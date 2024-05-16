@@ -1,0 +1,22 @@
+{
+  "name": "mdct-hcbs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "directories": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs.git"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/issues"
+  },
+  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs#readme",
+  "dependencies": {},
+  "devDependencies": {},
+  "resolutions": {}
+}
