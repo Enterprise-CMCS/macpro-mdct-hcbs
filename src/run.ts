@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";

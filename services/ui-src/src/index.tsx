@@ -1,3 +1,5 @@
+/* eslint-disable multiline-comment-style */
+
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";

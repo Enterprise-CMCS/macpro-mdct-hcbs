@@ -24,7 +24,7 @@ export const App = () => {
 
   const authenticatedRoutes = (
     <>
-      {user && <p>Hello World</p>}
+      {user && <div data-testid="app-container">Hello World</div>}
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>
