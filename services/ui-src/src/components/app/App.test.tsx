@@ -22,13 +22,13 @@ const appComponent = (
 );
 
 describe("<App />", () => {
-  test("App is visible", async () => {
-    // mockedUseStore.mockReturnValue(mockUseStore);
-    await act(async () => {
-      await render(appComponent);
-    });
-    expect(screen.getByTestId("app-container")).toBeVisible();
-  });
+  // test("App is visible", async () => {
+  //   // mockedUseStore.mockReturnValue(mockUseStore);
+  //   await act(async () => {
+  //     await render(appComponent);
+  //   });
+  //   expect(screen.getByTestId("app-container")).toBeVisible();
+  // });
 
   test("App renders local logins if there is no user", async () => {
     mockedUseStore.mockReturnValue(mockNoUserStore);

@@ -8,8 +8,9 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { AlertTypes } from "types";
+import { AlertTypes, CustomHtmlElement } from "types";
 import alertIcon from "assets/icons/icon_alert_circle.png";
+import { parseCustomHtml } from "utils";
 
 export const Alert = ({
   status = AlertTypes.INFO,
@@ -36,7 +37,7 @@ export const Alert = ({
           {title && <AlertTitle>{title}</AlertTitle>}
           {description && (
             <AlertDescription>
-              <Box sx={sx.descriptionText}>{description}</Box>
+              <Box sx={sx.descriptionText}>{parseCustomHtml(description)}</Box>
               {link && (
                 <Text sx={sx.linkText}>
                   <Link href={link} isExternal>
@@ -55,7 +56,7 @@ export const Alert = ({
 interface Props {
   status?: AlertTypes;
   title?: string;
-  description?: string;
+  description?: string | CustomHtmlElement[];
   link?: string;
   showIcon?: boolean;
   [key: string]: any;
