@@ -8,7 +8,7 @@ set -eu -o pipefail
 # this script checks for all the prereqs and then calls dev.ts
 
 export REGION_A=us-east-1
-export PROJECT=mfp
+export PROJECT=hcbs
 
 # check node exists
 if ! which node > /dev/null ; then
