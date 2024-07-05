@@ -14,9 +14,10 @@ export interface CustomHtmlElement {
     content: string | any;
     as?: string;
     props?: {[key: string]: any};
+    children?: CustomHtmlElement[];
   }
 
 export interface ErrorVerbiage {
     title: string;
-    description: string;
+    description: string | CustomHtmlElement[];
 }

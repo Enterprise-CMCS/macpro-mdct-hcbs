@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { UserContext, UserProvider, useStore } from "utils";
 import {
-  mockBannerStore,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -114,7 +113,6 @@ describe("<UserProvider />", () => {
     beforeEach(async () => {
       await act(async () => {
         mockedUseStore
-          .mockReturnValue(mockBannerStore)
           .mockReturnValue(mockStateUserStore);
         render(testComponent);
       });

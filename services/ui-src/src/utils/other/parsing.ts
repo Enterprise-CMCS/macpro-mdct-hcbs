@@ -93,7 +93,7 @@ export function createElementWithChildren(
     return React.createElement(
       elementType,
       elementProps,
-      element.children.map((x) => createElementWithChildren(x))
+      element.children.map((x: any) => createElementWithChildren(x))
     );
   }
   const santizedContent = sanitizeAndParseHtml(content);
