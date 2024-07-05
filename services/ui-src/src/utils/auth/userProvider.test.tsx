@@ -112,8 +112,7 @@ describe("<UserProvider />", () => {
   describe("Test UserProvider", () => {
     beforeEach(async () => {
       await act(async () => {
-        mockedUseStore
-          .mockReturnValue(mockStateUserStore);
+        mockedUseStore.mockReturnValue(mockStateUserStore);
         render(testComponent);
       });
     });

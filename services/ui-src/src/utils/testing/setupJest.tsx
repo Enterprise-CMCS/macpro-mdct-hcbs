@@ -3,11 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
-import {
-  UserRoles,
-  HcbsUserState,
-  UserContextShape,
-} from "types";
+import { UserRoles, HcbsUserState, UserContextShape } from "types";
 // GLOBALS
 
 global.React = React;
@@ -154,11 +150,9 @@ export const mockUseStore: HcbsUserState = {
   ...mockStateUserStore,
 };
 
-export const mockUseAdminStore: HcbsUserState =
-{
-  ...mockAdminUserStore
+export const mockUseAdminStore: HcbsUserState = {
+  ...mockAdminUserStore,
 };
-
 
 // ROUTER
 

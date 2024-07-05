@@ -1,6 +1,4 @@
-import {
-  HcbsUser,
-} from "types";
+import { HcbsUser } from "types";
 
 // initial user state
 export interface HcbsUserState {

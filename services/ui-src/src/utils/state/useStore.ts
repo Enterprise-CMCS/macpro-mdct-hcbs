@@ -1,9 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import {
-  HcbsUserState,
-  HcbsUser,
-} from "types";
+import { HcbsUserState, HcbsUser } from "types";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -19,18 +16,15 @@ const userStore = (set: Function) => ({
     set(() => ({ showLocalLogins: true }), false, { type: "showLocalLogins" }),
 });
 
-
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState>(
-      (set) => ({
-        ...userStore(set),
-      })
-    ),
+    devtools<HcbsUserState>((set) => ({
+      ...userStore(set),
+    })),
     {
       name: "hcbs-store",
-      partialize: (state) => ({}),
+      partialize: () => ({}),
     }
   )
 );
