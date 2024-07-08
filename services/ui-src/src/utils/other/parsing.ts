@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
-// components
 import { Link as RouterLink } from "react-router-dom";
 import {
   Heading,
@@ -18,7 +17,6 @@ import {
   Tr,
   UnorderedList,
 } from "@chakra-ui/react";
-// types
 import { CustomHtmlElement } from "types";
 import uuid from "react-uuid";
 

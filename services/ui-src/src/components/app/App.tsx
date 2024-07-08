@@ -29,7 +29,7 @@ export const App = () => {
         <main>
           <Container sx={sx.appContainer}>
             <Heading as="h1" size="xl" sx={sx.loginHeading}>
-              Home and Community Based Services
+              Home &amp; Community Based Services
             </Heading>
           </Container>
           <Container sx={sx.loginContainer} data-testid="login-container">

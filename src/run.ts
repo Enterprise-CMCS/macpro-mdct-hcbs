@@ -14,7 +14,7 @@ const deployedServices = [
   // "topics",
   // "app-api",
   "ui",
-  // "ui-auth",
+  "ui-auth",
   "ui-src",
 ];
 
