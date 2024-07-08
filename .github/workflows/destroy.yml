@@ -1,0 +1,62 @@
+name: Destroy
+
+on:
+  delete:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Name of the environment to destroy:"
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  destroy:
+    # Protected branches should be designated as such in the GitHub UI.
+    # So, a protected branch should never have this workflow run, since the branch should never be deleted.
+    # This conditional is a backup mechanism to help prevent mistakes from becoming disasters.
+    # This is a list of branch names that are commonly used for protected branches/environments.
+    # Add/remove names from this list as appropriate.
+    if: |
+      (
+        github.event.ref_type == 'branch' &&
+        (!startsWith(github.event.ref, 'skipci')) &&
+        (!contains(fromJson('["main", "val", "production"]'), github.event.ref))
+      ) ||
+      (
+        inputs.environment != '' &&
+        (!contains(fromJson('["main", "val", "production"]'), inputs.environment))
+      )
+    runs-on: ubuntu-latest
+    env:
+      SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"        
+      - name: set branch_name
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ inputs.environment || github.event.ref }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
+      - name: set branch specific variable names
+        run: ./.github/build-vars.sh set_names
+      - name: set variable values
+        run: ./.github/build-vars.sh set_values
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV          
+      - name: Destroy
+        run: ./run destroy --stage $STAGE_PREFIX$branch_name --verify false
