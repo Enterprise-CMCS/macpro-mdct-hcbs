@@ -24,6 +24,32 @@
       }
     ]
   },
+
+  {
+    "username": "borep@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "borep@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Bobby"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Business"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-bor"
+      }
+    ]
+  },
   {
     "username": "helpdeskuser@test.com",
     "attributes": [
@@ -100,6 +126,64 @@
       {
         "Name": "custom:cms_state",
         "Value": "PR"
+      }
+    ]
+  },
+  {
+    "username": "staterep@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "staterep@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Robert"
+      },
+      {
+        "Name": "family_name",
+        "Value": "States"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-rep"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MA"
+      }
+    ]
+  },
+  {
+    "username": "stateapprover@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateapprover@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Zara"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Zustimmer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-approver"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MN"
       }
     ]
   },

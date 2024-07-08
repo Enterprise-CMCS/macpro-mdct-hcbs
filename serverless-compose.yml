@@ -21,7 +21,6 @@ services:
   #     SarFormBucketName: ${database.SarFormBucketName}
   #     SarReportTableName: ${database.SarReportTableName}
   #     SarReportTableStreamArn: ${database.SarReportTableStreamArn}
-  #     AttachmentsBucketName: ${uploads.AttachmentsBucketName}
 
   # wave 3: depends on many
   ui-auth:
