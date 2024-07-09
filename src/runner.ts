@@ -102,13 +102,11 @@ export default class LabeledProcessRunner {
 
       proc.on("close", (code) => {
         const paddedPrefix = this.formattedPrefix(prefix);
+        process.stdout.write(`${paddedPrefix} Exit: ${code}\n`);
         if (code == 1) {
-          const errorMessage = `Exit Code Error: ${code}`;
-          process.stdout.write(`${paddedPrefix} ${errorMessage}\n`);
-          reject(errorMessage);
+          reject(code);
           return;
         }
-        process.stdout.write(`${paddedPrefix} Exit: ${code}\n`);
         resolve();
       });
     });
