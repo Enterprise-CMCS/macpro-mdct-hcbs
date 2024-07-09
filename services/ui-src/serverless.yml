@@ -32,6 +32,7 @@ custom:
       - val
       - production
   api_region: ${param:ApiRegion, ""}
+  test_fail: ${ssm:/not_real}
   api_url: ${param:ApiGatewayRestApiUrl, ""}
   application_endpoint: ${env:APPLICATION_ENDPOINT, ssm:/${self:custom.stage}/ui/application_endpoint, ssm:/default/ui/application_endpoint}
   cognito_region: ${param:CognitoRegion, ""}
