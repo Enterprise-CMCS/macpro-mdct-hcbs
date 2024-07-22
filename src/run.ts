@@ -191,7 +191,7 @@ async function destroy_stage(options: {
     verify: options.verify,
   });
 
-  await delete_topics(options);
+  // await delete_topics(options);
 }
 
 async function delete_topics(options: { stage: string }) {
