@@ -1,30 +1,42 @@
-import { Routes, Route } from "react-router-dom";
-import { LoginCognito, LoginIDM, PostLogoutRedirect, Footer } from "components";
 import { useStore } from "utils";
+import { useEffect } from "react";
+import { useLocation, Routes, Route } from "react-router-dom";
+import {
+  LoginCognito,
+  LoginIDM,
+  PostLogoutRedirect,
+  Footer,
+  Timeout,
+} from "components";
 import { makeMediaQueryClasses } from "utils/other/useBreakpoint";
-import { Container, Divider, Heading, Stack } from "@chakra-ui/react";
+import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   // const context = useContext(UserContext);
   const { user, showLocalLogins } = useStore();
+  const { pathname, key } = useLocation();
   // const { pathname } = useLocation();
 
   // TODO: fire tealium page view on route change
-  /*
-   * useEffect(() => {
-   * fireTealiumPageView(
-   *   user,
-   *   window.location.href,
-   *   pathname,
-   *   isApparentReportPage(pathname)
-   * );
-   * }, [key]);
-   */
+  // useEffect(() => {
+  //   fireTealiumPageView(
+  //     user,
+  //     window.location.href,
+  //     pathname,
+  //     isApparentReportPage(pathname)
+  //   );
+  // }, [key]);
 
   const authenticatedRoutes = (
     <>
-      {user && <div data-testid="app-container">Hello World</div> && <Footer />}
+      {user && (
+        <Flex sx={sx.appLayout}>
+          <Timeout />
+          <div data-testid="app-container">Hello World</div>
+          <Footer />
+        </Flex>
+      )}
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>

@@ -6,7 +6,7 @@ import { useBreakpoint } from "utils";
 // assets
 import hhsLogo from "assets/logos/logo_hhs.png";
 import medicaidLogo from "assets/logos/logo_medicaid.svg";
-import mfpLogo from "assets/logos/logo_mdct_mfp_footer.png";
+import hcbsLogo from "assets/logos/logo_mdct_hcbs_footer.png";
 
 export const Footer = () => {
   const { isDesktop } = useBreakpoint();
@@ -16,7 +16,7 @@ export const Footer = () => {
         <Container sx={sx.footerTopContainer}>
           <Flex sx={sx.footerTopFlex}>
             <Box sx={sx.footerTopLeftContainer}>
-              <Image src={mfpLogo} alt="HCBS logo" sx={sx.mfpLogo} />
+              <Image src={hcbsLogo} alt="HCBS logo" sx={sx.hcbsLogo} />
             </Box>
             <Box sx={sx.footerTopRightContainer}>
               <Flex sx={sx.footerTopRightTopFlex}>
@@ -161,7 +161,7 @@ const sx = {
     maxWidth: "25rem",
   },
 
-  mfpLogo: {
+  hcbsLogo: {
     maxHeight: "4.875rem",
     margin: "0 auto",
     ".desktop &": {
