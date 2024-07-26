@@ -6,27 +6,13 @@ import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
 import { Menu, MenuOption } from "components";
 // utils
 import { useBreakpoint } from "utils";
-/*
- *import { ReportContext, Text } from "components";
- *utils
- *import { useStore } from "utils";
- *assets
- */
+// assets
 import appLogo from "assets/logos/logo_mdct_hcbs.png";
 import getHelpIcon from "assets/icons/icon_help.png";
-/*
- *import checkIcon from "assets/icons/icon_check_gray.png";
- *import closeIcon from "assets/icons/icon_cancel_x_circle.png";
- */
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
-  /*
-   * const { report } = useStore() ?? {};
-   * const { lastSavedTime, isReportPage } = useContext(ReportContext);
-   *
-   * const saveStatusText = "Last saved " + lastSavedTime;
-   */
+
   return (
     <Box sx={sx.root} id="header">
       <Flex sx={sx.usaBannerContainer}>
@@ -58,42 +44,6 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {/* {isReportPage && (
-        <Flex sx={sx.subnavBar}>
-          <Container sx={sx.subnavContainer}>
-            <Flex sx={sx.subnavFlex}>
-              <Flex>
-                <Text sx={sx.submissionNameText}>{report?.submissionName}</Text>
-              </Flex>
-              <Flex sx={sx.subnavFlexRight}>
-                {lastSavedTime && (
-                  <>
-                    <Image
-                      src={checkIcon}
-                      alt="gray checkmark icon"
-                      sx={sx.checkIcon}
-                    />
-                    <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
-                  </>
-                )}
-                <Link
-                  as={RouterLink}
-                  to={report?.formTemplate.basePath || "/"}
-                  sx={sx.leaveFormLink}
-                  variant="outlineButton"
-                  tabIndex={-1}
-                >
-                  {!isMobile ? (
-                    <>Leave form</>
-                  ) : (
-                    <Image src={closeIcon} alt="Close" sx={sx.closeIcon} />
-                  )}
-                </Link>
-              </Flex>
-            </Flex>
-          </Container>
-        </Flex>
-      )} */}
     </Box>
   );
 };
@@ -141,46 +91,5 @@ const sx = {
   },
   appLogo: {
     maxWidth: "200px",
-  },
-  subnavBar: {
-    bg: "palette.secondary_lightest",
-  },
-  subnavContainer: {
-    maxW: "appMax",
-    ".desktop &": {
-      padding: "0 2rem",
-    },
-  },
-  subnavFlex: {
-    height: "60px",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  submissionNameText: {
-    fontWeight: "bold",
-  },
-  subnavFlexRight: {
-    alignItems: "center",
-    paddingRight: ".5rem",
-  },
-  checkIcon: {
-    marginRight: "0.5rem",
-    boxSize: "1rem",
-    ".mobile &": {
-      display: "none",
-    },
-  },
-  saveStatusText: {
-    fontSize: "sm",
-    ".mobile &": {
-      width: "5rem",
-      textAlign: "right",
-    },
-  },
-  leaveFormLink: {
-    marginLeft: "1rem",
-  },
-  closeIcon: {
-    width: "2rem",
   },
 };
