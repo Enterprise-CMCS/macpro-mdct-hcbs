@@ -3,24 +3,27 @@ import { Link as RouterLink } from "react-router-dom";
 // components
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
+import { MenuOption } from "components";
+// utils
+import { useBreakpoint } from "utils";
 /*
  *import text from ^
- *import { Menu, MenuOption, ReportContext } from "components";
+ *import { Menu, ReportContext } from "components";
  *utils
  *import { useBreakpoint, useStore } from "utils";
  *assets
  */
 import appLogo from "assets/logos/logo_mdct_hcbs.png";
+import getHelpIcon from "assets/icons/icon_help.png";
 /*
- *import getHelpIcon from "assets/icons/icon_help.png";
  *import checkIcon from "assets/icons/icon_check_gray.png";
  *import closeIcon from "assets/icons/icon_cancel_x_circle.png";
  */
 
 export const Header = () => {
+  const { isMobile } = useBreakpoint();
   /*
-   *  const { isMobile } = useBreakpoint();
-   *  const { report } = useStore() ?? {};
+   * const { report } = useStore() ?? {};
    * const { lastSavedTime, isReportPage } = useContext(ReportContext);
    *
    * const saveStatusText = "Last saved " + lastSavedTime;
@@ -43,13 +46,13 @@ export const Header = () => {
                 variant="unstyled"
                 aria-label="Get Help"
               >
-                {/* <MenuOption
+                <MenuOption
                   icon={getHelpIcon}
                   text="Get Help"
                   altText="Help"
                   role="group"
                   hideText={isMobile}
-                /> */}
+                />
               </Link>
               {/* <Menu handleLogout={handleLogout} /> */}
             </Flex>

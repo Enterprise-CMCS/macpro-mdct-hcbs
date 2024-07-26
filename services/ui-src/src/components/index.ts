@@ -10,5 +10,7 @@ export { PageTemplate } from "./layout/PageTemplate";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
+// menus
+export { MenuOption } from "./menus/MenuOption";
 // Redirects
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
