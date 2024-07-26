@@ -3,14 +3,13 @@ import { Link as RouterLink } from "react-router-dom";
 // components
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
-import { MenuOption } from "components";
+import { Menu, MenuOption } from "components";
 // utils
 import { useBreakpoint } from "utils";
 /*
- *import text from ^
- *import { Menu, ReportContext } from "components";
+ *import { ReportContext, Text } from "components";
  *utils
- *import { useBreakpoint, useStore } from "utils";
+ *import { useStore } from "utils";
  *assets
  */
 import appLogo from "assets/logos/logo_mdct_hcbs.png";
@@ -20,7 +19,7 @@ import getHelpIcon from "assets/icons/icon_help.png";
  *import closeIcon from "assets/icons/icon_cancel_x_circle.png";
  */
 
-export const Header = () => {
+export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   /*
    * const { report } = useStore() ?? {};
@@ -54,7 +53,7 @@ export const Header = () => {
                   hideText={isMobile}
                 />
               </Link>
-              {/* <Menu handleLogout={handleLogout} /> */}
+              <Menu handleLogout={handleLogout} />
             </Flex>
           </Flex>
         </Container>
@@ -99,11 +98,9 @@ export const Header = () => {
   );
 };
 
-/*
- *interface Props {
- *handleLogout: () => void;
- *}
- */
+interface Props {
+  handleLogout: () => void;
+}
 
 const sx = {
   root: {
