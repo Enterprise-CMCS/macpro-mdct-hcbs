@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Header, LoginCognito, LoginIDM, PostLogoutRedirect } from "components";
-import { useStore } from "utils";
-import { makeMediaQueryClasses } from "utils/other/useBreakpoint";
+// components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Header, LoginCognito, LoginIDM, PostLogoutRedirect } from "components";
+// utils
+import { makeMediaQueryClasses, UserContext, useStore } from "utils";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
-  // const context = useContext(UserContext);
+  const context = useContext(UserContext);
+  const { logout } = context;
   const { user, showLocalLogins } = useStore();
   // const { pathname } = useLocation();
 
@@ -26,7 +29,7 @@ export const App = () => {
     <>
       {user && (
         <Flex sx={sx.appLayout}>
-          <Header />
+          <Header handleLogout={logout} />
           <div data-testid="app-container">Hello World</div>
         </Flex>
       )}
