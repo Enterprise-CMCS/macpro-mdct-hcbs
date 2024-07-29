@@ -12,6 +12,7 @@ export const App = () => {
   const { pathname, key } = useLocation();
   // const { pathname } = useLocation();
 
+  // TODO: fire tealium page view on route change
   /*
    * useEffect(() => {
    * fireTealiumPageView(
