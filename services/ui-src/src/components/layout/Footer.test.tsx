@@ -22,7 +22,7 @@ describe("Test Footer", () => {
   });
 
   test("Logo is visible", () => {
-    expect(screen.getByAltText("MFP logo")).toBeVisible();
+    expect(screen.getByAltText("HCBS logo")).toBeVisible();
   });
 
   test("Help link is visible", () => {
