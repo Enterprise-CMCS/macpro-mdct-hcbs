@@ -22,21 +22,22 @@ export const App = () => {
   // const { pathname } = useLocation();
 
   // TODO: fire tealium page view on route change
-  // useEffect(() => {
-  //   fireTealiumPageView(
-  //     user,
-  //     window.location.href,
-  //     pathname,
-  //     isApparentReportPage(pathname)
-  //   );
-  // }, [key]);
+  /*
+   * useEffect(() => {
+   * fireTealiumPageView(
+   *   user,
+   *   window.location.href,
+   *   pathname,
+   *   isApparentReportPage(pathname)
+   * );
+   * }, [key]);
+   */
 
   const authenticatedRoutes = (
     <>
       {user && (
         <Flex sx={sx.appLayout}>
           <Timeout />
-          <div data-testid="app-container">Hello World</div>
           <Container sx={sx.appContainer} data-testid="app-container">
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes />
