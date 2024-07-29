@@ -2,6 +2,8 @@ import { useStore } from "utils";
 import { useEffect } from "react";
 import { useLocation, Routes, Route } from "react-router-dom";
 import {
+  AppRoutes,
+  Error,
   LoginCognito,
   LoginIDM,
   PostLogoutRedirect,
@@ -10,6 +12,7 @@ import {
 } from "components";
 import { makeMediaQueryClasses } from "utils/other/useBreakpoint";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
+import { ErrorBoundary } from "react-error-boundary";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
@@ -34,6 +37,11 @@ export const App = () => {
         <Flex sx={sx.appLayout}>
           <Timeout />
           <div data-testid="app-container">Hello World</div>
+          <Container sx={sx.appContainer} data-testid="app-container">
+            <ErrorBoundary FallbackComponent={Error}>
+              <AppRoutes />
+            </ErrorBoundary>
+          </Container>
           <Footer />
         </Flex>
       )}
