@@ -1,11 +1,8 @@
 import { Link as RouterLink } from "react-router-dom";
-// components
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
 import { Menu, MenuOption } from "components";
-// utils
 import { useBreakpoint } from "utils";
-// assets
 import appLogo from "assets/logos/logo_mdct_hcbs.png";
 import getHelpIcon from "assets/icons/icon_help.png";
 

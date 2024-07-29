@@ -1,5 +1,4 @@
 import { Link as RouterLink } from "react-router-dom";
-// components
 import {
   Box,
   Button,
@@ -11,9 +10,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { MenuOption } from "components";
-// utils
 import { useBreakpoint } from "utils";
-// assets
 import accountCircleIcon from "assets/icons/icon_account_circle.png";
 import chevronDownIcon from "assets/icons/icon_arrow_down.png";
 import editIcon from "assets/icons/icon_edit_square.png";

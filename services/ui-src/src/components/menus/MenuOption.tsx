@@ -1,4 +1,3 @@
-// components
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 export const MenuOption = ({ text, icon, altText, role, hideText }: Props) => {
