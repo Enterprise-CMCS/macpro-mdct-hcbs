@@ -1,7 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useFlags } from "launchdarkly-react-client-sdk";
-
-// components
+import { Route, Routes } from "react-router-dom";
 import { HelpPage } from "components";
 
 export const AppRoutes = () => {
