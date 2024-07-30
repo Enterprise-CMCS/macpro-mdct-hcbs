@@ -19,7 +19,7 @@ export const App = () => {
   const { user, showLocalLogins } = useStore();
   // const { pathname } = useLocation();
 
-  // TODO:  fire tealium page view on route change
+  // TODO: fire tealium page view on route change
   /*
    * useEffect(() => {
    * fireTealiumPageView(
@@ -34,7 +34,7 @@ export const App = () => {
   const authenticatedRoutes = (
     <>
       {user && (
-        <Flex data-testid="app-container" sx={sx.appLayout}>
+        <Flex sx={sx.appLayout}>
           <Timeout />
           <Container sx={sx.appContainer} data-testid="app-container">
             <ErrorBoundary FallbackComponent={Error}>
