@@ -12,7 +12,8 @@ const menuComponent = (
 describe("<Menu />", () => {
   test("Menu button is visible", () => {
     render(menuComponent);
-    expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
+
+    expect(screen.getByRole("button", { name: "my account" })).toBeVisible();
   });
 
   testA11y(menuComponent);

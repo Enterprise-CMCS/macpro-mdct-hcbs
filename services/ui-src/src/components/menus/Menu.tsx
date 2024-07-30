@@ -25,7 +25,6 @@ export const Menu = ({ handleLogout }: Props) => {
           }
           sx={sx.menuButton}
           aria-label="my account"
-          data-testid="header-menu-dropdown-button"
         >
           <MenuOption
             icon={accountCircleIcon}

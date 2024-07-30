@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Header, MenuOption } from "components";
 import { testA11y } from "utils/testing/commonTests";
@@ -10,29 +11,20 @@ const headerComponent = (
 );
 
 describe("<Header />", () => {
-  describe("Test Header", () => {
+  describe("Test Visibility of Header", () => {
     beforeEach(() => {
       render(headerComponent);
     });
 
-    test("Header is visible", () => {
+    test("Navigation, Logo, Help and Menu is visible on Header", () => {
       const header = screen.getByRole("navigation");
       expect(header).toBeVisible();
-    });
-
-    test("Logo is visible", () => {
       expect(screen.getByAltText("HCBS logo")).toBeVisible();
-    });
-
-    test("Help button is visible", () => {
       expect(screen.getByAltText("Help")).toBeVisible();
-    });
-
-    test("Menu button is visible", () => {
       expect(screen.getByAltText("Arrow down")).toBeVisible();
     });
 
-    test("Renders My Account and is clickable", () => {
+    test("Renders My Account menu and is clickable", () => {
       render(
         <MenuOption
           text={"My Account"}
@@ -44,7 +36,7 @@ describe("<Header />", () => {
       const menuButton = screen.getByRole("button", { name: /my account/i });
       expect(menuButton).toBeInTheDocument();
 
-      fireEvent.click(menuButton);
+      userEvent.click(menuButton);
     });
 
     test("Logs out user", () => {
@@ -59,7 +51,7 @@ describe("<Header />", () => {
       const logoutButton = screen.getByRole("img", { name: /Logout/i });
       expect(logoutButton).toBeInTheDocument();
 
-      fireEvent.click(logoutButton);
+      userEvent.click(logoutButton);
     });
   });
 
