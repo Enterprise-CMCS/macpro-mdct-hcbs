@@ -1,5 +1,4 @@
 import { ReactChild } from "react";
-// components
 import { Box } from "@chakra-ui/react";
 
 export const Card = ({ children, ...props }: Props) => {

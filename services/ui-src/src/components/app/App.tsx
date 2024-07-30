@@ -1,6 +1,5 @@
 import { useStore } from "utils";
-import { useEffect } from "react";
-import { useLocation, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import {
   AppRoutes,
   Error,
@@ -18,7 +17,6 @@ export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   // const context = useContext(UserContext);
   const { user, showLocalLogins } = useStore();
-  const { pathname, key } = useLocation();
   // const { pathname } = useLocation();
 
   // TODO: fire tealium page view on route change
@@ -36,7 +34,7 @@ export const App = () => {
   const authenticatedRoutes = (
     <>
       {user && (
-        <Flex sx={sx.appLayout}>
+        <Flex data-testid="app-container" sx={sx.appLayout}>
           <Timeout />
           <Container sx={sx.appContainer} data-testid="app-container">
             <ErrorBoundary FallbackComponent={Error}>

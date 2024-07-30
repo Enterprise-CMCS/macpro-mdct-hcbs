@@ -1,7 +1,5 @@
-// components
 import { Accordion, Box, Text } from "@chakra-ui/react";
 import { AccordionItem } from "components";
-// utils
 import { AnyObject } from "types";
 
 export const FaqAccordion = ({ accordionItems, ...props }: Props) => {

@@ -1,15 +1,12 @@
-// components
 import { Flex, Image, Link, Text } from "@chakra-ui/react";
 import { Card } from "components";
-// utils
 import { useBreakpoint } from "utils";
 import { AnyObject } from "types";
 import { createEmailLink } from "utils/other/email";
-// assets
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 import settingsIcon from "assets/icons/icon_wrench_gear.png";
 
-const iconMap: { [key: string]: { [key: string]: string } } = {
+const iconMap = {
   spreadsheet: {
     image: spreadsheetIcon,
     alt: "spreadsheet icon",
@@ -47,7 +44,7 @@ export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
 
 interface Props {
   verbiage: AnyObject;
-  icon: string;
+  icon: keyof typeof iconMap;
   [key: string]: any;
 }
 

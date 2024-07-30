@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-//components
 import { Card } from "components";
 
 const cardComponent = (

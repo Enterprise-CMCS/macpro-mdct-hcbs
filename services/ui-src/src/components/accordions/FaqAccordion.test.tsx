@@ -1,9 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
-// utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-// components
 import { FaqAccordion } from "components";
 
 const accordionItems = [

@@ -1,5 +1,4 @@
 import { ReactChild } from "react";
-// components
 import {
   AccordionButton,
   AccordionItem as AccordionItemRoot,
@@ -7,7 +6,6 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-// assets
 import plusIcon from "assets/icons/icon_plus.png";
 import minusIcon from "assets/icons/icon_minus.png";
 

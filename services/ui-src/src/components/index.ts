@@ -1,6 +1,6 @@
 // accordions
-export { AccordionItem } from "./accordians/AccordianItem";
-export { FaqAccordion } from "./accordians/FaqAccordian";
+export { AccordionItem } from "./accordions/AccordionItem";
+export { FaqAccordion } from "./accordions/FaqAccordion";
 // alerts
 export { Alert } from "./alerts/Alert";
 export { ErrorAlert } from "./alerts/ErrorAlert";

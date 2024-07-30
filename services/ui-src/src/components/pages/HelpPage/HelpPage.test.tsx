@@ -1,10 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-// components
 import { HelpPage } from "components/pages/HelpPage/HelpPage";
-// utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-// verbiage
 import verbiage from "verbiage/pages/help";
 
 const helpView = (

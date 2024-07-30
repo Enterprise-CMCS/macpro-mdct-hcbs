@@ -1,4 +1,3 @@
-// components
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { EmailCard, FaqAccordion, PageTemplate } from "components";
 import verbiage from "verbiage/pages/help";

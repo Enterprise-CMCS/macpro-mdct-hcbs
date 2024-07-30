@@ -1,11 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
-// components
 import { Timeout } from "components";
-// constants
 import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
-// utils
 import {
   mockStateUserStore,
   RouterWrappedComponent,

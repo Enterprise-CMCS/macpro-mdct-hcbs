@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-//components
 import { EmailCard } from "components";
 import { createEmailLink } from "utils/other/email";
 import verbiage from "verbiage/pages/help";
