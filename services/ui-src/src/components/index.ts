@@ -9,5 +9,6 @@ export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
 // layout
 export { PageTemplate } from "./layout/PageTemplate";
+export { Footer } from "./layout/Footer";
 // Redirects
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";

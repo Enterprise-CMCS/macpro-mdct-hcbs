@@ -9,3 +9,4 @@ export * from "./state/useStore";
 export * from "./tracking/tealium";
 //other
 export * from "./other/parsing";
+export * from "./other/useBreakpoint";

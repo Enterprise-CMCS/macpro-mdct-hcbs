@@ -1,8 +1,8 @@
-import { Routes, Route } from "react-router-dom";
-import { LoginCognito, LoginIDM, PostLogoutRedirect } from "components";
 import { useStore } from "utils";
+import { Routes, Route } from "react-router-dom";
+import { LoginCognito, LoginIDM, PostLogoutRedirect, Footer } from "components";
 import { makeMediaQueryClasses } from "utils/other/useBreakpoint";
-import { Container, Divider, Heading, Stack } from "@chakra-ui/react";
+import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
@@ -24,7 +24,11 @@ export const App = () => {
 
   const authenticatedRoutes = (
     <>
-      {user && <div data-testid="app-container">Hello World</div>}
+      {user && (
+        <Flex data-testid="app-container" sx={sx.appLayout}>
+          <Footer />
+        </Flex>
+      )}
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>
