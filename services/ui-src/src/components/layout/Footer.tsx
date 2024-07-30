@@ -1,9 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
-// components
 import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
-// utils
 import { useBreakpoint } from "utils";
-// assets
 import hhsLogo from "assets/logos/logo_hhs.png";
 import medicaidLogo from "assets/logos/logo_medicaid.svg";
 import hcbsLogo from "assets/logos/logo_mdct_hcbs_footer.png";
