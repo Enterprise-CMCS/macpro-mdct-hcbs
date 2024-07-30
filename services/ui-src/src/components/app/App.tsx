@@ -26,7 +26,7 @@ export const App = () => {
   const authenticatedRoutes = (
     <>
       {user && (
-        <Flex sx={sx.appLayout}>
+        <Flex data-testid="app-container" sx={sx.appLayout}>
           <Header handleLogout={logout} />
         </Flex>
       )}
