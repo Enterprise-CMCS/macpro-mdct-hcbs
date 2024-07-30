@@ -1,6 +1,5 @@
 import { useStore } from "utils";
-import { useEffect } from "react";
-import { useLocation, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { LoginCognito, LoginIDM, PostLogoutRedirect, Footer } from "components";
 import { makeMediaQueryClasses } from "utils/other/useBreakpoint";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
@@ -9,7 +8,6 @@ export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   // const context = useContext(UserContext);
   const { user, showLocalLogins } = useStore();
-  const { pathname, key } = useLocation();
   // const { pathname } = useLocation();
 
   // TODO: fire tealium page view on route change
