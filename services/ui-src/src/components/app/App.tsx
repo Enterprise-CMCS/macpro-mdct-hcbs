@@ -1,7 +1,13 @@
 import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
-import { Header, LoginCognito, LoginIDM, PostLogoutRedirect } from "components";
+import {
+  Header,
+  LoginCognito,
+  LoginIDM,
+  PostLogoutRedirect,
+  Footer,
+} from "components";
 import { makeMediaQueryClasses, UserContext, useStore } from "utils";
 
 export const App = () => {
@@ -28,6 +34,7 @@ export const App = () => {
       {user && (
         <Flex data-testid="app-container" sx={sx.appLayout}>
           <Header handleLogout={logout} />
+          <Footer />
         </Flex>
       )}
       {!user && showLocalLogins && (

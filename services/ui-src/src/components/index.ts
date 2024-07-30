@@ -7,6 +7,7 @@ export { Error } from "./app/Error";
 // layout
 export { Header } from "./layout/Header";
 export { PageTemplate } from "./layout/PageTemplate";
+export { Footer } from "./layout/Footer";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
