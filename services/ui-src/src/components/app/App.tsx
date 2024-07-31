@@ -1,13 +1,17 @@
 import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
+  AppRoutes,
+  Error,
   Header,
   LoginCognito,
   LoginIDM,
   PostLogoutRedirect,
   Footer,
+  Timeout,
 } from "components";
+import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
+import { ErrorBoundary } from "react-error-boundary";
 import { makeMediaQueryClasses, UserContext, useStore } from "utils";
 
 export const App = () => {
@@ -32,8 +36,14 @@ export const App = () => {
   const authenticatedRoutes = (
     <>
       {user && (
-        <Flex data-testid="app-container" sx={sx.appLayout}>
+        <Flex sx={sx.appLayout}>
+          <Timeout />
           <Header handleLogout={logout} />
+          <Container sx={sx.appContainer} data-testid="app-container">
+            <ErrorBoundary FallbackComponent={Error}>
+              <AppRoutes />
+            </ErrorBoundary>
+          </Container>
           <Footer />
         </Flex>
       )}
