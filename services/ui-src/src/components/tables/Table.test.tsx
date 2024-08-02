@@ -1,7 +1,5 @@
 import { render, screen } from "@testing-library/react";
-// utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-//components
 import { Table } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
