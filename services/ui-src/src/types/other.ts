@@ -15,6 +15,13 @@ export interface DateShape {
   day: number;
 }
 
+export interface TableContentShape {
+  caption?: string;
+  headRow?: string[];
+  bodyRows?: string[][];
+  footRow?: string[][];
+}
+
 export interface TimeShape {
   hour: number;
   minute: number;
