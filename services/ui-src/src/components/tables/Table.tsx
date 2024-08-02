@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-// components
 import {
   Table as TableRoot,
   TableCaption,
@@ -11,9 +10,7 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-// utils
 import { sanitizeAndParseHtml } from "utils";
-// types
 import { AnyObject, TableContentShape } from "types";
 import { notAnsweredText } from "../../constants";
 

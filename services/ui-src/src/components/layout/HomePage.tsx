@@ -1,7 +1,5 @@
-// components
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, TemplateCard } from "components";
-// utils
 import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {

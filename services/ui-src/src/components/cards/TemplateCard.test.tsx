@@ -1,11 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-// components
 import { TemplateCard } from "components";
-// utils
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 import { useStore } from "utils";
-// verbiage
 import verbiage from "verbiage/pages/home";
 import { testA11y } from "utils/testing/commonTests";
 

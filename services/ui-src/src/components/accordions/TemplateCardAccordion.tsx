@@ -1,7 +1,5 @@
-// components
 import { Accordion, ListItem, UnorderedList } from "@chakra-ui/react";
 import { AccordionItem, Table } from "components";
-// utils
 import { AnyObject } from "types";
 import { parseCustomHtml } from "utils";
 

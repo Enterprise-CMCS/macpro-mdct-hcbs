@@ -1,8 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-// utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-// components
 import { TemplateCardAccordion } from "components";
 import verbiage from "verbiage/pages/home";
 import { AnyObject } from "types";
@@ -10,7 +8,7 @@ import { testA11y } from "utils/testing/commonTests";
 
 const accordionComponent = (mockProps?: AnyObject) => {
   const props = {
-    verbiage: verbiage.cards.WP.accordion,
+    verbiage: verbiage.cards.QM.accordion,
     ...mockProps,
   };
   return (
@@ -20,8 +18,8 @@ const accordionComponent = (mockProps?: AnyObject) => {
   );
 };
 
-const accordionContent = verbiage.cards.WP.accordion.text[0].content;
-const accordionButtonLabel = verbiage.cards.WP.accordion.buttonLabel;
+const accordionContent = verbiage.cards.QM.accordion.text[0].content;
+const accordionButtonLabel = verbiage.cards.QM.accordion.buttonLabel;
 
 describe("<TemplateCardAccordion />", () => {
   test("Accordion is visible", () => {
