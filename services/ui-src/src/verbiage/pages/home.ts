@@ -6,7 +6,7 @@ export default {
         "Get started by completing the Home and Community-Based Services (HCBS) for your state or territory. Learn more about this ",
       linkText: "new data collection tool",
       linkLocation:
-        "https://www.medicaid.gov/medicaid/long-term-services-supports/money-follows-person/index.html",
+        "https://www.medicaid.gov/medicaid/home-community-based-services/index.html",
       postLinkText: " from CMS.",
     },
   },
