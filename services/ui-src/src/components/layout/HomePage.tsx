@@ -6,7 +6,7 @@ export const HomePage = () => {
   const { intro, cards } = verbiage;
 
   return (
-    <PageTemplate sx={sx.layout} data-testid="home-view">
+    <PageTemplate sx={sx.layout}>
       <>
         <Box sx={sx.introTextBox}>
           <Heading as="h1" sx={sx.headerText}>
