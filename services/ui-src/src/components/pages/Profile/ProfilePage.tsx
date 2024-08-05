@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
-// components
 import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
-//utils
 import { createEmailLink, useStore } from "utils";
 import verbiage from "verbiage/pages/profile";
 

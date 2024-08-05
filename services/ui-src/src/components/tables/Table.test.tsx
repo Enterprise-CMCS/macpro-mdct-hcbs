@@ -1,8 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-// utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-//components
 import { Table } from "components";
 
 const tableContent = {

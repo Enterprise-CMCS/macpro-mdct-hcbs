@@ -1,8 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-// components
 import { ProfilePage } from "components";
-// utils
 import {
   mockAdminUserStore,
   mockStateUserStore,
