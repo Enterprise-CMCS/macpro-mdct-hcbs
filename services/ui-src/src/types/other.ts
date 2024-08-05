@@ -26,6 +26,13 @@ export interface AnyObject {
   [key: string]: any;
 }
 
+export interface TableContentShape {
+  caption?: string;
+  headRow?: string[];
+  bodyRows?: string[][];
+  footRow?: string[][];
+}
+
 export interface CustomHtmlElement {
   type: string;
   content: string | any;

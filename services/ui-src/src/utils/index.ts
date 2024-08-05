@@ -11,3 +11,4 @@ export * from "./tracking/tealium";
 export * from "./other/parsing";
 export * from "./other/useBreakpoint";
 export * from "./other/time";
+export * from "./other/email";

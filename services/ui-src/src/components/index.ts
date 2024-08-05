@@ -21,8 +21,11 @@ export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
 // pages
 export { HelpPage } from "./pages/HelpPage/HelpPage";
+export { ProfilePage } from "./pages/Profile/ProfilePage";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 // Redirects
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
+// tables
+export { Table } from "./tables/Table";
