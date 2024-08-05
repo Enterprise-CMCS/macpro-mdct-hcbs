@@ -22,22 +22,22 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const wpTemplateVerbiage = verbiage.cards.QM;
+const qmTemplateVerbiage = verbiage.cards.QM;
 
-const wpTemplateCardComponent = (
+const qmTemplateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard templateName="WP" verbiage={wpTemplateVerbiage} />
+    <TemplateCard templateName="QM" verbiage={qmTemplateVerbiage} />
   </RouterWrappedComponent>
 );
 
 describe("<TemplateCard />", () => {
   describe("Renders", () => {
     beforeEach(() => {
-      render(wpTemplateCardComponent);
+      render(qmTemplateCardComponent);
     });
 
     test("QM TemplateCard is visible", () => {
-      expect(screen.getByText(wpTemplateVerbiage.title)).toBeVisible();
+      expect(screen.getByText(qmTemplateVerbiage.title)).toBeVisible();
     });
 
     test("QM TemplateCard image is visible on desktop", () => {
@@ -46,18 +46,18 @@ describe("<TemplateCard />", () => {
     });
 
     test("QM TemplateCard link is visible on desktop", () => {
-      const templateCardLink = wpTemplateVerbiage.link.text;
+      const templateCardLink = qmTemplateVerbiage.link.text;
       expect(screen.getByText(templateCardLink)).toBeVisible();
     });
 
     test("QM TemplateCard navigates to next route on link click", async () => {
       mockedUseStore.mockReturnValue(mockUseStore);
-      const templateCardLink = screen.getByText(wpTemplateVerbiage.link.text)!;
+      const templateCardLink = screen.getByText(qmTemplateVerbiage.link.text)!;
       await userEvent.click(templateCardLink);
-      const expectedRoute = wpTemplateVerbiage.link.route;
+      const expectedRoute = qmTemplateVerbiage.link.route;
       await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
   });
 
-  testA11y(wpTemplateCardComponent);
+  testA11y(qmTemplateCardComponent);
 });
