@@ -1,5 +1,6 @@
 // api
 export * from "./api/providers/ApiProvider";
+export * from "./api/requestMethods/getTemplateUrl";
 // auth
 export * from "./auth/UserProvider";
 export * from "./auth/authLifecycle";
