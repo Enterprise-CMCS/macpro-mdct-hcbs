@@ -19,7 +19,7 @@ export const ProfilePage = () => {
       ["First Name", given_name!],
       ["Last Name", family_name!],
       ["Role", userRole!],
-      ["State", state! || "N/A"],
+      ["State", state || "N/A"],
     ],
   };
 
