@@ -2,16 +2,19 @@ import {
   Box,
   Button,
   Image,
+  Link,
   Menu as MenuRoot,
   MenuButton,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 import { MenuOption } from "components";
 import { useBreakpoint } from "utils";
 import accountCircleIcon from "assets/icons/icon_account_circle.png";
 import chevronDownIcon from "assets/icons/icon_arrow_down.png";
 import logoutIcon from "assets/icons/icon_arrow_right_square.png";
+import editIcon from "assets/icons/icon_edit_square.png";
 
 export const Menu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
@@ -35,6 +38,18 @@ export const Menu = ({ handleLogout }: Props) => {
         </MenuButton>
       </Box>
       <MenuList sx={sx.menuList} data-testid="header-menu-options-list">
+        <Link as={RouterLink} to="/profile" variant="unstyled">
+          <MenuItem
+            sx={sx.menuItem}
+            data-testid="header-menu-option-manage-account"
+          >
+            <MenuOption
+              icon={editIcon}
+              altText="Manage account"
+              text="Manage Account"
+            />
+          </MenuItem>
+        </Link>
         <MenuItem
           onClick={handleLogout}
           sx={sx.menuItem}

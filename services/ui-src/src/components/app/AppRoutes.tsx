@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { HelpPage, HomePage } from "components";
+import { HelpPage, HomePage, ProfilePage } from "components";
 
 export const AppRoutes = () => {
   return (
@@ -7,6 +7,7 @@ export const AppRoutes = () => {
       <Routes>
         {/* General Routes */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/help" element={<HelpPage />} />
       </Routes>
     </main>
