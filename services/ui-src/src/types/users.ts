@@ -2,11 +2,11 @@
 
 // TODO: Finalize with IDM
 export enum UserRoles {
-  ADMIN = "mdcthcbs-bor", // "MDCT HCBS Business Owner Representative"
-  APPROVER = "mdcthcbs-approver", // "MDCT HCBS Approver"
-  HELP_DESK = "mdcthcbs-help-desk", // "MDCT HCBS Help Desk"
-  INTERNAL = "mdcthcbs-cms-internal-user", // "MDCT HCBS Internal User"
-  STATE_USER = "mdcthcbs-state-user", // "MDCT HCBS State User"
+  ADMIN = "mdct-hcbs-bor", // "MDCT HCBS Business Owner Representative"
+  APPROVER = "mdct-hcbs-appr", // "MDCT HCBS Approver"
+  HELP_DESK = "mdct-hcbs-hd", // "MDCT HCBS Help Desk"
+  INTERNAL = "mdct-hcbs-internal-user", // "MDCT HCBS Internal User"
+  STATE_USER = "mdct-hcbs-state-user", // "MDCT HCBS State User"
 }
 
 export interface HcbsUser {
