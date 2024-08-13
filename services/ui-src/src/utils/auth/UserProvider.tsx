@@ -71,7 +71,7 @@ export const UserProvider = ({ children }: Props) => {
       const { email, given_name, family_name } = payload;
       // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to HCBS
       const cms_role = payload["custom:cms_roles"] as string;
-      const userRole = cms_role.split(",").find((r) => r.includes("mdct-hcbs"));
+      const userRole = cms_role.split(",").find((r) => r.includes("mdcthcbs"));
       const state = payload["custom:cms_state"] as string | undefined;
       const full_name = [given_name, " ", family_name].join("");
       const userCheck = {
