@@ -1,6 +1,8 @@
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
 
+export const notAnsweredText = "Not answered";
+
 // STATES
 export enum States {
   AL = "Alabama",

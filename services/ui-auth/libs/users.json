@@ -71,7 +71,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-help-desk"
+        "Value": "mdcthcbs-hd"
       }
     ]
   },
@@ -96,7 +96,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-cms-internal-user"
+        "Value": "mdcthcbs-internal-user"
       }
     ]
   },
@@ -179,7 +179,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-approver"
+        "Value": "mdcthcbs-appr"
       },
       {
         "Name": "custom:cms_state",

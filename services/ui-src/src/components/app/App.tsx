@@ -1,12 +1,23 @@
+import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
-import { LoginCognito, LoginIDM, PostLogoutRedirect } from "components";
-import { useStore } from "utils";
-import { makeMediaQueryClasses } from "utils/other/useBreakpoint";
-import { Container, Divider, Heading, Stack } from "@chakra-ui/react";
+import {
+  AppRoutes,
+  Error,
+  Header,
+  LoginCognito,
+  LoginIDM,
+  PostLogoutRedirect,
+  Footer,
+  Timeout,
+} from "components";
+import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
+import { ErrorBoundary } from "react-error-boundary";
+import { makeMediaQueryClasses, UserContext, useStore } from "utils";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
-  // const context = useContext(UserContext);
+  const context = useContext(UserContext);
+  const { logout } = context;
   const { user, showLocalLogins } = useStore();
   // const { pathname } = useLocation();
 
@@ -24,7 +35,18 @@ export const App = () => {
 
   const authenticatedRoutes = (
     <>
-      {user && <div data-testid="app-container">Hello World</div>}
+      {user && (
+        <Flex sx={sx.appLayout}>
+          <Timeout />
+          <Header handleLogout={logout} />
+          <Container sx={sx.appContainer} data-testid="app-container">
+            <ErrorBoundary FallbackComponent={Error}>
+              <AppRoutes />
+            </ErrorBoundary>
+          </Container>
+          <Footer />
+        </Flex>
+      )}
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>
