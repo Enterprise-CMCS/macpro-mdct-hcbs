@@ -3,9 +3,9 @@ import { Card, TemplateCardAccordion } from "components";
 import { useNavigate } from "react-router-dom";
 import { useBreakpoint, getSignedTemplateUrl } from "utils";
 import { AnyObject } from "types";
-import downloadIcon from "assets/icons/icon_download.png";
-import nextIcon from "assets/icons/icon_next_white.png";
-import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
+import downloadIcon from "assets/icons/download/icon_download_primary.svg";
+import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
+import spreadsheetIcon from "assets/icons/spreadsheet/icon_spreadsheet_gray.svg";
 
 const downloadTemplate = async (templateName: string) => {
   const signedUrl = await getSignedTemplateUrl(templateName);
@@ -70,7 +70,6 @@ export const TemplateCard = ({
             )}
             {!isHidden && (
               <Button
-                sx={sx.formLink}
                 onClick={() => navigate(verbiage.link.route)}
                 rightIcon={
                   <Image src={nextIcon} alt="Link Icon" height="1rem" />

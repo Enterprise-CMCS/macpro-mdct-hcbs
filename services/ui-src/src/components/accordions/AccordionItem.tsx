@@ -6,8 +6,8 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import plusIcon from "assets/icons/icon_plus.png";
-import minusIcon from "assets/icons/icon_minus.png";
+import plusIcon from "assets/icons/accordian/icon_plus.svg";
+import minusIcon from "assets/icons/accordian/icon_minus.svg";
 
 export const AccordionItem = ({ label, children, ...props }: Props) => {
   return (
