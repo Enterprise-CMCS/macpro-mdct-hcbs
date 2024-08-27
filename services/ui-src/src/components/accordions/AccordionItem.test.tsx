@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const accordionItemComponent = (
   <RouterWrappedComponent>
     <Accordion>
-      <AccordionItem data-testid="accordion-item" />
+      <AccordionItem />
     </Accordion>
   </RouterWrappedComponent>
 );
@@ -17,15 +18,16 @@ describe("Test AccordionItem", () => {
     render(accordionItemComponent);
   });
 
-  test("AccordionItem is visible", () => {
-    expect(screen.getByTestId("accordion-item")).toBeVisible();
+  test("Expand button exists", () => {
+    const button = screen.getByRole("button", { name: "Expand" });
+    userEvent.click(button);
+    expect(button).toBeEnabled();
   });
-});
 
-describe("Test AccordionItem accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(accordionItemComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+  test("Expand image exists", () => {
+    const img = screen.getByRole("img", { name: "Expand" });
+    expect(img).toBeVisible();
   });
+
+  testA11y(accordionItemComponent);
 });
