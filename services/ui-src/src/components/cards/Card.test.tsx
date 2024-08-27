@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+import { testA11y } from "utils/testing/commonTests";
 import { Card } from "components";
 
 const cardComponent = (
@@ -16,12 +16,6 @@ describe("Test Card", () => {
   test("Card is visible", () => {
     expect(screen.getByTestId("card")).toBeVisible();
   });
-});
 
-describe("Test Card accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(cardComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(cardComponent);
 });
