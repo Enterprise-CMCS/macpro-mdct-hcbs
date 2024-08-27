@@ -19,7 +19,6 @@ export const Alert = ({
   link,
   showIcon = true,
   icon,
-  ...props
 }: Props) => {
   return (
     <AlertRoot
@@ -27,7 +26,6 @@ export const Alert = ({
       variant="left-accent"
       sx={sx.root}
       className={status}
-      {...props}
     >
       <Flex>
         {showIcon && (
@@ -59,7 +57,7 @@ interface Props {
   description?: string | CustomHtmlElement[];
   link?: string;
   showIcon?: boolean;
-  [key: string]: any;
+  icon?: string;
 }
 
 const sx = {
