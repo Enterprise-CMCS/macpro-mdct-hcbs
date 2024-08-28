@@ -21,8 +21,8 @@ describe("<ErrorAlert />", () => {
     ).toBeVisible();
   });
 
-  test("Find error in the alert", () => {
-    expect(screen.getByRole("alert")).toBeInTheDocument();
+  test("Find error alert", () => {
+    expect(screen.getByRole("alert")).toBeVisible();
     expect(screen.getByRole("alert")).toHaveTextContent(
       "We've run into a problem"
     );
