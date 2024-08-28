@@ -3,7 +3,7 @@ import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
 import { Menu, MenuOption } from "components";
 import { useBreakpoint } from "utils";
-import appLogo from "assets/logos/logo_mdct_hcbs.png";
+import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 
 export const Header = ({ handleLogout }: Props) => {
