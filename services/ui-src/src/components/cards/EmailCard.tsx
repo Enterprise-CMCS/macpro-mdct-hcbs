@@ -3,8 +3,8 @@ import { Card } from "components";
 import { useBreakpoint } from "utils";
 import { AnyObject } from "types";
 import { createEmailLink } from "utils/other/email";
-import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
-import settingsIcon from "assets/icons/icon_wrench_gear.png";
+import spreadsheetIcon from "assets/icons/spreadsheet/icon_spreadsheet_gray.svg";
+import settingsIcon from "assets/icons/icon_wrench_gear.svg";
 
 const iconMap = {
   spreadsheet: {

@@ -28,7 +28,7 @@ describe("<Header />", () => {
       render(
         <MenuOption
           text={"My Account"}
-          icon={"icon_arrrow_down.png"}
+          icon={"arrows/icon_arrrow_down.svg"}
           altText={"Arrow down"}
         />
       );
@@ -43,7 +43,7 @@ describe("<Header />", () => {
       render(
         <MenuOption
           text={"Log Out"}
-          icon={"icon_arrow_right_square.png"}
+          icon={"icon_logout.svg"}
           altText={"Logout"}
         />
       );

@@ -1,9 +1,9 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { useBreakpoint } from "utils";
-import hhsLogo from "assets/logos/logo_hhs.png";
+import hhsLogo from "assets/logos/logo_hhs.svg";
 import medicaidLogo from "assets/logos/logo_medicaid.svg";
-import hcbsLogo from "assets/logos/logo_mdct_hcbs_footer.png";
+import hcbsLogo from "assets/logos/logo_mdct_hcbs_footer.svg";
 
 export const Footer = () => {
   const { isDesktop } = useBreakpoint();
