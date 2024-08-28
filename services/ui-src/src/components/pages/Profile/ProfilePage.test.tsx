@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { ProfilePage } from "components";
 import {
   mockAdminUserStore,
@@ -7,6 +6,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 const ProfilePageComponent = (
   <RouterWrappedComponent>
@@ -27,11 +27,13 @@ describe("Test ProfilePage for admin users", () => {
     render(ProfilePageComponent);
   });
   test("Check that Profile page renders properly", () => {
-    expect(screen.getByTestId("profile-view")).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "Email adminuser@test.com" })
+    ).toBeVisible();
   });
 
   test("Check that there is an banner editor button visible", () => {
-    expect(screen.getByTestId("banner-admin-button")).toBeVisible();
+    expect(screen.getByRole("button", { name: "Banner Editor" })).toBeVisible();
   });
 
   test("Check that the state field is set to N/A", () => {
@@ -40,8 +42,7 @@ describe("Test ProfilePage for admin users", () => {
   });
 
   test("Check that admin button navigates to /admin on click", () => {
-    const adminButton = screen.getByTestId("banner-admin-button");
-    expect(adminButton).toBeVisible();
+    const adminButton = screen.getByRole("button", { name: "Banner Editor" });
     fireEvent.click(adminButton);
     expect(window.location.pathname).toEqual("/admin");
   });
@@ -53,7 +54,9 @@ describe("Test ProfilePage for state users", () => {
     render(ProfilePageComponent);
   });
   test("Check that Profile page renders properly", () => {
-    expect(screen.getByTestId("profile-view")).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "Email stateuser@test.com" })
+    ).toBeVisible();
   });
 
   test("Check that state is visible and set accordingly", () => {
@@ -67,10 +70,7 @@ describe("Test ProfilePage for state users", () => {
 });
 
 describe("Test ProfilePage accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    mockedUseStore.mockReturnValue(mockAdminUserStore);
-    const { container } = render(ProfilePageComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  mockedUseStore.mockReturnValue(mockAdminUserStore);
+  render(ProfilePageComponent);
+  testA11y(ProfilePageComponent);
 });
