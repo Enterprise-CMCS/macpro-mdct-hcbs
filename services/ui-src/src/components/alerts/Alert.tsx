@@ -19,6 +19,7 @@ export const Alert = ({
   link,
   showIcon = true,
   icon,
+  ...props
 }: Props) => {
   return (
     <AlertRoot
@@ -26,6 +27,7 @@ export const Alert = ({
       variant="left-accent"
       sx={sx.root}
       className={status}
+      {...props}
     >
       <Flex>
         {showIcon && (
@@ -58,6 +60,7 @@ interface Props {
   link?: string;
   showIcon?: boolean;
   icon?: string;
+  [key: string]: any;
 }
 
 const sx = {
