@@ -5,11 +5,10 @@ export const PageTemplate = ({
   type = "standard",
   children,
   sxOverride,
-  ...props
 }: Props) => {
   return (
     <section>
-      <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
+      <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type}>
         <Flex sx={sx.contentFlex} className={`contentFlex ${type}`}>
           {children}
         </Flex>
@@ -22,7 +21,6 @@ interface Props {
   type?: "standard" | "report";
   children: React.ReactNode;
   sxOverride?: any;
-  [key: string]: any;
 }
 
 const sx = {
