@@ -37,12 +37,9 @@ export const Menu = ({ handleLogout }: Props) => {
           />
         </MenuButton>
       </Box>
-      <MenuList sx={sx.menuList} data-testid="header-menu-options-list">
+      <MenuList sx={sx.menuList}>
         <Link as={RouterLink} to="/profile" variant="unstyled">
-          <MenuItem
-            sx={sx.menuItem}
-            data-testid="header-menu-option-manage-account"
-          >
+          <MenuItem sx={sx.menuItem}>
             <MenuOption
               icon={editIcon}
               altText="Manage account"
@@ -50,12 +47,7 @@ export const Menu = ({ handleLogout }: Props) => {
             />
           </MenuItem>
         </Link>
-        <MenuItem
-          onClick={handleLogout}
-          sx={sx.menuItem}
-          tabIndex={0}
-          data-testid="header-menu-option-log-out"
-        >
+        <MenuItem onClick={handleLogout} sx={sx.menuItem} tabIndex={0}>
           <MenuOption icon={logoutIcon} text="Log Out" altText="Logout" />
         </MenuItem>
       </MenuList>
