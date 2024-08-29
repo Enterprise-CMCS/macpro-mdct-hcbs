@@ -5,11 +5,7 @@ import { createEmailLink } from "utils/other/email";
 import verbiage from "verbiage/pages/help";
 
 const emailCardComponent = (
-  <EmailCard
-    verbiage={verbiage.cards.helpdesk}
-    icon="settings"
-    cardprops={{ "data-testid": "email-card" }}
-  />
+  <EmailCard verbiage={verbiage.cards.helpdesk} icon="settings" />
 );
 
 describe("Test EmailCard", () => {
@@ -17,8 +13,8 @@ describe("Test EmailCard", () => {
     render(emailCardComponent);
   });
 
-  test("EmailCard is visible", () => {
-    expect(screen.getByTestId("email-card")).toBeVisible();
+  test("Email for EmailCard is visible", () => {
+    expect(screen.getByText("mdct_help@cms.hhs.gov")).toBeVisible();
   });
 
   test("Email links are created correctly", () => {
