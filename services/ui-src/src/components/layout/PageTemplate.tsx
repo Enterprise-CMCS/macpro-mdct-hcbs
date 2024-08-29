@@ -5,6 +5,7 @@ export const PageTemplate = ({
   type = "standard",
   children,
   sxOverride,
+  sx,
 }: Props) => {
   return (
     <section>
@@ -21,26 +22,5 @@ interface Props {
   type?: "standard" | "report";
   children: React.ReactNode;
   sxOverride?: any;
+  sx: any;
 }
-
-const sx = {
-  contentBox: {
-    "&.standard": {
-      flexShrink: "0",
-      paddingTop: "2rem",
-    },
-    "&.report": {
-      height: "100%",
-    },
-  },
-  contentFlex: {
-    flexDirection: "column",
-    "&.standard": {
-      maxWidth: "basicPageWidth",
-      margin: "5.5rem auto 0",
-    },
-    "&.report": {
-      height: "100%",
-    },
-  },
-};
