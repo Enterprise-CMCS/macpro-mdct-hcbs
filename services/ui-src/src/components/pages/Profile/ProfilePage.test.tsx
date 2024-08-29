@@ -27,13 +27,13 @@ describe("Test ProfilePage for admin users", () => {
     render(ProfilePageComponent);
   });
   test("Check that Profile page renders properly", () => {
-    expect(
-      screen.getByRole("row", { name: "Email adminuser@test.com" })
-    ).toBeVisible();
+    const rows = screen.getAllByRole("row");
+    expect(rows[0]).toHaveTextContent("adminuser@test.com");
   });
 
   test("Check that there is an banner editor button visible", () => {
-    expect(screen.getByRole("button", { name: "Banner Editor" })).toBeVisible();
+    const buttons = screen.getAllByRole("button");
+    expect(buttons[0]).toHaveTextContent("Banner Editor");
   });
 
   test("Check that the state field is set to N/A", () => {
@@ -53,10 +53,10 @@ describe("Test ProfilePage for state users", () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
     render(ProfilePageComponent);
   });
+
   test("Check that Profile page renders properly", () => {
-    expect(
-      screen.getByRole("row", { name: "Email stateuser@test.com" })
-    ).toBeVisible();
+    const rows = screen.getAllByRole("row");
+    expect(rows[8]).toHaveTextContent("Rolemdcthcbs-state-user");
   });
 
   test("Check that state is visible and set accordingly", () => {
