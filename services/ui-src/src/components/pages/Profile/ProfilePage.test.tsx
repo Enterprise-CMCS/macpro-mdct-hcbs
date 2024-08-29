@@ -55,11 +55,13 @@ describe("Test ProfilePage for state users", () => {
   });
 
   test("Check that Profile page renders properly", () => {
-    // TODO: Find element to check profile page for state users
+    const elements = screen.getAllByText("stateuser@test.com");
+    expect(elements[0]).toBeInTheDocument();
   });
 
   test("Check that state is visible and set accordingly", () => {
-    expect(screen.getByText("State")).toBeVisible();
+    const elements = screen.getAllByText("State");
+    expect(elements[0]).toBeInTheDocument();
     expect(screen.getByText("MN")).toBeVisible();
   });
 
