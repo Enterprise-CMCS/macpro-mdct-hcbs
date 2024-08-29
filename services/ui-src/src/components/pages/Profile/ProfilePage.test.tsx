@@ -56,7 +56,7 @@ describe("Test ProfilePage for state users", () => {
 
   test("Check that Profile page renders properly", () => {
     const rows = screen.getAllByRole("row");
-    expect(rows[8]).toHaveTextContent("Rolemdcthcbs-state-user");
+    expect(rows[5]).toHaveTextContent("Emailstateuser@test.com");
   });
 
   test("Check that state is visible and set accordingly", () => {
