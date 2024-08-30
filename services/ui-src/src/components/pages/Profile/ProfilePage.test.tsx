@@ -1,4 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 import { ProfilePage } from "components";
 import {
   mockAdminUserStore,
@@ -41,9 +43,11 @@ describe("Test ProfilePage for admin users", () => {
     expect(screen.getByText("N/A")).toBeVisible();
   });
 
-  test("Check that admin button navigates to /admin on click", () => {
-    const adminButton = screen.getByRole("button", { name: "Banner Editor" });
-    fireEvent.click(adminButton);
+  test("Check that admin button navigates to /admin on click", async () => {
+    await act(async () => {
+      const adminButtons = screen.getAllByRole("button");
+      await userEvent.click(adminButtons[0]);
+    });
     expect(window.location.pathname).toEqual("/admin");
   });
 });
