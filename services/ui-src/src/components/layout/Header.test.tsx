@@ -1,12 +1,14 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { Header, MenuOption } from "components";
+import { Header } from "components";
 import { testA11y } from "utils/testing/commonTests";
+
+const mockLogout = jest.fn();
 
 const headerComponent = (
   <RouterWrappedComponent>
-    <Header handleLogout={() => {}} />
+    <Header handleLogout={mockLogout} />
   </RouterWrappedComponent>
 );
 
@@ -40,18 +42,24 @@ describe("<Header />", () => {
       ).toBeInTheDocument();
     });
 
-    test("Logs out user", () => {
-      // TO-DO mock log out and test that user is logged out when button is clicked
-      render(
-        <MenuOption
-          text={"Log Out"}
-          icon={"icon_arrow_right_square.png"}
-          altText={"Logout"}
-        />
-      );
+    test("Logs out user", async () => {
+      const menuButton = screen.getByRole("button", {
+        name: "my account",
+        expanded: false,
+      });
+
+      await act(async () => {
+        await userEvent.click(menuButton);
+      });
 
       const logoutButton = screen.getByRole("img", { name: "Logout" });
       expect(logoutButton).toBeInTheDocument();
+
+      await act(async () => {
+        await userEvent.click(logoutButton);
+      });
+
+      expect(mockLogout).toHaveBeenCalledTimes(1);
     });
   });
 

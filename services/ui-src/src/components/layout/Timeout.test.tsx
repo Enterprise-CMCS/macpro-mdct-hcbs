@@ -73,7 +73,7 @@ describe("Test Timeout Modal", () => {
       name: "Stay logged in",
     });
     await act(async () => {
-      await fireEvent.click(refreshButton);
+      fireEvent.click(refreshButton);
     });
     await waitFor(() => {
       const logoutButton = screen.getByRole("button", { name: "Log out" });
