@@ -1,7 +1,7 @@
 import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { PageTemplate } from "components";
 import { createEmailLink } from "utils/other/email";
-import warningIcon from "assets/icons/icon_warning.png";
+import warningIcon from "assets/icons/alert/icon_warning.svg";
 import verbiage from "verbiage/pages/error";
 
 export const Error = () => {
