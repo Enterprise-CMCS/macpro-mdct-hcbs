@@ -10,18 +10,18 @@ const menuComponent = (
 );
 
 describe("<Menu />", () => {
-  test("Menu button is visible", () => {
+  beforeEach(() => {
     render(menuComponent);
+  });
+  test("Menu button is visible", () => {
     expect(screen.getByRole("button", { name: "my account" })).toBeVisible();
   });
 
   test("Manage Account is a menu item available", () => {
-    render(menuComponent);
     expect(screen.getByAltText("Manage account")).toBeInTheDocument();
   });
 
   test("Log Out is a menu item available", () => {
-    render(menuComponent);
     expect(screen.getByAltText("Logout")).toBeInTheDocument();
   });
 
