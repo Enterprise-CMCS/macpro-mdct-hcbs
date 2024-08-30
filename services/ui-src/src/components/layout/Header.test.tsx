@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Header, MenuOption } from "components";
@@ -16,30 +16,32 @@ describe("<Header />", () => {
       render(headerComponent);
     });
 
-    test("Navigation, Logo, Help and Menu is visible on Header", () => {
+    test("Logo, Help and Menu is visible on Header", () => {
       const header = screen.getByRole("navigation");
       expect(header).toBeVisible();
       expect(screen.getByAltText("HCBS logo")).toBeVisible();
       expect(screen.getByAltText("Help")).toBeVisible();
+      expect(screen.getByAltText("Account")).toBeVisible();
       expect(screen.getByAltText("Arrow down")).toBeVisible();
     });
 
-    test("Renders My Account menu and is clickable", () => {
-      render(
-        <MenuOption
-          text={"My Account"}
-          icon={"icon_arrrow_down.png"}
-          altText={"Arrow down"}
-        />
-      );
-
-      const menuButton = screen.getByRole("button", { name: /my account/i });
+    test("When My Account menu is clicked, it expands", async () => {
+      const menuButton = screen.getByRole("button", {
+        name: "my account",
+        expanded: false,
+      });
       expect(menuButton).toBeInTheDocument();
 
-      userEvent.click(menuButton);
+      await act(async () => {
+        await userEvent.click(menuButton);
+      });
+      expect(
+        screen.getByRole("button", { name: "my account", expanded: true })
+      ).toBeInTheDocument();
     });
 
     test("Logs out user", () => {
+      // TO-DO mock log out and test that user is logged out when button is clicked
       render(
         <MenuOption
           text={"Log Out"}
@@ -48,10 +50,8 @@ describe("<Header />", () => {
         />
       );
 
-      const logoutButton = screen.getByRole("img", { name: /Logout/i });
+      const logoutButton = screen.getByRole("img", { name: "Logout" });
       expect(logoutButton).toBeInTheDocument();
-
-      userEvent.click(logoutButton);
     });
   });
 
