@@ -30,7 +30,7 @@ function updateEnvFiles() {
     execSync(
       "sed -i '' -e 's/# pragma: allowlist secret//g' services/ui-src/.env"
     );
-  } catch (error) {
+  } catch {
     // eslint-disable-next-line no-console
     console.error("Failed to update .env files using 1Password CLI.");
     process.exit(1);
@@ -191,7 +191,7 @@ async function destroy_stage(options: {
     verify: options.verify,
   });
 
-  await delete_topics(options);
+  // await delete_topics(options);
 }
 
 async function delete_topics(options: { stage: string }) {
