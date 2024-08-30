@@ -45,7 +45,6 @@ describe("<Header />", () => {
     test("Logs out user", async () => {
       const menuButton = screen.getByRole("button", {
         name: "my account",
-        expanded: false,
       });
 
       await act(async () => {
