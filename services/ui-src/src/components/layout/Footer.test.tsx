@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Footer } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const footerComponent = (
   <RouterWrappedComponent>
@@ -9,33 +9,28 @@ const footerComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test Footer", () => {
-  beforeEach(() => {
-    render(footerComponent);
-  });
+describe("<Footer />", () => {
+  describe("Test Footer", () => {
+    beforeEach(() => {
+      render(footerComponent);
+    });
 
-  test("Footer is visible", () => {
-    const footer = screen.getByRole("contentinfo");
-    expect(footer).toBeVisible();
-  });
+    test("Footer is visible", () => {
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeVisible();
+    });
 
-  test("Logo is visible", () => {
-    expect(screen.getByAltText("HCBS logo")).toBeVisible();
-  });
+    test("Logo is visible", () => {
+      expect(screen.getByAltText("HCBS logo")).toBeVisible();
+    });
 
-  test("Help link is visible", () => {
-    expect(screen.getByText("Contact Us")).toBeVisible();
-  });
+    test("Help link is visible", () => {
+      expect(screen.getByText("Contact Us")).toBeVisible();
+    });
 
-  test("Accessibility statement link is visible", () => {
-    expect(screen.getByText("Accessibility Statement")).toBeVisible();
+    test("Accessibility statement link is visible", () => {
+      expect(screen.getByText("Accessibility Statement")).toBeVisible();
+    });
   });
-});
-
-describe("Test Footer accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(footerComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(footerComponent);
 });

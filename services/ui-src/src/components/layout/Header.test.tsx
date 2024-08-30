@@ -62,6 +62,5 @@ describe("<Header />", () => {
       expect(mockLogout).toHaveBeenCalledTimes(1);
     });
   });
-
   testA11y(headerComponent);
 });
