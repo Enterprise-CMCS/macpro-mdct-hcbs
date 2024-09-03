@@ -31,7 +31,7 @@ const mockSsmResponse = {
   },
 };
 
-const event = { ...proxyEvent };
+const noApiKeyEvent = { ...proxyEvent };
 const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
 
 describe("Test authorization with api key and environment variables", () => {
