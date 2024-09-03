@@ -3,9 +3,13 @@ import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
 import { createEmailLink, useStore } from "utils";
 import verbiage from "verbiage/pages/profile";
+import { useEffect, useState } from "react";
+import { getHelloWorld } from "utils/api/requestMethods/helloWorld";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
+
+  const [helloWorldMessage, setHelloWorldMessage] = useState<string>(""); //remove
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
     useStore().user ?? {};
@@ -23,10 +27,27 @@ export const ProfilePage = () => {
     ],
   };
 
+  //TODO: remove this
+  const fetchStuff = async () => {
+    try {
+      const response = await getHelloWorld();
+      setHelloWorldMessage(response);
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchStuff();
+  }, []);
+
   return (
     <PageTemplate sx={sx.layout} data-testid="profile-view">
       <Heading as="h1" sx={sx.headerText}>
         {intro.header}
+      </Heading>
+      <Heading as="h1" sx={sx.headerText}>
+        {helloWorldMessage}
       </Heading>
       <Text>
         {intro.body}{" "}
