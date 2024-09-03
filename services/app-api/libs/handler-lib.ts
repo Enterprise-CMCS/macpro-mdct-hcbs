@@ -1,9 +1,6 @@
 // utils
 import * as logger from "./debug-lib";
-import {
-  internalServerError,
-  buildResponse,
-} from "./response-lib";
+import { internalServerError, buildResponse } from "./response-lib";
 import { error } from "../constants";
 import { sanitizeObject } from "../utils/sanitize";
 // types
