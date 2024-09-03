@@ -33,7 +33,7 @@ export const ProfilePage = () => {
       const response = await getHelloWorld();
       setHelloWorldMessage(response);
     } catch (e: any) {
-      // tslint:disable-next-line:no-console
+      /* eslint-disable no-console */
       console.log(e);
     }
   };
