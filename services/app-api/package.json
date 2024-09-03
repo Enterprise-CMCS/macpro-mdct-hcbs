@@ -1,0 +1,61 @@
+{
+  "name": "app-api",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
+    "@types/dompurify": "^3.0.5",
+    "@types/jest": "^29.5.12",
+    "@types/jsdom": "20.0.0",
+    "@types/node": "^22.5.1",
+    "aws-sdk-client-mock": "^4.0.1",
+    "serverless-api-client-certificate": "^1.0.2",
+    "serverless-associate-waf": "^1.2.1",
+    "serverless-plugin-typescript": "^2.1.5"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ssm": "^3.637.0",
+    "aws-jwt-verify": "^4.0.1",
+    "dompurify": "^3.1.6",
+    "jsdom": "20.0.0",
+    "jwt-decode": "3.1.2",
+    "util": "^0.12.5"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "globals": {
+      "isolatedModules": true
+    },
+    "coverageReporters": [
+      "json",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../"
+        }
+      ],
+      "text",
+      "text-summary"
+    ],
+    "collectCoverageFrom": [
+      "handlers/**/*.{ts,tsx}",
+      "utils/**/*.{ts,tsx}",
+      "!utils/constants/*",
+      "!utils/testing/*",
+      "!utils/types/*"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "#node-web-compat": "./node-web-compat-node.js"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/utils/testing/setupJest.ts"
+    ]
+  }
+}
