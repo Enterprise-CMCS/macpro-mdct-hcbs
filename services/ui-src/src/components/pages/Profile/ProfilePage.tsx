@@ -9,7 +9,9 @@ import { getHelloWorld } from "utils/api/requestMethods/helloWorld";
 export const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const [helloWorldMessage, setHelloWorldMessage] = useState<string>(""); //remove
+  const [helloWorldMessage, setHelloWorldMessage] = useState<string>(
+    "default value thing"
+  ); //remove
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
     useStore().user ?? {};
@@ -27,7 +29,6 @@ export const ProfilePage = () => {
     ],
   };
 
-  //TODO: remove this
   const fetchStuff = async () => {
     try {
       const response = await getHelloWorld();
@@ -38,6 +39,7 @@ export const ProfilePage = () => {
     }
   };
 
+  //TODO: remove this useEffect
   useEffect(() => {
     fetchStuff();
   }, []);

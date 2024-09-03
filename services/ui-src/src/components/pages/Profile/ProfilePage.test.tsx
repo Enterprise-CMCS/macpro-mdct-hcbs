@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { ProfilePage } from "components";
 import {
@@ -7,6 +7,11 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+
+// TODO: remove this
+jest.mock("utils/api/requestMethods/helloWorld", () => ({
+  getHelloWorld: jest.fn().mockResolvedValue("Hello World!"),
+}));
 
 const ProfilePageComponent = (
   <RouterWrappedComponent>
@@ -22,9 +27,12 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 // TESTS
 
 describe("Test ProfilePage for admin users", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockedUseStore.mockReturnValue(mockAdminUserStore);
-    render(ProfilePageComponent);
+    // TODO: remove this act after removing hello world call
+    await act(async () => {
+      render(ProfilePageComponent);
+    });
   });
   test("Check that Profile page renders properly", () => {
     expect(screen.getByTestId("profile-view")).toBeVisible();
