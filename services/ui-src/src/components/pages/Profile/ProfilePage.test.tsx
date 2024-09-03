@@ -56,9 +56,12 @@ describe("Test ProfilePage for admin users", () => {
 });
 
 describe("Test ProfilePage for state users", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
-    render(ProfilePageComponent);
+    // TODO: remove this act after removing hello world call
+    await act(async () => {
+      render(ProfilePageComponent);
+    });
   });
   test("Check that Profile page renders properly", () => {
     expect(screen.getByTestId("profile-view")).toBeVisible();
@@ -76,9 +79,12 @@ describe("Test ProfilePage for state users", () => {
 
 describe("Test ProfilePage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    mockedUseStore.mockReturnValue(mockAdminUserStore);
-    const { container } = render(ProfilePageComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    // TODO: remove this act after removing hello world call
+    await act(async () => {
+      mockedUseStore.mockReturnValue(mockAdminUserStore);
+      const { container } = render(ProfilePageComponent);
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
   });
 });
