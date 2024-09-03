@@ -3,14 +3,14 @@ import { proxyEvent } from "../../testing/proxyEvent";
 import { isAuthorized } from "../../utils/authorization";
 import * as logger from "../debug-lib";
 
-jest.mock("../utils/debugging/debug-lib", () => ({
+jest.mock("../debug-lib", () => ({
   init: jest.fn(),
   debug: jest.fn(),
   error: jest.fn(),
   flush: jest.fn(),
 }));
 
-jest.mock("../utils/auth/authorization", () => ({
+jest.mock("../../utils/authorization", () => ({
   isAuthorized: jest.fn(),
 }));
 

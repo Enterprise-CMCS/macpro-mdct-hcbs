@@ -10,8 +10,8 @@ import {
   logger,
 } from "../debug-lib";
 
-jest.mock("./debug-lib", () => ({
-  ...jest.requireActual("./debug-lib"),
+jest.mock("../debug-lib", () => ({
+  ...jest.requireActual("../debug-lib"),
 }));
 
 jest.spyOn(console, "trace").mockImplementation();
