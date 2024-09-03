@@ -20,7 +20,6 @@ describe("<ErrorAlert />", () => {
       screen.getByRole("link", { name: "mdct_help@cms.hhs.gov" })
     ).toBeVisible();
   });
-
   test("Find error alert", () => {
     expect(screen.getByRole("alert")).toBeVisible();
     expect(screen.getByRole("alert")).toHaveTextContent(

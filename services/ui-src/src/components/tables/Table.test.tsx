@@ -16,9 +16,20 @@ const tableComponent = (
 );
 
 describe("<Table />", () => {
-  test("Table is visible", () => {
+  beforeEach(() => {
     render(tableComponent);
+  });
+
+  test("Table is visible", () => {
     expect(screen.getByRole("table")).toBeVisible();
+  });
+
+  test("renders the table with correct headers", () => {
+    const rows = screen.getAllByRole("row");
+    expect(rows).toHaveLength(1);
+    expect(screen.getByText("mock header 1")).toBeInTheDocument();
+    expect(screen.getByText("mock header 2")).toBeInTheDocument();
+    expect(screen.getByText("mock header 3")).toBeInTheDocument();
   });
 
   testA11y(tableComponent);

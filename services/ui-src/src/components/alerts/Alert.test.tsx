@@ -25,7 +25,6 @@ describe("<Alert />", () => {
   test("Alert text exists", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("This is for testing.");
   });
-
   test("Alert image exists", () => {
     expect(screen.getByRole("img", { name: "Alert" })).toBeVisible();
   });
