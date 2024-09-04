@@ -16,20 +16,38 @@ describe("<Footer />", () => {
     });
 
     test("Footer is visible", () => {
-      const footer = screen.getByRole("contentinfo");
-      expect(footer).toBeVisible();
+      expect(screen.getByRole("contentinfo")).toHaveAttribute("id", "footer");
     });
 
-    test("Logo is visible", () => {
-      expect(screen.getByAltText("HCBS logo")).toBeVisible();
+    test("Images on footer are visible", () => {
+      expect(
+        screen.getByRole("img", {
+          name: "Department of Health and Human Services, USA",
+        })
+      ).toHaveAttribute("alt", "Department of Health and Human Services, USA");
+      expect(screen.getByRole("img", { name: "HCBS logo" })).toHaveAttribute(
+        "alt",
+        "HCBS logo"
+      );
+      expect(
+        screen.getByRole("img", {
+          name: "Medicaid.gov: Keeping America Healthy",
+        })
+      ).toHaveAttribute("alt", "Medicaid.gov: Keeping America Healthy");
     });
 
-    test("Help link is visible", () => {
-      expect(screen.getByText("Contact Us")).toBeVisible();
-    });
+    test("Links are visible", async () => {
+      expect(screen.getByRole("link", { name: "Contact Us" })).toHaveAttribute(
+        "href",
+        "/help"
+      );
 
-    test("Accessibility statement link is visible", () => {
-      expect(screen.getByText("Accessibility Statement")).toBeVisible();
+      expect(
+        screen.getByRole("link", { name: "Accessibility Statement" })
+      ).toHaveAttribute(
+        "href",
+        "https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
+      );
     });
   });
   testA11y(footerComponent);
