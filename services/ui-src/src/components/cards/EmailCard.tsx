@@ -17,12 +17,13 @@ const iconMap = {
   },
 };
 
-export const EmailCard = ({ verbiage, icon, ...props }: Props) => {
+export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
   const { isDesktop } = useBreakpoint();
 
   return (
     <Card
       boxShadow="0px 3px 9px rgba(0, 0, 0, 0.2)"
+      {...cardprops}
       paddingBottom="1.5rem !important"
     >
       <Flex sx={sx.root} {...props}>
