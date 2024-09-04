@@ -9,9 +9,9 @@ import {
 import plusIcon from "assets/icons/accordion/icon_plus.svg";
 import minusIcon from "assets/icons/accordion/icon_minus.svg";
 
-export const AccordionItem = ({ label, children, ...props }: Props) => {
+export const AccordionItem = ({ label, children }: Props) => {
   return (
-    <AccordionItemRoot sx={sx.root} {...props}>
+    <AccordionItemRoot sx={sx.root}>
       {({ isExpanded }) => (
         <>
           <AccordionButton
@@ -35,7 +35,6 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
 
 interface Props {
   children?: ReactChild | ReactChild[];
-  [key: string]: any;
   label?: string;
 }
 
