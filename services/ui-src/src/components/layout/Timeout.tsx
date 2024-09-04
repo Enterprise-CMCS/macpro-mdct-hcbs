@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import {
-  calculateRemainingMilliSeconds,
+  calculateRemainingSeconds,
   refreshCredentials,
   updateTimeout,
   UserContext,
@@ -55,14 +55,14 @@ export const Timeout = () => {
     // Set the initial timer for when a prompt appears
     const promptTimer = window.setTimeout(() => {
       // Once the prompt appears, set timers for logging out, and for updating text on screen
-      setTimeLeft(calculateRemainingMilliSeconds(expiration));
+      setTimeLeft(calculateRemainingSeconds(expiration));
       setShowTimeout(true);
       const forceLogoutTimer = window.setTimeout(() => {
         clearTimers();
         logout();
       }, IDLE_WINDOW - PROMPT_AT);
       const updateTextTimer = window.setInterval(() => {
-        setTimeLeft(calculateRemainingMilliSeconds(expiration));
+        setTimeLeft(calculateRemainingSeconds(expiration));
       }, 500);
       setTimeoutForceId(forceLogoutTimer);
       setUpdateTextIntervalId(updateTextTimer);
