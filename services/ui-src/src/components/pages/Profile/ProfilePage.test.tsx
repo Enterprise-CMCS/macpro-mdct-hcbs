@@ -16,25 +16,25 @@ const ProfilePageComponent = (
 );
 
 // MOCKS
-
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 // TESTS
-
 describe("Test ProfilePage for admin users", () => {
   beforeEach(() => {
     mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(ProfilePageComponent);
   });
+
   test("Check that Profile page renders properly", () => {
-    const rows = screen.getAllByRole("row");
-    expect(rows[0]).toHaveTextContent("adminuser@test.com");
+    expect(
+      screen.getByRole("row", { name: "Email adminuser@test.com" })
+    ).toBeVisible();
+    expect(screen.queryByText("stateuser@test.com")).not.toBeInTheDocument();
   });
 
   test("Check that there is a banner editor button visible", () => {
-    const buttons = screen.getAllByRole("button");
-    expect(buttons[0]).toHaveTextContent("Banner Editor");
+    expect(screen.getByRole("button", { name: "Banner Editor" })).toBeVisible();
   });
 
   test("Check that the state field is set to N/A", () => {
@@ -56,8 +56,10 @@ describe("Test ProfilePage for state users", () => {
   });
 
   test("Check that Profile page renders properly", () => {
-    const elements = screen.getAllByText("stateuser@test.com");
-    expect(elements[0]).toBeInTheDocument();
+    expect(
+      screen.getByRole("row", { name: "Email stateuser@test.com" })
+    ).toBeVisible();
+    expect(screen.queryByText("adminuser@test.com")).not.toBeInTheDocument();
   });
 
   test("Check that state is visible and set accordingly", () => {
@@ -73,6 +75,5 @@ describe("Test ProfilePage for state users", () => {
 
 describe("Test ProfilePage accessibility", () => {
   mockedUseStore.mockReturnValue(mockAdminUserStore);
-  render(ProfilePageComponent);
   testA11y(ProfilePageComponent);
 });

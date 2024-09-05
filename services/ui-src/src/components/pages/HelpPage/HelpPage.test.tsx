@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { HelpPage } from "components/pages/HelpPage/HelpPage";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import verbiage from "verbiage/pages/help";
@@ -29,14 +29,13 @@ describe("Test HelpPage", () => {
     expect(email2).toHaveAttribute("href", "mailto:MFPDemo@cms.hhs.gov");
   });
 
-  test("Question 1: When Expand button clicked it collapses", async () => {
-    await act(async () => {
-      const button = screen.getByRole("button", {
-        name: "How do I log into my IDM account?",
-        expanded: false,
-      });
-      await userEvent.click(button);
+  test("Question 1: When Expand button clicked it expands", async () => {
+    const button = screen.getByRole("button", {
+      name: "How do I log into my IDM account?",
+      expanded: false,
     });
+    await userEvent.click(button);
+
     expect(
       screen.getByRole("button", {
         name: "How do I log into my IDM account?",
@@ -45,14 +44,13 @@ describe("Test HelpPage", () => {
     ).toBeInTheDocument();
   });
 
-  test("Question 2: When Expand button clicked it collapses", async () => {
-    await act(async () => {
-      const button = screen.getByRole("button", {
-        name: "Question #2",
-        expanded: false,
-      });
-      await userEvent.click(button);
+  test("Question 2: When Expand button clicked it expands", async () => {
+    const button = screen.getByRole("button", {
+      name: "Question #2",
+      expanded: false,
     });
+    await userEvent.click(button);
+
     expect(
       screen.getByRole("button", { name: "Question #2", expanded: true })
     ).toBeInTheDocument();
