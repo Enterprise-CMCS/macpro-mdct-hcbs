@@ -13,8 +13,11 @@ class AuthManager {
 
   constructor() {
     // Force users with stale tokens > then the timeout to log in for a fresh session
-    const exp = localStorage.getItem("mdcthcbs_session_exp");
-    if (exp && isBefore(Number(exp), new Date())) {
+    const expiration = localStorage.getItem("mdcthcbs_session_exp");
+    const isExpired =
+      expiration &&
+      isBefore(new Date(expiration).valueOf(), Date.now().valueOf());
+    if (isExpired) {
       localStorage.removeItem("mdcthcbs_session_exp");
       Auth.signOut().then(() => {
         window.location.href = "/";

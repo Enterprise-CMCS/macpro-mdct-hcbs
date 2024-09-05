@@ -7,9 +7,9 @@ describe("utils/auth", () => {
   describe("Test AuthManager Init", () => {
     test("Initializing when past expiration will require a new login", async () => {
       // Set an initial time, because jest runs too fast to have different timestamps
-      const expired = sub(new Date(), {
+      const expired = sub(Date.now(), {
         days: 5,
-      }).toString();
+      }).toDateString();
       localStorage.setItem("mdcthcbs_session_exp", expired);
 
       initAuthManager();
