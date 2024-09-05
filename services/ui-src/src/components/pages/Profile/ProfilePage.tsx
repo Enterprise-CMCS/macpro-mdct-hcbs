@@ -9,7 +9,9 @@ import { getHelloWorld } from "utils/api/requestMethods/helloWorld";
 export const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const [helloWorldMessage, setHelloWorldMessage] = useState<string>("");
+  const [helloWorldMessage, setHelloWorldMessage] = useState<string>(
+    "default value that should not be displayed"
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
