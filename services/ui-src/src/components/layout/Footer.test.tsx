@@ -24,16 +24,13 @@ describe("<Footer />", () => {
         screen.getByRole("img", {
           name: "Department of Health and Human Services, USA",
         })
-      ).toHaveAttribute("alt", "Department of Health and Human Services, USA");
-      expect(screen.getByRole("img", { name: "HCBS logo" })).toHaveAttribute(
-        "alt",
-        "HCBS logo"
-      );
+      ).toBeVisible();
+      expect(screen.getByRole("img", { name: "HCBS logo" })).toBeVisible();
       expect(
         screen.getByRole("img", {
           name: "Medicaid.gov: Keeping America Healthy",
         })
-      ).toHaveAttribute("alt", "Medicaid.gov: Keeping America Healthy");
+      ).toBeVisible();
     });
 
     test("Links are visible", async () => {
