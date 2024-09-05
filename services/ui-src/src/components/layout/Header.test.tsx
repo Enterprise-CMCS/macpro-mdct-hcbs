@@ -22,7 +22,7 @@ describe("<Header />", () => {
       const header = screen.getByRole("navigation");
       expect(header).toBeVisible();
       // find img elements
-      expect(screen.getByRole("img", { name: "HCBS logo" }))..toBeVisible()
+      expect(screen.getByRole("img", { name: "HCBS logo" })).toBeVisible();
       expect(screen.getByRole("img", { name: "Help" })).toBeVisible();
       expect(screen.getByRole("img", { name: "Account" })).toBeVisible();
       expect(screen.getByAltText("Arrow down")).toBeVisible();
