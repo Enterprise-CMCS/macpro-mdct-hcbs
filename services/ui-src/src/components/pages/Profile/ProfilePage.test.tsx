@@ -43,8 +43,8 @@ describe("Test ProfilePage for admin users", () => {
   });
 
   test("Check that admin button navigates to /admin on click", async () => {
-    const adminButtons = screen.getAllByRole("button");
-    await userEvent.click(adminButtons[0]);
+    const adminButton = screen.getByRole("button", { name: "Banner Editor" });
+    await userEvent.click(adminButton);
     expect(window.location.pathname).toEqual("/admin");
   });
 });
@@ -63,8 +63,7 @@ describe("Test ProfilePage for state users", () => {
   });
 
   test("Check that state is visible and set accordingly", () => {
-    const elements = screen.getAllByText("State");
-    expect(elements[0]).toBeInTheDocument();
+    expect(screen.getByText("State")).toBeVisible();
     expect(screen.getByText("MN")).toBeVisible();
   });
 
