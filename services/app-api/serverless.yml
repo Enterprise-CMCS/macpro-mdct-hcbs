@@ -1,5 +1,7 @@
 service: app-api
 
+frameworkVersion: "3"
+
 package:
   individually: true
 
@@ -35,11 +37,6 @@ custom:
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
-  vpcId: ${env:VPC_ID, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
-  privateSubnets:
-    - ${env:VPC_SUBNET_A, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id}
-    - ${env:VPC_SUBNET_B, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/b/id, ssm:/configuration/default/vpc/subnets/private/b/id}
-    - ${env:VPC_SUBNET_C, ssm:/configuration/${self:custom.stage}/vpc/subnets/private/c/id, ssm:/configuration/default/vpc/subnets/private/c/id}
   serverlessApiClientCertificate:
     rotateCerts: true
     daysLeft: 30

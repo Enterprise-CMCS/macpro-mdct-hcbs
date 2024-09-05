@@ -75,12 +75,12 @@ export const hasPermissions = (
     const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
     const idmUserRoles = decoded["custom:cms_roles"];
     const idmUserState = decoded["custom:cms_state"];
-    const mfpUserRole = idmUserRoles
+    const hcbsUserRole = idmUserRoles
       ?.split(",")
       .find((role) => role.includes("mdcthcbs")) as UserRoles;
 
     isAllowed =
-      allowedRoles.includes(mfpUserRole) &&
+      allowedRoles.includes(hcbsUserRole) &&
       (!state || idmUserState?.includes(state))!;
   }
 
