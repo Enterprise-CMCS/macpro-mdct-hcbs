@@ -13,6 +13,8 @@ export const ProfilePage = () => {
     "default value thing"
   ); //remove
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
     useStore().user ?? {};
 
@@ -29,18 +31,20 @@ export const ProfilePage = () => {
     ],
   };
 
-  const fetchStuff = async () => {
-    try {
-      const response = await getHelloWorld();
-      setHelloWorldMessage(response);
-    } catch (e: any) {
-      /* eslint-disable no-console */
-      console.log(e);
-    }
-  };
-
   //TODO: remove this useEffect
   useEffect(() => {
+    const fetchStuff = async () => {
+      setLoading(true);
+      try {
+        const response = await getHelloWorld();
+        setHelloWorldMessage(response);
+      } catch (e: any) {
+        /* eslint-disable no-console */
+        console.log(e.message);
+        setHelloWorldMessage(e.message);
+      }
+      setLoading(false);
+    };
     fetchStuff();
   }, []);
 
@@ -49,9 +53,11 @@ export const ProfilePage = () => {
       <Heading as="h1" sx={sx.headerText}>
         {intro.header}
       </Heading>
-      <Heading as="h1" sx={sx.headerText}>
-        {helloWorldMessage}
-      </Heading>
+      {!loading && (
+        <Heading as="h1" sx={sx.headerText}>
+          {helloWorldMessage}
+        </Heading>
+      )}
       <Text>
         {intro.body}{" "}
         <Link href={createEmailLink(intro.email)} isExternal>
