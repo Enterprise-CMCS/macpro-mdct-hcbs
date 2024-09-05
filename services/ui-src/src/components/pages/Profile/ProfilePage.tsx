@@ -9,10 +9,7 @@ import { getHelloWorld } from "utils/api/requestMethods/helloWorld";
 export const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const [helloWorldMessage, setHelloWorldMessage] = useState<string>(
-    "default value thing"
-  ); //remove
-
+  const [helloWorldMessage, setHelloWorldMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
