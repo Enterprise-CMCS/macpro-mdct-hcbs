@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Header } from "components";
@@ -45,9 +45,8 @@ describe("<Header />", () => {
       });
       expect(menuButton).toBeInTheDocument();
       // Click and expand
-      await act(async () => {
-        await userEvent.click(menuButton);
-      });
+      await userEvent.click(menuButton);
+
       expect(
         screen.getByRole("button", { name: "my account", expanded: true })
       ).toBeInTheDocument();
@@ -58,15 +57,12 @@ describe("<Header />", () => {
       const menuButton = screen.getByRole("button", {
         name: "my account",
       });
-      await act(async () => {
-        await userEvent.click(menuButton);
-      });
+      await userEvent.click(menuButton);
+
       // Click and expand
       const logoutButton = screen.getByRole("img", { name: "Logout" });
       expect(logoutButton).toBeInTheDocument();
-      await act(async () => {
-        await userEvent.click(logoutButton);
-      });
+      await userEvent.click(logoutButton);
       // Mock logout
       expect(mockLogout).toHaveBeenCalledTimes(1);
     });

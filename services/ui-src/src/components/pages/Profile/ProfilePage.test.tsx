@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 import { ProfilePage } from "components";
 import {
   mockAdminUserStore,
@@ -33,7 +32,7 @@ describe("Test ProfilePage for admin users", () => {
     expect(rows[0]).toHaveTextContent("adminuser@test.com");
   });
 
-  test("Check that there is an banner editor button visible", () => {
+  test("Check that there is a banner editor button visible", () => {
     const buttons = screen.getAllByRole("button");
     expect(buttons[0]).toHaveTextContent("Banner Editor");
   });
@@ -44,10 +43,8 @@ describe("Test ProfilePage for admin users", () => {
   });
 
   test("Check that admin button navigates to /admin on click", async () => {
-    await act(async () => {
-      const adminButtons = screen.getAllByRole("button");
-      await userEvent.click(adminButtons[0]);
-    });
+    const adminButtons = screen.getAllByRole("button");
+    await userEvent.click(adminButtons[0]);
     expect(window.location.pathname).toEqual("/admin");
   });
 });
@@ -69,7 +66,7 @@ describe("Test ProfilePage for state users", () => {
     expect(screen.getByText("MN")).toBeVisible();
   });
 
-  test("Check that there is not an banner editor button", () => {
+  test("Check that there is not a banner editor button", () => {
     expect(screen.queryByText("Banner Editor")).not.toBeInTheDocument();
   });
 });
