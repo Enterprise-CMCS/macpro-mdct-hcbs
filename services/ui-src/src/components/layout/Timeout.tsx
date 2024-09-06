@@ -99,12 +99,7 @@ export const Timeout = () => {
           </Text>
         </ModalBody>
         <ModalFooter sx={sx.modalFooter}>
-          <Button
-            sx={sx.stayActive}
-            onClick={refreshAuth}
-            type="submit"
-            data-testid="modal-refresh-button"
-          >
+          <Button sx={sx.stayActive} onClick={refreshAuth} type="submit">
             Stay logged in
           </Button>
           <Button
@@ -112,7 +107,6 @@ export const Timeout = () => {
             onClick={logout}
             type="submit"
             variant="outline"
-            data-testid="modal-logout-button"
           >
             Log out
           </Button>

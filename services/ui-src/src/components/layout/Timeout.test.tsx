@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { axe } from "jest-axe";
 import { Timeout } from "components";
 import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
 import {
@@ -8,6 +7,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { initAuthManager, UserContext, useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockLogout = jest.fn();
 const mockLoginWithIDM = jest.fn();
@@ -58,8 +58,10 @@ describe("Test Timeout Modal", () => {
       jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
     await waitFor(() => {
-      expect(screen.getByTestId("modal-refresh-button")).toBeVisible();
-      expect(screen.getByTestId("modal-logout-button")).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: "Stay logged in" })
+      ).toBeVisible();
+      expect(screen.getByRole("button", { name: "Log out" })).toBeVisible();
     });
   });
 
@@ -67,13 +69,16 @@ describe("Test Timeout Modal", () => {
     await act(async () => {
       jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
-    const refreshButton = screen.getByTestId("modal-refresh-button");
+    const refreshButton = screen.getByRole("button", {
+      name: "Stay logged in",
+    });
     await act(async () => {
-      await fireEvent.click(refreshButton);
+      fireEvent.click(refreshButton);
     });
     await waitFor(() => {
-      expect(screen.getByTestId("modal-refresh-button")).not.toBeVisible();
-      expect(screen.getByTestId("modal-logout-button")).not.toBeVisible();
+      const logoutButton = screen.getByRole("button", { name: "Log out" });
+      expect(refreshButton).not.toBeVisible();
+      expect(logoutButton).not.toBeVisible();
     });
   });
 
@@ -81,7 +86,7 @@ describe("Test Timeout Modal", () => {
     await act(async () => {
       jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
-    const logoutButton = screen.getByTestId("modal-logout-button");
+    const logoutButton = screen.getByRole("button", { name: "Log out" });
     mockLogout.mockReset();
     await act(async () => {
       await fireEvent.click(logoutButton);
@@ -98,11 +103,7 @@ describe("Test Timeout Modal", () => {
 });
 
 describe("Test Timeout Modal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    initAuthManager();
-    mockedUseStore.mockReturnValue(mockUser);
-    const { container } = render(timeoutComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  initAuthManager();
+  mockedUseStore.mockReturnValue(mockUser);
+  testA11y(timeoutComponent);
 });

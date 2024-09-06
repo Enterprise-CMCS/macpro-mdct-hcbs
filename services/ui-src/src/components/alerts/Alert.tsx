@@ -59,6 +59,7 @@ interface Props {
   description?: string | CustomHtmlElement[];
   link?: string;
   showIcon?: boolean;
+  icon?: string;
   [key: string]: any;
 }
 

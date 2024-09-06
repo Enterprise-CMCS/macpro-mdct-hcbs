@@ -41,18 +41,11 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 const TestComponent = () => {
   const { ...context } = useContext(UserContext);
   return (
-    <div data-testid="testdiv">
-      <button onClick={() => context.logout()} data-testid="logout-button">
-        Logout
-      </button>
-      <button
-        onClick={() => context.loginWithIDM()}
-        data-testid="login-idm-button"
-      >
-        Log In with IDM
-      </button>
+    <div>
+      <button onClick={() => context.logout()}>Logout</button>
+      <button onClick={() => context.loginWithIDM()}>Log In with IDM</button>
       User Test
-      <p data-testid="show-local-logins">
+      <p>
         {mockedUseStore().showLocalLogins
           ? "showLocalLogins is true"
           : "showLocalLogins is false"}
@@ -118,12 +111,12 @@ describe("<UserProvider />", () => {
     });
 
     test("child component renders", () => {
-      expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+      expect(screen.getByText("User Test")).toBeVisible();
     });
 
     test("test logout function", async () => {
       await act(async () => {
-        const logoutButton = screen.getByTestId("logout-button");
+        const logoutButton = screen.getByRole("button", { name: "Logout" });
         await userEvent.click(logoutButton);
       });
       expect(window.location.pathname).toEqual("/");
@@ -131,10 +124,12 @@ describe("<UserProvider />", () => {
 
     test("test login with IDM function", async () => {
       await act(async () => {
-        const loginButton = screen.getByTestId("login-idm-button");
+        const loginButton = screen.getByRole("button", {
+          name: "Log In with IDM",
+        });
         await userEvent.click(loginButton);
       });
-      expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+      expect(screen.getByText("User Test")).toBeVisible();
     });
   });
 
@@ -147,7 +142,7 @@ describe("<UserProvider />", () => {
         render(testComponent);
       });
       expect(window.location.origin).toContain("mdcthcbs.cms.gov");
-      expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+      expect(screen.getByText("User Test")).toBeVisible();
       expect(mockReplace).toHaveBeenCalled();
     });
   });
@@ -161,8 +156,7 @@ describe("<UserProvider />", () => {
         render(testComponent);
       });
       expect(window.location.origin).toContain("wherever");
-      const showLocalLogins = screen.getByTestId("show-local-logins");
-      expect(showLocalLogins).toHaveTextContent("showLocalLogins is true");
+      expect(screen.getByText("showLocalLogins is true")).toBeVisible();
     });
   });
 
@@ -182,7 +176,7 @@ describe("<UserProvider />", () => {
       });
 
       await act(async () => {
-        const logoutButton = screen.getByTestId("logout-button");
+        const logoutButton = screen.getByRole("button", { name: "Logout" });
         await userEvent.click(logoutButton);
       });
 

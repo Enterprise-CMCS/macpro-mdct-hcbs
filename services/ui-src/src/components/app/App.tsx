@@ -39,7 +39,7 @@ export const App = () => {
         <Flex sx={sx.appLayout}>
           <Timeout />
           <Header handleLogout={logout} />
-          <Container sx={sx.appContainer} data-testid="app-container">
+          <Container sx={sx.appContainer}>
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes />
             </ErrorBoundary>
@@ -54,7 +54,7 @@ export const App = () => {
               Home &amp; Community Based Services
             </Heading>
           </Container>
-          <Container sx={sx.loginContainer} data-testid="login-container">
+          <Container sx={sx.loginContainer}>
             <Stack spacing={8}>
               <LoginIDM />
               <Divider />
