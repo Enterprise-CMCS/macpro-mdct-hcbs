@@ -1,75 +1,88 @@
 import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
 import { testJson } from "./json/layer-test";
 import { useState } from "react";
-import { AnyObject } from "yup/lib/types";
 import { Page } from "./Page";
+import { Sidebar } from "./Sidebar";
 
 interface PageData {
-  pageList: AnyObject;
+  parent: string;
+  children: string[];
   index: number;
 }
 
 export const ReportPageWrapper = () => {
-  const [prevPages, setPrevPages] = useState<PageData[]>([]);
-  const [page, setPage] = useState<PageData>({
-    pageList: testJson.pages,
+  const pageMap = new Map();
+  for (const parentPage of testJson.pages) {
+    pageMap.set(parentPage.id, parentPage);
+  }
+
+  const [parentPage, setParentPage] = useState<PageData>({
+    parent: pageMap.get("root").id,
+    children: pageMap.get("root").children,
     index: 0,
   });
 
   const SetPageIndex = (newPageIndex: number) => {
-    if (newPageIndex >= 0 && newPageIndex < page?.pageList.length) {
-      setPage({ ...page, index: newPageIndex });
+    if (newPageIndex >= 0 && newPageIndex < parentPage?.children.length) {
+      setParentPage({ ...parentPage, index: newPageIndex });
     }
   };
 
-  const SetPageFunction = (pages: any) => {
-    const prevPageList = prevPages.concat(page);
-    setPrevPages(prevPageList);
-    setPage({ pageList: pages, index: 0 });
-  };
-
-  const ReturnToLastPage = () => {
-    const lastPage = prevPages.pop();
-    setPrevPages(prevPages);
-    if (lastPage) {
-      setPage(lastPage);
+  const SetPage = (pageTo: any) => {
+    const findParentPage = [...pageMap.values()].find((parentPage) =>
+      parentPage?.children?.includes(pageTo)
+    );
+    if (findParentPage) {
+      const pageIndex = (findParentPage.children as string[]).findIndex(
+        (key) => key === pageTo
+      );
+      setParentPage({
+        parent: findParentPage.id,
+        children: findParentPage.children,
+        index: pageIndex,
+      });
     }
   };
 
-  const PrevPageName = () => {
-    const lastPage = prevPages[prevPages.length - 1];
-    return lastPage?.pageList[lastPage.index].name ?? "";
+  const PrevPageName = (name: string) => {
+    return pageMap.get(name).id;
   };
 
   const currPage = () => {
-    return page.pageList[page.index];
+    const currPage = parentPage.children[parentPage.index];
+    return pageMap.get(currPage);
   };
 
   return (
     <>
-      {prevPages.length > 0 && (
-        <Button onClick={() => ReturnToLastPage()} position="absolute" mt="6">
-          Return to {PrevPageName()}
+      <Sidebar></Sidebar>
+      {parentPage.parent && parentPage.parent != "root" && (
+        <Button
+          onClick={() => SetPage(parentPage.parent)}
+          position="absolute"
+          ml="40"
+          mt="6"
+        >
+          Return to {PrevPageName(parentPage.parent)}
         </Button>
       )}
       <VStack height="100%" padding="2rem">
         <Box flex="auto">
-          <Heading textTransform="uppercase">{currPage().name}</Heading>
+          <Heading textTransform="uppercase">{currPage().id}</Heading>
           {currPage().elements && (
-            <Page
-              elements={currPage().elements}
-              setPage={SetPageFunction}
-            ></Page>
+            <Page elements={currPage().elements} setPage={SetPage}></Page>
           )}
         </Box>
         <Container display="flex" justifyContent="flex-end" padding="0">
-          {page.index > 0 && (
-            <Button onClick={() => SetPageIndex(page.index - 1)} mr="3">
+          {parentPage.index > 0 && (
+            <Button onClick={() => SetPageIndex(parentPage.index - 1)} mr="3">
               Previous
             </Button>
           )}
-          {page.index < page.pageList.length - 1 && (
-            <Button onClick={() => SetPageIndex(page.index + 1)}>Next</Button>
+          {parentPage.index < parentPage.children.length - 1 && (
+            <Button onClick={() => SetPageIndex(parentPage.index + 1)}>
+              Next
+            </Button>
           )}
         </Container>
       </VStack>

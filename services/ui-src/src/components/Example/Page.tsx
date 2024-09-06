@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 export const headerElement = (value: string) => {
   return <Heading>{value}</Heading>;
@@ -9,7 +9,7 @@ export const paragraphElement = (value: string) => {
 };
 
 export const buttonElement = (element: any, func: Function) => {
-  return <Button onClick={() => func(element.pages)}>{element.text}</Button>;
+  return <Button onClick={() => func(element.to)}>{element.text}</Button>;
 };
 
 interface Props {
@@ -31,8 +31,8 @@ export const Page = ({ elements, setPage }: Props) => {
   };
 
   return (
-    <div>
+    <VStack>
       {elements.length > 0 && elements.map((element) => renderElement(element))}
-    </div>
+    </VStack>
   );
 };
