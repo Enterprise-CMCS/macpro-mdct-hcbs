@@ -17,7 +17,7 @@ import {
   UserContext,
 } from "utils";
 import { PROMPT_AT, IDLE_WINDOW } from "../../constants";
-import moment from "moment";
+import { add } from "date-fns";
 
 export const Timeout = () => {
   const context = useContext(UserContext);
@@ -43,7 +43,9 @@ export const Timeout = () => {
   }, [location]);
 
   const setTimer = () => {
-    const expiration = moment().add(IDLE_WINDOW, "milliseconds");
+    const expiration = add(new Date(), {
+      seconds: IDLE_WINDOW / 1000,
+    });
     if (timeoutPromptId) {
       clearTimers();
     }
@@ -97,12 +99,7 @@ export const Timeout = () => {
           </Text>
         </ModalBody>
         <ModalFooter sx={sx.modalFooter}>
-          <Button
-            sx={sx.stayActive}
-            onClick={refreshAuth}
-            type="submit"
-            data-testid="modal-refresh-button"
-          >
+          <Button sx={sx.stayActive} onClick={refreshAuth} type="submit">
             Stay logged in
           </Button>
           <Button
@@ -110,7 +107,6 @@ export const Timeout = () => {
             onClick={logout}
             type="submit"
             variant="outline"
-            data-testid="modal-logout-button"
           >
             Log out
           </Button>

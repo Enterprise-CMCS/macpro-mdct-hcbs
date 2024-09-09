@@ -1,15 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+import { testA11y } from "utils/testing/commonTests";
 import { EmailCard } from "components";
 import { createEmailLink } from "utils/other/email";
 import verbiage from "verbiage/pages/help";
 
 const emailCardComponent = (
-  <EmailCard
-    verbiage={verbiage.cards.helpdesk}
-    icon="settings"
-    cardprops={{ "data-testid": "email-card" }}
-  />
+  <EmailCard verbiage={verbiage.cards.helpdesk} icon="settings" />
 );
 
 describe("Test EmailCard", () => {
@@ -17,8 +13,8 @@ describe("Test EmailCard", () => {
     render(emailCardComponent);
   });
 
-  test("EmailCard is visible", () => {
-    expect(screen.getByTestId("email-card")).toBeVisible();
+  test("Email for EmailCard is visible", () => {
+    expect(screen.getByText("mdct_help@cms.hhs.gov")).toBeVisible();
   });
 
   test("Email links are created correctly", () => {
@@ -34,12 +30,6 @@ describe("Test EmailCard", () => {
   test("Email links are visible", () => {
     expect(screen.getByRole("link")).toBeVisible();
   });
-});
 
-describe("Test EmailCard accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(emailCardComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(emailCardComponent);
 });

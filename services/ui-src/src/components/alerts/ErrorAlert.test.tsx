@@ -9,14 +9,22 @@ const error: ErrorVerbiage = {
   description: genericErrorContent,
 };
 
-const errorAlertComponent = (
-  <ErrorAlert error={error} data-testid="test-error-alert" />
-);
+const errorAlertComponent = <ErrorAlert error={error} />;
 
 describe("<ErrorAlert />", () => {
-  test("ErrorAlert is visible", () => {
+  beforeEach(() => {
     render(errorAlertComponent);
-    expect(screen.getByTestId("test-error-alert")).toBeVisible();
+  });
+  test("Get by link", () => {
+    expect(
+      screen.getByRole("link", { name: "mdct_help@cms.hhs.gov" })
+    ).toBeVisible();
+  });
+  test("Find error alert", () => {
+    expect(screen.getByRole("alert")).toBeVisible();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "We've run into a problem"
+    );
   });
 
   testA11y(errorAlertComponent);
