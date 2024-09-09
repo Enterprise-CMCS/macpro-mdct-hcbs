@@ -4,123 +4,78 @@ export const testJson = {
   pages: [
     {
       id: "root",
-      children: ["apple", "onion", "banana"],
+      children: ["general-info", "req-measure-list"],
     },
     {
-      id: "apple",
+      id: "general-info",
       elements: [
         {
           type: "header",
-          text: "Hello I am the general app page",
+          text: "General Information",
         },
         {
-          type: "paragraph",
-          text: "why say more when less do",
+          type: "sub-header",
+          text: "State of Program Information",
         },
         {
-          type: "button",
-          text: "Jump to Onion",
-          to: "onion",
+          type: "textbox",
+          label: "Contact name",
+          helperText:
+            "Enter person's name or a position title for CMS to contact with questions about this request.",
         },
         {
-          type: "button",
-          text: "Jump to Banana",
-          to: "banana",
+          type: "textbox",
+          label: "Contact email address",
+          helperText:
+            "Enter email address. Department or program-wide email addresses ok.",
+        },
+        {
+          type: "date",
+          label: "Reporting period start date",
+          helperText:
+            "What is the reporting period Start Date applicable to the measure results?",
+        },
+        {
+          type: "date",
+          label: "Reporting period end date",
+          helperText:
+            "What is the reporting period End Date applicable to the measure results?",
         },
       ],
     },
     {
-      id: "onion",
-      elements: [
-        {
-          type: "paragraph",
-          text: "lets try some nesting",
-        },
-        {
-          type: "button",
-          text: "sub-page",
-          to: "onion-1-1",
-        },
-      ],
-      children: ["onion-1-1", "onion-1-2"],
-    },
-    {
-      id: "onion-1-1",
+      id: "req-measure-list",
       elements: [
         {
           type: "header",
-          text: "Did this work",
+          text: "Required Measure Results",
         },
         {
-          type: "paragraph",
-          text: "i am the first layer",
+          type: "accordian",
+          label: "Instructions",
+          value: "I am an accordian",
+        },
+        {
+          type: "resultRowButton",
+          value: "{measure}",
+          to: "req-measure-report",
         },
       ],
+      children: ["req-measure-report"],
     },
     {
-      id: "onion-1-2",
+      id: "req-measure-report",
       elements: [
         {
-          type: "paragraph",
-          text: "Click the button below to go in another layer",
+          type: "header",
+          label: "{measureName}",
         },
         {
-          type: "button",
-          text: "sub-sub-page",
-          to: "onion-1-2-1",
+          type: "accordian",
+          label: "Instructions",
+          value: "",
         },
       ],
-      children: ["onion-1-2-1", "onion-1-2-2"],
-    },
-    {
-      id: "onion-1-2-1",
-      elements: [
-        {
-          type: "paragraph",
-          text: "i am a layer within a layer",
-        },
-      ],
-    },
-    {
-      id: "onion-1-2-2",
-      elements: [
-        {
-          type: "paragraph",
-          text: "Do you want more layers?",
-        },
-        {
-          type: "button",
-          text: "more layers",
-          to: "onion-1-2-2-1",
-        },
-      ],
-      children: ["onion-1-2-2-1"],
-    },
-    {
-      id: "onion-1-2-3",
-      elements: [
-        {
-          type: "paragraph",
-          text: "this doesn't go anywhere",
-        },
-      ],
-    },
-    {
-      id: "onion-1-2-2-1",
-      elements: [
-        {
-          type: "paragraph",
-          text: "there's no more layers",
-        },
-        {
-          type: "button",
-          text: "back to Banana",
-          to: "banana",
-        },
-      ],
-    },
-    {
-      id: "banana",
     },
   ],
 };

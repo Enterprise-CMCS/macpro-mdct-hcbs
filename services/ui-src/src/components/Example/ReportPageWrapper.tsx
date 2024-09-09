@@ -1,4 +1,4 @@
-import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, Divider, Heading, HStack, Stack, VStack } from "@chakra-ui/react";
 import { testJson } from "./json/layer-test";
 import { useState } from "react";
 import { Page } from "./Page";
@@ -54,7 +54,7 @@ export const ReportPageWrapper = () => {
   };
 
   return (
-    <>
+    <HStack marginLeft="-30px" height="100%">
       <Sidebar></Sidebar>
       {parentPage.parent && parentPage.parent != "root" && (
         <Button
@@ -66,26 +66,26 @@ export const ReportPageWrapper = () => {
           Return to {PrevPageName(parentPage.parent)}
         </Button>
       )}
-      <VStack height="100%" padding="2rem">
-        <Box flex="auto">
-          <Heading textTransform="uppercase">{currPage().id}</Heading>
+      <VStack height="100%" padding="2rem" width="640px">
+        <Box flex="auto" alignItems="flex-start" width="100%">
           {currPage().elements && (
             <Page elements={currPage().elements} setPage={SetPage}></Page>
           )}
         </Box>
-        <Container display="flex" justifyContent="flex-end" padding="0">
+        <Divider></Divider>
+        <Stack direction="row" width="100%">
           {parentPage.index > 0 && (
             <Button onClick={() => SetPageIndex(parentPage.index - 1)} mr="3">
               Previous
             </Button>
           )}
           {parentPage.index < parentPage.children.length - 1 && (
-            <Button onClick={() => SetPageIndex(parentPage.index + 1)}>
-              Next
+            <Button onClick={() => SetPageIndex(parentPage.index + 1)} alignSelf="flex-end">
+              Continue
             </Button>
           )}
-        </Container>
+        </Stack>
       </VStack>
-    </>
+    </HStack>
   );
 };
