@@ -25,8 +25,7 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs#readme",
   "dependencies": {
-    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
-    "aws-amplify": "5.3.19"
+    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
