@@ -95,7 +95,7 @@ export const testJson = {
       sidebar: false,
       elements: [
         {
-          type: "button",
+          type: "button-link",
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
         },

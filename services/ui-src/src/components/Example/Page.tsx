@@ -40,6 +40,10 @@ export const subHeaderElement = (element: AnyObject) => {
   return <Heading fontSize="18px">{element.text}</Heading>;
 };
 
+export const paragraphElement = (element: AnyObject) => {
+  return <Text fontSize="18px">{element.text}</Text>;
+};
+
 export const textboxElement = (element: AnyObject) => {
   return (
     <FormControl>
@@ -95,13 +99,21 @@ export const buttonElement = (element: AnyObject, func: Function) => {
   return <Button onClick={() => func(element.to)}>{element.label}</Button>;
 };
 
+export const buttonLinkElement = (element: AnyObject, func: Function) => {
+  return (
+    <Button variant="link" onClick={() => func(element.to)}>
+      {element.label}
+    </Button>
+  );
+};
+
 interface Props {
   elements: AnyObject[];
   setPage: Function;
 }
 
 export const resultRowButtonElement = (element: AnyObject, func: Function) => {
-    console.log(element);
+  console.log(element);
   return (
     <Table>
       <Thead>
@@ -142,6 +154,8 @@ export const Page = ({ elements, setPage }: Props) => {
         return headerElement(element);
       case "sub-header":
         return subHeaderElement(element);
+      case "paragraph":
+        return paragraphElement(element);
       case "textbox":
         return textboxElement(element);
       case "date":
@@ -154,6 +168,8 @@ export const Page = ({ elements, setPage }: Props) => {
         return resultRowButtonElement(element, setPage);
       case "button":
         return buttonElement(element, setPage);
+      case "button-link":
+        return buttonLinkElement(element, setPage);
     }
     return <></>;
   };

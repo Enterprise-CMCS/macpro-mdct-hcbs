@@ -4,8 +4,10 @@ import {
   Divider,
   HStack,
   Modal,
+  ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Stack,
@@ -25,6 +27,7 @@ interface PageData {
 
 export const ReportPageWrapper = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [modalId, setModalId] = useState<string>();
 
   const pageMap = new Map();
   for (const parentPage of testJson.pages) {
@@ -45,6 +48,7 @@ export const ReportPageWrapper = () => {
 
   const SetPage = (pageTo: any, type: string) => {
     if (type === "modal") {
+      setModalId(pageTo);
       onOpen();
     } else {
       const findParentPage = [...pageMap.values()].find((parentPage) =>
@@ -96,9 +100,20 @@ export const ReportPageWrapper = () => {
       </VStack>
       <Modal isOpen={isOpen} onClose={onClose} width="500px">
         <ModalOverlay />
-        <ModalContent width="500px">
-          <ModalHeader>Modal Title</ModalHeader>
+        <ModalContent width="500px" minWidth="500px">
           <ModalCloseButton />
+          <ModalBody>
+            <Page
+              elements={pageMap?.get(modalId)?.elements}
+              setPage={SetPage}
+            ></Page>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Select Measure
+            </Button>
+            <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </HStack>
