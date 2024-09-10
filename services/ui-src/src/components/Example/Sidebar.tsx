@@ -1,11 +1,29 @@
-import { Button, VStack } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack, Text, VStack } from "@chakra-ui/react";
 import { testJson } from "./json/layer-test";
+import { AnyObject } from "yup/lib/types";
 
-const menuItem = (text: string) => {
-  return <Button>{text}</Button>;
+export const navItem = (page: AnyObject, func: Function) => {
+  return (
+    <Button
+      display="block"
+      width="100%"
+      textAlign="left"
+      background="transparent"
+      color="black"
+      fontWeight="normal"
+      onClick={() => func(page.id)}
+      overflow="hidden"
+    >
+      {page.title}
+    </Button>
+  );
 };
 
-export const Sidebar = () => {
+interface Props {
+  setPage: Function;
+}
+
+export const Sidebar = ({ setPage }: Props) => {
   const pageMap = new Map();
   for (const parentPage of testJson.pages) {
     pageMap.set(parentPage.id, parentPage);
@@ -16,25 +34,26 @@ export const Sidebar = () => {
     for (const child of children) {
       const page = pageMap.get(child);
       if (page.children) {
-        builtList.push({ id: page.id, child: buildNavList(page.children) });
+        builtList.push(
+          <Stack width="100%" spacing="0" >
+            {navItem(page, setPage)}
+            <Box width="100%" paddingLeft="24px">{buildNavList(page.children)}</Box>
+          </Stack>
+        );
       } else {
-        builtList.push({ id: page.id });
+        builtList.push(navItem(page, setPage));
       }
     }
     return builtList;
   };
 
   const navList = buildNavList(pageMap.get("root").children);
-  console.log(navList);
-
   return (
-    <VStack
-      height="100%"
-      width="160px"
-      background="gray.100"
-    >
-      Menubar
-      <Button variant="link"> Test</Button>
+    <VStack height="100%" width="320px" background="gray.100" spacing="0">
+      <Heading fontSize="21" fontWeight="700" padding="32px">
+        Quality Measures Report
+      </Heading>
+      {navList}
     </VStack>
   );
 };

@@ -13,6 +13,8 @@ import {
   Heading,
   HStack,
   Input,
+  Radio,
+  RadioGroup,
   Stack,
   Table,
   Tbody,
@@ -75,8 +77,22 @@ export const accordianElement = (element: AnyObject) => {
   );
 };
 
+export const radioElement = (element: AnyObject) => {
+  console.log(element);
+  return (
+    <RadioGroup>
+      <FormLabel fontWeight="bold">{element.label}</FormLabel>
+      <Stack direction="column">
+        {element.value.map((child: AnyObject) => (
+          <Radio value={child.value}>{child.label}</Radio>
+        ))}
+      </Stack>
+    </RadioGroup>
+  );
+};
+
 export const buttonElement = (element: AnyObject, func: Function) => {
-  return <Button onClick={() => func(element.to)}>{element.text}</Button>;
+  return <Button onClick={() => func(element.to)}>{element.label}</Button>;
 };
 
 interface Props {
@@ -85,6 +101,7 @@ interface Props {
 }
 
 export const resultRowButtonElement = (element: AnyObject, func: Function) => {
+    console.log(element);
   return (
     <Table>
       <Thead>
@@ -105,7 +122,7 @@ export const resultRowButtonElement = (element: AnyObject, func: Function) => {
             </Stack>
           </Td>
           <Td>
-            <Button variant="link" onClick={() => func(element.to)}>
+            <Button variant="link" onClick={() => func(element.modal, "modal")}>
               Edit measure
             </Button>
           </Td>
@@ -131,6 +148,8 @@ export const Page = ({ elements, setPage }: Props) => {
         return dateElement(element);
       case "accordian":
         return accordianElement(element);
+      case "radio":
+        return radioElement(element);
       case "resultRowButton":
         return resultRowButtonElement(element, setPage);
       case "button":

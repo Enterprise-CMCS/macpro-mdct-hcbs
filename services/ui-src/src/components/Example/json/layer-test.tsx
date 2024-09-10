@@ -1,13 +1,14 @@
 export const testJson = {
   type: "hcbs",
-  name: "plan id",
+  title: "plan id",
   pages: [
     {
       id: "root",
-      children: ["general-info", "req-measure-list"],
+      children: ["general-info", "req-measure-result", "strat-measure-report"],
     },
     {
       id: "general-info",
+      title: "General Information",
       elements: [
         {
           type: "header",
@@ -19,9 +20,9 @@ export const testJson = {
         },
         {
           type: "textbox",
-          label: "Contact name",
+          label: "Contact title",
           helperText:
-            "Enter person's name or a position title for CMS to contact with questions about this request.",
+            "Enter person's title or a position title for CMS to contact with questions about this request.",
         },
         {
           type: "textbox",
@@ -44,7 +45,8 @@ export const testJson = {
       ],
     },
     {
-      id: "req-measure-list",
+      id: "req-measure-result",
+      title: "Required Measure Results",
       elements: [
         {
           type: "header",
@@ -58,24 +60,95 @@ export const testJson = {
         {
           type: "resultRowButton",
           value: "{measure}",
+          modal: "req-measure-result-modal",
           to: "req-measure-report",
         },
       ],
       children: ["req-measure-report"],
     },
     {
-      id: "req-measure-report",
+      id: "req-measure-result-modal",
+      title:"Select measure",
+      type:"modal",
       elements: [
         {
           type: "header",
-          label: "{measureName}",
+          text: "Select measure",
+        },
+        {
+          type: "paragraph",
+          text: "Select the correct version of the quality measure."
+        },
+        {
+          type: "radio",
+          label: "Which quality measure will be reported?",
+          value: [
+            { label: "{Measure name version 1}", value: "measure-1" },
+            { label: "{Measure name version 2}", value: "measure-2" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "req-measure-report",
+      title: "Return to Required Measures Results Dashboard",
+      sidebar: false,
+      elements: [
+        {
+          type: "button",
+          label: "Return to Required Measures Results Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: "header",
+          text: "{measureName}",
         },
         {
           type: "accordian",
           label: "Instructions",
-          value: "",
+          value: "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: "sub-header",
+          text: "Measure Information",
+        },
+        {
+          type: "textbox",
+          label:
+            "What is the state performance target for this measure established by the state?",
+        },
+        {
+          type: "radio",
+          label: "Is the performance target approved by CMS?",
+          value: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+            { label: "In process", value: "inProcess" },
+          ],
         },
       ],
     },
+    {
+      id: "strat-measure-report",
+      title: "Stratified Measure Results",
+      elements: [
+        {
+          type: "header",
+          text: "Stratified Measure Results",
+        },
+        {
+          type: "accordian",
+          label: "Instructions",
+          value: "I am an accordian",
+        },
+        {
+          type: "resultRowButton",
+          value: "{measure}",
+          modal: "req-measure-result-modal",
+          to: "req-measure-report",
+        },
+      ],
+      children: ["req-measure-report"],
+    }
   ],
 };

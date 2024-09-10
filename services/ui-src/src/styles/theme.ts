@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { extendTheme } from "@chakra-ui/react";
+import { background, border, extendTheme } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
@@ -112,6 +112,9 @@ const theme = extendTheme({
     Accordion: {
       baseStyle: {
         borderStyle: "none",
+        button:{
+          background:"palette.gray_lightest"
+        }
       },
     },
     Button: {

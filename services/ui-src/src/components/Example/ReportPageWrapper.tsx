@@ -1,4 +1,17 @@
-import { Box, Button, Container, Divider, Heading, HStack, Stack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  HStack,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
 import { testJson } from "./json/layer-test";
 import { useState } from "react";
 import { Page } from "./Page";
@@ -11,6 +24,8 @@ interface PageData {
 }
 
 export const ReportPageWrapper = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const pageMap = new Map();
   for (const parentPage of testJson.pages) {
     pageMap.set(parentPage.id, parentPage);
@@ -28,24 +43,24 @@ export const ReportPageWrapper = () => {
     }
   };
 
-  const SetPage = (pageTo: any) => {
-    const findParentPage = [...pageMap.values()].find((parentPage) =>
-      parentPage?.children?.includes(pageTo)
-    );
-    if (findParentPage) {
-      const pageIndex = (findParentPage.children as string[]).findIndex(
-        (key) => key === pageTo
+  const SetPage = (pageTo: any, type: string) => {
+    if (type === "modal") {
+      onOpen();
+    } else {
+      const findParentPage = [...pageMap.values()].find((parentPage) =>
+        parentPage?.children?.includes(pageTo)
       );
-      setParentPage({
-        parent: findParentPage.id,
-        children: findParentPage.children,
-        index: pageIndex,
-      });
+      if (findParentPage) {
+        const pageIndex = (findParentPage.children as string[]).findIndex(
+          (key) => key === pageTo
+        );
+        setParentPage({
+          parent: findParentPage.id,
+          children: findParentPage.children,
+          index: pageIndex,
+        });
+      }
     }
-  };
-
-  const PrevPageName = (name: string) => {
-    return pageMap.get(name).id;
   };
 
   const currPage = () => {
@@ -55,17 +70,7 @@ export const ReportPageWrapper = () => {
 
   return (
     <HStack marginLeft="-30px" height="100%">
-      <Sidebar></Sidebar>
-      {parentPage.parent && parentPage.parent != "root" && (
-        <Button
-          onClick={() => SetPage(parentPage.parent)}
-          position="absolute"
-          ml="40"
-          mt="6"
-        >
-          Return to {PrevPageName(parentPage.parent)}
-        </Button>
-      )}
+      {currPage().sidebar != false && <Sidebar setPage={SetPage}></Sidebar>}
       <VStack height="100%" padding="2rem" width="640px">
         <Box flex="auto" alignItems="flex-start" width="100%">
           {currPage().elements && (
@@ -80,12 +85,22 @@ export const ReportPageWrapper = () => {
             </Button>
           )}
           {parentPage.index < parentPage.children.length - 1 && (
-            <Button onClick={() => SetPageIndex(parentPage.index + 1)} alignSelf="flex-end">
+            <Button
+              onClick={() => SetPageIndex(parentPage.index + 1)}
+              alignSelf="flex-end"
+            >
               Continue
             </Button>
           )}
         </Stack>
       </VStack>
+      <Modal isOpen={isOpen} onClose={onClose} width="500px">
+        <ModalOverlay />
+        <ModalContent width="500px">
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+        </ModalContent>
+      </Modal>
     </HStack>
   );
 };
