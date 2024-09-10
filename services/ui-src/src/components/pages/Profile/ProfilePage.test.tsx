@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProfilePage } from "components";
 import {
@@ -7,7 +7,12 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
+
+// TODO: remove this
+jest.mock("utils/api/requestMethods/helloWorld", () => ({
+  getHelloWorld: jest.fn().mockResolvedValue("Hello World!"),
+}));
 
 const ProfilePageComponent = (
   <RouterWrappedComponent>
@@ -21,9 +26,12 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 // TESTS
 describe("Test ProfilePage for admin users", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockedUseStore.mockReturnValue(mockAdminUserStore);
-    render(ProfilePageComponent);
+    // TODO: remove this act after removing hello world call
+    await act(async () => {
+      render(ProfilePageComponent);
+    });
   });
 
   test("Check that Profile page renders properly", () => {
@@ -50,9 +58,12 @@ describe("Test ProfilePage for admin users", () => {
 });
 
 describe("Test ProfilePage for state users", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
-    render(ProfilePageComponent);
+    // TODO: remove this act after removing hello world call
+    await act(async () => {
+      render(ProfilePageComponent);
+    });
   });
 
   test("Check that Profile page renders properly", () => {
@@ -74,5 +85,5 @@ describe("Test ProfilePage for state users", () => {
 
 describe("Test ProfilePage accessibility", () => {
   mockedUseStore.mockReturnValue(mockAdminUserStore);
-  testA11y(ProfilePageComponent);
+  testA11yAct(ProfilePageComponent);
 });
