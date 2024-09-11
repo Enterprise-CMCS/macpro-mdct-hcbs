@@ -1,19 +1,16 @@
-import { Box, Button, Heading, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Stack,
+  VStack,
+} from "@chakra-ui/react";
 import { testJson } from "./json/layer-test";
 import { AnyObject } from "yup/lib/types";
 
 export const navItem = (page: AnyObject, func: Function) => {
   return (
-    <Button
-      display="block"
-      width="100%"
-      textAlign="left"
-      background="transparent"
-      color="black"
-      fontWeight="normal"
-      onClick={() => func(page.id)}
-      overflow="hidden"
-    >
+    <Button variant="sidebar" onClick={() => func(page.id)}>
       {page.title}
     </Button>
   );
@@ -35,9 +32,9 @@ export const Sidebar = ({ setPage }: Props) => {
       const page = pageMap.get(child);
       if (page.children) {
         builtList.push(
-          <Stack width="100%" spacing="0" >
+          <Stack width="100%" spacing="0">
             {navItem(page, setPage)}
-            <Box width="100%" paddingLeft="24px">{buildNavList(page.children)}</Box>
+            <Box>{buildNavList(page.children)}</Box>
           </Stack>
         );
       } else {

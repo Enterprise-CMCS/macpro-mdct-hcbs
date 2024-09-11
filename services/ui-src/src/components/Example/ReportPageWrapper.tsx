@@ -3,13 +3,6 @@ import {
   Button,
   Divider,
   HStack,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Stack,
   useDisclosure,
   VStack,
@@ -18,6 +11,7 @@ import { testJson } from "./json/layer-test";
 import { useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
+import { ReportModal } from "./ReportModal";
 
 interface PageData {
   parent: string;
@@ -82,12 +76,21 @@ export const ReportPageWrapper = () => {
           )}
         </Box>
         <Divider></Divider>
-        <Stack direction="row" width="100%">
-          {parentPage.index > 0 && (
-            <Button onClick={() => SetPageIndex(parentPage.index - 1)} mr="3">
+        <Stack
+          direction="row"
+          width="100%"
+          display="flex"
+          justifyContent="space-between"
+        >
+          {
+            <Button
+              onClick={() => SetPageIndex(parentPage.index - 1)}
+              mr="3"
+              display={parentPage.index > 0 ? "block" : "contents"}
+            >
               Previous
             </Button>
-          )}
+          }
           {parentPage.index < parentPage.children.length - 1 && (
             <Button
               onClick={() => SetPageIndex(parentPage.index + 1)}
@@ -98,24 +101,11 @@ export const ReportPageWrapper = () => {
           )}
         </Stack>
       </VStack>
-      <Modal isOpen={isOpen} onClose={onClose} width="500px">
-        <ModalOverlay />
-        <ModalContent width="500px" minWidth="500px">
-          <ModalCloseButton />
-          <ModalBody>
-            <Page
-              elements={pageMap?.get(modalId)?.elements}
-              setPage={SetPage}
-            ></Page>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Select Measure
-            </Button>
-            <Button variant="ghost" onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ReportModal
+        elements={pageMap?.get(modalId)?.elements}
+        isOpen={isOpen}
+        onClose={onClose}
+      ></ReportModal>
     </HStack>
   );
 };
