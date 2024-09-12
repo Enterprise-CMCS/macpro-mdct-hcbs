@@ -6,15 +6,27 @@ const alertComponent = (
   <Alert
     title="Test alert!"
     description="This is for testing."
-    link="test-link"
-    data-testid="test-alert"
+    link="https://example.com"
   />
 );
 
 describe("<Alert />", () => {
-  test("Alert is visible", () => {
+  beforeEach(() => {
     render(alertComponent);
-    expect(screen.getByTestId("test-alert")).toBeVisible();
+  });
+  test("Alert is visible", () => {
+    expect(screen.getByRole("alert")).toBeVisible();
+  });
+  test("Alert link is visible", () => {
+    expect(
+      screen.getByRole("link", { name: "https://example.com" })
+    ).toHaveAttribute("href", "https://example.com");
+  });
+  test("Alert text exists", () => {
+    expect(screen.getByRole("alert")).toHaveTextContent("This is for testing.");
+  });
+  test("Alert image exists", () => {
+    expect(screen.getByRole("img", { name: "Alert" })).toBeVisible();
   });
 
   testA11y(alertComponent);

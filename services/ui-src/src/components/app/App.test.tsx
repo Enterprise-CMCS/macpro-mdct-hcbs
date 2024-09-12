@@ -27,7 +27,20 @@ describe("<App />", () => {
     await act(async () => {
       await render(appComponent);
     });
-    expect(screen.getByTestId("app-container")).toBeVisible();
+    expect(
+      screen.getByRole("region", { name: "Official government website" })
+    ).toBeVisible();
+    expect(screen.getByRole("img", { name: "U.S. Flag" })).toBeVisible();
+    // Unable to run assertions on collections
+    expect(screen.getAllByAltText("HCBS logo"));
+    expect(screen.getAllByAltText("Help"));
+    expect(screen.getAllByAltText("Account"));
+    expect(screen.getAllByAltText("Expand"));
+    expect(
+      screen.getAllByAltText("Department of Health and Human Services, USA")
+    );
+    expect(screen.getAllByAltText("Medicaid.gov: Keeping America Healthy"));
+    expect(screen.getAllByRole("button").length).toBe(5);
   });
 
   test("App renders local logins if there is no user", async () => {
@@ -35,7 +48,16 @@ describe("<App />", () => {
     await act(async () => {
       await render(appComponent);
     });
-    expect(screen.getByTestId("login-container")).toBeVisible();
+    const headings = screen.getAllByRole("heading", { level: 2 });
+    expect(headings.length).toBe(2);
+    expect(headings[0]).toHaveTextContent("Log In with IDM");
+    expect(headings[1]).toHaveTextContent("Log In with Cognito");
+    expect(
+      screen.getByRole("button", { name: "Log In with IDM" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Log In with Cognito" })
+    ).toBeVisible();
   });
 
   testA11y(appComponent);

@@ -75,13 +75,7 @@ export const LoginCognito = () => {
             />
           </label>
         </Box>
-        <Button
-          sx={sx.button}
-          onClick={handleLogin}
-          isFullWidth
-          type="submit"
-          data-testid="cognito-login-button"
-        >
+        <Button sx={sx.button} onClick={handleLogin} isFullWidth type="submit">
           Log In with Cognito
         </Button>
       </form>
