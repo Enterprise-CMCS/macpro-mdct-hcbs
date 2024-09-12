@@ -9,7 +9,7 @@ import {
   InstructionsAccordion,
   DashboardTable,
 } from "components";
-import { Box, Button, Image, Heading, Link } from "@chakra-ui/react";
+import { Box, Button, Image, Heading, Link, Text } from "@chakra-ui/react";
 import { parseCustomHtml, useStore } from "utils";
 
 import dashboardVerbiage from "verbiage/pages/dashboard";
@@ -62,6 +62,9 @@ export const DashboardPage = () => {
       </Box>
       <Box sx={sx.bodyBox}>
         <DashboardTable reportsByState={reportsToDisplay} body={body} />
+        {!reportsToDisplay?.length && (
+          <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
+        )}
         <Box sx={sx.callToActionContainer}>
           <Button type="submit" variant="outline">
             {body.callToAction}
@@ -136,6 +139,11 @@ const sx = {
         borderLeftColor: "palette.black",
       },
     },
+  },
+  emptyTableContainer: {
+    maxWidth: "75%",
+    margin: "0 auto",
+    textAlign: "center",
   },
   callToActionContainer: {
     display: "flex",
