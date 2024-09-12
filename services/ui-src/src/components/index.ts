@@ -35,3 +35,4 @@ export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 export { Table } from "./tables/Table";
 // dashboard
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
+export { DashboardTable } from "./pages/Dashboard/DashboardTable";

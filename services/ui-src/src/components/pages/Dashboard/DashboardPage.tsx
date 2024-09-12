@@ -1,7 +1,14 @@
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { States } from "../../../constants";
 
-import { PageTemplate, InstructionsAccordion } from "components";
+import { ReportMetadataShape } from "types";
+
+import {
+  PageTemplate,
+  InstructionsAccordion,
+  DashboardTable,
+} from "components";
 import { Box, Button, Image, Heading, Link } from "@chakra-ui/react";
 import { parseCustomHtml, useStore } from "utils";
 
@@ -13,10 +20,13 @@ import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 export const DashboardPage = () => {
   const {
     state: userState,
-    userIsEndUser,
     userIsReadOnly,
     userIsAdmin,
   } = useStore().user ?? {};
+
+  const [reportsToDisplay] = useState<ReportMetadataShape[] | undefined>(
+    undefined
+  );
 
   const { intro, body } = dashboardVerbiage;
 
@@ -51,6 +61,7 @@ export const DashboardPage = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
+        <DashboardTable reportsByState={reportsToDisplay} body={body} />
         <Box sx={sx.callToActionContainer}>
           <Button type="submit" variant="outline">
             {body.callToAction}
