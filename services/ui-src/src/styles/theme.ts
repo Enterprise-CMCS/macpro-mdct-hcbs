@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { extendTheme } from "@chakra-ui/react";
+import { background, border, extendTheme } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
@@ -112,6 +112,9 @@ const theme = extendTheme({
     Accordion: {
       baseStyle: {
         borderStyle: "none",
+        button: {
+          background: "palette.gray_lightest",
+        },
       },
     },
     Button: {
@@ -147,6 +150,26 @@ const theme = extendTheme({
               filter: svgFilters.primary_darker,
             },
           },
+        },
+        sidebar: {
+          display: "block",
+          width: "100%",
+          textAlign: "left",
+          background: "transparent",
+          color: "black",
+          fontWeight: "normal",
+          overflow: "hidden",
+          border: "1px solid",
+          borderColor: "palette.gray_light",
+          borderWidth: "0 0 1px 0",
+          fontSize: "0.75em",
+          _hover: {
+            color: "palette.primary_darker",
+            backgroundColor: "palette.gray_lightest_highlight",
+            border: "1px solid",
+            borderColor: "palette.secondary_light",
+            borderWidth: "0 0 0 4px",
+          }
         },
         outline: () => ({
           ...theme.components.Button.variants.transparent,
