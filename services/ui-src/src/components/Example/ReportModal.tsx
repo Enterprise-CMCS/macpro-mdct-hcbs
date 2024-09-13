@@ -6,13 +6,12 @@ import {
   ModalContent,
   ModalFooter,
   ModalOverlay,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { Page } from "./Page";
-import { AnyObject } from "yup/lib/types";
+import { PageElement } from "./types";
 
 interface Props {
-  elements: AnyObject[];
+  elements: PageElement[];
   isOpen: boolean;
   onClose: any;
 }

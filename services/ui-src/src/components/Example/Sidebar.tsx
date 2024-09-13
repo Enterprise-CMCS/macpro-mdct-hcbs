@@ -1,11 +1,5 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Stack,
-  VStack,
-} from "@chakra-ui/react";
-import { testJson } from "./json/layer-test";
+import { Box, Button, Heading, Stack, VStack } from "@chakra-ui/react";
+import { hcbsReportTemplate } from "./json/layer-test";
 import { AnyObject } from "yup/lib/types";
 
 export const navItem = (page: AnyObject, func: Function) => {
@@ -22,7 +16,7 @@ interface Props {
 
 export const Sidebar = ({ setPage }: Props) => {
   const pageMap = new Map();
-  for (const parentPage of testJson.pages) {
+  for (const parentPage of hcbsReportTemplate.pages) {
     pageMap.set(parentPage.id, parentPage);
   }
 

@@ -10,7 +10,11 @@ export const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/help" element={<HelpPage />} />
-        <Route key ="/report" path="/report" element={<ReportPageWrapper></ReportPageWrapper>}></Route>
+        <Route
+          key="/report"
+          path="/report"
+          element={<ReportPageWrapper />}
+        ></Route>
       </Routes>
     </main>
   );

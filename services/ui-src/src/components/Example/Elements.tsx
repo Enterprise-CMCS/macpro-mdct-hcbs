@@ -22,10 +22,23 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { AnyObject } from "yup/lib/types";
 import { WarningIcon } from "@cmsgov/design-system";
+import {
+  HeaderTemplate,
+  SubHeaderTemplate,
+  TextboxTemplate,
+  DateTemplate,
+  AccordionTemplate,
+  ResultRowButtonTemplate,
+  ParagraphTemplate,
+  RadioTemplate,
+  ButtonLinkTemplate,
+  PageType,
+  ChoiceTemplate,
+  NavigationFunction,
+} from "./types";
 
-export const headerElement = (element: AnyObject) => {
+export const headerElement = (element: HeaderTemplate) => {
   return (
     <Heading fontWeight="hairline" textAlign="left">
       {element.text}
@@ -33,25 +46,26 @@ export const headerElement = (element: AnyObject) => {
   );
 };
 
-export const subHeaderElement = (element: AnyObject) => {
+export const subHeaderElement = (element: SubHeaderTemplate) => {
   return <Heading fontSize="18px">{element.text}</Heading>;
 };
 
-export const paragraphElement = (element: AnyObject) => {
+export const paragraphElement = (element: ParagraphTemplate) => {
   return <Text fontSize="18px">{element.text}</Text>;
 };
 
-export const textboxElement = (element: AnyObject) => {
+export const textboxElement = (element: TextboxTemplate) => {
   return (
     <FormControl>
       <FormLabel fontWeight="bold">{element.label}</FormLabel>
+      {/* TODO does this look weird when helperText undefined? */}
       <FormHelperText>{element.helperText}</FormHelperText>
       <Input size="sm"></Input>
     </FormControl>
   );
 };
 
-export const dateElement = (element: AnyObject) => {
+export const dateElement = (element: DateTemplate) => {
   return (
     <FormControl>
       <FormLabel fontWeight="bold">{element.label}</FormLabel>
@@ -62,7 +76,7 @@ export const dateElement = (element: AnyObject) => {
   );
 };
 
-export const accordianElement = (element: AnyObject) => {
+export const accordionElement = (element: AccordionTemplate) => {
   return (
     <Accordion width="100%" defaultIndex={[0]} allowMultiple>
       <AccordionItem>
@@ -78,13 +92,12 @@ export const accordianElement = (element: AnyObject) => {
   );
 };
 
-export const radioElement = (element: AnyObject) => {
-  console.log(element);
+export const radioElement = (element: RadioTemplate) => {
   return (
     <RadioGroup>
       <FormLabel fontWeight="bold">{element.label}</FormLabel>
       <Stack direction="column">
-        {element.value.map((child: AnyObject) => (
+        {element.value.map((child: ChoiceTemplate) => (
           <Radio value={child.value}>{child.label}</Radio>
         ))}
       </Stack>
@@ -92,20 +105,21 @@ export const radioElement = (element: AnyObject) => {
   );
 };
 
-export const buttonElement = (element: AnyObject, func: Function) => {
-  return <Button onClick={() => func(element.to)}>{element.label}</Button>;
-};
-
-export const buttonLinkElement = (element: AnyObject, func: Function) => {
+export const buttonLinkElement = (
+  element: ButtonLinkTemplate,
+  clickHandler: NavigationFunction
+) => {
   return (
-    <Button variant="link" onClick={() => func(element.to)}>
+    <Button variant="link" onClick={() => clickHandler(element.to)}>
       {element.label}
     </Button>
   );
 };
 
-export const resultRowButtonElement = (element: AnyObject, func: Function) => {
-  console.log(element);
+export const resultRowButtonElement = (
+  element: ResultRowButtonTemplate,
+  modalOpenHandler: NavigationFunction
+) => {
   return (
     <Table>
       <Thead>
@@ -126,12 +140,15 @@ export const resultRowButtonElement = (element: AnyObject, func: Function) => {
             </Stack>
           </Td>
           <Td>
-            <Button variant="link" onClick={() => func(element.modal, "modal")}>
+            <Button
+              variant="link"
+              onClick={() => modalOpenHandler(element.modalId, PageType.Modal)}
+            >
               Edit measure
             </Button>
           </Td>
           <Td>
-            <Button onClick={() => func(element.to)}>Edit</Button>
+            <Button onClick={() => modalOpenHandler(element.to)}>Edit</Button>
           </Td>
         </Tr>
       </Tbody>
