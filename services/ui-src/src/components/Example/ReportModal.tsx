@@ -6,24 +6,24 @@ import {
   ModalContent,
   ModalFooter,
   ModalOverlay,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { Page } from "./Page";
-import { AnyObject } from "yup/lib/types";
+import { PageElement } from "./types";
 
 interface Props {
-  elements: AnyObject[];
+  elements: PageElement[];
   isOpen: boolean;
   onClose: any;
 }
 
 export const ReportModal = ({ elements, isOpen, onClose }: Props) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} width="500px">
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent width="500px" minWidth="500px">
         <ModalCloseButton />
         <ModalBody>
+          {/* @ts-ignore TODO */}
           <Page elements={elements}></Page>
         </ModalBody>
         <ModalFooter>

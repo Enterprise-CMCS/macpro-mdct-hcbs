@@ -1,53 +1,62 @@
 import { VStack } from "@chakra-ui/react";
-import { AnyObject } from "yup/lib/types";
+import React from "react";
 import {
   headerElement,
   subHeaderElement,
   paragraphElement,
   textboxElement,
   dateElement,
-  accordianElement,
+  accordionElement,
   radioElement,
   resultRowButtonElement,
-  buttonElement,
   buttonLinkElement,
 } from "./Elements";
+import {
+  assertExhaustive,
+  ElementType,
+  NavigationFunction,
+  PageElement,
+} from "./types";
 
 interface Props {
-  elements: AnyObject[];
-  setPage: Function;
+  elements: PageElement[];
+  setPage: NavigationFunction;
 }
 
 export const Page = ({ elements, setPage }: Props) => {
-  const renderElement = (element: any) => {
-    switch (element.type) {
-      case "header":
+  const renderElement = (element: PageElement) => {
+    const elementType = element.type;
+    switch (elementType) {
+      case ElementType.Header:
         return headerElement(element);
-      case "sub-header":
+      case ElementType.SubHeader:
         return subHeaderElement(element);
-      case "paragraph":
+      case ElementType.Paragraph:
         return paragraphElement(element);
-      case "textbox":
+      case ElementType.Textbox:
         return textboxElement(element);
-      case "date":
+      case ElementType.Date:
         return dateElement(element);
-      case "accordian":
-        return accordianElement(element);
-      case "radio":
+      case ElementType.Accordion:
+        return accordionElement(element);
+      case ElementType.Radio:
         return radioElement(element);
-      case "resultRowButton":
+      case ElementType.ResultRowButton:
         return resultRowButtonElement(element, setPage);
-      case "button":
-        return buttonElement(element, setPage);
-      case "button-link":
+      case ElementType.ButtonLink:
         return buttonLinkElement(element, setPage);
+      default:
+        assertExhaustive(elementType);
+        return <></>;
     }
-    return <></>;
   };
 
   return (
     <VStack alignItems="flex-start">
-      {elements.length > 0 && elements.map((element) => renderElement(element))}
+      {elements.length > 0 &&
+        elements.map((element, index) => (
+          <React.Fragment key={index}>{renderElement(element)}</React.Fragment>
+        ))}
     </VStack>
   );
 };
