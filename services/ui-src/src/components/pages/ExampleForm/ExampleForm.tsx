@@ -2,27 +2,32 @@ import { Button, Radio, RadioGroup, Stack } from "@chakra-ui/react";
 import { PageTemplate } from "components";
 import { useState } from "react";
 import { useStore } from "utils";
-import { buildForm } from "./generation/formBuilder";
+import { useNavigate } from "react-router-dom";
+import { createReport } from "utils/api/requestMethods/report";
+
+// TODO: Make this a real page name
 
 export const ExampleForm = () => {
   const [rulesOne, setRulesOne] = useState("0");
   const [rulesTwo, setRulesTwo] = useState("0");
-  // const [form, setForm] = useState();
-  const { email, state } = useStore().user ?? {};
+  const { state } = useStore().user ?? {};
+  const navigate = useNavigate();
 
-  const createForm = () => {
+  const createForm = async () => {
+    if (!state) throw new Error("Cannot create report without state on user");
     const stateOptions = [];
+
+    // Jank but proof of concept
     if (rulesOne == "1") {
-      // Jank but proof of concept
       stateOptions.push("rulesOne");
     }
     if (rulesTwo == "1") {
       stateOptions.push("rulesTwo");
     }
 
-    const formOptions = { stateOptions, state, createdBy: email };
-    buildForm(formOptions);
-    // setForm(form);
+    const formOptions = { stateOptions };
+    const report = await createReport("QM", state, formOptions);
+    navigate(`${state}/${report.id}`);
   };
 
   return (
@@ -43,7 +48,7 @@ export const ExampleForm = () => {
       </RadioGroup>
       <Button
         sx={sx.adminButton}
-        onClick={() => createForm()}
+        onClick={async () => await createForm()}
         data-testid="banner-admin-button"
       >
         Generate Form

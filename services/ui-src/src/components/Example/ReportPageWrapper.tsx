@@ -8,10 +8,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { testJson } from "./json/layer-test";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
+import { getReport } from "utils/api/requestMethods/report";
+import { useParams } from "react-router-dom";
 
 interface PageData {
   parent: string;
@@ -22,6 +24,23 @@ interface PageData {
 export const ReportPageWrapper = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalId, setModalId] = useState<string>();
+  const [report, setReport] = useState();
+  const { reportType, state, reportId } = useParams();
+  if (!reportType || !state || !reportId) {
+    return <div>bad params</div>; // TODO: error page
+  }
+  const fetchReport = async () => {
+    try {
+      const result = await getReport(reportType, state, reportId);
+      setReport(result);
+    } catch {
+      // console.log("oopsy");
+    }
+  };
+  report;
+  useEffect(() => {
+    fetchReport();
+  }, []);
 
   const pageMap = new Map();
   for (const parentPage of testJson.pages) {

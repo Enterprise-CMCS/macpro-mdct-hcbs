@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent } from "../types";
+import { APIGatewayProxyEvent } from "../types/types";
 
 export const proxyEvent: APIGatewayProxyEvent = {
   body: "{}",

@@ -1,6 +1,8 @@
-import { FormTemplate, MeasureTemplateName } from "./types";
+import { FormTemplate, MeasureTemplateName } from "../types/reports";
+import { ReportType } from "../utils/constants";
 
 export const qmTemplate: FormTemplate = {
+  reportType: ReportType.QM,
   measureLookup: {
     defaultMeasures: [
       {
@@ -60,7 +62,6 @@ export const qmTemplate: FormTemplate = {
           type: "input",
           inputType: "number",
           questionText: "How far can you throw a rock?",
-          answer: undefined,
         },
       ],
     },

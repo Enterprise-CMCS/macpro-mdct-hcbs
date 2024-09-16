@@ -5,7 +5,7 @@ import {
   isAuthorized,
   isAuthorizedToFetchState,
 } from "../authorization";
-import { UserRoles } from "../../types";
+import { UserRoles } from "../../types/types";
 import { proxyEvent } from "../../testing/proxyEvent";
 
 const mockVerifier = jest.fn();

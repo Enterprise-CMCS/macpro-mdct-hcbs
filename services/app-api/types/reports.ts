@@ -1,21 +1,9 @@
-export enum DeliverySystem {
-  FFS,
-  MLTSS,
-}
-
-export enum DataSource {
-  CaseRecordManagement,
-  Administrative,
-}
-
-export enum MeasureSteward {
-  CMS,
-}
-
 // Templates
 
+import { DataSource, DeliverySystem, ReportType } from "../utils/constants";
+
 export interface FormOptions {
-  type: string;
+  type: ReportType;
   stateOptions: string[];
   state: string | undefined;
   createdBy: string | undefined;
@@ -43,12 +31,21 @@ export enum MeasureTemplateName {
 }
 
 export interface FormTemplate {
+  reportType: ReportType;
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     optionGroups: Record<string, MeasureOptions[]>;
   };
   sections: SectionTemplate[];
   measureTemplates: Record<MeasureTemplateName, MeasureTemplate>;
+}
+
+export interface Report extends FormTemplate {
+  id?: string;
+  state: string;
+  created?: number;
+  lastEdited?: number;
+  lastEditedBy?: string;
 }
 
 export interface MeasureTemplate {
@@ -70,7 +67,7 @@ export interface Input extends FormComponent {
   type: "input";
   inputType: string;
   questionText: string;
-  answer: string | number | undefined;
+  answer?: string | number;
 }
 
 export interface Text extends FormComponent {

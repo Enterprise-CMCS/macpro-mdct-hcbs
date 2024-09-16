@@ -33,5 +33,5 @@
   "include": [
     "src",
     "tests"
-  ]
+, "../app-api/forms/constants.ts"  ]
 }

@@ -1,8 +1,8 @@
 import * as logger from "./debug-lib";
 import { internalServerError, buildResponse } from "./response-lib";
-import { error } from "../constants";
+import { error } from "../utils/constants";
 import { sanitizeObject } from "../utils/sanitize";
-import { APIGatewayProxyEvent, StatusCodes } from "../types";
+import { APIGatewayProxyEvent, StatusCodes } from "../types/types";
 import { isAuthorized } from "../utils/authorization";
 
 type LambdaFunction = (

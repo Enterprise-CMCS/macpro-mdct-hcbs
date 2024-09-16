@@ -1,6 +1,6 @@
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
-import { APIGatewayProxyEvent, UserRoles } from "../types";
+import { APIGatewayProxyEvent, UserRoles } from "../types/types";
 import { logger } from "../libs/debug-lib";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 
