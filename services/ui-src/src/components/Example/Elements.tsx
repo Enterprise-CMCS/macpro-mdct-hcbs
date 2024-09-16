@@ -34,7 +34,6 @@ import {
   RadioTemplate,
   ButtonLinkTemplate,
   PageType,
-  ChoiceTemplate,
   NavigationFunction,
 } from "./types";
 
@@ -58,8 +57,9 @@ export const textboxElement = (element: TextboxTemplate) => {
   return (
     <FormControl>
       <FormLabel fontWeight="bold">{element.label}</FormLabel>
-      {/* TODO does this look weird when helperText undefined? */}
-      <FormHelperText>{element.helperText}</FormHelperText>
+      {element.helperText !== undefined && (
+        <FormHelperText>{element.helperText}</FormHelperText>
+      )}
       <Input size="sm"></Input>
     </FormControl>
   );
@@ -97,8 +97,10 @@ export const radioElement = (element: RadioTemplate) => {
     <RadioGroup>
       <FormLabel fontWeight="bold">{element.label}</FormLabel>
       <Stack direction="column">
-        {element.value.map((child: ChoiceTemplate) => (
-          <Radio value={child.value}>{child.label}</Radio>
+        {element.value.map((child, index) => (
+          <Radio key={index} value={child.value}>
+            {child.label}
+          </Radio>
         ))}
       </Stack>
     </RadioGroup>
@@ -131,7 +133,7 @@ export const resultRowButtonElement = (
       <Tbody>
         <Tr>
           <Td>
-            <WarningIcon w={8} h={8} color="red.500" />
+            <WarningIcon />
           </Td>
           <Td>
             <Stack flex="1">

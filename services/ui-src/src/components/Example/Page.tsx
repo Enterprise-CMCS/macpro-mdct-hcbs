@@ -1,4 +1,5 @@
 import { VStack } from "@chakra-ui/react";
+import React from "react";
 import {
   headerElement,
   subHeaderElement,
@@ -52,7 +53,10 @@ export const Page = ({ elements, setPage }: Props) => {
 
   return (
     <VStack alignItems="flex-start">
-      {elements.length > 0 && elements.map((element) => renderElement(element))}
+      {elements.length > 0 &&
+        elements.map((element, index) => (
+          <React.Fragment key={index}>{renderElement(element)}</React.Fragment>
+        ))}
     </VStack>
   );
 };

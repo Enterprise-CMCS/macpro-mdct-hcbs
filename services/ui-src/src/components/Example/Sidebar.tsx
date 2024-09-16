@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Stack, VStack } from "@chakra-ui/react";
-import { hcbsReportTemplate } from "./json/layer-test";
+import { hcbsReportTemplate } from "./templates/hcbs";
 import { AnyObject } from "yup/lib/types";
 
 export const navItem = (page: AnyObject, func: Function) => {

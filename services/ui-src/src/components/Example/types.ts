@@ -107,6 +107,11 @@ export type ResultRowButtonTemplate = {
   modalId: PageId;
   to: PageId;
 };
+export const isResultRowButton = (
+  element: PageElement
+): element is ResultRowButtonTemplate => {
+  return element.type === ElementType.ResultRowButton;
+};
 
 export type RadioTemplate = {
   type: ElementType.Radio;
