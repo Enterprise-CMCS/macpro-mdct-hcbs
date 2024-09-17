@@ -21,8 +21,10 @@ export interface HcbsReportState {
   report?: ReportTemplate; // TODO: report, not template
   pageMap?: Map<string, PageTemplate>;
   rootPage?: ParentPageTemplate;
-  parentPage?: PageData;
+  parentPage?: PageData; // used for looking up curr & next page
+  currentPageId?: string;
   // ACTIONS
   setReport: (report?: ReportTemplate) => void;
-  setParentPage: (currentPage?: PageData) => void;
+  setParentPage: (parentPage?: PageData) => void;
+  setCurrentPageId: (currentPageId: string) => void;
 }

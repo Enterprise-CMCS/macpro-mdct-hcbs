@@ -23,12 +23,14 @@ const userStore = (set: Function) => ({
 });
 
 // REPORT STORE
-const reportStore = (set: Function) => ({
+const reportStore = (set: Function): HcbsReportState => ({
   // initial state
   report: undefined, // raw report
   pageMap: undefined, // all pages mapped by Id
   rootPage: undefined, // root node
   parentPage: undefined, // active parent (tracks prev/next page)
+  currentPageId: undefined,
+
   // actions
   setReport: (report: ReportTemplate | undefined) => {
     if (!report) {
@@ -46,10 +48,38 @@ const reportStore = (set: Function) => ({
       childPageIds: rootPage.childPageIds,
       index: 0,
     };
-    return set(() => ({ report, pageMap, rootPage, parentPage }), false, {
-      type: "setReport",
-    });
+    const currentPageId = parentPage.childPageIds[parentPage.index];
+    return set(
+      () => ({ report, pageMap, rootPage, parentPage, currentPageId }),
+      false,
+      {
+        type: "setReport",
+      }
+    );
   },
+  setCurrentPageId: (currentPageId: string) =>
+    set(
+      (state: HcbsReportState) => {
+        const findParentPage = [...state.pageMap!.values()].find((parentPage) =>
+          parentPage?.childPageIds?.includes(currentPageId)
+        );
+        let parentPage = undefined;
+        if (findParentPage) {
+          // @ts-ignore TODO
+          const pageIndex = findParentPage.childPageIds.findIndex(
+            (pageId) => pageId === currentPageId
+          );
+          parentPage = {
+            parent: findParentPage.id,
+            childPageIds: findParentPage.childPageIds!,
+            index: pageIndex,
+          };
+        }
+        return { currentPageId, parentPage };
+      },
+      false,
+      { type: "setCurrentPageId" }
+    ),
   setParentPage: (parentPage: PageData | undefined) =>
     set(() => ({ parentPage }), false, { type: "setParentPage" }),
 });

@@ -17,7 +17,15 @@ import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 
 export const ReportPageWrapper = () => {
-  const { report, pageMap, parentPage, setReport, setParentPage } = useStore();
+  const {
+    report,
+    pageMap,
+    parentPage,
+    currentPageId,
+    setReport,
+    setParentPage,
+    setCurrentPageId,
+  } = useStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalId, setModalId] = useState<string>();
   const { reportType, state, reportId } = useParams();
@@ -41,14 +49,14 @@ export const ReportPageWrapper = () => {
     fetchReport();
   }, []);
 
-  if (isLoading || !report || !parentPage || !pageMap) {
+  if (isLoading || !report || !pageMap || !currentPageId) {
     return <p>Loading</p>;
   }
-
-  const currentPageId = parentPage.childPageIds[parentPage.index];
+  // I'm pretty sure these can all be moved into the state, but have not used the brainpower
   const currentPage = pageMap.get(currentPageId)!;
 
   const SetPageIndex = (newPageIndex: number) => {
+    if (!parentPage) return; // Pages can exist outside of the direct parentage structure
     const childPageCount = parentPage.childPageIds?.length ?? 0;
     if (newPageIndex >= 0 && newPageIndex < childPageCount) {
       setParentPage({ ...parentPage, index: newPageIndex });
@@ -60,20 +68,7 @@ export const ReportPageWrapper = () => {
       setModalId(pageTo);
       onOpen();
     } else {
-      const findParentPage = [...pageMap.values()].find((parentPage) =>
-        parentPage?.childPageIds?.includes(pageTo)
-      );
-      if (findParentPage) {
-        // @ts-ignore TODO
-        const pageIndex = findParentPage.childPageIds.findIndex(
-          (pageId) => pageId === pageTo
-        );
-        setParentPage({
-          parent: findParentPage.id,
-          childPageIds: findParentPage.childPageIds!,
-          index: pageIndex,
-        });
-      }
+      setCurrentPageId(pageTo);
     }
   };
 
@@ -96,7 +91,7 @@ export const ReportPageWrapper = () => {
           display="flex"
           justifyContent="space-between"
         >
-          {
+          {parentPage && (
             <Button
               onClick={() => SetPageIndex(parentPage.index - 1)}
               mr="3"
@@ -104,8 +99,8 @@ export const ReportPageWrapper = () => {
             >
               Previous
             </Button>
-          }
-          {parentPage.index < parentPage.childPageIds.length - 1 && (
+          )}
+          {parentPage && parentPage.index < parentPage.childPageIds.length - 1 && (
             <Button
               onClick={() => SetPageIndex(parentPage.index + 1)}
               alignSelf="flex-end"

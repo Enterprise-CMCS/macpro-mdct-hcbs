@@ -51,13 +51,13 @@ export const MeasureTableElement = (
         <Td>
           <Button
             variant="link"
-            onClick={() => modalOpenHandler(element.modalId, PageType.Modal)}
+            onClick={() => modalOpenHandler(element.modalId, PageType.Modal)} // TODO: modal per link
           >
             Edit measure
           </Button>
         </Td>
         <Td>
-          <Button onClick={() => modalOpenHandler(element.to)}>Edit</Button>
+          <Button onClick={() => modalOpenHandler(measure.id)}>Edit</Button>
         </Td>
       </Tr>
     );
