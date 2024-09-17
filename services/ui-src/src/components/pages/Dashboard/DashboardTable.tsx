@@ -10,6 +10,24 @@ interface DashboardTableProps {
   body: { table: AnyObject };
 }
 
+export const getStatus = (
+  status: string,
+  archived?: boolean,
+  submissionCount?: number
+) => {
+  if (archived) {
+    return `Archived`;
+  }
+  if (
+    submissionCount &&
+    submissionCount >= 1 &&
+    !status.includes("Submitted")
+  ) {
+    return `In revision`;
+  }
+  return status;
+};
+
 const tableBody = (body: TableContentShape, isAdmin: boolean) => {
   var tableContent = body;
   if (!isAdmin) {
