@@ -11,6 +11,7 @@ import {
   resultRowButtonElement,
   buttonLinkElement,
 } from "./Elements";
+import { MeasureTableElement } from "./MeasureTable";
 import {
   assertExhaustive,
   ElementType,
@@ -45,6 +46,8 @@ export const Page = ({ elements, setPage }: Props) => {
         return resultRowButtonElement(element, setPage);
       case ElementType.ButtonLink:
         return buttonLinkElement(element, setPage);
+      case ElementType.MeasureTable:
+        return MeasureTableElement(element, setPage);
       default:
         assertExhaustive(elementType);
         return <></>;

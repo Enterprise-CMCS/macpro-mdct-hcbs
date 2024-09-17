@@ -42,10 +42,11 @@ export interface Report extends ReportTemplate {
   lastEditedBy?: string;
 }
 
-export interface MeasureTemplate extends FormPageTemplate {
+export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
   required?: boolean;
   stratified?: boolean;
+  optional?: boolean;
 }
 
 export interface SectionTemplate {
@@ -82,15 +83,18 @@ export interface Form {
 export type ReportTemplate = {
   type: ReportType;
   title: string;
-  pages: (ParentPageTemplate | FormPageTemplate)[];
+  pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     optionGroups: Record<string, MeasureOptions[]>;
   };
-  measureTemplates: Record<MeasureTemplateName, MeasureTemplate>;
+  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
 
-export type PageTemplate = ParentPageTemplate | FormPageTemplate;
+export type PageTemplate =
+  | ParentPageTemplate
+  | FormPageTemplate
+  | MeasurePageTemplate;
 
 export type ParentPageTemplate = {
   id: PageId;
@@ -125,6 +129,7 @@ export type PageId = string;
 export enum PageType {
   Standard = "standard",
   Modal = "modal",
+  Measure = "measure",
 }
 
 export enum ElementType {
@@ -137,6 +142,7 @@ export enum ElementType {
   Paragraph = "paragraph",
   Radio = "radio",
   ButtonLink = "buttonLink",
+  MeasureTable = "measureTable",
 }
 
 export type PageElement =
@@ -148,7 +154,8 @@ export type PageElement =
   | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
-  | ButtonLinkTemplate;
+  | ButtonLinkTemplate
+  | MeasureTableTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -210,6 +217,13 @@ export type ButtonLinkTemplate = {
 export type ChoiceTemplate = {
   label: string;
   value: string;
+};
+
+export type MeasureTableTemplate = {
+  type: ElementType.MeasureTable;
+  measureDisplay: "required" | "stratified" | "optional";
+  modalId: PageId;
+  to: PageId;
 };
 
 export type NavigationFunction = (page: PageId, type?: PageType) => void;

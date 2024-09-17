@@ -3,7 +3,7 @@ import {
   isResultRowButton,
   PageType,
   ResultRowButtonTemplate,
-} from "../types";
+} from "../types/reports";
 import { qmReportTemplate } from "./qm";
 
 describe("QM Template", () => {

@@ -15,7 +15,7 @@ export const qmReportTemplate: ReportTemplate = {
       childPageIds: [
         "general-info",
         "req-measure-result",
-        "strat-measure-report",
+        "strat-measure-result",
       ],
     },
     {
@@ -62,6 +62,7 @@ export const qmReportTemplate: ReportTemplate = {
       id: "req-measure-result",
       title: "Required Measure Results",
       type: PageType.Standard,
+      sidebar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -73,17 +74,17 @@ export const qmReportTemplate: ReportTemplate = {
           value: "I am an accordion",
         },
         {
-          type: ElementType.ResultRowButton,
-          value: "{measure}",
+          type: ElementType.MeasureTable,
+          measureDisplay: "required",
           modalId: "req-measure-result-modal",
           to: "req-measure-report",
         },
       ],
-      childPageIds: ["req-measure-report"],
     },
     {
       id: "req-measure-result-modal",
       title: "Select measure",
+      sidebar: true,
       type: PageType.Modal,
       elements: [
         {
@@ -105,9 +106,10 @@ export const qmReportTemplate: ReportTemplate = {
       ],
     },
     {
-      id: "strat-measure-report",
+      id: "strat-measure-result",
       title: "Stratified Measure Results",
       type: PageType.Standard,
+      sidebar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -119,13 +121,12 @@ export const qmReportTemplate: ReportTemplate = {
           value: "I am an accordion",
         },
         {
-          type: ElementType.ResultRowButton,
-          value: "{measure}",
+          type: ElementType.MeasureTable,
+          measureDisplay: "stratified",
           modalId: "req-measure-result-modal",
           to: "req-measure-report",
         },
       ],
-      childPageIds: ["req-measure-report"],
     },
   ],
   measureLookup: {
@@ -165,8 +166,8 @@ export const qmReportTemplate: ReportTemplate = {
   measureTemplates: {
     [MeasureTemplateName.StandardMeasure]: {
       id: "req-measure-report",
-      title: "Return to Required Measures Results Dashboard",
-      type: PageType.Standard,
+      title: "Example Measure",
+      type: PageType.Measure,
       sidebar: false,
       elements: [
         {

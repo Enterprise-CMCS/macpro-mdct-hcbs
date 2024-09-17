@@ -4,7 +4,10 @@ export type ReportTemplate = {
   pages: (ParentPageTemplate | FormPageTemplate)[];
 };
 
-export type PageTemplate = ParentPageTemplate | FormPageTemplate;
+export type PageTemplate =
+  | ParentPageTemplate
+  | FormPageTemplate
+  | MeasurePageTemplate;
 
 export type ParentPageTemplate = {
   id: PageId;
@@ -35,6 +38,20 @@ export type FormPageTemplate = {
 
   childPageIds?: PageId[];
 };
+
+export interface MeasurePageTemplate extends FormPageTemplate {
+  cmit?: number;
+  required?: boolean;
+  stratified?: boolean;
+  optional?: boolean;
+}
+
+export const isMeasureTemplate = (
+  element: PageTemplate
+): element is FormPageTemplate => {
+  return element.type === PageType.Measure;
+};
+
 export const isChildPage = (page: PageTemplate): page is FormPageTemplate => {
   return "elements" in page;
 };
@@ -48,6 +65,7 @@ export type PageId = string;
 export enum PageType {
   Standard = "standard",
   Modal = "modal",
+  Measure = "measure", // guarantees lookup info
 }
 
 export enum ElementType {
@@ -60,6 +78,7 @@ export enum ElementType {
   Paragraph = "paragraph",
   Radio = "radio",
   ButtonLink = "buttonLink",
+  MeasureTable = "measureTable",
 }
 
 export type PageElement =
@@ -71,7 +90,8 @@ export type PageElement =
   | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
-  | ButtonLinkTemplate;
+  | ButtonLinkTemplate
+  | MeasureTableTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -112,10 +132,18 @@ export type ResultRowButtonTemplate = {
   modalId: PageId;
   to: PageId;
 };
+
 export const isResultRowButton = (
   element: PageElement
 ): element is ResultRowButtonTemplate => {
   return element.type === ElementType.ResultRowButton;
+};
+
+export type MeasureTableTemplate = {
+  type: ElementType.MeasureTable;
+  measureDisplay: "required" | "stratified" | "optional";
+  modalId: PageId;
+  to: PageId;
 };
 
 export type RadioTemplate = {
@@ -136,6 +164,90 @@ export type ChoiceTemplate = {
 };
 
 export type NavigationFunction = (page: PageId, type?: PageType) => void;
+
+export enum DeliverySystem {
+  FFS,
+  MLTSS,
+}
+
+export enum DataSource {
+  CaseRecordManagement,
+  Administrative,
+}
+
+export enum MeasureSteward {
+  CMS,
+}
+
+// Templates
+
+export interface FormOptions {
+  type: string;
+  stateOptions: string[];
+  state: string | undefined;
+  createdBy: string | undefined;
+}
+
+export interface CMIT {
+  cmit: number;
+  name: string;
+  uid: string;
+  options: string;
+  deliverySystem: DeliverySystem[];
+  measureSteward: string;
+  dataSource: DataSource;
+}
+
+export interface MeasureOptions {
+  cmit: number;
+  required: boolean;
+  stratified: boolean;
+  measureTemplate: MeasureTemplateName;
+}
+
+export enum MeasureTemplateName {
+  StandardMeasure,
+}
+
+export interface FormTemplate {
+  measureLookup: {
+    defaultMeasures: MeasureOptions[];
+    optionGroups: Record<string, MeasureOptions[]>;
+  };
+  sections: SectionTemplate[];
+  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
+}
+
+export interface SectionTemplate {
+  title: string;
+  id: string;
+  pageElements: PageElements[];
+}
+
+export interface FormComponent {
+  id: string;
+  type: string;
+}
+
+export interface Input extends FormComponent {
+  type: "input";
+  inputType: string;
+  questionText: string;
+  answer: string | number | undefined;
+}
+
+export interface Text extends FormComponent {
+  type: "text";
+  text: string;
+}
+
+export type PageElements = Input | Text;
+
+export interface Form {
+  name: string;
+  createdBy: string;
+  sections: [];
+}
 
 /**
  * Instructs Typescript to complain if it detects that this function may be reachable.
