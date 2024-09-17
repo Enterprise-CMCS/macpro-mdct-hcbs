@@ -66,9 +66,7 @@ export const DashboardPage = () => {
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         <Box sx={sx.callToActionContainer}>
-          <Button type="submit" variant="outline">
-            {body.callToAction}
-          </Button>
+          <Button type="submit">{body.callToAction}</Button>
         </Box>
       </Box>
     </PageTemplate>
