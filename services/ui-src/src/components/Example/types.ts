@@ -9,7 +9,6 @@ export type PageTemplate = ParentPageTemplate | FormPageTemplate;
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-
   title?: undefined;
   type?: undefined;
   elements?: undefined;
@@ -20,6 +19,12 @@ export const isParentPage = (
 ): page is ParentPageTemplate => {
   return "childPageIds" in page;
 };
+
+export interface PageData {
+  parent: string;
+  childPageIds: string[];
+  index: number;
+}
 
 export type FormPageTemplate = {
   id: PageId;

@@ -1,7 +1,8 @@
 import handler from "../../libs/handler-lib";
 import { getReport } from "../../storage/reports";
+import { ReportType } from "../../types/reports";
 import { StatusCodes } from "../../types/types";
-import { ReportType, State } from "../../utils/constants";
+import { State } from "../../utils/constants";
 
 export const get = handler(async (event, _context) => {
   const { reportType, state, id } = event.pathParameters ?? {};

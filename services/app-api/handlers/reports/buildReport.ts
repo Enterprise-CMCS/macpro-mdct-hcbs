@@ -1,10 +1,9 @@
-import { qmTemplate } from "../../forms/qmTemplate";
+import { qmReportTemplate } from "../../forms/qm";
 import { putReport } from "../../storage/reports";
-import { Report } from "../../types/reports";
-import { ReportType } from "../../utils/constants";
+import { Report, ReportType } from "../../types/reports";
 
-export const repoortTemplates = {
-  [ReportType.QM]: qmTemplate,
+const reportTemplates = {
+  [ReportType.QM]: qmReportTemplate,
 };
 
 export const buildReport = async (
@@ -13,7 +12,7 @@ export const buildReport = async (
   measureOptions: string[],
   username: string
 ) => {
-  const report = structuredClone(repoortTemplates[reportType]) as Report;
+  const report = structuredClone(reportTemplates[reportType]) as Report;
   // TODO: Save version to db (filled or unfilled?)
 
   report.state = state;
@@ -30,7 +29,19 @@ export const buildReport = async (
       .flatMap((arr) => arr[1]);
     measures.push(...matchingRules);
 
-    // TODO: Sort measures into appropriate sections
+    for (const measure of measures) {
+      // TODO: make reusable. This will be used on the optional page when adding a measure.
+      const page = structuredClone(
+        report.measureTemplates[measure.measureTemplate]
+      );
+      page.cmit = measure.cmit;
+      page.id += measure.cmit; // TODO this will need some logic if a measure is substituted
+      page.stratified = measure.stratified;
+      page.required = measure.required;
+      // TODO: let the parent know what it relates to
+
+      report.pages.push(page);
+    }
   }
 
   // Save

@@ -7,56 +7,49 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { qmReportTemplate } from "./templates/hcbs";
 import { useEffect, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
-import { PageId, PageTemplate, PageType, ParentPageTemplate } from "./types";
+import { PageId, PageType } from "./types";
 import { getReport } from "utils/api/requestMethods/report";
 import { useParams } from "react-router-dom";
-
-interface PageData {
-  parent: string;
-  children: string[];
-  index: number;
-}
+import { useStore } from "utils";
 
 export const ReportPageWrapper = () => {
+  const { report, pageMap, parentPage, setReport, setParentPage } = useStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalId, setModalId] = useState<string>();
-  const [report, setReport] = useState();
   const { reportType, state, reportId } = useParams();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   if (!reportType || !state || !reportId) {
     return <div>bad params</div>; // TODO: error page
   }
   const fetchReport = async () => {
     try {
       const result = await getReport(reportType, state, reportId);
+
       setReport(result);
+      setIsLoading(false);
     } catch {
       // console.log("oopsy");
     }
   };
-  report;
+
   useEffect(() => {
     fetchReport();
   }, []);
 
-  const pageMap = new Map<string, PageTemplate>();
-  for (const parentPage of qmReportTemplate.pages) {
-    pageMap.set(parentPage.id, parentPage);
+  if (isLoading || !report || !parentPage || !pageMap) {
+    return <p>Loading</p>;
   }
 
-  const rootPage = pageMap.get("root") as ParentPageTemplate; // this cast is safe, per unit tests
-  const [parentPage, setParentPage] = useState<PageData>({
-    parent: rootPage.id,
-    children: rootPage.childPageIds,
-    index: 0,
-  });
+  const currentPageId = parentPage.childPageIds[parentPage.index];
+  const currentPage = pageMap.get(currentPageId)!;
 
   const SetPageIndex = (newPageIndex: number) => {
-    const childPageCount = parentPage.children?.length ?? 0;
+    const childPageCount = parentPage.childPageIds?.length ?? 0;
     if (newPageIndex >= 0 && newPageIndex < childPageCount) {
       setParentPage({ ...parentPage, index: newPageIndex });
     }
@@ -77,26 +70,21 @@ export const ReportPageWrapper = () => {
         );
         setParentPage({
           parent: findParentPage.id,
-          children: findParentPage.childPageIds!,
+          childPageIds: findParentPage.childPageIds!,
           index: pageIndex,
         });
       }
     }
   };
 
-  const currentPage = () => {
-    const currentPageId = parentPage.children[parentPage.index];
-    return pageMap.get(currentPageId)!;
-  };
-
   return (
     <HStack marginLeft="-30px" height="100%">
-      {currentPage().sidebar && <Sidebar setPage={SetPage}></Sidebar>}
+      {currentPage.sidebar && <Sidebar setPage={SetPage}></Sidebar>}
       <VStack height="100%" padding="2rem" width="640px">
         <Box flex="auto" alignItems="flex-start" width="100%">
-          {currentPage().elements && (
+          {currentPage.elements && (
             <Page
-              elements={currentPage().elements ?? []}
+              elements={currentPage.elements ?? []}
               setPage={SetPage}
             ></Page>
           )}
@@ -117,7 +105,7 @@ export const ReportPageWrapper = () => {
               Previous
             </Button>
           }
-          {parentPage.index < parentPage.children.length - 1 && (
+          {parentPage.index < parentPage.childPageIds.length - 1 && (
             <Button
               onClick={() => SetPageIndex(parentPage.index + 1)}
               alignSelf="flex-end"

@@ -1,6 +1,7 @@
 import handler from "../../libs/handler-lib";
+import { ReportType } from "../../types/reports";
 import { StatusCodes } from "../../types/types";
-import { ReportType, State } from "../../utils/constants";
+import { State } from "../../utils/constants";
 import { buildReport } from "./buildReport";
 
 export const createReport = handler(async (event, _context) => {

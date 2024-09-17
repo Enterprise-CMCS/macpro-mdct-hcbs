@@ -1,7 +1,7 @@
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { createClient as createDynamoClient } from "../libs/dynamo/dynamodb-lib";
-import { reportTables, ReportType, State } from "../utils/constants";
-import { Report } from "../types/reports";
+import { reportTables, State } from "../utils/constants";
+import { Report, ReportType } from "../types/reports";
 import { logger } from "../libs/debug-lib";
 
 const dynamoClient = createDynamoClient();
@@ -9,7 +9,7 @@ const dynamoClient = createDynamoClient();
 export const putReport = async (report: Report) => {
   await dynamoClient.send(
     new PutCommand({
-      TableName: reportTables[report.reportType],
+      TableName: reportTables[report.type],
       Item: report,
     })
   );

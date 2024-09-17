@@ -1,4 +1,10 @@
-import { ReportTemplate, ReportType, PageType, ElementType } from "../types";
+import {
+  ReportTemplate,
+  PageType,
+  ElementType,
+  ReportType,
+  MeasureTemplateName,
+} from "../types/reports";
 
 export const qmReportTemplate: ReportTemplate = {
   type: ReportType.QM,
@@ -16,6 +22,7 @@ export const qmReportTemplate: ReportTemplate = {
       id: "general-info",
       title: "General Information",
       type: PageType.Standard,
+      sidebar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -98,6 +105,65 @@ export const qmReportTemplate: ReportTemplate = {
       ],
     },
     {
+      id: "strat-measure-report",
+      title: "Stratified Measure Results",
+      type: PageType.Standard,
+      elements: [
+        {
+          type: ElementType.Header,
+          text: "Stratified Measure Results",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value: "I am an accordion",
+        },
+        {
+          type: ElementType.ResultRowButton,
+          value: "{measure}",
+          modalId: "req-measure-result-modal",
+          to: "req-measure-report",
+        },
+      ],
+      childPageIds: ["req-measure-report"],
+    },
+  ],
+  measureLookup: {
+    defaultMeasures: [
+      {
+        cmit: 123,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName.StandardMeasure,
+      },
+      {
+        cmit: 234,
+        required: false,
+        stratified: true,
+        measureTemplate: MeasureTemplateName.StandardMeasure,
+      },
+    ],
+    optionGroups: {
+      rulesOne: [
+        {
+          cmit: 888,
+          required: true,
+          stratified: false,
+          measureTemplate: MeasureTemplateName.StandardMeasure,
+        },
+      ],
+      rulesTwo: [
+        {
+          cmit: 999,
+          required: true,
+          stratified: false,
+          measureTemplate: MeasureTemplateName.StandardMeasure,
+        },
+      ],
+    },
+  },
+  measureTemplates: {
+    [MeasureTemplateName.StandardMeasure]: {
       id: "req-measure-report",
       title: "Return to Required Measures Results Dashboard",
       type: PageType.Standard,
@@ -138,28 +204,5 @@ export const qmReportTemplate: ReportTemplate = {
         },
       ],
     },
-    {
-      id: "strat-measure-report",
-      title: "Stratified Measure Results",
-      type: PageType.Standard,
-      elements: [
-        {
-          type: ElementType.Header,
-          text: "Stratified Measure Results",
-        },
-        {
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value: "I am an accordion",
-        },
-        {
-          type: ElementType.ResultRowButton,
-          value: "{measure}",
-          modalId: "req-measure-result-modal",
-          to: "req-measure-report",
-        },
-      ],
-      childPageIds: ["req-measure-report"],
-    },
-  ],
+  },
 };

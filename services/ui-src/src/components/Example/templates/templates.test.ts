@@ -4,9 +4,9 @@ import {
   PageType,
   ResultRowButtonTemplate,
 } from "../types";
-import { qmReportTemplate } from "./hcbs";
+import { qmReportTemplate } from "./qm";
 
-describe("HCBS Template", () => {
+describe("QM Template", () => {
   it("Should exist", () => {
     expect(qmReportTemplate).toBeDefined();
   });

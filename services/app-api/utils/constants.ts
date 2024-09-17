@@ -1,6 +1,4 @@
-export enum ReportType {
-  QM = "QM",
-}
+import { ReportType } from "../types/reports";
 
 export const error = {
   UNAUTHORIZED: "User is not authorized to access this resource.",

@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Stack, VStack } from "@chakra-ui/react";
-import { qmReportTemplate } from "./templates/hcbs";
+import { qmReportTemplate } from "./templates/qm";
 import { AnyObject } from "yup/lib/types";
 
 export const navItem = (page: AnyObject, func: Function) => {
@@ -20,15 +20,16 @@ export const Sidebar = ({ setPage }: Props) => {
     pageMap.set(parentPage.id, parentPage);
   }
 
-  const buildNavList = (children: string[]) => {
+  const buildNavList = (childPageIds: string[]) => {
     const builtList: any[] = [];
-    for (const child of children) {
+
+    for (const child of childPageIds) {
       const page = pageMap.get(child);
-      if (page.children) {
+      if (page.childPageIds) {
         builtList.push(
           <Stack width="100%" spacing="0">
             {navItem(page, setPage)}
-            <Box>{buildNavList(page.children)}</Box>
+            <Box>{buildNavList(page.childPageIds)}</Box>
           </Stack>
         );
       } else {
@@ -37,8 +38,7 @@ export const Sidebar = ({ setPage }: Props) => {
     }
     return builtList;
   };
-
-  const navList = buildNavList(pageMap.get("root").children);
+  const navList = buildNavList(pageMap.get("root").childPageIds);
   return (
     <VStack height="100%" width="320px" background="gray.100" spacing="0">
       <Heading fontSize="21" fontWeight="700" padding="32px">

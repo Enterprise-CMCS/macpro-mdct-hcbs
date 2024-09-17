@@ -1,6 +1,10 @@
 // Templates
 
-import { DataSource, DeliverySystem, ReportType } from "../utils/constants";
+import { DataSource, DeliverySystem } from "../utils/constants";
+
+export enum ReportType {
+  QM = "QM",
+}
 
 export interface FormOptions {
   type: ReportType;
@@ -30,17 +34,7 @@ export enum MeasureTemplateName {
   StandardMeasure,
 }
 
-export interface FormTemplate {
-  reportType: ReportType;
-  measureLookup: {
-    defaultMeasures: MeasureOptions[];
-    optionGroups: Record<string, MeasureOptions[]>;
-  };
-  sections: SectionTemplate[];
-  measureTemplates: Record<MeasureTemplateName, MeasureTemplate>;
-}
-
-export interface Report extends FormTemplate {
+export interface Report extends ReportTemplate {
   id?: string;
   state: string;
   created?: number;
@@ -48,8 +42,10 @@ export interface Report extends FormTemplate {
   lastEditedBy?: string;
 }
 
-export interface MeasureTemplate {
-  pageElements: PageElements[];
+export interface MeasureTemplate extends FormPageTemplate {
+  cmit?: number;
+  required?: boolean;
+  stratified?: boolean;
 }
 
 export interface SectionTemplate {
@@ -82,3 +78,144 @@ export interface Form {
   createdBy: string;
   sections: [];
 }
+
+export type ReportTemplate = {
+  type: ReportType;
+  title: string;
+  pages: (ParentPageTemplate | FormPageTemplate)[];
+  measureLookup: {
+    defaultMeasures: MeasureOptions[];
+    optionGroups: Record<string, MeasureOptions[]>;
+  };
+  measureTemplates: Record<MeasureTemplateName, MeasureTemplate>;
+};
+
+export type PageTemplate = ParentPageTemplate | FormPageTemplate;
+
+export type ParentPageTemplate = {
+  id: PageId;
+  childPageIds: PageId[];
+
+  title?: undefined;
+  type?: undefined;
+  elements?: undefined;
+  sidebar?: undefined;
+};
+export const isParentPage = (
+  page: PageTemplate
+): page is ParentPageTemplate => {
+  return "childPageIds" in page;
+};
+
+export type FormPageTemplate = {
+  id: PageId;
+  title: string;
+  type: PageType;
+  elements: PageElement[];
+  sidebar?: boolean;
+
+  childPageIds?: PageId[];
+};
+export const isChildPage = (page: PageTemplate): page is FormPageTemplate => {
+  return "elements" in page;
+};
+
+export type PageId = string;
+
+export enum PageType {
+  Standard = "standard",
+  Modal = "modal",
+}
+
+export enum ElementType {
+  Header = "header",
+  SubHeader = "subHeader",
+  Textbox = "textbox",
+  Date = "date",
+  Accordion = "accordion",
+  ResultRowButton = "resultRowButton",
+  Paragraph = "paragraph",
+  Radio = "radio",
+  ButtonLink = "buttonLink",
+}
+
+export type PageElement =
+  | HeaderTemplate
+  | SubHeaderTemplate
+  | TextboxTemplate
+  | DateTemplate
+  | AccordionTemplate
+  | ResultRowButtonTemplate
+  | ParagraphTemplate
+  | RadioTemplate
+  | ButtonLinkTemplate;
+
+export type HeaderTemplate = {
+  type: ElementType.Header;
+  text: string;
+};
+
+export type SubHeaderTemplate = {
+  type: ElementType.SubHeader;
+  text: string;
+};
+
+export type ParagraphTemplate = {
+  type: ElementType.Paragraph;
+  text: string;
+};
+
+export type TextboxTemplate = {
+  type: ElementType.Textbox;
+  label: string;
+  helperText?: string;
+};
+
+export type DateTemplate = {
+  type: ElementType.Date;
+  label: string;
+  helperText: string;
+};
+
+export type AccordionTemplate = {
+  type: ElementType.Accordion;
+  label: string;
+  value: string;
+};
+
+export type ResultRowButtonTemplate = {
+  type: ElementType.ResultRowButton;
+  value: string;
+  modalId: PageId;
+  to: PageId;
+};
+export const isResultRowButton = (
+  element: PageElement
+): element is ResultRowButtonTemplate => {
+  return element.type === ElementType.ResultRowButton;
+};
+
+export type RadioTemplate = {
+  type: ElementType.Radio;
+  label: string;
+  value: ChoiceTemplate[];
+};
+
+export type ButtonLinkTemplate = {
+  type: ElementType.ButtonLink;
+  label: string;
+  to: PageId;
+};
+
+export type ChoiceTemplate = {
+  label: string;
+  value: string;
+};
+
+export type NavigationFunction = (page: PageId, type?: PageType) => void;
+
+/**
+ * Instructs Typescript to complain if it detects that this function may be reachable.
+ * Useful for the default branch of a switch statement that verifiably covers every case.
+ */
+export const assertExhaustive = (_: never): void => {};
