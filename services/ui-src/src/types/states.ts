@@ -3,8 +3,8 @@ import {
   ParentPageTemplate,
   PageData,
   PageTemplate,
-  ModalArguments,
 } from "components/Example/types";
+import React from "react";
 import { HcbsUser } from "types";
 
 // initial user state
@@ -25,12 +25,12 @@ export interface HcbsReportState {
   parentPage?: PageData; // used for looking up curr & next page
   currentPageId?: string;
   modalOpen: boolean;
-  modalArgs?: ModalArguments;
+  modalComponent?: React.ReactFragment;
 
   // ACTIONS
   setReport: (report?: ReportTemplate) => void;
   setParentPage: (parentPage?: PageData) => void;
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
-  setModalArgs: (modalArgs: ModalArguments) => void;
+  setModalComponent: (modalComponent: React.ReactFragment) => void;
 }

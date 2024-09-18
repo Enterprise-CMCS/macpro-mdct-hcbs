@@ -17,14 +17,13 @@ import {
   MeasurePageTemplate,
   MeasureTableTemplate,
   NavigationFunction,
-  PageType,
 } from "./types";
 
 export const MeasureTableElement = (
   element: MeasureTableTemplate,
   modalOpenHandler: NavigationFunction
 ) => {
-  const { report, setModalArgs, setModalOpen } = useStore();
+  const { report, setModalComponent, setModalOpen } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -37,7 +36,12 @@ export const MeasureTableElement = (
   );
 
   const buildModal = (cmit: number | undefined) => {
-    setModalArgs({ modalFunction: MeasureReplacementModal, params: cmit });
+    const modal = MeasureReplacementModal(
+      cmit,
+      () => setModalOpen(false), // Close Action
+      () => setModalOpen(false) // Submit
+    ); // This will need the whole measure eventually
+    setModalComponent(modal);
   };
 
   // Build Rows

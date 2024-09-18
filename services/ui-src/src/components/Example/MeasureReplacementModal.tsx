@@ -6,12 +6,15 @@ import {
   Radio,
   RadioGroup,
 } from "@chakra-ui/react";
-import { useStore } from "utils";
+import React from "react";
 
-export const MeasureReplacementModal = (cmit: number | undefined) => {
-  const { setModalOpen } = useStore();
+export const MeasureReplacementModal = (
+  cmit: number | undefined,
+  onClose: Function,
+  onSubmit: Function
+): React.ReactFragment => {
   return (
-    <>
+    <React.Fragment>
       <ModalBody>
         Select alternate measure type for CMIT {cmit}
         {/* @ts-ignore TODO */}
@@ -23,13 +26,13 @@ export const MeasureReplacementModal = (cmit: number | undefined) => {
         </RadioGroup>
       </ModalBody>
       <ModalFooter>
-        <Button colorScheme="blue" mr={3} onClick={() => setModalOpen(false)}>
+        <Button colorScheme="blue" mr={3} onClick={() => onSubmit(false)}>
           Select Measure
         </Button>
-        <Button variant="ghost" onClick={() => setModalOpen(false)}>
+        <Button variant="ghost" onClick={() => onClose(false)}>
           Cancel
         </Button>
       </ModalFooter>
-    </>
+    </React.Fragment>
   );
 };

@@ -6,8 +6,8 @@ import {
   ParentPageTemplate,
   PageData,
   PageTemplate,
-  ModalArguments,
 } from "components/Example/types";
+import React from "react";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -32,7 +32,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   parentPage: undefined, // active parent (tracks prev/next page)
   currentPageId: undefined,
   modalOpen: false,
-  modalArgs: undefined,
+  modalComponent: undefined,
 
   // actions
   setReport: (report: ReportTemplate | undefined) => {
@@ -87,9 +87,9 @@ const reportStore = (set: Function): HcbsReportState => ({
     set(() => ({ parentPage }), false, { type: "setParentPage" }),
   setModalOpen: (modalOpen: boolean) =>
     set(() => ({ modalOpen }), false, { type: "setModalOpen" }),
-  setModalArgs: (modalArgs: ModalArguments) =>
-    set(() => ({ modalArgs, modalOpen: true }), false, {
-      type: "setModalArgs",
+  setModalComponent: (modalComponent: React.ReactFragment) =>
+    set(() => ({ modalComponent, modalOpen: true }), false, {
+      type: "setModalComponent",
     }),
 });
 

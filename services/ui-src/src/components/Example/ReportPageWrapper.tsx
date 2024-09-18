@@ -1,17 +1,9 @@
-import {
-  Box,
-  Button,
-  Divider,
-  HStack,
-  Stack,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, Stack, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
-import { PageId, PageType } from "./types";
+import { PageId } from "./types";
 import { getReport } from "utils/api/requestMethods/report";
 import { useParams } from "react-router-dom";
 import { useStore } from "utils";
@@ -26,8 +18,6 @@ export const ReportPageWrapper = () => {
     setParentPage,
     setCurrentPageId,
   } = useStore();
-  const { isOpen, onOpen, onClose } = useDisclosure(); // TODO: Control via state?
-  const [modalId, setModalId] = useState<string>();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -62,13 +52,8 @@ export const ReportPageWrapper = () => {
     }
   };
 
-  const SetPage = (pageTo: PageId, type?: PageType) => {
-    if (type === PageType.Modal) {
-      setModalId(pageTo);
-      onOpen();
-    } else {
-      setCurrentPageId(pageTo);
-    }
+  const SetPage = (pageTo: PageId) => {
+    setCurrentPageId(pageTo);
   };
 
   return (
@@ -99,15 +84,14 @@ export const ReportPageWrapper = () => {
               Previous
             </Button>
           )}
-          {parentPage &&
-            parentPage.index < parentPage.childPageIds.length - 1 && (
-              <Button
-                onClick={() => SetPageIndex(parentPage.index + 1)}
-                alignSelf="flex-end"
-              >
-                Continue
-              </Button>
-            )}
+          {parentPage && parentPage.index < parentPage.childPageIds.length - 1 && (
+            <Button
+              onClick={() => SetPageIndex(parentPage.index + 1)}
+              alignSelf="flex-end"
+            >
+              Continue
+            </Button>
+          )}
         </Stack>
       </VStack>
       <ReportModal />
