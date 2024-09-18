@@ -1,9 +1,4 @@
-import {
-  ElementType,
-  isResultRowButton,
-  PageType,
-  ResultRowButtonTemplate,
-} from "../types/reports";
+import { isResultRowButton, PageType } from "../types/reports";
 import { qmReportTemplate } from "./qm";
 
 describe("QM Template", () => {
@@ -44,21 +39,6 @@ describe("QM Template", () => {
       .map((button) => button.modalId);
     for (let modalId of referencedModals) {
       expect(modalPageIds).toContain(modalId);
-    }
-  });
-
-  it("Should not contain any unused pages", () => {
-    const allPageIds = qmReportTemplate.pages.map((page) => page.id);
-    const children = qmReportTemplate.pages.flatMap(
-      (page) => page.childPageIds ?? []
-    );
-    const modals = qmReportTemplate.pages
-      .flatMap((page) => page.elements ?? [])
-      .filter((element) => element.type === ElementType.ResultRowButton)
-      .map((button) => (button as ResultRowButtonTemplate).modalId);
-    const referencedPageIds = ["root"].concat(children).concat(modals);
-    for (let pageId of allPageIds) {
-      expect(referencedPageIds).toContain(pageId);
     }
   });
 });

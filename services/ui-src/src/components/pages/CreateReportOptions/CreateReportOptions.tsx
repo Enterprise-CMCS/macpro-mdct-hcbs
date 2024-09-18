@@ -5,8 +5,6 @@ import { useStore } from "utils";
 import { useNavigate } from "react-router-dom";
 import { createReport } from "utils/api/requestMethods/report";
 
-// TODO: Make this a real page name
-
 export const CreateReportOptions = () => {
   const [rulesOne, setRulesOne] = useState("0");
   const [rulesTwo, setRulesTwo] = useState("0");
