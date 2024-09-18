@@ -1,8 +1,9 @@
 import {
+  ReportTemplate,
+  ParentPageTemplate,
   PageData,
   PageTemplate,
-  ParentPageTemplate,
-  ReportTemplate,
+  ModalArguments,
 } from "components/Example/types";
 import { HcbsUser } from "types";
 
@@ -23,8 +24,13 @@ export interface HcbsReportState {
   rootPage?: ParentPageTemplate;
   parentPage?: PageData; // used for looking up curr & next page
   currentPageId?: string;
+  modalOpen: boolean;
+  modalArgs?: ModalArguments;
+
   // ACTIONS
   setReport: (report?: ReportTemplate) => void;
   setParentPage: (parentPage?: PageData) => void;
   setCurrentPageId: (currentPageId: string) => void;
+  setModalOpen: (modalOpen: boolean) => void;
+  setModalArgs: (modalArgs: ModalArguments) => void;
 }

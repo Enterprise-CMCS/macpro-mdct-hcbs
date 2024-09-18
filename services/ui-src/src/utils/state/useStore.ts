@@ -2,10 +2,11 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { HcbsUserState, HcbsUser, HcbsReportState } from "types";
 import {
+  ReportTemplate,
+  ParentPageTemplate,
   PageData,
   PageTemplate,
-  ParentPageTemplate,
-  ReportTemplate,
+  ModalArguments,
 } from "components/Example/types";
 
 // USER STORE
@@ -30,6 +31,8 @@ const reportStore = (set: Function): HcbsReportState => ({
   rootPage: undefined, // root node
   parentPage: undefined, // active parent (tracks prev/next page)
   currentPageId: undefined,
+  modalOpen: false,
+  modalArgs: undefined,
 
   // actions
   setReport: (report: ReportTemplate | undefined) => {
@@ -82,6 +85,12 @@ const reportStore = (set: Function): HcbsReportState => ({
     ),
   setParentPage: (parentPage: PageData | undefined) =>
     set(() => ({ parentPage }), false, { type: "setParentPage" }),
+  setModalOpen: (modalOpen: boolean) =>
+    set(() => ({ modalOpen }), false, { type: "setModalOpen" }),
+  setModalArgs: (modalArgs: ModalArguments) =>
+    set(() => ({ modalArgs, modalOpen: true }), false, {
+      type: "setModalArgs",
+    }),
 });
 
 export const useStore = create(

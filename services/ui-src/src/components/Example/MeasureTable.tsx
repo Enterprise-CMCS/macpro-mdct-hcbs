@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { WarningIcon } from "@cmsgov/design-system";
 import { useStore } from "utils";
+import { MeasureReplacementModal } from "./MeasureReplacementModal";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
@@ -23,7 +24,7 @@ export const MeasureTableElement = (
   element: MeasureTableTemplate,
   modalOpenHandler: NavigationFunction
 ) => {
-  const { report } = useStore();
+  const { report, setModalArgs, setModalOpen } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -34,6 +35,10 @@ export const MeasureTableElement = (
       (element.measureDisplay == "required" && page.required) ||
       (element.measureDisplay == "stratified" && page.stratified)
   );
+
+  const buildModal = (cmit: number | undefined) => {
+    setModalArgs({ modalFunction: MeasureReplacementModal, params: cmit });
+  };
 
   // Build Rows
   const rows = selectedMeasures.map((measure) => {
@@ -51,7 +56,7 @@ export const MeasureTableElement = (
         <Td>
           <Button
             variant="link"
-            onClick={() => modalOpenHandler(element.modalId, PageType.Modal)} // TODO: modal per link
+            onClick={() => buildModal(measure.cmit)} // TODO: modal per link
           >
             Edit measure
           </Button>

@@ -1,39 +1,36 @@
 import {
-  Button,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { Page } from "./Page";
+import React from "react";
+import { useStore } from "utils";
 import { PageElement } from "./types";
 
+/* TODO: 
+Original implementation. We can probably set it up to take an id as an alternate invocation
 interface Props {
   elements: PageElement[];
   isOpen: boolean;
   onClose: any;
 }
 
-export const ReportModal = ({ elements, isOpen, onClose }: Props) => {
+If modalElements, render as below, if id, use <Page>
+*/
+
+export const ReportModal = () => {
+  const { modalOpen, modalArgs, setModalOpen } = useStore();
+  const modalElements = modalArgs?.modalFunction(modalArgs.params);
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={modalOpen && !!modalArgs}
+      onClose={() => setModalOpen(false)}
+    >
       <ModalOverlay />
       <ModalContent width="500px" minWidth="500px">
         <ModalCloseButton />
-        <ModalBody>
-          {/* @ts-ignore TODO */}
-          <Page elements={elements}></Page>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3}>
-            Select Measure
-          </Button>
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-        </ModalFooter>
+        {modalElements}
       </ModalContent>
     </Modal>
   );

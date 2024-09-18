@@ -26,7 +26,7 @@ export const ReportPageWrapper = () => {
     setParentPage,
     setCurrentPageId,
   } = useStore();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure(); // TODO: Control via state?
   const [modalId, setModalId] = useState<string>();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -37,7 +37,6 @@ export const ReportPageWrapper = () => {
   const fetchReport = async () => {
     try {
       const result = await getReport(reportType, state, reportId);
-
       setReport(result);
       setIsLoading(false);
     } catch {
@@ -100,21 +99,18 @@ export const ReportPageWrapper = () => {
               Previous
             </Button>
           )}
-          {parentPage && parentPage.index < parentPage.childPageIds.length - 1 && (
-            <Button
-              onClick={() => SetPageIndex(parentPage.index + 1)}
-              alignSelf="flex-end"
-            >
-              Continue
-            </Button>
-          )}
+          {parentPage &&
+            parentPage.index < parentPage.childPageIds.length - 1 && (
+              <Button
+                onClick={() => SetPageIndex(parentPage.index + 1)}
+                alignSelf="flex-end"
+              >
+                Continue
+              </Button>
+            )}
         </Stack>
       </VStack>
-      <ReportModal
-        elements={pageMap?.get(modalId ?? "")?.elements ?? []}
-        isOpen={isOpen}
-        onClose={onClose}
-      ></ReportModal>
+      <ReportModal />
     </HStack>
   );
 };

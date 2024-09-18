@@ -1,3 +1,5 @@
+import React from "react";
+
 export type ReportTemplate = {
   type: ReportType;
   title: string;
@@ -247,6 +249,12 @@ export interface Form {
   name: string;
   createdBy: string;
   sections: [];
+}
+
+export interface ModalArguments {
+  // better name idk
+  modalFunction: any;
+  params: any; // passed to Modal Element on invocation
 }
 
 /**
