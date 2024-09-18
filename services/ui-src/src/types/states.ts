@@ -1,9 +1,9 @@
 import {
-  ReportTemplate,
   ParentPageTemplate,
   PageData,
   PageTemplate,
-} from "components/Example/types";
+  Report,
+} from "types/report";
 import React from "react";
 import { HcbsUser } from "types";
 
@@ -19,7 +19,7 @@ export interface HcbsUserState {
 
 export interface HcbsReportState {
   // INITIAL STATE
-  report?: ReportTemplate; // TODO: report, not template
+  report?: Report; // TODO: report, not template
   pageMap?: Map<string, PageTemplate>;
   rootPage?: ParentPageTemplate;
   parentPage?: PageData; // used for looking up curr & next page
@@ -28,7 +28,7 @@ export interface HcbsReportState {
   modalComponent?: React.ReactFragment;
 
   // ACTIONS
-  setReport: (report?: ReportTemplate) => void;
+  setReport: (report?: Report) => void;
   setParentPage: (parentPage?: PageData) => void;
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;

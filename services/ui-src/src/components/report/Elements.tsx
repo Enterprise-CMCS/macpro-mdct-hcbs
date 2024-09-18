@@ -35,7 +35,7 @@ import {
   ButtonLinkTemplate,
   PageType,
   NavigationFunction,
-} from "./types";
+} from "../../types/report";
 
 export const headerElement = (element: HeaderTemplate) => {
   return (

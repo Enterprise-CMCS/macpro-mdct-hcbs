@@ -17,7 +17,7 @@ import {
   ElementType,
   NavigationFunction,
   PageElement,
-} from "./types";
+} from "../../types/report";
 
 interface Props {
   elements: PageElement[];

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
-import { PageId } from "./types";
+import { PageId } from "../../types/report";
 import { getReport } from "utils/api/requestMethods/report";
 import { useParams } from "react-router-dom";
 import { useStore } from "utils";

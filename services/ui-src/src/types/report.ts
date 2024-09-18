@@ -1,8 +1,21 @@
 export type ReportTemplate = {
   type: ReportType;
   title: string;
-  pages: (ParentPageTemplate | FormPageTemplate)[];
+  pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
+  measureLookup: {
+    defaultMeasures: MeasureOptions[];
+    optionGroups: Record<string, MeasureOptions[]>;
+  };
+  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
+
+export interface Report extends ReportTemplate {
+  id?: string;
+  state: string;
+  created?: number;
+  lastEdited?: number;
+  lastEditedBy?: string;
+}
 
 export type PageTemplate =
   | ParentPageTemplate
@@ -179,15 +192,6 @@ export enum MeasureSteward {
   CMS,
 }
 
-// Templates
-
-export interface FormOptions {
-  type: string;
-  stateOptions: string[];
-  state: string | undefined;
-  createdBy: string | undefined;
-}
-
 export interface CMIT {
   cmit: number;
   name: string;
@@ -207,21 +211,6 @@ export interface MeasureOptions {
 
 export enum MeasureTemplateName {
   StandardMeasure,
-}
-
-export interface FormTemplate {
-  measureLookup: {
-    defaultMeasures: MeasureOptions[];
-    optionGroups: Record<string, MeasureOptions[]>;
-  };
-  sections: SectionTemplate[];
-  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
-}
-
-export interface SectionTemplate {
-  title: string;
-  id: string;
-  pageElements: PageElements[];
 }
 
 export interface FormComponent {

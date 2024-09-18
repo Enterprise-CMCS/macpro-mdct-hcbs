@@ -2,11 +2,11 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { HcbsUserState, HcbsUser, HcbsReportState } from "types";
 import {
-  ReportTemplate,
   ParentPageTemplate,
   PageData,
   PageTemplate,
-} from "components/Example/types";
+  Report,
+} from "types/report";
 import React from "react";
 
 // USER STORE
@@ -35,7 +35,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   modalComponent: undefined,
 
   // actions
-  setReport: (report: ReportTemplate | undefined) => {
+  setReport: (report: Report | undefined) => {
     if (!report) {
       return set(() => ({ report: undefined }), false, {
         type: "setReport",

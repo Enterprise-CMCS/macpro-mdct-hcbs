@@ -17,7 +17,7 @@ import {
   MeasurePageTemplate,
   MeasureTableTemplate,
   NavigationFunction,
-} from "./types";
+} from "../../types/report";
 
 export const MeasureTableElement = (
   element: MeasureTableTemplate,

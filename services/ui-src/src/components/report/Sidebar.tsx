@@ -1,7 +1,7 @@
 import { Box, Button, Heading, Stack, VStack } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { AnyObject } from "yup/lib/types";
-import { ParentPageTemplate } from "./types";
+import { ParentPageTemplate } from "../../types/report";
 
 export const navItem = (page: AnyObject, func: Function) => {
   return (
