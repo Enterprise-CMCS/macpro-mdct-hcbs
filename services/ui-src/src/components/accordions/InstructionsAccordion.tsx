@@ -1,9 +1,6 @@
-// components
 import { Accordion, Box, ListItem, UnorderedList } from "@chakra-ui/react";
 import { AccordionItem } from "components";
-// types
 import { AnyObject } from "types";
-// utils
 import { parseCustomHtml, sanitizeAndParseHtml } from "utils";
 
 export const InstructionsAccordion = ({ verbiage, ...props }: Props) => {
