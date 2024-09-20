@@ -87,7 +87,5 @@ resources:
       Value: !Ref QmReportTable
     QmReportTableArn:
       Value: !GetAtt QmReportTable.Arn
-    QmReportTableStreamArn:
-      Value: !GetAtt SarReportTable.StreamArn
     Region:
       Value: !Sub ${AWS::Region}

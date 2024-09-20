@@ -2235,7 +2235,7 @@ serialize-javascript@^6.0.2:
   dependencies:
     randombytes "^2.1.0"
 
-serverless-dynamodb@^0.2.53:
+serverless-dynamodb@^0.2.54:
   version "0.2.54"
   resolved "https://registry.yarnpkg.com/serverless-dynamodb/-/serverless-dynamodb-0.2.54.tgz#c34748ba5cb5f46d971053b19e9aeaf93c99e4bb"
   integrity sha512-3nZqJ4+3I38IaHUtwW2bllqzbONFavlYxn8xHPv8NlyGwKj4f4hoK3H4lXsofWe/Y8I2vskP3ULFRBXmuU2guw==
