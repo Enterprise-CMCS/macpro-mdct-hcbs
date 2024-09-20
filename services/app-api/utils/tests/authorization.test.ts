@@ -5,7 +5,7 @@ import {
   isAuthorized,
   isAuthorizedToFetchState,
 } from "../authorization";
-import { UserRoles } from "../../types";
+import { UserRoles } from "../../types/types";
 import { proxyEvent } from "../../testing/proxyEvent";
 
 const mockVerifier = jest.fn();
@@ -19,6 +19,7 @@ jest.mock("aws-jwt-verify", () => ({
   },
 }));
 
+// @ts-ignore
 const ssmClientMock = mockClient(SSMClient);
 const mockSsmResponse = {
   Parameter: {
@@ -74,6 +75,7 @@ describe("Test authorization with api key and ssm parameters", () => {
     const mockGetSsmParameter = jest.fn().mockImplementation(() => {
       throw new Error("failed in test");
     });
+    // @ts-ignore
     ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
     await expect(isAuthorized(apiKeyEvent)).rejects.toThrow("failed in test");
   });
@@ -81,6 +83,7 @@ describe("Test authorization with api key and ssm parameters", () => {
     const mockGetSsmParameter = jest
       .fn()
       .mockResolvedValue({ Parameter: { Value: "VALUE" } });
+    // @ts-ignore
     ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
     const authStatus = await isAuthorized(apiKeyEvent);
     expect(authStatus).toBeTruthy();
@@ -90,6 +93,7 @@ describe("Test authorization with api key and ssm parameters", () => {
     delete process.env["COGNITO_USER_POOL_ID"];
     delete process.env["COGNITO_USER_POOL_CLIENT_ID"];
     const mockGetSsmParameter = jest.fn().mockResolvedValue(mockSsmResponse);
+    // @ts-ignore
     ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
 
     await isAuthorized(apiKeyEvent);
@@ -99,6 +103,7 @@ describe("Test authorization with api key and ssm parameters", () => {
   test("authorization should throw error if no values exist in SSM or env", async () => {
     delete process.env["COGNITO_USER_POOL_ID"];
     delete process.env["COGNITO_USER_POOL_CLIENT_ID"];
+    // @ts-ignore
     ssmClientMock.on(GetParameterCommand).resolves({});
 
     await expect(isAuthorized(apiKeyEvent)).rejects.toThrow(Error);

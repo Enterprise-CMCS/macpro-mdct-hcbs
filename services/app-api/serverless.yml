@@ -33,6 +33,7 @@ custom:
       - production
   dotenv:
     path: ../../.env
+  qmReportTableName: ${env:QM_REPORT_TABLE_NAME, param:QmReportTableName}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   associateWaf:
     name: ${self:custom.webAclName}
@@ -78,6 +79,7 @@ provider:
           Resource: "*"
   environment:
     STAGE: ${self:custom.stage}
+    QM_REPORT_TABLE_NAME: ${self:custom.qmReportTableName}
 
 functions:
   getHelloWorld:
@@ -88,6 +90,33 @@ functions:
           method: get
           cors: true
           authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
+  createReport:
+    handler: handlers/reports/create.createReport
+    events:
+      - http:
+          path: reports/{reportType}/{state}
+          method: post
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                reportType: true
+                state: true
+  getReport:
+    handler: handlers/reports/get.get
+    events:
+      - http:
+          path: reports/{reportType}/{state}/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                reportType: true
+                state: true
+                id: true
 resources:
   Resources:
     GatewayResponseDefault4XX:

@@ -12,6 +12,7 @@ LOGGING_BUCKET=log-bucket
 S3_LOCAL_ENDPOINT=http://localhost:4569
 SAR_REPORT_TABLE_NAME=local-sar-reports
 SKIP_PREFLIGHT_CHECK=true
+QM_REPORT_TABLE_NAME=local-qm-reports
 
 # Values used for short-circuiting ssm: lookups, most likely won't need locally
 VPC_ID=local-nonsense

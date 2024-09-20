@@ -1,5 +1,5 @@
 import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent, StatusCodes } from "../../types";
+import { APIGatewayProxyEvent, StatusCodes } from "../../types/types";
 import { getHelloWorld } from "./get";
 
 jest.mock("../../utils/authorization", () => ({

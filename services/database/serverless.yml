@@ -1,0 +1,91 @@
+service: database
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-dynamodb
+  - serverless-stack-termination-protection
+  - serverless-s3-bucket-helper
+  - serverless-plugin-scripts
+  - serverless-offline
+
+s3BucketHelper:
+  loggingConfiguration:
+    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
+
+custom:
+  project: "hcbs"
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  serverlessTerminationProtection:
+    stages:
+      - main
+      - val
+      - production
+  dotenv:
+    path: ../../.env
+  qmReportTableName: ${self:custom.stage}-qm-reports
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stackTags:  
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}  
+  iam:
+    role:
+      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
+      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "*"
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:ListBucket"
+            - "s3:PutObject"
+resources:
+  Resources:   
+    QmReportTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.qmReportTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: state
+            AttributeType: S
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: state
+            KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+  Outputs:
+    QmReportTableName:
+      Value: !Ref QmReportTable
+    QmReportTableArn:
+      Value: !GetAtt QmReportTable.Arn
+    Region:
+      Value: !Sub ${AWS::Region}

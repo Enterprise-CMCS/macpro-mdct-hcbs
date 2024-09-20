@@ -1,4 +1,3 @@
-// TODO: Finalize with IDM
 export enum UserRoles {
   ADMIN = "mdcthcbs-bor", // "MDCT HCBS Business Owner Representative"
   APPROVER = "mdcthcbs-appr", // "MDCT HCBS Approver"
