@@ -5,18 +5,14 @@ import { ParentPageTemplate } from "../../types/report";
 
 export const navItem = (page: AnyObject, func: Function) => {
   return (
-    <Button variant="sidebar" onClick={() => func(page.id)}>
+    <Button key={page.id} variant="sidebar" onClick={() => func(page.id)}>
       {page.title}
     </Button>
   );
 };
 
-interface Props {
-  setPage: Function;
-}
-
-export const Sidebar = ({ setPage }: Props) => {
-  const { report, pageMap } = useStore();
+export const Sidebar = () => {
+  const { report, pageMap, setCurrentPageId } = useStore();
 
   if (!report || !pageMap) {
     return null;
@@ -28,13 +24,13 @@ export const Sidebar = ({ setPage }: Props) => {
       const page = pageMap.get(child) as ParentPageTemplate;
       if (page.childPageIds) {
         builtList.push(
-          <Stack width="100%" spacing="0">
-            {navItem(page, setPage)}
+          <Stack key={page.id} width="100%" spacing="0">
+            {navItem(page, setCurrentPageId)}
             <Box>{buildNavList(page.childPageIds)}</Box>
           </Stack>
         );
       } else {
-        builtList.push(navItem(page, setPage));
+        builtList.push(navItem(page, setCurrentPageId));
       }
     }
     return builtList;

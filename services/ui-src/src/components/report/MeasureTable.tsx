@@ -16,23 +16,22 @@ import {
   isMeasureTemplate,
   MeasurePageTemplate,
   MeasureTableTemplate,
-  NavigationFunction,
 } from "../../types/report";
+import { PageElementProps } from "./Elements";
 
-export const MeasureTableElement = (
-  element: MeasureTableTemplate,
-  modalOpenHandler: NavigationFunction
-) => {
-  const { report, setModalComponent, setModalOpen } = useStore();
+export const MeasureTableElement = (props: PageElementProps) => {
+  const table = props.element as MeasureTableTemplate;
+  const { report, setModalComponent, setModalOpen, setCurrentPageId } =
+    useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
   const selectedMeasures = measures.filter(
     (page) =>
-      (element.measureDisplay == "optional" && page.optional) ||
-      (element.measureDisplay == "required" && page.required) ||
-      (element.measureDisplay == "stratified" && page.stratified)
+      (table.measureDisplay == "optional" && page.optional) ||
+      (table.measureDisplay == "required" && page.required) ||
+      (table.measureDisplay == "stratified" && page.stratified)
   );
 
   const buildModal = (cmit: number | undefined) => {
@@ -66,7 +65,7 @@ export const MeasureTableElement = (
           </Button>
         </Td>
         <Td>
-          <Button onClick={() => modalOpenHandler(measure.id)}>Edit</Button>
+          <Button onClick={() => setCurrentPageId(measure.id)}>Edit</Button>
         </Td>
       </Tr>
     );

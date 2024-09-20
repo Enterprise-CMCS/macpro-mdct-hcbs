@@ -15,6 +15,7 @@ export interface Report extends ReportTemplate {
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
+  answers?: any[]; //TODO: any
 }
 
 export type PageTemplate =
@@ -100,7 +101,6 @@ export type PageElement =
   | TextboxTemplate
   | DateTemplate
   | AccordionTemplate
-  | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
   | ButtonLinkTemplate
@@ -125,6 +125,7 @@ export type TextboxTemplate = {
   type: ElementType.Textbox;
   label: string;
   helperText?: string;
+  answer?: string;
 };
 
 export type DateTemplate = {
@@ -137,19 +138,6 @@ export type AccordionTemplate = {
   type: ElementType.Accordion;
   label: string;
   value: string;
-};
-
-export type ResultRowButtonTemplate = {
-  type: ElementType.ResultRowButton;
-  value: string;
-  modalId: PageId;
-  to: PageId;
-};
-
-export const isResultRowButton = (
-  element: PageElement
-): element is ResultRowButtonTemplate => {
-  return element.type === ElementType.ResultRowButton;
 };
 
 export type MeasureTableTemplate = {
@@ -175,8 +163,6 @@ export type ChoiceTemplate = {
   label: string;
   value: string;
 };
-
-export type NavigationFunction = (page: PageId, type?: PageType) => void;
 
 export enum DeliverySystem {
   FFS,

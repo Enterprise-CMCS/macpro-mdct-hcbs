@@ -1,5 +1,4 @@
 import { VStack } from "@chakra-ui/react";
-import React from "react";
 import {
   headerElement,
   subHeaderElement,
@@ -8,58 +7,46 @@ import {
   dateElement,
   accordionElement,
   radioElement,
-  resultRowButtonElement,
   buttonLinkElement,
 } from "./Elements";
 import { MeasureTableElement } from "./MeasureTable";
-import {
-  assertExhaustive,
-  ElementType,
-  NavigationFunction,
-  PageElement,
-} from "../../types/report";
+import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 
 interface Props {
   elements: PageElement[];
-  setPage: NavigationFunction;
 }
 
-export const Page = ({ elements, setPage }: Props) => {
+export const Page = ({ elements }: Props) => {
   const renderElement = (element: PageElement) => {
     const elementType = element.type;
     switch (elementType) {
       case ElementType.Header:
-        return headerElement(element);
+        return headerElement;
       case ElementType.SubHeader:
-        return subHeaderElement(element);
+        return subHeaderElement;
       case ElementType.Paragraph:
-        return paragraphElement(element);
+        return paragraphElement;
       case ElementType.Textbox:
-        return textboxElement(element);
+        return textboxElement;
       case ElementType.Date:
-        return dateElement(element);
+        return dateElement;
       case ElementType.Accordion:
-        return accordionElement(element);
+        return accordionElement;
       case ElementType.Radio:
-        return radioElement(element);
-      case ElementType.ResultRowButton:
-        return resultRowButtonElement(element, setPage);
+        return radioElement;
       case ElementType.ButtonLink:
-        return buttonLinkElement(element, setPage);
+        return buttonLinkElement;
       case ElementType.MeasureTable:
-        return MeasureTableElement(element, setPage);
+        return MeasureTableElement;
       default:
         assertExhaustive(elementType);
-        return <></>;
+        return (_element: any, _key: number) => <></>;
     }
   };
 
-  return (
-    <VStack alignItems="flex-start">
-      {elements.length > 0 &&
-        elements.map((element, index) => (
-          <React.Fragment key={index}>{renderElement(element)}</React.Fragment>
-        ))}
-    </VStack>
-  );
+  const composedElements = elements.map((element, index) => {
+    const ComposedElement = renderElement(element);
+    return <ComposedElement key={index} element={element} />;
+  });
+  return <VStack alignItems="flex-start">{composedElements}</VStack>;
 };
