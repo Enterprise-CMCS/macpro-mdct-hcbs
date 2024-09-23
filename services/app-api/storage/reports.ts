@@ -1,6 +1,6 @@
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { createClient as createDynamoClient } from "./dynamo/dynamodb-lib";
-import { reportTables, State } from "../utils/constants";
+import { reportTables, StateAbbr } from "../utils/constants";
 import { Report, ReportType } from "../types/reports";
 import { logger } from "../libs/debug-lib";
 
@@ -17,7 +17,7 @@ export const putReport = async (report: Report) => {
 
 export const getReport = async (
   reportType: ReportType,
-  state: State,
+  state: StateAbbr,
   id: string
 ) => {
   const table = reportTables[reportType];

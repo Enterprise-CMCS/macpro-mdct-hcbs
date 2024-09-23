@@ -26,7 +26,7 @@ export enum MeasureSteward {
   CMS = "CMS",
 }
 
-export enum State {
+export enum StateNames {
   AL = "Alabama",
   AK = "Alaska",
   AS = "American Samoa",
@@ -87,8 +87,7 @@ export enum State {
   WI = "Wisconsin",
   WY = "Wyoming",
 }
-export const isStateAbbreviation = (
-  x: string | undefined
-): x is keyof typeof State => {
-  return Object.keys(State).includes(x!);
+export type StateAbbr = keyof typeof StateNames;
+export const isStateAbbreviation = (x: string | undefined): x is StateAbbr => {
+  return Object.keys(StateNames).includes(x!);
 };

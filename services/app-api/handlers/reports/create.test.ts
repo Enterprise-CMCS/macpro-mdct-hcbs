@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent } from "../../types/types";
 import { createReport } from "./create";
 
 jest.mock("../../utils/authorization", () => ({
-  isAuthenticated: jest.fn().mockReturnValue(true),
+  isAuthenticated: jest.fn().mockResolvedValue(true),
 }));
 
 jest.mock("./buildReport", () => ({
@@ -19,8 +19,9 @@ const testEvent: APIGatewayProxyEvent = {
 
 describe("Test create report handler", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
+
   test("Test missing path params", async () => {
     const badTestEvent: APIGatewayProxyEvent = {
       ...proxyEvent,
