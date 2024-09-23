@@ -1,5 +1,6 @@
+import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent, StatusCodes } from "../../types/types";
+import { APIGatewayProxyEvent } from "../../types/types";
 import { getHelloWorld } from "./get";
 
 jest.mock("../../utils/authorization", () => ({
@@ -18,7 +19,7 @@ describe("Test hello world API method", () => {
   test("Test Successful get hello world", async () => {
     const res = await getHelloWorld(testEvent, null);
 
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(res.body).toContain("Hello World!");
   });
 });

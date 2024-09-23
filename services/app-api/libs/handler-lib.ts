@@ -1,17 +1,18 @@
 import * as logger from "./debug-lib";
-import { internalServerError, buildResponse } from "./response-lib";
+import {
+  HttpResponse,
+  internalServerError,
+  unauthenticated,
+} from "./response-lib";
 import { error } from "../utils/constants";
 import { sanitizeObject } from "../utils/sanitize";
-import { APIGatewayProxyEvent, StatusCodes } from "../types/types";
+import { APIGatewayProxyEvent } from "../types/types";
 import { isAuthorized } from "../utils/authorization";
 
-type LambdaFunction = (
-  event: APIGatewayProxyEvent, // eslint-disable-line no-unused-vars
-  context: any // eslint-disable-line no-unused-vars
-) => Promise<any>;
+type LambdaFunction = (event: APIGatewayProxyEvent) => Promise<HttpResponse>;
 
 export default function handler(lambda: LambdaFunction) {
-  return async function (event: APIGatewayProxyEvent, context: any) {
+  return async function (event: APIGatewayProxyEvent, _context: any) {
     // Start debugger
     logger.init();
     logger.debug("API event: %O", {
@@ -26,21 +27,16 @@ export default function handler(lambda: LambdaFunction) {
           const newEventBody = sanitizeObject(JSON.parse(event.body));
           event.body = JSON.stringify(newEventBody);
         }
-        // Run the Lambda
-        const { status, body } = await lambda(event, context);
-        return buildResponse(status, body);
+        return await lambda(event);
       } catch (error: any) {
         // Print debug messages
         logger.error("Error: %O", error);
-
-        const body = { error: error.message };
-        return internalServerError(body);
+        return internalServerError(error.message);
       } finally {
         logger.flush();
       }
     } else {
-      const body = { error: error.UNAUTHORIZED };
-      return buildResponse(StatusCodes.UNAUTHORIZED, body);
+      return unauthenticated(error.UNAUTHORIZED);
     }
   };
 }

@@ -1,5 +1,6 @@
+import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent, StatusCodes } from "../../types/types";
+import { APIGatewayProxyEvent } from "../../types/types";
 import { createReport } from "./create";
 
 jest.mock("../../utils/authorization", () => ({
@@ -26,12 +27,12 @@ describe("Test create report handler", () => {
       headers: { "cognito-identity-id": "test" },
     };
     const res = await createReport(badTestEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
   test("Test Successful create", async () => {
     const res = await createReport(testEvent, null);
 
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 });
