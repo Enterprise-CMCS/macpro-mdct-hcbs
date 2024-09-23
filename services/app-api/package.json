@@ -53,11 +53,7 @@
       "text-summary"
     ],
     "collectCoverageFrom": [
-      "handlers/**/*.{ts,tsx}",
-      "utils/**/*.{ts,tsx}",
-      "!utils/constants/*",
-      "!utils/testing/*",
-      "!utils/types/*"
+      "**/*.{ts,tsx}"
     ],
     "moduleDirectories": [
       "node_modules"
