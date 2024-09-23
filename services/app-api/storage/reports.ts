@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
-import { createClient as createDynamoClient } from "../libs/dynamo/dynamodb-lib";
+import { createClient as createDynamoClient } from "./dynamo/dynamodb-lib";
 import { reportTables, State } from "../utils/constants";
 import { Report, ReportType } from "../types/reports";
 import { logger } from "../libs/debug-lib";
