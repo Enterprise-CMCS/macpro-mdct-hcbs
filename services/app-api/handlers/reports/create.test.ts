@@ -23,11 +23,21 @@ describe("Test create report handler", () => {
   });
 
   test("Test missing path params", async () => {
-    const badTestEvent: APIGatewayProxyEvent = {
+    const badTestEvent = {
       ...proxyEvent,
-      headers: { "cognito-identity-id": "test" },
-    };
+      pathParameters: {},
+    } as APIGatewayProxyEvent;
     const res = await createReport(badTestEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  });
+
+  test("Test missing body", async () => {
+    const emptyBodyEvent = {
+      ...proxyEvent,
+      pathParameters: { reportType: "QM", state: "PA" },
+      body: null,
+    } as APIGatewayProxyEvent;
+    const res = await createReport(emptyBodyEvent, null);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
