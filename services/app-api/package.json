@@ -53,13 +53,19 @@
       "text-summary"
     ],
     "collectCoverageFrom": [
-      "**/*.{ts,tsx}"
+      "**/*.{ts,tsx}",
+      "!.build",
+      "!.coverage",
+      "!node_modules"
     ],
     "moduleDirectories": [
       "node_modules"
     ],
     "moduleNameMapper": {
       "#node-web-compat": "./node-web-compat-node.js"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/testing/setupJest.ts"
+    ]
   }
 }
