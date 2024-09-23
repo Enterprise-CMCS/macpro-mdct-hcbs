@@ -16,7 +16,7 @@ import {
   Paginator,
 } from "@aws-sdk/lib-dynamodb";
 // utils
-import { logger } from "../debugging/debug-lib";
+import { logger } from "../debug-lib";
 // types
 
 const localConfig = {
