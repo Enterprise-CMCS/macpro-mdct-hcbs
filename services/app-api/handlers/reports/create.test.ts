@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent } from "../../types/types";
 import { createReport } from "./create";
 
 jest.mock("../../utils/authorization", () => ({
-  isAuthorized: jest.fn().mockReturnValue(true),
+  isAuthenticated: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("./buildReport", () => ({

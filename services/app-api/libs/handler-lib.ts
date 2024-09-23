@@ -7,7 +7,7 @@ import {
 import { error } from "../utils/constants";
 import { sanitizeObject } from "../utils/sanitize";
 import { APIGatewayProxyEvent } from "../types/types";
-import { isAuthorized } from "../utils/authorization";
+import { isAuthenticated } from "../utils/authorization";
 
 type LambdaFunction = (event: APIGatewayProxyEvent) => Promise<HttpResponse>;
 
@@ -21,7 +21,7 @@ export default function handler(lambda: LambdaFunction) {
       queryStringParameters: event.queryStringParameters,
     });
 
-    if (await isAuthorized(event)) {
+    if (await isAuthenticated(event)) {
       try {
         if (event.body) {
           const newEventBody = sanitizeObject(JSON.parse(event.body));
