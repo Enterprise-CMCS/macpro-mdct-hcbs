@@ -82,14 +82,6 @@ provider:
     QM_REPORT_TABLE_NAME: ${self:custom.qmReportTableName}
 
 functions:
-  getHelloWorld:
-    handler: handlers/helloWorld/get.getHelloWorld
-    events:
-      - http:
-          path: helloWorld
-          method: get
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   createReport:
     handler: handlers/reports/create.createReport
     events:
