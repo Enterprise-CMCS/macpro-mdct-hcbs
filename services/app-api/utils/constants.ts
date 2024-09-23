@@ -87,3 +87,8 @@ export enum State {
   WI = "Wisconsin",
   WY = "Wyoming",
 }
+export const isStateAbbreviation = (
+  x: string | undefined
+): x is keyof typeof State => {
+  return Object.keys(State).includes(x!);
+};
