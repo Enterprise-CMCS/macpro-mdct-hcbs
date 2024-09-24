@@ -3,20 +3,9 @@ import {
   QueryCommandOutput,
   ScanCommandOutput,
 } from "@aws-sdk/client-dynamodb";
-import {
-  DeleteCommand,
-  DeleteCommandInput,
-  DynamoDBDocumentClient,
-  GetCommand,
-  GetCommandInput,
-  QueryCommandInput,
-  paginateQuery,
-  PutCommand,
-  PutCommandInput,
-  Paginator,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, Paginator } from "@aws-sdk/lib-dynamodb";
 // utils
-import { logger } from "../debugging/debug-lib";
+import { logger } from "../../libs/debug-lib";
 // types
 
 const localConfig = {
@@ -52,25 +41,4 @@ export const collectPageItems = async <
     items = items.concat(page.Items ?? []);
   }
   return items;
-};
-
-const client = createClient();
-
-export default {
-  get: async (params: GetCommandInput) => {
-    return await client.send(new GetCommand(params));
-  },
-  delete: async (params: DeleteCommandInput) =>
-    await client.send(new DeleteCommand(params)),
-  put: async (params: PutCommandInput) =>
-    await client.send(new PutCommand(params)),
-  query: async (params: QueryCommandInput) => {
-    let items: any[] = []; // any?
-    const resultPages = paginateQuery({ client }, params);
-    for await (let page of resultPages) {
-      items = items.concat(page?.Items ?? []);
-    }
-
-    return items;
-  },
 };

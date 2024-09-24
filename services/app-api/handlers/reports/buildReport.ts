@@ -22,14 +22,18 @@ export const buildReport = async (
   report.lastEditedBy = username;
 
   if (reportType == ReportType.QM) {
-    // Collect all measures
-    const measures = [...report.measureLookup.defaultMeasures];
-    const matchingRules = Object.entries(report.measureLookup.optionGroups)
-      .filter(([k, _]) => measureOptions.includes(k))
-      .flatMap((arr) => arr[1]);
-    measures.push(...matchingRules);
+    /*
+     * Collect all measures, based on selected rules.
+     * TODO is measure order important? May need to sort.
+     * TODO could a measure be included by multiple rules? May need to deduplicate.
+     */
+    const measuresFromRules = Object.entries(report.measureLookup.optionGroups)
+      .filter(([ruleName, _measures]) => measureOptions.includes(ruleName))
+      .flatMap(([_ruleName, measures]) => measures);
+    const measures =
+      report.measureLookup.defaultMeasures.concat(measuresFromRules);
 
-    for (const measure of measures) {
+    const measurePages = measures.map((measure) => {
       // TODO: make reusable. This will be used on the optional page when adding a measure.
       const page = structuredClone(
         report.measureTemplates[measure.measureTemplate]
@@ -39,9 +43,10 @@ export const buildReport = async (
       page.stratified = measure.stratified;
       page.required = measure.required;
       // TODO: let the parent know what it relates to
+      return page;
+    });
 
-      report.pages.push(page);
-    }
+    report.pages = report.pages.concat(measurePages);
   }
 
   // Save

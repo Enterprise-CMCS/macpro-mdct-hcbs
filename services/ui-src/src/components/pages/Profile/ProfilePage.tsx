@@ -3,16 +3,9 @@ import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
 import { createEmailLink, useStore } from "utils";
 import verbiage from "verbiage/pages/profile";
-import { useEffect, useState } from "react";
-import { getHelloWorld } from "utils/api/requestMethods/helloWorld";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
-
-  const [helloWorldMessage, setHelloWorldMessage] = useState<string>(
-    "default value that should not be displayed"
-  );
-  const [loading, setLoading] = useState<boolean>(false);
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
     useStore().user ?? {};
@@ -30,33 +23,11 @@ export const ProfilePage = () => {
     ],
   };
 
-  //TODO: remove this useEffect
-  useEffect(() => {
-    const fetchStuff = async () => {
-      setLoading(true);
-      try {
-        const response = await getHelloWorld();
-        setHelloWorldMessage(response);
-      } catch (e: any) {
-        /* eslint-disable no-console */
-        console.log(e.message);
-        setHelloWorldMessage(e.message);
-      }
-      setLoading(false);
-    };
-    fetchStuff();
-  }, []);
-
   return (
     <PageTemplate sx={sx.layout}>
       <Heading as="h1" sx={sx.headerText}>
         {intro.header}
       </Heading>
-      {!loading && (
-        <Heading as="h1" sx={sx.headerText}>
-          {helloWorldMessage}
-        </Heading>
-      )}
       <Text>
         {intro.body}{" "}
         <Link href={createEmailLink(intro.email)} isExternal>

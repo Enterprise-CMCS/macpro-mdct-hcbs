@@ -1,8 +1,7 @@
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
 import { APIGatewayProxyEvent, UserRoles } from "../types/types";
-import { logger } from "../libs/debug-lib";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+import { getCognitoParameters as getCognitoParamsFromSSM } from "../storage/cognito";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
@@ -19,28 +18,14 @@ const loadCognitoValues = async () => {
       userPoolClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
     };
   } else {
-    const ssmClient = new SSMClient({ logger });
-    const stage = process.env.STAGE!;
-    const getParam = async (identifier: string) => {
-      const command = new GetParameterCommand({
-        Name: `/${stage}/ui-auth/${identifier}`,
-      });
-      const result = await ssmClient.send(command);
-      return result.Parameter?.Value;
-    };
-    const userPoolId = await getParam("cognito_user_pool_id");
-    const userPoolClientId = await getParam("cognito_user_pool_client_id");
-    if (userPoolId && userPoolClientId) {
-      process.env["COGNITO_USER_POOL_ID"] = userPoolId;
-      process.env["COGNITO_USER_POOL_CLIENT_ID"] = userPoolClientId;
-      return { userPoolId, userPoolClientId };
-    } else {
-      throw new Error("cannot load cognito values");
-    }
+    const { userPoolId, userPoolClientId } = await getCognitoParamsFromSSM();
+    process.env.COGNITO_USER_POOL_ID = userPoolId;
+    process.env.COGNITO_USER_POOL_CLIENT_ID = userPoolClientId;
+    return { userPoolId, userPoolClientId };
   }
 };
 
-export const isAuthorized = async (event: APIGatewayProxyEvent) => {
+export const isAuthenticated = async (event: APIGatewayProxyEvent) => {
   const cognitoValues = await loadCognitoValues();
 
   // Verifier that expects valid access tokens:
@@ -50,17 +35,12 @@ export const isAuthorized = async (event: APIGatewayProxyEvent) => {
     clientId: cognitoValues.userPoolClientId,
   });
 
-  let isAuthorized;
-  if (event?.headers?.["x-api-key"]) {
-    try {
-      isAuthorized = await verifier.verify(event.headers["x-api-key"]);
-    } catch {
-      // verification failed - unauthorized
-      isAuthorized = false;
-    }
+  try {
+    await verifier.verify(event.headers?.["x-api-key"]!);
+    return true;
+  } catch {
+    return false;
   }
-
-  return !!isAuthorized;
 };
 
 export const hasPermissions = (

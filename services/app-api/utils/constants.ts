@@ -1,15 +1,9 @@
-import { ReportType } from "../types/reports";
-
 export const error = {
   UNAUTHORIZED: "User is not authorized to access this resource.",
   NO_KEY: "Must provide key for table.",
   MISSING_DATA: "Missing required data.",
   INVALID_DATA: "Provided data is not valid.",
   SERVER_ERROR: "An unspecified server error occured.",
-};
-
-export const reportTables: { [key in ReportType]: string } = {
-  QM: process.env.QM_REPORT_TABLE_NAME!,
 };
 
 export enum DeliverySystem {
@@ -26,7 +20,7 @@ export enum MeasureSteward {
   CMS = "CMS",
 }
 
-export enum State {
+export enum StateNames {
   AL = "Alabama",
   AK = "Alaska",
   AS = "American Samoa",
@@ -87,3 +81,7 @@ export enum State {
   WI = "Wisconsin",
   WY = "Wyoming",
 }
+export type StateAbbr = keyof typeof StateNames;
+export const isStateAbbreviation = (x: string | undefined): x is StateAbbr => {
+  return Object.keys(StateNames).includes(x!);
+};

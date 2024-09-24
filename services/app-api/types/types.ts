@@ -6,15 +6,6 @@ export enum UserRoles {
   STATE_USER = "mdcthcbs-state-user", // "MDCT HCBS State User"
 }
 
-export const enum StatusCodes {
-  SUCCESS = 200,
-  CREATED = 201,
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 403,
-  NOT_FOUND = 404,
-  SERVER_ERROR = 500,
-}
-
 /**
  * Abridged copy of the type used by `aws-lambda@1.0.7` (from `@types/aws-lambda@8.10.88`)
  * We only this package for these types, and we use only a subset of the

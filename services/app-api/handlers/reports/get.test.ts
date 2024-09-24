@@ -1,9 +1,10 @@
+import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent, StatusCodes } from "../../types/types";
+import { APIGatewayProxyEvent } from "../../types/types";
 import { get } from "./get";
 
 jest.mock("../../utils/authorization", () => ({
-  isAuthorized: jest.fn().mockReturnValue(true),
+  isAuthenticated: jest.fn().mockResolvedValue(true),
 }));
 
 jest.mock("../../storage/reports", () => ({
@@ -18,7 +19,7 @@ const testEvent: APIGatewayProxyEvent = {
 
 describe("Test get report handler", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
   test("Test missing path params", async () => {
     const badTestEvent: APIGatewayProxyEvent = {
@@ -26,11 +27,11 @@ describe("Test get report handler", () => {
       headers: { "cognito-identity-id": "test" },
     };
     const res = await get(badTestEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
   test("Test Successful get", async () => {
     const res = await get(testEvent, null);
 
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 });

@@ -9,11 +9,6 @@ import {
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 
-// TODO: remove this
-jest.mock("utils/api/requestMethods/helloWorld", () => ({
-  getHelloWorld: jest.fn().mockResolvedValue("Hello World!"),
-}));
-
 const ProfilePageComponent = (
   <RouterWrappedComponent>
     <ProfilePage />

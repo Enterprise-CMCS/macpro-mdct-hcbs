@@ -8,7 +8,7 @@ jest.mock("../../storage/reports", () => ({
 
 describe("Test create report handler", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   test("Test Successful create", async () => {

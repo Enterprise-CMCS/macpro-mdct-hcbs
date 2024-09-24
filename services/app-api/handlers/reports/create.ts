@@ -1,38 +1,23 @@
 import handler from "../../libs/handler-lib";
-import { ReportType } from "../../types/reports";
-import { StatusCodes } from "../../types/types";
-import { State } from "../../utils/constants";
+import { parseReportTypeAndState } from "../../libs/param-lib";
+import { badRequest, ok } from "../../libs/response-lib";
 import { buildReport } from "./buildReport";
 
-export const createReport = handler(async (event, _context) => {
-  const { reportType, state } = event.pathParameters ?? {};
+export const createReport = handler(async (event) => {
+  const { allParamsValid, reportType, state } = parseReportTypeAndState(event);
+  if (!allParamsValid) {
+    return badRequest("Invalid path parameters");
+  }
 
   // TODO: Auth
   const user = "";
 
   if (!event?.body) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: "Invalid request",
-    };
+    return badRequest("Invalid request");
   }
   // const options = JSON.parse(event.body);
 
-  // Move to helper function
-  if (!Object.values(ReportType).includes(reportType as ReportType)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: "Report Type not available",
-    };
-  }
-  if (!state || !Object.keys(State).includes(state)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: "State not available:" + state,
-    };
-  }
+  const report = await buildReport(reportType, state, [], user);
 
-  const report = await buildReport(reportType as ReportType, state, [], user);
-
-  return { status: StatusCodes.SUCCESS, body: report };
+  return ok(report);
 });
