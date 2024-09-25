@@ -1,10 +1,7 @@
 import { render, screen } from "@testing-library/react";
-// components
 import { DashboardPage } from "components";
-// utils
 import { mockStateUser } from "utils/testing/mockUsers";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-
 import { useBreakpoint, useStore, makeMediaQueryClasses } from "utils";
 import { useUser } from "utils/auth/useUser";
 import dashboardVerbiage from "verbiage/pages/dashboard";

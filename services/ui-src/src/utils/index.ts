@@ -13,4 +13,3 @@ export * from "./other/parsing";
 export * from "./other/useBreakpoint";
 export * from "./other/time";
 export * from "./other/email";
-export * from "./other/rendering";

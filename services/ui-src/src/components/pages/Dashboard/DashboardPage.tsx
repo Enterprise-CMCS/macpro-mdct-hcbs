@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { States } from "../../../constants";
-
 import { ReportMetadataShape } from "types";
 
 import {
@@ -23,6 +22,7 @@ export const DashboardPage = () => {
     userIsReadOnly,
     userIsAdmin,
   } = useStore().user ?? {};
+  const navigate = useNavigate();
 
   const [reportsToDisplay] = useState<ReportMetadataShape[] | undefined>(
     undefined
@@ -66,7 +66,9 @@ export const DashboardPage = () => {
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         <Box sx={sx.callToActionContainer}>
-          <Button type="submit">{body.callToAction}</Button>
+          <Button onClick={() => navigate(body.link.route)} type="submit">
+            {body.link.callToActionText}
+          </Button>
         </Box>
       </Box>
     </PageTemplate>

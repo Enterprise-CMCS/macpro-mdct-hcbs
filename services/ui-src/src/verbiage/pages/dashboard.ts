@@ -18,6 +18,9 @@ export default {
     },
     empty:
       "Keep track of your Quality Measures Reports, once you start a report you can access it here.",
-    callToAction: "Start Quality Measures Report",
+    link: {
+      callToActionText: "Start Quality Measures Report",
+      route: "/report/QM",
+    },
   },
 };
