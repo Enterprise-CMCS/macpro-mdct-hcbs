@@ -12,7 +12,7 @@ const deployedServices = [
   // "database",
   // "uploads",
   // "topics",
-  // "app-api",
+  "app-api",
   "ui",
   "ui-auth",
   "ui-src",
@@ -38,65 +38,65 @@ function updateEnvFiles() {
 }
 
 // run_db_locally runs the local db
-// async function run_db_locally(runner: LabeledProcessRunner) {
-//   await runner.run_command_and_output(
-//     "db yarn",
-//     ["yarn", "install"],
-//     "services/database"
-//   );
-//   await runner.run_command_and_output(
-//     "db svls doc",
-//     ["serverless", "doctor"],
-//     "services/database"
-//   );
-//   await runner.run_command_and_output(
-//     "db svls",
-//     ["serverless", "dynamodb", "install", "--stage", "local"],
-//     "services/database"
-//   );
-//   runner.run_command_and_output(
-//     "db",
-//     [
-//       "serverless",
-//       "offline",
-//       "start",
-//       "--stage",
-//       "local",
-//       "--lambdaPort",
-//       "3003",
-//     ],
-//     "services/database"
-//   );
-// }
+async function run_db_locally(runner: LabeledProcessRunner) {
+  await runner.run_command_and_output(
+    "db yarn",
+    ["yarn", "install"],
+    "services/database"
+  );
+  await runner.run_command_and_output(
+    "db svls doc",
+    ["serverless", "doctor"],
+    "services/database"
+  );
+  await runner.run_command_and_output(
+    "db svls",
+    ["serverless", "dynamodb", "install", "--stage", "local"],
+    "services/database"
+  );
+  runner.run_command_and_output(
+    "db",
+    [
+      "serverless",
+      "offline",
+      "start",
+      "--stage",
+      "local",
+      "--lambdaPort",
+      "3003",
+    ],
+    "services/database"
+  );
+}
 
 // run_api_locally uses the serverless-offline plugin to run the api lambdas locally
-// async function run_api_locally(runner: LabeledProcessRunner) {
-//   await runner.run_command_and_output(
-//     "api deps",
-//     ["yarn", "install"],
-//     "services/app-api"
-//   );
-//   runner.run_command_and_output(
-//     "api svls doc",
-//     ["serverless", "doctor"],
-//     "services/app-api"
-//   );
-//   runner.run_command_and_output(
-//     "api",
-//     [
-//       "serverless",
-//       "offline",
-//       "start",
-//       "--stage",
-//       "local",
-//       "--region",
-//       "us-east-1",
-//       "--httpPort",
-//       "3030",
-//     ],
-//     "services/app-api"
-//   );
-// }
+async function run_api_locally(runner: LabeledProcessRunner) {
+  await runner.run_command_and_output(
+    "api deps",
+    ["yarn", "install"],
+    "services/app-api"
+  );
+  runner.run_command_and_output(
+    "api svls doc",
+    ["serverless", "doctor"],
+    "services/app-api"
+  );
+  runner.run_command_and_output(
+    "api",
+    [
+      "serverless",
+      "offline",
+      "start",
+      "--stage",
+      "local",
+      "--region",
+      "us-east-1",
+      "--httpPort",
+      "3030",
+    ],
+    "services/app-api"
+  );
+}
 
 // run_s3_locally runs s3 locally
 // async function run_s3_locally(runner: LabeledProcessRunner) {
@@ -142,9 +142,9 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
 async function run_all_locally() {
   const runner = new LabeledProcessRunner();
 
-  // run_db_locally(runner);
+  run_db_locally(runner);
   // run_s3_locally(runner);
-  // run_api_locally(runner);
+  run_api_locally(runner);
   run_fe_locally(runner);
 }
 

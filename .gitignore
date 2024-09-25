@@ -10,3 +10,4 @@ tests_output
 package-lock.json
 .vscode/
 *._S3rver_cors.xml
+.serverless
