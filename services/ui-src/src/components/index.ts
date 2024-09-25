@@ -2,6 +2,7 @@
 export { AccordionItem } from "./accordions/AccordionItem";
 export { FaqAccordion } from "./accordions/FaqAccordion";
 export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
+export { InstructionsAccordion } from "./accordions/InstructionsAccordion";
 // alerts
 export { Alert } from "./alerts/Alert";
 export { ErrorAlert } from "./alerts/ErrorAlert";
@@ -32,3 +33,6 @@ export { MenuOption } from "./menus/MenuOption";
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables
 export { Table } from "./tables/Table";
+// dashboard
+export { DashboardPage } from "./pages/Dashboard/DashboardPage";
+export { DashboardTable } from "./pages/Dashboard/DashboardTable";
