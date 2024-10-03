@@ -20,6 +20,8 @@ export { Timeout } from "./layout/Timeout";
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
+// fields
+export { TextField } from "./fields/TextField";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
