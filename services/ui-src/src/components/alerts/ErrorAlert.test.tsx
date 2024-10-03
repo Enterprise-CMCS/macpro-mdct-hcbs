@@ -29,3 +29,11 @@ describe("<ErrorAlert />", () => {
 
   testA11y(errorAlertComponent);
 });
+
+describe("ErrorAlert not visible", () => {
+  test("does not render the Alert when error is null", () => {
+    render(<ErrorAlert error={undefined} />);
+
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+});
