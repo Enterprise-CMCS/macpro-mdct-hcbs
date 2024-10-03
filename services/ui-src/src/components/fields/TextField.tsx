@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
-import { labelTextWithOptional, parseCustomHtml } from "utils";
+import { parseCustomHtml } from "utils";
 import { TextboxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 
@@ -35,9 +35,7 @@ export const TextField = (props: PageElementProps) => {
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[inputName]?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
-  const labelText = textbox.label
-    ? labelTextWithOptional(textbox.label)
-    : textbox.label;
+  const labelText = textbox.label;
 
   return (
     <Box>
