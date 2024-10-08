@@ -23,7 +23,6 @@ import {
   HeaderTemplate,
   SubHeaderTemplate,
   TextboxTemplate,
-  DateTemplate,
   AccordionTemplate,
   RadioTemplate,
   ButtonLinkTemplate,
@@ -86,18 +85,6 @@ export const textboxElement = (props: PageElementProps) => {
         onBlur={async (e) => await onBlurHandler(e)}
         size="sm"
       ></Input>
-    </FormControl>
-  );
-};
-
-export const dateElement = (props: PageElementProps) => {
-  const dateElement = props.element as DateTemplate;
-  return (
-    <FormControl>
-      <FormLabel fontWeight="bold">{dateElement.label}</FormLabel>
-      <FormHelperText>{dateElement.helperText}</FormHelperText>
-      <FormHelperText>MM/DD/YY</FormHelperText>
-      <Input size="sm" width="22"></Input>
     </FormControl>
   );
 };
