@@ -1,11 +1,10 @@
 import { render, screen } from "@testing-library/react";
-// components
 import { useFormContext } from "react-hook-form";
 import { TextField } from "components";
-// utils
 import { mockStateUserStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
+import { PageElement } from "types/report";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -29,12 +28,16 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
+const mockedTextboxElement = {
+  type: TextField,
+  label: "test label",
+  helperText: "helper text",
+};
+
 const textFieldComponent = (
   <TextField
-    name="testTextField"
-    label="test-label"
-    placeholder="test-placeholder"
-    data-testid="test-text-field"
+    element={mockedTextboxElement as unknown as PageElement}
+    index={0}
   />
 );
 
