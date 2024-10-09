@@ -2,15 +2,20 @@ import {
   calculateNextQuarter,
   calculateRemainingSeconds,
   calculateTimeByType,
+  checkDateCompleteness,
   checkDateRangeStatus,
   convertDateEtToUtc,
   convertDateTimeEtToUtc,
+  convertDatetimeStringToNumber,
   convertDateUtcToEt,
+  displayLongformPeriod,
+  displayLongformPeriodSection9,
   getLocalHourMinuteTime,
   midnight,
   noon,
   oneSecondToMidnight,
   twoDigitCalendarDate,
+  utcDateToReadableDate,
 } from "./time";
 
 // 1/1/2022 @ 00:00:00
@@ -107,6 +112,86 @@ describe("utils/time", () => {
     test("should set 12 to 12", () => {
       const startMonth = 12;
       expect(twoDigitCalendarDate(startMonth)).toBe("12");
+    });
+  });
+
+  describe("utcDateToReadableDate()", () => {
+    test("epoch time -> full date", () => {
+      expect(utcDateToReadableDate(1729569600000, "full")).toEqual(
+        "Monday, October 21, 2024"
+      );
+    });
+    test("long date", () => {
+      expect(utcDateToReadableDate(0, "long")).toEqual("December 31, 1969");
+    });
+    test("medium date", () => {
+      expect(utcDateToReadableDate(0, "medium")).toEqual("Dec 31, 1969");
+    });
+    test("short date", () => {
+      expect(utcDateToReadableDate(0, "short")).toEqual("12/31/69");
+    });
+  });
+
+  describe("checkDateCompleteness()", () => {
+    test("that it returns an object of { year, month, day }", () => {
+      expect(checkDateCompleteness("10/22/2024")).toEqual({
+        year: 2024,
+        month: 10,
+        day: 22,
+      });
+    });
+    test("incorrect date returns null", () => {
+      expect(checkDateCompleteness("10/22/24")).toBeNull();
+    });
+    test("not a date returns null", () => {
+      expect(checkDateCompleteness("banana")).toBeNull();
+    });
+    test("empty string returns null", () => {
+      expect(checkDateCompleteness("")).toBeNull();
+    });
+  });
+
+  describe("convertDatetimeStringToNumber()", () => {
+    test("that when passed in a date and a timeType are passed, the correct epoch value is returned", () => {
+      expect(convertDatetimeStringToNumber("10/22/2024", "startDate")).toEqual(
+        1729569600000
+      );
+    });
+    test("that when passed in a date and a timeType are passed, the correct epoch value is returned", () => {
+      expect(convertDatetimeStringToNumber("10/22/2024", "endDate")).toEqual(
+        1729655999000
+      );
+    });
+    test("that when passed in a date and a timeType are passed, the correct epoch value is returned", () => {
+      expect(
+        convertDatetimeStringToNumber("10/22/2024", "NotATimeType")
+      ).toEqual(1729612800000);
+    });
+  });
+
+  describe("displayLongformPeriod()", () => {
+    test("Period 1 and year 2024", () => {
+      expect(displayLongformPeriod(1, 2024)).toEqual(
+        "January 1 to June 30, 2024 reporting period"
+      );
+    });
+    test("Period 2 and year 2024", () => {
+      expect(displayLongformPeriod(2, 2024)).toEqual(
+        "July 1 to December 31, 2024 reporting period"
+      );
+    });
+  });
+
+  describe("displayLongformPeriodSection9()", () => {
+    test("Report year 2024", () => {
+      expect(displayLongformPeriodSection9(2024)).toEqual(
+        "August 1, 2023 to July 31, 2024"
+      );
+    });
+    test("Why are we accepting undefined?", () => {
+      expect(displayLongformPeriodSection9(undefined)).toEqual(
+        "August 1, undefined to July 31, undefined"
+      );
     });
   });
 
