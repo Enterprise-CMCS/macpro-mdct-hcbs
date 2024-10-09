@@ -22,7 +22,7 @@ describe("downloadTemplate", () => {
     jest.clearAllMocks();
   });
 
-  it("should download the template when called", async () => {
+  test("should download the template when called", async () => {
     const templateName = "test-template";
     const signedUrl = "https://example.com/signed-url";
     const { getSignedTemplateUrl } = require("utils");

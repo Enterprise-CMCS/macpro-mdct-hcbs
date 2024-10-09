@@ -77,7 +77,7 @@ describe("Alert icon", () => {
     expect(imgElement).toHaveAttribute("src", alertIcon);
   });
 
-  it("does not render the icon when showIcon is false", () => {
+  test("does not render the icon when showIcon is false", () => {
     render(
       <Alert
         status={AlertTypes.INFO}
