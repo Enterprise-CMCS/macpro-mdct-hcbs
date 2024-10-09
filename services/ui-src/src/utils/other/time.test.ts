@@ -117,18 +117,22 @@ describe("utils/time", () => {
 
   describe("utcDateToReadableDate()", () => {
     test("epoch time -> full date", () => {
-      expect(utcDateToReadableDate(1729569600000, "full")).toEqual(
-        "Monday, October 21, 2024"
+      expect(utcDateToReadableDate(1729612800000, "full")).toEqual(
+        "Tuesday, October 22, 2024"
       );
     });
     test("long date", () => {
-      expect(utcDateToReadableDate(0, "long")).toEqual("December 31, 1969");
+      expect(utcDateToReadableDate(1729612800000, "long")).toEqual(
+        "October 22, 2024"
+      );
     });
     test("medium date", () => {
-      expect(utcDateToReadableDate(0, "medium")).toEqual("Dec 31, 1969");
+      expect(utcDateToReadableDate(1729612800000, "medium")).toEqual(
+        "Oct 22, 2024"
+      );
     });
     test("short date", () => {
-      expect(utcDateToReadableDate(0, "short")).toEqual("12/31/69");
+      expect(utcDateToReadableDate(1729612800000, "short")).toEqual("10/22/24");
     });
   });
 
