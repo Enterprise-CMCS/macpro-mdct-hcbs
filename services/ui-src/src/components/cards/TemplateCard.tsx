@@ -7,7 +7,7 @@ import downloadIcon from "assets/icons/download/icon_download_primary.svg";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import spreadsheetIcon from "assets/icons/spreadsheet/icon_spreadsheet_gray.svg";
 
-const downloadTemplate = async (templateName: string) => {
+export const downloadTemplate = async (templateName: string) => {
   const signedUrl = await getSignedTemplateUrl(templateName);
   const link = document.createElement("a");
   link.setAttribute("target", "_blank");
