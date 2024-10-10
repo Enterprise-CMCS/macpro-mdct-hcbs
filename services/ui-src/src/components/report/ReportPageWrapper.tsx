@@ -65,9 +65,9 @@ export const ReportPageWrapper = () => {
 
   return (
     <FormProvider {...methods}>
-      <form id="aFormId" autoComplete="off" onBlur={handleSubmit(handleBlur)}>
-        <HStack marginLeft="-30px" height="100%">
-          {currentPage.sidebar && <Sidebar />}
+      <HStack>
+        {currentPage.sidebar && <Sidebar />}
+        <form id="aFormId" autoComplete="off" onBlur={handleSubmit(handleBlur)}>
           <VStack height="100%" padding="2rem" width="640px">
             <Box flex="auto" alignItems="flex-start" width="100%">
               {currentPage.elements && (
@@ -102,8 +102,8 @@ export const ReportPageWrapper = () => {
             </Stack>
           </VStack>
           <ReportModal />
-        </HStack>
-      </form>
+        </form>
+      </HStack>
     </FormProvider>
   );
 };

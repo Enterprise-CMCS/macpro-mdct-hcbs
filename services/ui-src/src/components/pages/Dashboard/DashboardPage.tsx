@@ -41,13 +41,14 @@ export const DashboardPage = () => {
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
-      <Link as={RouterLink} to="/" sx={sx.returnLink}>
-        <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
+
+      <Link as={RouterLink} to="/" variant="return">
+        <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
         Return home
       </Link>
 
       <Box sx={sx.leadTextBox}>
-        <Heading as="h1" sx={sx.headerText}>
+        <Heading as="h1" variant="h1">
           {fullStateName} {intro.header}
         </Heading>
         <InstructionsAccordion
@@ -81,37 +82,6 @@ const sx = {
       maxWidth: "appMax",
       marginTop: "1rem",
       marginBottom: "3.5rem",
-    },
-  },
-  returnLink: {
-    display: "flex",
-    width: "8.5rem",
-    paddingTop: "0.5rem",
-    svg: {
-      height: "1.375rem",
-      width: "1.375rem",
-      marginTop: "-0.125rem",
-      marginRight: ".5rem",
-    },
-    textDecoration: "none",
-    _hover: {
-      textDecoration: "underline",
-    },
-    ".returnIcon": {
-      width: "1.25rem",
-      height: "1.25rem",
-      marginTop: "0.25rem",
-      marginRight: "0.5rem",
-    },
-  },
-  headerText: {
-    marginBottom: "1rem",
-    fontSize: "4xl",
-    fontWeight: "normal",
-    ".tablet &, .mobile &": {
-      fontSize: "xl",
-      lineHeight: "1.75rem",
-      fontWeight: "bold",
     },
   },
   leadTextBox: {

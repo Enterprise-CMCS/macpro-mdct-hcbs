@@ -39,7 +39,7 @@ export const Sidebar = () => {
     (pageMap.get("root") as ParentPageTemplate).childPageIds
   );
   return (
-    <VStack height="100%" width="320px" background="gray.100" spacing="0">
+    <VStack>
       <Heading fontSize="21" fontWeight="700" padding="32px">
         Quality Measures Report
       </Heading>

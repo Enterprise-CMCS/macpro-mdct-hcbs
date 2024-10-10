@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { extendTheme } from "@chakra-ui/react";
+import { baseStyle, extendTheme } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
@@ -261,7 +261,14 @@ const theme = extendTheme({
     Heading: {
       baseStyle: {
         color: "palette.base",
+        fontWeight: "normal",
+        marginBottom: "1rem",
       },
+      variants:{
+        h1:{
+          fontSize: "2rem",
+        }
+      }
     },
     Link: {
       baseStyle: {
@@ -280,6 +287,23 @@ const theme = extendTheme({
             textDecorationColor: "palette.primary_darker",
           },
         },
+        return: {
+          padding: "0.5rem 0 0 2rem",
+          textDecoration: "none",
+          _hover: {
+            textDecoration: "underline",
+          },
+          _visited: {
+            color: "palette.primary",
+          },
+          display: "flex",
+          ".icon": {
+            width: "1.25rem",
+            height: "1.25rem",
+            marginTop: "0.15rem",
+            marginRight: "0.5rem",
+          },
+        },
         inverse: {
           color: "palette.white",
           _visited: {
@@ -295,22 +319,6 @@ const theme = extendTheme({
           textDecoration: "none",
           ":focus, :focus-visible, :hover, :visited, :visited:hover": {
             textDecoration: "none",
-          },
-        },
-        outlineButton: {
-          color: "palette.primary",
-          border: "1px solid",
-          padding: ".5rem 1rem",
-          borderRadius: "5px",
-          fontWeight: "bold",
-          textDecoration: "none",
-          _visited: { color: "palette.primary" },
-          ":hover, :visited:hover": {
-            color: "palette.primary_darker",
-            textDecoration: "none",
-          },
-          ".mobile &": {
-            border: "none",
           },
         },
       },
