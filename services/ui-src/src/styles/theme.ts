@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { baseStyle, extendTheme } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
@@ -113,7 +113,22 @@ const theme = extendTheme({
       baseStyle: {
         borderStyle: "none",
         button: {
+          marginTop: "2rem",
           background: "palette.gray_lightest",
+          padding:"0 1.5rem"
+        },
+        panel: {
+          table: {
+            "tr td:last-of-type": {
+              fontWeight: "semibold",
+            },
+          },
+          p: {
+            marginBottom: "1rem",
+          },
+          list: {
+            paddingLeft: "1rem",
+          },
         },
       },
     },
@@ -264,11 +279,11 @@ const theme = extendTheme({
         fontWeight: "normal",
         marginBottom: "1rem",
       },
-      variants:{
-        h1:{
+      variants: {
+        h1: {
           fontSize: "2rem",
-        }
-      }
+        },
+      },
     },
     Link: {
       baseStyle: {
@@ -324,6 +339,18 @@ const theme = extendTheme({
       },
       defaultProps: {
         variant: "primary",
+      },
+    },
+    List: {
+      baseStyle: {
+        container: {},
+      },
+      variants: {
+        accordian: {
+          container: {
+            paddingLeft: "1rem",
+          },
+        },
       },
     },
     Text: {
