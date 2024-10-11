@@ -11,21 +11,34 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
+import { useStore } from "utils";
 import iconStatusCheck from "assets/icons/status/icon_status_check.svg";
+import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
+import { ParentPageTemplate } from "types/report";
 
 export const StatusTableElement = () => {
-  const sectionTitles = [
-    "General Information",
-    "Required Measure Results",
-    "Optional Measure Results",
-  ];
+  const { pageMap } = useStore();
+
+  if (!pageMap) {
+    return null;
+  }
+
+  const childPageIdsList = (pageMap.get("root") as ParentPageTemplate)
+    .childPageIds;
+  const sectionTitles = childPageIdsList
+    .map((id) => {
+      const page = pageMap.get(id) as ParentPageTemplate;
+      return page.title;
+    })
+    .filter((title) => title !== "Review & Submit");
+
   // Build Rows
   const rows = sectionTitles.map((section) => {
     return (
-      <Tr>
+      <Tr p={0}>
         <Td>
           <Stack flex="1">
-            <Text>{section}</Text>
+            <Text fontWeight="bold">{section}</Text>
           </Stack>
         </Td>
         <Td>
@@ -35,7 +48,14 @@ export const StatusTableElement = () => {
           </Flex>
         </Td>
         <Td>
-          <Button onClick={() => {}}>Edit</Button>
+          <Button
+            colorScheme="blue"
+            variant="outline"
+            leftIcon={<Image src={editIconPrimary} />}
+            onClick={() => {}}
+          >
+            Edit
+          </Button>
         </Td>
       </Tr>
     );
