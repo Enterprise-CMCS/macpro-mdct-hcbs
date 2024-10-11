@@ -8,7 +8,15 @@ import {
   InstructionsAccordion,
   DashboardTable,
 } from "components";
-import { Box, Button, Image, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Image,
+  Heading,
+  Link,
+  Text,
+  Flex,
+} from "@chakra-ui/react";
 import { parseCustomHtml, useStore } from "utils";
 
 import dashboardVerbiage from "verbiage/pages/dashboard";
@@ -41,7 +49,6 @@ export const DashboardPage = () => {
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
-
       <Link as={RouterLink} to="/" variant="return">
         <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
         Return home
@@ -66,11 +73,11 @@ export const DashboardPage = () => {
         {!reportsToDisplay?.length && (
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
-        <Box sx={sx.callToActionContainer}>
+        <Flex justifyContent="center" marginTop="2rem">
           <Button onClick={() => navigate(body.link.route)} type="submit">
             {body.link.callToActionText}
           </Button>
-        </Box>
+        </Flex>
       </Box>
     </PageTemplate>
   );
@@ -114,11 +121,5 @@ const sx = {
     maxWidth: "75%",
     margin: "0 auto",
     textAlign: "center",
-  },
-  callToActionContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: "2rem",
   },
 };

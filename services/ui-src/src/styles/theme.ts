@@ -115,7 +115,7 @@ const theme = extendTheme({
         button: {
           marginTop: "2rem",
           background: "palette.gray_lightest",
-          padding:"0 1.5rem"
+          padding: "0 1.5rem",
         },
         panel: {
           table: {
@@ -349,6 +349,39 @@ const theme = extendTheme({
         accordian: {
           container: {
             paddingLeft: "1rem",
+          },
+        },
+      },
+    },
+    Table: {
+      baseStyle: {
+        table: {
+          marginBottom: "2.5rem",
+          th: {
+            padding: "0.5rem 0",
+            borderBottom: "1px solid",
+            borderColor: "palette.gray_light",
+            color: "palette.gray_medium",
+            fontWeight: "bold",
+          },
+          tr: {
+            borderBottom: "1px solid",
+            borderColor: "palette.gray_light",
+          },
+          td: {
+            minWidth: "6rem",
+            padding: "0.5rem 0.75rem",
+            paddingLeft: 0,
+            borderTop: "1px solid",
+            borderBottom: "1px solid",
+            borderColor: "palette.gray_light",
+            textAlign: "left",
+            "&:last-of-type": {
+              paddingRight: 0,
+            },
+            "&:first-of-type": {
+              minWidth: "2rem",
+            },
           },
         },
       },
