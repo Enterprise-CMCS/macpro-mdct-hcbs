@@ -60,6 +60,12 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
 }
 
+export interface StatusPageTemplate extends FormPageTemplate {
+  required?: boolean;
+  stratified?: boolean;
+  optional?: boolean;
+}
+
 export const isMeasureTemplate = (
   element: PageTemplate
 ): element is FormPageTemplate => {
@@ -93,6 +99,7 @@ export enum ElementType {
   Radio = "radio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  StatusTable = "statusTable",
 }
 
 export type PageElement =
@@ -104,7 +111,8 @@ export type PageElement =
   | ParagraphTemplate
   | RadioTemplate
   | ButtonLinkTemplate
-  | MeasureTableTemplate;
+  | MeasureTableTemplate
+  | StatusTableTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -144,6 +152,11 @@ export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
   modalId: PageId;
+  to: PageId;
+};
+
+export type StatusTableTemplate = {
+  type: ElementType.StatusTable;
   to: PageId;
 };
 

@@ -155,6 +155,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Paragraph,
           text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
         },
+        {
+          type: ElementType.StatusTable,
+          to: "review-submit",
+        },
       ],
     },
   ],
