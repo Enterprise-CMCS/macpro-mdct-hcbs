@@ -128,15 +128,18 @@ export const ReportPageWrapper = () => {
                 parentPage.index == parentPage.childPageIds.length - 1 && (
                   <>
                     <Button
+                      as="a"
+                      href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       colorScheme="blue"
                       variant="outline"
                       leftIcon={<Image src={lookupIconPrimary} />}
-                      onClick={() => SetPageIndex(parentPage.index - 1)}
                     >
                       Review PDF
                     </Button>
                     <Button
-                      onClick={() => SetPageIndex(parentPage.index - 1)}
+                      // onClick={() => SetPageIndex(parentPage.index - 1)}
                       alignSelf="flex-end"
                     >
                       Submit QMS Report
