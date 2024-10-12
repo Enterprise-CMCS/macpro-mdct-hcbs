@@ -1,4 +1,12 @@
-import { Box, Button, Divider, HStack, Stack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  HStack,
+  Image,
+  Stack,
+  VStack,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
@@ -7,6 +15,7 @@ import { getReport } from "utils/api/requestMethods/report";
 import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
+import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 
 export const ReportPageWrapper = () => {
   const {
@@ -75,29 +84,64 @@ export const ReportPageWrapper = () => {
               )}
             </Box>
             <Divider></Divider>
-            <Stack
-              direction="row"
-              width="100%"
-              display="flex"
-              justifyContent="space-between"
-            >
-              {parentPage && (
-                <Button
-                  onClick={() => SetPageIndex(parentPage.index - 1)}
-                  mr="3"
-                  display={parentPage.index > 0 ? "block" : "contents"}
+            {parentPage &&
+              parentPage.index < parentPage.childPageIds.length - 1 && (
+                <Stack
+                  direction="row"
+                  width="100%"
+                  display="flex"
+                  justifyContent="space-between"
+                  mt={5}
                 >
-                  Previous
-                </Button>
-              )}
-              {parentPage &&
-                parentPage.index < parentPage.childPageIds.length - 1 && (
+                  {parentPage && (
+                    <Button
+                      onClick={() => SetPageIndex(parentPage.index - 1)}
+                      mr="3"
+                      display={
+                        parentPage.index > 0 &&
+                        parentPage.index < parentPage.childPageIds.length - 1
+                          ? "block"
+                          : "contents"
+                      }
+                    >
+                      Previous
+                    </Button>
+                  )}
+                  (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index + 1)}
                     alignSelf="flex-end"
                   >
                     Continue
                   </Button>
+                  )
+                </Stack>
+              )}
+            <Stack
+              direction="row"
+              width="100%"
+              display="flex"
+              justifyContent="space-between"
+              mt={5}
+            >
+              {parentPage &&
+                parentPage.index == parentPage.childPageIds.length - 1 && (
+                  <>
+                    <Button
+                      colorScheme="blue"
+                      variant="outline"
+                      leftIcon={<Image src={lookupIconPrimary} />}
+                      onClick={() => SetPageIndex(parentPage.index - 1)}
+                    >
+                      Review PDF
+                    </Button>
+                    <Button
+                      onClick={() => SetPageIndex(parentPage.index - 1)}
+                      alignSelf="flex-end"
+                    >
+                      Submit QMS Report
+                    </Button>
+                  </>
                 )}
             </Stack>
           </VStack>

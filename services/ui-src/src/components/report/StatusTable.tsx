@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import iconStatusCheck from "assets/icons/status/icon_status_check.svg";
+import iconStatusError from "assets/icons/status/icon_status_alert.svg";
+
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import { ParentPageTemplate } from "types/report";
 
@@ -43,8 +45,12 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           <Flex align="right">
-            <Image src={iconStatusCheck} alt="icon description" />
-            <Text ml={1}>Complete</Text>
+            {/* TODO: Logic for when a page is incomplete to change status icon and text */}
+            <Image
+              src={iconStatusCheck ? iconStatusCheck : iconStatusError}
+              alt="icon description"
+            />
+            <Text ml={1}>{iconStatusCheck ? "Complete" : "Error"}</Text>
           </Flex>
         </Td>
         <Td>
