@@ -216,13 +216,13 @@ resources:
                   aws:SecureTransport: false
         Bucket: !Ref LoggingBucket
     CloudFrontOriginAccessControl:
-    Type: AWS::CloudFront::OriginAccessControl
-    Properties:
-      OriginAccessControlConfig:
-        Name: ${self:service}-${self:custom.stage}-oac-conf
-        OriginAccessControlOriginType: s3
-        SigningBehavior: always
-        SigningProtocol: sigv4
+      Type: AWS::CloudFront::OriginAccessControl
+      Properties:
+        OriginAccessControlConfig:
+          Name: ${self:service}-${self:custom.stage}-oac-conf
+          OriginAccessControlOriginType: s3
+          SigningBehavior: always
+          SigningProtocol: sigv4
     CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
