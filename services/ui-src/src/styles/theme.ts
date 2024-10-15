@@ -174,11 +174,11 @@ const theme = extendTheme({
           color: "palette.base",
           fontWeight: "normal",
           border: "1px solid",
-          borderRadius:"0",
+          borderRadius: "0",
           borderColor: "palette.gray_lighter",
           borderWidth: "0 0 1px 0",
           fontSize: "14px",
-          paddingLeft:"2rem",
+          paddingLeft: "2rem",
           _hover: {
             color: "palette.secondary_darkest",
             backgroundColor: "palette.gray_lightest_highlight",
@@ -187,8 +187,8 @@ const theme = extendTheme({
             borderWidth: "0 0 0 4px",
           },
         },
-        sidebarToggle:{
-          padding:"0"
+        sidebarToggle: {
+          padding: "0",
         },
         outline: () => ({
           ...theme.components.Button.variants.transparent,
@@ -291,7 +291,7 @@ const theme = extendTheme({
           fontSize: "21px",
           fontWeight: "700",
           padding: "32px",
-          margin:"0"
+          margin: "0",
         },
       },
     },
@@ -361,14 +361,6 @@ const theme = extendTheme({
             paddingLeft: "1rem",
           },
         },
-        sidebar:{
-          container:{
-            paddingLeft: "1rem",
-          },
-          item:{
-            listStyleType:"none"
-          }
-        }
       },
     },
     Table: {

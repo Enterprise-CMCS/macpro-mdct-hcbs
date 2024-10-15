@@ -1,56 +1,63 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Stack,
-  Flex,
-  Text,
-  UnorderedList,
-  ListItem,
-} from "@chakra-ui/react";
+import { Box, Button, Heading, Flex, Text, Image } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { AnyObject } from "yup/lib/types";
 import { ParentPageTemplate } from "../../types/report";
 import { useState } from "react";
+import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
+import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
 
-const navItem = (page: AnyObject, index: number, func: Function) => {
-  const [section, setSection] = useState<boolean>(false);
+const navItemText = (title: string, index: number) => {
+  if (index <= 0) return title;
+  return <Box paddingLeft="1rem">{navItemText(title, index - 1)}</Box>;
+};
+
+const navItem = (
+  page: AnyObject,
+  index: number,
+  isToggle: boolean,
+  func: Function
+) => {
+  const [section, setSection] = useState<boolean>(true);
   return (
-    <Button variant="sidebar" key={page.id} onClick={() => func(page.id)}>
+    <Button variant="sidebar" key={page.id}>
       <Flex justifyContent="space-between" alignItems="center">
-        {navItemText(page.title!, index)}
-        {index > 0 && <Button variant="sidebarToggle">toggle</Button>}
+        <Box onClick={() => func(page.id)} width="100%" height="100%">
+          {navItemText(page.title!, index)}
+        </Box>
+        <Box onClick={() => setSection(!section)}>
+          {isToggle && (
+            <Image
+              src={section ? arrowDownIcon : arrowUpIcon}
+              alt={section ? "Arrow left" : "Arrow right"}
+            />
+          )}
+        </Box>
       </Flex>
     </Button>
   );
 };
 
-const navItemText = (title: string, index: number) => {
-  if (index <= 0) return title;
-  return (
-    <UnorderedList variant="sidebar">
-      <ListItem>{navItemText(title, index - 1)}</ListItem>
-    </UnorderedList>
-  );
-};
-
 export const Sidebar = () => {
   const { report, pageMap, setCurrentPageId } = useStore();
-  // const [selectedNav, setSelectedNav ] = useState<string>();
 
   if (!report || !pageMap) {
     return null;
   }
-  const buildNavList = (pageIds: string[], layer: number = 0) => {
+  const buildNavList = (
+    pageIds: string[],
+    layer: number = 0
+  ): JSX.Element[] => {
     const builtList = [];
     for (const child of pageIds) {
       const page = pageMap.get(child) as ParentPageTemplate;
-      builtList.push(navItem(page, layer, setCurrentPageId));
+      builtList.push(
+        navItem(page, layer, !!page.childPageIds, setCurrentPageId)
+      );
       if (page.childPageIds) {
         builtList.push(buildNavList(page.childPageIds, layer + 1));
       }
     }
-    return builtList;
+    return builtList as JSX.Element[];
   };
 
   const navList = buildNavList(
