@@ -1,13 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { Alert } from "components";
-import { AlertTypes } from "types";
 import { testA11y } from "utils/testing/commonTests";
+
+/** The path to our alert SVG, as injected by jest */
+const alertIcon = "test-file-stub";
 
 const alertComponent = (
   <Alert
     title="Test alert!"
     description="This is for testing."
     link="https://example.com"
+    icon={alertIcon}
+    showIcon={true}
   />
 );
 
@@ -29,34 +33,26 @@ describe("<Alert />", () => {
   test("Alert image exists", () => {
     expect(screen.getByRole("img", { name: "Alert" })).toBeVisible();
   });
+  test("renders fallback alertIcon when icon prop is not provided", () => {
+    expect(screen.getByAltText("Alert")).toHaveAttribute("src", alertIcon);
+  });
 
   testA11y(alertComponent);
 });
 
-describe("Alert icon", () => {
-  const alertIcon = "test-file-stub";
-  const customIcon = "customIcon.png";
-
+describe("Test Alert icon if custom or if showIcon is false", () => {
   test("renders custom icon when icon prop is provided", () => {
-    render(
-      <Alert status={AlertTypes.INFO} icon={customIcon} showIcon={true} />
+    render(<Alert icon="customIcon.png" />);
+
+    expect(screen.getByAltText("Alert")).toHaveAttribute(
+      "src",
+      "customIcon.png"
     );
-
-    const imgElement = screen.getByAltText("Alert");
-    expect(imgElement).toHaveAttribute("src", customIcon);
-  });
-
-  test("renders fallback alertIcon when icon prop is not provided", () => {
-    render(<Alert status={AlertTypes.INFO} showIcon={true} />);
-
-    const imgElement = screen.getByAltText("Alert");
-    expect(imgElement).toHaveAttribute("src", alertIcon);
   });
 
   test("does not render the icon when showIcon is false", () => {
-    render(<Alert status={AlertTypes.INFO} showIcon={false} />);
+    render(<Alert showIcon={false} />);
 
-    const imgElement = screen.queryByAltText("Alert");
-    expect(imgElement).not.toBeInTheDocument();
+    expect(screen.queryByAltText("Alert")).not.toBeInTheDocument();
   });
 });
