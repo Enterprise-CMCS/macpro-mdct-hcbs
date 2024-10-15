@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { TextField } from "components";
 import { mockStateUserStore } from "utils/testing/setupJest";
@@ -9,7 +10,7 @@ import { PageElement } from "types/report";
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
   register: () => {},
-  setValue: () => {},
+  setValue: jest.fn(),
   getValues: jest.fn(),
   trigger: mockTrigger,
 };
@@ -50,6 +51,22 @@ describe("<TextField />", () => {
       const textField = screen.getByRole("textbox");
       expect(textField).toBeVisible();
       jest.clearAllMocks();
+    });
+
+    test("TextField should send updates to the Form", async () => {
+      mockedUseStore.mockReturnValue(mockStateUserStore);
+      mockGetValues("");
+      render(textFieldComponent);
+      const textField = screen.getByRole("textbox");
+
+      await userEvent.type(textField, "hello[Tab]");
+
+      // 5 keystrokes + 1 blur = 6 calls
+      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(6);
+      expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
+        expect.any(String),
+        "hello"
+      );
     });
   });
 
