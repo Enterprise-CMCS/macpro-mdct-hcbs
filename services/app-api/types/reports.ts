@@ -120,7 +120,7 @@ export type FormPageTemplate = {
   type: PageType;
   elements: PageElement[];
   sidebar?: boolean;
-
+  hideNavButtons?: boolean;
   childPageIds?: PageId[];
 };
 export const isChildPage = (page: PageTemplate): page is FormPageTemplate => {

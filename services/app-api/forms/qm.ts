@@ -134,6 +134,7 @@ export const qmReportTemplate: ReportTemplate = {
       title: "Review & Submit",
       type: PageType.Standard,
       sidebar: true,
+      hideNavButtons: true,
       elements: [
         {
           type: ElementType.Header,

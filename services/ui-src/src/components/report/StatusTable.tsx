@@ -14,12 +14,14 @@ import {
 import { useStore } from "utils";
 import iconStatusCheck from "assets/icons/status/icon_status_check.svg";
 import iconStatusError from "assets/icons/status/icon_status_alert.svg";
-
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
+import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { ParentPageTemplate } from "types/report";
+import { useNavigate } from "react-router-dom";
 
 export const StatusTableElement = () => {
   const { pageMap } = useStore();
+  const navigate = useNavigate();
 
   if (!pageMap) {
     return null;
@@ -32,7 +34,7 @@ export const StatusTableElement = () => {
       const page = pageMap.get(id) as ParentPageTemplate;
       return page.title;
     })
-    .filter((title) => title !== "Review & Submit");
+    .slice(0, -1);
 
   // Build Rows
   const rows = sectionTitles.map((section) => {
@@ -66,17 +68,40 @@ export const StatusTableElement = () => {
       </Tr>
     );
   });
-
   return (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th>Section</Th>
-          <Th>Status</Th>
-          <Th></Th>
-        </Tr>
-      </Thead>
-      <Tbody>{rows}</Tbody>
-    </Table>
+    <>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>Section</Th>
+            <Th>Status</Th>
+            <Th></Th>
+          </Tr>
+        </Thead>
+        <Tbody>{rows}</Tbody>
+      </Table>
+      <Stack
+        direction="row"
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        mt={5}
+      >
+        <Button
+          onClick={() => navigate("PDF")}
+          colorScheme="blue"
+          variant="outline"
+          leftIcon={<Image src={lookupIconPrimary} />}
+        >
+          Review PDF
+        </Button>
+        <Button
+          // onClick={() => SetPageIndex(parentPage.index - 1)}
+          alignSelf="flex-end"
+        >
+          Submit QMS Report
+        </Button>
+      </Stack>
+    </>
   );
 };
