@@ -1,8 +1,7 @@
-import { Box, Button, Heading, Flex, Text, Image } from "@chakra-ui/react";
+import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { AnyObject } from "yup/lib/types";
 import { ParentPageTemplate } from "../../types/report";
-import { useState } from "react";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
 
@@ -14,21 +13,20 @@ const navItemText = (title: string, index: number) => {
 const navItem = (
   page: AnyObject,
   index: number,
-  isToggle: boolean,
+  toggle: AnyObject,
   func: Function
 ) => {
-  const [section, setSection] = useState<boolean>(true);
   return (
     <Button variant="sidebar" key={page.id}>
       <Flex justifyContent="space-between" alignItems="center">
         <Box onClick={() => func(page.id)} width="100%" height="100%">
           {navItemText(page.title!, index)}
         </Box>
-        <Box onClick={() => setSection(!section)}>
-          {isToggle && (
+        <Box onClick={() => toggle.func()}>
+          {toggle && (
             <Image
-              src={section ? arrowDownIcon : arrowUpIcon}
-              alt={section ? "Arrow left" : "Arrow right"}
+              src={toggle.state ? arrowDownIcon : arrowUpIcon}
+              alt={toggle.state ? "Arrow left" : "Arrow right"}
             />
           )}
         </Box>
@@ -37,12 +35,19 @@ const navItem = (
   );
 };
 
+const toggleMap: any = {};
+
 export const Sidebar = () => {
   const { report, pageMap, setCurrentPageId } = useStore();
 
   if (!report || !pageMap) {
     return null;
   }
+
+  const setToggle = (page: ParentPageTemplate) => {
+    toggleMap[page.id] = !toggleMap[page.id];
+  };
+
   const buildNavList = (
     pageIds: string[],
     layer: number = 0
@@ -50,25 +55,24 @@ export const Sidebar = () => {
     const builtList = [];
     for (const child of pageIds) {
       const page = pageMap.get(child) as ParentPageTemplate;
-      builtList.push(
-        navItem(page, layer, !!page.childPageIds, setCurrentPageId)
-      );
-      if (page.childPageIds) {
+      const toggleData = page.childPageIds && {
+        state: toggleMap[page.id],
+        func: () => setToggle(page),
+      };
+      builtList.push(navItem(page, layer, toggleData, setCurrentPageId));
+      const toggle = toggleMap[page.id];
+      if (page.childPageIds && toggle!) {
         builtList.push(buildNavList(page.childPageIds, layer + 1));
       }
     }
     return builtList as JSX.Element[];
   };
 
-  const navList = buildNavList(
-    (pageMap.get("root") as ParentPageTemplate).childPageIds
-  );
-
   return (
     <Flex height="100%">
       <Flex flexDirection="column" background="palette.gray_lightest">
         <Heading variant="sidebar">Quality Measures Report</Heading>
-        {navList}
+        {buildNavList((pageMap.get("root") as ParentPageTemplate).childPageIds)}
       </Flex>
       <Button>Toggle</Button>
     </Flex>
