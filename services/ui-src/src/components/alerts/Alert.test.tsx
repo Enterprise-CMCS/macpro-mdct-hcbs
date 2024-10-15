@@ -36,26 +36,10 @@ describe("<Alert />", () => {
 describe("Alert icon", () => {
   const alertIcon = "test-file-stub";
   const customIcon = "customIcon.png";
-  const title = "Test Alert";
-  const description = "This is a test description";
-
-  const sx = {
-    icon: { width: "100px" },
-    contentBox: {},
-    descriptionText: {},
-    linkText: {},
-  };
 
   test("renders custom icon when icon prop is provided", () => {
     render(
-      <Alert
-        status={AlertTypes.INFO}
-        title={title}
-        description={description}
-        icon={customIcon}
-        showIcon={true}
-        sx={sx}
-      />
+      <Alert status={AlertTypes.INFO} icon={customIcon} showIcon={true} />
     );
 
     const imgElement = screen.getByAltText("Alert");
@@ -63,30 +47,14 @@ describe("Alert icon", () => {
   });
 
   test("renders fallback alertIcon when icon prop is not provided", () => {
-    render(
-      <Alert
-        status={AlertTypes.INFO}
-        title={title}
-        description={description}
-        showIcon={true}
-        sx={sx}
-      />
-    );
+    render(<Alert status={AlertTypes.INFO} showIcon={true} />);
 
     const imgElement = screen.getByAltText("Alert");
     expect(imgElement).toHaveAttribute("src", alertIcon);
   });
 
   test("does not render the icon when showIcon is false", () => {
-    render(
-      <Alert
-        status={AlertTypes.INFO}
-        title={title}
-        description={description}
-        showIcon={false}
-        sx={sx}
-      />
-    );
+    render(<Alert status={AlertTypes.INFO} showIcon={false} />);
 
     const imgElement = screen.queryByAltText("Alert");
     expect(imgElement).not.toBeInTheDocument();
