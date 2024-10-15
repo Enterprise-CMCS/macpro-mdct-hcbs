@@ -65,7 +65,7 @@ export const ReportPageWrapper = () => {
 
   return (
     <FormProvider {...methods}>
-      <HStack>
+      <HStack width="100%" height="100%">
         {currentPage.sidebar && <Sidebar />}
         <form id="aFormId" autoComplete="off" onBlur={handleSubmit(handleBlur)}>
           <VStack height="100%" padding="2rem" width="640px">
@@ -77,7 +77,6 @@ export const ReportPageWrapper = () => {
             <Divider></Divider>
             <Stack
               direction="row"
-              width="100%"
               display="flex"
               justifyContent="space-between"
             >

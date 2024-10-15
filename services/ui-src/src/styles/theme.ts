@@ -171,20 +171,24 @@ const theme = extendTheme({
           width: "100%",
           textAlign: "left",
           background: "transparent",
-          color: "black",
+          color: "palette.base",
           fontWeight: "normal",
-          overflow: "hidden",
           border: "1px solid",
-          borderColor: "palette.gray_light",
+          borderRadius:"0",
+          borderColor: "palette.gray_lighter",
           borderWidth: "0 0 1px 0",
-          fontSize: "0.75em",
+          fontSize: "14px",
+          paddingLeft:"2rem",
           _hover: {
-            color: "palette.primary_darker",
+            color: "palette.secondary_darkest",
             backgroundColor: "palette.gray_lightest_highlight",
             border: "1px solid",
-            borderColor: "palette.secondary_light",
+            borderColor: "palette.secondary",
             borderWidth: "0 0 0 4px",
           },
+        },
+        sidebarToggle:{
+          padding:"0"
         },
         outline: () => ({
           ...theme.components.Button.variants.transparent,
@@ -283,6 +287,12 @@ const theme = extendTheme({
         h1: {
           fontSize: "2rem",
         },
+        sidebar: {
+          fontSize: "21px",
+          fontWeight: "700",
+          padding: "32px",
+          margin:"0"
+        },
       },
     },
     Link: {
@@ -351,6 +361,14 @@ const theme = extendTheme({
             paddingLeft: "1rem",
           },
         },
+        sidebar:{
+          container:{
+            paddingLeft: "1rem",
+          },
+          item:{
+            listStyleType:"none"
+          }
+        }
       },
     },
     Table: {

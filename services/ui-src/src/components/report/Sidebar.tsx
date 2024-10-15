@@ -1,49 +1,69 @@
-import { Box, Button, Heading, Stack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Stack,
+  Flex,
+  Text,
+  UnorderedList,
+  ListItem,
+} from "@chakra-ui/react";
 import { useStore } from "utils";
 import { AnyObject } from "yup/lib/types";
 import { ParentPageTemplate } from "../../types/report";
+import { useState } from "react";
 
-export const navItem = (page: AnyObject, func: Function) => {
+const navItem = (page: AnyObject, index: number, func: Function) => {
+  const [section, setSection] = useState<boolean>(false);
   return (
-    <Button key={page.id} variant="sidebar" onClick={() => func(page.id)}>
-      {page.title}
+    <Button variant="sidebar" key={page.id} onClick={() => func(page.id)}>
+      <Flex justifyContent="space-between" alignItems="center">
+        {navItemText(page.title!, index)}
+        {index > 0 && <Button variant="sidebarToggle">toggle</Button>}
+      </Flex>
     </Button>
+  );
+};
+
+const navItemText = (title: string, index: number) => {
+  if (index <= 0) return title;
+  return (
+    <UnorderedList variant="sidebar">
+      <ListItem>{navItemText(title, index - 1)}</ListItem>
+    </UnorderedList>
   );
 };
 
 export const Sidebar = () => {
   const { report, pageMap, setCurrentPageId } = useStore();
+  // const [selectedNav, setSelectedNav ] = useState<string>();
 
   if (!report || !pageMap) {
     return null;
   }
-  const buildNavList = (childPageIds: string[]) => {
-    const builtList: any[] = [];
-
-    for (const child of childPageIds) {
+  const buildNavList = (pageIds: string[], layer: number = 0) => {
+    const builtList = [];
+    for (const child of pageIds) {
       const page = pageMap.get(child) as ParentPageTemplate;
+      builtList.push(navItem(page, layer, setCurrentPageId));
       if (page.childPageIds) {
-        builtList.push(
-          <Stack key={page.id} width="100%" spacing="0">
-            {navItem(page, setCurrentPageId)}
-            <Box>{buildNavList(page.childPageIds)}</Box>
-          </Stack>
-        );
-      } else {
-        builtList.push(navItem(page, setCurrentPageId));
+        builtList.push(buildNavList(page.childPageIds, layer + 1));
       }
     }
     return builtList;
   };
+
   const navList = buildNavList(
     (pageMap.get("root") as ParentPageTemplate).childPageIds
   );
+
   return (
-    <VStack>
-      <Heading fontSize="21" fontWeight="700" padding="32px">
-        Quality Measures Report
-      </Heading>
-      {navList}
-    </VStack>
+    <Flex height="100%">
+      <Flex flexDirection="column" background="palette.gray_lightest">
+        <Heading variant="sidebar">Quality Measures Report</Heading>
+        {navList}
+      </Flex>
+      <Button>Toggle</Button>
+    </Flex>
   );
 };
