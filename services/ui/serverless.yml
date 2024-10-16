@@ -143,6 +143,11 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
       DeletionPolicy: Delete
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
@@ -150,11 +155,16 @@ resources:
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
-            - Effect: Allow
-              Action: "s3:GetObject"
-              Resource: !Sub arn:aws:s3:::${S3Bucket}/*
+            - Sid: AllowCloudFrontServicePrincipalReadOnly
+              Action:
+              - 's3:GetObject'
+              Effect: Allow
               Principal:
-                CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
+                Service: cloudfront.amazonaws.com
+              Resource: !Sub "${S3Bucket.Arn}/*"
+              Condition:
+                StringEquals:
+                  AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution.Id}"
             - Sid: "AllowSSLRequestsOnly"
               Effect: Deny
               Action: "s3:*"
@@ -205,11 +215,14 @@ resources:
                 Bool:
                   aws:SecureTransport: false
         Bucket: !Ref LoggingBucket
-    CloudFrontOriginAccessIdentity:
-      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    CloudFrontOriginAccessControl:
+      Type: AWS::CloudFront::OriginAccessControl
       Properties:
-        CloudFrontOriginAccessIdentityConfig:
-          Comment: OAI to prevent direct public access to the bucket
+        OriginAccessControlConfig:
+          Name: ${self:service}-${self:custom.stage}-oac-conf
+          OriginAccessControlOriginType: s3
+          SigningBehavior: always
+          SigningProtocol: sigv4
     CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -223,8 +236,9 @@ resources:
           Origins:
             - DomainName: !GetAtt S3Bucket.DomainName
               Id: S3Origin
+              OriginAccessControlId: !Ref CloudFrontOriginAccessControl
               S3OriginConfig:
-                OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}
+                OriginAccessIdentity: ""
           Enabled: true
           HttpVersion: "http2"
           DefaultRootObject: index.html
