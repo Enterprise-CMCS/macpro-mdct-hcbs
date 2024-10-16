@@ -3,7 +3,7 @@ import { useStore } from "utils";
 import { PageTemplate } from "../../types/report";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
@@ -38,7 +38,7 @@ export const Sidebar = () => {
   const navSection = (
     section: PageTemplate,
     index: number = 0
-  ): React.ReactNode => {
+  ): ReactNode => {
     const childSections = section.childPageIds?.map((child) =>
       pageMap.get(child)
     );
