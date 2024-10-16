@@ -35,10 +35,7 @@ export const Sidebar = () => {
     setSelected(sectonId);
   };
 
-  const navSection = (
-    section: PageTemplate,
-    index: number = 0
-  ): ReactNode => {
+  const navSection = (section: PageTemplate, index: number = 0): ReactNode => {
     const childSections = section.childPageIds?.map((child) =>
       pageMap.get(child)
     );
