@@ -65,7 +65,12 @@ export const MeasureTableElement = (props: PageElementProps) => {
           </Button>
         </Td>
         <Td>
-          <Button variant="outline" onClick={() => setCurrentPageId(measure.id)}>Edit</Button>
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPageId(measure.id)}
+          >
+            Edit
+          </Button>
         </Td>
       </Tr>
     );

@@ -1,4 +1,12 @@
-import { Box, Button, Divider, HStack, Stack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  HStack,
+  Stack,
+  VStack,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
@@ -68,8 +76,13 @@ export const ReportPageWrapper = () => {
     <FormProvider {...methods}>
       <HStack width="100%" height="100%">
         {currentPage.sidebar && <Sidebar />}
-        <VStack height="100%" padding="4rem 2rem 2rem 2rem" width="640px" gap="6">
-          <Box flex="auto"alignItems="flex-start" width="100%">
+        <VStack
+          height="100%"
+          padding="4rem 2rem 2rem 2rem"
+          width="640px"
+          gap="6"
+        >
+          <Box flex="auto" alignItems="flex-start" width="100%">
             <form
               id="aFormId"
               autoComplete="off"
@@ -81,27 +94,25 @@ export const ReportPageWrapper = () => {
             </form>
           </Box>
           <Divider borderColor="palette.gray_light"></Divider>
-          <Stack direction="row" display="flex" justifyContent="space-between" width="100%">
-            {parentPage && (
+          <Flex width="100%">
+            {parentPage && parentPage.index > 0 && (
               <Button
                 onClick={() => SetPageIndex(parentPage.index - 1)}
-                mr="3"
-                display={parentPage.index > 0 ? "block" : "contents"}
                 variant="outline"
               >
-                {parentPage.index > 0 ? "Previous" : "-"}
+                Previous
               </Button>
             )}
             {parentPage &&
               parentPage.index < parentPage.childPageIds.length - 1 && (
                 <Button
                   onClick={() => SetPageIndex(parentPage.index + 1)}
-                  alignSelf="flex-end"
+                  marginLeft="auto"
                 >
                   Continue
                 </Button>
               )}
-          </Stack>
+          </Flex>
         </VStack>
         <ReportModal />
       </HStack>
