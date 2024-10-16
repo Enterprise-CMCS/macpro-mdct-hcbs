@@ -6,23 +6,17 @@ import {
   AccordionPanel,
   Box,
   Button,
-  FormControl,
-  FormHelperText,
   FormLabel,
   Heading,
-  Input,
   Radio,
   RadioGroup,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
 import { useStore } from "utils";
 import {
   HeaderTemplate,
   SubHeaderTemplate,
-  TextboxTemplate,
   AccordionTemplate,
   RadioTemplate,
   ButtonLinkTemplate,
@@ -53,39 +47,6 @@ export const subHeaderElement = (props: PageElementProps) => {
 export const paragraphElement = (props: PageElementProps) => {
   return (
     <Text fontSize="18px">{(props.element as SubHeaderTemplate).text}</Text>
-  );
-};
-
-export const textboxElement = (props: PageElementProps) => {
-  const textbox = props.element as TextboxTemplate;
-
-  // get form context and register field
-  const form = useFormContext();
-  const inputName = "answers.1.2"; // TODO: id based
-  useEffect(() => {
-    form.register(inputName);
-  }, []);
-  const [input, setInput] = useState(textbox.answer || "");
-
-  const onBlurHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(inputName, e.target.value);
-  };
-
-  return (
-    <FormControl>
-      <FormLabel fontWeight="bold">{textbox.label}</FormLabel>
-      {textbox.helperText !== undefined && (
-        <FormHelperText>{textbox.helperText}</FormHelperText>
-      )}
-      <Input
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
-        onBlur={async (e) => await onBlurHandler(e)}
-        size="sm"
-      ></Input>
-    </FormControl>
   );
 };
 
