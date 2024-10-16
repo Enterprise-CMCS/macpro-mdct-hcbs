@@ -7,7 +7,11 @@ import { useState } from "react";
 
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
-  return <Box paddingLeft="1rem">{navItem(title, index - 1)}</Box>;
+  return (
+    <Box paddingLeft="1rem" key={`${title}.${index}`}>
+      {navItem(title, index - 1)}
+    </Box>
+  );
 };
 
 export const Sidebar = () => {
@@ -26,7 +30,7 @@ export const Sidebar = () => {
     setToggleList({ ...list });
   };
 
-  const onNavClick = (sectonId: string) => {
+  const onNavSelect = (sectonId: string) => {
     setCurrentPageId(sectonId);
     setSelected(sectonId);
   };
@@ -34,24 +38,21 @@ export const Sidebar = () => {
   const navSection = (
     section: PageTemplate,
     index: number = 0
-  ): JSX.Element => {
+  ): React.ReactNode => {
     const childSections = section.childPageIds?.map((child) =>
       pageMap.get(child)
     );
 
-    const isSelected = section.id === selected;
-
     return (
-      <>
+      <Box key={section.id}>
         <Button
-          key={section.id}
-          variant={isSelected ? "sidebarSelected" : "sidebar"}
+          variant={section.id === selected ? "sidebarSelected" : "sidebar"}
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box
               width="100%"
               height="100%"
-              onClick={() => onNavClick(section.id)}
+              onClick={() => onNavSelect(section.id)}
             >
               {navItem(section.title!, index)}
             </Box>
@@ -72,7 +73,7 @@ export const Sidebar = () => {
         {childSections?.length! > 0 &&
           toggleList[section.id] &&
           childSections!.map((sec) => navSection(sec!, index + 1))}
-      </>
+      </Box>
     );
   };
 
@@ -86,7 +87,11 @@ export const Sidebar = () => {
             ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
         </Flex>
       )}
-      <Button variant="sidebarToggle" onClick={() => setIsOpen(!isOpen)}>
+      <Button
+        aria-label="Open/Close sidebar menu"
+        variant="sidebarToggle"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <Image
           src={arrowDownIcon}
           alt={isOpen ? "Arrow left" : "Arrow right"}
