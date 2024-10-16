@@ -58,6 +58,7 @@ export const ReportPageWrapper = () => {
   const SetPageIndex = (newPageIndex: number) => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
     const childPageCount = parentPage.childPageIds?.length ?? 0;
+
     if (newPageIndex >= 0 && newPageIndex < childPageCount) {
       setParentPage({ ...parentPage, index: newPageIndex });
     }
@@ -67,41 +68,42 @@ export const ReportPageWrapper = () => {
     <FormProvider {...methods}>
       <HStack width="100%" height="100%">
         {currentPage.sidebar && <Sidebar />}
-        <form id="aFormId" autoComplete="off" onBlur={handleSubmit(handleBlur)}>
-          <VStack height="100%" padding="2rem" width="640px">
-            <Box flex="auto" alignItems="flex-start" width="100%">
+        <VStack height="100%" padding="4rem 2rem 2rem 2rem" width="640px" gap="6">
+          <Box flex="auto"alignItems="flex-start" width="100%">
+            <form
+              id="aFormId"
+              autoComplete="off"
+              onBlur={handleSubmit(handleBlur)}
+            >
               {currentPage.elements && (
                 <Page elements={currentPage.elements ?? []}></Page>
               )}
-            </Box>
-            <Divider></Divider>
-            <Stack
-              direction="row"
-              display="flex"
-              justifyContent="space-between"
-            >
-              {parentPage && (
+            </form>
+          </Box>
+          <Divider borderColor="palette.gray_light"></Divider>
+          <Stack direction="row" display="flex" justifyContent="space-between" width="100%">
+            {parentPage && (
+              <Button
+                onClick={() => SetPageIndex(parentPage.index - 1)}
+                mr="3"
+                display={parentPage.index > 0 ? "block" : "contents"}
+                variant="outline"
+              >
+                {parentPage.index > 0 ? "Previous" : "-"}
+              </Button>
+            )}
+            {parentPage &&
+              parentPage.index < parentPage.childPageIds.length - 1 && (
                 <Button
-                  onClick={() => SetPageIndex(parentPage.index - 1)}
-                  mr="3"
-                  display={parentPage.index > 0 ? "block" : "contents"}
+                  onClick={() => SetPageIndex(parentPage.index + 1)}
+                  alignSelf="flex-end"
                 >
-                  Previous
+                  Continue
                 </Button>
               )}
-              {parentPage &&
-                parentPage.index < parentPage.childPageIds.length - 1 && (
-                  <Button
-                    onClick={() => SetPageIndex(parentPage.index + 1)}
-                    alignSelf="flex-end"
-                  >
-                    Continue
-                  </Button>
-                )}
-            </Stack>
-          </VStack>
-          <ReportModal />
-        </form>
+          </Stack>
+        </VStack>
+        <ReportModal />
       </HStack>
     </FormProvider>
   );

@@ -112,12 +112,16 @@ const theme = extendTheme({
     Accordion: {
       baseStyle: {
         borderStyle: "none",
+        root: {
+          width: "100%",
+        },
         button: {
           marginTop: "2rem",
           background: "palette.gray_lightest",
           padding: "0 1.5rem",
         },
         panel: {
+          width: "100%",
           table: {
             "tr td:last-of-type": {
               fontWeight: "semibold",
@@ -138,13 +142,12 @@ const theme = extendTheme({
         ".mobile &": {
           fontSize: "sm",
         },
-        borderRadius: "0",
+        borderRadius: "0.25rem",
         fontWeight: "normal",
       },
       variants: {
         // primary variants
         primary: {
-          borderRadius: "0.25rem",
           width: "fit-content",
           fontWeight: "bold",
           backgroundColor: "palette.primary",
@@ -314,6 +317,10 @@ const theme = extendTheme({
           fontWeight: "700",
           padding: "32px",
           margin: "0",
+        },
+        subHeader: {
+          fontSize: "23px",
+          fontWeight: "700",
         },
       },
     },
