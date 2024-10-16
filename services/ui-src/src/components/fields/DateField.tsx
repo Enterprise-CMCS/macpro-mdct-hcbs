@@ -19,10 +19,12 @@ export const DateField = (props: PageElementProps) => {
     form.register(inputName);
   }, []);
 
-  const onChangeHandler = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    form.setValue(inputName, event.target.value);
+  const onChangeHandler = (rawValue: string, maskedValue: string) => {
+    setDisplayValue(rawValue);
+    const isValidDate = checkDateCompleteness(maskedValue);
+    if (isValidDate || maskedValue === "") {
+      form.setValue(inputName, maskedValue, { shouldValidate: true });
+    }
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,8 +44,8 @@ export const DateField = (props: PageElementProps) => {
         id={inputName}
         name={inputName}
         label={labelText || ""}
-        onChange={(e) => onChangeHandler(e)}
-        onBlur={(e) => onBlurHandler(e)}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
         value={displayValue}
         hint={parsedHint}
         errorMessage={errorMessage}

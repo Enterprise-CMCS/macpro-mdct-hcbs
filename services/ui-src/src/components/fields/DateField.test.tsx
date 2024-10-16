@@ -1,10 +1,10 @@
-import { render } from "@testing-library/react";
 import { mockStateUserStore } from "utils/testing/setupJest";
 import { useFormContext } from "react-hook-form";
 import { DateField } from "components/fields/DateField";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 import { PageElement } from "types/report";
+import { render, screen } from "@testing-library/react";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -46,11 +46,8 @@ describe("<DateField />", () => {
   describe("Test DateField basic functionality", () => {
     test("DateField is visible", () => {
       mockGetValues(undefined);
-      const result = render(dateFieldComponent);
-      console.log(result.container);
-      const dateFieldInput: HTMLInputElement = result.container.querySelector(
-        "[label='test-date-field']"
-      )!;
+      render(dateFieldComponent);
+      const dateFieldInput: HTMLInputElement = screen.getByRole("textbox");
       expect(dateFieldInput).toBeVisible();
     });
   });
