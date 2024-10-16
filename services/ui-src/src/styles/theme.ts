@@ -135,16 +135,18 @@ const theme = extendTheme({
     Button: {
       baseStyle: {
         transition: "all 0.3s ease",
-        width: "fit-content",
-        borderRadius: "0.25rem",
-        fontWeight: "bold",
         ".mobile &": {
           fontSize: "sm",
         },
+        borderRadius: "0",
+        fontWeight:"normal"
       },
       variants: {
         // primary variants
         primary: {
+          borderRadius: "0.25rem",
+          width: "fit-content",
+          fontWeight: "bold",
           backgroundColor: "palette.primary",
           color: "palette.white",
           "&:hover": {
@@ -187,8 +189,28 @@ const theme = extendTheme({
             borderWidth: "0 0 0 4px",
           },
         },
+        sidebarSelected: {
+          display:"block",
+          textAlign: "left",
+          color: "palette.secondary_darkest",
+          backgroundColor: "palette.gray_lightest_highlight",
+          border: "1px solid",
+          borderColor: "palette.secondary",
+          borderWidth: "0 0 0 4px",
+          fontSize: "14px",
+          paddingLeft: "2rem",
+          width:"100%"
+        },
         sidebarToggle: {
           padding: "0",
+          background: "palette.gray_lightest",
+          borderRadius: "0px 10px 10px 0px",
+          "img.left": {
+            transform: "rotate(90deg)",
+          },
+          "img.right": {
+            transform: "rotate(270deg)",
+          },
         },
         outline: () => ({
           ...theme.components.Button.variants.transparent,

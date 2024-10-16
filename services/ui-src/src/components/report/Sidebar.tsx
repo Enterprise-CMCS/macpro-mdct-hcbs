@@ -1,80 +1,91 @@
 import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { AnyObject } from "yup/lib/types";
-import { ParentPageTemplate } from "../../types/report";
+import { PageTemplate } from "../../types/report";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
+import { useState } from "react";
 
-const navItemText = (title: string, index: number) => {
+const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
-  return <Box paddingLeft="1rem">{navItemText(title, index - 1)}</Box>;
+  return <Box paddingLeft="1rem">{navItem(title, index - 1)}</Box>;
 };
-
-const navItem = (
-  page: AnyObject,
-  index: number,
-  toggle: AnyObject,
-  func: Function
-) => {
-  return (
-    <Button variant="sidebar" key={page.id}>
-      <Flex justifyContent="space-between" alignItems="center">
-        <Box onClick={() => func(page.id)} width="100%" height="100%">
-          {navItemText(page.title!, index)}
-        </Box>
-        <Box onClick={() => toggle.func()}>
-          {toggle && (
-            <Image
-              src={toggle.state ? arrowDownIcon : arrowUpIcon}
-              alt={toggle.state ? "Arrow left" : "Arrow right"}
-            />
-          )}
-        </Box>
-      </Flex>
-    </Button>
-  );
-};
-
-const toggleMap: any = {};
 
 export const Sidebar = () => {
   const { report, pageMap, setCurrentPageId } = useStore();
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
+  const [selected, setSelected] = useState<string>();
 
   if (!report || !pageMap) {
     return null;
   }
 
-  const setToggle = (page: ParentPageTemplate) => {
-    toggleMap[page.id] = !toggleMap[page.id];
+  const setToggle = (sectonId: string) => {
+    const list = toggleList;
+    list[sectonId] = !toggleList[sectonId];
+    setToggleList({ ...list });
   };
 
-  const buildNavList = (
-    pageIds: string[],
-    layer: number = 0
-  ): JSX.Element[] => {
-    const builtList = [];
-    for (const child of pageIds) {
-      const page = pageMap.get(child) as ParentPageTemplate;
-      const toggleData = page.childPageIds && {
-        state: toggleMap[page.id],
-        func: () => setToggle(page),
-      };
-      builtList.push(navItem(page, layer, toggleData, setCurrentPageId));
-      const toggle = toggleMap[page.id];
-      if (page.childPageIds && toggle!) {
-        builtList.push(buildNavList(page.childPageIds, layer + 1));
-      }
-    }
-    return builtList as JSX.Element[];
+  const onNavClick = (sectonId:string) => {
+    setCurrentPageId(sectonId);
+    setSelected(sectonId);
+  }
+
+  const navSection = (
+    section: PageTemplate,
+    index: number = 0
+  ): JSX.Element => {
+    const childSections = section.childPageIds?.map((child) =>
+      pageMap.get(child)
+    );
+
+    const isSelected = section.id === selected;
+
+    return (
+      <>
+        <Button key={section.id} variant={isSelected ? "sidebarSelected" : "sidebar"}>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Box width="100%" height="100%" onClick={ () => onNavClick(section.id)}>
+              {navItem(section.title!, index)}
+            </Box>
+            {childSections?.length! > 0 && (
+              <Box onClick={() => setToggle(section.id)}>
+                <Image
+                  src={toggleList[section.id] ? arrowUpIcon : arrowDownIcon}
+                  alt={
+                    toggleList[section.id]
+                      ? "Collapse subitems"
+                      : "Expand subitems"
+                  }
+                />
+              </Box>
+            )}
+          </Flex>
+        </Button>
+        {childSections?.length! > 0 &&
+          toggleList[section.id] &&
+          childSections!.map((sec) => navSection(sec!, index + 1))}
+      </>
+    );
   };
 
   return (
     <Flex height="100%">
-      <Flex flexDirection="column" background="palette.gray_lightest">
-        <Heading variant="sidebar">Quality Measures Report</Heading>
-        {buildNavList((pageMap.get("root") as ParentPageTemplate).childPageIds)}
-      </Flex>
-      <Button>Toggle</Button>
+      {isOpen && (
+        <Flex flexDirection="column" background="palette.gray_lightest">
+          <Heading variant="sidebar">Quality Measures Report</Heading>
+          {pageMap
+            .get("root")
+            ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
+        </Flex>
+      )}
+      <Button variant="sidebarToggle" onClick={() => setIsOpen(!isOpen)}>
+        <Image
+          src={arrowDownIcon}
+          alt={isOpen ? "Arrow left" : "Arrow right"}
+          className={isOpen ? "left" : "right"}
+        />
+      </Button>
     </Flex>
   );
 };
