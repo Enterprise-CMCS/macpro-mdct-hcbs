@@ -12,19 +12,23 @@ const error: ErrorVerbiage = {
 const errorAlertComponent = <ErrorAlert error={error} />;
 
 describe("<ErrorAlert />", () => {
-  beforeEach(() => {
-    render(errorAlertComponent);
-  });
   test("Get by link", () => {
+    render(errorAlertComponent);
     expect(
       screen.getByRole("link", { name: "mdct_help@cms.hhs.gov" })
     ).toBeVisible();
   });
   test("Find error alert", () => {
+    render(errorAlertComponent);
     expect(screen.getByRole("alert")).toBeVisible();
     expect(screen.getByRole("alert")).toHaveTextContent(
       "We've run into a problem"
     );
+  });
+  test("does not render the Alert when error is null", () => {
+    render(<ErrorAlert error={undefined} />);
+
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   testA11y(errorAlertComponent);
