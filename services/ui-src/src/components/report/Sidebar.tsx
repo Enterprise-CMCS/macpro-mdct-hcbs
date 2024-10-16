@@ -26,10 +26,10 @@ export const Sidebar = () => {
     setToggleList({ ...list });
   };
 
-  const onNavClick = (sectonId:string) => {
+  const onNavClick = (sectonId: string) => {
     setCurrentPageId(sectonId);
     setSelected(sectonId);
-  }
+  };
 
   const navSection = (
     section: PageTemplate,
@@ -43,9 +43,16 @@ export const Sidebar = () => {
 
     return (
       <>
-        <Button key={section.id} variant={isSelected ? "sidebarSelected" : "sidebar"}>
+        <Button
+          key={section.id}
+          variant={isSelected ? "sidebarSelected" : "sidebar"}
+        >
           <Flex justifyContent="space-between" alignItems="center">
-            <Box width="100%" height="100%" onClick={ () => onNavClick(section.id)}>
+            <Box
+              width="100%"
+              height="100%"
+              onClick={() => onNavClick(section.id)}
+            >
               {navItem(section.title!, index)}
             </Box>
             {childSections?.length! > 0 && (

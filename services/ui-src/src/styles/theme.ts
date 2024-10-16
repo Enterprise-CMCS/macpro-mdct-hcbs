@@ -139,7 +139,7 @@ const theme = extendTheme({
           fontSize: "sm",
         },
         borderRadius: "0",
-        fontWeight:"normal"
+        fontWeight: "normal",
       },
       variants: {
         // primary variants
@@ -190,7 +190,7 @@ const theme = extendTheme({
           },
         },
         sidebarSelected: {
-          display:"block",
+          display: "block",
           textAlign: "left",
           color: "palette.secondary_darkest",
           backgroundColor: "palette.gray_lightest_highlight",
@@ -199,7 +199,7 @@ const theme = extendTheme({
           borderWidth: "0 0 0 4px",
           fontSize: "14px",
           paddingLeft: "2rem",
-          width:"100%"
+          width: "100%",
         },
         sidebarToggle: {
           padding: "0",
