@@ -37,9 +37,9 @@ export const StatusTableElement = () => {
     .slice(0, -1);
 
   // Build Rows
-  const rows = sectionTitles.map((section) => {
+  const rows = sectionTitles.map((section, index) => {
     return (
-      <Tr p={0}>
+      <Tr key={section || index} p={0}>
         <Td>
           <Stack flex="1">
             <Text fontWeight="bold">{section}</Text>
