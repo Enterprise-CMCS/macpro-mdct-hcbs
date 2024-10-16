@@ -5,11 +5,12 @@ import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 import { PageElement } from "types/report";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
   register: () => {},
-  setValue: () => {},
+  setValue: jest.fn(),
   getValues: jest.fn(),
   trigger: mockTrigger,
 };
@@ -44,11 +45,35 @@ const dateFieldComponent = (
 
 describe("<DateField />", () => {
   describe("Test DateField basic functionality", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
     test("DateField is visible", () => {
       mockGetValues(undefined);
       render(dateFieldComponent);
-      const dateFieldInput: HTMLInputElement = screen.getByRole("textbox");
+      const dateFieldInput = screen.getByRole("textbox");
       expect(dateFieldInput).toBeVisible();
+    });
+
+    test("Datefield sends updates to the Form", async () => {
+      mockGetValues(undefined);
+      render(dateFieldComponent);
+      const dateFieldInput = screen.getByRole("textbox");
+
+      await userEvent.type(dateFieldInput, "10162024[Tab]");
+
+      /*
+       *   1 onChange (which passed validation) (value: 10162024)
+       * + 1 onChange (performed automatically by masking) (value: 10/16/2024)
+       * + 1 onBlur
+       * = 3 calls
+       */
+      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(3);
+      expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
+        "answers.1.2",
+        "10/16/2024"
+      );
     });
   });
 
