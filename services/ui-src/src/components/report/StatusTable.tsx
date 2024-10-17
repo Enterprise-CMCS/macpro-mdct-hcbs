@@ -20,7 +20,7 @@ import { ParentPageTemplate } from "types/report";
 import { useNavigate } from "react-router-dom";
 
 export const StatusTableElement = () => {
-  const { pageMap } = useStore();
+  const { pageMap, setCurrentPageId } = useStore();
   const navigate = useNavigate();
 
   if (!pageMap) {
@@ -32,17 +32,17 @@ export const StatusTableElement = () => {
   const sectionTitles = childPageIdsList
     .map((id) => {
       const page = pageMap.get(id) as ParentPageTemplate;
-      return page.title;
+      return { title: page.title, pageId: id };
     })
     .slice(0, -1);
 
   // Build Rows
   const rows = sectionTitles.map((section, index) => {
     return (
-      <Tr key={section || index} p={0}>
+      <Tr key={section.pageId || index} p={0}>
         <Td>
           <Stack flex="1">
-            <Text fontWeight="bold">{section}</Text>
+            <Text fontWeight="bold">{section.title}</Text>
           </Stack>
         </Td>
         <Td>
@@ -60,7 +60,7 @@ export const StatusTableElement = () => {
             colorScheme="blue"
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
-            onClick={() => {}}
+            onClick={() => setCurrentPageId(section.pageId)}
           >
             Edit
           </Button>

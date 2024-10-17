@@ -4,14 +4,6 @@ import { StatusTableElement } from "./StatusTable";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "utils";
 
-jest.mock("assets/icons/status/icon_status_check.svg", () => "iconStatusCheck");
-jest.mock("assets/icons/status/icon_status_alert.svg", () => "iconStatusError");
-jest.mock("assets/icons/edit/icon_edit_primary.svg", () => "editIconPrimary");
-jest.mock(
-  "assets/icons/search/icon_search_primary.svg",
-  () => "lookupIconPrimary"
-);
-
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
 }));
@@ -22,12 +14,14 @@ jest.mock("utils", () => ({
 
 describe("StatusTableElement", () => {
   const mockNavigate = jest.fn();
+  const setCurrentPageId = jest.fn();
 
   beforeEach(() => {
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    jest.clearAllMocks();
   });
 
-  it("should render the table with section title and status icon", () => {
+  test("table with section titles and status icons render", () => {
     const mockPageMap = new Map();
     mockPageMap.set("root", { childPageIds: ["1", "2"] });
     mockPageMap.set("1", { title: "Section 1" });
@@ -43,17 +37,32 @@ describe("StatusTableElement", () => {
     expect(screen.getByText("Section")).toBeInTheDocument();
     expect(screen.getByText("Status")).toBeInTheDocument();
 
-    // Section title rendered
+    // Section title and status for Section 1
     expect(screen.getByText("Section 1")).toBeInTheDocument();
     expect(screen.getByText("Complete")).toBeInTheDocument();
     expect(screen.getByAltText("icon description")).toBeInTheDocument();
-
-    // icon
-    const editButtons = screen.getByRole("button", { name: /Edit/i });
-    expect(editButtons).toBeInTheDocument();
   });
 
-  it("should navigate to PDF when Review PDF button is clicked", async () => {
+  test("when Edit button is clicked call setCurrentPageId with the correct pageId", async () => {
+    const mockPageMap = new Map();
+    mockPageMap.set("root", { childPageIds: ["1", "2"] });
+    mockPageMap.set("1", { title: "Section 1" });
+    mockPageMap.set("2", { title: "Section 2" });
+
+    (useStore as unknown as jest.Mock).mockReturnValue({
+      pageMap: mockPageMap,
+      setCurrentPageId,
+    });
+
+    render(<StatusTableElement />);
+
+    const editButton = screen.getByRole("button", { name: /Edit/i });
+    await userEvent.click(editButton);
+
+    expect(setCurrentPageId).toHaveBeenCalledWith("1");
+  });
+
+  test("when the Review PDF button is clicked navigate to PDF", async () => {
     const mockPageMap = new Map();
     mockPageMap.set("root", { childPageIds: ["1"] });
     mockPageMap.set("1", { title: "Section 1" });
@@ -70,7 +79,7 @@ describe("StatusTableElement", () => {
     expect(mockNavigate).toHaveBeenCalledWith("PDF");
   });
 
-  it("should return null if pageMap is not defined", () => {
+  test("if pageMap is not defined return null", () => {
     (useStore as unknown as jest.Mock).mockReturnValue({
       pageMap: null,
     });
