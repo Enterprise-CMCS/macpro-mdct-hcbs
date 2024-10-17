@@ -116,7 +116,6 @@ const theme = extendTheme({
           width: "100%",
         },
         button: {
-          marginTop: "2rem",
           background: "palette.gray_lightest",
           padding: "0 1.5rem",
         },
@@ -306,11 +305,12 @@ const theme = extendTheme({
       baseStyle: {
         color: "palette.base",
         fontWeight: "normal",
-        marginBottom: "1rem",
+        margin: "0",
       },
       variants: {
         h1: {
           fontSize: "2rem",
+          paddingBottom: "0.5rem",
         },
         sidebar: {
           fontSize: "21px",
@@ -321,6 +321,9 @@ const theme = extendTheme({
         subHeader: {
           fontSize: "23px",
           fontWeight: "700",
+          p: {
+            margin: "0",
+          },
         },
       },
     },
@@ -409,7 +412,6 @@ const theme = extendTheme({
           },
           td: {
             minWidth: "6rem",
-            padding: "0.5rem 0.75rem",
             paddingLeft: 0,
             borderTop: "1px solid",
             borderBottom: "1px solid",
@@ -418,8 +420,21 @@ const theme = extendTheme({
             "&:last-of-type": {
               paddingRight: 0,
             },
+          },
+        },
+      },
+      variants: {
+        measure: {
+          td: {
             "&:first-of-type": {
-              minWidth: "2rem",
+              minWidth: "3rem",
+              padding: "0 0.75rem",
+            },
+            "&:last-of-type": {
+              minWidth: "4rem",
+              button: {
+                fontWeight: "800",
+              },
             },
           },
         },
