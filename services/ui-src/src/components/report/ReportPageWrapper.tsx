@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  HStack,
-  Stack,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
@@ -24,6 +16,7 @@ export const ReportPageWrapper = () => {
     currentPageId,
     setReport,
     setParentPage,
+    setCurrentPageId,
   } = useStore();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -69,6 +62,7 @@ export const ReportPageWrapper = () => {
 
     if (newPageIndex >= 0 && newPageIndex < childPageCount) {
       setParentPage({ ...parentPage, index: newPageIndex });
+      setCurrentPageId(parentPage.childPageIds[newPageIndex]);
     }
   };
 
