@@ -33,7 +33,7 @@ describe("StatusTableElement", () => {
     mockPageMap.set("1", { title: "Section 1" });
     mockPageMap.set("2", { title: "Section 2" });
 
-    (useStore as jest.Mock).mockReturnValue({
+    (useStore as unknown as jest.Mock).mockReturnValue({
       pageMap: mockPageMap,
     });
 
@@ -58,7 +58,7 @@ describe("StatusTableElement", () => {
     mockPageMap.set("root", { childPageIds: ["1"] });
     mockPageMap.set("1", { title: "Section 1" });
 
-    (useStore as jest.Mock).mockReturnValue({
+    (useStore as unknown as jest.Mock).mockReturnValue({
       pageMap: mockPageMap,
     });
 
@@ -71,7 +71,7 @@ describe("StatusTableElement", () => {
   });
 
   it("should return null if pageMap is not defined", () => {
-    (useStore as jest.Mock).mockReturnValue({
+    (useStore as unknown as jest.Mock).mockReturnValue({
       pageMap: null,
     });
 
