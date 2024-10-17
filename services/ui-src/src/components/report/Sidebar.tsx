@@ -15,10 +15,9 @@ const navItem = (title: string, index: number) => {
 };
 
 export const Sidebar = () => {
-  const { report, pageMap, setCurrentPageId } = useStore();
+  const { report, pageMap, currentPageId, setCurrentPageId } = useStore();
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
-  const [selected, setSelected] = useState<string>();
 
   if (!report || !pageMap) {
     return null;
@@ -32,7 +31,6 @@ export const Sidebar = () => {
 
   const onNavSelect = (sectonId: string) => {
     setCurrentPageId(sectonId);
-    setSelected(sectonId);
   };
 
   const navSection = (section: PageTemplate, index: number = 0): ReactNode => {
@@ -43,7 +41,7 @@ export const Sidebar = () => {
     return (
       <Box key={section.id}>
         <Button
-          variant={section.id === selected ? "sidebarSelected" : "sidebar"}
+          variant={section.id === currentPageId ? "sidebarSelected" : "sidebar"}
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box
