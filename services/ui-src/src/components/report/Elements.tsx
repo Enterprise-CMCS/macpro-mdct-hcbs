@@ -1,10 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Button,
   FormLabel,
   Heading,
@@ -22,6 +16,7 @@ import {
   ButtonLinkTemplate,
   PageElement,
 } from "../../types/report";
+import { TemplateCardAccordion } from "components/accordions/TemplateCardAccordion";
 
 export interface PageElementProps {
   element: PageElement;
@@ -38,7 +33,7 @@ export const headerElement = (props: PageElementProps) => {
 
 export const subHeaderElement = (props: PageElementProps) => {
   return (
-    <Heading fontSize="18px">
+    <Heading variant="subHeader">
       {(props.element as SubHeaderTemplate).text}
     </Heading>
   );
@@ -52,19 +47,10 @@ export const paragraphElement = (props: PageElementProps) => {
 
 export const accordionElement = (props: PageElementProps) => {
   const accordion = props.element as AccordionTemplate;
-
   return (
-    <Accordion width="100%" defaultIndex={[0]} allowMultiple>
-      <AccordionItem>
-        <AccordionButton>
-          <Box flex="1" textAlign="left">
-            {accordion.label}{" "}
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel>{accordion.value}</AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+    <TemplateCardAccordion
+      verbiage={{ buttonLabel: accordion.label, text: accordion.value }}
+    ></TemplateCardAccordion>
   );
 };
 

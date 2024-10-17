@@ -48,5 +48,9 @@ export const Page = ({ elements }: Props) => {
     const ComposedElement = renderElement(element);
     return <ComposedElement key={index} element={element} />;
   });
-  return <VStack alignItems="flex-start">{composedElements}</VStack>;
+  return (
+    <VStack alignItems="flex-start" gap="1.5rem">
+      {composedElements}
+    </VStack>
+  );
 };
