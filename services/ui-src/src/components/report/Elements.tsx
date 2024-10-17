@@ -6,11 +6,8 @@ import {
   AccordionPanel,
   Box,
   Button,
-  FormControl,
-  FormHelperText,
   FormLabel,
   Heading,
-  Input,
   Radio,
   RadioGroup,
   Stack,
@@ -20,7 +17,6 @@ import { useStore } from "utils";
 import {
   HeaderTemplate,
   SubHeaderTemplate,
-  DateTemplate,
   AccordionTemplate,
   RadioTemplate,
   ButtonLinkTemplate,
@@ -53,18 +49,6 @@ export const paragraphElement = (props: PageElementProps) => {
     <Text fontSize="18px" pb={6}>
       {(props.element as SubHeaderTemplate).text}
     </Text>
-  );
-};
-
-export const dateElement = (props: PageElementProps) => {
-  const dateElement = props.element as DateTemplate;
-  return (
-    <FormControl>
-      <FormLabel fontWeight="bold">{dateElement.label}</FormLabel>
-      <FormHelperText>{dateElement.helperText}</FormHelperText>
-      <FormHelperText>MM/DD/YY</FormHelperText>
-      <Input size="sm" width="22"></Input>
-    </FormControl>
   );
 };
 

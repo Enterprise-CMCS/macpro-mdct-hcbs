@@ -3,7 +3,6 @@ import {
   headerElement,
   subHeaderElement,
   paragraphElement,
-  dateElement,
   accordionElement,
   radioElement,
   buttonLinkElement,
@@ -12,6 +11,7 @@ import { TextField } from "../fields/TextField";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import { MeasureTableElement } from "./MeasureTable";
 import { StatusTableElement } from "./StatusTable";
+import { DateField } from "../fields/DateField";
 
 interface Props {
   elements: PageElement[];
@@ -30,7 +30,7 @@ export const Page = ({ elements }: Props) => {
       case ElementType.Textbox:
         return TextField;
       case ElementType.Date:
-        return dateElement;
+        return DateField;
       case ElementType.Accordion:
         return accordionElement;
       case ElementType.Radio:
