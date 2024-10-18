@@ -11,7 +11,7 @@ export enum TableStatuses {
 
 export type TableStatusType = TableStatuses | string;
 
-export const TableStatueIcon = ({ tableStatus, isPdf }: Props) => {
+export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
   const statusIcon = (status: TableStatusType) => {
     switch (status) {
       case TableStatuses.COMPLETE:

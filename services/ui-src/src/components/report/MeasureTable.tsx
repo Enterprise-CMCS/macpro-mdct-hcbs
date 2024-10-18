@@ -16,7 +16,7 @@ import {
   MeasureTableTemplate,
 } from "../../types/report";
 import { PageElementProps } from "./Elements";
-import { TableStatueIcon } from "components/tables/TableStatusIcon";
+import { TableStatusIcon } from "components/tables/TableStatusIcon";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
@@ -47,7 +47,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
     return (
       <Tr>
         <Td>
-          <TableStatueIcon tableStatus=""></TableStatueIcon>
+          <TableStatusIcon tableStatus=""></TableStatusIcon>
         </Td>
         <Td width="100%">
           <Text>{measure.title}</Text>
