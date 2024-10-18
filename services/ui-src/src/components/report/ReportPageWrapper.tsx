@@ -74,32 +74,38 @@ export const ReportPageWrapper = () => {
                 <Page elements={currentPage.elements ?? []}></Page>
               )}
             </Box>
-            <Divider></Divider>
-            <Stack
-              direction="row"
-              width="100%"
-              display="flex"
-              justifyContent="space-between"
-            >
-              {parentPage && (
-                <Button
-                  onClick={() => SetPageIndex(parentPage.index - 1)}
-                  mr="3"
-                  display={parentPage.index > 0 ? "block" : "contents"}
+
+            {!currentPage.hideNavButtons && parentPage && (
+              <>
+                <Divider></Divider>
+                <Stack
+                  direction="row"
+                  width="100%"
+                  display="flex"
+                  justifyContent="space-between"
+                  mt={5}
                 >
-                  Previous
-                </Button>
-              )}
-              {parentPage &&
-                parentPage.index < parentPage.childPageIds.length - 1 && (
+                  <Button
+                    onClick={() => SetPageIndex(parentPage.index - 1)}
+                    mr="3"
+                    display={
+                      parentPage.index > 0 &&
+                      parentPage.index < parentPage.childPageIds.length - 1
+                        ? "block"
+                        : "contents"
+                    }
+                  >
+                    Previous
+                  </Button>
                   <Button
                     onClick={() => SetPageIndex(parentPage.index + 1)}
                     alignSelf="flex-end"
                   >
                     Continue
                   </Button>
-                )}
-            </Stack>
+                </Stack>
+              </>
+            )}
           </VStack>
           <ReportModal />
         </HStack>
