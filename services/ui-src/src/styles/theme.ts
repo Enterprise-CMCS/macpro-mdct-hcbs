@@ -129,9 +129,6 @@ const theme = extendTheme({
           p: {
             marginBottom: "1rem",
           },
-          list: {
-            paddingLeft: "1rem",
-          },
         },
       },
     },
