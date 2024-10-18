@@ -3,6 +3,7 @@ import { devtools, persist } from "zustand/middleware";
 import { HcbsUserState, HcbsUser, HcbsReportState } from "types";
 import { ParentPageTemplate, PageData, Report } from "types/report";
 import React from "react";
+import { putReport } from "utils/api/requestMethods/report";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -93,6 +94,9 @@ const reportStore = (set: Function): HcbsReportState => ({
         (page) => page.id === state.currentPageId
       );
       report.pages[pageIndex] = deepMerge(report.pages[pageIndex], answers);
+
+      putReport(report); // Submit to API
+
       return { report };
     };
     set(mergeAction, false, {

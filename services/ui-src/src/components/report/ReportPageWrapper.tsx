@@ -38,7 +38,6 @@ export const ReportPageWrapper = () => {
   const handleBlur = (data: any) => {
     if (!report) return;
     setAnswers(data);
-    // TODO: Post
   };
 
   if (!reportType || !state || !reportId) {
