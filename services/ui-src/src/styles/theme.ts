@@ -395,6 +395,34 @@ const theme = extendTheme({
         },
       },
     },
+    Modal: {
+      baseStyle: {
+        dialog: {
+          minWidth: "500px",
+          padding: "2rem",
+          ".close": {
+            position: "absolute",
+            right: "2rem",
+          },
+        },
+        header: {
+          padding: "0 0 1.50rem 0",
+        },
+        body: {
+          padding: "0 0 2rem 0",
+        },
+        footer: {
+          display: "block",
+          padding: "0",
+          "button:first-of-type": {
+            marginRight: "2.5rem",
+          },
+        },
+        closeButton: {
+          padding: "2rem",
+        },
+      },
+    },
     Table: {
       baseStyle: {
         table: {

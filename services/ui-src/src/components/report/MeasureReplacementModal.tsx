@@ -25,11 +25,11 @@ export const MeasureReplacementModal = (
           </Stack>
         </RadioGroup>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter gap="4">
         <Button colorScheme="blue" mr={3} onClick={() => onSubmit(false)}>
-          Select Measure
+          Substitute Measure
         </Button>
-        <Button variant="ghost" onClick={() => onClose(false)}>
+        <Button variant="link" onClick={() => onClose(false)}>
           Cancel
         </Button>
       </ModalFooter>
