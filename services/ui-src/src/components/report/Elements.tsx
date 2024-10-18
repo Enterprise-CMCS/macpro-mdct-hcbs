@@ -5,6 +5,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Image,
   Text,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
@@ -17,6 +18,7 @@ import {
   PageElement,
 } from "../../types/report";
 import { TemplateCardAccordion } from "components/accordions/TemplateCardAccordion";
+import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 
 export interface PageElementProps {
   element: PageElement;
@@ -75,7 +77,8 @@ export const buttonLinkElement = (props: PageElementProps) => {
   const button = props.element as ButtonLinkTemplate;
   const { setCurrentPageId } = useStore();
   return (
-    <Button variant="link" onClick={() => setCurrentPageId(button.to)}>
+    <Button variant="return" onClick={() => setCurrentPageId(button.to)}>
+      <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
       {button.label}
     </Button>
   );

@@ -296,7 +296,24 @@ const theme = extendTheme({
             backgroundColor: "palette.error_darker",
           },
         },
-        return: {},
+        return: {
+          width: "fit-content",
+          padding: "0",
+          textDecoration: "none",
+          _hover: {
+            textDecoration: "underline",
+          },
+          _visited: {
+            color: "palette.primary",
+          },
+          display: "flex",
+          ".icon": {
+            width: "1.25rem",
+            height: "1.25rem",
+            marginTop: "0.15rem",
+            marginRight: "0.5rem",
+          },
+        },
       },
       defaultProps: {
         variant: "primary",
