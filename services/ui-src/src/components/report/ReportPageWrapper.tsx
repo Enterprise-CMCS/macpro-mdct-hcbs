@@ -88,26 +88,29 @@ export const ReportPageWrapper = () => {
               )}
             </form>
           </Box>
-          <Divider borderColor="palette.gray_light"></Divider>
-          <Flex width="100%">
-            {parentPage && parentPage.index > 0 && (
-              <Button
-                onClick={() => SetPageIndex(parentPage.index - 1)}
-                variant="outline"
-              >
-                Previous
-              </Button>
-            )}
-            {parentPage &&
-              parentPage.index < parentPage.childPageIds.length - 1 && (
-                <Button
-                  onClick={() => SetPageIndex(parentPage.index + 1)}
-                  marginLeft="auto"
-                >
-                  Continue
-                </Button>
-              )}
-          </Flex>
+          {!currentPage.hideNavButtons && parentPage && (
+            <>
+              <Divider borderColor="palette.gray_light"></Divider>
+              <Flex width="100%">
+                {parentPage.index > 0 && (
+                  <Button
+                    onClick={() => SetPageIndex(parentPage.index - 1)}
+                    variant="outline"
+                  >
+                    Previous
+                  </Button>
+                )}
+                {parentPage.index < parentPage.childPageIds.length - 1 && (
+                  <Button
+                    onClick={() => SetPageIndex(parentPage.index + 1)}
+                    marginLeft="auto"
+                  >
+                    Continue
+                  </Button>
+                )}
+              </Flex>
+            </>
+          )}
         </VStack>
         <ReportModal />
       </HStack>

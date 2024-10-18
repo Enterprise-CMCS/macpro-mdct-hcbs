@@ -27,7 +27,7 @@ export interface PageElementProps {
 
 export const headerElement = (props: PageElementProps) => {
   return (
-    <Heading fontWeight="hairline" textAlign="left">
+    <Heading fontWeight="hairline" textAlign="left" mb={6}>
       {(props.element as HeaderTemplate).text}
     </Heading>
   );
@@ -43,7 +43,9 @@ export const subHeaderElement = (props: PageElementProps) => {
 
 export const paragraphElement = (props: PageElementProps) => {
   return (
-    <Text fontSize="18px">{(props.element as SubHeaderTemplate).text}</Text>
+    <Text fontSize="18px" pb={6}>
+      {(props.element as SubHeaderTemplate).text}
+    </Text>
   );
 };
 
