@@ -8,7 +8,15 @@ import {
   InstructionsAccordion,
   DashboardTable,
 } from "components";
-import { Box, Button, Image, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Image,
+  Heading,
+  Link,
+  Text,
+  Flex,
+} from "@chakra-ui/react";
 import { parseCustomHtml, useStore } from "utils";
 
 import dashboardVerbiage from "verbiage/pages/dashboard";
@@ -41,13 +49,13 @@ export const DashboardPage = () => {
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
-      <Link as={RouterLink} to="/" sx={sx.returnLink}>
-        <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
+      <Link as={RouterLink} to="/" variant="return">
+        <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
         Return home
       </Link>
 
       <Box sx={sx.leadTextBox}>
-        <Heading as="h1" sx={sx.headerText}>
+        <Heading as="h1" variant="h1">
           {fullStateName} {intro.header}
         </Heading>
         <InstructionsAccordion
@@ -60,17 +68,17 @@ export const DashboardPage = () => {
         />
         {parseCustomHtml(intro.body)}
       </Box>
-      <Box sx={sx.bodyBox}>
+      <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
         <DashboardTable reportsByState={reportsToDisplay} body={body} />
         {!reportsToDisplay?.length && (
-          <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
+          <Text variant="tableEmpty">{body.empty}</Text>
         )}
-        <Box sx={sx.callToActionContainer}>
+        <Flex justifyContent="center">
           <Button onClick={() => navigate(body.link.route)} type="submit">
             {body.link.callToActionText}
           </Button>
-        </Box>
-      </Box>
+        </Flex>
+      </Flex>
     </PageTemplate>
   );
 };
@@ -81,37 +89,6 @@ const sx = {
       maxWidth: "appMax",
       marginTop: "1rem",
       marginBottom: "3.5rem",
-    },
-  },
-  returnLink: {
-    display: "flex",
-    width: "8.5rem",
-    paddingTop: "0.5rem",
-    svg: {
-      height: "1.375rem",
-      width: "1.375rem",
-      marginTop: "-0.125rem",
-      marginRight: ".5rem",
-    },
-    textDecoration: "none",
-    _hover: {
-      textDecoration: "underline",
-    },
-    ".returnIcon": {
-      width: "1.25rem",
-      height: "1.25rem",
-      marginTop: "0.25rem",
-      marginRight: "0.5rem",
-    },
-  },
-  headerText: {
-    marginBottom: "1rem",
-    fontSize: "4xl",
-    fontWeight: "normal",
-    ".tablet &, .mobile &": {
-      fontSize: "xl",
-      lineHeight: "1.75rem",
-      fontWeight: "bold",
     },
   },
   leadTextBox: {
@@ -139,16 +116,5 @@ const sx = {
         borderLeftColor: "palette.black",
       },
     },
-  },
-  emptyTableContainer: {
-    maxWidth: "75%",
-    margin: "0 auto",
-    textAlign: "center",
-  },
-  callToActionContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: "2rem",
   },
 };

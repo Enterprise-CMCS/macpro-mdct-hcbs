@@ -36,7 +36,7 @@ export const TemplateCard = ({
             sx={sx.spreadsheetIcon}
           />
         )}
-        <Flex sx={sx.cardContentFlex}>
+        <Flex sx={sx.cardContentFlex} gap="1rem">
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
           <Text>
             {verbiage.body.available}
