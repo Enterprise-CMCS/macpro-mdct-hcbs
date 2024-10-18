@@ -26,6 +26,7 @@ import {
 export interface PageElementProps {
   element: PageElement;
   index: number;
+  formkey: string;
 }
 
 export const headerElement = (props: PageElementProps) => {

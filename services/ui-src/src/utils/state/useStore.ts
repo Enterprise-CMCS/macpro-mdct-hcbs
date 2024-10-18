@@ -91,7 +91,34 @@ const reportStore = (set: Function): HcbsReportState => ({
     set(() => ({ modalComponent, modalOpen: true }), false, {
       type: "setModalComponent",
     }),
+  setAnswers: (answers) => {
+    const mergeAction = (state: HcbsReportState) => {
+      if (!state.report) return;
+      const report = structuredClone(state.report);
+      const pageIndex = state.report.pages.findIndex(
+        (page) => page.id === state.currentPageId
+      );
+      report.pages[pageIndex] = deepMerge(report.pages[pageIndex], answers);
+      return { report };
+    };
+    set(mergeAction, false, {
+      type: "setAnswers",
+    });
+  },
 });
+
+const deepMerge = (obj1: any, obj2: any) => {
+  const clone1 = structuredClone(obj1);
+  const clone2 = structuredClone(obj2);
+  for (let key in clone2) {
+    if (clone2[key] instanceof Object && clone1[key] instanceof Object) {
+      clone1[key] = deepMerge(clone1[key], clone2[key]);
+    } else {
+      clone1[key] = clone2[key];
+    }
+  }
+  return clone1;
+};
 
 export const useStore = create(
   // devtools is being used for debugging state

@@ -13,10 +13,9 @@ export const TextField = (props: PageElementProps) => {
 
   // get form context and register field
   const form = useFormContext();
-  const inputName = "answers.1.2"; // TODO: id based
-
+  const key = `${props.formkey}.answer`;
   useEffect(() => {
-    form.register(inputName);
+    form.register(key);
   }, []);
 
   const onChangeHandler = async (
@@ -28,20 +27,20 @@ export const TextField = (props: PageElementProps) => {
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(inputName, event.target.value);
+    form.setValue(key, event.target.value);
   };
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[inputName]?.message;
+  const errorMessage = formErrorState?.[key]?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
 
   return (
     <Box>
       <CmsdsTextField
-        id={inputName}
-        name={inputName}
+        id={key}
+        name={key}
         label={labelText || ""}
         hint={parsedHint}
         onChange={(e) => onChangeHandler(e)}

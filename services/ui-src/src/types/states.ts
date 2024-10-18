@@ -19,7 +19,7 @@ export interface HcbsUserState {
 
 export interface HcbsReportState {
   // INITIAL STATE
-  report?: Report; // TODO: report, not template
+  report?: Report;
   pageMap?: Map<string, PageTemplate>;
   rootPage?: ParentPageTemplate;
   parentPage?: PageData; // used for looking up curr & next page
@@ -33,4 +33,5 @@ export interface HcbsReportState {
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
   setModalComponent: (modalComponent: React.ReactFragment) => void;
+  setAnswers: (answers: any) => void;
 }

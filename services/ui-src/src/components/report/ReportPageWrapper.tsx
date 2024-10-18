@@ -1,5 +1,5 @@
 import { Box, Button, Divider, HStack, Stack, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
@@ -7,6 +7,7 @@ import { getReport } from "utils/api/requestMethods/report";
 import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
+import { FormPageTemplate } from "types/report";
 
 export const ReportPageWrapper = () => {
   const {
@@ -16,19 +17,21 @@ export const ReportPageWrapper = () => {
     currentPageId,
     setReport,
     setParentPage,
+    setAnswers,
   } = useStore();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const methods = useForm({
+    defaultValues: useMemo(() => {
+      return pageMap?.get(currentPageId ?? "")!;
+    }, [currentPageId]) as FormPageTemplate,
     shouldUnregister: true,
   });
 
   const { handleSubmit } = methods;
   const handleBlur = (data: any) => {
-    // TODO: any
     if (!report) return;
-    // console.log(methods.formState);
-    report.answers = [...data.answers];
+    setAnswers(data);
     // TODO: Post
   };
 
