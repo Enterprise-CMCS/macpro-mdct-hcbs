@@ -25,7 +25,7 @@ export const ProfilePage = () => {
 
   return (
     <PageTemplate sx={sx.layout}>
-      <Heading as="h1" sx={sx.headerText}>
+      <Heading as="h1" variant="h1">
         {intro.header}
       </Heading>
       <Text>
@@ -35,11 +35,9 @@ export const ProfilePage = () => {
         </Link>
         .
       </Text>
-      <Table content={tableContent} variant="striped" sxOverride={sx.table} />
+      <Table content={tableContent} variant="striped" />
       {userIsAdmin && (
-        <Button sx={sx.adminButton} onClick={() => navigate("/admin")}>
-          Banner Editor
-        </Button>
+        <Button onClick={() => navigate("/admin")}>Banner Editor</Button>
       )}
     </PageTemplate>
   );
@@ -51,24 +49,5 @@ const sx = {
       marginTop: "3.5rem",
       marginBottom: "5rem !important",
     },
-  },
-  headerText: {
-    marginBottom: "2rem",
-    fontSize: "2rem",
-    fontWeight: "normal",
-  },
-  table: {
-    marginTop: "2rem",
-    maxWidth: "100%",
-    "tr td:first-of-type": {
-      width: "8rem",
-      fontWeight: "semibold",
-    },
-    td: {
-      padding: "0.5rem",
-    },
-  },
-  adminButton: {
-    marginTop: "2rem",
   },
 };

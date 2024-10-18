@@ -68,17 +68,17 @@ export const DashboardPage = () => {
         />
         {parseCustomHtml(intro.body)}
       </Box>
-      <Box sx={sx.bodyBox}>
+      <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
         <DashboardTable reportsByState={reportsToDisplay} body={body} />
         {!reportsToDisplay?.length && (
-          <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
+          <Text variant="tableEmpty">{body.empty}</Text>
         )}
-        <Flex justifyContent="center" marginTop="2rem">
+        <Flex justifyContent="center">
           <Button onClick={() => navigate(body.link.route)} type="submit">
             {body.link.callToActionText}
           </Button>
         </Flex>
-      </Box>
+      </Flex>
     </PageTemplate>
   );
 };
@@ -116,10 +116,5 @@ const sx = {
         borderLeftColor: "palette.black",
       },
     },
-  },
-  emptyTableContainer: {
-    maxWidth: "75%",
-    margin: "0 auto",
-    textAlign: "center",
   },
 };

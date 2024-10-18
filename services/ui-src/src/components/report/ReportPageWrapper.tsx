@@ -73,7 +73,8 @@ export const ReportPageWrapper = () => {
         <VStack
           height="100%"
           padding="4rem 2rem 2rem 2rem"
-          width="640px"
+          width="100%"
+          maxWidth="640px"
           gap="6"
         >
           <Box flex="auto" alignItems="flex-start" width="100%">

@@ -296,6 +296,7 @@ const theme = extendTheme({
             backgroundColor: "palette.error_darker",
           },
         },
+        return: {},
       },
       defaultProps: {
         variant: "primary",
@@ -345,6 +346,7 @@ const theme = extendTheme({
           },
         },
         return: {
+          width: "fit-content",
           padding: "0.5rem 0 0 2rem",
           textDecoration: "none",
           _hover: {
@@ -426,7 +428,6 @@ const theme = extendTheme({
     Table: {
       baseStyle: {
         table: {
-          marginBottom: "2.5rem",
           th: {
             padding: "0.5rem 0",
             borderBottom: "1px solid",
@@ -452,6 +453,22 @@ const theme = extendTheme({
         },
       },
       variants: {
+        striped: () => ({
+          ...theme.components.Table.variants.striped,
+          table: {
+            maxWidth: "100%",
+            "tr td:first-of-type": {
+              width: "8rem",
+              fontWeight: "semibold",
+            },
+            td: {
+              padding: "0.5rem",
+            },
+            "td, tr": {
+              border: "none",
+            },
+          },
+        }),
         measure: {
           td: {
             "&:first-of-type": {
@@ -472,6 +489,13 @@ const theme = extendTheme({
       baseStyle: {
         color: "palette.base",
         transition: "all 0.3s ease",
+      },
+      variants: {
+        tableEmpty: {
+          maxWidth: "75%",
+          margin: "0 auto",
+          textAlign: "center",
+        },
       },
     },
   },
