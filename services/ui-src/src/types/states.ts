@@ -1,9 +1,4 @@
-import {
-  ParentPageTemplate,
-  PageData,
-  PageTemplate,
-  Report,
-} from "types/report";
+import { ParentPageTemplate, PageData, Report } from "types/report";
 import React from "react";
 import { HcbsUser } from "types";
 
@@ -20,7 +15,7 @@ export interface HcbsUserState {
 export interface HcbsReportState {
   // INITIAL STATE
   report?: Report;
-  pageMap?: Map<string, PageTemplate>;
+  pageMap?: Map<string, number>;
   rootPage?: ParentPageTemplate;
   parentPage?: PageData; // used for looking up curr & next page
   currentPageId?: string;

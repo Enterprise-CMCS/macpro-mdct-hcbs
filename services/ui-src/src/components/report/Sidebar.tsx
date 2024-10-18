@@ -17,11 +17,16 @@ export const Sidebar = () => {
   if (!report || !pageMap) {
     return null;
   }
+  const root = pageMap.get("root");
+  if (root == undefined) throw new Error("Sidebar missing root object.");
+
   const buildNavList = (childPageIds: string[]) => {
     const builtList: any[] = [];
 
     for (const child of childPageIds) {
-      const page = pageMap.get(child) as ParentPageTemplate;
+      const pageIndex = pageMap.get(child);
+      if (pageIndex == undefined) continue; // how did you do this
+      const page = report.pages[pageIndex];
       if (page.childPageIds) {
         builtList.push(
           <Stack key={page.id} width="100%" spacing="0">
@@ -36,7 +41,7 @@ export const Sidebar = () => {
     return builtList;
   };
   const navList = buildNavList(
-    (pageMap.get("root") as ParentPageTemplate).childPageIds
+    (report.pages[root] as ParentPageTemplate).childPageIds
   );
   return (
     <VStack height="100%" width="320px" background="gray.100" spacing="0">

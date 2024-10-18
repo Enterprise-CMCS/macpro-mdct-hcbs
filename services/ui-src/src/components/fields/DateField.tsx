@@ -8,7 +8,7 @@ import { DateTemplate } from "../../types/report";
 
 export const DateField = (props: PageElementProps) => {
   const dateTextbox = props.element as DateTemplate;
-  const defaultValue = "";
+  const defaultValue = dateTextbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
   // get form context and register form field

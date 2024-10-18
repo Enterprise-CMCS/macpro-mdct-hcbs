@@ -132,6 +132,7 @@ export type DateTemplate = {
   type: ElementType.Date;
   label: string;
   helperText: string;
+  answer?: string;
 };
 
 export type AccordionTemplate = {

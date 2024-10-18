@@ -8,7 +8,7 @@ import { PageElementProps } from "../report/Elements";
 
 export const TextField = (props: PageElementProps) => {
   const textbox = props.element as TextboxTemplate;
-  const defaultValue = "";
+  const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
   // get form context and register field

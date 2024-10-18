@@ -23,12 +23,18 @@ export const ReportPageWrapper = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const methods = useForm({
     defaultValues: useMemo(() => {
-      return pageMap?.get(currentPageId ?? "")!;
+      const pageIndex = pageMap?.get(currentPageId ?? "")!;
+      return report?.pages[pageIndex];
     }, [currentPageId]) as FormPageTemplate,
     shouldUnregister: true,
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, reset } = methods;
+  useEffect(() => {
+    const pageIndex = pageMap?.get(currentPageId ?? "")!;
+    reset(report?.pages[pageIndex]);
+  }, [currentPageId]);
+
   const handleBlur = (data: any) => {
     if (!report) return;
     setAnswers(data);
@@ -57,7 +63,7 @@ export const ReportPageWrapper = () => {
   }
 
   // I'm pretty sure these can all be moved into the state, but have not used the brainpower
-  const currentPage = pageMap.get(currentPageId)!;
+  const currentPage = report.pages[pageMap.get(currentPageId)!];
   const SetPageIndex = (newPageIndex: number) => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
     const childPageCount = parentPage.childPageIds?.length ?? 0;

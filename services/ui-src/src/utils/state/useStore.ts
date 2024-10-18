@@ -1,12 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { HcbsUserState, HcbsUser, HcbsReportState } from "types";
-import {
-  ParentPageTemplate,
-  PageData,
-  PageTemplate,
-  Report,
-} from "types/report";
+import { ParentPageTemplate, PageData, Report } from "types/report";
 import React from "react";
 
 // USER STORE
@@ -27,7 +22,7 @@ const userStore = (set: Function) => ({
 const reportStore = (set: Function): HcbsReportState => ({
   // initial state
   report: undefined, // raw report
-  pageMap: undefined, // all pages mapped by Id
+  pageMap: undefined, // all page indexes mapped by Id
   rootPage: undefined, // root node
   parentPage: undefined, // active parent (tracks prev/next page)
   currentPageId: undefined,
@@ -41,11 +36,10 @@ const reportStore = (set: Function): HcbsReportState => ({
         type: "setReport",
       });
     }
-    const pageMap = new Map<string, PageTemplate>();
-    for (const page of report.pages) {
-      pageMap.set(page.id, page);
-    }
-    const rootPage = pageMap.get("root") as ParentPageTemplate; // this cast is safe, per unit tests
+    const pageMap = new Map<string, number>(
+      report.pages.map((page, index) => [page.id, index])
+    );
+    const rootPage = report.pages[pageMap.get("root")!] as ParentPageTemplate; // this cast is safe, per unit tests
     const parentPage = {
       parent: rootPage.id,
       childPageIds: rootPage.childPageIds,
@@ -63,18 +57,18 @@ const reportStore = (set: Function): HcbsReportState => ({
   setCurrentPageId: (currentPageId: string) =>
     set(
       (state: HcbsReportState) => {
-        const findParentPage = [...state.pageMap!.values()].find((parentPage) =>
+        const parent = state.report?.pages.find((parentPage) =>
           parentPage?.childPageIds?.includes(currentPageId)
         );
         let parentPage = undefined;
-        if (findParentPage) {
+        if (parent) {
           // @ts-ignore TODO
-          const pageIndex = findParentPage.childPageIds.findIndex(
+          const pageIndex = parent.childPageIds.findIndex(
             (pageId) => pageId === currentPageId
           );
           parentPage = {
-            parent: findParentPage.id,
-            childPageIds: findParentPage.childPageIds!,
+            parent: parent.id,
+            childPageIds: parent.childPageIds!,
             index: pageIndex,
           };
         }
