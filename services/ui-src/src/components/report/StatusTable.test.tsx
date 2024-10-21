@@ -19,18 +19,27 @@ describe("StatusTableElement", () => {
   beforeEach(() => {
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     jest.clearAllMocks();
+
+    const mockPageMap = new Map();
+    mockPageMap.set("root", 0);
+    mockPageMap.set("1", 1);
+    mockPageMap.set("2", 2);
+
+    const report = {
+      pages: [
+        { childPageIds: ["1", "2"] },
+        { title: "Section 1", id: "id-1" },
+        { title: "Section 2", id: "id-2" },
+      ],
+    };
+    (useStore as unknown as jest.Mock).mockReturnValue({
+      pageMap: mockPageMap,
+      report: report,
+      setCurrentPageId,
+    });
   });
 
   test("table with section titles and status icons render", () => {
-    const mockPageMap = new Map();
-    mockPageMap.set("root", { childPageIds: ["1", "2"] });
-    mockPageMap.set("1", { title: "Section 1" });
-    mockPageMap.set("2", { title: "Section 2" });
-
-    (useStore as unknown as jest.Mock).mockReturnValue({
-      pageMap: mockPageMap,
-    });
-
     render(<StatusTableElement />);
 
     // Table headers
@@ -44,33 +53,15 @@ describe("StatusTableElement", () => {
   });
 
   test("when Edit button is clicked call setCurrentPageId with the correct pageId", async () => {
-    const mockPageMap = new Map();
-    mockPageMap.set("root", { childPageIds: ["1", "2"] });
-    mockPageMap.set("1", { title: "Section 1" });
-    mockPageMap.set("2", { title: "Section 2" });
-
-    (useStore as unknown as jest.Mock).mockReturnValue({
-      pageMap: mockPageMap,
-      setCurrentPageId,
-    });
-
     render(<StatusTableElement />);
 
     const editButton = screen.getByRole("button", { name: /Edit/i });
     await userEvent.click(editButton);
 
-    expect(setCurrentPageId).toHaveBeenCalledWith("1");
+    expect(setCurrentPageId).toHaveBeenCalledWith("id-1");
   });
 
   test("when the Review PDF button is clicked navigate to PDF", async () => {
-    const mockPageMap = new Map();
-    mockPageMap.set("root", { childPageIds: ["1"] });
-    mockPageMap.set("1", { title: "Section 1" });
-
-    (useStore as unknown as jest.Mock).mockReturnValue({
-      pageMap: mockPageMap,
-    });
-
     render(<StatusTableElement />);
 
     const reviewPdfButton = screen.getByRole("button", { name: /Review PDF/i });

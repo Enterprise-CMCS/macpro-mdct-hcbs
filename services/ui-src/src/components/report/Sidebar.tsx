@@ -71,7 +71,7 @@ export const Sidebar = () => {
   };
 
   const root = pageMap.get("root");
-  if (root == undefined) throw new Error("Sidebar missing root object.");
+  if (root == undefined) return null;
 
   return (
     <Flex height="100%">
