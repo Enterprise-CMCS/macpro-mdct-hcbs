@@ -122,7 +122,6 @@ const sx = {
     fontSize: "sm",
     fontWeight: "semibold",
     borderColor: "palette.gray_lighter",
-    textTransform: "none",
     letterSpacing: "normal",
     ".mobile &": {
       fontSize: "xs",

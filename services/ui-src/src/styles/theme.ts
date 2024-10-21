@@ -324,7 +324,7 @@ const theme = extendTheme({
       },
       variants: {
         h1: {
-          fontSize: "2rem",
+          fontSize: "2.25rem",
           paddingBottom: "0.5rem",
         },
         sidebar: {
@@ -334,17 +334,17 @@ const theme = extendTheme({
           margin: "0",
         },
         subHeader: {
-          fontSize: "23px",
+          fontSize: "21px",
           fontWeight: "700",
           p: {
             margin: "0",
           },
         },
-        login:{
+        login: {
           my: "6rem",
           textAlign: "center",
           width: "100%",
-        }
+        },
       },
     },
     Link: {
@@ -452,6 +452,7 @@ const theme = extendTheme({
             borderColor: "palette.gray_light",
             color: "palette.gray_medium",
             fontWeight: "bold",
+            textTransform: "none",
           },
           tr: {
             borderBottom: "1px solid",

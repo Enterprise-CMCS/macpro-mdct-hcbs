@@ -106,12 +106,12 @@ export const Sidebar = () => {
 
 const sx = {
   sidebar: {
-    ".mobile &": {
-      position: "absolute",
+    ".tablet &, .mobile &": {
+      position: "fixed",
       display: "flex",
       top: 0,
       left: 0,
-      zIndex: "50",
+      zIndex: "dropdown",
     },
   },
 };
