@@ -35,11 +35,7 @@ export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
       {status && (
         <>
           <Image src={status.src} alt={status.alt} boxSize="xl" />
-          {isPdf && (
-            <Text>
-              <b>{status.text}</b>
-            </Text>
-          )}
+          {isPdf && <Text fontWeight="bold">{status.text}</Text>}
         </>
       )}
     </Box>

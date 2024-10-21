@@ -340,6 +340,11 @@ const theme = extendTheme({
             margin: "0",
           },
         },
+        login:{
+          my: "6rem",
+          textAlign: "center",
+          width: "100%",
+        }
       },
     },
     Link: {
@@ -361,7 +366,6 @@ const theme = extendTheme({
         },
         return: {
           width: "fit-content",
-          padding: "0.5rem 0 0 2rem",
           textDecoration: "none",
           _hover: {
             textDecoration: "underline",
@@ -404,7 +408,7 @@ const theme = extendTheme({
         container: {},
       },
       variants: {
-        accordian: {
+        accordion: {
           container: {
             paddingLeft: "1rem",
           },
