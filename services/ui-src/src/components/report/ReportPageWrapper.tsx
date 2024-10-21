@@ -1,4 +1,4 @@
-import { Box, Button, Divider, HStack, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
@@ -18,6 +18,7 @@ export const ReportPageWrapper = () => {
     setReport,
     setParentPage,
     setAnswers,
+    setCurrentPageId,
   } = useStore();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -66,52 +67,61 @@ export const ReportPageWrapper = () => {
   const SetPageIndex = (newPageIndex: number) => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
     const childPageCount = parentPage.childPageIds?.length ?? 0;
+
     if (newPageIndex >= 0 && newPageIndex < childPageCount) {
       setParentPage({ ...parentPage, index: newPageIndex });
+      setCurrentPageId(parentPage.childPageIds[newPageIndex]);
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <form id="aFormId" autoComplete="off" onBlur={handleSubmit(handleBlur)}>
-        <HStack marginLeft="-30px" height="100%">
-          {currentPage.sidebar && <Sidebar />}
-          <VStack height="100%" padding="2rem" width="640px">
-            <Box flex="auto" alignItems="flex-start" width="100%">
+      <HStack width="100%" height="100%">
+        {currentPage.sidebar && <Sidebar />}
+        <VStack
+          height="100%"
+          padding="4rem 2rem 2rem 2rem"
+          width="100%"
+          maxWidth="640px"
+          gap="6"
+        >
+          <Box flex="auto" alignItems="flex-start" width="100%">
+            <form
+              id="aFormId"
+              autoComplete="off"
+              onBlur={handleSubmit(handleBlur)}
+            >
               {currentPage.elements && (
                 <Page elements={currentPage.elements ?? []}></Page>
               )}
-            </Box>
-            <Divider></Divider>
-            <Stack
-              direction="row"
-              width="100%"
-              display="flex"
-              justifyContent="space-between"
-            >
-              {parentPage && (
-                <Button
-                  onClick={() => SetPageIndex(parentPage.index - 1)}
-                  mr="3"
-                  display={parentPage.index > 0 ? "block" : "contents"}
-                >
-                  Previous
-                </Button>
-              )}
-              {parentPage &&
-                parentPage.index < parentPage.childPageIds.length - 1 && (
+            </form>
+          </Box>
+          {!currentPage.hideNavButtons && parentPage && (
+            <>
+              <Divider borderColor="palette.gray_light"></Divider>
+              <Flex width="100%">
+                {parentPage.index > 0 && (
+                  <Button
+                    onClick={() => SetPageIndex(parentPage.index - 1)}
+                    variant="outline"
+                  >
+                    Previous
+                  </Button>
+                )}
+                {parentPage.index < parentPage.childPageIds.length - 1 && (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index + 1)}
-                    alignSelf="flex-end"
+                    marginLeft="auto"
                   >
                     Continue
                   </Button>
                 )}
-            </Stack>
-          </VStack>
-          <ReportModal />
-        </HStack>
-      </form>
+              </Flex>
+            </>
+          )}
+        </VStack>
+        <ReportModal />
+      </HStack>
     </FormProvider>
   );
 };

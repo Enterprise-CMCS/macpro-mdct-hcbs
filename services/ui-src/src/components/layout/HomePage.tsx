@@ -6,10 +6,10 @@ export const HomePage = () => {
   const { intro, cards } = verbiage;
 
   return (
-    <PageTemplate sx={sx.layout}>
+    <PageTemplate>
       <>
-        <Box sx={sx.introTextBox}>
-          <Heading as="h1" sx={sx.headerText}>
+        <Box>
+          <Heading as="h1" variant="h1">
             {intro.header}
           </Heading>
           <Text>
@@ -21,32 +21,8 @@ export const HomePage = () => {
           </Text>
           <Text></Text>
         </Box>
-        <TemplateCard
-          templateName="QM"
-          verbiage={cards.QM}
-          cardprops={sx.card}
-        />
+        <TemplateCard templateName="QM" verbiage={cards.QM} />
       </>
     </PageTemplate>
   );
-};
-
-const sx = {
-  layout: {
-    ".contentFlex": {
-      marginTop: "3.5rem",
-    },
-  },
-  introTextBox: {
-    width: "100%",
-    marginBottom: "2.25rem",
-  },
-  headerText: {
-    marginBottom: "1rem",
-    fontSize: "2rem",
-    fontWeight: "normal",
-  },
-  card: {
-    marginBottom: "2rem",
-  },
 };

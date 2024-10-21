@@ -16,6 +16,7 @@ export const qmReportTemplate: ReportTemplate = {
         "general-info",
         "req-measure-result",
         "strat-measure-result",
+        "review-submit",
       ],
     },
     {
@@ -125,6 +126,39 @@ export const qmReportTemplate: ReportTemplate = {
           measureDisplay: "stratified",
           modalId: "req-measure-result-modal",
           to: "req-measure-report",
+        },
+      ],
+    },
+    {
+      id: "review-submit",
+      title: "Review & Submit",
+      type: PageType.Standard,
+      sidebar: true,
+      hideNavButtons: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          text: "Review & Submit",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Ready to Submit?",
+        },
+        {
+          type: ElementType.Paragraph,
+          text: "Double check that everything in your QMS Report is accurate. You will be able to make edits after submitting if you contact your [CMS representative] to unlock your report while it is in “Submitted” status.",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Compliance review",
+        },
+        {
+          type: ElementType.Paragraph,
+          text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
+        },
+        {
+          type: ElementType.StatusTable,
+          to: "review-submit",
         },
       ],
     },

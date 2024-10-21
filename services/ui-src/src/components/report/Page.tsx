@@ -7,9 +7,10 @@ import {
   radioElement,
   buttonLinkElement,
 } from "./Elements";
-import { MeasureTableElement } from "./MeasureTable";
 import { TextField } from "../fields/TextField";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
+import { MeasureTableElement } from "./MeasureTable";
+import { StatusTableElement } from "./StatusTable";
 import { DateField } from "../fields/DateField";
 
 interface Props {
@@ -38,6 +39,8 @@ export const Page = ({ elements }: Props) => {
         return buttonLinkElement;
       case ElementType.MeasureTable:
         return MeasureTableElement;
+      case ElementType.StatusTable:
+        return StatusTableElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;
@@ -54,7 +57,11 @@ export const Page = ({ elements }: Props) => {
       />
     );
   });
-  return <VStack alignItems="flex-start">{composedElements}</VStack>;
+  return (
+    <VStack alignItems="flex-start" gap="1.5rem">
+      {composedElements}
+    </VStack>
+  );
 };
 
 const buildFormKey = (index: number) => {

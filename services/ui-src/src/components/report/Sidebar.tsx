@@ -1,54 +1,98 @@
-import { Box, Button, Heading, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { AnyObject } from "yup/lib/types";
-import { ParentPageTemplate } from "../../types/report";
+import { PageTemplate } from "../../types/report";
+import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
+import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
+import { ReactNode, useState } from "react";
 
-export const navItem = (page: AnyObject, func: Function) => {
+const navItem = (title: string, index: number) => {
+  if (index <= 0) return title;
   return (
-    <Button key={page.id} variant="sidebar" onClick={() => func(page.id)}>
-      {page.title}
-    </Button>
+    <Box paddingLeft="1rem" key={`${title}.${index}`}>
+      {navItem(title, index - 1)}
+    </Box>
   );
 };
 
 export const Sidebar = () => {
-  const { report, pageMap, setCurrentPageId } = useStore();
+  const { report, pageMap, currentPageId, setCurrentPageId } = useStore();
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
 
   if (!report || !pageMap) {
     return null;
   }
-  const root = pageMap.get("root");
-  if (root == undefined) throw new Error("Sidebar missing root object.");
 
-  const buildNavList = (childPageIds: string[]) => {
-    const builtList: any[] = [];
-
-    for (const child of childPageIds) {
-      const pageIndex = pageMap.get(child);
-      if (pageIndex == undefined) continue; // how did you do this
-      const page = report.pages[pageIndex];
-      if (page.childPageIds) {
-        builtList.push(
-          <Stack key={page.id} width="100%" spacing="0">
-            {navItem(page, setCurrentPageId)}
-            <Box>{buildNavList(page.childPageIds)}</Box>
-          </Stack>
-        );
-      } else {
-        builtList.push(navItem(page, setCurrentPageId));
-      }
-    }
-    return builtList;
+  const setToggle = (sectonId: string) => {
+    const list = toggleList;
+    list[sectonId] = !toggleList[sectonId];
+    setToggleList({ ...list });
   };
-  const navList = buildNavList(
-    (report.pages[root] as ParentPageTemplate).childPageIds
-  );
+
+  const onNavSelect = (sectonId: string) => {
+    setCurrentPageId(sectonId);
+  };
+
+  const navSection = (section: PageTemplate, index: number = 0): ReactNode => {
+    const childSections = section.childPageIds?.map((child) =>
+      pageMap.get(child)
+    );
+
+    return (
+      <Box key={section.id}>
+        <Button
+          variant={section.id === currentPageId ? "sidebarSelected" : "sidebar"}
+        >
+          <Flex justifyContent="space-between" alignItems="center">
+            <Box
+              width="100%"
+              height="100%"
+              onClick={() => onNavSelect(section.id)}
+            >
+              {navItem(section.title!, index)}
+            </Box>
+            {childSections?.length! > 0 && (
+              <Box onClick={() => setToggle(section.id)}>
+                <Image
+                  src={toggleList[section.id] ? arrowUpIcon : arrowDownIcon}
+                  alt={
+                    toggleList[section.id]
+                      ? "Collapse subitems"
+                      : "Expand subitems"
+                  }
+                />
+              </Box>
+            )}
+          </Flex>
+        </Button>
+        {childSections?.length! > 0 &&
+          toggleList[section.id] &&
+          childSections!.map((sec) => navSection(sec!, index + 1))}
+      </Box>
+    );
+  };
+
   return (
-    <VStack height="100%" width="320px" background="gray.100" spacing="0">
-      <Heading fontSize="21" fontWeight="700" padding="32px">
-        Quality Measures Report
-      </Heading>
-      {navList}
-    </VStack>
+    <Flex height="100%">
+      {isOpen && (
+        <Flex flexDirection="column" background="palette.gray_lightest">
+          <Heading variant="sidebar">Quality Measures Report</Heading>
+          {pageMap
+            .get("root")
+            ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
+        </Flex>
+      )}
+      <Button
+        aria-label="Open/Close sidebar menu"
+        variant="sidebarToggle"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <Image
+          src={arrowDownIcon}
+          alt={isOpen ? "Arrow left" : "Arrow right"}
+          className={isOpen ? "left" : "right"}
+        />
+      </Button>
+    </Flex>
   );
 };

@@ -30,6 +30,7 @@ export type ParentPageTemplate = {
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
+  hideNavButtons?: undefined;
 };
 export const isParentPage = (
   page: PageTemplate
@@ -49,12 +50,18 @@ export type FormPageTemplate = {
   type: PageType;
   elements: PageElement[];
   sidebar?: boolean;
-
+  hideNavButtons?: boolean;
   childPageIds?: PageId[];
 };
 
 export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
+  required?: boolean;
+  stratified?: boolean;
+  optional?: boolean;
+}
+
+export interface StatusPageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
@@ -93,6 +100,7 @@ export enum ElementType {
   Radio = "radio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  StatusTable = "statusTable",
 }
 
 export type PageElement =
@@ -104,7 +112,8 @@ export type PageElement =
   | ParagraphTemplate
   | RadioTemplate
   | ButtonLinkTemplate
-  | MeasureTableTemplate;
+  | MeasureTableTemplate
+  | StatusTableTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -145,6 +154,11 @@ export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
   modalId: PageId;
+  to: PageId;
+};
+
+export type StatusTableTemplate = {
+  type: ElementType.StatusTable;
   to: PageId;
 };
 

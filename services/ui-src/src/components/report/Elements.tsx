@@ -1,16 +1,11 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Button,
   FormLabel,
   Heading,
   Radio,
   RadioGroup,
   Stack,
+  Image,
   Text,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
@@ -22,6 +17,8 @@ import {
   ButtonLinkTemplate,
   PageElement,
 } from "../../types/report";
+import { TemplateCardAccordion } from "components/accordions/TemplateCardAccordion";
+import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 
 export interface PageElementProps {
   element: PageElement;
@@ -31,7 +28,7 @@ export interface PageElementProps {
 
 export const headerElement = (props: PageElementProps) => {
   return (
-    <Heading fontWeight="hairline" textAlign="left">
+    <Heading fontWeight="hairline" textAlign="left" mb={6}>
       {(props.element as HeaderTemplate).text}
     </Heading>
   );
@@ -39,7 +36,7 @@ export const headerElement = (props: PageElementProps) => {
 
 export const subHeaderElement = (props: PageElementProps) => {
   return (
-    <Heading fontSize="18px">
+    <Heading variant="subHeader">
       {(props.element as SubHeaderTemplate).text}
     </Heading>
   );
@@ -47,25 +44,18 @@ export const subHeaderElement = (props: PageElementProps) => {
 
 export const paragraphElement = (props: PageElementProps) => {
   return (
-    <Text fontSize="18px">{(props.element as SubHeaderTemplate).text}</Text>
+    <Text fontSize="18px" pb={6}>
+      {(props.element as SubHeaderTemplate).text}
+    </Text>
   );
 };
 
 export const accordionElement = (props: PageElementProps) => {
   const accordion = props.element as AccordionTemplate;
-
   return (
-    <Accordion width="100%" defaultIndex={[0]} allowMultiple>
-      <AccordionItem>
-        <AccordionButton>
-          <Box flex="1" textAlign="left">
-            {accordion.label}{" "}
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel>{accordion.value}</AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+    <TemplateCardAccordion
+      verbiage={{ buttonLabel: accordion.label, text: accordion.value }}
+    ></TemplateCardAccordion>
   );
 };
 
@@ -90,7 +80,8 @@ export const buttonLinkElement = (props: PageElementProps) => {
   const button = props.element as ButtonLinkTemplate;
   const { setCurrentPageId } = useStore();
   return (
-    <Button variant="link" onClick={() => setCurrentPageId(button.to)}>
+    <Button variant="return" onClick={() => setCurrentPageId(button.to)}>
+      <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
       {button.label}
     </Button>
   );
