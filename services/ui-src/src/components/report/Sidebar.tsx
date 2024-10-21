@@ -1,4 +1,11 @@
-import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Flex,
+  Image,
+  background,
+} from "@chakra-ui/react";
 import { useStore } from "utils";
 import { PageTemplate } from "../../types/report";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
@@ -73,7 +80,7 @@ export const Sidebar = () => {
   };
 
   return (
-    <Flex height="100%">
+    <Flex height="100%" sx={sx.sidebar}>
       {isOpen && (
         <Flex flexDirection="column" background="palette.gray_lightest">
           <Heading variant="sidebar">Quality Measures Report</Heading>
@@ -95,4 +102,16 @@ export const Sidebar = () => {
       </Button>
     </Flex>
   );
+};
+
+const sx = {
+  sidebar: {
+    ".mobile &": {
+      position: "absolute",
+      display: "flex",
+      top: 0,
+      left: 0,
+      zIndex: "50",
+    },
+  },
 };

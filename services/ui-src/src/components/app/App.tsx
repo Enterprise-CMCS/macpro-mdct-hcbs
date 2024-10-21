@@ -50,7 +50,7 @@ export const App = () => {
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>
-            <Heading as="h1" size="xl" sx={sx.loginHeading}>
+            <Heading as="h1" size="xl" variant="login">
               Home &amp; Community Based Services
             </Heading>
           </Container>
@@ -81,30 +81,18 @@ const sx = {
     minHeight: "100vh",
     flexDirection: "column",
   },
-  skipnav: {
-    position: "absolute",
-  },
   appContainer: {
     display: "flex",
     maxW: "appMax",
+    padding: "0",
     flex: "1 0 auto",
-    ".desktop &": {
-      padding: "0",
-    },
-    "#main-content": {
-      section: {
-        flex: "1",
-      },
+    section: {
+      padding: "1rem",
     },
   },
   loginContainer: {
     maxWidth: "25rem",
     height: "full",
     marginY: "auto",
-  },
-  loginHeading: {
-    my: "6rem",
-    textAlign: "center",
-    width: "100%",
   },
 };

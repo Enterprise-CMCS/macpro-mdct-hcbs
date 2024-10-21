@@ -29,7 +29,6 @@ const sx = {
   contentBox: {
     "&.standard": {
       flexShrink: "0",
-      padding: "2rem",
     },
     "&.report": {
       height: "100%",
