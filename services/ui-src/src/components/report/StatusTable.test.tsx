@@ -40,7 +40,7 @@ describe("StatusTableElement", () => {
     // Section title and status for Section 1
     expect(screen.getByText("Section 1")).toBeInTheDocument();
     expect(screen.getByText("Complete")).toBeInTheDocument();
-    expect(screen.getByAltText("icon description")).toBeInTheDocument();
+    expect(screen.getByAltText("complete icon")).toBeInTheDocument();
   });
 
   test("when Edit button is clicked call setCurrentPageId with the correct pageId", async () => {

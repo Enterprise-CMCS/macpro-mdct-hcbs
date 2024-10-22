@@ -42,7 +42,11 @@ export const StatusTableElement = () => {
           <Text>{section.title}</Text>
         </Td>
         <Td>
-          <TableStatusIcon tableStatus={"error"} isPdf={true}></TableStatusIcon>
+          {/* TODO: Logic for when a page is incomplete to change status icon and text */}
+          <TableStatusIcon
+            tableStatus={"complete"}
+            isPdf={true}
+          ></TableStatusIcon>
         </Td>
         <Td>
           <Button

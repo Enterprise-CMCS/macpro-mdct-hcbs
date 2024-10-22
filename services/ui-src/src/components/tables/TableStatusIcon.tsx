@@ -17,13 +17,13 @@ export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
       case TableStatuses.COMPLETE:
         return {
           src: successIcon,
-          alt: isPdf ? "" : "complete icon",
+          alt: "complete icon",
           text: "Complete",
         };
       default:
         return {
           src: unfinishedIcon,
-          alt: isPdf ? "" : "warning icon",
+          alt: "warning icon",
           text: "Error",
         };
     }

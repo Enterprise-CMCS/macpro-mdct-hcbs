@@ -424,6 +424,7 @@ const theme = extendTheme({
             position: "absolute",
             right: "2rem",
           },
+          borderRadius: "none",
         },
         header: {
           padding: "0 0 1.50rem 0",
@@ -518,7 +519,7 @@ const theme = extendTheme({
               width: "65%",
               fontWeight: "bold",
             },
-            "&:nth-child(2)": {
+            "&:nth-of-type(2)": {
               width: "25%",
             },
           },
