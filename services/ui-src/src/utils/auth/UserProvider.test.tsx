@@ -2,39 +2,17 @@ import { useContext } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
+// utils
 import { UserContext, UserProvider, useStore } from "utils";
-import {
-  mockStateUserStore,
-  RouterWrappedComponent,
-} from "utils/testing/setupJest";
-import { UserRoles } from "types/users";
-
-const mockAuthPayload = {
-  email: "test@email.com",
-  given_name: "Test",
-  family_name: "IsMe",
-  ["custom:cms_roles"]: UserRoles.STATE_USER,
-  ["custom:cms_state"]: "AL",
-};
-
-jest.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: jest.fn().mockReturnValue({
-      getIdToken: () => ({
-        payload: mockAuthPayload,
-      }),
-    }),
-    configure: () => {},
-    signOut: jest.fn().mockImplementation(() => {}),
-    federatedSignIn: () => {},
-  },
-  Hub: {
-    listen: jest.fn(),
-  },
-}));
+import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 
 jest.mock("utils/state/useStore");
+const mockSetUser = jest.fn();
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockUseStore,
+  setUser: mockSetUser,
+});
 
 // COMPONENTS
 
@@ -85,8 +63,8 @@ const setWindowOrigin = (windowOrigin: string) => {
 };
 
 const breakCheckAuthState = async () => {
-  const mockAmplify = require("aws-amplify");
-  mockAmplify.Auth.currentSession = jest.fn().mockImplementation(() => {
+  const mockAmplify = require("aws-amplify/auth");
+  mockAmplify.currentSession = jest.fn().mockImplementation(() => {
     throw new Error();
   });
 };
@@ -105,7 +83,6 @@ describe("<UserProvider />", () => {
   describe("Test UserProvider", () => {
     beforeEach(async () => {
       await act(async () => {
-        mockedUseStore.mockReturnValue(mockStateUserStore);
         render(testComponent);
       });
     });
@@ -138,7 +115,6 @@ describe("<UserProvider />", () => {
       setWindowOrigin("mdcthcbs.cms.gov");
       await breakCheckAuthState();
       await act(async () => {
-        mockedUseStore.mockReturnValue(mockStateUserStore);
         render(testComponent);
       });
       expect(window.location.origin).toContain("mdcthcbs.cms.gov");
@@ -152,7 +128,6 @@ describe("<UserProvider />", () => {
       setWindowOrigin("wherever");
       await breakCheckAuthState();
       await act(async () => {
-        mockedUseStore.mockReturnValue(mockStateUserStore);
         render(testComponent);
       });
       expect(window.location.origin).toContain("wherever");
@@ -165,13 +140,12 @@ describe("<UserProvider />", () => {
       jest.spyOn(console, "log").mockImplementation(jest.fn());
       const spy = jest.spyOn(console, "log");
 
-      const mockAmplify = require("aws-amplify");
-      mockAmplify.Auth.signOut = jest.fn().mockImplementation(() => {
+      const mockAmplify = require("aws-amplify/auth");
+      mockAmplify.signOut = jest.fn().mockImplementation(() => {
         throw new Error();
       });
 
       await act(async () => {
-        mockedUseStore.mockReturnValue(mockStateUserStore);
         render(testComponent);
       });
 
@@ -181,6 +155,37 @@ describe("<UserProvider />", () => {
       });
 
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  test("test check auth function", async () => {
+    const mockAmplify = require("aws-amplify/auth");
+    mockAmplify.fetchAuthSession = jest.fn().mockResolvedValue({
+      tokens: {
+        idToken: {
+          payload: {
+            email: "email@address.com",
+            given_name: "first",
+            family_name: "last",
+            "custom:cms_roles": "roles",
+            "custom:cms_state": "ZZ",
+          },
+        },
+      },
+    });
+    await act(async () => {
+      render(testComponent);
+    });
+    expect(mockSetUser).toHaveBeenCalledWith({
+      email: "email@address.com",
+      given_name: "first",
+      family_name: "last",
+      full_name: "first last",
+      userRole: undefined,
+      state: "ZZ",
+      userIsAdmin: false,
+      userIsReadOnly: false,
+      userIsEndUser: false,
     });
   });
 });

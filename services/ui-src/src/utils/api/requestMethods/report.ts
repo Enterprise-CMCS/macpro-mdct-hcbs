@@ -1,6 +1,5 @@
-import { API } from "aws-amplify";
+import { apiLib } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { updateTimeout } from "utils";
 
 async function createReport(
   reportType: string,
@@ -8,33 +7,21 @@ async function createReport(
   reportOptions: any // TODO: correct
 ) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
     body: { ...reportOptions },
   };
 
-  updateTimeout();
-  const response = await API.post(
-    "hcbs",
-    `/reports/${reportType}/${state}`,
-    request
-  );
-  return response;
+  return await apiLib.post(`/reports/${reportType}/${state}`, options);
 }
 
 async function getReport(reportType: string, state: string, id: string) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
   };
 
-  updateTimeout();
-  const response = await API.get(
-    "hcbs",
-    `/reports/${reportType}/${state}/${id}`,
-    request
-  );
-  return response;
+  return await apiLib.get(`/reports/${reportType}/${state}/${id}`, options);
 }
 
 export { createReport, getReport };

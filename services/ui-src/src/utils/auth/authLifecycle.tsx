@@ -1,4 +1,5 @@
-import { Auth, Hub } from "aws-amplify";
+import { fetchAuthSession, signOut } from "aws-amplify/auth";
+import { Hub } from "aws-amplify/utils";
 import { IDLE_WINDOW } from "../../constants";
 import { isBefore, addMilliseconds } from "date-fns";
 
@@ -19,7 +20,7 @@ class AuthManager {
       isBefore(new Date(expiration).valueOf(), Date.now().valueOf());
     if (isExpired) {
       localStorage.removeItem("mdcthcbs_session_exp");
-      Auth.signOut().then(() => {
+      signOut().then(() => {
         window.location.href = "/";
       });
     }
@@ -48,7 +49,7 @@ class AuthManager {
    * Manual refresh of credentials paired with an instant timer clear
    */
   refreshCredentials = async () => {
-    await Auth.currentAuthenticatedUser({ bypassCache: true }); // Force a token refresh
+    await fetchAuthSession({ forceRefresh: true }); // Force a token refresh
     this.setTimer();
   };
 
