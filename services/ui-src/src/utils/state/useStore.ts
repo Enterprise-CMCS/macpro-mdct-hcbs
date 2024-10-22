@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { HcbsUserState, HcbsUser, HcbsReportState } from "types";
-import { PageData, Report } from "types/report";
+import { Report } from "types/report";
 import React from "react";
 import { buildState, mergeAnswers, setPage } from "./management/reportState";
 
@@ -39,8 +39,6 @@ const reportStore = (set: Function): HcbsReportState => ({
     set((state: HcbsReportState) => setPage(currentPageId, state), false, {
       type: "setCurrentPageId",
     }),
-  setParentPage: (parentPage: PageData | undefined) =>
-    set(() => ({ parentPage }), false, { type: "setParentPage" }),
   setModalOpen: (modalOpen: boolean) =>
     set(() => ({ modalOpen }), false, { type: "setModalOpen" }),
   setModalComponent: (modalComponent: React.ReactFragment) =>

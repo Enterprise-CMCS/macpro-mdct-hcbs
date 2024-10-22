@@ -24,7 +24,6 @@ export interface HcbsReportState {
 
   // ACTIONS
   setReport: (report?: Report) => void;
-  setParentPage: (parentPage?: PageData) => void;
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
   setModalComponent: (modalComponent: React.ReactFragment) => void;

@@ -16,7 +16,6 @@ export const ReportPageWrapper = () => {
     parentPage,
     currentPageId,
     setReport,
-    setParentPage,
     setAnswers,
     setCurrentPageId,
   } = useStore();
@@ -64,16 +63,10 @@ export const ReportPageWrapper = () => {
     return <p>Loading</p>;
   }
 
-  // I'm pretty sure these can all be moved into the state, but have not used the brainpower
   const currentPage = report.pages[pageMap.get(currentPageId)!];
   const SetPageIndex = (newPageIndex: number) => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
-    const childPageCount = parentPage.childPageIds?.length ?? 0;
-
-    if (newPageIndex >= 0 && newPageIndex < childPageCount) {
-      setParentPage({ ...parentPage, index: newPageIndex });
-      setCurrentPageId(parentPage.childPageIds[newPageIndex]);
-    }
+    setCurrentPageId(parentPage.childPageIds[newPageIndex]);
   };
 
   return (
