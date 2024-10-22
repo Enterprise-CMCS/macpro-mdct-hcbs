@@ -179,7 +179,7 @@ const theme = extendTheme({
           borderColor: "palette.gray_lighter",
           borderWidth: "0 0 1px 0",
           fontSize: "14px",
-          paddingLeft: "2rem",
+          paddingLeft: "1rem",
           _hover: {
             color: "palette.secondary_darkest",
             backgroundColor: "palette.gray_lightest_highlight",
@@ -195,9 +195,9 @@ const theme = extendTheme({
           backgroundColor: "palette.gray_lightest_highlight",
           border: "1px solid",
           borderColor: "palette.secondary",
-          borderWidth: "0 0 0 4px",
+          borderWidth: "0 0 0 2px",
           fontSize: "14px",
-          paddingLeft: "2rem",
+          paddingLeft: "1rem",
           width: "100%",
         },
         sidebarToggle: {
@@ -504,6 +504,10 @@ const theme = extendTheme({
             },
             a: {
               fontSize: "14px",
+              whiteSpace: "nowrap",
+              ".mobile &": {
+                whiteSpace: "wrap",
+              },
             },
           },
         },

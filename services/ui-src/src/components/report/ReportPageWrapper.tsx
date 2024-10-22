@@ -68,13 +68,13 @@ export const ReportPageWrapper = () => {
 
   return (
     <FormProvider {...methods}>
-      <HStack width="100%" height="100%" position="relative">
+      <HStack width="100%" height="100%" position="relative" spacing="0">
         {currentPage.sidebar && <Sidebar />}
         <VStack
           height="100%"
           padding={{ base: "4rem 1rem", md: "4rem 2rem 2rem 2rem" }}
           width="100%"
-          maxWidth="640px"
+          maxWidth="reportPageWidth"
           gap="6"
         >
           <Box flex="auto" alignItems="flex-start" width="100%">
