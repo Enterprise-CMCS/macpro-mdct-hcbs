@@ -461,7 +461,6 @@ const theme = extendTheme({
             borderColor: "palette.gray_light",
           },
           td: {
-            minWidth: "6rem",
             paddingLeft: 0,
             borderTop: "1px solid",
             borderBottom: "1px solid",
@@ -508,6 +507,19 @@ const theme = extendTheme({
               ".mobile &": {
                 whiteSpace: "wrap",
               },
+            },
+          },
+        },
+        status: {
+          td: {
+            fontSize: "14px",
+            padding: "0.75rem 0",
+            "&:first-of-type": {
+              width: "65%",
+              fontWeight: "bold",
+            },
+            "&:nth-child(2)": {
+              width: "25%",
             },
           },
         },

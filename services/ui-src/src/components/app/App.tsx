@@ -84,10 +84,15 @@ const sx = {
   appContainer: {
     display: "flex",
     maxW: "appMax",
-    padding: "0",
     flex: "1 0 auto",
+    padding: "0rem",
     section: {
-      padding: "1rem",
+      padding: "1rem 2rem",
+    },
+    ".tablet &, .mobile &": {
+      section: {
+        padding: "1rem",
+      },
     },
   },
   loginContainer: {

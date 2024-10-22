@@ -12,6 +12,7 @@ import { useStore } from "utils";
 import {
   HeaderTemplate,
   SubHeaderTemplate,
+  ParagraphTemplate,
   AccordionTemplate,
   RadioTemplate,
   ButtonLinkTemplate,
@@ -42,10 +43,17 @@ export const subHeaderElement = (props: PageElementProps) => {
 };
 
 export const paragraphElement = (props: PageElementProps) => {
+  const element = props.element as ParagraphTemplate;
+
   return (
-    <Text fontSize="18px" pb={6}>
-      {(props.element as SubHeaderTemplate).text}
-    </Text>
+    <Stack>
+      {element?.title && (
+        <Text fontSize="16px" fontWeight="bold">
+          {(props.element as ParagraphTemplate).title}
+        </Text>
+      )}
+      <Text fontSize="16px">{(props.element as ParagraphTemplate).text}</Text>
+    </Stack>
   );
 };
 
