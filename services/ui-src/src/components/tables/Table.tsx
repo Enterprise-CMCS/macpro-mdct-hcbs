@@ -119,10 +119,7 @@ const sx = {
   },
   tableHeader: {
     padding: "0.75rem 0.5rem",
-    fontSize: "sm",
-    fontWeight: "semibold",
     borderColor: "palette.gray_lighter",
-    letterSpacing: "normal",
     ".mobile &": {
       fontSize: "xs",
     },

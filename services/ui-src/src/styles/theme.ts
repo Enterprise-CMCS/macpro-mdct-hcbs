@@ -330,7 +330,7 @@ const theme = extendTheme({
         sidebar: {
           fontSize: "21px",
           fontWeight: "700",
-          padding: "32px",
+          padding: "2rem",
           margin: "0",
         },
         subHeader: {
@@ -453,6 +453,8 @@ const theme = extendTheme({
             color: "palette.gray_medium",
             fontWeight: "bold",
             textTransform: "none",
+            letterSpacing: "normal",
+            fontSize: "sm",
           },
           tr: {
             borderBottom: "1px solid",
@@ -499,6 +501,9 @@ const theme = extendTheme({
               button: {
                 fontWeight: "800",
               },
+            },
+            a: {
+              fontSize: "14px",
             },
           },
         },

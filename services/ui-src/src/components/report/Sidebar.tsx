@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Flex,
-  Image,
-  background,
-} from "@chakra-ui/react";
+import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { PageTemplate } from "../../types/report";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
@@ -80,38 +73,42 @@ export const Sidebar = () => {
   };
 
   return (
-    <Flex height="100%" sx={sx.sidebar}>
-      {isOpen && (
-        <Flex flexDirection="column" background="palette.gray_lightest">
-          <Heading variant="sidebar">Quality Measures Report</Heading>
-          {pageMap
-            .get("root")
-            ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
-        </Flex>
-      )}
-      <Button
-        aria-label="Open/Close sidebar menu"
-        variant="sidebarToggle"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <Image
-          src={arrowDownIcon}
-          alt={isOpen ? "Arrow left" : "Arrow right"}
-          className={isOpen ? "left" : "right"}
-        />
-      </Button>
-    </Flex>
+    <Box sx={sx.sidebar}>
+      <Flex sx={sx.sidebarNav}>
+        {isOpen && (
+          <Flex flexDirection="column" background="palette.gray_lightest">
+            <Heading variant="sidebar">Quality Measures Report</Heading>
+            {pageMap
+              .get("root")
+              ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
+          </Flex>
+        )}
+        <Button
+          aria-label="Open/Close sidebar menu"
+          variant="sidebarToggle"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <Image
+            src={arrowDownIcon}
+            alt={isOpen ? "Arrow left" : "Arrow right"}
+            className={isOpen ? "left" : "right"}
+          />
+        </Button>
+      </Flex>
+    </Box>
   );
 };
 
 const sx = {
   sidebar: {
+    height: "100%",
+    zIndex: "dropdown",
+  },
+  sidebarNav: {
+    height: "100%",
     ".tablet &, .mobile &": {
       position: "fixed",
       display: "flex",
-      top: 0,
-      left: 0,
-      zIndex: "dropdown",
     },
   },
 };

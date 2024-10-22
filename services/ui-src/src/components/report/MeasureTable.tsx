@@ -7,6 +7,7 @@ import {
   Thead,
   Tr,
   Text,
+  Link,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { MeasureReplacementModal } from "./MeasureReplacementModal";
@@ -50,16 +51,13 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <TableStatusIcon tableStatus=""></TableStatusIcon>
         </Td>
         <Td width="100%">
-          <Text>{measure.title}</Text>
+          <Text fontWeight="bold">{measure.title}</Text>
           <Text>CMIT# {measure.cmit}</Text>
         </Td>
         <Td>
-          <Button
-            variant="link"
-            onClick={() => buildModal(measure.cmit)} // TODO: modal per link
-          >
+          <Link onClick={() => buildModal(measure.cmit)}>
             Substitute measure
-          </Button>
+          </Link>
         </Td>
         <Td>
           <Button
