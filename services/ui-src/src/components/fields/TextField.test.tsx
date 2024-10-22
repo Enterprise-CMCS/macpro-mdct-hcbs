@@ -39,6 +39,7 @@ const textFieldComponent = (
   <TextField
     element={mockedTextboxElement as unknown as PageElement}
     index={0}
+    formkey="elements.0"
   />
 );
 
