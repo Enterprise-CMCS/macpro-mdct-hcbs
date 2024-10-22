@@ -91,7 +91,7 @@ describe("state/management/reportState: setPage", () => {
   test("updates the page info", () => {
     const state = buildState(testReport) as unknown as HcbsReportState;
     const result = setPage("req-measure-result", state);
-    expect(result.pageId).toEqual("req-measure-result");
+    expect(result.currentPageId).toEqual("req-measure-result");
   });
 });
 

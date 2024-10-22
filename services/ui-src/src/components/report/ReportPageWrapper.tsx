@@ -41,10 +41,8 @@ export const ReportPageWrapper = () => {
     setAnswers(data);
   };
 
-  if (!reportType || !state || !reportId) {
-    return <div>bad params</div>; // TODO: error page
-  }
   const fetchReport = async () => {
+    if (!reportType || !state || !reportId) return;
     try {
       const result = await getReport(reportType, state, reportId);
       setReport(result);
@@ -57,6 +55,10 @@ export const ReportPageWrapper = () => {
   useEffect(() => {
     fetchReport();
   }, []);
+
+  if (!reportType || !state || !reportId) {
+    return <div>bad params</div>; // TODO: error page
+  }
 
   if (isLoading || !report || !pageMap || !currentPageId) {
     return <p>Loading</p>;

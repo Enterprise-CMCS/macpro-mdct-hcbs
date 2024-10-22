@@ -18,9 +18,12 @@ export const buildState = (report: Report | undefined) => {
   return { report, pageMap, rootPage, parentPage, currentPageId };
 };
 
-export const setPage = (pageId: string, currentState: HcbsReportState) => {
+export const setPage = (
+  currentPageId: string,
+  currentState: HcbsReportState
+) => {
   const parent = currentState.report?.pages.find((parentPage) =>
-    parentPage?.childPageIds?.includes(pageId)
+    parentPage?.childPageIds?.includes(currentPageId)
   );
   let parentPage = undefined;
   if (parent) {
@@ -34,7 +37,7 @@ export const setPage = (pageId: string, currentState: HcbsReportState) => {
       index: pageIndex,
     };
   }
-  return { pageId, parentPage };
+  return { currentPageId, parentPage };
 };
 
 export const deepMerge = (obj1: any, obj2: any) => {
