@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
@@ -7,6 +7,7 @@ import { getReport } from "utils/api/requestMethods/report";
 import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
+import { FormPageTemplate } from "types/report";
 
 export const ReportPageWrapper = () => {
   const {
@@ -15,28 +16,32 @@ export const ReportPageWrapper = () => {
     parentPage,
     currentPageId,
     setReport,
-    setParentPage,
+    setAnswers,
     setCurrentPageId,
   } = useStore();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const methods = useForm({
+    defaultValues: useMemo(() => {
+      const pageIndex = pageMap?.get(currentPageId ?? "")!;
+      return report?.pages[pageIndex];
+    }, [currentPageId]) as FormPageTemplate,
     shouldUnregister: true,
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, reset } = methods;
+  useEffect(() => {
+    const pageIndex = pageMap?.get(currentPageId ?? "")!;
+    reset(report?.pages[pageIndex]);
+  }, [currentPageId]);
+
   const handleBlur = (data: any) => {
-    // TODO: any
     if (!report) return;
-    // console.log(methods.formState);
-    report.answers = [...data.answers];
-    // TODO: Post
+    setAnswers(data);
   };
 
-  if (!reportType || !state || !reportId) {
-    return <div>bad params</div>; // TODO: error page
-  }
   const fetchReport = async () => {
+    if (!reportType || !state || !reportId) return;
     try {
       const result = await getReport(reportType, state, reportId);
       setReport(result);
@@ -50,20 +55,18 @@ export const ReportPageWrapper = () => {
     fetchReport();
   }, []);
 
+  if (!reportType || !state || !reportId) {
+    return <div>bad params</div>; // TODO: error page
+  }
+
   if (isLoading || !report || !pageMap || !currentPageId) {
     return <p>Loading</p>;
   }
 
-  // I'm pretty sure these can all be moved into the state, but have not used the brainpower
-  const currentPage = pageMap.get(currentPageId)!;
+  const currentPage = report.pages[pageMap.get(currentPageId)!];
   const SetPageIndex = (newPageIndex: number) => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
-    const childPageCount = parentPage.childPageIds?.length ?? 0;
-
-    if (newPageIndex >= 0 && newPageIndex < childPageCount) {
-      setParentPage({ ...parentPage, index: newPageIndex });
-      setCurrentPageId(parentPage.childPageIds[newPageIndex]);
-    }
+    setCurrentPageId(parentPage.childPageIds[newPageIndex]);
   };
 
   return (

@@ -141,6 +141,7 @@ export type DateTemplate = {
   type: ElementType.Date;
   label: string;
   helperText: string;
+  answer?: string;
 };
 
 export type AccordionTemplate = {
@@ -152,13 +153,10 @@ export type AccordionTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
-  modalId: PageId;
-  to: PageId;
 };
 
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
-  to: PageId;
 };
 
 export type RadioTemplate = {

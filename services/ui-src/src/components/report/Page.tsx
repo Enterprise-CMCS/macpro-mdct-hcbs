@@ -49,11 +49,21 @@ export const Page = ({ elements }: Props) => {
 
   const composedElements = elements.map((element, index) => {
     const ComposedElement = renderElement(element);
-    return <ComposedElement key={index} element={element} />;
+    return (
+      <ComposedElement
+        formkey={buildFormKey(index)}
+        key={index}
+        element={element}
+      />
+    );
   });
   return (
     <VStack alignItems="flex-start" gap="1.5rem">
       {composedElements}
     </VStack>
   );
+};
+
+const buildFormKey = (index: number) => {
+  return `elements.${index}`;
 };

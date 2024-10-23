@@ -1,6 +1,5 @@
 import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { PageTemplate } from "../../types/report";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
 import { ReactNode, useState } from "react";
@@ -33,30 +32,29 @@ export const Sidebar = () => {
     setCurrentPageId(sectonId);
   };
 
-  const navSection = (section: PageTemplate, index: number = 0): ReactNode => {
-    const childSections = section.childPageIds?.map((child) =>
-      pageMap.get(child)
-    );
+  const navSection = (section: number, index: number = 0): ReactNode => {
+    const page = report.pages[section];
+    const childSections = page.childPageIds?.map((child) => pageMap.get(child));
 
     return (
-      <Box key={section.id}>
+      <Box key={page.id}>
         <Button
-          variant={section.id === currentPageId ? "sidebarSelected" : "sidebar"}
+          variant={page.id === currentPageId ? "sidebarSelected" : "sidebar"}
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box
               width="100%"
               height="100%"
-              onClick={() => onNavSelect(section.id)}
+              onClick={() => onNavSelect(page.id)}
             >
-              {navItem(section.title!, index)}
+              {navItem(page.title!, index)}
             </Box>
             {childSections?.length! > 0 && (
-              <Box onClick={() => setToggle(section.id)}>
+              <Box onClick={() => setToggle(page.id)}>
                 <Image
-                  src={toggleList[section.id] ? arrowUpIcon : arrowDownIcon}
+                  src={toggleList[page.id] ? arrowUpIcon : arrowDownIcon}
                   alt={
-                    toggleList[section.id]
+                    toggleList[page.id]
                       ? "Collapse subitems"
                       : "Expand subitems"
                   }
@@ -66,20 +64,23 @@ export const Sidebar = () => {
           </Flex>
         </Button>
         {childSections?.length! > 0 &&
-          toggleList[section.id] &&
+          toggleList[page.id] &&
           childSections!.map((sec) => navSection(sec!, index + 1))}
       </Box>
     );
   };
+
+  const root = pageMap.get("root");
+  if (root == undefined) return null;
 
   return (
     <Flex height="100%">
       {isOpen && (
         <Flex flexDirection="column" background="palette.gray_lightest">
           <Heading variant="sidebar">Quality Measures Report</Heading>
-          {pageMap
-            .get("root")
-            ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
+          {report.pages[root].childPageIds?.map((child) =>
+            navSection(pageMap.get(child)!)
+          )}
         </Flex>
       )}
       <Button

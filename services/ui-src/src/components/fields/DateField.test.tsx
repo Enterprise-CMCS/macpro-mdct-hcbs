@@ -36,9 +36,11 @@ const mockedDateTextboxElement = {
   helperText: "helper text",
 };
 
+const testKey = "unique.form.key";
 const dateFieldComponent = (
   <DateField
     element={mockedDateTextboxElement as unknown as PageElement}
+    formkey={testKey}
     index={0}
   />
 );
@@ -71,7 +73,7 @@ describe("<DateField />", () => {
        */
       expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(3);
       expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
-        "answers.1.2",
+        `${testKey}.answer`,
         "10/16/2024"
       );
     });

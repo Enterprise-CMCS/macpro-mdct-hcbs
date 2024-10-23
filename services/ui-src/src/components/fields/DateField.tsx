@@ -8,32 +8,31 @@ import { DateTemplate } from "../../types/report";
 
 export const DateField = (props: PageElementProps) => {
   const dateTextbox = props.element as DateTemplate;
-  const defaultValue = "";
+  const defaultValue = dateTextbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
   // get form context and register form field
   const form = useFormContext();
-  const inputName = "answers.1.2"; // TODO: id based
-
+  const key = `${props.formkey}.answer`;
   useEffect(() => {
-    form.register(inputName);
+    form.register(key);
   }, []);
 
   const onChangeHandler = (rawValue: string, maskedValue: string) => {
     setDisplayValue(rawValue);
     const isValidDate = checkDateCompleteness(maskedValue);
     if (isValidDate || maskedValue === "") {
-      form.setValue(inputName, maskedValue, { shouldValidate: true });
+      form.setValue(key, maskedValue, { shouldValidate: true });
     }
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(inputName, event.target.value);
+    form.setValue(key, event.target.value);
   };
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[inputName]?.message;
+  const errorMessage = formErrorState?.[key]?.message;
   const parsedHint =
     dateTextbox.helperText && parseCustomHtml(dateTextbox.helperText);
   const labelText = dateTextbox.label;
@@ -41,8 +40,8 @@ export const DateField = (props: PageElementProps) => {
   return (
     <Box>
       <CmsdsDateField
-        id={inputName}
-        name={inputName}
+        id={key}
+        name={key}
         label={labelText || ""}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}

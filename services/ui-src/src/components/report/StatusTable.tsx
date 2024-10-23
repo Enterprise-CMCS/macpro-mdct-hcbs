@@ -20,26 +20,26 @@ import { ParentPageTemplate } from "types/report";
 import { useNavigate } from "react-router-dom";
 
 export const StatusTableElement = () => {
-  const { pageMap, setCurrentPageId } = useStore();
+  const { pageMap, report, setCurrentPageId } = useStore();
   const navigate = useNavigate();
 
   if (!pageMap) {
     return null;
   }
 
-  const childPageIdsList = (pageMap.get("root") as ParentPageTemplate)
+  const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate)
     .childPageIds;
-  const sectionTitles = childPageIdsList
-    .map((id) => {
-      const page = pageMap.get(id) as ParentPageTemplate;
-      return { title: page.title, pageId: id };
-    })
-    .slice(0, -1);
+  const sections = childPages.slice(0, -1).map((id) => {
+    const pageIdx = pageMap.get(id);
+    if (!pageIdx) return;
+    return report?.pages[pageIdx] as ParentPageTemplate;
+  });
 
   // Build Rows
-  const rows = sectionTitles.map((section, index) => {
+  const rows = sections.map((section, index) => {
+    if (!section) return;
     return (
-      <Tr key={section.pageId || index} p={0}>
+      <Tr key={section.id || index} p={0}>
         <Td>
           <Stack flex="1">
             <Text fontWeight="bold">{section.title}</Text>
@@ -60,7 +60,7 @@ export const StatusTableElement = () => {
             colorScheme="blue"
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
-            onClick={() => setCurrentPageId(section.pageId)}
+            onClick={() => setCurrentPageId(section.id)}
           >
             Edit
           </Button>

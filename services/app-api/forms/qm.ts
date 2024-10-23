@@ -77,8 +77,6 @@ export const qmReportTemplate: ReportTemplate = {
         {
           type: ElementType.MeasureTable,
           measureDisplay: "required",
-          modalId: "req-measure-result-modal",
-          to: "req-measure-report",
         },
       ],
     },
@@ -124,8 +122,6 @@ export const qmReportTemplate: ReportTemplate = {
         {
           type: ElementType.MeasureTable,
           measureDisplay: "stratified",
-          modalId: "req-measure-result-modal",
-          to: "req-measure-report",
         },
       ],
     },
