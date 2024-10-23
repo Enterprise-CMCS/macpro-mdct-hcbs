@@ -227,8 +227,6 @@ export type ChoiceTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
-  modalId: PageId;
-  to: PageId;
 };
 
 export type StatusTableTemplate = {

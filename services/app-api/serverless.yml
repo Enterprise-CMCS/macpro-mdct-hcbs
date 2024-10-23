@@ -95,6 +95,20 @@ functions:
               paths:
                 reportType: true
                 state: true
+  updateReport:
+    handler: handlers/reports/update.updateReport
+    events:
+      - http:
+          path: reports/{reportType}/{state}/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                reportType: true
+                state: true
+                id: true
   getReport:
     handler: handlers/reports/get.getReport
     events:
