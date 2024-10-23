@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { background, extendTheme, position } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
