@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { extendTheme } from "@chakra-ui/react";
+import { background, extendTheme, position } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
@@ -201,6 +201,7 @@ const theme = extendTheme({
           width: "100%",
         },
         sidebarToggle: {
+          position: "absolute",
           padding: "0",
           background: "palette.gray_lightest",
           borderRadius: "0px 10px 10px 0px",
@@ -209,6 +210,15 @@ const theme = extendTheme({
           },
           "img.right": {
             transform: "rotate(270deg)",
+          },
+          ".tablet &, .mobile &": {
+            position: "fixed",
+          },
+          "&.open": {
+            left: "20rem",
+          },
+          "&.closed": {
+            left: "0",
           },
         },
         outline: () => ({

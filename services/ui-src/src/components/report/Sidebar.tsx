@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
-import { useStore } from "utils";
+import { useBreakpoint, useStore } from "utils";
 import { PageTemplate } from "../../types/report";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
@@ -16,7 +16,8 @@ const navItem = (title: string, index: number) => {
 
 export const Sidebar = () => {
   const { report, pageMap, currentPageId, setCurrentPageId } = useStore();
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const { isDesktop } = useBreakpoint();
+  const [isOpen, setIsOpen] = useState<boolean>(isDesktop);
   const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
 
   if (!report || !pageMap) {
@@ -74,7 +75,7 @@ export const Sidebar = () => {
 
   return (
     <Box sx={sx.sidebar}>
-      <Flex sx={sx.sidebarNav}>
+      <Flex sx={isOpen ? sx.sidebarNav : ""}>
         {isOpen && (
           <Flex flexDirection="column" background="palette.gray_lightest">
             <Heading variant="sidebar">Quality Measures Report</Heading>
@@ -87,6 +88,7 @@ export const Sidebar = () => {
           aria-label="Open/Close sidebar menu"
           variant="sidebarToggle"
           onClick={() => setIsOpen(!isOpen)}
+          className={isOpen ? "open" : "closed"}
         >
           <Image
             src={arrowDownIcon}
@@ -105,6 +107,9 @@ const sx = {
     zIndex: "dropdown",
   },
   sidebarNav: {
+    transition: "all 0.3s ease",
+    position: "relative",
+    width: "22.5rem",
     height: "100%",
     ".tablet &, .mobile &": {
       position: "fixed",
