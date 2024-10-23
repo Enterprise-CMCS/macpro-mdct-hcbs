@@ -187,22 +187,15 @@ const theme = extendTheme({
             borderColor: "palette.secondary",
             borderWidth: "0 0 0 4px",
           },
-        },
-        sidebarSelected: {
-          display: "block",
-          textAlign: "left",
-          color: "palette.secondary_darkest",
-          backgroundColor: "palette.gray_lightest_highlight",
-          border: "1px solid",
-          borderColor: "palette.secondary",
-          borderWidth: "0 0 0 2px",
-          fontSize: "14px",
-          paddingLeft: "1rem",
-          width: "100%",
+          "&.selected": {
+            border: "1px solid",
+            borderColor: "palette.secondary",
+            borderWidth: "0 0 0 2px",
+            color: "palette.secondary_darkest",
+            backgroundColor: "palette.gray_lightest_highlight",
+          },
         },
         sidebarToggle: {
-          position: "absolute",
-          padding: "0",
           background: "palette.gray_lightest",
           borderRadius: "0px 10px 10px 0px",
           "img.left": {
@@ -210,15 +203,6 @@ const theme = extendTheme({
           },
           "img.right": {
             transform: "rotate(270deg)",
-          },
-          ".tablet &, .mobile &": {
-            position: "fixed",
-          },
-          "&.open": {
-            left: "20rem",
-          },
-          "&.closed": {
-            left: "0",
           },
         },
         outline: () => ({

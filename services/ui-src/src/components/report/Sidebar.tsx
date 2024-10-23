@@ -42,7 +42,8 @@ export const Sidebar = () => {
     return (
       <Box key={section.id}>
         <Button
-          variant={section.id === currentPageId ? "sidebarSelected" : "sidebar"}
+          variant={"sidebar"}
+          className={section.id === currentPageId ? "selected" : ""}
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box
@@ -74,16 +75,14 @@ export const Sidebar = () => {
   };
 
   return (
-    <Box sx={sx.sidebar}>
-      <Flex sx={isOpen ? sx.sidebarNav : ""}>
-        {isOpen && (
-          <Flex flexDirection="column" background="palette.gray_lightest">
-            <Heading variant="sidebar">Quality Measures Report</Heading>
-            {pageMap
-              .get("root")
-              ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
-          </Flex>
-        )}
+    <Box sx={sx.sidebar} className={isOpen ? "open" : "closed"}>
+      <Flex sx={sx.sidebarNav}>
+        <Flex flexDirection="column" background="palette.gray_lightest">
+          <Heading variant="sidebar">Quality Measures Report</Heading>
+          {pageMap
+            .get("root")
+            ?.childPageIds?.map((child) => navSection(pageMap.get(child)!))}
+        </Flex>
         <Button
           aria-label="Open/Close sidebar menu"
           variant="sidebarToggle"
@@ -103,15 +102,31 @@ export const Sidebar = () => {
 
 const sx = {
   sidebar: {
+    position: "relative",
+    transition: "all 0.3s ease",
+    minWidth: "23rem",
     height: "100%",
     zIndex: "dropdown",
+    "&.open": {
+      marginLeft: "0rem",
+    },
+    "&.closed": {
+      marginLeft: "-20rem",
+    },
+    ".tablet &": {
+      position: "absolute",
+    },
+    ".mobile &": {
+      position: "absolute",
+    },
   },
   sidebarNav: {
-    transition: "all 0.3s ease",
-    position: "relative",
-    width: "22.5rem",
     height: "100%",
-    ".tablet &, .mobile &": {
+    ".tablet &": {
+      position: "fixed",
+      display: "flex",
+    },
+    ".mobile &": {
       position: "fixed",
       display: "flex",
     },
