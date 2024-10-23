@@ -52,7 +52,7 @@ export const Page = ({ elements }: Props) => {
     return <ComposedElement key={index} element={element} />;
   });
   return (
-    <VStack alignItems="flex-start" gap="1.5rem">
+    <VStack alignItems="flex-start" gap="1rem">
       {composedElements}
     </VStack>
   );

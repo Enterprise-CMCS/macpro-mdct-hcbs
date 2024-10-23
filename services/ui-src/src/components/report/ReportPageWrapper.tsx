@@ -75,7 +75,7 @@ export const ReportPageWrapper = () => {
           padding={{ base: "4rem 1rem", md: "4rem 2rem 2rem 2rem" }}
           width="100%"
           maxWidth="reportPageWidth"
-          gap="6"
+          gap="1rem"
         >
           <Box flex="auto" alignItems="flex-start" width="100%">
             <form
@@ -90,7 +90,7 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              <Divider borderColor="palette.gray_light"></Divider>
+              <Divider></Divider>
               <Flex width="100%">
                 {parentPage.index > 0 && (
                   <Button

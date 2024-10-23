@@ -316,6 +316,12 @@ const theme = extendTheme({
         variant: "primary",
       },
     },
+    Divider: {
+      baseStyle: {
+        borderColor: "palette.gray_light",
+        paddingTop: "1rem",
+      },
+    },
     Heading: {
       baseStyle: {
         color: "palette.base",
