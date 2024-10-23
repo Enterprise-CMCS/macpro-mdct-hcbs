@@ -1,4 +1,4 @@
-import { act, render } from "@testing-library/react";
+import { act, getByAltText, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Sidebar } from "./Sidebar";
 
@@ -12,8 +12,8 @@ mockPageMap.set("child-1", 3);
 const report = {
   pages: [
     { childPageIds: ["id-1", "id-2"], id: "root" },
-    { title: "Section 1", id: "id-1" },
-    { title: "Section 2", id: "id-2", childPageIds: [] },
+    { title: "Section 1", id: "id-1", childPageIds: ["child-1"] },
+    { title: "Section 2", id: "id-2" },
     { title: "Child 1", id: "child-1" },
   ],
 };
@@ -64,14 +64,14 @@ describe("Sidebar", () => {
     expect(setCurrentPageId).toHaveBeenCalledWith("id-1");
   });
 
-  test("should collapse on Click", async () => {
-    const { getByText, getByRole, queryByText } = render(<Sidebar />);
+  test("should expand on Click", async () => {
+    const { getByText, queryByText } = render(<Sidebar />);
 
     expect(getByText("Section 1")).toBeTruthy();
     await act(async () => {
-      const button = getByRole("img");
+      const button = screen.getByAltText("Expand subitems");
       await userEvent.click(button);
     });
-    expect(queryByText("Section 1")).toBeNull();
+    expect(queryByText("Child 1")).toBeInTheDocument();
   });
 });
