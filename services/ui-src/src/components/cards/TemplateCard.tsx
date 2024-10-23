@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Image, Text, Link } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
 import { useNavigate } from "react-router-dom";
-import { useBreakpoint, getSignedTemplateUrl } from "utils";
+import { useBreakpoint, getSignedTemplateUrl, useStore } from "utils";
 import { AnyObject } from "types";
 import downloadIcon from "assets/icons/download/icon_download_primary.svg";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
@@ -25,6 +25,10 @@ export const TemplateCard = ({
 }: Props) => {
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
+  const store = useStore();
+  const user = store.user;
+  const state = user?.state;
+  const dashboardPath = verbiage.link.route.replace("{state}", state);
 
   return (
     <Card boxShadow="0px 3px 9px rgba(0, 0, 0, 0.2)" {...cardprops}>
@@ -70,7 +74,7 @@ export const TemplateCard = ({
             )}
             {!isHidden && (
               <Button
-                onClick={() => navigate(verbiage.link.route)}
+                onClick={() => navigate(dashboardPath)}
                 rightIcon={
                   <Image src={nextIcon} alt="Link Icon" height="1rem" />
                 }

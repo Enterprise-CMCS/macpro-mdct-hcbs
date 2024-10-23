@@ -96,7 +96,7 @@ functions:
                 reportType: true
                 state: true
   getReport:
-    handler: handlers/reports/get.get
+    handler: handlers/reports/get.getReport
     events:
       - http:
           path: reports/{reportType}/{state}/{id}
@@ -109,6 +109,19 @@ functions:
                 reportType: true
                 state: true
                 id: true
+  getReportsForState:
+    handler: handlers/reports/get.getReportsForState
+    events:
+      - http:
+          path: reports/{reportType}/{state}
+          method: get
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                reportType: true
+                state: true
 resources:
   Resources:
     GatewayResponseDefault4XX:

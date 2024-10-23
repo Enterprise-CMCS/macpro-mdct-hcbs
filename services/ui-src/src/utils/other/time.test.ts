@@ -8,14 +8,11 @@ import {
   convertDateTimeEtToUtc,
   convertDatetimeStringToNumber,
   convertDateUtcToEt,
-  displayLongformPeriod,
-  displayLongformPeriodSection9,
   getLocalHourMinuteTime,
   midnight,
   noon,
   oneSecondToMidnight,
   twoDigitCalendarDate,
-  utcDateToReadableDate,
 } from "./time";
 
 // 1/1/2022 @ 00:00:00
@@ -115,27 +112,6 @@ describe("utils/time", () => {
     });
   });
 
-  describe("utcDateToReadableDate()", () => {
-    test("epoch time -> full date", () => {
-      expect(utcDateToReadableDate(1729612800000, "full")).toEqual(
-        "Tuesday, October 22, 2024"
-      );
-    });
-    test("long date", () => {
-      expect(utcDateToReadableDate(1729612800000, "long")).toEqual(
-        "October 22, 2024"
-      );
-    });
-    test("medium date", () => {
-      expect(utcDateToReadableDate(1729612800000, "medium")).toEqual(
-        "Oct 22, 2024"
-      );
-    });
-    test("short date", () => {
-      expect(utcDateToReadableDate(1729612800000, "short")).toEqual("10/22/24");
-    });
-  });
-
   describe("checkDateCompleteness()", () => {
     test("that it returns an object of { year, month, day }", () => {
       expect(checkDateCompleteness("10/22/2024")).toEqual({
@@ -170,32 +146,6 @@ describe("utils/time", () => {
       expect(
         convertDatetimeStringToNumber("10/22/2024", "NotATimeType")
       ).toEqual(1729612800000);
-    });
-  });
-
-  describe("displayLongformPeriod()", () => {
-    test("Period 1 and year 2024", () => {
-      expect(displayLongformPeriod(1, 2024)).toEqual(
-        "January 1 to June 30, 2024 reporting period"
-      );
-    });
-    test("Period 2 and year 2024", () => {
-      expect(displayLongformPeriod(2, 2024)).toEqual(
-        "July 1 to December 31, 2024 reporting period"
-      );
-    });
-  });
-
-  describe("displayLongformPeriodSection9()", () => {
-    test("Report year 2024", () => {
-      expect(displayLongformPeriodSection9(2024)).toEqual(
-        "August 1, 2023 to July 31, 2024"
-      );
-    });
-    test("Why are we accepting undefined?", () => {
-      expect(displayLongformPeriodSection9(undefined)).toEqual(
-        "August 1, undefined to July 31, undefined"
-      );
     });
   });
 

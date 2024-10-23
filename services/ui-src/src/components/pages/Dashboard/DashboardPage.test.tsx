@@ -24,6 +24,7 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mock-dashboard",

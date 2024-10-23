@@ -1,7 +1,7 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent } from "../../types/types";
-import { get } from "./get";
+import { getReport } from "./get";
 
 jest.mock("../../utils/authorization", () => ({
   isAuthenticated: jest.fn().mockResolvedValue(true),
@@ -26,11 +26,11 @@ describe("Test get report handler", () => {
       ...proxyEvent,
       headers: { "cognito-identity-id": "test" },
     };
-    const res = await get(badTestEvent, null);
+    const res = await getReport(badTestEvent, null);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
   test("Test Successful get", async () => {
-    const res = await get(testEvent, null);
+    const res = await getReport(testEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });

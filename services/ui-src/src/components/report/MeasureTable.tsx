@@ -43,9 +43,9 @@ export const MeasureTableElement = (props: PageElementProps) => {
   };
 
   // Build Rows
-  const rows = selectedMeasures.map((measure) => {
+  const rows = selectedMeasures.map((measure, index) => {
     return (
-      <Tr>
+      <Tr key={index}>
         <Td>
           <TableStatueIcon tableStatus=""></TableStatueIcon>
         </Td>
