@@ -111,7 +111,7 @@ const sx = {
       marginLeft: "0rem",
     },
     "&.closed": {
-      marginLeft: "-20rem",
+      marginLeft: "-20.5rem",
     },
     ".tablet &": {
       position: "absolute",
