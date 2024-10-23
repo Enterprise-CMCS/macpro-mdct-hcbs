@@ -1,6 +1,7 @@
 import { API } from "aws-amplify";
 import { getRequestHeaders } from "./getRequestHeaders";
 import { updateTimeout } from "utils";
+import { Report } from "types/report";
 
 async function createReport(
   reportType: string,
@@ -37,4 +38,20 @@ async function getReport(reportType: string, state: string, id: string) {
   return response;
 }
 
-export { createReport, getReport };
+async function putReport(report: Report) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+    body: { ...report },
+  };
+
+  updateTimeout();
+  const response = await API.put(
+    "hcbs",
+    `/reports/${report.type}/${report.state}/${report.id}`,
+    request
+  );
+  return response;
+}
+
+export { createReport, getReport, putReport };
