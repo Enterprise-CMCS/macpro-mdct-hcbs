@@ -37,28 +37,23 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
     },
   ];
 
-  const buildStates = () => {
+  const buildStates = (): DropdownOptions[] => {
     const dropdownStates: DropdownOptions[] = Object.keys(States).map(
-      (value) => {
-        return {
-          label: States[value as keyof typeof States],
-          value,
-        };
-      }
+      (value) => ({
+        label: States[value as keyof typeof States],
+        value,
+      })
     );
-
-    return (
-      <Dropdown
-        name="state"
-        id="state"
-        label="Select state or territory:"
-        ariaLabel="List of states, including District of Columbia and Puerto Rico"
-        options={dropdownStates}
-        onChange={handleStateChange}
-        value={selectedState}
-      />
-    );
+    return [
+      {
+        label: "- Select an option -",
+        value: "",
+      },
+      ...dropdownStates,
+    ];
   };
+
+  const dropdownStates = buildStates();
 
   return (
     <Box sx={sx.root}>
@@ -67,7 +62,15 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
       </Heading>
 
       <form onSubmit={handleSubmit}>
-        {buildStates()}
+        <Dropdown
+          name="state"
+          id="state"
+          label="Select state or territory:"
+          ariaLabel="List of states, including District of Columbia and Puerto Rico"
+          options={dropdownStates}
+          onChange={handleStateChange}
+          value={selectedState}
+        />
         <ChoiceList
           name="radio"
           type="radio"
