@@ -4,6 +4,7 @@ import {
   MeasureTemplateName,
   PageType,
   Report,
+  ReportStatus,
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
@@ -13,6 +14,7 @@ const testReport: Report = {
   title: "plan id",
   state: "NJ",
   id: "NJQM123",
+  status: ReportStatus.NotStarted,
   pages: [
     {
       id: "root",
