@@ -51,7 +51,7 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
       <Dropdown
         name="state"
         id="state"
-        label="Select state to view reports:"
+        label="Select state or territory:"
         ariaLabel="List of states, including District of Columbia and Puerto Rico"
         options={dropdownStates}
         onChange={handleStateChange}
@@ -61,7 +61,7 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
   };
 
   return (
-    <Box sx={sx.root} data-testid="read-only-view">
+    <Box sx={sx.root}>
       <Heading as="h1" sx={sx.headerText}>
         {verbiage.header}
       </Heading>
@@ -100,6 +100,7 @@ const sx = {
   headerText: {
     fontSize: "2rem",
     fontWeight: "normal",
+    paddingBottom: "1.5rem",
   },
   navigationButton: {
     padding: "1.5rem 0 2rem 0",
