@@ -1,42 +1,49 @@
+import { Button, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
-import { AnyObject, TableContentShape, ReportMetadataShape } from "types";
-
-export const DashboardTable = ({ body }: DashboardTableProps) => (
-  <Table content={tableBody(body.table, false)}></Table>
-);
+import { useNavigate } from "react-router-dom";
+import { Report, UserRoles } from "types";
+import { formatMonthDayYear, useStore } from "utils";
 
 interface DashboardTableProps {
-  reportsByState: ReportMetadataShape[] | undefined;
-  body: { table: AnyObject };
+  reports: Report[];
 }
 
-export const getStatus = (
-  status: string,
-  archived?: boolean,
-  submissionCount?: number
-) => {
-  if (archived) {
-    return `Archived`;
-  }
-  if (
-    submissionCount &&
-    submissionCount >= 1 &&
-    !status.includes("Submitted")
-  ) {
-    return `In revision`;
-  }
-  return status;
+export const DashboardTable = ({ reports }: DashboardTableProps) => {
+  const navigate = useNavigate();
+  const store = useStore();
+  const user = store.user;
+  const isStateUser = user?.userRole === UserRoles.STATE_USER;
+  const editButtonText = isStateUser ? "Edit" : "View";
+
+  const tableContent = {
+    caption: "Quality Measure Reports",
+    headRow: ["Submission name", "Last edited", "Edited by", "Status", ""],
+  };
+
+  return (
+    <Table content={tableContent}>
+      {reports.map((report) => (
+        <Tr key={report.id}>
+          <Td>{"{Name of form}"}</Td>
+          <Td>
+            {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
+          </Td>
+          <Td>{report.lastEditedBy}</Td>
+          <Td>{report.status}</Td>
+          <Td>
+            <Button
+              onClick={() => navigate(reportBasePath(report))}
+              variant="outline"
+            >
+              {editButtonText}
+            </Button>
+          </Td>
+        </Tr>
+      ))}
+    </Table>
+  );
 };
 
-const tableBody = (body: TableContentShape, isAdmin: boolean) => {
-  var tableContent = body;
-  if (!isAdmin) {
-    tableContent.headRow = tableContent.headRow!.filter((e) => e !== "#");
-    return tableContent;
-  } else {
-    tableContent.headRow = tableContent.headRow!.filter(
-      (e) => e !== "Due date" && e !== "Target populations"
-    );
-  }
-  return body;
+const reportBasePath = (report: Report) => {
+  return `/report/${report.type}/${report.state}/${report.id}`;
 };

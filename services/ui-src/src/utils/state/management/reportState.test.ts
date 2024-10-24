@@ -4,6 +4,7 @@ import {
   MeasureTemplateName,
   PageType,
   Report,
+  ReportStatus,
   ReportType,
   TextboxTemplate,
 } from "types/report";
@@ -17,6 +18,7 @@ const testReport: Report = {
   title: "plan id",
   state: "NJ",
   id: "NJQM123",
+  status: ReportStatus.NotStarted,
   pages: [
     {
       id: "root",
@@ -98,7 +100,7 @@ describe("state/management/reportState: setPage", () => {
 describe("state/management/reportState: mergeAnswers", () => {
   test("Adds answers to a question", () => {
     // Jest is garbage
-    global.structuredClone = (val) => {
+    global.structuredClone = (val: unknown) => {
       return JSON.parse(JSON.stringify(val));
     };
 

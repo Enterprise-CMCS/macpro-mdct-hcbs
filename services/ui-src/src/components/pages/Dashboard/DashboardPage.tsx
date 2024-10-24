@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { States } from "../../../constants";
-import { ReportMetadataShape } from "types";
-
+import { useEffect, useState } from "react";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { StateNames } from "../../../constants";
+import { isReportType, isStateAbbr, Report } from "types";
 import {
   PageTemplate,
   InstructionsAccordion,
@@ -18,34 +17,32 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { parseCustomHtml, useStore } from "utils";
-
 import dashboardVerbiage from "verbiage/pages/dashboard";
 import accordion from "verbiage/pages/accordion";
-
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
+import { getReportsForState } from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
-  const {
-    state: userState,
-    userIsReadOnly,
-    userIsAdmin,
-  } = useStore().user ?? {};
   const navigate = useNavigate();
-
-  const [reportsToDisplay] = useState<ReportMetadataShape[] | undefined>(
-    undefined
-  );
-
+  const { userIsAdmin } = useStore().user ?? {};
+  const { reportType, state } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [reports, setReports] = useState<Report[]>([]);
   const { intro, body } = dashboardVerbiage;
+  const fullStateName = StateNames[state as keyof typeof StateNames];
 
-  // if an admin or a read-only user has selected a state, retrieve it from local storage
-  const adminSelectedState = localStorage.getItem("selectedState") || undefined;
+  useEffect(() => {
+    if (!isReportType(reportType) || !isStateAbbr(state)) {
+      return;
+    }
 
-  // if a user is an admin or a read-only type, use the selected state, otherwise use their assigned state
-  const activeState =
-    userIsAdmin || userIsReadOnly ? adminSelectedState : userState;
-
-  const fullStateName = States[activeState as keyof typeof States];
+    (async () => {
+      setIsLoading(true);
+      const result = await getReportsForState(reportType, state);
+      setReports(result);
+      setIsLoading(false);
+    })();
+  }, [reportType, state]);
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
@@ -69,10 +66,8 @@ export const DashboardPage = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
-        <DashboardTable reportsByState={reportsToDisplay} body={body} />
-        {!reportsToDisplay?.length && (
-          <Text variant="tableEmpty">{body.empty}</Text>
-        )}
+        {!isLoading && <DashboardTable reports={reports} />}
+        {!reports?.length && <Text variant="tableEmpty">{body.empty}</Text>}
         <Flex justifyContent="center">
           <Button onClick={() => navigate(body.link.route)} type="submit">
             {body.link.callToActionText}

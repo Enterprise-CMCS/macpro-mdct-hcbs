@@ -98,18 +98,19 @@ export const twoDigitCalendarDate = (date: number) => {
   return ("0" + date).slice(-2);
 };
 
-/*
- * Converts passed UTC datetime to a local date in the users timezone
- * returns -> User Timezone date in format Day of Week, Month Day, Year
- * Ex: Friday, August 12, 2022
+/**
+ * Format the given date to MM/dd/yyyy. For example: "03/20/2024"
  */
-export const utcDateToReadableDate = (
-  date: number,
-  style?: "full" | "long" | "medium" | "short"
-) => {
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: style,
-  }).format(date);
+export const formatMonthDayYear = (date: number) => {
+  const options = {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+  } as const;
+  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const parts = formatter.formatToParts(date);
+  const getPart = (type: string) => parts.find((p) => p.type === type)!.value;
+  return [getPart("month"), getPart("day"), getPart("year")].join("/");
 };
 
 export const checkDateCompleteness = (date: string) => {
@@ -147,25 +148,6 @@ export const checkDateRangeStatus = (
 export const calculateRemainingSeconds = (expiresAt?: any) => {
   if (!expiresAt) return 0;
   return differenceInSeconds(parseISO(expiresAt), new Date());
-};
-
-export const displayLongformPeriod = (
-  period: number | undefined,
-  reportYear: number | undefined
-) => {
-  if (period === 1) {
-    return `January 1 to June 30, ${reportYear} reporting period`;
-  } else {
-    return `July 1 to December 31, ${reportYear} reporting period`;
-  }
-};
-
-export const displayLongformPeriodSection9 = (
-  reportYear: number | undefined
-) => {
-  return `August 1, ${
-    reportYear ? reportYear - 1 : reportYear
-  } to July 31, ${reportYear}`;
 };
 
 export const calculateNextQuarter = (previousQuarter: string) => {

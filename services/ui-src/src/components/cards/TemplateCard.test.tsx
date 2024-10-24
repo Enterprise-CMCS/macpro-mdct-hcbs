@@ -13,8 +13,8 @@ jest.mock("utils/other/useBreakpoint", () => ({
 }));
 
 jest.mock("utils/state/useStore");
-
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockUseStore);
 
 const mockUseNavigate = jest.fn();
 
@@ -51,10 +51,9 @@ describe("<TemplateCard />", () => {
     });
 
     test("QM TemplateCard navigates to next route on link click", async () => {
-      mockedUseStore.mockReturnValue(mockUseStore);
       const templateCardLink = screen.getByText(qmTemplateVerbiage.link.text)!;
       await userEvent.click(templateCardLink);
-      const expectedRoute = qmTemplateVerbiage.link.route;
+      const expectedRoute = "/report/QM/MN";
       await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
   });

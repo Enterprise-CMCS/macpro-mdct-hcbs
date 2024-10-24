@@ -1,3 +1,24 @@
+import { StateAbbr } from "./other";
+
+export enum ReportType {
+  QM = "QM",
+}
+export const isReportType = (
+  reportType: string | undefined
+): reportType is ReportType => {
+  return Object.values(ReportType).includes(reportType as ReportType);
+};
+
+// TODO: We probably will need more statuses? In Revision? Approved?
+export enum ReportStatus {
+  NotStarted = "Not Started",
+  InProgress = "In Progress",
+  Submitted = "Submitted",
+}
+export const isReportStatus = (status: string): status is ReportStatus => {
+  return Object.values(ReportStatus).includes(status as ReportStatus);
+};
+
 export type ReportTemplate = {
   type: ReportType;
   title: string;
@@ -11,10 +32,11 @@ export type ReportTemplate = {
 
 export interface Report extends ReportTemplate {
   id?: string;
-  state: string;
+  state: StateAbbr;
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
+  status: ReportStatus;
   answers?: any[]; //TODO: any
 }
 
@@ -76,10 +98,6 @@ export const isMeasureTemplate = (
 export const isChildPage = (page: PageTemplate): page is FormPageTemplate => {
   return "elements" in page;
 };
-
-export enum ReportType {
-  QM = "qm",
-}
 
 export type PageId = string;
 

@@ -24,7 +24,7 @@ export default {
       downloadText: "User Guide and Help File",
       link: {
         text: "Enter HCBS QM online",
-        route: "/dashboard",
+        route: "/report/QM/{state}",
       },
       accordion: {
         buttonLabel: "When are the HCBS Quality Measures due?",
