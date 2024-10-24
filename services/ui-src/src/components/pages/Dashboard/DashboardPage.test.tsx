@@ -1,60 +1,97 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { DashboardPage } from "components";
-import { mockStateUser } from "utils/testing/mockUsers";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { useBreakpoint, useStore, makeMediaQueryClasses } from "utils";
-import { useUser } from "utils/auth/useUser";
-import dashboardVerbiage from "verbiage/pages/dashboard";
+import { RouterWrappedComponent, mockUseStore } from "utils/testing/setupJest";
+import { useStore } from "utils";
+import { getReportsForState } from "utils/api/requestMethods/report";
+import { Report } from "types";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/other/useBreakpoint", () => ({
+  isMobile: jest.fn().mockReturnValue(false),
+  makeMediaQueryClasses: jest.fn().mockReturnValue("desktop"),
+}));
 
-jest.mock("utils/other/useBreakpoint");
-const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
-  typeof useBreakpoint
->;
-const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
-  typeof makeMediaQueryClasses
->;
-
-jest.mock("utils/state/useStore");
+jest.mock("utils/state/useStore", () => ({
+  useStore: jest.fn().mockReturnValue({}),
+}));
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockUseStore);
 
-const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useNavigate: () => mockUseNavigate,
-  useLocation: jest.fn(() => ({
-    pathname: "/mock-dashboard",
+  useNavigate: () => jest.fn(),
+  useParams: jest.fn(() => ({
+    reportType: "QM",
+    state: "CO",
   })),
 }));
 
-const dashboardWithNoReports = (
+jest.mock("utils/api/requestMethods/report", () => ({
+  getReportsForState: jest.fn().mockResolvedValue([
+    {
+      id: "QMCO123",
+      type: "QM",
+      state: "CO",
+      lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
+      lastEditedBy: "Mock User",
+      status: "Not Started",
+    } as Report,
+  ]),
+}));
+
+const dashboardComponent = (
   <RouterWrappedComponent>
     <DashboardPage />
   </RouterWrappedComponent>
 );
 
 describe("<DashboardPage />", () => {
-  describe("Test Report Dashboard with no reports", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-      mockedUseUser.mockReturnValue(mockStateUser);
-      mockedUseStore.mockReturnValue({
-        reportsByState: undefined,
-      });
-      mockUseBreakpoint.mockReturnValue({
-        isMobile: false,
-      });
-      mockMakeMediaQueryClasses.mockReturnValue("desktop");
+  beforeEach(() => jest.clearAllMocks());
+
+  it("should render an empty state when there are no reports", async () => {
+    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
+
+    render(dashboardComponent);
+    await waitFor(() => {
+      expect(getReportsForState).toHaveBeenCalled();
     });
 
-    test("Dashboard renders table with empty text", () => {
-      mockedUseStore.mockReturnValue(mockStateUser);
-      render(dashboardWithNoReports);
-      expect(screen.getByText(dashboardVerbiage.body.empty)).toBeVisible();
+    expect(
+      screen.getByRole("heading", { name: "Colorado Quality Measures Report" })
+    ).toBeVisible();
+    expect(
+      screen.getByText("once you start a report you can access it here", {
+        exact: false,
+      })
+    ).toBeVisible();
+  });
+
+  it("should render report data", async () => {
+    const { container } = render(dashboardComponent);
+    await waitFor(() => {
+      expect(getReportsForState).toHaveBeenCalled();
     });
+
+    const table = container.querySelector("table")!;
+    const columns = [...table.querySelectorAll("tr th")].map(
+      (th) => th.textContent!
+    );
+    const rows = [...table.querySelectorAll("tbody tr")].map((tr) => [
+      ...tr.querySelectorAll("td"),
+    ]);
+
+    expect(columns.length).toBeGreaterThanOrEqual(4);
+    expect(rows.length).toBe(1);
+
+    const cellContent = (columnName: string) => {
+      const columnIndex = columns.indexOf(columnName);
+      if (columnIndex < 0) throw new Error(`Could not find '${columnName}'`);
+      const cell = rows[0][columnIndex];
+      return cell.textContent;
+    };
+    expect(cellContent("Submission name")).toBe("{Name of form}"); // TODO placeholder
+    expect(cellContent("Last edited")).toBe("10/24/2024");
+    expect(cellContent("Edited by")).toBe("Mock User");
   });
 });

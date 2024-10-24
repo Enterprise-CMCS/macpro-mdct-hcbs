@@ -8,6 +8,7 @@ import {
   convertDateTimeEtToUtc,
   convertDatetimeStringToNumber,
   convertDateUtcToEt,
+  formatMonthDayYear,
   getLocalHourMinuteTime,
   midnight,
   noon,
@@ -109,6 +110,14 @@ describe("utils/time", () => {
     test("should set 12 to 12", () => {
       const startMonth = 12;
       expect(twoDigitCalendarDate(startMonth)).toBe("12");
+    });
+  });
+
+  describe("formatMonthDayYear()", () => {
+    it("Should render dates as MM/dd/yyyy", () => {
+      const date = new Date("2024-03-20").valueOf(); // UTC
+      const formatted = formatMonthDayYear(date);
+      expect(formatted).toBe("03/19/2024"); // Converted to some american zone
     });
   });
 

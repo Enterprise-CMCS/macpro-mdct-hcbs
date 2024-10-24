@@ -98,12 +98,6 @@ export const twoDigitCalendarDate = (date: number) => {
   return ("0" + date).slice(-2);
 };
 
-/*
- * Converts passed UTC datetime to a local date in the users timezone
- * returns -> User Timezone date in format Day of Week, Month Day, Year
- * Ex: Friday, August 12, 2022
- */
-
 /**
  * Format the given date to MM/dd/yyyy. For example: "03/20/2024"
  */
