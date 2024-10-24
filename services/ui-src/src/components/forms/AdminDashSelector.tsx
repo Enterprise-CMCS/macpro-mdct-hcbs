@@ -66,7 +66,6 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
           name="state"
           id="state"
           label="Select state or territory:"
-          ariaLabel="List of states, including District of Columbia and Puerto Rico"
           options={dropdownStates}
           onChange={handleStateChange}
           value={selectedState}
