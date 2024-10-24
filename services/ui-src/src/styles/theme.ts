@@ -154,6 +154,7 @@ const theme = extendTheme({
           "&:disabled, &:disabled:hover": {
             color: "palette.gray",
             backgroundColor: "palette.gray_lighter",
+            opacity: 1,
           },
         },
         transparent: {
