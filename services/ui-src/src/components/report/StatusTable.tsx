@@ -1,6 +1,5 @@
 import {
   Button,
-  Flex,
   Image,
   Stack,
   Table,
@@ -12,12 +11,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
-import iconStatusCheck from "assets/icons/status/icon_status_check.svg";
-import iconStatusError from "assets/icons/status/icon_status_alert.svg";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { ParentPageTemplate } from "types/report";
 import { useNavigate } from "react-router-dom";
+import { TableStatusIcon } from "components/tables/TableStatusIcon";
 
 export const StatusTableElement = () => {
   const { pageMap, report, setCurrentPageId } = useStore();
@@ -41,23 +39,17 @@ export const StatusTableElement = () => {
     return (
       <Tr key={section.id || index} p={0}>
         <Td>
-          <Stack flex="1">
-            <Text fontWeight="bold">{section.title}</Text>
-          </Stack>
+          <Text>{section.title}</Text>
         </Td>
         <Td>
-          <Flex align="right">
-            {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-            <Image
-              src={iconStatusCheck ? iconStatusCheck : iconStatusError}
-              alt="icon description"
-            />
-            <Text ml={1}>{iconStatusCheck ? "Complete" : "Error"}</Text>
-          </Flex>
+          {/* TODO: Logic for when a page is incomplete to change status icon and text */}
+          <TableStatusIcon
+            tableStatus={"complete"}
+            isPdf={true}
+          ></TableStatusIcon>
         </Td>
         <Td>
           <Button
-            colorScheme="blue"
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
             onClick={() => setCurrentPageId(section.id)}
@@ -70,7 +62,7 @@ export const StatusTableElement = () => {
   });
   return (
     <>
-      <Table>
+      <Table variant="status">
         <Thead>
           <Tr>
             <Th>Section</Th>

@@ -137,19 +137,13 @@ export const qmReportTemplate: ReportTemplate = {
           text: "Review & Submit",
         },
         {
-          type: ElementType.SubHeader,
-          text: "Ready to Submit?",
-        },
-        {
           type: ElementType.Paragraph,
+          title: "Ready to Submit?",
           text: "Double check that everything in your QMS Report is accurate. You will be able to make edits after submitting if you contact your [CMS representative] to unlock your report while it is in “Submitted” status.",
         },
         {
-          type: ElementType.SubHeader,
-          text: "Compliance review",
-        },
-        {
           type: ElementType.Paragraph,
+          title: "Compliance review",
           text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
         },
         {

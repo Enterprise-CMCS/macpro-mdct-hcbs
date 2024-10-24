@@ -71,14 +71,14 @@ export const ReportPageWrapper = () => {
 
   return (
     <FormProvider {...methods}>
-      <HStack width="100%" height="100%">
+      <HStack width="100%" height="100%" position="relative" spacing="0">
         {currentPage.sidebar && <Sidebar />}
         <VStack
           height="100%"
-          padding="4rem 2rem 2rem 2rem"
+          padding={{ base: "4rem 1rem", md: "4rem 2rem 2rem 2rem" }}
           width="100%"
-          maxWidth="640px"
-          gap="6"
+          maxWidth="reportPageWidth"
+          gap="1rem"
         >
           <Box flex="auto" alignItems="flex-start" width="100%">
             <form
@@ -93,7 +93,7 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              <Divider borderColor="palette.gray_light"></Divider>
+              <Divider></Divider>
               <Flex width="100%">
                 {parentPage.index > 0 && (
                   <Button

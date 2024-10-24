@@ -127,6 +127,7 @@ export type SubHeaderTemplate = {
 
 export type ParagraphTemplate = {
   type: ElementType.Paragraph;
+  title?: string;
   text: string;
 };
 
