@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { AdminDashSelector } from "./AdminDashSelector";
 import { useNavigate } from "react-router-dom";
 
-jest.mock("Components", () => ({
+jest.mock("@cmsgov/design-system", () => ({
   Dropdown: ({ label, options, onChange, value }: any) => (
     <select aria-label={label} onChange={onChange} value={value}>
       {options.map((option: any) => (
