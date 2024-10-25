@@ -40,4 +40,8 @@ export default {
       },
     },
   },
+  readOnly: {
+    header: "View State/Territory Reports",
+    buttonLabel: "Go to Report Dashboard",
+  },
 };
