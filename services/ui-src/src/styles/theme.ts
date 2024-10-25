@@ -330,6 +330,12 @@ const theme = extendTheme({
             fontSize: "2xl",
           },
         },
+        sidebar: {
+          fontSize: "21px",
+          fontWeight: "700",
+          padding: "2rem",
+          margin: "0",
+        },
         subHeader: {
           fontSize: "21px",
           fontWeight: "700",
@@ -345,6 +351,11 @@ const theme = extendTheme({
           fontWeight: "700",
           padding: "2rem",
           margin: "0",
+        },
+        login: {
+          my: "6rem",
+          textAlign: "center",
+          width: "100%",
         },
         login: {
           my: "6rem",
