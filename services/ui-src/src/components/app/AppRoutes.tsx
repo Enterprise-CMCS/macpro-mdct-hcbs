@@ -11,7 +11,7 @@ export const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/help" element={<HelpPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/report/:reportType/:state" element={<DashboardPage />} />
         <Route path="/report/QM" element={<CreateReportOptions />} />
         <Route
           path="/report/:reportType/:state/:reportId"
