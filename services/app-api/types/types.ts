@@ -1,9 +1,21 @@
+import { StateAbbr } from "../utils/constants";
+
 export enum UserRoles {
   ADMIN = "mdcthcbs-bor", // "MDCT HCBS Business Owner Representative"
   APPROVER = "mdcthcbs-appr", // "MDCT HCBS Approver"
   HELP_DESK = "mdcthcbs-hd", // "MDCT HCBS Help Desk"
   INTERNAL = "mdcthcbs-internal-user", // "MDCT HCBS Internal User"
   STATE_USER = "mdcthcbs-state-user", // "MDCT HCBS State User"
+}
+export const isUserRole = (role: string): role is UserRoles => {
+  return Object.values(UserRoles).includes(role as UserRoles);
+};
+
+export interface User {
+  role: UserRoles;
+  state?: StateAbbr;
+  email: string;
+  full_name: string;
 }
 
 /**
@@ -26,4 +38,10 @@ export interface APIGatewayProxyEvent {
   /** The context is complicated, and we don't (as of 2023) use it at all. */
   requestContext: any;
   resource: string;
+}
+
+export interface AuthenticatedRequest<TParams> {
+  body: string | null;
+  user: User;
+  parameters: TParams;
 }

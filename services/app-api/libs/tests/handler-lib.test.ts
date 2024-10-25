@@ -1,6 +1,6 @@
 import handlerLib from "../handler-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { isAuthenticated } from "../../utils/authentication";
+import { authenticatedUser } from "../../utils/authentication";
 import * as logger from "../debug-lib";
 import { ok, StatusCodes } from "../response-lib";
 
@@ -12,7 +12,7 @@ jest.mock("../debug-lib", () => ({
 }));
 
 jest.mock("../../utils/authentication", () => ({
-  isAuthenticated: jest.fn(),
+  authenticatedUser: jest.fn(),
 }));
 
 describe("Test Lambda Handler Lib", () => {
@@ -20,7 +20,7 @@ describe("Test Lambda Handler Lib", () => {
     const testFunc = jest.fn().mockReturnValue(ok("test"));
     const handler = handlerLib(testFunc);
 
-    (isAuthenticated as jest.Mock).mockReturnValue(true);
+    (authenticatedUser as jest.Mock).mockReturnValue({});
     const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
@@ -42,7 +42,7 @@ describe("Test Lambda Handler Lib", () => {
     const testFunc = jest.fn();
     const handler = handlerLib(testFunc);
 
-    (isAuthenticated as jest.Mock).mockReturnValue(false);
+    (authenticatedUser as jest.Mock).mockReturnValue(undefined);
     const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
@@ -56,7 +56,7 @@ describe("Test Lambda Handler Lib", () => {
     });
     const handler = handlerLib(testFunc);
 
-    (isAuthenticated as jest.Mock).mockReturnValue(true);
+    (authenticatedUser as jest.Mock).mockReturnValue({});
     const res = await handler(proxyEvent, null);
 
     expect(testFunc).toHaveBeenCalledWith(proxyEvent);
