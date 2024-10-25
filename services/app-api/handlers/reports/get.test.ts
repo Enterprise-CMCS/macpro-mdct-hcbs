@@ -1,7 +1,7 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent } from "../../types/types";
-import { get } from "./get";
+import { getReport, getReportsForState } from "./get";
 
 jest.mock("../../utils/authorization", () => ({
   isAuthenticated: jest.fn().mockResolvedValue(true),
@@ -9,6 +9,7 @@ jest.mock("../../utils/authorization", () => ({
 
 jest.mock("../../storage/reports", () => ({
   getReport: jest.fn().mockReturnValue({ id: "A report" }),
+  queryReportsForState: jest.fn().mockReturnValue([{ id: "A report" }]),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -21,17 +22,38 @@ describe("Test get report handler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  test("Test missing path params", async () => {
-    const badTestEvent: APIGatewayProxyEvent = {
-      ...proxyEvent,
-      headers: { "cognito-identity-id": "test" },
-    };
-    const res = await get(badTestEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("Test Successful get", async () => {
-    const res = await get(testEvent, null);
 
-    expect(res.statusCode).toBe(StatusCodes.Ok);
+  describe("getReport", () => {
+    test("Test missing path params", async () => {
+      const badTestEvent: APIGatewayProxyEvent = {
+        ...proxyEvent,
+        headers: { "cognito-identity-id": "test" },
+      };
+      const res = await getReport(badTestEvent, null);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    });
+
+    test("Test Successful get", async () => {
+      const res = await getReport(testEvent, null);
+
+      expect(res.statusCode).toBe(StatusCodes.Ok);
+    });
+  });
+
+  describe("getReportsForState", () => {
+    test("Test missing path params", async () => {
+      const badTestEvent: APIGatewayProxyEvent = {
+        ...proxyEvent,
+        headers: { "cognito-identity-id": "test" },
+      };
+      const res = await getReportsForState(badTestEvent, null);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    });
+
+    test("Test Successful get", async () => {
+      const res = await getReportsForState(testEvent, null);
+
+      expect(res.statusCode).toBe(StatusCodes.Ok);
+    });
   });
 });

@@ -3,7 +3,7 @@ import { getRequestHeaders } from "./getRequestHeaders";
 import { updateTimeout } from "utils";
 import { Report } from "types/report";
 
-async function createReport(
+export async function createReport(
   reportType: string,
   state: string,
   reportOptions: any // TODO: correct
@@ -23,7 +23,7 @@ async function createReport(
   return response;
 }
 
-async function getReport(reportType: string, state: string, id: string) {
+export async function getReport(reportType: string, state: string, id: string) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -38,7 +38,7 @@ async function getReport(reportType: string, state: string, id: string) {
   return response;
 }
 
-async function putReport(report: Report) {
+export async function putReport(report: Report) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -54,4 +54,17 @@ async function putReport(report: Report) {
   return response;
 }
 
-export { createReport, getReport, putReport };
+export async function getReportsForState(reportType: string, state: string) {
+  const requestHeaders = await getRequestHeaders();
+  const request = {
+    headers: { ...requestHeaders },
+  };
+
+  updateTimeout();
+  const response = await API.get(
+    "hcbs",
+    `/reports/${reportType}/${state}`,
+    request
+  );
+  return response;
+}
