@@ -5,7 +5,7 @@ import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
 import { getReport } from "utils/api/requestMethods/report";
 import { useParams } from "react-router-dom";
-import { useStore } from "utils";
+import { useStore, getLocalHourMinuteTime } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormPageTemplate } from "types/report";
 
@@ -18,6 +18,7 @@ export const ReportPageWrapper = () => {
     setReport,
     setAnswers,
     setCurrentPageId,
+    setLastSavedTime,
   } = useStore();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,6 +39,7 @@ export const ReportPageWrapper = () => {
   const handleBlur = (data: any) => {
     if (!report) return;
     setAnswers(data);
+    setLastSavedTime(getLocalHourMinuteTime());
   };
 
   const fetchReport = async () => {

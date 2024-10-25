@@ -1,13 +1,17 @@
 import { Link as RouterLink } from "react-router-dom";
 import { UsaBanner } from "@cmsgov/design-system";
-import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
+import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { Menu, MenuOption } from "components";
-import { useBreakpoint } from "utils";
+import { useStore, useBreakpoint } from "utils";
 import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
+import checkIcon from "assets/icons/check/icon_check_gray.png";
 
 export const Header = ({ handleLogout }: Props) => {
+  const { lastSavedTime } = useStore();
   const { isMobile } = useBreakpoint();
+
+  const saveStatusText = "Last saved " + lastSavedTime;
 
   return (
     <Box sx={sx.root} id="header">
@@ -36,6 +40,24 @@ export const Header = ({ handleLogout }: Props) => {
                 />
               </Link>
               <Menu handleLogout={handleLogout} />
+            </Flex>
+          </Flex>
+        </Container>
+      </Flex>
+      <Flex sx={sx.subnavBar}>
+        <Container sx={sx.subnavContainer}>
+          <Flex sx={sx.subnavFlex}>
+            <Flex sx={sx.subnavFlexRight}>
+              {lastSavedTime && (
+                <>
+                  <Image
+                    src={checkIcon}
+                    alt="gray checkmark icon"
+                    sx={sx.checkIcon}
+                  />
+                  <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
+                </>
+              )}
             </Flex>
           </Flex>
         </Container>
@@ -87,5 +109,37 @@ const sx = {
   },
   appLogo: {
     maxWidth: "200px",
+  },
+  subnavBar: {
+    bg: "palette.secondary_lightest",
+  },
+  subnavContainer: {
+    maxW: "appMax",
+    ".desktop &": {
+      padding: "0 2rem",
+    },
+  },
+  subnavFlex: {
+    height: "60px",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  subnavFlexRight: {
+    alignItems: "center",
+    paddingRight: ".5rem",
+  },
+  checkIcon: {
+    marginRight: "0.5rem",
+    boxSize: "1rem",
+    ".mobile &": {
+      display: "none",
+    },
+  },
+  saveStatusText: {
+    fontSize: "sm",
+    ".mobile &": {
+      width: "5rem",
+      textAlign: "right",
+    },
   },
 };

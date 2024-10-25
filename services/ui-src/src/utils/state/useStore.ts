@@ -29,6 +29,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   currentPageId: undefined,
   modalOpen: false,
   modalComponent: undefined,
+  lastSavedTime: undefined,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -48,6 +49,10 @@ const reportStore = (set: Function): HcbsReportState => ({
   setAnswers: (answers) =>
     set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
       type: "setAnswers",
+    }),
+  setLastSavedTime: (savedTime: string | undefined) =>
+    set(() => ({ lastSavedTime: savedTime }), false, {
+      type: "setLastSavedTime",
     }),
 });
 

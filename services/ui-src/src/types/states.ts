@@ -21,6 +21,7 @@ export interface HcbsReportState {
   currentPageId?: string;
   modalOpen: boolean;
   modalComponent?: React.ReactFragment;
+  lastSavedTime: string | undefined;
 
   // ACTIONS
   setReport: (report?: Report) => void;
@@ -28,4 +29,5 @@ export interface HcbsReportState {
   setModalOpen: (modalOpen: boolean) => void;
   setModalComponent: (modalComponent: React.ReactFragment) => void;
   setAnswers: (answers: any) => void;
+  setLastSavedTime: (savedTime: string | undefined) => void;
 }
