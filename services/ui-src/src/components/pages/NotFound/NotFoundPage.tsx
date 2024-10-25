@@ -19,11 +19,11 @@ export const NotFoundPage = () => {
           {header}
         </Heading>
       </Flex>
-      <Heading as="h2" sx={sx.subHeadingText}>
+      <Heading as="h2" variant="subHeader">
         {subHeading}
       </Heading>
       <Box>
-        <Text sx={sx.descriptionText}>
+        <Text>
           {preLinkText}
           <Link href={createEmailLink({ address: cmsEmail })}>{cmsEmail}</Link>
           {postLinkText}
@@ -50,13 +50,5 @@ const sx = {
     ".mobile &": {
       boxSize: "1.5rem",
     },
-  },
-  subHeadingText: {
-    fontSize: "lg",
-    fontWeight: "bold",
-    ".mobile &": {},
-  },
-  descriptionText: {
-    fontSize: "md",
   },
 };
