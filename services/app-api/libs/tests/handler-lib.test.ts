@@ -1,6 +1,6 @@
 import handlerLib from "../handler-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { isAuthenticated } from "../../utils/authorization";
+import { isAuthenticated } from "../../utils/authentication";
 import * as logger from "../debug-lib";
 import { ok, StatusCodes } from "../response-lib";
 
@@ -11,7 +11,7 @@ jest.mock("../debug-lib", () => ({
   flush: jest.fn(),
 }));
 
-jest.mock("../../utils/authorization", () => ({
+jest.mock("../../utils/authentication", () => ({
   isAuthenticated: jest.fn(),
 }));
 

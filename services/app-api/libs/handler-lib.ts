@@ -7,7 +7,7 @@ import {
 import { error } from "../utils/constants";
 import { sanitizeObject } from "../utils/sanitize";
 import { APIGatewayProxyEvent } from "../types/types";
-import { isAuthenticated } from "../utils/authorization";
+import { isAuthenticated } from "../utils/authentication";
 
 type LambdaFunction = (event: APIGatewayProxyEvent) => Promise<HttpResponse>;
 

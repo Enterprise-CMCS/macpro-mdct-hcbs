@@ -3,7 +3,7 @@ import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent } from "../../types/types";
 import { get } from "./get";
 
-jest.mock("../../utils/authorization", () => ({
+jest.mock("../../utils/authentication", () => ({
   isAuthenticated: jest.fn().mockResolvedValue(true),
 }));
 
