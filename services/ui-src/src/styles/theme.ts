@@ -324,8 +324,8 @@ const theme = extendTheme({
       },
       variants: {
         h1: {
-          fontSize: "2.25rem",
-          paddingBottom: "0.5rem",
+          fontSize: "4xl",
+          fontWeight: "normal",
         },
         sidebar: {
           fontSize: "21px",

@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { HelpPage, HomePage, ProfilePage, DashboardPage } from "components";
+import { HelpPage, HomePage, ProfilePage, DashboardPage, NotFoundPage } from "components";
 import { CreateReportOptions } from "components/pages/CreateReportOptions/CreateReportOptions";
 import { ReportPageWrapper } from "components/report/ReportPageWrapper";
 
@@ -11,6 +11,7 @@ export const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/help" element={<HelpPage />} />
+        <Route path="*" element={<NotFoundPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/report/QM" element={<CreateReportOptions />} />
         <Route
