@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Dropdown, ChoiceList } from "@cmsgov/design-system";
 import { AnyObject, DropdownOptions } from "types";
-import { States } from "../../constants";
+import { StateNames } from "../../constants";
 
 interface FormProps {
   verbiage: AnyObject;
@@ -38,9 +38,9 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
   ];
 
   const buildStates = (): DropdownOptions[] => {
-    const dropdownStates: DropdownOptions[] = Object.keys(States).map(
+    const dropdownStates: DropdownOptions[] = Object.keys(StateNames).map(
       (value) => ({
-        label: States[value as keyof typeof States],
+        label: StateNames[value as keyof typeof StateNames],
         value,
       })
     );
