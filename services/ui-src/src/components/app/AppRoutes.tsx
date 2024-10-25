@@ -1,5 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import { HelpPage, HomePage, ProfilePage, DashboardPage, NotFoundPage } from "components";
+import {
+  HelpPage,
+  HomePage,
+  ProfilePage,
+  DashboardPage,
+  NotFoundPage,
+} from "components";
 import { CreateReportOptions } from "components/pages/CreateReportOptions/CreateReportOptions";
 import { ReportPageWrapper } from "components/report/ReportPageWrapper";
 
