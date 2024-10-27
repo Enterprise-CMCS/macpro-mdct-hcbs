@@ -12,7 +12,7 @@ import { authenticatedUser } from "../utils/authentication";
 type LambdaFunction = (event: APIGatewayProxyEvent) => Promise<HttpResponse>;
 
 export default function handler(lambda: LambdaFunction) {
-  return async function (event: APIGatewayProxyEvent, _context: any) {
+  return async function (event: APIGatewayProxyEvent) {
     try {
       logger.init();
       logger.debug("API event: %O", {

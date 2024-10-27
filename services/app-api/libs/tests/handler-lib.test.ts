@@ -21,7 +21,7 @@ describe("Test Lambda Handler Lib", () => {
     const handler = handlerLib(testFunc);
 
     (authenticatedUser as jest.Mock).mockReturnValue({});
-    const res = await handler(proxyEvent, null);
+    const res = await handler(proxyEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(res.body).toContain("test");
@@ -43,7 +43,7 @@ describe("Test Lambda Handler Lib", () => {
     const handler = handlerLib(testFunc);
 
     (authenticatedUser as jest.Mock).mockReturnValue(undefined);
-    const res = await handler(proxyEvent, null);
+    const res = await handler(proxyEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
     expect(res.body).toBe(`"User is not authorized to access this resource."`);
@@ -57,7 +57,7 @@ describe("Test Lambda Handler Lib", () => {
     const handler = handlerLib(testFunc);
 
     (authenticatedUser as jest.Mock).mockReturnValue({});
-    const res = await handler(proxyEvent, null);
+    const res = await handler(proxyEvent);
 
     expect(testFunc).toHaveBeenCalledWith(proxyEvent);
     expect(logger.error).toHaveBeenCalledWith("Error: %O", err);

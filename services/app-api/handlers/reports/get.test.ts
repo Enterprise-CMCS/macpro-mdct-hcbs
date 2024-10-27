@@ -26,11 +26,11 @@ describe("Test get report handler", () => {
       ...proxyEvent,
       headers: { "cognito-identity-id": "test" },
     };
-    const res = await get(badTestEvent, null);
+    const res = await get(badTestEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
   test("Test Successful get", async () => {
-    const res = await get(testEvent, null);
+    const res = await get(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });

@@ -31,7 +31,7 @@ describe("Test update report handler", () => {
       ...proxyEvent,
       pathParameters: {},
     } as APIGatewayProxyEvent;
-    const res = await updateReport(badTestEvent, null);
+    const res = await updateReport(badTestEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
@@ -41,7 +41,7 @@ describe("Test update report handler", () => {
       pathParameters: { reportType: "QM", state: "PA", id: "QMPA123" },
       body: null,
     } as APIGatewayProxyEvent;
-    const res = await updateReport(emptyBodyEvent, null);
+    const res = await updateReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
@@ -62,16 +62,16 @@ describe("Test update report handler", () => {
       body: report,
     } as APIGatewayProxyEvent;
 
-    const resType = await updateReport(badType, null);
+    const resType = await updateReport(badType);
     expect(resType.statusCode).toBe(StatusCodes.BadRequest);
-    const resState = await updateReport(badState, null);
+    const resState = await updateReport(badState);
     expect(resState.statusCode).toBe(StatusCodes.BadRequest);
-    const resId = await updateReport(badId, null);
+    const resId = await updateReport(badId);
     expect(resId.statusCode).toBe(StatusCodes.BadRequest);
   });
 
   test("Test Successful update", async () => {
-    const res = await updateReport(testEvent, null);
+    const res = await updateReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });

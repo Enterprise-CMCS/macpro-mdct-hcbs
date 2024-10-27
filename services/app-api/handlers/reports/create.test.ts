@@ -27,7 +27,7 @@ describe("Test create report handler", () => {
       ...proxyEvent,
       pathParameters: {},
     } as APIGatewayProxyEvent;
-    const res = await createReport(badTestEvent, null);
+    const res = await createReport(badTestEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
@@ -37,12 +37,12 @@ describe("Test create report handler", () => {
       pathParameters: { reportType: "QM", state: "PA" },
       body: null,
     } as APIGatewayProxyEvent;
-    const res = await createReport(emptyBodyEvent, null);
+    const res = await createReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
   test("Test Successful create", async () => {
-    const res = await createReport(testEvent, null);
+    const res = await createReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
