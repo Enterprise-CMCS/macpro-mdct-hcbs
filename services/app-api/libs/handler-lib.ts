@@ -1,17 +1,22 @@
 import * as logger from "./debug-lib";
 import {
-  HttpResponse,
+  badRequest,
   internalServerError,
   unauthenticated,
 } from "./response-lib";
 import { error } from "../utils/constants";
 import { sanitizeObject } from "../utils/sanitize";
-import { APIGatewayProxyEvent } from "../types/types";
+import {
+  APIGatewayProxyEvent,
+  HandlerLambda,
+  ParameterParser,
+} from "../types/types";
 import { authenticatedUser } from "../utils/authentication";
 
-type LambdaFunction = (event: APIGatewayProxyEvent) => Promise<HttpResponse>;
-
-export default function handler(lambda: LambdaFunction) {
+export const handler = <TParams>(
+  parser: ParameterParser<TParams>,
+  lambda: HandlerLambda<TParams>
+) => {
   return async function (event: APIGatewayProxyEvent) {
     try {
       logger.init();
@@ -26,12 +31,18 @@ export default function handler(lambda: LambdaFunction) {
         return unauthenticated(error.UNAUTHORIZED);
       }
 
-      if (event.body) {
-        const newEventBody = sanitizeObject(JSON.parse(event.body));
-        event.body = JSON.stringify(newEventBody);
+      const parameters = parser(event);
+      if (!parameters) {
+        return badRequest(error.MISSING_DATA);
       }
 
-      return await lambda(event);
+      let body: object | undefined = undefined;
+      if (event.body) {
+        body = sanitizeObject(JSON.parse(event.body));
+      }
+      const request = { body, user, parameters };
+
+      return await lambda(request);
     } catch (error: any) {
       logger.error("Error: %O", error);
       return internalServerError(error.message);
@@ -39,4 +50,4 @@ export default function handler(lambda: LambdaFunction) {
       logger.flush();
     }
   };
-}
+};

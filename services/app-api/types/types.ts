@@ -1,3 +1,4 @@
+import { HttpResponse } from "../libs/response-lib";
 import { StateAbbr } from "../utils/constants";
 
 export enum UserRoles {
@@ -19,29 +20,58 @@ export interface User {
 }
 
 /**
- * Abridged copy of the type used by `aws-lambda@1.0.7` (from `@types/aws-lambda@8.10.88`)
- * We only this package for these types, and we use only a subset of the
- * properties. Since `aws-lambda` depends on `aws-sdk` (that is, SDK v2),
- * we can save ourselves a big dependency with this small redundancy.
+ * Abridged definition of the type receieved by our lambdas in AWS.
+ * We use only a handful of these properties.
+ *
+ * For official documentation, see https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html#apigateway-example-event
+ *
+ * For more details, see https://github.com/DefinitelyTyped/DefinitelyTyped/blob/97a6cb3f8272fe9915c2152c964e607557906f30/types/aws-lambda/trigger/api-gateway-proxy.d.ts#L135-L148
  */
 export interface APIGatewayProxyEvent {
   body: string | null;
   headers: Record<string, string | undefined>;
-  multiValueHeaders: Record<string, string | undefined>;
-  httpMethod: string;
-  isBase64Encoded: boolean;
-  path: string;
   pathParameters: Record<string, string | undefined> | null;
   queryStringParameters: Record<string, string | undefined> | null;
-  multiValueQueryStringParameters: Record<string, string | undefined> | null;
-  stageVariables: Record<string, string | undefined> | null;
-  /** The context is complicated, and we don't (as of 2023) use it at all. */
-  requestContext: any;
-  resource: string;
 }
 
+/**
+ * Given an event, pull out all necessary parameters.
+ * Returns undefined if parsing fails (due to a missing or invalid param).
+ *
+ * Usually, these extract reportType and state from the event's pathParameters,
+ * but exact needs will vary from endpoint to endpoint.
+ *
+ * If parsing fails, parsers should log which parameter was missing or invalid.
+ *
+ * At this time none of our endpoints use queryParameters,
+ * but in theory those should be extracted & validated here as well.
+ */
+export type ParameterParser<TParams> = (
+  event: APIGatewayProxyEvent
+) => TParams | undefined;
+
+/**
+ * Represents a request that:
+ *   1. Was made by an authenticated user
+ *   2. Has valid values for all necessary parameters
+ *   3. Has a sanitized body (or none at all)
+ *
+ * This is a more refined object than `APIGatewayProxyEvent`,
+ * which makes no such guarantees.
+ */
 export interface AuthenticatedRequest<TParams> {
-  body: string | null;
+  body: object | undefined;
   user: User;
   parameters: TParams;
 }
+
+/**
+ * Performs all the necessary operations for an API endpoint. This includes:
+ *   1. Checking user permissions
+ *   2. Validating the request body (if applicable)
+ *   3. Creating, reading, updating, and/or deleting appropriate resources
+ *   4. Returning an HTTP Response (complete with status and headers)
+ */
+export type HandlerLambda<TParams> = (
+  request: AuthenticatedRequest<TParams>
+) => Promise<HttpResponse>;

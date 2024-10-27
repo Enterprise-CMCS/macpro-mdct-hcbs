@@ -1,14 +1,10 @@
-import handler from "../../libs/handler-lib";
+import { handler } from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
-import { badRequest, ok } from "../../libs/response-lib";
+import { ok } from "../../libs/response-lib";
 import { getReport } from "../../storage/reports";
 
-export const get = handler(async (event) => {
-  const { allParamsValid, reportType, state, id } =
-    parseReportParameters(event);
-  if (!allParamsValid) {
-    return badRequest("Invalid path parameters");
-  }
+export const get = handler(parseReportParameters, async (event) => {
+  const { reportType, state, id } = event.parameters;
 
   // TODO: Auth
 

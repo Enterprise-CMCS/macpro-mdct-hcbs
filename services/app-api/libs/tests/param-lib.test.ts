@@ -8,8 +8,8 @@ describe("Path parameter parsing", () => {
         ...proxyEvent,
         pathParameters: { reportType: "QM", state: "CO" },
       };
-      const result = parseReportTypeAndState(event);
-      expect(result.allParamsValid).toBe(true);
+      const result = parseReportTypeAndState(event)!;
+      expect(result).toBeDefined();
       expect(result.reportType).toBe("QM");
       expect(result.state).toBe("CO");
     });
@@ -20,9 +20,7 @@ describe("Path parameter parsing", () => {
         pathParameters: { reportType: "XX", state: "CO" },
       };
       const result = parseReportTypeAndState(event);
-      expect(result.allParamsValid).toBe(false);
-      expect(result.reportType).toBe(undefined);
-      expect(result.state).toBe(undefined);
+      expect(result).toBeUndefined();
     });
 
     it("should return false for invalid state", () => {
@@ -31,9 +29,7 @@ describe("Path parameter parsing", () => {
         pathParameters: { reportType: "QM", state: "XX" },
       };
       const result = parseReportTypeAndState(event);
-      expect(result.allParamsValid).toBe(false);
-      expect(result.reportType).toBe(undefined);
-      expect(result.state).toBe(undefined);
+      expect(result).toBeUndefined();
     });
   });
 
@@ -43,8 +39,8 @@ describe("Path parameter parsing", () => {
         ...proxyEvent,
         pathParameters: { reportType: "QM", state: "CO", id: "foo" },
       };
-      const result = parseReportParameters(event);
-      expect(result.allParamsValid).toBe(true);
+      const result = parseReportParameters(event)!;
+      expect(result).toBeDefined();
       expect(result.reportType).toBe("QM");
       expect(result.state).toBe("CO");
       expect(result.id).toBe("foo");
@@ -56,10 +52,7 @@ describe("Path parameter parsing", () => {
         pathParameters: { reportType: "XX", state: "CO", id: "foo" },
       };
       const result = parseReportParameters(event);
-      expect(result.allParamsValid).toBe(false);
-      expect(result.reportType).toBe(undefined);
-      expect(result.state).toBe(undefined);
-      expect(result.id).toBe(undefined);
+      expect(result).toBeUndefined();
     });
 
     it("should return false for invalid state", () => {
@@ -68,10 +61,7 @@ describe("Path parameter parsing", () => {
         pathParameters: { reportType: "QM", state: "XX", id: "foo" },
       };
       const result = parseReportParameters(event);
-      expect(result.allParamsValid).toBe(false);
-      expect(result.reportType).toBe(undefined);
-      expect(result.state).toBe(undefined);
-      expect(result.id).toBe(undefined);
+      expect(result).toBeUndefined();
     });
 
     it("should return false for missing report ID", () => {
@@ -80,10 +70,7 @@ describe("Path parameter parsing", () => {
         pathParameters: { reportType: "QM", state: "CO" },
       };
       const result = parseReportParameters(event);
-      expect(result.allParamsValid).toBe(false);
-      expect(result.reportType).toBe(undefined);
-      expect(result.state).toBe(undefined);
-      expect(result.id).toBe(undefined);
+      expect(result).toBeUndefined();
     });
   });
 });

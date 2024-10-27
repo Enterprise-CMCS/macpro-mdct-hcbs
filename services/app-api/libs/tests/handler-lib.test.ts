@@ -1,4 +1,4 @@
-import handlerLib from "../handler-lib";
+import { handler as handlerLib } from "../handler-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { authenticatedUser } from "../../utils/authentication";
 import * as logger from "../debug-lib";
@@ -15,10 +15,12 @@ jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn(),
 }));
 
+const parser = () => ({});
+
 describe("Test Lambda Handler Lib", () => {
   test("Test successful authorized lambda workflow", async () => {
     const testFunc = jest.fn().mockReturnValue(ok("test"));
-    const handler = handlerLib(testFunc);
+    const handler = handlerLib(parser, testFunc);
 
     (authenticatedUser as jest.Mock).mockReturnValue({});
     const res = await handler(proxyEvent);
@@ -35,12 +37,18 @@ describe("Test Lambda Handler Lib", () => {
       })
     );
     expect(logger.flush).toHaveBeenCalled();
-    expect(testFunc).toHaveBeenCalledWith(proxyEvent);
+    expect(testFunc).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: {},
+        user: {},
+        parameters: {},
+      })
+    );
   });
 
   test("Test unsuccessful authorization lambda workflow", async () => {
     const testFunc = jest.fn();
-    const handler = handlerLib(testFunc);
+    const handler = handlerLib(parser, testFunc);
 
     (authenticatedUser as jest.Mock).mockReturnValue(undefined);
     const res = await handler(proxyEvent);
@@ -54,16 +62,15 @@ describe("Test Lambda Handler Lib", () => {
     const testFunc = jest.fn().mockImplementation(() => {
       throw err;
     });
-    const handler = handlerLib(testFunc);
+    const handler = handlerLib(parser, testFunc);
 
     (authenticatedUser as jest.Mock).mockReturnValue({});
     const res = await handler(proxyEvent);
 
-    expect(testFunc).toHaveBeenCalledWith(proxyEvent);
+    expect(testFunc).toHaveBeenCalled();
     expect(logger.error).toHaveBeenCalledWith("Error: %O", err);
     expect(logger.flush).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.InternalServerError);
     expect(res.body).toBe(`"Test Error"`);
-    expect(testFunc).toHaveBeenCalledWith(proxyEvent);
   });
 });
