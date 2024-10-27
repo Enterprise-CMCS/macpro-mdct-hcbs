@@ -10,6 +10,7 @@ import {
   logger,
 } from "../debug-lib";
 
+// This requireActual() overrides the mock in setupJest.ts
 jest.mock("../debug-lib", () => ({
   ...jest.requireActual("../debug-lib"),
 }));
