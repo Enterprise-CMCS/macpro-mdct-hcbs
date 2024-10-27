@@ -10,7 +10,7 @@ export const PageTemplate = ({
   return (
     <section>
       <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
-        <Flex sx={sx.contentFlex} className={`contentFlex ${type}`} gap="8">
+        <Flex sx={sx.contentFlex} className={`contentFlex ${type}`} gap="4">
           {children}
         </Flex>
       </Box>

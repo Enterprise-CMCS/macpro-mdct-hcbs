@@ -325,14 +325,11 @@ const theme = extendTheme({
       },
       variants: {
         h1: {
-          fontSize: "2.25rem",
-          paddingBottom: "0.5rem",
-        },
-        sidebar: {
-          fontSize: "21px",
-          fontWeight: "700",
-          padding: "2rem",
-          margin: "0",
+          fontSize: "4xl",
+          fontWeight: "normal",
+          ".mobile &": {
+            fontSize: "2xl",
+          },
         },
         subHeader: {
           fontSize: "21px",
@@ -340,6 +337,15 @@ const theme = extendTheme({
           p: {
             margin: "0",
           },
+          ".mobile &": {
+            fontSize: "lg",
+          },
+        },
+        sidebar: {
+          fontSize: "21px",
+          fontWeight: "700",
+          padding: "2rem",
+          margin: "0",
         },
         login: {
           my: "6rem",
@@ -531,6 +537,9 @@ const theme = extendTheme({
       baseStyle: {
         color: "palette.base",
         transition: "all 0.3s ease",
+        ".mobile &": {
+          fontSize: ".95rem",
+        },
       },
       variants: {
         tableEmpty: {
