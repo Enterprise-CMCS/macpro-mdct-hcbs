@@ -1,9 +1,10 @@
-import { getReport, putReport } from "./reports";
+import { getReport, putReport, queryReportsForState } from "./reports";
 import { Report, ReportType } from "../types/reports";
 import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
@@ -60,6 +61,29 @@ describe("Report storage helpers", () => {
       mockDynamo.on(GetCommand).resolvesOnce({});
       const report = await getReport(ReportType.QM, "CO", "mock-report-id");
       expect(report).toBe(undefined);
+    });
+  });
+
+  describe("queryReportsForState", () => {
+    it("should call DynamoDB to get report data", async () => {
+      const mockQuery = jest.fn().mockResolvedValue({
+        Items: [mockReport],
+        LastEvaluatedKey: undefined,
+      });
+      mockDynamo.on(QueryCommand).callsFake(mockQuery);
+
+      const reports = await queryReportsForState(ReportType.QM, "CO");
+
+      expect(reports).toEqual([mockReport]);
+      expect(mockQuery).toHaveBeenCalledWith(
+        {
+          TableName: "local-qm-reports",
+          KeyConditionExpression: "#state = :state",
+          ExpressionAttributeValues: { ":state": "CO" },
+          ExpressionAttributeNames: { "#state": "state" },
+        },
+        expect.any(Function)
+      );
     });
   });
 });
