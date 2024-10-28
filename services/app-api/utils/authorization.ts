@@ -1,47 +1,27 @@
-import jwt_decode from "jwt-decode";
-import { APIGatewayProxyEvent, UserRoles } from "../types/types";
+import { User, UserRoles } from "../types/types";
+import { StateAbbr } from "./constants";
 
-interface DecodedToken {
-  "custom:cms_roles": UserRoles;
-  "custom:cms_state": string | undefined;
-}
+/** These roles are allowed to read data for any state */
+const statelessRoles = [
+  UserRoles.ADMIN,
+  UserRoles.APPROVER,
+  UserRoles.HELP_DESK,
+  UserRoles.INTERNAL,
+];
 
-export const hasPermissions = (
-  event: APIGatewayProxyEvent,
-  allowedRoles: UserRoles[],
-  state?: string
-) => {
-  let isAllowed = false;
-  // decode the idToken
-  if (event?.headers?.["x-api-key"]) {
-    const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
-    const idmUserRoles = decoded["custom:cms_roles"];
-    const idmUserState = decoded["custom:cms_state"];
-    const hcbsUserRole = idmUserRoles
-      ?.split(",")
-      .find((role) => role.includes("mdcthcbs")) as UserRoles;
-
-    isAllowed =
-      allowedRoles.includes(hcbsUserRole) &&
-      (!state || idmUserState?.includes(state))!;
-  }
-
-  return isAllowed;
-};
-
-export const isAuthorizedToFetchState = (
-  event: APIGatewayProxyEvent,
-  state: string
-) => {
-  // If this is a state user for the matching state, authorize them.
-  if (hasPermissions(event, [UserRoles.STATE_USER], state)) {
+export const canReadState = (user: User, state: StateAbbr) => {
+  if (statelessRoles.includes(user.role)) {
     return true;
   }
+  if (user.role == UserRoles.STATE_USER && user.state === state) {
+    return true;
+  }
+  return false;
+};
 
-  const nonStateUserRoles = Object.values(UserRoles).filter(
-    (role) => role !== UserRoles.STATE_USER
-  );
-
-  // If they are any other user type, they don't need to belong to this state.
-  return hasPermissions(event, nonStateUserRoles);
+export const canWriteState = (user: User, state: StateAbbr) => {
+  if (user.role == UserRoles.STATE_USER && user.state === state) {
+    return true;
+  }
+  return false;
 };
