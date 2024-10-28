@@ -1,7 +1,7 @@
 import KSUID from "ksuid";
 import { qmReportTemplate } from "../../forms/qm";
 import { putReport } from "../../storage/reports";
-import { Report, ReportType } from "../../types/reports";
+import { Report, ReportStatus, ReportType } from "../../types/reports";
 
 const reportTemplates = {
   [ReportType.QM]: qmReportTemplate,
@@ -22,6 +22,7 @@ export const buildReport = async (
   report.lastEdited = Date.now();
   report.lastEditedBy = username;
   report.type = reportType;
+  report.status = ReportStatus.NOT_STARTED;
 
   if (reportType == ReportType.QM) {
     /*

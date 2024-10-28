@@ -9,11 +9,10 @@ export const isReportType = (
   return Object.values(ReportType).includes(reportType as ReportType);
 };
 
-// TODO: We probably will need more statuses? In Revision? Approved?
 export enum ReportStatus {
-  NotStarted = "Not Started",
-  InProgress = "In Progress",
-  Submitted = "Submitted",
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  SUBMITTED = "Submitted",
 }
 export const isReportStatus = (status: string): status is ReportStatus => {
   return Object.values(ReportStatus).includes(status as ReportStatus);
@@ -37,7 +36,6 @@ export interface Report extends ReportTemplate {
   lastEdited?: number;
   lastEditedBy?: string;
   status: ReportStatus;
-  answers?: any[]; //TODO: any
 }
 
 export type PageTemplate =
