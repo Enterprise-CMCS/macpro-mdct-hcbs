@@ -154,6 +154,7 @@ const theme = extendTheme({
           "&:disabled, &:disabled:hover": {
             color: "palette.gray",
             backgroundColor: "palette.gray_lighter",
+            opacity: 1,
           },
         },
         transparent: {
@@ -179,7 +180,7 @@ const theme = extendTheme({
           borderColor: "palette.gray_lighter",
           borderWidth: "0 0 1px 0",
           fontSize: "14px",
-          paddingLeft: "2rem",
+          paddingLeft: "1rem",
           _hover: {
             color: "palette.secondary_darkest",
             backgroundColor: "palette.gray_lightest_highlight",
@@ -187,21 +188,15 @@ const theme = extendTheme({
             borderColor: "palette.secondary",
             borderWidth: "0 0 0 4px",
           },
-        },
-        sidebarSelected: {
-          display: "block",
-          textAlign: "left",
-          color: "palette.secondary_darkest",
-          backgroundColor: "palette.gray_lightest_highlight",
-          border: "1px solid",
-          borderColor: "palette.secondary",
-          borderWidth: "0 0 0 4px",
-          fontSize: "14px",
-          paddingLeft: "2rem",
-          width: "100%",
+          "&.selected": {
+            border: "1px solid",
+            borderColor: "palette.secondary",
+            borderWidth: "0 0 0 2px",
+            color: "palette.secondary_darkest",
+            backgroundColor: "palette.gray_lightest_highlight",
+          },
         },
         sidebarToggle: {
-          padding: "0",
           background: "palette.gray_lightest",
           borderRadius: "0px 10px 10px 0px",
           "img.left": {
@@ -316,6 +311,12 @@ const theme = extendTheme({
         variant: "primary",
       },
     },
+    Divider: {
+      baseStyle: {
+        borderColor: "palette.gray_light",
+        paddingTop: "1rem",
+      },
+    },
     Heading: {
       baseStyle: {
         color: "palette.base",
@@ -324,21 +325,32 @@ const theme = extendTheme({
       },
       variants: {
         h1: {
-          fontSize: "2rem",
-          paddingBottom: "0.5rem",
-        },
-        sidebar: {
-          fontSize: "21px",
-          fontWeight: "700",
-          padding: "32px",
-          margin: "0",
+          fontSize: "4xl",
+          fontWeight: "normal",
+          ".mobile &": {
+            fontSize: "2xl",
+          },
         },
         subHeader: {
-          fontSize: "23px",
+          fontSize: "21px",
           fontWeight: "700",
           p: {
             margin: "0",
           },
+          ".mobile &": {
+            fontSize: "lg",
+          },
+        },
+        sidebar: {
+          fontSize: "21px",
+          fontWeight: "700",
+          padding: "2rem",
+          margin: "0",
+        },
+        login: {
+          my: "6rem",
+          textAlign: "center",
+          width: "100%",
         },
       },
     },
@@ -361,7 +373,6 @@ const theme = extendTheme({
         },
         return: {
           width: "fit-content",
-          padding: "0.5rem 0 0 2rem",
           textDecoration: "none",
           _hover: {
             textDecoration: "underline",
@@ -404,7 +415,7 @@ const theme = extendTheme({
         container: {},
       },
       variants: {
-        accordian: {
+        accordion: {
           container: {
             paddingLeft: "1rem",
           },
@@ -420,6 +431,7 @@ const theme = extendTheme({
             position: "absolute",
             right: "2rem",
           },
+          borderRadius: "none",
         },
         header: {
           padding: "0 0 1.50rem 0",
@@ -448,13 +460,15 @@ const theme = extendTheme({
             borderColor: "palette.gray_light",
             color: "palette.gray_medium",
             fontWeight: "bold",
+            textTransform: "none",
+            letterSpacing: "normal",
+            fontSize: "sm",
           },
           tr: {
             borderBottom: "1px solid",
             borderColor: "palette.gray_light",
           },
           td: {
-            minWidth: "6rem",
             paddingLeft: 0,
             borderTop: "1px solid",
             borderBottom: "1px solid",
@@ -495,6 +509,26 @@ const theme = extendTheme({
                 fontWeight: "800",
               },
             },
+            a: {
+              fontSize: "14px",
+              whiteSpace: "nowrap",
+              ".mobile &": {
+                whiteSpace: "wrap",
+              },
+            },
+          },
+        },
+        status: {
+          td: {
+            fontSize: "14px",
+            padding: "0.75rem 0",
+            "&:first-of-type": {
+              width: "65%",
+              fontWeight: "bold",
+            },
+            "&:nth-of-type(2)": {
+              width: "25%",
+            },
           },
         },
       },
@@ -503,6 +537,9 @@ const theme = extendTheme({
       baseStyle: {
         color: "palette.base",
         transition: "all 0.3s ease",
+        ".mobile &": {
+          fontSize: ".95rem",
+        },
       },
       variants: {
         tableEmpty: {

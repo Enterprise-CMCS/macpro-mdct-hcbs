@@ -1,5 +1,7 @@
 // ALERTS
 
+import { StateNames } from "../constants";
+
 export enum AlertTypes {
   ERROR = "error",
   INFO = "info",
@@ -45,3 +47,8 @@ export interface ErrorVerbiage {
   title: string;
   description: string | CustomHtmlElement[];
 }
+
+export type StateAbbr = keyof typeof StateNames;
+export const isStateAbbr = (abbr: string | undefined): abbr is StateAbbr => {
+  return Object.keys(StateNames).includes(abbr as keyof typeof StateNames);
+};

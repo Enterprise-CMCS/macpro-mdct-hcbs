@@ -139,4 +139,13 @@ button {
 
 .ds-c-label {
   margin: 0;
+  font-size: 14px;
+  > span:first-of-type {
+    font-size: 16px;
+  }
+}
+
+.ds-c-field {
+  margin: 8px 0 0 0;
+  font-weight: 100;
 }

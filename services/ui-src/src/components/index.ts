@@ -22,12 +22,15 @@ export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // fields
 export { TextField } from "./fields/TextField";
+// forms
+export { AdminDashSelector } from "./forms/AdminDashSelector";
 // logins
 export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
 // pages
 export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
+export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";

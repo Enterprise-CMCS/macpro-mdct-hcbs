@@ -9,7 +9,7 @@ export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
       {parseCustomHtml(verbiage.text)}
       {verbiage.table && <Table content={verbiage.table} variant="striped" />}
       {verbiage.list && (
-        <UnorderedList variant="accordian">
+        <UnorderedList variant="accordion">
           {verbiage.list.map((listItem: string, index: number) => (
             <ListItem key={index}>{listItem}</ListItem>
           ))}

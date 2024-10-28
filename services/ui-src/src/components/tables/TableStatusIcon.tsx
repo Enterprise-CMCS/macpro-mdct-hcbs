@@ -1,4 +1,4 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, HStack, Image, Text } from "@chakra-ui/react";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import unfinishedIcon from "assets/icons/status/icon_status_alert.svg";
 
@@ -11,19 +11,19 @@ export enum TableStatuses {
 
 export type TableStatusType = TableStatuses | string;
 
-export const TableStatueIcon = ({ tableStatus, isPdf }: Props) => {
+export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
   const statusIcon = (status: TableStatusType) => {
     switch (status) {
       case TableStatuses.COMPLETE:
         return {
           src: successIcon,
-          alt: isPdf ? "" : "complete icon",
+          alt: "complete icon",
           text: "Complete",
         };
       default:
         return {
           src: unfinishedIcon,
-          alt: isPdf ? "" : "warning icon",
+          alt: "warning icon",
           text: "Error",
         };
     }
@@ -33,14 +33,10 @@ export const TableStatueIcon = ({ tableStatus, isPdf }: Props) => {
   return (
     <Box>
       {status && (
-        <>
+        <HStack>
           <Image src={status.src} alt={status.alt} boxSize="xl" />
-          {isPdf && (
-            <Text>
-              <b>{status.text}</b>
-            </Text>
-          )}
-        </>
+          {isPdf && <Text>{status.text}</Text>}
+        </HStack>
       )}
     </Box>
   );

@@ -7,6 +7,7 @@ import {
   Thead,
   Tr,
   Text,
+  Link,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { MeasureReplacementModal } from "./MeasureReplacementModal";
@@ -16,7 +17,7 @@ import {
   MeasureTableTemplate,
 } from "../../types/report";
 import { PageElementProps } from "./Elements";
-import { TableStatueIcon } from "components/tables/TableStatusIcon";
+import { TableStatusIcon } from "components/tables/TableStatusIcon";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
@@ -43,23 +44,20 @@ export const MeasureTableElement = (props: PageElementProps) => {
   };
 
   // Build Rows
-  const rows = selectedMeasures.map((measure) => {
+  const rows = selectedMeasures.map((measure, index) => {
     return (
-      <Tr>
+      <Tr key={index}>
         <Td>
-          <TableStatueIcon tableStatus=""></TableStatueIcon>
+          <TableStatusIcon tableStatus=""></TableStatusIcon>
         </Td>
         <Td width="100%">
-          <Text>{measure.title}</Text>
+          <Text fontWeight="bold">{measure.title}</Text>
           <Text>CMIT# {measure.cmit}</Text>
         </Td>
         <Td>
-          <Button
-            variant="link"
-            onClick={() => buildModal(measure.cmit)} // TODO: modal per link
-          >
+          <Link onClick={() => buildModal(measure.cmit)}>
             Substitute measure
-          </Button>
+          </Link>
         </Td>
         <Td>
           <Button

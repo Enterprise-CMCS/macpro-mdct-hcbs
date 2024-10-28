@@ -174,6 +174,7 @@ export type SubHeaderTemplate = {
 
 export type ParagraphTemplate = {
   type: ElementType.Paragraph;
+  title?: string;
   text: string;
 };
 
@@ -227,8 +228,6 @@ export type ChoiceTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
-  modalId: PageId;
-  to: PageId;
 };
 
 export type StatusTableTemplate = {
