@@ -8,7 +8,7 @@ import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
 
 export const Header = ({ handleLogout }: Props) => {
-  const { lastSavedTime } = useStore();
+  const { lastSavedTime, report } = useStore();
   const { isMobile } = useBreakpoint();
 
   const saveStatusText = "Last saved " + lastSavedTime;
@@ -47,6 +47,11 @@ export const Header = ({ handleLogout }: Props) => {
       <Flex sx={sx.subnavBar}>
         <Container sx={sx.subnavContainer}>
           <Flex sx={sx.subnavFlex}>
+            <Flex>
+              <Text sx={sx.submissionNameText}>
+                {report?.state + " QMS Report"}
+              </Text>
+            </Flex>
             <Flex sx={sx.subnavFlexRight}>
               {lastSavedTime && (
                 <>
@@ -58,6 +63,15 @@ export const Header = ({ handleLogout }: Props) => {
                   <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
                 </>
               )}
+              <Link
+                as={RouterLink}
+                to={`/report/${report?.type}/${report?.state}` || "/"}
+                sx={sx.leaveFormLink}
+                variant="outlineButton"
+                tabIndex={-1}
+              >
+                Leave form
+              </Link>
             </Flex>
           </Flex>
         </Container>
@@ -141,5 +155,11 @@ const sx = {
       width: "5rem",
       textAlign: "right",
     },
+  },
+  submissionNameText: {
+    fontWeight: "bold",
+  },
+  leaveFormLink: {
+    marginLeft: "1rem",
   },
 };
