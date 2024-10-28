@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { Amplify } from "aws-amplify";
 import config from "config";
+import "aws-amplify/auth/enable-oauth-listener";
 import { ApiProvider, UserProvider } from "utils";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import { App, Error } from "components";
@@ -35,8 +36,8 @@ Amplify.configure({
       loginWith: {
         oauth: {
           domain: config.cognito.APP_CLIENT_DOMAIN,
-          redirectSignIn: config.cognito.REDIRECT_SIGNIN,
-          redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
+          redirectSignIn: [config.cognito.REDIRECT_SIGNIN],
+          redirectSignOut: [config.cognito.REDIRECT_SIGNOUT],
           scopes: ["email", "openid", "profile"],
           responseType: "code",
         },

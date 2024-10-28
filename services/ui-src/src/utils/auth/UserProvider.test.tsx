@@ -41,9 +41,6 @@ const testComponent = (
 );
 
 // HELPERS
-
-const mockReplace = jest.fn();
-
 const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
   global,
   "location"
@@ -55,7 +52,6 @@ const setWindowOrigin = (windowOrigin: string) => {
     value: {
       assign: jest.fn(),
       origin: windowOrigin,
-      replace: mockReplace,
       pathname: "/",
     },
     writable: true,
@@ -119,7 +115,6 @@ describe("<UserProvider />", () => {
       });
       expect(window.location.origin).toContain("mdcthcbs.cms.gov");
       expect(screen.getByText("User Test")).toBeVisible();
-      expect(mockReplace).toHaveBeenCalled();
     });
   });
 

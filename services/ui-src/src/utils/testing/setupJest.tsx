@@ -77,9 +77,8 @@ jest.mock("aws-amplify/auth", () => ({
       payload: "eyJLongToken",
     }),
   }),
-  configure: () => {},
   signOut: jest.fn().mockImplementation(() => Promise.resolve()),
-  federatedSignIn: () => {},
+  signInWithRedirect: () => {},
 }));
 
 // USER CONTEXT
@@ -87,7 +86,7 @@ jest.mock("aws-amplify/auth", () => ({
 export const mockUserContext: UserContextShape = {
   user: undefined,
   logout: async () => {},
-  loginWithIDM: () => {},
+  loginWithIDM: async () => {},
   updateTimeout: async () => {},
   getExpiration: () => {},
 };
