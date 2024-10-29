@@ -1,6 +1,5 @@
-import { API } from "aws-amplify";
+import { apiLib } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { updateTimeout } from "utils";
 import { Report } from "types/report";
 
 export async function createReport(
@@ -9,62 +8,41 @@ export async function createReport(
   reportOptions: any // TODO: correct
 ) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
     body: { ...reportOptions },
   };
 
-  updateTimeout();
-  const response = await API.post(
-    "hcbs",
-    `/reports/${reportType}/${state}`,
-    request
-  );
-  return response;
+  return await apiLib.post(`/reports/${reportType}/${state}`, options);
 }
 
 export async function getReport(reportType: string, state: string, id: string) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
   };
 
-  updateTimeout();
-  const response = await API.get(
-    "hcbs",
-    `/reports/${reportType}/${state}/${id}`,
-    request
-  );
-  return response;
+  return await apiLib.get(`/reports/${reportType}/${state}/${id}`, options);
 }
 
 export async function putReport(report: Report) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
     body: { ...report },
   };
 
-  updateTimeout();
-  const response = await API.put(
-    "hcbs",
+  return await apiLib.put(
     `/reports/${report.type}/${report.state}/${report.id}`,
-    request
+    options
   );
-  return response;
 }
 
 export async function getReportsForState(reportType: string, state: string) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
   };
 
-  updateTimeout();
-  const response = await API.get(
-    "hcbs",
-    `/reports/${reportType}/${state}`,
-    request
-  );
-  return response;
+  return await apiLib.get(`/reports/${reportType}/${state}`, options);
 }
