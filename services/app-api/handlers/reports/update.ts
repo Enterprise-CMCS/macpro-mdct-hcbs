@@ -2,7 +2,7 @@ import handler from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, ok } from "../../libs/response-lib";
 import { putReport } from "../../storage/reports";
-import { Report } from "../../types/reports";
+import { Report, ReportStatus } from "../../types/reports";
 
 export const updateReport = handler(async (event) => {
   const { allParamsValid, reportType, state, id } =
@@ -25,6 +25,9 @@ export const updateReport = handler(async (event) => {
   ) {
     return badRequest("Invalid request");
   }
+
+  report.status = ReportStatus.IN_PROGRESS;
+  report.lastEdited = Date.now();
 
   // Validation required.
   await putReport(report);

@@ -37,12 +37,19 @@ export enum MeasureTemplateName {
   StandardMeasure,
 }
 
+export enum ReportStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  SUBMITTED = "Submitted",
+}
+
 export interface Report extends ReportTemplate {
   id?: string;
   state: string;
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
+  status: ReportStatus;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
