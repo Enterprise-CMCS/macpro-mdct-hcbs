@@ -10,6 +10,7 @@ import checkIcon from "assets/icons/check/icon_check_gray.png";
 export const Header = ({ handleLogout }: Props) => {
   const { lastSavedTime, report } = useStore();
   const { isMobile } = useBreakpoint();
+  // TO-DO: add a boolean isReportPage to contain subheader to only report pages
 
   const saveStatusText = "Last saved " + lastSavedTime;
 
