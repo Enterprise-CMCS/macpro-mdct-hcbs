@@ -8,6 +8,7 @@ import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
+
   return (
     <Box sx={sx.root} id="header">
       <Flex sx={sx.usaBannerContainer}>
@@ -86,43 +87,5 @@ const sx = {
   },
   appLogo: {
     maxWidth: "200px",
-  },
-  subnavBar: {
-    bg: "palette.secondary_lightest",
-  },
-  subnavContainer: {
-    maxW: "appMax",
-    ".desktop &": {
-      padding: "0 2rem",
-    },
-  },
-  subnavFlex: {
-    height: "60px",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  subnavFlexRight: {
-    alignItems: "center",
-    paddingRight: ".5rem",
-  },
-  checkIcon: {
-    marginRight: "0.5rem",
-    boxSize: "1rem",
-    ".mobile &": {
-      display: "none",
-    },
-  },
-  saveStatusText: {
-    fontSize: "sm",
-    ".mobile &": {
-      width: "5rem",
-      textAlign: "right",
-    },
-  },
-  submissionNameText: {
-    fontWeight: "bold",
-  },
-  leaveFormLink: {
-    marginLeft: "1rem",
   },
 };
