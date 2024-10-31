@@ -2,7 +2,7 @@ import { handler } from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { putReport } from "../../storage/reports";
-import { Report } from "../../types/reports";
+import { Report, ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 
@@ -26,6 +26,9 @@ export const updateReport = handler(parseReportParameters, async (request) => {
   ) {
     return badRequest("Invalid request");
   }
+
+  report.status = ReportStatus.IN_PROGRESS;
+  report.lastEdited = Date.now();
 
   // Validation required.
   await putReport(report);

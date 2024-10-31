@@ -18,7 +18,7 @@ const testReport: Report = {
   title: "plan id",
   state: "NJ",
   id: "NJQM123",
-  status: ReportStatus.NotStarted,
+  status: ReportStatus.NOT_STARTED,
   pages: [
     {
       id: "root",
