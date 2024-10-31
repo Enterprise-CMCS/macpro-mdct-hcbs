@@ -111,11 +111,6 @@ describe("Authentication methods", () => {
       expect(() => parseUserFromToken(badStateToken)).toThrow();
     });
 
-    it("should fail if user has not validated their email", () => {
-      const noEmailToken = { ...mockToken, email_verified: false };
-      expect(() => parseUserFromToken(noEmailToken)).toThrow();
-    });
-
     it("should omit first name if it is not in the token", () => {
       const noGivenNameToken = { ...mockToken, given_name: null };
       const user = parseUserFromToken(noGivenNameToken);

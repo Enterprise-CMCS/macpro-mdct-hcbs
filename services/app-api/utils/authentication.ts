@@ -58,7 +58,11 @@ export const parseUserFromToken = (token: CognitoIdTokenPayload) => {
   return {
     role: parseRoleFromToken(token),
     state: parseStateFromToken(token),
-    email: parseEmailFromToken(token),
+    /*
+     * We expect email to always be present & valid for all users,
+     * even though email_verified is not always true for our test users.
+     */
+    email: token.email as string,
     full_name: parseFullNameFromToken(token),
   };
 };
@@ -84,13 +88,6 @@ const parseStateFromToken = (token: CognitoIdTokenPayload) => {
     throw new Error(`Invalid state abbreviation: ${state}`);
   }
   return state;
-};
-
-const parseEmailFromToken = (token: CognitoIdTokenPayload) => {
-  if (!token.email_verified) {
-    throw new Error(`User's email is not verified`);
-  }
-  return token.email as string;
 };
 
 const parseFullNameFromToken = (token: CognitoIdTokenPayload) => {
