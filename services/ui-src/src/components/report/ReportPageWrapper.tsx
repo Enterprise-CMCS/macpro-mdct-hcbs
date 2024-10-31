@@ -1,13 +1,25 @@
-import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  HStack,
+  VStack,
+  Container,
+  Image,
+  Link,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
 import { getReport } from "utils/api/requestMethods/report";
-import { useParams } from "react-router-dom";
 import { useStore, getLocalHourMinuteTime } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormPageTemplate } from "types/report";
+import checkIcon from "assets/icons/check/icon_check_gray.png";
 
 export const ReportPageWrapper = () => {
   const {
@@ -15,11 +27,11 @@ export const ReportPageWrapper = () => {
     pageMap,
     parentPage,
     currentPageId,
+    lastSavedTime,
     setReport,
     setAnswers,
     setCurrentPageId,
     setLastSavedTime,
-    setIsReportPage,
   } = useStore();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -49,7 +61,6 @@ export const ReportPageWrapper = () => {
       const result = await getReport(reportType, state, reportId);
       setReport(result);
       setIsLoading(false);
-      setIsReportPage(true);
     } catch {
       // console.log("oopsy")
     }
@@ -73,8 +84,42 @@ export const ReportPageWrapper = () => {
     setCurrentPageId(parentPage.childPageIds[newPageIndex]);
   };
 
+  const saveStatusText = "Last saved " + lastSavedTime;
+
   return (
     <FormProvider {...methods}>
+      <Flex sx={sx.subnavBar}>
+        <Container sx={sx.subnavContainer}>
+          <Flex sx={sx.subnavFlex}>
+            <Flex>
+              <Text sx={sx.submissionNameText}>
+                {report?.state + " QMS Report"}
+              </Text>
+            </Flex>
+            <Flex sx={sx.subnavFlexRight}>
+              {lastSavedTime && (
+                <>
+                  <Image
+                    src={checkIcon}
+                    alt="gray checkmark icon"
+                    sx={sx.checkIcon}
+                  />
+                  <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
+                </>
+              )}
+              <Link
+                as={RouterLink}
+                to={`/report/${report?.type}/${report?.state}` || "/"}
+                sx={sx.leaveFormLink}
+                variant="outlineButton"
+                tabIndex={-1}
+              >
+                Leave form
+              </Link>
+            </Flex>
+          </Flex>
+        </Container>
+      </Flex>
       <HStack width="100%" height="100%" position="relative" spacing="0">
         {currentPage.sidebar && <Sidebar />}
         <VStack
@@ -123,4 +168,45 @@ export const ReportPageWrapper = () => {
       </HStack>
     </FormProvider>
   );
+};
+
+const sx = {
+  subnavBar: {
+    bg: "palette.secondary_lightest",
+  },
+  subnavContainer: {
+    maxW: "appMax",
+    ".desktop &": {
+      padding: "0 2rem",
+    },
+  },
+  subnavFlex: {
+    height: "60px",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  leaveFormLink: {
+    marginLeft: "1rem",
+  },
+  checkIcon: {
+    marginRight: "0.5rem",
+    boxSize: "1rem",
+    ".mobile &": {
+      display: "none",
+    },
+  },
+  submissionNameText: {
+    fontWeight: "bold",
+  },
+  saveStatusText: {
+    fontSize: "sm",
+    ".mobile &": {
+      width: "5rem",
+      textAlign: "right",
+    },
+  },
+  subnavFlexRight: {
+    alignItems: "center",
+    paddingRight: ".5rem",
+  },
 };

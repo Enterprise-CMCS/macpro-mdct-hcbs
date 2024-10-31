@@ -1,19 +1,13 @@
 import { Link as RouterLink } from "react-router-dom";
 import { UsaBanner } from "@cmsgov/design-system";
-import { Box, Container, Flex, Image, Link, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
 import { Menu, MenuOption } from "components";
-import { useStore, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
-import checkIcon from "assets/icons/check/icon_check_gray.png";
 
 export const Header = ({ handleLogout }: Props) => {
-  const { lastSavedTime, report, isReportPage } = useStore();
   const { isMobile } = useBreakpoint();
-  // TO-DO: add a boolean isReportPage to contain subheader to only report pages
-
-  const saveStatusText = "Last saved " + lastSavedTime;
-
   return (
     <Box sx={sx.root} id="header">
       <Flex sx={sx.usaBannerContainer}>
@@ -45,40 +39,6 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isReportPage && (
-        <Flex sx={sx.subnavBar}>
-          <Container sx={sx.subnavContainer}>
-            <Flex sx={sx.subnavFlex}>
-              <Flex>
-                <Text sx={sx.submissionNameText}>
-                  {report?.state + " QMS Report"}
-                </Text>
-              </Flex>
-              <Flex sx={sx.subnavFlexRight}>
-                {lastSavedTime && (
-                  <>
-                    <Image
-                      src={checkIcon}
-                      alt="gray checkmark icon"
-                      sx={sx.checkIcon}
-                    />
-                    <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
-                  </>
-                )}
-                <Link
-                  as={RouterLink}
-                  to={`/report/${report?.type}/${report?.state}` || "/"}
-                  sx={sx.leaveFormLink}
-                  variant="outlineButton"
-                  tabIndex={-1}
-                >
-                  Leave form
-                </Link>
-              </Flex>
-            </Flex>
-          </Container>
-        </Flex>
-      )}
     </Box>
   );
 };
