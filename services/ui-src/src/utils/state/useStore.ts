@@ -30,6 +30,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   modalOpen: false,
   modalComponent: undefined,
   lastSavedTime: undefined,
+  isReportPage: false,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -54,6 +55,8 @@ const reportStore = (set: Function): HcbsReportState => ({
     set(() => ({ lastSavedTime: savedTime }), false, {
       type: "setLastSavedTime",
     }),
+  setIsReportPage: (isReportPage: boolean) =>
+    set(() => ({ isReportPage }), false, { type: "setIsReportPage" }),
 });
 
 export const useStore = create(

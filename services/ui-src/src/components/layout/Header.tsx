@@ -8,7 +8,7 @@ import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
 
 export const Header = ({ handleLogout }: Props) => {
-  const { lastSavedTime, report } = useStore();
+  const { lastSavedTime, report, isReportPage } = useStore();
   const { isMobile } = useBreakpoint();
   // TO-DO: add a boolean isReportPage to contain subheader to only report pages
 
@@ -45,38 +45,40 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      <Flex sx={sx.subnavBar}>
-        <Container sx={sx.subnavContainer}>
-          <Flex sx={sx.subnavFlex}>
-            <Flex>
-              <Text sx={sx.submissionNameText}>
-                {report?.state + " QMS Report"}
-              </Text>
+      {isReportPage && (
+        <Flex sx={sx.subnavBar}>
+          <Container sx={sx.subnavContainer}>
+            <Flex sx={sx.subnavFlex}>
+              <Flex>
+                <Text sx={sx.submissionNameText}>
+                  {report?.state + " QMS Report"}
+                </Text>
+              </Flex>
+              <Flex sx={sx.subnavFlexRight}>
+                {lastSavedTime && (
+                  <>
+                    <Image
+                      src={checkIcon}
+                      alt="gray checkmark icon"
+                      sx={sx.checkIcon}
+                    />
+                    <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
+                  </>
+                )}
+                <Link
+                  as={RouterLink}
+                  to={`/report/${report?.type}/${report?.state}` || "/"}
+                  sx={sx.leaveFormLink}
+                  variant="outlineButton"
+                  tabIndex={-1}
+                >
+                  Leave form
+                </Link>
+              </Flex>
             </Flex>
-            <Flex sx={sx.subnavFlexRight}>
-              {lastSavedTime && (
-                <>
-                  <Image
-                    src={checkIcon}
-                    alt="gray checkmark icon"
-                    sx={sx.checkIcon}
-                  />
-                  <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
-                </>
-              )}
-              <Link
-                as={RouterLink}
-                to={`/report/${report?.type}/${report?.state}` || "/"}
-                sx={sx.leaveFormLink}
-                variant="outlineButton"
-                tabIndex={-1}
-              >
-                Leave form
-              </Link>
-            </Flex>
-          </Flex>
-        </Container>
-      </Flex>
+          </Container>
+        </Flex>
+      )}
     </Box>
   );
 };

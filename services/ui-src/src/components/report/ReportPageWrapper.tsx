@@ -19,6 +19,7 @@ export const ReportPageWrapper = () => {
     setAnswers,
     setCurrentPageId,
     setLastSavedTime,
+    setIsReportPage,
   } = useStore();
   const { reportType, state, reportId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -48,6 +49,7 @@ export const ReportPageWrapper = () => {
       const result = await getReport(reportType, state, reportId);
       setReport(result);
       setIsLoading(false);
+      setIsReportPage(true);
     } catch {
       // console.log("oopsy")
     }
