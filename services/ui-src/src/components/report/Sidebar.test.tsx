@@ -1,5 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 
 const setCurrentPageId = jest.fn();
@@ -36,7 +37,11 @@ describe("Sidebar", () => {
       currentPageId: undefined,
       setCurrentPageId,
     });
-    const { container } = render(<Sidebar />);
+    const { container } = render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
     expect(container).toBeEmptyDOMElement();
   });
 
@@ -47,25 +52,41 @@ describe("Sidebar", () => {
       currentPageId: "id-1",
       setCurrentPageId,
     });
-    const { container } = render(<Sidebar />);
+    const { container } = render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
     expect(container).toBeEmptyDOMElement();
   });
 
   test("should render section headers", () => {
-    const { getByText } = render(<Sidebar />);
+    const { getByText } = render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
     expect(getByText("Section 1")).toBeTruthy();
     expect(getByText("Section 2")).toBeTruthy();
   });
 
   test("should attempt to navigate on Click", async () => {
-    const { getByText } = render(<Sidebar />);
+    const { getByText } = render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
     const button = getByText("Section 1");
     await userEvent.click(button);
     expect(setCurrentPageId).toHaveBeenCalledWith("id-1");
   });
 
   test("should expand on Click", async () => {
-    const { getByText, queryByText } = render(<Sidebar />);
+    const { getByText, queryByText } = render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
 
     expect(getByText("Section 1")).toBeTruthy();
     await act(async () => {
