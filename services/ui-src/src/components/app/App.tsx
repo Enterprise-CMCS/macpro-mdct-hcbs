@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import {
   AppRoutes,
   Error,
@@ -9,6 +9,7 @@ import {
   PostLogoutRedirect,
   Footer,
   Timeout,
+  ExportedReportBanner
 } from "components";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -19,7 +20,9 @@ export const App = () => {
   const context = useContext(UserContext);
   const { logout } = context;
   const { user, showLocalLogins } = useStore();
-  // const { pathname } = useLocation();
+  const { pathname } = useLocation();
+
+  const isExportPage = pathname.includes("/export");
 
   // TODO: fire tealium page view on route change
   /*
@@ -38,7 +41,11 @@ export const App = () => {
       {user && (
         <Flex sx={sx.appLayout}>
           <Timeout />
-          <Header handleLogout={logout} />
+          {!isExportPage ? (
+            <Header handleLogout={logout} />
+          ) : (
+            <ExportedReportBanner />
+          )}
           <Container sx={sx.appContainer}>
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes />
