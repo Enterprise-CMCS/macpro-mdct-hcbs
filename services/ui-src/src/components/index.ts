@@ -31,6 +31,7 @@ export { LoginIDM } from "./logins/LoginIDM";
 export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";

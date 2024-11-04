@@ -16,6 +16,7 @@ import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { ParentPageTemplate } from "types/report";
 import { useNavigate } from "react-router-dom";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import { reportBasePath } from "utils/other/routing";
 
 export const StatusTableElement = () => {
   const { pageMap, report, setCurrentPageId } = useStore();
@@ -80,7 +81,7 @@ export const StatusTableElement = () => {
         mt={5}
       >
         <Button
-          onClick={() => navigate("PDF")}
+          onClick={() => navigate(reportBasePath(report!) + "/export")}
           colorScheme="blue"
           variant="outline"
           leftIcon={<Image src={lookupIconPrimary} />}
