@@ -1,42 +1,53 @@
 import * as logger from "./debug-lib";
 import {
-  HttpResponse,
+  badRequest,
   internalServerError,
   unauthenticated,
 } from "./response-lib";
 import { error } from "../utils/constants";
 import { sanitizeObject } from "../utils/sanitize";
-import { APIGatewayProxyEvent } from "../types/types";
-import { isAuthenticated } from "../utils/authorization";
+import {
+  APIGatewayProxyEvent,
+  HandlerLambda,
+  ParameterParser,
+} from "../types/types";
+import { authenticatedUser } from "../utils/authentication";
 
-type LambdaFunction = (event: APIGatewayProxyEvent) => Promise<HttpResponse>;
+export const handler = <TParams>(
+  parser: ParameterParser<TParams>,
+  lambda: HandlerLambda<TParams>
+) => {
+  return async function (event: APIGatewayProxyEvent) {
+    try {
+      logger.init();
+      logger.debug("API event: %O", {
+        body: event.body,
+        pathParameters: event.pathParameters,
+        queryStringParameters: event.queryStringParameters,
+      });
 
-export default function handler(lambda: LambdaFunction) {
-  return async function (event: APIGatewayProxyEvent, _context: any) {
-    // Start debugger
-    logger.init();
-    logger.debug("API event: %O", {
-      body: event.body,
-      pathParameters: event.pathParameters,
-      queryStringParameters: event.queryStringParameters,
-    });
-
-    if (await isAuthenticated(event)) {
-      try {
-        if (event.body) {
-          const newEventBody = sanitizeObject(JSON.parse(event.body));
-          event.body = JSON.stringify(newEventBody);
-        }
-        return await lambda(event);
-      } catch (error: any) {
-        // Print debug messages
-        logger.error("Error: %O", error);
-        return internalServerError(error.message);
-      } finally {
-        logger.flush();
+      const user = await authenticatedUser(event);
+      if (!user) {
+        return unauthenticated(error.UNAUTHORIZED);
       }
-    } else {
-      return unauthenticated(error.UNAUTHORIZED);
+
+      const parameters = parser(event);
+      if (!parameters) {
+        return badRequest(error.MISSING_DATA);
+      }
+
+      let body: object | undefined = undefined;
+      if (event.body) {
+        body = sanitizeObject(JSON.parse(event.body));
+      }
+      const request = { body, user, parameters };
+
+      return await lambda(request);
+    } catch (error: any) {
+      logger.error("Error: %O", error);
+      return internalServerError(error.message);
+    } finally {
+      logger.flush();
     }
   };
-}
+};

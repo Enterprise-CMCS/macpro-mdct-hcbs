@@ -8,14 +8,14 @@ export const parseReportTypeAndState = (event: APIGatewayProxyEvent) => {
 
   if (!isReportType(reportType)) {
     logger.warn("Invalid report type in path");
-    return { allParamsValid: false as const };
+    return undefined;
   }
   if (!isStateAbbreviation(state)) {
     logger.warn("Invalid state abbreviation in path");
-    return { allParamsValid: false as const };
+    return undefined;
   }
 
-  return { allParamsValid: true as const, reportType, state };
+  return { reportType, state };
 };
 
 export const parseReportParameters = (event: APIGatewayProxyEvent) => {
@@ -23,16 +23,16 @@ export const parseReportParameters = (event: APIGatewayProxyEvent) => {
 
   if (!isReportType(reportType)) {
     logger.warn("Invalid report type in path");
-    return { allParamsValid: false as const };
+    return undefined;
   }
   if (!isStateAbbreviation(state)) {
     logger.warn("Invalid state abbreviation in path");
-    return { allParamsValid: false as const };
+    return undefined;
   }
   if (!id) {
     logger.warn("Missing report ID in path");
-    return { allParamsValid: false as const };
+    return undefined;
   }
 
-  return { allParamsValid: true as const, reportType, state, id };
+  return { reportType, state, id };
 };

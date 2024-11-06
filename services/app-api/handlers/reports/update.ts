@@ -1,23 +1,24 @@
-import handler from "../../libs/handler-lib";
+import { handler } from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
-import { badRequest, ok } from "../../libs/response-lib";
+import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { putReport } from "../../storage/reports";
 import { Report, ReportStatus } from "../../types/reports";
+import { canWriteState } from "../../utils/authorization";
+import { error } from "../../utils/constants";
 
-export const updateReport = handler(async (event) => {
-  const { allParamsValid, reportType, state, id } =
-    parseReportParameters(event);
-  if (!allParamsValid) {
-    return badRequest("Invalid path parameters");
+export const updateReport = handler(parseReportParameters, async (request) => {
+  const { reportType, state, id } = request.parameters;
+  const user = request.user;
+
+  if (!canWriteState(user, state)) {
+    return forbidden(error.UNAUTHORIZED);
   }
 
-  // TODO: Auth
-
-  if (!event?.body) {
+  if (!request?.body) {
     return badRequest("Invalid request");
   }
 
-  const report = JSON.parse(event.body) as Report;
+  const report = request.body as Report;
   if (
     reportType !== report.type ||
     state !== report.state ||
