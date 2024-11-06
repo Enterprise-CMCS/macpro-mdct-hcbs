@@ -85,7 +85,7 @@ describe("Authentication methods", () => {
       expect(user).toBeTruthy();
       expect(user.role).toBe(UserRoles.STATE_USER);
       expect(user.email).toBe("stateuser@test.com");
-      expect(user.full_name).toBe("Helen Hunt Jackson");
+      expect(user.fullName).toBe("Helen Hunt Jackson");
     });
 
     it("should fail if the roles key is missing", () => {
@@ -114,7 +114,7 @@ describe("Authentication methods", () => {
     it("should omit first name if it is not in the token", () => {
       const noGivenNameToken = { ...mockToken, given_name: null };
       const user = parseUserFromToken(noGivenNameToken);
-      expect(user.full_name).toBe("Jackson");
+      expect(user.fullName).toBe("Jackson");
     });
   });
 });

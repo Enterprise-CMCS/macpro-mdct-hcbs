@@ -29,6 +29,7 @@ export const updateReport = handler(parseReportParameters, async (request) => {
 
   report.status = ReportStatus.IN_PROGRESS;
   report.lastEdited = Date.now();
+  report.lastEditedBy = user.fullName;
 
   // Validation required.
   await putReport(report);
