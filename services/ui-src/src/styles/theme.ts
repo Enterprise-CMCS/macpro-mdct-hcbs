@@ -531,6 +531,15 @@ const theme = extendTheme({
             },
           },
         },
+        export: {
+          td: {
+            fontSize: "14px",
+            width: "50%",
+            "p:first-of-type": {
+              fontWeight: "bold",
+            },
+          },
+        },
       },
     },
     Text: {

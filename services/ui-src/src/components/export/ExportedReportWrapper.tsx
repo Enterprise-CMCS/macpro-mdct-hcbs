@@ -1,4 +1,14 @@
-import { Box, Stack, Table, Thead, Th, Tr, Td, Tbody } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Table,
+  Thead,
+  Th,
+  Tr,
+  Td,
+  Tbody,
+  Text,
+} from "@chakra-ui/react";
 import {
   ElementType,
   FormPageTemplate,
@@ -28,7 +38,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   return (
     <Stack>
       {elements?.length! > 0 ? (
-        <Table variant="status">
+        <Table variant="export">
           <Thead>
             <Tr>
               <Th>Indicator</Th>
@@ -41,8 +51,13 @@ export const ExportedReportWrapper = ({ section }: Props) => {
                 element?.label && (
                   <Tr>
                     <Td>
-                      {<Box>{element?.label}</Box>}
-                      {element?.helperText && <Box>{element?.helperText}</Box>}
+                      <Text>{element?.label}</Text>
+                      {element?.helperText && (
+                        <Text>{element?.helperText}</Text>
+                      )}
+                      {element?.type === ElementType.Date && (
+                        <Text>MM/DD/YYYY</Text>
+                      )}
                     </Td>
                     <Td>{element?.answer}</Td>
                   </Tr>

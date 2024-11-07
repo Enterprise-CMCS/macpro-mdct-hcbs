@@ -5,6 +5,7 @@ import qmVerbiage from "verbiage/export/qm-export";
 import {
   FormPageTemplate,
   MeasurePageTemplate,
+  PageType,
   ParentPageTemplate,
   Report,
 } from "../../../types";
@@ -13,7 +14,10 @@ import { ExportedReportWrapper } from "components";
 export const ExportedReportPage = () => {
   const { report } = useStore();
   const { metadata } = qmVerbiage;
-  const reportPages = report?.pages || [];
+  const reportPages =
+    report?.pages.filter(
+      (page) => page.type !== PageType.Modal && page.type !== PageType.Measure
+    ) || [];
 
   return (
     <Box sx={sx.container}>
