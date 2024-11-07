@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { Box, Center, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Center, Heading, Spinner, Flex } from "@chakra-ui/react";
 import { useStore } from "utils";
 import qmVerbiage from "verbiage/export/qm-export";
 import {
@@ -56,10 +56,10 @@ export const renderReportSections = (
     return (
       <Box key={section.id}>
         {/* if section does not have children and has content to render, render it */}
-        <Box>
+        <Flex gap="2rem" flexDirection="column">
           <Heading variant="subHeader">{section.title}</Heading>
           <ExportedReportWrapper section={section} />
-        </Box>
+        </Flex>
       </Box>
     );
   };
