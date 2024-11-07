@@ -1,13 +1,9 @@
 import { Box, Text, Button, Image } from "@chakra-ui/react";
 import pdfIcon from "assets/icons/pdf/icon_pdf_white.svg";
-import { useStore } from "utils";
 import qmVerbiage from "verbiage/export/qm-export";
 
 export const ExportedReportBanner = () => {
-  const { report } = useStore();
   const { reportBanner } = qmVerbiage;
-
-  console.log("report", report);
 
   const onClickHandler = () => {
     window?.print();
@@ -15,7 +11,7 @@ export const ExportedReportBanner = () => {
 
   return (
     <Box data-testid="exportedReportBanner" sx={sx.container}>
-      <Text>{report?.title}</Text>
+      <Text>{reportBanner.intro}</Text>
       <Button sx={sx.pdfButton} onClick={onClickHandler}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
         {reportBanner.pdfButton}

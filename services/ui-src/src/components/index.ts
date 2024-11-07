@@ -22,6 +22,7 @@ export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
+export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
 export { TextField } from "./fields/TextField";
 // forms
