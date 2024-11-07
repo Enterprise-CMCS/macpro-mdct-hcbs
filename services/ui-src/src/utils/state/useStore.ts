@@ -60,7 +60,7 @@ export const useStore = create(
     })),
     {
       name: "hcbs-store",
-      partialize: () => ({}),
+      partialize: (state) => ({ report: state.report }),
     }
   )
 );
