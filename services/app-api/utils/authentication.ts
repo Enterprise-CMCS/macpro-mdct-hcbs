@@ -63,7 +63,7 @@ export const parseUserFromToken = (token: CognitoIdTokenPayload) => {
      * even though email_verified is not always true for our test users.
      */
     email: token.email as string,
-    full_name: parseFullNameFromToken(token),
+    fullName: parseFullNameFromToken(token),
   };
 };
 

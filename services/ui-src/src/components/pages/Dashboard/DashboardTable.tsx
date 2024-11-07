@@ -24,8 +24,8 @@ export const DashboardTable = ({ reports }: DashboardTableProps) => {
     <Table content={tableContent}>
       {reports.map((report) => (
         <Tr key={report.id}>
-          <Td>{"{Name of form}"}</Td>
-          <Td>
+          <Td fontWeight={"bold"}>{"{Name of form}"}</Td>
+          <Td minWidth={"25rem"}>
             {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
           </Td>
           <Td>{report.lastEditedBy}</Td>
