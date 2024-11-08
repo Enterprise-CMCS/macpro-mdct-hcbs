@@ -74,9 +74,10 @@ export const renderReportSections = (
     )
     .map(
       (
-        section: ParentPageTemplate | FormPageTemplate | MeasurePageTemplate
+        section: ParentPageTemplate | FormPageTemplate | MeasurePageTemplate,
+        idx
       ) => (
-        <Box key={section.id} mt="3.5rem">
+        <Box key={`${section.id}.${idx}`} mt="3.5rem">
           {renderSection(section)}
         </Box>
       )

@@ -47,7 +47,7 @@ export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
   title?: undefined;
-  type?: undefined;
+  type?: PageElement;
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
