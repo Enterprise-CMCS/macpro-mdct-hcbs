@@ -66,7 +66,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           </Tbody>
         </Table>
       ) : (
-        <Box>No data</Box>
+        <Box>N/A</Box>
       )}
     </Stack>
   );

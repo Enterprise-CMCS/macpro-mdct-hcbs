@@ -9,7 +9,7 @@ import {
   PostLogoutRedirect,
   Footer,
   Timeout,
-  ExportedReportBanner
+  ExportedReportBanner,
 } from "components";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
