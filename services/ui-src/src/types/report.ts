@@ -52,6 +52,7 @@ export type ParentPageTemplate = {
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
+  subnavbar?: undefined;
   hideNavButtons?: undefined;
 };
 export const isParentPage = (
@@ -72,6 +73,7 @@ export type FormPageTemplate = {
   type: PageType;
   elements: PageElement[];
   sidebar?: boolean;
+  subnavbar?: boolean;
   hideNavButtons?: boolean;
   childPageIds?: PageId[];
 };

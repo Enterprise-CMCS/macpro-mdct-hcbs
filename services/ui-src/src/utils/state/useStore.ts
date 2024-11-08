@@ -51,12 +51,6 @@ const reportStore = (set: Function): HcbsReportState => ({
     set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
       type: "setAnswers",
     }),
-  setLastSavedTime: (savedTime: string | undefined) =>
-    set(() => ({ lastSavedTime: savedTime }), false, {
-      type: "setLastSavedTime",
-    }),
-  setIsReportPage: (isReportPage: boolean) =>
-    set(() => ({ isReportPage }), false, { type: "setIsReportPage" }),
 });
 
 export const useStore = create(
