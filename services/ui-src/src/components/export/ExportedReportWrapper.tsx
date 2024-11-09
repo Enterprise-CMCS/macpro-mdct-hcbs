@@ -47,9 +47,9 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           </Thead>
           <Tbody>
             {elements?.map(
-              (element) =>
+              (element, idx) =>
                 element?.label && (
-                  <Tr>
+                  <Tr key={`${element.label}.${idx}`}>
                     <Td>
                       <Text>{element?.label}</Text>
                       {element?.helperText && (
