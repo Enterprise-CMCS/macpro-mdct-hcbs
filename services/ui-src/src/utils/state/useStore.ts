@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { HcbsUserState, HcbsUser, HcbsReportState } from "types";
+import { HcbsUserState, HcbsUser, HcbsReportState, AdminBannerData, ErrorVerbiage } from "types";
 import { Report } from "types/report";
 import React from "react";
 import { buildState, mergeAnswers, setPage } from "./management/reportState";
@@ -17,6 +17,37 @@ const userStore = (set: Function) => ({
   // toggle show local logins (dev only)
   setShowLocalLogins: () =>
     set(() => ({ showLocalLogins: true }), false, { type: "showLocalLogins" }),
+});
+
+// BANNER STORE
+const bannerStore = (set: Function) => ({
+  // initial state
+  bannerData: undefined,
+  bannerActive: false,
+  bannerLoading: false,
+  bannerErrorMessage: undefined,
+  bannerDeleting: false,
+  // actions
+  setBannerData: (newBanner: AdminBannerData | undefined) =>
+    set(() => ({ bannerData: newBanner }), false, { type: "setBannerData" }),
+  clearAdminBanner: () =>
+    set(() => ({ bannerData: undefined }), false, { type: "clearAdminBanner" }),
+  setBannerActive: (bannerStatus: boolean) =>
+    set(() => ({ bannerActive: bannerStatus }), false, {
+      type: "setBannerActive",
+    }),
+  setBannerLoading: (loading: boolean) =>
+    set(() => ({ bannerLoading: loading }), false, {
+      type: "setBannerLoading",
+    }),
+  setBannerErrorMessage: (errorMessage: ErrorVerbiage | undefined) =>
+    set(() => ({ bannerErrorMessage: errorMessage }), false, {
+      type: "setBannerErrorMessage",
+    }),
+  setBannerDeleting: (deleting: boolean) =>
+    set(() => ({ bannerDeleting: deleting }), false, {
+      type: "setBannerDeleting",
+    }),
 });
 
 // REPORT STORE
@@ -56,6 +87,7 @@ export const useStore = create(
   persist(
     devtools<HcbsUserState & HcbsReportState>((set) => ({
       ...userStore(set),
+      ...bannerStore(set),
       ...reportStore(set),
     })),
     {
