@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormPageTemplate } from "types/report";
-import { praStatement } from "../../../../app-api/forms/qm";
+import { praStatement } from "../../../../app-api/utils/constants";
 
 export const ReportPageWrapper = () => {
   const {
@@ -94,7 +94,7 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              {parentPage.index == 0 && <Divider></Divider>}
+              <Divider></Divider>
               <Flex width="100%">
                 {parentPage.index > 0 && (
                   <Button
