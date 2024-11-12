@@ -9,6 +9,7 @@ import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormPageTemplate } from "types/report";
 import { praStatement } from "../../../../app-api/utils/constants";
+import { paragraphElement } from "./Elements";
 
 export const ReportPageWrapper = () => {
   const {
@@ -114,9 +115,12 @@ export const ReportPageWrapper = () => {
                 )}
               </Flex>
               <Box flex="auto">
-                {parentPage.index == 0 && (
-                  <Page elements={[praStatement] ?? []}></Page>
-                )}
+                {parentPage.index == 0 &&
+                  paragraphElement({
+                    element: praStatement,
+                    index: 0,
+                    formkey: "praStatement",
+                  })}
               </Box>
             </>
           )}
