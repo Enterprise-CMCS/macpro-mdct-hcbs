@@ -123,7 +123,7 @@ export const ReportPageWrapper = () => {
                   </Button>
                 )}
               </Flex>
-              <Box flex="auto" width="97.5%">
+              <Box flex="auto">
                 {parentPage.index == 0 && (
                   <Page elements={[praStatement] ?? []}></Page>
                 )}
