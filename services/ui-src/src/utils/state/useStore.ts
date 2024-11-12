@@ -1,6 +1,13 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { HcbsUserState, HcbsUser, HcbsReportState, AdminBannerData, ErrorVerbiage } from "types";
+import {
+  HcbsUserState,
+  HcbsUser,
+  HcbsReportState,
+  AdminBannerData,
+  ErrorVerbiage,
+  AdminBannerState,
+} from "types";
 import { Report } from "types/report";
 import React from "react";
 import { buildState, mergeAnswers, setPage } from "./management/reportState";
@@ -85,7 +92,7 @@ const reportStore = (set: Function): HcbsReportState => ({
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState & HcbsReportState>((set) => ({
+    devtools<HcbsUserState & HcbsReportState & AdminBannerState>((set) => ({
       ...userStore(set),
       ...bannerStore(set),
       ...reportStore(set),
