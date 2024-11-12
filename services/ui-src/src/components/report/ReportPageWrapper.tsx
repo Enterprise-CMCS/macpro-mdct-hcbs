@@ -104,20 +104,10 @@ export const ReportPageWrapper = () => {
                     Previous
                   </Button>
                 )}
-                {parentPage.index < parentPage.childPageIds.length - 1 &&
-                  parentPage.index !== 0 && (
-                    <Button
-                      onClick={() => SetPageIndex(parentPage.index + 1)}
-                      marginLeft="auto"
-                    >
-                      Continue
-                    </Button>
-                  )}
-                {parentPage.index == 0 && (
+                {parentPage.index < parentPage.childPageIds.length - 1 && (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index + 1)}
                     marginLeft="auto"
-                    justifyContent={"flex-end"}
                   >
                     Continue
                   </Button>
