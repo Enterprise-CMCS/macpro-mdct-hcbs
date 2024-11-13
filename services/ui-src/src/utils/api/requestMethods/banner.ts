@@ -1,7 +1,6 @@
-import { apiLib } from "utils";
+import { apiLib, updateTimeout } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
 import { AdminBannerData } from "types/banners";
-import { updateTimeout } from "utils";
 
 async function getBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
