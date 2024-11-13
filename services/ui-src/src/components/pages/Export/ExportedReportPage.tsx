@@ -9,7 +9,7 @@ import {
   ParentPageTemplate,
   Report,
 } from "../../../types";
-import { ExportedReportWrapper } from "components";
+import { ExportedReportBanner, ExportedReportWrapper } from "components";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
@@ -20,28 +20,31 @@ export const ExportedReportPage = () => {
     ) || [];
 
   return (
-    <Box sx={sx.container}>
-      {(report && reportPages.length > 0 && (
-        <Box sx={sx.innerContainer}>
-          {/* pdf metadata */}
-          <Helmet>
-            <title>{reportTitle(report)}</title>
-            <meta name="author" content={metadata.author} />
-            <meta name="subject" content={metadata.subject} />
-            <meta name="language" content={metadata.language} />
-          </Helmet>
-          {/* report heading */}
-          <Heading as="h1" variant="h1">
-            {reportTitle(report)}
-          </Heading>
-          {/* report sections */}
-          {renderReportSections(reportPages)}
-        </Box>
-      )) || (
-        <Center>
-          <Spinner size="lg" />
-        </Center>
-      )}
+    <Box>
+      <ExportedReportBanner />
+      <Box sx={sx.container}>
+        {(report && reportPages.length > 0 && (
+          <Box sx={sx.innerContainer}>
+            {/* pdf metadata */}
+            <Helmet>
+              <title>{reportTitle(report)}</title>
+              <meta name="author" content={metadata.author} />
+              <meta name="subject" content={metadata.subject} />
+              <meta name="language" content={metadata.language} />
+            </Helmet>
+            {/* report heading */}
+            <Heading as="h1" variant="h1">
+              {reportTitle(report)}
+            </Heading>
+            {/* report sections */}
+            {renderReportSections(reportPages)}
+          </Box>
+        )) || (
+          <Center>
+            <Spinner size="lg" />
+          </Center>
+        )}
+      </Box>
     </Box>
   );
 };

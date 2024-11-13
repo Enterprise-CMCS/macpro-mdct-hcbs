@@ -41,11 +41,7 @@ export const App = () => {
       {user && (
         <Flex sx={sx.appLayout}>
           <Timeout />
-          {!isExportPage ? (
-            <Header handleLogout={logout} />
-          ) : (
-            <ExportedReportBanner />
-          )}
+          {!isExportPage && <Header handleLogout={logout} />}
           <Container sx={sx.appContainer}>
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes />
