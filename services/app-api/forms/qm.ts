@@ -24,7 +24,6 @@ export const qmReportTemplate: ReportTemplate = {
       title: "General Information",
       type: PageType.Standard,
       sidebar: true,
-      subnavbar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -65,7 +64,6 @@ export const qmReportTemplate: ReportTemplate = {
       title: "Required Measure Results",
       type: PageType.Standard,
       sidebar: true,
-      subnavbar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -86,7 +84,6 @@ export const qmReportTemplate: ReportTemplate = {
       id: "req-measure-result-modal",
       title: "Select measure",
       sidebar: true,
-      subnavbar: true,
       type: PageType.Modal,
       elements: [
         {
@@ -112,7 +109,6 @@ export const qmReportTemplate: ReportTemplate = {
       title: "Stratified Measure Results",
       type: PageType.Standard,
       sidebar: true,
-      subnavbar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -134,7 +130,6 @@ export const qmReportTemplate: ReportTemplate = {
       title: "Review & Submit",
       type: PageType.Standard,
       sidebar: true,
-      subnavbar: true,
       hideNavButtons: true,
       elements: [
         {

@@ -2,6 +2,7 @@ import { Link as RouterLink, useParams } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
+import { ReportType } from "types/report";
 
 export const SubnavBar = () => {
   const { reportType } = useParams();
@@ -13,7 +14,7 @@ export const SubnavBar = () => {
         <Flex sx={sx.subnavFlex}>
           <Flex>
             <Text sx={sx.submissionNameText}>
-              {reportType == "QM" ? report?.state + " QMS Report" : ""}
+              {reportType == ReportType.QM ? report?.state + " QMS Report" : ""}
             </Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
