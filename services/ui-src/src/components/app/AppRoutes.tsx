@@ -1,5 +1,6 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import {
+  AdminPage,
   HelpPage,
   HomePage,
   ProfilePage,
@@ -8,13 +9,20 @@ import {
 } from "components";
 import { CreateReportOptions } from "components/pages/CreateReportOptions/CreateReportOptions";
 import { ReportPageWrapper } from "components/report/ReportPageWrapper";
+import { useStore } from "utils";
 
 export const AppRoutes = () => {
+  const { userIsAdmin } = useStore().user ?? {};
+  
   return (
     <main id="main-content" tabIndex={-1}>
       <Routes>
         {/* General Routes */}
         <Route path="/" element={<HomePage />} />
+        <Route
+          path="/admin"
+          element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
+        />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/help" element={<HelpPage />} />
         <Route path="*" element={<NotFoundPage />} />
