@@ -1,29 +1,27 @@
-import { API } from "aws-amplify";
+import { apiLib } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
 import { AdminBannerData } from "types/banners";
 import { updateTimeout } from "utils";
 
 async function getBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
   };
 
   updateTimeout();
-  const response = await API.get("mfp", `/banners/${bannerKey}`, request);
-  return response;
+  return await apiLib.get(`/banners/${bannerKey}`, options);
 }
 
 async function writeBanner(bannerData: AdminBannerData) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
-    body: bannerData,
+    body: { ...bannerData },
   };
 
   updateTimeout();
-  const response = await API.post("mfp", `/banners/${bannerData.key}`, request);
-  return response;
+  return await apiLib.post(`/banners/${bannerData.key}`, options);
 }
 
 async function deleteBanner(bannerKey: string) {
@@ -33,8 +31,7 @@ async function deleteBanner(bannerKey: string) {
   };
 
   updateTimeout();
-  const response = await API.del("mfp", `/banners/${bannerKey}`, request);
-  return response;
+  return await apiLib.del(`/banners/${bannerKey}`, request);
 }
 
 export { getBanner, writeBanner, deleteBanner };
