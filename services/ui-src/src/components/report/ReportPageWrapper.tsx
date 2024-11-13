@@ -8,8 +8,7 @@ import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormPageTemplate } from "types/report";
-import { praStatement } from "../../../../app-api/utils/constants";
-import { praStatementElement } from "./Elements";
+import { PraDisclosure } from "./PraDisclosure";
 
 export const ReportPageWrapper = () => {
   const {
@@ -117,7 +116,7 @@ export const ReportPageWrapper = () => {
                 )}
               </Flex>
               <Box flex="auto">
-                {parentPage.index == 0 && praStatementElement(praStatement)}
+                {parentPage.index == 0 && <PraDisclosure />}
               </Box>
             </>
           )}

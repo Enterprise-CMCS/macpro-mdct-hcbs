@@ -43,19 +43,6 @@ export const subHeaderElement = (props: PageElementProps) => {
   );
 };
 
-export const praStatementElement = (props: ParagraphTemplate) => {
-  return (
-    <Stack>
-      {props?.title && (
-        <Text fontSize="16px" fontWeight="bold">
-          {props.title}
-        </Text>
-      )}
-      <Text fontSize="16px">{props.text}</Text>
-    </Stack>
-  );
-};
-
 export const paragraphElement = (props: PageElementProps) => {
   const element = props.element as ParagraphTemplate;
 
