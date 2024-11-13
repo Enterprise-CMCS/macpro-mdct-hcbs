@@ -1,10 +1,18 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent } from "../../types/types";
+import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { canWriteState } from "../../utils/authorization";
 import { updateReport } from "./update";
 
+jest.mock("../../utils/authentication", () => ({
+  authenticatedUser: jest.fn().mockResolvedValue({
+    role: UserRoles.STATE_USER,
+    state: "PA",
+  }),
+}));
+
 jest.mock("../../utils/authorization", () => ({
-  isAuthenticated: jest.fn().mockResolvedValue(true),
+  canWriteState: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("../../storage/reports", () => ({
@@ -31,8 +39,14 @@ describe("Test update report handler", () => {
       ...proxyEvent,
       pathParameters: {},
     } as APIGatewayProxyEvent;
-    const res = await updateReport(badTestEvent, null);
+    const res = await updateReport(badTestEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  });
+
+  it("should return 403 if user is not authorized", async () => {
+    (canWriteState as jest.Mock).mockReturnValueOnce(false);
+    const response = await updateReport(testEvent);
+    expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
   test("Test missing body", async () => {
@@ -41,7 +55,7 @@ describe("Test update report handler", () => {
       pathParameters: { reportType: "QM", state: "PA", id: "QMPA123" },
       body: null,
     } as APIGatewayProxyEvent;
-    const res = await updateReport(emptyBodyEvent, null);
+    const res = await updateReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
@@ -53,8 +67,8 @@ describe("Test update report handler", () => {
     } as APIGatewayProxyEvent;
     const badState = {
       ...proxyEvent,
-      pathParameters: { reportType: "QM", state: "OR", id: "QMPA123" },
-      body: report,
+      pathParameters: { reportType: "QM", state: "PA", id: "QMPA123" },
+      body: JSON.stringify({ ...reportObj, state: "OR" }),
     } as APIGatewayProxyEvent;
     const badId = {
       ...proxyEvent,
@@ -62,16 +76,16 @@ describe("Test update report handler", () => {
       body: report,
     } as APIGatewayProxyEvent;
 
-    const resType = await updateReport(badType, null);
+    const resType = await updateReport(badType);
     expect(resType.statusCode).toBe(StatusCodes.BadRequest);
-    const resState = await updateReport(badState, null);
+    const resState = await updateReport(badState);
     expect(resState.statusCode).toBe(StatusCodes.BadRequest);
-    const resId = await updateReport(badId, null);
+    const resId = await updateReport(badId);
     expect(resId.statusCode).toBe(StatusCodes.BadRequest);
   });
 
   test("Test Successful update", async () => {
-    const res = await updateReport(testEvent, null);
+    const res = await updateReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });

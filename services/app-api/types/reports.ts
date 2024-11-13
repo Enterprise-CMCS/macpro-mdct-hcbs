@@ -48,7 +48,8 @@ export interface Report extends ReportTemplate {
   state: string;
   created?: number;
   lastEdited?: number;
-  lastEditedBy?: string;
+  lastEditedBy: string;
+  lastEditedByEmail: string;
   status: ReportStatus;
 }
 

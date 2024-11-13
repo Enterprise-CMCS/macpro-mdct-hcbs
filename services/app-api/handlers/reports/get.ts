@@ -1,37 +1,41 @@
-import handler from "../../libs/handler-lib";
+import { handler } from "../../libs/handler-lib";
 import {
   parseReportParameters,
   parseReportTypeAndState,
 } from "../../libs/param-lib";
-import { badRequest, ok } from "../../libs/response-lib";
+import { forbidden, ok } from "../../libs/response-lib";
 import {
   getReport as getReportFromDatabase,
   queryReportsForState,
 } from "../../storage/reports";
+import { canReadState } from "../../utils/authorization";
+import { error } from "../../utils/constants";
 
-export const getReport = handler(async (event) => {
-  const { allParamsValid, reportType, state, id } =
-    parseReportParameters(event);
-  if (!allParamsValid) {
-    return badRequest("Invalid path parameters");
+export const getReport = handler(parseReportParameters, async (request) => {
+  const { reportType, state, id } = request.parameters;
+  const user = request.user;
+
+  if (!canReadState(user, state)) {
+    return forbidden(error.UNAUTHORIZED);
   }
-
-  // TODO: Auth
 
   const report = await getReportFromDatabase(reportType, state, id);
 
   return ok(report);
 });
 
-export const getReportsForState = handler(async (event) => {
-  const { allParamsValid, reportType, state } = parseReportTypeAndState(event);
-  if (!allParamsValid) {
-    return badRequest("Invalid path parameters");
+export const getReportsForState = handler(
+  parseReportTypeAndState,
+  async (request) => {
+    const { reportType, state } = request.parameters;
+    const user = request.user;
+
+    if (!canReadState(user, state)) {
+      return forbidden(error.UNAUTHORIZED);
+    }
+
+    const reports = await queryReportsForState(reportType, state);
+
+    return ok(reports);
   }
-
-  // TODO: Auth
-
-  const reports = await queryReportsForState(reportType, state);
-
-  return ok(reports);
-});
+);
