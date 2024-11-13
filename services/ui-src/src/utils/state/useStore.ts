@@ -29,8 +29,6 @@ const reportStore = (set: Function): HcbsReportState => ({
   currentPageId: undefined,
   modalOpen: false,
   modalComponent: undefined,
-  lastSavedTime: undefined,
-  isReportPage: false,
 
   // actions
   setReport: (report: Report | undefined) =>

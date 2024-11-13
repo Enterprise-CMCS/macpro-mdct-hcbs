@@ -21,8 +21,6 @@ export interface HcbsReportState {
   currentPageId?: string;
   modalOpen: boolean;
   modalComponent?: React.ReactFragment;
-  lastSavedTime: string | undefined;
-  isReportPage: boolean;
 
   // ACTIONS
   setReport: (report?: Report) => void;

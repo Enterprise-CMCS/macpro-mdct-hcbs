@@ -120,7 +120,6 @@ export type FormPageTemplate = {
   type: PageType;
   elements: PageElement[];
   sidebar?: boolean;
-  subnavbar?: boolean;
   hideNavButtons?: boolean;
   childPageIds?: PageId[];
 };

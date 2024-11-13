@@ -25,7 +25,6 @@ const testReport: Report = {
       title: "General Information",
       type: PageType.Standard,
       sidebar: true,
-      subnavbar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -44,7 +43,6 @@ const testReport: Report = {
       title: "Required Measure Results",
       type: PageType.Standard,
       sidebar: true,
-      subnavbar: true,
       elements: [
         {
           type: ElementType.Header,
