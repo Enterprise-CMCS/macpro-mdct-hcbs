@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormPageTemplate } from "types/report";
+import { PraDisclosure } from "./PraDisclosure";
 
 export const ReportPageWrapper = () => {
   const {
@@ -93,6 +94,8 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
+              {/* TO-DO: solidify the Divider behavior for our form controls vs elements in a page 
+             i.e, when table appears as the last element on a form page */}
               <Divider></Divider>
               <Flex width="100%">
                 {parentPage.index > 0 && (
@@ -112,6 +115,9 @@ export const ReportPageWrapper = () => {
                   </Button>
                 )}
               </Flex>
+              <Box flex="auto">
+                {parentPage.index == 0 && <PraDisclosure />}
+              </Box>
             </>
           )}
         </VStack>
