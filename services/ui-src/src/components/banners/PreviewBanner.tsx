@@ -9,9 +9,10 @@ export const PreviewBanner = ({ ...props }: Props) => {
   // set banner preview data
   const formData = form.getValues();
   const bannerData = {
-    title: formData["bannerTitle"] || "New banner title",
-    description: formData["bannerDescription"] || "New banner description",
-    link: formData["bannerLink"] || "",
+    title: formData?.["bannerTitle"]?.["answer"] || "New banner title",
+    description:
+      formData?.["bannerDescription"]?.["answer"] || "New banner description",
+    link: formData?.["bannerLink"]?.["answer"] || "",
   };
 
   return <Banner bannerData={bannerData} {...props} />;

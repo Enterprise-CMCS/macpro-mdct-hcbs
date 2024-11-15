@@ -1,15 +1,12 @@
+import { FormProvider, useForm } from "react-hook-form";
 import { useState } from "react";
-// components
 import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, PreviewBanner } from "components";
-// utils
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
-import { ErrorVerbiage } from "types";
-// data
-import formJson from "forms/addAdminBanner/addAdminBanner.json";
-import { FormProvider, useForm } from "react-hook-form";
+import { ElementType, ErrorVerbiage } from "types";
+import { TextField, DateField } from "components";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<ErrorVerbiage>();
@@ -47,12 +44,56 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     <>
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
       <FormProvider {...form}>
-        <form id={formJson.id} onSubmit={onSubmit} {...props}>
-          <PreviewBanner />
+        <form id="addAdminBanner" onSubmit={onSubmit} {...props}>
+          <Flex flexDirection="column" gap="1.5rem">
+            <TextField
+              element={{
+                type: ElementType.Textbox,
+                label: "Title text",
+              }}
+              index={0}
+              formkey={"bannerTitle"}
+            ></TextField>
+            <TextField
+              element={{
+                type: ElementType.Textbox,
+                label: "Description tex",
+              }}
+              index={1}
+              formkey={"bannerDescription"}
+            ></TextField>
+            <TextField
+              element={{
+                type: ElementType.Textbox,
+                label: "Link",
+              }}
+              index={2}
+              formkey={"bannerLink"}
+            ></TextField>
+            <DateField
+              element={{
+                type: ElementType.Date,
+                label: "Start date",
+                helperText: "",
+              }}
+              index={3}
+              formkey={"bannerStartDate"}
+            ></DateField>
+            <DateField
+              element={{
+                type: ElementType.Date,
+                label: "End date",
+                helperText: "",
+              }}
+              index={3}
+              formkey={"bannerEndDate"}
+            ></DateField>
+          </Flex>
         </form>
+        <PreviewBanner />
       </FormProvider>
       <Flex sx={sx.previewFlex}>
-        <Button form={formJson.id} type="submit" sx={sx.replaceBannerButton}>
+        <Button form="addAdminBanner" type="submit" sx={sx.replaceBannerButton}>
           {submitting ? <Spinner size="md" /> : "Replace Current Banner"}
         </Button>
       </Flex>

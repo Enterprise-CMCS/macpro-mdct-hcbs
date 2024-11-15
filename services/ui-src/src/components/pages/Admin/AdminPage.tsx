@@ -91,7 +91,7 @@ export const AdminPage = () => {
           </>
         )}
       </Box>
-      <Flex sx={sx.newBannerBox}>
+      <Flex sx={sx.newBannerBox} gap=".75rem">
         <Text sx={sx.sectionHeader}>Create a New Banner</Text>
         <AdminBannerForm writeAdminBanner={writeAdminBanner} />
       </Flex>
