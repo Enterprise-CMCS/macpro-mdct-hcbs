@@ -13,6 +13,7 @@ services:
   app-api:
     path: services/app-api
     params:
+      BannerTableName: ${database.BannerTableName}
       QmReportTableName: ${database.QmReportTableName}
 
   # wave 3: depends on many

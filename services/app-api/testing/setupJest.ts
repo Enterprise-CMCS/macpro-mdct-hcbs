@@ -1,5 +1,6 @@
 process.env.STAGE = "local";
 process.env.QM_REPORT_TABLE_NAME = "local-qm-reports";
+process.env.BANNER_TABLE_NAME = "local-banners";
 
 /*
  * This mock mutes all logger output during tests! Including console errors!
