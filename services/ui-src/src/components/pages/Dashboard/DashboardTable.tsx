@@ -2,7 +2,7 @@ import { Button, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 import { useNavigate } from "react-router-dom";
 import { Report, UserRoles } from "types";
-import { formatMonthDayYear, useStore } from "utils";
+import { formatMonthDayYear, reportBasePath, useStore } from "utils";
 
 interface DashboardTableProps {
   reports: Report[];
@@ -42,8 +42,4 @@ export const DashboardTable = ({ reports }: DashboardTableProps) => {
       ))}
     </Table>
   );
-};
-
-const reportBasePath = (report: Report) => {
-  return `/report/${report.type}/${report.state}/${report.id}`;
 };

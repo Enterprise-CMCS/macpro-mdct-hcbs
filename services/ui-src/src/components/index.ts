@@ -20,6 +20,9 @@ export { Timeout } from "./layout/Timeout";
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
+// export
+export { ExportedReportBanner } from "./export/ExportedReportBanner";
+export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
 export { TextField } from "./fields/TextField";
 // forms
@@ -31,6 +34,7 @@ export { LoginIDM } from "./logins/LoginIDM";
 export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";

@@ -12,6 +12,17 @@ jest.mock("utils", () => ({
   useStore: jest.fn(),
 }));
 
+const report = {
+  type: "QM",
+  id: "mock-report-id",
+  state: "CO",
+  pages: [
+    { childPageIds: ["1", "2"] },
+    { title: "Section 1", id: "id-1" },
+    { title: "Section 2", id: "id-2" },
+  ],
+};
+
 describe("StatusTableElement", () => {
   const mockNavigate = jest.fn();
   const setCurrentPageId = jest.fn();
@@ -25,13 +36,6 @@ describe("StatusTableElement", () => {
     mockPageMap.set("1", 1);
     mockPageMap.set("2", 2);
 
-    const report = {
-      pages: [
-        { childPageIds: ["1", "2"] },
-        { title: "Section 1", id: "id-1" },
-        { title: "Section 2", id: "id-2" },
-      ],
-    };
     (useStore as unknown as jest.Mock).mockReturnValue({
       pageMap: mockPageMap,
       report: report,
@@ -65,9 +69,11 @@ describe("StatusTableElement", () => {
     render(<StatusTableElement />);
 
     const reviewPdfButton = screen.getByRole("button", { name: /Review PDF/i });
-    await userEvent.click(reviewPdfButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith("PDF");
+    const path = `/report/${report.type}/${report.state}/${report.id}/export`;
+    expect(reviewPdfButton).toHaveAttribute("to", path);
+
+    await userEvent.click(reviewPdfButton);
   });
 
   test("if pageMap is not defined return null", () => {
