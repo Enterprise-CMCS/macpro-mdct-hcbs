@@ -110,7 +110,6 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-
   title?: undefined;
   type?: undefined;
   elements?: undefined;
