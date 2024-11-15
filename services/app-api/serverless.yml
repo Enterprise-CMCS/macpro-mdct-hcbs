@@ -84,6 +84,42 @@ provider:
     QM_REPORT_TABLE_NAME: ${self:custom.qmReportTableName}
 
 functions:
+  createBanner:
+    handler: handlers/banners/create.createBanner
+    events:
+      - http:
+          path: banners/{bannerId}
+          method: post
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                bannerId: true
+  deleteBanner:
+    handler: handlers/banners/delete.deleteBanner
+    events:
+      - http:
+          path: banners/{bannerId}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                bannerId: true
+  fetchBanner:
+    handler: handlers/banners/fetch.fetchBanner
+    events:
+      - http:
+          path: banners/{bannerId}
+          method: get
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                bannerId: true
   createReport:
     handler: handlers/reports/create.createReport
     events:

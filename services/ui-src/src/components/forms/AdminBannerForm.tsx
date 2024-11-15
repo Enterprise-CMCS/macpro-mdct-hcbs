@@ -19,18 +19,19 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     setSubmitting(true);
     const newBannerData = {
       key: bannerId,
-      title: formData["bannerTitle"],
-      description: formData["bannerDescription"],
-      link: formData["bannerLink"] || undefined,
+      title: formData["bannerTitle"]?.answer,
+      description: formData["bannerDescription"]?.answer,
+      link: formData["bannerLink"]?.answer || undefined,
       startDate: convertDatetimeStringToNumber(
-        formData["bannerStartDate"],
+        formData["bannerStartDate"]?.answer,
         "startDate"
       ),
       endDate: convertDatetimeStringToNumber(
-        formData["bannerEndDate"],
+        formData["bannerEndDate"]?.answer,
         "endDate"
       ),
     };
+
     try {
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
@@ -44,14 +45,17 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     <>
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
       <FormProvider {...form}>
-        <form id="addAdminBanner" onSubmit={onSubmit} {...props}>
+        <form
+          id="addAdminBanner"
+          onSubmit={form.handleSubmit(onSubmit)}
+          {...props}
+        >
           <Flex flexDirection="column" gap="1.5rem">
             <TextField
               element={{
                 type: ElementType.Textbox,
                 label: "Title text",
               }}
-              index={0}
               formkey={"bannerTitle"}
             ></TextField>
             <TextField
@@ -59,7 +63,6 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
                 type: ElementType.Textbox,
                 label: "Description tex",
               }}
-              index={1}
               formkey={"bannerDescription"}
             ></TextField>
             <TextField
@@ -67,7 +70,6 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
                 type: ElementType.Textbox,
                 label: "Link",
               }}
-              index={2}
               formkey={"bannerLink"}
             ></TextField>
             <DateField
@@ -76,7 +78,6 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
                 label: "Start date",
                 helperText: "",
               }}
-              index={3}
               formkey={"bannerStartDate"}
             ></DateField>
             <DateField
@@ -85,7 +86,6 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
                 label: "End date",
                 helperText: "",
               }}
-              index={3}
               formkey={"bannerEndDate"}
             ></DateField>
           </Flex>
