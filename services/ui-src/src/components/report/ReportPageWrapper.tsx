@@ -1,10 +1,11 @@
+import { useParams } from "react-router-dom";
 import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
+import { SubnavBar } from "./SubnavBar";
 import { getReport } from "utils/api/requestMethods/report";
-import { useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormPageTemplate } from "types/report";
@@ -72,6 +73,7 @@ export const ReportPageWrapper = () => {
 
   return (
     <FormProvider {...methods}>
+      <SubnavBar />
       <HStack width="100%" height="100%" position="relative" spacing="0">
         {currentPage.sidebar && <Sidebar />}
         <VStack
