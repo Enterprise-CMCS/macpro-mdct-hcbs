@@ -8,7 +8,7 @@ import {
   PageType,
   ParentPageTemplate,
   Report,
-} from "../../../types";
+} from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 
 export const ExportedReportPage = () => {

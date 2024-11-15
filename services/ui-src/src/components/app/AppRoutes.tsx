@@ -24,11 +24,11 @@ export const AppRoutes = () => {
         <Route
           path="/report/:reportType/:state/:reportId"
           element={<ReportPageWrapper />}
-        ></Route>
+        />
         <Route
           path="/report/:reportType/:state/:reportId/export"
           element={<ExportedReportPage />}
-        ></Route>
+        />
       </Routes>
     </main>
   );

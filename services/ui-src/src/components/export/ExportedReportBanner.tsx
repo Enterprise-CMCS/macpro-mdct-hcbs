@@ -10,7 +10,7 @@ export const ExportedReportBanner = () => {
   };
 
   return (
-    <Box data-testid="exportedReportBanner" sx={sx.container}>
+    <Box sx={sx.container}>
       <Text>{reportBanner.intro}</Text>
       <Button sx={sx.pdfButton} onClick={onClickHandler}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
