@@ -9,11 +9,8 @@ export const isReportType = (x: string | undefined): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);
 };
 
-export interface FormOptions {
-  type: ReportType;
-  stateOptions: string[];
-  state: string | undefined;
-  createdBy: string | undefined;
+export interface ReportOptions {
+  name: string;
 }
 
 export interface CMIT {
@@ -43,6 +40,7 @@ export interface Report extends ReportTemplate {
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
+  name?: string;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -89,7 +87,6 @@ export type ReportTemplate = {
   pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
-    optionGroups: Record<string, MeasureOptions[]>;
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };

@@ -1,6 +1,7 @@
 import handler from "../../libs/handler-lib";
 import { parseReportTypeAndState } from "../../libs/param-lib";
 import { badRequest, ok } from "../../libs/response-lib";
+import { ReportOptions } from "../../types/reports";
 import { buildReport } from "./buildReport";
 
 export const createReport = handler(async (event) => {
@@ -15,9 +16,9 @@ export const createReport = handler(async (event) => {
   if (!event?.body) {
     return badRequest("Invalid request");
   }
-  // const options = JSON.parse(event.body);
+  const options = JSON.parse(event.body) as ReportOptions;
 
-  const report = await buildReport(reportType, state, [], user);
+  const report = await buildReport(reportType, state, options, user);
 
   return ok(report);
 });

@@ -1,6 +1,6 @@
 import { qmReportTemplate } from "../../forms/qm";
 import { putReport } from "../../storage/reports";
-import { Report, ReportType } from "../../types/reports";
+import { Report, ReportOptions, ReportType } from "../../types/reports";
 
 const reportTemplates = {
   [ReportType.QM]: qmReportTemplate,
@@ -9,7 +9,7 @@ const reportTemplates = {
 export const buildReport = async (
   reportType: ReportType,
   state: string,
-  measureOptions: string[],
+  reportOptions: ReportOptions,
   username: string
 ) => {
   const report = structuredClone(reportTemplates[reportType]) as Report;
@@ -20,6 +20,7 @@ export const buildReport = async (
   report.created = Date.now();
   report.lastEdited = Date.now();
   report.lastEditedBy = username;
+  report.name = reportOptions.name;
 
   if (reportType == ReportType.QM) {
     /*
@@ -27,11 +28,7 @@ export const buildReport = async (
      * TODO is measure order important? May need to sort.
      * TODO could a measure be included by multiple rules? May need to deduplicate.
      */
-    const measuresFromRules = Object.entries(report.measureLookup.optionGroups)
-      .filter(([ruleName, _measures]) => measureOptions.includes(ruleName))
-      .flatMap(([_ruleName, measures]) => measures);
-    const measures =
-      report.measureLookup.defaultMeasures.concat(measuresFromRules);
+    const measures = report.measureLookup.defaultMeasures;
 
     const measurePages = measures.map((measure) => {
       // TODO: make reusable. This will be used on the optional page when adding a measure.
