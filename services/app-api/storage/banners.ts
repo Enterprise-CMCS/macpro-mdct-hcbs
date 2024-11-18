@@ -1,11 +1,11 @@
 import { DeleteCommand, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { createClient } from "./dynamo/dynamodb-lib";
-import { AdminBannerData } from "../types/banner";
+import { BannerData } from "../types/banner";
 
 const bannerTableName = process.env.BANNER_TABLE_NAME!;
 const client = createClient();
 
-export const putBanner = async (banner: AdminBannerData) => {
+export const putBanner = async (banner: BannerData) => {
   await client.send(
     new PutCommand({
       TableName: bannerTableName,
@@ -23,7 +23,7 @@ export const getBanner = async (bannerId: string) => {
       },
     })
   );
-  return response.Item as AdminBannerData | undefined;
+  return response.Item as BannerData | undefined;
 };
 
 export const deleteBanner = async (bannerId: string) => {

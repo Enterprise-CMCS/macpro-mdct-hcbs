@@ -2,9 +2,7 @@ import { ParentPageTemplate, PageData, Report } from "types/report";
 import React from "react";
 import { AdminBannerData, ErrorVerbiage, HcbsUser } from "types";
 
-// initial admin banner state
 export interface AdminBannerState {
-  // INITIAL STATE
   bannerData: AdminBannerData | undefined;
   bannerActive: boolean;
   bannerLoading: boolean;

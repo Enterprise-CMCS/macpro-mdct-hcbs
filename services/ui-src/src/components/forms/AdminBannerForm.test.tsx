@@ -1,7 +1,5 @@
 import { render, screen } from "@testing-library/react";
-// components
 import { AdminBannerForm } from "components";
-// utils
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 import userEvent from "@testing-library/user-event";
 import { testA11y } from "utils/testing/commonTests";

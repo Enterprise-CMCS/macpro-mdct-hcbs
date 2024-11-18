@@ -1,9 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-// components
 import { AdminPage, AdminBannerContext } from "components";
-// utils
 import { useStore } from "utils";
 import {
   mockBannerStore,

@@ -1,5 +1,4 @@
 import { useContext, MouseEventHandler } from "react";
-// components
 import {
   Box,
   Button,
@@ -16,16 +15,13 @@ import {
   ErrorAlert,
   PageTemplate,
 } from "components";
-// utils
 import { convertDateUtcToEt, useStore } from "utils";
-// verbiage
 import verbiage from "verbiage/pages/admin";
 
 export const AdminPage = () => {
   const { deleteAdminBanner, writeAdminBanner } =
     useContext(AdminBannerContext);
 
-  // state management
   const {
     bannerData,
     bannerActive,

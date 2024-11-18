@@ -37,7 +37,7 @@ export const parseReportParameters = (event: APIGatewayProxyEvent) => {
   return { reportType, state, id };
 };
 
-export const parseBanner = (event: APIGatewayProxyEvent) => {
+export const parseBannerId = (event: APIGatewayProxyEvent) => {
   const { bannerId } = event.pathParameters ?? {};
   if (!bannerId) {
     logger.warn("Invalid banner id in path");

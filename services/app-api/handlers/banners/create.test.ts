@@ -1,7 +1,7 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
-import { canWriteAdmin } from "../../utils/authorization";
+import { canWriteBanner } from "../../utils/authorization";
 import { createBanner } from "./create";
 import { error } from "../../utils/constants";
 
@@ -13,7 +13,7 @@ jest.mock("../../utils/authentication", () => ({
 }));
 
 jest.mock("../../utils/authorization", () => ({
-  canWriteAdmin: jest.fn().mockReturnValue(true),
+  canWriteBanner: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("../../storage/banners", () => ({
@@ -42,7 +42,7 @@ describe("Test createBanner API method", () => {
   });
 
   test("Test unauthorized banner creation throws 403 error", async () => {
-    (canWriteAdmin as jest.Mock).mockReturnValueOnce(false);
+    (canWriteBanner as jest.Mock).mockReturnValueOnce(false);
     const res = await createBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);

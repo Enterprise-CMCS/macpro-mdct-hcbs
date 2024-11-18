@@ -1,6 +1,4 @@
-// components
 import { Alert } from "components";
-// types
 import { BannerData } from "types";
 
 export const Banner = ({ bannerData, ...props }: Props) => {

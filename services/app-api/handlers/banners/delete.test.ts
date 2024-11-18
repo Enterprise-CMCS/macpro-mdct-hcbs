@@ -16,7 +16,7 @@ jest.mock("../../utils/authentication", () => ({
 }));
 
 jest.mock("../../utils/authorization", () => ({
-  canWriteAdmin: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
+  canWriteBanner: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
 const testEvent: APIGatewayProxyEvent = {

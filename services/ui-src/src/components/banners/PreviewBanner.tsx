@@ -1,5 +1,4 @@
 import { useFormContext } from "react-hook-form";
-// components
 import { Banner } from "components";
 
 export const PreviewBanner = ({ ...props }: Props) => {
