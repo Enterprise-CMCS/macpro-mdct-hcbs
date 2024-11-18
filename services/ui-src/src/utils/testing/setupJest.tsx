@@ -184,12 +184,14 @@ export const mockAdminUserStore: HcbsUserState = {
 
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState = {
+export const mockUseStore: HcbsUserState & AdminBannerState = {
   ...mockStateUserStore,
+  ...mockBannerStore,
 };
 
-export const mockUseAdminStore: HcbsUserState = {
+export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
   ...mockAdminUserStore,
+  ...mockBannerStore,
 };
 
 // ROUTER
