@@ -27,15 +27,6 @@ const testEvent: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test" },
 };
 
-/* TO DO: Add back in when we have validation
-const testInvalidEvent: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"key":"mock-id","title":"test banner","description":"test description","link":"https://www.mocklink.com","startDate":1000}`,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { bannerId: "testKey" },
-};
-*/
-
 describe("Test createBanner API method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -63,13 +54,6 @@ describe("Test createBanner API method", () => {
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");
   });
-
-  /* TO DO: Add back in when we have validation
-  test("Test invalid banner payload returns 400", async () => {
-    const res = await createBanner(testInvalidEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  */
 
   test("Test bannerKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {

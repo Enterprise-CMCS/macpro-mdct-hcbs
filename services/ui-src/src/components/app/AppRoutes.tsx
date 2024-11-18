@@ -22,6 +22,10 @@ export const AppRoutes = () => {
         <Routes>
           {/* General Routes */}
           <Route path="/" element={<HomePage />} />
+          <Route
+            path="/admin"
+            element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
+          />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="*" element={<NotFoundPage />} />

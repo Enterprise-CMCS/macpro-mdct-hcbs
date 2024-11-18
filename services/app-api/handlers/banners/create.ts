@@ -30,7 +30,7 @@ export const createBanner = handler(parseBanner, async (request) => {
 
   const unvalidatedPayload = request.body;
 
-  //TO DO: add validation
+  //TO DO: add validation & validation test back
   const { title, description, link, startDate, endDate } =
     unvalidatedPayload as BannerData;
 

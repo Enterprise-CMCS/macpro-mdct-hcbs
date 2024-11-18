@@ -4,7 +4,6 @@ import { canWriteAdmin } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { deleteBanner as deleteBannerById } from "../../storage/banners";
 // types
-import { UserRoles } from "../../types/types";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { parseBanner } from "../../libs/param-lib";
 
