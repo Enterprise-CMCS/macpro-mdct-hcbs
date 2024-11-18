@@ -60,7 +60,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
             <TextField
               element={{
                 type: ElementType.Textbox,
-                label: "Description tex",
+                label: "Description text",
               }}
               formkey={"bannerDescription"}
             ></TextField>
