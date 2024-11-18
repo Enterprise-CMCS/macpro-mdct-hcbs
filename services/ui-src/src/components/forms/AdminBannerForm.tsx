@@ -102,7 +102,6 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 
 interface Props {
   writeAdminBanner: Function;
-  [key: string]: any;
 }
 
 const sx = {

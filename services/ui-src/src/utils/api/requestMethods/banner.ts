@@ -1,6 +1,6 @@
 import { apiLib, updateTimeout } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { AdminBannerData } from "types/banners";
+import { BannerData } from "types/banners";
 
 async function getBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
@@ -12,7 +12,7 @@ async function getBanner(bannerKey: string) {
   return await apiLib.get(`/banners/${bannerKey}`, options);
 }
 
-async function writeBanner(bannerData: AdminBannerData) {
+async function writeBanner(bannerData: BannerData) {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },

@@ -4,7 +4,7 @@ import {
   HcbsUserState,
   HcbsUser,
   HcbsReportState,
-  AdminBannerData,
+  BannerData,
   ErrorVerbiage,
   AdminBannerState,
 } from "types";
@@ -35,7 +35,7 @@ const bannerStore = (set: Function) => ({
   bannerErrorMessage: undefined,
   bannerDeleting: false,
   // actions
-  setBannerData: (newBanner: AdminBannerData | undefined) =>
+  setBannerData: (newBanner: BannerData | undefined) =>
     set(() => ({ bannerData: newBanner }), false, { type: "setBannerData" }),
   clearAdminBanner: () =>
     set(() => ({ bannerData: undefined }), false, { type: "clearAdminBanner" }),

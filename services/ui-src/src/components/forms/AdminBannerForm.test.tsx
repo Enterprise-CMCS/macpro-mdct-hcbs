@@ -9,18 +9,23 @@ window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const adminBannerFormComponent = (writeAdminBanner: Function) => (
   <RouterWrappedComponent>
-    <AdminBannerForm
-      writeAdminBanner={writeAdminBanner}
-      data-testid="test-form"
-    />
+    <AdminBannerForm writeAdminBanner={writeAdminBanner} />
   </RouterWrappedComponent>
 );
 
 describe("<AdminBannerForm />", () => {
   test("AdminBannerForm is visible", () => {
     render(adminBannerFormComponent(mockWriteAdminBanner));
-    const form = screen.getByTestId("test-form");
-    expect(form).toBeVisible();
+    expect(screen.getByRole("textbox", { name: "Title text" })).toBeVisible();
+    expect(
+      screen.getByRole("textbox", { name: "Description text" })
+    ).toBeVisible();
+    expect(screen.getByRole("textbox", { name: "Link" })).toBeVisible();
+    expect(screen.getByRole("textbox", { name: "Start date" })).toBeVisible();
+    expect(screen.getByRole("textbox", { name: "End date" })).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Replace Current Banner" })
+    ).toBeVisible();
   });
 
   test("AdminBannerForm can be filled and submitted without error", async () => {

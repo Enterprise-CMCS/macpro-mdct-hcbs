@@ -59,11 +59,11 @@ export const AdminPage = () => {
                     </Text>
                     <Text sx={sx.currentBannerDate}>
                       Start Date:{" "}
-                      <span>{convertDateUtcToEt(bannerData?.startDate)}</span>
+                      <span>{convertDateUtcToEt(bannerData?.startDate!)}</span>
                     </Text>
                     <Text sx={sx.currentBannerDate}>
                       End Date:{" "}
-                      <span>{convertDateUtcToEt(bannerData?.endDate)}</span>
+                      <span>{convertDateUtcToEt(bannerData?.endDate!)}</span>
                     </Text>
                   </Flex>
                   <Flex sx={sx.currentBannerFlex}>

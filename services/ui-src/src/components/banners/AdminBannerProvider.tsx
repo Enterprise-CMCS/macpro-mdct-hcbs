@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useMemo, useEffect } from "react";
-import { AdminBannerData, AdminBannerShape } from "types/banners";
+import { BannerData, AdminBannerShape } from "types/banners";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import {
@@ -37,7 +37,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
     setBannerLoading(true);
     try {
       const currentBanner = await getBanner(ADMIN_BANNER_ID);
-      const newBannerData = currentBanner as AdminBannerData | undefined;
+      const newBannerData = currentBanner as BannerData | undefined;
       setBannerData(newBannerData);
       setBannerErrorMessage(undefined);
     } catch (e: any) {
@@ -60,7 +60,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
     setBannerDeleting(false);
   };
 
-  const writeAdminBanner = async (newBannerData: AdminBannerData) => {
+  const writeAdminBanner = async (newBannerData: BannerData) => {
     try {
       await writeBanner(newBannerData);
     } catch {

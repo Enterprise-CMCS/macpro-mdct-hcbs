@@ -14,5 +14,4 @@ export const Banner = ({ bannerData, ...props }: Props) => {
 
 interface Props {
   bannerData: BannerData | undefined;
-  [key: string]: any;
 }

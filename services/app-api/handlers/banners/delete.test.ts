@@ -1,6 +1,7 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { canWriteBanner } from "../../utils/authorization";
 import { deleteBanner } from "./delete";
 import { error } from "../../utils/constants";
 import { DeleteCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
@@ -16,7 +17,7 @@ jest.mock("../../utils/authentication", () => ({
 }));
 
 jest.mock("../../utils/authorization", () => ({
-  canWriteBanner: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
+  canWriteBanner: jest.fn().mockReturnValue(true),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -31,6 +32,7 @@ describe("Test deleteBanner API method", () => {
   });
 
   test("Test not authorized to delete banner throws 403 error", async () => {
+    (canWriteBanner as jest.Mock).mockReturnValueOnce(false);
     const res = await deleteBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
