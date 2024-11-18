@@ -67,6 +67,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   currentPageId: undefined,
   modalOpen: false,
   modalComponent: undefined,
+  lastSavedTime: undefined,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -99,7 +100,7 @@ export const useStore = create(
     })),
     {
       name: "hcbs-store",
-      partialize: () => ({}),
+      partialize: (state) => ({ report: state.report }),
     }
   )
 );

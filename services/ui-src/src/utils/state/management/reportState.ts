@@ -1,6 +1,7 @@
 import { HcbsReportState } from "types";
 import { ParentPageTemplate, Report } from "types/report";
 import { putReport } from "utils/api/requestMethods/report";
+import { getLocalHourMinuteTime } from "utils";
 
 export const buildState = (report: Report | undefined) => {
   if (!report) return { report: undefined };
@@ -63,6 +64,5 @@ export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   report.pages[pageIndex] = deepMerge(report.pages[pageIndex], answers);
 
   putReport(report); // Submit to API
-
-  return { report };
+  return { report, lastSavedTime: getLocalHourMinuteTime() };
 };

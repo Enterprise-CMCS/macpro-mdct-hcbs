@@ -27,6 +27,9 @@ export { Timeout } from "./layout/Timeout";
 export { Card } from "./cards/Card";
 export { EmailCard } from "./cards/EmailCard";
 export { TemplateCard } from "./cards/TemplateCard";
+// export
+export { ExportedReportBanner } from "./export/ExportedReportBanner";
+export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
 export { TextField } from "./fields/TextField";
 export { DateField } from "./fields/DateField";
@@ -41,6 +44,7 @@ export { AdminPage } from "./pages/Admin/AdminPage";
 export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";

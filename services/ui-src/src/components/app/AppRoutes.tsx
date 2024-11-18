@@ -7,6 +7,7 @@ import {
   DashboardPage,
   NotFoundPage,
   AdminBannerProvider,
+  ExportedReportPage,
 } from "components";
 import { CreateReportOptions } from "components/pages/CreateReportOptions/CreateReportOptions";
 import { ReportPageWrapper } from "components/report/ReportPageWrapper";
@@ -21,10 +22,6 @@ export const AppRoutes = () => {
         <Routes>
           {/* General Routes */}
           <Route path="/" element={<HomePage />} />
-          <Route
-            path="/admin"
-            element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
-          />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="*" element={<NotFoundPage />} />
@@ -35,8 +32,12 @@ export const AppRoutes = () => {
           <Route path="/report/QM" element={<CreateReportOptions />} />
           <Route
             path="/report/:reportType/:state/:reportId"
-            element={<ReportPageWrapper></ReportPageWrapper>}
-          ></Route>
+            element={<ReportPageWrapper />}
+          />
+          <Route
+            path="/report/:reportType/:state/:reportId/export"
+            element={<ExportedReportPage />}
+          />
         </Routes>
       </AdminBannerProvider>
     </main>
