@@ -1,14 +1,19 @@
-import { fetchBanner } from "./fetch";
-// utils
+import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
+import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { fetchBanner } from "./fetch";
 import { error } from "../../utils/constants";
 import { getBanner } from "../../storage/banners";
-// types
-import { APIGatewayProxyEvent } from "../../types/types";
-import { StatusCodes } from "../../libs/response-lib";
 import { mockBannerResponse } from "../../testing/setupJest";
 
-jest.mock("../../utils/auth/authorization", () => ({
+jest.mock("../../utils/authentication", () => ({
+  authenticatedUser: jest.fn().mockResolvedValue({
+    role: UserRoles.ADMIN,
+    state: "PA",
+  }),
+}));
+
+jest.mock("../../utils/authorization", () => ({
   isAuthenticated: jest.fn().mockReturnValue(true),
 }));
 
@@ -22,26 +27,14 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "admin-banner-id" },
 };
 
-let consoleSpy: {
-  debug: jest.SpyInstance<void>;
-  error: jest.SpyInstance<void>;
-} = {
-  debug: jest.fn() as jest.SpyInstance,
-  error: jest.fn() as jest.SpyInstance,
-};
-
 describe("Test fetchBanner API method", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
-    consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
-    consoleSpy.error = jest.spyOn(console, "error").mockImplementation();
+    jest.clearAllMocks();
   });
 
   test("Test Successful Banner Fetch", async () => {
     (getBanner as jest.Mock).mockResolvedValueOnce(mockBannerResponse);
-    const res = await fetchBanner(testEvent, null);
-
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    const res = await fetchBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(res.body).toContain("testDesc");
     expect(res.body).toContain("testTitle");
@@ -49,9 +42,7 @@ describe("Test fetchBanner API method", () => {
 
   test("Test successful empty banner found fetch", async () => {
     (getBanner as jest.Mock).mockResolvedValueOnce(undefined);
-    const res = await fetchBanner(testEvent, null);
-
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    const res = await fetchBanner(testEvent);
     expect(res.body).not.toBeDefined();
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
@@ -61,10 +52,10 @@ describe("Test fetchBanner API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await fetchBanner(noKeyEvent, null);
+    const res = await fetchBanner(noKeyEvent);
 
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.NO_KEY);
+    expect(res.body).toContain(error.MISSING_DATA);
   });
 
   test("Test bannerKey empty throws 500 error", async () => {
@@ -72,9 +63,9 @@ describe("Test fetchBanner API method", () => {
       ...testEvent,
       pathParameters: { bannerId: "" },
     };
-    const res = await fetchBanner(noKeyEvent, null);
+    const res = await fetchBanner(noKeyEvent);
 
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.NO_KEY);
+    expect(res.body).toContain(error.MISSING_DATA);
   });
 });

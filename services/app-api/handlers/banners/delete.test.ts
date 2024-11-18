@@ -1,18 +1,22 @@
+import { StatusCodes } from "../../libs/response-lib";
+import { proxyEvent } from "../../testing/proxyEvent";
+import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { deleteBanner } from "./delete";
+import { error } from "../../utils/constants";
 import { DeleteCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
-// utils
-import { proxyEvent } from "../../testing/proxyEvent";
-import { error } from "../../utils/constants";
-// types
-import { APIGatewayProxyEvent } from "../../types/types";
-import { StatusCodes } from "../../libs/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockReturnValue(true),
-  hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
+jest.mock("../../utils/authentication", () => ({
+  authenticatedUser: jest.fn().mockResolvedValue({
+    role: UserRoles.ADMIN,
+    state: "PA",
+  }),
+}));
+
+jest.mock("../../utils/authorization", () => ({
+  canWriteAdmin: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -21,19 +25,13 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
-const consoleSpy: {
-  debug: jest.SpyInstance<void>;
-  error: jest.SpyInstance<void>;
-} = {
-  debug: jest.spyOn(console, "debug").mockImplementation(),
-  error: jest.spyOn(console, "error").mockImplementation(),
-};
-
 describe("Test deleteBanner API method", () => {
-  test("Test not authorized to delete banner throws 403 error", async () => {
-    const res = await deleteBanner(testEvent, null);
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+  test("Test not authorized to delete banner throws 403 error", async () => {
+    const res = await deleteBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
@@ -41,9 +39,7 @@ describe("Test deleteBanner API method", () => {
   test("Test Successful Banner Deletion", async () => {
     const mockDelete = jest.fn();
     dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
-    const res = await deleteBanner(testEvent, null);
-
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    const res = await deleteBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(mockDelete).toHaveBeenCalled();
   });
@@ -53,10 +49,10 @@ describe("Test deleteBanner API method", () => {
       ...testEvent,
       pathParameters: {},
     };
-    const res = await deleteBanner(noKeyEvent, null);
+    const res = await deleteBanner(noKeyEvent);
 
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.NO_KEY);
+    expect(res.body).toContain(error.MISSING_DATA);
   });
 
   test("Test bannerKey empty throws 500 error", async () => {
@@ -64,9 +60,9 @@ describe("Test deleteBanner API method", () => {
       ...testEvent,
       pathParameters: { bannerId: "" },
     };
-    const res = await deleteBanner(noKeyEvent, null);
+    const res = await deleteBanner(noKeyEvent);
 
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.NO_KEY);
+    expect(res.body).toContain(error.MISSING_DATA);
   });
 });
