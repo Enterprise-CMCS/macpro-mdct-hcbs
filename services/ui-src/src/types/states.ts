@@ -1,6 +1,23 @@
 import { ParentPageTemplate, PageData, Report } from "types/report";
 import React from "react";
-import { HcbsUser } from "types";
+import { BannerData, ErrorVerbiage, HcbsUser } from "types";
+
+export interface AdminBannerState {
+  bannerData: BannerData | undefined;
+  bannerActive: boolean;
+  bannerLoading: boolean;
+  bannerErrorMessage: ErrorVerbiage | undefined;
+  bannerDeleting: boolean;
+  // ACTIONS
+  setBannerData: (newBannerData: BannerData | undefined) => void;
+  clearAdminBanner: () => void;
+  setBannerActive: (bannerStatus: boolean) => void;
+  setBannerLoading: (bannerLoading: boolean) => void;
+  setBannerErrorMessage: (
+    bannerErrorMessage: ErrorVerbiage | undefined
+  ) => void;
+  setBannerDeleting: (bannerDeleting: boolean) => void;
+}
 
 // initial user state
 export interface HcbsUserState {

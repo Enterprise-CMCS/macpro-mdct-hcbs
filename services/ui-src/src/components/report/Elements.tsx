@@ -23,7 +23,7 @@ import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 
 export interface PageElementProps {
   element: PageElement;
-  index: number;
+  index?: number;
   formkey: string;
 }
 
