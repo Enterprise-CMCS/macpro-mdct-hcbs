@@ -3,7 +3,7 @@ export interface BannerData {
   description: string;
   link?: string;
   key: string;
-  startDate: number;
-  endDate: number;
+  startDate?: number;
+  endDate?: number;
   isActive?: boolean;
 }
