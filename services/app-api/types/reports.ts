@@ -48,7 +48,8 @@ export interface Report extends ReportTemplate {
   state: string;
   created?: number;
   lastEdited?: number;
-  lastEditedBy?: string;
+  lastEditedBy: string;
+  lastEditedByEmail: string;
   status: ReportStatus;
 }
 
@@ -109,7 +110,6 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-
   title?: undefined;
   type?: undefined;
   elements?: undefined;

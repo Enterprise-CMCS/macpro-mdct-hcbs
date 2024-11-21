@@ -405,6 +405,22 @@ const theme = extendTheme({
             textDecoration: "none",
           },
         },
+        outlineButton: {
+          color: "palette.primary",
+          border: "1px solid",
+          padding: ".5rem 1rem",
+          borderRadius: "5px",
+          fontWeight: "bold",
+          textDecoration: "none",
+          _visited: { color: "palette.primary" },
+          ":hover, :visited:hover": {
+            color: "palette.primary_darker",
+            textDecoration: "none",
+          },
+          ".mobile &": {
+            border: "none",
+          },
+        },
       },
       defaultProps: {
         variant: "primary",
@@ -521,13 +537,22 @@ const theme = extendTheme({
         status: {
           td: {
             fontSize: "14px",
-            padding: "0.75rem 0",
+            padding: "0.75rem 0.75rem 0.75rem 0",
             "&:first-of-type": {
               width: "65%",
               fontWeight: "bold",
             },
             "&:nth-of-type(2)": {
               width: "25%",
+            },
+          },
+        },
+        export: {
+          td: {
+            fontSize: "14px",
+            width: "50%",
+            "p:first-of-type": {
+              fontWeight: "bold",
             },
           },
         },

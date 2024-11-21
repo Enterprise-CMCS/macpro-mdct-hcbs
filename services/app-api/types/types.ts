@@ -16,7 +16,7 @@ export interface User {
   role: UserRoles;
   state?: StateAbbr;
   email: string;
-  full_name: string;
+  fullName: string;
 }
 
 /**

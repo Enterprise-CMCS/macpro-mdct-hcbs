@@ -25,6 +25,7 @@ custom:
       - production
   dotenv:
     path: ../../.env
+  bannerTableName: ${self:custom.stage}-banners
   qmReportTableName: ${self:custom.stage}-qm-reports
   dynamodb:
     stages:
@@ -38,9 +39,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackTags:  
+  stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
   iam:
     role:
       path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
@@ -62,7 +63,22 @@ provider:
             - "s3:ListBucket"
             - "s3:PutObject"
 resources:
-  Resources:   
+  Resources:
+    BannerTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.bannerTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     QmReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -83,6 +99,8 @@ resources:
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
+    BannerTableName:
+      Value: !Ref BannerTable
     QmReportTableName:
       Value: !Ref QmReportTable
     QmReportTableArn:

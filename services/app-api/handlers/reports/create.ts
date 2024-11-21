@@ -20,7 +20,7 @@ export const createReport = handler(
     }
     // const options = JSON.parse(event.body);
 
-    const report = await buildReport(reportType, state, [], user.full_name);
+    const report = await buildReport(reportType, state, [], user);
 
     return ok(report);
   }

@@ -4,6 +4,7 @@ export const error = {
   MISSING_DATA: "Missing required data.",
   INVALID_DATA: "Provided data is not valid.",
   SERVER_ERROR: "An unspecified server error occured.",
+  CREATION_ERROR: "Could not be created due to a database error.",
 };
 
 export enum DeliverySystem {

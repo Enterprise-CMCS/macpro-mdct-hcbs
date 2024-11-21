@@ -1,3 +1,4 @@
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Image,
@@ -14,12 +15,11 @@ import { useStore } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { ParentPageTemplate } from "types/report";
-import { useNavigate } from "react-router-dom";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import { reportBasePath } from "utils/other/routing";
 
 export const StatusTableElement = () => {
   const { pageMap, report, setCurrentPageId } = useStore();
-  const navigate = useNavigate();
 
   if (!pageMap) {
     return null;
@@ -80,7 +80,9 @@ export const StatusTableElement = () => {
         mt={5}
       >
         <Button
-          onClick={() => navigate("PDF")}
+          as={RouterLink}
+          to={reportBasePath(report!) + "/export"}
+          target="_blank"
           colorScheme="blue"
           variant="outline"
           leftIcon={<Image src={lookupIconPrimary} />}

@@ -10,7 +10,6 @@ IAM_PERMISSIONS_BOUNDARY="bound"
 LOCAL_LOGIN=true
 LOGGING_BUCKET=log-bucket
 S3_LOCAL_ENDPOINT=http://localhost:4569
-SAR_REPORT_TABLE_NAME=local-sar-reports
 SKIP_PREFLIGHT_CHECK=true
 QM_REPORT_TABLE_NAME=local-qm-reports
 

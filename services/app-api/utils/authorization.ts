@@ -25,3 +25,7 @@ export const canWriteState = (user: User, state: StateAbbr) => {
   }
   return false;
 };
+
+export const canWriteBanner = (user: User) => {
+  return user.role == UserRoles.ADMIN;
+};

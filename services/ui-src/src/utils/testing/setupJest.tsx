@@ -3,7 +3,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
-import { UserRoles, HcbsUserState, UserContextShape } from "types";
+import {
+  UserRoles,
+  HcbsUserState,
+  UserContextShape,
+  AdminBannerState,
+} from "types";
+import { mockBannerData } from "./mockBanner";
 // GLOBALS
 
 global.React = React;
@@ -80,6 +86,22 @@ jest.mock("aws-amplify/auth", () => ({
   signOut: jest.fn().mockImplementation(() => Promise.resolve()),
   signInWithRedirect: () => {},
 }));
+
+//  BANNER STATES / STORE
+
+export const mockBannerStore: AdminBannerState = {
+  bannerData: mockBannerData,
+  bannerActive: false,
+  bannerLoading: false,
+  bannerErrorMessage: { title: "", description: "" },
+  bannerDeleting: false,
+  setBannerData: () => {},
+  clearAdminBanner: () => {},
+  setBannerActive: () => {},
+  setBannerLoading: () => {},
+  setBannerErrorMessage: () => {},
+  setBannerDeleting: () => {},
+};
 
 // USER CONTEXT
 
@@ -162,12 +184,14 @@ export const mockAdminUserStore: HcbsUserState = {
 
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState = {
+export const mockUseStore: HcbsUserState & AdminBannerState = {
   ...mockStateUserStore,
+  ...mockBannerStore,
 };
 
-export const mockUseAdminStore: HcbsUserState = {
+export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
   ...mockAdminUserStore,
+  ...mockBannerStore,
 };
 
 // ROUTER
@@ -184,6 +208,8 @@ export const mockLDClient = {
 
 // ASSET
 export * from "./mockAsset";
+// BANNER
+export * from "./mockBanner";
 // FORM
 export * from "./mockForm";
 // ROUTER

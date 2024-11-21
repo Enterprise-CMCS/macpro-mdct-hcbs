@@ -1,6 +1,13 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { HcbsUserState, HcbsUser, HcbsReportState } from "types";
+import {
+  HcbsUserState,
+  HcbsUser,
+  HcbsReportState,
+  BannerData,
+  ErrorVerbiage,
+  AdminBannerState,
+} from "types";
 import { Report } from "types/report";
 import React from "react";
 import { buildState, mergeAnswers, setPage } from "./management/reportState";
@@ -19,6 +26,37 @@ const userStore = (set: Function) => ({
     set(() => ({ showLocalLogins: true }), false, { type: "showLocalLogins" }),
 });
 
+// BANNER STORE
+const bannerStore = (set: Function) => ({
+  // initial state
+  bannerData: undefined,
+  bannerActive: false,
+  bannerLoading: false,
+  bannerErrorMessage: undefined,
+  bannerDeleting: false,
+  // actions
+  setBannerData: (newBanner: BannerData | undefined) =>
+    set(() => ({ bannerData: newBanner }), false, { type: "setBannerData" }),
+  clearAdminBanner: () =>
+    set(() => ({ bannerData: undefined }), false, { type: "clearAdminBanner" }),
+  setBannerActive: (bannerStatus: boolean) =>
+    set(() => ({ bannerActive: bannerStatus }), false, {
+      type: "setBannerActive",
+    }),
+  setBannerLoading: (loading: boolean) =>
+    set(() => ({ bannerLoading: loading }), false, {
+      type: "setBannerLoading",
+    }),
+  setBannerErrorMessage: (errorMessage: ErrorVerbiage | undefined) =>
+    set(() => ({ bannerErrorMessage: errorMessage }), false, {
+      type: "setBannerErrorMessage",
+    }),
+  setBannerDeleting: (deleting: boolean) =>
+    set(() => ({ bannerDeleting: deleting }), false, {
+      type: "setBannerDeleting",
+    }),
+});
+
 // REPORT STORE
 const reportStore = (set: Function): HcbsReportState => ({
   // initial state
@@ -29,6 +67,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   currentPageId: undefined,
   modalOpen: false,
   modalComponent: undefined,
+  lastSavedTime: undefined,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -54,13 +93,14 @@ const reportStore = (set: Function): HcbsReportState => ({
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState & HcbsReportState>((set) => ({
+    devtools<HcbsUserState & HcbsReportState & AdminBannerState>((set) => ({
       ...userStore(set),
+      ...bannerStore(set),
       ...reportStore(set),
     })),
     {
       name: "hcbs-store",
-      partialize: () => ({}),
+      partialize: (state) => ({ report: state.report }),
     }
   )
 );
