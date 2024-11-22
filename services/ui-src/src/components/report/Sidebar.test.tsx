@@ -6,9 +6,9 @@ import {
   useParams,
 } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
-import { useStore } from "../../utils/state/useStore";
+import { useStore } from "utils";
 
-jest.mock("../../utils/state/useStore", () => ({
+jest.mock("utils", () => ({
   useStore: jest.fn(),
 }));
 
@@ -38,21 +38,21 @@ const report = {
 
 describe("Sidebar", () => {
   beforeEach(() => {
-    useStore.mockReturnValue({
+    (useStore as unknown as jest.Mock).mockReturnValue({
       pageMap: mockPageMap,
       report,
       currentPageId: "id-1",
       setCurrentPageId,
     });
-    useNavigate.mockReturnValue(mockNavigate);
-    useParams.mockReturnValue({
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    (useParams as jest.Mock).mockReturnValue({
       reportType: "exampleReport",
       state: "exampleState",
       reportId: "123",
     });
   });
   test("should not render if missing details from the store", () => {
-    useStore.mockReturnValueOnce({
+    (useStore as unknown as jest.Mock).mockReturnValueOnce({
       pageMap: undefined,
       report: undefined,
       currentPageId: undefined,
