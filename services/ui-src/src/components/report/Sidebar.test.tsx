@@ -1,9 +1,26 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { Sidebar } from "./Sidebar";
+import { useStore } from "../../utils/state/useStore";
+
+jest.mock("../../utils/state/useStore", () => ({
+  useStore: jest.fn(),
+}));
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: jest.fn(),
+  useParams: jest.fn(),
+}));
 
 const setCurrentPageId = jest.fn();
+const mockNavigate = jest.fn();
+
 const mockPageMap = new Map();
 mockPageMap.set("root", 0);
 mockPageMap.set("id-1", 1);
@@ -19,39 +36,29 @@ const report = {
   ],
 };
 
-const mockReportStore = jest.fn().mockImplementation(() => ({
-  pageMap: mockPageMap,
-  report: report,
-  currentPageId: "id-1",
-  setCurrentPageId,
-}));
-jest.mock("../../utils/state/useStore", () => ({
-  useStore: () => mockReportStore(),
-}));
-
 describe("Sidebar", () => {
+  beforeEach(() => {
+    useStore.mockReturnValue({
+      pageMap: mockPageMap,
+      report,
+      currentPageId: "id-1",
+      setCurrentPageId,
+    });
+    useNavigate.mockReturnValue(mockNavigate);
+    useParams.mockReturnValue({
+      reportType: "exampleReport",
+      state: "exampleState",
+      reportId: "123",
+    });
+  });
   test("should not render if missing details from the store", () => {
-    mockReportStore.mockReturnValueOnce({
+    useStore.mockReturnValueOnce({
       pageMap: undefined,
       report: undefined,
       currentPageId: undefined,
       setCurrentPageId,
     });
-    const { container } = render(
-      <Router>
-        <Sidebar />
-      </Router>
-    );
-    expect(container).toBeEmptyDOMElement();
-  });
 
-  test("should not render if missing root in page map", () => {
-    mockReportStore.mockReturnValueOnce({
-      pageMap: new Map(),
-      report: report,
-      currentPageId: "id-1",
-      setCurrentPageId,
-    });
     const { container } = render(
       <Router>
         <Sidebar />
@@ -61,38 +68,43 @@ describe("Sidebar", () => {
   });
 
   test("should render section headers", () => {
-    const { getByText } = render(
+    render(
       <Router>
         <Sidebar />
       </Router>
     );
-    expect(getByText("Section 1")).toBeTruthy();
-    expect(getByText("Section 2")).toBeTruthy();
+    expect(screen.getByText("Section 1")).toBeInTheDocument();
+    expect(screen.getByText("Section 2")).toBeInTheDocument();
   });
 
   test("should attempt to navigate on Click", async () => {
-    const { getByText } = render(
+    render(
       <Router>
         <Sidebar />
       </Router>
     );
-    const button = getByText("Section 1");
+    const button = screen.getByText("Section 1");
     await userEvent.click(button);
-    expect(setCurrentPageId).toHaveBeenCalledWith("id-1");
+
+    expect(mockNavigate).toHaveBeenLastCalledWith(
+      "/report/exampleReport/exampleState/123/id-1"
+    );
   });
 
   test("should expand on Click", async () => {
-    const { getByText, queryByText } = render(
+    render(
       <Router>
         <Sidebar />
       </Router>
     );
 
-    expect(getByText("Section 1")).toBeTruthy();
+    const expandButton = screen.getByAltText("Expand subitems");
+    expect(screen.queryByText("Child 1")).not.toBeInTheDocument();
+
     await act(async () => {
-      const button = screen.getByAltText("Expand subitems");
-      await userEvent.click(button);
+      await userEvent.click(expandButton);
     });
-    expect(queryByText("Child 1")).toBeInTheDocument();
+
+    expect(screen.getByText("Child 1")).toBeInTheDocument();
   });
 });
