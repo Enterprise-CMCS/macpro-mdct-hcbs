@@ -1,25 +1,28 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {
-  BrowserRouter as Router,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { mockUseStore } from "utils/testing/setupJest";
+import { BrowserRouter as Router, useParams } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { useStore } from "utils";
 
-jest.mock("utils", () => ({
-  useStore: jest.fn(),
+jest.mock("utils/other/useBreakpoint", () => ({
+  useBreakpoint: jest.fn(() => ({
+    isDesktop: true,
+  })),
 }));
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockUseStore);
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useNavigate: jest.fn(),
+  useNavigate: () => mockUseNavigate,
   useParams: jest.fn(),
 }));
 
 const setCurrentPageId = jest.fn();
-const mockNavigate = jest.fn();
+const mockUseNavigate = jest.fn();
 
 const mockPageMap = new Map();
 mockPageMap.set("root", 0);
@@ -44,7 +47,6 @@ describe("Sidebar", () => {
       currentPageId: "id-1",
       setCurrentPageId,
     });
-    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     (useParams as jest.Mock).mockReturnValue({
       reportType: "exampleReport",
       state: "exampleState",
@@ -85,8 +87,7 @@ describe("Sidebar", () => {
     );
     const button = screen.getByText("Section 1");
     await userEvent.click(button);
-
-    expect(mockNavigate).toHaveBeenLastCalledWith(
+    expect(mockUseNavigate).toHaveBeenCalledWith(
       "/report/exampleReport/exampleState/123/id-1"
     );
   });
