@@ -8,7 +8,6 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { useStore } from "utils";
 import {
   HeaderTemplate,
   SubHeaderTemplate,
@@ -20,6 +19,7 @@ import {
 } from "../../types/report";
 import { TemplateCardAccordion } from "components/accordions/TemplateCardAccordion";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
+import { useNavigate, useParams } from "react-router-dom";
 
 export interface PageElementProps {
   element: PageElement;
@@ -85,10 +85,14 @@ export const radioElement = (props: PageElementProps) => {
 };
 
 export const buttonLinkElement = (props: PageElementProps) => {
+  const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
   const button = props.element as ButtonLinkTemplate;
-  const { setCurrentPageId } = useStore();
+  const nav = () =>
+    navigate(`/report/${reportType}/${state}/${reportId}/${button.to}`);
+
   return (
-    <Button variant="return" onClick={() => setCurrentPageId(button.to)}>
+    <Button variant="return" onClick={() => nav()}>
       <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
       {button.label}
     </Button>

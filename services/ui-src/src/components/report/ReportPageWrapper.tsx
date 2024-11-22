@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { Page } from "./Page";
@@ -21,7 +21,7 @@ export const ReportPageWrapper = () => {
     setAnswers,
     setCurrentPageId,
   } = useStore();
-  const { reportType, state, reportId } = useParams();
+  const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const methods = useForm({
     defaultValues: useMemo(() => {
@@ -31,11 +31,16 @@ export const ReportPageWrapper = () => {
     shouldUnregister: true,
   });
 
+  const navigate = useNavigate();
+
   const { handleSubmit, reset } = methods;
   useEffect(() => {
-    const pageIndex = pageMap?.get(currentPageId ?? "")!;
+    const pageIndex = pageMap?.get(pageId ?? "")!;
     reset(report?.pages[pageIndex]);
-  }, [currentPageId]);
+    if (pageId) {
+      setCurrentPageId(pageId);
+    }
+  }, [pageId]);
 
   const handleBlur = (data: any) => {
     if (!report) return;
@@ -47,6 +52,9 @@ export const ReportPageWrapper = () => {
     try {
       const result = await getReport(reportType, state, reportId);
       setReport(result);
+      if (pageId) {
+        setCurrentPageId(pageId);
+      }
       setIsLoading(false);
     } catch {
       // console.log("oopsy")
@@ -68,7 +76,8 @@ export const ReportPageWrapper = () => {
   const currentPage = report.pages[pageMap.get(currentPageId)!];
   const SetPageIndex = (newPageIndex: number) => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
-    setCurrentPageId(parentPage.childPageIds[newPageIndex]);
+    const sectionId = parentPage.childPageIds[newPageIndex];
+    navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
   };
 
   return (

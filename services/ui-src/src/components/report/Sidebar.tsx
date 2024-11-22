@@ -15,7 +15,7 @@ const navItem = (title: string, index: number) => {
 };
 
 export const Sidebar = () => {
-  const { report, pageMap, currentPageId, setCurrentPageId } = useStore();
+  const { report, pageMap, currentPageId } = useStore();
   const { reportType, state, reportId } = useParams();
   const { isDesktop } = useBreakpoint();
   const [isOpen, setIsOpen] = useState<boolean>(isDesktop);
@@ -34,7 +34,6 @@ export const Sidebar = () => {
   const navigate = useNavigate();
 
   const onNavSelect = (sectionId: string) => {
-    setCurrentPageId(sectionId);
     navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
   };
 

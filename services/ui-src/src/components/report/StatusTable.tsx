@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Image,
@@ -19,7 +19,9 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 
 export const StatusTableElement = () => {
-  const { pageMap, report, setCurrentPageId } = useStore();
+  const { pageMap, report } = useStore();
+  const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
 
   if (!pageMap) {
     return null;
@@ -36,6 +38,9 @@ export const StatusTableElement = () => {
   // Build Rows
   const rows = sections.map((section, index) => {
     if (!section) return;
+    const nav = () =>
+      navigate(`/report/${reportType}/${state}/${reportId}/${section.id}`);
+
     return (
       <Tr key={section.id || index} p={0}>
         <Td>
@@ -52,7 +57,7 @@ export const StatusTableElement = () => {
           <Button
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
-            onClick={() => setCurrentPageId(section.id)}
+            onClick={() => nav()}
           >
             Edit
           </Button>

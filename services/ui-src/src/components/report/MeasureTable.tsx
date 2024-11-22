@@ -18,11 +18,14 @@ import {
 } from "../../types/report";
 import { PageElementProps } from "./Elements";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setModalComponent, setModalOpen, setCurrentPageId } =
-    useStore();
+  const { report, setModalComponent, setModalOpen } = useStore();
+  const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
+
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -45,6 +48,8 @@ export const MeasureTableElement = (props: PageElementProps) => {
 
   // Build Rows
   const rows = selectedMeasures.map((measure, index) => {
+    const nav = () =>
+      navigate(`/report/${reportType}/${state}/${reportId}/${measure.id}`);
     return (
       <Tr key={index}>
         <Td>
@@ -60,10 +65,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
           </Link>
         </Td>
         <Td>
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPageId(measure.id)}
-          >
+          <Button variant="outline" onClick={() => nav()}>
             Edit
           </Button>
         </Td>
