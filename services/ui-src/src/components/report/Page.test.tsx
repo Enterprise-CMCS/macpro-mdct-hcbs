@@ -1,9 +1,12 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ElementType, PageElement } from "types/report";
 import { Page } from "./Page";
+import { useNavigate, useParams } from "react-router-dom";
 
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
+  useParams: jest.fn(),
 }));
 
 jest.mock("../../utils/state/useStore", () => ({
@@ -23,6 +26,14 @@ jest.mock("./StatusTable", () => {
 });
 jest.mock("./MeasureTable", () => {
   return { MeasureTableElement: () => <div>Measure Table</div> };
+});
+
+const mockNavigate = jest.fn();
+(useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+(useParams as jest.Mock).mockReturnValue({
+  reportType: "exampleReport",
+  state: "exampleState",
+  reportId: "123",
 });
 
 const elements: PageElement[] = [
@@ -76,6 +87,31 @@ describe("Page Component", () => {
     const { container } = render(<Page elements={[element]} />);
     expect(container).not.toBeEmptyDOMElement();
   });
+
+  test("should render and navigate correctly for ButtonLink element", async () => {
+    render(
+      <Page
+        elements={[
+          {
+            type: ElementType.ButtonLink,
+            to: "report-page-id",
+            label: "click me",
+          },
+        ]}
+      />
+    );
+
+    // Button renders
+    const button = screen.getByRole("button", { name: /click me/i });
+    expect(button).toBeInTheDocument();
+
+    // Navigation
+    await userEvent.click(button);
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/report/exampleReport/exampleState/123/report-page-id"
+    );
+  });
+
   test("should not render if it is passed missing types", () => {
     // Page Element prevents us from doing this with typescript, but the real world may have other plans
     const badObject = { type: "unused element name" };
