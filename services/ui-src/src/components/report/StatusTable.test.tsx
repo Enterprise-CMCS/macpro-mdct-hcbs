@@ -68,12 +68,9 @@ describe("StatusTableElement", () => {
     await userEvent.click(editButton);
 
     expect(editButton).toBeVisible();
-    /*
-     *console.log("TEST RESULT: Navigating to: ", `/report/${report.type}/${report.state}/${report.id}/id-1`)
-     *const expectButtonPath = `/report/${report.type}/${report.state}/${report.id}/id-1`;
-     *expect(mockNavigate).toHaveBeenCalledWith(expectButtonPath);
-     *expect(mockNavigate).toHaveBeenCalled();
-     */
+
+    //const expectButtonPath = `/report/${report.type}/${report.state}/${report.id}/id-1`;
+    expect(mockNavigate).toHaveBeenCalled();
   });
 
   test("when the Review PDF button is clicked, navigate to PDF", async () => {

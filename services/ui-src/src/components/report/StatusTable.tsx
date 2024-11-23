@@ -46,19 +46,13 @@ export const StatusTableElement = () => {
   });
 
   const handleEditClick = (sectionId: string) => {
-    /*
-     *console.log(
-     *"STATUS STABLE - Navigating to:",
-     *`/report/${reportType}/${state}/${reportId}/${sectionId}`
-     *);
-     */
     const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
     setTargetPage(path);
   };
 
   // Build Rows
   const rows = sections.map((section, index) => {
-    if (!section) return;
+    if (!section) return null;
 
     return (
       <Tr key={section.id || index} p={0}>
