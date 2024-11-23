@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
@@ -23,23 +24,35 @@ export const StatusTableElement = () => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  if (!pageMap) {
+  console.log("UseParam values: ", { reportType, state, reportId})
+  const [targetPage, setTargetPage] = useState<string | null>(null);
+
+ useEffect(() => {
+    if (targetPage) {
+      navigate(targetPage);
+    }
+  }, [targetPage, navigate]);
+
+  if (!pageMap || !report) {
     return null;
   }
 
-  const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate)
-    .childPageIds;
-  const sections = childPages.slice(0, -1).map((id) => {
-    const pageIdx = pageMap.get(id);
-    if (!pageIdx) return;
-    return report?.pages[pageIdx] as ParentPageTemplate;
-  });
+  const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate).childPageIds;
+    const sections = childPages.slice(0, -1).map((id) => {
+      const pageIdx = pageMap.get(id);
+      if (!pageIdx) return null;
+      return report?.pages[pageIdx] as ParentPageTemplate;
+    }); 
+
+  const handleEditClick = (sectionId: string) => {
+    console.log("STATUS STABLE - Navigating to:", `/report/${reportType}/${state}/${reportId}/${sectionId}`)
+    const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
+    setTargetPage(path);
+  }
 
   // Build Rows
   const rows = sections.map((section, index) => {
-    if (!section) return;
-    const nav = () =>
-      navigate(`/report/${reportType}/${state}/${reportId}/${section.id}`);
+    if (!section) return null;
 
     return (
       <Tr key={section.id || index} p={0}>
@@ -51,13 +64,13 @@ export const StatusTableElement = () => {
           <TableStatusIcon
             tableStatus={"complete"}
             isPdf={true}
-          ></TableStatusIcon>
+          />
         </Td>
         <Td>
           <Button
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
-            onClick={() => nav()}
+            onClick={() => handleEditClick(section.id)}
           >
             Edit
           </Button>
