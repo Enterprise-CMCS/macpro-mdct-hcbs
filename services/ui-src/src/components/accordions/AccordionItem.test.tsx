@@ -31,7 +31,7 @@ describe("Test AccordionItem", () => {
       const button = screen.getByRole("button", { name: "Expand" });
       await userEvent.click(button);
     });
-    expect(screen.getByRole("button", { name: "Collapse" }));
+    expect(screen.getByRole("button", { name: "Collapse" })).toBeVisible();
   });
 
   testA11y(accordionItemComponent);

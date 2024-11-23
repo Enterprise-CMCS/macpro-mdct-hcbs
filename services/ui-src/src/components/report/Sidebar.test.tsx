@@ -87,9 +87,8 @@ describe("Sidebar", () => {
     );
     const button = screen.getByText("Section 1");
     await userEvent.click(button);
-    expect(mockUseNavigate).toHaveBeenCalledWith(
-      "/report/exampleReport/exampleState/123/id-1"
-    );
+    const reportPath = "/report/exampleReport/exampleState/123/id-1";
+    expect(mockUseNavigate).toHaveBeenCalledWith(reportPath);
   });
 
   test("should expand on Click", async () => {
