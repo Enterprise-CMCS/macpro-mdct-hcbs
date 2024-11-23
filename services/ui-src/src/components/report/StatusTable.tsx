@@ -24,35 +24,41 @@ export const StatusTableElement = () => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  console.log("UseParam values: ", { reportType, state, reportId})
+  // console.log("UseParam values: ", { reportType, state, reportId });
   const [targetPage, setTargetPage] = useState<string | null>(null);
 
- useEffect(() => {
+  useEffect(() => {
     if (targetPage) {
       navigate(targetPage);
     }
   }, [targetPage, navigate]);
 
-  if (!pageMap || !report) {
+  if (!pageMap) {
     return null;
   }
 
-  const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate).childPageIds;
-    const sections = childPages.slice(0, -1).map((id) => {
-      const pageIdx = pageMap.get(id);
-      if (!pageIdx) return null;
-      return report?.pages[pageIdx] as ParentPageTemplate;
-    }); 
+  const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate)
+    .childPageIds;
+  const sections = childPages.slice(0, -1).map((id) => {
+    const pageIdx = pageMap.get(id);
+    if (!pageIdx) return null;
+    return report?.pages[pageIdx] as ParentPageTemplate;
+  });
 
   const handleEditClick = (sectionId: string) => {
-    console.log("STATUS STABLE - Navigating to:", `/report/${reportType}/${state}/${reportId}/${sectionId}`)
+    /*
+     *console.log(
+     *"STATUS STABLE - Navigating to:",
+     *`/report/${reportType}/${state}/${reportId}/${sectionId}`
+     *);
+     */
     const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
     setTargetPage(path);
-  }
+  };
 
   // Build Rows
   const rows = sections.map((section, index) => {
-    if (!section) return null;
+    if (!section) return;
 
     return (
       <Tr key={section.id || index} p={0}>
@@ -61,10 +67,7 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-          <TableStatusIcon
-            tableStatus={"complete"}
-            isPdf={true}
-          />
+          <TableStatusIcon tableStatus={"complete"} isPdf={true} />
         </Td>
         <Td>
           <Button
