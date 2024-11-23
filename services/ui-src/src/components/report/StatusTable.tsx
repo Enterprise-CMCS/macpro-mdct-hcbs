@@ -24,6 +24,10 @@ export const StatusTableElement = () => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
+  if (!pageMap) {
+    return null;
+  }
+
   // console.log("UseParam values: ", { reportType, state, reportId });
   const [targetPage, setTargetPage] = useState<string | null>(null);
 
@@ -32,10 +36,6 @@ export const StatusTableElement = () => {
       navigate(targetPage);
     }
   }, [targetPage, navigate]);
-
-  if (!pageMap) {
-    return null;
-  }
 
   const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate)
     .childPageIds;
