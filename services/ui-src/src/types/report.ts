@@ -180,6 +180,8 @@ export type RadioTemplate = {
   type: ElementType.Radio;
   label: string;
   value: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string;
 };
 
 export type ButtonLinkTemplate = {
