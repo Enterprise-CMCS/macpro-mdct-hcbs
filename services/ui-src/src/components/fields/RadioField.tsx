@@ -2,15 +2,16 @@ import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { RadioTemplate } from "types";
+import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
 
-  const defaultValue = radio.answer ?? "";
-  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const defaultValue = radio.value ?? [];
+  const [displayValue, setDisplayValue] =
+    useState<ChoiceTemplate[]>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
@@ -23,7 +24,11 @@ export const RadioField = (props: PageElementProps) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = event.target;
-    setDisplayValue(value);
+    const newValues = displayValue.map((choice) => {
+      choice.checked = choice.value === value;
+      return choice;
+    });
+    setDisplayValue(newValues);
     form.setValue(name, value, { shouldValidate: true });
   };
 
@@ -36,13 +41,14 @@ export const RadioField = (props: PageElementProps) => {
   const errorMessage = formErrorState?.[key]?.message;
   const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
   const labelText = radio.label;
+
   return (
     <Box>
       <CmsdsChoiceList
         name={key}
         type={"radio"}
         label={labelText || ""}
-        choices={radio.value}
+        choices={displayValue}
         hint={parsedHint}
         errorMessage={errorMessage}
         onChange={onChangeHandler}

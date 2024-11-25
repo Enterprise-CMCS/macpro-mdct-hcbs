@@ -193,6 +193,7 @@ export type ButtonLinkTemplate = {
 export type ChoiceTemplate = {
   label: string;
   value: string;
+  checked?: boolean;
 };
 
 export enum DeliverySystem {
