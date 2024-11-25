@@ -1,0 +1,15 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "End-to-end tests for the HCBS application",
+  "license": "ISC",
+  "scripts": {
+    "test": "playwright test",
+    "test-ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@playwright/test": "^1.49.0",
+    "playwright": "^1.49.0"
+  }
+}
