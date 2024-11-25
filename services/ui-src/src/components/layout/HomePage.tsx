@@ -30,7 +30,9 @@ export const HomePage = () => {
   return (
     <>
       <Collapse in={showBanner}>
-        <Banner bannerData={bannerData} />
+        <Box margin="0 2rem">
+          <Banner bannerData={bannerData} />
+        </Box>
       </Collapse>
       <PageTemplate>
         {/* show standard view to state users */}
