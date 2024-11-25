@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
@@ -57,13 +57,4 @@ export const RadioField = (props: PageElementProps) => {
       />
     </Box>
   );
-};
-
-const sx = {
-  ".ds-c-choice:disabled::before": {
-    boxShadow: "inset 0 0 4em 1em #A6A6A6",
-  },
-  ".ds-c-choice:disabled": {
-    borderColor: "palette.gray_light",
-  },
 };

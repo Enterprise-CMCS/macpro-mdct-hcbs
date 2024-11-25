@@ -5,7 +5,6 @@ import {
   SubHeaderTemplate,
   ParagraphTemplate,
   AccordionTemplate,
-  RadioTemplate,
   ButtonLinkTemplate,
   PageElement,
 } from "../../types/report";
