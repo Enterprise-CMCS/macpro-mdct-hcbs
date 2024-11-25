@@ -1,13 +1,4 @@
-import {
-  Button,
-  FormLabel,
-  Heading,
-  Radio,
-  RadioGroup,
-  Stack,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Heading, Stack, Image, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import {
   HeaderTemplate,
@@ -64,23 +55,6 @@ export const accordionElement = (props: PageElementProps) => {
     <TemplateCardAccordion
       verbiage={{ buttonLabel: accordion.label, text: accordion.value }}
     ></TemplateCardAccordion>
-  );
-};
-
-export const radioElement = (props: PageElementProps) => {
-  const radio = props.element as RadioTemplate;
-
-  return (
-    <RadioGroup>
-      <FormLabel fontWeight="bold">{radio.label}</FormLabel>
-      <Stack direction="column">
-        {radio.value.map((child, index) => (
-          <Radio key={index} value={child.value}>
-            {child.label}
-          </Radio>
-        ))}
-      </Stack>
-    </RadioGroup>
   );
 };
 

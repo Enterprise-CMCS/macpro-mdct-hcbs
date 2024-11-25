@@ -4,14 +4,12 @@ import {
   subHeaderElement,
   paragraphElement,
   accordionElement,
-  radioElement,
   buttonLinkElement,
 } from "./Elements";
-import { TextField } from "../fields/TextField";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import { MeasureTableElement } from "./MeasureTable";
 import { StatusTableElement } from "./StatusTable";
-import { DateField } from "../fields/DateField";
+import { TextField, DateField, RadioField } from "components";
 
 interface Props {
   elements: PageElement[];
@@ -34,7 +32,7 @@ export const Page = ({ elements }: Props) => {
       case ElementType.Accordion:
         return accordionElement;
       case ElementType.Radio:
-        return radioElement;
+        return RadioField;
       case ElementType.ButtonLink:
         return buttonLinkElement;
       case ElementType.MeasureTable:
