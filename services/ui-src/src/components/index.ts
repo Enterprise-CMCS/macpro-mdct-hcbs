@@ -31,6 +31,7 @@ export { TemplateCard } from "./cards/TemplateCard";
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
+export { RadioField } from "./fields/RadioField";
 export { TextField } from "./fields/TextField";
 export { DateField } from "./fields/DateField";
 // forms
