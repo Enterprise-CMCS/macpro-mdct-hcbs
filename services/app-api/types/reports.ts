@@ -34,12 +34,20 @@ export enum MeasureTemplateName {
   StandardMeasure,
 }
 
+export enum ReportStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  SUBMITTED = "Submitted",
+}
+
 export interface Report extends ReportTemplate {
   id?: string;
   state: string;
   created?: number;
   lastEdited?: number;
-  lastEditedBy?: string;
+  lastEditedBy: string;
+  lastEditedByEmail: string;
+  status: ReportStatus;
   name?: string;
 }
 
@@ -99,7 +107,6 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-
   title?: undefined;
   type?: undefined;
   elements?: undefined;

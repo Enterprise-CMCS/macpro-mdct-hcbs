@@ -3,7 +3,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
-import { UserRoles, HcbsUserState, UserContextShape } from "types";
+import {
+  UserRoles,
+  HcbsUserState,
+  UserContextShape,
+  AdminBannerState,
+} from "types";
+import { mockBannerData } from "./mockBanner";
 // GLOBALS
 
 global.React = React;
@@ -39,38 +45,70 @@ export const mockLDFlags = {
   set: mockFlags,
 };
 
-// AUTH
-
-jest.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: jest.fn().mockReturnValue({
-      getIdToken: () => ({
-        getJwtToken: () => "eyJLongToken",
-      }),
+/* Mock Amplify */
+jest.mock("aws-amplify/api", () => ({
+  get: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
     }),
-    currentAuthenticatedUser: () => {},
-    configure: () => {},
-    signOut: async () => {},
-    federatedSignIn: () => {},
-  },
-  API: {
-    get: () => {},
-    post: () => {},
-    put: () => {},
-    del: () => {},
-    configure: () => {},
-  },
-  Hub: {
-    listen: jest.fn(),
-  },
+  })),
+  post: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
+  put: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
+  del: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
 }));
+
+jest.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: jest.fn().mockReturnValue({
+    idToken: () => ({
+      payload: "eyJLongToken",
+    }),
+  }),
+  signOut: jest.fn().mockImplementation(() => Promise.resolve()),
+  signInWithRedirect: () => {},
+}));
+
+//  BANNER STATES / STORE
+
+export const mockBannerStore: AdminBannerState = {
+  bannerData: mockBannerData,
+  bannerActive: false,
+  bannerLoading: false,
+  bannerErrorMessage: { title: "", description: "" },
+  bannerDeleting: false,
+  setBannerData: () => {},
+  clearAdminBanner: () => {},
+  setBannerActive: () => {},
+  setBannerLoading: () => {},
+  setBannerErrorMessage: () => {},
+  setBannerDeleting: () => {},
+};
 
 // USER CONTEXT
 
 export const mockUserContext: UserContextShape = {
   user: undefined,
   logout: async () => {},
-  loginWithIDM: () => {},
+  loginWithIDM: async () => {},
   updateTimeout: async () => {},
   getExpiration: () => {},
 };
@@ -146,12 +184,14 @@ export const mockAdminUserStore: HcbsUserState = {
 
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState = {
+export const mockUseStore: HcbsUserState & AdminBannerState = {
   ...mockStateUserStore,
+  ...mockBannerStore,
 };
 
-export const mockUseAdminStore: HcbsUserState = {
+export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
   ...mockAdminUserStore,
+  ...mockBannerStore,
 };
 
 // ROUTER
@@ -168,6 +208,8 @@ export const mockLDClient = {
 
 // ASSET
 export * from "./mockAsset";
+// BANNER
+export * from "./mockBanner";
 // FORM
 export * from "./mockForm";
 // ROUTER

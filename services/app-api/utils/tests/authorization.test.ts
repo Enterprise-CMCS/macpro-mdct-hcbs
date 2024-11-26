@@ -1,132 +1,41 @@
-import {
-  hasPermissions,
-  isAuthenticated,
-  isAuthorizedToFetchState,
-} from "../authorization";
-import { getCognitoParameters } from "../../storage/cognito";
-import { UserRoles } from "../../types/types";
-import { proxyEvent } from "../../testing/proxyEvent";
+import { canReadState, canWriteState } from "../authorization";
+import { User, UserRoles } from "../../types/types";
 
-const mockVerifier = jest.fn();
+const adminUser = {
+  role: UserRoles.ADMIN,
+} as User;
 
-jest.mock("aws-jwt-verify", () => ({
-  __esModule: true,
-  CognitoJwtVerifier: {
-    create: jest.fn().mockImplementation(() => ({
-      verify: mockVerifier,
-    })),
-  },
-}));
+const stateUser = {
+  role: UserRoles.STATE_USER,
+  state: "CO",
+} as User;
 
-jest.mock("../../storage/cognito", () => ({
-  getCognitoParameters: jest.fn().mockResolvedValue({
-    userPoolId: "pool-id",
-    userPoolClientId: "client-id",
-  }),
-}));
-
-const noApiKeyEvent = { ...proxyEvent };
-const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
-
-describe("Test authorization with api key and environment variables", () => {
-  beforeEach(() => {
-    process.env["COGNITO_USER_POOL_ID"] = "fakeId";
-    process.env["COGNITO_USER_POOL_CLIENT_ID"] = "fakeClientId";
-  });
-  afterEach(() => {
-    delete process.env.COGNITO_USER_POOL_ID;
-    delete process.env.COGNITO_USER_POOL_CLIENT_ID;
-    jest.clearAllMocks();
-  });
-  test("is not authorized when token is missing or invalid", async () => {
-    mockVerifier.mockImplementation(() => {
-      throw new Error("could not verify");
+describe("Authorization functions", () => {
+  describe("canReadState", () => {
+    it("should allow admins", () => {
+      expect(canReadState(adminUser, "CO")).toBe(true);
     });
-    const authStatus = await isAuthenticated(apiKeyEvent);
-    expect(authStatus).toBeFalsy();
-  });
-  test("is authorized when api key is passed and environment variables are set", async () => {
-    mockVerifier.mockReturnValue(true);
-    const authStatus = await isAuthenticated(apiKeyEvent);
-    expect(authStatus).toBeTruthy();
-  });
-});
 
-describe("Test authorization with api key and ssm parameters", () => {
-  beforeEach(() => {
-    mockVerifier.mockReturnValue(true);
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-  test("is authorized when api key is passed and ssm parameters exist", async () => {
-    const authStatus = await isAuthenticated(apiKeyEvent);
-    expect(authStatus).toBeTruthy();
-  });
+    it("should allow state users to read their own state", () => {
+      expect(canReadState(stateUser, "CO")).toBe(true);
+    });
 
-  test("authorization should reach out to SSM when missing cognito info", async () => {
-    delete process.env["COGNITO_USER_POOL_ID"];
-    delete process.env["COGNITO_USER_POOL_CLIENT_ID"];
-
-    await isAuthenticated(apiKeyEvent);
-    expect(getCognitoParameters).toHaveBeenCalled();
-  });
-});
-
-const mockedDecode = jest.fn();
-
-jest.mock("jwt-decode", () => ({
-  __esModule: true,
-  default: () => {
-    return mockedDecode();
-  },
-}));
-
-describe("Check user has permissions", () => {
-  beforeEach(() => {
-    mockedDecode.mockReturnValue({
-      "custom:cms_roles": UserRoles.ADMIN,
+    it("should forbid state users to read other states", () => {
+      expect(canReadState(stateUser, "TX")).toBe(false);
     });
   });
 
-  test("has permissions should pass when the asked for role is the given role", () => {
-    expect(hasPermissions(apiKeyEvent, [UserRoles.ADMIN])).toBeTruthy();
-  });
-  test("has permissions should fail when the asked for role is the given role", () => {
-    expect(hasPermissions(apiKeyEvent, [UserRoles.STATE_USER])).toBeFalsy();
-  });
-  test("has permissions should fail when the api token is missing", () => {
-    expect(hasPermissions(noApiKeyEvent, [UserRoles.ADMIN])).toBeFalsy();
-  });
-});
+  describe("canWriteState", () => {
+    it("should forbid admins", () => {
+      expect(canWriteState(adminUser, "CO")).toBe(false);
+    });
 
-describe("Test isAuthorizedToFetchState", () => {
-  test("isAuthorizedToFetchState should pass when requested role and state match user role and state", () => {
-    mockedDecode.mockReturnValue({
-      "custom:cms_roles": UserRoles.STATE_USER,
-      "custom:cms_state": "AL",
+    it("should allow state users to read their own state", () => {
+      expect(canWriteState(stateUser, "CO")).toBe(true);
     });
-    expect(isAuthorizedToFetchState(apiKeyEvent, "AL")).toBeTruthy();
-  });
-  test("isAuthorizedToFetchState should fail if state requested does not match role", () => {
-    mockedDecode.mockReturnValue({
-      "custom:cms_roles": UserRoles.STATE_USER,
-      "custom:cms_state": "AL",
+
+    it("should forbid state users to read other states", () => {
+      expect(canWriteState(stateUser, "TX")).toBe(false);
     });
-    expect(isAuthorizedToFetchState(apiKeyEvent, "TX")).toBeFalsy();
-  });
-  test("isAuthorizedToFetchState should fail if state is not specified in state user role", () => {
-    mockedDecode.mockReturnValue({
-      "custom:cms_roles": UserRoles.STATE_USER,
-    });
-    expect(isAuthorizedToFetchState(apiKeyEvent, "AL")).toBeFalsy();
-  });
-  test("isAuthorizedToFetchState should pass for admin, regardless of state", () => {
-    mockedDecode.mockReturnValue({
-      "custom:cms_roles": UserRoles.ADMIN,
-    });
-    expect(isAuthorizedToFetchState(apiKeyEvent, "TX")).toBeTruthy();
-    expect(isAuthorizedToFetchState(apiKeyEvent, "AL")).toBeTruthy();
-    expect(isAuthorizedToFetchState(apiKeyEvent, "OR")).toBeTruthy();
   });
 });

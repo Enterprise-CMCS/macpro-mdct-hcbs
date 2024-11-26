@@ -154,6 +154,7 @@ const theme = extendTheme({
           "&:disabled, &:disabled:hover": {
             color: "palette.gray",
             backgroundColor: "palette.gray_lighter",
+            opacity: 1,
           },
         },
         transparent: {
@@ -324,14 +325,11 @@ const theme = extendTheme({
       },
       variants: {
         h1: {
-          fontSize: "2.25rem",
-          paddingBottom: "0.5rem",
-        },
-        sidebar: {
-          fontSize: "21px",
-          fontWeight: "700",
-          padding: "2rem",
-          margin: "0",
+          fontSize: "4xl",
+          fontWeight: "normal",
+          ".mobile &": {
+            fontSize: "2xl",
+          },
         },
         subHeader: {
           fontSize: "21px",
@@ -339,6 +337,15 @@ const theme = extendTheme({
           p: {
             margin: "0",
           },
+          ".mobile &": {
+            fontSize: "lg",
+          },
+        },
+        sidebar: {
+          fontSize: "21px",
+          fontWeight: "700",
+          padding: "2rem",
+          margin: "0",
         },
         login: {
           my: "6rem",
@@ -396,6 +403,22 @@ const theme = extendTheme({
           textDecoration: "none",
           ":focus, :focus-visible, :hover, :visited, :visited:hover": {
             textDecoration: "none",
+          },
+        },
+        outlineButton: {
+          color: "palette.primary",
+          border: "1px solid",
+          padding: ".5rem 1rem",
+          borderRadius: "5px",
+          fontWeight: "bold",
+          textDecoration: "none",
+          _visited: { color: "palette.primary" },
+          ":hover, :visited:hover": {
+            color: "palette.primary_darker",
+            textDecoration: "none",
+          },
+          ".mobile &": {
+            border: "none",
           },
         },
       },
@@ -514,7 +537,7 @@ const theme = extendTheme({
         status: {
           td: {
             fontSize: "14px",
-            padding: "0.75rem 0",
+            padding: "0.75rem 0.75rem 0.75rem 0",
             "&:first-of-type": {
               width: "65%",
               fontWeight: "bold",
@@ -524,12 +547,24 @@ const theme = extendTheme({
             },
           },
         },
+        export: {
+          td: {
+            fontSize: "14px",
+            width: "50%",
+            "p:first-of-type": {
+              fontWeight: "bold",
+            },
+          },
+        },
       },
     },
     Text: {
       baseStyle: {
         color: "palette.base",
         transition: "all 0.3s ease",
+        ".mobile &": {
+          fontSize: ".95rem",
+        },
       },
       variants: {
         tableEmpty: {

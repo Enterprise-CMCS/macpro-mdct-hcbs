@@ -1,10 +1,18 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent } from "../../types/types";
+import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { canWriteState } from "../../utils/authorization";
 import { createReport } from "./create";
 
+jest.mock("../../utils/authentication", () => ({
+  authenticatedUser: jest.fn().mockResolvedValue({
+    role: UserRoles.STATE_USER,
+    state: "PA",
+  }),
+}));
+
 jest.mock("../../utils/authorization", () => ({
-  isAuthenticated: jest.fn().mockResolvedValue(true),
+  canWriteState: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("./buildReport", () => ({
@@ -27,8 +35,14 @@ describe("Test create report handler", () => {
       ...proxyEvent,
       pathParameters: {},
     } as APIGatewayProxyEvent;
-    const res = await createReport(badTestEvent, null);
+    const res = await createReport(badTestEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  });
+
+  it("should return 403 if user is not authorized", async () => {
+    (canWriteState as jest.Mock).mockReturnValueOnce(false);
+    const response = await createReport(testEvent);
+    expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
   test("Test missing body", async () => {
@@ -37,12 +51,12 @@ describe("Test create report handler", () => {
       pathParameters: { reportType: "QM", state: "PA" },
       body: null,
     } as APIGatewayProxyEvent;
-    const res = await createReport(emptyBodyEvent, null);
+    const res = await createReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
   test("Test Successful create", async () => {
-    const res = await createReport(testEvent, null);
+    const res = await createReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });

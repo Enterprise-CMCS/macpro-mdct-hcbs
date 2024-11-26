@@ -1,12 +1,11 @@
-import { API } from "aws-amplify";
+import { apiLib } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
 
 export async function getSignedTemplateUrl(templateName: string) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
   };
 
-  const response = await API.get("hcbs", `/templates/${templateName}`, request);
-  return response;
+  return await apiLib.get(`/templates/${templateName}`, options);
 }

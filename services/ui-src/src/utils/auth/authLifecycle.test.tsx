@@ -1,6 +1,6 @@
 import { initAuthManager, updateTimeout, getExpiration } from "utils";
 import { refreshCredentials } from "./authLifecycle";
-import { Hub } from "aws-amplify";
+import { Hub } from "aws-amplify/utils";
 import { sub } from "date-fns";
 
 describe("utils/auth", () => {

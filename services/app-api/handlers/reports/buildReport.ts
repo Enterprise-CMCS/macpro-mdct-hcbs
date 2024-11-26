@@ -1,6 +1,13 @@
+import KSUID from "ksuid";
 import { qmReportTemplate } from "../../forms/qm";
 import { putReport } from "../../storage/reports";
-import { Report, ReportOptions, ReportType } from "../../types/reports";
+import {
+  Report,
+  ReportStatus,
+  ReportOptions,
+  ReportType,
+} from "../../types/reports";
+import { User } from "../../types/types";
 
 const reportTemplates = {
   [ReportType.QM]: qmReportTemplate,
@@ -10,16 +17,19 @@ export const buildReport = async (
   reportType: ReportType,
   state: string,
   reportOptions: ReportOptions,
-  username: string
+  user: User
 ) => {
   const report = structuredClone(reportTemplates[reportType]) as Report;
   // TODO: Save version to db (filled or unfilled?)
 
   report.state = state;
-  report.id = state + reportType + ""; // TODO: uid
+  report.id = KSUID.randomSync().string;
   report.created = Date.now();
   report.lastEdited = Date.now();
-  report.lastEditedBy = username;
+  report.lastEditedBy = user.fullName;
+  report.lastEditedByEmail = user.email;
+  report.type = reportType;
+  report.status = ReportStatus.NOT_STARTED;
   report.name = reportOptions.name;
 
   if (reportType == ReportType.QM) {

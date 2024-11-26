@@ -1,10 +1,18 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent } from "../../types/types";
+import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { canReadState } from "../../utils/authorization";
 import { getReport, getReportsForState } from "./get";
 
+jest.mock("../../utils/authentication", () => ({
+  authenticatedUser: jest.fn().mockResolvedValue({
+    role: UserRoles.STATE_USER,
+    state: "PA",
+  }),
+}));
+
 jest.mock("../../utils/authorization", () => ({
-  isAuthenticated: jest.fn().mockResolvedValue(true),
+  canReadState: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("../../storage/reports", () => ({
@@ -29,12 +37,18 @@ describe("Test get report handler", () => {
         ...proxyEvent,
         headers: { "cognito-identity-id": "test" },
       };
-      const res = await getReport(badTestEvent, null);
+      const res = await getReport(badTestEvent);
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
     });
 
+    it("should return 403 if user is not authorized", async () => {
+      (canReadState as jest.Mock).mockReturnValueOnce(false);
+      const response = await getReport(testEvent);
+      expect(response.statusCode).toBe(StatusCodes.Forbidden);
+    });
+
     test("Test Successful get", async () => {
-      const res = await getReport(testEvent, null);
+      const res = await getReport(testEvent);
 
       expect(res.statusCode).toBe(StatusCodes.Ok);
     });
@@ -46,12 +60,18 @@ describe("Test get report handler", () => {
         ...proxyEvent,
         headers: { "cognito-identity-id": "test" },
       };
-      const res = await getReportsForState(badTestEvent, null);
+      const res = await getReportsForState(badTestEvent);
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
     });
 
+    it("should return 403 if user is not authorized", async () => {
+      (canReadState as jest.Mock).mockReturnValueOnce(false);
+      const response = await getReportsForState(testEvent);
+      expect(response.statusCode).toBe(StatusCodes.Forbidden);
+    });
+
     test("Test Successful get", async () => {
-      const res = await getReportsForState(testEvent, null);
+      const res = await getReportsForState(testEvent);
 
       expect(res.statusCode).toBe(StatusCodes.Ok);
     });

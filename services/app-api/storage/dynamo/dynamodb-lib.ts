@@ -4,9 +4,7 @@ import {
   ScanCommandOutput,
 } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, Paginator } from "@aws-sdk/lib-dynamodb";
-// utils
 import { logger } from "../../libs/debug-lib";
-// types
 
 const localConfig = {
   endpoint: process.env.DYNAMODB_URL,

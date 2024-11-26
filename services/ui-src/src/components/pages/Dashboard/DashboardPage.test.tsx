@@ -36,7 +36,7 @@ jest.mock("utils/api/requestMethods/report", () => ({
       lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
       lastEditedBy: "Mock User",
       status: "Not Started",
-    } as Report,
+    } as unknown as Report,
   ]),
 }));
 

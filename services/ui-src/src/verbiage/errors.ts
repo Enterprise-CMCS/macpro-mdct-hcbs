@@ -19,3 +19,22 @@ export const genericErrorContent = [
     content: ".",
   },
 ];
+
+export const bannerErrors = {
+  GET_BANNER_FAILED: {
+    title: "Banner could not be fetched",
+    description: genericErrorContent,
+  },
+  REPLACE_BANNER_FAILED: {
+    title: "Current banner could not be replaced.",
+    description: genericErrorContent,
+  },
+  DELETE_BANNER_FAILED: {
+    title: "Current banner could not be deleted",
+    description: genericErrorContent,
+  },
+  CREATE_BANNER_FAILED: {
+    title: "Could not create a banner.",
+    description: genericErrorContent,
+  },
+};
