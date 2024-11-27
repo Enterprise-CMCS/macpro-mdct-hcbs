@@ -17,8 +17,8 @@ import {
   RadioTemplate,
   ButtonLinkTemplate,
   PageElement,
-} from "../../types/report";
-import { TemplateCardAccordion } from "components/accordions/TemplateCardAccordion";
+} from "types";
+import { TemplateCardAccordion } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 
 export interface PageElementProps {

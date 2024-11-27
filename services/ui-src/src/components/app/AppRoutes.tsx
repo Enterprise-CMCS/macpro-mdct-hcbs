@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
   AdminPage,
+  CreateReportOptions,
   HelpPage,
   HomePage,
   ProfilePage,
@@ -8,9 +9,8 @@ import {
   NotFoundPage,
   AdminBannerProvider,
   ExportedReportPage,
+  ReportPageWrapper,
 } from "components";
-import { CreateReportOptions } from "components/pages/CreateReportOptions/CreateReportOptions";
-import { ReportPageWrapper } from "components/report/ReportPageWrapper";
 import { useStore } from "utils";
 
 export const AppRoutes = () => {

@@ -10,15 +10,14 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
-import { MeasureReplacementModal } from "./MeasureReplacementModal";
+import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
   MeasureTableTemplate,
-} from "../../types/report";
-import { PageElementProps } from "./Elements";
-import { TableStatusIcon } from "components/tables/TableStatusIcon";
+} from "types";
 import { reportBasePath, useStore } from "utils";
+import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;

@@ -31,8 +31,8 @@ export { TemplateCard } from "./cards/TemplateCard";
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
-export { TextField } from "./fields/TextField";
 export { DateField } from "./fields/DateField";
+export { TextField } from "./fields/TextField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";
@@ -41,10 +41,19 @@ export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
-export { HelpPage } from "./pages/HelpPage/HelpPage";
-export { ProfilePage } from "./pages/Profile/ProfilePage";
-export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+export { CreateReportOptions } from "./pages/CreateReportOptions/CreateReportOptions";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
+export { HelpPage } from "./pages/HelpPage/HelpPage";
+export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+export { ProfilePage } from "./pages/Profile/ProfilePage";
+// report
+export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
+export { Page } from "./report/Page";
+export { PraDisclosure } from "./report/PraDisclosure";
+export { ReportModal } from "./report/ReportModal";
+export { ReportPageWrapper } from "./report/ReportPageWrapper";
+export { Sidebar } from "./report/Sidebar";
+export { SubnavBar } from "./report/SubnavBar";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
@@ -52,6 +61,7 @@ export { MenuOption } from "./menus/MenuOption";
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables
 export { Table } from "./tables/Table";
+export { TableStatusIcon } from "./tables/TableStatusIcon";
 // dashboard
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";
