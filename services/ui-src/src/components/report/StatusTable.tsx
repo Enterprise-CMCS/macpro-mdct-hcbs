@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
@@ -28,15 +27,6 @@ export const StatusTableElement = () => {
     return null;
   }
 
-  // console.log("UseParam values: ", { reportType, state, reportId });
-  const [targetPage, setTargetPage] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (targetPage) {
-      navigate(targetPage);
-    }
-  }, [targetPage, navigate]);
-
   const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate)
     .childPageIds;
   const sections = childPages.slice(0, -1).map((id) => {
@@ -47,7 +37,7 @@ export const StatusTableElement = () => {
 
   const handleEditClick = (sectionId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
-    setTargetPage(path);
+    navigate(path);
   };
 
   // Build Rows

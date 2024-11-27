@@ -68,8 +68,6 @@ describe("StatusTableElement", () => {
     await userEvent.click(editButton);
 
     expect(editButton).toBeVisible();
-
-    //const expectButtonPath = `/report/${report.type}/${report.state}/${report.id}/id-1`;
     expect(mockNavigate).toHaveBeenCalled();
   });
 
