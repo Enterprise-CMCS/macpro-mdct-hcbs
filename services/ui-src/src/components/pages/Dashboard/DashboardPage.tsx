@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { StateNames } from "../../../constants";
 import { isReportType, isStateAbbr, Report } from "types";
 import {
   PageTemplate,
   InstructionsAccordion,
   DashboardTable,
+  AddEditReportModal,
 } from "components";
 import {
   Box,
@@ -15,6 +16,7 @@ import {
   Link,
   Text,
   Flex,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { parseCustomHtml, useStore } from "utils";
 import dashboardVerbiage from "verbiage/pages/dashboard";
@@ -23,13 +25,16 @@ import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const { userIsAdmin } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<Report[]>([]);
   const { intro, body } = dashboardVerbiage;
   const fullStateName = StateNames[state as keyof typeof StateNames];
+
+  // TO-DO: update accordingly - if a user is an admin or a read-only type, use the selected state, otherwise use their assigned state
+  const activeState = state;
 
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {
@@ -43,6 +48,20 @@ export const DashboardPage = () => {
       setIsLoading(false);
     })();
   }, [reportType, state]);
+
+  const openAddEditReportModal = () => {
+    // TO-DO: setSelectedReport with formData
+
+    // use disclosure to open modal
+    addEditReportModalOnOpenHandler();
+  };
+
+  // add/edit program modal disclosure
+  const {
+    isOpen: addEditReportModalIsOpen,
+    onOpen: addEditReportModalOnOpenHandler,
+    onClose: addEditReportModalOnCloseHandler,
+  } = useDisclosure();
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
@@ -69,11 +88,19 @@ export const DashboardPage = () => {
         {!isLoading && <DashboardTable reports={reports} />}
         {!reports?.length && <Text variant="tableEmpty">{body.empty}</Text>}
         <Flex justifyContent="center">
-          <Button onClick={() => navigate(body.link.route)} type="submit">
+          <Button onClick={() => openAddEditReportModal()} type="submit">
             {body.link.callToActionText}
           </Button>
         </Flex>
       </Flex>
+      <AddEditReportModal
+        activeState={activeState!}
+        reportType={reportType!}
+        modalDisclosure={{
+          isOpen: addEditReportModalIsOpen,
+          onClose: addEditReportModalOnCloseHandler,
+        }}
+      />
     </PageTemplate>
   );
 };

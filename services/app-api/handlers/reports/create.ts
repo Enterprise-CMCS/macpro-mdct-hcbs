@@ -11,6 +11,7 @@ export const createReport = handler(
   async (request) => {
     const { reportType, state } = request.parameters;
     const user = request.user;
+    const body = request.body;
 
     if (!canWriteState(user, state)) {
       return forbidden(error.UNAUTHORIZED);
@@ -19,7 +20,7 @@ export const createReport = handler(
     if (!request?.body) {
       return badRequest("Invalid request");
     }
-    const options = JSON.parse(request.body) as ReportOptions;
+    const options = body as ReportOptions;
 
     const report = await buildReport(reportType, state, options, user);
 

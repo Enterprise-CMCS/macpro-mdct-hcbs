@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-// components
 import {
   Box,
   Button,
@@ -14,8 +13,7 @@ import {
   ModalOverlay,
   Spinner,
 } from "@chakra-ui/react";
-// assets
-import closeIcon from "assets/icons/icon_close.png";
+import closeIcon from "assets/icons/close/icon_close_primary.svg";
 
 export const Modal = ({
   modalDisclosure,

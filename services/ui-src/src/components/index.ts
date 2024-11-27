@@ -50,6 +50,7 @@ export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 // modals
 export { Modal } from "./modals/Modal";
+export { AddEditReportModal } from "./modals/AddEditReportModal";
 // Redirects
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables
