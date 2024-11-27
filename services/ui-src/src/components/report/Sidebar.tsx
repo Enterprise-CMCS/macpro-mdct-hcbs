@@ -1,9 +1,9 @@
+import { ReactNode, useState } from "react";
 import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useBreakpoint, useStore } from "utils";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { reportBasePath, useBreakpoint, useStore } from "utils";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
-import { ReactNode, useState } from "react";
 
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
@@ -16,7 +16,6 @@ const navItem = (title: string, index: number) => {
 
 export const Sidebar = () => {
   const { report, pageMap, currentPageId } = useStore();
-  const { reportType, state, reportId } = useParams();
   const { isDesktop } = useBreakpoint();
   const [isOpen, setIsOpen] = useState<boolean>(isDesktop);
   const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
@@ -34,7 +33,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
 
   const onNavSelect = (sectionId: string) => {
-    navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
+    navigate(reportBasePath(report!) + `/${sectionId}`);
   };
 
   const navSection = (section: number, index: number = 0): ReactNode => {
@@ -46,6 +45,8 @@ export const Sidebar = () => {
         <Button
           variant={"sidebar"}
           className={page.id === currentPageId ? "selected" : ""}
+          as={RouterLink}
+          to={reportBasePath(report!) + `/${page.id}`}
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box
