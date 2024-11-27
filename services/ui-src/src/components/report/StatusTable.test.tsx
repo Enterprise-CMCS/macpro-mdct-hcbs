@@ -1,17 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter } from "react-router-dom";
 import { useStore } from "utils";
 
 jest.mock("utils", () => ({
   useStore: jest.fn(),
-}));
-
-const mockNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useNavigate: () => mockNavigate,
 }));
 
 const report = {
@@ -64,11 +57,9 @@ describe("StatusTableElement", () => {
       </MemoryRouter>
     );
 
-    const editButton = screen.getAllByRole("button", { name: /Edit/i })[0];
-    await userEvent.click(editButton);
-
-    expect(editButton).toBeVisible();
-    expect(mockNavigate).toHaveBeenCalled();
+    const editButton = screen.getByRole("link", { name: /Edit/i });
+    const editButtonPath = `/report/${report.type}/${report.state}/${report.id}/id-1`;
+    expect(editButton).toHaveAttribute("href", editButtonPath);
   });
 
   test("when the Review PDF button is clicked, navigate to PDF", async () => {

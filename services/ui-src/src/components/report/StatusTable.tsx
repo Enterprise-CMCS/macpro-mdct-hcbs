@@ -1,4 +1,4 @@
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Image,
@@ -20,8 +20,6 @@ import { reportBasePath } from "utils/other/routing";
 
 export const StatusTableElement = () => {
   const { pageMap, report } = useStore();
-  const { reportType, state, reportId } = useParams();
-  const navigate = useNavigate();
 
   if (!pageMap) {
     return null;
@@ -34,11 +32,6 @@ export const StatusTableElement = () => {
     if (!pageIdx) return null;
     return report?.pages[pageIdx] as ParentPageTemplate;
   });
-
-  const handleEditClick = (sectionId: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
-    navigate(path);
-  };
 
   // Build Rows
   const rows = sections.map((section, index) => {
@@ -55,9 +48,10 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           <Button
+            as={RouterLink}
+            to={reportBasePath(report!) + `/${section.id}`}
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
-            onClick={() => handleEditClick(section.id)}
           >
             Edit
           </Button>
