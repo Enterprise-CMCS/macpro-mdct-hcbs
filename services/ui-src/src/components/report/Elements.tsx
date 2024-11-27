@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   FormLabel,
@@ -19,7 +20,6 @@ import {
 } from "../../types/report";
 import { TemplateCardAccordion } from "components/accordions/TemplateCardAccordion";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
-import { useNavigate, useParams } from "react-router-dom";
 
 export interface PageElementProps {
   element: PageElement;

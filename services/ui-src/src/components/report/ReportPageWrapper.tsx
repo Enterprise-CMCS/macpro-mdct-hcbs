@@ -1,14 +1,13 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { FormProvider, useForm } from "react-hook-form";
+import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
 import { Page } from "./Page";
 import { Sidebar } from "./Sidebar";
 import { ReportModal } from "./ReportModal";
 import { SubnavBar } from "./SubnavBar";
-import { getReport } from "utils/api/requestMethods/report";
-import { useStore } from "utils";
-import { FormProvider, useForm } from "react-hook-form";
-import { FormPageTemplate } from "types/report";
+import { getReport, useStore } from "utils";
+import { FormPageTemplate } from "types";
 import { PraDisclosure } from "./PraDisclosure";
 
 export const ReportPageWrapper = () => {
