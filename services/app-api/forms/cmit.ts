@@ -7,26 +7,6 @@ import {
 
 export const CMIT_LIST: CMIT[] = [
   {
-    cmit: 111,
-    name: "my measure",
-    uid: "abc",
-    options: "",
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
-    measureSteward: "CMS",
-    dataSource: DataSource.Administrative,
-    measureSpecification: [],
-  },
-  {
-    cmit: 222,
-    name: "another measure",
-    uid: "cde",
-    options: "",
-    deliverySystem: [DeliverySystem.FFS],
-    measureSteward: "CMS",
-    dataSource: DataSource.Administrative,
-    measureSpecification: [],
-  },
-  {
     cmit: 960,
     name: "LTSS-1: Comprehensive Assessment and Update",
     uid: "960",

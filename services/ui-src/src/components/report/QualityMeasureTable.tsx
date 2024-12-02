@@ -19,16 +19,13 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 
 export const QualityMeasureTableElement = (props: PageElementProps) => {
   const table = props.element as QualityMeasureTableTemplate;
-  const { report, setCurrentPageId } = useStore();
+  const { report, cmit, setCurrentPageId } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  console.log("hello");
-  console.log("measures", report);
-
   const selectedMeasures = measures.filter(
-    (page) => table.measureDisplay == "quality"
+    (_page) => table.measureDisplay == "quality"
   );
 
   // Build Rows

@@ -21,8 +21,13 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setModalComponent, setModalOpen, setCurrentPageId } =
-    useStore();
+  const {
+    report,
+    setMeasure,
+    setModalComponent,
+    setModalOpen,
+    setCurrentPageId,
+  } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -43,6 +48,11 @@ export const MeasureTableElement = (props: PageElementProps) => {
     setModalComponent(modal);
   };
 
+  const onEdit = (measure: MeasurePageTemplate) => {
+    setCurrentPageId(measure.id);
+    setMeasure(measure.cmit!);
+  };
+
   // Build Rows
   const rows = selectedMeasures.map((measure, index) => {
     return (
@@ -60,10 +70,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
           </Link>
         </Td>
         <Td>
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPageId(measure.id)}
-          >
+          <Button variant="outline" onClick={() => onEdit(measure)}>
             Edit
           </Button>
         </Td>

@@ -169,15 +169,9 @@ export const qmReportTemplate: ReportTemplate = {
       },
       {
         cmit: 960,
-        required: false,
+        required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName.QualityMeasure,
-      },
-      {
-        cmit: 960,
-        required: false,
-        stratified: false,
-        measureTemplate: MeasureTemplateName.QualityMeasure,
+        measureTemplate: MeasureTemplateName.StandardMeasure,
       },
     ],
     optionGroups: {
@@ -227,27 +221,26 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Do you want CMS to calculate this measure on your behalf?",
+          label: "Were the reported measure results audited or validated?",
           value: [
             {
-              label: "No, I am reporting on this measure",
-              value: "no",
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              children: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency of entity that audited or validated the report?",
+                },
+              ],
             },
-            { label: "Yes, CMS is reporting on my behalf", value: "yes" },
+            { label: "No, I am reporting on this measure", value: "no" },
           ],
-        },
-        {
-          type: ElementType.Textbox,
-          label: "Under what authorities is this measure being reported?",
-          helperText:
-            "Please provide authority demonstration name and control number for each authority being reported.",
         },
         {
           type: ElementType.Radio,
           label:
-            "Which tehnical specification of quality measure will be reported?",
-          helperText:
-            "Select the correct technical specification for the quality measure.",
+            "What Technical Specifications are you using to report this measure?",
           value: [
             { label: "CMS", value: "cms" },
             { label: "HEDIS", value: "hedis" },
@@ -256,13 +249,28 @@ export const qmReportTemplate: ReportTemplate = {
         {
           type: ElementType.Radio,
           label:
-            "Which delivery system was used for the quality measure being reported?",
-          helperText:
-            "Select the correct delivery system for the quality measure.",
+            "Did you deviate from the [reportYear] Technical Specifications?",
           value: [
-            { label: "FFS", value: "ffs" },
-            { label: "MLTSS", value: "mltss" },
-            { label: "Both FFS and MLTSS (separate", value: "ffsAndMltss" },
+            {
+              label: "Yes",
+              value: "yes",
+              children: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+            { label: "No", value: "no" },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Which delivery systems were used to report the LTSS measure?",
+          value: [
+            { label: "Managed Care", value: "managed-care" },
+            { label: "Free-For-Service", value: "fee-for-service" },
+            { label: "Both", value: "both" },
           ],
         },
         {
