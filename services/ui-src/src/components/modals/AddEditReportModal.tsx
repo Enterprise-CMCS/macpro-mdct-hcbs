@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Modal, TextField } from "components";
 import { Spinner, Flex } from "@chakra-ui/react";
 import { AnyObject, ElementType } from "types";
-import { createReport } from "utils/api/requestMethods/report";
+import {
+  createReport,
+  getReportsForState,
+} from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
-//import { useNavigate } from "react-router-dom";
+import { ReportOptions } from "../../../../app-api/types/reports";
 
 export const AddEditReportModal = ({
   activeState,
@@ -12,7 +15,6 @@ export const AddEditReportModal = ({
   modalDisclosure,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  //const navigate = useNavigate();
 
   // add validation to formJson
   const form = useForm();
@@ -20,17 +22,19 @@ export const AddEditReportModal = ({
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
 
-    const reportOptions = [];
+    const reportOptions: any = {
+      name: "",
+    } as ReportOptions;
 
     if (formData["reportTitle"]) {
-      reportOptions.push(formData["reportTitle"].answer);
+      reportOptions["name"] = formData["reportTitle"].answer;
     }
 
     await createReport(reportType, activeState, reportOptions);
 
+    await getReportsForState(reportType, activeState);
     setSubmitting(false);
     modalDisclosure.onClose();
-    //navigate(`${activeState}/${report.id}`);
   };
 
   return (
