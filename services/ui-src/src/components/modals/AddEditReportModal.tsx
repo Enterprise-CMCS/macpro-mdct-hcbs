@@ -7,7 +7,7 @@ import {
   getReportsForState,
 } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
-import { ReportOptions } from "../../../../app-api/types/reports";
+import { ReportOptions } from "types/report";
 
 export const AddEditReportModal = ({
   activeState,
