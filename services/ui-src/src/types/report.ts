@@ -201,6 +201,7 @@ export type ChoiceTemplate = {
   label: string;
   value: string;
   checked?: boolean;
+  children: PageElement[];
 };
 
 export enum DeliverySystem {

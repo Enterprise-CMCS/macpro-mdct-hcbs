@@ -2,14 +2,38 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { useFormContext } from "react-hook-form";
-import { ChoiceTemplate, RadioTemplate } from "types";
+import { ChoiceTemplate, ElementType, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
+import { TextField } from "components";
+
+export const formatChoices = (choices: ChoiceTemplate[]) => {
+  return choices.map((choice) => {
+    if (choice.children) {
+      const formatFields = choice.children.map((element) => {
+        if (element.type === ElementType.Textbox) {
+          return (
+            <TextField
+              element={{
+                type: ElementType.Textbox,
+                label: element.label,
+              }}
+              formkey={element.label}
+            ></TextField>
+          );
+        }
+        return <>Not Found</>;
+      });
+      return { ...choice, children: formatFields };
+    }
+    return choice;
+  });
+};
 
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
 
-  const defaultValue = radio.value ?? [];
+  const defaultValue = formatChoices(radio.value) ?? [];
   const [displayValue, setDisplayValue] =
     useState<ChoiceTemplate[]>(defaultValue);
 

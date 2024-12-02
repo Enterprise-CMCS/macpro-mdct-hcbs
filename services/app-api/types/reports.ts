@@ -1,6 +1,10 @@
 // Templates
 
-import { DataSource, DeliverySystem, MeasureSpecification } from "../utils/constants";
+import {
+  DataSource,
+  DeliverySystem,
+  MeasureSpecification,
+} from "../utils/constants";
 
 export enum ReportType {
   QM = "QM",
@@ -235,6 +239,7 @@ export type ButtonLinkTemplate = {
 export type ChoiceTemplate = {
   label: string;
   value: string;
+  children?: PageElement[];
 };
 
 export type MeasureTableTemplate = {
