@@ -113,6 +113,7 @@ const sx = {
   },
   modalHeader: {
     padding: "0",
+    margin: "0 0 2rem 0",
   },
   modalHeaderText: {
     padding: "0 4rem 0 0",
@@ -152,7 +153,6 @@ const sx = {
   },
   action: {
     justifyContent: "center",
-    marginTop: "1rem",
     marginRight: "2rem",
     minWidth: "10rem",
     span: {
@@ -169,7 +169,6 @@ const sx = {
   close: {
     justifyContent: "start",
     padding: ".5rem 1rem",
-    marginTop: "1rem",
     span: {
       marginLeft: "0rem",
       marginRight: "0.5rem",
