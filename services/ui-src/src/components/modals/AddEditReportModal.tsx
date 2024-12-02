@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Modal, TextField } from "components";
-import { Spinner, Flex } from "@chakra-ui/react";
+import { Spinner, Flex, Button } from "@chakra-ui/react";
 import { AnyObject, ElementType } from "types";
 import { createReport } from "utils/api/requestMethods/report";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+//import { useNavigate } from "react-router-dom";
 
 export const AddEditReportModal = ({
   activeState,
@@ -11,11 +12,13 @@ export const AddEditReportModal = ({
   modalDisclosure,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  //const navigate = useNavigate();
 
   // add validation to formJson
   const form = useForm();
 
   const onSubmit = async (formData: any) => {
+    //console.log("submitting");
     setSubmitting(true);
 
     const reportOptions = [];
@@ -28,7 +31,7 @@ export const AddEditReportModal = ({
 
     setSubmitting(false);
     modalDisclosure.onClose();
-    //navigate(`${props.activeState}/${report.id}`);
+    //navigate(`${activeState}/${report.id}`);
   };
 
   return (
@@ -42,17 +45,24 @@ export const AddEditReportModal = ({
         closeButtonText: "Cancel",
       }}
     >
-      <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
-        <Flex flexDirection="column" gap="1.5rem">
-          <TextField
-            element={{
-              type: ElementType.Textbox,
-              label: "Title text",
-            }}
-            formkey={"reportTitle"}
-          ></TextField>
-        </Flex>
-      </form>
+      <FormProvider {...form}>
+        <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
+          <Flex flexDirection="column" gap="1.5rem">
+            <TextField
+              element={{
+                type: ElementType.Textbox,
+                label: "Title text",
+              }}
+              formkey={"reportTitle"}
+            ></TextField>
+          </Flex>
+        </form>
+      </FormProvider>
+      <Flex>
+        <Button form="addEditReportModal" type="submit">
+          {submitting ? <Spinner size="md" /> : "Submit"}
+        </Button>
+      </Flex>
     </Modal>
   );
 };
