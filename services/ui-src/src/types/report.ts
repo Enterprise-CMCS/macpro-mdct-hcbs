@@ -211,6 +211,10 @@ export enum MeasureSteward {
   CMS,
 }
 
+export interface ReportOptions {
+  name: string;
+}
+
 export interface CMIT {
   cmit: number;
   name: string;
