@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, TextField } from "components";
-import { Spinner, Flex } from "@chakra-ui/react";
+import { Button, Spinner, Flex } from "@chakra-ui/react";
 import { AnyObject, ElementType } from "types";
 import { createReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
@@ -41,8 +41,7 @@ export const AddEditReportModal = ({
       content={{
         heading: "Add new Quality Measure Set Report",
         subheading: "",
-        actionButtonText: submitting ? <Spinner size="md" /> : "Start new",
-        closeButtonText: "Cancel",
+        actionButtonText: undefined,
       }}
     >
       <FormProvider {...form}>
@@ -60,6 +59,18 @@ export const AddEditReportModal = ({
           </Flex>
         </form>
       </FormProvider>
+      <Flex>
+        <Button form="addEditReportModal" type="submit">
+          {submitting ? <Spinner size="md" /> : "Start new"}
+        </Button>
+        <Button
+          form="addEditReportModal"
+          type="button"
+          onClick={modalDisclosure.onClose}
+        >
+          {"Cancel"}
+        </Button>
+      </Flex>
     </Modal>
   );
 };

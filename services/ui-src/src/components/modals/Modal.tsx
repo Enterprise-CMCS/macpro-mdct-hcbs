@@ -51,17 +51,7 @@ export const Modal = ({
         </Flex>
         <ModalBody sx={sx.modalBody}>{children}</ModalBody>
         <ModalFooter sx={sx.modalFooter}>
-          {formId && (
-            <Button
-              sx={sx.action}
-              form={formId}
-              type="submit"
-              data-testid="modal-submit-button"
-            >
-              {submitting ? <Spinner size="md" /> : content.actionButtonText}
-            </Button>
-          )}
-          {onConfirmHandler && (
+          {formId && onConfirmHandler && (
             <Button
               sx={sx.action}
               onClick={() => onConfirmHandler()}
