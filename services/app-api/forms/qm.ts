@@ -167,6 +167,18 @@ export const qmReportTemplate: ReportTemplate = {
         stratified: true,
         measureTemplate: MeasureTemplateName.StandardMeasure,
       },
+      {
+        cmit: 960,
+        required: false,
+        stratified: false,
+        measureTemplate: MeasureTemplateName.QualityMeasure,
+      },
+      {
+        cmit: 960,
+        required: false,
+        stratified: false,
+        measureTemplate: MeasureTemplateName.QualityMeasure,
+      },
     ],
     optionGroups: {
       rulesOne: [
@@ -196,8 +208,83 @@ export const qmReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
+          label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Do you want CMS to calculate this measure on your behalf?",
+          value: [
+            {
+              label: "No, I am reporting on this measure",
+              value: "no",
+            },
+            { label: "Yes, CMS is reporting on my behalf", value: "yes" },
+          ],
+        },
+        {
+          type: ElementType.Textbox,
+          label: "Under what authorities is this measure being reported?",
+          helperText:
+            "Please provide authority demonstration name and control number for each authority being reported.",
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Which tehnical specification of quality measure will be reported?",
+          helperText:
+            "Select the correct technical specification for the quality measure.",
+          value: [
+            { label: "CMS", value: "cms" },
+            { label: "HEDIS", value: "hedis" },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Which delivery system was used for the quality measure being reported?",
+          helperText:
+            "Select the correct delivery system for the quality measure.",
+          value: [
+            { label: "FFS", value: "ffs" },
+            { label: "MLTSS", value: "mltss" },
+            { label: "Both FFS and MLTSS (separate", value: "ffsAndMltss" },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
+      ],
+    },
+    [MeasureTemplateName.QualityMeasure]: {
+      id: "req-measure-result-report",
+      title: "Example Measure Result",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Required Measures Results Dashboard",
+          to: "req-measure-report",
         },
         {
           type: ElementType.Header,
@@ -216,15 +303,67 @@ export const qmReportTemplate: ReportTemplate = {
         {
           type: ElementType.Textbox,
           label:
-            "What is the state performance target for this measure established by the state?",
+            "What is the [two years in the future] state performance target for this measure established by the state?",
         },
         {
           type: ElementType.Radio,
-          label: "Is the performance target approved by CMS?",
+          label:
+            "Did the calculation of the measure results device from the measure technical specification?",
+          value: [
+            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
+          ],
+        },
+        {
+          type: ElementType.Textbox,
+          label: "Additional notes/comments",
+          helperText:
+            "If applicable, add any notes or comments to provide context to the reported measure results.",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Results",
+        },
+        {
+          type: ElementType.Paragraph,
+          title: "Overall Measure results",
+          text: "What are the overall results for this measure? To calculate the aggregate based on population weight, please use this template.",
+        },
+        {
+          type: ElementType.Textbox,
+          label: "Numerator",
+        },
+        {
+          type: ElementType.Textbox,
+          label: "Denominator",
+        },
+        {
+          type: ElementType.Textbox,
+          helperText: "Auto-calculates",
+          label: "Rate",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Stratification",
+        },
+        {
+          type: ElementType.Paragraph,
+          text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Are you reporting measure stratification for this measure?",
           value: [
             { label: "Yes", value: "yes" },
             { label: "No", value: "no" },
-            { label: "In process", value: "inProcess" },
           ],
         },
       ],

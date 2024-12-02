@@ -116,6 +116,7 @@ export enum ElementType {
   Radio = "radio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  QualityMeasureTable = "qualityMeasureTable",
   StatusTable = "statusTable",
 }
 
@@ -129,6 +130,7 @@ export type PageElement =
   | RadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
+  | QualityMeasureTableTemplate
   | StatusTableTemplate;
 
 export type HeaderTemplate = {
@@ -170,6 +172,11 @@ export type AccordionTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
+};
+
+export type QualityMeasureTableTemplate = {
+  type: ElementType.QualityMeasureTable;
+  measureDisplay: "quality";
 };
 
 export type StatusTableTemplate = {
