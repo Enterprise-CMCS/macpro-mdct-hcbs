@@ -5,7 +5,7 @@ import {
   putReport,
 } from "./report";
 // types
-import { Report, ReportType } from "types/report";
+import { Report, ReportOptions, ReportType } from "types/report";
 import { AnyObject } from "types";
 
 const report = {
@@ -27,8 +27,8 @@ jest.mock("../apiLib", () => ({
 }));
 
 const mockReport = {
-  "mock-report-field": "value",
-};
+  name: "report name",
+} as ReportOptions;
 
 describe("utils/report", () => {
   beforeEach(() => {
