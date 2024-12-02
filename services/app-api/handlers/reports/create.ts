@@ -22,7 +22,6 @@ export const createReport = handler(
     }
 
     const options = body as ReportOptions;
-
     const report = await buildReport(reportType, state, options, user);
 
     return ok(report);
