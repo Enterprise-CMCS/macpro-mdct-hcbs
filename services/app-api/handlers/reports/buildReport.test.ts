@@ -1,4 +1,4 @@
-import { ReportType } from "../../types/reports";
+import { ReportOptions, ReportType } from "../../types/reports";
 import { User } from "../../types/types";
 import { buildReport } from "./buildReport";
 
@@ -18,7 +18,10 @@ describe("Test create report handler", () => {
       fullName: "James Holden",
       email: "james.holden@test.com",
     } as User;
-    const report = await buildReport(ReportType.QM, state, ["rulesOne"], user);
+    const reportOptions = {
+      name: "report1",
+    } as ReportOptions;
+    const report = await buildReport(ReportType.QM, state, reportOptions, user);
 
     expect(report.state).toBe("PA");
     expect(report.type).toBe(ReportType.QM);
