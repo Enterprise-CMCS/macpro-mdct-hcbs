@@ -4,6 +4,12 @@ import {
   ElementType,
   ReportType,
   MeasureTemplateName,
+  ButtonLinkTemplate,
+  HeaderTemplate,
+  AccordionTemplate,
+  SubHeaderTemplate,
+  TextboxTemplate,
+  RadioTemplate,
 } from "../types/reports";
 
 export const qmReportTemplate: ReportTemplate = {
@@ -255,36 +261,36 @@ export const qmReportTemplate: ReportTemplate = {
       ],
     },
     [MeasureTemplateName["LTSS-1"]]: {
-      id: "req-measure-report",
+      id: "LTSS-1",
       title: "LTSS-1: Comprehensive Assessment and Update",
       type: PageType.Measure,
-      sidebar: false,
       substitutable: true,
+      sidebar: false,
       elements: [
         {
           type: ElementType.ButtonLink,
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
-        },
+        } as ButtonLinkTemplate,
         {
           type: ElementType.Header,
           text: "LTSS-1: Comprehensive Assessment and Update",
-        },
+        } as HeaderTemplate,
         {
           type: ElementType.Accordion,
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
-        },
+        } as AccordionTemplate,
         {
           type: ElementType.SubHeader,
           text: "Measure Information",
-        },
+        } as SubHeaderTemplate,
         {
           type: ElementType.Textbox,
           label:
             "What is the state performance target for this measure established by the state?",
-        },
+        } as TextboxTemplate,
         {
           type: ElementType.Radio,
           label: "Is the performance target approved by CMS?",
@@ -293,11 +299,11 @@ export const qmReportTemplate: ReportTemplate = {
             { label: "No", value: "no" },
             { label: "In process", value: "inProcess" },
           ],
-        },
+        } as RadioTemplate,
       ],
     },
     [MeasureTemplateName["LTSS-2"]]: {
-      id: "req-measure-report",
+      id: "LTSS-2",
       title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
       type: PageType.Measure,
       sidebar: false,
@@ -307,26 +313,26 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.ButtonLink,
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
-        },
+        } as ButtonLinkTemplate,
         {
           type: ElementType.Header,
-          text: "LTSS-2: Comprehensive Person-Centered Plan and Update",
-        },
+          text: "LTSS-1: Comprehensive Assessment and Update",
+        } as HeaderTemplate,
         {
           type: ElementType.Accordion,
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
-        },
+        } as AccordionTemplate,
         {
           type: ElementType.SubHeader,
           text: "Measure Information",
-        },
+        } as SubHeaderTemplate,
         {
           type: ElementType.Textbox,
           label:
             "What is the state performance target for this measure established by the state?",
-        },
+        } as TextboxTemplate,
         {
           type: ElementType.Radio,
           label: "Is the performance target approved by CMS?",
@@ -335,11 +341,11 @@ export const qmReportTemplate: ReportTemplate = {
             { label: "No", value: "no" },
             { label: "In process", value: "inProcess" },
           ],
-        },
+        } as RadioTemplate,
       ],
     },
     [MeasureTemplateName["LTSS-6"]]: {
-      id: "req-measure-report",
+      id: "LTSS-6",
       title: "LTSS-6: Admission to a Facility from the Community",
       type: PageType.Measure,
       sidebar: false,
@@ -348,26 +354,26 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.ButtonLink,
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
-        },
+        } as ButtonLinkTemplate,
         {
           type: ElementType.Header,
-          text: "LTSS-6: Admission to a Facility from the Community",
-        },
+          text: "LTSS-1: Comprehensive Assessment and Update",
+        } as HeaderTemplate,
         {
           type: ElementType.Accordion,
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
-        },
+        } as AccordionTemplate,
         {
           type: ElementType.SubHeader,
           text: "Measure Information",
-        },
+        } as SubHeaderTemplate,
         {
           type: ElementType.Textbox,
           label:
             "What is the state performance target for this measure established by the state?",
-        },
+        } as TextboxTemplate,
         {
           type: ElementType.Radio,
           label: "Is the performance target approved by CMS?",
@@ -376,11 +382,11 @@ export const qmReportTemplate: ReportTemplate = {
             { label: "No", value: "no" },
             { label: "In process", value: "inProcess" },
           ],
-        },
+        } as RadioTemplate,
       ],
     },
     [MeasureTemplateName["LTSS-7"]]: {
-      id: "req-measure-report",
+      id: "LTSS-7",
       title: "LTSS-7: Minimizing Facility Length of Stay",
       type: PageType.Measure,
       sidebar: false,
@@ -389,26 +395,26 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.ButtonLink,
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
-        },
+        } as ButtonLinkTemplate,
         {
           type: ElementType.Header,
-          text: "LTSS-7: Minimizing Facility Length of Stay",
-        },
+          text: "LTSS-1: Comprehensive Assessment and Update",
+        } as HeaderTemplate,
         {
           type: ElementType.Accordion,
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
-        },
+        } as AccordionTemplate,
         {
           type: ElementType.SubHeader,
           text: "Measure Information",
-        },
+        } as SubHeaderTemplate,
         {
           type: ElementType.Textbox,
           label:
             "What is the state performance target for this measure established by the state?",
-        },
+        } as TextboxTemplate,
         {
           type: ElementType.Radio,
           label: "Is the performance target approved by CMS?",
@@ -417,12 +423,12 @@ export const qmReportTemplate: ReportTemplate = {
             { label: "No", value: "no" },
             { label: "In process", value: "inProcess" },
           ],
-        },
+        } as RadioTemplate,
       ],
     },
     [MeasureTemplateName["LTSS-8"]]: {
-      id: "req-measure-report",
-      title: "TSS-8: Successful Transition after Long-Term Facility Stay",
+      id: "LTSS-8",
+      title: "LTSS-8: Successful Transition after Long-Term Facility Stay",
       type: PageType.Measure,
       sidebar: false,
       elements: [
@@ -430,26 +436,26 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.ButtonLink,
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
-        },
+        } as ButtonLinkTemplate,
         {
           type: ElementType.Header,
-          text: "TSS-8: Successful Transition after Long-Term Facility Stay",
-        },
+          text: "LTSS-1: Comprehensive Assessment and Update",
+        } as HeaderTemplate,
         {
           type: ElementType.Accordion,
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
-        },
+        } as AccordionTemplate,
         {
           type: ElementType.SubHeader,
           text: "Measure Information",
-        },
+        } as SubHeaderTemplate,
         {
           type: ElementType.Textbox,
           label:
             "What is the state performance target for this measure established by the state?",
-        },
+        } as TextboxTemplate,
         {
           type: ElementType.Radio,
           label: "Is the performance target approved by CMS?",
@@ -458,7 +464,7 @@ export const qmReportTemplate: ReportTemplate = {
             { label: "No", value: "no" },
             { label: "In process", value: "inProcess" },
           ],
-        },
+        } as RadioTemplate,
       ],
     },
   },
