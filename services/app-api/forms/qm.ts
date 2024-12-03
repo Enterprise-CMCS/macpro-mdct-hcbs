@@ -287,17 +287,40 @@ export const qmReportTemplate: ReportTemplate = {
           text: "Measure Information",
         } as SubHeaderTemplate,
         {
+          type: ElementType.Radio,
+          label: "Do you want CMS to calculate this measure on your behalf?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            { label: "Yes, CMS is reporting on my behalf", value: "yes" },
+          ],
+        } as RadioTemplate,
+        {
           type: ElementType.Textbox,
-          label:
-            "What is the state performance target for this measure established by the state?",
+          label: "Under what authorities is this measure being reported?",
+          helperText:
+            "Please provide authority demonstration name and control number for each authority being reported.",
         } as TextboxTemplate,
         {
           type: ElementType.Radio,
-          label: "Is the performance target approved by CMS?",
+          label:
+            "Which technical specification of quality measure will be reported?",
+          helperText:
+            "Select the correct technical specification for the quality measure.",
           value: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-            { label: "In process", value: "inProcess" },
+            { label: "CMS", value: "cms" },
+            { label: "HEDIS", value: "hedis" },
+          ],
+        } as RadioTemplate,
+        {
+          type: ElementType.Radio,
+          label:
+            "Which delivery system was used for the quality measure being reported?",
+          helperText:
+            "Select the correct delivery system for the quality measure.",
+          value: [
+            { label: "FFS", value: "ffs" },
+            { label: "MLTSS", value: "mltss" },
+            { label: "Both FFS and MLTSS (separate)", value: "both" },
           ],
         } as RadioTemplate,
       ],
