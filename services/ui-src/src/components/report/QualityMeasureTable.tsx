@@ -9,13 +9,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { PageElementProps } from "./Elements";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { CMIT_LIST } from "cmit";
 
-export const QualityMeasureTableElement = (props: PageElementProps) => {
+export const QualityMeasureTableElement = () => {
   const { cmit } = useStore();
-
   const cmitInfo = CMIT_LIST.find((item) => item.cmit === cmit);
 
   const onEdit = () => {};

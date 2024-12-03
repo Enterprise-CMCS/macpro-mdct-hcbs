@@ -223,6 +223,7 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Were the reported measure results audited or validated?",
           value: [
+            { label: "No, I am reporting on this measure", value: "no" },
             {
               label: "Yes, CMS is reporting on my behalf",
               value: "yes",
@@ -234,7 +235,6 @@ export const qmReportTemplate: ReportTemplate = {
                 },
               ],
             },
-            { label: "No, I am reporting on this measure", value: "no" },
           ],
         },
         {
@@ -251,6 +251,7 @@ export const qmReportTemplate: ReportTemplate = {
           label:
             "Did you deviate from the [reportYear] Technical Specifications?",
           value: [
+            { label: "No", value: "no" },
             {
               label: "Yes",
               value: "yes",
@@ -261,7 +262,6 @@ export const qmReportTemplate: ReportTemplate = {
                 },
               ],
             },
-            { label: "No", value: "no" },
           ],
         },
         {

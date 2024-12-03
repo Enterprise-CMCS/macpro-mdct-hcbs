@@ -10,17 +10,18 @@ import { TextField } from "components";
 export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
   return choices.map((choice) => {
     const formatFields =
-      choice?.checkedChildren?.map((element) => {
+      choice?.checkedChildren?.map((element, index) => {
         if (element.type === ElementType.Textbox) {
           return (
-            <TextField
-              key={element.label}
-              element={{
-                type: ElementType.Textbox,
-                label: element.label,
-              }}
-              formkey={element.label}
-            ></TextField>
+            <Box key={element.label} sx={sx.children}>
+              <TextField
+                element={{
+                  type: ElementType.Textbox,
+                  label: element.label,
+                }}
+                formkey={`${choice.value}.${index}`}
+              ></TextField>
+            </Box>
           );
         }
         return <></>;
@@ -83,4 +84,13 @@ export const RadioField = (props: PageElementProps) => {
       />
     </Box>
   );
+};
+
+const sx = {
+  children: {
+    padding: "0 22px",
+    border: "4px #0071BC solid",
+    borderWidth: "0 0 0 4px",
+    margin: "0 14px",
+  },
 };

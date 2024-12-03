@@ -15,7 +15,7 @@ export enum DeliverySystem {
 export enum DataSource {
   CaseRecordManagement = "CaseRecordManagement",
   Administrative = "Administrative",
-  Hybrid = "Hybrid"
+  Hybrid = "Hybrid",
 }
 
 export enum MeasureSteward {
