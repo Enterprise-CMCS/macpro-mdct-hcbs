@@ -231,6 +231,7 @@ jobs:
         working-directory: tests
       - name: Run Playwright tests
         run: yarn playwright test
+        id: run_playwright_tests
         working-directory: tests
         continue-on-error: true
         env:
@@ -246,6 +247,8 @@ jobs:
           # path: playwright-report/index.html # path on runner
           path: tests/playwright-report # path on runner
           retention-days: 30
+    outputs:
+      test_outcome: steps.run_playwright_tests.outcome
 
   upload-reports:
     name: Upload Reports
@@ -324,3 +327,8 @@ jobs:
         env:
           AWS_RETRY_MODE: adaptive
           AWS_MAX_ATTEMPTS: 10
+      - name: Fail if tests did not pass
+        if: ${{ needs.test.outputs.test_outcome != 'success' }}
+        run: |
+          echo "End-to-end tests in the deployed environment were not successful."
+          exit 1
