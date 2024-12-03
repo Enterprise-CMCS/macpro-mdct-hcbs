@@ -1,8 +1,12 @@
 import { test, expect } from "@playwright/test";
-
-import { adminPassword, adminUser, statePassword, stateUser } from "./consts";
-
-const adminFile = "playwright/.auth/admin.json";
+import {
+  adminAuthPath,
+  adminPassword,
+  adminUser,
+  statePassword,
+  stateUser,
+  stateUserAuthPath,
+} from "./consts";
 
 test("authenticate as admin", async ({ page }) => {
   await page.goto("/");
@@ -17,10 +21,8 @@ test("authenticate as admin", async ({ page }) => {
   });
   await expect(landingPageHeading).toBeVisible();
   await page.waitForTimeout(1000);
-  await page.context().storageState({ path: adminFile });
+  await page.context().storageState({ path: adminAuthPath });
 });
-
-const userFile = "playwright/.auth/stateUser.json";
 
 test("authenticate as user", async ({ page }) => {
   await page.goto("/");
@@ -35,5 +37,5 @@ test("authenticate as user", async ({ page }) => {
   });
   await expect(landingPageHeading).toBeVisible();
   await page.waitForTimeout(1000);
-  await page.context().storageState({ path: userFile });
+  await page.context().storageState({ path: stateUserAuthPath });
 });
