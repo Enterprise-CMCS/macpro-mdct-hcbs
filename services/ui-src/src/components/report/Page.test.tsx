@@ -55,7 +55,7 @@ const elements: PageElement[] = [
   {
     type: ElementType.Radio,
     label: "date label",
-    value: [{ label: "a", value: "1" }],
+    value: [{ label: "a", value: "1", checkedChildren: [] }],
   },
   {
     type: ElementType.ButtonLink,
