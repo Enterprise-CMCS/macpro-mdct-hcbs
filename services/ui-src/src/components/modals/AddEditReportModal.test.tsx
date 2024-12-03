@@ -9,6 +9,7 @@ import {
 import { useStore } from "utils";
 
 const mockCloseHandler = jest.fn();
+const mockReportHandler = jest.fn();
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -22,6 +23,7 @@ const modalComponent = (
         isOpen: true,
         onClose: mockCloseHandler,
       }}
+      reportHandler={mockReportHandler}
     />
   </RouterWrappedComponent>
 );
@@ -38,7 +40,7 @@ describe("Test AddEditProgramModal", () => {
 
   test("AddEditReportModal shows the contents", () => {
     expect(screen.getByText("QMS Report Name")).toBeTruthy();
-    expect(screen.getByText("Submit")).toBeTruthy();
+    expect(screen.getByText("Start new")).toBeTruthy();
   });
 
   test("AddEditReportModal top close button can be clicked", () => {
