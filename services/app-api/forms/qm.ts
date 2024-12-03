@@ -154,17 +154,42 @@ export const qmReportTemplate: ReportTemplate = {
     },
   ],
   measureLookup: {
+    // TODO: wtf is default and are there any other kinds of measures?
     defaultMeasures: [
       {
-        cmit: 123,
+        cmit: 960,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName.StandardMeasure,
+        measureTemplate: MeasureTemplateName["LTSS-1"],
+      },
+      {
+        cmit: 961,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-2"],
+      },
+      {
+        cmit: 20,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-6"],
+      },
+      {
+        cmit: 968,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-7"],
+      },
+      {
+        cmit: 414,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-8"],
       },
       {
         cmit: 234,
         required: false,
-        stratified: true,
+        stratified: false,
         measureTemplate: MeasureTemplateName.StandardMeasure,
       },
     ],
@@ -202,6 +227,213 @@ export const qmReportTemplate: ReportTemplate = {
         {
           type: ElementType.Header,
           text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Information",
+        },
+        {
+          type: ElementType.Textbox,
+          label:
+            "What is the state performance target for this measure established by the state?",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Is the performance target approved by CMS?",
+          value: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+            { label: "In process", value: "inProcess" },
+          ],
+        },
+      ],
+    },
+    [MeasureTemplateName["LTSS-1"]]: {
+      id: "req-measure-report",
+      title: "LTSS-1: Comprehensive Assessment and Update",
+      type: PageType.Measure,
+      sidebar: false,
+      substitutable: true,
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Required Measures Results Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "LTSS-1: Comprehensive Assessment and Update",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Information",
+        },
+        {
+          type: ElementType.Textbox,
+          label:
+            "What is the state performance target for this measure established by the state?",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Is the performance target approved by CMS?",
+          value: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+            { label: "In process", value: "inProcess" },
+          ],
+        },
+      ],
+    },
+    [MeasureTemplateName["LTSS-2"]]: {
+      id: "req-measure-report",
+      title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+      type: PageType.Measure,
+      sidebar: false,
+      substitutable: true,
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Required Measures Results Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Information",
+        },
+        {
+          type: ElementType.Textbox,
+          label:
+            "What is the state performance target for this measure established by the state?",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Is the performance target approved by CMS?",
+          value: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+            { label: "In process", value: "inProcess" },
+          ],
+        },
+      ],
+    },
+    [MeasureTemplateName["LTSS-6"]]: {
+      id: "req-measure-report",
+      title: "LTSS-6: Admission to a Facility from the Community",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Required Measures Results Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "LTSS-6: Admission to a Facility from the Community",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Information",
+        },
+        {
+          type: ElementType.Textbox,
+          label:
+            "What is the state performance target for this measure established by the state?",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Is the performance target approved by CMS?",
+          value: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+            { label: "In process", value: "inProcess" },
+          ],
+        },
+      ],
+    },
+    [MeasureTemplateName["LTSS-7"]]: {
+      id: "req-measure-report",
+      title: "LTSS-7: Minimizing Facility Length of Stay",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Required Measures Results Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "LTSS-7: Minimizing Facility Length of Stay",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Information",
+        },
+        {
+          type: ElementType.Textbox,
+          label:
+            "What is the state performance target for this measure established by the state?",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Is the performance target approved by CMS?",
+          value: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+            { label: "In process", value: "inProcess" },
+          ],
+        },
+      ],
+    },
+    [MeasureTemplateName["LTSS-8"]]: {
+      id: "req-measure-report",
+      title: "TSS-8: Successful Transition after Long-Term Facility Stay",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Required Measures Results Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "TSS-8: Successful Transition after Long-Term Facility Stay",
         },
         {
           type: ElementType.Accordion,
