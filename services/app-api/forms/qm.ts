@@ -168,24 +168,6 @@ export const qmReportTemplate: ReportTemplate = {
         measureTemplate: MeasureTemplateName.StandardMeasure,
       },
     ],
-    optionGroups: {
-      rulesOne: [
-        {
-          cmit: 888,
-          required: true,
-          stratified: false,
-          measureTemplate: MeasureTemplateName.StandardMeasure,
-        },
-      ],
-      rulesTwo: [
-        {
-          cmit: 999,
-          required: true,
-          stratified: false,
-          measureTemplate: MeasureTemplateName.StandardMeasure,
-        },
-      ],
-    },
   },
   measureTemplates: {
     [MeasureTemplateName.StandardMeasure]: {
