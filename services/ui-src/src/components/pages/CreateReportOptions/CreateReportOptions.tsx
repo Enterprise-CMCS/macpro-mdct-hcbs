@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useStore } from "utils";
 import { useNavigate } from "react-router-dom";
 import { createReport } from "utils/api/requestMethods/report";
+import { ReportOptions } from "types";
 
 export const CreateReportOptions = () => {
   const [rulesOne, setRulesOne] = useState("0");
@@ -13,18 +14,13 @@ export const CreateReportOptions = () => {
 
   const createForm = async () => {
     if (!state) throw new Error("Cannot create report without state on user");
-    const stateOptions = [];
 
-    // Jank but proof of concept
-    if (rulesOne == "1") {
-      stateOptions.push("rulesOne");
-    }
-    if (rulesTwo == "1") {
-      stateOptions.push("rulesTwo");
-    }
+    // proof of concept
+    const reportOptions = {
+      name: "report1",
+    } as ReportOptions;
 
-    const formOptions = { stateOptions };
-    const report = await createReport("QM", state, formOptions);
+    const report = await createReport("QM", state, reportOptions);
     navigate(`${state}/${report.id}`);
   };
 
