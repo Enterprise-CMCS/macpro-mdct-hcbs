@@ -48,6 +48,15 @@ export const DashboardPage = () => {
     })();
   }, [reportType, state]);
 
+  const reloadReports = (reportType: string, state: string) => {
+    (async () => {
+      setIsLoading(true);
+      const result = await getReportsForState(reportType, state);
+      setReports(result);
+      setIsLoading(false);
+    })();
+  };
+
   const openAddEditReportModal = () => {
     // TO-DO: setSelectedReport with formData
 
@@ -99,6 +108,7 @@ export const DashboardPage = () => {
           isOpen: addEditReportModalIsOpen,
           onClose: addEditReportModalOnCloseHandler,
         }}
+        reportHandler={reloadReports}
       />
     </PageTemplate>
   );

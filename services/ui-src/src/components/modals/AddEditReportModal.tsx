@@ -2,10 +2,7 @@ import { useState } from "react";
 import { Modal, TextField } from "components";
 import { Spinner, Flex } from "@chakra-ui/react";
 import { AnyObject, ElementType } from "types";
-import {
-  createReport,
-  getReportsForState,
-} from "utils/api/requestMethods/report";
+import { createReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
 import { ReportOptions } from "types/report";
 
@@ -13,6 +10,7 @@ export const AddEditReportModal = ({
   activeState,
   reportType,
   modalDisclosure,
+  reportHandler,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -32,7 +30,7 @@ export const AddEditReportModal = ({
 
     await createReport(reportType, activeState, reportOptions);
 
-    await getReportsForState(reportType, activeState);
+    await reportHandler(reportType, activeState);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
@@ -76,4 +74,5 @@ interface Props {
     isOpen: boolean;
     onClose: any;
   };
+  reportHandler: (reportType: string, activeState: string) => void;
 }
