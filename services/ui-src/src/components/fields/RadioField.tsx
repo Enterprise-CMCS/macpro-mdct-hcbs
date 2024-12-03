@@ -7,7 +7,7 @@ import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { TextField } from "components";
 
-export const formatChoices = (choices: ChoiceTemplate[]) => {
+export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
   return choices.map((choice) => {
     const formatFields =
       choice?.checkedChildren?.map((element) => {
@@ -27,6 +27,7 @@ export const formatChoices = (choices: ChoiceTemplate[]) => {
       }) ?? [];
     return {
       ...choice,
+      checked: choice.value === answer,
       checkedChildren: formatFields,
     };
   });
@@ -35,7 +36,7 @@ export const formatChoices = (choices: ChoiceTemplate[]) => {
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
   const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
-    radio.value ?? []
+    formatChoices(radio.value, radio.answer) ?? []
   );
 
   // get form context and register field
