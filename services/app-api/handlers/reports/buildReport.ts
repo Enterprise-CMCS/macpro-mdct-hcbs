@@ -6,6 +6,7 @@ import {
   PageElement,
   Report,
   ReportStatus,
+  ReportOptions,
   ReportType,
 } from "../../types/reports";
 import { User } from "../../types/types";
@@ -18,7 +19,7 @@ const reportTemplates = {
 export const buildReport = async (
   reportType: ReportType,
   state: string,
-  measureOptions: string[],
+  reportOptions: ReportOptions,
   user: User
 ) => {
   const report = structuredClone(reportTemplates[reportType]) as Report;
@@ -32,6 +33,7 @@ export const buildReport = async (
   report.lastEditedByEmail = user.email;
   report.type = reportType;
   report.status = ReportStatus.NOT_STARTED;
+  report.name = reportOptions["name"];
 
   if (reportType == ReportType.QM) {
     /*
@@ -39,11 +41,7 @@ export const buildReport = async (
      * TODO is measure order important? May need to sort.
      * TODO could a measure be included by multiple rules? May need to deduplicate.
      */
-    const measuresFromRules = Object.entries(report.measureLookup.optionGroups)
-      .filter(([ruleName, _measures]) => measureOptions.includes(ruleName))
-      .flatMap(([_ruleName, measures]) => measures);
-    const measures =
-      report.measureLookup.defaultMeasures.concat(measuresFromRules);
+    const measures = report.measureLookup.defaultMeasures;
 
     const measurePages = measures.map((measure) => {
       // TODO: make reusable. This will be used on the optional page when adding a measure.

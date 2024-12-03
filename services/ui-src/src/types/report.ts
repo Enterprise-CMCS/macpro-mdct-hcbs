@@ -224,6 +224,10 @@ export enum MeasureSpecification {
   HEDIS = "HEDIS",
 }
 
+export interface ReportOptions {
+  name: string;
+}
+
 export interface CMIT {
   cmit: number;
   name: string;

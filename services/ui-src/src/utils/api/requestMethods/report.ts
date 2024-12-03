@@ -1,11 +1,11 @@
 import { apiLib } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { Report } from "types/report";
+import { Report, ReportOptions } from "types/report";
 
 export async function createReport(
   reportType: string,
   state: string,
-  reportOptions: any // TODO: correct
+  reportOptions: ReportOptions
 ) {
   const requestHeaders = await getRequestHeaders();
   const options = {
