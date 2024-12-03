@@ -201,21 +201,27 @@ export type ChoiceTemplate = {
   label: string;
   value: string;
   checked?: boolean;
-  children: PageElement[];
+  checkedChildren: PageElement[];
 };
 
 export enum DeliverySystem {
-  FFS,
-  MLTSS,
+  FFS = "FFS",
+  MLTSS = "MLTSS",
 }
 
 export enum DataSource {
   CaseRecordManagement,
   Administrative,
+  Hybrid,
 }
 
 export enum MeasureSteward {
   CMS,
+}
+
+export enum MeasureSpecification {
+  CMS = "CMS",
+  HEDIS = "HEDIS",
 }
 
 export interface CMIT {
@@ -225,6 +231,7 @@ export interface CMIT {
   options: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
+  measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
 }
 

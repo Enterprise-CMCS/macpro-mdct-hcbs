@@ -226,7 +226,7 @@ export const qmReportTemplate: ReportTemplate = {
             {
               label: "Yes, CMS is reporting on my behalf",
               value: "yes",
-              children: [
+              checkedChildren: [
                 {
                   type: ElementType.Textbox,
                   label:
@@ -254,7 +254,7 @@ export const qmReportTemplate: ReportTemplate = {
             {
               label: "Yes",
               value: "yes",
-              children: [
+              checkedChildren: [
                 {
                   type: ElementType.Textbox,
                   label: "Please explain the deviation.",

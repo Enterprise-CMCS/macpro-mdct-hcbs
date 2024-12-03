@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createElement } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { useFormContext } from "react-hook-form";
@@ -9,11 +9,12 @@ import { TextField } from "components";
 
 export const formatChoices = (choices: ChoiceTemplate[]) => {
   return choices.map((choice) => {
-    if (choice.children) {
-      const formatFields = choice.children.map((element) => {
+    const formatFields =
+      choice?.checkedChildren?.map((element) => {
         if (element.type === ElementType.Textbox) {
           return (
             <TextField
+              key={element.label}
               element={{
                 type: ElementType.Textbox,
                 label: element.label,
@@ -22,20 +23,20 @@ export const formatChoices = (choices: ChoiceTemplate[]) => {
             ></TextField>
           );
         }
-        return <>Not Found</>;
-      });
-      return { ...choice, children: formatFields };
-    }
-    return choice;
+        return <></>;
+      }) ?? [];
+    return {
+      ...choice,
+      checkedChildren: formatFields,
+    };
   });
 };
 
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
-
-  const defaultValue = formatChoices(radio.value) ?? [];
-  const [displayValue, setDisplayValue] =
-    useState<ChoiceTemplate[]>(defaultValue);
+  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
+    radio.value ?? []
+  );
 
   // get form context and register field
   const form = useFormContext();

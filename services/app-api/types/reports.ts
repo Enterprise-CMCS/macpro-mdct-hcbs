@@ -239,7 +239,8 @@ export type ButtonLinkTemplate = {
 export type ChoiceTemplate = {
   label: string;
   value: string;
-  children?: PageElement[];
+  checked?: boolean;
+  checkedChildren?: PageElement[];
 };
 
 export type MeasureTableTemplate = {

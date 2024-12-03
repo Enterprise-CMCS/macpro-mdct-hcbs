@@ -9,41 +9,30 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
-import {
-  isMeasureTemplate,
-  MeasurePageTemplate,
-  QualityMeasureTableTemplate,
-} from "../../types/report";
 import { PageElementProps } from "./Elements";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import { CMIT_LIST } from "cmit";
 
 export const QualityMeasureTableElement = (props: PageElementProps) => {
-  const table = props.element as QualityMeasureTableTemplate;
-  const { report, cmit, setCurrentPageId } = useStore();
-  const measures = report?.pages.filter((page) =>
-    isMeasureTemplate(page)
-  ) as MeasurePageTemplate[];
+  const { cmit } = useStore();
 
-  const selectedMeasures = measures.filter(
-    (_page) => table.measureDisplay == "quality"
-  );
+  const cmitInfo = CMIT_LIST.find((item) => item.cmit === cmit);
+
+  const onEdit = () => {};
 
   // Build Rows
-  const rows = selectedMeasures.map((measure, index) => {
+  const rows = cmitInfo?.deliverySystem.map((system, index) => {
     return (
       <Tr key={index}>
         <Td>
           <TableStatusIcon tableStatus=""></TableStatusIcon>
         </Td>
         <Td width="100%">
-          <Text fontWeight="bold">{measure.title}</Text>
-          <Text>CMIT# {measure.cmit}</Text>
+          <Text fontWeight="bold">Delivery Method: {system}</Text>
+          <Text>CMIT# {cmit}</Text>
         </Td>
         <Td>
-          <Button
-            variant="outline"
-            onClick={() => setCurrentPageId(measure.id)}
-          >
+          <Button variant="outline" onClick={() => onEdit()}>
             Edit
           </Button>
         </Td>
