@@ -248,7 +248,7 @@ jobs:
           path: tests/playwright-report # path on runner
           retention-days: 30
     outputs:
-      test_outcome: steps.run_playwright_tests.outcome
+      test_outcome: ${{ steps.run_playwright_tests.outcome }}
 
   upload-reports:
     name: Upload Reports
