@@ -21,6 +21,7 @@ const MeasureTableComponent = (
   ></MeasureTableElement>
 );
 
+/* To do: add real test */
 describe("Test MeasureTable", () => {
   beforeEach(() => {
     render(MeasureTableComponent);
