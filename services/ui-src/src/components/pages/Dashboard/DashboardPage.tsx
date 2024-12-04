@@ -40,12 +40,7 @@ export const DashboardPage = () => {
       return;
     }
 
-    (async () => {
-      setIsLoading(true);
-      const result = await getReportsForState(reportType, state);
-      setReports(result);
-      setIsLoading(false);
-    })();
+    reloadReports(reportType, state);
   }, [reportType, state]);
 
   const reloadReports = (reportType: string, state: string) => {

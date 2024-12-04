@@ -55,10 +55,13 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <Text>CMIT# {measure.cmit}</Text>
         </Td>
         <Td>
-          <Link onClick={() => buildModal(measure.cmit)}>
-            Substitute measure
-          </Link>
+          {measure.substitutable ? (
+            <Link onClick={() => buildModal(measure.cmit)}>
+              Substitute measure
+            </Link>
+          ) : null}
         </Td>
+
         <Td>
           <Button
             variant="outline"
