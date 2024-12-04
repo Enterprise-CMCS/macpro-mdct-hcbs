@@ -15,7 +15,7 @@ export const qmReportTemplate: ReportTemplate = {
       childPageIds: [
         "general-info",
         "req-measure-result",
-        "strat-measure-result",
+        "optional-measure-result",
         "review-submit",
       ],
     },
@@ -105,14 +105,14 @@ export const qmReportTemplate: ReportTemplate = {
       ],
     },
     {
-      id: "strat-measure-result",
-      title: "Stratified Measure Results",
+      id: "optional-measure-result",
+      title: "Optional Measure Results",
       type: PageType.Standard,
       sidebar: true,
       elements: [
         {
           type: ElementType.Header,
-          text: "Stratified Measure Results",
+          text: "Optional Measure Results",
         },
         {
           type: ElementType.Accordion,
@@ -121,7 +121,7 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.MeasureTable,
-          measureDisplay: "stratified",
+          measureDisplay: "optional",
         },
       ],
     },
@@ -154,8 +154,9 @@ export const qmReportTemplate: ReportTemplate = {
     },
   ],
   measureLookup: {
-    // TODO: wtf is default and are there any other kinds of measures?
+    // TODO: what is a default measure and are there any other kinds of measures?
     defaultMeasures: [
+      // required measures
       {
         cmit: 960,
         required: true,
@@ -186,11 +187,42 @@ export const qmReportTemplate: ReportTemplate = {
         stratified: false,
         measureTemplate: MeasureTemplateName["LTSS-8"],
       },
+      // optional measures
       {
-        cmit: 234,
+        cmit: 969,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName.StandardMeasure,
+        measureTemplate: MeasureTemplateName["FASI-1"],
+      },
+      {
+        cmit: 970,
+        required: false,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["FASI-2"],
+      },
+      {
+        cmit: 111,
+        required: false,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["HCBS-10"],
+      },
+      {
+        cmit: 963,
+        required: false,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-3"],
+      },
+      {
+        cmit: 962,
+        required: false,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-4"],
+      },
+      {
+        cmit: 1255,
+        required: false,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-5"],
       },
     ],
   },
@@ -236,6 +268,7 @@ export const qmReportTemplate: ReportTemplate = {
         },
       ],
     },
+    //required
     [MeasureTemplateName["LTSS-1"]]: {
       id: "LTSS-1",
       title: "LTSS-1: Comprehensive Assessment and Update",
@@ -269,6 +302,52 @@ export const qmReportTemplate: ReportTemplate = {
     [MeasureTemplateName["LTSS-8"]]: {
       id: "LTSS-8",
       title: "LTSS-8: Successful Transition after Long-Term Facility Stay",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    //optional
+    [MeasureTemplateName["FASI-1"]]: {
+      id: "FASI-1",
+      title: "FASI-1: Identification of Person-Centered Priorities",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["FASI-2"]]: {
+      id: "FASI-2",
+      title: "FASI-2: Documentation of a Person-Centered Service Plan",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["HCBS-10"]]: {
+      id: "HCBS-10",
+      title:
+        "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through Manage Care Organizations",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-3"]]: {
+      id: "LTSS-3",
+      title: "LTSS-3: Shared Person-Cdntered Plan with Primary Care Provider",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-4"]]: {
+      id: "LTSS-4",
+      title:
+        "LTSS-4: Reassessment and Person-Centered Plan Update after Inpatient Discharge",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-5"]]: {
+      id: "LTSS-5",
+      title:
+        "LTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
       type: PageType.Measure,
       sidebar: false,
       elements: [],
