@@ -331,5 +331,6 @@ jobs:
         if: ${{ needs.test.outputs.test_outcome != 'success' }}
         run: |
           echo "End-to-end tests in the deployed environment were not successful."
+          echo "Outcome: ${{needs.test.outputs.test_outcome}}"
           echo "See the Playwright Report for details."
           exit 1
