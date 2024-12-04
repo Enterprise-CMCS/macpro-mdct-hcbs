@@ -22,9 +22,6 @@ jest.mock("react-hook-form", () => ({
 jest.mock("./StatusTable", () => {
   return { StatusTableElement: () => <div>Status Table</div> };
 });
-// jest.mock("./MeasureTable", () => {
-//   return { MeasureTableElement: () => <div>Measure Table</div> };
-// });
 
 const elements: PageElement[] = [
   {

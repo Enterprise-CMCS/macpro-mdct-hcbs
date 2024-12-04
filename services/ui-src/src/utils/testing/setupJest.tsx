@@ -13,6 +13,7 @@ import {
   ReportStatus,
   PageType,
   MeasureTemplateName,
+  MeasurePageTemplate,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -187,10 +188,12 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-const mockMeasureTemplate = {
+const mockMeasureTemplate: MeasurePageTemplate = {
   id: "mock-template-id",
   title: "mock-title",
   type: PageType.Measure,
+  required: true,
+  substitutable: true,
   elements: [],
 };
 
