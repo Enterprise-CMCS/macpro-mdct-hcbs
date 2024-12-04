@@ -4,12 +4,6 @@ import {
   ElementType,
   ReportType,
   MeasureTemplateName,
-  ButtonLinkTemplate,
-  HeaderTemplate,
-  AccordionTemplate,
-  SubHeaderTemplate,
-  TextboxTemplate,
-  RadioTemplate,
 } from "../types/reports";
 
 export const qmReportTemplate: ReportTemplate = {
