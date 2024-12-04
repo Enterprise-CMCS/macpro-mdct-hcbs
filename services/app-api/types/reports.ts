@@ -38,6 +38,11 @@ export interface MeasureOptions {
 export enum MeasureTemplateName {
   StandardMeasure,
   QualityMeasure,
+  "LTSS-1",
+  "LTSS-2",
+  "LTSS-6",
+  "LTSS-7",
+  "LTSS-8",
 }
 
 export enum ReportStatus {
@@ -62,6 +67,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
+  substitutable?: boolean;
 }
 
 export interface SectionTemplate {

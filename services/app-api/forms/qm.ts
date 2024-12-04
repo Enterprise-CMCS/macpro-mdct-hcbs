@@ -154,17 +154,42 @@ export const qmReportTemplate: ReportTemplate = {
     },
   ],
   measureLookup: {
+    // TODO: wtf is default and are there any other kinds of measures?
     defaultMeasures: [
       {
-        cmit: 123,
+        cmit: 960,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName.StandardMeasure,
+        measureTemplate: MeasureTemplateName["LTSS-1"],
+      },
+      {
+        cmit: 961,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-2"],
+      },
+      {
+        cmit: 20,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-6"],
+      },
+      {
+        cmit: 968,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-7"],
+      },
+      {
+        cmit: 414,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-8"],
       },
       {
         cmit: 234,
         required: false,
-        stratified: true,
+        stratified: false,
         measureTemplate: MeasureTemplateName.StandardMeasure,
       },
       {
@@ -357,6 +382,43 @@ export const qmReportTemplate: ReportTemplate = {
           ],
         },
       ],
+    },
+    [MeasureTemplateName["LTSS-1"]]: {
+      id: "LTSS-1",
+      title: "LTSS-1: Comprehensive Assessment and Update",
+      type: PageType.Measure,
+      substitutable: true,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-2"]]: {
+      id: "LTSS-2",
+      title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+      type: PageType.Measure,
+      sidebar: false,
+      substitutable: true,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-6"]]: {
+      id: "LTSS-6",
+      title: "LTSS-6: Admission to a Facility from the Community",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-7"]]: {
+      id: "LTSS-7",
+      title: "LTSS-7: Minimizing Facility Length of Stay",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-8"]]: {
+      id: "LTSS-8",
+      title: "LTSS-8: Successful Transition after Long-Term Facility Stay",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
     },
   },
 };
