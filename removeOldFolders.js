@@ -1,3 +1,13 @@
+/*
+ *                 ⚠️ ⚠️ ⚠️ WARNING ⚠️ ⚠️ ⚠️
+ *
+ * Updating this file in the main branch will do nothing!
+ *
+ * It is only invoked by the delete-pages.yml github action,
+ * which is only run on the gh-pages branch.
+ * Any changes _must_ be merged to gh-pages to take effect.
+ */
+
 /* eslint-disable no-console */
 import { parseArgs } from "node:util";
 import * as fs from "node:fs";
