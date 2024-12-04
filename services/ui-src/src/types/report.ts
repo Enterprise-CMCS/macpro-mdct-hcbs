@@ -79,6 +79,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
+  substitutable?: boolean;
 }
 
 export interface StatusPageTemplate extends FormPageTemplate {
