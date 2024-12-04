@@ -64,6 +64,10 @@ const testReport: Report = {
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
         },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
       ],
     },
     [MeasureTemplateName["LTSS-2"]]: {

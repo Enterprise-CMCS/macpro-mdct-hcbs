@@ -2,34 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { useFormContext } from "react-hook-form";
-import { ChoiceTemplate, ElementType, RadioTemplate } from "types";
+import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
-import { TextField } from "components";
+import { Page } from "components/report/Page";
 
 export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
   return choices.map((choice) => {
-    const formatFields =
-      choice?.checkedChildren?.map((element, index) => {
-        if (element.type === ElementType.Textbox) {
-          return (
-            <Box key={element.label} sx={sx.children}>
-              <TextField
-                element={{
-                  type: ElementType.Textbox,
-                  label: element.label,
-                }}
-                formkey={`${choice.value}.${index}`}
-              ></TextField>
-            </Box>
-          );
-        }
-        return <></>;
-      }) ?? [];
+    const formatFields = choice?.checkedChildren ? (
+      <Box sx={sx.children}>
+        <Page elements={choice?.checkedChildren} />
+      </Box>
+    ) : (
+      <></>
+    );
     return {
       ...choice,
       checked: choice.value === answer,
-      checkedChildren: formatFields,
+      checkedChildren: [formatFields],
     };
   });
 };
