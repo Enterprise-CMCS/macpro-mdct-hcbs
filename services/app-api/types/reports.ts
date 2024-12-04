@@ -175,7 +175,7 @@ export type PageElement =
   | RadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
-  | QualityMeasureTable
+  | QualityMeasureTableTemplate
   | StatusTableTemplate;
 
 export type HeaderTemplate = {
@@ -249,7 +249,7 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
-export type QualityMeasureTable = {
+export type QualityMeasureTableTemplate = {
   type: ElementType.QualityMeasureTable;
   measureDisplay: "quality";
 };

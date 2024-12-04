@@ -4,6 +4,12 @@ import {
   ElementType,
   ReportType,
   MeasureTemplateName,
+  ButtonLinkTemplate,
+  HeaderTemplate,
+  AccordionTemplate,
+  SubHeaderTemplate,
+  RadioTemplate,
+  QualityMeasureTableTemplate,
 } from "../types/reports";
 
 export const qmReportTemplate: ReportTemplate = {
@@ -200,21 +206,21 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.ButtonLink,
           label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
-        },
+        } as ButtonLinkTemplate,
         {
           type: ElementType.Header,
           text: "{measureName}",
-        },
+        } as HeaderTemplate,
         {
           type: ElementType.Accordion,
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
-        },
+        } as AccordionTemplate,
         {
           type: ElementType.SubHeader,
           text: "Measure Details",
-        },
+        } as SubHeaderTemplate,
         {
           type: ElementType.Radio,
           label: "Were the reported measure results audited or validated?",
@@ -232,7 +238,7 @@ export const qmReportTemplate: ReportTemplate = {
               ],
             },
           ],
-        },
+        } as RadioTemplate,
         {
           type: ElementType.Radio,
           label:
@@ -241,7 +247,7 @@ export const qmReportTemplate: ReportTemplate = {
             { label: "CMS", value: "cms" },
             { label: "HEDIS", value: "hedis" },
           ],
-        },
+        } as RadioTemplate,
         {
           type: ElementType.Radio,
           label:
@@ -259,7 +265,7 @@ export const qmReportTemplate: ReportTemplate = {
               ],
             },
           ],
-        },
+        } as RadioTemplate,
         {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report the LTSS measure?",
@@ -268,15 +274,15 @@ export const qmReportTemplate: ReportTemplate = {
             { label: "Free-For-Service", value: "fee-for-service" },
             { label: "Both", value: "both" },
           ],
-        },
+        } as RadioTemplate,
         {
           type: ElementType.SubHeader,
           text: "Quality Measures",
-        },
+        } as SubHeaderTemplate,
         {
           type: ElementType.QualityMeasureTable,
           measureDisplay: "quality",
-        },
+        } as QualityMeasureTableTemplate,
       ],
     },
     [MeasureTemplateName["LTSS-2"]]: {
