@@ -29,7 +29,7 @@ export interface CMIT {
 export interface MeasureOptions {
   cmit: number;
   required: boolean;
-  stratified: boolean; // TODO: remove fully
+  stratified: boolean;
   measureTemplate: MeasureTemplateName;
 }
 

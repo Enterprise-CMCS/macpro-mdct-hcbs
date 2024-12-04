@@ -266,64 +266,7 @@ export const qmReportTemplate: ReportTemplate = {
       type: PageType.Measure,
       substitutable: true,
       sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-result",
-        } as ButtonLinkTemplate,
-        {
-          type: ElementType.Header,
-          text: "LTSS-1: Comprehensive Assessment and Update",
-        } as HeaderTemplate,
-        {
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value:
-            "[Optional instructional content that could support the user in completing this page]",
-        } as AccordionTemplate,
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Information",
-        } as SubHeaderTemplate,
-        {
-          type: ElementType.Radio,
-          label: "Do you want CMS to calculate this measure on your behalf?",
-          value: [
-            { label: "No, I am reporting on this measure", value: "no" },
-            { label: "Yes, CMS is reporting on my behalf", value: "yes" },
-          ],
-        } as RadioTemplate,
-        {
-          type: ElementType.Textbox,
-          label: "Under what authorities is this measure being reported?",
-          helperText:
-            "Please provide authority demonstration name and control number for each authority being reported.",
-        } as TextboxTemplate,
-        {
-          type: ElementType.Radio,
-          label:
-            "Which technical specification of quality measure will be reported?",
-          helperText:
-            "Select the correct technical specification for the quality measure.",
-          value: [
-            { label: "CMS", value: "cms" },
-            { label: "HEDIS", value: "hedis" },
-          ],
-        } as RadioTemplate,
-        {
-          type: ElementType.Radio,
-          label:
-            "Which delivery system was used for the quality measure being reported?",
-          helperText:
-            "Select the correct delivery system for the quality measure.",
-          value: [
-            { label: "FFS", value: "ffs" },
-            { label: "MLTSS", value: "mltss" },
-            { label: "Both FFS and MLTSS (separate)", value: "both" },
-          ],
-        } as RadioTemplate,
-      ],
+      elements: [],
     },
     [MeasureTemplateName["LTSS-2"]]: {
       id: "LTSS-2",
@@ -331,164 +274,28 @@ export const qmReportTemplate: ReportTemplate = {
       type: PageType.Measure,
       sidebar: false,
       substitutable: true,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-result",
-        } as ButtonLinkTemplate,
-        {
-          type: ElementType.Header,
-          text: "LTSS-1: Comprehensive Assessment and Update",
-        } as HeaderTemplate,
-        {
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value:
-            "[Optional instructional content that could support the user in completing this page]",
-        } as AccordionTemplate,
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Information",
-        } as SubHeaderTemplate,
-        {
-          type: ElementType.Textbox,
-          label:
-            "What is the state performance target for this measure established by the state?",
-        } as TextboxTemplate,
-        {
-          type: ElementType.Radio,
-          label: "Is the performance target approved by CMS?",
-          value: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-            { label: "In process", value: "inProcess" },
-          ],
-        } as RadioTemplate,
-      ],
+      elements: [],
     },
     [MeasureTemplateName["LTSS-6"]]: {
       id: "LTSS-6",
       title: "LTSS-6: Admission to a Facility from the Community",
       type: PageType.Measure,
       sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-result",
-        } as ButtonLinkTemplate,
-        {
-          type: ElementType.Header,
-          text: "LTSS-1: Comprehensive Assessment and Update",
-        } as HeaderTemplate,
-        {
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value:
-            "[Optional instructional content that could support the user in completing this page]",
-        } as AccordionTemplate,
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Information",
-        } as SubHeaderTemplate,
-        {
-          type: ElementType.Textbox,
-          label:
-            "What is the state performance target for this measure established by the state?",
-        } as TextboxTemplate,
-        {
-          type: ElementType.Radio,
-          label: "Is the performance target approved by CMS?",
-          value: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-            { label: "In process", value: "inProcess" },
-          ],
-        } as RadioTemplate,
-      ],
+      elements: [],
     },
     [MeasureTemplateName["LTSS-7"]]: {
       id: "LTSS-7",
       title: "LTSS-7: Minimizing Facility Length of Stay",
       type: PageType.Measure,
       sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-result",
-        } as ButtonLinkTemplate,
-        {
-          type: ElementType.Header,
-          text: "LTSS-1: Comprehensive Assessment and Update",
-        } as HeaderTemplate,
-        {
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value:
-            "[Optional instructional content that could support the user in completing this page]",
-        } as AccordionTemplate,
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Information",
-        } as SubHeaderTemplate,
-        {
-          type: ElementType.Textbox,
-          label:
-            "What is the state performance target for this measure established by the state?",
-        } as TextboxTemplate,
-        {
-          type: ElementType.Radio,
-          label: "Is the performance target approved by CMS?",
-          value: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-            { label: "In process", value: "inProcess" },
-          ],
-        } as RadioTemplate,
-      ],
+      elements: [],
     },
     [MeasureTemplateName["LTSS-8"]]: {
       id: "LTSS-8",
       title: "LTSS-8: Successful Transition after Long-Term Facility Stay",
       type: PageType.Measure,
       sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-result",
-        } as ButtonLinkTemplate,
-        {
-          type: ElementType.Header,
-          text: "LTSS-1: Comprehensive Assessment and Update",
-        } as HeaderTemplate,
-        {
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value:
-            "[Optional instructional content that could support the user in completing this page]",
-        } as AccordionTemplate,
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Information",
-        } as SubHeaderTemplate,
-        {
-          type: ElementType.Textbox,
-          label:
-            "What is the state performance target for this measure established by the state?",
-        } as TextboxTemplate,
-        {
-          type: ElementType.Radio,
-          label: "Is the performance target approved by CMS?",
-          value: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-            { label: "In process", value: "inProcess" },
-          ],
-        } as RadioTemplate,
-      ],
+      elements: [],
     },
   },
 };
