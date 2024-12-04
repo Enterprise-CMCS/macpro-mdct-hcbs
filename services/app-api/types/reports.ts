@@ -36,8 +36,6 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  StandardMeasure,
-  QualityMeasure,
   "LTSS-1",
   "LTSS-2",
   "LTSS-6",

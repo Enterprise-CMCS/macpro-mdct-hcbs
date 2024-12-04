@@ -186,25 +186,14 @@ export const qmReportTemplate: ReportTemplate = {
         stratified: false,
         measureTemplate: MeasureTemplateName["LTSS-8"],
       },
-      {
-        cmit: 234,
-        required: false,
-        stratified: false,
-        measureTemplate: MeasureTemplateName.StandardMeasure,
-      },
-      {
-        cmit: 960,
-        required: true,
-        stratified: false,
-        measureTemplate: MeasureTemplateName.StandardMeasure,
-      },
     ],
   },
   measureTemplates: {
-    [MeasureTemplateName.StandardMeasure]: {
-      id: "req-measure-report",
-      title: "Example Measure",
+    [MeasureTemplateName["LTSS-1"]]: {
+      id: "LTSS-1",
+      title: "LTSS-1: Comprehensive Assessment and Update",
       type: PageType.Measure,
+      substitutable: true,
       sidebar: false,
       elements: [
         {
@@ -289,107 +278,6 @@ export const qmReportTemplate: ReportTemplate = {
           measureDisplay: "quality",
         },
       ],
-    },
-    [MeasureTemplateName.QualityMeasure]: {
-      id: "req-measure-result-report",
-      title: "Example Measure Result",
-      type: PageType.Measure,
-      sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-report",
-        },
-        {
-          type: ElementType.Header,
-          text: "{measureName}",
-        },
-        {
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value:
-            "[Optional instructional content that could support the user in completing this page]",
-        },
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Information",
-        },
-        {
-          type: ElementType.Textbox,
-          label:
-            "What is the [two years in the future] state performance target for this measure established by the state?",
-        },
-        {
-          type: ElementType.Radio,
-          label:
-            "Did the calculation of the measure results device from the measure technical specification?",
-          value: [
-            { label: "No", value: "no" },
-            { label: "Yes", value: "yes" },
-          ],
-        },
-        {
-          type: ElementType.Radio,
-          label: "Were the reported measure results audited or validated?",
-          value: [
-            { label: "No", value: "no" },
-            { label: "Yes", value: "yes" },
-          ],
-        },
-        {
-          type: ElementType.Textbox,
-          label: "Additional notes/comments",
-          helperText:
-            "If applicable, add any notes or comments to provide context to the reported measure results.",
-        },
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Results",
-        },
-        {
-          type: ElementType.Paragraph,
-          title: "Overall Measure results",
-          text: "What are the overall results for this measure? To calculate the aggregate based on population weight, please use this template.",
-        },
-        {
-          type: ElementType.Textbox,
-          label: "Numerator",
-        },
-        {
-          type: ElementType.Textbox,
-          label: "Denominator",
-        },
-        {
-          type: ElementType.Textbox,
-          helperText: "Auto-calculates",
-          label: "Rate",
-        },
-        {
-          type: ElementType.SubHeader,
-          text: "Measure Stratification",
-        },
-        {
-          type: ElementType.Paragraph,
-          text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-        },
-        {
-          type: ElementType.Radio,
-          label: "Are you reporting measure stratification for this measure?",
-          value: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-          ],
-        },
-      ],
-    },
-    [MeasureTemplateName["LTSS-1"]]: {
-      id: "LTSS-1",
-      title: "LTSS-1: Comprehensive Assessment and Update",
-      type: PageType.Measure,
-      substitutable: true,
-      sidebar: false,
-      elements: [],
     },
     [MeasureTemplateName["LTSS-2"]]: {
       id: "LTSS-2",

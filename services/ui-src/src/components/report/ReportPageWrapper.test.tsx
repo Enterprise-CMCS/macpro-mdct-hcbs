@@ -53,7 +53,7 @@ const testReport: Report = {
   ],
   measureLookup: { defaultMeasures: [], optionGroups: {} },
   measureTemplates: {
-    [MeasureTemplateName.StandardMeasure]: {
+    [MeasureTemplateName["LTSS-1"]]: {
       id: "req-measure-report",
       title: "Example Measure",
       type: PageType.Measure,
@@ -65,6 +65,30 @@ const testReport: Report = {
           to: "req-measure-result",
         },
       ],
+    },
+    [MeasureTemplateName["LTSS-2"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-6"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-7"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-8"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
     },
   },
 };

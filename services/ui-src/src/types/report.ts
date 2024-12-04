@@ -248,7 +248,11 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  StandardMeasure,
+  "LTSS-1",
+  "LTSS-2",
+  "LTSS-6",
+  "LTSS-7",
+  "LTSS-8",
 }
 
 export interface FormComponent {
