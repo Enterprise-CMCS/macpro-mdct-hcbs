@@ -49,16 +49,7 @@ test.describe("Banner functionality", () => {
     let alertElements = await page.getByRole("alert").all();
     expect(alertElements).toHaveLength(2);
 
-    const deleteButton = page.getByRole("button", {
-      name: "Delete Current Banner",
-    });
-    await deleteButton.click();
-
-    // Wait for the new data to be posted to the API
-    await waitForBannerRequest(page, "DELETE");
-
-    // Wait for the new data to come back from the API
-    await waitForBannerRequest(page, "GET");
+    await deleteBanner(page);
 
     // We should be back down to just 1 alert.
     alertElements = await page.getByRole("alert").all();
@@ -105,12 +96,20 @@ const saveBanner = async (page: Page) => {
   const saveButton = page.getByRole("button", {
     name: "Replace Current Banner",
   });
+
   await saveButton.click();
-
-  // Wait for the new data to be posted to the API
   await waitForBannerRequest(page, "POST");
+  await waitForBannerRequest(page, "GET");
+};
 
-  // Wait for the new data to come back from the API
+// Click the banner save button. Expects to be on the banner editor page.
+const deleteBanner = async (page: Page) => {
+  const deleteButton = page.getByRole("button", {
+    name: "Delete Current Banner",
+  });
+
+  await deleteButton.click();
+  await waitForBannerRequest(page, "DELETE");
   await waitForBannerRequest(page, "GET");
 };
 
@@ -120,7 +119,7 @@ const waitForBannerRequest = async (
 ) => {
   await page.waitForResponse(
     (response) =>
-      response.url().includes(`/local/banners/`) &&
+      response.url().includes(`/banners/`) &&
       response.request().method() === method &&
       response.ok()
   );
