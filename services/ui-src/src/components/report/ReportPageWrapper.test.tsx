@@ -1,6 +1,7 @@
 import { render, waitFor } from "@testing-library/react";
 import {
   ElementType,
+  MeasurePageTemplate,
   MeasureTemplateName,
   PageType,
   Report,
@@ -69,7 +70,7 @@ const testReport: Report = {
           measureDisplay: "quality",
         },
       ],
-    },
+    } as MeasurePageTemplate,
     [MeasureTemplateName["LTSS-2"]]: {
       id: "",
       title: "",
