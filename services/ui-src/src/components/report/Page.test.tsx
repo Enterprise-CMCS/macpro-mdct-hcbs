@@ -9,6 +9,7 @@ jest.mock("react-router-dom", () => ({
 jest.mock("../../utils/state/useStore", () => ({
   useStore: () => ({
     setCurrentPageId: jest.fn(),
+    cmit: 960,
   }),
 }));
 jest.mock("react-hook-form", () => ({
@@ -68,6 +69,10 @@ const elements: PageElement[] = [
   },
   {
     type: ElementType.StatusTable,
+  },
+  {
+    type: ElementType.QualityMeasureTable,
+    measureDisplay: "quality",
   },
 ];
 

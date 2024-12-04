@@ -16,8 +16,6 @@ export const QualityMeasureTableElement = () => {
   const { cmit } = useStore();
   const cmitInfo = CMIT_LIST.find((item) => item.cmit === cmit);
 
-  const onEdit = () => {};
-
   // Build Rows
   const rows = cmitInfo?.deliverySystem.map((system, index) => {
     return (
@@ -30,7 +28,7 @@ export const QualityMeasureTableElement = () => {
           <Text>CMIT# {cmit}</Text>
         </Td>
         <Td>
-          <Button variant="outline" onClick={() => onEdit()}>
+          <Button variant="outline" onClick={() => {}}>
             Edit
           </Button>
         </Td>

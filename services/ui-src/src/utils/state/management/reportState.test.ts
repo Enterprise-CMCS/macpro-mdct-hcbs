@@ -99,7 +99,7 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-  },
+  } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
 
 describe("state/management/reportState: buildState", () => {

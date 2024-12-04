@@ -70,7 +70,7 @@ const testReport: Report = {
           measureDisplay: "quality",
         },
       ],
-    } as MeasurePageTemplate,
+    },
     [MeasureTemplateName["LTSS-2"]]: {
       id: "",
       title: "",
@@ -95,7 +95,7 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-  },
+  } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
 
 const mockUseParams = jest.fn();

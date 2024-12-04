@@ -8,6 +8,8 @@ import {
   HcbsUserState,
   UserContextShape,
   AdminBannerState,
+  HcbsReportState,
+  Report,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -182,12 +184,25 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
+export const mockReportStore: HcbsReportState = {
+  modalOpen: false,
+  cmit: 960,
+  setReport: () => {},
+  setCurrentPageId: () => {},
+  setModalOpen: () => {},
+  setModalComponent: () => {},
+  setAnswers: () => {},
+  setMeasure: () => {},
+};
+
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState & AdminBannerState = {
-  ...mockStateUserStore,
-  ...mockBannerStore,
-};
+export const mockUseStore: HcbsUserState & AdminBannerState & HcbsReportState =
+  {
+    ...mockStateUserStore,
+    ...mockBannerStore,
+    ...mockReportStore,
+  };
 
 export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
   ...mockAdminUserStore,

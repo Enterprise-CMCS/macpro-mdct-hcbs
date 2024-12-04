@@ -279,7 +279,7 @@ export const qmReportTemplate: ReportTemplate = {
           measureDisplay: "quality",
         },
       ],
-    } as MeasurePageTemplate,
+    },
     [MeasureTemplateName["LTSS-2"]]: {
       id: "LTSS-2",
       title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
@@ -309,5 +309,5 @@ export const qmReportTemplate: ReportTemplate = {
       sidebar: false,
       elements: [],
     },
-  },
+  } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
