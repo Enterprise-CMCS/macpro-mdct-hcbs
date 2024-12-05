@@ -8,6 +8,12 @@ import {
   HcbsUserState,
   UserContextShape,
   AdminBannerState,
+  HcbsReportState,
+  ReportType,
+  ReportStatus,
+  PageType,
+  MeasureTemplateName,
+  MeasurePageTemplate,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -182,12 +188,62 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
+const mockMeasureTemplate: MeasurePageTemplate = {
+  id: "mock-template-id",
+  title: "mock-title",
+  type: PageType.Measure,
+  required: true,
+  substitutable: true,
+  elements: [],
+};
+
+export const mockReportStore: HcbsReportState = {
+  modalOpen: false,
+  cmit: 960,
+  report: {
+    id: "mock-id",
+    type: ReportType.QM,
+    status: ReportStatus.IN_PROGRESS,
+    title: "mock-report-title",
+    state: "PR",
+    pages: [{ ...mockMeasureTemplate, cmit: 960 }],
+    measureLookup: {
+      defaultMeasures: [],
+      optionGroups: {},
+    },
+    measureTemplates: {
+      [MeasureTemplateName["LTSS-1"]]: {
+        ...mockMeasureTemplate,
+        required: true,
+      },
+      [MeasureTemplateName["LTSS-2"]]: {
+        ...mockMeasureTemplate,
+        optional: true,
+      },
+      [MeasureTemplateName["LTSS-6"]]: {
+        ...mockMeasureTemplate,
+        stratified: true,
+      },
+      [MeasureTemplateName["LTSS-7"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-8"]]: mockMeasureTemplate,
+    },
+  },
+  setReport: () => {},
+  setCurrentPageId: () => {},
+  setModalOpen: () => {},
+  setModalComponent: () => {},
+  setAnswers: () => {},
+  setMeasure: () => {},
+};
+
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState & AdminBannerState = {
-  ...mockStateUserStore,
-  ...mockBannerStore,
-};
+export const mockUseStore: HcbsUserState & AdminBannerState & HcbsReportState =
+  {
+    ...mockStateUserStore,
+    ...mockBannerStore,
+    ...mockReportStore,
+  };
 
 export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
   ...mockAdminUserStore,

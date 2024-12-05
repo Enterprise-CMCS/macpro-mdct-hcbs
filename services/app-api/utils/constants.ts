@@ -15,10 +15,16 @@ export enum DeliverySystem {
 export enum DataSource {
   CaseRecordManagement = "CaseRecordManagement",
   Administrative = "Administrative",
+  Hybrid = "Hybrid",
 }
 
 export enum MeasureSteward {
   CMS = "CMS",
+}
+
+export enum MeasureSpecification {
+  CMS = "CMS",
+  HEDIS = "HEDIS",
 }
 
 export enum StateNames {
