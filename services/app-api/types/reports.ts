@@ -1,6 +1,10 @@
 // Templates
 
-import { DataSource, DeliverySystem } from "../utils/constants";
+import {
+  DataSource,
+  DeliverySystem,
+  MeasureSpecification,
+} from "../utils/constants";
 
 export enum ReportType {
   QM = "QM",
@@ -20,6 +24,7 @@ export interface CMIT {
   options: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
+  measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
 }
 
@@ -31,7 +36,6 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  StandardMeasure,
   "LTSS-1",
   "LTSS-2",
   "LTSS-6",
@@ -156,6 +160,7 @@ export enum ElementType {
   Radio = "radio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  QualityMeasureTable = "qualityMeasureTable",
   StatusTable = "statusTable",
 }
 
@@ -170,6 +175,7 @@ export type PageElement =
   | RadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
+  | QualityMeasureTableTemplate
   | StatusTableTemplate;
 
 export type HeaderTemplate = {
@@ -221,6 +227,7 @@ export const isResultRowButton = (
 export type RadioTemplate = {
   type: ElementType.Radio;
   label: string;
+  helperText?: string;
   value: ChoiceTemplate[];
 };
 
@@ -233,11 +240,18 @@ export type ButtonLinkTemplate = {
 export type ChoiceTemplate = {
   label: string;
   value: string;
+  checked?: boolean;
+  checkedChildren?: PageElement[];
 };
 
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
+};
+
+export type QualityMeasureTableTemplate = {
+  type: ElementType.QualityMeasureTable;
+  measureDisplay: "quality";
 };
 
 export type StatusTableTemplate = {
