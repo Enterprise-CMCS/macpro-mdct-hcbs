@@ -68,6 +68,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   modalOpen: false,
   modalComponent: undefined,
   lastSavedTime: undefined,
+  cmit: undefined,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -88,6 +89,9 @@ const reportStore = (set: Function): HcbsReportState => ({
     set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
       type: "setAnswers",
     }),
+  setMeasure: (cmit: number) => {
+    set(() => ({ cmit }), false, { type: "setMeasure" });
+  },
 });
 
 export const useStore = create(

@@ -1,4 +1,3 @@
-import { Link as RouterLink } from "react-router-dom";
 import {
   Button,
   Table,
@@ -16,13 +15,18 @@ import {
   MeasurePageTemplate,
   MeasureTableTemplate,
 } from "types";
-import { reportBasePath, useStore } from "utils";
+import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setModalComponent, setModalOpen } = useStore();
-
+  const {
+    report,
+    setMeasure,
+    setModalComponent,
+    setModalOpen,
+    setCurrentPageId,
+  } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -43,6 +47,11 @@ export const MeasureTableElement = (props: PageElementProps) => {
     setModalComponent(modal);
   };
 
+  const onEdit = (measure: MeasurePageTemplate) => {
+    setCurrentPageId(measure.id);
+    setMeasure(measure.cmit!);
+  };
+
   // Build Rows
   const rows = selectedMeasures.map((measure, index) => {
     return (
@@ -55,16 +64,15 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <Text>CMIT# {measure.cmit}</Text>
         </Td>
         <Td>
-          <Link onClick={() => buildModal(measure.cmit)}>
-            Substitute measure
-          </Link>
+          {measure.substitutable ? (
+            <Link onClick={() => buildModal(measure.cmit)}>
+              Substitute measure
+            </Link>
+          ) : null}
         </Td>
+
         <Td>
-          <Button
-            variant="outline"
-            as={RouterLink}
-            to={reportBasePath(report!) + `/${measure.id}`}
-          >
+          <Button variant="outline" onClick={() => onEdit(measure)}>
             Edit
           </Button>
         </Td>

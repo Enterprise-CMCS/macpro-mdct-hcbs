@@ -1,6 +1,10 @@
 // Templates
 
-import { DataSource, DeliverySystem } from "../utils/constants";
+import {
+  DataSource,
+  DeliverySystem,
+  MeasureSpecification,
+} from "../utils/constants";
 
 export enum ReportType {
   QM = "QM",
@@ -9,11 +13,8 @@ export const isReportType = (x: string | undefined): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);
 };
 
-export interface FormOptions {
-  type: ReportType;
-  stateOptions: string[];
-  state: string | undefined;
-  createdBy: string | undefined;
+export interface ReportOptions {
+  name: string;
 }
 
 export interface CMIT {
@@ -23,6 +24,7 @@ export interface CMIT {
   options: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
+  measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
 }
 
@@ -34,7 +36,11 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  StandardMeasure,
+  "LTSS-1",
+  "LTSS-2",
+  "LTSS-6",
+  "LTSS-7",
+  "LTSS-8",
 }
 
 export enum ReportStatus {
@@ -51,6 +57,7 @@ export interface Report extends ReportTemplate {
   lastEditedBy: string;
   lastEditedByEmail: string;
   status: ReportStatus;
+  name?: string;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -58,6 +65,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
+  substitutable?: boolean;
 }
 
 export interface SectionTemplate {
@@ -97,7 +105,6 @@ export type ReportTemplate = {
   pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
-    optionGroups: Record<string, MeasureOptions[]>;
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
@@ -153,6 +160,7 @@ export enum ElementType {
   Radio = "radio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  QualityMeasureTable = "qualityMeasureTable",
   StatusTable = "statusTable",
 }
 
@@ -167,6 +175,7 @@ export type PageElement =
   | RadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
+  | QualityMeasureTableTemplate
   | StatusTableTemplate;
 
 export type HeaderTemplate = {
@@ -218,6 +227,7 @@ export const isResultRowButton = (
 export type RadioTemplate = {
   type: ElementType.Radio;
   label: string;
+  helperText?: string;
   value: ChoiceTemplate[];
 };
 
@@ -230,11 +240,18 @@ export type ButtonLinkTemplate = {
 export type ChoiceTemplate = {
   label: string;
   value: string;
+  checked?: boolean;
+  checkedChildren?: PageElement[];
 };
 
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
+};
+
+export type QualityMeasureTableTemplate = {
+  type: ElementType.QualityMeasureTable;
+  measureDisplay: "quality";
 };
 
 export type StatusTableTemplate = {

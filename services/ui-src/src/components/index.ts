@@ -31,6 +31,7 @@ export { TemplateCard } from "./cards/TemplateCard";
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
+export { RadioField } from "./fields/RadioField";
 export { DateField } from "./fields/DateField";
 export { TextField } from "./fields/TextField";
 // forms
@@ -57,6 +58,8 @@ export { SubnavBar } from "./report/SubnavBar";
 // menus
 export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
+// modals
+export { Modal } from "./modals/Modal";
 // Redirects
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables

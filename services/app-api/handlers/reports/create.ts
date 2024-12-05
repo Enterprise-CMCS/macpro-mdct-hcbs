@@ -4,12 +4,14 @@ import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { buildReport } from "./buildReport";
+import { ReportOptions } from "../../types/reports";
 
 export const createReport = handler(
   parseReportTypeAndState,
   async (request) => {
     const { reportType, state } = request.parameters;
     const user = request.user;
+    const body = request.body;
 
     if (!canWriteState(user, state)) {
       return forbidden(error.UNAUTHORIZED);
@@ -18,9 +20,9 @@ export const createReport = handler(
     if (!request?.body) {
       return badRequest("Invalid request");
     }
-    // const options = JSON.parse(event.body);
 
-    const report = await buildReport(reportType, state, [], user);
+    const options = body as ReportOptions;
+    const report = await buildReport(reportType, state, options, user);
 
     return ok(report);
   }

@@ -4,6 +4,7 @@ import {
   ElementType,
   ReportType,
   MeasureTemplateName,
+  MeasurePageTemplate,
 } from "../types/reports";
 
 export const qmReportTemplate: ReportTemplate = {
@@ -154,49 +155,51 @@ export const qmReportTemplate: ReportTemplate = {
     },
   ],
   measureLookup: {
+    // TODO: wtf is default and are there any other kinds of measures?
     defaultMeasures: [
       {
-        cmit: 123,
+        cmit: 960,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName.StandardMeasure,
+        measureTemplate: MeasureTemplateName["LTSS-1"],
       },
       {
-        cmit: 234,
-        required: false,
-        stratified: true,
-        measureTemplate: MeasureTemplateName.StandardMeasure,
+        cmit: 961,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-2"],
+      },
+      {
+        cmit: 20,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-6"],
+      },
+      {
+        cmit: 968,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-7"],
+      },
+      {
+        cmit: 414,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["LTSS-8"],
       },
     ],
-    optionGroups: {
-      rulesOne: [
-        {
-          cmit: 888,
-          required: true,
-          stratified: false,
-          measureTemplate: MeasureTemplateName.StandardMeasure,
-        },
-      ],
-      rulesTwo: [
-        {
-          cmit: 999,
-          required: true,
-          stratified: false,
-          measureTemplate: MeasureTemplateName.StandardMeasure,
-        },
-      ],
-    },
   },
   measureTemplates: {
-    [MeasureTemplateName.StandardMeasure]: {
-      id: "req-measure-report",
-      title: "Example Measure",
+    [MeasureTemplateName["LTSS-1"]]: {
+      id: "LTSS-1",
+      title: "LTSS-1: Comprehensive Assessment and Update",
       type: PageType.Measure,
+      substitutable: true,
       sidebar: false,
       elements: [
         {
           type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
+          label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
         },
         {
@@ -211,23 +214,100 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
-          text: "Measure Information",
-        },
-        {
-          type: ElementType.Textbox,
-          label:
-            "What is the state performance target for this measure established by the state?",
+          text: "Measure Details",
         },
         {
           type: ElementType.Radio,
-          label: "Is the performance target approved by CMS?",
+          label: "Were the reported measure results audited or validated?",
           value: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-            { label: "In process", value: "inProcess" },
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency of entity that audited or validated the report?",
+                },
+              ],
+            },
           ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "What Technical Specifications are you using to report this measure?",
+          value: [
+            { label: "CMS", value: "cms" },
+            { label: "HEDIS", value: "hedis" },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Which delivery systems were used to report the LTSS measure?",
+          value: [
+            { label: "Managed Care", value: "managed-care" },
+            { label: "Free-For-Service", value: "fee-for-service" },
+            { label: "Both", value: "both" },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
         },
       ],
     },
-  },
+    [MeasureTemplateName["LTSS-2"]]: {
+      id: "LTSS-2",
+      title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+      type: PageType.Measure,
+      sidebar: false,
+      substitutable: true,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-6"]]: {
+      id: "LTSS-6",
+      title: "LTSS-6: Admission to a Facility from the Community",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-7"]]: {
+      id: "LTSS-7",
+      title: "LTSS-7: Minimizing Facility Length of Stay",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-8"]]: {
+      id: "LTSS-8",
+      title: "LTSS-8: Successful Transition after Long-Term Facility Stay",
+      type: PageType.Measure,
+      sidebar: false,
+      elements: [],
+    },
+  } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
