@@ -2,7 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 import { ElementType, PageElement } from "types/report";
-import { mockUseStore, useStore } from "utils";
+import { useStore } from "utils";
+import { mockUseStore } from "utils/testing/setupJest";
 import { Page } from "./Page";
 
 jest.mock("react-router-dom", () => ({
