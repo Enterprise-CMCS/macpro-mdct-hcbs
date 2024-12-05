@@ -1,4 +1,5 @@
-import { render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import {
   ElementType,
   MeasurePageTemplate,
@@ -116,28 +117,34 @@ describe("ReportPageWrapper", () => {
       reportId: "QMNJ123",
     });
   });
-  test("should not render if missing params", () => {
+  test("should not render if missing params", async () => {
     mockUseParams.mockReturnValue({
       reportType: undefined,
       state: undefined,
       reportId: undefined,
     });
-    const { getByText } = render(<ReportPageWrapper />);
-    expect(getByText("bad params")).toBeTruthy(); // To be updated with real error page
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+    expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
-  test("should render Loading if report not loaded", () => {
+  test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
-    const { getByText } = render(<ReportPageWrapper />);
-    expect(getByText("Loading")).toBeTruthy(); // To be updated with real loading page
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+    expect(screen.getByText("Loading")).toBeTruthy(); // To be updated with real loading page
   });
   test("should render if report exists", async () => {
-    const { queryAllByText, getByText } = render(<ReportPageWrapper />);
-
-    await waitFor(() => {
-      expect(queryAllByText("General Information")).toBeDefined();
+    await act(async () => {
+      render(<ReportPageWrapper />);
     });
 
-    expect(getByText("Continue")).toBeTruthy();
-    expect(queryAllByText("General Information")[0]).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.queryAllByText("General Information")).toBeDefined();
+    });
+
+    expect(screen.getByText("Continue")).toBeTruthy();
+    expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
   });
 });
