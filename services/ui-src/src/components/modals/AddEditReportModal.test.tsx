@@ -39,7 +39,7 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditReportModal shows the contents", () => {
-    expect(screen.getByText("QMS Report Name")).toBeTruthy();
+    expect(screen.getByText("QMS report name")).toBeTruthy();
     expect(screen.getByText("Start new")).toBeTruthy();
   });
 
