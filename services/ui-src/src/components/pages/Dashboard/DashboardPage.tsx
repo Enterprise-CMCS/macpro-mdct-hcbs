@@ -24,7 +24,7 @@ import { getReportsForState } from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
-  const { userIsAdmin } = useStore().user ?? {};
+  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<Report[]>([]);
@@ -68,11 +68,13 @@ export const DashboardPage = () => {
       <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
         {!isLoading && <DashboardTable reports={reports} />}
         {!reports?.length && <Text variant="tableEmpty">{body.empty}</Text>}
-        <Flex justifyContent="center">
-          <Button onClick={() => navigate(body.link.route)} type="submit">
-            {body.link.callToActionText}
-          </Button>
-        </Flex>
+        {userIsEndUser && (
+          <Flex justifyContent="center">
+            <Button onClick={() => navigate(body.link.route)} type="submit">
+              {body.link.callToActionText}
+            </Button>
+          </Flex>
+        )}
       </Flex>
     </PageTemplate>
   );
