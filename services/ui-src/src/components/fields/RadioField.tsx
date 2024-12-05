@@ -5,13 +5,30 @@ import { useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
+import { Page } from "components/report/Page";
+
+export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
+  return choices.map((choice) => {
+    const formatFields = choice?.checkedChildren ? (
+      <Box sx={sx.children}>
+        <Page elements={choice?.checkedChildren} />
+      </Box>
+    ) : (
+      <></>
+    );
+    return {
+      ...choice,
+      checked: choice.value === answer,
+      checkedChildren: [formatFields],
+    };
+  });
+};
 
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
-
-  const defaultValue = radio.value ?? [];
-  const [displayValue, setDisplayValue] =
-    useState<ChoiceTemplate[]>(defaultValue);
+  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
+    formatChoices(radio.value, radio.answer) ?? []
+  );
 
   // get form context and register field
   const form = useFormContext();
@@ -57,4 +74,13 @@ export const RadioField = (props: PageElementProps) => {
       />
     </Box>
   );
+};
+
+const sx = {
+  children: {
+    padding: "0 22px",
+    border: "4px #0071BC solid",
+    borderWidth: "0 0 0 4px",
+    margin: "0 14px",
+  },
 };
