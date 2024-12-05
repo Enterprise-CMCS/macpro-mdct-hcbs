@@ -372,7 +372,7 @@ export const qmReportTemplate: ReportTemplate = {
     },
     [MeasureTemplateName["LTSS-3"]]: {
       id: "LTSS-3",
-      title: "LTSS-3: Shared Person-Cdntered Plan with Primary Care Provider",
+      title: "LTSS-3: Shared Person-Centered Plan with Primary Care Provider",
       type: PageType.Measure,
       sidebar: false,
       elements: [],
