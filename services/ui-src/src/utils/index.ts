@@ -11,8 +11,6 @@ export * from "./auth/authLifecycle";
 export * from "./state/useStore";
 // tracking
 export * from "./tracking/tealium";
-// testing
-export * from "./testing/setupJest";
 //other
 export * from "./other/parsing";
 export * from "./other/useBreakpoint";
