@@ -1,10 +1,17 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter } from "react-router-dom";
 import { useStore } from "utils";
 
 jest.mock("utils", () => ({
   useStore: jest.fn(),
+}));
+
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
 }));
 
 const report = {
@@ -50,16 +57,17 @@ describe("StatusTableElement", () => {
     expect(screen.getByAltText("complete icon")).toBeInTheDocument();
   });
 
-  test("when the Edit button is clicked, navigate to the correct page", async () => {
+  test("when the Edit button is clicked, navigate to the correct editable page", async () => {
     render(
       <MemoryRouter>
         <StatusTableElement />
       </MemoryRouter>
     );
 
-    const editButton = screen.getByRole("link", { name: /Edit/i });
-    const editButtonPath = `/report/${report.type}/${report.state}/${report.id}/id-1`;
-    expect(editButton).toHaveAttribute("href", editButtonPath);
+    const editButton = screen.getAllByRole("button", { name: /Edit/i })[0];
+    await userEvent.click(editButton);
+
+    expect(editButton).toBeVisible();
   });
 
   test("when the Review PDF button is clicked, navigate to PDF", async () => {

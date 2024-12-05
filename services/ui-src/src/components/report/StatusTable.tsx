@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Image,
@@ -11,14 +11,16 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { TableStatusIcon } from "components";
-import { ParentPageTemplate } from "types";
-import { reportBasePath, useStore } from "utils";
+import { useStore } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
+import { ParentPageTemplate } from "types/report";
+import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import { reportBasePath } from "utils/other/routing";
 
 export const StatusTableElement = () => {
   const { pageMap, report } = useStore();
+  const { reportType, state, reportId } = useParams();
 
   if (!pageMap) {
     return null;
@@ -32,9 +34,16 @@ export const StatusTableElement = () => {
     return report?.pages[pageIdx] as ParentPageTemplate;
   });
 
+  const navigate = useNavigate();
+
+  const handleEditClick = (sectionId: string) => {
+    const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
+    navigate(path);
+  };
+
   // Build Rows
   const rows = sections.map((section, index) => {
-    if (!section) return null;
+    if (!section) return;
 
     return (
       <Tr key={section.id || index} p={0}>
@@ -47,10 +56,9 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           <Button
-            as={RouterLink}
-            to={reportBasePath(report!) + `/${section.id}`}
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
+            onClick={() => handleEditClick(section.id)}
           >
             Edit
           </Button>
