@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
-import { checkDateCompleteness, parseCustomHtml } from "utils";
+import { checkDateCompleteness, parseCustomHtml, useStore } from "utils";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { PageElementProps } from "../report/Elements";
 import { DateTemplate } from "../../types/report";
@@ -10,6 +10,8 @@ export const DateField = (props: PageElementProps) => {
   const dateTextbox = props.element as DateTemplate;
   const defaultValue = dateTextbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+
+  const { userIsEndUser } = useStore().user || {};
 
   // get form context and register form field
   const form = useFormContext();
@@ -48,6 +50,7 @@ export const DateField = (props: PageElementProps) => {
         value={displayValue}
         hint={parsedHint}
         errorMessage={errorMessage}
+        disabled={!userIsEndUser}
       />
     </Box>
   );
