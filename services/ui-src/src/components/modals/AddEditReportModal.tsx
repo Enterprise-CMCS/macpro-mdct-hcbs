@@ -53,9 +53,9 @@ export const AddEditReportModal = ({
             <TextField
               element={{
                 type: ElementType.Textbox,
-                label: "QMS Report Name",
+                label: "QMS report name",
                 helperText:
-                  "Name this QMS report so you can easily refer to it. Consider using timeframe(s)",
+                  "Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
               }}
               formkey={"reportTitle"}
             ></TextField>
