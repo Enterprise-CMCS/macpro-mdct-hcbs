@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
-import { parseCustomHtml, useStore } from "utils";
+import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 
@@ -25,8 +25,6 @@ export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
 };
 
 export const RadioField = (props: PageElementProps) => {
-  const { userIsEndUser } = useStore().user || {};
-
   const radio = props.element as RadioTemplate;
   const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
     formatChoices(radio.value, radio.answer) ?? []
@@ -72,7 +70,6 @@ export const RadioField = (props: PageElementProps) => {
         errorMessage={errorMessage}
         onChange={onChangeHandler}
         onComponentBlur={onBlurHandler}
-        disabled={!userIsEndUser}
         {...props}
       />
     </Box>

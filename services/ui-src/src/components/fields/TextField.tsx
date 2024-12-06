@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
-import { parseCustomHtml, useStore } from "utils";
+import { parseCustomHtml } from "utils";
 import { TextboxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 
@@ -10,8 +10,6 @@ export const TextField = (props: PageElementProps) => {
   const textbox = props.element as TextboxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-
-  const { userIsEndUser } = useStore().user || {};
 
   // get form context and register field
   const form = useFormContext();
@@ -50,7 +48,6 @@ export const TextField = (props: PageElementProps) => {
         value={displayValue}
         errorMessage={errorMessage}
         {...props}
-        disabled={!userIsEndUser}
       />
     </Box>
   );

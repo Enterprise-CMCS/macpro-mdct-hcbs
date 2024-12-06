@@ -11,12 +11,14 @@ import { MeasureTableElement } from "./MeasureTable";
 import { QualityMeasureTableElement } from "./QualityMeasureTable";
 import { StatusTableElement } from "./StatusTable";
 import { TextField, DateField, RadioField } from "components";
+import { useStore } from "utils";
 
 interface Props {
   elements: PageElement[];
 }
 
 export const Page = ({ elements }: Props) => {
+  const { userIsEndUser } = useStore().user || {};
   const renderElement = (element: PageElement) => {
     const elementType = element.type;
     switch (elementType) {
@@ -55,6 +57,7 @@ export const Page = ({ elements }: Props) => {
         formkey={buildFormKey(index)}
         key={index}
         element={element}
+        disabled={!userIsEndUser}
       />
     );
   });
