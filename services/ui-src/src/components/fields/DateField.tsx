@@ -8,8 +8,10 @@ import { DateTemplate } from "../../types/report";
 
 export const DateField = (props: PageElementProps) => {
   const dateTextbox = props.element as DateTemplate;
-  // This is a hack to get the custom design system component to accept the
-  // disabled prop, if used directly in the component, it will throw a ts error
+  /**
+   * This is a hack to get the custom design system component to accept the
+   * disabled prop, if used directly in the component, it will throw a ts error
+   */
   const disabled = { disabled: props.disabled };
   const defaultValue = dateTextbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
