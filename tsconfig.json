@@ -33,11 +33,7 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
   "exclude": [
-    "./services/ui-src/*",
-    "./services/app-api/*",
-    "./services/database/*",
-    "./tests/e2e/**/**.ts",
-    "./tests/e2e/**/**.js",
-    "playwright.config.ts"
+    "./services/*",
+    "./tests/*"
   ]
 }

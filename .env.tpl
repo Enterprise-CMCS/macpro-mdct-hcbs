@@ -20,11 +20,12 @@ VPC_SUBNET_B=local-nonsense
 VPC_SUBNET_C=local-nonsense
 BROKER_STRINGS=local-nonsense
 
-# needed for e2e tests
-CYPRESS_ADMIN_USER_EMAIL=op://mdct_devs/hcbs_secrets/CYPRESS_ADMIN_USER_EMAIL
-CYPRESS_ADMIN_USER_PASSWORD=op://mdct_devs/hcbs_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret
-CYPRESS_STATE_USER_EMAIL=op://mdct_devs/hcbs_secrets/CYPRESS_STATE_USER_EMAIL
-CYPRESS_STATE_USER_PASSWORD=op://mdct_devs/hcbs_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret
+# These settings are needed for playwright end-to-end tests
+TEST_ADMIN_USER_EMAIL=op://mdct_devs/hcbs_secrets/CYPRESS_ADMIN_USER_EMAIL
+TEST_ADMIN_USER_PASSWORD=op://mdct_devs/hcbs_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret
+TEST_STATE_USER_EMAIL=op://mdct_devs/hcbs_secrets/CYPRESS_STATE_USER_EMAIL
+TEST_STATE_USER_PASSWORD=op://mdct_devs/hcbs_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret
+TEST_STATE=DC
 
 # db:seed
 SEED_ADMIN_USER_EMAIL=op://mdct_devs/hcbs_secrets/SEED_ADMIN_USER_EMAIL

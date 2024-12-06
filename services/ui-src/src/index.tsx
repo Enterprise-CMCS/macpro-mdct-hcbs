@@ -61,6 +61,7 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
       eventsUrl: "https://events.launchdarkly.us",
     },
     deferInitialization: false,
+    timeout: 2, // seconds
   });
 
   ReactDOM.render(
