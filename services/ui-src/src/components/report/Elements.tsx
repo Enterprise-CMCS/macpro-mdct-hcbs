@@ -15,6 +15,7 @@ export interface PageElementProps {
   element: PageElement;
   index?: number;
   formkey: string;
+  disabled?: boolean;
 }
 
 export const headerElement = (props: PageElementProps) => {
