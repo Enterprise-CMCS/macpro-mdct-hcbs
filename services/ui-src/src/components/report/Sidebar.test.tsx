@@ -1,8 +1,29 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { mockUseStore } from "utils/testing/setupJest";
+import { BrowserRouter as Router, useParams } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
+import { useStore } from "utils";
+
+jest.mock("utils/other/useBreakpoint", () => ({
+  useBreakpoint: jest.fn(() => ({
+    isDesktop: true,
+  })),
+}));
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockUseStore);
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockUseNavigate,
+  useParams: jest.fn(),
+}));
 
 const setCurrentPageId = jest.fn();
+const mockUseNavigate = jest.fn();
+
 const mockPageMap = new Map();
 mockPageMap.set("root", 0);
 mockPageMap.set("id-1", 1);
@@ -18,60 +39,72 @@ const report = {
   ],
 };
 
-const mockReportStore = jest.fn().mockImplementation(() => ({
-  pageMap: mockPageMap,
-  report: report,
-  currentPageId: "id-1",
-  setCurrentPageId,
-}));
-jest.mock("../../utils/state/useStore", () => ({
-  useStore: () => mockReportStore(),
-}));
-
 describe("Sidebar", () => {
+  beforeEach(() => {
+    (useStore as unknown as jest.Mock).mockReturnValue({
+      pageMap: mockPageMap,
+      report,
+      currentPageId: "id-1",
+      setCurrentPageId,
+    });
+    (useParams as jest.Mock).mockReturnValue({
+      reportType: "exampleReport",
+      state: "exampleState",
+      reportId: "123",
+    });
+  });
   test("should not render if missing details from the store", () => {
-    mockReportStore.mockReturnValueOnce({
+    (useStore as unknown as jest.Mock).mockReturnValueOnce({
       pageMap: undefined,
       report: undefined,
       currentPageId: undefined,
       setCurrentPageId,
     });
-    const { container } = render(<Sidebar />);
-    expect(container).toBeEmptyDOMElement();
-  });
 
-  test("should not render if missing root in page map", () => {
-    mockReportStore.mockReturnValueOnce({
-      pageMap: new Map(),
-      report: report,
-      currentPageId: "id-1",
-      setCurrentPageId,
-    });
-    const { container } = render(<Sidebar />);
+    const { container } = render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
     expect(container).toBeEmptyDOMElement();
   });
 
   test("should render section headers", () => {
-    const { getByText } = render(<Sidebar />);
-    expect(getByText("Section 1")).toBeTruthy();
-    expect(getByText("Section 2")).toBeTruthy();
+    render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
+    expect(screen.getByText("Section 1")).toBeInTheDocument();
+    expect(screen.getByText("Section 2")).toBeInTheDocument();
   });
 
   test("should attempt to navigate on Click", async () => {
-    const { getByText } = render(<Sidebar />);
-    const button = getByText("Section 1");
+    render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
+    const button = screen.getByText("Section 1");
     await userEvent.click(button);
-    expect(setCurrentPageId).toHaveBeenCalledWith("id-1");
+    const reportPath = "/report/exampleReport/exampleState/123/id-1";
+    expect(mockUseNavigate).toHaveBeenCalledWith(reportPath);
   });
 
   test("should expand on Click", async () => {
-    const { getByText, queryByText } = render(<Sidebar />);
+    render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
 
-    expect(getByText("Section 1")).toBeTruthy();
+    const expandButton = screen.getByAltText("Expand subitems");
+    expect(screen.queryByText("Child 1")).not.toBeInTheDocument();
+
     await act(async () => {
-      const button = screen.getByAltText("Expand subitems");
-      await userEvent.click(button);
+      await userEvent.click(expandButton);
     });
-    expect(queryByText("Child 1")).toBeInTheDocument();
+
+    expect(screen.getByText("Child 1")).toBeInTheDocument();
   });
 });

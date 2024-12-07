@@ -54,7 +54,7 @@ describe("<TemplateCard />", () => {
       const templateCardLink = screen.getByText(qmTemplateVerbiage.link.text)!;
       await userEvent.click(templateCardLink);
       const expectedRoute = "/report/QM/MN";
-      await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
+      expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
   });
 
