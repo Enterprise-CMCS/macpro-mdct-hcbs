@@ -53,7 +53,7 @@ export const DateField = (props: PageElementProps) => {
          * passthrough props until @cmsgov/design-system^9.0.0
          * TODO: Unhack, to just `disabled={props.disabled}`
          */
-        {...{ disabled: props.disabled } }
+        {...{ disabled: props.disabled }}
       />
     </Box>
   );
