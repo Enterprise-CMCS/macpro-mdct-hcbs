@@ -20,12 +20,12 @@ export const AddEditReportModal = ({
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
 
-    const reportOptions: any = {
+    const reportOptions: ReportOptions = {
       name: "",
-    } as ReportOptions;
+    };
 
-    if (formData["reportTitle"]) {
-      reportOptions["name"] = formData["reportTitle"].answer;
+    if (formData.reportTitle) {
+      reportOptions.name = formData.reportTitle.answer;
     }
 
     await createReport(reportType, activeState, reportOptions);

@@ -1,12 +1,12 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-//components
 import { AddEditReportModal } from "components";
 import {
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import userEvent from "@testing-library/user-event";
 
 const mockCloseHandler = jest.fn();
 const mockReportHandler = jest.fn();
@@ -39,17 +39,17 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditReportModal shows the contents", () => {
-    expect(screen.getByText("QMS report name")).toBeTruthy();
-    expect(screen.getByText("Start new")).toBeTruthy();
+    expect(screen.getByText("QMS report name")).toBeVisible();
+    expect(screen.getByText("Start new")).toBeVisible();
   });
 
   test("AddEditReportModal top close button can be clicked", () => {
-    fireEvent.click(screen.getByText("Close"));
+    userEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
   test("AddEditReportModal bottom cancel button can be clicked", () => {
-    fireEvent.click(screen.getByText("Cancel"));
+    userEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });

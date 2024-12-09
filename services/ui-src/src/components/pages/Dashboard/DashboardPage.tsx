@@ -32,9 +32,6 @@ export const DashboardPage = () => {
   const { intro, body } = dashboardVerbiage;
   const fullStateName = StateNames[state as keyof typeof StateNames];
 
-  // TO-DO: update accordingly - if a user is an admin or a read-only type, use the selected state, otherwise use their assigned state
-  const activeState = state;
-
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {
       return;
@@ -97,7 +94,7 @@ export const DashboardPage = () => {
         </Flex>
       </Flex>
       <AddEditReportModal
-        activeState={activeState!}
+        activeState={state!}
         reportType={reportType!}
         modalDisclosure={{
           isOpen: addEditReportModalIsOpen,
