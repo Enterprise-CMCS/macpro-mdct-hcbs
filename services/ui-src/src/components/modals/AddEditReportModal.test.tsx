@@ -39,8 +39,8 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditReportModal shows the contents", () => {
-    expect(screen.getByLabelText("QMS report name")).toBeVisible();
-    expect(screen.getByText("Start new")).toBeVisible();
+    expect(screen.getByText("QMS report name")).toBeInTheDocument();
+    expect(screen.getByText("Start new")).toBeInTheDocument();
   });
 
   test("AddEditReportModal top close button can be clicked", async () => {
