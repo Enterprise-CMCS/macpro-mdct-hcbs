@@ -29,7 +29,7 @@ const modalComponent = (
 );
 
 describe("Test AddEditProgramModal", () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalComponent);
   });
@@ -39,17 +39,17 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditReportModal shows the contents", () => {
-    expect(screen.getByText("QMS report name")).toBeVisible();
+    expect(screen.getByLabelText("QMS report name")).toBeVisible();
     expect(screen.getByText("Start new")).toBeVisible();
   });
 
-  test("AddEditReportModal top close button can be clicked", () => {
-    userEvent.click(screen.getByText("Close"));
+  test("AddEditReportModal top close button can be clicked", async () => {
+    await userEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("AddEditReportModal bottom cancel button can be clicked", () => {
-    userEvent.click(screen.getByText("Cancel"));
+  test("AddEditReportModal bottom cancel button can be clicked", async () => {
+    await userEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });
