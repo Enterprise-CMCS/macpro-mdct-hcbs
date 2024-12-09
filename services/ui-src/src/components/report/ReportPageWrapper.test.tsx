@@ -1,6 +1,7 @@
 import { render, waitFor } from "@testing-library/react";
 import {
   ElementType,
+  MeasurePageTemplate,
   MeasureTemplateName,
   PageType,
   Report,
@@ -53,7 +54,7 @@ const testReport: Report = {
   ],
   measureLookup: { defaultMeasures: [], optionGroups: {} },
   measureTemplates: {
-    [MeasureTemplateName.StandardMeasure]: {
+    [MeasureTemplateName["LTSS-1"]]: {
       id: "req-measure-report",
       title: "Example Measure",
       type: PageType.Measure,
@@ -64,9 +65,37 @@ const testReport: Report = {
           label: "Return to Required Measures Results Dashboard",
           to: "req-measure-result",
         },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
       ],
     },
-  },
+    [MeasureTemplateName["LTSS-2"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-6"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-7"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-8"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+  } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
 
 const mockUseParams = jest.fn();

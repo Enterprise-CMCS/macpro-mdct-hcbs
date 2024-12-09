@@ -118,6 +118,7 @@ export enum ElementType {
   Radio = "radio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  QualityMeasureTable = "qualityMeasureTable",
   StatusTable = "statusTable",
 }
 
@@ -131,6 +132,7 @@ export type PageElement =
   | RadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
+  | QualityMeasureTableTemplate
   | StatusTableTemplate;
 
 export type HeaderTemplate = {
@@ -174,6 +176,11 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
+export type QualityMeasureTableTemplate = {
+  type: ElementType.QualityMeasureTable;
+  measureDisplay: "quality";
+};
+
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
 };
@@ -196,20 +203,27 @@ export type ChoiceTemplate = {
   label: string;
   value: string;
   checked?: boolean;
+  checkedChildren: PageElement[];
 };
 
 export enum DeliverySystem {
-  FFS,
-  MLTSS,
+  FFS = "FFS",
+  MLTSS = "MLTSS",
 }
 
 export enum DataSource {
   CaseRecordManagement,
   Administrative,
+  Hybrid,
 }
 
 export enum MeasureSteward {
   CMS,
+}
+
+export enum MeasureSpecification {
+  CMS = "CMS",
+  HEDIS = "HEDIS",
 }
 
 export interface ReportOptions {
@@ -223,6 +237,7 @@ export interface CMIT {
   options: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
+  measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
 }
 
@@ -234,7 +249,11 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  StandardMeasure,
+  "LTSS-1",
+  "LTSS-2",
+  "LTSS-6",
+  "LTSS-7",
+  "LTSS-8",
 }
 
 export interface FormComponent {

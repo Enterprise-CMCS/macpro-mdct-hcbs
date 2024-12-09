@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RadioField } from "components";
 import { useFormContext } from "react-hook-form";
-import { PageElement } from "types";
+import { ElementType, PageElement } from "types";
 import { testA11y } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
@@ -37,6 +37,12 @@ const mockRadioElement = {
     {
       label: "Choice 2",
       value: "B",
+      checkedChildren: [
+        {
+          type: ElementType.Textbox,
+          label: "mock-text-box",
+        },
+      ],
       checked: false,
     },
     {
@@ -73,6 +79,17 @@ describe("<RadioField />", () => {
     expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "A", {
       shouldValidate: true,
     });
+  });
+
+  test("RadioField displays children fields after selection", async () => {
+    mockGetValues(undefined);
+    render(RadioFieldComponent);
+    const firstRadio = screen.getByLabelText("Choice 2") as HTMLInputElement;
+    await userEvent.click(firstRadio);
+    expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "B", {
+      shouldValidate: true,
+    });
+    expect(screen.getByLabelText("mock-text-box")).toBeInTheDocument();
   });
 
   testA11y(RadioFieldComponent, () => {

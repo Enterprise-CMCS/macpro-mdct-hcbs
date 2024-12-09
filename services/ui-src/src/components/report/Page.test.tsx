@@ -1,16 +1,17 @@
 import { render } from "@testing-library/react";
 import { ElementType, PageElement } from "types/report";
 import { Page } from "./Page";
+import { mockUseStore } from "utils/testing/setupJest";
+import { useStore } from "utils/state/useStore";
 
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
 }));
 
-jest.mock("../../utils/state/useStore", () => ({
-  useStore: () => ({
-    setCurrentPageId: jest.fn(),
-  }),
-}));
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockUseStore);
+
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     register: jest.fn(),
@@ -20,9 +21,6 @@ jest.mock("react-hook-form", () => ({
 // Mock the more complex elements, let them test themselves
 jest.mock("./StatusTable", () => {
   return { StatusTableElement: () => <div>Status Table</div> };
-});
-jest.mock("./MeasureTable", () => {
-  return { MeasureTableElement: () => <div>Measure Table</div> };
 });
 
 const elements: PageElement[] = [
@@ -55,7 +53,7 @@ const elements: PageElement[] = [
   {
     type: ElementType.Radio,
     label: "date label",
-    value: [{ label: "a", value: "1" }],
+    value: [{ label: "a", value: "1", checkedChildren: [] }],
   },
   {
     type: ElementType.ButtonLink,
@@ -67,7 +65,19 @@ const elements: PageElement[] = [
     measureDisplay: "stratified",
   },
   {
+    type: ElementType.MeasureTable,
+    measureDisplay: "required",
+  },
+  {
+    type: ElementType.MeasureTable,
+    measureDisplay: "optional",
+  },
+  {
     type: ElementType.StatusTable,
+  },
+  {
+    type: ElementType.QualityMeasureTable,
+    measureDisplay: "quality",
   },
 ];
 

@@ -8,6 +8,7 @@ import {
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import { MeasureTableElement } from "./MeasureTable";
+import { QualityMeasureTableElement } from "./QualityMeasureTable";
 import { StatusTableElement } from "./StatusTable";
 import { TextField, DateField, RadioField } from "components";
 
@@ -37,6 +38,8 @@ export const Page = ({ elements }: Props) => {
         return buttonLinkElement;
       case ElementType.MeasureTable:
         return MeasureTableElement;
+      case ElementType.QualityMeasureTable:
+        return QualityMeasureTableElement;
       case ElementType.StatusTable:
         return StatusTableElement;
       default:
