@@ -36,11 +36,19 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
+  // required measures
   "LTSS-1",
   "LTSS-2",
   "LTSS-6",
   "LTSS-7",
   "LTSS-8",
+  //optional measures
+  "FASI-1",
+  "FASI-2",
+  "HCBS-10",
+  "LTSS-3",
+  "LTSS-4",
+  "LTSS-5",
 }
 
 export enum ReportStatus {

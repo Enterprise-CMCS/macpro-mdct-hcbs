@@ -36,6 +36,7 @@ export interface Report extends ReportTemplate {
   lastEdited?: number;
   lastEditedBy?: string;
   status: ReportStatus;
+  name?: string;
 }
 
 export type PageTemplate =

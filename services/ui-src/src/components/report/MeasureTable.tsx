@@ -34,7 +34,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
 
   const selectedMeasures = measures.filter(
     (page) =>
-      (table.measureDisplay == "optional" && page.optional) ||
+      (table.measureDisplay == "optional" && !page.required) ||
       (table.measureDisplay == "required" && page.required) ||
       (table.measureDisplay == "stratified" && page.stratified)
   );

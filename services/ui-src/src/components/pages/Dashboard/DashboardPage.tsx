@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { StateNames } from "../../../constants";
 import { isReportType, isStateAbbr, Report } from "types";
 import {
   PageTemplate,
   InstructionsAccordion,
   DashboardTable,
+  AddEditReportModal,
 } from "components";
 import {
   Box,
@@ -15,6 +16,7 @@ import {
   Link,
   Text,
   Flex,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { parseCustomHtml, useStore } from "utils";
 import dashboardVerbiage from "verbiage/pages/dashboard";
@@ -23,7 +25,6 @@ import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
-  const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -36,13 +37,31 @@ export const DashboardPage = () => {
       return;
     }
 
+    reloadReports(reportType, state);
+  }, [reportType, state]);
+
+  const reloadReports = (reportType: string, state: string) => {
     (async () => {
       setIsLoading(true);
       const result = await getReportsForState(reportType, state);
       setReports(result);
       setIsLoading(false);
     })();
-  }, [reportType, state]);
+  };
+
+  const openAddEditReportModal = () => {
+    // TO-DO: setSelectedReport with formData
+
+    // use disclosure to open modal
+    addEditReportModalOnOpenHandler();
+  };
+
+  // add/edit program modal disclosure
+  const {
+    isOpen: addEditReportModalIsOpen,
+    onOpen: addEditReportModalOnOpenHandler,
+    onClose: addEditReportModalOnCloseHandler,
+  } = useDisclosure();
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
@@ -70,12 +89,21 @@ export const DashboardPage = () => {
         {!reports?.length && <Text variant="tableEmpty">{body.empty}</Text>}
         {userIsEndUser && (
           <Flex justifyContent="center">
-            <Button onClick={() => navigate(body.link.route)} type="submit">
+            <Button onClick={() => openAddEditReportModal()} type="submit">
               {body.link.callToActionText}
             </Button>
           </Flex>
         )}
       </Flex>
+      <AddEditReportModal
+        activeState={state!}
+        reportType={reportType!}
+        modalDisclosure={{
+          isOpen: addEditReportModalIsOpen,
+          onClose: addEditReportModalOnCloseHandler,
+        }}
+        reportHandler={reloadReports}
+      />
     </PageTemplate>
   );
 };

@@ -113,6 +113,7 @@ const sx = {
   },
   modalHeader: {
     padding: "0",
+    margin: "0 0 2rem 0",
   },
   modalHeaderText: {
     padding: "0 4rem 0 0",
