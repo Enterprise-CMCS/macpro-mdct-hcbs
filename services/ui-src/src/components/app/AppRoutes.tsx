@@ -35,17 +35,14 @@ export const AppRoutes = () => {
           />
           <Route path="/report/QM" element={<CreateReportOptions />} />
           <Route
-            path="/report/:reportType/:state/:reportId"
-            element={<ReportPageWrapper />}
-          />
-          <Route
             path="/report/:reportType/:state/:reportId/export"
             element={<ExportedReportPage />}
           />
           <Route
-            path="/report/:reportType/:state/:reportId/:pageId"
+            path="/report/:reportType/:state/:reportId/:pageId?"
             element={<ReportPageWrapper />}
           />
+          {/* TO DO: Load pageId by default? */}
         </Routes>
       </AdminBannerProvider>
     </main>

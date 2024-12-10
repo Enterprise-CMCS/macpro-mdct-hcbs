@@ -1,5 +1,4 @@
 import { screen, render, waitFor } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 import {
   ElementType,
   MeasurePageTemplate,
@@ -123,22 +122,19 @@ describe("ReportPageWrapper", () => {
       state: undefined,
       reportId: undefined,
     });
-    await act(async () => {
-      render(<ReportPageWrapper />);
-    });
+    render(<ReportPageWrapper />);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
     expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
-    await act(async () => {
-      render(<ReportPageWrapper />);
-    });
+    render(<ReportPageWrapper />);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
     expect(screen.getByText("Loading")).toBeTruthy(); // To be updated with real loading page
   });
   test("should render if report exists", async () => {
-    await act(async () => {
-      render(<ReportPageWrapper />);
-    });
+    render(<ReportPageWrapper />);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
 
     await waitFor(() => {
       expect(screen.queryAllByText("General Information")).toBeDefined();
