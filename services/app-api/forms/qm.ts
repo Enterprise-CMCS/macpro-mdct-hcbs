@@ -454,15 +454,6 @@ export const qmReportTemplate: ReportTemplate = {
         {
           type: ElementType.Radio,
           label:
-            "What Technical Specifications are you using to report this measure?",
-          value: [
-            { label: "CMS", value: "cms" },
-            { label: "HEDIS", value: "hedis" },
-          ],
-        },
-        {
-          type: ElementType.Radio,
-          label:
             "Did you deviate from the [reportYear] Technical Specifications?",
           value: [
             { label: "No", value: "no" },
@@ -554,15 +545,6 @@ export const qmReportTemplate: ReportTemplate = {
         {
           type: ElementType.Radio,
           label:
-            "What Technical Specifications are you using to report this measure?",
-          value: [
-            { label: "CMS", value: "cms" },
-            { label: "HEDIS", value: "hedis" },
-          ],
-        },
-        {
-          type: ElementType.Radio,
-          label:
             "Did you deviate from the [reportYear] Technical Specifications?",
           value: [
             { label: "No", value: "no" },
@@ -649,15 +631,6 @@ export const qmReportTemplate: ReportTemplate = {
                 },
               ],
             },
-          ],
-        },
-        {
-          type: ElementType.Radio,
-          label:
-            "What Technical Specifications are you using to report this measure?",
-          value: [
-            { label: "CMS", value: "cms" },
-            { label: "HEDIS", value: "hedis" },
           ],
         },
         {
