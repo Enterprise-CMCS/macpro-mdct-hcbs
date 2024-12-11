@@ -68,7 +68,7 @@ export const CMIT_LIST: CMIT[] = [
       MeasureSpecification.HEDIS,
     ],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
-    dataSource: DataSource.Hybrid,
+    dataSource: DataSource.Administrative,
     options: "",
   },
   {
@@ -81,7 +81,7 @@ export const CMIT_LIST: CMIT[] = [
       MeasureSpecification.HEDIS,
     ],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
-    dataSource: DataSource.Hybrid,
+    dataSource: DataSource.Administrative,
     options: "",
   },
   {
@@ -94,7 +94,7 @@ export const CMIT_LIST: CMIT[] = [
       MeasureSpecification.HEDIS,
     ],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
-    dataSource: DataSource.Hybrid,
+    dataSource: DataSource.Administrative,
     options: "",
   },
 ];
