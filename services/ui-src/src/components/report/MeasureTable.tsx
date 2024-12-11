@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Table,
@@ -9,24 +10,22 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
-import { useStore } from "utils";
-import { MeasureReplacementModal } from "./MeasureReplacementModal";
+import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
   MeasureTableTemplate,
-} from "../../types/report";
+} from "types";
+import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
-import { TableStatusIcon } from "components/tables/TableStatusIcon";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
   const {
     report,
-    setMeasure,
+    // setMeasure,
     setModalComponent,
     setModalOpen,
-    setCurrentPageId,
   } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
@@ -48,9 +47,14 @@ export const MeasureTableElement = (props: PageElementProps) => {
     setModalComponent(modal);
   };
 
-  const onEdit = (measure: MeasurePageTemplate) => {
-    setCurrentPageId(measure.id);
-    setMeasure(measure.cmit!);
+  const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
+
+  // TO-DO: Where does cmit need to be set? Does it happen onEdit click?
+  const handleEditClick = (measureId: string) => {
+    const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
+    navigate(path);
+    // setMeasure(measure.cmit!);
   };
 
   // Build Rows
@@ -73,7 +77,8 @@ export const MeasureTableElement = (props: PageElementProps) => {
         </Td>
 
         <Td>
-          <Button variant="outline" onClick={() => onEdit(measure)}>
+          {/* TO-DO: Fix format of measure id */}
+          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
             Edit
           </Button>
         </Td>
