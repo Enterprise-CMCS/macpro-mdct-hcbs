@@ -45,4 +45,17 @@ export const CMIT_LIST: CMIT[] = [
     dataSource: DataSource.Hybrid,
     options: "",
   },
+  {
+    cmit: 414,
+    name: "LTSS-8: Successful Transition after Long-Term Facility Stay",
+    uid: "414",
+    measureSteward: "CMS",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+    options: "",
+  },
 ];
