@@ -1,7 +1,10 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ElementType, PageElement } from "types/report";
 import { Page } from "./Page";
-import { mockUseStore } from "utils/testing/setupJest";
+import {
+  mockUseReadOnlyUserStore,
+  mockUseStore,
+} from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 
 jest.mock("react-router-dom", () => ({
@@ -81,7 +84,27 @@ const elements: PageElement[] = [
   },
 ];
 
-describe("Page Component", () => {
+const textFieldElement: PageElement[] = [
+  {
+    type: ElementType.Textbox,
+    label: "labeled",
+  },
+  {
+    type: ElementType.Radio,
+    label: "radio button",
+    value: [{ label: "radio choice 1", value: "1", checkedChildren: [] }],
+  },
+];
+
+const dateFieldElement: PageElement[] = [
+  {
+    type: ElementType.Date,
+    label: "date label",
+    helperText: "can you read this?",
+  },
+];
+
+describe("Page Component with state user", () => {
   test.each(elements)("Renders all element types: %p", (element) => {
     const { container } = render(<Page elements={[element]} />);
     expect(container).not.toBeEmptyDOMElement();
@@ -94,5 +117,23 @@ describe("Page Component", () => {
       <Page elements={[badObject as unknown as PageElement]} />
     );
     expect(container).not.toBeEmptyDOMElement();
+  });
+});
+
+describe("Page Component with read only user", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
+  });
+  test("text field and radio button should be disabled", () => {
+    render(<Page elements={textFieldElement} />);
+    const textField = screen.getByRole("textbox");
+    const radioButton = screen.getByLabelText("radio choice 1");
+    expect(textField).toBeDisabled();
+    expect(radioButton).toBeDisabled();
+  });
+  test("date field should be disabled", () => {
+    render(<Page elements={dateFieldElement} />);
+    const dateField = screen.getByRole("textbox");
+    expect(dateField).toBeDisabled();
   });
 });
