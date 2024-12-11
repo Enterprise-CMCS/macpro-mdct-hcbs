@@ -19,4 +19,17 @@ export const CMIT_LIST: CMIT[] = [
     dataSource: DataSource.Hybrid,
     options: "",
   },
+  {
+    cmit: 961,
+    name: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+    uid: "961",
+    measureSteward: "CMS",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+    options: "",
+  },
 ];
