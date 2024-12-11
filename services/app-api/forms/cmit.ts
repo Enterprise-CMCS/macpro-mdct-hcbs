@@ -63,11 +63,8 @@ export const CMIT_LIST: CMIT[] = [
     name: "LTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
     uid: "1255",
     measureSteward: "CMS",
-    measureSpecification: [
-      MeasureSpecification.CMS,
-      MeasureSpecification.HEDIS,
-    ],
-    deliverySystem: [],
+    measureSpecification: [MeasureSpecification.CMS],
+    deliverySystem: [DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
     options: "",
   },
