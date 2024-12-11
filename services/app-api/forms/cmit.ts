@@ -32,4 +32,17 @@ export const CMIT_LIST: CMIT[] = [
     dataSource: DataSource.Hybrid,
     options: "",
   },
+  {
+    cmit: 962,
+    name: "LTSS-4: Reassessment and Person-Centered Plan Update after Inpatient Discharge",
+    uid: "962",
+    measureSteward: "CMS",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+    options: "",
+  },
 ];
