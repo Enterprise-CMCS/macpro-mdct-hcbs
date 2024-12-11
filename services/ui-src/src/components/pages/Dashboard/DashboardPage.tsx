@@ -25,7 +25,7 @@ import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
-  const { userIsAdmin } = useStore().user ?? {};
+  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<Report[]>([]);
@@ -87,11 +87,13 @@ export const DashboardPage = () => {
       <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
         {!isLoading && <DashboardTable reports={reports} />}
         {!reports?.length && <Text variant="tableEmpty">{body.empty}</Text>}
-        <Flex justifyContent="center">
-          <Button onClick={() => openAddEditReportModal()} type="submit">
-            {body.link.callToActionText}
-          </Button>
-        </Flex>
+        {userIsEndUser && (
+          <Flex justifyContent="center">
+            <Button onClick={() => openAddEditReportModal()} type="submit">
+              {body.link.callToActionText}
+            </Button>
+          </Flex>
+        )}
       </Flex>
       <AddEditReportModal
         activeState={state!}

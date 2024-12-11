@@ -250,6 +250,12 @@ export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
   ...mockBannerStore,
 };
 
+export const mockUseReadOnlyUserStore: HcbsUserState & AdminBannerState = {
+  ...mockHelpDeskUserStore,
+  ...mockBannerStore,
+  ...mockReportStore,
+};
+
 // ROUTER
 
 export const RouterWrappedComponent: React.FC = ({ children }) => (
