@@ -1,4 +1,5 @@
 import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useBreakpoint, useStore } from "utils";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
@@ -14,7 +15,8 @@ const navItem = (title: string, index: number) => {
 };
 
 export const Sidebar = () => {
-  const { report, pageMap, currentPageId, setCurrentPageId } = useStore();
+  const { report, pageMap, currentPageId } = useStore();
+  const { reportType, state, reportId } = useParams();
   const { isDesktop } = useBreakpoint();
   const [isOpen, setIsOpen] = useState<boolean>(isDesktop);
   const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
@@ -23,14 +25,16 @@ export const Sidebar = () => {
     return null;
   }
 
-  const setToggle = (sectonId: string) => {
+  const setToggle = (sectionId: string) => {
     const list = toggleList;
-    list[sectonId] = !toggleList[sectonId];
+    list[sectionId] = !toggleList[sectionId];
     setToggleList({ ...list });
   };
 
-  const onNavSelect = (sectonId: string) => {
-    setCurrentPageId(sectonId);
+  const navigate = useNavigate();
+
+  const onNavSelect = (sectionId: string) => {
+    navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
   };
 
   const navSection = (section: number, index: number = 0): ReactNode => {
