@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Image,
@@ -19,7 +19,8 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 
 export const StatusTableElement = () => {
-  const { pageMap, report, user, setCurrentPageId } = useStore();
+  const { pageMap, report, user } = useStore();
+  const { reportType, state, reportId } = useParams();
 
   if (!pageMap) {
     return null;
@@ -29,13 +30,21 @@ export const StatusTableElement = () => {
     .childPageIds;
   const sections = childPages.slice(0, -1).map((id) => {
     const pageIdx = pageMap.get(id);
-    if (!pageIdx) return;
+    if (!pageIdx) return null;
     return report?.pages[pageIdx] as ParentPageTemplate;
   });
+
+  const navigate = useNavigate();
+
+  const handleEditClick = (sectionId: string) => {
+    const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
+    navigate(path);
+  };
 
   // Build Rows
   const rows = sections.map((section, index) => {
     if (!section) return;
+
     return (
       <Tr key={section.id || index} p={0}>
         <Td>
@@ -43,16 +52,13 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-          <TableStatusIcon
-            tableStatus={"complete"}
-            isPdf={true}
-          ></TableStatusIcon>
+          <TableStatusIcon tableStatus={"complete"} isPdf={true} />
         </Td>
         <Td>
           <Button
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
-            onClick={() => setCurrentPageId(section.id)}
+            onClick={() => handleEditClick(section.id)}
           >
             Edit
           </Button>

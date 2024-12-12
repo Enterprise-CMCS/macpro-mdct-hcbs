@@ -40,6 +40,11 @@ export const Menu = ({ handleLogout }: Props) => {
       <MenuList sx={sx.menuList}>
         <Link as={RouterLink} to="/profile" variant="unstyled">
           <MenuItem sx={sx.menuItem}>
+            {/*
+             * TODO: Will a screen reader announce this
+             * as "manage account manage account?"
+             * We may need to tone down the alt text.
+             */}
             <MenuOption
               icon={editIcon}
               altText="Manage account"

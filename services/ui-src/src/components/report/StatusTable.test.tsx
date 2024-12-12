@@ -1,16 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
-import { useNavigate } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { useStore } from "utils";
 import { mockUseReadOnlyUserStore } from "utils/testing/setupJest";
 
-jest.mock("react-router-dom", () => ({
-  useNavigate: jest.fn(),
-}));
-
 jest.mock("utils", () => ({
   useStore: jest.fn(),
+}));
+
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
 }));
 
 const report = {
@@ -32,22 +34,21 @@ mockPageMap.set("2", 2);
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 describe("StatusTable with state user", () => {
-  const mockNavigate = jest.fn();
-  const setCurrentPageId = jest.fn();
-
   beforeEach(() => {
-    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     jest.clearAllMocks();
 
     mockedUseStore.mockReturnValue({
       pageMap: mockPageMap,
       report: report,
-      setCurrentPageId,
     });
   });
 
   test("table with section titles and status icons render", () => {
-    render(<StatusTableElement />);
+    render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
 
     // Table headers
     expect(screen.getByText("Section")).toBeInTheDocument();
@@ -59,24 +60,31 @@ describe("StatusTable with state user", () => {
     expect(screen.getByAltText("complete icon")).toBeInTheDocument();
   });
 
-  test("when Edit button is clicked call setCurrentPageId with the correct pageId", async () => {
-    render(<StatusTableElement />);
+  test("when the Edit button is clicked, navigate to the correct editable page", async () => {
+    render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
 
-    const editButton = screen.getByRole("button", { name: /Edit/i });
+    const editButton = screen.getAllByRole("button", { name: /Edit/i })[0];
     await userEvent.click(editButton);
 
-    expect(setCurrentPageId).toHaveBeenCalledWith("id-1");
+    expect(editButton).toBeVisible();
   });
 
-  test("when the Review PDF button is clicked navigate to PDF", async () => {
-    render(<StatusTableElement />);
+  test("when the Review PDF button is clicked, navigate to PDF", async () => {
+    render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
 
-    const reviewPdfButton = screen.getByRole("button", { name: /Review PDF/i });
+    const reviewPdfButton = screen.getByRole("link", { name: /Review PDF/i });
 
-    const path = `/report/${report.type}/${report.state}/${report.id}/export`;
-    expect(reviewPdfButton).toHaveAttribute("to", path);
-
-    await userEvent.click(reviewPdfButton);
+    const PdfPath = `/report/${report.type}/${report.state}/${report.id}/export`;
+    expect(reviewPdfButton).toHaveAttribute("href", PdfPath);
+    expect(reviewPdfButton).toHaveAttribute("target", "_blank");
   });
 
   test("if pageMap is not defined return null", () => {
@@ -84,7 +92,11 @@ describe("StatusTable with state user", () => {
       pageMap: null,
     });
 
-    const { container } = render(<StatusTableElement />);
+    const { container } = render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
     expect(container.firstChild).toBeNull();
   });
 });
@@ -98,7 +110,11 @@ describe("StatusPage with Read only user", () => {
     });
   });
   it("should not render the Submit QMS Report button when user is read only", async () => {
-    render(<StatusTableElement />);
+    render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
 
     const submitButton = screen.queryByText("Submit QMS Report");
     expect(submitButton).not.toBeInTheDocument();

@@ -4,6 +4,7 @@ import { MeasureTableElement } from "./MeasureTable";
 import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import { ElementType, PageElement } from "types";
+import { MemoryRouter } from "react-router-dom";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -15,10 +16,12 @@ const mockedMeasureTableElement = {
 };
 
 const MeasureTableComponent = (
-  <MeasureTableElement
-    element={mockedMeasureTableElement as unknown as PageElement}
-    formkey={""}
-  ></MeasureTableElement>
+  <MemoryRouter>
+    <MeasureTableElement
+      element={mockedMeasureTableElement as unknown as PageElement}
+      formkey={""}
+    ></MeasureTableElement>
+  </MemoryRouter>
 );
 
 /* To do: add real test */

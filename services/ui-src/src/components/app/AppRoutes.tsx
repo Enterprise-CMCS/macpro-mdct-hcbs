@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
   AdminPage,
+  CreateReportOptions,
   HelpPage,
   HomePage,
   ProfilePage,
@@ -8,9 +9,8 @@ import {
   NotFoundPage,
   AdminBannerProvider,
   ExportedReportPage,
+  ReportPageWrapper,
 } from "components";
-import { CreateReportOptions } from "components/pages/CreateReportOptions/CreateReportOptions";
-import { ReportPageWrapper } from "components/report/ReportPageWrapper";
 import { useStore } from "utils";
 
 export const AppRoutes = () => {
@@ -35,13 +35,14 @@ export const AppRoutes = () => {
           />
           <Route path="/report/QM" element={<CreateReportOptions />} />
           <Route
-            path="/report/:reportType/:state/:reportId"
-            element={<ReportPageWrapper />}
-          />
-          <Route
             path="/report/:reportType/:state/:reportId/export"
             element={<ExportedReportPage />}
           />
+          <Route
+            path="/report/:reportType/:state/:reportId/:pageId?"
+            element={<ReportPageWrapper />}
+          />
+          {/* TO DO: Load pageId by default? */}
         </Routes>
       </AdminBannerProvider>
     </main>

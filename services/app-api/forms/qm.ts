@@ -324,7 +324,89 @@ export const qmReportTemplate: ReportTemplate = {
       type: PageType.Measure,
       sidebar: false,
       substitutable: true,
-      elements: [],
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Optional Measures Dashboard",
+          to: "optional-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency of entity that audited or validated the report?",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "What Technical Specifications are you using to report this measure?",
+          value: [
+            { label: "CMS", value: "cms" },
+            { label: "HEDIS", value: "hedis" },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Which delivery systems were used to report the LTSS measure?",
+          value: [
+            { label: "Managed Care", value: "managed-care" },
+            { label: "Fee-For-Service", value: "fee-for-service" },
+            { label: "Both", value: "both" },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
+      ],
     },
     [MeasureTemplateName["LTSS-6"]]: {
       id: "LTSS-6",
@@ -375,7 +457,89 @@ export const qmReportTemplate: ReportTemplate = {
       title: "LTSS-3: Shared Person-Centered Plan with Primary Care Provider",
       type: PageType.Measure,
       sidebar: false,
-      elements: [],
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Optional Measures Dashboard",
+          to: "optional-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency of entity that audited or validated the report?",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "What Technical Specifications are you using to report this measure?",
+          value: [
+            { label: "CMS", value: "cms" },
+            { label: "HEDIS", value: "hedis" },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Which delivery systems were used to report the LTSS measure?",
+          value: [
+            { label: "Managed Care", value: "managed-care" },
+            { label: "Free-For-Service", value: "fee-for-service" },
+            { label: "Both", value: "both" },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
+      ],
     },
     [MeasureTemplateName["LTSS-4"]]: {
       id: "LTSS-4",
@@ -383,7 +547,89 @@ export const qmReportTemplate: ReportTemplate = {
         "LTSS-4: Reassessment and Person-Centered Plan Update after Inpatient Discharge",
       type: PageType.Measure,
       sidebar: false,
-      elements: [],
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Optional Measures Dashboard",
+          to: "optional-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency of entity that audited or validated the report?",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "What Technical Specifications are you using to report this measure?",
+          value: [
+            { label: "CMS", value: "cms" },
+            { label: "HEDIS", value: "hedis" },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Which delivery systems were used to report the LTSS measure?",
+          value: [
+            { label: "Managed Care", value: "managed-care" },
+            { label: "Free-For-Service", value: "fee-for-service" },
+            { label: "Both", value: "both" },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
+      ],
     },
     [MeasureTemplateName["LTSS-5"]]: {
       id: "LTSS-5",
