@@ -945,6 +945,14 @@ export const qmReportTemplate: ReportTemplate = {
             },
           ],
         },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
       ],
     },
   } as Record<MeasureTemplateName, MeasurePageTemplate>,
