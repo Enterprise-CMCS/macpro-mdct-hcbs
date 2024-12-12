@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter } from "react-router-dom";
 import { useStore } from "utils";
+import { mockUseReadOnlyUserStore } from "utils/testing/setupJest";
 
 jest.mock("utils", () => ({
   useStore: jest.fn(),
@@ -25,16 +26,18 @@ const report = {
   ],
 };
 
-describe("StatusTableElement", () => {
+const mockPageMap = new Map();
+mockPageMap.set("root", 0);
+mockPageMap.set("1", 1);
+mockPageMap.set("2", 2);
+
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+
+describe("StatusTable with state user", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    const mockPageMap = new Map();
-    mockPageMap.set("root", 0);
-    mockPageMap.set("1", 1);
-    mockPageMap.set("2", 2);
-
-    (useStore as unknown as jest.Mock).mockReturnValue({
+    mockedUseStore.mockReturnValue({
       pageMap: mockPageMap,
       report: report,
     });
@@ -95,5 +98,25 @@ describe("StatusTableElement", () => {
       </MemoryRouter>
     );
     expect(container.firstChild).toBeNull();
+  });
+});
+
+describe("StatusPage with Read only user", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue({
+      ...mockUseReadOnlyUserStore,
+      pageMap: mockPageMap,
+      report: report,
+    });
+  });
+  it("should not render the Submit QMS Report button when user is read only", async () => {
+    render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
+
+    const submitButton = screen.queryByText("Submit QMS Report");
+    expect(submitButton).not.toBeInTheDocument();
   });
 });

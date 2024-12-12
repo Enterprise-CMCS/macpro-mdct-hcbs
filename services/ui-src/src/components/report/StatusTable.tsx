@@ -19,7 +19,7 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 
 export const StatusTableElement = () => {
-  const { pageMap, report } = useStore();
+  const { pageMap, report, user } = useStore();
   const { reportType, state, reportId } = useParams();
 
   if (!pageMap) {
@@ -95,12 +95,14 @@ export const StatusTableElement = () => {
         >
           Review PDF
         </Button>
-        <Button
-          // onClick={() => SetPageIndex(parentPage.index - 1)}
-          alignSelf="flex-end"
-        >
-          Submit QMS Report
-        </Button>
+        {user?.userIsEndUser && (
+          <Button
+            // onClick={() => SetPageIndex(parentPage.index - 1)}
+            alignSelf="flex-end"
+          >
+            Submit QMS Report
+          </Button>
+        )}
       </Stack>
     </>
   );
