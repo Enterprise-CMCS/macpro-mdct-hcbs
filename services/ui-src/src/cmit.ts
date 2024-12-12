@@ -29,7 +29,7 @@ export const CMIT_LIST: CMIT[] = [
     options: "",
   },
   {
-    cmit: 1255,
+    cmit: 963,
     name: "LTSS-3: Shared Person-Centered Plan with Primary Care Provider",
     uid: "963",
     measureSteward: "CMS",
