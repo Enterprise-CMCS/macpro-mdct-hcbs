@@ -1,9 +1,14 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { DashboardPage } from "components";
-import { RouterWrappedComponent, mockUseStore } from "utils/testing/setupJest";
+import {
+  RouterWrappedComponent,
+  mockUseReadOnlyUserStore,
+  mockUseStore,
+} from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Report } from "types";
+import dashboardVerbiage from "verbiage/pages/dashboard";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -46,7 +51,7 @@ const dashboardComponent = (
   </RouterWrappedComponent>
 );
 
-describe("<DashboardPage />", () => {
+describe("DashboardPage with state user", () => {
   beforeEach(() => jest.clearAllMocks());
 
   it("should render an empty state when there are no reports", async () => {
@@ -93,5 +98,24 @@ describe("<DashboardPage />", () => {
     expect(cellContent("Submission name")).toBe("{Name of form}"); // TODO placeholder
     expect(cellContent("Last edited")).toBe("10/24/2024");
     expect(cellContent("Edited by")).toBe("Mock User");
+  });
+});
+
+describe("DashboardPage with Read only user", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
+  });
+  it("should not render the Start Report button when user is read only", async () => {
+    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
+
+    render(dashboardComponent);
+    await waitFor(() => {
+      expect(getReportsForState).toHaveBeenCalled();
+    });
+
+    const startReportButton = screen.queryByText(
+      dashboardVerbiage.body.link.callToActionText
+    );
+    expect(startReportButton).not.toBeInTheDocument();
   });
 });
