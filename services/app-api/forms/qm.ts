@@ -889,7 +889,63 @@ export const qmReportTemplate: ReportTemplate = {
         "LTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
       type: PageType.Measure,
       sidebar: false,
-      elements: [],
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Optional Measures Dashboard",
+          to: "optional-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency of entity that audited or validated the report?",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
   } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
