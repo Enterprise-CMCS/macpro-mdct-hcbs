@@ -38,7 +38,7 @@ const MAX_AGE_DAYS = 30;
  */
 function shouldDelete(entry) {
   const name = entry.name;
-  if (!entry.isDirectory) {
+  if (!entry.isDirectory()) {
     console.info(
       `SKIPPED --- File ${name} is not a folder. It will not be deleted.`
     );
