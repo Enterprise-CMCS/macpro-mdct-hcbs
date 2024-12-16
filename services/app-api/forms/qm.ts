@@ -266,7 +266,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -327,8 +327,8 @@ export const qmReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.ButtonLink,
-          label: "Return to Optional Measures Dashboard",
-          to: "optional-measure-result",
+          label: "Return to Required Measures Dashboard",
+          to: "req-measure-result",
         },
         {
           type: ElementType.Header,
@@ -356,7 +356,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -445,7 +445,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -536,7 +536,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -627,7 +627,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -687,14 +687,160 @@ export const qmReportTemplate: ReportTemplate = {
       title: "FASI-1: Identification of Person-Centered Priorities",
       type: PageType.Measure,
       sidebar: false,
-      elements: [],
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Optional Measures Dashboard",
+          to: "optional-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency or entity that audited or validated the report?",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Which delivery systems were used to report the LTSS measure?",
+          value: [
+            { label: "Managed Care", value: "managed-care" },
+            { label: "Fee-For-Service", value: "fee-for-service" },
+            { label: "Both", value: "both" },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
+      ],
     },
     [MeasureTemplateName["FASI-2"]]: {
       id: "FASI-2",
       title: "FASI-2: Documentation of a Person-Centered Service Plan",
       type: PageType.Measure,
       sidebar: false,
-      elements: [],
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Optional Measures Dashboard",
+          to: "optional-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency or entity that audited or validated the report?",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label: "Which delivery systems were used to report the LTSS measure?",
+          value: [
+            { label: "Managed Care", value: "managed-care" },
+            { label: "Fee-For-Service", value: "fee-for-service" },
+            { label: "Both", value: "both" },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
+      ],
     },
     [MeasureTemplateName["HCBS-10"]]: {
       id: "HCBS-10",
@@ -702,7 +848,71 @@ export const qmReportTemplate: ReportTemplate = {
         "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through Managed Care Organizations",
       type: PageType.Measure,
       sidebar: false,
-      elements: [],
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Optional Measures Dashboard",
+          to: "optional-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Measure Details",
+        },
+        {
+          type: ElementType.Radio,
+          label: "Were the reported measure results audited or validated?",
+          value: [
+            { label: "No, I am reporting on this measure", value: "no" },
+            {
+              label: "Yes, CMS is reporting on my behalf",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label:
+                    "What is the name of the agency or entity that audited or validated the report?",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.Radio,
+          label:
+            "Did you deviate from the [reportYear] Technical Specifications?",
+          value: [
+            { label: "No", value: "no" },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the deviation.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+        },
+      ],
     },
     [MeasureTemplateName["LTSS-3"]]: {
       id: "LTSS-3",
@@ -741,7 +951,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -831,7 +1041,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -921,7 +1131,7 @@ export const qmReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency of entity that audited or validated the report?",
+                    "What is the name of the agency or entity that audited or validated the report?",
                 },
               ],
             },
@@ -944,6 +1154,14 @@ export const qmReportTemplate: ReportTemplate = {
               ],
             },
           ],
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "Quality Measures",
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
         },
       ],
     },
