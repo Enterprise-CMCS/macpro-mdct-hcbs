@@ -21,12 +21,7 @@ import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const {
-    report,
-    // setMeasure,
-    setModalComponent,
-    setModalOpen,
-  } = useStore();
+  const { report, setMeasure, setModalComponent, setModalOpen } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -50,11 +45,10 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  // TO-DO: Where does cmit need to be set? Does it happen onEdit click?
-  const handleEditClick = (measureId: string) => {
+  const handleEditClick = (measureId: string, cmit: number | undefined) => {
+    setMeasure(cmit!);
     const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
     navigate(path);
-    // setMeasure(measure.cmit!);
   };
 
   // Build Rows
@@ -78,7 +72,10 @@ export const MeasureTableElement = (props: PageElementProps) => {
 
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
+          <Button
+            variant="outline"
+            onClick={() => handleEditClick(measure.id, measure.cmit)}
+          >
             Edit
           </Button>
         </Td>
