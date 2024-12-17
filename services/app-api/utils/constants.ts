@@ -16,6 +16,7 @@ export enum DataSource {
   CaseRecordManagement = "CaseRecordManagement",
   Administrative = "Administrative",
   Hybrid = "Hybrid",
+  RecordReview = "RecordReview",
 }
 
 export enum MeasureSteward {
