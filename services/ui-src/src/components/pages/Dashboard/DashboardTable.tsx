@@ -11,6 +11,15 @@ interface DashboardTableProps {
   openAddEditReportModal: Function;
 }
 
+/**
+ * Return the dashboard table column headers. If user is admin, there will be
+ * an extra empty row that is for the edit report name button column.
+ */
+const getHeadRow = (readOnlyUser?: boolean) =>
+  readOnlyUser
+    ? ["Submission name", "Last edited", "Edited by", "Status", ""]
+    : ["", "Submission name", "Last edited", "Edited by", "Status", ""];
+
 export const DashboardTable = ({
   reports,
   readOnlyUser,
@@ -23,14 +32,9 @@ export const DashboardTable = ({
   const editButtonText = isStateUser ? "Edit" : "View";
 
   const tableContent = {
-    caption: "Quality Measure Reports",
-    headRow: ["", "Submission name", "Last edited", "Edited by", "Status", ""],
+    caption: "QMR",
+    headRow: getHeadRow(readOnlyUser),
   };
-
-  // pop off the edit button heading if the user is read only
-  if (readOnlyUser) {
-    tableContent.headRow.shift();
-  }
 
   return (
     <Table content={tableContent}>
@@ -39,7 +43,7 @@ export const DashboardTable = ({
           {!readOnlyUser && (
             <Td fontWeight={"bold"}>
               <button onClick={() => openAddEditReportModal(report)}>
-                <Image src={editIcon} alt="Edit Report" />
+                <Image src={editIcon} alt="Edit Report Name" />
               </button>
             </Td>
           )}
