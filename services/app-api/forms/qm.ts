@@ -285,10 +285,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
@@ -374,10 +374,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
@@ -453,10 +453,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
@@ -543,10 +543,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
@@ -633,10 +633,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
@@ -755,10 +755,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
@@ -844,10 +844,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
@@ -924,10 +924,10 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
