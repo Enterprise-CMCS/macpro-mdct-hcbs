@@ -29,6 +29,9 @@ export const DashboardPage = () => {
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<Report[]>([]);
+  const [selectedReport, setSelectedReport] = useState<Report | undefined>(
+    undefined
+  );
   const { intro, body } = dashboardVerbiage;
   const fullStateName = StateNames[state as keyof typeof StateNames];
 
@@ -49,9 +52,8 @@ export const DashboardPage = () => {
     })();
   };
 
-  const openAddEditReportModal = () => {
-    // TO-DO: setSelectedReport with formData
-
+  const openAddEditReportModal = (report?: Report) => {
+    setSelectedReport(report);
     // use disclosure to open modal
     addEditReportModalOnOpenHandler();
   };
@@ -85,7 +87,13 @@ export const DashboardPage = () => {
         {parseCustomHtml(intro.body)}
       </Box>
       <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
-        {!isLoading && <DashboardTable reports={reports} />}
+        {!isLoading && (
+          <DashboardTable
+            reports={reports}
+            openAddEditReportModal={openAddEditReportModal}
+            readOnlyUser={!userIsEndUser}
+          />
+        )}
         {!reports?.length && <Text variant="tableEmpty">{body.empty}</Text>}
         {userIsEndUser && (
           <Flex justifyContent="center">
@@ -103,6 +111,7 @@ export const DashboardPage = () => {
           onClose: addEditReportModalOnCloseHandler,
         }}
         reportHandler={reloadReports}
+        selectedReport={selectedReport}
       />
     </PageTemplate>
   );
