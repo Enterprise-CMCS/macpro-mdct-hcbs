@@ -32,7 +32,7 @@ export const DashboardTable = ({
   const editButtonText = isStateUser ? "Edit" : "View";
 
   const tableContent = {
-    caption: "QMR",
+    caption: "Quality Measure Reports",
     headRow: getHeadRow(readOnlyUser),
   };
 
