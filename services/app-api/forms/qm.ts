@@ -302,9 +302,15 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -391,9 +397,15 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Fee-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -481,9 +493,15 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -571,9 +589,15 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -661,9 +685,15 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -694,7 +724,7 @@ export const qmReportTemplate: ReportTemplate = {
     [MeasureTemplateName["HCBS-10"]]: {
       id: "HCBS-10",
       title:
-        "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through Managed Care Organizations",
+        "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through FFS Organizations",
       type: PageType.Measure,
       sidebar: false,
       elements: [],
@@ -772,9 +802,15 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -861,9 +897,15 @@ export const qmReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
