@@ -215,6 +215,7 @@ export enum DataSource {
   CaseRecordManagement,
   Administrative,
   Hybrid,
+  RecordReview,
 }
 
 export enum MeasureSteward {
