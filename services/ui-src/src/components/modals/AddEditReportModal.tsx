@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Modal, TextField } from "components";
 import { Spinner, Flex } from "@chakra-ui/react";
-import { AnyObject, ElementType } from "types";
-import { createReport } from "utils/api/requestMethods/report";
+import { ElementType, Report } from "types";
+import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
 import { ReportOptions } from "types/report";
 
@@ -10,6 +10,7 @@ export const AddEditReportModal = ({
   activeState,
   reportType,
   modalDisclosure,
+  selectedReport,
   reportHandler,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -20,17 +21,24 @@ export const AddEditReportModal = ({
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
 
-    const reportOptions: ReportOptions = {
-      name: "",
-    };
+    const userEnteredReportName = formData?.reportTitle?.answer;
 
-    if (formData.reportTitle) {
-      reportOptions.name = formData.reportTitle.answer;
+    if (selectedReport) {
+      if (userEnteredReportName) {
+        selectedReport.name = userEnteredReportName;
+      }
+      await putReport(selectedReport);
+    } else {
+      const reportOptions: ReportOptions = {
+        name: "",
+      };
+      if (userEnteredReportName) {
+        reportOptions.name = userEnteredReportName;
+      }
+      await createReport(reportType, activeState, reportOptions);
+      await reportHandler(reportType, activeState);
     }
 
-    await createReport(reportType, activeState, reportOptions);
-
-    await reportHandler(reportType, activeState);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
@@ -41,9 +49,15 @@ export const AddEditReportModal = ({
       formId="addEditReportModal"
       modalDisclosure={modalDisclosure}
       content={{
-        heading: "Add new Quality Measure Set Report",
+        heading: `${
+          selectedReport ? "Edit" : "Add new"
+        } Quality Measure Set Report`,
         subheading: "",
-        actionButtonText: submitting ? <Spinner size="md" /> : "Start new",
+        actionButtonText: submitting ? (
+          <Spinner size="md" />
+        ) : (
+          `${selectedReport ? "Save" : "Start new"}`
+        ),
         closeButtonText: "Cancel",
       }}
     >
@@ -56,9 +70,10 @@ export const AddEditReportModal = ({
                 label: "QMS report name",
                 helperText:
                   "Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
+                answer: selectedReport?.name,
               }}
               formkey={"reportTitle"}
-            ></TextField>
+            />
           </Flex>
         </form>
       </FormProvider>
@@ -69,7 +84,7 @@ export const AddEditReportModal = ({
 interface Props {
   activeState: string;
   reportType: string;
-  selectedReport?: AnyObject;
+  selectedReport?: Report;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

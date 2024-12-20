@@ -283,17 +283,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
@@ -301,11 +300,17 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Which delivery systems were used to report the LTSS measure?",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -373,17 +378,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
@@ -391,11 +395,17 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Which delivery systems were used to report the LTSS measure?",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Fee-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -453,17 +463,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
@@ -482,11 +491,17 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Which delivery systems were used to report the LTSS measure?",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -544,17 +559,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
@@ -573,11 +587,17 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Which delivery systems were used to report the LTSS measure?",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -635,17 +655,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
@@ -664,11 +683,17 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Which delivery systems were used to report the LTSS measure?",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -968,17 +993,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
@@ -986,11 +1010,17 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Which delivery systems were used to report the LTSS measure?",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -1058,17 +1088,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
@@ -1076,11 +1105,17 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Which delivery systems were used to report the LTSS measure?",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Managed Care", value: "managed-care" },
-            { label: "Free-For-Service", value: "fee-for-service" },
-            { label: "Both", value: "both" },
+            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            {
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: "managed-long-term-services-and-supports",
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: "both-ffs-and-mltss",
+            },
           ],
         },
         {
@@ -1139,17 +1174,16 @@ export const qmReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label:
-            "Did you deviate from the [reportYear] Technical Specifications?",
+          label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
-            { label: "No", value: "no" },
+            { label: "Yes", value: "yes" },
             {
-              label: "Yes",
-              value: "yes",
+              label: "No",
+              value: "no",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
-                  label: "Please explain the deviation.",
+                  label: "Please explain the variance.",
                 },
               ],
             },
