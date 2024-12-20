@@ -724,7 +724,7 @@ export const qmReportTemplate: ReportTemplate = {
     [MeasureTemplateName["HCBS-10"]]: {
       id: "HCBS-10",
       title:
-        "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through FFS Organizations",
+        "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through Managed Care Organizations",
       type: PageType.Measure,
       sidebar: false,
       elements: [],
