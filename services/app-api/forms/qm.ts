@@ -304,7 +304,7 @@ export const qmReportTemplate: ReportTemplate = {
           value: [
             { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
             {
-              label: "Managed Long Term Services and Supports (MLTSS)",
+              label: "Managed Long-Term Services and Supports (MLTSS)",
               value: "managed-long-term-services-and-supports",
             },
             {
@@ -399,7 +399,7 @@ export const qmReportTemplate: ReportTemplate = {
           value: [
             { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
             {
-              label: "Managed Long Term Services and Supports (MLTSS)",
+              label: "Managed Long-Term Services and Supports (MLTSS)",
               value: "managed-long-term-services-and-supports",
             },
             {
@@ -495,7 +495,7 @@ export const qmReportTemplate: ReportTemplate = {
           value: [
             { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
             {
-              label: "Managed Long Term Services and Supports (MLTSS)",
+              label: "Managed Long-Term Services and Supports (MLTSS)",
               value: "managed-long-term-services-and-supports",
             },
             {
@@ -591,7 +591,7 @@ export const qmReportTemplate: ReportTemplate = {
           value: [
             { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
             {
-              label: "Managed Long Term Services and Supports (MLTSS)",
+              label: "Managed Long-Term Services and Supports (MLTSS)",
               value: "managed-long-term-services-and-supports",
             },
             {
@@ -687,7 +687,7 @@ export const qmReportTemplate: ReportTemplate = {
           value: [
             { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
             {
-              label: "Managed Long Term Services and Supports (MLTSS)",
+              label: "Managed Long-Term Services and Supports (MLTSS)",
               value: "managed-long-term-services-and-supports",
             },
             {
@@ -804,7 +804,7 @@ export const qmReportTemplate: ReportTemplate = {
           value: [
             { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
             {
-              label: "Managed Long Term Services and Supports (MLTSS)",
+              label: "Managed Long-Term Services and Supports (MLTSS)",
               value: "managed-long-term-services-and-supports",
             },
             {
@@ -899,7 +899,7 @@ export const qmReportTemplate: ReportTemplate = {
           value: [
             { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
             {
-              label: "Managed Long Term Services and Supports (MLTSS)",
+              label: "Managed Long-Term Services and Supports (MLTSS)",
               value: "managed-long-term-services-and-supports",
             },
             {
