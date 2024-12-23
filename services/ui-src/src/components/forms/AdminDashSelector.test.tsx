@@ -69,7 +69,7 @@ describe("AdminDashSelector Component", () => {
 
     // Select a report
     const radioButton = screen.getByLabelText(
-      "Quality Measures (QM)"
+      "Quality Measure Set (QMS)"
     ) as HTMLElement;
     await userEvent.click(radioButton);
     expect(dropdown.value).toBe("CA");
@@ -82,7 +82,7 @@ describe("AdminDashSelector Component", () => {
     // Select a state and report
     const dropdown = screen.getByLabelText("Select state or territory:");
     await userEvent.selectOptions(dropdown, "CA");
-    const radioButton = screen.getByLabelText("Quality Measures (QM)");
+    const radioButton = screen.getByLabelText("Quality Measure Set (QMS)");
     await userEvent.click(radioButton);
 
     // Submit the form
@@ -92,7 +92,7 @@ describe("AdminDashSelector Component", () => {
     await userEvent.click(submitButton);
 
     // Check if navigate is called with the correct parameters
-    expect(mockNavigate).toHaveBeenCalledWith("report/QM/CA");
+    expect(mockNavigate).toHaveBeenCalledWith("report/QMS/CA");
   });
   test("submit button is disabled when no state or report is selected", async () => {
     render(<AdminDashSelector verbiage={mockVerbiage} />);
@@ -109,7 +109,7 @@ describe("AdminDashSelector Component", () => {
     expect(submitButton).toBeDisabled();
 
     // Now select a report
-    const radioButton = screen.getByLabelText("Quality Measures (QM)");
+    const radioButton = screen.getByLabelText("Quality Measure Set (QMS)");
     await userEvent.click(radioButton);
     // Now it should be enabled
     expect(submitButton).toBeEnabled();

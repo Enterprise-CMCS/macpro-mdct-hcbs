@@ -63,7 +63,9 @@ describe("DashboardPage with state user", () => {
     });
 
     expect(
-      screen.getByRole("heading", { name: "Colorado Quality Measures Report" })
+      screen.getByRole("heading", {
+        name: "Colorado Quality Measure Set Report",
+      })
     ).toBeVisible();
     expect(
       screen.getByText("once you start a report you can access it here", {

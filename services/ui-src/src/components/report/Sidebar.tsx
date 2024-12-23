@@ -83,7 +83,7 @@ export const Sidebar = () => {
     <Box sx={sx.sidebar} className={isOpen ? "open" : "closed"}>
       <Flex sx={sx.sidebarNav}>
         <Flex flexDirection="column" background="palette.gray_lightest">
-          <Heading variant="sidebar">Quality Measures Report</Heading>
+          <Heading variant="sidebar">Quality Measure Set Report</Heading>
           {report.pages[root].childPageIds?.map((child) =>
             navSection(pageMap.get(child)!)
           )}

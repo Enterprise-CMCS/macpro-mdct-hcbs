@@ -11,8 +11,8 @@ export default {
     },
   },
   cards: {
-    QM: {
-      title: "HCBS Quality Measures",
+    QMS: {
+      title: "HCBS Quality Measure Set",
       body: {
         available: "The HCBS is ...  ",
       },
@@ -23,18 +23,18 @@ export default {
         ' as "increasing the use of home and community-based, rather than institutional, long-term care services."',
       downloadText: "User Guide and Help File",
       link: {
-        text: "Enter HCBS QM online",
-        route: "/report/QM/{state}",
+        text: "Enter HCBS QMS online",
+        route: "/report/QMS/{state}",
       },
       accordion: {
-        buttonLabel: "When are the HCBS Quality Measures due?",
+        buttonLabel: "When is the HCBS Quality Measure Set due?",
         text: [
           {
             content:
-              "The HCBS Quality Measures will be created and submitted ...",
+              "The HCBS Quality Measure Set will be created and submitted ...",
           },
           {
-            content: "The HCBS Quality Measures deadlines are TBD ...",
+            content: "The HCBS Quality Measure Set deadlines are TBD ...",
           },
         ],
       },

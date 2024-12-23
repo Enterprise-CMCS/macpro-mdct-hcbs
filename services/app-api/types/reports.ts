@@ -7,7 +7,7 @@ import {
 } from "../utils/constants";
 
 export enum ReportType {
-  QM = "QM",
+  QMS = "QMS",
 }
 export const isReportType = (x: string | undefined): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);

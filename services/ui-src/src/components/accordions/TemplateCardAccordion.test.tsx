@@ -8,7 +8,7 @@ import { testA11y } from "utils/testing/commonTests";
 
 const accordionComponent = (mockProps?: AnyObject) => {
   const props = {
-    verbiage: verbiage.cards.QM.accordion,
+    verbiage: verbiage.cards.QMS.accordion,
     ...mockProps,
   };
   return (
@@ -18,8 +18,8 @@ const accordionComponent = (mockProps?: AnyObject) => {
   );
 };
 
-const accordionContent = verbiage.cards.QM.accordion.text[0].content;
-const accordionButtonLabel = verbiage.cards.QM.accordion.buttonLabel;
+const accordionContent = verbiage.cards.QMS.accordion.text[0].content;
+const accordionButtonLabel = verbiage.cards.QMS.accordion.buttonLabel;
 
 describe("<TemplateCardAccordion />", () => {
   test("Accordion is visible", () => {
