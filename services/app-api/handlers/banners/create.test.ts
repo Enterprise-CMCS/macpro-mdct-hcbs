@@ -27,6 +27,13 @@ const testEvent: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test" },
 };
 
+const testEventWithInvalidData: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  body: `{"description":"test description","link":"test link","startDate":"1000","endDate":2000}`,
+  pathParameters: { bannerId: "testKey" },
+  headers: { "cognito-identity-id": "test" },
+};
+
 describe("Test createBanner API method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -73,5 +80,10 @@ describe("Test createBanner API method", () => {
     const res = await createBanner(noKeyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.MISSING_DATA);
+  });
+
+  test("Test invalid data causes internal server error", async () => {
+    const res = await createBanner(testEventWithInvalidData);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
   });
 });

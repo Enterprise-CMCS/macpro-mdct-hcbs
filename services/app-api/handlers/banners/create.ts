@@ -10,6 +10,17 @@ import {
 import { canWriteBanner } from "../../utils/authorization";
 import { parseBannerId } from "../../libs/param-lib";
 import { BannerData } from "../../types/banner";
+import { number, object, string } from "yup";
+import { validateData } from "../../utils/validation";
+
+const validationSchema = object().shape({
+  key: string().required(),
+  title: string().required(),
+  description: string().required(),
+  link: string().url().notRequired(),
+  startDate: number().required(),
+  endDate: number().required(),
+});
 
 export const createBanner = handler(parseBannerId, async (request) => {
   const { bannerId } = request.parameters;
@@ -25,9 +36,13 @@ export const createBanner = handler(parseBannerId, async (request) => {
 
   const unvalidatedPayload = request.body;
 
-  //TO DO: add validation & validation test back
+  const validatedPayload = await validateData(
+    validationSchema,
+    unvalidatedPayload
+  );
+
   const { title, description, link, startDate, endDate } =
-    unvalidatedPayload as BannerData;
+    validatedPayload as BannerData;
 
   const currentTime = Date.now();
 
