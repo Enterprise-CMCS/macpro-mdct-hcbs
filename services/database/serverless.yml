@@ -26,7 +26,7 @@ custom:
   dotenv:
     path: ../../.env
   bannerTableName: ${self:custom.stage}-banners
-  qmReportTableName: ${self:custom.stage}-qm-reports
+  qmsReportTableName: ${self:custom.stage}-qms-reports
   dynamodb:
     stages:
       - local
@@ -79,10 +79,10 @@ resources:
           - AttributeName: key
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
-    QmReportTable:
+    QmsReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.qmReportTableName}
+        TableName: ${self:custom.qmsReportTableName}
         PointInTimeRecoverySpecification:
           PointInTimeRecoveryEnabled: true
         StreamSpecification:
@@ -101,9 +101,9 @@ resources:
   Outputs:
     BannerTableName:
       Value: !Ref BannerTable
-    QmReportTableName:
-      Value: !Ref QmReportTable
-    QmReportTableArn:
-      Value: !GetAtt QmReportTable.Arn
+    QmsReportTableName:
+      Value: !Ref QmsReportTable
+    QmsReportTableArn:
+      Value: !GetAtt QmsReportTable.Arn
     Region:
       Value: !Sub ${AWS::Region}

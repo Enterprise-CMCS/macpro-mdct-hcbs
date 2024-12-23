@@ -10,7 +10,7 @@ import { mockClient } from "aws-sdk-client-mock";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const mockReport = {
-  type: "QM",
+  type: "QMS",
   id: "mock-report-id",
   state: "CO",
 } as Report;
@@ -30,7 +30,7 @@ describe("Report storage helpers", () => {
 
       expect(mockPut).toHaveBeenCalledWith(
         {
-          TableName: "local-qm-reports",
+          TableName: "local-qms-reports",
           Item: mockReport,
         },
         expect.any(Function)
@@ -45,12 +45,12 @@ describe("Report storage helpers", () => {
       });
       mockDynamo.on(GetCommand).callsFake(mockGet);
 
-      const report = await getReport(ReportType.QM, "CO", "mock-report-id");
+      const report = await getReport(ReportType.QMS, "CO", "mock-report-id");
 
       expect(report).toBe(mockReport);
       expect(mockGet).toHaveBeenCalledWith(
         {
-          TableName: "local-qm-reports",
+          TableName: "local-qms-reports",
           Key: { state: "CO", id: "mock-report-id" },
         },
         expect.any(Function)
@@ -59,7 +59,7 @@ describe("Report storage helpers", () => {
 
     it("should return undefined if report is not found", async () => {
       mockDynamo.on(GetCommand).resolvesOnce({});
-      const report = await getReport(ReportType.QM, "CO", "mock-report-id");
+      const report = await getReport(ReportType.QMS, "CO", "mock-report-id");
       expect(report).toBe(undefined);
     });
   });
@@ -72,12 +72,12 @@ describe("Report storage helpers", () => {
       });
       mockDynamo.on(QueryCommand).callsFake(mockQuery);
 
-      const reports = await queryReportsForState(ReportType.QM, "CO");
+      const reports = await queryReportsForState(ReportType.QMS, "CO");
 
       expect(reports).toEqual([mockReport]);
       expect(mockQuery).toHaveBeenCalledWith(
         {
-          TableName: "local-qm-reports",
+          TableName: "local-qms-reports",
           KeyConditionExpression: "#state = :state",
           ExpressionAttributeValues: { ":state": "CO" },
           ExpressionAttributeNames: { "#state": "state" },

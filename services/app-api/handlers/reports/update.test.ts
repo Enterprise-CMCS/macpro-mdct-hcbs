@@ -19,12 +19,12 @@ jest.mock("../../storage/reports", () => ({
   putReport: () => jest.fn(),
 }));
 
-const reportObj = { type: "QM", state: "PA", id: "QMPA123" };
+const reportObj = { type: "QMS", state: "PA", id: "QMPA123" };
 const report = JSON.stringify(reportObj);
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  pathParameters: { reportType: "QM", state: "PA", id: "QMPA123" },
+  pathParameters: { reportType: "QMS", state: "PA", id: "QMPA123" },
   headers: { "cognito-identity-id": "test" },
   body: report,
 };
@@ -52,7 +52,7 @@ describe("Test update report handler", () => {
   test("Test missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
-      pathParameters: { reportType: "QM", state: "PA", id: "QMPA123" },
+      pathParameters: { reportType: "QMS", state: "PA", id: "QMPA123" },
       body: null,
     } as APIGatewayProxyEvent;
     const res = await updateReport(emptyBodyEvent);
@@ -67,12 +67,12 @@ describe("Test update report handler", () => {
     } as APIGatewayProxyEvent;
     const badState = {
       ...proxyEvent,
-      pathParameters: { reportType: "QM", state: "PA", id: "QMPA123" },
+      pathParameters: { reportType: "QMS", state: "PA", id: "QMPA123" },
       body: JSON.stringify({ ...reportObj, state: "OR" }),
     } as APIGatewayProxyEvent;
     const badId = {
       ...proxyEvent,
-      pathParameters: { reportType: "QM", state: "PA", id: "ZZOR1234" },
+      pathParameters: { reportType: "QMS", state: "PA", id: "ZZOR1234" },
       body: report,
     } as APIGatewayProxyEvent;
 
