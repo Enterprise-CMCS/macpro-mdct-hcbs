@@ -6,11 +6,11 @@ describe("Path parameter parsing", () => {
     it("should validate report type and state", () => {
       const event = {
         ...proxyEvent,
-        pathParameters: { reportType: "QM", state: "CO" },
+        pathParameters: { reportType: "QMS", state: "CO" },
       };
       const result = parseReportTypeAndState(event)!;
       expect(result).toBeDefined();
-      expect(result.reportType).toBe("QM");
+      expect(result.reportType).toBe("QMS");
       expect(result.state).toBe("CO");
     });
 
@@ -26,7 +26,7 @@ describe("Path parameter parsing", () => {
     it("should return false for invalid state", () => {
       const event = {
         ...proxyEvent,
-        pathParameters: { reportType: "QM", state: "XX" },
+        pathParameters: { reportType: "QMS", state: "XX" },
       };
       const result = parseReportTypeAndState(event);
       expect(result).toBeUndefined();
@@ -37,11 +37,11 @@ describe("Path parameter parsing", () => {
     it("should validate report type and state", () => {
       const event = {
         ...proxyEvent,
-        pathParameters: { reportType: "QM", state: "CO", id: "foo" },
+        pathParameters: { reportType: "QMS", state: "CO", id: "foo" },
       };
       const result = parseReportParameters(event)!;
       expect(result).toBeDefined();
-      expect(result.reportType).toBe("QM");
+      expect(result.reportType).toBe("QMS");
       expect(result.state).toBe("CO");
       expect(result.id).toBe("foo");
     });
@@ -58,7 +58,7 @@ describe("Path parameter parsing", () => {
     it("should return false for invalid state", () => {
       const event = {
         ...proxyEvent,
-        pathParameters: { reportType: "QM", state: "XX", id: "foo" },
+        pathParameters: { reportType: "QMS", state: "XX", id: "foo" },
       };
       const result = parseReportParameters(event);
       expect(result).toBeUndefined();
@@ -67,7 +67,7 @@ describe("Path parameter parsing", () => {
     it("should return false for missing report ID", () => {
       const event = {
         ...proxyEvent,
-        pathParameters: { reportType: "QM", state: "CO" },
+        pathParameters: { reportType: "QMS", state: "CO" },
       };
       const result = parseReportParameters(event);
       expect(result).toBeUndefined();

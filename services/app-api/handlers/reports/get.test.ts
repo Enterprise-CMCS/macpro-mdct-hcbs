@@ -22,7 +22,11 @@ jest.mock("../../storage/reports", () => ({
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  pathParameters: { reportType: "QM", state: "PA", id: "myVeryFavoriteReport" },
+  pathParameters: {
+    reportType: "QMS",
+    state: "PA",
+    id: "myVeryFavoriteReport",
+  },
   headers: { "cognito-identity-id": "test" },
 };
 

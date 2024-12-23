@@ -16,7 +16,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 const report = {
-  type: "QM",
+  type: "QMS",
   id: "mock-report-id",
   state: "CO",
   pages: [

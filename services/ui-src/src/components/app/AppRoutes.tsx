@@ -33,7 +33,7 @@ export const AppRoutes = () => {
             path="/report/:reportType/:state"
             element={<DashboardPage />}
           />
-          <Route path="/report/QM" element={<CreateReportOptions />} />
+          <Route path="/report/QMS" element={<CreateReportOptions />} />
           <Route
             path="/report/:reportType/:state/:reportId/export"
             element={<ExportedReportPage />}

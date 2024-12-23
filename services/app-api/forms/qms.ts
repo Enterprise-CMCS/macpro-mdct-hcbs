@@ -8,7 +8,7 @@ import {
 } from "../types/reports";
 
 export const qmReportTemplate: ReportTemplate = {
-  type: ReportType.QM,
+  type: ReportType.QMS,
   title: "plan id",
   pages: [
     {

@@ -1,7 +1,7 @@
 import { StateAbbr } from "./other";
 
 export enum ReportType {
-  QM = "QM",
+  QMS = "QMS",
 }
 export const isReportType = (
   reportType: string | undefined

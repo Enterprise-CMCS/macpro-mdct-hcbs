@@ -1,7 +1,7 @@
 import { isResultRowButton, PageType } from "../types/reports";
-import { qmReportTemplate } from "./qm";
+import { qmReportTemplate } from "./qms";
 
-describe("QM Template", () => {
+describe("QMS Template", () => {
   it("Should exist", () => {
     expect(qmReportTemplate).toBeDefined();
   });

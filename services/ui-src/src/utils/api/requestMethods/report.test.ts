@@ -9,7 +9,7 @@ import { Report, ReportOptions, ReportType } from "types/report";
 import { AnyObject } from "types";
 
 const report = {
-  type: ReportType.QM,
+  type: ReportType.QMS,
   state: "NJ",
   title: "A Title",
   pages: [],

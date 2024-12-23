@@ -15,10 +15,10 @@ jest.mock("../../api/requestMethods/report", () => ({
   putReport: jest.fn(),
 }));
 const testReport: Report = {
-  type: ReportType.QM,
+  type: ReportType.QMS,
   title: "plan id",
   state: "NJ",
-  id: "NJQM123",
+  id: "NJQMS123",
   status: ReportStatus.NOT_STARTED,
   pages: [
     {
