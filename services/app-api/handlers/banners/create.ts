@@ -18,8 +18,8 @@ const validationSchema = object().shape({
   title: string().required(),
   description: string().required(),
   link: string().url().notRequired(),
-  startDate: number().required(),
-  endDate: number().required(),
+  startDate: number().notRequired(),
+  endDate: number().notRequired(),
 });
 
 export const createBanner = handler(parseBannerId, async (request) => {
