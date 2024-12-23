@@ -7,7 +7,7 @@ import {
   MeasurePageTemplate,
 } from "../types/reports";
 
-export const qmsReportTemplate: ReportTemplate = {
+export const qmReportTemplate: ReportTemplate = {
   type: ReportType.QMS,
   title: "plan id",
   pages: [

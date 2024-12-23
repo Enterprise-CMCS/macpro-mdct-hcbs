@@ -1,27 +1,27 @@
 import { isResultRowButton, PageType } from "../types/reports";
-import { qmsReportTemplate } from "./qms";
+import { qmReportTemplate } from "./qms";
 
-describe("QM Template", () => {
+describe("QMS Template", () => {
   it("Should exist", () => {
-    expect(qmsReportTemplate).toBeDefined();
+    expect(qmReportTemplate).toBeDefined();
   });
 
   it("Should have a root page", () => {
-    const root = qmsReportTemplate.pages.find((page) => page.id === "root");
+    const root = qmReportTemplate.pages.find((page) => page.id === "root");
     expect(root).toBeDefined();
   });
 
   it("Should not contain duplicate page IDs", () => {
-    const pageIds = qmsReportTemplate.pages.map((page) => page.id);
+    const pageIds = qmReportTemplate.pages.map((page) => page.id);
     const uniqueIds = pageIds.filter((x, i, a) => i === a.indexOf(x));
     expect(pageIds).toEqual(uniqueIds);
   });
 
   it("Should have a child page for every ID referenced by a parent page", () => {
-    const allPageIds = qmsReportTemplate.pages
+    const allPageIds = qmReportTemplate.pages
       .filter((page) => page.type === PageType.Standard)
       .map((page) => page.id);
-    const referencedChildren = qmsReportTemplate.pages.flatMap(
+    const referencedChildren = qmReportTemplate.pages.flatMap(
       (page) => page.childPageIds ?? []
     );
     for (let childPageId of referencedChildren) {
@@ -30,10 +30,10 @@ describe("QM Template", () => {
   });
 
   it("Should have a modal for every ID referenced by a page", () => {
-    const modalPageIds = qmsReportTemplate.pages
+    const modalPageIds = qmReportTemplate.pages
       .filter((page) => page.type === PageType.Modal)
       .map((page) => page.id);
-    const referencedModals = qmsReportTemplate.pages
+    const referencedModals = qmReportTemplate.pages
       .flatMap((page) => page.elements ?? [])
       .filter(isResultRowButton)
       .map((button) => button.modalId);

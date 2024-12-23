@@ -30,7 +30,7 @@ describe("Report storage helpers", () => {
 
       expect(mockPut).toHaveBeenCalledWith(
         {
-          TableName: "local-qms-reports",
+          TableName: "local-qm-reports",
           Item: mockReport,
         },
         expect.any(Function)
@@ -50,7 +50,7 @@ describe("Report storage helpers", () => {
       expect(report).toBe(mockReport);
       expect(mockGet).toHaveBeenCalledWith(
         {
-          TableName: "local-qms-reports",
+          TableName: "local-qm-reports",
           Key: { state: "CO", id: "mock-report-id" },
         },
         expect.any(Function)
@@ -77,7 +77,7 @@ describe("Report storage helpers", () => {
       expect(reports).toEqual([mockReport]);
       expect(mockQuery).toHaveBeenCalledWith(
         {
-          TableName: "local-qms-reports",
+          TableName: "local-qm-reports",
           KeyConditionExpression: "#state = :state",
           ExpressionAttributeValues: { ":state": "CO" },
           ExpressionAttributeNames: { "#state": "state" },

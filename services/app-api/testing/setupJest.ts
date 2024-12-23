@@ -1,5 +1,5 @@
 process.env.STAGE = "local";
-process.env.QMS_REPORT_TABLE_NAME = "local-qms-reports";
+process.env.QM_REPORT_TABLE_NAME = "local-qm-reports";
 process.env.BANNER_TABLE_NAME = "local-banners";
 
 /*

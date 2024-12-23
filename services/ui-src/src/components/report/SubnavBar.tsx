@@ -14,7 +14,9 @@ export const SubnavBar = () => {
         <Flex sx={sx.subnavFlex}>
           <Flex>
             <Text sx={sx.submissionNameText}>
-              {reportType == ReportType.QM ? report?.state + " QMS Report" : ""}
+              {reportType == ReportType.QMS
+                ? report?.state + " QMS Report"
+                : ""}
             </Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>

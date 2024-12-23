@@ -14,7 +14,7 @@ services:
     path: services/app-api
     params:
       BannerTableName: ${database.BannerTableName}
-      QmsReportTableName: ${database.QmsReportTableName}
+      QmReportTableName: ${database.QmReportTableName}
 
   # wave 3: depends on many
   ui-auth:

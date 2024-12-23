@@ -27,7 +27,7 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => jest.fn(),
   useParams: jest.fn(() => ({
-    reportType: "QM",
+    reportType: "QMS",
     state: "CO",
   })),
 }));
@@ -35,8 +35,8 @@ jest.mock("react-router-dom", () => ({
 jest.mock("utils/api/requestMethods/report", () => ({
   getReportsForState: jest.fn().mockResolvedValue([
     {
-      id: "QMCO123",
-      type: "QM",
+      id: "QMSCO123",
+      type: "QMS",
       state: "CO",
       lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
       lastEditedBy: "Mock User",
