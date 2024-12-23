@@ -26,7 +26,7 @@ custom:
   dotenv:
     path: ../../.env
   bannerTableName: ${self:custom.stage}-banners
-  qmReportTableName: ${self:custom.stage}-qms-reports
+  qmReportTableName: ${self:custom.stage}-qm-reports
   dynamodb:
     stages:
       - local
