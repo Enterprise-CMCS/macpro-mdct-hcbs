@@ -131,7 +131,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "561",
     measureSteward: "NCQA",
     measureSpecification: [MeasureSpecification.HEDIS],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    deliverySystem: [DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
     options: "",
   },
