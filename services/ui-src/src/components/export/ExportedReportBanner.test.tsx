@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ExportedReportBanner } from "./ExportedReportBanner";
 import userEvent from "@testing-library/user-event";
-import qmsVerbiage from "verbiage/export/qm-export";
+import qmsVerbiage from "verbiage/export/qms-export";
 
 describe("ExportedReportBanner", () => {
   beforeEach(() => {

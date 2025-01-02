@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import { Box, Center, Heading, Spinner, Flex } from "@chakra-ui/react";
 import { useStore } from "utils";
-import qmVerbiage from "verbiage/export/qm-export";
+import qmVerbiage from "verbiage/export/qms-export";
 import {
   FormPageTemplate,
   MeasurePageTemplate,
