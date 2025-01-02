@@ -1,9 +1,9 @@
 import { Box, Text, Button, Image } from "@chakra-ui/react";
 import pdfIcon from "assets/icons/pdf/icon_pdf_white.svg";
-import qmVerbiage from "verbiage/export/qms-export";
+import qmsVerbiage from "verbiage/export/qms-export";
 
 export const ExportedReportBanner = () => {
-  const { reportBanner } = qmVerbiage;
+  const { reportBanner } = qmsVerbiage;
 
   const onClickHandler = () => {
     window?.print();
