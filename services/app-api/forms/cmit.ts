@@ -130,4 +130,14 @@ export const CMIT_LIST: CMIT[] = [
     dataSource: DataSource.Hybrid,
     options: "",
   },
+  {
+    cmit: 561,
+    name: "MLTSS: Plan All-Cause Readmission",
+    uid: "561",
+    measureSteward: "NCQA",
+    measureSpecification: [MeasureSpecification.HEDIS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Administrative,
+    options: "",
+  },
 ];
