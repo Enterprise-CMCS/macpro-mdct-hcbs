@@ -11,7 +11,7 @@ LOCAL_LOGIN=true
 LOGGING_BUCKET=log-bucket
 S3_LOCAL_ENDPOINT=http://localhost:4569
 SKIP_PREFLIGHT_CHECK=true
-QM_REPORT_TABLE_NAME=local-qm-reports
+QMS_REPORT_TABLE_NAME=local-qms-reports
 
 # Values used for short-circuiting ssm: lookups, most likely won't need locally
 VPC_ID=local-nonsense

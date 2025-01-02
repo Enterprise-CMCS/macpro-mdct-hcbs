@@ -13,7 +13,7 @@ import { Report, ReportType } from "../types/reports";
 
 const dynamoClient = createDynamoClient();
 const reportTables: { [key in ReportType]: string } = {
-  QMS: process.env.QM_REPORT_TABLE_NAME!,
+  QMS: process.env.QMS_REPORT_TABLE_NAME!,
 };
 
 export const putReport = async (report: Report) => {

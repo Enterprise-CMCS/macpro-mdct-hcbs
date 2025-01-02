@@ -1,5 +1,5 @@
 import KSUID from "ksuid";
-import { qmReportTemplate } from "../../forms/qms";
+import { qmsReportTemplate } from "../../forms/qms";
 import { putReport } from "../../storage/reports";
 import {
   ElementType,
@@ -13,7 +13,7 @@ import { User } from "../../types/types";
 import { CMIT_LIST } from "../../forms/cmit";
 
 const reportTemplates = {
-  [ReportType.QMS]: qmReportTemplate,
+  [ReportType.QMS]: qmsReportTemplate,
 };
 
 export const buildReport = async (
