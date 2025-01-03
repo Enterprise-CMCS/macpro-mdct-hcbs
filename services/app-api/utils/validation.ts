@@ -1,19 +1,24 @@
-import { AnyObject } from "../types/types";
+import { number, object, string } from "yup";
+import { BannerData } from "../types/banner";
 import { error } from "./constants";
 
-// compare payload data against validation schema
-export const validateData = async (
-  validationSchema: AnyObject,
-  data: AnyObject,
-  options?: AnyObject
-) => {
-  try {
-    // returns valid data to be passed through API
-    return await validationSchema.validate(data, {
-      stripUnknown: true,
-      ...options,
-    });
-  } catch {
-    throw new Error(error.INVALID_DATA);
+const bannerValidateSchema = object().shape({
+  key: string().required(),
+  title: string().required(),
+  description: string().required(),
+  link: string().url().notRequired(),
+  startDate: number().notRequired(),
+  endDate: number().notRequired(),
+});
+
+export const validateBannerPayload = async (payload: object | undefined) => {
+  if (!payload) {
+    throw new Error(error.MISSING_DATA);
   }
+
+  const validatedPayload = await bannerValidateSchema.validate(payload, {
+    stripUnknown: true,
+  });
+
+  return validatedPayload as BannerData;
 };

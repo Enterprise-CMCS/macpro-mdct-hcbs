@@ -75,7 +75,3 @@ export interface AuthenticatedRequest<TParams> {
 export type HandlerLambda<TParams> = (
   request: AuthenticatedRequest<TParams>
 ) => Promise<HttpResponse>;
-
-export interface AnyObject {
-  [key: string]: any;
-}

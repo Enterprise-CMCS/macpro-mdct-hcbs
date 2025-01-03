@@ -84,6 +84,6 @@ describe("Test createBanner API method", () => {
 
   test("Test invalid data causes internal server error", async () => {
     const res = await createBanner(testEventWithInvalidData);
-    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 });

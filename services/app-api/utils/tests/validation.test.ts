@@ -1,16 +1,4 @@
-import { error } from "../constants";
-import { validateData } from "../validation";
-
-import { number, object, string } from "yup";
-
-const validationSchema = object().shape({
-  key: string().required(),
-  title: string().required(),
-  description: string().required(),
-  link: string().url().notRequired(),
-  startDate: number().notRequired(),
-  endDate: number().notRequired(),
-});
+import { validateBannerPayload } from "../validation";
 
 const validObject = {
   key: "1023",
@@ -30,14 +18,14 @@ const invalidObject = {
   endDate: 103444405,
 };
 
-describe("Test validateData function", () => {
+describe("Test validateBannerPayload function", () => {
   it("successfully validates a valid object", async () => {
-    const validatedData = await validateData(validationSchema, validObject);
+    const validatedData = await validateBannerPayload(validObject);
     expect(validatedData).toEqual(validObject);
   });
   it("throws an error when validating an invalid object", () => {
     expect(async () => {
-      await validateData(validationSchema, invalidObject);
-    }).rejects.toThrow(error.INVALID_DATA);
+      await validateBannerPayload(invalidObject);
+    }).rejects.toThrow();
   });
 });

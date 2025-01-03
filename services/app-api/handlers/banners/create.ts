@@ -9,18 +9,9 @@ import {
 } from "../../libs/response-lib";
 import { canWriteBanner } from "../../utils/authorization";
 import { parseBannerId } from "../../libs/param-lib";
+import { validateBannerPayload } from "../../utils/validation";
+import { logger } from "../../libs/debug-lib";
 import { BannerData } from "../../types/banner";
-import { number, object, string } from "yup";
-import { validateData } from "../../utils/validation";
-
-const validationSchema = object().shape({
-  key: string().required(),
-  title: string().required(),
-  description: string().required(),
-  link: string().url().notRequired(),
-  startDate: number().notRequired(),
-  endDate: number().notRequired(),
-});
 
 export const createBanner = handler(parseBannerId, async (request) => {
   const { bannerId } = request.parameters;
@@ -30,19 +21,15 @@ export const createBanner = handler(parseBannerId, async (request) => {
     return forbidden(error.UNAUTHORIZED);
   }
 
-  if (!request?.body) {
+  let validatedPayload: BannerData | undefined;
+  try {
+    validatedPayload = await validateBannerPayload(request.body);
+  } catch (err) {
+    logger.error(err);
     return badRequest("Invalid request");
   }
 
-  const unvalidatedPayload = request.body;
-
-  const validatedPayload = await validateData(
-    validationSchema,
-    unvalidatedPayload
-  );
-
-  const { title, description, link, startDate, endDate } =
-    validatedPayload as BannerData;
+  const { title, description, link, startDate, endDate } = validatedPayload;
 
   const currentTime = Date.now();
 
