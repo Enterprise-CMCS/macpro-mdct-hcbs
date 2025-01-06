@@ -8,11 +8,15 @@ import {
 import { useEffect } from "react";
 import { checkDateRangeStatus, useStore } from "utils";
 import verbiage from "verbiage/pages/home";
+//import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const HomePage = () => {
   const { bannerData, bannerActive, setBannerActive } = useStore();
   const { intro, cards } = verbiage;
   const { userIsEndUser } = useStore().user ?? {};
+
+  const isTAReportActive = false;
+  const isCIReportActive = false;
 
   useEffect(() => {
     let bannerActivity = false;
@@ -52,6 +56,12 @@ export const HomePage = () => {
               <Text></Text>
             </Box>
             <TemplateCard templateName="QM" verbiage={cards.QM} />
+            {isTAReportActive && (
+              <TemplateCard templateName="TA" verbiage={cards.TA} />
+            )}
+            {isCIReportActive && (
+              <TemplateCard templateName="CI" verbiage={cards.CI} />
+            )}
           </>
         ) : (
           // show read-only view to non-state users

@@ -39,6 +39,62 @@ export default {
         ],
       },
     },
+    TA: {
+      title: "HCBS Timely Access Report",
+      body: {
+        available: "The HCBS is ...  ",
+      },
+      linkText: "6071(a)(1) of the Deficit Reduction Act (DRA)",
+      linkLocation:
+        "https://www.govinfo.gov/content/pkg/PLAW-109publ171/pdf/PLAW-109publ171.pdf",
+      postLinkText:
+        ' as "increasing the use of home and community-based, rather than institutional, long-term care services."',
+      downloadText: "User Guide and Help File",
+      link: {
+        text: "Enter HCBS TA online",
+        route: "/report/TA/{state}",
+      },
+      accordion: {
+        buttonLabel: "When is the HCBS Timely Access Report due?",
+        text: [
+          {
+            content:
+              "The HCBS Timely Access Report will be created and submitted ...",
+          },
+          {
+            content: "The HCBS Timely Access Report deadlines are TBD ...",
+          },
+        ],
+      },
+    },
+    CI: {
+      title: "HCBS Critical Incident Report",
+      body: {
+        available: "The HCBS is ...  ",
+      },
+      linkText: "6071(a)(1) of the Deficit Reduction Act (DRA)",
+      linkLocation:
+        "https://www.govinfo.gov/content/pkg/PLAW-109publ171/pdf/PLAW-109publ171.pdf",
+      postLinkText:
+        ' as "increasing the use of home and community-based, rather than institutional, long-term care services."',
+      downloadText: "User Guide and Help File",
+      link: {
+        text: "Enter HCBS CI online",
+        route: "/report/CI/{state}",
+      },
+      accordion: {
+        buttonLabel: "When is the HCBS Critical Incident Report due?",
+        text: [
+          {
+            content:
+              "The HCBS Critical Incident Report will be created and submitted ...",
+          },
+          {
+            content: "The HCBS Critical Incident Report deadlines are TBD ...",
+          },
+        ],
+      },
+    },
   },
   readOnly: {
     header: "View State/Territory Reports",
