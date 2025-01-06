@@ -32,7 +32,8 @@
     "jsdom": "20.0.0",
     "jwt-decode": "3.1.2",
     "ksuid": "^3.0.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "yup": "^1.6.1"
   },
   "jest": {
     "verbose": true,
