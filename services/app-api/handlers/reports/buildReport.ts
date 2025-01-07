@@ -1,5 +1,5 @@
 import KSUID from "ksuid";
-import { qmReportTemplate } from "../../forms/qm";
+import { qmsReportTemplate } from "../../forms/qms";
 import { putReport } from "../../storage/reports";
 import {
   ElementType,
@@ -13,7 +13,7 @@ import { User } from "../../types/types";
 import { CMIT_LIST } from "../../forms/cmit";
 
 const reportTemplates = {
-  [ReportType.QM]: qmReportTemplate,
+  [ReportType.QMS]: qmsReportTemplate,
 };
 
 export const buildReport = async (
@@ -35,7 +35,7 @@ export const buildReport = async (
   report.status = ReportStatus.NOT_STARTED;
   report.name = reportOptions["name"];
 
-  if (reportType == ReportType.QM) {
+  if (reportType == ReportType.QMS) {
     /*
      * Collect all measures, based on selected rules.
      * TODO is measure order important? May need to sort.

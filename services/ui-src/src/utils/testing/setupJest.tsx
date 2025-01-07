@@ -202,7 +202,7 @@ export const mockReportStore: HcbsReportState = {
   cmit: 960,
   report: {
     id: "mock-id",
-    type: ReportType.QM,
+    type: ReportType.QMS,
     status: ReportStatus.IN_PROGRESS,
     title: "mock-report-title",
     state: "PR",

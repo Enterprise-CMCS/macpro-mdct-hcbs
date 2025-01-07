@@ -51,7 +51,7 @@ export const HomePage = () => {
               </Text>
               <Text></Text>
             </Box>
-            <TemplateCard templateName="QM" verbiage={cards.QM} />
+            <TemplateCard templateName="QMS" verbiage={cards.QMS} />
           </>
         ) : (
           // show read-only view to non-state users
