@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, TextField } from "components";
-import { Spinner, Flex } from "@chakra-ui/react";
+import { Spinner, Flex, Text } from "@chakra-ui/react";
 import { ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
@@ -63,7 +63,11 @@ export const AddEditReportModal = ({
     >
       <FormProvider {...form}>
         <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
-          <Flex>
+          <Flex direction="column" gap="1.5rem">
+            <Text>
+              Answering 'Yes' or 'No' to the following questions will impact
+              which measure results must be reported.
+            </Text>
             <TextField
               element={{
                 type: ElementType.Textbox,
