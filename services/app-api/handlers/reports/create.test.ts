@@ -61,3 +61,12 @@ describe("Test create report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 });
+
+test("Test invalid report type", async () => {
+  const invalidDataEvent = {
+    ...proxyEvent,
+    pathParameters: { reportType: "BM", state: "NM" },
+  } as APIGatewayProxyEvent;
+  const res = await createReport(invalidDataEvent);
+  expect(res.statusCode).toBe(StatusCodes.BadRequest);
+});
