@@ -49,6 +49,7 @@ export enum MeasureTemplateName {
   "LTSS-3",
   "LTSS-4",
   "LTSS-5",
+  "MLTSS",
 }
 
 export enum ReportStatus {
