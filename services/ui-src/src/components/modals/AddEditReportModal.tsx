@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import { Modal, TextField } from "components";
-import {
-  Spinner,
-  Flex,
-  Text,
-  Radio,
-  RadioGroup,
-  Stack,
-} from "@chakra-ui/react";
+import { Modal, TextField, RadioField } from "components";
+import { Spinner, Flex, Text } from "@chakra-ui/react";
 import { DropdownOptions, ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
@@ -39,7 +32,7 @@ export const AddEditReportModal = ({
     );
     return [
       {
-        label: "- Select a year -",
+        label: "2026",
         value: "",
       },
       ...dropdownYears,
@@ -117,42 +110,93 @@ export const AddEditReportModal = ({
               onChange={handleYearChange}
               value={selectedYear}
             />
-            <strong>
-              Does your state administer the HCBS CAHPS beneficiary survey?
-            </strong>
-            <RadioGroup onChange={() => {}} value={1}>
-              <Stack direction="column">
-                <Radio value="0">Yes</Radio>
-                <Radio value="1">No</Radio>
-              </Stack>
-            </RadioGroup>
-            <strong>
-              Does your state administer the HCI-IDD beneficiary survey?
-            </strong>
-            <RadioGroup onChange={() => {}} value={2}>
-              <Stack direction="column">
-                <Radio value="0">No</Radio>
-                <Radio value="1">Yes</Radio>
-              </Stack>
-            </RadioGroup>
-            <strong>
-              Does your state administer the NCI-AD beneficiary survey?
-            </strong>
-            <RadioGroup onChange={() => {}} value={3}>
-              <Stack direction="column">
-                <Radio value="0">No</Radio>
-                <Radio value="1">Yes</Radio>
-              </Stack>
-            </RadioGroup>
-            <strong>
-              Does your state administer the POM beneficiary survey?
-            </strong>
-            <RadioGroup onChange={() => {}} value={3}>
-              <Stack direction="column">
-                <Radio value="0">No</Radio>
-                <Radio value="1">Yes</Radio>
-              </Stack>
-            </RadioGroup>
+            <RadioField
+              element={{
+                type: ElementType.Radio,
+                label:
+                  "Does your state administer the HCBS CAHPS beneficiary survey?",
+                value: [
+                  {
+                    label: "Yes",
+                    value: "0",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                  {
+                    label: "No",
+                    value: "1",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                ],
+              }}
+              formkey={"radioQuestion1"}
+            />
+            <RadioField
+              element={{
+                type: ElementType.Radio,
+                label:
+                  "Does your state administer the HCI-IDD beneficiary survey?",
+                value: [
+                  {
+                    label: "Yes",
+                    value: "0",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                  {
+                    label: "No",
+                    value: "1",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                ],
+              }}
+              formkey={"radioQuestion2"}
+            />
+            <RadioField
+              element={{
+                type: ElementType.Radio,
+                label:
+                  "Does your state administer the NCI-AD beneficiary survey?",
+                value: [
+                  {
+                    label: "Yes",
+                    value: "0",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                  {
+                    label: "No",
+                    value: "1",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                ],
+              }}
+              formkey={"radioQuestion2"}
+            />
+            <RadioField
+              element={{
+                type: ElementType.Radio,
+                label: "Does your state administer the POM beneficiary survey?",
+                value: [
+                  {
+                    label: "Yes",
+                    value: "0",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                  {
+                    label: "No",
+                    value: "1",
+                    checkedChildren: [],
+                    checked: false,
+                  },
+                ],
+              }}
+              formkey={"radioQuestion2"}
+            />
           </Flex>
         </form>
       </FormProvider>
