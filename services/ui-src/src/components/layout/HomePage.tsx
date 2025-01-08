@@ -55,7 +55,7 @@ export const HomePage = () => {
               </Text>
               <Text></Text>
             </Box>
-            <TemplateCard templateName="QM" verbiage={cards.QM} />
+            <TemplateCard templateName="QMS" verbiage={cards.QMS} />
             {isTAReportActive && (
               <TemplateCard templateName="TA" verbiage={cards.TA} />
             )}

@@ -18,7 +18,7 @@ const addModalComponent = (
   <RouterWrappedComponent>
     <AddEditReportModal
       activeState="AB"
-      reportType={"QM"}
+      reportType={"QMS"}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -32,7 +32,7 @@ const editModalComponent = (
   <RouterWrappedComponent>
     <AddEditReportModal
       activeState="AB"
-      reportType={"QM"}
+      reportType={"QMS"}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,

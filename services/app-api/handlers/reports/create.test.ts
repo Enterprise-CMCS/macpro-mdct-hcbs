@@ -21,7 +21,7 @@ jest.mock("./buildReport", () => ({
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  pathParameters: { reportType: "QM", state: "PA" },
+  pathParameters: { reportType: "QMS", state: "PA" },
   headers: { "cognito-identity-id": "test" },
 };
 
@@ -48,7 +48,7 @@ describe("Test create report handler", () => {
   test("Test missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
-      pathParameters: { reportType: "QM", state: "PA" },
+      pathParameters: { reportType: "QMS", state: "PA" },
       body: null,
     } as APIGatewayProxyEvent;
     const res = await createReport(emptyBodyEvent);
@@ -60,4 +60,13 @@ describe("Test create report handler", () => {
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
+});
+
+test("Test invalid report type", async () => {
+  const invalidDataEvent = {
+    ...proxyEvent,
+    pathParameters: { reportType: "BM", state: "NM" },
+  } as APIGatewayProxyEvent;
+  const res = await createReport(invalidDataEvent);
+  expect(res.statusCode).toBe(StatusCodes.BadRequest);
 });

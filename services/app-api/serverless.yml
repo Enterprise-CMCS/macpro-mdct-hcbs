@@ -34,7 +34,7 @@ custom:
   dotenv:
     path: ../../.env
   bannerTableName: ${env:BANNER_TABLE_NAME, param:BannerTableName}
-  qmReportTableName: ${env:QM_REPORT_TABLE_NAME, param:QmReportTableName}
+  qmsReportTableName: ${env:QMS_REPORT_TABLE_NAME, param:QmsReportTableName}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   associateWaf:
     name: ${self:custom.webAclName}
@@ -81,7 +81,7 @@ provider:
   environment:
     STAGE: ${self:custom.stage}
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
-    QM_REPORT_TABLE_NAME: ${self:custom.qmReportTableName}
+    QMS_REPORT_TABLE_NAME: ${self:custom.qmsReportTableName}
 
 functions:
   createBanner:

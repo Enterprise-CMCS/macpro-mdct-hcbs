@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import { Box, Center, Heading, Spinner, Flex } from "@chakra-ui/react";
 import { useStore } from "utils";
-import qmVerbiage from "verbiage/export/qm-export";
+import qmsVerbiage from "verbiage/export/qms-export";
 import {
   FormPageTemplate,
   MeasurePageTemplate,
@@ -13,7 +13,7 @@ import { ExportedReportBanner, ExportedReportWrapper } from "components";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const { metadata } = qmVerbiage;
+  const { metadata } = qmsVerbiage;
   const reportPages =
     report?.pages.filter(
       (page) => page.type !== PageType.Modal && page.type !== PageType.Measure

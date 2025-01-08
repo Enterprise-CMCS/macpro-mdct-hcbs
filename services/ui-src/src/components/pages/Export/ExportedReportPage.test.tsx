@@ -7,7 +7,7 @@ jest.mock("utils", () => ({
 }));
 
 const report = {
-  type: "QM",
+  type: "QMS",
   id: "mock-report-id",
   state: "CO",
   title: "mock-title",

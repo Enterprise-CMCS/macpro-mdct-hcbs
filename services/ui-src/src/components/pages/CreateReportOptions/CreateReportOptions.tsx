@@ -20,7 +20,7 @@ export const CreateReportOptions = () => {
       name: "report1",
     } as ReportOptions;
 
-    const report = await createReport("QM", state, reportOptions);
+    const report = await createReport("QMS", state, reportOptions);
     navigate(`${state}/${report.id}`);
   };
 
