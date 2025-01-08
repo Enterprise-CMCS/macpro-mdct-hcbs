@@ -21,8 +21,6 @@ export const AddEditReportModal = ({
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(event.target.value);
   };
-  // add validation to formJson
-  const form = useForm();
   const buildYears = (): DropdownOptions[] => {
     const dropdownYears: DropdownOptions[] = Object.keys(Years).map(
       (value) => ({
@@ -40,8 +38,9 @@ export const AddEditReportModal = ({
   };
 
   const dropdownYears = buildYears();
-  // const dropdownYears = { "2026": 2026, "2027": 2027, "2028": 2028];
 
+  // add validation to formJson
+  const form = useForm();
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
 
