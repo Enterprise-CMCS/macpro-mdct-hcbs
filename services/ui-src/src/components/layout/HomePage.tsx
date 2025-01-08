@@ -8,15 +8,15 @@ import {
 import { useEffect } from "react";
 import { checkDateRangeStatus, useStore } from "utils";
 import verbiage from "verbiage/pages/home";
-//import { useFlags } from "launchdarkly-react-client-sdk";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const HomePage = () => {
   const { bannerData, bannerActive, setBannerActive } = useStore();
   const { intro, cards } = verbiage;
   const { userIsEndUser } = useStore().user ?? {};
 
-  const isTAReportActive = false;
-  const isCIReportActive = false;
+  const isTAReportActive = useFlags()?.isTaReportActive;
+  const isCIReportActive = useFlags()?.isCiReportActive;
 
   useEffect(() => {
     let bannerActivity = false;
