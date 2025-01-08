@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Modal, TextField } from "components";
 import {
   Spinner,
@@ -8,10 +8,12 @@ import {
   RadioGroup,
   Stack,
 } from "@chakra-ui/react";
-import { ElementType, Report } from "types";
+import { DropdownOptions, ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
 import { ReportOptions } from "types/report";
+import { Dropdown } from "@cmsgov/design-system";
+import { Years } from "../../constants";
 
 export const AddEditReportModal = ({
   activeState,
@@ -21,9 +23,31 @@ export const AddEditReportModal = ({
   reportHandler,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [selectedYear, setSelectedYear] = useState<string>("");
 
+  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(event.target.value);
+  };
   // add validation to formJson
   const form = useForm();
+  const buildYears = (): DropdownOptions[] => {
+    const dropdownYears: DropdownOptions[] = Object.keys(Years).map(
+      (value) => ({
+        label: Years[value as unknown as keyof typeof Years],
+        value,
+      })
+    );
+    return [
+      {
+        label: "- Select a year -",
+        value: "",
+      },
+      ...dropdownYears,
+    ];
+  };
+
+  const dropdownYears = buildYears();
+  // const dropdownYears = { "2026": 2026, "2027": 2027, "2028": 2028];
 
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
@@ -84,6 +108,14 @@ export const AddEditReportModal = ({
                 answer: selectedReport?.name,
               }}
               formkey={"reportTitle"}
+            />
+            <Dropdown
+              name="year"
+              id="year"
+              label="Select the quality measure set reporting year"
+              options={dropdownYears}
+              onChange={handleYearChange}
+              value={selectedYear}
             />
             <strong>
               Does your state administer the HCBS CAHPS beneficiary survey?

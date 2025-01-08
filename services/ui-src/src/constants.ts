@@ -6,6 +6,15 @@ export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
 
 export const notAnsweredText = "Not answered";
 
+// YEARS
+export const Years = {
+  2026: "2026",
+  2027: "2027",
+  2028: "2028",
+  2029: "2029",
+  2030: "2030",
+} as const;
+
 // STATES
 export const StateNames = {
   AL: "Alabama",
