@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Modal, TextField } from "components";
-import { Spinner, Flex, Text } from "@chakra-ui/react";
+import {
+  Spinner,
+  Flex,
+  Text,
+  Radio,
+  RadioGroup,
+  Stack,
+} from "@chakra-ui/react";
 import { ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
@@ -78,6 +85,42 @@ export const AddEditReportModal = ({
               }}
               formkey={"reportTitle"}
             />
+            <strong>
+              Does your state administer the HCBS CAHPS beneficiary survey?
+            </strong>
+            <RadioGroup onChange={() => {}} value={1}>
+              <Stack direction="column">
+                <Radio value="0">Yes</Radio>
+                <Radio value="1">No</Radio>
+              </Stack>
+            </RadioGroup>
+            <strong>
+              Does your state administer the HCI-IDD beneficiary survey?
+            </strong>
+            <RadioGroup onChange={() => {}} value={2}>
+              <Stack direction="column">
+                <Radio value="0">No</Radio>
+                <Radio value="1">Yes</Radio>
+              </Stack>
+            </RadioGroup>
+            <strong>
+              Does your state administer the NCI-AD beneficiary survey?
+            </strong>
+            <RadioGroup onChange={() => {}} value={3}>
+              <Stack direction="column">
+                <Radio value="0">No</Radio>
+                <Radio value="1">Yes</Radio>
+              </Stack>
+            </RadioGroup>
+            <strong>
+              Does your state administer the POM beneficiary survey?
+            </strong>
+            <RadioGroup onChange={() => {}} value={3}>
+              <Stack direction="column">
+                <Radio value="0">No</Radio>
+                <Radio value="1">Yes</Radio>
+              </Stack>
+            </RadioGroup>
           </Flex>
         </form>
       </FormProvider>
