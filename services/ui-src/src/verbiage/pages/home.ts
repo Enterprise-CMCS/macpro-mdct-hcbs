@@ -52,7 +52,7 @@ export default {
       downloadText: "User Guide and Help File",
       link: {
         text: "Enter HCBS TA online",
-        route: "/report/TA/{state}",
+        route: "/report/TA/",
       },
       accordion: {
         buttonLabel: "When is the HCBS Timely Access Report due?",
@@ -80,14 +80,14 @@ export default {
       downloadText: "User Guide and Help File",
       link: {
         text: "Enter HCBS CI online",
-        route: "/report/CI/{state}",
+        route: "/report/CI/",
       },
       accordion: {
         buttonLabel: "When is the HCBS Critical Incident Report due?",
         text: [
           {
             content:
-              "The HCBS Critical Incident Report will be created and submitted ...",
+              "The HCBS Critical Incident will be created and submitted ...",
           },
           {
             content: "The HCBS Critical Incident Report deadlines are TBD ...",
