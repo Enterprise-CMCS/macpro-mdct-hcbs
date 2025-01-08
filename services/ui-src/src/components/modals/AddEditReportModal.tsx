@@ -28,13 +28,7 @@ export const AddEditReportModal = ({
         value,
       })
     );
-    return [
-      {
-        label: "2026",
-        value: "",
-      },
-      ...dropdownYears,
-    ];
+    return [...dropdownYears];
   };
 
   const dropdownYears = buildYears();
