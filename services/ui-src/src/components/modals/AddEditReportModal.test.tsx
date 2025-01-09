@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { AddEditReportModal } from "components";
 import {
@@ -6,7 +7,6 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import userEvent from "@testing-library/user-event";
 
 const mockCloseHandler = jest.fn();
 const mockReportHandler = jest.fn();
@@ -103,6 +103,28 @@ describe("Test Edit Report Modal", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Save")).toBeInTheDocument();
     expect(screen.getByDisplayValue("report name thing")).toBeInTheDocument();
+  });
+});
+
+describe("Test dropdown for year", () => {
+  beforeEach(() => {
+    render(addModalComponent);
+  });
+
+  test("Assert dropdown options are rendered", () => {
+    const dropdown = screen.getByRole("combobox", {
+      name: "Select the quality measure set reporting year",
+    }) as HTMLSelectElement;
+    expect(dropdown).toBeInTheDocument();
+    expect(dropdown.options.length).toBe(1);
+  });
+
+  test("Simulate selecting a year", () => {
+    const dropdown = screen.getByRole("combobox", {
+      name: "Select the quality measure set reporting year",
+    }) as HTMLSelectElement;
+    userEvent.selectOptions(dropdown, "2026");
+    expect(dropdown.value).toBe("2026");
   });
 });
 
