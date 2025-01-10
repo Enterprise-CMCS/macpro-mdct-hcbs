@@ -9,7 +9,7 @@ import {
 } from "../../libs/response-lib";
 import { canWriteBanner } from "../../utils/authorization";
 import { parseBannerId } from "../../libs/param-lib";
-import { validateBannerPayload } from "../../utils/validation";
+import { validateBannerPayload } from "../../utils/bannerValidation";
 import { logger } from "../../libs/debug-lib";
 import { BannerData } from "../../types/banner";
 
