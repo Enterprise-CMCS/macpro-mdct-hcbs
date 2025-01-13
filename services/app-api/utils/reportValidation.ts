@@ -123,7 +123,7 @@ const parentPageTemplateSchema = object().shape({
   childPageIds: array().of(string()).required(),
 });
 
-const formPageTemplate = {
+const formPageTemplateSchema = object().shape({
   id: string().required(),
   title: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
@@ -131,13 +131,10 @@ const formPageTemplate = {
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),
   childPageIds: array().of(string()).notRequired(),
-};
-const formPageTemplateSchema = object().shape({
-  ...formPageTemplate,
 });
 
-const measurePageTemplateSchema = object().shape({
-  ...formPageTemplate,
+// MeasurePageTemplate extends FormPageTemplate
+const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmit: number().notRequired(),
   required: boolean().notRequired(),
   stratified: boolean().notRequired(),
@@ -158,6 +155,13 @@ const measureLookupSchema = object().shape({
   ),
 });
 
+/**
+ * This schema is meant to represent the pages field in the ReportTemplate type.
+ * The following yup `lazy` function is building up the union type:
+ * `(ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[]`
+ * and outputs the correct type in the union based on various fields
+ * on the page object that gets passed through.
+ */
 const pagesSchema = array()
   .of(
     lazy((pageObject) => {
@@ -171,6 +175,28 @@ const pagesSchema = array()
     })
   )
   .required();
+
+/**
+ * This schema represents a typescript type of Record<MeasureTemplateName, MeasurePageTemplate>
+ * 
+ * The following code is looping through the MeasureTemplateName enum and building
+ * a yup validation object that looks like so:
+ * {
+    [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
+    [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
+    [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
+    ...
+    ...
+   }
+ */
+// const measureTemplatesSchema = object().shape(
+//   Object.fromEntries(
+//     Object.keys(MeasureTemplateName).map((meas) => [
+//       meas,
+//       measurePageTemplateSchema,
+//     ])
+//   )
+// );
 
 const measureTemplatesSchema = object().shape({
   [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
