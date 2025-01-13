@@ -92,6 +92,7 @@ export const AddEditReportModal = ({
                 helperText:
                   "Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
                 answer: selectedReport?.name,
+                required: "A response is required",
               }}
               formkey={"reportTitle"}
             />
@@ -122,6 +123,7 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
+                required: "A response is required",
               }}
               formkey={"radioQuestion1"}
             />
@@ -144,6 +146,7 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
+                required: "A response is required",
               }}
               formkey={"radioQuestion2"}
             />
@@ -166,8 +169,9 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
+                required: "A response is required",
               }}
-              formkey={"radioQuestion2"}
+              formkey={"radioQuestion3"}
             />
             <RadioField
               element={{
@@ -187,8 +191,9 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
+                required: "A response is required",
               }}
-              formkey={"radioQuestion2"}
+              formkey={"radioQuestion4"}
             />
           </Flex>
         </form>
