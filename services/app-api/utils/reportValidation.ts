@@ -88,6 +88,9 @@ const statusTableTemplateSchema = object().shape({
 });
 
 const pageElementSchema = lazy((value: PageElement) => {
+  if (!value.type) {
+    throw new Error();
+  }
   switch (value.type) {
     case ElementType.Header:
       return headerTemplateSchema;
@@ -127,7 +130,7 @@ const formPageTemplateSchema = object().shape({
   id: string().required(),
   title: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
-  elements: pageElementSchema,
+  elements: array().of(pageElementSchema).required(),
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),
   childPageIds: array().of(string()).notRequired(),
@@ -165,13 +168,18 @@ const measureLookupSchema = object().shape({
 const pagesSchema = array()
   .of(
     lazy((pageObject) => {
-      if (pageObject.childPageIds) {
-        return parentPageTemplateSchema;
+      if (!pageObject.type) {
+        if (pageObject.id && pageObject.childPageIds) {
+          return parentPageTemplateSchema;
+        } else {
+          throw new Error();
+        }
+      } else {
+        if (pageObject.type == PageType.Measure) {
+          return measurePageTemplateSchema;
+        }
+        return formPageTemplateSchema;
       }
-      if ((pageObject.type = PageType.Measure)) {
-        return measurePageTemplateSchema;
-      }
-      return formPageTemplateSchema;
     })
   )
   .required();

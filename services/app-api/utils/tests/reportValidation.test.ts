@@ -1,39 +1,56 @@
-import { qmReportTemplate } from "../../forms/qm";
 import { validateUpdateReportPayload } from "../reportValidation";
-import { Report, ReportStatus } from "../../types/reports";
+import {
+  validReport,
+  missingStateReport,
+  incorrectStatusReport,
+  incorrectTypeReport,
+  invalidMeasureTemplatesReport,
+  invalidMeasureLookupReport,
+  invalidFormPageReport,
+  invalidParentPageReport,
+} from "./mockReport";
 
-const validReport: Report = {
-  ...qmReportTemplate,
-  state: "NJ",
-  id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
-  created: 1736524513631,
-  lastEdited: 1736524513631,
-  lastEditedBy: "Anthony Soprano",
-  lastEditedByEmail: "stateuser2@test.com",
-  status: ReportStatus.NOT_STARTED,
-  name: "yeehaw",
-};
-
-const invalidReport = {
-  ...qmReportTemplate,
-  // missing state
-  id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
-  created: 1736524513631,
-  lastEdited: 1736524513631,
-  lastEditedBy: "Anthony Soprano",
-  lastEditedByEmail: "stateuser2@test.com",
-  status: ReportStatus.NOT_STARTED,
-  name: "yeehaw",
-};
-
-describe("Test validateUpdateReportPayload function", () => {
+describe("Test validateUpdateReportPayload function with valid report", () => {
   it("successfully validates a valid report object", async () => {
     const validatedData = await validateUpdateReportPayload(validReport);
     expect(validatedData).toEqual(validReport);
   });
-  it("throws an error when validating an invalid report", () => {
+});
+
+describe("Test invalid reports", () => {
+  it("throws an error when validating a report with missing state", () => {
     expect(async () => {
-      await validateUpdateReportPayload(invalidReport);
+      await validateUpdateReportPayload(missingStateReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating a report with incorrect status", () => {
+    expect(async () => {
+      await validateUpdateReportPayload(incorrectStatusReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating a report with incorrect report type", () => {
+    expect(async () => {
+      await validateUpdateReportPayload(incorrectTypeReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating invalid measure templates", () => {
+    expect(async () => {
+      await validateUpdateReportPayload(invalidMeasureTemplatesReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating invalid measure lookup object", () => {
+    expect(async () => {
+      await validateUpdateReportPayload(invalidMeasureLookupReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating invalid form page object", () => {
+    expect(async () => {
+      await validateUpdateReportPayload(invalidFormPageReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating invalid parent page object", () => {
+    expect(async () => {
+      await validateUpdateReportPayload(invalidParentPageReport);
     }).rejects.toThrow();
   });
 });
