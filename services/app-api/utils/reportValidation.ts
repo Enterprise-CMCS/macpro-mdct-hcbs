@@ -186,16 +186,16 @@ const pagesSchema = array()
 
 /**
  * This schema represents a typescript type of Record<MeasureTemplateName, MeasurePageTemplate>
- * 
+ *
  * The following code is looping through the MeasureTemplateName enum and building
  * a yup validation object that looks like so:
  * {
-    [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
-    [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
-    [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
-    ...
-    ...
-   }
+ *   [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
+ *   [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
+ *   [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
+ *   ...
+ *   ...
+ *  }
  */
 const measureTemplatesSchema = object().shape(
   Object.fromEntries(
