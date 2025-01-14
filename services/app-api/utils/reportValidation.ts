@@ -184,19 +184,27 @@ const pagesSchema = array()
   )
   .required();
 
-const measureTemplatesSchema = object().shape({
-  [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["LTSS-7"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["LTSS-8"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["FASI-1"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["FASI-2"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["HCBS-10"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["LTSS-3"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["LTSS-4"]]: measurePageTemplateSchema,
-  [MeasureTemplateName["LTSS-5"]]: measurePageTemplateSchema,
-});
+/**
+ * This schema represents a typescript type of Record<MeasureTemplateName, MeasurePageTemplate>
+ * 
+ * The following code is looping through the MeasureTemplateName enum and building
+ * a yup validation object that looks like so:
+ * {
+    [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
+    [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
+    [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
+    ...
+    ...
+   }
+ */
+const measureTemplatesSchema = object().shape(
+  Object.fromEntries(
+    Object.keys(MeasureTemplateName).map((meas) => [
+      meas,
+      measurePageTemplateSchema,
+    ])
+  )
+);
 
 const reportValidateSchema = object().shape({
   id: string().notRequired(),
