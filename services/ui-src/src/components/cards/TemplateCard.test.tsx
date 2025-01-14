@@ -22,41 +22,41 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const qmTemplateVerbiage = verbiage.cards.QM;
+const qmsTemplateVerbiage = verbiage.cards.QMS;
 
-const qmTemplateCardComponent = (
+const qmsTemplateCardComponent = (
   <RouterWrappedComponent>
-    <TemplateCard templateName="QM" verbiage={qmTemplateVerbiage} />
+    <TemplateCard templateName="QMS" verbiage={qmsTemplateVerbiage} />
   </RouterWrappedComponent>
 );
 
 describe("<TemplateCard />", () => {
   describe("Renders", () => {
     beforeEach(() => {
-      render(qmTemplateCardComponent);
+      render(qmsTemplateCardComponent);
     });
 
-    test("QM TemplateCard is visible", () => {
-      expect(screen.getByText(qmTemplateVerbiage.title)).toBeVisible();
+    test("QMS TemplateCard is visible", () => {
+      expect(screen.getByText(qmsTemplateVerbiage.title)).toBeVisible();
     });
 
-    test("QM TemplateCard image is visible on desktop", () => {
+    test("QMS TemplateCard image is visible on desktop", () => {
       const imageAltText = "Spreadsheet icon";
       expect(screen.getByAltText(imageAltText)).toBeVisible();
     });
 
-    test("QM TemplateCard link is visible on desktop", () => {
-      const templateCardLink = qmTemplateVerbiage.link.text;
+    test("QMS TemplateCard link is visible on desktop", () => {
+      const templateCardLink = qmsTemplateVerbiage.link.text;
       expect(screen.getByText(templateCardLink)).toBeVisible();
     });
 
-    test("QM TemplateCard navigates to next route on link click", async () => {
-      const templateCardLink = screen.getByText(qmTemplateVerbiage.link.text)!;
+    test("QMS TemplateCard navigates to next route on link click", async () => {
+      const templateCardLink = screen.getByText(qmsTemplateVerbiage.link.text)!;
       await userEvent.click(templateCardLink);
-      const expectedRoute = "/report/QM/MN";
+      const expectedRoute = "/report/QMS/MN";
       expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
   });
 
-  testA11y(qmTemplateCardComponent);
+  testA11y(qmsTemplateCardComponent);
 });

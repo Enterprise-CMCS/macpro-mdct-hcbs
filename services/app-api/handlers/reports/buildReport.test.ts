@@ -21,10 +21,15 @@ describe("Test create report handler", () => {
     const reportOptions = {
       name: "report1",
     } as ReportOptions;
-    const report = await buildReport(ReportType.QM, state, reportOptions, user);
+    const report = await buildReport(
+      ReportType.QMS,
+      state,
+      reportOptions,
+      user
+    );
 
     expect(report.state).toBe("PA");
-    expect(report.type).toBe(ReportType.QM);
+    expect(report.type).toBe(ReportType.QMS);
     expect(report.lastEditedBy).toBe("James Holden");
     expect(report.lastEditedByEmail).toBe("james.holden@test.com");
     expect(putMock).toHaveBeenCalled();

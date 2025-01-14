@@ -11,10 +11,10 @@ import {
 import { ReportPageWrapper } from "./ReportPageWrapper";
 
 const testReport: Report = {
-  type: ReportType.QM,
+  type: ReportType.QMS,
   title: "plan id",
   state: "NJ",
-  id: "NJQM123",
+  id: "NJQMS123",
   status: ReportStatus.NOT_STARTED,
   pages: [
     {
@@ -111,9 +111,9 @@ jest.mock("../../utils/api/requestMethods/report", () => ({
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
     mockUseParams.mockReturnValue({
-      reportType: "QM",
+      reportType: "QMS",
       state: "NJ",
-      reportId: "QMNJ123",
+      reportId: "QMSNJ123",
     });
   });
   test("should not render if missing params", async () => {

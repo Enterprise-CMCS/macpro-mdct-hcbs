@@ -28,8 +28,8 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
 
   const reportChoices = [
     {
-      value: "QM",
-      label: "Quality Measures (QM)",
+      value: "QMS",
+      label: "Quality Measure Set (QMS)",
     },
     {
       value: "TBD",
