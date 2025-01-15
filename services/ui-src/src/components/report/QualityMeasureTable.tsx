@@ -20,7 +20,7 @@ export const QualityMeasureTableElement = () => {
 
   // Build Rows
   const rows = cmitInfo?.deliverySystem.map((system, index) => {
-    const selections = form.getValues("delivery-method-radio").answer ?? "";
+    const selections = form.getValues("delivery-method-radio")?.answer ?? "";
     const deliverySystemIsSelected = selections.split(",").includes(system);
 
     return (
