@@ -27,6 +27,8 @@ export type ReportTemplate = {
     optionGroups: Record<string, MeasureOptions[]>;
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
+  year: number;
+  options: { [key: string]: boolean };
 };
 
 export interface Report extends ReportTemplate {
@@ -231,6 +233,11 @@ export enum MeasureSpecification {
 
 export interface ReportOptions {
   name: string;
+  year: number;
+  cahps: boolean;
+  hciidd: boolean;
+  nciad: boolean;
+  pom: boolean;
 }
 
 export interface CMIT {

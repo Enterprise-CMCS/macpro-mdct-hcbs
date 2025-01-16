@@ -38,7 +38,7 @@ export const AddEditReportModal = ({
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
 
-    const userEnteredReportName = formData?.reportTitle?.answer;
+    const userEnteredReportName = formData.reportTitle.answer;
 
     if (selectedReport) {
       if (userEnteredReportName) {
@@ -47,11 +47,13 @@ export const AddEditReportModal = ({
       await putReport(selectedReport);
     } else {
       const reportOptions: ReportOptions = {
-        name: "",
+        name: userEnteredReportName,
+        year: 2026,
+        cahps: formData.cahps.answer == "true",
+        hciidd: formData.hciidd.answer == "true",
+        nciad: formData.nciad.answer == "true",
+        pom: formData.pom.answer == "true",
       };
-      if (userEnteredReportName) {
-        reportOptions.name = userEnteredReportName;
-      }
       await createReport(reportType, activeState, reportOptions);
       await reportHandler(reportType, activeState);
     }
@@ -103,6 +105,7 @@ export const AddEditReportModal = ({
               options={dropdownYears}
               onChange={handleYearChange}
               value={selectedYear}
+              disabled={!!selectedReport}
             />
             <RadioField
               element={{
@@ -112,20 +115,22 @@ export const AddEditReportModal = ({
                 value: [
                   {
                     label: "Yes",
-                    value: "0",
+                    value: "true",
                     checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
-                    value: "1",
+                    value: "false",
                     checkedChildren: [],
                     checked: false,
                   },
                 ],
                 required: "A response is required",
+                answer: selectedReport?.options.cahps?.toString(),
               }}
-              formkey={"radioQuestion1"}
+              disabled={!!selectedReport}
+              formkey={"cahps"}
             />
             <RadioField
               element={{
@@ -135,20 +140,22 @@ export const AddEditReportModal = ({
                 value: [
                   {
                     label: "Yes",
-                    value: "0",
+                    value: "true",
                     checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
-                    value: "1",
+                    value: "false",
                     checkedChildren: [],
                     checked: false,
                   },
                 ],
                 required: "A response is required",
+                answer: selectedReport?.options.hciidd?.toString(),
               }}
-              formkey={"radioQuestion2"}
+              disabled={!!selectedReport}
+              formkey={"hciidd"}
             />
             <RadioField
               element={{
@@ -158,20 +165,22 @@ export const AddEditReportModal = ({
                 value: [
                   {
                     label: "Yes",
-                    value: "0",
+                    value: "true",
                     checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
-                    value: "1",
+                    value: "false",
                     checkedChildren: [],
                     checked: false,
                   },
                 ],
                 required: "A response is required",
+                answer: selectedReport?.options.nciad?.toString(),
               }}
-              formkey={"radioQuestion3"}
+              disabled={!!selectedReport}
+              formkey={"nciad"}
             />
             <RadioField
               element={{
@@ -180,20 +189,22 @@ export const AddEditReportModal = ({
                 value: [
                   {
                     label: "Yes",
-                    value: "0",
+                    value: "true",
                     checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
-                    value: "1",
+                    value: "false",
                     checkedChildren: [],
                     checked: false,
                   },
                 ],
                 required: "A response is required",
+                answer: selectedReport?.options.pom?.toString(),
               }}
-              formkey={"radioQuestion4"}
+              disabled={!!selectedReport}
+              formkey={"pom"}
             />
           </Flex>
         </form>

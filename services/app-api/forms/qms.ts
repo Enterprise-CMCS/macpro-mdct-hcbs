@@ -10,6 +10,8 @@ import {
 export const qmsReportTemplate: ReportTemplate = {
   type: ReportType.QMS,
   title: "plan id",
+  year: 2026,
+  options: {},
   pages: [
     {
       id: "root",

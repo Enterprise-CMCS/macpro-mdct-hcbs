@@ -33,7 +33,14 @@ export const buildReport = async (
   report.lastEditedByEmail = user.email;
   report.type = reportType;
   report.status = ReportStatus.NOT_STARTED;
-  report.name = reportOptions["name"];
+  report.name = reportOptions.name;
+  report.year = reportOptions.year;
+  report.options = {
+    cahps: reportOptions.cahps,
+    hciidd: reportOptions.hciidd,
+    nciad: reportOptions.nciad,
+    pom: reportOptions.pom,
+  };
 
   if (reportType == ReportType.QMS) {
     /*
