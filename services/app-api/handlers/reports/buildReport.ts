@@ -23,8 +23,10 @@ export const buildReport = async (
   user: User
 ) => {
   const report = structuredClone(reportTemplates[reportType]) as Report;
-  // TODO: Save version to db (filled or unfilled?)
-
+  // TODO: Get version by year
+  if (reportOptions.year != 2026) {
+    throw new Error("ERROR: Year should be 2026");
+  }
   report.state = state;
   report.id = KSUID.randomSync().string;
   report.created = Date.now();

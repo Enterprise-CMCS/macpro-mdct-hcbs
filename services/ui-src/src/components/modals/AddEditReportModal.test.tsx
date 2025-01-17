@@ -41,6 +41,12 @@ const editModalComponent = (
       selectedReport={
         {
           name: "report name thing",
+          options: {
+            cahps: "true",
+            hciidd: "true",
+            nciad: "true",
+            pom: "true",
+          },
         } as unknown as any
       }
     />

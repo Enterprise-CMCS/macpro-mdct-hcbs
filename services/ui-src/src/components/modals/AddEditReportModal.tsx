@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Modal, TextField, RadioField } from "components";
 import { Spinner, Flex, Text } from "@chakra-ui/react";
-import { DropdownOptions, ElementType, Report } from "types";
+import { ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
 import { ReportOptions } from "types/report";
 import { Dropdown } from "@cmsgov/design-system";
-import { Years } from "../../constants";
 
 export const AddEditReportModal = ({
   activeState,
@@ -21,20 +20,22 @@ export const AddEditReportModal = ({
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(event.target.value);
   };
-  const buildYears = (): DropdownOptions[] => {
-    const dropdownYears: DropdownOptions[] = Object.keys(Years).map(
-      (value) => ({
-        label: Years[value as unknown as keyof typeof Years],
-        value,
-      })
-    );
-    return [...dropdownYears];
-  };
 
-  const dropdownYears = buildYears();
+  // TO-DO to update when we add template versioning by year
+  const dropdownYears = [{ label: "2026", value: 2026 }];
 
   // add validation to formJson
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      name: selectedReport?.name,
+      year: selectedReport?.year,
+      cahps: selectedReport?.options.cahps,
+      hciidd: selectedReport?.options.hciidd,
+      nciad: selectedReport?.options.nciad,
+      pom: selectedReport?.options.pom,
+    },
+    shouldUnregister: true,
+  });
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
 
@@ -98,6 +99,7 @@ export const AddEditReportModal = ({
               }}
               formkey={"reportTitle"}
             />
+            {/* TO-DO: Add DropdownField.tsx */}
             <Dropdown
               name="year"
               id="year"
