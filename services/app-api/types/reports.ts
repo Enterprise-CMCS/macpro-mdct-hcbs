@@ -207,12 +207,14 @@ export type TextboxTemplate = {
   type: ElementType.Textbox;
   label: string;
   helperText?: string;
+  answer?: string;
 };
 
 export type DateTemplate = {
   type: ElementType.Date;
   label: string;
   helperText: string;
+  answer?: string;
 };
 
 export type AccordionTemplate = {
@@ -238,6 +240,7 @@ export type RadioTemplate = {
   label: string;
   helperText?: string;
   value: ChoiceTemplate[];
+  answer?: string;
 };
 
 export type ButtonLinkTemplate = {
@@ -250,7 +253,7 @@ export type ChoiceTemplate = {
   label: string;
   value: string;
   checked?: boolean;
-  checkedChildren?: PageElement[];
+  checkedChildren: PageElement[];
 };
 
 export type MeasureTableTemplate = {

@@ -99,8 +99,16 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Which quality measure will be reported?",
           value: [
-            { label: "{Measure name version 1}", value: "measure-1" },
-            { label: "{Measure name version 2}", value: "measure-2" },
+            {
+              label: "{Measure name version 1}",
+              value: "measure-1",
+              checkedChildren: [],
+            },
+            {
+              label: "{Measure name version 2}",
+              value: "measure-2",
+              checkedChildren: [],
+            },
           ],
         },
       ],

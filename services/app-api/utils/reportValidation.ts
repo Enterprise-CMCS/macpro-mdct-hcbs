@@ -1,4 +1,13 @@
-import { array, boolean, lazy, mixed, number, object, string } from "yup";
+import {
+  array,
+  boolean,
+  lazy,
+  mixed,
+  number,
+  object,
+  Schema,
+  string,
+} from "yup";
 import {
   ReportStatus,
   ReportType,
@@ -29,12 +38,14 @@ const textboxTemplateSchema = object().shape({
   type: string().required(ElementType.Textbox),
   label: string().required(),
   helperText: string().notRequired(),
+  answer: string().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
   type: string().required(ElementType.Date),
   label: string().required(),
   helperText: string().required(),
+  answer: string().notRequired(),
 });
 
 const accordionTemplateSchema = object().shape({
@@ -50,44 +61,7 @@ const resultRowButtonTemplateSchema = object().shape({
   to: string().required(),
 });
 
-const radioTemplateSchema = object().shape({
-  type: string().required(ElementType.Radio),
-  label: string().required(),
-  helperText: string().notRequired(),
-  value: array().of(
-    object().shape({
-      label: string().required(),
-      value: string().required(),
-      checked: boolean().notRequired(),
-      checkedChildren: array().notRequired(), // TODO: add PageElement array
-    })
-  ),
-});
-
-const buttonLinkTemplateSchema = object().shape({
-  type: string().required(ElementType.ButtonLink),
-  label: string().required(),
-  to: string().required(),
-});
-
-const measureTableTemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureTable),
-  measureDisplay: string()
-    .oneOf(["required", "stratified", "optional"])
-    .required(),
-});
-
-const qualityMeasureTableTemplateSchema = object().shape({
-  type: string().required(ElementType.QualityMeasureTable),
-  measureDisplay: string().required("quality"),
-});
-
-const statusTableTemplateSchema = object().shape({
-  type: string().required(ElementType.StatusTable),
-  to: string().required(),
-});
-
-const pageElementSchema = lazy((value: PageElement) => {
+const pageElementSchema = lazy((value: PageElement): Schema<any> => {
   if (!value.type) {
     throw new Error();
   }
@@ -121,6 +95,44 @@ const pageElementSchema = lazy((value: PageElement) => {
   }
 });
 
+const radioTemplateSchema = object().shape({
+  type: string().required(ElementType.Radio),
+  label: string().required(),
+  helperText: string().notRequired(),
+  value: array().of(
+    object().shape({
+      label: string().required(),
+      value: string().required(),
+      checked: boolean().notRequired(),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+    })
+  ),
+  answer: string().notRequired(),
+});
+
+const buttonLinkTemplateSchema = object().shape({
+  type: string().required(ElementType.ButtonLink),
+  label: string().required(),
+  to: string().required(),
+});
+
+const measureTableTemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureTable),
+  measureDisplay: string()
+    .oneOf(["required", "stratified", "optional"])
+    .required(),
+});
+
+const qualityMeasureTableTemplateSchema = object().shape({
+  type: string().required(ElementType.QualityMeasureTable),
+  measureDisplay: string().required("quality"),
+});
+
+const statusTableTemplateSchema = object().shape({
+  type: string().required(ElementType.StatusTable),
+  to: string().required(),
+});
+
 const parentPageTemplateSchema = object().shape({
   id: string().required(),
   childPageIds: array().of(string()).required(),
@@ -145,17 +157,20 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   substitutable: boolean().notRequired(),
 });
 
+const measureOptionsArraySchema = array().of(
+  object().shape({
+    cmit: number().required(),
+    required: boolean().required(),
+    stratified: boolean().required(),
+    measureTemplate: mixed()
+      .oneOf(Object.values(MeasureTemplateName))
+      .required(),
+  })
+);
+
 const measureLookupSchema = object().shape({
-  defaultMeasures: array().of(
-    object().shape({
-      cmit: number().required(),
-      required: boolean().required(),
-      stratified: boolean().required(),
-      measureTemplate: mixed()
-        .oneOf(Object.values(MeasureTemplateName))
-        .required(),
-    })
-  ),
+  defaultMeasures: measureOptionsArraySchema,
+  // TODO: Add option groups
 });
 
 /**
