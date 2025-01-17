@@ -1,18 +1,12 @@
 service: database
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 plugins:
   - serverless-dynamodb
   - serverless-stack-termination-protection
-  - serverless-s3-bucket-helper
   - serverless-plugin-scripts
   - serverless-offline
-
-s3BucketHelper:
-  loggingConfiguration:
-    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
-    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 custom:
   project: "hcbs"
@@ -44,8 +38,8 @@ provider:
     SERVICE: ${self:service}
   iam:
     role:
-      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      path: /delegatedadmin/developer/
+      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
       statements:
         - Effect: "Allow"
           Action:
