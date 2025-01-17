@@ -20,7 +20,8 @@ describe("Test create report handler", () => {
     } as User;
     const reportOptions = {
       name: "report1",
-    } as ReportOptions;
+      year: 2026,
+    } as unknown as ReportOptions;
     const report = await buildReport(
       ReportType.QMS,
       state,
