@@ -147,6 +147,20 @@ functions:
                 reportType: true
                 state: true
                 id: true
+  submitReport:
+    handler: handlers/reports/submit.submitReport
+    events:
+      - http:
+          path: reports/submit/{reportType}/{state}/{id}
+          method: post
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                reportType: true
+                state: true
+                id: true
   getReport:
     handler: handlers/reports/get.getReport
     events:
