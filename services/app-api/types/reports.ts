@@ -253,7 +253,7 @@ export type ChoiceTemplate = {
   label: string;
   value: string;
   checked?: boolean;
-  checkedChildren: PageElement[];
+  checkedChildren?: PageElement[];
 };
 
 export type MeasureTableTemplate = {

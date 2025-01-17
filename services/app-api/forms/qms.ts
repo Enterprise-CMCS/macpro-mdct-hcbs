@@ -102,12 +102,10 @@ export const qmsReportTemplate: ReportTemplate = {
             {
               label: "{Measure name version 1}",
               value: "measure-1",
-              checkedChildren: [],
             },
             {
               label: "{Measure name version 2}",
               value: "measure-2",
-              checkedChildren: [],
             },
           ],
         },
