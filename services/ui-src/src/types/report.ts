@@ -39,6 +39,8 @@ export interface Report extends ReportTemplate {
   lastEditedBy?: string;
   status: ReportStatus;
   name?: string;
+  year: number;
+  options: { [key: string]: boolean };
 }
 
 export type PageTemplate =

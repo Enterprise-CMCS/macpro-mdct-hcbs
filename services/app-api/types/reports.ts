@@ -72,6 +72,8 @@ export interface Report extends ReportTemplate {
   lastEditedByEmail: string;
   status: ReportStatus;
   name?: string;
+  year: number;
+  options: { [key: string]: boolean };
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
