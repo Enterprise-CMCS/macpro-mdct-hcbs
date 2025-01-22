@@ -4,6 +4,10 @@
 # It is a part of our Playwright setup:
 # We save test run output as files in the repo, in the gh-pages branch.
 # After a month, we consider it safe to delete those old test results.
+#
+# Even though this action affects only the gh-pages branch,
+# it runs _from_ the main branch, due to GH action schedule constraints.
+# https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule
 
 name: Delete old folders from GitHub Pages
 
