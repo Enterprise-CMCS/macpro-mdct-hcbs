@@ -1,0 +1,57 @@
+# This job deletes all folders in the root directory
+# which are named in a certain way, and are older than a certain cutoff.
+#
+# It is a part of our Playwright setup:
+# We save test run output as files in the repo, in the gh-pages branch.
+# After a month, we consider it safe to delete those old test results.
+
+name: Delete old folders from GitHub Pages
+
+on:
+  push:
+    branches:
+      - "gh-pages"
+  schedule:
+    - cron: '0 0 * * *' # This will run the workflow daily at midnight UTC
+
+jobs:
+  delete_old_folders:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with: 
+          ref: gh-pages
+
+      - name: Set up Node
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Get current directory
+        run: echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV
+
+      - name: Run the script
+        run: node removeOldFolders.js "${{ env.CURRENT_DIR }}"
+
+      - name: Commit all changed files back to the repository
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: gh-pages
+          commit_message: Delete folders older than 30 days
+
+  notify_on_delete_pages_failure:
+    runs-on: ubuntu-latest
+    needs: 
+      - delete_old_folders
+    if: failure()
+    steps:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: ":boom: The nightly delete of expired Playwright reports job has failed in ${{ github.repository }}."
+          MSG_MINIMAL: true
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}"
