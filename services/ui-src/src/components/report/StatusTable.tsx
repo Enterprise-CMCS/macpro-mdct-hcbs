@@ -11,13 +11,12 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { useStore } from "utils";
+import { useStore, submitReport } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { ParentPageTemplate } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
-import { submitReport } from "utils/api/requestMethods/report";
 
 export const StatusTableElement = () => {
   const { pageMap, report, user } = useStore();
@@ -98,7 +97,6 @@ export const StatusTableElement = () => {
         </Button>
         {user?.userIsEndUser && (
           <Button
-            // onClick={() => SetPageIndex(parentPage.index - 1)}
             alignSelf="flex-end"
             onClick={async () => submitReport(report!)}
           >
