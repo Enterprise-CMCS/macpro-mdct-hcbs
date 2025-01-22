@@ -29,6 +29,7 @@ custom:
       inMemory: true
       migrate: true
       seed: true
+
 provider:
   name: aws
   runtime: nodejs20.x
@@ -36,27 +37,7 @@ provider:
   stackTags:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
-  iam:
-    role:
-      path: /delegatedadmin/developer/
-      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
-      statements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:DescribeTable
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource: "*"
-        - Effect: "Allow"
-          Action:
-            - "s3:GetObject"
-            - "s3:ListBucket"
-            - "s3:PutObject"
-          Resource: "*"
+
 resources:
   Resources:
     BannerTable:
