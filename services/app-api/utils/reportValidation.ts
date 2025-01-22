@@ -9,6 +9,7 @@ import {
   string,
 } from "yup";
 import {
+  Report,
   ReportStatus,
   ReportType,
   MeasureTemplateName,
@@ -248,5 +249,5 @@ export const validateUpdateReportPayload = async (
     stripUnknown: true,
   });
 
-  return validatedPayload;
+  return validatedPayload as Report;
 };
