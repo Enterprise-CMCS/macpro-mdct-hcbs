@@ -14,6 +14,10 @@ export const submitReport = handler(parseReportParameters, async (request) => {
     return forbidden(error.UNAUTHORIZED);
   }
 
+  if (!request?.body) {
+    return badRequest("Invalid request");
+  }
+
   // get the report that's being submitted
   const report = request.body as Report;
   if (
