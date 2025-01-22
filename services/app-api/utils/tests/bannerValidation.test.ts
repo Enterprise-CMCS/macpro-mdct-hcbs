@@ -1,4 +1,4 @@
-import { validateBannerPayload } from "../validation";
+import { validateBannerPayload } from "../bannerValidation";
 
 const validObject = {
   key: "1023",

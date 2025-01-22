@@ -1,12 +1,15 @@
 service: app-api
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 package:
   individually: true
 
+build:
+  esbuild:
+    packages: external
+
 plugins:
-  - serverless-plugin-typescript
   - serverless-dotenv-plugin
   - serverless-associate-waf
   - serverless-stack-termination-protection
@@ -57,8 +60,8 @@ provider:
     restApi: true
   iam:
     role:
-      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      path: /delegatedadmin/developer/
+      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
       statements:
         - Effect: "Allow"
           Action:
