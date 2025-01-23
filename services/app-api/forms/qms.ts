@@ -6,6 +6,7 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
 } from "../types/reports";
+import { DeliverySystem } from "../utils/constants";
 
 export const qmsReportTemplate: ReportTemplate = {
   type: ReportType.QMS,
@@ -314,16 +315,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -409,16 +411,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -505,16 +508,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -601,16 +605,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -697,16 +702,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -784,16 +790,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -870,16 +877,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -1036,16 +1044,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
@@ -1131,16 +1140,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: "fee-for-service" },
+            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: "managed-long-term-services-and-supports",
+              value: DeliverySystem.MLTSS,
             },
             {
               label: "Both FFS and MLTSS (separate)",
-              value: "both-ffs-and-mltss",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },

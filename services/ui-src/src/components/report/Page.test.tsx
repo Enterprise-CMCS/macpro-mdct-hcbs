@@ -21,6 +21,7 @@ mockedUseStore.mockReturnValue(mockUseStore);
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
     register: jest.fn(),
+    getValues: jest.fn(),
   }),
 }));
 
