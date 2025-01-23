@@ -99,6 +99,9 @@ export const StatusTableElement = () => {
           <Button
             alignSelf="flex-end"
             onClick={async () => submitReport(report!)}
+            onBlur={(event) => {
+              event.stopPropagation();
+            }}
           >
             Submit QMS Report
           </Button>
