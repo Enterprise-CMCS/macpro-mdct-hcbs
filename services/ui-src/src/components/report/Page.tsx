@@ -52,9 +52,10 @@ export const Page = ({ elements }: Props) => {
 
   const composedElements = elements.map((element, index) => {
     const ComposedElement = renderElement(element);
+    const formKey = (element as any).formKey ?? buildFormKey(index);
     return (
       <ComposedElement
-        formkey={buildFormKey(index)}
+        formkey={formKey}
         key={index}
         element={element}
         disabled={!userIsEndUser}
