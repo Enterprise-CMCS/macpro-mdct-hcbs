@@ -232,6 +232,8 @@ const reportValidateSchema = object().shape({
   name: string().notRequired(),
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),
   title: string().required(),
+  year: number().notRequired(),
+  options: object().notRequired(),
   pages: pagesSchema,
   measureLookup: measureLookupSchema,
   measureTemplates: measureTemplatesSchema,
