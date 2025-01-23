@@ -238,9 +238,7 @@ const reportValidateSchema = object().shape({
   measureTemplates: measureTemplatesSchema,
 });
 
-export const validateUpdateReportPayload = async (
-  payload: object | undefined
-) => {
+export const validateReportPayload = async (payload: object | undefined) => {
   if (!payload) {
     throw new Error(error.MISSING_DATA);
   }

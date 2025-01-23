@@ -6,7 +6,7 @@ import { putReport } from "../../storage/reports";
 import { Report, ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
-import { validateUpdateReportPayload } from "../../utils/reportValidation";
+import { validateReportPayload } from "../../utils/reportValidation";
 
 export const updateReport = handler(parseReportParameters, async (request) => {
   const { reportType, state, id } = request.parameters;
@@ -35,7 +35,7 @@ export const updateReport = handler(parseReportParameters, async (request) => {
 
   let validatedPayload: Report | undefined;
   try {
-    validatedPayload = await validateUpdateReportPayload(request.body);
+    validatedPayload = await validateReportPayload(request.body);
   } catch (err) {
     logger.error(err);
     return badRequest("Invalid request");
