@@ -11,13 +11,18 @@ import {
 import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { CMIT_LIST } from "cmit";
+import { useFormContext } from "react-hook-form";
 
 export const QualityMeasureTableElement = () => {
   const { cmit } = useStore();
   const cmitInfo = CMIT_LIST.find((item) => item.cmit === cmit);
+  const form = useFormContext();
 
   // Build Rows
   const rows = cmitInfo?.deliverySystem.map((system, index) => {
+    const selections = form.getValues("delivery-method-radio")?.answer ?? "";
+    const deliverySystemIsSelected = selections.split(",").includes(system);
+
     return (
       <Tr key={index}>
         <Td>
@@ -28,7 +33,11 @@ export const QualityMeasureTableElement = () => {
           <Text>CMIT# {cmit}</Text>
         </Td>
         <Td>
-          <Button variant="outline" onClick={() => {}}>
+          <Button
+            variant="outline"
+            disabled={!deliverySystemIsSelected}
+            onClick={() => {}}
+          >
             Edit
           </Button>
         </Td>
