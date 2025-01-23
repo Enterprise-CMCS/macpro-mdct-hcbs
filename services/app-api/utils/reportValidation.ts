@@ -92,7 +92,7 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
     default:
-      return mixed().notRequired(); // Fallback, although it should never be hit
+      throw new Error("Page Element type is not valid");
   }
 });
 

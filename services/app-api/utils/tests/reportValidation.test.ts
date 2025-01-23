@@ -9,6 +9,7 @@ import {
   invalidFormPageReport,
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
+  invalidPageElementType,
 } from "./mockReport";
 
 describe("Test validateReportPayload function with valid report", () => {
@@ -57,6 +58,11 @@ describe("Test invalid reports", () => {
   it("throws an error when validating invalid radio element checked children object", () => {
     expect(async () => {
       await validateReportPayload(invalidRadioCheckedChildrenReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating invalid page element type", () => {
+    expect(async () => {
+      await validateReportPayload(invalidPageElementType);
     }).rejects.toThrow();
   });
 });
