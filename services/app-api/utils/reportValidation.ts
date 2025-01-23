@@ -98,6 +98,7 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
 
 const radioTemplateSchema = object().shape({
   type: string().required(ElementType.Radio),
+  formKey: string().notRequired(), // TODO: may be able to remove in future
   label: string().required(),
   helperText: string().notRequired(),
   value: array().of(
