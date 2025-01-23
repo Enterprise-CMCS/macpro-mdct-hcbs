@@ -39,6 +39,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
@@ -108,6 +109,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({

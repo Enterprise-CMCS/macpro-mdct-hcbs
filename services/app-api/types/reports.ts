@@ -215,6 +215,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
+  required?: string; //takes error message to display if not provided
 };
 
 export type DateTemplate = {
@@ -248,6 +249,7 @@ export type RadioTemplate = {
   helperText?: string;
   value: ChoiceTemplate[];
   answer?: string;
+  required?: string; //takes error message to display if not provided
 };
 
 export type ButtonLinkTemplate = {
