@@ -7,6 +7,11 @@ jest.mock("../../storage/reports", () => ({
   putReport: () => putMock(),
 }));
 
+const validateReportPayloadMock = jest.fn();
+jest.mock("../../utils/reportValidation", () => ({
+  validateReportPayload: () => validateReportPayloadMock(),
+}));
+
 describe("Test create report handler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -33,5 +38,31 @@ describe("Test create report handler", () => {
     expect(report.lastEditedBy).toBe("James Holden");
     expect(report.lastEditedByEmail).toBe("james.holden@test.com");
     expect(putMock).toHaveBeenCalled();
+  });
+});
+
+describe("Test validation error", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Test that a validation failure throws invalid request error", async () => {
+    // Manually throw validation error
+    validateReportPayloadMock.mockImplementation(() => {
+      throw new Error("you be havin some validatin errors");
+    });
+
+    const state = "PA";
+    const user = {
+      fullName: "James Holden",
+      email: "james.holden@test.com",
+    } as User;
+    const reportOptions = {
+      name: "report1",
+    } as ReportOptions;
+
+    expect(async () => {
+      await buildReport(ReportType.QMS, state, reportOptions, user);
+    }).rejects.toThrow("Invalid request");
   });
 });
