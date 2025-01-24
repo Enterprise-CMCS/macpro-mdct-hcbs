@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useFormContext } from "react-hook-form";
+import { FieldError, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
@@ -15,7 +15,8 @@ export const TextField = (props: PageElementProps) => {
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
-    form.register(key);
+    const options = { required: textbox.required || false };
+    form.register(key, options);
   }, []);
 
   const onChangeHandler = async (
@@ -32,7 +33,10 @@ export const TextField = (props: PageElementProps) => {
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[key]?.message;
+  const elementErrors = formErrorState?.[props.formkey] as {
+    answer: FieldError;
+  };
+  const errorMessage = elementErrors?.answer?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
 

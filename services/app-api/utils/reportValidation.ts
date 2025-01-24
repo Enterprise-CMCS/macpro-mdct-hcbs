@@ -40,6 +40,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
@@ -110,6 +111,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({
@@ -234,6 +236,8 @@ const reportValidateSchema = object().shape({
   name: string().notRequired(),
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),
   title: string().required(),
+  year: number().required(),
+  options: object().required(),
   pages: pagesSchema,
   measureLookup: measureLookupSchema,
   measureTemplates: measureTemplatesSchema,

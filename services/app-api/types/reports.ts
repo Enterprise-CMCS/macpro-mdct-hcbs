@@ -15,6 +15,11 @@ export const isReportType = (x: string | undefined): x is ReportType => {
 
 export interface ReportOptions {
   name: string;
+  year: number;
+  cahps: boolean;
+  hciidd: boolean;
+  nciad: boolean;
+  pom: boolean;
 }
 
 export interface CMIT {
@@ -116,6 +121,8 @@ export type ReportTemplate = {
     defaultMeasures: MeasureOptions[];
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
+  year: number;
+  options: { [key: string]: boolean };
 };
 
 export type PageTemplate =
@@ -208,6 +215,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
+  required?: string; //takes error message to display if not provided
 };
 
 export type DateTemplate = {
@@ -242,6 +250,7 @@ export type RadioTemplate = {
   helperText?: string;
   value: ChoiceTemplate[];
   answer?: string;
+  required?: string; //takes error message to display if not provided
 };
 
 export type ButtonLinkTemplate = {

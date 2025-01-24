@@ -18,6 +18,8 @@ export const validReport: Report = {
   lastEditedByEmail: "stateuser2@test.com",
   status: ReportStatus.NOT_STARTED,
   name: "yeehaw",
+  year: 2026,
+  options: {},
 };
 
 export const missingStateReport = {
