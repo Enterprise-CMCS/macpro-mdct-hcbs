@@ -60,6 +60,7 @@ describe("Test validation error", () => {
     } as User;
     const reportOptions = {
       name: "report1",
+      year: 2026,
     } as ReportOptions;
 
     expect(async () => {
