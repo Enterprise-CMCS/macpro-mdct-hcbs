@@ -3,6 +3,7 @@ import {
   getReport,
   getReportsForState,
   putReport,
+  submitReport,
 } from "./report";
 // types
 import { Report, ReportOptions, ReportType } from "types/report";
@@ -52,5 +53,10 @@ describe("utils/report", () => {
   test("putReport", async () => {
     await putReport(report);
     expect(mockPut).toHaveBeenCalledTimes(1);
+  });
+
+  test("submitReport", async () => {
+    await submitReport(report);
+    expect(mockPost).toHaveBeenCalledTimes(1);
   });
 });

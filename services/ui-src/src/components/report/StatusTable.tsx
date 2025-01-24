@@ -11,7 +11,7 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { useStore } from "utils";
+import { useStore, submitReport } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { ParentPageTemplate } from "types/report";
@@ -97,8 +97,11 @@ export const StatusTableElement = () => {
         </Button>
         {user?.userIsEndUser && (
           <Button
-            // onClick={() => SetPageIndex(parentPage.index - 1)}
             alignSelf="flex-end"
+            onClick={async () => submitReport(report!)}
+            onBlur={(event) => {
+              event.stopPropagation();
+            }}
           >
             Submit QMS Report
           </Button>
