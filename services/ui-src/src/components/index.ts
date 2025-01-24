@@ -34,6 +34,7 @@ export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { RadioField } from "./fields/RadioField";
 export { DateField } from "./fields/DateField";
 export { TextField } from "./fields/TextField";
+export { TextAreaField } from "./fields/TextAreaField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";

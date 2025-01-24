@@ -111,6 +111,7 @@ export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
   Textbox = "textbox",
+  TextAreaField = "textAreaField",
   Date = "date",
   Accordion = "accordion",
   ResultRowButton = "resultRowButton",
@@ -126,6 +127,7 @@ export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
   | TextboxTemplate
+  | TextAreaBoxTemplate
   | DateTemplate
   | AccordionTemplate
   | ParagraphTemplate
@@ -157,6 +159,13 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
 };
+
+export type TextAreaBoxTemplate = {
+  type: ElementType.Textbox;
+  label: string;
+  helperText?: string;
+  answer?: string;
+}
 
 export type DateTemplate = {
   type: ElementType.Date;
