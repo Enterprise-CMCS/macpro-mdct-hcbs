@@ -23,12 +23,13 @@ export const ErrorAlert = ({
           <Alert
             status={AlertTypes.ERROR}
             title={error.title}
-            description={error.description}
             showIcon={false}
             className={variant}
             sx={sx.root}
             {...props}
-          />
+          >
+            {error.children}
+          </Alert>
         )}
       </Collapse>
     </Box>

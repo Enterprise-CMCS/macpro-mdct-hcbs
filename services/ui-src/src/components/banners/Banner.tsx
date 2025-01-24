@@ -6,7 +6,9 @@ export const Banner = ({ bannerData, ...props }: Props) => {
     const { title, description, link } = bannerData;
     return (
       bannerData && (
-        <Alert title={title} description={description} link={link} {...props} />
+        <Alert title={title} link={link} {...props}>
+          {description}
+        </Alert>
       )
     );
   } else return <></>;

@@ -8,14 +8,14 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { AlertTypes, CustomHtmlElement } from "types";
+import { AlertTypes } from "types";
 import alertIcon from "assets/icons/alert/icon_alert.svg";
-import { parseCustomHtml } from "utils";
+import { ComponentProps } from "react";
 
 export const Alert = ({
   status = AlertTypes.INFO,
   title,
-  description,
+  children,
   link,
   showIcon = true,
   icon,
@@ -35,9 +35,9 @@ export const Alert = ({
         )}
         <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
           {title && <AlertTitle>{title}</AlertTitle>}
-          {description && (
+          {children && (
             <AlertDescription>
-              <Box sx={sx.descriptionText}>{parseCustomHtml(description)}</Box>
+              <Box sx={sx.descriptionText}>{children}</Box>
               {link && (
                 <Text sx={sx.linkText}>
                   <Link href={link} isExternal>
@@ -53,14 +53,16 @@ export const Alert = ({
   );
 };
 
-interface Props {
+interface Props
+  extends Pick<
+    ComponentProps<typeof AlertRoot>,
+    "children" | "className" | "sx"
+  > {
   status?: AlertTypes;
   title?: string;
-  description?: string | CustomHtmlElement[];
   link?: string;
   showIcon?: boolean;
   icon?: string;
-  [key: string]: any;
 }
 
 const sx = {

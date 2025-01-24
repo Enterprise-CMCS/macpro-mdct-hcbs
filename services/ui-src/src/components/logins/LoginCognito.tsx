@@ -36,7 +36,7 @@ export const LoginCognito = () => {
     } catch (error: any) {
       let errorMessage: ErrorVerbiage = {
         title: "Unable to login",
-        description: error.message,
+        children: error.message,
       };
       setError(errorMessage);
     }
