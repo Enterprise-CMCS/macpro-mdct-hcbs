@@ -1,10 +1,8 @@
-import { Flex, Image, Link, Text } from "@chakra-ui/react";
+import { Flex, Image } from "@chakra-ui/react";
 import { Card } from "components";
-import { useBreakpoint } from "utils";
-import { AnyObject } from "types";
-import { createEmailLink } from "utils/other/email";
 import spreadsheetIcon from "assets/icons/spreadsheet/icon_spreadsheet_gray.svg";
 import settingsIcon from "assets/icons/icon_wrench_gear.svg";
+import { ComponentProps } from "react";
 
 const iconMap = {
   spreadsheet: {
@@ -17,35 +15,22 @@ const iconMap = {
   },
 };
 
-export const EmailCard = ({ verbiage, icon, cardprops, ...props }: Props) => {
-  const { isDesktop } = useBreakpoint();
-
+export const HelpCard = ({ icon, children }: Props) => {
   return (
     <Card
       boxShadow="0px 3px 9px rgba(0, 0, 0, 0.2)"
-      {...cardprops}
       paddingBottom="1.5rem !important"
     >
-      <Flex sx={sx.root} {...props}>
+      <Flex sx={sx.root}>
         <Image src={iconMap[icon].image} alt={iconMap[icon].alt} sx={sx.icon} />
-        <Flex sx={sx.cardContentFlex}>
-          <Text sx={sx.bodyText}>{verbiage.body}</Text>
-          <Text sx={sx.emailText}>
-            Email {!isDesktop && <br />}
-            <Link href={createEmailLink(verbiage.email)} target="_blank">
-              {verbiage.email.address}
-            </Link>
-          </Text>
-        </Flex>
+        <Flex sx={sx.cardContentFlex}>{children}</Flex>
       </Flex>
     </Card>
   );
 };
 
-interface Props {
-  verbiage: AnyObject;
+interface Props extends Pick<ComponentProps<typeof Flex>, "children"> {
   icon: keyof typeof iconMap;
-  [key: string]: any;
 }
 
 const sx = {

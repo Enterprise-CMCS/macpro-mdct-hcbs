@@ -1,6 +1,5 @@
 // accordions
 export { AccordionItem } from "./accordions/AccordionItem";
-export { FaqAccordion } from "./accordions/FaqAccordion";
 export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
 export { InstructionsAccordion } from "./accordions/InstructionsAccordion";
 // alerts
@@ -25,7 +24,7 @@ export { AppRoutes } from "./app/AppRoutes";
 export { Timeout } from "./layout/Timeout";
 // cards
 export { Card } from "./cards/Card";
-export { EmailCard } from "./cards/EmailCard";
+export { HelpCard as EmailCard } from "./cards/HelpCard";
 export { TemplateCard } from "./cards/TemplateCard";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
