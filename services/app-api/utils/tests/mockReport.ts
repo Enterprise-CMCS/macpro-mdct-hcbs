@@ -166,3 +166,21 @@ export const invalidRadioCheckedChildrenReport = {
     },
   } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
+
+export const invalidPageElementType = {
+  ...validReport,
+  pages: [
+    {
+      id: "general-info",
+      title: "General Info",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: "badElementType", // Doesn't use ElementType enum
+          text: "State of Program Information",
+        },
+      ],
+    },
+  ],
+};
