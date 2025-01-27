@@ -9,6 +9,7 @@ import {
   string,
 } from "yup";
 import {
+  Report,
   ReportStatus,
   ReportType,
   MeasureTemplateName,
@@ -92,12 +93,13 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
     default:
-      return mixed().notRequired(); // Fallback, although it should never be hit
+      throw new Error("Page Element type is not valid");
   }
 });
 
 const radioTemplateSchema = object().shape({
   type: string().required(ElementType.Radio),
+  formKey: string().notRequired(), // TODO: may be able to remove in future
   label: string().required(),
   helperText: string().notRequired(),
   value: array().of(
@@ -248,9 +250,7 @@ const reportValidateSchema = object().shape({
   measureTemplates: measureTemplatesSchema,
 });
 
-export const validateUpdateReportPayload = async (
-  payload: object | undefined
-) => {
+export const validateReportPayload = async (payload: object | undefined) => {
   if (!payload) {
     throw new Error(error.MISSING_DATA);
   }
@@ -259,5 +259,5 @@ export const validateUpdateReportPayload = async (
     stripUnknown: true,
   });
 
-  return validatedPayload;
+  return validatedPayload as Report;
 };
