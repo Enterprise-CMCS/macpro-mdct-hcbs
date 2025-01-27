@@ -1,4 +1,4 @@
-import { ReactChild } from "react";
+import { ComponentProps, ReactChild } from "react";
 import {
   AccordionButton,
   AccordionItem as AccordionItemRoot,
@@ -33,9 +33,8 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
   );
 };
 
-interface Props {
+interface Props extends ComponentProps<typeof AccordionItemRoot> {
   children?: ReactChild | ReactChild[];
-  [key: string]: any;
   label?: string;
 }
 
