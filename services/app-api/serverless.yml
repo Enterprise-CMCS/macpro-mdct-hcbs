@@ -25,7 +25,7 @@ custom:
   stage: ${sls:stage}
   region: ${aws:region}
   wafPlugin:
-    name: ${self:service}-${self:custom.stage}-webacl-waf
+    name: ${self:custom.webAclName}
   wafExcludeRules:
     awsCommon:
       - "SizeRestrictions_BODY"
@@ -54,6 +54,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
   tracing:
     apiGateway: true
   logs:
