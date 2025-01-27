@@ -18,7 +18,7 @@ export const isReportStatus = (status: string): status is ReportStatus => {
   return Object.values(ReportStatus).includes(status as ReportStatus);
 };
 
-export type ReportTemplate = {
+export type ReportTemplate = ReportOptions & {
   type: ReportType;
   title: string;
   pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
@@ -27,8 +27,6 @@ export type ReportTemplate = {
     optionGroups: Record<string, MeasureOptions[]>;
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
-  year: number;
-  options: { [key: string]: boolean };
 };
 
 export interface Report extends ReportTemplate {
@@ -38,7 +36,6 @@ export interface Report extends ReportTemplate {
   lastEdited?: number;
   lastEditedBy?: string;
   status: ReportStatus;
-  name?: string;
 }
 
 export type PageTemplate =
@@ -232,12 +229,14 @@ export enum MeasureSpecification {
 }
 
 export interface ReportOptions {
-  name: string;
+  name?: string;
   year: number;
-  cahps: boolean;
-  hciidd: boolean;
-  nciad: boolean;
-  pom: boolean;
+  options: {
+    cahps?: boolean;
+    hciidd?: boolean;
+    nciad?: boolean;
+    pom?: boolean;
+  };
 }
 
 export interface CMIT {

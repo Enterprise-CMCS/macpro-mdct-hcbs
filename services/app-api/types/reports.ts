@@ -14,12 +14,14 @@ export const isReportType = (x: string | undefined): x is ReportType => {
 };
 
 export interface ReportOptions {
-  name: string;
+  name?: string;
   year: number;
-  cahps: boolean;
-  hciidd: boolean;
-  nciad: boolean;
-  pom: boolean;
+  options: {
+    cahps?: boolean;
+    hciidd?: boolean;
+    nciad?: boolean;
+    pom?: boolean;
+  };
 }
 
 export interface CMIT {
@@ -71,7 +73,6 @@ export interface Report extends ReportTemplate {
   lastEditedBy: string;
   lastEditedByEmail: string;
   status: ReportStatus;
-  name?: string;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -113,7 +114,7 @@ export interface Form {
   sections: [];
 }
 
-export type ReportTemplate = {
+export type ReportTemplate = ReportOptions & {
   type: ReportType;
   title: string;
   pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
@@ -121,8 +122,6 @@ export type ReportTemplate = {
     defaultMeasures: MeasureOptions[];
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
-  year: number;
-  options: { [key: string]: boolean };
 };
 
 export type PageTemplate =

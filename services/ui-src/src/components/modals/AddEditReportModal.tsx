@@ -50,10 +50,12 @@ export const AddEditReportModal = ({
       const reportOptions: ReportOptions = {
         name: userEnteredReportName,
         year: 2026,
-        cahps: formData.cahps.answer == "true",
-        hciidd: formData.hciidd.answer == "true",
-        nciad: formData.nciad.answer == "true",
-        pom: formData.pom.answer == "true",
+        options: {
+          cahps: formData.cahps.answer == "true",
+          hciidd: formData.hciidd.answer == "true",
+          nciad: formData.nciad.answer == "true",
+          pom: formData.pom.answer == "true",
+        },
       };
       await createReport(reportType, activeState, reportOptions);
       await reportHandler(reportType, activeState);

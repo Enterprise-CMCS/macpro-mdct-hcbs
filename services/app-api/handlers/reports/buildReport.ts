@@ -35,7 +35,8 @@ export const buildReport = async (
   report.lastEditedByEmail = user.email;
   report.type = reportType;
   report.status = ReportStatus.NOT_STARTED;
-  report.name = reportOptions["name"];
+  report.name = reportOptions.name;
+  report.options = reportOptions.options;
 
   if (reportType == ReportType.QMS) {
     /*
