@@ -24,6 +24,11 @@ custom:
     tsConfigFileLocation: "./tsconfig.json"
   stage: ${sls:stage}
   region: ${aws:region}
+  wafPlugin:
+    name: ${self:custom.webAclName}
+  wafExcludeRules:
+    awsCommon:
+      - "SizeRestrictions_BODY"
   serverlessTerminationProtection:
     stages:
       - main
@@ -36,11 +41,6 @@ custom:
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   associateWaf:
     name: ${self:custom.webAclName}
-  wafPlugin:
-    name: ${self:custom.webAclName}
-  wafExcludeRules:
-    awsCommon:
-      - "SizeRestrictions_BODY"
     version: V2
   serverlessApiClientCertificate:
     rotateCerts: true
