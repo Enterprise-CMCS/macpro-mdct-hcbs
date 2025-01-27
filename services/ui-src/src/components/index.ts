@@ -1,6 +1,5 @@
 // accordions
 export { AccordionItem } from "./accordions/AccordionItem";
-export { TemplateCardAccordion } from "./accordions/TemplateCardAccordion";
 export { InstructionsAccordion } from "./accordions/InstructionsAccordion";
 // alerts
 export { Alert } from "./alerts/Alert";
@@ -24,8 +23,12 @@ export { AppRoutes } from "./app/AppRoutes";
 export { Timeout } from "./layout/Timeout";
 // cards
 export { Card } from "./cards/Card";
-export { HelpCard as EmailCard } from "./cards/HelpCard";
-export { TemplateCard } from "./cards/TemplateCard";
+export { HelpCard } from "./cards/HelpCard";
+export { ReportIntroCard } from "./cards/ReportIntroCard";
+export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
+export { TaIntroductionCard } from "./cards/TaIntroductionCard";
+export { CiIntroductionCard } from "./cards/CiIntroductionCard";
+export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";

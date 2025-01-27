@@ -2,7 +2,10 @@ import { StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
+  TA = "TA",
+  CI = "CI",
 }
+
 export const isReportType = (
   reportType: string | undefined
 ): reportType is ReportType => {

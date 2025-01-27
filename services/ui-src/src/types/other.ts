@@ -1,7 +1,6 @@
 // ALERTS
 
-import { Box } from "@chakra-ui/react";
-import { ComponentProps } from "react";
+import { ReactNode } from "react";
 import { StateNames } from "../constants";
 
 export enum AlertTypes {
@@ -45,9 +44,9 @@ export interface CustomHtmlElement {
   children?: CustomHtmlElement[];
 }
 
-export interface ErrorVerbiage
-  extends Pick<ComponentProps<typeof Box>, "children"> {
+export interface ErrorVerbiage {
   title: string;
+  children: ReactNode;
 }
 
 export type StateAbbr = keyof typeof StateNames;

@@ -1,5 +1,5 @@
 import { Accordion, Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { AccordionItem, EmailCard, PageTemplate } from "components";
+import { AccordionItem, HelpCard, PageTemplate } from "components";
 import { useBreakpoint } from "utils";
 
 const helpDeskEmailAddress = "mdct_help@cms.hhs.gov";
@@ -19,7 +19,7 @@ export const HelpPage = () => {
         </Text>
       </Box>
       <Flex flexDirection="column" gap="1.5rem">
-        <EmailCard icon="settings">
+        <HelpCard icon="settings">
           <Text sx={sx.bodyText}>For technical support and login issues:</Text>
           <Text sx={sx.emailText}>
             Email {!isDesktop && <br />}
@@ -27,8 +27,8 @@ export const HelpPage = () => {
               {helpDeskEmailAddress}
             </Link>
           </Text>
-        </EmailCard>
-        <EmailCard icon="spreadsheet">
+        </HelpCard>
+        <HelpCard icon="spreadsheet">
           <Text sx={sx.bodyText}>For questions about the online form:</Text>
           <Text sx={sx.emailText}>
             Email {!isDesktop && <br />}
@@ -36,7 +36,7 @@ export const HelpPage = () => {
               {mfpDemoEmailAddress}
             </Link>
           </Text>
-        </EmailCard>
+        </HelpCard>
       </Flex>
       <Box>
         <Accordion allowToggle={true} allowMultiple={true}>
