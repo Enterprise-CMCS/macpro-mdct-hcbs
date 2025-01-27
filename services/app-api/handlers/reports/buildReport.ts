@@ -11,6 +11,8 @@ import {
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { CMIT_LIST } from "../../forms/cmit";
+import { validateReportPayload } from "../../utils/reportValidation";
+import { logger } from "../../libs/debug-lib";
 
 const reportTemplates = {
   [ReportType.QMS]: qmsReportTemplate,
@@ -23,10 +25,8 @@ export const buildReport = async (
   user: User
 ) => {
   const report = structuredClone(reportTemplates[reportType]) as Report;
-  // TODO: Get version by year
-  if (reportOptions.year != 2026) {
-    throw new Error("ERROR: Year should be 2026");
-  }
+  // TODO: Save version to db (filled or unfilled?)
+
   report.state = state;
   report.id = KSUID.randomSync().string;
   report.created = Date.now();
@@ -35,14 +35,7 @@ export const buildReport = async (
   report.lastEditedByEmail = user.email;
   report.type = reportType;
   report.status = ReportStatus.NOT_STARTED;
-  report.name = reportOptions.name;
-  report.year = reportOptions.year;
-  report.options = {
-    cahps: reportOptions.cahps,
-    hciidd: reportOptions.hciidd,
-    nciad: reportOptions.nciad,
-    pom: reportOptions.pom,
-  };
+  report.name = reportOptions["name"];
 
   if (reportType == ReportType.QMS) {
     /*
@@ -73,8 +66,20 @@ export const buildReport = async (
     report.pages = report.pages.concat(measurePages);
   }
 
+  /**
+   * Report should always be valid in this function, but we're going
+   * to send it through the report validator for a sanity check
+   */
+  let validatedReport: Report | undefined;
+  try {
+    validatedReport = await validateReportPayload(report);
+  } catch (err) {
+    logger.error(err);
+    throw new Error("Invalid request");
+  }
+
   // Save
-  await putReport(report);
+  await putReport(validatedReport);
   return report;
 };
 
