@@ -26,6 +26,7 @@ describe("Test create report handler", () => {
     const reportOptions = {
       name: "report1",
       year: 2026,
+      options: {},
     } as unknown as ReportOptions;
     const report = await buildReport(
       ReportType.QMS,
@@ -60,6 +61,8 @@ describe("Test validation error", () => {
     } as User;
     const reportOptions = {
       name: "report1",
+      year: 2026,
+      options: {},
     } as ReportOptions;
 
     expect(async () => {

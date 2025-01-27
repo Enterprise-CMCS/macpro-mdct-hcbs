@@ -39,12 +39,7 @@ export const buildReport = async (
   report.status = ReportStatus.NOT_STARTED;
   report.name = reportOptions.name;
   report.year = reportOptions.year;
-  report.options = {
-    cahps: reportOptions.cahps,
-    hciidd: reportOptions.hciidd,
-    nciad: reportOptions.nciad,
-    pom: reportOptions.pom,
-  };
+  report.options = reportOptions.options;
 
   if (reportType == ReportType.QMS) {
     /*
