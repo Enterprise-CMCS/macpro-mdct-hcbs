@@ -1,8 +1,8 @@
 import { Accordion, Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { AccordionItem, HelpCard, PageTemplate } from "components";
+import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
 import { useBreakpoint } from "utils";
 
-const helpDeskEmailAddress = "mdct_help@cms.hhs.gov";
 const mfpDemoEmailAddress = "MFPDemo@cms.hhs.gov";
 
 export const HelpPage = () => {
@@ -23,8 +23,8 @@ export const HelpPage = () => {
           <Text sx={sx.bodyText}>For technical support and login issues:</Text>
           <Text sx={sx.emailText}>
             Email {!isDesktop && <br />}
-            <Link href={`mailto:${helpDeskEmailAddress}`} target="_blank">
-              {helpDeskEmailAddress}
+            <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} target="_blank">
+              {HELP_DESK_EMAIL_ADDRESS}
             </Link>
           </Text>
         </HelpCard>

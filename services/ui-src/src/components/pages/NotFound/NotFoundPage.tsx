@@ -1,34 +1,33 @@
-// components
 import { Flex, Heading, Image, Link, Text, Box } from "@chakra-ui/react";
 import { PageTemplate } from "components";
-// utils
-import { createEmailLink } from "utils/other/email";
-// assets
 import warningIcon from "assets/icons/alert/icon_warning.svg";
-import verbiage from "./../../../verbiage/not-found";
+import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
 
 export const NotFoundPage = () => {
-  const { header, subHeading, emailText, body } = verbiage;
-  const { preLinkText, cmsEmail, postLinkText } = emailText;
-
   return (
     <PageTemplate data-testid="404-view" sxOverride={sx.layout}>
       <Flex sx={sx.heading}>
         <Image src={warningIcon} alt="warning icon" sx={sx.warningIcon} />
         <Heading as="h1" variant="h1">
-          {header}
+          Page not found
         </Heading>
       </Flex>
       <Heading as="h2" variant="subHeader">
-        {subHeading}
+        Sorry, the page you're looking for couldn't be found. It's possible that
+        this page has moved, or the address may have been typed incorrectly.
       </Heading>
       <Box>
         <Text>
-          {preLinkText}
-          <Link href={createEmailLink({ address: cmsEmail })}>{cmsEmail}</Link>
-          {postLinkText}
+          Please email
+          <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} isExternal>
+            {HELP_DESK_EMAIL_ADDRESS}
+          </Link>
+          for help or feedback.
         </Text>
-        <Text>{body}</Text>
+        <Text>
+          Note: If you were using a bookmark, please reset it once you find the
+          correct page.
+        </Text>
       </Box>
     </PageTemplate>
   );

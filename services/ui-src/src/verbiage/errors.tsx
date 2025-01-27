@@ -1,7 +1,6 @@
 import { Link } from "@chakra-ui/react";
+import { HELP_DESK_EMAIL_ADDRESS } from "../constants";
 import { ErrorVerbiage } from "types";
-
-const helpDeskEmailAddress = "mdct_help@cms.hhs.gov";
 
 export const genericErrorContent = (
   <>
@@ -10,12 +9,12 @@ export const genericErrorContent = (
       If this persists, contact the MDCT Help Desk with questions or to request
       technical assistance by emailing
       <Link
-        href={`mailto:${helpDeskEmailAddress}`}
+        href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`}
         target="_blank"
         color="black"
         fontWeight="bold"
       >
-        {helpDeskEmailAddress}
+        {HELP_DESK_EMAIL_ADDRESS}
       </Link>
       .
     </p>

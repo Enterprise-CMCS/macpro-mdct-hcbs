@@ -1,16 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
-import { createEmailLink, useStore } from "utils";
-import verbiage from "verbiage/pages/profile";
+import { useStore } from "utils";
+import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
     useStore().user ?? {};
-
-  const { intro } = verbiage;
 
   const tableContent = {
     caption: "Profile Account Information",
@@ -26,12 +24,13 @@ export const ProfilePage = () => {
   return (
     <PageTemplate sx={sx.layout}>
       <Heading as="h1" variant="h1">
-        {intro.header}
+        My Account
       </Heading>
       <Text>
-        {intro.body}{" "}
-        <Link href={createEmailLink(intro.email)} isExternal>
-          {intro.email.address}
+        If any information is incorrect, please contact the Managed Care
+        Reporting (MCR) Help Desk at
+        <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} isExternal>
+          {HELP_DESK_EMAIL_ADDRESS}
         </Link>
         .
       </Text>
