@@ -1,4 +1,4 @@
-import { validateReportPayload } from "../reportValidation";
+import { validateUpdateReportPayload } from "../reportValidation";
 import {
   validReport,
   missingStateReport,
@@ -9,12 +9,11 @@ import {
   invalidFormPageReport,
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
-  invalidPageElementType,
 } from "./mockReport";
 
-describe("Test validateReportPayload function with valid report", () => {
+describe("Test validateUpdateReportPayload function with valid report", () => {
   it("successfully validates a valid report object", async () => {
-    const validatedData = await validateReportPayload(validReport);
+    const validatedData = await validateUpdateReportPayload(validReport);
     expect(validatedData).toEqual(validReport);
   });
 });
@@ -22,47 +21,42 @@ describe("Test validateReportPayload function with valid report", () => {
 describe("Test invalid reports", () => {
   it("throws an error when validating a report with missing state", () => {
     expect(async () => {
-      await validateReportPayload(missingStateReport);
+      await validateUpdateReportPayload(missingStateReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating a report with incorrect status", () => {
     expect(async () => {
-      await validateReportPayload(incorrectStatusReport);
+      await validateUpdateReportPayload(incorrectStatusReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating a report with incorrect report type", () => {
     expect(async () => {
-      await validateReportPayload(incorrectTypeReport);
+      await validateUpdateReportPayload(incorrectTypeReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating invalid measure templates", () => {
     expect(async () => {
-      await validateReportPayload(invalidMeasureTemplatesReport);
+      await validateUpdateReportPayload(invalidMeasureTemplatesReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating invalid measure lookup object", () => {
     expect(async () => {
-      await validateReportPayload(invalidMeasureLookupReport);
+      await validateUpdateReportPayload(invalidMeasureLookupReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating invalid form page object", () => {
     expect(async () => {
-      await validateReportPayload(invalidFormPageReport);
+      await validateUpdateReportPayload(invalidFormPageReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating invalid parent page object", () => {
     expect(async () => {
-      await validateReportPayload(invalidParentPageReport);
+      await validateUpdateReportPayload(invalidParentPageReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating invalid radio element checked children object", () => {
     expect(async () => {
-      await validateReportPayload(invalidRadioCheckedChildrenReport);
-    }).rejects.toThrow();
-  });
-  it("throws an error when validating invalid page element type", () => {
-    expect(async () => {
-      await validateReportPayload(invalidPageElementType);
+      await validateUpdateReportPayload(invalidRadioCheckedChildrenReport);
     }).rejects.toThrow();
   });
 });

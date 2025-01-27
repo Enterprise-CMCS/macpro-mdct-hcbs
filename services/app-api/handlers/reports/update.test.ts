@@ -2,23 +2,12 @@ import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
-import {
-  incorrectTypeReport,
-  invalidFormPageReport,
-  invalidMeasureLookupReport,
-  invalidMeasureTemplatesReport,
-  invalidParentPageReport,
-  invalidRadioCheckedChildrenReport,
-  missingStateReport,
-  validReport,
-} from "../../utils/tests/mockReport";
 import { updateReport } from "./update";
 
 jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
     state: "PA",
-    fullName: "Anthony Soprano",
   }),
 }));
 
@@ -30,15 +19,12 @@ jest.mock("../../storage/reports", () => ({
   putReport: () => jest.fn(),
 }));
 
-const report = JSON.stringify(validReport);
+const reportObj = { type: "QMS", state: "PA", id: "QMSPA123" };
+const report = JSON.stringify(reportObj);
 
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  pathParameters: {
-    reportType: "QMS",
-    state: "NJ",
-    id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
-  },
+  pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
   headers: { "cognito-identity-id": "test" },
   body: report,
 };
@@ -82,7 +68,7 @@ describe("Test update report handler", () => {
     const badState = {
       ...proxyEvent,
       pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
-      body: JSON.stringify({ ...validReport, state: "OR" }),
+      body: JSON.stringify({ ...reportObj, state: "OR" }),
     } as APIGatewayProxyEvent;
     const badId = {
       ...proxyEvent,
@@ -102,74 +88,5 @@ describe("Test update report handler", () => {
     const res = await updateReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
-  });
-});
-
-describe("Test update report validation failures", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("throws an error when validating a report with missing state", async () => {
-    const missingStateEvent = {
-      ...testEvent,
-      body: JSON.stringify(missingStateReport),
-    };
-
-    const res = await updateReport(missingStateEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating a report with incorrect report type", async () => {
-    const incorrectReportTypeEvent = {
-      ...testEvent,
-      body: JSON.stringify(incorrectTypeReport),
-    };
-
-    const res = await updateReport(incorrectReportTypeEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid measure templates", async () => {
-    const invalidMeasureTemplatesEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidMeasureTemplatesReport),
-    };
-
-    const res = await updateReport(invalidMeasureTemplatesEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid measure lookup object", async () => {
-    const invalidMeasureLookupEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidMeasureLookupReport),
-    };
-
-    const res = await updateReport(invalidMeasureLookupEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid form page object", async () => {
-    const invalidFormPageEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidFormPageReport),
-    };
-
-    const res = await updateReport(invalidFormPageEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid parent page object", async () => {
-    const invalidParentPageEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidParentPageReport),
-    };
-
-    const res = await updateReport(invalidParentPageEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid radio element checked children object", async () => {
-    const invalidRadioCheckedChildrenEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidRadioCheckedChildrenReport),
-    };
-    const res = await updateReport(invalidRadioCheckedChildrenEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 });

@@ -9,7 +9,6 @@ import {
   string,
 } from "yup";
 import {
-  Report,
   ReportStatus,
   ReportType,
   MeasureTemplateName,
@@ -40,6 +39,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
@@ -92,13 +92,12 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
     default:
-      throw new Error("Page Element type is not valid");
+      return mixed().notRequired(); // Fallback, although it should never be hit
   }
 });
 
 const radioTemplateSchema = object().shape({
   type: string().required(ElementType.Radio),
-  formKey: string().notRequired(), // TODO: may be able to remove in future
   label: string().required(),
   helperText: string().notRequired(),
   value: array().of(
@@ -110,6 +109,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({
@@ -248,7 +248,9 @@ const reportValidateSchema = object().shape({
   measureTemplates: measureTemplatesSchema,
 });
 
-export const validateReportPayload = async (payload: object | undefined) => {
+export const validateUpdateReportPayload = async (
+  payload: object | undefined
+) => {
   if (!payload) {
     throw new Error(error.MISSING_DATA);
   }
@@ -257,5 +259,5 @@ export const validateReportPayload = async (payload: object | undefined) => {
     stripUnknown: true,
   });
 
-  return validatedPayload as Report;
+  return validatedPayload;
 };

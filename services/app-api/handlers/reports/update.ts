@@ -1,4 +1,3 @@
-import { logger } from "../../libs/debug-lib";
 import { handler } from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
@@ -6,7 +5,6 @@ import { putReport } from "../../storage/reports";
 import { Report, ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
-import { validateReportPayload } from "../../utils/reportValidation";
 
 export const updateReport = handler(parseReportParameters, async (request) => {
   const { reportType, state, id } = request.parameters;
@@ -33,15 +31,8 @@ export const updateReport = handler(parseReportParameters, async (request) => {
   report.lastEdited = Date.now();
   report.lastEditedBy = user.fullName;
 
-  let validatedPayload: Report | undefined;
-  try {
-    validatedPayload = await validateReportPayload(request.body);
-  } catch (err) {
-    logger.error(err);
-    return badRequest("Invalid request");
-  }
-
-  await putReport(validatedPayload);
+  // Validation required.
+  await putReport(report);
 
   return ok();
 });

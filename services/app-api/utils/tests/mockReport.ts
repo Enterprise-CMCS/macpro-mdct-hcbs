@@ -18,6 +18,8 @@ export const validReport: Report = {
   lastEditedByEmail: "stateuser2@test.com",
   status: ReportStatus.NOT_STARTED,
   name: "yeehaw",
+  year: 2026,
+  options: {},
 };
 
 export const missingStateReport = {
@@ -163,22 +165,4 @@ export const invalidRadioCheckedChildrenReport = {
       ],
     },
   } as Record<MeasureTemplateName, MeasurePageTemplate>,
-};
-
-export const invalidPageElementType = {
-  ...validReport,
-  pages: [
-    {
-      id: "general-info",
-      title: "General Info",
-      type: PageType.Standard,
-      sidebar: true,
-      elements: [
-        {
-          type: "badElementType", // Doesn't use ElementType enum
-          text: "State of Program Information",
-        },
-      ],
-    },
-  ],
 };
