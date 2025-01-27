@@ -38,6 +38,18 @@ export async function putReport(report: Report) {
   );
 }
 
+export async function submitReport(report: Report) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    body: { ...report },
+  };
+  return await apiLib.post(
+    `/reports/submit/${report.type}/${report.state}/${report.id}`,
+    options
+  );
+}
+
 export async function getReportsForState(reportType: string, state: string) {
   const requestHeaders = await getRequestHeaders();
   const options = {
