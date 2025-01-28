@@ -1,6 +1,5 @@
+import { BannerData } from "types/banners";
 import { boolean, number, object, string } from "yup";
-import { BannerData } from "../types/banner";
-import { error } from "./constants";
 
 const bannerValidateSchema = object().shape({
   key: string().required(),
@@ -14,7 +13,7 @@ const bannerValidateSchema = object().shape({
 
 export const validateBannerPayload = async (payload: object | undefined) => {
   if (!payload) {
-    throw new Error(error.MISSING_DATA);
+    throw new Error("missing data");
   }
 
   const validatedPayload = await bannerValidateSchema.validate(payload, {
