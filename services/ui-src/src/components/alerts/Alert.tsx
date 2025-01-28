@@ -15,20 +15,20 @@ import { ReactNode } from "react";
 
 export const Alert = ({
   status = AlertTypes.INFO,
+  sx: sxOverride,
+  className,
+  showIcon = true,
+  icon,
   title,
   children,
   link,
-  showIcon = true,
-  icon,
-  ...props
 }: Props) => {
   return (
     <AlertRoot
       status={status}
       variant="left-accent"
-      sx={sx.root}
-      className={status}
-      {...props}
+      sx={sxOverride ?? sx.root}
+      className={className ?? status}
     >
       <Flex>
         {showIcon && (
@@ -56,13 +56,13 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  title?: string;
-  link?: string;
+  sx?: CSSObject;
   showIcon?: boolean;
   icon?: string;
-  children?: ReactNode;
+  title?: string;
   className?: string;
-  sx?: CSSObject;
+  children?: ReactNode;
+  link?: string;
 }
 
 const sx = {
