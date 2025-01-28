@@ -2,7 +2,7 @@ import { Flex, Image } from "@chakra-ui/react";
 import { Card } from "components";
 import spreadsheetIcon from "assets/icons/spreadsheet/icon_spreadsheet_gray.svg";
 import settingsIcon from "assets/icons/icon_wrench_gear.svg";
-import { ComponentProps } from "react";
+import { ReactNode } from "react";
 
 const iconMap = {
   spreadsheet: {
@@ -29,8 +29,9 @@ export const HelpCard = ({ icon, children }: Props) => {
   );
 };
 
-interface Props extends Pick<ComponentProps<typeof Flex>, "children"> {
+interface Props {
   icon: keyof typeof iconMap;
+  children: ReactNode;
 }
 
 const sx = {

@@ -1,8 +1,9 @@
-import { ComponentProps, ReactChild } from "react";
+import { ReactChild } from "react";
 import {
   AccordionButton,
   AccordionItem as AccordionItemRoot,
   AccordionPanel,
+  CSSObject,
   Image,
   Text,
 } from "@chakra-ui/react";
@@ -33,9 +34,10 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
   );
 };
 
-interface Props extends ComponentProps<typeof AccordionItemRoot> {
+interface Props {
   children?: ReactChild | ReactChild[];
   label?: string;
+  sx?: CSSObject;
 }
 
 const sx = {

@@ -1,6 +1,5 @@
 // accordions
 export { AccordionItem } from "./accordions/AccordionItem";
-export { InstructionsAccordion } from "./accordions/InstructionsAccordion";
 // alerts
 export { Alert } from "./alerts/Alert";
 export { ErrorAlert } from "./alerts/ErrorAlert";

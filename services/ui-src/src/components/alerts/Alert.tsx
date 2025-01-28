@@ -3,6 +3,7 @@ import {
   AlertDescription,
   AlertTitle,
   Box,
+  CSSObject,
   Flex,
   Image,
   Link,
@@ -10,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
 import alertIcon from "assets/icons/alert/icon_alert.svg";
-import { ComponentProps } from "react";
+import { ReactNode } from "react";
 
 export const Alert = ({
   status = AlertTypes.INFO,
@@ -53,16 +54,15 @@ export const Alert = ({
   );
 };
 
-interface Props
-  extends Pick<
-    ComponentProps<typeof AlertRoot>,
-    "children" | "className" | "sx"
-  > {
+interface Props {
   status?: AlertTypes;
   title?: string;
   link?: string;
   showIcon?: boolean;
   icon?: string;
+  children?: ReactNode;
+  className?: string;
+  sx?: CSSObject;
 }
 
 const sx = {
