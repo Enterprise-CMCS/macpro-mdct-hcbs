@@ -2,11 +2,15 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter } from "react-router-dom";
-import { useStore } from "utils";
-import { mockUseReadOnlyUserStore } from "utils/testing/setupJest";
+import { useStore, submitReport } from "utils";
+import {
+  mockUseReadOnlyUserStore,
+  mockStateUserStore,
+} from "utils/testing/setupJest";
 
 jest.mock("utils", () => ({
   useStore: jest.fn(),
+  submitReport: jest.fn(),
 }));
 
 const mockNavigate = jest.fn();
@@ -38,6 +42,7 @@ describe("StatusTable with state user", () => {
     jest.clearAllMocks();
 
     mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
       pageMap: mockPageMap,
       report: report,
     });
@@ -72,7 +77,6 @@ describe("StatusTable with state user", () => {
 
     expect(editButton).toBeVisible();
   });
-
   test("when the Review PDF button is clicked, navigate to PDF", async () => {
     render(
       <MemoryRouter>
@@ -85,6 +89,21 @@ describe("StatusTable with state user", () => {
     const PdfPath = `/report/${report.type}/${report.state}/${report.id}/export`;
     expect(reviewPdfButton).toHaveAttribute("href", PdfPath);
     expect(reviewPdfButton).toHaveAttribute("target", "_blank");
+  });
+
+  test("when the Submit button is clicked, call the API", async () => {
+    render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
+
+    const submitButton = screen.getAllByRole("button", {
+      name: /Submit QMS Report/i,
+    })[0];
+    await userEvent.click(submitButton);
+
+    expect(submitReport).toBeCalled();
   });
 
   test("if pageMap is not defined return null", () => {
