@@ -161,11 +161,11 @@ export type TextboxTemplate = {
 };
 
 export type TextAreaBoxTemplate = {
-  type: ElementType.Textbox;
+  type: ElementType.TextAreaField;
   label: string;
   helperText?: string;
   answer?: string;
-}
+};
 
 export type DateTemplate = {
   type: ElementType.Date;

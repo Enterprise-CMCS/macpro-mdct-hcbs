@@ -42,6 +42,13 @@ const textboxTemplateSchema = object().shape({
   answer: string().notRequired(),
 });
 
+const textAreaTemplateSchema = object().shape({
+  type: string().required(ElementType.Textbox),
+  label: string().required(),
+  helperText: string().notRequired(),
+  answer: string().notRequired(),
+});
+
 const dateTemplateSchema = object().shape({
   type: string().required(ElementType.Date),
   label: string().required(),
@@ -75,6 +82,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return paragraphTemplateSchema;
     case ElementType.Textbox:
       return textboxTemplateSchema;
+    case ElementType.TextAreaField:
+      return textAreaTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
     case ElementType.Accordion:
