@@ -16,10 +16,10 @@ export const Error = () => {
         Sorry! An error has occurred.
       </Heading>
       <Text sx={sx.descriptionText}>
-        Please refresh and try again, or email
+        Please refresh and try again, or email{" "}
         <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} isExternal>
           {HELP_DESK_EMAIL_ADDRESS}
-        </Link>
+        </Link>{" "}
         for help.
       </Text>
     </PageTemplate>
