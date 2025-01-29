@@ -7,11 +7,23 @@ import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 
-export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
-  return choices.map((choice) => {
-    const formatFields = choice?.checkedChildren ? (
+export const formatChoices = (
+  parentKey: string,
+  choices: ChoiceTemplate[],
+  answer?: string
+) => {
+  return choices.map((choice, choice_index) => {
+    const children = choice?.checkedChildren?.map((child, child_index) => {
+      return {
+        ...child,
+        formKey:
+          parentKey + `.value.${choice_index}.checkedChildren.${child_index}`,
+      };
+    });
+
+    const formatFields = children ? (
       <Box sx={sx.children}>
-        <Page elements={choice?.checkedChildren} />
+        <Page elements={children} />
       </Box>
     ) : (
       <></>
@@ -26,9 +38,6 @@ export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
 
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
-  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
-    formatChoices(radio.value, radio.answer) ?? []
-  );
 
   // get form context and register field
   const form = useFormContext();
@@ -36,6 +45,10 @@ export const RadioField = (props: PageElementProps) => {
   useEffect(() => {
     form.register(key);
   }, []);
+
+  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
+    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+  );
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
