@@ -18,10 +18,10 @@ export const NotFoundPage = () => {
       </Heading>
       <Box>
         <Text>
-          Please email
+          Please email{" "}
           <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} isExternal>
             {HELP_DESK_EMAIL_ADDRESS}
-          </Link>
+          </Link>{" "}
           for help or feedback.
         </Text>
         <Text>
