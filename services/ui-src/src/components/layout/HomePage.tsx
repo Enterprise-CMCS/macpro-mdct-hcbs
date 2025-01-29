@@ -48,13 +48,13 @@ export const HomePage = () => {
               </Heading>
               <Text>
                 Get started by completing the Home and Community-Based Services
-                (HCBS) for your state or territory. Learn more about this
+                (HCBS) for your state or territory. Learn more about this{" "}
                 <Link
                   href="https://www.medicaid.gov/medicaid/home-community-based-services/index.html"
                   isExternal
                 >
                   new data collection tool
-                </Link>
+                </Link>{" "}
                 from CMS.
               </Text>
             </Box>
