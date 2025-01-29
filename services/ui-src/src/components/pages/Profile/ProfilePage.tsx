@@ -28,7 +28,7 @@ export const ProfilePage = () => {
       </Heading>
       <Text>
         If any information is incorrect, please contact the Managed Care
-        Reporting (MCR) Help Desk at
+        Reporting (MCR) Help Desk at{" "}
         <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} isExternal>
           {HELP_DESK_EMAIL_ADDRESS}
         </Link>
