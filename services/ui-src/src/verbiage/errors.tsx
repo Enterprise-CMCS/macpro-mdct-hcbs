@@ -7,7 +7,7 @@ export const genericErrorContent = (
     <p>Something went wrong on our end. Refresh your screen and try again.</p>
     <p>
       If this persists, contact the MDCT Help Desk with questions or to request
-      technical assistance by emailing
+      technical assistance by emailing{" "}
       <Link
         href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`}
         target="_blank"
