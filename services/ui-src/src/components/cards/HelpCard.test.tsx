@@ -14,5 +14,5 @@ describe("Test EmailCard", () => {
     expect(link).toBeVisible();
   });
 
-  testA11y(<HelpCard icon="settings" />);
+  testA11y(<HelpCard icon="settings">Test</HelpCard>);
 });
