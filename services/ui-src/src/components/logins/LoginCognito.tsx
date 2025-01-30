@@ -36,7 +36,7 @@ export const LoginCognito = () => {
     } catch (error: any) {
       let errorMessage: ErrorVerbiage = {
         title: "Unable to login",
-        description: error.message,
+        children: error.message,
       };
       setError(errorMessage);
     }
@@ -47,7 +47,7 @@ export const LoginCognito = () => {
       <Heading size="md" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      <ErrorAlert error={error} sx={sx.error} />
+      <ErrorAlert error={error} alertSxOverride={sx.error} />
       <form onSubmit={(event) => handleLogin(event)}>
         <Box sx={sx.label}>
           <label>

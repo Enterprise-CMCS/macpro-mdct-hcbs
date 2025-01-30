@@ -1,30 +1,26 @@
 import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { PageTemplate } from "components";
-import { createEmailLink } from "utils/other/email";
 import warningIcon from "assets/icons/alert/icon_warning.svg";
-import verbiage from "verbiage/pages/error";
+import { HELP_DESK_EMAIL_ADDRESS } from "../../constants";
 
 export const Error = () => {
-  const { header, subHeading, emailText } = verbiage;
-  const { preLinkText, helpDeskEmail, postLinkText } = emailText;
-
   return (
     <PageTemplate sxOverride={sx.layout}>
       <Flex sx={sx.heading}>
         <Image src={warningIcon} alt="warning icon" sx={sx.warningIcon} />
         <Heading as="h1" sx={sx.headerText}>
-          {header}
+          Error
         </Heading>
       </Flex>
       <Heading as="h2" sx={sx.subHeadingText}>
-        {subHeading}
+        Sorry! An error has occurred.
       </Heading>
       <Text sx={sx.descriptionText}>
-        {preLinkText}
-        <Link href={createEmailLink({ address: helpDeskEmail })} isExternal>
-          {helpDeskEmail}
-        </Link>
-        {postLinkText}
+        Please refresh and try again, or email{" "}
+        <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} isExternal>
+          {HELP_DESK_EMAIL_ADDRESS}
+        </Link>{" "}
+        for help.
       </Text>
     </PageTemplate>
   );

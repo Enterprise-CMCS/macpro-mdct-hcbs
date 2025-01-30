@@ -1,20 +1,17 @@
 import { Box, Text, Button, Image } from "@chakra-ui/react";
 import pdfIcon from "assets/icons/pdf/icon_pdf_white.svg";
-import qmsVerbiage from "verbiage/export/qms-export";
 
 export const ExportedReportBanner = () => {
-  const { reportBanner } = qmsVerbiage;
-
   const onClickHandler = () => {
     window?.print();
   };
 
   return (
     <Box sx={sx.container}>
-      <Text>{reportBanner.intro}</Text>
+      <Text>Click below to export or print Quality Measure Set shown here</Text>
       <Button sx={sx.pdfButton} onClick={onClickHandler}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
-        {reportBanner.pdfButton}
+        Download PDF
       </Button>
     </Box>
   );
