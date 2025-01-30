@@ -12,26 +12,30 @@ export const formatChoices = (
   choices: ChoiceTemplate[],
   answer?: string
 ) => {
-  return choices.map((choice, choice_index) => {
-    const children = choice?.checkedChildren?.map((child, child_index) => {
+  return choices.map((choice, choiceIndex) => {
+    if (!choice?.checkedChildren) {
       return {
-        ...child,
-        formKey:
-          parentKey + `.value.${choice_index}.checkedChildren.${child_index}`,
+        ...choice,
+        checked: choice.value === answer,
+        checkedChildren: [],
       };
-    });
+    }
 
-    const formatFields = children ? (
+    const children = choice.checkedChildren.map((child, childIndex) => ({
+      ...child,
+      formKey: `${parentKey}.value.${choiceIndex}.checkedChildren.${childIndex}`,
+    }));
+
+    const checkedChildren = [
       <Box sx={sx.children}>
         <Page elements={children} />
-      </Box>
-    ) : (
-      <></>
-    );
+      </Box>,
+    ];
+
     return {
       ...choice,
+      checkedChildren,
       checked: choice.value === answer,
-      checkedChildren: [formatFields],
     };
   });
 };
