@@ -6,18 +6,9 @@ import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
 import { ElementType, ErrorVerbiage } from "types";
-import { boolean, number, object, string } from "yup";
+import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-const bannerWriteValidateSchema = object().shape({
-  key: string().required(),
-  title: string().required(),
-  description: string().required(),
-  link: string().url().notRequired(),
-  startDate: number().notRequired(),
-  endDate: number().notRequired(),
-  isActive: boolean().notRequired(),
-});
+import { validateBannerPayload } from "utils/validation/bannerValidation";
 
 const bannerFormValidateSchema = object().shape({
   bannerTitle: object().shape({
@@ -30,10 +21,10 @@ const bannerFormValidateSchema = object().shape({
     answer: string().url().notRequired(),
   }),
   bannerStartDate: object().shape({
-    answer: string().notRequired(),
+    answer: string().required("Start date is required"),
   }),
   bannerEndDate: object().shape({
-    answer: string().notRequired(),
+    answer: string().required("End date is required"),
   }),
 });
 
@@ -64,10 +55,8 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     };
 
     try {
-      // validate banner data
-      await bannerWriteValidateSchema.validate(newBannerData, {
-        stripUnknown: true,
-      });
+      // validate banner data before making api call
+      await validateBannerPayload(newBannerData);
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
     } catch (e) {
@@ -75,6 +64,8 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     }
     setSubmitting(false);
   };
+
+  console.log(form.formState.errors);
   return (
     <>
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
