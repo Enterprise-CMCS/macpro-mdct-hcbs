@@ -290,7 +290,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -386,7 +386,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -472,7 +472,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -569,7 +569,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -666,7 +666,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -765,7 +765,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -852,7 +852,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -940,7 +940,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1019,7 +1019,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1115,7 +1115,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1202,7 +1202,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1272,7 +1272,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],

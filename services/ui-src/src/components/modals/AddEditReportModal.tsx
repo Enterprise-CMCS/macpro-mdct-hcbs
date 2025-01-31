@@ -120,13 +120,11 @@ export const AddEditReportModal = ({
                   {
                     label: "Yes",
                     value: "true",
-                    checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
                     value: "false",
-                    checkedChildren: [],
                     checked: false,
                   },
                 ],
@@ -145,13 +143,11 @@ export const AddEditReportModal = ({
                   {
                     label: "Yes",
                     value: "true",
-                    checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
                     value: "false",
-                    checkedChildren: [],
                     checked: false,
                   },
                 ],
@@ -170,13 +166,11 @@ export const AddEditReportModal = ({
                   {
                     label: "Yes",
                     value: "true",
-                    checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
                     value: "false",
-                    checkedChildren: [],
                     checked: false,
                   },
                 ],
@@ -194,13 +188,11 @@ export const AddEditReportModal = ({
                   {
                     label: "Yes",
                     value: "true",
-                    checkedChildren: [],
                     checked: false,
                   },
                   {
                     label: "No",
                     value: "false",
-                    checkedChildren: [],
                     checked: false,
                   },
                 ],

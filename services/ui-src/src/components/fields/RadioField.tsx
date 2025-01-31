@@ -7,28 +7,41 @@ import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 
-export const formatChoices = (choices: ChoiceTemplate[], answer?: string) => {
-  return choices.map((choice) => {
-    const formatFields = choice?.checkedChildren ? (
+export const formatChoices = (
+  parentKey: string,
+  choices: ChoiceTemplate[],
+  answer?: string
+) => {
+  return choices.map((choice, choiceIndex) => {
+    if (!choice?.checkedChildren) {
+      return {
+        ...choice,
+        checked: choice.value === answer,
+        checkedChildren: [],
+      };
+    }
+
+    const children = choice.checkedChildren.map((child, childIndex) => ({
+      ...child,
+      formKey: `${parentKey}.value.${choiceIndex}.checkedChildren.${childIndex}`,
+    }));
+
+    const checkedChildren = [
       <Box sx={sx.children}>
-        <Page elements={choice?.checkedChildren} />
-      </Box>
-    ) : (
-      <></>
-    );
+        <Page elements={children} />
+      </Box>,
+    ];
+
     return {
       ...choice,
+      checkedChildren,
       checked: choice.value === answer,
-      checkedChildren: [formatFields],
     };
   });
 };
 
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
-  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
-    formatChoices(radio.value, radio.answer) ?? []
-  );
 
   // get form context and register field
   const form = useFormContext();
@@ -37,6 +50,10 @@ export const RadioField = (props: PageElementProps) => {
     const options = { required: radio.required || false };
     form.register(key, options);
   }, []);
+
+  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
+    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+  );
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -86,5 +103,11 @@ const sx = {
     border: "4px #0071BC solid",
     borderWidth: "0 0 0 4px",
     margin: "0 14px",
+    input: {
+      width: "240px",
+    },
+    textarea: {
+      width: "440px",
+    },
   },
 };

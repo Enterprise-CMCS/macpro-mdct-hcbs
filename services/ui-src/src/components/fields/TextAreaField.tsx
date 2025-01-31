@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FieldError, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
-import { TextboxTemplate } from "../../types/report";
+import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 
-export const TextField = (props: PageElementProps) => {
-  const textbox = props.element as TextboxTemplate;
+export const TextAreaField = (props: PageElementProps) => {
+  const textbox = props.element as TextAreaBoxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
@@ -15,8 +15,7 @@ export const TextField = (props: PageElementProps) => {
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
-    const options = { required: textbox.required || false };
-    form.register(key, options);
+    form.register(key);
   }, []);
 
   const onChangeHandler = async (
@@ -33,10 +32,7 @@ export const TextField = (props: PageElementProps) => {
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const elementErrors = formErrorState?.[props.formkey] as {
-    answer: FieldError;
-  };
-  const errorMessage = elementErrors?.answer?.message;
+  const errorMessage = formErrorState?.[key]?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
 
@@ -51,6 +47,8 @@ export const TextField = (props: PageElementProps) => {
         onBlur={onBlurHandler}
         value={displayValue}
         errorMessage={errorMessage}
+        multiline
+        rows={3}
         {...props}
       />
     </Box>

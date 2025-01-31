@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import {
   AdminPage,
   CreateReportOptions,
@@ -12,9 +12,18 @@ import {
   ReportPageWrapper,
 } from "components";
 import { useStore } from "utils";
+import { useEffect } from "react";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const appWrapper = document.getElementById("app-wrapper")!;
+    appWrapper?.focus();
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <main id="main-content" tabIndex={-1}>
