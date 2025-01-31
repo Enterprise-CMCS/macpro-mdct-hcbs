@@ -5,7 +5,7 @@ import { TextField } from "components";
 import { mockStateUserStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { PageElement } from "types/report";
+import { ElementType, TextboxTemplate } from "types/report";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -30,17 +30,13 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const mockedTextboxElement = {
-  type: TextField,
+  type: ElementType.Textbox,
   label: "test label",
   helperText: "helper text",
-};
+} as TextboxTemplate;
 
 const textFieldComponent = (
-  <TextField
-    element={mockedTextboxElement as unknown as PageElement}
-    index={0}
-    formkey="elements.0"
-  />
+  <TextField element={mockedTextboxElement} index={0} formkey="elements.0" />
 );
 
 describe("<TextField />", () => {

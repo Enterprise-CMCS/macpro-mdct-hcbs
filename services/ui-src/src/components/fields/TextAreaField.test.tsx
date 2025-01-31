@@ -5,7 +5,7 @@ import { TextAreaField } from "components";
 import { mockStateUserStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { PageElement } from "types/report";
+import { ElementType, TextAreaBoxTemplate } from "types/report";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -30,14 +30,14 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const mockedTextAreaElement = {
-  type: TextAreaField,
+  type: ElementType.TextAreaField,
   label: "test label",
   helperText: "helper text",
-};
+} as TextAreaBoxTemplate;
 
 const textAreaFieldComponent = (
   <TextAreaField
-    element={mockedTextAreaElement as unknown as PageElement}
+    element={mockedTextAreaElement}
     index={0}
     formkey="elements.0"
   />
