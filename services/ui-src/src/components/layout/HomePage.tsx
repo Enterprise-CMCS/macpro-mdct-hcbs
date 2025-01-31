@@ -2,17 +2,17 @@ import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminDashSelector,
   Banner,
+  CiIntroductionCard,
   PageTemplate,
-  TemplateCard,
+  QmsIntroductionCard,
+  TaIntroductionCard,
 } from "components";
 import { useEffect } from "react";
 import { checkDateRangeStatus, useStore } from "utils";
-import verbiage from "verbiage/pages/home";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const HomePage = () => {
   const { bannerData, bannerActive, setBannerActive } = useStore();
-  const { intro, cards } = verbiage;
   const { userIsEndUser } = useStore().user ?? {};
 
   const isTAReportActive = useFlags()?.isTaReportActive;
@@ -44,28 +44,27 @@ export const HomePage = () => {
           <>
             <Box>
               <Heading as="h1" variant="h1">
-                {intro.header}
+                Home and Community Based Services (HCBS) Portal
               </Heading>
               <Text>
-                {intro.body.preLinkText}
-                <Link href={intro.body.linkLocation} isExternal>
-                  {intro.body.linkText}
-                </Link>
-                {intro.body.postLinkText}
+                Get started by completing the Home and Community-Based Services
+                (HCBS) for your state or territory. Learn more about this{" "}
+                <Link
+                  href="https://www.medicaid.gov/medicaid/home-community-based-services/index.html"
+                  isExternal
+                >
+                  new data collection tool
+                </Link>{" "}
+                from CMS.
               </Text>
-              <Text></Text>
             </Box>
-            <TemplateCard templateName="QMS" verbiage={cards.QMS} />
-            {isTAReportActive && (
-              <TemplateCard templateName="TA" verbiage={cards.TA} />
-            )}
-            {isCIReportActive && (
-              <TemplateCard templateName="CI" verbiage={cards.CI} />
-            )}
+            <QmsIntroductionCard />
+            {isTAReportActive && <TaIntroductionCard />}
+            {isCIReportActive && <CiIntroductionCard />}
           </>
         ) : (
           // show read-only view to non-state users
-          <AdminDashSelector verbiage={verbiage.readOnly} />
+          <AdminDashSelector />
         )}
       </PageTemplate>
     </>

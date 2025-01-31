@@ -8,7 +8,6 @@ import {
 import { useStore } from "utils";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Report } from "types";
-import dashboardVerbiage from "verbiage/pages/dashboard";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -115,9 +114,9 @@ describe("DashboardPage with Read only user", () => {
       expect(getReportsForState).toHaveBeenCalled();
     });
 
-    const startReportButton = screen.queryByText(
-      dashboardVerbiage.body.link.callToActionText
-    );
+    const startReportButton = screen.queryByRole("button", {
+      name: "Start Quality Measure Set Report",
+    });
     expect(startReportButton).not.toBeInTheDocument();
   });
 });
