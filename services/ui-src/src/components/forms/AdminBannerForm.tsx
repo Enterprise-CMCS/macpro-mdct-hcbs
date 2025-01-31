@@ -4,9 +4,9 @@ import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, PreviewBanner, TextField, DateField } from "components";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
-import { convertDatetimeStringToNumber } from "utils";
+import { convertDatetimeStringToNumber, checkDateCompleteness } from "utils";
 import { ElementType, ErrorVerbiage } from "types";
-import { object, string } from "yup";
+import { object, string, date } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validateBannerPayload } from "utils/validation/bannerValidation";
 
@@ -21,10 +21,14 @@ const bannerFormValidateSchema = object().shape({
     answer: string().url().notRequired(),
   }),
   bannerStartDate: object().shape({
-    answer: string().required("Start date is required"),
+    answer: date()
+      .typeError("Date is invalid. Please enter date in MM/DD/YYYY format")
+      .required("Start date is required"),
   }),
   bannerEndDate: object().shape({
-    answer: string().required("End date is required"),
+    answer: date()
+      .typeError("Date is invalid. Please enter date in MM/DD/YYYY format")
+      .required("End date is required"),
   }),
 });
 
@@ -65,7 +69,6 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     setSubmitting(false);
   };
 
-  console.log(form.formState.errors);
   return (
     <>
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
