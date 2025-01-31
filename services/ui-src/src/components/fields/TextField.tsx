@@ -31,8 +31,8 @@ export const TextField = (props: PageElementProps) => {
   };
 
   // prepare error message, hint, and classes
-  const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[key]?.message;
+  const formErrorState = form?.formState?.errors as any; // Need to cast as any to allow access to answer field
+  const errorMessage = formErrorState?.[props.formkey]?.answer?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
 

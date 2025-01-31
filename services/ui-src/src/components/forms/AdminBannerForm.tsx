@@ -9,7 +9,7 @@ import { ElementType, ErrorVerbiage } from "types";
 import { boolean, number, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const bannerValidateSchema = object().shape({
+const bannerWriteValidateSchema = object().shape({
   key: string().required(),
   title: string().required(),
   description: string().required(),
@@ -19,13 +19,30 @@ const bannerValidateSchema = object().shape({
   isActive: boolean().notRequired(),
 });
 
+const bannerFormValidateSchema = object().shape({
+  bannerTitle: object().shape({
+    answer: string().required("Title is required"),
+  }),
+  bannerDescription: object().shape({
+    answer: string().required("Description is required"),
+  }),
+  bannerLink: object().shape({
+    answer: string().url().notRequired(),
+  }),
+  bannerStartDate: object().shape({
+    answer: string().notRequired(),
+  }),
+  bannerEndDate: object().shape({
+    answer: string().notRequired(),
+  }),
+});
+
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<ErrorVerbiage>();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  // add validation to formJson
   const form = useForm({
-    resolver: yupResolver(bannerValidateSchema),
+    resolver: yupResolver(bannerFormValidateSchema),
   });
 
   const onSubmit = async (formData: any) => {
@@ -48,18 +65,16 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 
     try {
       // validate banner data
-      await bannerValidateSchema.validate(newBannerData, {
+      await bannerWriteValidateSchema.validate(newBannerData, {
         stripUnknown: true,
       });
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
     } catch (e) {
-      console.log(e);
       setError(bannerErrors.REPLACE_BANNER_FAILED);
     }
     setSubmitting(false);
   };
-
   return (
     <>
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
