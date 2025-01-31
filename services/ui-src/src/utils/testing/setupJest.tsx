@@ -99,7 +99,7 @@ export const mockBannerStore: AdminBannerState = {
   bannerData: mockBannerData,
   bannerActive: false,
   bannerLoading: false,
-  bannerErrorMessage: { title: "", description: "" },
+  bannerErrorMessage: { title: "", children: undefined },
   bannerDeleting: false,
   setBannerData: () => {},
   clearAdminBanner: () => {},
@@ -205,6 +205,8 @@ export const mockReportStore: HcbsReportState = {
     type: ReportType.QMS,
     status: ReportStatus.IN_PROGRESS,
     title: "mock-report-title",
+    year: 2026,
+    options: {},
     state: "PR",
     pages: [{ ...mockMeasureTemplate, cmit: 960 }],
     measureLookup: {

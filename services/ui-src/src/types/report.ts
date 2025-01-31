@@ -2,7 +2,10 @@ import { StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
+  TA = "TA",
+  CI = "CI",
 }
+
 export const isReportType = (
   reportType: string | undefined
 ): reportType is ReportType => {
@@ -18,7 +21,7 @@ export const isReportStatus = (status: string): status is ReportStatus => {
   return Object.values(ReportStatus).includes(status as ReportStatus);
 };
 
-export type ReportTemplate = {
+export type ReportTemplate = ReportOptions & {
   type: ReportType;
   title: string;
   pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
@@ -36,7 +39,6 @@ export interface Report extends ReportTemplate {
   lastEdited?: number;
   lastEditedBy?: string;
   status: ReportStatus;
-  name?: string;
 }
 
 export type PageTemplate =
@@ -156,6 +158,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
+  required?: string; //takes error message to display if not provided
 };
 
 export type DateTemplate = {
@@ -191,6 +194,7 @@ export type RadioTemplate = {
   value: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
+  required?: string; //takes error message to display if not provided
 };
 
 export type ButtonLinkTemplate = {
@@ -228,7 +232,14 @@ export enum MeasureSpecification {
 }
 
 export interface ReportOptions {
-  name: string;
+  name?: string;
+  year: number;
+  options: {
+    cahps?: boolean;
+    hciidd?: boolean;
+    nciad?: boolean;
+    pom?: boolean;
+  };
 }
 
 export interface CMIT {

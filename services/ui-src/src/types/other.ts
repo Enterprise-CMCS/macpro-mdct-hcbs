@@ -1,5 +1,6 @@
 // ALERTS
 
+import { ReactNode } from "react";
 import { StateNames } from "../constants";
 
 export enum AlertTypes {
@@ -45,7 +46,7 @@ export interface CustomHtmlElement {
 
 export interface ErrorVerbiage {
   title: string;
-  description: string | CustomHtmlElement[];
+  children: ReactNode;
 }
 
 export type StateAbbr = keyof typeof StateNames;

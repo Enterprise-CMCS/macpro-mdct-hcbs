@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { useFormContext } from "react-hook-form";
+import { FieldError, useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -34,7 +34,8 @@ export const RadioField = (props: PageElementProps) => {
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
-    form.register(key);
+    const options = { required: radio.required || false };
+    form.register(key, options);
   }, []);
 
   const onChangeHandler = async (
@@ -55,7 +56,10 @@ export const RadioField = (props: PageElementProps) => {
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[key]?.message;
+  const elementErrors = formErrorState?.[props.formkey] as {
+    answer: FieldError;
+  };
+  const errorMessage = elementErrors?.answer?.message;
   const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
   const labelText = radio.label;
 

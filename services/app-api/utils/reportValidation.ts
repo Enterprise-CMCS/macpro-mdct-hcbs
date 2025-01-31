@@ -40,6 +40,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
@@ -110,6 +111,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({
@@ -175,6 +177,13 @@ const measureLookupSchema = object().shape({
   // TODO: Add option groups
 });
 
+const optionsSchema = object().shape({
+  cahps: boolean().notRequired(),
+  hciidd: boolean().notRequired(),
+  nciad: boolean().notRequired(),
+  pom: boolean().notRequired(),
+});
+
 /**
  * This schema is meant to represent the pages field in the ReportTemplate type.
  * The following yup `lazy` function is building up the union type:
@@ -234,6 +243,8 @@ const reportValidateSchema = object().shape({
   name: string().notRequired(),
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),
   title: string().required(),
+  year: number().required(),
+  options: optionsSchema,
   pages: pagesSchema,
   measureLookup: measureLookupSchema,
   measureTemplates: measureTemplatesSchema,

@@ -16,7 +16,6 @@ import {
   PageTemplate,
 } from "components";
 import { convertDateUtcToEt, useStore } from "utils";
-import verbiage from "verbiage/pages/admin";
 
 export const AdminPage = () => {
   const { deleteAdminBanner, writeAdminBanner } =
@@ -35,9 +34,9 @@ export const AdminPage = () => {
       <ErrorAlert error={bannerErrorMessage} sxOverride={sx.errorAlert} />
       <Box sx={sx.introTextBox}>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
-          {verbiage.intro.header}
+          Banner Admin
         </Heading>
-        <Text>{verbiage.intro.body}</Text>
+        <Text>Manage the announcement banner below.</Text>
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner</Text>

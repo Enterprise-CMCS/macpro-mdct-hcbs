@@ -6,7 +6,7 @@ import { testA11y } from "utils/testing/commonTests";
 
 const error: ErrorVerbiage = {
   title: "We've run into a problem",
-  description: genericErrorContent,
+  children: genericErrorContent,
 };
 
 const errorAlertComponent = <ErrorAlert error={error} />;
