@@ -21,13 +21,28 @@ const bannerFormValidateSchema = object().shape({
     answer: string().url().notRequired(),
   }),
   bannerStartDate: object().shape({
-    answer: date()
-      .typeError("Date is invalid. Please enter date in MM/DD/YYYY format")
+    answer: string()
+      .test({
+        message:
+          "Start date is invalid. Please enter date in MM/DD/YYYY format",
+        test: (value) => {
+          if (value) {
+            return checkDateCompleteness(value) !== null;
+          } else return true;
+        },
+      })
       .required("Start date is required"),
   }),
   bannerEndDate: object().shape({
-    answer: date()
-      .typeError("Date is invalid. Please enter date in MM/DD/YYYY format")
+    answer: string()
+      .test({
+        message: "End date is invalid. Please enter date in MM/DD/YYYY format",
+        test: (value) => {
+          if (value) {
+            return checkDateCompleteness(value) !== null;
+          } else return true;
+        },
+      })
       .required("End date is required"),
   }),
 });
