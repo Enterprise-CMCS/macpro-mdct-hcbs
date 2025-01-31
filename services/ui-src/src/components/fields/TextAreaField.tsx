@@ -43,8 +43,8 @@ export const TextAreaField = (props: PageElementProps) => {
         name={key}
         label={labelText || ""}
         hint={parsedHint}
-        onChange={(e) => onChangeHandler(e)}
-        onBlur={(e) => onBlurHandler(e)}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
         value={displayValue}
         errorMessage={errorMessage}
         multiline
