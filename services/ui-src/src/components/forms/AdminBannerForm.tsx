@@ -4,48 +4,13 @@ import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, PreviewBanner, TextField, DateField } from "components";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
-import { convertDatetimeStringToNumber, checkDateCompleteness } from "utils";
+import { convertDatetimeStringToNumber } from "utils";
 import { ElementType, ErrorVerbiage } from "types";
-import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { validateBannerPayload } from "utils/validation/bannerValidation";
-
-const bannerFormValidateSchema = object().shape({
-  bannerTitle: object().shape({
-    answer: string().required("Title is required"),
-  }),
-  bannerDescription: object().shape({
-    answer: string().required("Description is required"),
-  }),
-  bannerLink: object().shape({
-    answer: string().url().notRequired(),
-  }),
-  bannerStartDate: object().shape({
-    answer: string()
-      .test({
-        message:
-          "Start date is invalid. Please enter date in MM/DD/YYYY format",
-        test: (value) => {
-          if (value) {
-            return checkDateCompleteness(value) !== null;
-          } else return true;
-        },
-      })
-      .required("Start date is required"),
-  }),
-  bannerEndDate: object().shape({
-    answer: string()
-      .test({
-        message: "End date is invalid. Please enter date in MM/DD/YYYY format",
-        test: (value) => {
-          if (value) {
-            return checkDateCompleteness(value) !== null;
-          } else return true;
-        },
-      })
-      .required("End date is required"),
-  }),
-});
+import {
+  bannerFormValidateSchema,
+  validateBannerPayload,
+} from "utils/validation/bannerValidation";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<ErrorVerbiage>();
