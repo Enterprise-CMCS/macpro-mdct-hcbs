@@ -6,7 +6,7 @@ import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber, checkDateCompleteness } from "utils";
 import { ElementType, ErrorVerbiage } from "types";
-import { object, string, date } from "yup";
+import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validateBannerPayload } from "utils/validation/bannerValidation";
 
@@ -78,7 +78,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       await validateBannerPayload(newBannerData);
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
-    } catch (e) {
+    } catch {
       setError(bannerErrors.REPLACE_BANNER_FAILED);
     }
     setSubmitting(false);
