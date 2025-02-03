@@ -217,6 +217,7 @@ export enum DataSource {
   Administrative,
   Hybrid,
   RecordReview,
+  Survey,
 }
 
 export enum MeasureSteward {
@@ -226,6 +227,7 @@ export enum MeasureSteward {
 export enum MeasureSpecification {
   CMS = "CMS",
   HEDIS = "HEDIS",
+  CQL = "CQL",
 }
 
 export interface ReportOptions {

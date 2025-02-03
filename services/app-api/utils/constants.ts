@@ -17,6 +17,7 @@ export enum DataSource {
   Administrative = "Administrative",
   Hybrid = "Hybrid",
   RecordReview = "RecordReview",
+  Survey = "Survey",
 }
 
 export enum MeasureSteward {
@@ -26,6 +27,7 @@ export enum MeasureSteward {
 export enum MeasureSpecification {
   CMS = "CMS",
   HEDIS = "HEDIS",
+  CQL = "CQL",
 }
 
 export enum StateNames {
