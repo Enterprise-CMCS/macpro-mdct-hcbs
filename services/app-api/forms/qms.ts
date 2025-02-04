@@ -1321,7 +1321,7 @@ export const qmsReportTemplate: ReportTemplate = {
         {
           type: ElementType.ButtonLink,
           label: "Return to Optional Measures Dashboard",
-          to: "optional-measure-result",
+          to: "required-measure-result",
         },
         {
           type: ElementType.Header,
