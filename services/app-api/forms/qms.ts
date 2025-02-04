@@ -1365,7 +1365,7 @@ export const qmsReportTemplate: ReportTemplate = {
                 {
                   type: ElementType.Textbox,
                   label:
-                    "Enter the name of the entity that conducted the audit or validation",
+                    "Enter the name of the entity that conducted the audit or validation.",
                 },
               ],
             },
