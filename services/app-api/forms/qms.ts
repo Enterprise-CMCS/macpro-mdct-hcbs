@@ -1342,7 +1342,7 @@ export const qmsReportTemplate: ReportTemplate = {
           formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
+            { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
             {
               label: "Managed Long-Term Services and Supports (MLTSS)",
               value: DeliverySystem.MLTSS,
@@ -1357,15 +1357,15 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Radio,
           label: "Were the reported measure results audited or validated?",
           value: [
-            { label: "No, I am reporting on this measure", value: "no" },
+            { label: "No", value: "no" },
             {
-              label: "Yes, CMS is reporting on my behalf",
+              label: "Yes",
               value: "yes",
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
                   label:
-                    "What is the name of the agency or entity that audited or validated the report?",
+                    "Enter the name of the entity that conducted the audit or validation",
                 },
               ],
             },
@@ -1373,7 +1373,8 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          label: "Did you follow the [reportYear] Technical Specifications?",
+          // TO-DO: Import year how?
+          label: "Did you follow the 2026 Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
             {
