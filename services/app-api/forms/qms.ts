@@ -1374,6 +1374,10 @@ export const qmsReportTemplate: ReportTemplate = {
           ],
         },
         {
+          type: ElementType.Textbox,
+          label: "Additonal notes/comments (optional)",
+        },
+        {
           type: ElementType.Radio,
           formKey: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
