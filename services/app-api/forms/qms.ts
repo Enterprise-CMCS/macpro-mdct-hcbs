@@ -1339,17 +1339,19 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
-          label: "Which delivery systems were used to report this measure?",
+          // TO-DO: Import year how?
+          label: "Did you follow the 2026 Technical Specifications?",
           value: [
-            { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+            { label: "Yes", value: "yes" },
             {
-              label: "Managed Long-Term Services and Supports (MLTSS)",
-              value: DeliverySystem.MLTSS,
-            },
-            {
-              label: "Both FFS and MLTSS (separate)",
-              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
+              label: "No",
+              value: "no",
+              checkedChildren: [
+                {
+                  type: ElementType.Textbox,
+                  label: "Please explain the variance.",
+                },
+              ],
             },
           ],
         },
@@ -1373,19 +1375,17 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          // TO-DO: Import year how?
-          label: "Did you follow the 2026 Technical Specifications?",
+          formKey: "delivery-method-radio",
+          label: "Which delivery systems were used to report this measure?",
           value: [
-            { label: "Yes", value: "yes" },
+            { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
             {
-              label: "No",
-              value: "no",
-              checkedChildren: [
-                {
-                  type: ElementType.Textbox,
-                  label: "Please explain the variance.",
-                },
-              ],
+              label: "Managed Long-Term Services and Supports (MLTSS)",
+              value: DeliverySystem.MLTSS,
+            },
+            {
+              label: "Both FFS and MLTSS (separate)",
+              value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
             },
           ],
         },
