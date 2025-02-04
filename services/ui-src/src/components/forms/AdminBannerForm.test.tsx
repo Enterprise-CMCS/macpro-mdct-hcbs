@@ -20,7 +20,9 @@ describe("<AdminBannerForm />", () => {
     expect(
       screen.getByRole("textbox", { name: "Description text" })
     ).toBeVisible();
-    expect(screen.getByRole("textbox", { name: "Link" })).toBeVisible();
+    expect(
+      screen.getByRole("textbox", { name: "Link Optional" })
+    ).toBeVisible();
     expect(screen.getByRole("textbox", { name: "Start date" })).toBeVisible();
     expect(screen.getByRole("textbox", { name: "End date" })).toBeVisible();
     expect(
