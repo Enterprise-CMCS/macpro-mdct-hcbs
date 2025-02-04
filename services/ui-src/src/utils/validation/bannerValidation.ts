@@ -10,13 +10,15 @@ import { boolean, number, object, string } from "yup";
  */
 export const bannerFormValidateSchema = object().shape({
   bannerTitle: object().shape({
-    answer: string().required("Title is required"),
+    answer: string().required("A response is required"),
   }),
   bannerDescription: object().shape({
-    answer: string().required("Description is required"),
+    answer: string().required("A response is required"),
   }),
   bannerLink: object().shape({
-    answer: string().url().notRequired(),
+    answer: string()
+      .url("Response must be a valid hyperlink/URL")
+      .notRequired(),
   }),
   bannerStartDate: object().shape({
     answer: string()
@@ -29,7 +31,7 @@ export const bannerFormValidateSchema = object().shape({
           } else return true;
         },
       })
-      .required("Start date is required"),
+      .required("A response is required"),
   }),
   bannerEndDate: object().shape({
     answer: string()
@@ -41,7 +43,7 @@ export const bannerFormValidateSchema = object().shape({
           } else return true;
         },
       })
-      .required("End date is required"),
+      .required("A response is required"),
   }),
 });
 

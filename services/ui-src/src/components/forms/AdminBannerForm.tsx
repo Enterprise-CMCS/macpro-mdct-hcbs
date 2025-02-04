@@ -77,6 +77,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
               element={{
                 type: ElementType.Textbox,
                 label: "Link",
+                helperText: "Optional",
               }}
               formkey={"bannerLink"}
             ></TextField>
