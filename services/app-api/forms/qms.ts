@@ -1298,7 +1298,7 @@ export const qmsReportTemplate: ReportTemplate = {
     },
     [MeasureTemplateName["POM-1"]]: {
       id: "POM-1",
-      title: "POM: People live in integrated environments",
+      title: "POM: People Live in Integrated Environments",
       type: PageType.Measure,
       sidebar: false,
       elements: [
