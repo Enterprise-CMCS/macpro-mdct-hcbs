@@ -23,6 +23,7 @@ jest.mock("react-hook-form", () => ({
     register: jest.fn(),
     getValues: jest.fn(),
   }),
+  get: jest.fn(),
 }));
 
 // Mock the more complex elements, let them test themselves
