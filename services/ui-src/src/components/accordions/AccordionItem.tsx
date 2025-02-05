@@ -3,15 +3,16 @@ import {
   AccordionButton,
   AccordionItem as AccordionItemRoot,
   AccordionPanel,
+  CSSObject,
   Image,
   Text,
 } from "@chakra-ui/react";
-import plusIcon from "assets/icons/icon_plus.png";
-import minusIcon from "assets/icons/icon_minus.png";
+import plusIcon from "assets/icons/accordion/icon_plus.svg";
+import minusIcon from "assets/icons/accordion/icon_minus.svg";
 
-export const AccordionItem = ({ label, children, ...props }: Props) => {
+export const AccordionItem = ({ label, children, sx: sxOverride }: Props) => {
   return (
-    <AccordionItemRoot sx={sx.root} {...props}>
+    <AccordionItemRoot sx={sxOverride ?? sx.root}>
       {({ isExpanded }) => (
         <>
           <AccordionButton
@@ -35,7 +36,8 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
 
 interface Props {
   children?: ReactChild | ReactChild[];
-  [key: string]: any;
+  label?: string;
+  sx?: CSSObject;
 }
 
 const sx = {

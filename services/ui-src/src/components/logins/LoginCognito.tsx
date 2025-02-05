@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Auth } from "aws-amplify";
+import { signIn } from "aws-amplify/auth";
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
 import { ErrorVerbiage } from "types";
@@ -31,12 +31,12 @@ export const LoginCognito = () => {
   const handleLogin = async (event: any) => {
     event.preventDefault();
     try {
-      await Auth.signIn(fields.email, fields.password);
+      await signIn({ username: fields.email, password: fields.password });
       navigate(`/`);
     } catch (error: any) {
       let errorMessage: ErrorVerbiage = {
         title: "Unable to login",
-        description: error.message,
+        children: error.message,
       };
       setError(errorMessage);
     }
@@ -47,7 +47,7 @@ export const LoginCognito = () => {
       <Heading size="md" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      <ErrorAlert error={error} sx={sx.error} />
+      <ErrorAlert error={error} alertSxOverride={sx.error} />
       <form onSubmit={(event) => handleLogin(event)}>
         <Box sx={sx.label}>
           <label>
@@ -75,13 +75,7 @@ export const LoginCognito = () => {
             />
           </label>
         </Box>
-        <Button
-          sx={sx.button}
-          onClick={handleLogin}
-          isFullWidth
-          type="submit"
-          data-testid="cognito-login-button"
-        >
+        <Button sx={sx.button} onClick={handleLogin} isFullWidth type="submit">
           Log In with Cognito
         </Button>
       </form>

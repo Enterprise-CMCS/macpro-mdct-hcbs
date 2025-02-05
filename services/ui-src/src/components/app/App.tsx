@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import {
   AppRoutes,
   Error,
@@ -19,7 +19,9 @@ export const App = () => {
   const context = useContext(UserContext);
   const { logout } = context;
   const { user, showLocalLogins } = useStore();
-  // const { pathname } = useLocation();
+  const { pathname } = useLocation();
+
+  const isExportPage = pathname.includes("/export");
 
   // TODO: fire tealium page view on route change
   /*
@@ -38,8 +40,8 @@ export const App = () => {
       {user && (
         <Flex sx={sx.appLayout}>
           <Timeout />
-          <Header handleLogout={logout} />
-          <Container sx={sx.appContainer} data-testid="app-container">
+          {!isExportPage && <Header handleLogout={logout} />}
+          <Container sx={sx.appContainer}>
             <ErrorBoundary FallbackComponent={Error}>
               <AppRoutes />
             </ErrorBoundary>
@@ -50,11 +52,11 @@ export const App = () => {
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>
-            <Heading as="h1" size="xl" sx={sx.loginHeading}>
+            <Heading as="h1" size="xl" variant="login">
               Home &amp; Community Based Services
             </Heading>
           </Container>
-          <Container sx={sx.loginContainer} data-testid="login-container">
+          <Container sx={sx.loginContainer}>
             <Stack spacing={8}>
               <LoginIDM />
               <Divider />
@@ -81,19 +83,17 @@ const sx = {
     minHeight: "100vh",
     flexDirection: "column",
   },
-  skipnav: {
-    position: "absolute",
-  },
   appContainer: {
     display: "flex",
     maxW: "appMax",
     flex: "1 0 auto",
-    ".desktop &": {
-      padding: "0 2rem",
+    padding: "0rem",
+    section: {
+      padding: "1rem 2rem",
     },
-    "#main-content": {
+    ".tablet &, .mobile &": {
       section: {
-        flex: "1",
+        padding: "1rem",
       },
     },
   },
@@ -101,10 +101,5 @@ const sx = {
     maxWidth: "25rem",
     height: "full",
     marginY: "auto",
-  },
-  loginHeading: {
-    my: "6rem",
-    textAlign: "center",
-    width: "100%",
   },
 };

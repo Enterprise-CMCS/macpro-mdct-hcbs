@@ -1,4 +1,4 @@
-import { Box, Collapse } from "@chakra-ui/react";
+import { Box, Collapse, CSSObject } from "@chakra-ui/react";
 import { Alert } from "components";
 import { useRef } from "react";
 import { AlertTypes, ErrorVerbiage } from "types";
@@ -7,7 +7,7 @@ export const ErrorAlert = ({
   error,
   variant = "inline",
   sxOverride,
-  ...props
+  alertSxOverride,
 }: Props) => {
   // Focus the alert when an error is given
   const ref = useRef<HTMLDivElement>(null);
@@ -23,12 +23,12 @@ export const ErrorAlert = ({
           <Alert
             status={AlertTypes.ERROR}
             title={error.title}
-            description={error.description}
             showIcon={false}
             className={variant}
-            sx={sx.root}
-            {...props}
-          />
+            sx={alertSxOverride ?? sx.root}
+          >
+            {error.children}
+          </Alert>
         )}
       </Collapse>
     </Box>
@@ -38,8 +38,8 @@ export const ErrorAlert = ({
 interface Props {
   error?: ErrorVerbiage;
   variant?: "inline" | "toast";
-  sxOverride?: any;
-  [key: string]: any;
+  sxOverride?: CSSObject;
+  alertSxOverride?: CSSObject;
 }
 
 const sx = {

@@ -3,31 +3,32 @@ import {
   AlertDescription,
   AlertTitle,
   Box,
+  CSSObject,
   Flex,
   Image,
   Link,
   Text,
 } from "@chakra-ui/react";
-import { AlertTypes, CustomHtmlElement } from "types";
-import alertIcon from "assets/icons/icon_alert_circle.png";
-import { parseCustomHtml } from "utils";
+import { AlertTypes } from "types";
+import alertIcon from "assets/icons/alert/icon_alert.svg";
+import { ReactNode } from "react";
 
 export const Alert = ({
   status = AlertTypes.INFO,
-  title,
-  description,
-  link,
+  sx: sxOverride,
+  className,
   showIcon = true,
   icon,
-  ...props
+  title,
+  children,
+  link,
 }: Props) => {
   return (
     <AlertRoot
       status={status}
       variant="left-accent"
-      sx={sx.root}
-      className={status}
-      {...props}
+      sx={sxOverride ?? sx.root}
+      className={className ?? status}
     >
       <Flex>
         {showIcon && (
@@ -35,9 +36,9 @@ export const Alert = ({
         )}
         <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
           {title && <AlertTitle>{title}</AlertTitle>}
-          {description && (
+          {children && (
             <AlertDescription>
-              <Box sx={sx.descriptionText}>{parseCustomHtml(description)}</Box>
+              <Box sx={sx.descriptionText}>{children}</Box>
               {link && (
                 <Text sx={sx.linkText}>
                   <Link href={link} isExternal>
@@ -55,11 +56,13 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  title?: string;
-  description?: string | CustomHtmlElement[];
-  link?: string;
+  sx?: CSSObject;
   showIcon?: boolean;
-  [key: string]: any;
+  icon?: string;
+  title?: string;
+  className?: string;
+  children?: ReactNode;
+  link?: string;
 }
 
 const sx = {

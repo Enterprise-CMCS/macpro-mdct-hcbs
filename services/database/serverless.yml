@@ -1,0 +1,85 @@
+service: database
+
+frameworkVersion: "4"
+
+plugins:
+  - serverless-dynamodb
+  - serverless-stack-termination-protection
+  - serverless-plugin-scripts
+  - serverless-offline
+
+custom:
+  project: "hcbs"
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  serverlessTerminationProtection:
+    stages:
+      - main
+      - val
+      - production
+  dotenv:
+    path: ../../.env
+  bannerTableName: ${self:custom.stage}-banners
+  qmsReportTableName: ${self:custom.stage}-qms-reports
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+resources:
+  Resources:
+    BannerTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.bannerTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+    QmsReportTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.qmsReportTableName}
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        AttributeDefinitions:
+          - AttributeName: state
+            AttributeType: S
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: state
+            KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
+  Outputs:
+    BannerTableName:
+      Value: !Ref BannerTable
+    QmsReportTableName:
+      Value: !Ref QmsReportTable
+    QmsReportTableArn:
+      Value: !GetAtt QmsReportTable.Arn
+    Region:
+      Value: !Sub ${AWS::Region}
