@@ -138,7 +138,7 @@ export const CMIT_LIST: CMIT[] = [
   // POM meeasures
   {
     cmit: 1822,
-    name: "POM: People live in integrated environments",
+    name: "POM: People Live in Integrated Environments",
     uid: "1822",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
