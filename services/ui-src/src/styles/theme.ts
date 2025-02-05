@@ -15,8 +15,8 @@ export const svgFilters = {
 const theme = extendTheme({
   sizes: {
     appMax: "100vw",
-    basicPageWidth: "46rem",
-    reportPageWidth: "46rem",
+    basicPageWidth: "48rem",
+    reportPageWidth: "48rem",
     // font sizes: https://design.cms.gov/utilities/font-size/
     xs: "0.75rem", // 12px
     sm: "0.875rem", // 14px
@@ -112,21 +112,40 @@ const theme = extendTheme({
     Accordion: {
       baseStyle: {
         borderStyle: "none",
+        root: {
+          width: "100%",
+        },
+        button: {
+          background: "palette.gray_lightest",
+          padding: "0 1.5rem",
+        },
+        panel: {
+          width: "100%",
+          table: {
+            "tr td:last-of-type": {
+              fontWeight: "semibold",
+            },
+          },
+          p: {
+            marginBottom: "1rem",
+          },
+        },
       },
     },
     Button: {
       baseStyle: {
         transition: "all 0.3s ease",
-        width: "fit-content",
-        borderRadius: "0.25rem",
-        fontWeight: "bold",
         ".mobile &": {
           fontSize: "sm",
         },
+        borderRadius: "0.25rem",
+        fontWeight: "normal",
       },
       variants: {
         // primary variants
         primary: {
+          width: "fit-content",
+          fontWeight: "bold",
           backgroundColor: "palette.primary",
           color: "palette.white",
           "&:hover": {
@@ -135,6 +154,7 @@ const theme = extendTheme({
           "&:disabled, &:disabled:hover": {
             color: "palette.gray",
             backgroundColor: "palette.gray_lighter",
+            opacity: 1,
           },
         },
         transparent: {
@@ -147,6 +167,46 @@ const theme = extendTheme({
               filter: svgFilters.primary_darker,
             },
           },
+        },
+        sidebar: {
+          display: "block",
+          width: "100%",
+          textAlign: "left",
+          background: "transparent",
+          color: "palette.base",
+          fontWeight: "normal",
+          border: "1px solid",
+          borderRadius: "0",
+          borderColor: "palette.gray_lighter",
+          borderWidth: "0 0 1px 0",
+          fontSize: "14px",
+          paddingLeft: "1rem",
+          _hover: {
+            color: "palette.secondary_darkest",
+            backgroundColor: "palette.gray_lightest_highlight",
+            border: "1px solid",
+            borderColor: "palette.secondary",
+            borderWidth: "0 0 0 4px",
+          },
+          "&.selected": {
+            border: "1px solid",
+            borderColor: "palette.secondary",
+            borderWidth: "0 0 0 2px",
+            color: "palette.secondary_darkest",
+            backgroundColor: "palette.gray_lightest_highlight",
+          },
+        },
+        sidebarToggle: {
+          position: "absolute",
+          background: "palette.gray_lightest",
+          borderRadius: "0px 10px 10px 0px",
+          "img.left": {
+            transform: "rotate(90deg)",
+          },
+          "img.right": {
+            transform: "rotate(270deg)",
+          },
+          right: "-48px",
         },
         outline: () => ({
           ...theme.components.Button.variants.transparent,
@@ -230,14 +290,70 @@ const theme = extendTheme({
             backgroundColor: "palette.error_darker",
           },
         },
+        return: {
+          width: "fit-content",
+          padding: "0",
+          textDecoration: "none",
+          _hover: {
+            textDecoration: "underline",
+          },
+          _visited: {
+            color: "palette.primary",
+          },
+          display: "flex",
+          ".icon": {
+            width: "1.25rem",
+            height: "1.25rem",
+            marginTop: "0.15rem",
+            marginRight: "0.5rem",
+          },
+        },
       },
       defaultProps: {
         variant: "primary",
       },
     },
+    Divider: {
+      baseStyle: {
+        borderColor: "palette.gray_light",
+        paddingTop: "1rem",
+      },
+    },
     Heading: {
       baseStyle: {
         color: "palette.base",
+        fontWeight: "normal",
+        margin: "0",
+      },
+      variants: {
+        h1: {
+          fontSize: "4xl",
+          fontWeight: "normal",
+          ".mobile &": {
+            fontSize: "2xl",
+          },
+        },
+        subHeader: {
+          fontSize: "21px",
+          fontWeight: "700",
+          p: {
+            margin: "0",
+          },
+          ".mobile &": {
+            fontSize: "lg",
+          },
+        },
+        sidebar: {
+          fontSize: "21px",
+          fontWeight: "700",
+          padding: "2rem",
+          margin: "0",
+        },
+        login: {
+          my: "6rem",
+          textAlign: "center",
+          width: "100%",
+        },
       },
     },
     Link: {
@@ -255,6 +371,23 @@ const theme = extendTheme({
           ":hover, :visited:hover": {
             color: "palette.primary_darker",
             textDecorationColor: "palette.primary_darker",
+          },
+        },
+        return: {
+          width: "fit-content",
+          textDecoration: "none",
+          _hover: {
+            textDecoration: "underline",
+          },
+          _visited: {
+            color: "palette.primary",
+          },
+          display: "flex",
+          ".icon": {
+            width: "1.25rem",
+            height: "1.25rem",
+            marginTop: "0.15rem",
+            marginRight: "0.5rem",
           },
         },
         inverse: {
@@ -295,10 +428,152 @@ const theme = extendTheme({
         variant: "primary",
       },
     },
+    List: {
+      baseStyle: {
+        container: {},
+      },
+      variants: {
+        accordion: {
+          container: {
+            paddingLeft: "1rem",
+          },
+        },
+      },
+    },
+    Modal: {
+      baseStyle: {
+        dialog: {
+          minWidth: "500px",
+          padding: "2rem",
+          ".close": {
+            position: "absolute",
+            right: "2rem",
+          },
+          borderRadius: "none",
+        },
+        header: {
+          padding: "0 0 1.50rem 0",
+        },
+        body: {
+          padding: "0 0 2rem 0",
+        },
+        footer: {
+          display: "block",
+          padding: "0",
+          "button:first-of-type": {
+            marginRight: "2.5rem",
+          },
+        },
+        closeButton: {
+          padding: "2rem",
+        },
+      },
+    },
+    Table: {
+      baseStyle: {
+        table: {
+          th: {
+            padding: "0.5rem 0",
+            borderBottom: "1px solid",
+            borderColor: "palette.gray_light",
+            color: "palette.gray_medium",
+            fontWeight: "bold",
+            textTransform: "none",
+            letterSpacing: "normal",
+            fontSize: "sm",
+          },
+          tr: {
+            borderBottom: "1px solid",
+            borderColor: "palette.gray_light",
+          },
+          td: {
+            paddingLeft: 0,
+            borderTop: "1px solid",
+            borderBottom: "1px solid",
+            borderColor: "palette.gray_light",
+            textAlign: "left",
+            "&:last-of-type": {
+              paddingRight: 0,
+            },
+          },
+        },
+      },
+      variants: {
+        striped: () => ({
+          ...theme.components.Table.variants.striped,
+          table: {
+            maxWidth: "100%",
+            "tr td:first-of-type": {
+              width: "8rem",
+              fontWeight: "semibold",
+            },
+            td: {
+              padding: "0.5rem",
+            },
+            "td, tr": {
+              border: "none",
+            },
+          },
+        }),
+        measure: {
+          td: {
+            "&:first-of-type": {
+              minWidth: "3rem",
+              padding: "0 0.75rem",
+            },
+            "&:last-of-type": {
+              minWidth: "4rem",
+              button: {
+                fontWeight: "800",
+              },
+            },
+            a: {
+              fontSize: "14px",
+              whiteSpace: "nowrap",
+              ".mobile &": {
+                whiteSpace: "wrap",
+              },
+            },
+          },
+        },
+        status: {
+          td: {
+            fontSize: "14px",
+            padding: "0.75rem 0.75rem 0.75rem 0",
+            "&:first-of-type": {
+              width: "65%",
+              fontWeight: "bold",
+            },
+            "&:nth-of-type(2)": {
+              width: "25%",
+            },
+          },
+        },
+        export: {
+          td: {
+            fontSize: "14px",
+            width: "50%",
+            "p:first-of-type": {
+              fontWeight: "bold",
+            },
+          },
+        },
+      },
+    },
     Text: {
       baseStyle: {
         color: "palette.base",
         transition: "all 0.3s ease",
+        ".mobile &": {
+          fontSize: ".95rem",
+        },
+      },
+      variants: {
+        tableEmpty: {
+          maxWidth: "75%",
+          margin: "0 auto",
+          textAlign: "center",
+        },
       },
     },
   },

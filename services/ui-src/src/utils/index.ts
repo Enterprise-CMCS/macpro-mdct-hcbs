@@ -1,6 +1,9 @@
 // api
+export * from "./api/apiLib";
 export * from "./api/providers/ApiProvider";
+export * from "./api/requestMethods/banner";
 export * from "./api/requestMethods/getTemplateUrl";
+export * from "./api/requestMethods/report";
 // auth
 export * from "./auth/UserProvider";
 export * from "./auth/authLifecycle";
@@ -13,3 +16,4 @@ export * from "./other/parsing";
 export * from "./other/useBreakpoint";
 export * from "./other/time";
 export * from "./other/email";
+export * from "./other/routing";

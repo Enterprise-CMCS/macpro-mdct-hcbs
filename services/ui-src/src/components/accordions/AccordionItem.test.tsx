@@ -1,13 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const accordionItemComponent = (
   <RouterWrappedComponent>
     <Accordion>
-      <AccordionItem data-testid="accordion-item" />
+      <AccordionItem />
     </Accordion>
   </RouterWrappedComponent>
 );
@@ -17,15 +19,20 @@ describe("Test AccordionItem", () => {
     render(accordionItemComponent);
   });
 
-  test("AccordionItem is visible", () => {
-    expect(screen.getByTestId("accordion-item")).toBeVisible();
+  test("Find Expand button", () => {
+    const button = screen.getByRole("button", { name: "Expand" });
+    expect(button).toBeEnabled();
+    const img = screen.getByRole("img", { name: "Expand" });
+    expect(img).toBeVisible();
   });
-});
 
-describe("Test AccordionItem accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(accordionItemComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+  test("When Expand button clicked it switches to Collapse", async () => {
+    await act(async () => {
+      const button = screen.getByRole("button", { name: "Expand" });
+      await userEvent.click(button);
+    });
+    expect(screen.getByRole("button", { name: "Collapse" })).toBeVisible();
   });
+
+  testA11y(accordionItemComponent);
 });

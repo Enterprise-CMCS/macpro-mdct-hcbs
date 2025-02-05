@@ -10,7 +10,7 @@ export const PageTemplate = ({
   return (
     <section>
       <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
-        <Flex sx={sx.contentFlex} className={`contentFlex ${type}`}>
+        <Flex sx={sx.contentFlex} className={`contentFlex ${type}`} gap="4">
           {children}
         </Flex>
       </Box>
@@ -29,7 +29,6 @@ const sx = {
   contentBox: {
     "&.standard": {
       flexShrink: "0",
-      paddingTop: "2rem",
     },
     "&.report": {
       height: "100%",
@@ -39,7 +38,7 @@ const sx = {
     flexDirection: "column",
     "&.standard": {
       maxWidth: "basicPageWidth",
-      margin: "5.5rem auto 0",
+      margin: "5.5rem auto",
     },
     "&.report": {
       height: "100%",

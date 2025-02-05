@@ -3,22 +3,22 @@ import { PageTemplate } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
 const standardPageComponent = (
-  <PageTemplate data-testid="page-template">
-    <p>Test text</p>
+  <PageTemplate type="standard">
+    <p>Standard Test Text</p>
   </PageTemplate>
 );
 
 const reportPageComponent = (
-  <PageTemplate type="standard" data-testid="page-template">
-    <p>Test text</p>
+  <PageTemplate type="report">
+    <p>Report Test Text</p>
   </PageTemplate>
 );
 
 describe("<PageTemplate />", () => {
   describe("standard", () => {
     test("Check that PageTemplate (standard) renders", () => {
-      const { getByTestId } = render(standardPageComponent);
-      expect(getByTestId("page-template")).toBeVisible();
+      const { getByText } = render(standardPageComponent);
+      expect(getByText("Standard Test Text")).toBeVisible();
     });
 
     testA11y(standardPageComponent);
@@ -26,8 +26,8 @@ describe("<PageTemplate />", () => {
 
   describe("report", () => {
     test("Check that PageTemplate (report) renders", () => {
-      const { getByTestId } = render(reportPageComponent);
-      expect(getByTestId("page-template")).toBeVisible();
+      const { getByText } = render(reportPageComponent);
+      expect(getByText("Report Test Text")).toBeVisible();
     });
 
     testA11y(reportPageComponent);

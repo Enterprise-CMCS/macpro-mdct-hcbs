@@ -1,52 +1,72 @@
-import { Box, Heading, Link, Text } from "@chakra-ui/react";
-import { PageTemplate, TemplateCard } from "components";
-import verbiage from "verbiage/pages/home";
+import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  AdminDashSelector,
+  Banner,
+  CiIntroductionCard,
+  PageTemplate,
+  QmsIntroductionCard,
+  TaIntroductionCard,
+} from "components";
+import { useEffect } from "react";
+import { checkDateRangeStatus, useStore } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const HomePage = () => {
-  const { intro, cards } = verbiage;
+  const { bannerData, bannerActive, setBannerActive } = useStore();
+  const { userIsEndUser } = useStore().user ?? {};
+
+  const isTAReportActive = useFlags()?.isTaReportActive;
+  const isCIReportActive = useFlags()?.isCiReportActive;
+
+  useEffect(() => {
+    let bannerActivity = false;
+    if (bannerData && bannerData.startDate && bannerData.endDate) {
+      bannerActivity = checkDateRangeStatus(
+        bannerData.startDate,
+        bannerData.endDate
+      );
+    }
+    setBannerActive(bannerActivity);
+  }, [bannerData]);
+
+  const showBanner = !!bannerData?.key && bannerActive;
 
   return (
-    <PageTemplate sx={sx.layout}>
-      <>
-        <Box sx={sx.introTextBox}>
-          <Heading as="h1" sx={sx.headerText}>
-            {intro.header}
-          </Heading>
-          <Text>
-            {intro.body.preLinkText}
-            <Link href={intro.body.linkLocation} isExternal>
-              {intro.body.linkText}
-            </Link>
-            {intro.body.postLinkText}
-          </Text>
-          <Text></Text>
+    <>
+      <Collapse in={showBanner}>
+        <Box margin="0 2rem">
+          <Banner bannerData={bannerData} />
         </Box>
-        <TemplateCard
-          templateName="QM"
-          verbiage={cards.QM}
-          cardprops={sx.card}
-        />
-      </>
-    </PageTemplate>
+      </Collapse>
+      <PageTemplate>
+        {/* show standard view to state users */}
+        {userIsEndUser ? (
+          <>
+            <Box>
+              <Heading as="h1" variant="h1">
+                Home and Community Based Services (HCBS) Portal
+              </Heading>
+              <Text>
+                Get started by completing the Home and Community-Based Services
+                (HCBS) for your state or territory. Learn more about this{" "}
+                <Link
+                  href="https://www.medicaid.gov/medicaid/home-community-based-services/index.html"
+                  isExternal
+                >
+                  new data collection tool
+                </Link>{" "}
+                from CMS.
+              </Text>
+            </Box>
+            <QmsIntroductionCard />
+            {isTAReportActive && <TaIntroductionCard />}
+            {isCIReportActive && <CiIntroductionCard />}
+          </>
+        ) : (
+          // show read-only view to non-state users
+          <AdminDashSelector />
+        )}
+      </PageTemplate>
+    </>
   );
-};
-
-const sx = {
-  layout: {
-    ".contentFlex": {
-      marginTop: "3.5rem",
-    },
-  },
-  introTextBox: {
-    width: "100%",
-    marginBottom: "2.25rem",
-  },
-  headerText: {
-    marginBottom: "1rem",
-    fontSize: "2rem",
-    fontWeight: "normal",
-  },
-  card: {
-    marginBottom: "2rem",
-  },
 };

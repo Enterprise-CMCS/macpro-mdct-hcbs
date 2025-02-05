@@ -3,7 +3,19 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
-import { UserRoles, HcbsUserState, UserContextShape } from "types";
+import {
+  UserRoles,
+  HcbsUserState,
+  UserContextShape,
+  AdminBannerState,
+  HcbsReportState,
+  ReportType,
+  ReportStatus,
+  PageType,
+  MeasureTemplateName,
+  MeasurePageTemplate,
+} from "types";
+import { mockBannerData } from "./mockBanner";
 // GLOBALS
 
 global.React = React;
@@ -39,38 +51,70 @@ export const mockLDFlags = {
   set: mockFlags,
 };
 
-// AUTH
-
-jest.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: jest.fn().mockReturnValue({
-      getIdToken: () => ({
-        getJwtToken: () => "eyJLongToken",
-      }),
+/* Mock Amplify */
+jest.mock("aws-amplify/api", () => ({
+  get: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
     }),
-    currentAuthenticatedUser: () => {},
-    configure: () => {},
-    signOut: async () => {},
-    federatedSignIn: () => {},
-  },
-  API: {
-    get: () => {},
-    post: () => {},
-    put: () => {},
-    del: () => {},
-    configure: () => {},
-  },
-  Hub: {
-    listen: jest.fn(),
-  },
+  })),
+  post: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
+  put: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
+  del: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
 }));
+
+jest.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: jest.fn().mockReturnValue({
+    idToken: () => ({
+      payload: "eyJLongToken",
+    }),
+  }),
+  signOut: jest.fn().mockImplementation(() => Promise.resolve()),
+  signInWithRedirect: () => {},
+}));
+
+//  BANNER STATES / STORE
+
+export const mockBannerStore: AdminBannerState = {
+  bannerData: mockBannerData,
+  bannerActive: false,
+  bannerLoading: false,
+  bannerErrorMessage: { title: "", children: undefined },
+  bannerDeleting: false,
+  setBannerData: () => {},
+  clearAdminBanner: () => {},
+  setBannerActive: () => {},
+  setBannerLoading: () => {},
+  setBannerErrorMessage: () => {},
+  setBannerDeleting: () => {},
+};
 
 // USER CONTEXT
 
 export const mockUserContext: UserContextShape = {
   user: undefined,
   logout: async () => {},
-  loginWithIDM: () => {},
+  loginWithIDM: async () => {},
   updateTimeout: async () => {},
   getExpiration: () => {},
 };
@@ -144,14 +188,74 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-// BOUND STORE
-
-export const mockUseStore: HcbsUserState = {
-  ...mockStateUserStore,
+const mockMeasureTemplate: MeasurePageTemplate = {
+  id: "mock-template-id",
+  title: "mock-title",
+  type: PageType.Measure,
+  required: true,
+  substitutable: true,
+  elements: [],
 };
 
-export const mockUseAdminStore: HcbsUserState = {
+export const mockReportStore: HcbsReportState = {
+  modalOpen: false,
+  cmit: 960,
+  report: {
+    id: "mock-id",
+    type: ReportType.QMS,
+    status: ReportStatus.IN_PROGRESS,
+    title: "mock-report-title",
+    year: 2026,
+    options: {},
+    state: "PR",
+    pages: [{ ...mockMeasureTemplate, cmit: 960 }],
+    measureLookup: {
+      defaultMeasures: [],
+      optionGroups: {},
+    },
+    measureTemplates: {
+      [MeasureTemplateName["LTSS-1"]]: {
+        ...mockMeasureTemplate,
+        required: true,
+      },
+      [MeasureTemplateName["LTSS-2"]]: {
+        ...mockMeasureTemplate,
+        optional: true,
+      },
+      [MeasureTemplateName["LTSS-6"]]: {
+        ...mockMeasureTemplate,
+        stratified: true,
+      },
+      [MeasureTemplateName["LTSS-7"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-8"]]: mockMeasureTemplate,
+    },
+  },
+  setReport: () => {},
+  setCurrentPageId: () => {},
+  setModalOpen: () => {},
+  setModalComponent: () => {},
+  setAnswers: () => {},
+  setMeasure: () => {},
+};
+
+// BOUND STORE
+
+export const mockUseStore: HcbsUserState & AdminBannerState & HcbsReportState =
+  {
+    ...mockStateUserStore,
+    ...mockBannerStore,
+    ...mockReportStore,
+  };
+
+export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
   ...mockAdminUserStore,
+  ...mockBannerStore,
+};
+
+export const mockUseReadOnlyUserStore: HcbsUserState & AdminBannerState = {
+  ...mockHelpDeskUserStore,
+  ...mockBannerStore,
+  ...mockReportStore,
 };
 
 // ROUTER
@@ -168,5 +272,9 @@ export const mockLDClient = {
 
 // ASSET
 export * from "./mockAsset";
+// BANNER
+export * from "./mockBanner";
+// FORM
+export * from "./mockForm";
 // ROUTER
 export * from "./mockRouter";

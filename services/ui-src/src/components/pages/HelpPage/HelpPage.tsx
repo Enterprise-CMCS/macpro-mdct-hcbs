@@ -1,56 +1,78 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
-import { EmailCard, FaqAccordion, PageTemplate } from "components";
-import verbiage from "verbiage/pages/help";
+import { Accordion, Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { AccordionItem, HelpCard, PageTemplate } from "components";
+import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
+import { useBreakpoint } from "utils";
+
+const mfpDemoEmailAddress = "MFPDemo@cms.hhs.gov";
 
 export const HelpPage = () => {
-  const { intro, cards, accordionItems } = verbiage;
+  const { isDesktop } = useBreakpoint();
   return (
     <PageTemplate>
-      <Box sx={sx.leadTextBox}>
-        <Heading as="h1" sx={sx.headerText}>
-          {intro.header}
+      <Box>
+        <Heading as="h1" variant="h1">
+          How can we help you?
         </Heading>
-        <Text>{intro.body}</Text>
+        <Text>
+          Question or feedback? Please email us and we will respond as soon as
+          possible. You can also review our frequently asked questions below.
+        </Text>
       </Box>
-      <Box sx={sx.emailCardBox}>
-        <EmailCard
-          verbiage={cards.helpdesk}
-          icon="settings"
-          cardprops={sx.card}
-        />
-        <EmailCard
-          verbiage={cards.template}
-          icon="spreadsheet"
-          cardprops={sx.card}
-        />
+      <Flex flexDirection="column" gap="1.5rem">
+        <HelpCard icon="settings">
+          <Text sx={sx.bodyText}>For technical support and login issues:</Text>
+          <Text sx={sx.emailText}>
+            Email {!isDesktop && <br />}
+            <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} target="_blank">
+              {HELP_DESK_EMAIL_ADDRESS}
+            </Link>
+          </Text>
+        </HelpCard>
+        <HelpCard icon="spreadsheet">
+          <Text sx={sx.bodyText}>For questions about the online form:</Text>
+          <Text sx={sx.emailText}>
+            Email {!isDesktop && <br />}
+            <Link href={`mailto:${mfpDemoEmailAddress}`} target="_blank">
+              {mfpDemoEmailAddress}
+            </Link>
+          </Text>
+        </HelpCard>
+      </Flex>
+      <Box>
+        <Accordion allowToggle={true} allowMultiple={true}>
+          <AccordionItem
+            label="How do I log into my IDM account?"
+            sx={sx.accordionItem}
+          >
+            <Box sx={sx.accordionPanel}>
+              <Text>TBD</Text>
+            </Box>
+          </AccordionItem>
+          <AccordionItem label="Question #2" sx={sx.accordionItem}>
+            <Box sx={sx.accordionPanel}>
+              <Text>TBD</Text>
+            </Box>
+          </AccordionItem>
+        </Accordion>
       </Box>
-      {accordionItems.length > 0 && (
-        <Box sx={sx.faqAccordionBox}>
-          <FaqAccordion accordionItems={accordionItems} />
-        </Box>
-      )}
     </PageTemplate>
   );
 };
 
 const sx = {
-  leadTextBox: {
-    marginBottom: "2.25rem",
-  },
-  headerText: {
+  bodyText: {
     marginBottom: "1rem",
-    fontSize: "2rem",
-    fontWeight: "normal",
   },
-  emailCardBox: {
-    width: "100%",
-    marginBottom: "3rem",
+  emailText: {
+    fontWeight: "bold",
   },
-  card: {
+  accordionItem: {
     marginBottom: "1.5rem",
+    borderStyle: "none",
   },
-  faqAccordionBox: {
-    width: "100%",
-    marginBottom: "8rem",
+  accordionPanel: {
+    ".mobile &": {
+      paddingLeft: "1rem",
+    },
   },
 };
