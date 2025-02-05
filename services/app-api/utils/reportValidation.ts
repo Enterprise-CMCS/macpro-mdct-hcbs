@@ -175,9 +175,7 @@ const measureOptionsArraySchema = array().of(
     cmit: number().required(),
     required: boolean().required(),
     stratified: boolean().required(),
-    measureTemplate: mixed()
-      .oneOf(Object.values(MeasureTemplateName))
-      .required(),
+    measureTemplate: array().required(),
   })
 );
 
