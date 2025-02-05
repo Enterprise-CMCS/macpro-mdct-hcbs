@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet";
 import { Box, Center, Heading, Spinner, Flex } from "@chakra-ui/react";
 import { useStore } from "utils";
-import qmsVerbiage from "verbiage/export/qms-export";
 import {
   FormPageTemplate,
   MeasurePageTemplate,
@@ -13,7 +12,6 @@ import { ExportedReportBanner, ExportedReportWrapper } from "components";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const { metadata } = qmsVerbiage;
   const reportPages =
     report?.pages.filter(
       (page) => page.type !== PageType.Modal && page.type !== PageType.Measure
@@ -28,9 +26,9 @@ export const ExportedReportPage = () => {
             {/* pdf metadata */}
             <Helmet>
               <title>{reportTitle(report)}</title>
-              <meta name="author" content={metadata.author} />
-              <meta name="subject" content={metadata.subject} />
-              <meta name="language" content={metadata.language} />
+              <meta name="author" content="CMS" />
+              <meta name="subject" content="Quality Measure Set" />
+              <meta name="language" content="English" />
             </Helmet>
             {/* report heading */}
             <Heading as="h1" variant="h1">

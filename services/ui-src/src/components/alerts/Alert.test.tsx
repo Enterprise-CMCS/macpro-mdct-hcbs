@@ -8,11 +8,12 @@ const alertIcon = "test-file-stub";
 const alertComponent = (
   <Alert
     title="Test alert!"
-    description="This is for testing."
     link="https://example.com"
     icon={alertIcon}
     showIcon={true}
-  />
+  >
+    This is for testing.
+  </Alert>
 );
 
 describe("<Alert />", () => {

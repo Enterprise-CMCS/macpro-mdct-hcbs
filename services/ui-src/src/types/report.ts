@@ -2,7 +2,10 @@ import { StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
+  TA = "TA",
+  CI = "CI",
 }
+
 export const isReportType = (
   reportType: string | undefined
 ): reportType is ReportType => {
@@ -110,6 +113,7 @@ export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
   Textbox = "textbox",
+  TextAreaField = "textAreaField",
   Date = "date",
   Accordion = "accordion",
   ResultRowButton = "resultRowButton",
@@ -125,6 +129,7 @@ export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
   | TextboxTemplate
+  | TextAreaBoxTemplate
   | DateTemplate
   | AccordionTemplate
   | ParagraphTemplate
@@ -156,6 +161,13 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+};
+
+export type TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField;
+  label: string;
+  helperText?: string;
+  answer?: string;
 };
 
 export type DateTemplate = {
@@ -204,7 +216,7 @@ export type ChoiceTemplate = {
   label: string;
   value: string;
   checked?: boolean;
-  checkedChildren: PageElement[];
+  checkedChildren?: PageElement[];
 };
 
 export enum DeliverySystem {

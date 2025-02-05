@@ -88,7 +88,7 @@ export const ReportPageWrapper = () => {
         {currentPage.sidebar && <Sidebar />}
         <VStack
           height="100%"
-          padding={{ base: "4rem 1rem", md: "4rem 2rem 2rem 2rem" }}
+          padding={{ base: "4rem 1rem", md: "4rem 4rem 4rem 4rem" }}
           width="100%"
           maxWidth="reportPageWidth"
           gap="1rem"

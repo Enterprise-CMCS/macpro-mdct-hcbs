@@ -6,16 +6,23 @@ import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
 import { ElementType, ErrorVerbiage } from "types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  bannerFormValidateSchema,
+  validateBannerPayload,
+} from "utils/validation/bannerValidation";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const [error, setError] = useState<ErrorVerbiage>();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  // add validation to formJson
-  const form = useForm();
+  const form = useForm({
+    resolver: yupResolver(bannerFormValidateSchema),
+  });
 
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
+
     const newBannerData = {
       key: bannerId,
       title: formData["bannerTitle"]?.answer,
@@ -32,6 +39,8 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     };
 
     try {
+      // validate banner data before making api call
+      await validateBannerPayload(newBannerData);
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
     } catch {
@@ -68,6 +77,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
               element={{
                 type: ElementType.Textbox,
                 label: "Link",
+                helperText: "Optional",
               }}
               formkey={"bannerLink"}
             ></TextField>

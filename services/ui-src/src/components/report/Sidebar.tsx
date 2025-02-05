@@ -82,7 +82,7 @@ export const Sidebar = () => {
   return (
     <Box sx={sx.sidebar} className={isOpen ? "open" : "closed"}>
       <Flex sx={sx.sidebarNav}>
-        <Flex flexDirection="column" background="palette.gray_lightest">
+        <Flex sx={sx.sidebarList}>
           <Heading variant="sidebar">Quality Measure Set Report</Heading>
           {report.pages[root].childPageIds?.map((child) =>
             navSection(pageMap.get(child)!)
@@ -109,7 +109,6 @@ const sx = {
   sidebar: {
     position: "relative",
     transition: "all 0.3s ease",
-    minWidth: "23rem",
     height: "100%",
     zIndex: "dropdown",
     "&.open": {
@@ -135,5 +134,10 @@ const sx = {
       position: "fixed",
       display: "flex",
     },
+  },
+  sidebarList: {
+    background: "palette.gray_lightest",
+    width: "20.5rem",
+    flexDir: "column",
   },
 };

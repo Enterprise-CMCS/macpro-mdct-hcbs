@@ -1,4 +1,4 @@
-import { number, object, string } from "yup";
+import { boolean, number, object, string } from "yup";
 import { BannerData } from "../types/banner";
 import { error } from "./constants";
 
@@ -9,6 +9,7 @@ const bannerValidateSchema = object().shape({
   link: string().url().notRequired(),
   startDate: number().notRequired(),
   endDate: number().notRequired(),
+  isActive: boolean().notRequired(),
 });
 
 export const validateBannerPayload = async (payload: object | undefined) => {

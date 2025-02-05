@@ -34,32 +34,16 @@ export const qmsReportTemplate: ReportTemplate = {
           text: "General Information",
         },
         {
-          type: ElementType.SubHeader,
-          text: "State of Program Information",
-        },
-        {
           type: ElementType.Textbox,
-          label: "Contact title",
+          label: "Contact name",
           helperText:
-            "Enter person's title or a position title for CMS to contact with questions about this request.",
+            "Enter person's name or a position title for CMS to contact with questions about this report.",
         },
         {
           type: ElementType.Textbox,
           label: "Contact email address",
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",
-        },
-        {
-          type: ElementType.Date,
-          label: "Reporting period start date",
-          helperText:
-            "What is the reporting period Start Date applicable to the measure results?",
-        },
-        {
-          type: ElementType.Date,
-          label: "Reporting period end date",
-          helperText:
-            "What is the reporting period End Date applicable to the measure results?",
         },
       ],
     },
@@ -313,7 +297,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -409,7 +393,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -495,7 +479,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -592,7 +576,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -689,7 +673,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -788,7 +772,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -875,7 +859,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -963,7 +947,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1042,7 +1026,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1138,7 +1122,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1225,7 +1209,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
@@ -1295,7 +1279,7 @@ export const qmsReportTemplate: ReportTemplate = {
               value: "no",
               checkedChildren: [
                 {
-                  type: ElementType.Textbox,
+                  type: ElementType.TextAreaField,
                   label: "Please explain the variance.",
                 },
               ],
