@@ -231,6 +231,12 @@ export const qmsReportTemplate: ReportTemplate = {
         stratified: false,
         measureTemplate: MeasureTemplateName["POM-1"],
       },
+      {
+        cmit: 1822,
+        required: true,
+        stratified: false,
+        measureTemplate: MeasureTemplateName["POM-3"],
+      },
     ],
   },
   measureTemplates: {
@@ -1296,8 +1302,9 @@ export const qmsReportTemplate: ReportTemplate = {
         },
       ],
     },
-    [MeasureTemplateName["POM-1"]]: {
-      id: "POM-1",
+
+    [MeasureTemplateName["POM-2"]]: {
+      id: "POM-2",
       title: "POM: People live in integrated environments",
       type: PageType.Measure,
       sidebar: false,
