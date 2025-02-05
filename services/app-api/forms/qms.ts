@@ -1305,7 +1305,7 @@ export const qmsReportTemplate: ReportTemplate = {
         {
           type: ElementType.ButtonLink,
           label: "Return to Optional Measures Dashboard",
-          to: "required-measure-result",
+          to: "req-measure-result",
         },
         {
           type: ElementType.Header,
@@ -1360,7 +1360,7 @@ export const qmsReportTemplate: ReportTemplate = {
         {
           type: ElementType.TextAreaField,
           helperText:
-            "If applicable, add any notes or comments to provide context to the reported measure results",
+            "If applicable, add any notes or comments to provide context to the reported measure result",
           label: "Additonal notes/comments (optional)",
         },
         {
