@@ -155,74 +155,74 @@ export const qmsReportTemplate: ReportTemplate = {
         cmit: 960,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-1"],
+        measureTemplate: [MeasureTemplateName["LTSS-1"], MeasureTemplateName["FFS"], MeasureTemplateName["MLTSS"]],
       },
       {
         cmit: 961,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-2"],
+        measureTemplate: [MeasureTemplateName["LTSS-2"]],
       },
       {
         cmit: 20,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-6"],
+        measureTemplate: [MeasureTemplateName["LTSS-6"]],
       },
       {
         cmit: 968,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-7"],
+        measureTemplate: [MeasureTemplateName["LTSS-7"]],
       },
       {
         cmit: 414,
         required: true,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-8"],
+        measureTemplate: [MeasureTemplateName["LTSS-8"]],
       },
       // optional measures
       {
         cmit: 969,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName["FASI-1"],
+        measureTemplate: [MeasureTemplateName["FASI-1"]],
       },
       {
         cmit: 970,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName["FASI-2"],
+        measureTemplate: [MeasureTemplateName["FASI-2"]],
       },
       {
         cmit: 111,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName["HCBS-10"],
+        measureTemplate: [MeasureTemplateName["HCBS-10"]],
       },
       {
         cmit: 963,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-3"],
+        measureTemplate: [MeasureTemplateName["LTSS-3"]],
       },
       {
         cmit: 962,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-4"],
+        measureTemplate: [MeasureTemplateName["LTSS-4"]],
       },
       {
         cmit: 1255,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName["LTSS-5"],
+        measureTemplate: [MeasureTemplateName["LTSS-5"]],
       },
       {
         cmit: 561,
         required: false,
         stratified: false,
-        measureTemplate: MeasureTemplateName["MLTSS"],
+        measureTemplate: [MeasureTemplateName["MLTSS"]],
       },
     ],
   },
@@ -322,6 +322,29 @@ export const qmsReportTemplate: ReportTemplate = {
           measureDisplay: "quality",
         },
       ],
+    },
+    [MeasureTemplateName["FFS"]]:{
+      id: "FFS",
+      title: "LTSS-1: FFS LTSS Measure Results",
+      type: PageType.Measure,
+      substitutable: true,
+      sidebar: false,
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          label: "Return to Required Measures Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          text: "Fee-For-Service Measure Results",
+        },
+        {
+          type:ElementType.TextAreaField,
+          label: "Which Medicaid HCBS programs are being reported? (optional)",
+          helperText: "Please provide waiver, SPA or 1115 demonstration names and associated control numbers."
+        }
+      ]
     },
     [MeasureTemplateName["LTSS-2"]]: {
       id: "LTSS-2",

@@ -266,7 +266,7 @@ export interface MeasureOptions {
   cmit: number;
   required: boolean;
   stratified: boolean;
-  measureTemplate: MeasureTemplateName;
+  measureTemplate: [MeasureTemplateName];
 }
 
 export enum MeasureTemplateName {

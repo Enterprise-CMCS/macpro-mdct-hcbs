@@ -39,12 +39,13 @@ export interface MeasureOptions {
   cmit: number;
   required: boolean;
   stratified: boolean;
-  measureTemplate: MeasureTemplateName;
+  measureTemplate: MeasureTemplateName[];
 }
 
 export enum MeasureTemplateName {
   // required measures
   "LTSS-1" = "LTSS-1",
+  "FFS" = "FFS",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
