@@ -12,6 +12,7 @@ import { QualityMeasureTableElement } from "./QualityMeasureTable";
 import { StatusTableElement } from "./StatusTable";
 import { TextField, DateField, RadioField, TextAreaField } from "components";
 import { useStore } from "utils";
+import { MeasureFooterElement } from "./MeasureFooter";
 
 interface Props {
   elements: PageElement[];
@@ -46,6 +47,8 @@ export const Page = ({ elements }: Props) => {
         return QualityMeasureTableElement;
       case ElementType.StatusTable:
         return StatusTableElement;
+      case ElementType.MeasureFooter:
+        return MeasureFooterElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;

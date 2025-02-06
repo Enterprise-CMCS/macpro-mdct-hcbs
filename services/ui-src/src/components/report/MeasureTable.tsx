@@ -89,7 +89,8 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <Th></Th>
           <Th>
             Measure Name <br />
-            CMIT Number
+            CMIT Number <br />
+            Status
           </Th>
         </Tr>
       </Thead>
