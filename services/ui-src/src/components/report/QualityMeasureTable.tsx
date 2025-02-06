@@ -24,7 +24,7 @@ export const QualityMeasureTableElement = () => {
   const navigate = useNavigate();
 
   const handleEditClick = (deliverySystem: string, cmitInfo: CMIT) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${cmitInfo.uid}${cmitInfo.cmit}`;
+    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${cmitInfo.cmit}`;
     navigate(path);
   };
 

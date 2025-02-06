@@ -334,7 +334,7 @@ export const qmsReportTemplate: ReportTemplate = {
       ],
     },
     [MeasureTemplateName["FFS960"]]: {
-      id: "FFS960",
+      id: "FFS",
       title: "LTSS-1: FFS LTSS Measure Results",
       type: PageType.Measure,
       substitutable: true,
