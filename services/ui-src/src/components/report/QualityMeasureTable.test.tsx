@@ -13,6 +13,15 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => jest.fn(),
+  useParams: jest.fn(() => ({
+    reportType: "QMS",
+    state: "CO",
+  })),
+}));
+
 describe("Quality Measure Table", () => {
   it("should enable each delivery system's button correctly", () => {
     render(<QualityMeasureTableElement />);
