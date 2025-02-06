@@ -47,12 +47,12 @@ export const MeasureFooterElement = (props: PageElementProps) => {
             </Button>
           )}
           {footer.completeMeasure && (
-            <Button disabled={true} onClick={() => onCompleteMeasure()}>
+            <Button onClick={() => onCompleteMeasure()}>
               Complete measure
             </Button>
           )}
           {footer.completeSection && (
-            <Button disabled={true} onClick={() => onCompleteSection()}>
+            <Button onClick={() => onCompleteSection()}>
               Complete section
             </Button>
           )}

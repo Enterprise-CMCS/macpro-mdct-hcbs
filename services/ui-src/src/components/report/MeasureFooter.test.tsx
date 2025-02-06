@@ -38,6 +38,7 @@ describe("Measure Footer", () => {
       />
     );
 
+    //click previous
     const previousLink = screen.getByRole("button", {
       name: "Previous",
     });
@@ -45,6 +46,7 @@ describe("Measure Footer", () => {
     const prevRoute = "/report/QMS/CO/undefined/mock-prev-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
+    //click next
     const nextLink = screen.getByRole("button", {
       name: "Next",
     });
@@ -52,9 +54,23 @@ describe("Measure Footer", () => {
     const nextRoute = "/report/QMS/CO/undefined/mock-next-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(nextRoute);
 
-    expect(screen.getByText("Clear measure data")).toBeInTheDocument();
-    expect(screen.getByText("Complete section")).toBeInTheDocument();
-    expect(screen.getByText("Complete measure")).toBeInTheDocument();
+    //click clear
+    const clearBtn = screen.getByRole("button", {
+      name: "Clear measure data",
+    });
+    await userEvent.click(clearBtn);
+
+    //click complete measure
+    const completeMeasureBtn = screen.getByRole("button", {
+      name: "Complete measure",
+    });
+    await userEvent.click(completeMeasureBtn);
+
+    //click complete section
+    const completeSectionBtn = screen.getByRole("button", {
+      name: "Complete section",
+    });
+    await userEvent.click(completeSectionBtn);
   });
 
   it("Test Measure Footer component without optional fields", () => {
