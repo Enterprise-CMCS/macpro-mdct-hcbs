@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ElementType, MeasureFooterTemplate } from "types";
 import { MeasureFooterElement } from "./MeasureFooter";
 import userEvent from "@testing-library/user-event";
