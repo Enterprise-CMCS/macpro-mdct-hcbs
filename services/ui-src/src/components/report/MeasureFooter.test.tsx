@@ -11,6 +11,7 @@ jest.mock("react-router-dom", () => ({
   useParams: jest.fn(() => ({
     reportType: "QMS",
     state: "CO",
+    reportId: "mock-id",
   })),
 }));
 
@@ -43,7 +44,7 @@ describe("Measure Footer", () => {
       name: "Previous",
     });
     await userEvent.click(previousLink);
-    const prevRoute = "/report/QMS/CO/undefined/mock-prev-link";
+    const prevRoute = "/report/QMS/CO/mock-id/mock-prev-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
     //click next
@@ -51,7 +52,7 @@ describe("Measure Footer", () => {
       name: "Next",
     });
     await userEvent.click(nextLink);
-    const nextRoute = "/report/QMS/CO/undefined/mock-next-link";
+    const nextRoute = "/report/QMS/CO/mock-id/mock-next-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(nextRoute);
 
     //click clear
