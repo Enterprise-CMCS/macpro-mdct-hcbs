@@ -50,7 +50,9 @@ export const buildReport = async (
     const measures = report.measureLookup.defaultMeasures;
 
     const measurePages = measures.map((measure) => {
-      const pages = measure.measureTemplate.map((template) => structuredClone(report.measureTemplates[template]));
+      const pages = measure.measureTemplate.map((template) =>
+        structuredClone(report.measureTemplates[template])
+      );
 
       return pages.map((page) => {
         // TODO: make reusable. This will be used on the optional page when adding a measure.
@@ -65,7 +67,7 @@ export const buildReport = async (
         ];
         // TODO: let the parent know what it relates to
         return page;
-      })
+      });
     });
 
     report.pages = report.pages.concat(...measurePages);

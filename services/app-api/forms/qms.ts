@@ -155,7 +155,11 @@ export const qmsReportTemplate: ReportTemplate = {
         cmit: 960,
         required: true,
         stratified: false,
-        measureTemplate: [MeasureTemplateName["LTSS-1"], MeasureTemplateName["FFS"], MeasureTemplateName["MLTSS"]],
+        measureTemplate: [
+          MeasureTemplateName["LTSS-1"],
+          MeasureTemplateName["FFS960"],
+          MeasureTemplateName["MLTSS"],
+        ],
       },
       {
         cmit: 961,
@@ -321,10 +325,16 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.QualityMeasureTable,
           measureDisplay: "quality",
         },
+        {
+          type: ElementType.MeasureFooter,
+          prevTo: "req-measure-result",
+          completeMeasure: true,
+          clear: true,
+        },
       ],
     },
-    [MeasureTemplateName["FFS"]]:{
-      id: "FFS",
+    [MeasureTemplateName["FFS960"]]: {
+      id: "FFS960",
       title: "LTSS-1: FFS LTSS Measure Results",
       type: PageType.Measure,
       substitutable: true,
@@ -333,18 +343,24 @@ export const qmsReportTemplate: ReportTemplate = {
         {
           type: ElementType.ButtonLink,
           label: "Return to Required Measures Dashboard",
-          to: "req-measure-result",
+          to: "LTSS-1960",
         },
         {
           type: ElementType.Header,
           text: "Fee-For-Service Measure Results",
         },
         {
-          type:ElementType.TextAreaField,
+          type: ElementType.TextAreaField,
           label: "Which Medicaid HCBS programs are being reported? (optional)",
-          helperText: "Please provide waiver, SPA or 1115 demonstration names and associated control numbers."
-        }
-      ]
+          helperText:
+            "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+        },
+        {
+          type: ElementType.MeasureFooter,
+          prevTo: "LTSS-1960",
+          completeSection: true,
+        },
+      ],
     },
     [MeasureTemplateName["LTSS-2"]]: {
       id: "LTSS-2",
