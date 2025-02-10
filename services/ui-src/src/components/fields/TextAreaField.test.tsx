@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
-import { TextField } from "components";
+import { TextAreaField } from "components";
 import { mockStateUserStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { ElementType, TextboxTemplate } from "types/report";
+import { ElementType, TextAreaBoxTemplate } from "types/report";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -19,7 +19,6 @@ const mockUseFormContext = useFormContext as unknown as jest.Mock<
 >;
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
 }));
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
@@ -30,34 +29,38 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedTextboxElement = {
-  type: ElementType.Textbox,
+const mockedTextAreaElement = {
+  type: ElementType.TextAreaField,
   label: "test label",
   helperText: "helper text",
-} as TextboxTemplate;
+} as TextAreaBoxTemplate;
 
-const textFieldComponent = (
-  <TextField element={mockedTextboxElement} index={0} formkey="elements.0" />
+const textAreaFieldComponent = (
+  <TextAreaField
+    element={mockedTextAreaElement}
+    index={0}
+    formkey="elements.0"
+  />
 );
 
-describe("<TextField />", () => {
-  describe("Test TextField component", () => {
-    test("TextField is visible", () => {
+describe("<TextAreaField />", () => {
+  describe("Test TextAreaField component", () => {
+    test("TextAreaField is visible", () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockGetValues("");
-      render(textFieldComponent);
-      const textField = screen.getByRole("textbox");
-      expect(textField).toBeVisible();
+      render(textAreaFieldComponent);
+      const textAreaField = screen.getByRole("textbox");
+      expect(textAreaField).toBeVisible();
       jest.clearAllMocks();
     });
 
-    test("TextField should send updates to the Form", async () => {
+    test("TextAreaField should send updates to the Form", async () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockGetValues("");
-      render(textFieldComponent);
-      const textField = screen.getByRole("textbox");
+      render(textAreaFieldComponent);
+      const textAreaField = screen.getByRole("textbox");
 
-      await userEvent.type(textField, "hello[Tab]");
+      await userEvent.type(textAreaField, "hello[Tab]");
 
       // 5 keystrokes + 1 blur = 6 calls
       expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(6);
@@ -69,7 +72,7 @@ describe("<TextField />", () => {
   });
 
   testA11y(
-    textFieldComponent,
+    textAreaFieldComponent,
     () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockGetValues(undefined);

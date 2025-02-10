@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ExportedReportBanner } from "./ExportedReportBanner";
 import userEvent from "@testing-library/user-event";
-import qmsVerbiage from "verbiage/export/qms-export";
 
 describe("ExportedReportBanner", () => {
   beforeEach(() => {
@@ -10,7 +9,7 @@ describe("ExportedReportBanner", () => {
   });
   it("ExportedReportBanner is visible", () => {
     expect(
-      screen.getByText(qmsVerbiage.reportBanner.intro)
+      screen.getByText("Click below to export", { exact: false })
     ).toBeInTheDocument();
   });
   it("Test click of print button", async () => {

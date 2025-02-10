@@ -2,14 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Dropdown, ChoiceList } from "@cmsgov/design-system";
-import { AnyObject, DropdownOptions } from "types";
+import { DropdownOptions } from "types";
 import { StateNames } from "../../constants";
 
-interface FormProps {
-  verbiage: AnyObject;
-}
-
-export const AdminDashSelector = ({ verbiage }: FormProps) => {
+export const AdminDashSelector = () => {
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedReport, setSelectedReport] = useState<string>("");
   const navigate = useNavigate();
@@ -58,7 +54,7 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
   return (
     <Box sx={sx.root}>
       <Heading as="h1" sx={sx.headerText}>
-        {verbiage.header}
+        View State/Territory Reports
       </Heading>
 
       <form onSubmit={handleSubmit}>
@@ -84,7 +80,7 @@ export const AdminDashSelector = ({ verbiage }: FormProps) => {
             onClick={() => handleSubmit()}
             disabled={!selectedState || !selectedReport}
           >
-            {verbiage.buttonLabel}
+            Go to Report Dashboard
           </Button>
         </Flex>
       </form>

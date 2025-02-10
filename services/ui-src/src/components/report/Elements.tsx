@@ -1,5 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Heading, Stack, Image, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  Stack,
+  Image,
+  Text,
+  Accordion,
+} from "@chakra-ui/react";
 import {
   HeaderTemplate,
   SubHeaderTemplate,
@@ -8,8 +15,9 @@ import {
   ButtonLinkTemplate,
   PageElement,
 } from "types";
-import { TemplateCardAccordion } from "components";
+import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
+import { parseCustomHtml } from "utils";
 
 export interface PageElementProps {
   element: PageElement;
@@ -52,9 +60,11 @@ export const paragraphElement = (props: PageElementProps) => {
 export const accordionElement = (props: PageElementProps) => {
   const accordion = props.element as AccordionTemplate;
   return (
-    <TemplateCardAccordion
-      verbiage={{ buttonLabel: accordion.label, text: accordion.value }}
-    ></TemplateCardAccordion>
+    <Accordion allowToggle={true}>
+      <AccordionItem label={accordion.label}>
+        {parseCustomHtml(accordion.value)}
+      </AccordionItem>
+    </Accordion>
   );
 };
 
