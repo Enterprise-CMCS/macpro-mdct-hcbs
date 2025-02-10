@@ -135,4 +135,18 @@ export const CMIT_LIST: CMIT[] = [
     dataSource: DataSource.Administrative,
     options: "",
   },
+  // pom measures
+  {
+    cmit: 1822,
+    name: "POM: People participate in the life of the community",
+    uid: "1822-2",
+    measureSteward: "CQL",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+    options: "",
+  },
 ];

@@ -221,11 +221,13 @@ export enum DataSource {
 
 export enum MeasureSteward {
   CMS,
+  CQL,
 }
 
 export enum MeasureSpecification {
   CMS = "CMS",
   HEDIS = "HEDIS",
+  CQL = "CQL",
 }
 
 export interface ReportOptions {
@@ -263,6 +265,7 @@ export enum MeasureTemplateName {
   "LTSS-6",
   "LTSS-7",
   "LTSS-8",
+  "POM-2",
 }
 
 export interface FormComponent {
