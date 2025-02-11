@@ -21,11 +21,13 @@ export enum DataSource {
 
 export enum MeasureSteward {
   CMS = "CMS",
+  CQL = "CQL",
 }
 
 export enum MeasureSpecification {
   CMS = "CMS",
   HEDIS = "HEDIS",
+  CQL = "CQL",
 }
 
 export enum StateNames {

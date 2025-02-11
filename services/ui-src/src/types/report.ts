@@ -266,6 +266,7 @@ export interface CMIT {
 
 export interface MeasureOptions {
   cmit: number;
+  uid: string;
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
