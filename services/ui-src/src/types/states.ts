@@ -48,4 +48,6 @@ export interface HcbsReportState {
   setModalComponent: (modalComponent: React.ReactFragment) => void;
   setAnswers: (answers: any) => void;
   setMeasure: (cmit: number) => void;
+  clearMeasure: (measureId: string, ignoreList: string[]) => void;
+  resetMeasure: (measureId: string) => void;
 }

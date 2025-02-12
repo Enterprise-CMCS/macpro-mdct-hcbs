@@ -10,7 +10,13 @@ import {
 } from "types";
 import { Report } from "types/report";
 import React from "react";
-import { buildState, mergeAnswers, setPage } from "./management/reportState";
+import {
+  buildState,
+  clearMeasure,
+  mergeAnswers,
+  resetMeasure,
+  setPage,
+} from "./management/reportState";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -92,6 +98,18 @@ const reportStore = (set: Function): HcbsReportState => ({
   setMeasure: (cmit: number) => {
     set(() => ({ cmit }), false, { type: "setMeasure" });
   },
+  resetMeasure: (measureId: string) =>
+    set((state: HcbsReportState) => resetMeasure(measureId, state), false, {
+      type: "resetMeasure",
+    }),
+  clearMeasure: (measureId: string, ignoreList: string[]) =>
+    set(
+      (state: HcbsReportState) => clearMeasure(measureId, state, ignoreList),
+      false,
+      {
+        type: "resetMeasure",
+      }
+    ),
 });
 
 export const useStore = create(
