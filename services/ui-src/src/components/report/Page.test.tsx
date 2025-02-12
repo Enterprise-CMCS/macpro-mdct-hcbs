@@ -23,6 +23,7 @@ jest.mock("react-hook-form", () => ({
     register: jest.fn(),
     getValues: jest.fn(),
   }),
+  useWatch: jest.fn(),
   get: jest.fn(),
 }));
 
@@ -69,7 +70,10 @@ const elements: PageElement[] = [
   {
     type: ElementType.Radio,
     label: "date label",
-    value: [{ label: "a", value: "1", checkedChildren: [] }],
+    value: [
+      { label: "a", value: "1", checkedChildren: [] },
+      { label: "b", value: "2" },
+    ],
   },
   {
     type: ElementType.ButtonLink,
@@ -105,7 +109,10 @@ const textFieldElement: PageElement[] = [
   {
     type: ElementType.Radio,
     label: "radio button",
-    value: [{ label: "radio choice 1", value: "1", checkedChildren: [] }],
+    value: [
+      { label: "radio choice 1", value: "1", checkedChildren: [] },
+      { label: "radio choice 2", value: "2" },
+    ],
   },
 ];
 

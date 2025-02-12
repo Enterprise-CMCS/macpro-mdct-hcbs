@@ -13,7 +13,7 @@ export const pomMeasures: MeasureOptions[] = [
     uid: "1822-1",
     required: true,
     stratified: false,
-    measureTemplate: MeasureTemplateName["POM-1"],
+    measureTemplate: [MeasureTemplateName["POM-1"]],
   },
   {
     cmit: 1822,

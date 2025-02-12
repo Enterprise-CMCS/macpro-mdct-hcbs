@@ -101,6 +101,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return qualityMeasureTableTemplateSchema;
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
+    case ElementType.MeasureFooter:
+      return measureFooterSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -146,6 +148,15 @@ const statusTableTemplateSchema = object().shape({
   to: string().required(),
 });
 
+const measureFooterSchema = object().shape({
+  type: string().required(ElementType.MeasureFooter),
+  prevTo: string().required(),
+  nextTo: string().notRequired(),
+  completeMeasure: boolean().notRequired(),
+  completeSection: boolean().notRequired(),
+  clear: boolean().notRequired(),
+});
+
 const parentPageTemplateSchema = object().shape({
   id: string().required(),
   childPageIds: array().of(string()).required(),
@@ -176,9 +187,7 @@ const measureOptionsArraySchema = array().of(
     uid: string().required(),
     required: boolean().required(),
     stratified: boolean().required(),
-    measureTemplate: mixed()
-      .oneOf(Object.values(MeasureTemplateName))
-      .required(),
+    measureTemplate: array().required(),
   })
 );
 
