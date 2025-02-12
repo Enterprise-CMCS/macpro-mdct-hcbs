@@ -105,26 +105,31 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Required Measures Dashboard",
         to: "req-measure-result",
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -135,6 +140,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -144,6 +150,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.Radio,
         label:
           "What Technical Specifications are you using to report this measure?",
+        id: "measure-tech-specs-radio",
         value: [
           { label: "CMS", value: "cms" },
           { label: "HEDIS", value: "hedis" },
@@ -152,6 +159,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -160,6 +168,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -168,7 +177,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -185,10 +194,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -201,26 +212,31 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Required Measures Dashboard",
         to: "req-measure-result",
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -231,6 +247,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -240,6 +257,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.Radio,
         label:
           "What Technical Specifications are you using to report this measure?",
+        id: "measure-tech-specs-radio",
         value: [
           { label: "CMS", value: "cms" },
           { label: "HEDIS", value: "hedis" },
@@ -248,6 +266,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -256,6 +275,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -264,7 +284,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -281,10 +301,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -296,26 +318,31 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Required Measures Dashboard",
         to: "req-measure-result",
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -326,6 +353,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -334,6 +362,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -342,6 +371,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -361,7 +391,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -378,10 +408,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -393,26 +425,31 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Required Measures Dashboard",
         to: "req-measure-result",
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -423,6 +460,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -431,6 +469,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -439,6 +478,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -458,7 +498,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -475,10 +515,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -490,26 +532,31 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Required Measures Dashboard",
         to: "req-measure-result",
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -520,6 +567,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -528,6 +576,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -536,6 +585,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -555,7 +605,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -572,10 +622,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -592,21 +644,25 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -617,6 +673,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -633,6 +690,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -641,7 +699,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -658,10 +716,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -678,21 +738,25 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -703,6 +767,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -719,6 +784,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -727,7 +793,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -744,10 +810,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -765,21 +833,25 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -790,6 +862,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -806,6 +879,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -815,10 +889,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -835,21 +911,25 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -860,6 +940,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -869,6 +950,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.Radio,
         label:
           "What Technical Specifications are you using to report this measure?",
+        id: "measure-tech-specs-radio",
         value: [
           { label: "CMS", value: "cms" },
           { label: "HEDIS", value: "hedis" },
@@ -877,6 +959,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -885,6 +968,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -893,7 +977,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -910,10 +994,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -931,21 +1017,25 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -956,6 +1046,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -965,6 +1056,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.Radio,
         label:
           "What Technical Specifications are you using to report this measure?",
+        id: "measure-tech-specs-radio",
         value: [
           { label: "CMS", value: "cms" },
           { label: "HEDIS", value: "hedis" },
@@ -973,6 +1065,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -981,6 +1074,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -989,7 +1083,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        formKey: "delivery-method-radio",
+        id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
           { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -1006,10 +1100,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -1027,21 +1123,25 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -1052,6 +1152,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -1060,6 +1161,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -1068,6 +1170,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -1077,10 +1180,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
@@ -1097,21 +1202,25 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
         label: "Were the reported measure results audited or validated?",
+        id: "measure-reporting-radio",
         value: [
           { label: "No, I am reporting on this measure", value: "no" },
           {
@@ -1122,6 +1231,7 @@ export const defaultMeasureTemplates = {
                 type: ElementType.Textbox,
                 label:
                   "What is the name of the agency or entity that audited or validated the report?",
+                id: "measure-auditing-agency",
               },
             ],
           },
@@ -1130,6 +1240,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         label: "Did you follow the [reportYear] Technical Specifications?",
+        id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -1138,6 +1249,7 @@ export const defaultMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.Textbox,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -1147,10 +1259,12 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         text: "Quality Measures",
+        id: "quality-measures-subheader",
       },
       {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
+        id: "quality-measure-table",
       },
     ],
   },
