@@ -280,6 +280,7 @@ export enum MeasureTemplateName {
   "LTSS-7",
   "LTSS-8",
   "POM-1",
+  "POM-2",
 }
 
 export interface FormComponent {
