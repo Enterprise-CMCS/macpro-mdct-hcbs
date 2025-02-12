@@ -291,6 +291,7 @@ const theme = extendTheme({
           },
         },
         return: {
+          color: "palette.primary",
           width: "fit-content",
           padding: "0",
           textDecoration: "none",
@@ -298,6 +299,7 @@ const theme = extendTheme({
             textDecoration: "underline",
           },
           _visited: {
+            // what color should visited link be?
             color: "palette.primary",
           },
           display: "flex",

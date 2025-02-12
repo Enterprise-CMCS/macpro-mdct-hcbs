@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
 import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
-import { FormPageTemplate } from "types";
 import { getReport, useStore } from "utils";
 import {
   ReportModal,
@@ -27,10 +26,7 @@ export const ReportPageWrapper = () => {
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const methods = useForm({
-    defaultValues: useMemo(() => {
-      const pageIndex = pageMap?.get(currentPageId ?? "")!;
-      return report?.pages[pageIndex];
-    }, [currentPageId]) as FormPageTemplate,
+    defaultValues: {},
     shouldUnregister: true,
     // resolver: yupResolver(pageElementsValidateSchema),
   });
@@ -44,7 +40,7 @@ export const ReportPageWrapper = () => {
     if (pageId) {
       setCurrentPageId(pageId);
     }
-  }, [pageId]);
+  }, [report, pageMap, pageId]);
 
   const handleBlur = (data: any) => {
     console.log("DATA CHANGE", data);
