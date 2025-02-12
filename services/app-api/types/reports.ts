@@ -65,6 +65,12 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
+export enum MeasureStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  COMPLETE = "Complete",
+}
+
 export interface Report extends ReportTemplate {
   id?: string;
   state: string;
@@ -81,6 +87,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   stratified?: boolean;
   optional?: boolean;
   substitutable?: boolean;
+  status: MeasureStatus;
 }
 
 export interface SectionTemplate {
@@ -195,22 +202,26 @@ export type PageElement =
 
 export type HeaderTemplate = {
   type: ElementType.Header;
+  id: string;
   text: string;
 };
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
   text: string;
 };
 
 export type ParagraphTemplate = {
   type: ElementType.Paragraph;
+  id: string;
   title?: string;
   text: string;
 };
 
 export type TextboxTemplate = {
   type: ElementType.Textbox;
+  id: string;
   label: string;
   helperText?: string;
   answer?: string;
@@ -219,6 +230,7 @@ export type TextboxTemplate = {
 
 export type DateTemplate = {
   type: ElementType.Date;
+  id: string;
   label: string;
   helperText: string;
   answer?: string;
@@ -226,12 +238,14 @@ export type DateTemplate = {
 
 export type AccordionTemplate = {
   type: ElementType.Accordion;
+  id: string;
   label: string;
   value: string;
 };
 
 export type ResultRowButtonTemplate = {
   type: ElementType.ResultRowButton;
+  id: string;
   value: string;
   modalId: PageId;
   to: PageId;
@@ -244,6 +258,7 @@ export const isResultRowButton = (
 
 export type RadioTemplate = {
   type: ElementType.Radio;
+  id: string;
   formKey?: string;
   label: string;
   helperText?: string;
@@ -254,6 +269,7 @@ export type RadioTemplate = {
 
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
+  id: string;
   label: string;
   to: PageId;
 };
@@ -266,17 +282,20 @@ export type ChoiceTemplate = {
 };
 
 export type MeasureTableTemplate = {
+  id: string;
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
 };
 
 export type QualityMeasureTableTemplate = {
   type: ElementType.QualityMeasureTable;
+  id: string;
   measureDisplay: "quality";
 };
 
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
+  id: string;
   to: PageId;
 };
 

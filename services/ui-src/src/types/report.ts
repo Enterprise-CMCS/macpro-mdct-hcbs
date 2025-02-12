@@ -14,6 +14,13 @@ export enum ReportStatus {
   IN_PROGRESS = "In progress",
   SUBMITTED = "Submitted",
 }
+
+export enum MeasureStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  COMPLETE = "Complete",
+}
+
 export const isReportStatus = (status: string): status is ReportStatus => {
   return Object.values(ReportStatus).includes(status as ReportStatus);
 };
@@ -80,6 +87,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   stratified?: boolean;
   optional?: boolean;
   substitutable?: boolean;
+  status: MeasureStatus;
 }
 
 export interface StatusPageTemplate extends FormPageTemplate {
@@ -136,22 +144,26 @@ export type PageElement =
 
 export type HeaderTemplate = {
   type: ElementType.Header;
+  id: string;
   text: string;
 };
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
   text: string;
 };
 
 export type ParagraphTemplate = {
   type: ElementType.Paragraph;
+  id: string;
   title?: string;
   text: string;
 };
 
 export type TextboxTemplate = {
   type: ElementType.Textbox;
+  id: string;
   label: string;
   helperText?: string;
   answer?: string;
@@ -160,6 +172,7 @@ export type TextboxTemplate = {
 
 export type DateTemplate = {
   type: ElementType.Date;
+  id: string;
   label: string;
   helperText: string;
   answer?: string;
@@ -167,26 +180,31 @@ export type DateTemplate = {
 
 export type AccordionTemplate = {
   type: ElementType.Accordion;
+  id: string;
   label: string;
   value: string;
 };
 
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
+  id: string;
   measureDisplay: "required" | "stratified" | "optional";
 };
 
 export type QualityMeasureTableTemplate = {
   type: ElementType.QualityMeasureTable;
+  id: string;
   measureDisplay: "quality";
 };
 
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
+  id: string;
 };
 
 export type RadioTemplate = {
   type: ElementType.Radio;
+  id: string;
   label: string;
   value: ChoiceTemplate[];
   helperText?: string;
@@ -196,6 +214,7 @@ export type RadioTemplate = {
 
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
+  id: string;
   label: string;
   to: PageId;
 };

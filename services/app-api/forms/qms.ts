@@ -5,6 +5,7 @@ import {
   ReportType,
   MeasureTemplateName,
   MeasurePageTemplate,
+  MeasureStatus,
 } from "../types/reports";
 import { DeliverySystem } from "../utils/constants";
 
@@ -31,32 +32,38 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "general-info-header",
           text: "General Information",
         },
         {
           type: ElementType.SubHeader,
+          id: "general-info-subheader",
           text: "State of Program Information",
         },
         {
           type: ElementType.Textbox,
+          id: "contact-title",
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
         },
         {
           type: ElementType.Textbox,
+          id: "contact-email",
           label: "Contact email address",
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",
         },
         {
           type: ElementType.Date,
+          id: "reporting-start",
           label: "Reporting period start date",
           helperText:
             "What is the reporting period Start Date applicable to the measure results?",
         },
         {
           type: ElementType.Date,
+          id: "reporting-end",
           label: "Reporting period end date",
           helperText:
             "What is the reporting period End Date applicable to the measure results?",
@@ -71,46 +78,19 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "required-header",
           text: "Required Measure Results",
         },
         {
           type: ElementType.Accordion,
+          id: "required-instructions",
           label: "Instructions",
           value: "I am an accordion",
         },
         {
           type: ElementType.MeasureTable,
+          id: "required-measures",
           measureDisplay: "required",
-        },
-      ],
-    },
-    {
-      id: "req-measure-result-modal",
-      title: "Select measure",
-      sidebar: true,
-      type: PageType.Modal,
-      elements: [
-        {
-          type: ElementType.Header,
-          text: "Select measure",
-        },
-        {
-          type: ElementType.Paragraph,
-          text: "Select the correct version of the quality measure.",
-        },
-        {
-          type: ElementType.Radio,
-          label: "Which quality measure will be reported?",
-          value: [
-            {
-              label: "{Measure name version 1}",
-              value: "measure-1",
-            },
-            {
-              label: "{Measure name version 2}",
-              value: "measure-2",
-            },
-          ],
         },
       ],
     },
@@ -122,15 +102,18 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "optional-header",
           text: "Optional Measure Results",
         },
         {
           type: ElementType.Accordion,
+          id: "optional-instructions",
           label: "Instructions",
           value: "I am an accordion",
         },
         {
           type: ElementType.MeasureTable,
+          id: "optional-measures",
           measureDisplay: "optional",
         },
       ],
@@ -144,20 +127,24 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "review-header",
           text: "Review & Submit",
         },
         {
           type: ElementType.Paragraph,
+          id: "review-text",
           title: "Ready to Submit?",
           text: "Double check that everything in your QMS Report is accurate. You will be able to make edits after submitting if you contact your [CMS representative] to unlock your report while it is in “Submitted” status.",
         },
         {
           type: ElementType.Paragraph,
+          id: "review-compliance",
           title: "Compliance review",
           text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
         },
         {
           type: ElementType.StatusTable,
+          id: "review-status",
           to: "review-submit",
         },
       ],
@@ -249,28 +236,34 @@ export const qmsReportTemplate: ReportTemplate = {
       type: PageType.Measure,
       substitutable: true,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -280,6 +273,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -289,6 +283,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-tech-specs",
           label:
             "What Technical Specifications are you using to report this measure?",
           value: [
@@ -298,6 +293,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -307,6 +303,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -315,7 +312,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -331,10 +328,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
@@ -345,28 +344,34 @@ export const qmsReportTemplate: ReportTemplate = {
       type: PageType.Measure,
       sidebar: false,
       substitutable: true,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -376,6 +381,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -385,6 +391,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-tech-specs",
           label:
             "What Technical Specifications are you using to report this measure?",
           value: [
@@ -394,6 +401,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -403,6 +411,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -411,7 +420,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -427,6 +436,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
@@ -440,28 +450,34 @@ export const qmsReportTemplate: ReportTemplate = {
       title: "LTSS-6: Admission to a Facility from the Community",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -471,6 +487,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -480,6 +497,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -489,6 +507,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -497,6 +516,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-cms-calculate",
           label: "Do you want CMS to calculate this measure on your behalf?",
           value: [
             { label: "No", value: "no" },
@@ -508,7 +528,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -524,6 +544,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
@@ -537,28 +558,34 @@ export const qmsReportTemplate: ReportTemplate = {
       title: "LTSS-7: Minimizing Facility Length of Stay",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -568,6 +595,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -577,6 +605,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -586,6 +615,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -594,6 +624,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-cms-calculate",
           label: "Do you want CMS to calculate this measure on your behalf?",
           value: [
             { label: "No", value: "no" },
@@ -605,7 +636,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -621,10 +652,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
@@ -634,28 +667,34 @@ export const qmsReportTemplate: ReportTemplate = {
       title: "LTSS-8: Successful Transition after Long-Term Facility Stay",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Required Measures Dashboard",
           to: "req-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -665,6 +704,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -674,6 +714,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -683,6 +724,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -691,6 +733,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-cms-calculate",
           label: "Do you want CMS to calculate this measure on your behalf?",
           value: [
             { label: "No", value: "no" },
@@ -702,7 +745,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -718,10 +761,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
@@ -732,28 +777,34 @@ export const qmsReportTemplate: ReportTemplate = {
       title: "FASI-1: Identification of Person-Centered Priorities",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Optional Measures Dashboard",
           to: "optional-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -763,6 +814,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -772,6 +824,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label:
             "Did you follow from the [reportYear] Technical Specifications?",
           value: [
@@ -782,6 +835,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -790,7 +844,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -806,10 +860,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
@@ -819,28 +875,34 @@ export const qmsReportTemplate: ReportTemplate = {
       title: "FASI-2: Documentation of a Person-Centered Service Plan",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Optional Measures Dashboard",
           to: "optional-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -850,6 +912,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -859,6 +922,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label:
             "Did you follow from the [reportYear] Technical Specifications?",
           value: [
@@ -869,6 +933,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -877,7 +942,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -893,10 +958,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
@@ -907,28 +974,34 @@ export const qmsReportTemplate: ReportTemplate = {
         "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through Managed Care Organizations",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Optional Measures Dashboard",
           to: "optional-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -938,6 +1011,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -947,6 +1021,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label:
             "Did you follow from the [reportYear] Technical Specifications?",
           value: [
@@ -957,6 +1032,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -965,10 +1041,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
@@ -978,28 +1056,34 @@ export const qmsReportTemplate: ReportTemplate = {
       title: "LTSS-3: Shared Person-Centered Plan with Primary Care Provider",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Optional Measures Dashboard",
           to: "optional-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -1009,6 +1093,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -1018,6 +1103,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-tech-specs",
           label:
             "What Technical Specifications are you using to report this measure?",
           value: [
@@ -1027,6 +1113,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -1036,6 +1123,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -1044,7 +1132,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -1060,10 +1148,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
@@ -1074,28 +1164,34 @@ export const qmsReportTemplate: ReportTemplate = {
         "LTSS-4: Reassessment and Person-Centered Plan Update after Inpatient Discharge",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Optional Measures Dashboard",
           to: "optional-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -1105,6 +1201,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -1114,6 +1211,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-tech-specs",
           label:
             "What Technical Specifications are you using to report this measure?",
           value: [
@@ -1123,6 +1221,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -1132,6 +1231,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -1140,7 +1240,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
-          formKey: "delivery-method-radio",
+          id: "delivery-method-radio",
           label: "Which delivery systems were used to report this measure?",
           value: [
             { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
@@ -1156,6 +1256,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
@@ -1170,6 +1271,7 @@ export const qmsReportTemplate: ReportTemplate = {
         "LTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
@@ -1201,6 +1303,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -1219,6 +1322,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -1227,6 +1331,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
@@ -1240,28 +1345,34 @@ export const qmsReportTemplate: ReportTemplate = {
       title: "MLTSS: Plan All-Cause Readmission",
       type: PageType.Measure,
       sidebar: false,
+      status: MeasureStatus.NOT_STARTED,
       elements: [
         {
           type: ElementType.ButtonLink,
+          id: "return-button",
           label: "Return to Optional Measures Dashboard",
           to: "optional-measure-result",
         },
         {
           type: ElementType.Header,
+          id: "measure-header",
           text: "{measureName}",
         },
         {
           type: ElementType.Accordion,
+          id: "measure-instructions",
           label: "Instructions",
           value:
             "[Optional instructional content that could support the user in completing this page]",
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-details-subheader",
           text: "Measure Details",
         },
         {
           type: ElementType.Radio,
+          id: "measure-reporting-radio",
           label: "Were the reported measure results audited or validated?",
           value: [
             { label: "No, I am reporting on this measure", value: "no" },
@@ -1271,6 +1382,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-auditing-agency",
                   label:
                     "What is the name of the agency or entity that audited or validated the report?",
                 },
@@ -1280,6 +1392,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Radio,
+          id: "measure-following-tech-specs",
           label: "Did you follow the [reportYear] Technical Specifications?",
           value: [
             { label: "Yes", value: "yes" },
@@ -1289,6 +1402,7 @@ export const qmsReportTemplate: ReportTemplate = {
               checkedChildren: [
                 {
                   type: ElementType.Textbox,
+                  id: "measure-following-tech-specs-no-explain",
                   label: "Please explain the variance.",
                 },
               ],
@@ -1297,10 +1411,12 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.SubHeader,
+          id: "measure-qms-subheader",
           text: "Quality Measures",
         },
         {
           type: ElementType.QualityMeasureTable,
+          id: "measure-qm-table",
           measureDisplay: "quality",
         },
       ],
