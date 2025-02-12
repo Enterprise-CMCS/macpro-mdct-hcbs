@@ -26,25 +26,30 @@ export const pomMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Required Measures Dashboard",
         to: "req-measure-result",
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "{measureName}",
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "Measure Details",
       },
       {
         type: ElementType.Radio,
+        id: "measure-reporting-radio",
         label: "Did you follow the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -54,6 +59,7 @@ export const pomMeasureTemplates = {
             checkedChildren: [
               {
                 type: ElementType.TextAreaField,
+                id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
             ],
@@ -62,6 +68,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
+        id: "measure-reporting-radio",
         label: "Were the reported measure results audited or validated?",
         value: [
           { label: "No", value: "no" },
@@ -80,6 +87,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "measure-context-text",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -102,10 +110,12 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.SubHeader,
+        id: "quality-measures-subheader",
         text: "Quality Measures",
       },
       {
         type: ElementType.QualityMeasureTable,
+        id: "quality-measure-table",
         measureDisplay: "quality",
       },
     ],
