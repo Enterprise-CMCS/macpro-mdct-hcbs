@@ -53,7 +53,7 @@ export const pomMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 label: "Please explain the variance.",
               },
             ],
@@ -70,7 +70,7 @@ export const pomMeasureTemplates = {
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 label:
                   "Enter the name of the entity that conducted the audit or validation.",
               },
@@ -79,7 +79,7 @@ export const pomMeasureTemplates = {
         ],
       },
       {
-        type: ElementType.Textbox,
+        type: ElementType.TextAreaField,
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
