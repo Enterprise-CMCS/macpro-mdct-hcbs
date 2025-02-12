@@ -167,7 +167,7 @@ export enum PageType {
   Standard = "standard",
   Modal = "modal",
   Measure = "measure",
-  MeasureResults = "measureResults"
+  MeasureResults = "measureResults",
 }
 
 export enum ElementType {
