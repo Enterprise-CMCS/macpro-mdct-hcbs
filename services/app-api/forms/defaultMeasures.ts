@@ -194,12 +194,18 @@ export const defaultMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
       },
+      {
+        type: ElementType.MeasureFooter,
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
+      },
     ],
   },
   [MeasureTemplateName["FFS960"]]: {
     id: "FFS",
     title: "LTSS-1: FFS LTSS Measure Results",
-    type: PageType.Measure,
+    type: PageType.MeasureResults,
     substitutable: true,
     sidebar: false,
     elements: [
