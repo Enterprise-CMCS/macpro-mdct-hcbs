@@ -9,9 +9,7 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({ ...mockUseStore });
 
 jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn().mockReturnValue({
-    getValues: jest.fn().mockReturnValue({ answer: "FFS" }),
-  }),
+  useWatch: jest.fn().mockReturnValue({ answer: "FFS" }),
 }));
 
 const mockUseNavigate = jest.fn();
