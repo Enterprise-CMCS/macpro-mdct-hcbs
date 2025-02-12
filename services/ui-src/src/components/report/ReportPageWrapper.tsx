@@ -12,7 +12,7 @@ import {
   PraDisclosure,
 } from "components";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { elementsValidateSchema } from "utils/validation/reportValidation";
+import { pageElementsValidateSchema } from "utils/validation/reportValidation";
 
 export const ReportPageWrapper = () => {
   const {
@@ -32,7 +32,7 @@ export const ReportPageWrapper = () => {
       return report?.pages[pageIndex];
     }, [currentPageId]) as FormPageTemplate,
     shouldUnregister: true,
-    resolver: yupResolver(elementsValidateSchema),
+    // resolver: yupResolver(pageElementsValidateSchema),
   });
 
   const navigate = useNavigate();
@@ -47,6 +47,7 @@ export const ReportPageWrapper = () => {
   }, [pageId]);
 
   const handleBlur = (data: any) => {
+    console.log("DATA CHANGE", data);
     if (!report) return;
     setAnswers(data);
   };
