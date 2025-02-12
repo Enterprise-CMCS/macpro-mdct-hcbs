@@ -229,6 +229,7 @@ export enum DataSource {
   Administrative,
   Hybrid,
   RecordReview,
+  Survey,
 }
 
 export enum MeasureSteward {

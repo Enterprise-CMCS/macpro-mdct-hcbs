@@ -10,15 +10,15 @@ import { DeliverySystem } from "../utils/constants";
 export const pomMeasures: MeasureOptions[] = [
   {
     cmit: 1822,
-    uid: "1822-2",
+    uid: "1822-1",
     required: true,
     stratified: false,
-    measureTemplate: MeasureTemplateName["POM-2"],
+    measureTemplate: MeasureTemplateName["POM-1"],
   },
 ];
 
 export const pomMeasureTemplates = {
-  [MeasureTemplateName["POM-2"]]: {
+  [MeasureTemplateName["POM-1"]]: {
     id: "POM-1",
     title: "POM: People Live in Integrated Environments",
     type: PageType.Measure,

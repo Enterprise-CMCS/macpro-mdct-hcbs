@@ -17,6 +17,7 @@ export enum DataSource {
   Administrative = "Administrative",
   Hybrid = "Hybrid",
   RecordReview = "RecordReview",
+  Survey = "Survey",
 }
 
 export enum MeasureSteward {
