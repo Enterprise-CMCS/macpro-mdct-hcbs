@@ -156,4 +156,14 @@ export const CMIT_LIST: CMIT[] = [
     dataSource: DataSource.Survey,
     options: "",
   },
+  {
+    cmit: 1822,
+    name: "POM: People Choose Services",
+    uid: "1822-3",
+    measureSteward: "CQL",
+    measureSpecification: [MeasureSpecification.CQL],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Survey,
+    options: "",
+  },
 ];

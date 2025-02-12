@@ -61,6 +61,7 @@ export enum MeasureTemplateName {
   // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
+  "POM-3" = "POM-3",
 }
 
 export enum ReportStatus {
