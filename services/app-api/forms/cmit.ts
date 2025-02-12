@@ -153,7 +153,7 @@ export const CMIT_LIST: CMIT[] = [
   },
   {
     cmit: 1822,
-    name: "POM: POM: People Participate in the Life of the Community",
+    name: "POM: People Participate in the Life of the Community",
     uid: "1822-2",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
