@@ -40,12 +40,13 @@ export interface MeasureOptions {
   uid: string;
   required: boolean;
   stratified: boolean;
-  measureTemplate: MeasureTemplateName;
+  measureTemplate: MeasureTemplateName[];
 }
 
 export enum MeasureTemplateName {
   // required measures
   "LTSS-1" = "LTSS-1",
+  "FFS960" = "FFS960",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
@@ -168,6 +169,7 @@ export enum PageType {
   Standard = "standard",
   Modal = "modal",
   Measure = "measure",
+  MeasureResults = "measureResults",
 }
 
 export enum ElementType {
@@ -184,6 +186,7 @@ export enum ElementType {
   MeasureTable = "measureTable",
   QualityMeasureTable = "qualityMeasureTable",
   StatusTable = "statusTable",
+  MeasureFooter = "measureFooter",
 }
 
 export type PageElement =
@@ -199,7 +202,8 @@ export type PageElement =
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
-  | StatusTableTemplate;
+  | StatusTableTemplate
+  | MeasureFooterTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -271,6 +275,15 @@ export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   label: string;
   to: PageId;
+};
+
+export type MeasureFooterTemplate = {
+  type: ElementType.MeasureFooter;
+  prevTo: string;
+  nextTo?: string;
+  completeMeasure?: boolean;
+  completeSection?: boolean;
+  clear?: boolean;
 };
 
 export type ChoiceTemplate = {

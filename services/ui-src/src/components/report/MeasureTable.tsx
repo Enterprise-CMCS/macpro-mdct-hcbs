@@ -15,6 +15,7 @@ import {
   isMeasureTemplate,
   MeasurePageTemplate,
   MeasureTableTemplate,
+  PageType,
 } from "types";
 import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
@@ -28,9 +29,10 @@ export const MeasureTableElement = (props: PageElementProps) => {
 
   const selectedMeasures = measures.filter(
     (page) =>
-      (table.measureDisplay == "optional" && !page.required) ||
-      (table.measureDisplay == "required" && page.required) ||
-      (table.measureDisplay == "stratified" && page.stratified)
+      ((table.measureDisplay == "optional" && !page.required) ||
+        (table.measureDisplay == "required" && page.required) ||
+        (table.measureDisplay == "stratified" && page.stratified)) &&
+      page.type === PageType.Measure
   );
 
   const buildModal = (cmit: number | undefined) => {
@@ -89,7 +91,8 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <Th></Th>
           <Th>
             Measure Name <br />
-            CMIT Number
+            CMIT Number <br />
+            Status
           </Th>
         </Tr>
       </Thead>
