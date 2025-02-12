@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { get, useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
 import { checkDateCompleteness, parseCustomHtml } from "utils";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
@@ -31,8 +31,9 @@ export const DateField = (props: PageElementProps) => {
   };
 
   // prepare error message, hint, and classes
-  const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[key]?.message;
+  const formErrors = form?.formState?.errors;
+  const errorMessage: string | undefined = get(formErrors, key)?.message;
+
   const parsedHint =
     dateTextbox.helperText && parseCustomHtml(dateTextbox.helperText);
   const labelText = dateTextbox.label;

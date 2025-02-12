@@ -10,7 +10,7 @@ import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import { MeasureTableElement } from "./MeasureTable";
 import { QualityMeasureTableElement } from "./QualityMeasureTable";
 import { StatusTableElement } from "./StatusTable";
-import { TextField, DateField, RadioField } from "components";
+import { TextField, DateField, RadioField, TextAreaField } from "components";
 import { useStore } from "utils";
 
 interface Props {
@@ -30,6 +30,8 @@ export const Page = ({ elements }: Props) => {
         return paragraphElement;
       case ElementType.Textbox:
         return TextField;
+      case ElementType.TextAreaField:
+        return TextAreaField;
       case ElementType.Date:
         return DateField;
       case ElementType.Accordion:

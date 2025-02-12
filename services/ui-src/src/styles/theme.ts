@@ -15,8 +15,8 @@ export const svgFilters = {
 const theme = extendTheme({
   sizes: {
     appMax: "100vw",
-    basicPageWidth: "46rem",
-    reportPageWidth: "46rem",
+    basicPageWidth: "48rem",
+    reportPageWidth: "48rem",
     // font sizes: https://design.cms.gov/utilities/font-size/
     xs: "0.75rem", // 12px
     sm: "0.875rem", // 14px
@@ -197,6 +197,7 @@ const theme = extendTheme({
           },
         },
         sidebarToggle: {
+          position: "absolute",
           background: "palette.gray_lightest",
           borderRadius: "0px 10px 10px 0px",
           "img.left": {
@@ -205,6 +206,7 @@ const theme = extendTheme({
           "img.right": {
             transform: "rotate(270deg)",
           },
+          right: "-48px",
         },
         outline: () => ({
           ...theme.components.Button.variants.transparent,
@@ -289,6 +291,7 @@ const theme = extendTheme({
           },
         },
         return: {
+          color: "palette.primary",
           width: "fit-content",
           padding: "0",
           textDecoration: "none",
@@ -296,6 +299,7 @@ const theme = extendTheme({
             textDecoration: "underline",
           },
           _visited: {
+            // what color should visited link be?
             color: "palette.primary",
           },
           display: "flex",

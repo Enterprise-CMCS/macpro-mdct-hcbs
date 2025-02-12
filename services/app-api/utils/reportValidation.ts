@@ -43,6 +43,13 @@ const textboxTemplateSchema = object().shape({
   required: string().notRequired(),
 });
 
+const textAreaTemplateSchema = object().shape({
+  type: string().required(ElementType.Textbox),
+  label: string().required(),
+  helperText: string().notRequired(),
+  answer: string().notRequired(),
+});
+
 const dateTemplateSchema = object().shape({
   type: string().required(ElementType.Date),
   label: string().required(),
@@ -76,6 +83,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return paragraphTemplateSchema;
     case ElementType.Textbox:
       return textboxTemplateSchema;
+    case ElementType.TextAreaField:
+      return textAreaTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
     case ElementType.Accordion:
@@ -164,6 +173,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
 const measureOptionsArraySchema = array().of(
   object().shape({
     cmit: number().required(),
+    uid: string().required(),
     required: boolean().required(),
     stratified: boolean().required(),
     measureTemplate: mixed()
@@ -174,6 +184,7 @@ const measureOptionsArraySchema = array().of(
 
 const measureLookupSchema = object().shape({
   defaultMeasures: measureOptionsArraySchema,
+  pomMeasures: measureOptionsArraySchema,
   // TODO: Add option groups
 });
 

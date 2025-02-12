@@ -4,9 +4,9 @@ import { StateNames } from "../../../constants";
 import { isReportType, isStateAbbr, Report } from "types";
 import {
   PageTemplate,
-  InstructionsAccordion,
   DashboardTable,
   AddEditReportModal,
+  AccordionItem,
 } from "components";
 import {
   Box,
@@ -17,22 +17,20 @@ import {
   Text,
   Flex,
   useDisclosure,
+  Accordion,
 } from "@chakra-ui/react";
-import { parseCustomHtml, useStore } from "utils";
-import dashboardVerbiage from "verbiage/pages/dashboard";
-import accordion from "verbiage/pages/accordion";
+import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
-  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
+  const { userIsEndUser } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<Report[]>([]);
   const [selectedReport, setSelectedReport] = useState<Report | undefined>(
     undefined
   );
-  const { intro, body } = dashboardVerbiage;
   const fullStateName = StateNames[state as keyof typeof StateNames];
 
   useEffect(() => {
@@ -74,17 +72,23 @@ export const DashboardPage = () => {
 
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" variant="h1">
-          {fullStateName} {intro.header}
+          {fullStateName} Quality Measure Set Report
         </Heading>
-        <InstructionsAccordion
-          verbiage={
-            userIsAdmin
-              ? accordion.adminDashboard
-              : accordion.stateUserDashboard
-          }
+        <Accordion
+          allowToggle={true}
+          allowMultiple={true}
+          sx={sx.accordion}
           defaultIndex={0} // sets the accordion to open by default
-        />
-        {parseCustomHtml(intro.body)}
+        >
+          <AccordionItem label="Instructions" sx={sx.accordionItem}>
+            <Box sx={sx.accordionPanel}>
+              <p>
+                [Optional - Include instructions that would support the state in
+                the completion of the report]
+              </p>
+            </Box>
+          </AccordionItem>
+        </Accordion>
       </Box>
       <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
         {!isLoading && (
@@ -94,11 +98,16 @@ export const DashboardPage = () => {
             readOnlyUser={!userIsEndUser}
           />
         )}
-        {!reports?.length && <Text variant="tableEmpty">{body.empty}</Text>}
+        {!reports?.length && (
+          <Text variant="tableEmpty">
+            Keep track of your Quality Measure Set Reports, once you start a
+            report you can access it here.
+          </Text>
+        )}
         {userIsEndUser && (
           <Flex justifyContent="center">
             <Button onClick={() => openAddEditReportModal()} type="submit">
-              {body.link.callToActionText}
+              Start Quality Measure Set Report
             </Button>
           </Flex>
         )}
@@ -149,6 +158,29 @@ const sx = {
       "&:after": {
         borderLeftColor: "palette.black",
       },
+    },
+  },
+  accordion: {
+    marginTop: "2rem",
+    color: "palette.base",
+  },
+  accordionItem: {
+    marginBottom: "1.5rem",
+    borderStyle: "none",
+  },
+  accordionPanel: {
+    ".mobile &": {
+      paddingLeft: "1rem",
+    },
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+    },
+    header: {
+      marginBottom: "1.5rem",
+    },
+    p: {
+      marginBottom: "1.5rem",
     },
   },
 };

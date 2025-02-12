@@ -44,22 +44,19 @@ describe("AdminDashSelector Component", () => {
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
   });
 
-  const mockVerbiage = {
-    header: "Select a State and Report",
-    buttonLabel: "Submit",
-  };
-
   test("renders correctly with header and button label", () => {
-    render(<AdminDashSelector verbiage={mockVerbiage} />);
+    render(<AdminDashSelector />);
 
-    expect(screen.getByText(mockVerbiage.header)).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: mockVerbiage.buttonLabel })
+      screen.getByText("View State/Territory Reports")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Go to Report Dashboard" })
     ).toBeInTheDocument();
   });
 
   test("allows user to select a state and report", async () => {
-    render(<AdminDashSelector verbiage={mockVerbiage} />);
+    render(<AdminDashSelector />);
 
     // Select a state
     const dropdown = screen.getByLabelText(
@@ -77,7 +74,7 @@ describe("AdminDashSelector Component", () => {
   });
 
   test("navigates to the correct report URL on form submission", async () => {
-    render(<AdminDashSelector verbiage={mockVerbiage} />);
+    render(<AdminDashSelector />);
 
     // Select a state and report
     const dropdown = screen.getByLabelText("Select state or territory:");
@@ -87,7 +84,7 @@ describe("AdminDashSelector Component", () => {
 
     // Submit the form
     const submitButton = screen.getByRole("button", {
-      name: mockVerbiage.buttonLabel,
+      name: "Go to Report Dashboard",
     });
     await userEvent.click(submitButton);
 
@@ -95,10 +92,10 @@ describe("AdminDashSelector Component", () => {
     expect(mockNavigate).toHaveBeenCalledWith("report/QMS/CA");
   });
   test("submit button is disabled when no state or report is selected", async () => {
-    render(<AdminDashSelector verbiage={mockVerbiage} />);
+    render(<AdminDashSelector />);
 
     const submitButton = screen.getByRole("button", {
-      name: mockVerbiage.buttonLabel,
+      name: "Go to Report Dashboard",
     });
     expect(submitButton).toBeDisabled();
 

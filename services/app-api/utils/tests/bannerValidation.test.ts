@@ -7,6 +7,7 @@ const validObject = {
   link: "https://www.google.com",
   startDate: 11022933,
   endDate: 103444405,
+  isActive: false,
 };
 
 const invalidObject = {
