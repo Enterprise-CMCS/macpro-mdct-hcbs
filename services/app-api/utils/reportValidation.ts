@@ -184,6 +184,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
 const measureOptionsArraySchema = array().of(
   object().shape({
     cmit: number().required(),
+    uid: string().required(),
     required: boolean().required(),
     stratified: boolean().required(),
     measureTemplate: array().required(),
@@ -192,6 +193,7 @@ const measureOptionsArraySchema = array().of(
 
 const measureLookupSchema = object().shape({
   defaultMeasures: measureOptionsArraySchema,
+  pomMeasures: measureOptionsArraySchema,
   // TODO: Add option groups
 });
 

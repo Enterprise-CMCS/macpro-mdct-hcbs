@@ -240,15 +240,18 @@ export enum DataSource {
   Administrative,
   Hybrid,
   RecordReview,
+  Survey,
 }
 
 export enum MeasureSteward {
   CMS,
+  CQL,
 }
 
 export enum MeasureSpecification {
   CMS = "CMS",
   HEDIS = "HEDIS",
+  CQL = "CQL",
 }
 
 export interface ReportOptions {
@@ -275,6 +278,7 @@ export interface CMIT {
 
 export interface MeasureOptions {
   cmit: number;
+  uid: string;
   required: boolean;
   stratified: boolean;
   measureTemplate: [MeasureTemplateName];
@@ -286,6 +290,7 @@ export enum MeasureTemplateName {
   "LTSS-6",
   "LTSS-7",
   "LTSS-8",
+  "POM-1",
 }
 
 export interface FormComponent {
