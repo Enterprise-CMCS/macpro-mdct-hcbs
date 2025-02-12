@@ -37,6 +37,7 @@ export interface CMIT {
 
 export interface MeasureOptions {
   cmit: number;
+  uid: string;
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
@@ -59,6 +60,7 @@ export enum MeasureTemplateName {
   "MLTSS" = "MLTSS",
   // pom measures
   "POM-1" = "POM-1",
+  "POM-2" = "POM-2",
 }
 
 export enum ReportStatus {
@@ -122,6 +124,7 @@ export type ReportTemplate = ReportOptions & {
   pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
+    pomMeasures: MeasureOptions[];
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };

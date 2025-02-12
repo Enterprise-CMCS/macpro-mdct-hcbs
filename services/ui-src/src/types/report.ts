@@ -234,6 +234,7 @@ export enum DataSource {
 
 export enum MeasureSteward {
   CMS,
+  CQL,
 }
 
 export enum MeasureSpecification {
@@ -266,6 +267,7 @@ export interface CMIT {
 
 export interface MeasureOptions {
   cmit: number;
+  uid: string;
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
@@ -277,6 +279,8 @@ export enum MeasureTemplateName {
   "LTSS-6",
   "LTSS-7",
   "LTSS-8",
+  "POM-1",
+  "POM-2",
 }
 
 export interface FormComponent {
