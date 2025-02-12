@@ -22,6 +22,7 @@ export enum DataSource {
 
 export enum MeasureSteward {
   CMS = "CMS",
+  CQL = "CQL",
 }
 
 export enum MeasureSpecification {

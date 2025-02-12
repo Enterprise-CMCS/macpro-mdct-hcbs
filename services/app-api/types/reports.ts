@@ -37,6 +37,7 @@ export interface CMIT {
 
 export interface MeasureOptions {
   cmit: number;
+  uid: string;
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
@@ -122,6 +123,7 @@ export type ReportTemplate = ReportOptions & {
   pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
+    pomMeasures: MeasureOptions[];
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
