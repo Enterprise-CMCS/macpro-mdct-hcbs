@@ -188,6 +188,7 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
+  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   QualityMeasureTable = "qualityMeasureTable",

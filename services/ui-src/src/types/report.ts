@@ -127,6 +127,7 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
+  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   QualityMeasureTable = "qualityMeasureTable",
@@ -218,7 +219,7 @@ export type StatusTableTemplate = {
 };
 
 export type RadioTemplate = {
-  type: ElementType.Radio;
+  type: ElementType.ReportingRadio;
   id: string;
   label: string;
   value: ChoiceTemplate[];

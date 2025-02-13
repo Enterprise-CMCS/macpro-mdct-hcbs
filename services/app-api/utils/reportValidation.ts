@@ -93,6 +93,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return resultRowButtonTemplateSchema;
     case ElementType.Radio:
       return radioTemplateSchema;
+    case ElementType.ReportingRadio:
+      return reportingRadioTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
@@ -110,7 +112,22 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
 
 const radioTemplateSchema = object().shape({
   type: string().required(ElementType.Radio),
-  formKey: string().notRequired(), // TODO: may be able to remove in future
+  label: string().required(),
+  helperText: string().notRequired(),
+  value: array().of(
+    object().shape({
+      label: string().required(),
+      value: string().required(),
+      checked: boolean().notRequired(),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+    })
+  ),
+  answer: string().notRequired(),
+  required: string().notRequired(),
+});
+
+const reportingRadioTemplateSchema = object().shape({
+  type: string().required(ElementType.ReportingRadio),
   label: string().required(),
   helperText: string().notRequired(),
   value: array().of(

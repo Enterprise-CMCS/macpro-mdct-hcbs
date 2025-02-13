@@ -20,7 +20,7 @@ export const pomMeasures: MeasureOptions[] = [
     uid: "1822-2",
     required: true,
     stratified: false,
-    measureTemplate: MeasureTemplateName["POM-2"],
+    measureTemplate: [MeasureTemplateName["POM-2"]],
   },
 ];
 
@@ -55,8 +55,23 @@ export const pomMeasureTemplates = {
         text: "Measure Details",
       },
       {
-        type: ElementType.Radio,
+        type: ElementType.ReportingRadio,
+        label: "Is the state reporting on this measure?",
         id: "measure-reporting-radio",
+        value: [
+          {
+            label: "Yes, the state is reporting on this measure",
+            value: "yes",
+          },
+          {
+            label: "No, CMS is reporting this measure on the state's behalf",
+            value: "no",
+          },
+        ],
+      },
+      {
+        type: ElementType.Radio,
+        id: "measure-audited-radio",
         label: "Did you follow the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -75,7 +90,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-reporting-radio",
+        id: "measure-audited-radio",
         label: "Were the reported measure results audited or validated?",
         value: [
           { label: "No", value: "no" },
