@@ -11,8 +11,9 @@ import {
 import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { CMIT_LIST } from "cmit";
-import { RadioTemplate, MeasurePageTemplate } from "types";
+import { MeasurePageTemplate } from "types";
 import { useParams, useNavigate } from "react-router-dom";
+import { useWatch } from "react-hook-form";
 
 export const QualityMeasureTableElement = () => {
   const { report, pageMap, currentPageId } = useStore();
@@ -23,22 +24,23 @@ export const QualityMeasureTableElement = () => {
   ] as MeasurePageTemplate;
 
   const cmitInfo = CMIT_LIST.find((item) => item.uid === currentPage?.cmitId);
-
-  const deliveryMethodRadio = currentPage?.elements?.find(
+  const deliveryMethodIndex = currentPage?.elements?.findIndex(
     (element) => element.id === "delivery-method-radio"
-  ) as RadioTemplate;
-
+  );
+  const deliveryMethods = useWatch({
+    name: `elements.${deliveryMethodIndex}.answer`,
+  }); // the formkey of the radio button
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
   const handleEditClick = (deliverySystem: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${currentPage.cmitId}`; // TODO: build path
+    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${currentPage.cmitId}`;
     navigate(path);
   };
 
   // Build Rows
   const rows = cmitInfo?.deliverySystem.map((system, index) => {
-    const selections = deliveryMethodRadio?.answer ?? "";
+    const selections = deliveryMethods ?? "";
     const deliverySystemIsSelected = selections.split(",").includes(system);
     return (
       <Tr key={index}>

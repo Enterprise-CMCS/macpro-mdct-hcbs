@@ -22,7 +22,7 @@ import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setMeasure, setModalComponent, setModalOpen } = useStore();
+  const { report, setModalComponent, setModalOpen } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -47,8 +47,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  const handleEditClick = (measureId: string, cmit: number | undefined) => {
-    setMeasure(cmit!);
+  const handleEditClick = (measureId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
     navigate(path);
   };
