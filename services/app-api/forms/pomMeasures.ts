@@ -20,14 +20,14 @@ export const pomMeasures: MeasureOptions[] = [
     uid: "1822-2",
     required: true,
     stratified: false,
-    measureTemplate: MeasureTemplateName["POM-2"],
+    measureTemplate: [MeasureTemplateName["POM-2"]],
   },
   {
     cmit: 1822,
     uid: "1822-3",
     required: true,
     stratified: false,
-    measureTemplate: MeasureTemplateName["POM-3"],
+    measureTemplate: [MeasureTemplateName["POM-3"]],
   },
 ];
 
