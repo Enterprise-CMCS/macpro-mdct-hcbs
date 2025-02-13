@@ -29,6 +29,20 @@ export const pomMeasures: MeasureOptions[] = [
     stratified: false,
     measureTemplate: [MeasureTemplateName["POM-3"]],
   },
+  {
+    cmit: 1822,
+    uid: "1822-4",
+    required: true,
+    stratified: false,
+    measureTemplate: [MeasureTemplateName["POM-4"]],
+  },
+  {
+    cmit: 1822,
+    uid: "1822-5",
+    required: true,
+    stratified: false,
+    measureTemplate: [MeasureTemplateName["POM-5"]],
+  },
 ];
 
 export const pomMeasureTemplates = {
@@ -120,7 +134,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.QualityMeasureTable,
-        measureDisplay: "quality",
+        measureDisplay: "quality" as const,
       },
     ],
   },
@@ -212,7 +226,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.QualityMeasureTable,
-        measureDisplay: "quality",
+        measureDisplay: "quality" as const,
       },
     ],
   },
@@ -304,7 +318,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.QualityMeasureTable,
-        measureDisplay: "quality",
+        measureDisplay: "quality" as const,
       },
     ],
   },

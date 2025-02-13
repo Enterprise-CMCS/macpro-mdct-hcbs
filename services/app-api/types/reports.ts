@@ -63,6 +63,8 @@ export enum MeasureTemplateName {
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
   "POM-3" = "POM-3",
+  "POM-4" = "POM-4",
+  "POM-5" = "POM-5",
 }
 
 export enum ReportStatus {
