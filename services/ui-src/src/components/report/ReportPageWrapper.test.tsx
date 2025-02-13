@@ -31,10 +31,12 @@ const testReport: Report = {
       elements: [
         {
           type: ElementType.Header,
+          id: "",
           text: "General Information",
         },
         {
           type: ElementType.Textbox,
+          id: "",
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
@@ -49,6 +51,7 @@ const testReport: Report = {
       elements: [
         {
           type: ElementType.Header,
+          id: "",
           text: "Required Measure Results",
         },
       ],
