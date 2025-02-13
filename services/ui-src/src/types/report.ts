@@ -131,6 +131,7 @@ export enum ElementType {
   MeasureTable = "measureTable",
   QualityMeasureTable = "qualityMeasureTable",
   StatusTable = "statusTable",
+  MeasureFooter = "measureFooter",
 }
 
 export type PageElement =
@@ -145,7 +146,8 @@ export type PageElement =
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
-  | StatusTableTemplate;
+  | StatusTableTemplate
+  | MeasureFooterTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -177,6 +179,7 @@ export type TextboxTemplate = {
 
 export type TextAreaBoxTemplate = {
   type: ElementType.TextAreaField;
+  id: string;
   label: string;
   helperText?: string;
   answer?: string;
@@ -229,6 +232,16 @@ export type ButtonLinkTemplate = {
   id: string;
   label: string;
   to: PageId;
+};
+
+export type MeasureFooterTemplate = {
+  type: ElementType.MeasureFooter;
+  id: string;
+  prevTo: string;
+  nextTo?: string;
+  completeMeasure?: boolean;
+  completeSection?: boolean;
+  clear?: boolean;
 };
 
 export type ChoiceTemplate = {
@@ -289,7 +302,7 @@ export interface MeasureOptions {
   uid: string;
   required: boolean;
   stratified: boolean;
-  measureTemplate: MeasureTemplateName;
+  measureTemplate: [MeasureTemplateName];
 }
 
 export enum MeasureTemplateName {
@@ -299,6 +312,7 @@ export enum MeasureTemplateName {
   "LTSS-7",
   "LTSS-8",
   "POM-1",
+  "POM-2",
 }
 
 export interface FormComponent {

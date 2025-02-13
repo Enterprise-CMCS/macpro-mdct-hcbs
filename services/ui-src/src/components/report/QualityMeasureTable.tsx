@@ -11,7 +11,8 @@ import {
 import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { CMIT_LIST } from "cmit";
-import { RadioTemplate } from "types";
+import { RadioTemplate, CMIT } from "types";
+import { useParams, useNavigate } from "react-router-dom";
 
 export const QualityMeasureTableElement = () => {
   const { cmit, report, pageMap, currentPageId } = useStore();
@@ -23,6 +24,14 @@ export const QualityMeasureTableElement = () => {
   const deliveryMethodRadio = currentPage?.elements?.find(
     (element) => element.id === "delivery-method-radio"
   ) as RadioTemplate;
+
+  const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
+
+  const handleEditClick = (deliverySystem: string, cmitInfo: CMIT) => {
+    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${cmitInfo.cmit}`;
+    navigate(path);
+  };
 
   // Build Rows
   const rows = cmitInfo?.deliverySystem.map((system, index) => {
@@ -42,7 +51,7 @@ export const QualityMeasureTableElement = () => {
           <Button
             variant="outline"
             disabled={!deliverySystemIsSelected}
-            onClick={() => {}}
+            onClick={() => handleEditClick(system, cmitInfo)}
           >
             Edit
           </Button>
