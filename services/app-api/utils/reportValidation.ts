@@ -178,7 +178,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   required: boolean().notRequired(),
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
-  substitutable: boolean().notRequired(),
+  substitutable: string().notRequired(),
 });
 
 const measureOptionsArraySchema = array().of(

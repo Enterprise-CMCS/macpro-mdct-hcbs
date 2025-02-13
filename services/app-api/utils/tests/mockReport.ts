@@ -45,7 +45,7 @@ export const invalidMeasureTemplatesReport = {
       id: "LTSS-1",
       title: "LTSS-1: Comprehensive Assessment and Update",
       //   type: PageType.Measure,
-      substitutable: true,
+      substitutable: MeasureTemplateName["FASI-1"],
       sidebar: false,
       elements: [
         {
@@ -141,7 +141,7 @@ export const invalidRadioCheckedChildrenReport = {
       id: "LTSS-1",
       title: "LTSS-1: Comprehensive Assessment and Update",
       type: PageType.Measure,
-      substitutable: true,
+      substitutable: MeasureTemplateName["FASI-2"],
       sidebar: false,
       elements: [
         {

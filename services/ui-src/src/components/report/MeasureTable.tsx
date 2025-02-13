@@ -35,11 +35,15 @@ export const MeasureTableElement = (props: PageElementProps) => {
       page.type === PageType.Measure
   );
 
+  const onSubstitute = (measure: string) => {
+    console.log("selection", measure);
+  };
+
   const buildModal = (cmit: number | undefined) => {
     const modal = MeasureReplacementModal(
       cmit,
       () => setModalOpen(false), // Close Action
-      () => setModalOpen(false) // Submit
+      onSubstitute // Submit
     ); // This will need the whole measure eventually
     setModalComponent(modal);
   };

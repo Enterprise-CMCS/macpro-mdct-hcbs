@@ -104,7 +104,7 @@ export const defaultMeasureTemplates = {
     id: "LTSS-1",
     title: "LTSS-1: Comprehensive Assessment and Update",
     type: PageType.Measure,
-    substitutable: true,
+    substitutable: MeasureTemplateName["FASI-1"],
     sidebar: false,
     elements: [
       {
@@ -206,7 +206,6 @@ export const defaultMeasureTemplates = {
     id: "FFS",
     title: "LTSS-1: FFS LTSS Measure Results",
     type: PageType.MeasureResults,
-    substitutable: true,
     sidebar: false,
     elements: [
       {
@@ -217,6 +216,16 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Header,
         text: "Fee-For-Service Measure Results",
+      },
+      {
+        type: ElementType.Accordion,
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
+      },
+      {
+        type: ElementType.SubHeader,
+        text: "FSS LTSS Measure Details",
       },
       {
         type: ElementType.TextAreaField,
@@ -236,7 +245,7 @@ export const defaultMeasureTemplates = {
     title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
     type: PageType.Measure,
     sidebar: false,
-    substitutable: true,
+    substitutable: MeasureTemplateName["FASI-2"],
     elements: [
       {
         type: ElementType.ButtonLink,
@@ -1126,7 +1135,7 @@ export const defaultMeasureTemplates = {
   [MeasureTemplateName["MLTSS"]]: {
     id: "MLTSS",
     title: "MLTSS: Plan All-Cause Readmission",
-    type: PageType.Measure,
+    type: PageType.MeasureResults,
     sidebar: false,
     elements: [
       {
