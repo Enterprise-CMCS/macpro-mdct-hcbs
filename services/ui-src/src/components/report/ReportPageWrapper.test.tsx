@@ -115,6 +115,18 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["POM-4"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["POM-5"]]: {
+      id: "",
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
   } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
 

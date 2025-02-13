@@ -231,6 +231,8 @@ export const mockReportStore: HcbsReportState = {
       [MeasureTemplateName["POM-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-2"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-3"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-4"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-5"]]: mockMeasureTemplate,
     },
   },
   setReport: () => {},
