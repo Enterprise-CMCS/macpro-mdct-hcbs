@@ -73,10 +73,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
 
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button
-            variant="outline"
-            onClick={() => handleEditClick(measure.id, measure.cmit)}
-          >
+          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
             Edit
           </Button>
         </Td>
