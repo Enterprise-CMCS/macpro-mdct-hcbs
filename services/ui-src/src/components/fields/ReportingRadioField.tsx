@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { FieldError, useFormContext } from "react-hook-form";
-import { ChoiceTemplate, RadioTemplate } from "types";
+import { ReportingRadioTemplate } from "types";
 import { parseCustomHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { formatChoices } from "./RadioField";
+import { ChoiceProps } from "@cmsgov/design-system/dist/types/ChoiceList/ChoiceList";
 
 export const ReportingRadioField = (props: PageElementProps) => {
-  const radio = props.element as RadioTemplate;
+  const radio = props.element as ReportingRadioTemplate;
   const { clearMeasure, currentPageId } = useStore();
 
-  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
-    formatChoices(radio.value, radio.answer) ?? []
+  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
+    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
   );
 
   // get form context and register field

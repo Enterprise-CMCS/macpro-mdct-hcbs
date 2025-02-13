@@ -88,6 +88,7 @@ export interface Report extends ReportTemplate {
 
 export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
+  cmitId: string;
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
@@ -206,6 +207,7 @@ export type PageElement =
   | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
@@ -278,6 +280,17 @@ export const isResultRowButton = (
 
 export type RadioTemplate = {
   type: ElementType.Radio;
+  id: string;
+  formKey?: string;
+  label: string;
+  helperText?: string;
+  value: ChoiceTemplate[];
+  answer?: string;
+  required?: string; //takes error message to display if not provided
+};
+
+export type ReportingRadioTemplate = {
+  type: ElementType.ReportingRadio;
   id: string;
   formKey?: string;
   label: string;

@@ -86,6 +86,7 @@ export type FormPageTemplate = {
 
 export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
+  cmitId: string;
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
@@ -144,6 +145,7 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
@@ -219,6 +221,16 @@ export type StatusTableTemplate = {
 };
 
 export type RadioTemplate = {
+  type: ElementType.Radio;
+  id: string;
+  label: string;
+  value: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string;
+  required?: string; //takes error message to display if not provided
+};
+
+export type ReportingRadioTemplate = {
   type: ElementType.ReportingRadio;
   id: string;
   label: string;

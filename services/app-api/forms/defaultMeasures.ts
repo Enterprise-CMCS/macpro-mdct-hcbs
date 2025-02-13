@@ -469,6 +469,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
+        id: "measure-cms-calculate",
         label: "Do you want CMS to calculate this measure on your behalf?",
         value: [
           { label: "No", value: "no" },
@@ -591,6 +592,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
+        id: "measure-cms-calculate",
         label: "Do you want CMS to calculate this measure on your behalf?",
         value: [
           { label: "No", value: "no" },
@@ -713,6 +715,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
+        id: "measure-cms-calculate",
         label: "Do you want CMS to calculate this measure on your behalf?",
         value: [
           { label: "No", value: "no" },
@@ -758,6 +761,7 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Optional Measures Dashboard",
         to: "optional-measure-result",
       },
@@ -815,6 +819,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
+        id: "measure-following-tech-specs",
         label: "Did you follow from the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -867,6 +872,7 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Optional Measures Dashboard",
         to: "optional-measure-result",
       },
@@ -924,6 +930,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
+        id: "measure-following-tech-specs",
         label: "Did you follow from the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -977,6 +984,7 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Optional Measures Dashboard",
         to: "optional-measure-result",
       },
@@ -1034,6 +1042,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
+        id: "measure-following-tech-specs",
         label: "Did you follow from the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -1070,6 +1079,7 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Optional Measures Dashboard",
         to: "optional-measure-result",
       },
@@ -1191,6 +1201,7 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Optional Measures Dashboard",
         to: "optional-measure-result",
       },
@@ -1312,6 +1323,7 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Optional Measures Dashboard",
         to: "optional-measure-result",
       },
@@ -1406,6 +1418,7 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Optional Measures Dashboard",
         to: "optional-measure-result",
       },

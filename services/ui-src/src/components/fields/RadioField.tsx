@@ -6,12 +6,13 @@ import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
+import { ChoiceProps } from "@cmsgov/design-system/dist/types/ChoiceList/ChoiceList";
 
 export const formatChoices = (
   parentKey: string,
   choices: ChoiceTemplate[],
   answer?: string
-) => {
+): ChoiceProps[] => {
   return choices.map((choice, choiceIndex) => {
     if (!choice?.checkedChildren) {
       return {
@@ -51,7 +52,7 @@ export const RadioField = (props: PageElementProps) => {
     form.register(key, options);
   }, []);
 
-  const [displayValue, setDisplayValue] = useState<ChoiceTemplate[]>(
+  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
     formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
   );
 
