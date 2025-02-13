@@ -19,7 +19,7 @@ export const performClearMeasure = (
 
   // Clean measure
   page.elements?.forEach((element) => {
-    if (!ignoreList.includes(element.id)) {
+    if (ignoreList.includes(element.id)) {
       return;
     }
     performResetPageElement(element);
@@ -61,6 +61,7 @@ const performResetPageElement = (element: PageElement) => {
   }
   if (element.type == ElementType.Radio) {
     for (const choice of element.value) {
+      if (!choice.checkedChildren) continue;
       for (const childElement of choice.checkedChildren) {
         performResetPageElement(childElement);
       }
