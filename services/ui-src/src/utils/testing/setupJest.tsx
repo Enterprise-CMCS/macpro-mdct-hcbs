@@ -199,7 +199,6 @@ const mockMeasureTemplate: MeasurePageTemplate = {
 
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
-  cmit: 960,
   report: {
     id: "mock-id",
     type: ReportType.QMS,

@@ -53,7 +53,7 @@ export const QualityMeasureTableElement = () => {
           <Button
             variant="outline"
             disabled={!deliverySystemIsSelected}
-            onClick={() => handleEditClick(system, cmitInfo)}
+            onClick={() => handleEditClick(system)}
           >
             Edit
           </Button>
