@@ -18,7 +18,7 @@ import { useWatch } from "react-hook-form";
 export const QualityMeasureTableElement = () => {
   const { report, pageMap, currentPageId } = useStore();
 
-  if (!currentPageId) return;
+  if (!currentPageId) return null;
   const currentPage = report?.pages[
     pageMap?.get(currentPageId)!
   ] as MeasurePageTemplate;

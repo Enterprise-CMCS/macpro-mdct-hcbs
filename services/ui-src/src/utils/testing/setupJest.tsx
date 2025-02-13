@@ -14,6 +14,7 @@ import {
   PageType,
   MeasureTemplateName,
   MeasurePageTemplate,
+  MeasureStatus,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -190,6 +191,8 @@ export const mockAdminUserStore: HcbsUserState = {
 
 const mockMeasureTemplate: MeasurePageTemplate = {
   id: "mock-template-id",
+  cmitId: "960",
+  status: MeasureStatus.IN_PROGRESS,
   title: "mock-title",
   type: PageType.Measure,
   required: true,
@@ -199,6 +202,8 @@ const mockMeasureTemplate: MeasurePageTemplate = {
 
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
+  currentPageId: "mock-template-id",
+  pageMap: new Map([["mock-template-id", 0]]),
   report: {
     id: "mock-id",
     type: ReportType.QMS,
@@ -236,7 +241,8 @@ export const mockReportStore: HcbsReportState = {
   setModalOpen: () => {},
   setModalComponent: () => {},
   setAnswers: () => {},
-  setMeasure: () => {},
+  resetMeasure: () => {},
+  clearMeasure: () => {},
 };
 
 // BOUND STORE
