@@ -295,6 +295,8 @@ export enum MeasureTemplateName {
   "POM-3",
   "POM-4",
   "POM-5",
+  "POM-6",
+  "POM-7",
 }
 
 export interface FormComponent {
