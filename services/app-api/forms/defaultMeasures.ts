@@ -207,6 +207,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.MeasureFooter,
+        id: "measure-footer",
         prevTo: "req-measure-result",
         completeMeasure: true,
         clear: true,
@@ -222,21 +223,25 @@ export const defaultMeasureTemplates = {
     elements: [
       {
         type: ElementType.ButtonLink,
+        id: "return-button",
         label: "Return to Required Measures Dashboard",
         to: "LTSS-1960",
       },
       {
         type: ElementType.Header,
+        id: "measure-header",
         text: "Fee-For-Service Measure Results",
       },
       {
         type: ElementType.TextAreaField,
+        id: "measure-programs-text",
         label: "Which Medicaid HCBS programs are being reported? (optional)",
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
         type: ElementType.MeasureFooter,
+        id: "measure-footer",
         prevTo: "LTSS-1960",
         completeSection: true,
       },
