@@ -15,7 +15,6 @@ import {
   isMeasureTemplate,
   MeasurePageTemplate,
   MeasureTableTemplate,
-  MeasureTemplateName,
   PageType,
 } from "types";
 import { putReport, useStore } from "utils";
