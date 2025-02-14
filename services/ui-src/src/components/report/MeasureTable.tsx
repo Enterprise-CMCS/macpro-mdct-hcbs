@@ -17,7 +17,7 @@ import {
   MeasureTableTemplate,
   PageType,
 } from "types";
-import { useStore } from "utils";
+import { putReport, useStore } from "utils";
 import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
@@ -35,13 +35,28 @@ export const MeasureTableElement = (props: PageElementProps) => {
       page.type === PageType.Measure
   );
 
-  const onSubstitute = (measure: string) => {
-    console.log("selection", measure);
+  const onSubstitute = async (selectMeasure: MeasurePageTemplate) => {
+    if (selectMeasure) {
+      const substitute = selectMeasure.substitutable?.toString();
+      const measure = measures.find((measure) =>
+        measure.title.includes(substitute!)
+      );
+      if (report && measure) {
+        measure.required = true;
+
+        selectMeasure.required = false;
+        selectMeasure.substitutable = undefined;
+
+        await putReport(report);
+      }
+    }
+
+    setModalOpen(false);
   };
 
-  const buildModal = (cmit: number | undefined) => {
+  const buildModal = (measure: MeasurePageTemplate) => {
     const modal = MeasureReplacementModal(
-      cmit,
+      measure,
       () => setModalOpen(false), // Close Action
       onSubstitute // Submit
     ); // This will need the whole measure eventually
@@ -70,9 +85,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
         </Td>
         <Td>
           {measure.substitutable ? (
-            <Link onClick={() => buildModal(measure.cmit)}>
-              Substitute measure
-            </Link>
+            <Link onClick={() => buildModal(measure)}>Substitute measure</Link>
           ) : null}
         </Td>
 

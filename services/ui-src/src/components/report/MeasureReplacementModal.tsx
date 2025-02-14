@@ -1,31 +1,21 @@
 import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
 import React from "react";
 import { ChoiceList } from "@cmsgov/design-system";
-
-const choices = [
-  {
-    label: "Yes",
-    value: "yes",
-  },
-  {
-    label: "No",
-    value: "no",
-  },
-];
+import { MeasurePageTemplate } from "types";
 
 export const MeasureReplacementModal = (
-  cmit: number | undefined,
+  measure: MeasurePageTemplate,
   onClose: Function,
   onSubmit: Function
 ): React.ReactFragment => {
+  let selectMeasure: MeasurePageTemplate | undefined;
+
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    console.log(name, value);
+    selectMeasure = event.target.value === "0" ? measure : undefined;
   };
 
-  const measureCurr = "FASI-1";
-  const measureSub = "LTSS-1";
-  const label = `Do you want to substitute ${measureCurr} for ${measureSub}`
+  const name = measure.title.split(":")[0];
+  const label = `Do you want to substitute ${name} for ${measure.substitutable}`;
 
   return (
     <React.Fragment>
@@ -35,12 +25,25 @@ export const MeasureReplacementModal = (
           name={"subsitute"}
           type={"radio"}
           label={label}
-          choices={choices}
+          choices={[
+            {
+              label: "Yes",
+              value: 0,
+            },
+            {
+              label: "No",
+              value: 1,
+            },
+          ]}
           onChange={onChangeHandler}
         />
       </ModalBody>
       <ModalFooter gap="4">
-        <Button colorScheme="blue" mr={3} onClick={() => onSubmit(false)}>
+        <Button
+          colorScheme="blue"
+          mr={3}
+          onClick={() => onSubmit(selectMeasure)}
+        >
           Substitute Measure
         </Button>
         <Button variant="link" onClick={() => onClose(false)}>
