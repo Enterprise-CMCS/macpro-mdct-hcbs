@@ -193,7 +193,7 @@ const mockMeasureTemplate: MeasurePageTemplate = {
   title: "mock-title",
   type: PageType.Measure,
   required: true,
-  substitutable: MeasureTemplateName["LTSS-2"],
+  substitutable: "LTSS-2",
   elements: [],
 };
 
