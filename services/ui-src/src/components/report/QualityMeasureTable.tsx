@@ -11,16 +11,26 @@ import {
 import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { CMIT_LIST } from "cmit";
-import { useFormContext } from "react-hook-form";
+import { useWatch } from "react-hook-form";
+import { useParams, useNavigate } from "react-router-dom";
+import { CMIT } from "types";
 
 export const QualityMeasureTableElement = () => {
   const { cmit } = useStore();
   const cmitInfo = CMIT_LIST.find((item) => item.cmit === cmit);
-  const form = useFormContext();
+  const deliveryMethods = useWatch({ name: "delivery-method-radio" });
+
+  const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
+
+  const handleEditClick = (deliverySystem: string, cmitInfo: CMIT) => {
+    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${cmitInfo.cmit}`;
+    navigate(path);
+  };
 
   // Build Rows
   const rows = cmitInfo?.deliverySystem.map((system, index) => {
-    const selections = form.getValues("delivery-method-radio")?.answer ?? "";
+    const selections = deliveryMethods?.answer ?? "";
     const deliverySystemIsSelected = selections.split(",").includes(system);
 
     return (
@@ -36,7 +46,7 @@ export const QualityMeasureTableElement = () => {
           <Button
             variant="outline"
             disabled={!deliverySystemIsSelected}
-            onClick={() => {}}
+            onClick={() => handleEditClick(system, cmitInfo)}
           >
             Edit
           </Button>
