@@ -39,7 +39,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
     if (selectMeasure) {
       const substitute = selectMeasure.substitutable?.toString();
       const measure = measures.find((measure) =>
-        measure.title.includes(substitute!)
+        measure.id.includes(substitute!)
       );
       if (report && measure) {
         measure.required = true;

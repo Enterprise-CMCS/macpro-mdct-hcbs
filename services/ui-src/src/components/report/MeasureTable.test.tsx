@@ -1,19 +1,34 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MeasureTableElement } from "./MeasureTable";
-import { mockUseStore } from "utils/testing/setupJest";
+import { mockMeasureTemplate, mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
-import { ElementType, PageElement } from "types";
+import { ElementType, MeasurePageTemplate, PageElement } from "types";
 import { MemoryRouter } from "react-router-dom";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockUseStore);
 
+const mockPut = jest.fn();
+jest.mock("utils/api/requestMethods/report", () => ({
+  putReport: () => mockPut(),
+}));
+
 const mockedMeasureTableElement = {
   type: ElementType.MeasureTable,
   measureDisplay: "required",
 };
+
+jest.mock("./MeasureReplacementModal", () => ({
+  MeasureReplacementModal: (
+    _measure: MeasurePageTemplate,
+    _onClose: Function,
+    onSubmit: Function
+  ) => {
+    onSubmit(mockMeasureTemplate);
+  },
+}));
 
 const MeasureTableComponent = (
   <MemoryRouter>
@@ -35,9 +50,10 @@ describe("Test MeasureTable", () => {
   it("Test Sustitute button", async () => {
     const substituteBtn = screen.getByText("Substitute measure");
     await userEvent.click(substituteBtn);
+    expect(mockPut).toHaveBeenCalled();
   });
   it("Test Edit button", async () => {
-    const editBtn = screen.getByText("Edit");
+    const editBtn = screen.getAllByText("Edit")[0];
     await userEvent.click(editBtn);
   });
 });

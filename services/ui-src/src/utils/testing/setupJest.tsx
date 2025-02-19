@@ -189,11 +189,19 @@ export const mockAdminUserStore: HcbsUserState = {
 };
 
 export const mockMeasureTemplate: MeasurePageTemplate = {
-  id: "mock-template-id",
+  id: "LTSS-1",
   title: "mock-title",
   type: PageType.Measure,
   required: true,
   substitutable: "LTSS-2",
+  elements: [],
+};
+
+export const mock2MeasureTemplate: MeasurePageTemplate = {
+  id: "LTSS-2",
+  title: "mock-title-2",
+  type: PageType.Measure,
+  required: true,
   elements: [],
 };
 
@@ -208,7 +216,7 @@ export const mockReportStore: HcbsReportState = {
     year: 2026,
     options: {},
     state: "PR",
-    pages: [{ ...mockMeasureTemplate, cmit: 960 }],
+    pages: [{ ...mockMeasureTemplate, cmit: 960 }, {...mock2MeasureTemplate, cmit: 961}],
     measureLookup: {
       defaultMeasures: [
         {
