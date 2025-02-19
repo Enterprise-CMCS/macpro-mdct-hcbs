@@ -210,7 +210,15 @@ export const mockReportStore: HcbsReportState = {
     state: "PR",
     pages: [{ ...mockMeasureTemplate, cmit: 960 }],
     measureLookup: {
-      defaultMeasures: [],
+      defaultMeasures: [
+        {
+          cmit: 960,
+          measureTemplate: [MeasureTemplateName["FFS-1"]],
+          required: true,
+          uid: "960",
+          stratified: false,
+        },
+      ],
       optionGroups: {},
     },
     measureTemplates: {
@@ -228,6 +236,7 @@ export const mockReportStore: HcbsReportState = {
       },
       [MeasureTemplateName["LTSS-7"]]: mockMeasureTemplate,
       [MeasureTemplateName["LTSS-8"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-2"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-3"]]: mockMeasureTemplate,
