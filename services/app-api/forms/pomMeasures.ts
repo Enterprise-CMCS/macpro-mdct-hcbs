@@ -57,13 +57,6 @@ export const pomMeasures: MeasureOptions[] = [
     stratified: false,
     measureTemplate: [MeasureTemplateName["POM-7"]],
   },
-  {
-    cmit: 1822,
-    uid: "1822-2",
-    required: true,
-    stratified: false,
-    measureTemplate: MeasureTemplateName["POM-2"],
-  },
 ];
 
 export const pomMeasureTemplates = {
