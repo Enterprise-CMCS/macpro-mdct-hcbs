@@ -43,7 +43,6 @@ export const ReportPageWrapper = () => {
   }, [report, pageMap, pageId]);
 
   const handleBlur = (data: any) => {
-    console.log("DATA CHANGE", data);
     if (!report) return;
     setAnswers(data);
   };

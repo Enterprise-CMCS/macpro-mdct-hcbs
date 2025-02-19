@@ -1,5 +1,5 @@
 import { ElementType, PageElement } from "types";
-import { array, lazy, mixed, object, Schema, string } from "yup";
+import { array, lazy, object, string } from "yup";
 
 export const textboxSchema = object().shape({
   answer: string().required("A response is required"),
@@ -52,10 +52,12 @@ const pageElementSchema = lazy((element: PageElement): any => {
   }
 });
 
-// TODO: make delivery method radio work
 export const elementsValidateSchema = object().shape({
   elements: array().of(pageElementSchema).required(),
-  // "delivery-method-radio": object().shape({
-  //   answer: string().required("A response is required"),
-  // }),
+  /** 
+   * TODO: make delivery method radio work
+  "delivery-method-radio": object().shape({
+    answer: string().required("A response is required"),
+  }),
+   */
 });

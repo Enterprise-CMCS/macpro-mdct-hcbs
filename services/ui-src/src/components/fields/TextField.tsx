@@ -37,7 +37,6 @@ export const TextField = (props: PageElementProps) => {
 
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
-  console.log("FORM ERRORS", formErrors);
   const errorMessage: string | undefined = get(formErrors, key)?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
