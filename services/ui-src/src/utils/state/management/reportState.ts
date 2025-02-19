@@ -79,7 +79,6 @@ export const clearMeasure = (
 ) => {
   if (!state.report) return;
   const report = structuredClone(state.report);
-
   performClearMeasure(measureId, report, ignoreList);
   putReport(report); // Submit to API
   return { report };

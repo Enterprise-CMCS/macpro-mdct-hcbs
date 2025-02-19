@@ -16,7 +16,6 @@ export const performClearMeasure = (
   if ("status" in page) {
     page.status = MeasureStatus.IN_PROGRESS;
   }
-
   // Clean measure
   page.elements?.forEach((element) => {
     if (ignoreList.includes(element.id)) {
