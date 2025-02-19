@@ -54,10 +54,10 @@ const pageElementSchema = lazy((element: PageElement): any => {
 
 export const elementsValidateSchema = object().shape({
   elements: array().of(pageElementSchema).required(),
-  /** 
+  /**
    * TODO: make delivery method radio work
-  "delivery-method-radio": object().shape({
-    answer: string().required("A response is required"),
-  }),
+   * "delivery-method-radio": object().shape({
+   *     answer: string().required("A response is required"),
+   * }),
    */
 });
