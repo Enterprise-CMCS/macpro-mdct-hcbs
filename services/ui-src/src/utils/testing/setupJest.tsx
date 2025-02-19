@@ -216,7 +216,10 @@ export const mockReportStore: HcbsReportState = {
     year: 2026,
     options: {},
     state: "PR",
-    pages: [{ ...mockMeasureTemplate, cmit: 960 }, {...mock2MeasureTemplate, cmit: 961}],
+    pages: [
+      { ...mockMeasureTemplate, cmit: 960 },
+      { ...mock2MeasureTemplate, cmit: 961 },
+    ],
     measureLookup: {
       defaultMeasures: [
         {

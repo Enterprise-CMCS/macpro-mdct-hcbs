@@ -82,7 +82,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <Text>CMIT# {measure.cmit}</Text>
         </Td>
         <Td>
-          {measure.substitutable ? (
+          {measure.substitutable && measure.required ? (
             <Link onClick={() => buildModal(measure)}>Substitute measure</Link>
           ) : null}
         </Td>
