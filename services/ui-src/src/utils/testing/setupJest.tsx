@@ -188,7 +188,7 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-const mockMeasureTemplate: MeasurePageTemplate = {
+export const mockMeasureTemplate: MeasurePageTemplate = {
   id: "mock-template-id",
   title: "mock-title",
   type: PageType.Measure,
