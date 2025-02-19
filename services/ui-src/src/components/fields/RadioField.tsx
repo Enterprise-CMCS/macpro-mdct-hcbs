@@ -65,10 +65,14 @@ export const RadioField = (props: PageElementProps) => {
     });
     setDisplayValue(newValues);
     form.setValue(name, value, { shouldValidate: true });
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     form.setValue(key, event.target.value);
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
   };
 
   // prepare error message, hint, and classes

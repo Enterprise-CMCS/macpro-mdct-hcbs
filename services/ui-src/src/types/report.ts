@@ -134,6 +134,7 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | ResultRowButtonTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
@@ -181,6 +182,13 @@ export type AccordionTemplate = {
   type: ElementType.Accordion;
   label: string;
   value: string;
+};
+
+export type ResultRowButtonTemplate = {
+  type: ElementType.ResultRowButton;
+  value: string;
+  modalId: PageId;
+  to: PageId;
 };
 
 export type MeasureTableTemplate = {

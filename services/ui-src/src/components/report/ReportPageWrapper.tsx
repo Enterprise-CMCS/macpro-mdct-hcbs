@@ -11,7 +11,7 @@ import {
   PraDisclosure,
 } from "components";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { pageElementsValidateSchema } from "utils/validation/reportValidation";
+import { elementsValidateSchema } from "utils/validation/reportValidation";
 
 export const ReportPageWrapper = () => {
   const {
@@ -28,7 +28,7 @@ export const ReportPageWrapper = () => {
   const methods = useForm({
     defaultValues: {},
     shouldUnregister: true,
-    // resolver: yupResolver(pageElementsValidateSchema),
+    resolver: yupResolver(elementsValidateSchema),
   });
 
   const navigate = useNavigate();
