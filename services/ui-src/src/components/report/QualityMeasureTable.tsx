@@ -19,20 +19,22 @@ export const QualityMeasureTableElement = () => {
   const { cmit, report } = useStore();
   const cmitInfo = CMIT_LIST.find((item) => item.cmit === cmit);
   const deliveryMethods = useWatch({ name: "delivery-method-radio" });
-  const { defaultMeasures } = report?.measureLookup!;
 
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
   const handleEditClick = (deliverySystem: string, cmitInfo: CMIT) => {
-    const measure = defaultMeasures.find(
-      (measure) => measure.cmit === cmitInfo.cmit
-    );
-    const deliveryId = measure?.measureTemplate.find((item) =>
-      item.toString().includes(deliverySystem)
-    );
-    const path = `/report/${reportType}/${state}/${reportId}/${deliveryId}`;
-    navigate(path);
+    if (report?.measureLookup) {
+      const { defaultMeasures } = report?.measureLookup;
+      const measure = defaultMeasures.find(
+        (measure) => measure.cmit === cmitInfo.cmit
+      );
+      const deliveryId = measure?.measureTemplate.find((item) =>
+        item.toString().includes(deliverySystem)
+      );
+      const path = `/report/${reportType}/${state}/${reportId}/${deliveryId}`;
+      navigate(path);
+    }
   };
 
   // Build Rows

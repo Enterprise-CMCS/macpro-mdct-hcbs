@@ -18,8 +18,7 @@ import {
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
-import { parseCustomHtml } from "utils";
-import { useStore } from "utils";
+import { parseCustomHtml, useStore } from "utils";
 
 export interface PageElementProps {
   element: PageElement;
