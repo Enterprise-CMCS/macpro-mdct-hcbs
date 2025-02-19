@@ -128,7 +128,7 @@ const radioTemplateSchema = object().shape({
 const buttonLinkTemplateSchema = object().shape({
   type: string().required(ElementType.ButtonLink),
   label: string().required(),
-  to: string().required(),
+  to: string().optional(),
 });
 
 const measureTableTemplateSchema = object().shape({

@@ -278,7 +278,7 @@ export type RadioTemplate = {
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   label: string;
-  to: PageId;
+  to?: PageId;
 };
 
 export type MeasureFooterTemplate = {

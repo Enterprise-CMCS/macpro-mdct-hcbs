@@ -110,7 +110,6 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.ButtonLink,
         label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
       },
       {
         type: ElementType.Header,
@@ -211,7 +210,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.ButtonLink,
         label: "Return to Required Measures Dashboard",
-        to: "LTSS-1960",
+        to: "LTSS-1",
       },
       {
         type: ElementType.Header,
@@ -250,7 +249,6 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.ButtonLink,
         label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
       },
       {
         type: ElementType.Header,
@@ -637,7 +635,6 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.ButtonLink,
         label: "Return to Optional Measures Dashboard",
-        to: "optional-measure-result",
       },
       {
         type: ElementType.Header,
@@ -718,12 +715,12 @@ export const defaultMeasureTemplates = {
     id: "FASI-2",
     title: "FASI-2: Documentation of a Person-Centered Service Plan",
     type: PageType.Measure,
+    substitutable: MeasureTemplateName["LTSS-2"],
     sidebar: false,
     elements: [
       {
         type: ElementType.ButtonLink,
         label: "Return to Optional Measures Dashboard",
-        to: "optional-measure-result",
       },
       {
         type: ElementType.Header,
