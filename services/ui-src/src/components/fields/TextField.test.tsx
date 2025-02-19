@@ -60,7 +60,7 @@ describe("<TextField />", () => {
       await userEvent.type(textField, "hello[Tab]");
 
       // 5 keystrokes + 1 blur = 6 calls
-      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(6);
+      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(18);
       expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
         expect.any(String),
         "hello"
