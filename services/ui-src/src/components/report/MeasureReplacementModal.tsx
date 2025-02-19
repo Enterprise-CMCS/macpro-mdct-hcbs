@@ -14,8 +14,7 @@ export const MeasureReplacementModal = (
     selectMeasure = event.target.value === "0" ? measure : undefined;
   };
 
-  const name = measure.title.split(":")[0];
-  const label = `Do you want to substitute ${name} for ${measure.substitutable}`;
+  const label = `Do you want to substitute ${measure.id} for ${measure.substitutable}`;
 
   return (
     <React.Fragment>

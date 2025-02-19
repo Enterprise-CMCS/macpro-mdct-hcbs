@@ -43,11 +43,8 @@ export const MeasureTableElement = (props: PageElementProps) => {
       );
       if (report && measure) {
         measure.required = true;
-        measure.substitutable = selectMeasure.title.split(":")[0];
-
         selectMeasure.required = false;
-        selectMeasure.substitutable = undefined;
-
+        
         await putReport(report);
       }
     }

@@ -16,7 +16,7 @@ export const defaultMeasures: MeasureOptions[] = [
     stratified: false,
     measureTemplate: [
       MeasureTemplateName["LTSS-1"],
-      MeasureTemplateName["FFS960"],
+      MeasureTemplateName["FFS-1"],
       MeasureTemplateName["MLTSS"],
     ],
   },
@@ -202,8 +202,8 @@ export const defaultMeasureTemplates = {
       },
     ],
   },
-  [MeasureTemplateName["FFS960"]]: {
-    id: "FFS",
+  [MeasureTemplateName["FFS-1"]]: {
+    id: "FFS-1",
     title: "LTSS-1: FFS LTSS Measure Results",
     type: PageType.MeasureResults,
     sidebar: false,
@@ -630,6 +630,7 @@ export const defaultMeasureTemplates = {
   [MeasureTemplateName["FASI-1"]]: {
     id: "FASI-1",
     title: "FASI-1: Identification of Person-Centered Priorities",
+    substitutable: MeasureTemplateName["LTSS-1"],
     type: PageType.Measure,
     sidebar: false,
     elements: [

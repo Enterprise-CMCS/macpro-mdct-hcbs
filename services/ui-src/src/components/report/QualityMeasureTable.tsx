@@ -16,15 +16,22 @@ import { useParams, useNavigate } from "react-router-dom";
 import { CMIT } from "types";
 
 export const QualityMeasureTableElement = () => {
-  const { cmit } = useStore();
+  const { cmit, report } = useStore();
   const cmitInfo = CMIT_LIST.find((item) => item.cmit === cmit);
   const deliveryMethods = useWatch({ name: "delivery-method-radio" });
+  const { defaultMeasures } = report?.measureLookup!;
 
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
   const handleEditClick = (deliverySystem: string, cmitInfo: CMIT) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${cmitInfo.cmit}`;
+    const measure = defaultMeasures.find(
+      (measure) => measure.cmit === cmitInfo.cmit
+    );
+    const deliveryId = measure?.measureTemplate.find((item) =>
+      item.toString().includes(deliverySystem)
+    );
+    const path = `/report/${reportType}/${state}/${reportId}/${deliveryId}`;
     navigate(path);
   };
 
