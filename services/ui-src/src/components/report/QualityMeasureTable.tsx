@@ -24,9 +24,8 @@ export const QualityMeasureTableElement = () => {
   const navigate = useNavigate();
 
   const handleEditClick = (deliverySystem: string, cmitInfo: CMIT) => {
-    if (report?.measureLookup) {
-      const { defaultMeasures } = report?.measureLookup;
-      const measure = defaultMeasures.find(
+    if (report && report.measureLookup) {
+      const measure = report?.measureLookup.defaultMeasures.find(
         (measure) => measure.cmit === cmitInfo.cmit
       );
       const deliveryId = measure?.measureTemplate.find((item) =>

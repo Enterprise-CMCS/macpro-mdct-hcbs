@@ -44,7 +44,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
       if (report && measure) {
         measure.required = true;
         selectMeasure.required = false;
-        
+
         await putReport(report);
       }
     }
