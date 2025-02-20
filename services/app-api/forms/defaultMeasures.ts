@@ -21,11 +21,25 @@ export const defaultMeasures: MeasureOptions[] = [
     ],
   },
   {
+    cmit: 969,
+    uid: "969",
+    required: false,
+    stratified: false,
+    measureTemplate: [MeasureTemplateName["FASI-1"]],
+  },
+  {
     cmit: 961,
     uid: "961",
     required: true,
     stratified: false,
     measureTemplate: [MeasureTemplateName["LTSS-2"]],
+  },
+  {
+    cmit: 970,
+    uid: "970",
+    required: false,
+    stratified: false,
+    measureTemplate: [MeasureTemplateName["FASI-2"]],
   },
   {
     cmit: 20,
@@ -47,20 +61,6 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: [MeasureTemplateName["LTSS-8"]],
-  },
-  {
-    cmit: 969,
-    uid: "969",
-    required: false,
-    stratified: false,
-    measureTemplate: [MeasureTemplateName["FASI-1"]],
-  },
-  {
-    cmit: 970,
-    uid: "970",
-    required: false,
-    stratified: false,
-    measureTemplate: [MeasureTemplateName["FASI-2"]],
   },
   {
     cmit: 111,
