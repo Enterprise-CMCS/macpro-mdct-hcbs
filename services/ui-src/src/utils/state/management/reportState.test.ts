@@ -13,7 +13,6 @@ import { buildState, mergeAnswers, setPage, substitute } from "./reportState";
 import {
   mock2MeasureTemplate,
   mockMeasureTemplate,
-  mockReportStore,
 } from "utils/testing/setupJest";
 
 jest.mock("../../api/requestMethods/report", () => ({
