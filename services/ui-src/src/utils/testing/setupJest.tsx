@@ -263,6 +263,7 @@ export const mockReportStore: HcbsReportState = {
   setModalComponent: () => {},
   setAnswers: () => {},
   setMeasure: () => {},
+  setSubstitute: () => {},
 };
 
 // BOUND STORE

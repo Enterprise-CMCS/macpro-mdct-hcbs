@@ -10,11 +10,6 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockUseStore);
 
-const mockPut = jest.fn();
-jest.mock("utils/api/requestMethods/report", () => ({
-  putReport: () => mockPut(),
-}));
-
 const mockedMeasureTableElement = {
   type: ElementType.MeasureTable,
   measureDisplay: "required",
@@ -50,7 +45,6 @@ describe("Test MeasureTable", () => {
   it("Test Sustitute button", async () => {
     const substituteBtn = screen.getByText("Substitute measure");
     await userEvent.click(substituteBtn);
-    expect(mockPut).toHaveBeenCalled();
   });
   it("Test Edit button", async () => {
     const editBtn = screen.getAllByText("Edit")[0];

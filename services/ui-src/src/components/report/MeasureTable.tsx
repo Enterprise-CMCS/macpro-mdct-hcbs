@@ -17,12 +17,13 @@ import {
   MeasureTableTemplate,
   PageType,
 } from "types";
-import { putReport, useStore } from "utils";
+import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setMeasure, setModalComponent, setModalOpen } = useStore();
+  const { report, setMeasure, setModalComponent, setModalOpen, setSubstitute } =
+    useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -36,18 +37,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   );
 
   const onSubstitute = async (selectMeasure: MeasurePageTemplate) => {
-    if (selectMeasure) {
-      const substitute = selectMeasure.substitutable?.toString();
-      const measure = measures.find((measure) =>
-        measure.id.includes(substitute!)
-      );
-      if (report && measure) {
-        measure.required = true;
-        selectMeasure.required = false;
-
-        await putReport(report);
-      }
-    }
+    if (report) setSubstitute(report, selectMeasure);
 
     setModalOpen(false);
   };
