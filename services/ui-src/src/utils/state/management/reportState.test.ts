@@ -10,7 +10,11 @@ import {
   ReportType,
   TextboxTemplate,
 } from "types/report";
-import { buildState, mergeAnswers, setPage } from "./reportState";
+import { buildState, mergeAnswers, setPage, substitute } from "./reportState";
+import {
+  mock2MeasureTemplate,
+  mockMeasureTemplate,
+} from "utils/testing/setupJest";
 
 jest.mock("../../api/requestMethods/report", () => ({
   putReport: jest.fn(),
@@ -61,6 +65,8 @@ const testReport: Report = {
         },
       ],
     },
+    mockMeasureTemplate,
+    mock2MeasureTemplate,
   ],
   measureLookup: { defaultMeasures: [], optionGroups: {} },
   measureTemplates: {
@@ -106,6 +112,14 @@ const testReport: Report = {
       elements: [],
     },
     [MeasureTemplateName["LTSS-8"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-1"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
@@ -175,7 +189,7 @@ const testReport: Report = {
 describe("state/management/reportState: buildState", () => {
   test("initializes relevant parts of the state", () => {
     const result = buildState(testReport);
-    expect(result.pageMap!.size).toEqual(3);
+    expect(result.pageMap!.size).toEqual(5);
     expect(result.report).not.toBeUndefined();
     expect(result.rootPage).not.toBeUndefined();
     expect(result.parentPage?.parent).toEqual("root");
@@ -212,5 +226,13 @@ describe("state/management/reportState: mergeAnswers", () => {
     const elements = page?.elements!;
     const question = elements[1] as TextboxTemplate;
     expect(question.answer).toEqual("ANSWERED");
+  });
+});
+
+describe("state/management/reportState: substitute", () => {
+  test("substitute the measure", () => {
+    const response = substitute(testReport, mockMeasureTemplate);
+    const measure = response.report.pages[3] as MeasurePageTemplate;
+    expect(measure.required).toBe(false);
   });
 });

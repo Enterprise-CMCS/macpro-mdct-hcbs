@@ -1,32 +1,48 @@
-import {
-  ModalBody,
-  ModalFooter,
-  Button,
-  Stack,
-  Radio,
-  RadioGroup,
-} from "@chakra-ui/react";
+import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
 import React from "react";
+import { ChoiceList } from "@cmsgov/design-system";
+import { MeasurePageTemplate } from "types";
 
 export const MeasureReplacementModal = (
-  cmit: number | undefined,
+  measure: MeasurePageTemplate,
   onClose: Function,
   onSubmit: Function
 ): React.ReactFragment => {
+  let selectMeasure: MeasurePageTemplate | undefined;
+
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    selectMeasure = event.target.value === "0" ? measure : undefined;
+  };
+
+  const label = `Do you want to substitute ${measure.id} for ${measure.substitutable}`;
+
   return (
     <React.Fragment>
       <ModalBody>
-        Select alternate measure type for CMIT {cmit}
-        {/* @ts-ignore TODO */}
-        <RadioGroup onChange={() => {}} value={1}>
-          <Stack direction="column">
-            <Radio value="1">Measure Type One</Radio>
-            <Radio value="2">Measure Type Two</Radio>
-          </Stack>
-        </RadioGroup>
+        [hint text explaining what happens when substituting a measure]
+        <ChoiceList
+          name={"subsitute"}
+          type={"radio"}
+          label={label}
+          choices={[
+            {
+              label: "Yes",
+              value: 0,
+            },
+            {
+              label: "No",
+              value: 1,
+            },
+          ]}
+          onChange={onChangeHandler}
+        />
       </ModalBody>
       <ModalFooter gap="4">
-        <Button colorScheme="blue" mr={3} onClick={() => onSubmit(false)}>
+        <Button
+          colorScheme="blue"
+          mr={3}
+          onClick={() => onSubmit(selectMeasure)}
+        >
           Substitute Measure
         </Button>
         <Button variant="link" onClick={() => onClose(false)}>

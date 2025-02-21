@@ -90,7 +90,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
-  substitutable?: boolean;
+  substitutable?: string;
   status: MeasureStatus;
 }
 
@@ -319,18 +319,19 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  "LTSS-1",
-  "LTSS-2",
-  "LTSS-6",
-  "LTSS-7",
-  "LTSS-8",
-  "POM-1",
-  "POM-2",
-  "POM-3",
-  "POM-4",
-  "POM-5",
-  "POM-6",
-  "POM-7",
+  "LTSS-1" = "LTSS-1",
+  "LTSS-2" = "LTSS-2",
+  "LTSS-6" = "LTSS-6",
+  "LTSS-7" = "LTSS-7",
+  "LTSS-8" = "LTSS-8",
+  "FFS-1" = "FFS-1",
+  "POM-1" = "POM-1",
+  "POM-2" = "POM-2",
+  "POM-3" = "POM-3",
+  "POM-4" = "POM-4",
+  "POM-5" = "POM-5",
+  "POM-6" = "POM-6",
+  "POM-7" = "POM-7",
 }
 
 export interface FormComponent {

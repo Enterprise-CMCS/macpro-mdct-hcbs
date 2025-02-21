@@ -8,7 +8,7 @@ import {
   ErrorVerbiage,
   AdminBannerState,
 } from "types";
-import { Report } from "types/report";
+import { MeasurePageTemplate, Report } from "types/report";
 import React from "react";
 import {
   buildState,
@@ -16,6 +16,7 @@ import {
   mergeAnswers,
   resetMeasure,
   setPage,
+  substitute,
 } from "./management/reportState";
 
 // USER STORE
@@ -94,6 +95,11 @@ const reportStore = (set: Function): HcbsReportState => ({
     set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
       type: "setAnswers",
     }),
+  setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => {
+    set(() => substitute(report, selectMeasure), false, {
+      type: "setSubstitute",
+    });
+  },
   resetMeasure: (measureId: string) =>
     set((state: HcbsReportState) => resetMeasure(measureId, state), false, {
       type: "resetMeasure",

@@ -61,7 +61,6 @@ export const buildReport = async (
       return pages.map((page) => {
         page.cmit = measure.cmit;
         page.cmitId = measure.uid;
-        page.id += measure.cmit; // TODO this will need some logic if a measure is substituted
         page.stratified = measure.stratified;
         page.required = measure.required;
         page.elements = [

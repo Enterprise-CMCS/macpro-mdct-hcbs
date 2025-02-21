@@ -16,9 +16,16 @@ export const defaultMeasures: MeasureOptions[] = [
     stratified: false,
     measureTemplate: [
       MeasureTemplateName["LTSS-1"],
-      MeasureTemplateName["FFS960"],
+      MeasureTemplateName["FFS-1"],
       MeasureTemplateName["MLTSS"],
     ],
+  },
+  {
+    cmit: 969,
+    uid: "969",
+    required: false,
+    stratified: false,
+    measureTemplate: [MeasureTemplateName["FASI-1"]],
   },
   {
     cmit: 961,
@@ -26,6 +33,13 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: [MeasureTemplateName["LTSS-2"]],
+  },
+  {
+    cmit: 970,
+    uid: "970",
+    required: false,
+    stratified: false,
+    measureTemplate: [MeasureTemplateName["FASI-2"]],
   },
   {
     cmit: 20,
@@ -47,20 +61,6 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: [MeasureTemplateName["LTSS-8"]],
-  },
-  {
-    cmit: 969,
-    uid: "969",
-    required: false,
-    stratified: false,
-    measureTemplate: [MeasureTemplateName["FASI-1"]],
-  },
-  {
-    cmit: 970,
-    uid: "970",
-    required: false,
-    stratified: false,
-    measureTemplate: [MeasureTemplateName["FASI-2"]],
   },
   {
     cmit: 111,
@@ -104,14 +104,13 @@ export const defaultMeasureTemplates = {
     id: "LTSS-1",
     title: "LTSS-1: Comprehensive Assessment and Update",
     type: PageType.Measure,
-    substitutable: true,
+    substitutable: MeasureTemplateName["FASI-1"],
     sidebar: false,
     elements: [
       {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
       },
       {
         type: ElementType.Header,
@@ -229,23 +228,34 @@ export const defaultMeasureTemplates = {
       },
     ],
   },
-  [MeasureTemplateName["FFS960"]]: {
-    id: "FFS",
+  [MeasureTemplateName["FFS-1"]]: {
+    id: "FFS-1",
     title: "LTSS-1: FFS LTSS Measure Results",
     type: PageType.MeasureResults,
-    substitutable: true,
     sidebar: false,
     elements: [
       {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Required Measures Dashboard",
-        to: "LTSS-1960",
+        to: "LTSS-1",
       },
       {
         type: ElementType.Header,
         id: "measure-header",
         text: "Fee-For-Service Measure Results",
+      },
+      {
+        type: ElementType.Accordion,
+        id: "measure-instructions",
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-details-subheader",
+        text: "FSS LTSS Measure Details",
       },
       {
         type: ElementType.TextAreaField,
@@ -267,13 +277,12 @@ export const defaultMeasureTemplates = {
     title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
     type: PageType.Measure,
     sidebar: false,
-    substitutable: true,
+    substitutable: MeasureTemplateName["FASI-2"],
     elements: [
       {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
       },
       {
         type: ElementType.Header,
@@ -756,6 +765,7 @@ export const defaultMeasureTemplates = {
   [MeasureTemplateName["FASI-1"]]: {
     id: "FASI-1",
     title: "FASI-1: Identification of Person-Centered Priorities",
+    substitutable: MeasureTemplateName["LTSS-1"],
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -763,7 +773,6 @@ export const defaultMeasureTemplates = {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Optional Measures Dashboard",
-        to: "optional-measure-result",
       },
       {
         type: ElementType.Header,
@@ -868,13 +877,13 @@ export const defaultMeasureTemplates = {
     id: "FASI-2",
     title: "FASI-2: Documentation of a Person-Centered Service Plan",
     type: PageType.Measure,
+    substitutable: MeasureTemplateName["LTSS-2"],
     sidebar: false,
     elements: [
       {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Optional Measures Dashboard",
-        to: "optional-measure-result",
       },
       {
         type: ElementType.Header,
@@ -1413,7 +1422,7 @@ export const defaultMeasureTemplates = {
   [MeasureTemplateName["MLTSS"]]: {
     id: "MLTSS",
     title: "MLTSS: Plan All-Cause Readmission",
-    type: PageType.Measure,
+    type: PageType.MeasureResults,
     sidebar: false,
     elements: [
       {

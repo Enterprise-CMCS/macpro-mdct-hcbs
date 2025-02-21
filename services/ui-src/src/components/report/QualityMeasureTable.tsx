@@ -34,8 +34,16 @@ export const QualityMeasureTableElement = () => {
   const navigate = useNavigate();
 
   const handleEditClick = (deliverySystem: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${deliverySystem}${currentPage.cmitId}`;
-    navigate(path);
+    if (report && report.measureLookup) {
+      const measure = report?.measureLookup.defaultMeasures.find(
+        (measure) => measure.cmit === currentPage.cmit
+      );
+      const deliveryId = measure?.measureTemplate.find((item) =>
+        item.toString().includes(deliverySystem)
+      );
+      const path = `/report/${reportType}/${state}/${reportId}/${deliveryId}`;
+      navigate(path);
+    }
   };
 
   // Build Rows

@@ -156,7 +156,7 @@ const buttonLinkTemplateSchema = object().shape({
   type: string().required(ElementType.ButtonLink),
   id: string().required(),
   label: string().required(),
-  to: string().required(),
+  to: string().optional(),
 });
 
 const measureTableTemplateSchema = object().shape({
@@ -211,7 +211,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   required: boolean().notRequired(),
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
-  substitutable: boolean().notRequired(),
+  substitutable: string().notRequired(),
 });
 
 const measureOptionsArraySchema = array().of(

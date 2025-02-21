@@ -46,7 +46,7 @@ export interface MeasureOptions {
 export enum MeasureTemplateName {
   // required measures
   "LTSS-1" = "LTSS-1",
-  "FFS960" = "FFS960",
+  "FFS-1" = "FFS-1",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
@@ -97,7 +97,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
-  substitutable?: boolean;
+  substitutable?: string;
   status: MeasureStatus;
 }
 
@@ -309,7 +309,7 @@ export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
   label: string;
-  to: PageId;
+  to?: PageId;
 };
 
 export type MeasureFooterTemplate = {

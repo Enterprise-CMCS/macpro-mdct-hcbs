@@ -1,5 +1,10 @@
 import { HcbsReportState } from "types";
-import { ParentPageTemplate, Report } from "types/report";
+import {
+  isMeasureTemplate,
+  MeasurePageTemplate,
+  ParentPageTemplate,
+  Report,
+} from "types/report";
 import { putReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
@@ -68,6 +73,29 @@ export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   return { report, lastSavedTime: getLocalHourMinuteTime() };
 };
 
+export const substitute = (
+  report: Report,
+  selectMeasure: MeasurePageTemplate
+) => {
+  const measures = report?.pages.filter((page) =>
+    isMeasureTemplate(page)
+  ) as MeasurePageTemplate[];
+
+  if (selectMeasure) {
+    const substitute = selectMeasure.substitutable?.toString();
+    const measure = measures.find((measure) =>
+      measure.id.includes(substitute!)
+    );
+    if (report && measure) {
+      measure.required = true;
+      selectMeasure.required = false;
+
+      putReport(report);
+    }
+  }
+
+  return { report, lastSavedTime: getLocalHourMinuteTime() };
+};
 /**
  * Clear all nested content in the measure, preserving an In Progress state,
  * and ignoring any fields with special treatment

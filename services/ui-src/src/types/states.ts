@@ -1,4 +1,9 @@
-import { ParentPageTemplate, PageData, Report } from "types/report";
+import {
+  ParentPageTemplate,
+  PageData,
+  Report,
+  MeasurePageTemplate,
+} from "types/report";
 import React from "react";
 import { BannerData, ErrorVerbiage, HcbsUser } from "types";
 
@@ -48,4 +53,5 @@ export interface HcbsReportState {
   setAnswers: (answers: any) => void;
   clearMeasure: (measureId: string, ignoreList: string[]) => void;
   resetMeasure: (measureId: string) => void;
+  setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => void;
 }
