@@ -247,12 +247,14 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Accordion,
+        id: "measure-instructions",
         label: "Instructions",
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
         type: ElementType.SubHeader,
+        id: "measure-details-subheader",
         text: "FSS LTSS Measure Details",
       },
       {
