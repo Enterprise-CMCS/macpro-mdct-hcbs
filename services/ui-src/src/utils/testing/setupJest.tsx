@@ -189,7 +189,7 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-const mockMeasureTemplate: MeasurePageTemplate = {
+export const mockMeasureTemplate: MeasurePageTemplate = {
   id: "LTSS-1",
   cmitId: "960",
   status: MeasureStatus.IN_PROGRESS,
