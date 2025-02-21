@@ -24,7 +24,7 @@ export const MeasureDetailsElement = (props: PageElementProps) => {
           </Text>
         </>
       </Flex>
-      <Divider marginBottom="2rem" />
+      <Divider />
     </Box>
   );
 };
