@@ -75,6 +75,12 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
+export enum MeasureStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  COMPLETE = "Complete",
+}
+
 export interface Report extends ReportTemplate {
   id?: string;
   state: string;
@@ -87,10 +93,12 @@ export interface Report extends ReportTemplate {
 
 export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
+  cmitId: string;
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
   substitutable?: string;
+  status: MeasureStatus;
 }
 
 export interface SectionTemplate {
@@ -186,6 +194,7 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
+  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   QualityMeasureTable = "qualityMeasureTable",
@@ -203,6 +212,7 @@ export type PageElement =
   | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
@@ -211,22 +221,26 @@ export type PageElement =
 
 export type HeaderTemplate = {
   type: ElementType.Header;
+  id: string;
   text: string;
 };
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
   text: string;
 };
 
 export type ParagraphTemplate = {
   type: ElementType.Paragraph;
+  id: string;
   title?: string;
   text: string;
 };
 
 export type TextboxTemplate = {
   type: ElementType.Textbox;
+  id: string;
   label: string;
   helperText?: string;
   answer?: string;
@@ -235,6 +249,7 @@ export type TextboxTemplate = {
 
 export type TextAreaBoxTemplate = {
   type: ElementType.TextAreaField;
+  id: string;
   label: string;
   helperText?: string;
   answer?: string;
@@ -242,6 +257,7 @@ export type TextAreaBoxTemplate = {
 
 export type DateTemplate = {
   type: ElementType.Date;
+  id: string;
   label: string;
   helperText: string;
   answer?: string;
@@ -249,12 +265,14 @@ export type DateTemplate = {
 
 export type AccordionTemplate = {
   type: ElementType.Accordion;
+  id: string;
   label: string;
   value: string;
 };
 
 export type ResultRowButtonTemplate = {
   type: ElementType.ResultRowButton;
+  id: string;
   value: string;
   modalId: PageId;
   to: PageId;
@@ -267,6 +285,18 @@ export const isResultRowButton = (
 
 export type RadioTemplate = {
   type: ElementType.Radio;
+  id: string;
+  formKey?: string;
+  label: string;
+  helperText?: string;
+  value: ChoiceTemplate[];
+  answer?: string;
+  required?: string; //takes error message to display if not provided
+};
+
+export type ReportingRadioTemplate = {
+  type: ElementType.ReportingRadio;
+  id: string;
   formKey?: string;
   label: string;
   helperText?: string;
@@ -277,12 +307,14 @@ export type RadioTemplate = {
 
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
+  id: string;
   label: string;
   to?: PageId;
 };
 
 export type MeasureFooterTemplate = {
   type: ElementType.MeasureFooter;
+  id: string;
   prevTo: string;
   nextTo?: string;
   completeMeasure?: boolean;
@@ -298,17 +330,20 @@ export type ChoiceTemplate = {
 };
 
 export type MeasureTableTemplate = {
+  id: string;
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "stratified" | "optional";
 };
 
 export type QualityMeasureTableTemplate = {
   type: ElementType.QualityMeasureTable;
+  id: string;
   measureDisplay: "quality";
 };
 
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
+  id: string;
   to: PageId;
 };
 

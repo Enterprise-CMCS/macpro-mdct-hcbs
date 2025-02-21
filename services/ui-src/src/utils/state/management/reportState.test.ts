@@ -2,6 +2,7 @@ import { HcbsReportState } from "types";
 import {
   ElementType,
   MeasurePageTemplate,
+  MeasureStatus,
   MeasureTemplateName,
   PageType,
   Report,
@@ -39,10 +40,12 @@ const testReport: Report = {
       elements: [
         {
           type: ElementType.Header,
+          id: "",
           text: "General Information",
         },
         {
           type: ElementType.Textbox,
+          id: "",
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
@@ -57,6 +60,7 @@ const testReport: Report = {
       elements: [
         {
           type: ElementType.Header,
+          id: "",
           text: "Required Measure Results",
         },
       ],
@@ -85,24 +89,32 @@ const testReport: Report = {
     } as MeasurePageTemplate,
     [MeasureTemplateName["LTSS-2"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["LTSS-6"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["LTSS-7"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["LTSS-8"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
@@ -115,42 +127,56 @@ const testReport: Report = {
     },
     [MeasureTemplateName["POM-1"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["POM-2"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["POM-3"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["POM-4"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["POM-5"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["POM-6"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["POM-7"]]: {
       id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       title: "",
       type: PageType.Measure,
       elements: [],

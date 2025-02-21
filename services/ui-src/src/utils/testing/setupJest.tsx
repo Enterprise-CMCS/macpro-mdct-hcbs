@@ -14,6 +14,7 @@ import {
   PageType,
   MeasureTemplateName,
   MeasurePageTemplate,
+  MeasureStatus,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -188,17 +189,21 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockMeasureTemplate: MeasurePageTemplate = {
+const mockMeasureTemplate: MeasurePageTemplate = {
   id: "LTSS-1",
+  cmitId: "960",
+  status: MeasureStatus.IN_PROGRESS,
   title: "mock-title",
   type: PageType.Measure,
   required: true,
-  substitutable: "LTSS-2",
+  substitutable: "FASI-1",
   elements: [],
 };
 
 export const mock2MeasureTemplate: MeasurePageTemplate = {
-  id: "LTSS-2",
+  id: "FASI-1",
+  cmitId: "961",
+  status: MeasureStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
@@ -207,7 +212,8 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
 
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
-  cmit: 960,
+  currentPageId: "mock-template-id",
+  pageMap: new Map([["mock-template-id", 0]]),
   report: {
     id: "mock-id",
     type: ReportType.QMS,
@@ -262,7 +268,8 @@ export const mockReportStore: HcbsReportState = {
   setModalOpen: () => {},
   setModalComponent: () => {},
   setAnswers: () => {},
-  setMeasure: () => {},
+  resetMeasure: () => {},
+  clearMeasure: () => {},
   setSubstitute: () => {},
 };
 

@@ -22,8 +22,7 @@ import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setMeasure, setModalComponent, setModalOpen, setSubstitute } =
-    useStore();
+  const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -54,8 +53,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  const handleEditClick = (measureId: string, cmit: number | undefined) => {
-    setMeasure(cmit!);
+  const handleEditClick = (measureId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
     navigate(path);
   };
@@ -79,10 +77,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
 
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button
-            variant="outline"
-            onClick={() => handleEditClick(measure.id, measure.cmit)}
-          >
+          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
             Edit
           </Button>
         </Td>
