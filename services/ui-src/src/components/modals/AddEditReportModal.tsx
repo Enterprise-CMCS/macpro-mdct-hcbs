@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Modal, TextField, RadioField } from "components";
+import { Modal, TextField, RadioField, DropdownField } from "components";
 import { Spinner, Flex, Text } from "@chakra-ui/react";
 import { ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
 import { ReportOptions } from "types/report";
-import { Dropdown } from "@cmsgov/design-system";
+// import { Dropdown } from "@cmsgov/design-system";
 
 export const AddEditReportModal = ({
   activeState,
@@ -15,14 +15,12 @@ export const AddEditReportModal = ({
   reportHandler,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [selectedYear, setSelectedYear] = useState<string>("");
-
-  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedYear(event.target.value);
-  };
 
   // TO-DO to update when we add template versioning by year
-  const dropdownYears = [{ label: "2026", value: 2026 }];
+  const dropdownYears = [
+    { label: "2026", value: "2026" },
+    { label: "2027", value: "2027" },
+  ];
 
   // add validation to formJson
   const form = useForm({
@@ -49,7 +47,7 @@ export const AddEditReportModal = ({
     } else {
       const reportOptions: ReportOptions = {
         name: userEnteredReportName,
-        year: 2026,
+        year: formData.year.answer,
         options: {
           cahps: formData.cahps.answer == "true",
           hciidd: formData.hciidd.answer == "true",
@@ -102,15 +100,17 @@ export const AddEditReportModal = ({
               }}
               formkey={"reportTitle"}
             />
-            {/* TO-DO: Add DropdownField.tsx */}
-            <Dropdown
-              name="year"
-              id="year"
-              label="Select the quality measure set reporting year"
-              options={dropdownYears}
-              onChange={handleYearChange}
-              value={selectedYear}
+            <DropdownField
+              element={{
+                type: ElementType.Dropdown,
+                id: "",
+                label: "Select the quality measure set reporting year",
+                options: dropdownYears,
+                answer: selectedReport?.year.toString(),
+                required: "A response is required",
+              }}
               disabled={!!selectedReport}
+              formkey={"year"}
             />
             <RadioField
               element={{
