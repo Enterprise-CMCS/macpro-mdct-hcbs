@@ -41,6 +41,7 @@ const editModalComponent = (
       selectedReport={
         {
           name: "report name thing",
+          year: "2026",
           options: {
             cahps: "true",
             hciidd: "true",

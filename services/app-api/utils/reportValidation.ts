@@ -63,6 +63,23 @@ const dateTemplateSchema = object().shape({
   answer: string().notRequired(),
 });
 
+const dropdownTemplateSchema = object().shape({
+  type: string().required(ElementType.Dropdown),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().required(),
+  options: array().of(
+    object().shape({
+      label: string().required(),
+      value: string().required(),
+      checked: boolean().notRequired(),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+    })
+  ),
+  answer: string().notRequired(),
+  required: string().notRequired(),
+});
+
 const accordionTemplateSchema = object().shape({
   type: string().required(ElementType.Accordion),
   id: string().required(),
@@ -95,6 +112,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return textAreaTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
+    case ElementType.Dropdown:
+      return dropdownTemplateSchema;
     case ElementType.Accordion:
       return accordionTemplateSchema;
     case ElementType.ResultRowButton:

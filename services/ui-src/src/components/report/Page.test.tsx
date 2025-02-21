@@ -62,10 +62,22 @@ const elements: PageElement[] = [
     label: "labeled",
   },
   {
+    type: ElementType.TextAreaField,
+    id: "",
+    label: "labeled",
+  },
+  {
     type: ElementType.Date,
     id: "",
     label: "date label",
     helperText: "can you read this?",
+  },
+  {
+    type: ElementType.Dropdown,
+    id: "",
+    label: "date label",
+    helperText: "can you read this?",
+    options: [{ label: "mock label", value: " mock value" }],
   },
   {
     type: ElementType.Accordion,
@@ -77,6 +89,15 @@ const elements: PageElement[] = [
     type: ElementType.Radio,
     id: "",
     label: "date label",
+    value: [
+      { label: "a", value: "1", checkedChildren: [] },
+      { label: "b", value: "2" },
+    ],
+  },
+  {
+    type: ElementType.ReportingRadio,
+    id: "",
+    label: "label",
     value: [
       { label: "a", value: "1", checkedChildren: [] },
       { label: "b", value: "2" },
@@ -111,6 +132,11 @@ const elements: PageElement[] = [
     type: ElementType.QualityMeasureTable,
     id: "",
     measureDisplay: "quality",
+  },
+  {
+    type: ElementType.MeasureFooter,
+    id: "",
+    prevTo: "mock-prev-page",
   },
 ];
 

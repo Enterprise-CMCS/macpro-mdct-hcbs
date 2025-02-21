@@ -36,6 +36,7 @@ export { RadioField } from "./fields/RadioField";
 export { DateField } from "./fields/DateField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
+export { DropdownField } from "./fields/DropdownField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";
