@@ -317,6 +317,7 @@ export type ButtonLinkTemplate = {
 export type MeasureDetailsTemplate = {
   type: ElementType.MeasureDetails;
   title: string;
+  id: string;
 };
 
 export type MeasureFooterTemplate = {
