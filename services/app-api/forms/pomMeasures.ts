@@ -85,9 +85,14 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        title: "{measureName}",
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        text: "Measure Information",
+        id: "measure-information-subheader",
       },
       {
         type: ElementType.ReportingRadio,

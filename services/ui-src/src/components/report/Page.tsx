@@ -7,12 +7,18 @@ import {
   buttonLinkElement,
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
-import { MeasureTableElement } from "./MeasureTable";
-import { QualityMeasureTableElement } from "./QualityMeasureTable";
-import { StatusTableElement } from "./StatusTable";
-import { TextField, DateField, RadioField, TextAreaField } from "components";
+import {
+  DateField,
+  MeasureDetailsElement,
+  MeasureFooterElement,
+  MeasureTableElement,
+  QualityMeasureTableElement,
+  RadioField,
+  StatusTableElement,
+  TextAreaField,
+  TextField,
+} from "components";
 import { useStore } from "utils";
-import { MeasureFooterElement } from "./MeasureFooter";
 import { ReportingRadioField } from "components/fields/ReportingRadioField";
 
 interface Props {
@@ -50,6 +56,8 @@ export const Page = ({ elements }: Props) => {
         return QualityMeasureTableElement;
       case ElementType.StatusTable:
         return StatusTableElement;
+      case ElementType.MeasureDetails:
+        return MeasureDetailsElement;
       case ElementType.MeasureFooter:
         return MeasureFooterElement;
       default:

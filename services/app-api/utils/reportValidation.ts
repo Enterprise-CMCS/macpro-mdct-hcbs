@@ -111,6 +111,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return qualityMeasureTableTemplateSchema;
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
+    case ElementType.MeasureDetails:
+      return measureDetailsTemplateSchema;
     case ElementType.MeasureFooter:
       return measureFooterSchema;
     default:
@@ -177,6 +179,12 @@ const statusTableTemplateSchema = object().shape({
   type: string().required(ElementType.StatusTable),
   id: string().required(),
   to: string().required(),
+});
+
+const measureDetailsTemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureDetails),
+  title: string().required(),
+  id: string().required(),
 });
 
 const measureFooterSchema = object().shape({
