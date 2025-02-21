@@ -41,7 +41,7 @@ const editModalComponent = (
       selectedReport={
         {
           name: "report name thing",
-          year: "2026",
+          year:"2026",
           options: {
             cahps: "true",
             hciidd: "true",
@@ -123,7 +123,7 @@ describe("Test dropdown for year", () => {
       name: "Select the quality measure set reporting year",
     }) as HTMLSelectElement;
     expect(dropdown).toBeInTheDocument();
-    expect(dropdown.options.length).toBe(2);
+    expect(dropdown.options.length).toBe(1);
   });
 
   test("Simulate selecting a year", () => {

@@ -17,10 +17,7 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   // TO-DO to update when we add template versioning by year
-  const dropdownYears = [
-    { label: "2026", value: "2026" },
-    { label: "2027", value: "2027" },
-  ];
+  const dropdownYears = [{ label: "2026", value: "2026" }];
 
   // add validation to formJson
   const form = useForm({
