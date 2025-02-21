@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MeasureTableElement } from "./MeasureTable";
-import { mockUseStore } from "utils/testing/setupJest";
+import { mockMeasureTemplate, mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
-import { ElementType, PageElement } from "types";
+import { ElementType, MeasurePageTemplate, PageElement } from "types";
 import { MemoryRouter } from "react-router-dom";
 
 jest.mock("utils/state/useStore");
@@ -14,6 +14,16 @@ const mockedMeasureTableElement = {
   type: ElementType.MeasureTable,
   measureDisplay: "required",
 };
+
+jest.mock("./MeasureReplacementModal", () => ({
+  MeasureReplacementModal: (
+    _measure: MeasurePageTemplate,
+    _onClose: Function,
+    onSubmit: Function
+  ) => {
+    onSubmit(mockMeasureTemplate);
+  },
+}));
 
 const MeasureTableComponent = (
   <MemoryRouter>
@@ -37,7 +47,7 @@ describe("Test MeasureTable", () => {
     await userEvent.click(substituteBtn);
   });
   it("Test Edit button", async () => {
-    const editBtn = screen.getByText("Edit");
+    const editBtn = screen.getAllByText("Edit")[0];
     await userEvent.click(editBtn);
   });
 });

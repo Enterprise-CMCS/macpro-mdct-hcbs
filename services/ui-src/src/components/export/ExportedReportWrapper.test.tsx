@@ -5,16 +5,19 @@ import { ElementType, FormPageTemplate, PageElement, PageType } from "types";
 const elements: PageElement[] = [
   {
     type: ElementType.Header,
+    id: "",
     text: "General Information",
   },
   {
     type: ElementType.Textbox,
+    id: "",
     label: "Contact title",
     helperText:
       "Enter person's title or a position title for CMS to contact with questions about this request.",
   },
   {
     type: ElementType.Date,
+    id: "",
     label: "Reporting period start date",
     helperText:
       "What is the reporting period Start Date applicable to the measure results?",

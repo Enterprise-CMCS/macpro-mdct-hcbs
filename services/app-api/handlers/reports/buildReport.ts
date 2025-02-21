@@ -59,9 +59,8 @@ export const buildReport = async (
       );
 
       return pages.map((page) => {
-        // TODO: make reusable. This will be used on the optional page when adding a measure.
         page.cmit = measure.cmit;
-        page.id += measure.cmit; // TODO this will need some logic if a measure is substituted
+        page.cmitId = measure.uid;
         page.stratified = measure.stratified;
         page.required = measure.required;
         page.elements = [
@@ -69,7 +68,6 @@ export const buildReport = async (
             findAndReplace(element, measure.uid)
           ),
         ];
-        // TODO: let the parent know what it relates to
         return page;
       });
     });

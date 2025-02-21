@@ -8,9 +8,16 @@ import {
   ErrorVerbiage,
   AdminBannerState,
 } from "types";
-import { Report } from "types/report";
+import { MeasurePageTemplate, Report } from "types/report";
 import React from "react";
-import { buildState, mergeAnswers, setPage } from "./management/reportState";
+import {
+  buildState,
+  clearMeasure,
+  mergeAnswers,
+  resetMeasure,
+  setPage,
+  substitute,
+} from "./management/reportState";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -68,7 +75,6 @@ const reportStore = (set: Function): HcbsReportState => ({
   modalOpen: false,
   modalComponent: undefined,
   lastSavedTime: undefined,
-  cmit: undefined,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -89,9 +95,23 @@ const reportStore = (set: Function): HcbsReportState => ({
     set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
       type: "setAnswers",
     }),
-  setMeasure: (cmit: number) => {
-    set(() => ({ cmit }), false, { type: "setMeasure" });
+  setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => {
+    set(() => substitute(report, selectMeasure), false, {
+      type: "setSubstitute",
+    });
   },
+  resetMeasure: (measureId: string) =>
+    set((state: HcbsReportState) => resetMeasure(measureId, state), false, {
+      type: "resetMeasure",
+    }),
+  clearMeasure: (measureId: string, ignoreList: string[]) =>
+    set(
+      (state: HcbsReportState) => clearMeasure(measureId, state, ignoreList),
+      false,
+      {
+        type: "resetMeasure",
+      }
+    ),
 });
 
 export const useStore = create(
