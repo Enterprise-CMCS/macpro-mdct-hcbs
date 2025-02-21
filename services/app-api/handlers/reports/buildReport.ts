@@ -100,6 +100,9 @@ export const findAndReplace = (element: PageElement, uid: string) => {
     if (element.type === ElementType.Header) {
       element.text = element.text.replace("{measureName}", cmitInfo.name);
     }
+    if (element.type === ElementType.MeasureDetails) {
+      element.title = element.title.replace("{measureName}", cmitInfo.name);
+    }
   }
   return element;
 };
