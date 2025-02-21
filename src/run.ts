@@ -142,7 +142,7 @@ async function install_deps_for_services(runner: LabeledProcessRunner) {
 async function deploy(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await install_deps_for_services(runner);
-  const deployCmd = ["sls", "deploy", "--stage", options.stage];
+  const deployCmd = ["sls", "deploy", "--stage", options.stage, "--verbose"];
   await runner.run_command_and_output("SLS Deploy", deployCmd, ".");
   await addSlsBucketPolicies();
 }
