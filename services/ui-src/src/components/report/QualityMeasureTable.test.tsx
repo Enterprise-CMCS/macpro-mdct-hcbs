@@ -9,7 +9,7 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({ ...mockUseStore });
 
 jest.mock("react-hook-form", () => ({
-  useWatch: jest.fn().mockReturnValue({ answer: "FFS" }),
+  useWatch: jest.fn().mockReturnValue("FFS"),
 }));
 
 const mockUseNavigate = jest.fn();
@@ -33,7 +33,7 @@ describe("Quality Measure Table", () => {
     expect(ffsButton).toBeEnabled();
 
     await userEvent.click(ffsButton!);
-    const ffsRoute = "/report/QMS/CO/mock-id/FFS960";
+    const ffsRoute = "/report/QMS/CO/mock-id/FFS-1";
     expect(mockUseNavigate).toHaveBeenCalledWith(ffsRoute);
 
     const mltssRow = screen.getByRole("row", { name: /MLTSS CMIT# 960/ });

@@ -17,6 +17,13 @@ export enum ReportStatus {
   IN_PROGRESS = "In progress",
   SUBMITTED = "Submitted",
 }
+
+export enum MeasureStatus {
+  NOT_STARTED = "Not started",
+  IN_PROGRESS = "In progress",
+  COMPLETE = "Complete",
+}
+
 export const isReportStatus = (status: string): status is ReportStatus => {
   return Object.values(ReportStatus).includes(status as ReportStatus);
 };
@@ -79,10 +86,12 @@ export type FormPageTemplate = {
 
 export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
+  cmitId: string;
   required?: boolean;
   stratified?: boolean;
   optional?: boolean;
-  substitutable?: boolean;
+  substitutable?: string;
+  status: MeasureStatus;
 }
 
 export interface StatusPageTemplate extends FormPageTemplate {
@@ -119,6 +128,7 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
+  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   QualityMeasureTable = "qualityMeasureTable",
@@ -136,6 +146,7 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
@@ -145,22 +156,26 @@ export type PageElement =
 
 export type HeaderTemplate = {
   type: ElementType.Header;
+  id: string;
   text: string;
 };
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
   text: string;
 };
 
 export type ParagraphTemplate = {
   type: ElementType.Paragraph;
+  id: string;
   title?: string;
   text: string;
 };
 
 export type TextboxTemplate = {
   type: ElementType.Textbox;
+  id: string;
   label: string;
   helperText?: string;
   answer?: string;
@@ -169,6 +184,7 @@ export type TextboxTemplate = {
 
 export type TextAreaBoxTemplate = {
   type: ElementType.TextAreaField;
+  id: string;
   label: string;
   helperText?: string;
   answer?: string;
@@ -176,6 +192,7 @@ export type TextAreaBoxTemplate = {
 
 export type DateTemplate = {
   type: ElementType.Date;
+  id: string;
   label: string;
   helperText: string;
   answer?: string;
@@ -183,26 +200,41 @@ export type DateTemplate = {
 
 export type AccordionTemplate = {
   type: ElementType.Accordion;
+  id: string;
   label: string;
   value: string;
 };
 
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
+  id: string;
   measureDisplay: "required" | "stratified" | "optional";
 };
 
 export type QualityMeasureTableTemplate = {
   type: ElementType.QualityMeasureTable;
+  id: string;
   measureDisplay: "quality";
 };
 
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
+  id: string;
 };
 
 export type RadioTemplate = {
   type: ElementType.Radio;
+  id: string;
+  label: string;
+  value: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string;
+  required?: string; //takes error message to display if not provided
+};
+
+export type ReportingRadioTemplate = {
+  type: ElementType.ReportingRadio;
+  id: string;
   label: string;
   value: ChoiceTemplate[];
   helperText?: string;
@@ -212,6 +244,7 @@ export type RadioTemplate = {
 
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
+  id: string;
   label: string;
   to: PageId;
 };
@@ -223,6 +256,7 @@ export type MeasureDetailsTemplate = {
 
 export type MeasureFooterTemplate = {
   type: ElementType.MeasureFooter;
+  id: string;
   prevTo: string;
   nextTo?: string;
   completeMeasure?: boolean;
@@ -292,18 +326,19 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  "LTSS-1",
-  "LTSS-2",
-  "LTSS-6",
-  "LTSS-7",
-  "LTSS-8",
-  "POM-1",
-  "POM-2",
-  "POM-3",
-  "POM-4",
-  "POM-5",
-  "POM-6",
-  "POM-7",
+  "LTSS-1" = "LTSS-1",
+  "LTSS-2" = "LTSS-2",
+  "LTSS-6" = "LTSS-6",
+  "LTSS-7" = "LTSS-7",
+  "LTSS-8" = "LTSS-8",
+  "FFS-1" = "FFS-1",
+  "POM-1" = "POM-1",
+  "POM-2" = "POM-2",
+  "POM-3" = "POM-3",
+  "POM-4" = "POM-4",
+  "POM-5" = "POM-5",
+  "POM-6" = "POM-6",
+  "POM-7" = "POM-7",
 }
 
 export interface FormComponent {

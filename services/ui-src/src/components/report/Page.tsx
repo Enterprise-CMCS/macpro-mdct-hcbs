@@ -19,6 +19,7 @@ import {
   TextField,
 } from "components";
 import { useStore } from "utils";
+import { ReportingRadioField } from "components/fields/ReportingRadioField";
 
 interface Props {
   elements: PageElement[];
@@ -45,6 +46,8 @@ export const Page = ({ elements }: Props) => {
         return accordionElement;
       case ElementType.Radio:
         return RadioField;
+      case ElementType.ReportingRadio:
+        return ReportingRadioField;
       case ElementType.ButtonLink:
         return buttonLinkElement;
       case ElementType.MeasureTable:
