@@ -115,6 +115,8 @@ const testReport: Report = {
     [MeasureTemplateName["FFS-1"]]: {
       id: "",
       title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       type: PageType.Measure,
       elements: [],
     },
