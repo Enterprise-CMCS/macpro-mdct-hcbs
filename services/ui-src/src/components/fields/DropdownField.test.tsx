@@ -76,9 +76,13 @@ describe("<DropdownField />", () => {
       fireEvent.change(dropdown, { target: { value: "2027" } });
 
       expect(mockSetValue).toHaveBeenCalledTimes(1);
-      expect(mockSetValue).toHaveBeenCalledWith("unique.form.key.answer", "2027", {
-        shouldValidate: true,
-      });
+      expect(mockSetValue).toHaveBeenCalledWith(
+        "unique.form.key.answer",
+        "2027",
+        {
+          shouldValidate: true,
+        }
+      );
     });
   });
 
