@@ -2,6 +2,7 @@ import { HcbsReportState } from "types";
 import { ParentPageTemplate, Report } from "types/report";
 import { putReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
+import { performClearMeasure, performResetMeasure } from "./reset";
 
 export const buildState = (report: Report | undefined) => {
   if (!report) return { report: undefined };
@@ -65,4 +66,32 @@ export const mergeAnswers = (answers: any, state: HcbsReportState) => {
 
   putReport(report); // Submit to API
   return { report, lastSavedTime: getLocalHourMinuteTime() };
+};
+
+/**
+ * Clear all nested content in the measure, preserving an In Progress state,
+ * and ignoring any fields with special treatment
+ */
+export const clearMeasure = (
+  measureId: string,
+  state: HcbsReportState,
+  ignoreList: string[]
+) => {
+  if (!state.report) return;
+  const report = structuredClone(state.report);
+  performClearMeasure(measureId, report, ignoreList);
+  putReport(report); // Submit to API
+  return { report };
+};
+
+/**
+ * Hard reset a measure back to the Not Started state
+ */
+export const resetMeasure = (measureId: string, state: HcbsReportState) => {
+  if (!state.report) return;
+  const report = structuredClone(state.report);
+
+  performResetMeasure(measureId, report);
+  putReport(report); // Submit to API
+  return { report };
 };

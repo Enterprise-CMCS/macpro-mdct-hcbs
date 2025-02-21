@@ -32,9 +32,11 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "general-info-header",
           text: "General Information",
         },
         {
+          id: "contact-name",
           type: ElementType.Textbox,
           label: "Contact name",
           helperText:
@@ -42,6 +44,7 @@ export const qmsReportTemplate: ReportTemplate = {
         },
         {
           type: ElementType.Textbox,
+          id: "contact-email",
           label: "Contact email address",
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",
@@ -56,46 +59,19 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "required-header",
           text: "Required Measure Results",
         },
         {
           type: ElementType.Accordion,
+          id: "required-instructions",
           label: "Instructions",
           value: "I am an accordion",
         },
         {
           type: ElementType.MeasureTable,
+          id: "required-measures",
           measureDisplay: "required",
-        },
-      ],
-    },
-    {
-      id: "req-measure-result-modal",
-      title: "Select measure",
-      sidebar: true,
-      type: PageType.Modal,
-      elements: [
-        {
-          type: ElementType.Header,
-          text: "Select measure",
-        },
-        {
-          type: ElementType.Paragraph,
-          text: "Select the correct version of the quality measure.",
-        },
-        {
-          type: ElementType.Radio,
-          label: "Which quality measure will be reported?",
-          value: [
-            {
-              label: "{Measure name version 1}",
-              value: "measure-1",
-            },
-            {
-              label: "{Measure name version 2}",
-              value: "measure-2",
-            },
-          ],
         },
       ],
     },
@@ -107,15 +83,18 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "optional-header",
           text: "Optional Measure Results",
         },
         {
           type: ElementType.Accordion,
+          id: "optional-instructions",
           label: "Instructions",
           value: "I am an accordion",
         },
         {
           type: ElementType.MeasureTable,
+          id: "optional-measures",
           measureDisplay: "optional",
         },
       ],
@@ -129,20 +108,24 @@ export const qmsReportTemplate: ReportTemplate = {
       elements: [
         {
           type: ElementType.Header,
+          id: "review-header",
           text: "Review & Submit",
         },
         {
           type: ElementType.Paragraph,
+          id: "review-text",
           title: "Ready to Submit?",
           text: "Double check that everything in your QMS Report is accurate. You will be able to make edits after submitting if you contact your [CMS representative] to unlock your report while it is in “Submitted” status.",
         },
         {
           type: ElementType.Paragraph,
+          id: "review-compliance",
           title: "Compliance review",
           text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
         },
         {
           type: ElementType.StatusTable,
+          id: "review-status",
           to: "review-submit",
         },
       ],

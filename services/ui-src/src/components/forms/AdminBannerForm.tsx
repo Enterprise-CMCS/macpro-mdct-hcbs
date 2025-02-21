@@ -62,6 +62,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
             <TextField
               element={{
                 type: ElementType.Textbox,
+                id: "",
                 label: "Title text",
               }}
               formkey={"bannerTitle"}
@@ -69,6 +70,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
             <TextField
               element={{
                 type: ElementType.Textbox,
+                id: "",
                 label: "Description text",
               }}
               formkey={"bannerDescription"}
@@ -76,6 +78,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
             <TextField
               element={{
                 type: ElementType.Textbox,
+                id: "",
                 label: "Link",
                 helperText: "Optional",
               }}
@@ -84,6 +87,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
             <DateField
               element={{
                 type: ElementType.Date,
+                id: "",
                 label: "Start date",
                 helperText: "",
               }}
@@ -92,6 +96,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
             <DateField
               element={{
                 type: ElementType.Date,
+                id: "",
                 label: "End date",
                 helperText: "",
               }}
