@@ -123,6 +123,7 @@ export enum ElementType {
   MeasureTable = "measureTable",
   QualityMeasureTable = "qualityMeasureTable",
   StatusTable = "statusTable",
+  MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
 }
 
@@ -139,6 +140,7 @@ export type PageElement =
   | MeasureTableTemplate
   | QualityMeasureTableTemplate
   | StatusTableTemplate
+  | MeasureDetailsTemplate
   | MeasureFooterTemplate;
 
 export type HeaderTemplate = {
@@ -212,6 +214,11 @@ export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   label: string;
   to: PageId;
+};
+
+export type MeasureDetailsTemplate = {
+  type: ElementType.MeasureDetails;
+  title: string;
 };
 
 export type MeasureFooterTemplate = {

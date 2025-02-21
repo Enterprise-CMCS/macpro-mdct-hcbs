@@ -82,16 +82,8 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
-        type: ElementType.SubHeader,
-        text: "Quality Measure Details:",
-      },
-      {
-        type: ElementType.Paragraph,
-        title: "Measure Name: POM: People Live in Integrated Environments",
-        text:
-          "CMIT number: CMIT #1822" +
-          "Steward: CQL" +
-          "Collection Method: Survey",
+        type: ElementType.MeasureDetails,
+        title: "{measureName}",
       },
       {
         type: ElementType.SubHeader,
