@@ -195,6 +195,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -272,6 +273,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -379,6 +381,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -508,6 +511,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -637,6 +641,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -766,6 +771,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -883,6 +889,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -1000,6 +1007,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -1128,6 +1136,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -1229,6 +1238,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -1357,6 +1367,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -1485,6 +1496,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
@@ -1586,6 +1598,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additonal notes/comments (optional)",
