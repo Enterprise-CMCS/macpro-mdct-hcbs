@@ -39,7 +39,7 @@ export const radioSchema = object().shape({
 const pageElementSchema = lazy((element: PageElement): any => {
   switch (element?.type) {
     case ElementType.Textbox:
-      if (element.label.includes("email address")) {
+      if (element.label?.includes("email")) {
         return emailSchema;
       }
       return textboxSchema;
