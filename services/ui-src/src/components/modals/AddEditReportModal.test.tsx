@@ -141,11 +141,8 @@ describe("Test dropdown for year", () => {
 });
 
 describe("Test submit", () => {
-  beforeEach(() => {
-    render(addModalComponent);
-  });
-
   it("Simulate submitting modal", async () => {
+    render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
       name: "QMS report name Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
     });
@@ -160,6 +157,18 @@ describe("Test submit", () => {
     await userEvent.click(submitBtn);
 
     expect(mockReportHandler).toHaveBeenCalled();
+  });
+
+  it("Simulate submitting an edited report", async () => {
+    render(editModalComponent);
+
+    const nameTextbox = screen.getByRole("textbox", {
+      name: "QMS report name Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
+    });
+    await userEvent.type(nameTextbox, "mock-edit-report");
+
+    const submitBtn = screen.getByText("Save");
+    await userEvent.click(submitBtn);
   });
 });
 
