@@ -31,6 +31,8 @@ export const ReportPageWrapper = () => {
     resolver: yupResolver(elementsValidateSchema),
   });
 
+  // console.log("METHODS GET VALUES", methods.getValues());
+
   const navigate = useNavigate();
 
   const { handleSubmit, reset } = methods;
@@ -43,6 +45,7 @@ export const ReportPageWrapper = () => {
   }, [report, pageMap, pageId]);
 
   const handleBlur = (data: any) => {
+    console.log("DATA", data);
     if (!report) return;
     setAnswers(data);
   };

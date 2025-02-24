@@ -70,7 +70,7 @@ export const RadioField = (props: PageElementProps) => {
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value);
+    form.setValue(key, event.target.value, { shouldValidate: true });
     form.setValue(`${props.formkey}.type`, radio.type);
     form.setValue(`${props.formkey}.label`, radio.label);
   };
@@ -80,6 +80,7 @@ export const RadioField = (props: PageElementProps) => {
   const elementErrors = formErrorState?.[props.formkey] as {
     answer: FieldError;
   };
+  // console.log("RADIO ERRORS", formErrorState);
   const errorMessage = elementErrors?.answer?.message;
   const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
   const labelText = radio.label;

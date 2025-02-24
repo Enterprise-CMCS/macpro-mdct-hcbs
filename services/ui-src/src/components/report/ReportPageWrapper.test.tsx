@@ -1,4 +1,11 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import {
+  screen,
+  render,
+  waitFor,
+  fireEvent,
+  act,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   ElementType,
   MeasurePageTemplate,
@@ -150,5 +157,45 @@ describe("ReportPageWrapper", () => {
 
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
+  });
+});
+
+describe("page validation", () => {
+  beforeEach(() => {
+    mockUseParams.mockReturnValue({
+      reportType: "QMS",
+      state: "NJ",
+      reportId: "QMSNJ123",
+    });
+  });
+  test("shows errors if fields are not filled out on blur", async () => {
+    render(<ReportPageWrapper />);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
+
+    const contactTitleInput = screen.getByLabelText("Contact title");
+
+    // blur when the user hasn't input anything
+    await act(async () => {
+      fireEvent.blur(contactTitleInput);
+    });
+
+    const responseIsRequiredErrorMessage = screen.getAllByText(
+      "A response is required",
+      { exact: false }
+    );
+
+    //expect validation errors since the required field is blank
+    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
+    expect(responseIsRequiredErrorMessage.length).toBe(1);
+
+    // user fills in the required field
+    await userEvent.type(contactTitleInput, "example title");
+
+    await act(async () => {
+      fireEvent.blur(contactTitleInput);
+    });
+
+    // Errors go away when user fills out the required field
+    expect(responseIsRequiredErrorMessage.length).toBe(0);
   });
 });
