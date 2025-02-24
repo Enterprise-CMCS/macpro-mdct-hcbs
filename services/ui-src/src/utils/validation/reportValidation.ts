@@ -15,22 +15,25 @@ export const emailSchema = object().shape({
   label: string().notRequired(),
 });
 
+export const radioWithChildrenSchema = object().shape({
+  answer: string().required("A response is required"),
+  type: string().notRequired(),
+  label: string().notRequired(),
+  value: array().of(
+    object().shape({
+      checkedChildren: array().of(
+        object().shape({
+          answer: string().required("A response is required"),
+        })
+      ),
+    })
+  ),
+});
+
 export const radioSchema = object().shape({
   answer: string().required("A response is required"),
   type: string().notRequired(),
   label: string().notRequired(),
-  value: array()
-    .notRequired()
-    .of(
-      object().shape({
-        // TODO: fix issue where checked children gets hidden and not cleared
-        checkedChildren: array().of(
-          object().shape({
-            answer: string().required("you have a bad checked child"),
-          })
-        ),
-      })
-    ),
 });
 
 const pageElementSchema = lazy((element: PageElement): any => {
@@ -46,9 +49,10 @@ const pageElementSchema = lazy((element: PageElement): any => {
       // TODO: make date schema
       return textboxSchema;
     case ElementType.Radio:
-      console.log("HEY WHAT GOING ON HERE", element);
-      // return radioSchema;
-      return mixed().notRequired();
+      if (element.value) {
+        return radioWithChildrenSchema;
+      }
+      return radioSchema;
     default:
       // if not one of the above types, there is no need to validate the element
       return mixed().notRequired();
@@ -57,10 +61,4 @@ const pageElementSchema = lazy((element: PageElement): any => {
 
 export const elementsValidateSchema = object().shape({
   elements: array().of(pageElementSchema).notRequired(),
-  /**
-   * TODO: make delivery method radio work
-   * "delivery-method-radio": object().shape({
-   *     answer: string().required("A response is required"),
-   * }),
-   */
 });

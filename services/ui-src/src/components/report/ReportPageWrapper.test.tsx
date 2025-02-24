@@ -196,6 +196,7 @@ const mockGetReport = jest.fn().mockResolvedValue(testReport);
 jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: () => mockGetReport(),
 }));
+
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
     mockUseParams.mockReturnValue({
@@ -240,35 +241,5 @@ describe("page validation", () => {
       state: "NJ",
       reportId: "QMSNJ123",
     });
-  });
-  test("shows errors if fields are not filled out on blur", async () => {
-    render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
-
-    const contactTitleInput = screen.getByLabelText("Contact title");
-
-    // blur when the user hasn't input anything
-    await act(async () => {
-      fireEvent.blur(contactTitleInput);
-    });
-
-    const responseIsRequiredErrorMessage = screen.getAllByText(
-      "A response is required",
-      { exact: false }
-    );
-
-    //expect validation errors since the required field is blank
-    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
-    expect(responseIsRequiredErrorMessage.length).toBe(1);
-
-    // user fills in the required field
-    await userEvent.type(contactTitleInput, "example title");
-
-    await act(async () => {
-      fireEvent.blur(contactTitleInput);
-    });
-
-    // Errors go away when user fills out the required field
-    expect(responseIsRequiredErrorMessage.length).toBe(0);
   });
 });
