@@ -15,29 +15,37 @@ import {
   isMeasureTemplate,
   MeasurePageTemplate,
   MeasureTableTemplate,
+  PageType,
 } from "types";
 import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setMeasure, setModalComponent, setModalOpen } = useStore();
+  const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
   const selectedMeasures = measures.filter(
     (page) =>
-      (table.measureDisplay == "optional" && !page.required) ||
-      (table.measureDisplay == "required" && page.required) ||
-      (table.measureDisplay == "stratified" && page.stratified)
+      ((table.measureDisplay == "optional" && !page.required) ||
+        (table.measureDisplay == "required" && page.required) ||
+        (table.measureDisplay == "stratified" && page.stratified)) &&
+      page.type === PageType.Measure
   );
 
-  const buildModal = (cmit: number | undefined) => {
+  const onSubstitute = async (selectMeasure: MeasurePageTemplate) => {
+    if (report) setSubstitute(report, selectMeasure);
+
+    setModalOpen(false);
+  };
+
+  const buildModal = (measure: MeasurePageTemplate) => {
     const modal = MeasureReplacementModal(
-      cmit,
+      measure,
       () => setModalOpen(false), // Close Action
-      () => setModalOpen(false) // Submit
+      onSubstitute // Submit
     ); // This will need the whole measure eventually
     setModalComponent(modal);
   };
@@ -45,8 +53,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  const handleEditClick = (measureId: string, cmit: number | undefined) => {
-    setMeasure(cmit!);
+  const handleEditClick = (measureId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
     navigate(path);
   };
@@ -63,19 +70,14 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <Text>CMIT# {measure.cmit}</Text>
         </Td>
         <Td>
-          {measure.substitutable ? (
-            <Link onClick={() => buildModal(measure.cmit)}>
-              Substitute measure
-            </Link>
+          {measure.substitutable && measure.required ? (
+            <Link onClick={() => buildModal(measure)}>Substitute measure</Link>
           ) : null}
         </Td>
 
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button
-            variant="outline"
-            onClick={() => handleEditClick(measure.id, measure.cmit)}
-          >
+          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
             Edit
           </Button>
         </Td>
@@ -89,7 +91,8 @@ export const MeasureTableElement = (props: PageElementProps) => {
           <Th></Th>
           <Th>
             Measure Name <br />
-            CMIT Number
+            CMIT Number <br />
+            Status
           </Th>
         </Tr>
       </Thead>

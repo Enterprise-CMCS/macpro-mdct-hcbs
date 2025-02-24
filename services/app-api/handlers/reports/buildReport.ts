@@ -54,22 +54,25 @@ export const buildReport = async (
     }
 
     const measurePages = measures.map((measure) => {
-      // TODO: make reusable. This will be used on the optional page when adding a measure.
-      const page = structuredClone(
-        report.measureTemplates[measure.measureTemplate]
+      const pages = measure.measureTemplate.map((template) =>
+        structuredClone(report.measureTemplates[template])
       );
-      page.cmit = measure.cmit;
-      page.id += measure.cmit; // TODO this will need some logic if a measure is substituted
-      page.stratified = measure.stratified;
-      page.required = measure.required;
-      page.elements = [
-        ...page.elements.map((element) => findAndReplace(element, measure.uid)),
-      ];
-      // TODO: let the parent know what it relates to
-      return page;
+
+      return pages.map((page) => {
+        page.cmit = measure.cmit;
+        page.cmitId = measure.uid;
+        page.stratified = measure.stratified;
+        page.required = measure.required;
+        page.elements = [
+          ...page.elements.map((element) =>
+            findAndReplace(element, measure.uid)
+          ),
+        ];
+        return page;
+      });
     });
 
-    report.pages = report.pages.concat(measurePages);
+    report.pages = report.pages.concat(...measurePages);
   }
 
   /**

@@ -1,4 +1,9 @@
-import { ParentPageTemplate, PageData, Report } from "types/report";
+import {
+  ParentPageTemplate,
+  PageData,
+  Report,
+  MeasurePageTemplate,
+} from "types/report";
 import React from "react";
 import { BannerData, ErrorVerbiage, HcbsUser } from "types";
 
@@ -39,7 +44,6 @@ export interface HcbsReportState {
   modalOpen: boolean;
   modalComponent?: React.ReactFragment;
   lastSavedTime?: string;
-  cmit?: number;
 
   // ACTIONS
   setReport: (report?: Report) => void;
@@ -47,5 +51,7 @@ export interface HcbsReportState {
   setModalOpen: (modalOpen: boolean) => void;
   setModalComponent: (modalComponent: React.ReactFragment) => void;
   setAnswers: (answers: any) => void;
-  setMeasure: (cmit: number) => void;
+  clearMeasure: (measureId: string, ignoreList: string[]) => void;
+  resetMeasure: (measureId: string) => void;
+  setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => void;
 }
