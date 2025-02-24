@@ -125,9 +125,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -253,9 +257,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "FSS LTSS Measure Details",
+        id: "measure-information-subheader",
+        text: "FSS LTSS Measure Information",
       },
       {
         type: ElementType.TextAreaField,
@@ -297,9 +305,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -418,9 +430,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -541,9 +557,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -664,9 +684,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -787,9 +811,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -898,9 +926,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -1010,9 +1042,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -1105,9 +1141,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -1227,9 +1267,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -1349,9 +1393,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -1444,9 +1492,13 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,

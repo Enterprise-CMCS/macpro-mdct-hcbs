@@ -86,13 +86,12 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.MeasureDetails,
-        title: "{measureName}",
         id: "measure-details-section",
       },
       {
         type: ElementType.SubHeader,
-        text: "Measure Information",
         id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -208,9 +207,13 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
@@ -311,9 +314,13 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
@@ -414,9 +421,13 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
@@ -517,9 +528,13 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
@@ -620,9 +635,13 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
@@ -723,9 +742,13 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,

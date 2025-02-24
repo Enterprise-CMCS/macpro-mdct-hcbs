@@ -183,7 +183,6 @@ const statusTableTemplateSchema = object().shape({
 
 const measureDetailsTemplateSchema = object().shape({
   type: string().required(ElementType.MeasureDetails),
-  title: string().required(),
   id: string().required(),
 });
 
