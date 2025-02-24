@@ -1,11 +1,4 @@
-import {
-  screen,
-  render,
-  waitFor,
-  fireEvent,
-  act,
-} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { screen, render, waitFor } from "@testing-library/react";
 import {
   ElementType,
   MeasurePageTemplate,
