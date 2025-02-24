@@ -47,27 +47,32 @@ export const buildReport = async (
      * TODO is measure order important? May need to sort.
      * TODO could a measure be included by multiple rules? May need to deduplicate.
      */
-    const measures = report.measureLookup.defaultMeasures;
+
+    let measures = report.measureLookup.defaultMeasures;
+    if (report.options.pom) {
+      measures.push(...report.measureLookup.pomMeasures);
+    }
 
     const measurePages = measures.map((measure) => {
-      // TODO: make reusable. This will be used on the optional page when adding a measure.
-      const page = structuredClone(
-        report.measureTemplates[measure.measureTemplate]
+      const pages = measure.measureTemplate.map((template) =>
+        structuredClone(report.measureTemplates[template])
       );
-      page.cmit = measure.cmit;
-      page.id += measure.cmit; // TODO this will need some logic if a measure is substituted
-      page.stratified = measure.stratified;
-      page.required = measure.required;
-      page.elements = [
-        ...page.elements.map((element) =>
-          findAndReplace(element, measure.cmit)
-        ),
-      ];
-      // TODO: let the parent know what it relates to
-      return page;
+
+      return pages.map((page) => {
+        page.cmit = measure.cmit;
+        page.cmitId = measure.uid;
+        page.stratified = measure.stratified;
+        page.required = measure.required;
+        page.elements = [
+          ...page.elements.map((element) =>
+            findAndReplace(element, measure.uid)
+          ),
+        ];
+        return page;
+      });
     });
 
-    report.pages = report.pages.concat(measurePages);
+    report.pages = report.pages.concat(...measurePages);
   }
 
   /**
@@ -87,8 +92,8 @@ export const buildReport = async (
   return report;
 };
 
-export const findAndReplace = (element: PageElement, cmit: number) => {
-  const cmitInfo = CMIT_LIST.find((list) => list.cmit === cmit);
+export const findAndReplace = (element: PageElement, uid: string) => {
+  const cmitInfo = CMIT_LIST.find((list) => list.uid === uid);
   if (cmitInfo) {
     if (element.type === ElementType.Header) {
       element.text = element.text.replace("{measureName}", cmitInfo.name);

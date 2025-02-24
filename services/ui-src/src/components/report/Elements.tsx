@@ -14,10 +14,11 @@ import {
   AccordionTemplate,
   ButtonLinkTemplate,
   PageElement,
+  MeasurePageTemplate,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
-import { parseCustomHtml } from "utils";
+import { parseCustomHtml, useStore } from "utils";
 
 export interface PageElementProps {
   element: PageElement;
@@ -69,11 +70,22 @@ export const accordionElement = (props: PageElementProps) => {
 };
 
 export const buttonLinkElement = (props: PageElementProps) => {
-  const { reportType, state, reportId } = useParams();
+  const { reportType, state, reportId, pageId } = useParams();
+  const { report } = useStore();
+
   const navigate = useNavigate();
   const button = props.element as ButtonLinkTemplate;
+
+  const findPrevPage = () => {
+    const measure = report?.pages.find(
+      (measure) => measure.id === pageId
+    ) as MeasurePageTemplate;
+    return measure?.required ? "req-measure-result" : "optional-measure-result";
+  };
+
+  const page = button.to ?? findPrevPage();
   const nav = () =>
-    navigate(`/report/${reportType}/${state}/${reportId}/${button.to}`);
+    navigate(`/report/${reportType}/${state}/${reportId}/${page}`);
 
   return (
     <Button variant="return" onClick={() => nav()}>

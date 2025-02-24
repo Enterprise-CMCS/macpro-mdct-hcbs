@@ -93,6 +93,7 @@ export const AddEditReportModal = ({
             <TextField
               element={{
                 type: ElementType.Textbox,
+                id: "",
                 label: "QMS report name",
                 helperText:
                   "Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
@@ -114,6 +115,7 @@ export const AddEditReportModal = ({
             <RadioField
               element={{
                 type: ElementType.Radio,
+                id: "",
                 label:
                   "Does your state administer the HCBS CAHPS beneficiary survey?",
                 value: [
@@ -137,6 +139,7 @@ export const AddEditReportModal = ({
             <RadioField
               element={{
                 type: ElementType.Radio,
+                id: "",
                 label:
                   "Does your state administer the HCI-IDD beneficiary survey?",
                 value: [
@@ -160,6 +163,7 @@ export const AddEditReportModal = ({
             <RadioField
               element={{
                 type: ElementType.Radio,
+                id: "",
                 label:
                   "Does your state administer the NCI-AD beneficiary survey?",
                 value: [
@@ -183,6 +187,7 @@ export const AddEditReportModal = ({
             <RadioField
               element={{
                 type: ElementType.Radio,
+                id: "",
                 label: "Does your state administer the POM beneficiary survey?",
                 value: [
                   {

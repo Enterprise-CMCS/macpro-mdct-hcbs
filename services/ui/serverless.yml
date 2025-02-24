@@ -118,9 +118,6 @@ resources:
     S3Bucket:
       Type: AWS::S3::Bucket
       Properties:
-        WebsiteConfiguration:
-          IndexDocument: index.html
-          ErrorDocument: index.html
         BucketEncryption:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
@@ -144,7 +141,7 @@ resources:
           Statement:
             - Sid: AllowCloudFrontServicePrincipalReadOnly
               Action:
-              - 's3:GetObject'
+                - "s3:GetObject"
               Effect: Allow
               Principal:
                 Service: cloudfront.amazonaws.com
@@ -293,6 +290,13 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        VersioningConfiguration:
+          Status: Enabled
     WaflogsUploadBucketPolicy:
       Type: "AWS::S3::BucketPolicy"
       Properties:

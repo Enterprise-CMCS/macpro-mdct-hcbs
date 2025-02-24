@@ -291,6 +291,7 @@ const theme = extendTheme({
           },
         },
         return: {
+          color: "palette.primary",
           width: "fit-content",
           padding: "0",
           textDecoration: "none",

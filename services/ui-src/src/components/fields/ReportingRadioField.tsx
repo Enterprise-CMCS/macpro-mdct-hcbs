@@ -2,47 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { FieldError, useFormContext } from "react-hook-form";
-import { ChoiceTemplate, RadioTemplate } from "types";
-import { parseCustomHtml } from "utils";
+import { ReportingRadioTemplate } from "types";
+import { parseCustomHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
-import { Page } from "components/report/Page";
+import { formatChoices } from "./RadioField";
 import { ChoiceProps } from "@cmsgov/design-system/dist/types/ChoiceList/ChoiceList";
 
-export const formatChoices = (
-  parentKey: string,
-  choices: ChoiceTemplate[],
-  answer?: string
-): ChoiceProps[] => {
-  return choices.map((choice, choiceIndex) => {
-    if (!choice?.checkedChildren) {
-      return {
-        ...choice,
-        checked: choice.value === answer,
-        checkedChildren: [],
-      };
-    }
+export const ReportingRadioField = (props: PageElementProps) => {
+  const radio = props.element as ReportingRadioTemplate;
+  const { clearMeasure, currentPageId } = useStore();
 
-    const children = choice.checkedChildren.map((child, childIndex) => ({
-      ...child,
-      formKey: `${parentKey}.value.${choiceIndex}.checkedChildren.${childIndex}`,
-    }));
-
-    const checkedChildren = [
-      <Box sx={sx.children}>
-        <Page elements={children} />
-      </Box>,
-    ];
-
-    return {
-      ...choice,
-      checkedChildren,
-      checked: choice.value === answer,
-    };
-  });
-};
-
-export const RadioField = (props: PageElementProps) => {
-  const radio = props.element as RadioTemplate;
+  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
+    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+  );
 
   // get form context and register field
   const form = useFormContext();
@@ -51,10 +23,6 @@ export const RadioField = (props: PageElementProps) => {
     const options = { required: radio.required || false };
     form.register(key, options);
   }, []);
-
-  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
-    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
-  );
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -66,6 +34,11 @@ export const RadioField = (props: PageElementProps) => {
     });
     setDisplayValue(newValues);
     form.setValue(name, value, { shouldValidate: true });
+
+    if (value === "no") {
+      clearMeasure(currentPageId ?? "", [radio.id]);
+      return;
+    }
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,17 +71,13 @@ export const RadioField = (props: PageElementProps) => {
   );
 };
 
-const sx = {
-  children: {
-    padding: "0 22px",
-    border: "4px #0071BC solid",
-    borderWidth: "0 0 0 4px",
-    margin: "0 14px",
-    input: {
-      width: "240px",
-    },
-    textarea: {
-      width: "440px",
-    },
-  },
-};
+/*
+ * const sx = {
+ *   children: {
+ *     padding: "0 22px",
+ *     border: "4px #0071BC solid",
+ *     borderWidth: "0 0 0 4px",
+ *     margin: "0 14px",
+ *   },
+ * };
+ */
