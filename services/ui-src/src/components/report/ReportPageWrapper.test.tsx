@@ -233,13 +233,3 @@ describe("ReportPageWrapper", () => {
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
   });
 });
-
-describe("page validation", () => {
-  beforeEach(() => {
-    mockUseParams.mockReturnValue({
-      reportType: "QMS",
-      state: "NJ",
-      reportId: "QMSNJ123",
-    });
-  });
-});
