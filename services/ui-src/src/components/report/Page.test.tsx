@@ -23,6 +23,7 @@ jest.mock("react-hook-form", () => ({
     register: jest.fn(),
     getValues: jest.fn(),
   }),
+  useWatch: jest.fn(),
   get: jest.fn(),
 }));
 
@@ -42,57 +43,73 @@ const mockNavigate = jest.fn();
 const elements: PageElement[] = [
   {
     type: ElementType.Header,
+    id: "",
     text: "My Header",
   },
   {
     type: ElementType.SubHeader,
+    id: "",
     text: "My subheader",
   },
   {
     type: ElementType.Paragraph,
+    id: "",
     text: "Paragraph",
   },
   {
     type: ElementType.Textbox,
+    id: "",
     label: "labeled",
   },
   {
     type: ElementType.Date,
+    id: "",
     label: "date label",
     helperText: "can you read this?",
   },
   {
     type: ElementType.Accordion,
+    id: "",
     label: "Some text",
     value: "Other",
   },
   {
     type: ElementType.Radio,
+    id: "",
     label: "date label",
-    value: [{ label: "a", value: "1", checkedChildren: [] }],
+    value: [
+      { label: "a", value: "1", checkedChildren: [] },
+      { label: "b", value: "2" },
+    ],
   },
   {
     type: ElementType.ButtonLink,
     to: "report-page-id",
     label: "click me",
+    id: "",
   },
   {
     type: ElementType.MeasureTable,
     measureDisplay: "stratified",
+    id: "",
   },
   {
     type: ElementType.MeasureTable,
     measureDisplay: "required",
+    id: "",
   },
   {
     type: ElementType.MeasureTable,
+    id: "",
     measureDisplay: "optional",
   },
   {
     type: ElementType.StatusTable,
+    id: "",
   },
   {
     type: ElementType.QualityMeasureTable,
+    id: "",
     measureDisplay: "quality",
   },
 ];
@@ -100,18 +117,24 @@ const elements: PageElement[] = [
 const textFieldElement: PageElement[] = [
   {
     type: ElementType.Textbox,
+    id: "",
     label: "labeled",
   },
   {
     type: ElementType.Radio,
+    id: "",
     label: "radio button",
-    value: [{ label: "radio choice 1", value: "1", checkedChildren: [] }],
+    value: [
+      { label: "radio choice 1", value: "1", checkedChildren: [] },
+      { label: "radio choice 2", value: "2" },
+    ],
   },
 ];
 
 const dateFieldElement: PageElement[] = [
   {
     type: ElementType.Date,
+    id: "",
     label: "date label",
     helperText: "can you read this?",
   },
@@ -129,6 +152,7 @@ describe("Page Component with state user", () => {
         elements={[
           {
             type: ElementType.ButtonLink,
+            id: "",
             to: "report-page-id",
             label: "click me",
           },

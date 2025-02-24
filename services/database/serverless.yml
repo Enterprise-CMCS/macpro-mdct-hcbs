@@ -73,6 +73,9 @@ resources:
             KeyType: HASH
           - AttributeName: id
             KeyType: RANGE
+        Tags:
+          - Key: "cpm backup"
+            Value: "no-backup"
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     BannerTableName:

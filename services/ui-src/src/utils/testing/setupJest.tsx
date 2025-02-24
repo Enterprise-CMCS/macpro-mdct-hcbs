@@ -14,6 +14,7 @@ import {
   PageType,
   MeasureTemplateName,
   MeasurePageTemplate,
+  MeasureStatus,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -188,18 +189,31 @@ export const mockAdminUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-const mockMeasureTemplate: MeasurePageTemplate = {
-  id: "mock-template-id",
+export const mockMeasureTemplate: MeasurePageTemplate = {
+  id: "LTSS-1",
+  cmitId: "960",
+  status: MeasureStatus.IN_PROGRESS,
   title: "mock-title",
   type: PageType.Measure,
   required: true,
-  substitutable: true,
+  substitutable: "FASI-1",
+  elements: [],
+};
+
+export const mock2MeasureTemplate: MeasurePageTemplate = {
+  id: "FASI-1",
+  cmitId: "961",
+  status: MeasureStatus.IN_PROGRESS,
+  title: "mock-title-2",
+  type: PageType.Measure,
+  required: true,
   elements: [],
 };
 
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
-  cmit: 960,
+  currentPageId: "mock-template-id",
+  pageMap: new Map([["mock-template-id", 0]]),
   report: {
     id: "mock-id",
     type: ReportType.QMS,
@@ -208,9 +222,20 @@ export const mockReportStore: HcbsReportState = {
     year: 2026,
     options: {},
     state: "PR",
-    pages: [{ ...mockMeasureTemplate, cmit: 960 }],
+    pages: [
+      { ...mockMeasureTemplate, cmit: 960 },
+      { ...mock2MeasureTemplate, cmit: 961 },
+    ],
     measureLookup: {
-      defaultMeasures: [],
+      defaultMeasures: [
+        {
+          cmit: 960,
+          measureTemplate: [MeasureTemplateName["FFS-1"]],
+          required: true,
+          uid: "960",
+          stratified: false,
+        },
+      ],
       optionGroups: {},
     },
     measureTemplates: {
@@ -228,6 +253,14 @@ export const mockReportStore: HcbsReportState = {
       },
       [MeasureTemplateName["LTSS-7"]]: mockMeasureTemplate,
       [MeasureTemplateName["LTSS-8"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-2"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-3"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-4"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-5"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-6"]]: mockMeasureTemplate,
+      [MeasureTemplateName["POM-7"]]: mockMeasureTemplate,
     },
   },
   setReport: () => {},
@@ -235,7 +268,9 @@ export const mockReportStore: HcbsReportState = {
   setModalOpen: () => {},
   setModalComponent: () => {},
   setAnswers: () => {},
-  setMeasure: () => {},
+  resetMeasure: () => {},
+  clearMeasure: () => {},
+  setSubstitute: () => {},
 };
 
 // BOUND STORE
