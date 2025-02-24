@@ -66,7 +66,7 @@ export const RadioField = (props: PageElementProps) => {
     });
     setDisplayValue(newValues);
     /**
-     * This is really brittle but we need to unregister the current radio
+     * This is not ideal but we need to unregister the current radio
      * element before setting the again values.
      * There is (seemingly) a bug in react hook form with yup validation:
      *
