@@ -52,10 +52,16 @@ export const RadioField = (props: PageElementProps) => {
     form.register(key, options);
   }, []);
 
-  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
-    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
-  );
+  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
 
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(
+      formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+    );
+  }, [radio.answer]);
+
+  // OnChange handles setting the visual of the radio on click, outside the normal blur
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
