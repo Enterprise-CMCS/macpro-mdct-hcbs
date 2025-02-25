@@ -33,6 +33,7 @@ export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
 export { RadioField } from "./fields/RadioField";
+export { ReportingRadioField } from "./fields/ReportingRadioField";
 export { DateField } from "./fields/DateField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
