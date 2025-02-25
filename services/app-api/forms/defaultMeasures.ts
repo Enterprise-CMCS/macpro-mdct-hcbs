@@ -1485,6 +1485,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.SubHeader,
         text: "Quality Measures",
         id: "quality-measures-subheader",
@@ -1493,13 +1500,6 @@ export const defaultMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
         id: "quality-measure-table",
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
       },
     ],
   },
