@@ -194,6 +194,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.Radio,
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
@@ -263,6 +270,13 @@ export const defaultMeasureTemplates = {
         label: "Which Medicaid HCBS programs are being reported? (optional)",
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.MeasureFooter,
@@ -364,6 +378,13 @@ export const defaultMeasureTemplates = {
             ],
           },
         ],
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -489,6 +510,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.Radio,
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
@@ -610,6 +638,13 @@ export const defaultMeasureTemplates = {
             value: "yes",
           },
         ],
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -735,6 +770,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.Radio,
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
@@ -846,6 +888,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.Radio,
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
@@ -955,6 +1004,13 @@ export const defaultMeasureTemplates = {
             ],
           },
         ],
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -1069,6 +1125,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.SubHeader,
         text: "Quality Measures",
         id: "quality-measures-subheader",
@@ -1172,6 +1235,13 @@ export const defaultMeasureTemplates = {
             ],
           },
         ],
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -1296,6 +1366,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.Radio,
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
@@ -1408,6 +1485,13 @@ export const defaultMeasureTemplates = {
         ],
       },
       {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
+      },
+      {
         type: ElementType.SubHeader,
         text: "Quality Measures",
         id: "quality-measures-subheader",
@@ -1511,6 +1595,13 @@ export const defaultMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         measureDisplay: "quality",
         id: "quality-measure-table",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "additional-notes-field",
+        helperText:
+          "If applicable, add any notes or comments to provide context to the reported measure result",
+        label: "Additional notes/comments (optional)",
       },
     ],
   },
