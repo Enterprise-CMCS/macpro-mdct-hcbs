@@ -14,12 +14,12 @@ import {
   MeasureTableElement,
   QualityMeasureTableElement,
   RadioField,
+  ReportingRadioField,
   StatusTableElement,
   TextAreaField,
   TextField,
 } from "components";
 import { useStore } from "utils";
-import { ReportingRadioField } from "components/fields/ReportingRadioField";
 
 interface Props {
   elements: PageElement[];

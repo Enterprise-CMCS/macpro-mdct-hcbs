@@ -52,6 +52,10 @@ const elements: PageElement[] = [
     text: "My subheader",
   },
   {
+    type: ElementType.MeasureDetails,
+    id: "",
+  },
+  {
     type: ElementType.Paragraph,
     id: "",
     text: "Paragraph",
