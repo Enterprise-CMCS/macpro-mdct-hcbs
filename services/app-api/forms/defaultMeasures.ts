@@ -899,7 +899,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-following-tech-specs",
-        label: "Did you follow from the 2026 Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -1021,7 +1021,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-following-tech-specs",
-        label: "Did you follow from the 2026 Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -1144,7 +1144,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-following-tech-specs",
-        label: "Did you follow from the 2026 Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
