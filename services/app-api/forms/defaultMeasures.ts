@@ -189,7 +189,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -383,7 +383,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -505,7 +505,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -639,7 +639,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -773,7 +773,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -907,7 +907,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -1029,7 +1029,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -1152,7 +1152,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -1268,7 +1268,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -1401,7 +1401,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -1524,7 +1524,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
@@ -1630,7 +1630,7 @@ export const defaultMeasureTemplates = {
             value: "no",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
                 id: "measure-following-tech-specs-no-explain",
                 label: "Please explain the variance.",
               },
