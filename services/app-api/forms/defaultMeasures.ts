@@ -263,7 +263,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.SubHeader,
         id: "measure-information-subheader",
-        text: "FSS LTSS Measure Information",
+        text: "Measure Information",
       },
       {
         type: ElementType.TextAreaField,
