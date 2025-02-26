@@ -47,15 +47,15 @@ export const RadioField = (props: PageElementProps) => {
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
-  useEffect(() => {
-    const options = { required: radio.required || false };
-    form.register(key, options);
-    form.setValue(key, displayValue);
-  }, []);
-
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
     formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
   );
+
+  useEffect(() => {
+    const options = { required: radio.required || false };
+    form.setValue(key, radio.answer);
+    form.register(key, options);
+  }, []);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
