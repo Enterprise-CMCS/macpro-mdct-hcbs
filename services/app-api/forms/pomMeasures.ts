@@ -145,10 +145,10 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
-        id: "measure-context-text",
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additonal notes/comments (optional)",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -255,10 +255,10 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
-        id: "measure-context-text",
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additonal notes/comments (optional)",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -365,10 +365,10 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
-        id: "measure-context-text",
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additonal notes/comments (optional)",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -475,10 +475,10 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
-        id: "measure-context-text",
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additonal notes/comments (optional)",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -585,10 +585,10 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
-        id: "measure-context-text",
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additonal notes/comments (optional)",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -695,10 +695,10 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
-        id: "measure-context-text",
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additonal notes/comments (optional)",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
@@ -805,10 +805,10 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.TextAreaField,
-        id: "measure-context-text",
+        id: "additional-notes-field",
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additonal notes/comments (optional)",
+        label: "Additional notes/comments (optional)",
       },
       {
         type: ElementType.Radio,
