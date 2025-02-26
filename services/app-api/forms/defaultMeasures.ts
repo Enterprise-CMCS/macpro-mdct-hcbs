@@ -150,19 +150,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -180,7 +180,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -344,19 +344,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -374,7 +374,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -476,19 +476,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -496,7 +496,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -610,19 +610,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -630,7 +630,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -744,19 +744,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -764,7 +764,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -878,19 +878,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -899,7 +899,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-following-tech-specs",
-        label: "Did you follow from the [reportYear] Technical Specifications?",
+        label: "Did you follow from the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -1000,19 +1000,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -1021,7 +1021,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-following-tech-specs",
-        label: "Did you follow from the [reportYear] Technical Specifications?",
+        label: "Did you follow from the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -1123,19 +1123,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -1144,7 +1144,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-following-tech-specs",
-        label: "Did you follow from the [reportYear] Technical Specifications?",
+        label: "Did you follow from the 2026 Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -1229,19 +1229,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -1259,7 +1259,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -1362,19 +1362,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -1392,7 +1392,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -1495,19 +1495,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -1515,7 +1515,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
@@ -1601,19 +1601,19 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Were the reported measure results audited or validated?",
         id: "measure-audited-radio",
+        label: "Were the reported measure results audited or validated?",
         value: [
-          { label: "No, I am reporting on this measure", value: "no" },
+          { label: "No", value: "no" },
           {
-            label: "Yes, CMS is reporting on my behalf",
+            label: "Yes",
             value: "yes",
             checkedChildren: [
               {
-                type: ElementType.Textbox,
+                type: ElementType.TextAreaField,
+                id: "measure-audited-entity",
                 label:
-                  "What is the name of the agency or entity that audited or validated the report?",
-                id: "measure-auditing-agency",
+                  "Enter the name of the entity that conducted the audit or validation.",
               },
             ],
           },
@@ -1621,7 +1621,7 @@ export const defaultMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        label: "Did you follow the [reportYear] Technical Specifications?",
+        label: "Did you follow the 2026 Technical Specifications?",
         id: "measure-following-tech-specs",
         value: [
           { label: "Yes", value: "yes" },
