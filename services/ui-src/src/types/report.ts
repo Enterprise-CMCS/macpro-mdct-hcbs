@@ -124,6 +124,7 @@ export enum ElementType {
   Textbox = "textbox",
   TextAreaField = "textAreaField",
   Date = "date",
+  Dropdown = "dropdown",
   Accordion = "accordion",
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
@@ -143,6 +144,7 @@ export type PageElement =
   | TextboxTemplate
   | TextAreaBoxTemplate
   | DateTemplate
+  | DropdownTemplate
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
@@ -196,6 +198,16 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
+};
+
+export type DropdownTemplate = {
+  type: ElementType.Dropdown;
+  id: string;
+  label: string;
+  options: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string;
+  required?: string;
 };
 
 export type AccordionTemplate = {

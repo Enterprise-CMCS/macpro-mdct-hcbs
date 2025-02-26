@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { get, useFormContext } from "react-hook-form";
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { Box } from "@chakra-ui/react";
+import { PageElementProps } from "components/report/Elements";
+import { DropdownTemplate } from "types";
+import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
 import { parseCustomHtml } from "utils";
-import { TextboxTemplate } from "../../types/report";
-import { PageElementProps } from "../report/Elements";
 
-export const TextField = (props: PageElementProps) => {
-  const textbox = props.element as TextboxTemplate;
-  const defaultValue = textbox.answer ?? "";
+export const DropdownField = (props: PageElementProps) => {
+  const dropdown = props.element as DropdownTemplate;
+  const defaultValue = dropdown.answer ?? dropdown.options[0].value;
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
-    const options = { required: textbox.required || false };
-    form.register(key, options);
+    form.register(key);
     form.setValue(key, defaultValue);
   }, []);
 
@@ -35,22 +33,22 @@ export const TextField = (props: PageElementProps) => {
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
-  const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
-  const labelText = textbox.label;
+  const parsedHint =
+    dropdown.helperText && parseCustomHtml(dropdown.helperText);
+  const labelText = dropdown.label;
 
   return (
-    <Box>
-      <CmsdsTextField
-        id={key}
-        name={key}
-        label={labelText || ""}
-        hint={parsedHint}
-        onChange={onChangeHandler}
-        onBlur={onBlurHandler}
-        value={displayValue}
-        errorMessage={errorMessage}
-        {...props}
-      />
-    </Box>
+    <CmsdsDropdownField
+      id={key}
+      name={key}
+      label={labelText || ""}
+      hint={parsedHint}
+      onChange={onChangeHandler}
+      onBlur={onBlurHandler}
+      options={dropdown.options}
+      errorMessage={errorMessage}
+      value={displayValue}
+      {...props}
+    ></CmsdsDropdownField>
   );
 };

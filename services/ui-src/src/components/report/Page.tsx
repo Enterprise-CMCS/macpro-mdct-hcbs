@@ -7,8 +7,10 @@ import {
   buttonLinkElement,
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
+
 import {
   DateField,
+  DropdownField,
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
@@ -42,6 +44,8 @@ export const Page = ({ elements }: Props) => {
         return TextAreaField;
       case ElementType.Date:
         return DateField;
+      case ElementType.Dropdown:
+        return DropdownField;
       case ElementType.Accordion:
         return accordionElement;
       case ElementType.Radio:
