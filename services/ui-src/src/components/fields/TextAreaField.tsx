@@ -16,6 +16,7 @@ export const TextAreaField = (props: PageElementProps) => {
   const key = `${props.formkey}.answer`;
   useEffect(() => {
     form.register(key);
+    form.setValue(key, defaultValue);
   }, []);
 
   const onChangeHandler = async (

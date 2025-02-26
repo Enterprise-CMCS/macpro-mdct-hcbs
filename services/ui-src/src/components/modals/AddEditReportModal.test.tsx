@@ -14,6 +14,11 @@ const mockReportHandler = jest.fn();
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
+jest.mock("utils/api/requestMethods/report", () => ({
+  putReport: jest.fn(),
+  createReport: jest.fn(),
+}));
+
 const addModalComponent = (
   <RouterWrappedComponent>
     <AddEditReportModal
@@ -41,6 +46,7 @@ const editModalComponent = (
       selectedReport={
         {
           name: "report name thing",
+          year: "2026",
           options: {
             cahps: "true",
             hciidd: "true",
@@ -131,6 +137,38 @@ describe("Test dropdown for year", () => {
     }) as HTMLSelectElement;
     userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
+  });
+});
+
+describe("Test submit", () => {
+  it("Simulate submitting modal", async () => {
+    render(addModalComponent);
+    const nameTextbox = screen.getByRole("textbox", {
+      name: "QMS report name Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
+    });
+    await userEvent.type(nameTextbox, "mock-name");
+
+    const radioBtns = screen.getAllByLabelText("Yes");
+    for (const radio of radioBtns) {
+      await userEvent.click(radio);
+    }
+
+    const submitBtn = screen.getByText("Start new");
+    await userEvent.click(submitBtn);
+
+    expect(mockReportHandler).toHaveBeenCalled();
+  });
+
+  it("Simulate submitting an edited report", async () => {
+    render(editModalComponent);
+
+    const nameTextbox = screen.getByRole("textbox", {
+      name: "QMS report name Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
+    });
+    await userEvent.type(nameTextbox, "mock-edit-report");
+
+    const submitBtn = screen.getByText("Save");
+    await userEvent.click(submitBtn);
   });
 });
 

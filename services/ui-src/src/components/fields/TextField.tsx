@@ -17,6 +17,7 @@ export const TextField = (props: PageElementProps) => {
   useEffect(() => {
     const options = { required: textbox.required || false };
     form.register(key, options);
+    form.setValue(key, defaultValue);
   }, []);
 
   const onChangeHandler = async (
