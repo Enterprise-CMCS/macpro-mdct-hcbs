@@ -5,7 +5,6 @@ import { ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
 import { ReportOptions } from "types/report";
-// import { Dropdown } from "@cmsgov/design-system";
 
 export const AddEditReportModal = ({
   activeState,

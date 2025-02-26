@@ -50,6 +50,7 @@ export const RadioField = (props: PageElementProps) => {
   useEffect(() => {
     const options = { required: radio.required || false };
     form.register(key, options);
+    form.setValue(key, displayValue);
   }, []);
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(

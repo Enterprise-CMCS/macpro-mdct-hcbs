@@ -7,7 +7,7 @@ import { parseCustomHtml } from "utils";
 
 export const DropdownField = (props: PageElementProps) => {
   const dropdown = props.element as DropdownTemplate;
-  const defaultValue = dropdown.answer ?? "";
+  const defaultValue = dropdown.answer ?? dropdown.options[0].value;
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
   // get form context and register field
@@ -15,6 +15,7 @@ export const DropdownField = (props: PageElementProps) => {
   const key = `${props.formkey}.answer`;
   useEffect(() => {
     form.register(key);
+    form.setValue(key, defaultValue);
   }, []);
 
   const onChangeHandler = async (

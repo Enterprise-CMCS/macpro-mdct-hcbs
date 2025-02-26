@@ -75,7 +75,8 @@ describe("<DropdownField />", () => {
 
       fireEvent.change(dropdown, { target: { value: "2027" } });
 
-      expect(mockSetValue).toHaveBeenCalledTimes(1);
+      //a hydrate at the start + value change = 2 times
+      expect(mockSetValue).toHaveBeenCalledTimes(2);
       expect(mockSetValue).toHaveBeenCalledWith(
         "unique.form.key.answer",
         "2027",
