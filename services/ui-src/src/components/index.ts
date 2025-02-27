@@ -32,13 +32,12 @@ export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
-export { RadioField } from "./fields/RadioField";
-export { ReportingRadioField } from "./fields/ReportingRadioField";
 export { DateField } from "./fields/DateField";
 export { DropdownField } from "./fields/DropdownField";
+export { RadioField } from "./fields/RadioField";
+export { ReportingRadioField } from "./fields/ReportingRadioField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
-export { ReportingRadioField } from "./fields/ReportingRadioField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";

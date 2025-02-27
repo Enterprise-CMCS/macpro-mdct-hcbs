@@ -7,7 +7,6 @@ import {
   buttonLinkElement,
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
-
 import {
   DateField,
   DropdownField,
