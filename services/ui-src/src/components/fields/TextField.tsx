@@ -20,6 +20,11 @@ export const TextField = (props: PageElementProps) => {
     form.setValue(key, defaultValue);
   }, []);
 
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(textbox.answer ?? "");
+  }, [textbox.answer]);
+
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
