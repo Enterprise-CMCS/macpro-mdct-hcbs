@@ -12,6 +12,7 @@ const mockRhfMethods = {
   setValue: mockSetValue,
   getValues: jest.fn(),
   trigger: mockTrigger,
+  unregister: jest.fn(),
 };
 const mockUseFormContext = useFormContext as unknown as jest.Mock<
   typeof useFormContext

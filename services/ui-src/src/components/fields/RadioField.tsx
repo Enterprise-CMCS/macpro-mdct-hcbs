@@ -73,11 +73,29 @@ export const RadioField = (props: PageElementProps) => {
       return choice;
     });
     setDisplayValue(newValues);
+    /**
+     * This is not ideal but we need to unregister the current radio
+     * element before setting the again values.
+     * There is (seemingly) a bug in react hook form with yup validation:
+     *
+     * If a child of a radio choice has errors and then
+     * the child element gets cleared from the page by switching to
+     * radio option that doesn't have children, the children errors do
+     * not get cleared from the form and it breaks so we have to clear here
+     * manually by doing unregister.
+     *
+     * If there's a bug with saving radio values, it's probably this line.
+     */
+    form.unregister(props.formkey);
     form.setValue(name, value, { shouldValidate: true });
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value);
+    form.setValue(key, event.target.value, { shouldValidate: true });
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
   };
 
   // prepare error message, hint, and classes

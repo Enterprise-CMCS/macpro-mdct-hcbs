@@ -1,4 +1,10 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import {
+  screen,
+  render,
+  waitFor,
+  act,
+  fireEvent,
+} from "@testing-library/react";
 import {
   ElementType,
   MeasurePageTemplate,
@@ -41,6 +47,11 @@ const testReport: Report = {
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
+        },
+        {
+          type: ElementType.Textbox,
+          id: "another-textbox",
+          label: "Another textbox",
         },
       ],
     },
@@ -189,6 +200,7 @@ const mockGetReport = jest.fn().mockResolvedValue(testReport);
 jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: () => mockGetReport(),
 }));
+
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
     mockUseParams.mockReturnValue({
@@ -223,5 +235,34 @@ describe("ReportPageWrapper", () => {
 
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
+  });
+});
+
+describe("Page validation", () => {
+  beforeEach(() => {
+    mockUseParams.mockReturnValue({
+      reportType: "QMS",
+      state: "NJ",
+      reportId: "QMSNJ123",
+    });
+  });
+  test("form should display error when text field is blurred with no input", async () => {
+    render(<ReportPageWrapper />);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
+
+    const contactTitleInput = screen.getByLabelText("Another textbox");
+
+    // blur the textbox without entering anything
+    await act(async () => {
+      fireEvent.blur(contactTitleInput);
+    });
+
+    // validation error will appear since textbox is empty
+    const responseIsRequiredErrorMessage = screen.getAllByText(
+      "A response is required",
+      { exact: false }
+    );
+    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
+    expect(responseIsRequiredErrorMessage.length).toBe(1);
   });
 });
