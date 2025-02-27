@@ -12,7 +12,7 @@ export const svgFilters = {
     "brightness(0) saturate(100%) invert(91%) sepia(0%) saturate(89%) hue-rotate(162deg) brightness(97%) contrast(93%);",
 };
 
-const theme = extendTheme({
+export const theme = extendTheme({
   sizes: {
     appMax: "100vw",
     basicPageWidth: "48rem",
