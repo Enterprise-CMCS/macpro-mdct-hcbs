@@ -111,7 +111,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -218,7 +218,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-reporting-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -325,7 +325,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -432,7 +432,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -539,7 +539,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -646,7 +646,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -753,7 +753,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
