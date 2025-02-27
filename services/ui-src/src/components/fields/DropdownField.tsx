@@ -18,6 +18,11 @@ export const DropdownField = (props: PageElementProps) => {
     form.setValue(key, defaultValue);
   }, []);
 
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(dropdown.answer ?? dropdown.options[0].value);
+  }, [dropdown.answer]);
+
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

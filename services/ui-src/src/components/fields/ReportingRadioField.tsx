@@ -12,9 +12,14 @@ export const ReportingRadioField = (props: PageElementProps) => {
   const radio = props.element as ReportingRadioTemplate;
   const { clearMeasure, currentPageId } = useStore();
 
-  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
-    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
-  );
+  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
+
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(
+      formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+    );
+  }, [radio.answer]);
 
   // get form context and register field
   const form = useFormContext();

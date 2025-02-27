@@ -20,12 +20,12 @@ import closeIcon from "assets/icons/close/icon_close_primary.svg";
  */
 
 export const ReportModal = () => {
-  const { modalOpen, modalComponent, setModalOpen } = useStore();
+  const { modalOpen, modalHeader, modalComponent, setModalOpen } = useStore();
   return (
     <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Substitute Measure</ModalHeader>
+        <ModalHeader>{modalHeader}</ModalHeader>
         <Button
           className="close"
           leftIcon={<Image src={closeIcon} alt="Close" />}
