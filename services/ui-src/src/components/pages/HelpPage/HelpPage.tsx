@@ -39,7 +39,7 @@ export const HelpPage = () => {
         </HelpCard>
       </Flex>
       <Box>
-        <Accordion allowToggle={true} allowMultiple={true}>
+        <Accordion allowMultiple={true} defaultIndex={[0, 1]}>
           <AccordionItem
             label="How do I log into my IDM account?"
             sx={sx.accordionItem}

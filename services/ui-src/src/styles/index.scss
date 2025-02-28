@@ -87,6 +87,10 @@ p:active {
   background-color: inherit;
 }
 
+p {
+  margin-block: 0;
+}
+
 a,
 button {
   &:focus {
