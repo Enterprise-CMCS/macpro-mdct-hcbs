@@ -58,20 +58,21 @@ describe("<DropdownField />", () => {
   describe("Test DropdownField basic functionality", () => {
     test("DropdownField is visible", () => {
       render(dropdownFieldComponent);
-      const dropdown = screen.getByRole("combobox", {
-        name: "test-dropdown-field helper text",
-      }) as HTMLSelectElement;
+      const dropdown = screen.getAllByLabelText(
+        "test-dropdown-field"
+      )[0] as HTMLSelectElement;
       expect(dropdown).toBeInTheDocument();
-      expect(dropdown.options.length).toBe(2);
+
+      expect(dropdown.options.length).toBe(3);
     });
 
     test("DropdownField should send updates to the Form", async () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockGetValues("");
       render(dropdownFieldComponent);
-      const dropdown = screen.getByRole("combobox", {
-        name: "test-dropdown-field helper text",
-      }) as HTMLSelectElement;
+      const dropdown = screen.getAllByLabelText(
+        "test-dropdown-field"
+      )[0] as HTMLSelectElement;
 
       fireEvent.change(dropdown, { target: { value: "2027" } });
 

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { AddEditReportModal } from "components";
@@ -124,17 +124,16 @@ describe("Test dropdown for year", () => {
   });
 
   test("Assert dropdown options are rendered", () => {
-    const dropdown = screen.getByRole("combobox", {
-      name: "Select the quality measure set reporting year",
-    }) as HTMLSelectElement;
+    const dropdown = screen.getByRole("button", {
+      name: "2026 Select the quality measure set reporting year",
+    });
     expect(dropdown).toBeInTheDocument();
-    expect(dropdown.options.length).toBe(1);
   });
 
-  test("Simulate selecting a year", () => {
-    const dropdown = screen.getByRole("combobox", {
-      name: "Select the quality measure set reporting year",
-    }) as HTMLSelectElement;
+  test("Simulate selecting a year", async () => {
+    const dropdown = screen.getAllByLabelText(
+      "Select the quality measure set reporting year"
+    )[0] as HTMLSelectElement;
     userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
   });
