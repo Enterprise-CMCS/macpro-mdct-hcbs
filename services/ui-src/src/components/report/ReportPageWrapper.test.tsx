@@ -1,4 +1,4 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, act } from "@testing-library/react";
 import {
   ElementType,
   MeasurePageTemplate,
@@ -214,13 +214,14 @@ describe("ReportPageWrapper", () => {
     expect(screen.getByText("Loading")).toBeTruthy(); // To be updated with real loading page
   });
   test("should render if report exists", async () => {
-    render(<ReportPageWrapper />);
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
 
     await waitFor(() => {
       expect(screen.queryAllByText("General Information")).toBeDefined();
     });
-
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
   });

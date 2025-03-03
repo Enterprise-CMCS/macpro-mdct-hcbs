@@ -295,9 +295,9 @@ export const mockUseReadOnlyUserStore: HcbsUserState & AdminBannerState = {
 
 // ROUTER
 
-export const RouterWrappedComponent: React.FC = ({ children }) => (
-  <Router>{children}</Router>
-);
+export const RouterWrappedComponent: React.FC<{ children: any }> = ({
+  children,
+}) => <Router>{children}</Router>;
 
 // LAUNCHDARKLY
 
