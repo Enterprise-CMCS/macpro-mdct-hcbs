@@ -1,23 +1,20 @@
 /* eslint-disable multiline-comment-style */
+/* eslint-disable no-console */
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { execSync } from "child_process";
 import { addSlsBucketPolicies } from "./slsV4BucketPolicies.js";
+import {
+  getAllStacksForStage,
+  getCloudFormationTemplatesForStage,
+} from "./getCloudFormationTemplateForStage.js";
 
 // load .env
 dotenv.config();
 
-const deployedServices = [
-  // "database",
-  // "uploads",
-  // "topics",
-  "app-api",
-  "ui",
-  "ui-auth",
-  "ui-src",
-];
+const deployedServices = ["database", "app-api", "ui", "ui-auth", "ui-src"];
 
 // Function to update .env files using 1Password CLI
 function updateEnvFiles() {
@@ -89,20 +86,6 @@ async function run_api_locally(runner: LabeledProcessRunner) {
   );
 }
 
-// run_s3_locally runs s3 locally
-// async function run_s3_locally(runner: LabeledProcessRunner) {
-//   await runner.run_command_and_output(
-//     "s3 yarn",
-//     ["yarn", "install"],
-//     "services/uploads"
-//   );
-//   runner.run_command_and_output(
-//     "s3",
-//     ["serverless", "s3", "start", "--stage", "local"],
-//     "services/uploads"
-//   );
-// }
-
 // run_fe_locally runs the frontend and its dependencies locally
 async function run_fe_locally(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
@@ -147,6 +130,36 @@ async function deploy(options: { stage: string }) {
   await addSlsBucketPolicies();
 }
 
+async function getNotRetainedResources(
+  stage: string,
+  filters: { Key: string; Value: string }[] | undefined
+) {
+  const templates = await getCloudFormationTemplatesForStage(
+    `${process.env.REGION_A}`,
+    stage,
+    filters
+  );
+
+  const resourcesToCheck = {
+    [`database-${stage}`]: ["BannerTable", "QmsReportTable"],
+    [`ui-${stage}`]: ["CloudFrontDistribution"],
+    [`ui-auth-${stage}`]: ["CognitoUserPool"],
+  };
+
+  const notRetained: { templateKey: string; resourceKey: string }[] = [];
+  for (const [templateKey, resourceKeys] of Object.entries(resourcesToCheck)) {
+    resourceKeys.forEach((resourceKey) => {
+      const policy =
+        templates?.[templateKey]?.Resources?.[resourceKey]?.DeletionPolicy;
+      if (policy !== "Retain") {
+        notRetained.push({ templateKey, resourceKey });
+      }
+    });
+  }
+
+  return notRetained;
+}
+
 async function destroy_stage(options: {
   stage: string;
   service: string | undefined;
@@ -165,6 +178,44 @@ async function destroy_stage(options: {
       Key: "SERVICE",
       Value: `${options.service}`,
     });
+  }
+
+  const stacks = await getAllStacksForStage(
+    `${process.env.REGION_A}`,
+    options.stage,
+    filters
+  );
+
+  const protectedStacks = stacks
+    .filter((i: any) => i.EnableTerminationProtection)
+    .map((i: any) => i.StackName);
+
+  if (protectedStacks.length > 0) {
+    console.log(
+      `We cannot proceed with the destroy because the following stacks have termination protection enabled:\n${protectedStacks.join(
+        "\n"
+      )}`
+    );
+    return;
+  } else {
+    console.log(
+      "No stacks have termination protection enabled. Proceeding with the destroy."
+    );
+  }
+
+  let notRetained: { templateKey: string; resourceKey: string }[] = [];
+  if (["master", "val", "production"].includes(options.stage)) {
+    notRetained = await getNotRetainedResources(options.stage, filters);
+  }
+
+  if (notRetained.length > 0) {
+    console.log(
+      "Will not destroy the stage because it's an important stage and some important resources are not yet set to be retained:"
+    );
+    notRetained.forEach(({ templateKey, resourceKey }) =>
+      console.log(` - ${templateKey}/${resourceKey}`)
+    );
+    return;
   }
 
   await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
