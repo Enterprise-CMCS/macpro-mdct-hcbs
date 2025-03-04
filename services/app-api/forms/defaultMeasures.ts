@@ -111,6 +111,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Required Measures Dashboard",
+        to: "req-measure-result",
       },
       {
         type: ElementType.Header,
@@ -305,6 +306,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Required Measures Dashboard",
+        to: "req-measure-result",
       },
       {
         type: ElementType.Header,
@@ -867,6 +869,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Optional Measures Dashboard",
+        to: "optional-measure-result",
       },
       {
         type: ElementType.Header,
@@ -996,6 +999,7 @@ export const defaultMeasureTemplates = {
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Optional Measures Dashboard",
+        to: "optional-measure-result",
       },
       {
         type: ElementType.Header,

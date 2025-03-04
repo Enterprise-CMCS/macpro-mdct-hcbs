@@ -110,7 +110,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-audited-radio",
+        id: "measure-following-tech-specs",
         label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -159,7 +159,7 @@ export const pomMeasureTemplates = {
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
-          { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
           {
             label: "Managed Long-Term Services and Supports (MLTSS)",
             value: DeliverySystem.MLTSS,
@@ -224,7 +224,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-reporting-radio",
+        id: "measure-following-tech-specs",
         label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -273,7 +273,7 @@ export const pomMeasureTemplates = {
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
-          { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
           {
             label: "Managed Long-Term Services and Supports (MLTSS)",
             value: DeliverySystem.MLTSS,
@@ -338,7 +338,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-audited-radio",
+        id: "measure-following-tech-specs",
         label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -387,7 +387,7 @@ export const pomMeasureTemplates = {
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
-          { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
           {
             label: "Managed Long-Term Services and Supports (MLTSS)",
             value: DeliverySystem.MLTSS,
@@ -452,7 +452,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-audited-radio",
+        id: "measure-following-tech-specs",
         label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -501,7 +501,7 @@ export const pomMeasureTemplates = {
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
-          { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
           {
             label: "Managed Long-Term Services and Supports (MLTSS)",
             value: DeliverySystem.MLTSS,
@@ -566,7 +566,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-audited-radio",
+        id: "measure-following-tech-specs",
         label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -615,7 +615,7 @@ export const pomMeasureTemplates = {
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
-          { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
           {
             label: "Managed Long-Term Services and Supports (MLTSS)",
             value: DeliverySystem.MLTSS,
@@ -680,7 +680,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-audited-radio",
+        id: "measure-following-tech-specs",
         label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -729,7 +729,7 @@ export const pomMeasureTemplates = {
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
-          { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
           {
             label: "Managed Long-Term Services and Supports (MLTSS)",
             value: DeliverySystem.MLTSS,
@@ -794,7 +794,7 @@ export const pomMeasureTemplates = {
       },
       {
         type: ElementType.Radio,
-        id: "measure-audited-radio",
+        id: "measure-following-tech-specs",
         label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
@@ -843,7 +843,7 @@ export const pomMeasureTemplates = {
         id: "delivery-method-radio",
         label: "Which delivery systems were used to report this measure?",
         value: [
-          { label: "Fee-for-Service (FFS)", value: DeliverySystem.FFS },
+          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
           {
             label: "Managed Long-Term Services and Supports (MLTSS)",
             value: DeliverySystem.MLTSS,
