@@ -85,9 +85,13 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.ReportingRadio,
@@ -107,7 +111,7 @@ export const pomMeasureTemplates = {
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -175,6 +179,13 @@ export const pomMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         id: "quality-measure-table",
         measureDisplay: "quality",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
       },
     ],
   },
@@ -203,14 +214,18 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
         id: "measure-reporting-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -278,6 +293,13 @@ export const pomMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         id: "quality-measure-table",
         measureDisplay: "quality",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
       },
     ],
   },
@@ -306,14 +328,18 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -381,6 +407,13 @@ export const pomMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         id: "quality-measure-table",
         measureDisplay: "quality",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
       },
     ],
   },
@@ -409,14 +442,18 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -484,6 +521,13 @@ export const pomMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         id: "quality-measure-table",
         measureDisplay: "quality",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
       },
     ],
   },
@@ -512,14 +556,18 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -587,6 +635,13 @@ export const pomMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         id: "quality-measure-table",
         measureDisplay: "quality",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
       },
     ],
   },
@@ -615,14 +670,18 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -690,6 +749,13 @@ export const pomMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         id: "quality-measure-table",
         measureDisplay: "quality",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
       },
     ],
   },
@@ -718,14 +784,18 @@ export const pomMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
+        type: ElementType.MeasureDetails,
+        id: "measure-details-section",
+      },
+      {
         type: ElementType.SubHeader,
-        id: "measure-details-subheader",
-        text: "Measure Details",
+        id: "measure-information-subheader",
+        text: "Measure Information",
       },
       {
         type: ElementType.Radio,
         id: "measure-audited-radio",
-        label: "Did you follow the 2026 Technical Specifications?",
+        label: "Did you follow the [reportYear] Technical Specifications?",
         value: [
           { label: "Yes", value: "yes" },
           {
@@ -793,6 +863,13 @@ export const pomMeasureTemplates = {
         type: ElementType.QualityMeasureTable,
         id: "quality-measure-table",
         measureDisplay: "quality",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "req-measure-result",
+        completeMeasure: true,
+        clear: true,
       },
     ],
   },

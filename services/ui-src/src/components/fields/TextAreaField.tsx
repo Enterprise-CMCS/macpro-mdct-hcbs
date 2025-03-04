@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useFormContext } from "react-hook-form";
+import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
@@ -19,6 +19,11 @@ export const TextAreaField = (props: PageElementProps) => {
     form.setValue(key, defaultValue);
   }, []);
 
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(textbox.answer ?? "");
+  }, [textbox.answer]);
+
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -33,7 +38,7 @@ export const TextAreaField = (props: PageElementProps) => {
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[key]?.message;
+  const errorMessage: string | undefined = get(formErrorState, key)?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
 

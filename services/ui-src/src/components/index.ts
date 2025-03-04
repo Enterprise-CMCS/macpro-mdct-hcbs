@@ -32,11 +32,12 @@ export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
-export { RadioField } from "./fields/RadioField";
 export { DateField } from "./fields/DateField";
+export { DropdownField } from "./fields/DropdownField";
+export { RadioField } from "./fields/RadioField";
+export { ReportingRadioField } from "./fields/ReportingRadioField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
-export { DropdownField } from "./fields/DropdownField";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";
@@ -51,12 +52,17 @@ export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 // report
+export { MeasureDetailsElement } from "./report/MeasureDetails";
+export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
+export { MeasureTableElement } from "./report/MeasureTable";
 export { Page } from "./report/Page";
 export { PraDisclosure } from "./report/PraDisclosure";
+export { QualityMeasureTableElement } from "./report/QualityMeasureTable";
 export { ReportModal } from "./report/ReportModal";
 export { ReportPageWrapper } from "./report/ReportPageWrapper";
 export { Sidebar } from "./report/Sidebar";
+export { StatusTableElement } from "./report/StatusTable";
 export { SubnavBar } from "./report/SubnavBar";
 // menus
 export { Menu } from "./menus/Menu";

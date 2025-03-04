@@ -47,7 +47,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
       () => setModalOpen(false), // Close Action
       onSubstitute // Submit
     ); // This will need the whole measure eventually
-    setModalComponent(modal);
+    setModalComponent(modal, "Substitute Measure");
   };
 
   const { reportType, state, reportId } = useParams();

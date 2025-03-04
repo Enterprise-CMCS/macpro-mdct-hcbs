@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RadioField } from "components";
+import { ReportingRadioField } from "components";
 import { useFormContext } from "react-hook-form";
 import { ElementType, PageElement } from "types";
 import { testA11y } from "utils/testing/commonTests";
@@ -12,7 +12,6 @@ const mockRhfMethods = {
   setValue: mockSetValue,
   getValues: jest.fn(),
   trigger: mockTrigger,
-  unregister: jest.fn(),
 };
 const mockUseFormContext = useFormContext as unknown as jest.Mock<
   typeof useFormContext
@@ -28,17 +27,17 @@ const mockGetValues = (returnValue: any) =>
   }));
 
 const mockRadioElement = {
-  type: RadioField,
+  type: ReportingRadioField,
   label: "mock label",
   value: [
     {
-      label: "Choice 1",
-      value: "A",
+      label: "Yes",
+      value: "yes",
       checked: false,
     },
     {
-      label: "Choice 2",
-      value: "B",
+      label: "No",
+      value: "no",
       checkedChildren: [
         {
           type: ElementType.Textbox,
@@ -47,17 +46,12 @@ const mockRadioElement = {
       ],
       checked: false,
     },
-    {
-      label: "Choice 3",
-      value: "C",
-      checked: false,
-    },
   ],
 };
 
-const RadioFieldComponent = (
+const ReportingRadioFieldComponent = (
   <div data-testid="test-radio-list">
-    <RadioField
+    <ReportingRadioField
       element={mockRadioElement as unknown as PageElement}
       index={0}
       formkey="elements.0"
@@ -68,33 +62,33 @@ const RadioFieldComponent = (
 describe("<RadioField />", () => {
   test("RadioField renders as Radio", () => {
     mockGetValues(undefined);
-    render(RadioFieldComponent);
-    expect(screen.getByText("Choice 1")).toBeVisible();
+    render(ReportingRadioFieldComponent);
+    expect(screen.getByText("Yes")).toBeVisible();
     expect(screen.getByTestId("test-radio-list")).toBeVisible();
   });
 
   test("RadioField allows checking radio choices", async () => {
     mockGetValues(undefined);
-    render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 1") as HTMLInputElement;
+    render(ReportingRadioFieldComponent);
+    const firstRadio = screen.getByLabelText("Yes") as HTMLInputElement;
     await userEvent.click(firstRadio);
-    expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "A", {
+    expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "yes", {
       shouldValidate: true,
     });
   });
 
   test("RadioField displays children fields after selection", async () => {
     mockGetValues(undefined);
-    render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 2") as HTMLInputElement;
+    render(ReportingRadioFieldComponent);
+    const firstRadio = screen.getByLabelText("No") as HTMLInputElement;
     await userEvent.click(firstRadio);
-    expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "B", {
+    expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "no", {
       shouldValidate: true,
     });
     expect(screen.getByLabelText("mock-text-box")).toBeInTheDocument();
   });
 
-  testA11y(RadioFieldComponent, () => {
+  testA11y(ReportingRadioFieldComponent, () => {
     mockGetValues(undefined);
   });
 });

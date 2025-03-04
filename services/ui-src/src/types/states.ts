@@ -42,6 +42,7 @@ export interface HcbsReportState {
   parentPage?: PageData; // used for looking up curr & next page
   currentPageId?: string;
   modalOpen: boolean;
+  modalHeader?: string;
   modalComponent?: React.ReactFragment;
   lastSavedTime?: string;
 
@@ -49,7 +50,10 @@ export interface HcbsReportState {
   setReport: (report?: Report) => void;
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
-  setModalComponent: (modalComponent: React.ReactFragment) => void;
+  setModalComponent: (
+    modalComponent: React.ReactFragment,
+    modalHeader: string
+  ) => void;
   setAnswers: (answers: any) => void;
   clearMeasure: (measureId: string, ignoreList: string[]) => void;
   resetMeasure: (measureId: string) => void;

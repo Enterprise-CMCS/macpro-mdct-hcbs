@@ -73,6 +73,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   parentPage: undefined, // active parent (tracks prev/next page)
   currentPageId: undefined,
   modalOpen: false,
+  modalHeader: undefined,
   modalComponent: undefined,
   lastSavedTime: undefined,
 
@@ -87,8 +88,11 @@ const reportStore = (set: Function): HcbsReportState => ({
     }),
   setModalOpen: (modalOpen: boolean) =>
     set(() => ({ modalOpen }), false, { type: "setModalOpen" }),
-  setModalComponent: (modalComponent: React.ReactFragment) =>
-    set(() => ({ modalComponent, modalOpen: true }), false, {
+  setModalComponent: (
+    modalComponent: React.ReactFragment,
+    modalHeader: string
+  ) =>
+    set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
       type: "setModalComponent",
     }),
   setAnswers: (answers) =>
@@ -109,7 +113,7 @@ const reportStore = (set: Function): HcbsReportState => ({
       (state: HcbsReportState) => clearMeasure(measureId, state, ignoreList),
       false,
       {
-        type: "resetMeasure",
+        type: "clearMeasure",
       }
     ),
 });
