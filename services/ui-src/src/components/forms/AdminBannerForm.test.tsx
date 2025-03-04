@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { AdminBannerForm } from "components";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 import userEvent from "@testing-library/user-event";
@@ -149,7 +149,6 @@ describe("AdminBannerForm validation", () => {
     });
 
     // Errors go away when user fills out all fields
-    // expect(responseIsRequiredErrorMessage[0]).not.toBeVisible();
     expect(
       screen.queryAllByText("A response is required", { exact: false })
     ).toStrictEqual([]);
