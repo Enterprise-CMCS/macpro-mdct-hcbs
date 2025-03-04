@@ -1,6 +1,6 @@
 process.env.STAGE = "local";
-process.env.QMS_REPORT_TABLE_NAME = "local-qms-reports";
-process.env.BANNER_TABLE_NAME = "local-banners";
+process.env.QmsReportsTable = "local-qms-reports";
+process.env.BannersTable = "local-banners";
 
 /*
  * This mock mutes all logger output during tests! Including console errors!
