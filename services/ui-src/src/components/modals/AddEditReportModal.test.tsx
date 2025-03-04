@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { AddEditReportModal } from "components";
@@ -143,17 +143,19 @@ describe("Test submit", () => {
   it("Simulate submitting modal", async () => {
     render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
-      name: "QMS report name Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
+      name: "QMS report name",
     });
-    await userEvent.type(nameTextbox, "mock-name");
+    await act(async () => await userEvent.type(nameTextbox, "mock-name"));
 
-    const radioBtns = screen.getAllByLabelText("Yes");
-    for (const radio of radioBtns) {
-      await userEvent.click(radio);
-    }
+    await act(async () => {
+      const radioBtns = screen.getAllByLabelText("Yes");
+      for (const radio of radioBtns) {
+        await userEvent.click(radio);
+      }
+    });
 
     const submitBtn = screen.getByText("Start new");
-    await userEvent.click(submitBtn);
+    await act(async () => await userEvent.click(submitBtn));
 
     expect(mockReportHandler).toHaveBeenCalled();
   });
@@ -162,12 +164,14 @@ describe("Test submit", () => {
     render(editModalComponent);
 
     const nameTextbox = screen.getByRole("textbox", {
-      name: "QMS report name Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
+      name: "QMS report name",
     });
-    await userEvent.type(nameTextbox, "mock-edit-report");
+    await act(
+      async () => await userEvent.type(nameTextbox, "mock-edit-report")
+    );
 
     const submitBtn = screen.getByText("Save");
-    await userEvent.click(submitBtn);
+    await act(async () => await userEvent.click(submitBtn));
   });
 });
 

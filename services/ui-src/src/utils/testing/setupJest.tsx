@@ -36,6 +36,7 @@ Object.defineProperty(window, "matchMedia", {
 
 window.scrollBy = jest.fn();
 window.scrollTo = jest.fn();
+Element.prototype.scrollTo = jest.fn();
 
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
 jest.mock("@chakra-ui/transition", () => ({

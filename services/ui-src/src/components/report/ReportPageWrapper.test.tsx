@@ -248,7 +248,9 @@ describe("Page validation", () => {
     });
   });
   test("form should display error when text field is blurred with no input", async () => {
-    render(<ReportPageWrapper />);
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
 
     const contactTitleInput = screen.getByLabelText("Another textbox");
