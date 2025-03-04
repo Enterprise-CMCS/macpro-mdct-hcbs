@@ -1,5 +1,5 @@
 import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactNode } from "react";
 import { ChoiceList } from "@cmsgov/design-system";
 import { MeasurePageTemplate } from "types";
 
@@ -7,7 +7,7 @@ export const MeasureReplacementModal = (
   measure: MeasurePageTemplate,
   onClose: Function,
   onSubmit: Function
-): React.ReactFragment => {
+): ReactNode => {
   let selectMeasure: MeasurePageTemplate | undefined;
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

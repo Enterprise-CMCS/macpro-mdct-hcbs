@@ -1,12 +1,12 @@
 import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactNode } from "react";
 import { MeasurePageTemplate } from "types";
 
 export const MeasureClearModal = (
   measure: MeasurePageTemplate,
   onClose: Function,
   onSubmit: Function
-): React.ReactFragment => {
+): ReactNode => {
   const submitReset = () => {
     onSubmit(measure.id);
     onClose();
