@@ -8,7 +8,6 @@
     "test": "tests"
   },
   "scripts": {
-    "db:seed": "cd services/app-api && yarn run db:seed",
     "test": "cd tests/cypress && npm test && cd -",
     "test:ci": "cd tests/cypress && yarn run test:ci",
     "test:e2e": "playwright test",
@@ -25,7 +24,15 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs#readme",
   "dependencies": {
-    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0"
+    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
+    "@aws-sdk/client-cloudformation": "^3.678.0",
+    "@aws-sdk/client-cloudfront": "^3.678.0",
+    "@aws-sdk/client-lambda": "^3.678.0",
+    "@aws-sdk/client-s3": "^3.670.0",
+    "@aws-sdk/client-secrets-manager": "^3.670.0",
+    "aws-cdk-lib": "^2.161.1",
+    "constructs": "^10.3.0",
+    "source-map-support": "^0.5.21"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
@@ -37,6 +44,8 @@
     "@types/yargs": "^15.0.10",
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
+    "aws-cdk": "^2.1002.0",
+    "aws-cdk-local": "^2.19.2",
     "dotenv": "^8.2.0",
     "eslint": "^8.33.0",
     "eslint-config-airbnb": "^19.0.4",

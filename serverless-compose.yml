@@ -1,10 +1,10 @@
 services:
   # wave 1: no dependencies
-  database:
-    path: services/database
+  # database: # IMPORT DONE
+  # path: services/database
   # topics:
   #   path: services/topics
-  ui:
+  ui: # IMPORT DONE
     path: services/ui
   # uploads:
   #   path: services/uploads
@@ -17,7 +17,7 @@ services:
       QmsReportTableName: ${database.QmsReportTableName}
 
   # wave 3: depends on many
-  ui-auth:
+  ui-auth: # IMPORT DONE
     path: services/ui-auth
     params:
       ApiGatewayRestApiName: ${app-api.ApiGatewayRestApiName}

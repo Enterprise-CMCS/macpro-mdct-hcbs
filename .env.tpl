@@ -1,5 +1,9 @@
 API_URL=http://localhost:3030/local
-BANNER_TABLE_NAME=local-banners
+
+# Dynamo
+BannersTable=local-banners
+QmsReportsTable=local-qms-reports
+
 COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT_ID
 COGNITO_USER_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_ID
 POST_SIGNOUT_REDIRECT=http://localhost:3000/
