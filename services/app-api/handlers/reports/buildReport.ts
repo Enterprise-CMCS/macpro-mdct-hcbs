@@ -2,12 +2,13 @@ import KSUID from "ksuid";
 import { qmsReportTemplate } from "../../forms/qms";
 import { putReport } from "../../storage/reports";
 import {
-  ElementType,
-  PageElement,
   Report,
   ReportStatus,
   ReportOptions,
   ReportType,
+  isHeaderTemplate,
+  MeasureOptions,
+  MeasurePageTemplate,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { CMIT_LIST } from "../../forms/cmit";
@@ -49,26 +50,12 @@ export const buildReport = async (
       measures.push(...report.measureLookup.pomMeasures);
     }
 
-    const measurePages = measures.map((measure) => {
-      const pages = measure.measureTemplate.map((template) =>
-        structuredClone(report.measureTemplates[template])
+    for (let measure of measures) {
+      const pages = measure.measureTemplate.map((templateName) =>
+        reifyQmsPage(measure, report.measureTemplates[templateName])
       );
-
-      return pages.map((page) => {
-        page.cmit = measure.cmit;
-        page.cmitId = measure.uid;
-        page.stratified = measure.stratified;
-        page.required = measure.required;
-        page.elements = [
-          ...page.elements.map((element) =>
-            findAndReplace(element, measure.uid)
-          ),
-        ];
-        return page;
-      });
-    });
-
-    report.pages = report.pages.concat(...measurePages);
+      report.pages.push(...pages);
+    }
   }
 
   /**
@@ -88,12 +75,21 @@ export const buildReport = async (
   return report;
 };
 
-export const findAndReplace = (element: PageElement, uid: string) => {
-  const cmitInfo = CMIT_LIST.find((list) => list.uid === uid);
-  if (cmitInfo) {
-    if (element.type === ElementType.Header) {
-      element.text = element.text.replace("{measureName}", cmitInfo.name);
-    }
+/**
+ * Clone the given template, and fill it in with the necessary data.
+ */
+const reifyQmsPage = (
+  measure: MeasureOptions,
+  template: MeasurePageTemplate
+) => {
+  const page = structuredClone(template);
+  const cmitInfo = CMIT_LIST.find((cmit) => cmit.uid === measure.uid)!;
+  page.cmit = measure.cmit;
+  page.cmitId = measure.uid;
+  page.stratified = measure.stratified;
+  page.required = measure.required;
+  for (let header of page.elements.filter(isHeaderTemplate)) {
+    header.text.replace("{measureName}", cmitInfo.name);
   }
-  return element;
+  return page;
 };
