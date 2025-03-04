@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { AdminBannerForm } from "components";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 import userEvent from "@testing-library/user-event";
@@ -126,18 +126,19 @@ describe("AdminBannerForm validation", () => {
     const startDateInput = screen.getByLabelText("Start date");
     const endDateInput = screen.getByLabelText("End date");
 
+    // User clicks submit button without filling any fields in
     await act(async () => {
-      // User clicks submit button without filling any fields in
       await userEvent.click(submitButton);
+    });
+    const responseIsRequiredErrorMessage = screen.getAllByText(
+      "A response is required",
+      { exact: false }
+    );
 
-      const responseIsRequiredErrorMessage = screen.getAllByText(
-        "A response is required",
-        { exact: false }
-      );
+    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
+    expect(responseIsRequiredErrorMessage.length).toBe(4);
 
-      expect(responseIsRequiredErrorMessage[0]).toBeVisible();
-      expect(responseIsRequiredErrorMessage.length).toBe(4);
-
+    await act(async () => {
       // User then fills in all the fields and is able to submit
       await userEvent.type(titleInput, "mock title");
       await userEvent.type(descriptionInput, "mock description");
@@ -145,9 +146,13 @@ describe("AdminBannerForm validation", () => {
       await userEvent.type(startDateInput, "01/01/1970");
       await userEvent.type(endDateInput, "01/01/1970");
       await userEvent.click(submitButton);
-      // Errors go away when user fills out all fields
-      expect(responseIsRequiredErrorMessage[0]).not.toBeVisible();
     });
+
+    // Errors go away when user fills out all fields
+    // expect(responseIsRequiredErrorMessage[0]).not.toBeVisible();
+    expect(
+      screen.queryAllByText("A response is required", { exact: false })
+    ).toStrictEqual([]);
 
     const HOURS = 60 * 60 * 1000;
 
