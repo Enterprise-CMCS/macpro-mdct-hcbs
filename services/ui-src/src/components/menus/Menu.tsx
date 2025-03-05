@@ -87,12 +87,13 @@ const sx = {
     },
   },
   menuList: {
+    background: "palette.primary_darkest",
     padding: "0",
     border: "none",
-    background: "palette.primary_darkest",
     boxShadow: "0px 5px 16px rgba(0, 0, 0, 0.14)",
   },
   menuItem: {
+    background: "palette.primary_darkest",
     borderRadius: ".375rem",
     _focus: { background: "palette.primary_darker" },
     _hover: { background: "palette.primary_darker" },
