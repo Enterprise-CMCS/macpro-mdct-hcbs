@@ -1,11 +1,25 @@
 import {
   PageType,
-  ElementType,
   MeasureTemplateName,
   MeasurePageTemplate,
   MeasureOptions,
 } from "../types/reports";
-import { DeliverySystem } from "../utils/constants";
+import {
+  additionalNotesField,
+  didYouFollowSpecifications,
+  isTheStateReportingThisMeasure,
+  measureDetailsSection,
+  measureFooter,
+  measureHeader,
+  measureInformationSubheader,
+  measureInstructions,
+  qualityMeasuresSubheader,
+  qualityMeasureTable,
+  returnToOptionalDashboard,
+  returnToRequiredDashboard,
+  wereTheResultsAudited,
+  whichDeliverySystemsWereUsed,
+} from "./elements";
 
 export const pomMeasures: MeasureOptions[] = [
   {
@@ -59,134 +73,30 @@ export const pomMeasures: MeasureOptions[] = [
   },
 ];
 
-export const pomMeasureTemplates = {
+type TemplateMap = Partial<
+  Record<MeasureTemplateName, Omit<MeasurePageTemplate, "cmitId" | "status">>
+>;
+
+export const pomMeasureTemplates: TemplateMap = {
   [MeasureTemplateName["POM-1"]]: {
     id: "POM-1",
     title: "POM: People Live in Integrated Environments",
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      {
-        type: ElementType.ButtonLink,
-        id: "return-button",
-        label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
-      },
-      {
-        type: ElementType.Header,
-        id: "measure-header",
-        text: "{measureName}",
-      },
-      {
-        type: ElementType.Accordion,
-        id: "measure-instructions",
-        label: "Instructions",
-        value:
-          "[Optional instructional content that could support the user in completing this page]",
-      },
-      {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
-      },
-      {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-following-tech-specs",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-audited-radio",
-        label: "Were the reported measure results audited or validated?",
-        value: [
-          { label: "No", value: "no" },
-          {
-            label: "Yes",
-            value: "yes",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-audited-entity",
-                label:
-                  "Enter the name of the entity that conducted the audit or validation.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
-      },
-      {
-        type: ElementType.Radio,
-        id: "delivery-method-radio",
-        label: "Which delivery systems were used to report this measure?",
-        value: [
-          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
-          {
-            label: "Managed Long-Term Services and Supports (MLTSS)",
-            value: DeliverySystem.MLTSS,
-          },
-          {
-            label: "Both FFS and MLTSS (separate)",
-            value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
-          },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "quality-measures-subheader",
-        text: "Quality Measures",
-      },
-      {
-        type: ElementType.QualityMeasureTable,
-        id: "quality-measure-table",
-        measureDisplay: "quality",
-      },
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "req-measure-result",
-        completeMeasure: true,
-        clear: true,
-      },
+      returnToRequiredDashboard,
+      measureHeader,
+      measureInstructions,
+      measureDetailsSection,
+      measureInformationSubheader,
+      isTheStateReportingThisMeasure,
+      didYouFollowSpecifications,
+      wereTheResultsAudited,
+      additionalNotesField,
+      whichDeliverySystemsWereUsed,
+      qualityMeasuresSubheader,
+      qualityMeasureTable,
+      measureFooter,
     ],
   },
   [MeasureTemplateName["POM-2"]]: {
@@ -195,112 +105,18 @@ export const pomMeasureTemplates = {
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      {
-        type: ElementType.ButtonLink,
-        id: "return-button",
-        label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
-      },
-      {
-        type: ElementType.Header,
-        id: "measure-header",
-        text: "{measureName}",
-      },
-      {
-        type: ElementType.Accordion,
-        id: "measure-instructions",
-        label: "Instructions",
-        value:
-          "[Optional instructional content that could support the user in completing this page]",
-      },
-      {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-following-tech-specs",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-audited-radio",
-        label: "Were the reported measure results audited or validated?",
-        value: [
-          { label: "No", value: "no" },
-          {
-            label: "Yes",
-            value: "yes",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-audited-entity",
-                label:
-                  "Enter the name of the entity that conducted the audit or validation.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
-      },
-      {
-        type: ElementType.Radio,
-        id: "delivery-method-radio",
-        label: "Which delivery systems were used to report this measure?",
-        value: [
-          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
-          {
-            label: "Managed Long-Term Services and Supports (MLTSS)",
-            value: DeliverySystem.MLTSS,
-          },
-          {
-            label: "Both FFS and MLTSS (separate)",
-            value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
-          },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "quality-measures-subheader",
-        text: "Quality Measures",
-      },
-      {
-        type: ElementType.QualityMeasureTable,
-        id: "quality-measure-table",
-        measureDisplay: "quality",
-      },
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "req-measure-result",
-        completeMeasure: true,
-        clear: true,
-      },
+      returnToRequiredDashboard,
+      measureHeader,
+      measureInstructions,
+      measureDetailsSection,
+      measureInformationSubheader,
+      didYouFollowSpecifications,
+      wereTheResultsAudited,
+      additionalNotesField,
+      whichDeliverySystemsWereUsed,
+      qualityMeasuresSubheader,
+      qualityMeasureTable,
+      measureFooter,
     ],
   },
   [MeasureTemplateName["POM-3"]]: {
@@ -309,112 +125,18 @@ export const pomMeasureTemplates = {
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      {
-        type: ElementType.ButtonLink,
-        id: "return-button",
-        label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
-      },
-      {
-        type: ElementType.Header,
-        id: "measure-header",
-        text: "{measureName}",
-      },
-      {
-        type: ElementType.Accordion,
-        id: "measure-instructions",
-        label: "Instructions",
-        value:
-          "[Optional instructional content that could support the user in completing this page]",
-      },
-      {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-following-tech-specs",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-audited-radio",
-        label: "Were the reported measure results audited or validated?",
-        value: [
-          { label: "No", value: "no" },
-          {
-            label: "Yes",
-            value: "yes",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-audited-entity",
-                label:
-                  "Enter the name of the entity that conducted the audit or validation.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
-      },
-      {
-        type: ElementType.Radio,
-        id: "delivery-method-radio",
-        label: "Which delivery systems were used to report this measure?",
-        value: [
-          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
-          {
-            label: "Managed Long-Term Services and Supports (MLTSS)",
-            value: DeliverySystem.MLTSS,
-          },
-          {
-            label: "Both FFS and MLTSS (separate)",
-            value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
-          },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "quality-measures-subheader",
-        text: "Quality Measures",
-      },
-      {
-        type: ElementType.QualityMeasureTable,
-        id: "quality-measure-table",
-        measureDisplay: "quality",
-      },
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "req-measure-result",
-        completeMeasure: true,
-        clear: true,
-      },
+      returnToRequiredDashboard,
+      measureHeader,
+      measureInstructions,
+      measureDetailsSection,
+      measureInformationSubheader,
+      didYouFollowSpecifications,
+      wereTheResultsAudited,
+      additionalNotesField,
+      whichDeliverySystemsWereUsed,
+      qualityMeasuresSubheader,
+      qualityMeasureTable,
+      measureFooter,
     ],
   },
   [MeasureTemplateName["POM-4"]]: {
@@ -423,112 +145,18 @@ export const pomMeasureTemplates = {
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      {
-        type: ElementType.ButtonLink,
-        id: "return-button",
-        label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
-      },
-      {
-        type: ElementType.Header,
-        id: "measure-header",
-        text: "{measureName}",
-      },
-      {
-        type: ElementType.Accordion,
-        id: "measure-instructions",
-        label: "Instructions",
-        value:
-          "[Optional instructional content that could support the user in completing this page]",
-      },
-      {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-following-tech-specs",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-audited-radio",
-        label: "Were the reported measure results audited or validated?",
-        value: [
-          { label: "No", value: "no" },
-          {
-            label: "Yes",
-            value: "yes",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-audited-entity",
-                label:
-                  "Enter the name of the entity that conducted the audit or validation.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
-      },
-      {
-        type: ElementType.Radio,
-        id: "delivery-method-radio",
-        label: "Which delivery systems were used to report this measure?",
-        value: [
-          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
-          {
-            label: "Managed Long-Term Services and Supports (MLTSS)",
-            value: DeliverySystem.MLTSS,
-          },
-          {
-            label: "Both FFS and MLTSS (separate)",
-            value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
-          },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "quality-measures-subheader",
-        text: "Quality Measures",
-      },
-      {
-        type: ElementType.QualityMeasureTable,
-        id: "quality-measure-table",
-        measureDisplay: "quality",
-      },
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "req-measure-result",
-        completeMeasure: true,
-        clear: true,
-      },
+      returnToRequiredDashboard,
+      measureHeader,
+      measureInstructions,
+      measureDetailsSection,
+      measureInformationSubheader,
+      didYouFollowSpecifications,
+      wereTheResultsAudited,
+      additionalNotesField,
+      whichDeliverySystemsWereUsed,
+      qualityMeasuresSubheader,
+      qualityMeasureTable,
+      measureFooter,
     ],
   },
   [MeasureTemplateName["POM-5"]]: {
@@ -537,112 +165,18 @@ export const pomMeasureTemplates = {
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      {
-        type: ElementType.ButtonLink,
-        id: "return-button",
-        label: "Return to Required Measures Dashboard",
-        to: "req-measure-result",
-      },
-      {
-        type: ElementType.Header,
-        id: "measure-header",
-        text: "{measureName}",
-      },
-      {
-        type: ElementType.Accordion,
-        id: "measure-instructions",
-        label: "Instructions",
-        value:
-          "[Optional instructional content that could support the user in completing this page]",
-      },
-      {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-following-tech-specs",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-audited-radio",
-        label: "Were the reported measure results audited or validated?",
-        value: [
-          { label: "No", value: "no" },
-          {
-            label: "Yes",
-            value: "yes",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-audited-entity",
-                label:
-                  "Enter the name of the entity that conducted the audit or validation.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
-      },
-      {
-        type: ElementType.Radio,
-        id: "delivery-method-radio",
-        label: "Which delivery systems were used to report this measure?",
-        value: [
-          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
-          {
-            label: "Managed Long-Term Services and Supports (MLTSS)",
-            value: DeliverySystem.MLTSS,
-          },
-          {
-            label: "Both FFS and MLTSS (separate)",
-            value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
-          },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "quality-measures-subheader",
-        text: "Quality Measures",
-      },
-      {
-        type: ElementType.QualityMeasureTable,
-        id: "quality-measure-table",
-        measureDisplay: "quality",
-      },
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "req-measure-result",
-        completeMeasure: true,
-        clear: true,
-      },
+      returnToRequiredDashboard,
+      measureHeader,
+      measureInstructions,
+      measureDetailsSection,
+      measureInformationSubheader,
+      didYouFollowSpecifications,
+      wereTheResultsAudited,
+      additionalNotesField,
+      whichDeliverySystemsWereUsed,
+      qualityMeasuresSubheader,
+      qualityMeasureTable,
+      measureFooter,
     ],
   },
   [MeasureTemplateName["POM-6"]]: {
@@ -651,112 +185,18 @@ export const pomMeasureTemplates = {
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      {
-        type: ElementType.ButtonLink,
-        label: "Return to Optional Measures Dashboard",
-        id: "return-button",
-        to: "optional-measure-result",
-      },
-      {
-        type: ElementType.Header,
-        id: "measure-header",
-        text: "{measureName}",
-      },
-      {
-        type: ElementType.Accordion,
-        id: "measure-instructions",
-        label: "Instructions",
-        value:
-          "[Optional instructional content that could support the user in completing this page]",
-      },
-      {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-following-tech-specs",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-audited-radio",
-        label: "Were the reported measure results audited or validated?",
-        value: [
-          { label: "No", value: "no" },
-          {
-            label: "Yes",
-            value: "yes",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-audited-entity",
-                label:
-                  "Enter the name of the entity that conducted the audit or validation.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
-      },
-      {
-        type: ElementType.Radio,
-        id: "delivery-method-radio",
-        label: "Which delivery systems were used to report this measure?",
-        value: [
-          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
-          {
-            label: "Managed Long-Term Services and Supports (MLTSS)",
-            value: DeliverySystem.MLTSS,
-          },
-          {
-            label: "Both FFS and MLTSS (separate)",
-            value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
-          },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "quality-measures-subheader",
-        text: "Quality Measures",
-      },
-      {
-        type: ElementType.QualityMeasureTable,
-        id: "quality-measure-table",
-        measureDisplay: "quality",
-      },
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "req-measure-result",
-        completeMeasure: true,
-        clear: true,
-      },
+      returnToOptionalDashboard,
+      measureHeader,
+      measureInstructions,
+      measureDetailsSection,
+      measureInformationSubheader,
+      didYouFollowSpecifications,
+      wereTheResultsAudited,
+      additionalNotesField,
+      whichDeliverySystemsWereUsed,
+      qualityMeasuresSubheader,
+      qualityMeasureTable,
+      measureFooter,
     ],
   },
   [MeasureTemplateName["POM-7"]]: {
@@ -765,112 +205,18 @@ export const pomMeasureTemplates = {
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      {
-        type: ElementType.ButtonLink,
-        label: "Return to Optional Measures Dashboard",
-        id: "return-button",
-        to: "optional-measure-result",
-      },
-      {
-        type: ElementType.Header,
-        id: "measure-header",
-        text: "{measureName}",
-      },
-      {
-        type: ElementType.Accordion,
-        id: "measure-instructions",
-        label: "Instructions",
-        value:
-          "[Optional instructional content that could support the user in completing this page]",
-      },
-      {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-following-tech-specs",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-audited-radio",
-        label: "Were the reported measure results audited or validated?",
-        value: [
-          { label: "No", value: "no" },
-          {
-            label: "Yes",
-            value: "yes",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-audited-entity",
-                label:
-                  "Enter the name of the entity that conducted the audit or validation.",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "additional-notes-field",
-        helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
-      },
-      {
-        type: ElementType.Radio,
-        id: "delivery-method-radio",
-        label: "Which delivery systems were used to report this measure?",
-        value: [
-          { label: "Fee-For-Service (FFS)", value: DeliverySystem.FFS },
-          {
-            label: "Managed Long-Term Services and Supports (MLTSS)",
-            value: DeliverySystem.MLTSS,
-          },
-          {
-            label: "Both FFS and MLTSS (separate)",
-            value: [DeliverySystem.FFS, DeliverySystem.MLTSS].join(","),
-          },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "quality-measures-subheader",
-        text: "Quality Measures",
-      },
-      {
-        type: ElementType.QualityMeasureTable,
-        id: "quality-measure-table",
-        measureDisplay: "quality",
-      },
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "req-measure-result",
-        completeMeasure: true,
-        clear: true,
-      },
+      returnToOptionalDashboard,
+      measureHeader,
+      measureInstructions,
+      measureDetailsSection,
+      measureInformationSubheader,
+      didYouFollowSpecifications,
+      wereTheResultsAudited,
+      additionalNotesField,
+      whichDeliverySystemsWereUsed,
+      qualityMeasuresSubheader,
+      qualityMeasureTable,
+      measureFooter,
     ],
   },
-} as Record<MeasureTemplateName, MeasurePageTemplate>;
+};
