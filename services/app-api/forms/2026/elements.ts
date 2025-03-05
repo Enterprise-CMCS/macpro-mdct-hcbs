@@ -10,7 +10,7 @@ import {
   ReportingRadioTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
-} from "../types/reports";
+} from "../../types/reports";
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
   type: ElementType.ButtonLink,

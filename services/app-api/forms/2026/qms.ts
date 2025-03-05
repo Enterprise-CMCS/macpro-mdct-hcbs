@@ -5,7 +5,7 @@ import {
   ReportType,
   MeasureTemplateName,
   MeasurePageTemplate,
-} from "../types/reports";
+} from "../../types/reports";
 import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { measureTemplates } from "./measureTemplates";
 

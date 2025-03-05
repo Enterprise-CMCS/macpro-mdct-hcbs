@@ -1,5 +1,8 @@
 import KSUID from "ksuid";
-import { qmsReportTemplate } from "../../forms/qms";
+import {
+  getReportTemplate,
+  getCmitInfo,
+} from "../../forms/yearlyFormSelection";
 import { putReport } from "../../storage/reports";
 import {
   Report,
@@ -9,15 +12,11 @@ import {
   isHeaderTemplate,
   MeasureOptions,
   MeasurePageTemplate,
+  CMIT,
 } from "../../types/reports";
 import { User } from "../../types/types";
-import { CMIT_LIST } from "../../forms/cmit";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { logger } from "../../libs/debug-lib";
-
-const reportTemplates = {
-  [ReportType.QMS]: qmsReportTemplate,
-};
 
 export const buildReport = async (
   reportType: ReportType,
@@ -25,7 +24,9 @@ export const buildReport = async (
   reportOptions: ReportOptions,
   user: User
 ) => {
-  const report = structuredClone(reportTemplates[reportType]) as Report;
+  const year = reportOptions.year;
+  const report = structuredClone(getReportTemplate(reportType, year));
+  const cmitList = getCmitInfo(year);
   report.state = state;
   report.id = KSUID.randomSync().string;
   report.created = Date.now();
@@ -51,8 +52,9 @@ export const buildReport = async (
     }
 
     for (let measure of measures) {
+      const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
       const pages = measure.measureTemplate.map((templateName) =>
-        reifyQmsPage(measure, report.measureTemplates[templateName])
+        reifyQmsPage(measure, report.measureTemplates[templateName], cmitInfo)
       );
       report.pages.push(...pages);
     }
@@ -80,10 +82,10 @@ export const buildReport = async (
  */
 const reifyQmsPage = (
   measure: MeasureOptions,
-  template: MeasurePageTemplate
+  template: MeasurePageTemplate,
+  cmitInfo: CMIT
 ) => {
   const page = structuredClone(template);
-  const cmitInfo = CMIT_LIST.find((cmit) => cmit.uid === measure.uid)!;
   page.cmit = measure.cmit;
   page.cmitId = measure.uid;
   page.stratified = measure.stratified;

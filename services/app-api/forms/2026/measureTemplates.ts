@@ -3,7 +3,7 @@ import {
   ElementType,
   MeasureTemplateName,
   MeasurePageTemplate,
-} from "../types/reports";
+} from "../../types/reports";
 import {
   additionalNotesField,
   didYouFollowSpecifications,

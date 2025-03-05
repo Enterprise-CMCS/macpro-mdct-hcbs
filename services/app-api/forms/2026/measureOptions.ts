@@ -1,4 +1,4 @@
-import { MeasureTemplateName, MeasureOptions } from "../types/reports";
+import { MeasureTemplateName, MeasureOptions } from "../../types/reports";
 
 export const defaultMeasures: MeasureOptions[] = [
   {
