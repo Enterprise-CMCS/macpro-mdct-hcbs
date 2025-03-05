@@ -4,6 +4,7 @@ import {
   AccordionItem as AccordionItemRoot,
   AccordionPanel,
   Image,
+  SystemStyleObject,
   Text,
 } from "@chakra-ui/react";
 import plusIcon from "assets/icons/accordion/icon_plus.svg";
@@ -36,7 +37,7 @@ export const AccordionItem = ({ label, children, sx: sxOverride }: Props) => {
 interface Props {
   children?: ReactNode | ReactNode[];
   label?: string;
-  sx?: Object;
+  sx?: SystemStyleObject;
 }
 
 const sx = {
