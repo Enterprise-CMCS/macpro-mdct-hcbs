@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useBreakpoint, useStore } from "utils";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
@@ -20,6 +20,11 @@ export const Sidebar = () => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, setIsOpen] = useState<boolean>(isDesktop);
   const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
+
+  //TO FIX: temporary fix, for some reason isDesktop sometimes returns false so it messes with the sidebar on load
+  useEffect(() => {
+    setIsOpen(isDesktop);
+  }, [isDesktop])
 
   if (!report || !pageMap) {
     return null;
