@@ -1,3 +1,4 @@
+import { ComponentClass } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import { Box, Center, Heading, Spinner, Flex } from "@chakra-ui/react";
 import { useStore } from "utils";
@@ -18,7 +19,7 @@ export const ExportedReportPage = () => {
     ) || [];
 
   //package import issue, can be removed once we get to react >= 18.3.0 and types/react >= 18.3.0
-  const Helmet = HelmetImport as React.ComponentClass<HelmetProps>;
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   return (
     <Box>
