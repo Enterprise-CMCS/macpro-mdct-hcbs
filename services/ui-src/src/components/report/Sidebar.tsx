@@ -24,7 +24,7 @@ export const Sidebar = () => {
   //TO FIX: temporary fix, for some reason isDesktop sometimes returns false so it messes with the sidebar on load
   useEffect(() => {
     setIsOpen(isDesktop);
-  }, [isDesktop])
+  }, [isDesktop]);
 
   if (!report || !pageMap) {
     return null;
