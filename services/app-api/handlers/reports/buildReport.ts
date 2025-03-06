@@ -90,8 +90,17 @@ const reifyQmsPage = (
   page.cmitId = measure.uid;
   page.stratified = measure.stratified;
   page.required = measure.required;
-  for (let header of page.elements.filter(isHeaderTemplate)) {
-    header.text.replace("{measureName}", cmitInfo.name);
+  for (let i = 0; i < page.elements.length; i += 1) {
+    let element = page.elements[i];
+    if (isHeaderTemplate(element)) {
+      /*
+       * Many pages share the same `measureHeader` object, from elements.ts
+       * The extra clone ensures we only alter this page's header.
+       */
+      const clone = structuredClone(element);
+      clone.text = clone.text.replace("{measureName}", cmitInfo.name);
+      page.elements[i] = clone;
+    }
   }
   return page;
 };
