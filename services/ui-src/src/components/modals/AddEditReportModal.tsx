@@ -43,7 +43,7 @@ export const AddEditReportModal = ({
     } else {
       const reportOptions: ReportOptions = {
         name: userEnteredReportName,
-        year: formData.year.answer,
+        year: Number(formData.year.answer),
         options: {
           cahps: formData.cahps.answer == "true",
           hciidd: formData.hciidd.answer == "true",

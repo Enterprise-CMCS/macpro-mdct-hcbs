@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { render, screen, act } from "@testing-library/react";
 import { ApiProvider } from "./ApiProvider";
 
 const TestComponent = () => <div>Test</div>;

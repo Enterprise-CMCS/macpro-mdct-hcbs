@@ -241,20 +241,20 @@ export const defaultMeasureTemplates = {
   },
   [MeasureTemplateName["FFS-1"]]: {
     id: "FFS-1",
-    title: "LTSS-1: FFS LTSS Measure Results",
+    title: "LTSS-1: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
       {
         type: ElementType.ButtonLink,
         id: "return-button",
-        label: "Return to Required Measures Dashboard",
+        label: "Return to Measure Information",
         to: "LTSS-1",
       },
       {
         type: ElementType.Header,
         id: "measure-header",
-        text: "Fee-For-Service Measure Results",
+        text: "LTSS-1: Fee-For-Service (FFS LTSS)",
       },
       {
         type: ElementType.Accordion,
@@ -264,13 +264,9 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
         type: ElementType.SubHeader,
-        id: "measure-information-subheader",
-        text: "Measure Information",
+        id: "measure-subheader",
+        text: "Fee-For-Service Measure Results",
       },
       {
         type: ElementType.TextAreaField,
@@ -289,7 +285,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
-        prevTo: "LTSS-1960",
+        prevTo: "LTSS-1",
         completeSection: true,
       },
     ],

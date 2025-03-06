@@ -9,7 +9,7 @@ import {
   AdminBannerState,
 } from "types";
 import { MeasurePageTemplate, Report } from "types/report";
-import React from "react";
+import { ReactNode } from "react";
 import {
   buildState,
   clearMeasure,
@@ -88,10 +88,7 @@ const reportStore = (set: Function): HcbsReportState => ({
     }),
   setModalOpen: (modalOpen: boolean) =>
     set(() => ({ modalOpen }), false, { type: "setModalOpen" }),
-  setModalComponent: (
-    modalComponent: React.ReactFragment,
-    modalHeader: string
-  ) =>
+  setModalComponent: (modalComponent: ReactNode, modalHeader: string) =>
     set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
       type: "setModalComponent",
     }),
