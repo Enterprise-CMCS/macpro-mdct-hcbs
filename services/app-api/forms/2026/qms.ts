@@ -5,9 +5,9 @@ import {
   ReportType,
   MeasureTemplateName,
   MeasurePageTemplate,
-} from "../types/reports";
-import { defaultMeasures, defaultMeasureTemplates } from "./defaultMeasures";
-import { pomMeasures, pomMeasureTemplates } from "./pomMeasures";
+} from "../../types/reports";
+import { defaultMeasures, pomMeasures } from "./measureOptions";
+import { measureTemplates } from "./measureTemplates";
 
 export const qmsReportTemplate: ReportTemplate = {
   type: ReportType.QMS,
@@ -135,8 +135,9 @@ export const qmsReportTemplate: ReportTemplate = {
     defaultMeasures: defaultMeasures,
     pomMeasures: pomMeasures,
   },
-  measureTemplates: {
-    ...defaultMeasureTemplates,
-    ...pomMeasureTemplates,
-  } as Record<MeasureTemplateName, MeasurePageTemplate>,
+  // Note: These measure page templates do _not_ have `cmitId` or `status` properties.
+  measureTemplates: measureTemplates as Record<
+    MeasureTemplateName,
+    MeasurePageTemplate
+  >,
 };

@@ -228,6 +228,11 @@ export type HeaderTemplate = {
   id: string;
   text: string;
 };
+export const isHeaderTemplate = (
+  element: PageElement
+): element is HeaderTemplate => {
+  return element.type === ElementType.Header;
+};
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
