@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { DashboardPage } from "components";
 import {
   RouterWrappedComponent,
@@ -75,8 +75,10 @@ describe("DashboardPage with state user", () => {
 
   it("should render report data", async () => {
     const { container } = render(dashboardComponent);
-    await waitFor(() => {
-      expect(getReportsForState).toHaveBeenCalled();
+    await act(async () => {
+      await waitFor(() => {
+        expect(getReportsForState).toHaveBeenCalled();
+      });
     });
 
     const table = container.querySelector("table")!;

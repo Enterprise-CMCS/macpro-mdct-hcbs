@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { Dropdown, ChoiceList } from "@cmsgov/design-system";
+import {
+  Dropdown,
+  ChoiceList,
+  DropdownChangeObject,
+} from "@cmsgov/design-system";
 import { DropdownOptions } from "types";
 import { StateNames } from "../../constants";
 
@@ -10,7 +14,7 @@ export const AdminDashSelector = () => {
   const [selectedReport, setSelectedReport] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStateChange = (event: DropdownChangeObject) => {
     setSelectedState(event.target.value);
   };
 
@@ -58,14 +62,16 @@ export const AdminDashSelector = () => {
       </Heading>
 
       <form onSubmit={handleSubmit}>
-        <Dropdown
-          name="state"
-          id="state"
-          label="Select state or territory:"
-          options={dropdownStates}
-          onChange={handleStateChange}
-          value={selectedState}
-        />
+        <>
+          {Dropdown({
+            name: "state",
+            id: "state",
+            label: "Select state or territory:",
+            options: dropdownStates,
+            onChange: (change) => handleStateChange(change),
+            value: selectedState,
+          })}
+        </>
         <ChoiceList
           name="radio"
           type="radio"

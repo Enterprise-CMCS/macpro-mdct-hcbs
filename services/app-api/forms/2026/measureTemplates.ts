@@ -52,21 +52,26 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-1"]]: {
     id: "FFS-1",
-    title: "LTSS-1: FFS LTSS Measure Results",
+    title: "LTSS-1: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
       {
-        ...returnToRequiredDashboard,
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
         to: "LTSS-1",
       },
       {
         ...measureHeader,
-        text: "Fee-For-Service Measure Results",
+        text: "LTSS-1: Fee-For-Service (FFS LTSS)",
       },
       measureInstructions,
-      measureDetailsSection,
-      measureInformationSubheader,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Fee-For-Service Measure Results",
+      },
       {
         type: ElementType.TextAreaField,
         id: "measure-programs-text",
@@ -77,7 +82,7 @@ export const measureTemplates: Record<
       additionalNotesField,
       {
         ...measureFooter,
-        prevTo: "LTSS-1960",
+        prevTo: "LTSS-1",
         completeSection: true,
         clear: undefined,
       },

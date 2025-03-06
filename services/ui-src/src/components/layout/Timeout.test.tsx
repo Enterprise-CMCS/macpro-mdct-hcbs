@@ -1,5 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { Timeout } from "components";
 import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
 import {

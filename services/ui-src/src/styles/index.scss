@@ -1,6 +1,7 @@
 // necessary to render the UsaBanner correctly
 $image-path: "~@cmsgov/design-system/dist/images";
 @import "@cmsgov/design-system/dist/css/index";
+@import "variables";
 
 @mixin tabbed-focus {
   box-shadow: 0 0 0 3px #fff,
@@ -86,6 +87,10 @@ p:active {
   background-color: inherit;
 }
 
+p {
+  margin-block: 0;
+}
+
 a,
 button {
   &:focus {
@@ -139,7 +144,6 @@ button {
 
 .ds-c-label {
   margin: 0;
-  font-size: 14px;
   > span:first-of-type {
     font-size: 16px;
   }
