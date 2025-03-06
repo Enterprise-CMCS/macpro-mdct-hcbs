@@ -9,6 +9,18 @@ const formsByYear = {
   },
 };
 
+/**
+ * Find the year which best matches the requested year.
+ *
+ * Suppose we have the following keys in `formsByYear`: 2026, 2027, 2029.
+ * Then these years would be "closest":
+ * * 2025 and prior -> 2026
+ * * 2026  -> 2026
+ * * 2027  -> 2027
+ * * 2028  -> 2027
+ * * 2029  -> 2029
+ * * 2030 and later -> 2029
+ */
 const findClosestYear = (requestedYear: number) => {
   if (requestedYear in formsByYear) {
     return requestedYear as keyof typeof formsByYear;
