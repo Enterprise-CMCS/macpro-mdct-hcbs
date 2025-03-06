@@ -6,7 +6,7 @@ import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
-import { ChoiceProps } from "@cmsgov/design-system/dist/types/ChoiceList/ChoiceList";
+import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
 
 export const formatChoices = (
   parentKey: string,

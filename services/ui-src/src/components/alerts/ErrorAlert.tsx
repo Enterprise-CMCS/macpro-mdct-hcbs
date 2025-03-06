@@ -1,4 +1,4 @@
-import { Box, Collapse, CSSObject } from "@chakra-ui/react";
+import { Box, Collapse, SystemStyleObject } from "@chakra-ui/react";
 import { Alert } from "components";
 import { useRef } from "react";
 import { AlertTypes, ErrorVerbiage } from "types";
@@ -38,8 +38,8 @@ export const ErrorAlert = ({
 interface Props {
   error?: ErrorVerbiage;
   variant?: "inline" | "toast";
-  sxOverride?: CSSObject;
-  alertSxOverride?: CSSObject;
+  sxOverride?: SystemStyleObject;
+  alertSxOverride?: SystemStyleObject;
 }
 
 const sx = {

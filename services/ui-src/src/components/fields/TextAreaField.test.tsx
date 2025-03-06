@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { TextAreaField } from "components";
@@ -61,7 +61,7 @@ describe("<TextAreaField />", () => {
       render(textAreaFieldComponent);
       const textAreaField = screen.getByRole("textbox");
 
-      await userEvent.type(textAreaField, "hello[Tab]");
+      await act(async () => await userEvent.type(textAreaField, "hello[Tab]"));
 
       // 5 keystrokes + 1 blur + 1 hydrate = 7 calls
       expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(7);

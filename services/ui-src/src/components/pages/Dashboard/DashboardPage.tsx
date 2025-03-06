@@ -76,9 +76,8 @@ export const DashboardPage = () => {
         </Heading>
         <Accordion
           allowToggle={true}
-          allowMultiple={true}
           sx={sx.accordion}
-          defaultIndex={0} // sets the accordion to open by default
+          defaultIndex={[0]} // sets the accordion to open by default
         >
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
             <Box sx={sx.accordionPanel}>

@@ -1,6 +1,6 @@
 /* eslint-disable multiline-comment-style */
 
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { Amplify } from "aws-amplify";
@@ -64,7 +64,7 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
     timeout: 2, // seconds
   });
 
-  ReactDOM.render(
+  createRoot(document.getElementById("root")!).render(
     <ErrorBoundary FallbackComponent={Error}>
       <Router>
         <UserProvider>
@@ -77,8 +77,7 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
           </ApiProvider>
         </UserProvider>
       </Router>
-    </ErrorBoundary>,
-    document.getElementById("root")
+    </ErrorBoundary>
   );
 })().catch((e) => {
   throw e;

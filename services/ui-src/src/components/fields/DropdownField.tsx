@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { get, useFormContext } from "react-hook-form";
 import { PageElementProps } from "components/report/Elements";
 import { DropdownTemplate } from "types";
-import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
+import {
+  Dropdown as CmsdsDropdownField,
+  DropdownChangeObject,
+  DropdownProps,
+} from "@cmsgov/design-system";
 import { parseCustomHtml } from "utils";
 
 export const DropdownField = (props: PageElementProps) => {
@@ -23,9 +27,7 @@ export const DropdownField = (props: PageElementProps) => {
     setDisplayValue(dropdown.answer ?? dropdown.options[0].value);
   }, [dropdown.answer]);
 
-  const onChangeHandler = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const onChangeHandler = async (event: DropdownChangeObject) => {
     const { name, value } = event.target;
     setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
@@ -42,18 +44,20 @@ export const DropdownField = (props: PageElementProps) => {
     dropdown.helperText && parseCustomHtml(dropdown.helperText);
   const labelText = dropdown.label;
 
-  return (
-    <CmsdsDropdownField
-      id={key}
-      name={key}
-      label={labelText || ""}
-      hint={parsedHint}
-      onChange={onChangeHandler}
-      onBlur={onBlurHandler}
-      options={dropdown.options}
-      errorMessage={errorMessage}
-      value={displayValue}
-      {...props}
-    ></CmsdsDropdownField>
-  );
+  const dropdownProps: DropdownProps = {
+    id: key,
+    name: key,
+    label: labelText || "",
+    hint: <>{parsedHint}</>,
+    onChange: (change) => {
+      onChangeHandler(change);
+    },
+    onBlur: onBlurHandler,
+    options: dropdown.options,
+    errorMessage: errorMessage,
+    value: displayValue,
+    ...props,
+  };
+
+  return <>{CmsdsDropdownField(dropdownProps)}</>;
 };
