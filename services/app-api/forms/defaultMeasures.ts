@@ -264,10 +264,6 @@ export const defaultMeasureTemplates = {
           "[Optional instructional content that could support the user in completing this page]",
       },
       {
-        type: ElementType.MeasureDetails,
-        id: "measure-details-section",
-      },
-      {
         type: ElementType.SubHeader,
         id: "measure-information-subheader",
         text: "Measure Information",
@@ -289,7 +285,7 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
-        prevTo: "LTSS-1960",
+        prevTo: "LTSS-1",
         completeSection: true,
       },
     ],
