@@ -13,6 +13,7 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
+  PerformanceRateElement,
   QualityMeasureTableElement,
   RadioField,
   ReportingRadioField,
@@ -63,6 +64,8 @@ export const Page = ({ elements }: Props) => {
         return MeasureDetailsElement;
       case ElementType.MeasureFooter:
         return MeasureFooterElement;
+      case ElementType.PerformanceRate:
+        return PerformanceRateElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;

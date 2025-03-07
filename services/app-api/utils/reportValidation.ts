@@ -134,6 +134,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return measureDetailsTemplateSchema;
     case ElementType.MeasureFooter:
       return measureFooterSchema;
+    case ElementType.PerformanceRate:
+      return performanceRateSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -213,6 +215,14 @@ const measureFooterSchema = object().shape({
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
   clear: boolean().notRequired(),
+});
+
+const performanceRateSchema = object().shape({
+  type: string().required(ElementType.PerformanceRate),
+  id: string().required(),
+  rateType: string().required(),
+  rateCalc: string().notRequired(),
+  answer: object().notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({
