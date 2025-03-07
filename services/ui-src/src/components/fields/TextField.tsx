@@ -65,6 +65,10 @@ export const TextField = (props: PageElementProps) => {
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
 
+  if (hideElement) {
+    return null;
+  }
+
   return (
     <Box>
       <CmsdsTextField
