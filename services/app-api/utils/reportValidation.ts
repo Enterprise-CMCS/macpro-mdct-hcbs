@@ -45,6 +45,7 @@ const textboxTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   required: string().notRequired(),
+  conditionallyHide: boolean().notRequired(),
 });
 
 const textAreaTemplateSchema = object().shape({
@@ -53,6 +54,7 @@ const textAreaTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
+  conditionallyHide: boolean().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
@@ -144,6 +146,7 @@ const radioTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
+  conditionallyHide: boolean().notRequired(),
   value: array().of(
     object().shape({
       label: string().required(),

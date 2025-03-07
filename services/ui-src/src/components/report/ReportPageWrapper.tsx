@@ -25,11 +25,27 @@ export const ReportPageWrapper = () => {
   } = useStore();
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [hideElements, setHideElements] = useState<boolean>(false);
   const methods = useForm({
     defaultValues: {},
     shouldUnregister: true,
     resolver: yupResolver(elementsValidateSchema),
   });
+
+  useEffect(() => {
+    const formValues = methods.getValues() as any;
+    if (Object.keys(formValues).length === 0) {
+      return;
+    }
+    const reportingRadio = formValues?.elements?.find((element: any) => {
+      return element?.id === "measure-reporting-radio";
+    });
+    if (reportingRadio?.answer === "no") {
+      setHideElements(true);
+    } else {
+      setHideElements(false);
+    }
+  }, [methods.getValues()]);
 
   const navigate = useNavigate();
 
@@ -99,7 +115,10 @@ export const ReportPageWrapper = () => {
               onBlur={handleSubmit(handleBlur)}
             >
               {currentPage.elements && (
-                <Page elements={currentPage.elements ?? []}></Page>
+                <Page
+                  elements={currentPage.elements ?? []}
+                  hideElements={hideElements}
+                ></Page>
               )}
             </form>
           </Box>

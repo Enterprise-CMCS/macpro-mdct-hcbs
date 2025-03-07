@@ -182,6 +182,7 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+  conditionallyHide?: boolean;
 };
 
 export type TextAreaBoxTemplate = {
@@ -190,6 +191,7 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
+  conditionallyHide?: boolean;
 };
 
 export type DateTemplate = {
@@ -242,6 +244,7 @@ export type RadioTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+  conditionallyHide?: boolean;
 };
 
 export type ReportingRadioTemplate = {

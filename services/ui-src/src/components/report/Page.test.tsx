@@ -145,6 +145,45 @@ const elements: PageElement[] = [
   },
 ];
 
+const elementsWithConditionallyHide: PageElement[] = [
+  {
+    type: ElementType.Textbox,
+    id: "",
+    label: "textbox-hide",
+    conditionallyHide: true,
+  },
+  {
+    type: ElementType.TextAreaField,
+    id: "",
+    label: "textarea-hide",
+    conditionallyHide: true,
+  },
+  {
+    type: ElementType.Radio,
+    id: "",
+    label: "radio-hide",
+    value: [
+      { label: "radio-hide-choice-1", value: "1", checkedChildren: [] },
+      { label: "radio-hide-choice-2", value: "2" },
+    ],
+    conditionallyHide: true,
+  },
+  {
+    type: ElementType.ReportingRadio,
+    id: "",
+    label: "label",
+    value: [
+      { label: "a", value: "1", checkedChildren: [] },
+      { label: "b", value: "2" },
+    ],
+  },
+  {
+    type: ElementType.QualityMeasureTable,
+    id: "",
+    measureDisplay: "quality",
+  },
+];
+
 const textFieldElement: PageElement[] = [
   {
     type: ElementType.Textbox,
@@ -228,5 +267,30 @@ describe("Page Component with read only user", () => {
     render(<Page elements={dateFieldElement} />);
     const dateField = screen.getByRole("textbox");
     expect(dateField).toBeDisabled();
+  });
+});
+
+describe("Page Component with condtionally hidden elements", () => {
+  test("elements with 'conditionallyHide' bool should be visible if hideElements is set to false", () => {
+    render(
+      <Page elements={elementsWithConditionallyHide} hideElements={false} />
+    );
+    const textField = screen.queryByLabelText("textbox-hide");
+    const textArea = screen.queryByLabelText("textarea-hide");
+    const radio = screen.queryByLabelText("radio-hide-choice-1");
+    expect(textField).toBeVisible();
+    expect(textArea).toBeVisible();
+    expect(radio).toBeVisible();
+  });
+  test("elements with 'conditionallyHide' bool should be hidden if hideElements is set to true", () => {
+    render(
+      <Page elements={elementsWithConditionallyHide} hideElements={true} />
+    );
+    const textField = screen.queryByLabelText("textbox-hide");
+    const textArea = screen.queryByLabelText("textarea-hide");
+    const radio = screen.queryByLabelText("radio-hide-choice-1");
+    expect(textField).toBe(null);
+    expect(textArea).toBe(null);
+    expect(radio).toBe(null);
   });
 });

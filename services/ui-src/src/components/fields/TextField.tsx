@@ -33,12 +33,14 @@ export const TextField = (props: PageElementProps) => {
     form.setValue(name, value, { shouldValidate: true });
     form.setValue(`${props.formkey}.type`, textbox.type);
     form.setValue(`${props.formkey}.label`, textbox.label);
+    form.setValue(`${props.formkey}.id`, textbox.id);
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     form.setValue(key, event.target.value);
     form.setValue(`${props.formkey}.type`, textbox.type);
     form.setValue(`${props.formkey}.label`, textbox.label);
+    form.setValue(`${props.formkey}.id`, textbox.id);
   };
 
   // prepare error message, hint, and classes

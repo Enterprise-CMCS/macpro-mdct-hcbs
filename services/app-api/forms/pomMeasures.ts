@@ -94,21 +94,6 @@ export const pomMeasureTemplates = {
         text: "Measure Information",
       },
       {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
         type: ElementType.Radio,
         id: "measure-audited-radio",
         label: "Did you follow the [reportYear] Technical Specifications?",
@@ -221,25 +206,6 @@ export const pomMeasureTemplates = {
         type: ElementType.SubHeader,
         id: "measure-information-subheader",
         text: "Measure Information",
-      },
-      {
-        type: ElementType.Radio,
-        id: "measure-reporting-radio",
-        label: "Did you follow the [reportYear] Technical Specifications?",
-        value: [
-          { label: "Yes", value: "yes" },
-          {
-            label: "No",
-            value: "no",
-            checkedChildren: [
-              {
-                type: ElementType.TextAreaField,
-                id: "measure-following-tech-specs-no-explain",
-                label: "Please explain the variance.",
-              },
-            ],
-          },
-        ],
       },
       {
         type: ElementType.Radio,
