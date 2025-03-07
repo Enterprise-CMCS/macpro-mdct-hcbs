@@ -39,6 +39,9 @@ export const Page = ({ elements, hideElements }: Props) => {
       case ElementType.Paragraph:
         return paragraphElement;
       case ElementType.Textbox:
+        if (element?.conditionallyHide && hideElements) {
+          return (_element: any, _key: number) => <></>;
+        }
         return TextField;
       case ElementType.TextAreaField:
         if (element?.conditionallyHide && hideElements) {
