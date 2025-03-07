@@ -134,21 +134,6 @@ export const defaultMeasureTemplates = {
         text: "Measure Information",
       },
       {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
         type: ElementType.Radio,
         id: "measure-audited-radio",
         label: "Were the reported measure results audited or validated?",
@@ -324,21 +309,6 @@ export const defaultMeasureTemplates = {
         text: "Measure Information",
       },
       {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
         type: ElementType.Radio,
         id: "measure-audited-radio",
         label: "Were the reported measure results audited or validated?",
@@ -465,6 +435,8 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.ReportingRadio,
         label: "Is the state reporting on this measure?",
+        helperText:
+          "Warning: Changing this response will clear any data previously entered in this measure.",
         id: "measure-reporting-radio",
         value: [
           {
@@ -606,6 +578,8 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.ReportingRadio,
         label: "Is the state reporting on this measure?",
+        helperText:
+          "Warning: Changing this response will clear any data previously entered in this measure.",
         id: "measure-reporting-radio",
         value: [
           {
@@ -747,6 +721,8 @@ export const defaultMeasureTemplates = {
       {
         type: ElementType.ReportingRadio,
         label: "Is the state reporting on this measure?",
+        helperText:
+          "Warning: Changing this response will clear any data previously entered in this measure.",
         id: "measure-reporting-radio",
         value: [
           {
@@ -886,21 +862,6 @@ export const defaultMeasureTemplates = {
         text: "Measure Information",
       },
       {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
         type: ElementType.Radio,
         id: "measure-audited-radio",
         label: "Were the reported measure results audited or validated?",
@@ -1013,21 +974,6 @@ export const defaultMeasureTemplates = {
         type: ElementType.SubHeader,
         id: "measure-information-subheader",
         text: "Measure Information",
-      },
-      {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
       },
       {
         type: ElementType.Radio,
@@ -1145,21 +1091,6 @@ export const defaultMeasureTemplates = {
         text: "Measure Information",
       },
       {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
         type: ElementType.Radio,
         id: "measure-audited-radio",
         label: "Were the reported measure results audited or validated?",
@@ -1256,21 +1187,6 @@ export const defaultMeasureTemplates = {
         type: ElementType.SubHeader,
         id: "measure-information-subheader",
         text: "Measure Information",
-      },
-      {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
       },
       {
         type: ElementType.Radio,
@@ -1398,21 +1314,6 @@ export const defaultMeasureTemplates = {
         text: "Measure Information",
       },
       {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
         type: ElementType.Radio,
         id: "measure-audited-radio",
         label: "Were the reported measure results audited or validated?",
@@ -1538,21 +1439,6 @@ export const defaultMeasureTemplates = {
         text: "Measure Information",
       },
       {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
-      },
-      {
         type: ElementType.Radio,
         id: "measure-audited-radio",
         label: "Were the reported measure results audited or validated?",
@@ -1649,21 +1535,6 @@ export const defaultMeasureTemplates = {
         type: ElementType.SubHeader,
         id: "measure-information-subheader",
         text: "Measure Information",
-      },
-      {
-        type: ElementType.ReportingRadio,
-        label: "Is the state reporting on this measure?",
-        id: "measure-reporting-radio",
-        value: [
-          {
-            label: "Yes, the state is reporting on this measure",
-            value: "yes",
-          },
-          {
-            label: "No, CMS is reporting this measure on the state's behalf",
-            value: "no",
-          },
-        ],
       },
       {
         type: ElementType.Radio,

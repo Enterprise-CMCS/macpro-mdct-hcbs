@@ -10,6 +10,7 @@ export const DateField = (props: PageElementProps) => {
   const dateTextbox = props.element as DateTemplate;
   const defaultValue = dateTextbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [hideElement, setHideElement] = useState<boolean>(false);
 
   // get form context and register form field
   const form = useFormContext();
@@ -22,6 +23,21 @@ export const DateField = (props: PageElementProps) => {
   useEffect(() => {
     setDisplayValue(dateTextbox.answer ?? "");
   }, [dateTextbox.answer]);
+
+  useEffect(() => {
+    const formValues = form.getValues() as any;
+    if (Object.keys(formValues).length === 0) {
+      return;
+    }
+    const reportingRadio = formValues?.elements?.find((element: any) => {
+      return element?.id === "measure-reporting-radio";
+    });
+    if (reportingRadio?.answer === "no") {
+      setHideElement(true);
+    } else {
+      setHideElement(false);
+    }
+  }, [form.getValues()]);
 
   const onChangeHandler = (rawValue: string, maskedValue: string) => {
     setDisplayValue(rawValue);
@@ -42,6 +58,10 @@ export const DateField = (props: PageElementProps) => {
   const parsedHint =
     dateTextbox.helperText && parseCustomHtml(dateTextbox.helperText);
   const labelText = dateTextbox.label;
+
+  if (hideElement) {
+    return null;
+  }
 
   return (
     <Box>
