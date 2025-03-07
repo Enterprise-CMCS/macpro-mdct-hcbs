@@ -24,9 +24,10 @@ import { useStore } from "utils";
 
 interface Props {
   elements: PageElement[];
+  hideElements?: boolean;
 }
 
-export const Page = ({ elements }: Props) => {
+export const Page = ({ elements, hideElements }: Props) => {
   const { userIsEndUser } = useStore().user || {};
   const renderElement = (element: PageElement) => {
     const elementType = element.type;
@@ -40,6 +41,9 @@ export const Page = ({ elements }: Props) => {
       case ElementType.Textbox:
         return TextField;
       case ElementType.TextAreaField:
+        if (element?.conditionallyHide && hideElements) {
+          return (_element: any, _key: number) => <></>;
+        }
         return TextAreaField;
       case ElementType.Date:
         return DateField;
@@ -48,6 +52,9 @@ export const Page = ({ elements }: Props) => {
       case ElementType.Accordion:
         return accordionElement;
       case ElementType.Radio:
+        if (element?.conditionallyHide && hideElements) {
+          return (_element: any, _key: number) => <></>;
+        }
         return RadioField;
       case ElementType.ReportingRadio:
         return ReportingRadioField;

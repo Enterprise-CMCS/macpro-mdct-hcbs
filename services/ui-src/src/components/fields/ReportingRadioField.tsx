@@ -11,7 +11,6 @@ import { ChoiceProps } from "@cmsgov/design-system/dist/types/ChoiceList/ChoiceL
 export const ReportingRadioField = (props: PageElementProps) => {
   const radio = props.element as ReportingRadioTemplate;
   const { clearMeasure, currentPageId } = useStore();
-
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
 
   // Need to listen to prop updates from the parent for events like a measure clear
@@ -23,10 +22,14 @@ export const ReportingRadioField = (props: PageElementProps) => {
 
   // get form context and register field
   const form = useFormContext();
+
   const key = `${props.formkey}.answer`;
   useEffect(() => {
     const options = { required: radio.required || false };
     form.register(key, options);
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
   }, []);
 
   const onChangeHandler = async (
@@ -39,6 +42,9 @@ export const ReportingRadioField = (props: PageElementProps) => {
     });
     setDisplayValue(newValues);
     form.setValue(name, value, { shouldValidate: true });
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
 
     if (value === "no") {
       clearMeasure(currentPageId ?? "", [radio.id]);
@@ -48,6 +54,9 @@ export const ReportingRadioField = (props: PageElementProps) => {
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     form.setValue(key, event.target.value);
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
   };
 
   // prepare error message, hint, and classes
