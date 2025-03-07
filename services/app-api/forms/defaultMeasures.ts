@@ -4,6 +4,7 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   MeasureOptions,
+  PerformanceRateType,
 } from "../types/reports";
 
 import { DeliverySystem } from "../utils/constants";
@@ -281,6 +282,24 @@ export const defaultMeasureTemplates = {
         helperText:
           "If applicable, add any notes or comments to provide context to the reported measure result",
         label: "Additional notes/comments (optional)",
+      },
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        rateCalc: "test-calc",
+      },
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Ehanced,
+        rateCalc: "test-calc",
+      },
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.FIELDS,
+        rateCalc: "test-calc",
       },
       {
         type: ElementType.MeasureFooter,
