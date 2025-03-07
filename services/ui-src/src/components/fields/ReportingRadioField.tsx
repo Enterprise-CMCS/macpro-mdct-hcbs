@@ -27,6 +27,9 @@ export const ReportingRadioField = (props: PageElementProps) => {
   useEffect(() => {
     const options = { required: radio.required || false };
     form.register(key, options);
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
   }, []);
 
   const onChangeHandler = async (
@@ -39,6 +42,9 @@ export const ReportingRadioField = (props: PageElementProps) => {
     });
     setDisplayValue(newValues);
     form.setValue(name, value, { shouldValidate: true });
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
 
     if (value === "no") {
       clearMeasure(currentPageId ?? "", [radio.id]);
