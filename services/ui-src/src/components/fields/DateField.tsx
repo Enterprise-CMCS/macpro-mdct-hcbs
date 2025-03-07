@@ -26,7 +26,7 @@ export const DateField = (props: PageElementProps) => {
 
   useEffect(() => {
     const formValues = form.getValues() as any;
-    if (Object.keys(formValues).length === 0) {
+    if (formValues && Object.keys(formValues).length === 0) {
       return;
     }
     const reportingRadio = formValues?.elements?.find((element: any) => {
