@@ -291,7 +291,8 @@ export const enum RateCalc {
 export type PerformanceRateTemplate = {
   id: string;
   type: ElementType.PerformanceRate;
-  categories: [{label: string, id: string}];
+  helperText?: string;
+  categories?: [{label: string, id: string}];
   rateType: PerformanceRateType;
   rateCalc?: RateCalc;
   multiplier?: Number;

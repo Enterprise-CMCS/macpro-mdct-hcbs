@@ -1,4 +1,4 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, Stack, Text } from "@chakra-ui/react";
 import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useEffect, useState } from "react";
@@ -6,8 +6,7 @@ import { PerformanceRateTemplate } from "types";
 import { AnyObject } from "yup";
 
 export const NDREnhanced = (
-  formkey: string,
-  props: PerformanceRateTemplate
+  props: PerformanceRateTemplate & { formkey: string }
 ) => {
   const { id, rateCalc, answer } = props;
   const defaultValue = answer ?? {};
@@ -15,7 +14,7 @@ export const NDREnhanced = (
 
   // get form context and register field
   const form = useFormContext();
-  const key = `${formkey}.answer`;
+  const key = `${props?.formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
     form.setValue(key, defaultValue);
@@ -37,13 +36,7 @@ export const NDREnhanced = (
   const onBlurHandler = () => {};
 
   return (
-    <div>
-      <Heading variant="subHeader">Performance Rates</Heading>
-      <Text>
-        The performance rate is based on a review of this measures participant
-        case management records, slected via a systematic sample drawn from the
-        eligible population.
-      </Text>
+    <Stack gap={4}>
       <CmsdsTextField
         label="Performance Rates Denominator"
         name="Performance Rates Denominator"
@@ -74,6 +67,6 @@ export const NDREnhanced = (
           ></CmsdsTextField>
         </>
       ))}
-    </div>
+    </Stack>
   );
 };
