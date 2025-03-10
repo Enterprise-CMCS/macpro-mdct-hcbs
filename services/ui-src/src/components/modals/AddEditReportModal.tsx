@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Modal, TextField, RadioField, DropdownField } from "components";
 import { Spinner, Flex, Text } from "@chakra-ui/react";
 import { ElementType, Report } from "types";
