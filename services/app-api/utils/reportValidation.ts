@@ -230,6 +230,16 @@ const formPageTemplateSchema = object().shape({
   childPageIds: array().of(string()).notRequired(),
 });
 
+const cmitInfoSchema = object().shape({
+  cmit: number().required(),
+  name: string().required(),
+  uid: string().required(),
+  measureSteward: string().required(),
+  measureSpecification: array().of(string()).required(),
+  deliverySystem: array().of(string()).required(),
+  dataSource: string().required(),
+});
+
 // MeasurePageTemplate extends FormPageTemplate
 const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmit: number().notRequired(),
@@ -238,6 +248,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
+  cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 
 const measureOptionsArraySchema = array().of(
@@ -246,7 +257,8 @@ const measureOptionsArraySchema = array().of(
     uid: string().required(),
     required: boolean().required(),
     stratified: boolean().required(),
-    measureTemplate: array().required(),
+    measureTemplate: string().required(),
+    deliverySystemTemplates: array().of(string()).optional(),
   })
 );
 
