@@ -12,12 +12,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
   return (
     <Stack gap={4} sx={sx.performance}>
       <Heading variant="subHeader">Performance Rates</Heading>
-      <Text>
-        {helperText}
-        The performance rate is based on a review of this measures participant
-        case management records, slected via a systematic sample drawn from the
-        eligible population.
-      </Text>
+      <Text>{helperText}</Text>
       <PerformanceRate
         {...{ formkey: props.formkey, ...performanceRateProp }}
       ></PerformanceRate>

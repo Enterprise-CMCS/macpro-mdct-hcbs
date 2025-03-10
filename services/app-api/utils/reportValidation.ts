@@ -220,9 +220,18 @@ const measureFooterSchema = object().shape({
 const performanceRateSchema = object().shape({
   type: string().required(ElementType.PerformanceRate),
   id: string().required(),
-  categories: array().of(object()),
+  helperText: string().notRequired(),
+  categories: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+      })
+    )
+    .notRequired(),
   rateType: string().required(),
   rateCalc: string().notRequired(),
+  multiplier: number().notRequired(),
   answer: object().notRequired(),
 });
 

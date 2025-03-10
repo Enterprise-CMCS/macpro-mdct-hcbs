@@ -8,7 +8,7 @@ import { AnyObject } from "yup";
 export const NDREnhanced = (
   props: PerformanceRateTemplate & { formkey: string }
 ) => {
-  const { id, rateCalc, answer } = props;
+  const { id, rateCalc, categories, answer } = props;
   const defaultValue = answer ?? {};
   const [displayValue, setDisplayValue] = useState<AnyObject>(defaultValue);
 
@@ -20,10 +20,6 @@ export const NDREnhanced = (
     form.setValue(key, defaultValue);
   }, []);
 
-  const categories = [
-    { id: "test", label: "test" },
-    { id: "test2", label: "test 2" },
-  ];
   const templateYear = "2026";
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +39,7 @@ export const NDREnhanced = (
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
       ></CmsdsTextField>
-      {categories.map((cat) => (
+      {categories?.map((cat) => (
         <>
           <Heading variant="subHeader">Performance Rate: {cat.label}</Heading>
           <CmsdsTextField

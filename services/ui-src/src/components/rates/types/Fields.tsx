@@ -10,11 +10,11 @@ export const Fields = (
   return (
     <Stack gap={4}>
       <CmsdsTextField
-        label="Count of Successful Discharges to Community"
-        name="numerator"
+        label="Field 1"
+        name="Field 1"
       ></CmsdsTextField>
-      <CmsdsTextField label="Denominator" name="denominator"></CmsdsTextField>
-      <CmsdsTextField label="Rate" name="rate" disabled></CmsdsTextField>
+      <CmsdsTextField label="Field 2" name="Field 2"></CmsdsTextField>
+      <CmsdsTextField label="Field 3" name="Field 3" disabled></CmsdsTextField>
     </Stack>
   );
 };
