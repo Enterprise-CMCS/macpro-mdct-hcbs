@@ -53,14 +53,22 @@ export const buildReport = async (
 
     for (let measure of measures) {
       const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
-      const pages = measure.measureTemplate.map((templateName) =>
-        initializeQmsPage(
-          measure,
-          report.measureTemplates[templateName],
-          cmitInfo
-        )
+      const parentPage = initializeQmsPage(
+        measure,
+        report.measureTemplates[measure.measureTemplate],
+        cmitInfo,
+        true
       );
-      report.pages.push(...pages);
+      const deliverySystemPages = measure.deliverySystemTemplates.map(
+        (templateName) =>
+          initializeQmsPage(
+            measure,
+            report.measureTemplates[templateName],
+            cmitInfo,
+            false
+          )
+      );
+      report.pages.push(parentPage, ...deliverySystemPages);
     }
   }
 
@@ -87,13 +95,20 @@ export const buildReport = async (
 const initializeQmsPage = (
   measure: MeasureOptions,
   template: MeasurePageTemplate,
-  cmitInfo: CMIT
+  cmitInfo: CMIT,
+  isMeasurePage: boolean
 ) => {
   const page = structuredClone(template);
   page.cmit = measure.cmit;
   page.cmitId = measure.uid;
   page.stratified = measure.stratified;
   page.required = measure.required;
+
+  if (isMeasurePage) {
+    page.children = measure.deliverySystemTemplates;
+    page.cmitInfo = cmitInfo;
+  }
+
   for (let i = 0; i < page.elements.length; i += 1) {
     let element = page.elements[i];
     if (isHeaderTemplate(element)) {
