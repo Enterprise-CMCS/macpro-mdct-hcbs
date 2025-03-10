@@ -121,6 +121,7 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
   Date = "date",
@@ -141,6 +142,7 @@ export enum ElementType {
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | NestedHeadingTemplate
   | TextboxTemplate
   | TextAreaBoxTemplate
   | DateTemplate
@@ -164,6 +166,13 @@ export type HeaderTemplate = {
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
+  text: string;
+  helperText?: string;
+};
+
+export type NestedHeadingTemplate = {
+  type: ElementType.NestedHeading;
   id: string;
   text: string;
 };
