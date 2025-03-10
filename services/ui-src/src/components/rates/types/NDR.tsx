@@ -5,8 +5,10 @@ import { useFormContext } from "react-hook-form";
 import { PerformanceRateTemplate } from "types";
 import { AnyObject } from "yup";
 
-export const NDR = (props: PerformanceRateTemplate & { formkey: string }) => {
-  const { id, rateCalc, categories, answer } = props;
+export const NDR = (
+  props: PerformanceRateTemplate & { formkey: string; year?: number }
+) => {
+  const { rateCalc, categories, answer } = props;
   const defaultValue = answer ?? {
     numerator: "",
     denominator: "",
@@ -14,8 +16,6 @@ export const NDR = (props: PerformanceRateTemplate & { formkey: string }) => {
     performanceTarget: "",
   };
   const [displayValue, setDisplayValue] = useState<AnyObject>(defaultValue);
-
-  const templateYear = "2026";
 
   // get form context and register field
   const form = useFormContext();
@@ -32,13 +32,19 @@ export const NDR = (props: PerformanceRateTemplate & { formkey: string }) => {
       ...displayValue,
       [name]: value,
     };
-
     setDisplayValue(newDisplayValue);
     form.setValue(name, newDisplayValue, { shouldValidate: true });
-    // form.setValue(`${props.formkey}.type`, textbox.type);
-    // form.setValue(`${props.formkey}.label`, textbox.label);
+    form.setValue(`${key}.type`, props.type);
   };
-  const onBlurHandler = () => {};
+  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const newDisplayValue = {
+      ...displayValue,
+      [name]: value,
+    };
+    form.setValue(key, newDisplayValue);
+    form.setValue(`${key}.type`, props.type);
+  };
 
   return (
     <Stack gap={4}>
@@ -46,7 +52,7 @@ export const NDR = (props: PerformanceRateTemplate & { formkey: string }) => {
         <>
           <Heading variant="subHeader">Performance Rate: {cat.label}</Heading>
           <CmsdsTextField
-            label={`What is the ${templateYear} state performance target for this assessment`}
+            label={`What is the ${props.year} state performance target for this assessment`}
             name="performanceTarget"
             onChange={onChangeHandler}
             onBlur={onBlurHandler}

@@ -6,7 +6,7 @@ import { PerformanceRateTemplate } from "types";
 import { AnyObject } from "yup";
 
 export const NDREnhanced = (
-  props: PerformanceRateTemplate & { formkey: string }
+  props: PerformanceRateTemplate & { formkey: string; year?: number }
 ) => {
   const { id, rateCalc, categories, answer } = props;
   const defaultValue = answer ?? {};
@@ -19,8 +19,6 @@ export const NDREnhanced = (
     form.register(key, { required: true });
     form.setValue(key, defaultValue);
   }, []);
-
-  const templateYear = "2026";
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -43,7 +41,7 @@ export const NDREnhanced = (
         <>
           <Heading variant="subHeader">Performance Rate: {cat.label}</Heading>
           <CmsdsTextField
-            label={`What is the ${templateYear} state performance target for this assessment`}
+            label={`What is the ${props.year} state performance target for this assessment`}
             name="numerator"
             onChange={onChangeHandler}
             onBlur={onBlurHandler}

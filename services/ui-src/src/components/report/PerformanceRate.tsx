@@ -2,10 +2,12 @@ import { PageElementProps } from "components/report/Elements";
 import { PerformanceRateTemplate } from "types";
 import * as PerformanceType from "./../rates/types";
 import { Heading, Stack, Text } from "@chakra-ui/react";
+import { useStore } from "utils";
 
 export const PerformanceRateElement = (props: PageElementProps) => {
   const performanceRateProp = props.element as PerformanceRateTemplate;
-  const { rateType, helperText } = performanceRateProp;
+  const { rateType, rateCalc, helperText } = performanceRateProp;
+  const { report } = useStore();
 
   const PerformanceRate = PerformanceType[rateType];
 
@@ -14,7 +16,11 @@ export const PerformanceRateElement = (props: PageElementProps) => {
       <Heading variant="subHeader">Performance Rates</Heading>
       <Text>{helperText}</Text>
       <PerformanceRate
-        {...{ formkey: props.formkey, ...performanceRateProp }}
+        {...{
+          formkey: props.formkey,
+          year: report?.year,
+          ...performanceRateProp,
+        }}
       ></PerformanceRate>
     </Stack>
   );

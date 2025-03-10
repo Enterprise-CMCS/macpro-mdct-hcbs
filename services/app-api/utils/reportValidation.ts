@@ -232,7 +232,7 @@ const performanceRateSchema = object().shape({
   rateType: string().required(),
   rateCalc: string().notRequired(),
   multiplier: number().notRequired(),
-  answer: object().notRequired(),
+  answer: mixed().notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({
