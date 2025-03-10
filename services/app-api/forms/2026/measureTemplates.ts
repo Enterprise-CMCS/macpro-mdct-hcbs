@@ -83,7 +83,6 @@ export const measureTemplates: Record<
       {
         ...measureFooter,
         prevTo: "LTSS-1",
-        completeSection: true,
         clear: undefined,
       },
     ],
