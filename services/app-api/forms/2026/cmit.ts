@@ -1,9 +1,9 @@
-import { CMIT } from "../types/reports";
+import { CMIT } from "../../types/reports";
 import {
   DataSource,
   DeliverySystem,
   MeasureSpecification,
-} from "../utils/constants";
+} from "../../utils/constants";
 
 export const CMIT_LIST: CMIT[] = [
   // required measures

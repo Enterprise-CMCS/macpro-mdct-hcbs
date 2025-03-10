@@ -1,4 +1,6 @@
-import { isResultRowButton, PageType } from "../types/reports";
+import { isResultRowButton, PageType } from "../../types/reports";
+import { CMIT_LIST } from "./cmit";
+import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { qmsReportTemplate } from "./qms";
 
 describe("QMS Template", () => {
@@ -40,5 +42,17 @@ describe("QMS Template", () => {
     for (let modalId of referencedModals) {
       expect(modalPageIds).toContain(modalId);
     }
+  });
+
+  describe("Measure Templates", () => {
+    it("Should all have UIDs which exist in the CMIT list", () => {
+      const existingUids = CMIT_LIST.map((cmitInfo) => cmitInfo.uid);
+      for (let measure of defaultMeasures) {
+        expect(existingUids).toContain(measure.uid);
+      }
+      for (let measure of pomMeasures) {
+        expect(existingUids).toContain(measure.uid);
+      }
+    });
   });
 });
