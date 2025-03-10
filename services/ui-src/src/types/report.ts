@@ -334,8 +334,8 @@ export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
-  stratified: boolean;
-  measureTemplate: [MeasureTemplateName];
+  measureTemplate: MeasureTemplateName;
+  deliverySystemTemplates: MeasureTemplateName[];
 }
 
 export enum MeasureTemplateName {
