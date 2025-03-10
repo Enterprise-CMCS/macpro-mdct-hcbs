@@ -248,6 +248,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
+  children: array().of(string()).notRequired().default(undefined),
   cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 

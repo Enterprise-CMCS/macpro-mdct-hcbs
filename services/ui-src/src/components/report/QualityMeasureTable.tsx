@@ -34,7 +34,7 @@ export const QualityMeasureTableElement = () => {
       const measure = report?.measureLookup.defaultMeasures.find(
         (measure) => measure.cmit === currentPage.cmit
       );
-      const deliveryId = measure?.measureTemplate.find((item) =>
+      const deliveryId = measure?.deliverySystemTemplates.find((item) =>
         item.toString().includes(deliverySystem)
       );
       const path = `/report/${reportType}/${state}/${reportId}/${deliveryId}`;
