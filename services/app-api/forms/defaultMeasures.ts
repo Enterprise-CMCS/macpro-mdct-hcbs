@@ -276,6 +276,79 @@ export const defaultMeasureTemplates = {
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText:
+          "The performance rate is based on a review of the measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-subheader",
+        text: "Performance Rate: Assessment of Core Elements",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-subheader",
+        text: "Performance Rate: Assessment of Supplemental Elements",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
         type: ElementType.TextAreaField,
         id: "additional-notes-field",
         helperText:
