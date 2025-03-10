@@ -32,7 +32,6 @@ export interface CMIT {
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
-  cmitInfo?: CMIT;
 }
 
 export interface MeasureOptions {
