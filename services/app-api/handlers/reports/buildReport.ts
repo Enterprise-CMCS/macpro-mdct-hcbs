@@ -54,7 +54,11 @@ export const buildReport = async (
     for (let measure of measures) {
       const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
       const pages = measure.measureTemplate.map((templateName) =>
-        reifyQmsPage(measure, report.measureTemplates[templateName], cmitInfo)
+        initializeQmsPage(
+          measure,
+          report.measureTemplates[templateName],
+          cmitInfo
+        )
       );
       report.pages.push(...pages);
     }
@@ -80,7 +84,7 @@ export const buildReport = async (
 /**
  * Clone the given template, and fill it in with the necessary data.
  */
-const reifyQmsPage = (
+const initializeQmsPage = (
   measure: MeasureOptions,
   template: MeasurePageTemplate,
   cmitInfo: CMIT
