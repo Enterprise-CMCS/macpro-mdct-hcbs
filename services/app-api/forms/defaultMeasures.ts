@@ -17,7 +17,7 @@ export const defaultMeasures: MeasureOptions[] = [
     measureTemplate: [
       MeasureTemplateName["LTSS-1"],
       MeasureTemplateName["FFS-1"],
-      MeasureTemplateName["MLTSS"],
+      MeasureTemplateName["MLTSS-1"],
     ],
   },
   {
@@ -349,11 +349,141 @@ export const defaultMeasureTemplates = {
         label: "Rate",
       },
       {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-exclusion-rates",
+        text: "Exclusion Rates",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Exclusion Rates Denominator",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-1",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-1"]]: {
+    id: "MLTSS-1",
+    title: "LTSS-1: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-1",
+      },
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "LTSS-1: Fee-For-Service (FFS LTSS)",
+      },
+      {
+        type: ElementType.Accordion,
+        id: "measure-instructions",
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Fee-For-Service Measure Results",
+      },
+      {
         type: ElementType.TextAreaField,
-        id: "additional-notes-field",
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
         helperText:
-          "If applicable, add any notes or comments to provide context to the reported measure result",
-        label: "Additional notes/comments (optional)",
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText:
+          "The performance rate is based on a review of the measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-subheader",
+        text: "Performance Rate: Assessment of Core Elements",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-subheader",
+        text: "Performance Rate: Assessment of Supplemental Elements",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-exclusion-rates",
+        text: "Exclusion Rates",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Exclusion Rates Denominator",
       },
       {
         type: ElementType.MeasureFooter,
