@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
-import { CMIT_LIST } from "cmit";
 import { MeasurePageTemplate, RadioTemplate } from "types";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
@@ -24,8 +23,8 @@ export const QualityMeasureTableElement = () => {
   const currentPage = report?.pages[
     pageMap?.get(currentPageId)!
   ] as MeasurePageTemplate;
+  if (!currentPage.cmitInfo) return null;
 
-  const cmitInfo = CMIT_LIST.find((item) => item.uid === currentPage?.cmitId);
   const deliveryMethodRadio = useLiveElement(
     "delivery-method-radio"
   ) as RadioTemplate;
@@ -42,9 +41,10 @@ export const QualityMeasureTableElement = () => {
       navigate(path);
     }
   };
+  const singleOption = currentPage.cmitInfo?.deliverySystem.length == 1;
 
   // Build Rows
-  const rows = cmitInfo?.deliverySystem.map((system, index) => {
+  const rows = currentPage.cmitInfo?.deliverySystem.map((system, index) => {
     const selections = deliveryMethodRadio?.answer ?? "";
     const deliverySystemIsSelected = selections.split(",").includes(system);
     return (
@@ -59,7 +59,7 @@ export const QualityMeasureTableElement = () => {
         <Td>
           <Button
             variant="outline"
-            disabled={!deliverySystemIsSelected}
+            disabled={!singleOption && !deliverySystemIsSelected}
             onClick={() => handleEditClick(system)}
           >
             Edit
