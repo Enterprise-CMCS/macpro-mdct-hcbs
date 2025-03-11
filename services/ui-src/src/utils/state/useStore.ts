@@ -65,7 +65,7 @@ const bannerStore = (set: Function) => ({
 });
 
 // REPORT STORE
-const reportStore = (set: Function): HcbsReportState => ({
+const reportStore = (set: Function, get: Function): HcbsReportState => ({
   // initial state
   report: undefined, // raw report
   pageMap: undefined, // all page indexes mapped by Id
@@ -76,6 +76,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   modalHeader: undefined,
   modalComponent: undefined,
   lastSavedTime: undefined,
+  errorMessage: undefined,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -92,37 +93,45 @@ const reportStore = (set: Function): HcbsReportState => ({
     set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
       type: "setModalComponent",
     }),
-  setAnswers: (answers) =>
-    set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
+  setAnswers: async (answers) => {
+    const state = get();
+    const merged = await mergeAnswers(answers, state);
+    set(merged, false, {
       type: "setAnswers",
-    }),
-  setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => {
-    set(() => substitute(report, selectMeasure), false, {
+    });
+  },
+  setSubstitute: async (report: Report, selectMeasure: MeasurePageTemplate) => {
+    const newReport = await substitute(report, selectMeasure);
+    set(newReport, false, {
       type: "setSubstitute",
     });
   },
-  resetMeasure: (measureId: string) =>
-    set((state: HcbsReportState) => resetMeasure(measureId, state), false, {
+  resetMeasure: async (measureId: string) => {
+    const state = get();
+    const update = await resetMeasure(measureId, state);
+    set(update, false, {
       type: "resetMeasure",
-    }),
-  clearMeasure: (measureId: string, ignoreList: string[]) =>
-    set(
-      (state: HcbsReportState) => clearMeasure(measureId, state, ignoreList),
-      false,
-      {
-        type: "clearMeasure",
-      }
-    ),
+    });
+  },
+  clearMeasure: async (measureId: string, ignoreList: string[]) => {
+    const state = get();
+    const update = await clearMeasure(measureId, state, ignoreList);
+    set(update, false, {
+      type: "clearMeasure",
+    });
+  },
 });
 
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState & HcbsReportState & AdminBannerState>((set) => ({
-      ...userStore(set),
-      ...bannerStore(set),
-      ...reportStore(set),
-    })),
+    devtools<HcbsUserState & HcbsReportState & AdminBannerState>(
+      (set, get) => ({
+        ...userStore(set),
+        ...bannerStore(set),
+        ...reportStore(set, get),
+      })
+    ),
     {
       name: "hcbs-store",
       partialize: (state) => ({ report: state.report }),
