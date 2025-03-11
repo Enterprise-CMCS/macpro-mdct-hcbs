@@ -9,6 +9,8 @@ import { putReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
 
+const apiError = "Something went wrong, please try again";
+
 export const buildState = (report: Report | undefined) => {
   if (!report) return { report: undefined };
   const pageMap = new Map<string, number>(
@@ -72,7 +74,7 @@ export const mergeAnswers = async (answers: any, state: HcbsReportState) => {
   try {
     await putReport(report);
   } catch (e) {
-    return { errorMessage: "Something went wrong", lastSavedTime: undefined };
+    return { errorMessage: apiError };
   }
   return { report, lastSavedTime: getLocalHourMinuteTime() };
 };
@@ -97,7 +99,7 @@ export const substitute = async (
       try {
         await putReport(report);
       } catch (e) {
-        return {};
+        return { errorMessage: apiError };
       }
     }
   }
@@ -119,7 +121,7 @@ export const clearMeasure = async (
   try {
     await putReport(report);
   } catch (e) {
-    return {};
+    return { errorMessage: apiError };
   }
   return { report };
 };
@@ -138,7 +140,7 @@ export const resetMeasure = async (
   try {
     await putReport(report);
   } catch (e) {
-    return {};
+    return { errorMessage: apiError };
   }
   return { report };
 };

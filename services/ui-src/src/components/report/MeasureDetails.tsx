@@ -1,17 +1,16 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import { CMIT_LIST } from "cmit";
 import { useStore } from "utils";
-import { DataSource, MeasurePageTemplate } from "types";
+import { DataSource, MeasurePageTemplate, PageType } from "types";
+import { currentPageSelector } from "utils/state/selectors";
 
 export const MeasureDetailsElement = () => {
-  const { report, pageMap, currentPageId } = useStore();
+  const currentPage = useStore(currentPageSelector);
 
-  if (!currentPageId) return null;
-  const currentPage = report?.pages[
-    pageMap?.get(currentPageId)!
-  ] as MeasurePageTemplate;
+  if (!currentPage || currentPage.type !== PageType.Measure) return null;
+  const measurePage = currentPage as MeasurePageTemplate;
 
-  const cmitInfo = CMIT_LIST.find((item) => item.uid === currentPage?.cmitId);
+  const cmitInfo = CMIT_LIST.find((item) => item.uid === measurePage?.cmitId);
   const title = cmitInfo!.name;
   const cmit = cmitInfo?.cmit;
   const steward = cmitInfo?.measureSteward;
