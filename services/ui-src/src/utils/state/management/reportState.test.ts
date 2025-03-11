@@ -211,7 +211,7 @@ describe("state/management/reportState: setPage", () => {
 });
 
 describe("state/management/reportState: mergeAnswers", () => {
-  test("Adds answers to a question", () => {
+  test("Adds answers to a question", async () => {
     // Jest is garbage
     global.structuredClone = (val: unknown) => {
       return JSON.parse(JSON.stringify(val));
@@ -220,9 +220,9 @@ describe("state/management/reportState: mergeAnswers", () => {
     const state = buildState(testReport) as unknown as HcbsReportState;
 
     const answers = { elements: [null, { answer: "ANSWERED" }] };
-    const result = mergeAnswers(answers, state);
+    const result = await mergeAnswers(answers, state);
 
-    const page = result?.report.pages[1];
+    const page = result?.report!.pages[1];
     const elements = page?.elements!;
     const question = elements[1] as TextboxTemplate;
     expect(question.answer).toEqual("ANSWERED");
@@ -230,9 +230,9 @@ describe("state/management/reportState: mergeAnswers", () => {
 });
 
 describe("state/management/reportState: substitute", () => {
-  test("substitute the measure", () => {
-    const response = substitute(testReport, mockMeasureTemplate);
-    const measure = response.report.pages[3] as MeasurePageTemplate;
+  test("substitute the measure", async () => {
+    const response = await substitute(testReport, mockMeasureTemplate);
+    const measure = response.report!.pages[3] as MeasurePageTemplate;
     expect(measure.required).toBe(false);
   });
 });
