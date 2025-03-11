@@ -10,6 +10,7 @@ export const TextField = (props: PageElementProps) => {
   const textbox = props.element as TextboxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [hideElement, setHideElement] = useState<boolean>(false);
 
   // get form context and register field
   const form = useFormContext();
@@ -18,12 +19,32 @@ export const TextField = (props: PageElementProps) => {
     const options = { required: textbox.required || false };
     form.register(key, options);
     form.setValue(key, defaultValue);
+    form.setValue(`${props.formkey}.type`, textbox.type);
+    form.setValue(`${props.formkey}.label`, textbox.label);
+    form.setValue(`${props.formkey}.id`, textbox.id);
   }, []);
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
     setDisplayValue(textbox.answer ?? "");
   }, [textbox.answer]);
+
+  useEffect(() => {
+    const formValues = form.getValues() as any;
+    if (formValues && Object.keys(formValues).length === 0) {
+      return;
+    }
+    if (textbox?.hide) {
+      const controlElement = formValues?.elements?.find((element: any) => {
+        return element?.id === textbox.hide?.targetId;
+      });
+      if (controlElement?.answer === textbox.hide.value) {
+        setHideElement(true);
+      } else {
+        setHideElement(false);
+      }
+    }
+  }, [form.getValues()]);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -33,12 +54,11 @@ export const TextField = (props: PageElementProps) => {
     form.setValue(name, value, { shouldValidate: true });
     form.setValue(`${props.formkey}.type`, textbox.type);
     form.setValue(`${props.formkey}.label`, textbox.label);
+    form.setValue(`${props.formkey}.id`, textbox.id);
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     form.setValue(key, event.target.value);
-    form.setValue(`${props.formkey}.type`, textbox.type);
-    form.setValue(`${props.formkey}.label`, textbox.label);
   };
 
   // prepare error message, hint, and classes
@@ -46,6 +66,10 @@ export const TextField = (props: PageElementProps) => {
   const errorMessage: string | undefined = get(formErrors, key)?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
+
+  if (hideElement) {
+    return null;
+  }
 
   return (
     <Box>

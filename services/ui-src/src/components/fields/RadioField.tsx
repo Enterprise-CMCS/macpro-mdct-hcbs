@@ -51,10 +51,14 @@ export const RadioField = (props: PageElementProps) => {
   useEffect(() => {
     const options = { required: radio.required || false };
     form.setValue(key, radio.answer);
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
     form.register(key, options);
   }, []);
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
+  const [hideElement, setHideElement] = useState<boolean>(false);
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
@@ -62,6 +66,23 @@ export const RadioField = (props: PageElementProps) => {
       formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
     );
   }, [radio.answer]);
+
+  useEffect(() => {
+    const formValues = form.getValues() as any;
+    if (formValues && Object.keys(formValues).length === 0) {
+      return;
+    }
+    if (radio?.hide) {
+      const controlElement = formValues?.elements?.find((element: any) => {
+        return element?.id === radio.hide?.targetId;
+      });
+      if (controlElement?.answer === radio.hide.value) {
+        setHideElement(true);
+      } else {
+        setHideElement(false);
+      }
+    }
+  }, [form.getValues()]);
 
   // OnChange handles setting the visual of the radio on click, outside the normal blur
   const onChangeHandler = async (
@@ -90,6 +111,7 @@ export const RadioField = (props: PageElementProps) => {
     form.setValue(name, value, { shouldValidate: true });
     form.setValue(`${props.formkey}.type`, radio.type);
     form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,6 +128,10 @@ export const RadioField = (props: PageElementProps) => {
   const errorMessage = elementErrors?.answer?.message;
   const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
   const labelText = radio.label;
+
+  if (hideElement) {
+    return null;
+  }
 
   return (
     <Box>

@@ -10,6 +10,7 @@ export const TextAreaField = (props: PageElementProps) => {
   const textbox = props.element as TextAreaBoxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [hideElement, setHideElement] = useState<boolean>(false);
 
   // get form context and register field
   const form = useFormContext();
@@ -23,6 +24,23 @@ export const TextAreaField = (props: PageElementProps) => {
   useEffect(() => {
     setDisplayValue(textbox.answer ?? "");
   }, [textbox.answer]);
+
+  useEffect(() => {
+    const formValues = form.getValues() as any;
+    if (formValues && Object.keys(formValues).length === 0) {
+      return;
+    }
+    if (textbox?.hide) {
+      const controlElement = formValues?.elements?.find((element: any) => {
+        return element?.id === textbox.hide?.targetId;
+      });
+      if (controlElement?.answer === textbox.hide.value) {
+        setHideElement(true);
+      } else {
+        setHideElement(false);
+      }
+    }
+  }, [form.getValues()]);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -41,6 +59,10 @@ export const TextAreaField = (props: PageElementProps) => {
   const errorMessage: string | undefined = get(formErrorState, key)?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
+
+  if (hideElement) {
+    return null;
+  }
 
   return (
     <Box>
