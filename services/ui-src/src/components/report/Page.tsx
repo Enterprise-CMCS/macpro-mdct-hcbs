@@ -5,6 +5,7 @@ import {
   paragraphElement,
   accordionElement,
   buttonLinkElement,
+  nestedHeadingElement,
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import {
@@ -35,6 +36,8 @@ export const Page = ({ elements }: Props) => {
         return headerElement;
       case ElementType.SubHeader:
         return subHeaderElement;
+      case ElementType.NestedHeading:
+        return nestedHeadingElement;
       case ElementType.Paragraph:
         return paragraphElement;
       case ElementType.Textbox:
