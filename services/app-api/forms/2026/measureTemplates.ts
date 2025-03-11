@@ -468,4 +468,78 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-2"]]: {
+    id: "FFS-2",
+    title: "LTSS-2: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-2",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-2: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Fee-For-Service Measure Results",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
+        helperText:
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      additionalNotesField,
+      {
+        ...measureFooter,
+        prevTo: "LTSS-2",
+        clear: undefined,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-2"]]: {
+    id: "MLTSS-2",
+    title: "LTSS-2: Managed Care Measure Results (MLTSS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-2",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-2: Managed Care Measure Results (MLTSS LTSS)",
+      },
+      measureInstructions,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Managed Care Measure Results",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
+        helperText:
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      additionalNotesField,
+      {
+        ...measureFooter,
+        prevTo: "LTSS-2",
+        clear: undefined,
+      },
+    ],
+  },
 };
