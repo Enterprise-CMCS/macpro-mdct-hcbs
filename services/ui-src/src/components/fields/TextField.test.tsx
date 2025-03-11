@@ -59,8 +59,8 @@ describe("<TextField />", () => {
 
       await act(async () => await userEvent.type(textField, "hello[Tab]"));
 
-      // 5 keystrokes + 1 blur + 1 hydrate x 3 set value calls each = 18 calls
-      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(19);
+      // ((5 keystrokes + 1 blur) x 4 set value calls each) + 1 hydrate = 25 calls
+      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(25);
       expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
         expect.any(String),
         "hello"
