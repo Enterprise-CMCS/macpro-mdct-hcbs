@@ -1,26 +1,14 @@
 /* eslint-disable no-console */
 import { Construct } from "constructs";
-import {
-  Aws,
-  // aws_ec2 as ec2,
-  aws_iam as iam,
-  // CfnOutput,
-  Stack,
-  StackProps,
-} from "aws-cdk-lib";
+import { Aws, aws_iam as iam, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
-/*
- * import { createUiAuthComponents } from "./ui-auth";
- * import { createUiComponents } from "./ui";
- */
+import { createUiAuthComponents } from "./ui-auth";
+import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
-/*
- * import { sortSubnets } from "../utils/vpc";
- * import { deployFrontend } from "./deployFrontend";
- * import { createCustomResourceRole } from "./customResourceRole";
- * import { isLocalStack } from "../local/util";
- */
+import { deployFrontend } from "./deployFrontend";
+import { createCustomResourceRole } from "./customResourceRole";
+import { isLocalStack } from "../local/util";
 
 export class ParentStack extends Stack {
   constructor(
@@ -28,7 +16,7 @@ export class ParentStack extends Stack {
     id: string,
     props: StackProps & DeploymentConfigProperties
   ) {
-    const { isDev } = props;
+    const { isDev, secureCloudfrontDomainName } = props;
 
     super(scope, id, {
       ...props,
@@ -49,61 +37,52 @@ export class ParentStack extends Stack {
       iamPath,
     };
 
+    const customResourceRole = createCustomResourceRole({ ...commonProps });
+
     const { tables } = createDataComponents(commonProps);
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
       tables,
     });
-    console.log(apiGatewayRestApiUrl);
-    console.log(restApiId);
 
-    /*
-     *   if (!isLocalStack) {
-     *     const {
-     *       applicationEndpointUrl,
-     *       distribution,
-     *       uiBucket,
-     *     } = createUiComponents({ ...commonProps });
-     */
+    if (!isLocalStack) {
+      const { applicationEndpointUrl, distribution, uiBucket } =
+        createUiComponents({ ...commonProps });
 
-    /*
-     *     const {
-     *       userPoolDomainName,
-     *       identityPoolId,
-     *       userPoolId,
-     *       userPoolClientId,
-     *     } = createUiAuthComponents({
-     *       ...commonProps,
-     *       applicationEndpointUrl,
-     *       restApiId,
-     *       customResourceRole
-     *     });
-     */
+      const {
+        userPoolDomainName,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+      } = createUiAuthComponents({
+        ...commonProps,
+        applicationEndpointUrl,
+        restApiId,
+        customResourceRole,
+      });
 
-    /*
-     *     deployFrontend({
-     *       ...commonProps,
-     *       uiBucket,
-     *       distribution,
-     *       apiGatewayRestApiUrl,
-     *       applicationEndpointUrl: props.secureCloudfrontDomainName || applicationEndpointUrl,
-     *       identityPoolId,
-     *       userPoolId,
-     *       userPoolClientId,
-     *       userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
-     *       customResourceRole,
-     *     });
-     */
+      deployFrontend({
+        ...commonProps,
+        uiBucket,
+        distribution,
+        apiGatewayRestApiUrl,
+        applicationEndpointUrl:
+          secureCloudfrontDomainName || applicationEndpointUrl,
+        identityPoolId,
+        userPoolId,
+        userPoolClientId,
+        userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
+        customResourceRole,
+      });
 
-    /*
-     *     new CfnOutput(this, "CloudFrontUrl", {
-     *       value: applicationEndpointUrl,
-     *     });
-     *   }
-     *   new CfnOutput(this, "ApiUrl", {
-     *     value: apiGatewayRestApiUrl,
-     *   });
-     */
+      new CfnOutput(this, "CloudFrontUrl", {
+        value: applicationEndpointUrl,
+      });
+    }
+
+    new CfnOutput(this, "ApiUrl", {
+      value: apiGatewayRestApiUrl,
+    });
   }
 }

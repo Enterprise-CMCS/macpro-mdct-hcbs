@@ -2,18 +2,24 @@
 import { isLocalStack } from "./local/util";
 import { getSecret } from "./utils/secrets-manager";
 
-//GO THROUGH THIS AND MAKE IT MAKE SENSE!!!
 export interface DeploymentConfigProperties {
   project: string;
   stage: string;
   isDev: boolean;
+  oktaMetadataUrl: string;
+  launchDarklyClient: string;
+  cloudfrontCertificateArn?: string;
+  cloudfrontDomainName?: string;
+  secureCloudfrontDomainName?: string;
+  vpnIpSetArn?: string;
+  vpnIpv6SetArn?: string;
+  userPoolDomainPrefix?: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
-    isLocalStack ||
-    !["master", "main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
+    isLocalStack || !["main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project)),
     ...(await loadStageSecret(project, stage)),
@@ -59,7 +65,12 @@ const loadStageSecret = async (project: string, stage: string) => {
 function validateConfig(config: {
   [key: string]: any;
 }): asserts config is DeploymentConfigProperties {
-  const expectedKeys = ["project", "stage"];
+  const expectedKeys = [
+    "project",
+    "stage",
+    "oktaMetadataUrl",
+    "launchDarklyClient",
+  ];
 
   const invalidKeys = expectedKeys.filter(
     (key) => !config[key] || typeof config[key] !== "string"
