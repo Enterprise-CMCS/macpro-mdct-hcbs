@@ -80,6 +80,20 @@ export const ReportPageWrapper = () => {
     navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
   };
 
+  // console.log(currentPage.elements)
+  const answerResults: unknown[] = [];
+  if (currentPage.elements) {
+    for (const element of currentPage.elements) {
+      if ("value" in element) {
+        if ("answer" in element) {
+          answerResults.push(element.answer);
+        }
+      }
+    }
+  }
+
+  // console.log(answerResults)
+
   return (
     <FormProvider {...methods}>
       <SubnavBar />
