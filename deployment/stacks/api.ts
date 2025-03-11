@@ -1,21 +1,20 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
+  aws_s3 as s3,
   aws_iam as iam,
   aws_logs as logs,
-  // aws_wafv2 as wafv2,
+  aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
   Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
-// import { WafConstruct } from "../constructs/waf";
+import { WafConstruct } from "../constructs/waf";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
-/*
- * import { isDefined } from "../utils/misc";
- * import { isLocalStack } from "../local/util";
- * ADD BACK WAF!
- */
+import { isLocalStack } from "../local/util";
+import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
+import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -28,10 +27,17 @@ interface CreateApiComponentsProps {
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
-  const { scope, stage, project, isDev, tables } = props;
+  const {
+    scope,
+    stage,
+    project,
+    isDev,
+    tables,
+    iamPermissionsBoundary,
+    iamPath,
+  } = props;
 
   const service = "app-api";
-  const shortStackName = `${service}-${stage}`;
   Tags.of(scope).add("SERVICE", service);
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
@@ -105,12 +111,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   ];
 
   const commonProps = {
-    stackName: shortStackName,
+    stackName: `${service}-${stage}`,
     api,
     environment,
     additionalPolicies,
-    iamPermissionsBoundary: props.iamPermissionsBoundary,
-    iamPath: props.iamPath,
+    iamPermissionsBoundary: iamPermissionsBoundary,
+    iamPath: iamPath,
   };
 
   new Lambda(scope, "createBanner", {
@@ -177,9 +183,47 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  if (!isLocalStack) {
+    const waf = new WafConstruct(
+      scope,
+      "ApiWafConstruct",
+      {
+        name: `${project}-${stage}-${service}`,
+        blockRequestBodyOver8KB: false,
+      },
+      "REGIONAL"
+    );
+
+    new wafv2.CfnWebACLAssociation(scope, "WebACLAssociation", {
+      resourceArn: api.deploymentStage.stageArn,
+      webAclArn: waf.webAcl.attrArn,
+    });
+
+    if (!isDev) {
+      const logBucket = new s3.Bucket(scope, "WafLogBucket", {
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        removalPolicy: RemovalPolicy.RETAIN,
+        enforceSSL: true,
+      });
+
+      new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
+        logGroup: waf.logGroup,
+        bucket: logBucket,
+        iamPermissionsBoundary: iamPermissionsBoundary,
+        iamPath: iamPath,
+      });
+    }
+  }
+
+  addIamPropertiesToBucketAutoDeleteRole(
+    scope,
+    iamPermissionsBoundary.managedPolicyArn,
+    iamPath
+  );
+
   return {
     restApiId: api.restApiId,
     apiGatewayRestApiUrl: api.url.slice(0, -1),
-    project, // remove this later!
   };
 }
