@@ -325,8 +325,35 @@ export const defaultMeasureTemplates = {
         id: "measure-rates",
         helperText:
           "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+        fields: [
+          {
+            id: "count-of-success-dis",
+            label: "Count of Successful Discharges to the Community",
+          },
+          { id: "", label: "Facility Admission Count" },
+          {
+            id: "expected-count-of-success-dis",
+            label: "Expected Count of Successful Discharges to the Community",
+          },
+          { id: "multi-plan", label: "Multi-Plan Population Rate" },
+          {
+            id: "opr-min-stay",
+            label:
+              "Observed Performance Rate for the Minimizing Length of Facility Stay",
+          },
+          {
+            id: "epr-min-stay",
+            label:
+              "Expected Performance Rate for the Minimizing Length of Facility Stay",
+          },
+          {
+            id: "rar-min-stay",
+            label:
+              "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+          },
+        ],
         rateType: PerformanceRateType.FIELDS,
-        rateCalc: "test-calc",
+        rateCalc: "FacilityLengthOfStay",
       },
       {
         type: ElementType.MeasureFooter,

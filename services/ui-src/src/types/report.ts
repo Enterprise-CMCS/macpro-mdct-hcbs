@@ -292,11 +292,11 @@ export type PerformanceRateTemplate = {
   id: string;
   type: ElementType.PerformanceRate;
   helperText?: string;
-  categories?: [{label: string, id: string}];
+  assessments?: [{label: string, id: string}];
   rateType: PerformanceRateType;
   rateCalc?: RateCalc;
-  multiplier?: Number;
-  answer?: AnyObject;
+  multiplier?: number;
+  answer?: AnyObject[];
 };
 
 export type ChoiceTemplate = {

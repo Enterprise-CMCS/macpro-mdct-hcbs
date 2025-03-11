@@ -221,7 +221,7 @@ const performanceRateSchema = object().shape({
   type: string().required(ElementType.PerformanceRate),
   id: string().required(),
   helperText: string().notRequired(),
-  categories: array()
+  assessments: array()
     .of(
       object().shape({
         id: string().required(),
