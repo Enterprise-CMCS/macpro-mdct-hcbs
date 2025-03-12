@@ -55,7 +55,7 @@ const elements: PageElement[] = [
   {
     type: ElementType.NestedHeading,
     id: "",
-    text: "My nested subheading",
+    text: "My nested heading",
   },
   {
     type: ElementType.MeasureDetails,
