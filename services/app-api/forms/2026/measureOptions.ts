@@ -66,7 +66,11 @@ export const defaultMeasures: MeasureOptions[] = [
     uid: "963",
     required: false,
     stratified: false,
-    measureTemplate: [MeasureTemplateName["LTSS-3"]],
+    measureTemplate: [
+      MeasureTemplateName["LTSS-3"],
+      MeasureTemplateName["FFS-3"],
+      MeasureTemplateName["MLTSS-3"],
+    ],
   },
   {
     cmit: 962,
