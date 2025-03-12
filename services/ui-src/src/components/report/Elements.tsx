@@ -15,6 +15,7 @@ import {
   ButtonLinkTemplate,
   PageElement,
   MeasurePageTemplate,
+  NestedHeadingTemplate,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -36,9 +37,26 @@ export const headerElement = (props: PageElementProps) => {
 };
 
 export const subHeaderElement = (props: PageElementProps) => {
+  const element = props.element as SubHeaderTemplate;
+
   return (
-    <Heading as="h2" variant="subHeader">
-      {(props.element as SubHeaderTemplate).text}
+    <Stack>
+      <Heading as="h2" variant="subHeader">
+        {(props.element as SubHeaderTemplate).text}
+      </Heading>
+      {element?.helperText && (
+        <Text variant="helperText">
+          {(props.element as SubHeaderTemplate).helperText}
+        </Text>
+      )}
+    </Stack>
+  );
+};
+
+export const nestedHeadingElement = (props: PageElementProps) => {
+  return (
+    <Heading as="h3" variant="nestedHeading">
+      {(props.element as NestedHeadingTemplate).text}
     </Heading>
   );
 };

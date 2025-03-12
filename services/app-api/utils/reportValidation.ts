@@ -29,6 +29,13 @@ const subHeaderTemplateSchema = object().shape({
   type: string().required(ElementType.SubHeader),
   id: string().required(),
   text: string().required(),
+  helperText: string().notRequired(),
+});
+
+const nestedHeadingTemplateSchema = object().shape({
+  type: string().required(ElementType.NestedHeading),
+  id: string().required(),
+  text: string().required(),
 });
 
 const paragraphTemplateSchema = object().shape({
@@ -104,6 +111,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return headerTemplateSchema;
     case ElementType.SubHeader:
       return subHeaderTemplateSchema;
+    case ElementType.NestedHeading:
+      return nestedHeadingTemplateSchema;
     case ElementType.Paragraph:
       return paragraphTemplateSchema;
     case ElementType.Textbox:

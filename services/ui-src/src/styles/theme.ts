@@ -344,6 +344,16 @@ export const theme = extendTheme({
             fontSize: "lg",
           },
         },
+        nestedHeading: {
+          fontSize: "18px",
+          fontWeight: "700",
+          p: {
+            margin: "0",
+          },
+          ".mobile &": {
+            fontSize: "lg",
+          },
+        },
         sidebar: {
           fontSize: "21px",
           fontWeight: "700",
@@ -574,6 +584,9 @@ export const theme = extendTheme({
           maxWidth: "75%",
           margin: "0 auto",
           textAlign: "center",
+        },
+        helperText: {
+          color: "palette.gray_medium_dark",
         },
       },
     },
