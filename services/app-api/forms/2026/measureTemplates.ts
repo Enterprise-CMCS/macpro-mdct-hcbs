@@ -218,7 +218,7 @@ export const measureTemplates: Record<
         label: "Are you reporting stratification for this measure?",
         value: [
           { label: "Yes", value: "yes" },
-          { label: "Yes", value: "no" },
+          { label: "No", value: "no" },
         ],
       },
       {
@@ -404,7 +404,7 @@ export const measureTemplates: Record<
         label: "Are you reporting stratification for this measure?",
         value: [
           { label: "Yes", value: "yes" },
-          { label: "Yes", value: "no" },
+          { label: "No", value: "no" },
         ],
       },
       {
