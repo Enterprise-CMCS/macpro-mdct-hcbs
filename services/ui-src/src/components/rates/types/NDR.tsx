@@ -3,12 +3,16 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { PerformanceRateTemplate } from "types";
-import { AnyObject, number } from "yup";
+import { AnyObject } from "yup";
 
 export const NDR = (
-  props: PerformanceRateTemplate & { formkey: string; year?: number }
+  props: PerformanceRateTemplate & {
+    formkey: string;
+    year?: number;
+    calculation: Function;
+  }
 ) => {
-  const { rateCalc, assessments, answer, multiplier } = props;
+  const { assessments, answer, multiplier, calculation } = props;
   const defaultValue =
     answer ??
     assessments?.map((assess) => {
@@ -43,9 +47,7 @@ export const NDR = (
       newDisplayValue.numerator != undefined &&
       newDisplayValue.denominator != undefined
     ) {
-      newDisplayValue.rate =
-        (newDisplayValue.numerator / newDisplayValue.denominator) * 100;
-
+      newDisplayValue.rate = calculation(newDisplayValue);
       newDisplayValue.rate = newDisplayValue.rate * multiply;
     }
 

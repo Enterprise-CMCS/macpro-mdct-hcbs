@@ -3,6 +3,7 @@ import { PerformanceRateTemplate } from "types";
 import * as PerformanceType from "./../rates/types";
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
+import * as Calculations from "./../rates/calculations";
 
 export const PerformanceRateElement = (props: PageElementProps) => {
   const performanceRateProp = props.element as PerformanceRateTemplate;
@@ -10,6 +11,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
   const { report } = useStore();
 
   const PerformanceRate = PerformanceType[rateType];
+  const Calculation = Calculations[rateCalc ?? "NDRCalc"];
 
   return (
     <Stack gap={4} sx={sx.performance}>
@@ -20,6 +22,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
           formkey: props.formkey,
           year: report?.year,
           ...performanceRateProp,
+          calculation: Calculation,
         }}
       ></PerformanceRate>
     </Stack>

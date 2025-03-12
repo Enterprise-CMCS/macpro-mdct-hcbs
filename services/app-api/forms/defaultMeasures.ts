@@ -5,6 +5,7 @@ import {
   MeasurePageTemplate,
   MeasureOptions,
   PerformanceRateType,
+  RateCalc,
 } from "../types/reports";
 
 import { DeliverySystem } from "../utils/constants";
@@ -287,10 +288,9 @@ export const defaultMeasureTemplates = {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         rateType: PerformanceRateType.NDR,
-        rateCalc: "test-calc",
         helperText:
           "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
-        categories: [
+        assessments: [
           {
             id: "same-env",
             label:
@@ -304,8 +304,7 @@ export const defaultMeasureTemplates = {
         rateType: PerformanceRateType.NDR_Ehanced,
         helperText:
           "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
-        rateCalc: "test-calc",
-        categories: [
+        assessments: [
           {
             id: "age-18-64",
             label: "18 to 64 Years",
@@ -353,7 +352,7 @@ export const defaultMeasureTemplates = {
           },
         ],
         rateType: PerformanceRateType.FIELDS,
-        rateCalc: "FacilityLengthOfStay",
+        rateCalc: RateCalc.FacilityLengthOfStayCalc,
       },
       {
         type: ElementType.MeasureFooter,

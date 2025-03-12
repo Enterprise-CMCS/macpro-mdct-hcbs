@@ -351,14 +351,15 @@ export const enum PerformanceRateType {
 }
 
 export const enum RateCalc {
-  default = "default",
+  NDRCalc = "NDRCalc",
+  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
 }
 
 export type PerformanceRateTemplate = {
   id: string;
   type: ElementType.PerformanceRate;
   helperText?: string;
-  assessments?: [{label: string, id: string}];
+  assessments?: [{ label: string; id: string }];
   rateType: PerformanceRateType;
   rateCalc?: RateCalc;
   multiplier?: number;
