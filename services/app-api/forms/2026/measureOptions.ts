@@ -9,7 +9,7 @@ export const defaultMeasures: MeasureOptions[] = [
     measureTemplate: [
       MeasureTemplateName["LTSS-1"],
       MeasureTemplateName["FFS-1"],
-      MeasureTemplateName["MLTSS"],
+      MeasureTemplateName["MLTSS-1"],
     ],
   },
   {
