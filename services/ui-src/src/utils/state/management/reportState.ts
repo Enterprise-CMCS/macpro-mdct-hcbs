@@ -73,7 +73,7 @@ export const mergeAnswers = async (answers: any, state: HcbsReportState) => {
 
   try {
     await putReport(report);
-  } catch (e) {
+  } catch (_error) {
     return { errorMessage: apiError };
   }
   return { report, lastSavedTime: getLocalHourMinuteTime() };
@@ -95,7 +95,7 @@ export const substitute = async (
 
     try {
       await putReport(report);
-    } catch (e) {
+    } catch (_error) {
       return { errorMessage: apiError };
     }
   }
@@ -116,7 +116,7 @@ export const clearMeasure = async (
   performClearMeasure(measureId, report, ignoreList);
   try {
     await putReport(report);
-  } catch (e) {
+  } catch (_error) {
     return { errorMessage: apiError };
   }
   return { report };
@@ -135,7 +135,7 @@ export const resetMeasure = async (
   performResetMeasure(measureId, report);
   try {
     await putReport(report);
-  } catch (e) {
+  } catch (_error) {
     return { errorMessage: apiError };
   }
   return { report };
