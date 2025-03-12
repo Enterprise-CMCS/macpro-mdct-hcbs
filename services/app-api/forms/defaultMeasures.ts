@@ -329,7 +329,7 @@ export const defaultMeasureTemplates = {
             id: "count-of-success-dis",
             label: "Count of Successful Discharges to the Community",
           },
-          { id: "", label: "Facility Admission Count" },
+          { id: "fac-admin-count", label: "Facility Admission Count" },
           {
             id: "expected-count-of-success-dis",
             label: "Expected Count of Successful Discharges to the Community",

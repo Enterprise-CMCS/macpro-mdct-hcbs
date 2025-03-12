@@ -344,6 +344,11 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
+export type PerformanceData = {
+  rates: AnyObject[];
+  denominator?: number;
+};
+
 export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Ehanced = "NDREnhanced",
@@ -360,10 +365,11 @@ export type PerformanceRateTemplate = {
   type: ElementType.PerformanceRate;
   helperText?: string;
   assessments?: [{ label: string; id: string }];
+  fields?: [{ label: string; id: string }];
   rateType: PerformanceRateType;
   rateCalc?: RateCalc;
   multiplier?: number;
-  answer?: AnyObject[];
+  answer?: PerformanceData;
 };
 
 export type ChoiceTemplate = {

@@ -1,6 +1,9 @@
 import { AnyObject } from "yup";
 
-export const FacilityLengthOfStayCalc = (set: AnyObject) => {
+export const FacilityLengthOfStayCalc = (
+  set: AnyObject,
+  multiplier: number
+) => {
   const { numerator, denominator } = set;
   // "count-of-success-dis"
   // "expected-count-of-success-dis"
@@ -10,7 +13,16 @@ export const FacilityLengthOfStayCalc = (set: AnyObject) => {
   // "rar-min-stay"
 };
 
-export const NDRCalc = (set: AnyObject) => {
+export const NDRCalc = (set: AnyObject, multiplier: number) => {
   const { numerator, denominator } = set;
-  return Math.round((numerator / denominator) * 1000) / 10;
+  if (
+    numerator === undefined ||
+    numerator === "" ||
+    denominator === undefined ||
+    denominator === ""
+  ) {
+    return "";
+  }
+
+  return (Math.round((numerator / denominator) * 1000) / 10) * multiplier;
 };

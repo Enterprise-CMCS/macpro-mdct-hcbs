@@ -12,6 +12,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
 
   const PerformanceRate = PerformanceType[rateType];
   const Calculation = Calculations[rateCalc ?? "NDRCalc"];
+  performanceRateProp.multiplier = performanceRateProp.multiplier ?? 1;
 
   return (
     <Stack gap={4} sx={sx.performance}>

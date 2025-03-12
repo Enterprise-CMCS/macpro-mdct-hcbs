@@ -3,7 +3,11 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { PerformanceRateTemplate } from "types";
 
 export const Fields = (
-  props: PerformanceRateTemplate & { formkey: string; year?: number }
+  props: PerformanceRateTemplate & {
+    formkey: string;
+    year?: number;
+    calculation?: Function;
+  }
 ) => {
   const { id, rateCalc, answer } = props;
 

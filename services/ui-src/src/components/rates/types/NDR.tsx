@@ -2,8 +2,7 @@ import { Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { PerformanceRateTemplate } from "types";
-import { AnyObject } from "yup";
+import { PerformanceData, PerformanceRateTemplate } from "types";
 
 export const NDR = (
   props: PerformanceRateTemplate & {
@@ -13,8 +12,7 @@ export const NDR = (
   }
 ) => {
   const { assessments, answer, multiplier, calculation } = props;
-  const defaultValue =
-    answer ??
+  const initialValues =
     assessments?.map((assess) => {
       return {
         numerator: "",
@@ -23,9 +21,11 @@ export const NDR = (
         performanceTarget: "",
         id: assess.id,
       };
-    });
+    }) ?? [];
 
-  const [displayValue, setDisplayValue] = useState<AnyObject[]>(defaultValue!);
+  const defaultValue = answer ?? { rates: initialValues };
+  const [displayValue, setDisplayValue] =
+    useState<PerformanceData>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
@@ -38,37 +38,30 @@ export const NDR = (
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     const [index, type] = name.split(".");
-    const multiply = multiplier ?? 1;
 
-    const newDisplayValue = displayValue[Number(index)];
+    const newDisplayValue = displayValue.rates[Number(index)];
     newDisplayValue[type] = value;
+    newDisplayValue.rate = calculation(newDisplayValue, multiplier);
+    displayValue.rates[Number(index)] = newDisplayValue;
 
-    if (
-      newDisplayValue.numerator != undefined &&
-      newDisplayValue.denominator != undefined
-    ) {
-      newDisplayValue.rate = calculation(newDisplayValue);
-      newDisplayValue.rate = newDisplayValue.rate * multiply;
-    }
-
-    displayValue[Number(index)] = newDisplayValue;
     setDisplayValue(displayValue);
-
     form.setValue(`${key}`, displayValue, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    form.setValue(`${key}.${name}`, value, { shouldValidate: true });
+    form.setValue(`${key}.rates.${name}`, value, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
 
   return (
     <Stack gap={4}>
       {assessments?.map((assess, index) => {
-        const value = displayValue.find((item) => item.id === assess.id) ?? {};
+        const value =
+          displayValue.rates.find((item) => item.id === assess.id) ?? {};
+
         return (
-          <>
+          <div key={assess.id}>
             <Heading variant="subHeader">
               Performance Rate: {assess.label}
             </Heading>
@@ -100,7 +93,7 @@ export const NDR = (
               value={value.rate}
               disabled
             ></CmsdsTextField>
-          </>
+          </div>
         );
       })}
     </Stack>
