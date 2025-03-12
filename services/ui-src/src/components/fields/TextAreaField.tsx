@@ -30,11 +30,11 @@ export const TextAreaField = (props: PageElementProps) => {
     if (formValues && Object.keys(formValues).length === 0) {
       return;
     }
-    if (textbox?.hide) {
+    if (textbox?.hideCondition) {
       const controlElement = formValues?.elements?.find((element: any) => {
-        return element?.id === textbox.hide?.targetId;
+        return element?.id === textbox.hideCondition?.controllerElementId;
       });
-      if (controlElement?.answer === textbox.hide.value) {
+      if (controlElement?.answer === textbox.hideCondition.answer) {
         setHideElement(true);
       } else {
         setHideElement(false);

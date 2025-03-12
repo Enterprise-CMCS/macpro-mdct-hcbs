@@ -45,10 +45,10 @@ const textboxTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   required: string().notRequired(),
-  hide: object()
+  hideCondition: object()
     .shape({
-      targetId: string().required(),
-      value: string().required(),
+      controllerElementId: string().required(),
+      answer: string().required(),
     })
     .notRequired()
     .default(undefined),
@@ -60,11 +60,10 @@ const textAreaTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  hide: object()
-    .notRequired()
+  hideCondition: object()
     .shape({
-      targetId: string().required(),
-      value: string().required(),
+      controllerElementId: string().required(),
+      answer: string().required(),
     })
     .notRequired()
     .default(undefined),
@@ -169,10 +168,10 @@ const radioTemplateSchema = object().shape({
   ),
   answer: string().notRequired(),
   required: string().notRequired(),
-  hide: object()
+  hideCondition: object()
     .shape({
-      targetId: string().required(),
-      value: string().required(),
+      controllerElementId: string().required(),
+      answer: string().required(),
     })
     .notRequired()
     .default(undefined),

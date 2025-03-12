@@ -254,9 +254,9 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
-  hide?: {
-    targetId: string;
-    value: string;
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
   };
 };
 
@@ -266,9 +266,9 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  hide?: {
-    targetId: string;
-    value: string;
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
   };
 };
 
@@ -319,9 +319,9 @@ export type RadioTemplate = {
   value: ChoiceTemplate[];
   answer?: string;
   required?: string; //takes error message to display if not provided
-  hide?: {
-    targetId: string;
-    value: string;
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
   };
 };
 

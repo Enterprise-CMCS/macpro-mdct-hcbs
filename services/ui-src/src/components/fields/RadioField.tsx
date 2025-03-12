@@ -72,11 +72,11 @@ export const RadioField = (props: PageElementProps) => {
     if (formValues && Object.keys(formValues).length === 0) {
       return;
     }
-    if (radio?.hide) {
+    if (radio?.hideCondition) {
       const controlElement = formValues?.elements?.find((element: any) => {
-        return element?.id === radio.hide?.targetId;
+        return element?.id === radio.hideCondition?.controllerElementId;
       });
-      if (controlElement?.answer === radio.hide.value) {
+      if (controlElement?.answer === radio.hideCondition.answer) {
         setHideElement(true);
       } else {
         setHideElement(false);
