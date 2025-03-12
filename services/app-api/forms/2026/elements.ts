@@ -10,6 +10,7 @@ import {
   ReportingRadioTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
+  TextboxTemplate,
 } from "../../types/reports";
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
@@ -49,6 +50,18 @@ export const measureInformationSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   id: "measure-information-subheader",
   text: "Measure Information",
+};
+
+export const feeForServiceMeasureResultsSubheader: SubHeaderTemplate = {
+  type: ElementType.SubHeader,
+  id: "fee-for-service-measure-results-subheader",
+  text: "Fee-For-Service Measure Results",
+};
+
+export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
+  type: ElementType.SubHeader,
+  id: "managed-care-measure-results-subheader",
+  text: "Managed Care Measure Results",
 };
 
 export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
@@ -165,4 +178,70 @@ export const measureFooter: MeasureFooterTemplate = {
   prevTo: "req-measure-result",
   completeMeasure: true,
   clear: true,
+};
+
+export const whichMedicaidHCBSprograms: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "measure-programs-text",
+  label: "Which Medicaid HCBS programs are being reported? (optional)",
+  helperText:
+    "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+};
+
+export const performanceRatesDenom: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "performance-rates-denom",
+  label: "Performance Rates Denominator",
+};
+
+export const performanceRatesDenomAutoCalculates: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "performance-rates-denom-auto-calc",
+  helperText: "Auto-calculates",
+  label: "Denominator",
+};
+
+export const exclusionRatesDenomAutoCalculates: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "exclusion-rates-denom-auto-calc",
+  helperText: "Auto-calculates",
+  label: "Denominator",
+};
+
+export const performanceRateAutoCalculates: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "performance-rate-auto-calc",
+  helperText: "Auto-calculates",
+  label: "Rate",
+};
+
+export const performanceRateNum: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "performance-rate-num",
+  label: "Numerator",
+};
+
+export const exclusionRateNum: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "exclusion-rate-num",
+  label: "Numerator",
+};
+
+export const performanceRateTarget: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "performance-rate-target",
+  label:
+    "What is the [templateYear+2] state performance target for this assessment?",
+};
+
+export const exclusionRatesMeasureSubheader: SubHeaderTemplate = {
+  type: ElementType.SubHeader,
+  id: "measure-subheader-exclusion-rates",
+  text: "Exclusion Rates",
+};
+
+export const exclusionRatesDenomTextBox: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "exclusion-rates-denom",
+  label: "Exclusion Rates Denominator",
 };
