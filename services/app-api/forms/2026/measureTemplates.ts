@@ -407,6 +407,12 @@ export const measureTemplates: Record<
           { label: "Yes", value: "no" },
         ],
       },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-1",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["LTSS-2"]]: {
