@@ -15,6 +15,7 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   MeasureStatus,
+  ElementType,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -211,6 +212,41 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
   elements: [],
 };
 
+export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
+  id: "LTSS-1",
+  cmitId: "960",
+  status: MeasureStatus.IN_PROGRESS,
+  title: "mock-title-2",
+  type: PageType.Measure,
+  required: true,
+  elements: [
+    {
+      type: ElementType.ReportingRadio,
+      label: "Is the state reporting on this measure?",
+      id: "measure-reporting-radio",
+      value: [
+        {
+          label: "Yes, the state is reporting on this measure",
+          value: "yes",
+        },
+        {
+          label: "No, CMS is reporting this measure on the state's behalf",
+          value: "no",
+        },
+      ],
+      answer: "no",
+    },
+    {
+      type: ElementType.TextAreaField,
+      id: "additional-notes-field",
+      helperText:
+        "If applicable, add any notes or comments to provide context to the reported measure result",
+      label: "Additional notes/comments (optional)",
+      answer: "yes",
+    },
+  ],
+};
+
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
   currentPageId: "mock-template-id",
@@ -268,10 +304,10 @@ export const mockReportStore: HcbsReportState = {
   setCurrentPageId: () => {},
   setModalOpen: () => {},
   setModalComponent: () => {},
-  setAnswers: () => {},
-  resetMeasure: () => {},
-  clearMeasure: () => {},
-  setSubstitute: () => {},
+  setAnswers: async () => {},
+  resetMeasure: async () => {},
+  clearMeasure: async () => {},
+  setSubstitute: async () => {},
 };
 
 // BOUND STORE
