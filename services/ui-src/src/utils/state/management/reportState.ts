@@ -87,20 +87,16 @@ export const substitute = async (
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  if (selectMeasure) {
-    const substitute = selectMeasure.substitutable?.toString();
-    const measure = measures.find((measure) =>
-      measure.id.includes(substitute!)
-    );
-    if (report && measure) {
-      measure.required = true;
-      selectMeasure.required = false;
+  const substitute = selectMeasure.substitutable?.toString();
+  const measure = measures.find((measure) => measure.id.includes(substitute!));
+  if (measure) {
+    measure.required = true;
+    selectMeasure.required = false;
 
-      try {
-        await putReport(report);
-      } catch (e) {
-        return { errorMessage: apiError };
-      }
+    try {
+      await putReport(report);
+    } catch (e) {
+      return { errorMessage: apiError };
     }
   }
 

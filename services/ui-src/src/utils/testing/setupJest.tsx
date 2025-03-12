@@ -219,6 +219,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
+  substitutable: "FASI-1",
   elements: [
     {
       type: ElementType.ReportingRadio,

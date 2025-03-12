@@ -21,7 +21,6 @@ import {
 } from "./reportState";
 import {
   mock2MeasureTemplate,
-  mockMeasureTemplate,
   mockMeasureTemplateNotReporting,
 } from "utils/testing/setupJest";
 
@@ -240,7 +239,10 @@ describe("state/management/reportState: mergeAnswers", () => {
 
 describe("state/management/reportState: substitute", () => {
   test("substitute the measure", async () => {
-    const response = await substitute(testReport, mockMeasureTemplate);
+    const response = await substitute(
+      testReport,
+      mockMeasureTemplateNotReporting
+    );
     const measure = response.report!.pages[3] as MeasurePageTemplate;
     expect(measure.required).toBe(false);
   });
