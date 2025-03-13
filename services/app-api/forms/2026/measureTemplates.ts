@@ -24,15 +24,19 @@ import {
   whichMedicaidHCBSprograms,
   feeForServiceMeasureResultsSubheader,
   managedCareMeasureResultsSubheader,
-  performanceRatesDenom,
-  performanceRatesDenomAutoCalculates,
-  exclusionRatesDenomAutoCalculates,
-  exclusionRateNum,
+  performanceRatesSubheader,
   performanceRateAutoCalculates,
   performanceRateNum,
   performanceRateTarget,
+  performanceRatesDenomTextbox,
+  performanceRatesDenomAutoCalculates,
   exclusionRatesMeasureSubheader,
+  exclusionRatesDenomAutoCalculates,
+  exclusionRateNum,
   exclusionRatesDenomTextBox,
+  stratificationSubheader,
+  stratificationParagraph,
+  stratificationReportingRadio,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -81,14 +85,8 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
-      performanceRatesDenom,
+      performanceRatesSubheader,
+      performanceRatesDenomTextbox,
       {
         type: ElementType.NestedHeading,
         id: "measure-subheader",
@@ -125,25 +123,9 @@ export const measureTemplates: Record<
       exclusionRateNum,
       exclusionRatesDenomAutoCalculates,
       performanceRateAutoCalculates,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      stratificationReportingRadio,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -172,14 +154,8 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
-      performanceRatesDenom,
+      performanceRatesSubheader,
+      performanceRatesDenomTextbox,
       {
         type: ElementType.NestedHeading,
         id: "measure-subheader",
@@ -216,25 +192,9 @@ export const measureTemplates: Record<
       exclusionRateNum,
       exclusionRatesDenomAutoCalculates,
       performanceRateAutoCalculates,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      stratificationReportingRadio,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -285,14 +245,8 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
-      performanceRatesDenom,
+      performanceRatesSubheader,
+      performanceRatesDenomTextbox,
       {
         type: ElementType.NestedHeading,
         id: "measure-subheader",
@@ -329,25 +283,9 @@ export const measureTemplates: Record<
       exclusionRateNum,
       exclusionRatesDenomAutoCalculates,
       performanceRateAutoCalculates,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      stratificationReportingRadio,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -376,14 +314,8 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
-      performanceRatesDenom,
+      performanceRatesSubheader,
+      performanceRatesDenomTextbox,
       {
         type: ElementType.NestedHeading,
         id: "measure-subheader",
@@ -420,25 +352,9 @@ export const measureTemplates: Record<
       exclusionRateNum,
       exclusionRatesDenomAutoCalculates,
       performanceRateAutoCalculates,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      stratificationReportingRadio,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
