@@ -48,6 +48,9 @@ export enum MeasureTemplateName {
   // required measures
   "LTSS-1" = "LTSS-1",
   "FFS-1" = "FFS-1",
+  "FFS-2" = "FFS-2",
+  "MLTSS-1" = "MLTSS-1",
+  "MLTSS-2" = "MLTSS-2",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
@@ -188,6 +191,7 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
   Date = "date",
@@ -209,6 +213,7 @@ export enum ElementType {
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | NestedHeadingTemplate
   | TextboxTemplate
   | TextAreaBoxTemplate
   | DateTemplate
@@ -231,9 +236,21 @@ export type HeaderTemplate = {
   id: string;
   text: string;
 };
+export const isHeaderTemplate = (
+  element: PageElement
+): element is HeaderTemplate => {
+  return element.type === ElementType.Header;
+};
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
+  text: string;
+  helperText?: string;
+};
+
+export type NestedHeadingTemplate = {
+  type: ElementType.NestedHeading;
   id: string;
   text: string;
 };

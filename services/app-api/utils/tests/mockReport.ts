@@ -1,4 +1,4 @@
-import { qmsReportTemplate } from "../../forms/qms";
+import { getReportTemplate } from "../../forms/yearlyFormSelection";
 import {
   Report,
   PageType,
@@ -6,7 +6,10 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   ReportStatus,
+  ReportType,
 } from "../../types/reports";
+
+const qmsReportTemplate = getReportTemplate(ReportType.QMS, 2026);
 
 export const validReport: Report = {
   ...qmsReportTemplate,
