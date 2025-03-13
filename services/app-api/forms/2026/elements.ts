@@ -267,7 +267,7 @@ export const stratificationParagraph: ParagraphTemplate = {
   text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
 };
 
-export const stratificationReportingRadio: RadioTemplate = {
+export const areYouReportingStratification: RadioTemplate = {
   type: ElementType.Radio,
   id: "reporting-strat-radio",
   label: "Are you reporting stratification for this measure?",

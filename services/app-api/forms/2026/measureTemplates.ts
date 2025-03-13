@@ -36,7 +36,7 @@ import {
   exclusionRatesDenomTextBox,
   stratificationSubheader,
   stratificationParagraph,
-  stratificationReportingRadio,
+  areYouReportingStratification,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -125,7 +125,7 @@ export const measureTemplates: Record<
       performanceRateAutoCalculates,
       stratificationSubheader,
       stratificationParagraph,
-      stratificationReportingRadio,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -194,7 +194,7 @@ export const measureTemplates: Record<
       performanceRateAutoCalculates,
       stratificationSubheader,
       stratificationParagraph,
-      stratificationReportingRadio,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -285,7 +285,7 @@ export const measureTemplates: Record<
       performanceRateAutoCalculates,
       stratificationSubheader,
       stratificationParagraph,
-      stratificationReportingRadio,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -354,7 +354,7 @@ export const measureTemplates: Record<
       performanceRateAutoCalculates,
       stratificationSubheader,
       stratificationParagraph,
-      stratificationReportingRadio,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
