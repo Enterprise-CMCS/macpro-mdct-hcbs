@@ -11,7 +11,7 @@ export const NDREnhanced = (
     calculation: Function;
   }
 ) => {
-  const { assessments, answer, multiplier, calculation } = props;
+  const { label, assessments, answer, multiplier, calculation } = props;
   const initialValues =
     assessments?.map((assess) => {
       return {
@@ -86,10 +86,12 @@ export const NDREnhanced = (
         return (
           <div key={assess.id}>
             <Heading variant="subHeader">
-              Performance Rate: {assess.label}
+              {label ?? "Performance Rate"}
+              {": "}
+              {assess.label}
             </Heading>
             <CmsdsTextField
-              label={`What is the ${props.year} state performance target for this assessment`}
+              label={`What is the ${props.year} state performance target for this assessment?`}
               name={`${index}.performanceTarget`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}

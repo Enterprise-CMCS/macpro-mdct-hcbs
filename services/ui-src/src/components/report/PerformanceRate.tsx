@@ -7,7 +7,7 @@ import * as Calculations from "./../rates/calculations";
 
 export const PerformanceRateElement = (props: PageElementProps) => {
   const performanceRateProp = props.element as PerformanceRateTemplate;
-  const { rateType, rateCalc, helperText } = performanceRateProp;
+  const { rateType, rateCalc, helperText, label } = performanceRateProp;
   const { report } = useStore();
 
   const PerformanceRate = PerformanceType[rateType];
@@ -16,7 +16,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
 
   return (
     <Stack gap={4} sx={sx.performance}>
-      <Heading variant="subHeader">Performance Rates</Heading>
+      <Heading variant="subHeader">{label ?? "Performance Rates"}</Heading>
       <Text>{helperText}</Text>
       <PerformanceRate
         {...{

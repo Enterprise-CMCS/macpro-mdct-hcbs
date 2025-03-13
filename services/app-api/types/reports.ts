@@ -380,9 +380,10 @@ export const enum RateCalc {
 export type PerformanceRateTemplate = {
   id: string;
   type: ElementType.PerformanceRate;
+  label?: string;
   helperText?: string;
-  assessments?: [{ label: string; id: string }];
-  fields?: [{ label: string; id: string; autoCalc?: boolean }];
+  assessments?: { label: string; id: string }[];
+  fields?: { label: string; id: string; autoCalc?: boolean }[];
   rateType: PerformanceRateType;
   rateCalc?: RateCalc;
   multiplier?: number;

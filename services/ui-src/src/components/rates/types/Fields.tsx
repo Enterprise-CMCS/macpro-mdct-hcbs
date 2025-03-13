@@ -53,7 +53,7 @@ export const Fields = (
   return (
     <Stack gap={4}>
       <CmsdsTextField
-        label={`What is the ${props.year} state performance target for this assessment`}
+        label={`What is the ${props.year} state performance target for this assessment?`}
         name={`0.performanceTarget`}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}

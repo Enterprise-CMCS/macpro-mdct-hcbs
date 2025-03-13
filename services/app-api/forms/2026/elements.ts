@@ -6,8 +6,11 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   ParagraphTemplate,
+  PerformanceRateTemplate,
+  PerformanceRateType,
   QualityMeasureTableTemplate,
   RadioTemplate,
+  RateCalc,
   ReportingRadioTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
@@ -63,14 +66,6 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   id: "managed-care-measure-results-subheader",
   text: "Managed Care Measure Results",
-};
-
-export const performanceRatesSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  id: "measure-subheader-performance-rates",
-  text: "Performance Rates",
-  helperText:
-    "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
 };
 
 export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
@@ -197,64 +192,6 @@ export const whichMedicaidHCBSprograms: TextAreaBoxTemplate = {
     "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
 };
 
-export const performanceRatesDenomTextbox: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rates-denom",
-  label: "Performance Rates Denominator",
-};
-
-export const performanceRatesDenomAutoCalculates: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rates-denom-auto-calc",
-  helperText: "Auto-calculates",
-  label: "Denominator",
-};
-
-export const exclusionRatesDenomAutoCalculates: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "exclusion-rates-denom-auto-calc",
-  helperText: "Auto-calculates",
-  label: "Denominator",
-};
-
-export const performanceRateAutoCalculates: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rate-auto-calc",
-  helperText: "Auto-calculates",
-  label: "Rate",
-};
-
-export const performanceRateNum: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rate-num",
-  label: "Numerator",
-};
-
-export const exclusionRateNum: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "exclusion-rate-num",
-  label: "Numerator",
-};
-
-export const performanceRateTarget: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rate-target",
-  label:
-    "What is the [templateYear+2] state performance target for this assessment?",
-};
-
-export const exclusionRatesMeasureSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  id: "measure-subheader-exclusion-rates",
-  text: "Exclusion Rates",
-};
-
-export const exclusionRatesDenomTextBox: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "exclusion-rates-denom",
-  label: "Exclusion Rates Denominator",
-};
-
 export const stratificationSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   id: "measure-subheader-stratification",
@@ -275,4 +212,130 @@ export const areYouReportingStratification: RadioTemplate = {
     { label: "Yes", value: "yes" },
     { label: "No", value: "no" },
   ],
+};
+
+export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  rateType: PerformanceRateType.NDR_Ehanced,
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "assess-of-core",
+      label: "Assessment of Core Elements",
+    },
+    {
+      id: "assess-of-supplemental",
+      label: "Assessment of Supplemental Elements",
+    },
+  ],
+};
+
+export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  label: "Exclusion Rates",
+  rateType: PerformanceRateType.NDR_Ehanced,
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "part-not-connect",
+      label: "Participant Could Not be Connected",
+    },
+    {
+      id: "part-refuse-assess",
+      label: "Participant Refused Assessment",
+    },
+  ],
+};
+
+export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  rateType: PerformanceRateType.NDR_Ehanced,
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "person-plan-core",
+      label: "Person-Centered Plan with Core Elements",
+    },
+    {
+      id: "person-plan-supplemental",
+      label: "Person-Centered Plan with Supplemental Elements",
+    },
+  ],
+};
+
+export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  label: "Exclusion Rates",
+  rateType: PerformanceRateType.NDR_Ehanced,
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "part-not-contact",
+      label: "Participant Count Not Be Contacted",
+    },
+    {
+      id: "part-refuse-planning",
+      label: "Participant Refused Person-Centered Planning",
+    },
+  ],
+};
+
+export const performanceMeasurePOM: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  rateType: PerformanceRateType.NDR,
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "same-env",
+      label: "Person uses the same environments as people without disabilities",
+    },
+  ],
+};
+
+export const performanceMeasureFacility: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+  fields: [
+    {
+      id: "count-of-success-dis",
+      label: "Count of Successful Discharges to the Community",
+    },
+    { id: "fac-admin-count", label: "Facility Admission Count" },
+    {
+      id: "expected-count-of-success-dis",
+      label: "Expected Count of Successful Discharges to the Community",
+    },
+    { id: "multi-plan", label: "Multi-Plan Population Rate" },
+    {
+      id: "opr-min-stay",
+      label:
+        "Observed Performance Rate for the Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "epr-min-stay",
+      label:
+        "Expected Performance Rate for the Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "rar-min-stay",
+      label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+  ],
+  rateType: PerformanceRateType.FIELDS,
+  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
