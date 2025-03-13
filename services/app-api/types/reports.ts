@@ -47,7 +47,9 @@ export enum MeasureTemplateName {
   // required measures
   "LTSS-1" = "LTSS-1",
   "FFS-1" = "FFS-1",
+  "FFS-2" = "FFS-2",
   "MLTSS-1" = "MLTSS-1",
+  "MLTSS-2" = "MLTSS-2",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
