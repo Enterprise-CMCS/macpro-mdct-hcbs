@@ -14,7 +14,6 @@ import {
   ReportingRadioTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
-  TextboxTemplate,
 } from "../../types/reports";
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {

@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { PerformanceData, PerformanceRateTemplate } from "types";
 

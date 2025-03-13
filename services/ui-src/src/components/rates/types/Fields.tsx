@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PerformanceData, PerformanceRateTemplate } from "types";
 import { Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
