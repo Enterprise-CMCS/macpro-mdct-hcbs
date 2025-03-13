@@ -385,6 +385,7 @@ export enum MeasureTemplateName {
   "LTSS-8" = "LTSS-8",
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
+  "FFS-6" = "FFS-6",
   "MLTSS-1" = "MLTSS-1",
   "MLTSS-2" = "MLTSS-2",
   "POM-1" = "POM-1",

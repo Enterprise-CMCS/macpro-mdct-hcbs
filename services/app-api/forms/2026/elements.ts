@@ -214,6 +214,7 @@ export const areYouReportingStratification: RadioTemplate = {
   ],
 };
 
+//Rates for LTSS-1
 export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
@@ -251,6 +252,7 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   ],
 };
 
+//Rates for LTSS-2
 export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
@@ -288,7 +290,8 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
   ],
 };
 
-export const performanceMeasurePOM: PerformanceRateTemplate = {
+//Rates for POM
+export const performanceRatePOM: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   rateType: PerformanceRateType.NDR,
@@ -302,7 +305,8 @@ export const performanceMeasurePOM: PerformanceRateTemplate = {
   ],
 };
 
-export const performanceMeasureFacility: PerformanceRateTemplate = {
+//Rates for LTSS-7 & LTSS-8
+export const performanceRateFacility: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   helperText:
@@ -338,4 +342,24 @@ export const performanceMeasureFacility: PerformanceRateTemplate = {
   ],
   rateType: PerformanceRateType.FIELDS,
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
+};
+
+export const performanceRateTermStay: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, slected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years" },
+    { id: "year-2", label: "65 to 74 Years" },
+    { id: "year-3", label: "75 to 84 Years" },
+    { id: "year-4", label: "85 years or older" },
+  ],
+  fields: [
+    { id: "short-term", label: "Short Term Stay" },
+    { id: "med-term", label: "Medium Term Stay" },
+    { id: "long-term", label: "Long Term Stay" },
+  ],
+  rateType: PerformanceRateType.NDRFIELDS,
+  multiplier: 1000,
 };

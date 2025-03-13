@@ -61,7 +61,7 @@ export const NDR = (
           displayValue.rates.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <div key={assess.id}>
+          <Stack key={assess.id}>
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}
@@ -95,7 +95,7 @@ export const NDR = (
               value={value.rate}
               disabled
             ></CmsdsTextField>
-          </div>
+          </Stack>
         );
       })}
     </Stack>

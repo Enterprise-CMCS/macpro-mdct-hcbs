@@ -4,14 +4,14 @@ import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useEffect, useState } from "react";
 import { PerformanceData, PerformanceRateTemplate } from "types";
 
-export const NDREnhanced = (
+export const NDRFields = (
   props: PerformanceRateTemplate & {
     formkey: string;
     year?: number;
     calculation: Function;
   }
 ) => {
-  const { label, assessments, answer, multiplier, calculation } = props;
+  const { label, assessments, answer, multiplier, calculation, fields } = props;
   const initialValues =
     assessments?.map((assess) => {
       return {
@@ -75,13 +75,6 @@ export const NDREnhanced = (
 
   return (
     <Stack gap={4}>
-      <CmsdsTextField
-        label="Performance Rates Denominator"
-        name="denominator"
-        onChange={onChangeHandler}
-        onBlur={onBlurHandler}
-        value={answer?.denominator}
-      ></CmsdsTextField>
       {assessments?.map((assess, index) => {
         const value =
           displayValue?.rates?.find((item) => item.id === assess.id) ?? {};
@@ -93,36 +86,46 @@ export const NDREnhanced = (
               {": "}
               {assess.label}
             </Heading>
-            <CmsdsTextField
-              label={`What is the ${props.year} state performance target for this assessment?`}
-              name={`${index}.performanceTarget`}
-              onChange={onChangeHandler}
-              onBlur={onBlurHandler}
-              value={value.performanceTarget}
-            ></CmsdsTextField>
-            <CmsdsTextField
-              label="Numerator"
-              name={`${index}.numerator`}
-              onChange={onChangeHandler}
-              onBlur={onBlurHandler}
-              value={value.numerator}
-            ></CmsdsTextField>
+
             <CmsdsTextField
               label="Denominator"
               name={`${index}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={value.denominator}
-              hint="Auto-calculates"
-              disabled
             ></CmsdsTextField>
-            <CmsdsTextField
-              label="Rate"
-              name={`${index}.rate`}
-              hint="Auto-calculates"
-              value={value.rate}
-              disabled
-            ></CmsdsTextField>
+
+            {fields?.map((field) => {
+              return (
+                <Stack>
+                  <CmsdsTextField
+                    label={`What is the ${
+                      props.year
+                    } state performance target for this assessment for ${field.label.toLowerCase()} (${
+                      assess.label
+                    })?`}
+                    name={`${index}.performanceTarget`}
+                    onChange={onChangeHandler}
+                    onBlur={onBlurHandler}
+                    value={value.performanceTarget}
+                  ></CmsdsTextField>
+                  <CmsdsTextField
+                    label={`Numerator: ${field.label} (${assess.label})`}
+                    name={`${index}.numerator`}
+                    onChange={onChangeHandler}
+                    onBlur={onBlurHandler}
+                    value={value.numerator}
+                  ></CmsdsTextField>
+                  <CmsdsTextField
+                    label={`${field.label} Rate (${assess.label})`}
+                    name={`${index}.rate`}
+                    hint="Auto-calculates"
+                    value={value.rate}
+                    disabled
+                  ></CmsdsTextField>
+                </Stack>
+              );
+            })}
           </Stack>
         );
       })}

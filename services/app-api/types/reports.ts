@@ -49,6 +49,7 @@ export enum MeasureTemplateName {
   "LTSS-1" = "LTSS-1",
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
+  "FFS-6" = "FFS-6",
   "MLTSS-1" = "MLTSS-1",
   "MLTSS-2" = "MLTSS-2",
   "LTSS-2" = "LTSS-2",
@@ -370,6 +371,7 @@ export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Ehanced = "NDREnhanced",
   FIELDS = "Fields",
+  NDRFIELDS = "NDRFields",
 }
 
 export const enum RateCalc {

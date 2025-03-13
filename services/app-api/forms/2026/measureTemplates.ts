@@ -31,6 +31,7 @@ import {
   performanceRatesAssessmentElements,
   performanceRatesPersonPlanElements,
   exclusionRatesPersonPlanElements,
+  performanceRateTermStay,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -233,6 +234,31 @@ export const measureTemplates: Record<
       qualityMeasuresSubheader,
       qualityMeasureTable,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["FFS-6"]]: {
+    id: "FFS-6",
+    title: "FFS-6: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-6",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-6: Fee-For-Service Measure Results",
+      },
+      performanceRateTermStay,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-6",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["LTSS-7"]]: {
