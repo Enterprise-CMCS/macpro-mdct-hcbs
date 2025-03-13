@@ -32,7 +32,7 @@ export const FacilityLengthOfStayCalc = (
   if (
     isFilled(rate["opr-min-stay"]) &&
     isFilled(rate["epr-min-stay"]) &&
-    isFilled("multi-plan")
+    isFilled(rate["multi-plan"])
   )
     rate["rar-min-stay"] =
       (rate["opr-min-stay"] / rate["epr-min-stay"]) * rate["multi-plan"];
