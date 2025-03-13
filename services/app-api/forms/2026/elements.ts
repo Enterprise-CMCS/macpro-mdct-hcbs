@@ -65,6 +65,14 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
   text: "Managed Care Measure Results",
 };
 
+export const performanceRatesSubheader: SubHeaderTemplate = {
+  type: ElementType.SubHeader,
+  id: "measure-subheader-performance-rates",
+  text: "Performance Rates",
+  helperText:
+    "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+};
+
 export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
   type: ElementType.ReportingRadio,
   label: "Is the state reporting on this measure?",
@@ -189,7 +197,7 @@ export const whichMedicaidHCBSprograms: TextAreaBoxTemplate = {
     "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
 };
 
-export const performanceRatesDenom: TextboxTemplate = {
+export const performanceRatesDenomTextbox: TextboxTemplate = {
   type: ElementType.Textbox,
   id: "performance-rates-denom",
   label: "Performance Rates Denominator",
