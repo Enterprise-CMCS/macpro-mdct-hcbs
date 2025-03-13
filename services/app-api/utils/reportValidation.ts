@@ -230,7 +230,13 @@ const performanceRateSchema = object().shape({
     )
     .notRequired(),
   fields: array()
-    .of(object().shape({ id: string().required(), label: string().required() }))
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+        autoCalc: boolean().notRequired(),
+      })
+    )
     .notRequired(),
   rateType: string().required(),
   rateCalc: string().notRequired(),

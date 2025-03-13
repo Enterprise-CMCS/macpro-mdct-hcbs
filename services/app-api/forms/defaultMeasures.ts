@@ -339,16 +339,19 @@ export const defaultMeasureTemplates = {
             id: "opr-min-stay",
             label:
               "Observed Performance Rate for the Minimizing Length of Facility Stay",
+            autoCalc: true,
           },
           {
             id: "epr-min-stay",
             label:
               "Expected Performance Rate for the Minimizing Length of Facility Stay",
+            autoCalc: true,
           },
           {
             id: "rar-min-stay",
             label:
               "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+            autoCalc: true,
           },
         ],
         rateType: PerformanceRateType.FIELDS,
