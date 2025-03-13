@@ -22,7 +22,16 @@ export const testA11y = (
 
     test("should not have basic accessibility issues", async () => {
       const { container } = render(component);
-      const results = await axe(container);
+      const results = await axe(container, {
+        runOnly: [
+          "wcag2a",
+          "wcag2aa",
+          "wcag21a",
+          "wcag21aa",
+          "wcag22aa",
+          "best-practice",
+        ],
+      });
       expect(results).toHaveNoViolations();
     });
   });
