@@ -1,14 +1,18 @@
 import { QualityMeasureTableElement } from "./QualityMeasureTable";
 import { render, screen } from "@testing-library/react";
-import { useStore } from "utils";
 import { mockUseStore } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
 import { ElementType } from "types/report";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({ ...mockUseStore });
+jest.mock("utils/state/useStore", () => ({
+  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
+    if (selector) {
+      return selector(mockUseStore);
+    }
+    return mockUseStore;
+  }),
+}));
 
 jest.mock("utils/state/hooks/useLiveElement");
 const mockedUseLiveElement = useLiveElement as jest.MockedFunction<

@@ -6,14 +6,22 @@ import {
   MeasureTemplateName,
   PageType,
   Report,
+  ReportingRadioTemplate,
   ReportStatus,
   ReportType,
   TextboxTemplate,
 } from "types/report";
-import { buildState, mergeAnswers, setPage, substitute } from "./reportState";
+import {
+  buildState,
+  mergeAnswers,
+  setPage,
+  substitute,
+  resetMeasure,
+  clearMeasure,
+} from "./reportState";
 import {
   mock2MeasureTemplate,
-  mockMeasureTemplate,
+  mockMeasureTemplateNotReporting,
 } from "utils/testing/setupJest";
 
 jest.mock("../../api/requestMethods/report", () => ({
@@ -65,7 +73,7 @@ const testReport: Report = {
         },
       ],
     },
-    mockMeasureTemplate,
+    mockMeasureTemplateNotReporting,
     mock2MeasureTemplate,
   ],
   measureLookup: { defaultMeasures: [], optionGroups: {} },
@@ -235,7 +243,7 @@ describe("state/management/reportState: setPage", () => {
 });
 
 describe("state/management/reportState: mergeAnswers", () => {
-  test("Adds answers to a question", () => {
+  test("Adds answers to a question", async () => {
     // Jest is garbage
     global.structuredClone = (val: unknown) => {
       return JSON.parse(JSON.stringify(val));
@@ -244,9 +252,9 @@ describe("state/management/reportState: mergeAnswers", () => {
     const state = buildState(testReport) as unknown as HcbsReportState;
 
     const answers = { elements: [null, { answer: "ANSWERED" }] };
-    const result = mergeAnswers(answers, state);
+    const result = await mergeAnswers(answers, state);
 
-    const page = result?.report.pages[1];
+    const page = result?.report!.pages[1];
     const elements = page?.elements!;
     const question = elements[1] as TextboxTemplate;
     expect(question.answer).toEqual("ANSWERED");
@@ -254,9 +262,50 @@ describe("state/management/reportState: mergeAnswers", () => {
 });
 
 describe("state/management/reportState: substitute", () => {
-  test("substitute the measure", () => {
-    const response = substitute(testReport, mockMeasureTemplate);
-    const measure = response.report.pages[3] as MeasurePageTemplate;
+  test("substitute the measure", async () => {
+    const response = await substitute(
+      testReport,
+      mockMeasureTemplateNotReporting
+    );
+    const measure = response.report!.pages[3] as MeasurePageTemplate;
     expect(measure.required).toBe(false);
+  });
+});
+
+describe("state/management/reportState: resetMeasure", () => {
+  test("reset measure", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport) as unknown as HcbsReportState;
+    const response = await resetMeasure("LTSS-1", state);
+    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const question = measure.elements[1] as TextboxTemplate;
+
+    expect(measure.status).toBe(MeasureStatus.NOT_STARTED);
+    expect(reportingRadio.answer).toBeFalsy();
+    expect(question.answer).toBeFalsy();
+  });
+});
+
+describe("state/management/reportState: clearMeasure", () => {
+  test("clear measure", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport) as unknown as HcbsReportState;
+    const response = await clearMeasure("LTSS-1", state, [
+      "measure-reporting-radio",
+    ]);
+    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const question = measure.elements[1] as TextboxTemplate;
+
+    expect(measure.status).toBe(MeasureStatus.IN_PROGRESS);
+    expect(reportingRadio.answer).toBe("no");
+    expect(question.answer).toBeFalsy();
   });
 });

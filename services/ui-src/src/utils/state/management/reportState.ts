@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HcbsReportState } from "types";
 import {
   isMeasureTemplate,
@@ -8,6 +9,8 @@ import {
 import { putReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
+
+const apiError = "Something went wrong, please try again";
 
 export const buildState = (report: Report | undefined) => {
   if (!report) return { report: undefined };
@@ -61,7 +64,7 @@ export const deepMerge = (obj1: any, obj2: any) => {
   return clone1;
 };
 
-export const mergeAnswers = (answers: any, state: HcbsReportState) => {
+export const mergeAnswers = async (answers: any, state: HcbsReportState) => {
   if (!state.report) return;
   const report = structuredClone(state.report);
   const pageIndex = state.report.pages.findIndex(
@@ -69,11 +72,15 @@ export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   );
   report.pages[pageIndex] = deepMerge(report.pages[pageIndex], answers);
 
-  putReport(report); // Submit to API
+  try {
+    await putReport(report);
+  } catch (_error) {
+    return { errorMessage: apiError };
+  }
   return { report, lastSavedTime: getLocalHourMinuteTime() };
 };
 
-export const substitute = (
+export const substitute = async (
   report: Report,
   selectMeasure: MeasurePageTemplate
 ) => {
@@ -81,16 +88,16 @@ export const substitute = (
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  if (selectMeasure) {
-    const substitute = selectMeasure.substitutable?.toString();
-    const measure = measures.find((measure) =>
-      measure.id.includes(substitute!)
-    );
-    if (report && measure) {
-      measure.required = true;
-      selectMeasure.required = false;
+  const substitute = selectMeasure.substitutable?.toString();
+  const measure = measures.find((measure) => measure.id.includes(substitute!));
+  if (measure) {
+    measure.required = true;
+    selectMeasure.required = false;
 
-      putReport(report);
+    try {
+      await putReport(report);
+    } catch (_error) {
+      return { errorMessage: apiError };
     }
   }
 
@@ -100,7 +107,7 @@ export const substitute = (
  * Clear all nested content in the measure, preserving an In Progress state,
  * and ignoring any fields with special treatment
  */
-export const clearMeasure = (
+export const clearMeasure = async (
   measureId: string,
   state: HcbsReportState,
   ignoreList: string[]
@@ -108,18 +115,29 @@ export const clearMeasure = (
   if (!state.report) return;
   const report = structuredClone(state.report);
   performClearMeasure(measureId, report, ignoreList);
-  putReport(report); // Submit to API
+  try {
+    await putReport(report);
+  } catch (_error) {
+    return { errorMessage: apiError };
+  }
   return { report };
 };
 
 /**
  * Hard reset a measure back to the Not Started state
  */
-export const resetMeasure = (measureId: string, state: HcbsReportState) => {
+export const resetMeasure = async (
+  measureId: string,
+  state: HcbsReportState
+) => {
   if (!state.report) return;
   const report = structuredClone(state.report);
 
   performResetMeasure(measureId, report);
-  putReport(report); // Submit to API
+  try {
+    await putReport(report);
+  } catch (_error) {
+    return { errorMessage: apiError };
+  }
   return { report };
 };
