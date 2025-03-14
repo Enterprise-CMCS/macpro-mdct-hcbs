@@ -53,6 +53,10 @@ const mockRadioElement = {
       checked: false,
     },
   ],
+  hideCondition: {
+    controllerElementId: "reporting-radio",
+    answer: "yes",
+  },
 };
 
 const RadioFieldComponent = (

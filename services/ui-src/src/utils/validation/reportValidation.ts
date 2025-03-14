@@ -5,6 +5,7 @@ export const textboxSchema = object().shape({
   answer: string().required("A response is required"),
   type: string().notRequired(),
   label: string().notRequired(),
+  id: string().notRequired(),
 });
 
 export const emailSchema = object().shape({
@@ -13,6 +14,7 @@ export const emailSchema = object().shape({
     .required("A response is required"),
   type: string().notRequired(),
   label: string().notRequired(),
+  id: string().notRequired(),
 });
 
 export const radioWithChildrenSchema = object().shape({
@@ -28,12 +30,14 @@ export const radioWithChildrenSchema = object().shape({
       ),
     })
   ),
+  id: string().notRequired(),
 });
 
 export const radioSchema = object().shape({
   answer: string().required("A response is required"),
   type: string().notRequired(),
   label: string().notRequired(),
+  id: string().notRequired(),
 });
 
 const pageElementSchema = lazy((element: PageElement): any => {
