@@ -102,3 +102,37 @@ describe("<RadioField />", () => {
     mockGetValues(undefined);
   });
 });
+
+describe("Radio field hide condition logic", () => {
+  test("Radio field is hidden if its hide conditions' controlling element has a matching answer", async () => {
+    mockGetValues({
+      elements: [
+        {
+          answer: "yes",
+          type: "reportingRadio",
+          label: "Should we hide the other radios on this page?",
+          id: "reporting-radio",
+        },
+      ],
+    });
+    render(RadioFieldComponent);
+    const radioField = screen.queryByText("Choice 1");
+    expect(radioField).toBe(null);
+  });
+
+  test("Radio field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {
+    mockGetValues({
+      elements: [
+        {
+          answer: "idk",
+          type: "reportingRadio",
+          label: "Should we hide the other radios on this page?",
+          id: "reporting-radio",
+        },
+      ],
+    });
+    render(RadioFieldComponent);
+    const radioField = screen.queryByText("Choice 1");
+    expect(radioField).toBeVisible();
+  });
+});
