@@ -15,6 +15,9 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   MeasureStatus,
+  DataSource,
+  DeliverySystem,
+  MeasureSpecification,
 } from "types";
 import { mockBannerData } from "./mockBanner";
 // GLOBALS
@@ -193,6 +196,18 @@ export const mockAdminUserStore: HcbsUserState = {
 export const mockMeasureTemplate: MeasurePageTemplate = {
   id: "LTSS-1",
   cmitId: "960",
+  cmitInfo: {
+    cmit: 960,
+    name: "LTSS-1: Comprehensive Assessment and Update",
+    uid: "960",
+    measureSteward: "CMS",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+  },
   status: MeasureStatus.IN_PROGRESS,
   title: "mock-title",
   type: PageType.Measure,
@@ -204,6 +219,18 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
 export const mock2MeasureTemplate: MeasurePageTemplate = {
   id: "FASI-1",
   cmitId: "961",
+  cmitInfo: {
+    cmit: 961,
+    name: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+    uid: "961",
+    measureSteward: "CMS",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+  },
   status: MeasureStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
@@ -231,10 +258,10 @@ export const mockReportStore: HcbsReportState = {
       defaultMeasures: [
         {
           cmit: 960,
-          measureTemplate: [MeasureTemplateName["FFS-1"]],
+          measureTemplate: MeasureTemplateName["FFS-1"],
           required: true,
           uid: "960",
-          stratified: false,
+          deliverySystemTemplates: [MeasureTemplateName["FFS-1"]],
         },
       ],
       optionGroups: {},
