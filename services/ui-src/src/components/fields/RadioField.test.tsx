@@ -117,7 +117,7 @@ describe("Radio field hide condition logic", () => {
     });
     render(RadioFieldComponent);
     const radioField = screen.queryByText("Choice 1");
-    expect(radioField).toBe(null);
+    expect(radioField).not.toBeInTheDocument();
   });
 
   test("Radio field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {

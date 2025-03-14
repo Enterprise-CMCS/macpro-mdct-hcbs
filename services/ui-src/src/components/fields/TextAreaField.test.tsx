@@ -90,7 +90,7 @@ describe("<TextAreaField />", () => {
       });
       render(textAreaFieldComponent);
       const textField = screen.queryByLabelText("test label");
-      expect(textField).toBe(null);
+      expect(textField).not.toBeInTheDocument();
     });
 
     test("Text area field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {
