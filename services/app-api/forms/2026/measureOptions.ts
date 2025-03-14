@@ -9,7 +9,7 @@ export const defaultMeasures: MeasureOptions[] = [
     measureTemplate: MeasureTemplateName["LTSS-1"],
     deliverySystemTemplates: [
       MeasureTemplateName["FFS-1"],
-      MeasureTemplateName["MLTSS"],
+      MeasureTemplateName["MLTSS-1"],
     ],
   },
   {
@@ -26,7 +26,10 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-2"],
-    deliverySystemTemplates: [],
+    deliverySystemTemplates: [
+      MeasureTemplateName["FFS-2"],
+      MeasureTemplateName["MLTSS-2"],
+    ],
   },
   {
     cmit: 970,

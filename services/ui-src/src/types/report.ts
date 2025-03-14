@@ -123,6 +123,7 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
   Date = "date",
@@ -143,6 +144,7 @@ export enum ElementType {
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | NestedHeadingTemplate
   | TextboxTemplate
   | TextAreaBoxTemplate
   | DateTemplate
@@ -166,6 +168,13 @@ export type HeaderTemplate = {
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
+  text: string;
+  helperText?: string;
+};
+
+export type NestedHeadingTemplate = {
+  type: ElementType.NestedHeading;
   id: string;
   text: string;
 };
@@ -345,6 +354,9 @@ export enum MeasureTemplateName {
   "LTSS-7" = "LTSS-7",
   "LTSS-8" = "LTSS-8",
   "FFS-1" = "FFS-1",
+  "FFS-2" = "FFS-2",
+  "MLTSS-1" = "MLTSS-1",
+  "MLTSS-2" = "MLTSS-2",
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
   "POM-3" = "POM-3",
