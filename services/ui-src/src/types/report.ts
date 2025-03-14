@@ -92,6 +92,8 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
+  children?: MeasureTemplateName[];
+  cmitInfo?: CMIT;
 }
 
 export interface StatusPageTemplate extends FormPageTemplate {
@@ -343,7 +345,6 @@ export interface CMIT {
   cmit: number;
   name: string;
   uid: string;
-  options: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
@@ -354,8 +355,8 @@ export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
-  stratified: boolean;
-  measureTemplate: [MeasureTemplateName];
+  measureTemplate: MeasureTemplateName;
+  deliverySystemTemplates: MeasureTemplateName[];
 }
 
 export enum MeasureTemplateName {
