@@ -1,3 +1,4 @@
+import { ElementType } from "types";
 import { elementsValidateSchema } from "./reportValidation";
 
 const yupValidateTestHelper = async (payload: any) => {
@@ -17,13 +18,27 @@ describe("Textbox validation", () => {
       elements: [
         {
           answer: "hello",
-          type: "textbox",
+          type: ElementType.Textbox,
           label: "name",
+          id: "textbox1",
         },
         {
           answer: "ac@test.com", // email
-          type: "textbox",
+          type: ElementType.Textbox,
           label: "email address",
+          id: "email-textbox",
+        },
+        {
+          answer: "wee",
+          type: ElementType.TextAreaField,
+          label: "this is a text area field",
+          id: "textarea1",
+        },
+        {
+          answer: "09/12/23",
+          type: ElementType.Date,
+          label: "this is a date",
+          id: "date1",
         },
       ],
     };
@@ -35,8 +50,9 @@ describe("Textbox validation", () => {
       elements: [
         {
           answer: "",
-          type: "textbox",
+          type: ElementType.Textbox,
           label: "name",
+          id: "textbox1",
         },
       ],
     };
@@ -49,8 +65,9 @@ describe("Textbox validation", () => {
       elements: [
         {
           answer: "aco@",
-          type: "textbox",
+          type: ElementType.Textbox,
           label: "email address",
+          id: "textbox1",
         },
       ],
     };
@@ -66,18 +83,26 @@ describe("Radio validation", () => {
       elements: [
         {
           answer: "yes",
-          type: "radio",
+          type: ElementType.Radio,
           label: "radio childless",
+          id: "radio1",
         },
         {
           answer: "no",
-          type: "radio",
+          type: ElementType.ReportingRadio,
+          label: "reporting radio extrordinare",
+          id: "reporting-radio",
+        },
+        {
+          answer: "no",
+          type: ElementType.Radio,
           label: "radio with children",
           value: [
             {
               checkedChildren: [{ answer: "i'm a child" }],
             },
           ],
+          id: "radio2",
         },
       ],
     };
@@ -89,8 +114,9 @@ describe("Radio validation", () => {
       elements: [
         {
           answer: "",
-          type: "radio",
+          type: ElementType.Radio,
           label: "radio childless",
+          id: "radio1",
         },
       ],
     };
@@ -104,18 +130,69 @@ describe("Radio validation", () => {
       elements: [
         {
           answer: "no",
-          type: "radio",
+          type: ElementType.Radio,
           label: "radio with children",
           value: [
             {
               checkedChildren: [{ answer: "" }],
             },
           ],
+          id: "radio1",
         },
       ],
     };
     expect(async () => {
       await yupValidateTestHelper(emptyRadioFormData);
     }).rejects.toThrow("A response is required");
+  });
+});
+
+describe("Ignores validation for elements that are not editable", () => {
+  it("successfully validates non editable types", async () => {
+    const nonEditableElements = {
+      elements: [
+        {
+          type: ElementType.ButtonLink,
+          id: "return-button",
+          label: "Return to Required Measures Dashboard",
+          to: "req-measure-result",
+        },
+        {
+          type: ElementType.Header,
+          id: "measure-header",
+          text: "{measureName}",
+        },
+        {
+          type: ElementType.MeasureDetails,
+          id: "measure-details-section",
+        },
+        {
+          type: ElementType.Accordion,
+          id: "measure-instructions",
+          label: "Instructions",
+          value:
+            "[Optional instructional content that could support the user in completing this page]",
+        },
+        {
+          type: ElementType.SubHeader,
+          id: "measure-information-subheader",
+          text: "Measure Information",
+        },
+        {
+          type: ElementType.MeasureFooter,
+          id: "measure-footer",
+          prevTo: "req-measure-result",
+          completeMeasure: true,
+          clear: true,
+        },
+        {
+          type: ElementType.QualityMeasureTable,
+          measureDisplay: "quality",
+          id: "quality-measure-table",
+        },
+      ],
+    };
+    const validatedData = await yupValidateTestHelper(nonEditableElements);
+    expect(validatedData).toEqual(nonEditableElements);
   });
 });

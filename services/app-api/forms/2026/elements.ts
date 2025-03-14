@@ -105,6 +105,10 @@ export const wereTheResultsAudited: RadioTemplate = {
       ],
     },
   ],
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const whatSpecificationsAreYouUsing: RadioTemplate = {
@@ -135,6 +139,10 @@ export const didYouFollowSpecifications: RadioTemplate = {
       ],
     },
   ],
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const doYouWantCmsToCalculateOnYourBehalf: RadioTemplate = {
@@ -145,6 +153,10 @@ export const doYouWantCmsToCalculateOnYourBehalf: RadioTemplate = {
     { label: "No", value: "no" },
     { label: "Yes", value: "yes" },
   ],
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const additionalNotesField: TextAreaBoxTemplate = {
@@ -153,6 +165,10 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   helperText:
     "If applicable, add any notes or comments to provide context to the reported measure result",
   label: "Additional notes/comments (optional)",
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const whichDeliverySystemsWereUsed: RadioTemplate = {
@@ -167,6 +183,10 @@ export const whichDeliverySystemsWereUsed: RadioTemplate = {
     },
     { label: "Both FFS and MLTSS (separate)", value: "FFS,MLTSS" },
   ],
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const qualityMeasuresSubheader: SubHeaderTemplate = {

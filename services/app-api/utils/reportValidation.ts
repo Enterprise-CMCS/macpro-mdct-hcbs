@@ -52,6 +52,13 @@ const textboxTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   required: string().notRequired(),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const textAreaTemplateSchema = object().shape({
@@ -60,6 +67,13 @@ const textAreaTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const dateTemplateSchema = object().shape({
@@ -163,6 +177,13 @@ const radioTemplateSchema = object().shape({
   ),
   answer: string().notRequired(),
   required: string().notRequired(),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const reportingRadioTemplateSchema = object().shape({

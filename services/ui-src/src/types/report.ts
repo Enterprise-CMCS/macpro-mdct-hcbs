@@ -191,6 +191,10 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type TextAreaBoxTemplate = {
@@ -199,6 +203,10 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type DateTemplate = {
@@ -251,6 +259,10 @@ export type RadioTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type ReportingRadioTemplate = {

@@ -290,6 +290,6 @@ describe("Page validation", () => {
       { exact: false }
     );
     expect(responseIsRequiredErrorMessage[0]).toBeVisible();
-    expect(responseIsRequiredErrorMessage.length).toBe(1);
+    expect(responseIsRequiredErrorMessage.length).toBe(2);
   });
 });
