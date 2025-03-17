@@ -34,6 +34,10 @@ const mockedTextAreaElement = {
   type: ElementType.TextAreaField,
   label: "test label",
   helperText: "helper text",
+  hideCondition: {
+    controllerElementId: "reporting-radio",
+    answer: "yes",
+  },
 } as TextAreaBoxTemplate;
 
 const textAreaFieldComponent = (
@@ -69,6 +73,40 @@ describe("<TextAreaField />", () => {
         expect.any(String),
         "hello"
       );
+    });
+  });
+
+  describe("Text area field hide condition logic", () => {
+    test("Text area field is hidden if its hide conditions' controlling element has a matching answer", async () => {
+      mockGetValues({
+        elements: [
+          {
+            answer: "yes",
+            type: "reportingRadio",
+            label: "Should we hide the other radios on this page?",
+            id: "reporting-radio",
+          },
+        ],
+      });
+      render(textAreaFieldComponent);
+      const textField = screen.queryByLabelText("test label");
+      expect(textField).not.toBeInTheDocument();
+    });
+
+    test("Text area field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {
+      mockGetValues({
+        elements: [
+          {
+            answer: "idk",
+            type: "reportingRadio",
+            label: "Should we hide the other radios on this page?",
+            id: "reporting-radio",
+          },
+        ],
+      });
+      render(textAreaFieldComponent);
+      const textField = screen.queryByLabelText("test label");
+      expect(textField).toBeVisible();
     });
   });
 

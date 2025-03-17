@@ -92,6 +92,8 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
+  children?: MeasureTemplateName[];
+  cmitInfo?: CMIT;
 }
 
 export interface StatusPageTemplate extends FormPageTemplate {
@@ -193,6 +195,10 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type TextAreaBoxTemplate = {
@@ -201,6 +207,10 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type DateTemplate = {
@@ -253,6 +263,10 @@ export type RadioTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type ReportingRadioTemplate = {
@@ -362,7 +376,6 @@ export interface CMIT {
   cmit: number;
   name: string;
   uid: string;
-  options: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
@@ -373,8 +386,8 @@ export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
-  stratified: boolean;
-  measureTemplate: [MeasureTemplateName];
+  measureTemplate: MeasureTemplateName;
+  deliverySystemTemplates: MeasureTemplateName[];
 }
 
 export enum MeasureTemplateName {
