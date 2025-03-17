@@ -59,7 +59,7 @@ export const NDREnhanced = (
       newDisplayValue[type] = value;
       newDisplayValue.rate = calculation(newDisplayValue, multiplier);
       displayValue.rates[Number(index)] = newDisplayValue;
-      setDisplayValue({...displayValue});
+      setDisplayValue({ ...displayValue });
       form.setValue(`${key}`, displayValue, { shouldValidate: true });
       form.setValue(`${key}.type`, props.type);
     }
