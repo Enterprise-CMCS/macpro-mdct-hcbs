@@ -279,6 +279,7 @@ export const mockReportStore: HcbsReportState = {
         ...mockMeasureTemplate,
         stratified: true,
       },
+      [MeasureTemplateName["LTSS-3"]]: mockMeasureTemplate,
       [MeasureTemplateName["LTSS-7"]]: mockMeasureTemplate,
       [MeasureTemplateName["LTSS-8"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-1"]]: mockMeasureTemplate,
