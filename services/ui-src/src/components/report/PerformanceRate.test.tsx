@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { useFormContext } from "react-hook-form";
 import { PerformanceRateElement } from "components";
 import { mockStateUserStore } from "utils/testing/setupJest";
