@@ -1,11 +1,16 @@
-import { render, screen } from "@testing-library/react";
-import { Fields } from "./Fields";
+import { act, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { FacilityLengthOfStayCalc } from "../calculations";
 import { useStore } from "utils";
-import { ElementType, PerformanceRateTemplate } from "types";
+import {
+  ElementType,
+  PerformanceRateTemplate,
+  PerformanceRateType,
+} from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { mockStateUserStore } from "utils/testing/setupJest";
+import { NDRFields } from "./NDRFields";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -33,40 +38,23 @@ const mockedPerformanceElement = {
   type: ElementType.PerformanceRate,
   label: "test label",
   helperText: "helper text",
-  fields: [
-    {
-      id: "count-of-success-dis",
-      label: "Count of Successful Discharges to the Community",
-    },
-    { id: "fac-admin-count", label: "Facility Admission Count" },
-    {
-      id: "expected-count-of-success-dis",
-      label: "Expected Count of Successful Discharges to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label:
-        "Observed Performance Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label:
-        "Expected Performance Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years" },
+    { id: "year-2", label: "65 to 74 Years" },
+    { id: "year-3", label: "75 to 84 Years" },
+    { id: "year-4", label: "85 years or older" },
   ],
-  multiplier: 1,
+  fields: [
+    { id: "short-term", label: "Short Term Stay" },
+    { id: "med-term", label: "Medium Term Stay" },
+    { id: "long-term", label: "Long Term Stay" },
+  ],
+  multiplier: 1000,
+  rateType: PerformanceRateType.NDRFIELDS,
 } as PerformanceRateTemplate;
 
-const fieldsComponent = (
-  <Fields
+const ndrNDRFieldsComponent = (
+  <NDRFields
     formkey={"mock-key"}
     calculation={FacilityLengthOfStayCalc}
     year={2026}
@@ -74,36 +62,65 @@ const fieldsComponent = (
   />
 );
 
-describe("<Fields />", () => {
-  describe("Test Fields component", () => {
+describe("<NDRFields />", () => {
+  describe("Test NDRFields component", () => {
     beforeEach(() => {
-      render(fieldsComponent);
+      render(ndrNDRFieldsComponent);
     });
-    test("Fields is visible", () => {
-      expect(
-        screen.getByLabelText(
-          "What is the 2026 state performance target for this assessment?"
-        )
-      ).toBeInTheDocument();
+    test("NDRFields is visible", () => {
+      const { assessments, fields } = mockedPerformanceElement;
 
-      mockedPerformanceElement.fields?.forEach((field) => {
+      assessments?.forEach((assess) => {
         expect(
           screen.getByRole("textbox", {
-            name: field.label,
+            name: `Denominator (${assess.label})`,
           })
         ).toBeInTheDocument();
-
-        if (field.autoCalc)
+        fields?.forEach((field) => {
           expect(
-            screen.getByRole("textbox", { name: field.label })
-          ).toBeDisabled();
+            screen.getByRole("textbox", {
+              name: `What is the 2026 state performance target for this assessment for ${field.label.toLowerCase()} (${
+                assess.label
+              })?`,
+            })
+          ).toBeInTheDocument();
+
+          expect(
+            screen.getByRole("textbox", {
+              name: `Numerator: ${field.label} (${assess.label})`,
+            })
+          ).toBeInTheDocument();
+
+          expect(
+            screen.getByRole("textbox", {
+              name: `${field.label} Rate (${assess.label})`,
+            })
+          ).toBeInTheDocument();
+        });
       });
     });
-    test("Rate should calculate", async () => {});
+
+    test("Rate should calculate", async () => {
+      const { assessments, fields } = mockedPerformanceElement;
+
+      if (assessments && assessments.length > 0) {
+        const denom = screen.getByRole("textbox", {
+          name: `Denominator (${assessments[0].label})`,
+        });
+        await act(async () => await userEvent.type(denom, "1"));
+        expect(denom).toHaveValue("1");
+
+        const num = screen.getByRole("textbox", {
+          name: `Numerator: ${fields?.[0].label} (${assessments[0].label})`,
+        });
+        await act(async () => await userEvent.type(num, "1"));
+        expect(num).toHaveValue("1");
+      }
+    });
   });
 
   testA11y(
-    fieldsComponent,
+    ndrNDRFieldsComponent,
     () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockGetValues(undefined);

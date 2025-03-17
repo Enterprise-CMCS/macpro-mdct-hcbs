@@ -310,6 +310,7 @@ export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Ehanced = "NDREnhanced",
   FIELDS = "Fields",
+  NDRFIELDS = "NDRFields",
 }
 
 export const enum RateCalc {

@@ -44,7 +44,7 @@ export const NDRFields = (
     const [index, type] = name.split(".");
 
     // //set the denominator for all the ndr sets
-    if (name === "denominator") {
+    if (type === "denominator") {
       const newValues = {
         denominator: Number(value),
         rates: displayValue?.rates?.map((values) => {
@@ -59,7 +59,7 @@ export const NDRFields = (
       newDisplayValue[type] = value;
       newDisplayValue.rate = calculation(newDisplayValue, multiplier);
       displayValue.rates[Number(index)] = newDisplayValue;
-      setDisplayValue(displayValue);
+      setDisplayValue({ ...displayValue });
       form.setValue(`${key}`, displayValue, { shouldValidate: true });
       form.setValue(`${key}.type`, props.type);
     }
@@ -88,7 +88,7 @@ export const NDRFields = (
             </Heading>
 
             <CmsdsTextField
-              label="Denominator"
+              label={`Denominator (${assess.label})`}
               name={`${index}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}

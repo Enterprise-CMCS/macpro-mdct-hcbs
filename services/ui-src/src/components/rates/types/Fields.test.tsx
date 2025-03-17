@@ -82,9 +82,9 @@ describe("<Fields />", () => {
     });
     test("Fields is visible", () => {
       expect(
-        screen.getByLabelText(
-          "What is the 2026 state performance target for this assessment?"
-        )
+        screen.getByRole("textbox", {
+          name: "What is the 2026 state performance target for this assessment?",
+        })
       ).toBeInTheDocument();
 
       mockedPerformanceElement.fields?.forEach((field) => {
