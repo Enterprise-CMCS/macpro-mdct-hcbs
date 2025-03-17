@@ -101,18 +101,43 @@ describe("<Fields />", () => {
       });
     });
     test("Fields should auto-calculate", async () => {
-      mockedPerformanceElement.fields?.forEach((field) => {
-        expect(
-          screen.getByRole("textbox", {
-            name: field.label,
-          })
-        ).toBeInTheDocument();
-
-        if (field.autoCalc)
-          expect(
-            screen.getByRole("textbox", { name: field.label })
-          ).toBeDisabled();
+      const countOfSuccessDis = screen.getByRole("textbox", {
+        name: "Count of Successful Discharges to the Community",
       });
+      await act(async () => await userEvent.type(countOfSuccessDis, "1"));
+
+      const facAdminCount = screen.getByRole("textbox", {
+        name: "Facility Admission Count",
+      });
+      await act(async () => await userEvent.type(facAdminCount, "2"));
+
+      const expectedCountOfSuccessDis = screen.getByRole("textbox", {
+        name: "Expected Count of Successful Discharges to the Community",
+      });
+      await act(
+        async () => await userEvent.type(expectedCountOfSuccessDis, "1")
+      );
+
+      const multiPlan = screen.getByRole("textbox", {
+        name: "Multi-Plan Population Rate",
+      });
+      await act(async () => await userEvent.type(multiPlan, "2"));
+
+      //rates
+      const oprMinStay = screen.getByRole("textbox", {
+        name: "Observed Performance Rate for the Minimizing Length of Facility Stay",
+      });
+      expect(oprMinStay).toHaveValue("0.5");
+
+      const eprMinStay = screen.getByRole("textbox", {
+        name: "Expected Performance Rate for the Minimizing Length of Facility Stay",
+      });
+      expect(eprMinStay).toHaveValue("0.5");
+
+      const rarMinStay = screen.getByRole("textbox", {
+        name: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+      });
+      expect(rarMinStay).toHaveValue("2");
     });
   });
 

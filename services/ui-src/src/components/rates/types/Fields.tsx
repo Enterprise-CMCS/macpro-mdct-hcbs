@@ -40,7 +40,7 @@ export const Fields = (
     const calculatedRate = calculation(newDisplayValue, multiplier);
 
     displayValue.rates[Number(index)] = calculatedRate;
-    setDisplayValue(displayValue);
+    setDisplayValue({ ...displayValue });
     form.setValue(`${key}`, displayValue, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };

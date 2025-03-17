@@ -1,11 +1,14 @@
 import { act, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { PerformanceRateElement } from "components";
 import { mockStateUserStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { ElementType, PerformanceRateTemplate, PerformanceRateType } from "types/report";
+import {
+  ElementType,
+  PerformanceRateTemplate,
+  PerformanceRateType,
+} from "types/report";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -40,26 +43,37 @@ const mockedPerformanceRateElement = {
 } as PerformanceRateTemplate;
 
 const performanceRateComponent = (
-  <PerformanceRateElement element={mockedPerformanceRateElement} index={0} formkey="elements.0" />
+  <PerformanceRateElement
+    element={mockedPerformanceRateElement}
+    index={0}
+    formkey="elements.0"
+  />
 );
 
 describe("<PerformanceRateElement />", () => {
   describe("Test PerformanceRateElement component", () => {
-    test("PerformanceRateElement is visible", () => {
+    beforeEach(() => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockGetValues("");
       render(performanceRateComponent);
-      const textField = screen.getByRole("textbox");
-      expect(textField).toBeVisible();
-      jest.clearAllMocks();
+    });
+    test("PerformanceRateElement is visible", () => {
+      expect(
+        screen.getByRole("textbox", {
+          name: "What is the undefined state performance target for this assessment?",
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("textbox", { name: "Numerator" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("textbox", { name: "Denominator" })
+      ).toBeInTheDocument();
+      expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
     });
 
-    test("TextField should send updates to the Form", async () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues("");
-      render(performanceRateComponent);
-
-      screen.debug();
+    afterEach(() => {
+      jest.clearAllMocks();
     });
   });
 

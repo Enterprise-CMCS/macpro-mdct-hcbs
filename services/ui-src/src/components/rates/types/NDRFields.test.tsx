@@ -1,6 +1,5 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Fields } from "./Fields";
-import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { FacilityLengthOfStayCalc } from "../calculations";
 import { useStore } from "utils";
@@ -100,9 +99,7 @@ describe("<Fields />", () => {
           ).toBeDisabled();
       });
     });
-    test("Rate should calculate", async () => {
-      
-    });
+    test("Rate should calculate", async () => {});
   });
 
   testA11y(
