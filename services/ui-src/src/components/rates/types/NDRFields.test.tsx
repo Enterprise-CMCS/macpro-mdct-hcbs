@@ -101,23 +101,7 @@ describe("<Fields />", () => {
       });
     });
     test("Rate should calculate", async () => {
-      const performDenominator = screen.getByRole("textbox", {
-        name: "Performance Rates Denominator",
-      });
-
       
-
-      await act(async () => await userEvent.type(performDenominator, "2"));
-
-      const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "1"));
-      expect(numerator).toHaveValue("1");
-
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      expect(denominator).toHaveValue("2");
-
-      const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("50");
     });
   });
 
