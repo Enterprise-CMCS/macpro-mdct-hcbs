@@ -28,7 +28,7 @@ export class WafConstruct extends Construct {
     } = props;
 
     const commonRuleOverrides: CfnWebACL.RuleActionOverrideProperty[] = [];
-    if (blockRequestBodyOver8KB) {
+    if (!blockRequestBodyOver8KB) {
       commonRuleOverrides.push({
         name: "SizeRestrictions_BODY",
         actionToUse: { count: {} },

@@ -20,13 +20,6 @@ let apiRestConfig: any = {
   },
 };
 
-if (config.DEV_API_URL) {
-  apiRestConfig["hcbsDev"] = {
-    endpoint: config.DEV_API_URL,
-    region: "us-east-1",
-  };
-}
-
 Amplify.configure({
   Auth: {
     Cognito: {

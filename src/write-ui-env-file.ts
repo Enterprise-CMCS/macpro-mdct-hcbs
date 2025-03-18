@@ -11,23 +11,24 @@ const configFilePath = path.resolve(outputPath, "env-config.js");
 const region = "us-east-1";
 
 export async function writeLocalUiEnvFile(apiUrl: string) {
-  console.log(region);
+  console.log("apiUrlapiUrlapiUrlapiUrlapiUrlapiUrl");
   console.log(apiUrl);
   const envVariables = {
-    /*
-     * LOCAL_LOGIN: "false",
-     * SKIP_PREFLIGHT_CHECK: "true",
-     * API_REGION: region,
-     * API_URL: apiUrl.replace("https", "http"),
-     * COGNITO_REGION: process.env.COGNITO_REGION,
-     * COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
-     * COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
-     * COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
-     * COGNITO_USER_POOL_CLIENT_DOMAIN:
-     *   process.env.COGNITO_USER_POOL_CLIENT_DOMAIN,
-     * COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
-     * COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
-     */
+    SKIP_PREFLIGHT_CHECK: "true",
+    STAGE: "localhost",
+    API_REGION: region,
+    API_URL: apiUrl.replace("https", "http"),
+    COGNITO_REGION: region,
+    COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
+    COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+    COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
+    COGNITO_USER_POOL_CLIENT_DOMAIN:
+      process.env.COGNITO_USER_POOL_CLIENT_DOMAIN,
+    COGNITO_IDP_NAME: "Okta",
+    COGNITO_REDIRECT_SIGNIN: "http://localhost:3000/",
+    COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/",
+    POST_SIGNOUT_REDIRECT: "http://localhost:3000/",
+    REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT,
   };
 
   await fs.rm(configFilePath, { force: true });
