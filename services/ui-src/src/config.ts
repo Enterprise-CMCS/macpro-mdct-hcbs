@@ -2,8 +2,9 @@
 
 const config = {
   MAX_ATTACHMENT_SIZE: 5000000,
-  LOCAL_LOGIN: window._env_.LOCAL_LOGIN,
-  IS_FEATURE_BRANCH: window._env_.IS_FEATURE_BRANCH,
+  STAGE: window._env_.STAGE,
+  REACT_APP_LD_SDK_CLIENT: window._env_.REACT_APP_LD_SDK_CLIENT,
+  POST_SIGNOUT_REDIRECT: window._env_.POST_SIGNOUT_REDIRECT,
   s3: {
     LOCAL_ENDPOINT: window._env_.S3_LOCAL_ENDPOINT,
     REGION: window._env_.S3_ATTACHMENTS_BUCKET_REGION,
@@ -23,11 +24,6 @@ const config = {
     REDIRECT_SIGNIN: window._env_.COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: window._env_.COGNITO_REDIRECT_SIGNOUT,
   },
-  STAGE: window._env_.STAGE,
-  DEV_API_URL: window._env_.DEV_API_URL,
-  REACT_APP_LD_SDK_CLIENT: window._env_.REACT_APP_LD_SDK_CLIENT,
-  APPLICATION_ENDPOINT: window._env_.APPLICATION_ENDPOINT,
-  POST_SIGNOUT_REDIRECT: window._env_.POST_SIGNOUT_REDIRECT,
 };
 
 export default config;

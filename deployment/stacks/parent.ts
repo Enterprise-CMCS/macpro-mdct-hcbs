@@ -17,10 +17,11 @@ export class ParentStack extends Stack {
     props: StackProps & DeploymentConfigProperties
   ) {
     const { isDev, secureCloudfrontDomainName } = props;
-
+    console.log(isDev);
     super(scope, id, {
       ...props,
-      terminationProtection: !isDev,
+      // terminationProtection: !isDev,
+      terminationProtection: false,
     });
 
     const iamPermissionsBoundaryArn = `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`;

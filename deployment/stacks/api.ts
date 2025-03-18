@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
-  aws_s3 as s3,
   aws_iam as iam,
   aws_logs as logs,
   aws_wafv2 as wafv2,
@@ -13,7 +12,6 @@ import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isLocalStack } from "../local/util";
-import { CloudWatchToS3 } from "../constructs/cloudwatch-to-s3";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 
 interface CreateApiComponentsProps {
@@ -90,12 +88,22 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     },
   });
 
-  const environment = {
+  const environment: any = {
     STAGE: stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])
     ),
   };
+
+  if (isLocalStack) {
+    /*
+     * need a plan for deployed version of this.
+     * move the api creation stuff so that we can inject it
+     */
+    environment["COGNITO_USER_POOL_ID"] = process.env.COGNITO_USER_POOL_ID;
+    environment["COGNITO_USER_POOL_CLIENT_ID"] =
+      process.env.COGNITO_USER_POOL_CLIENT_ID;
+  }
 
   const additionalPolicies = [
     new iam.PolicyStatement({
@@ -198,22 +206,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       resourceArn: api.deploymentStage.stageArn,
       webAclArn: waf.webAcl.attrArn,
     });
-
-    if (!isDev) {
-      const logBucket = new s3.Bucket(scope, "WafLogBucket", {
-        encryption: s3.BucketEncryption.S3_MANAGED,
-        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-        removalPolicy: RemovalPolicy.RETAIN,
-        enforceSSL: true,
-      });
-
-      new CloudWatchToS3(scope, "CloudWatchToS3Construct", {
-        logGroup: waf.logGroup,
-        bucket: logBucket,
-        iamPermissionsBoundary: iamPermissionsBoundary,
-        iamPath: iamPath,
-      });
-    }
   }
 
   addIamPropertiesToBucketAutoDeleteRole(

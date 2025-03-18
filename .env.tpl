@@ -1,22 +1,19 @@
-API_URL=http://localhost:3030/local
-
 # Dynamo
 BannersTable=local-banners
 QmsReportsTable=local-qms-reports
 
-COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT_ID
-COGNITO_USER_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_ID
-POST_SIGNOUT_REDIRECT=http://localhost:3000/
+DYNAMODB_URL=http://host.docker.internal:8000
 DISABLE_ESLINT_PLUGIN=true
-DYNAMODB_URL=http://localhost:8000
 IAM_PATH=/
 IAM_PERMISSIONS_BOUNDARY="bound"
-LOCAL_LOGIN=true
 LOGGING_BUCKET=log-bucket
-S3_LOCAL_ENDPOINT=http://localhost:4569
-SKIP_PREFLIGHT_CHECK=true
-QMS_REPORT_TABLE_NAME=local-qms-reports
 SERVERLESS_LICENSE_KEY=op://mdct_devs/hcbs_secrets/SERVERLESS_LICENSE_KEY
+
+COGNITO_IDENTITY_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_IDENTITY_POOL_ID
+COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT_ID
+COGNITO_USER_POOL_CLIENT_DOMAIN=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT_DOMAIN
+COGNITO_USER_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_ID
+REACT_APP_LD_SDK_CLIENT=op://mdct_devs/hcbs_secrets/REACT_APP_LD_SDK_CLIENT
 
 # Values used for short-circuiting ssm: lookups, most likely won't need locally
 VPC_ID=local-nonsense
