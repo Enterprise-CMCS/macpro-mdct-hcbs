@@ -1,6 +1,14 @@
 /* eslint-disable no-console */
 import { Construct } from "constructs";
-import { Aws, aws_iam as iam, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import {
+  Aws,
+  aws_cloudfront as cloudfront,
+  aws_iam as iam,
+  aws_s3 as s3,
+  CfnOutput,
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
@@ -20,8 +28,7 @@ export class ParentStack extends Stack {
     console.log(isDev);
     super(scope, id, {
       ...props,
-      // terminationProtection: !isDev,
-      terminationProtection: false,
+      terminationProtection: !isDev,
     });
 
     const iamPermissionsBoundaryArn = `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`;
@@ -42,43 +49,67 @@ export class ParentStack extends Stack {
 
     const { tables } = createDataComponents(commonProps);
 
-    const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
-      ...commonProps,
-      tables,
-    });
+    let applicationEndpointUrl: string | undefined,
+      distribution: cloudfront.Distribution | undefined,
+      uiBucket: s3.Bucket | undefined,
+      userPoolDomainName: string | undefined,
+      identityPoolId: string | undefined,
+      userPoolId: string | undefined,
+      userPoolClientId: string | undefined,
+      cognitoAuthRole: iam.Role | undefined = undefined;
 
     if (!isLocalStack) {
-      const { applicationEndpointUrl, distribution, uiBucket } =
-        createUiComponents({ ...commonProps });
+      ({ applicationEndpointUrl, distribution, uiBucket } = createUiComponents({
+        ...commonProps,
+      }));
 
-      const {
+      ({
         userPoolDomainName,
         identityPoolId,
         userPoolId,
         userPoolClientId,
+        cognitoAuthRole,
       } = createUiAuthComponents({
         ...commonProps,
         applicationEndpointUrl,
-        restApiId,
         customResourceRole,
-      });
+      }));
+    }
+
+    const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
+      ...commonProps,
+      userPoolId,
+      userPoolClientId,
+      tables,
+    });
+
+    if (!isLocalStack) {
+      cognitoAuthRole!.addToPolicy(
+        new iam.PolicyStatement({
+          actions: ["execute-api:Invoke"],
+          resources: [
+            `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
+          ],
+          effect: iam.Effect.ALLOW,
+        })
+      );
 
       deployFrontend({
         ...commonProps,
-        uiBucket,
-        distribution,
+        uiBucket: uiBucket!,
+        distribution: distribution!,
         apiGatewayRestApiUrl,
         applicationEndpointUrl:
-          secureCloudfrontDomainName || applicationEndpointUrl,
-        identityPoolId,
-        userPoolId,
-        userPoolClientId,
+          secureCloudfrontDomainName || applicationEndpointUrl!,
+        identityPoolId: identityPoolId!,
+        userPoolId: userPoolId!,
+        userPoolClientId: userPoolClientId!,
         userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
         customResourceRole,
       });
 
       new CfnOutput(this, "CloudFrontUrl", {
-        value: applicationEndpointUrl,
+        value: applicationEndpointUrl!,
       });
     }
 

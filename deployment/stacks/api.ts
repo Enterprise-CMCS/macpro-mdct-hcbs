@@ -19,6 +19,8 @@ interface CreateApiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
+  userPoolId?: string;
+  userPoolClientId?: string;
   tables: DynamoDBTableIdentifiers[];
   iamPermissionsBoundary: iam.IManagedPolicy;
   iamPath: string;
@@ -30,6 +32,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     stage,
     project,
     isDev,
+    userPoolId,
+    userPoolClientId,
     tables,
     iamPermissionsBoundary,
     iamPath,
@@ -93,17 +97,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])
     ),
+    COGNITO_USER_POOL_ID: userPoolId || process.env.COGNITO_USER_POOL_ID,
+    COGNITO_USER_POOL_CLIENT_ID:
+      userPoolClientId || process.env.COGNITO_USER_POOL_CLIENT_ID,
   };
-
-  if (isLocalStack) {
-    /*
-     * need a plan for deployed version of this.
-     * move the api creation stuff so that we can inject it
-     */
-    environment["COGNITO_USER_POOL_ID"] = process.env.COGNITO_USER_POOL_ID;
-    environment["COGNITO_USER_POOL_CLIENT_ID"] =
-      process.env.COGNITO_USER_POOL_CLIENT_ID;
-  }
 
   const additionalPolicies = [
     new iam.PolicyStatement({
