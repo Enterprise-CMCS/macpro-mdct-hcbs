@@ -48,11 +48,12 @@ export const NDREnhanced = (
       const newValues = {
         denominator: Number(value),
         rates: displayValue?.rates?.map((values) => {
-          return { ...values, denominator: value };
+          const newValue = { ...values, denominator: value };
+          return { ...newValue, rate: calculation(newValue, multiplier) };
         }),
       };
 
-      setDisplayValue(newValues);
+      setDisplayValue({ ...newValues });
       form.setValue(`${key}`, newValues, { shouldValidate: true });
     } else {
       const newDisplayValue = displayValue.rates[Number(index)];
