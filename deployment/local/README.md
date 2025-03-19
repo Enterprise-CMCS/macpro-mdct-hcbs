@@ -1,4 +1,4 @@
-<!-- # Running Locally with LocalStack
+# Running Locally with LocalStack
 
 The `./run local` command allows you to run our application locally on your laptop using [LocalStack](https://localstack.cloud/), simulating the AWS cloud environment (except using cognito authentication from the real AWS).
 
@@ -65,4 +65,4 @@ awslocal --version
 ```
 # example of something you'd pop in as YOUR_FUNCTION_NAME => app-api-localstack-getUserById
 awslocal lambda get-function-configuration --function-name YOUR_FUNCTION_NAME --query "Environment.Variables"
-``` -->
+```

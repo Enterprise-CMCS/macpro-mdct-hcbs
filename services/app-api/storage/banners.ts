@@ -2,7 +2,7 @@ import { DeleteCommand, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { createClient } from "./dynamo/dynamodb-lib";
 import { BannerData } from "../types/banner";
 
-const bannerTableName = process.env.BannersTable!;
+const bannerTableName = process.env.BannersTable;
 const client = createClient();
 
 export const putBanner = async (banner: BannerData) => {

@@ -1853,11 +1853,6 @@
   resolved "https://registry.yarnpkg.com/@balena/dockerignore/-/dockerignore-1.0.2.tgz#9ffe4726915251e8eb69f44ef3547e0da2c03e0d"
   integrity sha512-wMue2Sy4GAVTk6Ic4tJVcnfdau+gx2EnG7S+uAEe+TWJFqE4YoWN4/H8MSLj4eYJKxGg26lZwboEniNiNwZQ6Q==
 
-"@enterprise-cmcs/serverless-waf-plugin@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/serverless-waf-plugin/-/serverless-waf-plugin-1.4.0.tgz#f1af6d64726c067bc8eaece714b15e73dccf5a6d"
-  integrity sha512-hKmIa4b11iMfcHnhgoxS12z51rGSJZG2/L4AuM2s+vC1a1+7rvN7JyaiWFgppoInr510aGAfrm1BGCV1VU1eTw==
-
 "@esbuild/aix-ppc64@0.23.1":
   version "0.23.1"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.23.1.tgz#51299374de171dbd80bb7d838e1cfce9af36f353"
