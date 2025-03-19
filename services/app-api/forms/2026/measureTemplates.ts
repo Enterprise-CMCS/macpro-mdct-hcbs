@@ -487,7 +487,6 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Long Term Rate (18 to 64 years)",
       },
-      performanceRatesSubheader,
       // 65 to 74 Years
       {
         type: ElementType.SubHeader,
@@ -851,7 +850,6 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Long Term Rate (18 to 64 years)",
       },
-      performanceRatesSubheader,
       // 65 to 74 Years
       {
         type: ElementType.SubHeader,
