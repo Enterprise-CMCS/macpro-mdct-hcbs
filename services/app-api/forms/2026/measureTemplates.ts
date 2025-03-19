@@ -491,7 +491,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.SubHeader,
         id: "measure-subheader-performance-rate-65-to-74",
-        text: "Performance Rate: 65 to 74 Years",
+        text: "Performance Rates: 65 to 74 Years",
       },
       {
         type: ElementType.Textbox,
@@ -579,7 +579,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.SubHeader,
         id: "measure-subheader-performance-rate-75-to-84",
-        text: "Performance Rate: 75 to 84 Years",
+        text: "Performance Rates: 75 to 84 Years",
       },
       {
         type: ElementType.Textbox,
@@ -662,7 +662,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.SubHeader,
         id: "measure-subheader-performance-rate-85-or-older",
-        text: "Performance Rate: 85 years or older",
+        text: "Performance Rates: 85 years or older",
       },
       {
         type: ElementType.Textbox,
@@ -937,7 +937,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.SubHeader,
         id: "measure-subheader-performance-rate-75-to-84",
-        text: "Performance Rate: 75 to 84 Years",
+        text: "Performance Rates: 75 to 84 Years",
       },
       {
         type: ElementType.Textbox,
