@@ -19,7 +19,6 @@ import {
   setPage,
   substitute,
 } from "./management/reportState";
-import { getLocalHourMinuteTime } from "utils";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -121,12 +120,6 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
     const result = await saveReport(state);
     set(result, false, { type: "saveReport" });
   },
-  setErrorMessage: (errorMessage: string) =>
-    set(() => ({ errorMessage }), false, { type: "setErrorMessage" }),
-  setLastSavedTime: () =>
-    set(() => ({ lastSavedTime: getLocalHourMinuteTime() }), false, {
-      type: "setLastSavedTime",
-    }),
 });
 
 export const useStore = create(

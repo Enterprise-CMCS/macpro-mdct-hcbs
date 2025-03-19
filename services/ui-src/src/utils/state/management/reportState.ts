@@ -80,15 +80,11 @@ export const substitute = (
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  if (selectMeasure) {
-    const substitute = selectMeasure.substitutable?.toString();
-    const measure = measures.find((measure) =>
-      measure.id.includes(substitute!)
-    );
-    if (report && measure) {
-      measure.required = true;
-      selectMeasure.required = false;
-    }
+  const substitute = selectMeasure.substitutable?.toString();
+  const measure = measures.find((measure) => measure.id.includes(substitute!));
+  if (measure) {
+    measure.required = true;
+    selectMeasure.required = false;
   }
 
   return { report };
@@ -124,9 +120,8 @@ export const resetMeasure = (measureId: string, state: HcbsReportState) => {
  */
 export const saveReport = async (state: HcbsReportState) => {
   if (!state.report) return;
-  const report = structuredClone(state.report);
   try {
-    await putReport(report); // Submit to API
+    await putReport(state.report); // Submit to API
   } catch (_) {
     return { errorMessage: "Something went wrong, try again." };
   }
