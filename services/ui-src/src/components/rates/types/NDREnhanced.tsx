@@ -43,27 +43,27 @@ export const NDREnhanced = (
     const { name, value } = event.target;
     const [index, type] = name.split(".");
 
+    let newDisplayValue = { ...displayValue };
+
     // //set the denominator for all the ndr sets
     if (name === "denominator") {
-      const newValues = {
+      newDisplayValue = {
         denominator: Number(value),
         rates: displayValue?.rates?.map((values) => {
-          const newValue = { ...values, denominator: value };
-          return { ...newValue, rate: calculation(newValue, multiplier) };
+          return { ...values, denominator: value };
         }),
       };
-
-      setDisplayValue({ ...newValues });
-      form.setValue(`${key}`, newValues, { shouldValidate: true });
     } else {
-      const newDisplayValue = displayValue.rates[Number(index)];
-      newDisplayValue[type] = value;
-      newDisplayValue.rate = calculation(newDisplayValue, multiplier);
-      displayValue.rates[Number(index)] = newDisplayValue;
-      setDisplayValue({ ...displayValue });
-      form.setValue(`${key}`, displayValue, { shouldValidate: true });
-      form.setValue(`${key}.type`, props.type);
+      newDisplayValue.rates[Number(index)][type] = value;
     }
+
+    newDisplayValue.rates = newDisplayValue.rates.map((set) => {
+      return { ...set, rate: calculation(set, multiplier) };
+    });
+
+    setDisplayValue({ ...newDisplayValue });
+    form.setValue(`${key}`, displayValue, { shouldValidate: true });
+    form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -81,7 +81,7 @@ export const NDREnhanced = (
         name="denominator"
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        value={answer?.denominator}
+        value={displayValue?.denominator}
       ></CmsdsTextField>
       {assessments?.map((assess, index) => {
         const value =
