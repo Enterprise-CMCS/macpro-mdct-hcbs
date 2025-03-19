@@ -533,7 +533,76 @@ export const measureTemplates: Record<
         helperText: "Auto-calculated",
         label: "Long Term Rate (65 to 74 years)",
       },
-      // figma is cutoff - not sure if these questions go here yet
+      // 75 to 84 Years
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-75-to-84",
+        text: "Performance Rate: 75 to 84 Years",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom-75-to-84",
+        label: "Denominator (75 to 84 years)",
+      },
+      // Should this pattern below repeat like we did for 18 to 64 years?
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-short-term-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-75-to-84",
+        label: "Numerator: Short Term Stay (75 to 84 years)",
+      },
+      // Is this intentional
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-18-to-64",
+        label: "Numerator: Short Term Stay (18 to 64 years)",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-75-to-84",
+        helperText: "Auto-calculated",
+        label: "Short Term Rate (75 to 84 years)",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-75-to-84",
+        label: "Numerator: Medium Term Stay (75 to 84 years)",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-75-to-84",
+        helperText: "Auto-calculated",
+        label: "Medium Term Rate (75 to 84 years)",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-75-to-84",
+        label: "Numerator: Long Term Stay (75 to 84 years)",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-75-to-84",
+        helperText: "Auto-calculated",
+        label: "Long Term Rate (75 to 84 years)",
+      },
+      // figma is cutoff - guessing the questions are similar to previous age ranges for 85 years and older
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
