@@ -69,8 +69,7 @@ export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   );
   report.pages[pageIndex] = deepMerge(report.pages[pageIndex], answers);
 
-  putReport(report); // Submit to API
-  return { report, lastSavedTime: getLocalHourMinuteTime() };
+  return { report };
 };
 
 export const substitute = (
@@ -89,12 +88,10 @@ export const substitute = (
     if (report && measure) {
       measure.required = true;
       selectMeasure.required = false;
-
-      putReport(report);
     }
   }
 
-  return { report, lastSavedTime: getLocalHourMinuteTime() };
+  return { report };
 };
 /**
  * Clear all nested content in the measure, preserving an In Progress state,
@@ -108,7 +105,6 @@ export const clearMeasure = (
   if (!state.report) return;
   const report = structuredClone(state.report);
   performClearMeasure(measureId, report, ignoreList);
-  putReport(report); // Submit to API
   return { report };
 };
 
@@ -120,6 +116,19 @@ export const resetMeasure = (measureId: string, state: HcbsReportState) => {
   const report = structuredClone(state.report);
 
   performResetMeasure(measureId, report);
-  putReport(report); // Submit to API
   return { report };
+};
+
+/**
+ * Action saving a report to the api, updates errors or saved status
+ */
+export const saveReport = async (state: HcbsReportState) => {
+  if (!state.report) return;
+  const report = structuredClone(state.report);
+  try {
+    await putReport(report); // Submit to API
+  } catch (_) {
+    return { errorMessage: "Something went wrong, try again." };
+  }
+  return { lastSavedTime: getLocalHourMinuteTime() };
 };

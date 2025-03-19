@@ -10,8 +10,10 @@ import {
   Page,
   PraDisclosure,
 } from "components";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { elementsValidateSchema } from "utils/validation/reportValidation";
+/*
+ * import { yupResolver } from "@hookform/resolvers/yup";
+ * import { elementsValidateSchema } from "utils/validation/reportValidation";
+ */
 import { currentPageSelector } from "utils/state/selectors";
 
 export const ReportPageWrapper = () => {
@@ -22,6 +24,7 @@ export const ReportPageWrapper = () => {
     setReport,
     setAnswers,
     setCurrentPageId,
+    saveReport,
   } = useStore();
   const currentPage = useStore(currentPageSelector);
 
@@ -30,7 +33,7 @@ export const ReportPageWrapper = () => {
   const methods = useForm({
     defaultValues: {},
     shouldUnregister: true,
-    resolver: yupResolver(elementsValidateSchema),
+    // resolver: yupResolver(elementsValidateSchema),
   });
 
   const navigate = useNavigate();
@@ -44,9 +47,10 @@ export const ReportPageWrapper = () => {
     }
   }, [report, pageMap, pageId]);
 
-  const handleBlur = (data: any) => {
+  const handleBlur = async (data: any) => {
     if (!report) return;
     setAnswers(data);
+    saveReport();
   };
 
   const fetchReport = async () => {

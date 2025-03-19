@@ -13,19 +13,24 @@ const onCompleteSection = () => {};
 export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
   const { reportType, state, reportId } = useParams();
-  const { resetMeasure, setModalComponent, setModalOpen } = useStore();
+  const { resetMeasure, saveReport, setModalComponent, setModalOpen } =
+    useStore();
   const currentPage = useStore(currentPageSelector);
 
   if (!currentPage || currentPage.type !== PageType.Measure) return null;
   const measure = currentPage as MeasurePageTemplate;
   const navigate = useNavigate();
+  const submitClear = () => {
+    resetMeasure(measure.id);
+    saveReport();
+  };
 
-  const onClear = () => {
+  const onClearButton = () => {
     // Open Modal
     const modal = MeasureClearModal(
       measure,
       () => setModalOpen(false), // Close Action
-      resetMeasure // Submit
+      submitClear // Submit
     ); // This will need the whole measure eventually
     setModalComponent(
       modal,
@@ -61,7 +66,11 @@ export const MeasureFooterElement = (props: PageElementProps) => {
 
         <Box>
           {footer.clear && (
-            <Button variant="link" marginRight="2rem" onClick={() => onClear()}>
+            <Button
+              variant="link"
+              marginRight="2rem"
+              onClick={() => onClearButton()}
+            >
               Clear measure data
             </Button>
           )}

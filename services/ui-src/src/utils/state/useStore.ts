@@ -15,9 +15,11 @@ import {
   clearMeasure,
   mergeAnswers,
   resetMeasure,
+  saveReport,
   setPage,
   substitute,
 } from "./management/reportState";
+import { getLocalHourMinuteTime } from "utils";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -65,7 +67,7 @@ const bannerStore = (set: Function) => ({
 });
 
 // REPORT STORE
-const reportStore = (set: Function): HcbsReportState => ({
+const reportStore = (set: Function, get: Function): HcbsReportState => ({
   // initial state
   report: undefined, // raw report
   pageMap: undefined, // all page indexes mapped by Id
@@ -76,6 +78,7 @@ const reportStore = (set: Function): HcbsReportState => ({
   modalHeader: undefined,
   modalComponent: undefined,
   lastSavedTime: undefined,
+  errorMessage: undefined,
 
   // actions
   setReport: (report: Report | undefined) =>
@@ -113,16 +116,29 @@ const reportStore = (set: Function): HcbsReportState => ({
         type: "clearMeasure",
       }
     ),
+  saveReport: async () => {
+    const state = get();
+    const result = await saveReport(state);
+    set(result, false, { type: "saveReport" });
+  },
+  setErrorMessage: (errorMessage: string) =>
+    set(() => ({ errorMessage }), false, { type: "setErrorMessage" }),
+  setLastSavedTime: () =>
+    set(() => ({ lastSavedTime: getLocalHourMinuteTime() }), false, {
+      type: "setLastSavedTime",
+    }),
 });
 
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState & HcbsReportState & AdminBannerState>((set) => ({
-      ...userStore(set),
-      ...bannerStore(set),
-      ...reportStore(set),
-    })),
+    devtools<HcbsUserState & HcbsReportState & AdminBannerState>(
+      (set, get) => ({
+        ...userStore(set),
+        ...bannerStore(set),
+        ...reportStore(set, get),
+      })
+    ),
     {
       name: "hcbs-store",
       partialize: (state) => ({ report: state.report }),
