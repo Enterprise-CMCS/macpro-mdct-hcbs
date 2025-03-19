@@ -67,7 +67,7 @@ function updateEnvFiles() {
       stdio: "inherit",
     });
     execSync("sed -i '' -e 's/# pragma: allowlist secret//g' .env");
-  } catch (error) {
+  } catch {
     // eslint-disable-next-line no-console
     console.error("Failed to update .env files using 1Password CLI.");
     process.exit(1);
@@ -183,32 +183,6 @@ async function run_local() {
     "."
   );
 
-  const deployLocalPrequisitesCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--app",
-    '"npx tsx deployment/local/prerequisites.ts"',
-  ];
-  await runner.run_command_and_output(
-    "CDK local prerequisite deploy",
-    deployLocalPrequisitesCmd,
-    "."
-  );
-
-  const deployPrequisitesCmd = [
-    "yarn",
-    "cdklocal",
-    "deploy",
-    "--app",
-    '"npx tsx deployment/prerequisites.ts"',
-  ];
-  await runner.run_command_and_output(
-    "CDK prerequisite deploy",
-    deployPrequisitesCmd,
-    "."
-  );
-
   const deployCmd = [
     "yarn",
     "cdklocal",
@@ -247,53 +221,20 @@ async function prepare_services(runner: LabeledProcessRunner) {
   }
 }
 
-async function deploy_prerequisites() {
-  const runner = new LabeledProcessRunner();
-  await prepare_services(runner);
-  const deployPrequisitesCmd = [
-    "yarn",
-    "cdk",
-    "deploy",
-    "--app",
-    '"npx tsx deployment/prerequisites.ts"',
-  ];
-  await runner.run_command_and_output(
-    "CDK prerequisite deploy",
-    deployPrequisitesCmd,
-    "."
-  );
-}
-
-const stackExists = async (stackName: string): Promise<boolean> => {
-  const client = new CloudFormationClient({ region });
-  try {
-    await client.send(new DescribeStacksCommand({ StackName: stackName }));
-    return true;
-  } catch (error: any) {
-    return false;
-  }
-};
-
 async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  if (await stackExists("hcbs-prerequisites")) {
-    const deployCmd = [
-      "yarn",
-      "cdk",
-      "deploy",
-      "--context",
-      `stage=${stage}`,
-      "--method=direct",
-      "--all",
-    ];
-    await runner.run_command_and_output("CDK deploy", deployCmd, ".");
-  } else {
-    console.error(
-      "MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application."
-    );
-  }
+  const deployCmd = [
+    "yarn",
+    "cdk",
+    "deploy",
+    "--context",
+    `stage=${stage}`,
+    "--method=direct",
+    "--all",
+  ];
+  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
 }
 
 const waitForStackDeleteComplete = async (
@@ -359,12 +300,6 @@ yargs(process.argv.slice(2))
     "run our app via cdk deployment to localstack locally and react locally together",
     {},
     run_local
-  )
-  .command(
-    "deploy-prerequisites",
-    "deploy the app's AWS account prerequisites with cdk to the cloud",
-    () => {},
-    deploy_prerequisites
   )
   .command(
     "deploy",

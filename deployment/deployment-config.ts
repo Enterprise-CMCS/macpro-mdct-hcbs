@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { isLocalStack } from "./local/util";
 import { getSecret } from "./utils/secrets-manager";
 
@@ -19,8 +18,7 @@ export interface DeploymentConfigProperties {
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
-    // isLocalStack || !["main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
-    isLocalStack || !["main", "val", "production"].includes(stage); // TODO: remove jon-cdk after main is deployed
+    isLocalStack || !["main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project)),
     ...(await loadStageSecret(project, stage)),
@@ -56,6 +54,7 @@ const loadStageSecret = async (project: string, stage: string) => {
   try {
     return JSON.parse((await getSecret(secretName))!);
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.warn(
       `Optional stage secret "${secretName}" not found: ${error.message}`
     );

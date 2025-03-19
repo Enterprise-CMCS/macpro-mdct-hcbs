@@ -77,6 +77,11 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
+  const cfnUserPool = userPool.node.defaultChild as cognito.CfnUserPool;
+  cfnUserPool.adminCreateUserConfig = {
+    allowAdminCreateUserOnly: true,
+  };
+
   let supportedIdentityProviders:
     | cognito.UserPoolClientIdentityProvider[]
     | undefined = undefined;
