@@ -37,6 +37,9 @@ import {
   stratificationSubheader,
   stratificationParagraph,
   areYouReportingStratification,
+  shortTermNestedHeading,
+  mediumTermNestedHeading,
+  longTermNestedHeading,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -412,11 +415,7 @@ export const measureTemplates: Record<
         id: "performance-rates-denom-18-to-64",
         label: "Denominator (18 to 64 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "short-term-subheader",
-        text: "Short Term",
-      },
+      shortTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target",
@@ -434,11 +433,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Short Term Rate (18 to 64 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "medium-term-subheader",
-        text: "Medium Term",
-      },
+      mediumTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-medium-term-stay-18-to-64",
@@ -456,11 +451,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Medium Term Rate (18 to 64 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "long-term-subheader",
-        text: "Long Term",
-      },
+      longTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-long-term-stay-18-to-64",
@@ -490,11 +481,7 @@ export const measureTemplates: Record<
         id: "performance-rate-denom-65-to-74",
         label: "Denominator (65 to 74 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "short-term-subheader",
-        text: "Short Term",
-      },
+      shortTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-short-term-65-to-74",
@@ -523,11 +510,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Short Term Rate (65 to 74 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "medium-term-subheader",
-        text: "Medium Term",
-      },
+      mediumTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-medium-term-65-to-74",
@@ -551,11 +534,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Medium Term Rate (65 to 74 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "long-term-subheader",
-        text: "Long Term",
-      },
+      longTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-long-term-stay-65-to-74",
@@ -590,11 +569,7 @@ export const measureTemplates: Record<
         id: "performance-rate-denom-75-to-84",
         label: "Denominator (75 to 84 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "short-term-subheader",
-        text: "Short Term",
-      },
+      shortTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-short-term-75-to-84",
@@ -618,11 +593,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Short Term Rate (75 to 84 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "medium-term-subheader",
-        text: "Medium Term",
-      },
+      mediumTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-medium-term-75-to-84",
@@ -646,11 +617,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Medium Term Rate (75 to 84 years)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "long-term-subheader",
-        text: "Long Term",
-      },
+      longTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-long-term-stay-75-to-84",
@@ -684,11 +651,7 @@ export const measureTemplates: Record<
         id: "performance-rate-denom-85-or-older",
         label: "Denominator (85 years or older)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "short-term-subheader",
-        text: "Short Term",
-      },
+      shortTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-short-term-85-or-older",
@@ -712,11 +675,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Short Term Rate (85 years or older)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "medium-term-subheader",
-        text: "Medium Term",
-      },
+      mediumTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-medium-term-85-or-older",
@@ -740,11 +699,7 @@ export const measureTemplates: Record<
         helperText: "Auto-calculates",
         label: "Medium Term Rate (85 years or older)",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "long-term-subheader",
-        text: "Long Term",
-      },
+      longTermNestedHeading,
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-long-term-stay-85-or-older",

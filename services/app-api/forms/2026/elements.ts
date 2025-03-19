@@ -5,6 +5,7 @@ import {
   HeaderTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
+  NestedHeadingTemplate,
   ParagraphTemplate,
   QualityMeasureTableTemplate,
   RadioTemplate,
@@ -295,4 +296,22 @@ export const areYouReportingStratification: RadioTemplate = {
     { label: "Yes", value: "yes" },
     { label: "No", value: "no" },
   ],
+};
+
+export const shortTermNestedHeading: NestedHeadingTemplate = {
+  type: ElementType.NestedHeading,
+  id: "short-term-subheader",
+  text: "Short Term",
+};
+
+export const mediumTermNestedHeading: NestedHeadingTemplate = {
+  type: ElementType.NestedHeading,
+  id: "medium-term-subheader",
+  text: "Medium Term",
+};
+
+export const longTermNestedHeading: NestedHeadingTemplate = {
+  type: ElementType.NestedHeading,
+  id: "long-term-subheader",
+  text: "Long Term",
 };
