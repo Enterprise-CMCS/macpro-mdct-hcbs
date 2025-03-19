@@ -385,7 +385,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-6"]]: {
     id: "FFS-6",
-    title: "LTSS-6: Fee-For-Service Measure Results",
+    title: "LTSS-6: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -397,7 +397,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "LTSS-6: Fee-For-Service Measure Results",
+        text: "LTSS-6: Fee-For-Service (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -411,6 +411,11 @@ export const measureTemplates: Record<
         type: ElementType.Textbox,
         id: "performance-rates-denom-18-to-64",
         label: "Denominator (18 to 64 years)",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "short-term-subheader",
+        text: "Short Term",
       },
       {
         type: ElementType.Textbox,
@@ -430,6 +435,11 @@ export const measureTemplates: Record<
         label: "Short Term Rate (18 to 64 years)",
       },
       {
+        type: ElementType.NestedHeading,
+        id: "medium-term-subheader",
+        text: "Medium Term",
+      },
+      {
         type: ElementType.Textbox,
         id: "performance-rate-target-medium-term-stay-18-to-64",
         label:
@@ -445,6 +455,11 @@ export const measureTemplates: Record<
         id: "medium-term-rate-18-to-64",
         helperText: "Auto-calculated",
         label: "Medium Term Rate (18 to 64 years)",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "long-term-subheader",
+        text: "Long Term",
       },
       {
         type: ElementType.Textbox,
@@ -475,7 +490,11 @@ export const measureTemplates: Record<
         id: "performance-rate-denom-65-to-74",
         label: "Denominator (65 to 74 years)",
       },
-      // Should this pattern below repeat like we did for 18 to 64 years?
+      {
+        type: ElementType.NestedHeading,
+        id: "short-term-subheader",
+        text: "Short Term",
+      },
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-short-term-65-to-74",
@@ -487,7 +506,6 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-65-to-74",
         label: "Numerator: Short Term Stay (65 to 74 years)",
       },
-      // Is this intentional
       {
         type: ElementType.Textbox,
         id: "performance-rates-num-short-18-to-64",
@@ -498,6 +516,11 @@ export const measureTemplates: Record<
         id: "short-term-rate-65-to-74",
         helperText: "Auto-calculated",
         label: "Short Term Rate (65 to 74 years)",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "medium-term-subheader",
+        text: "Medium Term",
       },
       {
         type: ElementType.Textbox,
@@ -515,6 +538,11 @@ export const measureTemplates: Record<
         id: "medium-term-rate-65-to-74",
         helperText: "Auto-calculated",
         label: "Medium Term Rate (65 to 74 years)",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "long-term-subheader",
+        text: "Long Term",
       },
       {
         type: ElementType.Textbox,
@@ -544,7 +572,11 @@ export const measureTemplates: Record<
         id: "performance-rate-denom-75-to-84",
         label: "Denominator (75 to 84 years)",
       },
-      // Should this pattern below repeat like we did for 18 to 64 years?
+      {
+        type: ElementType.NestedHeading,
+        id: "short-term-subheader",
+        text: "Short Term",
+      },
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-short-term-75-to-84",
@@ -556,7 +588,6 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-75-to-84",
         label: "Numerator: Short Term Stay (75 to 84 years)",
       },
-      // Is this intentional
       {
         type: ElementType.Textbox,
         id: "performance-rates-num-short-18-to-64",
@@ -567,6 +598,11 @@ export const measureTemplates: Record<
         id: "short-term-rate-75-to-84",
         helperText: "Auto-calculated",
         label: "Short Term Rate (75 to 84 years)",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "medium-term-subheader",
+        text: "Medium Term",
       },
       {
         type: ElementType.Textbox,
@@ -586,6 +622,11 @@ export const measureTemplates: Record<
         label: "Medium Term Rate (75 to 84 years)",
       },
       {
+        type: ElementType.NestedHeading,
+        id: "long-term-subheader",
+        text: "Long Term",
+      },
+      {
         type: ElementType.Textbox,
         id: "performance-rate-target-long-term-stay-75-to-84",
         label:
@@ -602,7 +643,6 @@ export const measureTemplates: Record<
         helperText: "Auto-calculated",
         label: "Long Term Rate (75 to 84 years)",
       },
-      // 85 years or older - below is guesswork for now (cutoff in Figma)
       {
         type: ElementType.SubHeader,
         id: "measure-subheader-performance-rate-85-or-older",
@@ -613,7 +653,11 @@ export const measureTemplates: Record<
         id: "performance-rate-denom-85-or-older",
         label: "Denominator (85 years or older)",
       },
-      // Should this pattern below repeat like we did for 18 to 64 years?
+      {
+        type: ElementType.NestedHeading,
+        id: "short-term-subheader",
+        text: "Short Term",
+      },
       {
         type: ElementType.Textbox,
         id: "performance-rate-target-short-term-85-or-older",
@@ -625,7 +669,6 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-85-or-older",
         label: "Numerator: Short Term Stay (85 years or older)",
       },
-      // Is this intentional
       {
         type: ElementType.Textbox,
         id: "performance-rates-num-short-18-to-64",
@@ -636,6 +679,11 @@ export const measureTemplates: Record<
         id: "short-term-rate-85-or-older",
         helperText: "Auto-calculated",
         label: "Short Term Rate (85 years or older)",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "medium-term-subheader",
+        text: "Medium Term",
       },
       {
         type: ElementType.Textbox,
@@ -653,6 +701,11 @@ export const measureTemplates: Record<
         id: "medium-term-rate-85-or-older",
         helperText: "Auto-calculated",
         label: "Medium Term Rate (85 years or older)",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "long-term-subheader",
+        text: "Long Term",
       },
       {
         type: ElementType.Textbox,
