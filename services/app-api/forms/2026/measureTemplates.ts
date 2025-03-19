@@ -464,6 +464,7 @@ export const measureTemplates: Record<
         label: "Long Term Rate (18 to 64 years)",
       },
       performanceRatesSubheader,
+      // 65 to 74 Years
       {
         type: ElementType.SubHeader,
         id: "measure-subheader-performance-rate-65-to-74",
@@ -474,9 +475,10 @@ export const measureTemplates: Record<
         id: "performance-rate-denom-65-to-74",
         label: "Denominator (65 to 74 years)",
       },
+      // Should this pattern below repeat like we did for 18 to 64 years?
       {
         type: ElementType.Textbox,
-        id: "performance-rate-target",
+        id: "performance-rate-target-short-term-65-to-74",
         label:
           "What is the [templateYear+2] state performance target for short term stay (65 to 74 years)?",
       },
@@ -485,17 +487,11 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-65-to-74",
         label: "Numerator: Short Term Stay (65 to 74 years)",
       },
+      // Is this intentional
       {
         type: ElementType.Textbox,
-        id: "short-term-rate-65-to-74",
-        helperText: "Auto-calculated",
-        label: "Short Term Rate (65 to 74 years)",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (65 to 74 years)?",
+        id: "performance-rates-num-short-18-to-64",
+        label: "Numerator: Short Term Stay (18 to 64 years)",
       },
       {
         type: ElementType.Textbox,
@@ -505,7 +501,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-stay-65-to-74",
+        id: "performance-rate-target-medium-term-65-to-74",
         label:
           "What is the [templateYear+2] state performance target for medium term stay (65 to 74 years)?",
       },
