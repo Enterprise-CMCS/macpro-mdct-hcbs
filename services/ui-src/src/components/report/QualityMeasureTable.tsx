@@ -22,7 +22,7 @@ export const QualityMeasureTableElement = () => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  if (!currentPage || currentPage.type !== PageType.Measure) return;
+  if (!currentPage || currentPage.type !== PageType.Measure) return null;
   const measurePage = currentPage as MeasurePageTemplate;
   const deliveryMethodRadio = useLiveElement(
     "delivery-method-radio"
