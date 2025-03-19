@@ -10,7 +10,7 @@ import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/C
 
 export const ReportingRadioField = (props: PageElementProps) => {
   const radio = props.element as ReportingRadioTemplate;
-  const { clearMeasure, currentPageId } = useStore();
+  const { clearMeasure, saveReport, currentPageId } = useStore();
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
 
@@ -48,6 +48,7 @@ export const ReportingRadioField = (props: PageElementProps) => {
 
     if (value === "no") {
       clearMeasure(currentPageId ?? "", [radio.id]);
+      saveReport();
       return;
     }
   };
