@@ -512,11 +512,6 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.Textbox,
-        id: "performance-rates-num-short-18-to-64",
-        label: "Numerator: Short Term Stay (18 to 64 years)",
-      },
-      {
-        type: ElementType.Textbox,
         id: "denom-short-auto-calc-65-to-74",
         helperText: "Auto-calculates",
         label: "Denominator (65 to 74 years)",
