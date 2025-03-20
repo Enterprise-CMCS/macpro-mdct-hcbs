@@ -131,6 +131,22 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["FFS-FASI-1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-FASI-1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-6"]]: {
       id: "",
       title: "",
