@@ -10,6 +10,8 @@ export const error = {
 export enum DeliverySystem {
   FFS = "FFS",
   MLTSS = "MLTSS",
+  MLTSSPT1 = "MLTSS-PT1",
+  MLTSSPT2 = "MLTSS-PT2",
 }
 
 export enum DataSource {

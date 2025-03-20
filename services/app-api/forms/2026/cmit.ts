@@ -116,7 +116,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1255",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.MLTSS],
+    deliverySystem: [DeliverySystem.MLTSSPT1, DeliverySystem.MLTSSPT2],
     dataSource: DataSource.Hybrid,
   },
   {
