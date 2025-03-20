@@ -93,7 +93,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   const environment: any = {
-    STAGE: stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])
     ),
@@ -120,8 +119,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
-    iamPermissionsBoundary: iamPermissionsBoundary,
-    iamPath: iamPath,
+    iamPermissionsBoundary,
+    iamPath,
   };
 
   new Lambda(scope, "createBanner", {
