@@ -1,4 +1,3 @@
-process.env.STAGE = "local";
 process.env.QmsReportsTable = "local-qms-reports";
 process.env.BannersTable = "local-banners";
 

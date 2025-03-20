@@ -11,11 +11,8 @@ const configFilePath = path.resolve(outputPath, "env-config.js");
 const region = "us-east-1";
 
 export async function writeLocalUiEnvFile(apiUrl: string) {
-  console.log("apiUrlapiUrlapiUrlapiUrlapiUrlapiUrl");
-  console.log(apiUrl);
   const envVariables = {
     SKIP_PREFLIGHT_CHECK: "true",
-    STAGE: "localhost",
     API_REGION: region,
     API_URL: apiUrl.replace("https", "http"),
     COGNITO_REGION: region,
