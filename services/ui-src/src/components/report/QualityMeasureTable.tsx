@@ -10,21 +10,20 @@ import {
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
-import { MeasurePageTemplate, RadioTemplate } from "types";
+import { MeasurePageTemplate, PageType, RadioTemplate } from "types";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
+import { currentPageSelector } from "utils/state/selectors";
 
 export const QualityMeasureTableElement = () => {
-  const { report, pageMap, currentPageId } = useStore();
+  const { report } = useStore();
+  const currentPage = useStore(currentPageSelector);
+
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
 
-  if (!currentPageId) return null;
-  const currentPage = report?.pages[
-    pageMap?.get(currentPageId)!
-  ] as MeasurePageTemplate;
-  if (!currentPage.cmitInfo) return null;
-
+  if (!currentPage || currentPage.type !== PageType.Measure) return null;
+  const measurePage = currentPage as MeasurePageTemplate;
   const deliveryMethodRadio = useLiveElement(
     "delivery-method-radio"
   ) as RadioTemplate;
@@ -32,7 +31,7 @@ export const QualityMeasureTableElement = () => {
   const handleEditClick = (deliverySystem: string) => {
     if (report && report.measureLookup) {
       const measure = report?.measureLookup.defaultMeasures.find(
-        (measure) => measure.cmit === currentPage.cmit
+        (measure) => measure.cmit === measurePage.cmit
       );
       const deliveryId = measure?.deliverySystemTemplates.find((item) =>
         item.toString().includes(deliverySystem)
@@ -41,10 +40,10 @@ export const QualityMeasureTableElement = () => {
       navigate(path);
     }
   };
-  const singleOption = currentPage.cmitInfo?.deliverySystem.length == 1;
+  const singleOption = measurePage.cmitInfo?.deliverySystem.length == 1;
 
   // Build Rows
-  const rows = currentPage.cmitInfo?.deliverySystem.map((system, index) => {
+  const rows = measurePage.cmitInfo?.deliverySystem.map((system, index) => {
     const selections = deliveryMethodRadio?.answer ?? "";
     const deliverySystemIsSelected = selections.split(",").includes(system);
     return (
@@ -54,7 +53,7 @@ export const QualityMeasureTableElement = () => {
         </Td>
         <Td width="100%">
           <Text fontWeight="bold">Delivery Method: {system}</Text>
-          <Text>CMIT# {currentPage.cmit}</Text>
+          <Text>CMIT# {measurePage.cmit}</Text>
         </Td>
         <Td>
           <Button

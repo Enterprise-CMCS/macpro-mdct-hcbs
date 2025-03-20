@@ -1,16 +1,15 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { DataSource, MeasurePageTemplate } from "types";
+import { DataSource, MeasurePageTemplate, PageType } from "types";
+import { currentPageSelector } from "utils/state/selectors";
 
 export const MeasureDetailsElement = () => {
-  const { report, pageMap, currentPageId } = useStore();
+  const currentPage = useStore(currentPageSelector);
 
-  if (!currentPageId) return null;
-  const currentPage = report?.pages[
-    pageMap?.get(currentPageId)!
-  ] as MeasurePageTemplate;
+  if (!currentPage || currentPage.type !== PageType.Measure) return null;
+  const measurePage = currentPage as MeasurePageTemplate;
 
-  const cmitInfo = currentPage.cmitInfo;
+  const cmitInfo = measurePage.cmitInfo;
   const title = cmitInfo!.name;
   const cmit = cmitInfo?.cmit;
   const steward = cmitInfo?.measureSteward;

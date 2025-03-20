@@ -45,6 +45,7 @@ export interface HcbsReportState {
   modalHeader?: string;
   modalComponent?: ReactNode;
   lastSavedTime?: string;
+  errorMessage?: string;
 
   // ACTIONS
   setReport: (report?: Report) => void;
@@ -55,4 +56,5 @@ export interface HcbsReportState {
   clearMeasure: (measureId: string, ignoreList: string[]) => void;
   resetMeasure: (measureId: string) => void;
   setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => void;
+  saveReport: () => void;
 }

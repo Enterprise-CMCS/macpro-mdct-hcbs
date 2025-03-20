@@ -1,9 +1,10 @@
 import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
-import { MeasureFooterTemplate, MeasurePageTemplate } from "types";
+import { MeasureFooterTemplate, MeasurePageTemplate, PageType } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
+import { currentPageSelector } from "utils/state/selectors";
 
 const onCompleteMeasure = () => {};
 
@@ -12,27 +13,24 @@ const onCompleteSection = () => {};
 export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
   const { reportType, state, reportId } = useParams();
-  const {
-    currentPageId,
-    report,
-    pageMap,
-    resetMeasure,
-    setModalComponent,
-    setModalOpen,
-  } = useStore();
+  const { resetMeasure, saveReport, setModalComponent, setModalOpen } =
+    useStore();
+  const currentPage = useStore(currentPageSelector);
 
-  if (!report || !pageMap || !currentPageId) return null;
-  const measure = report.pages[
-    pageMap.get(currentPageId)!
-  ] as MeasurePageTemplate;
+  if (!currentPage || currentPage.type !== PageType.Measure) return null;
+  const measure = currentPage as MeasurePageTemplate;
   const navigate = useNavigate();
+  const submitClear = () => {
+    resetMeasure(measure.id);
+    saveReport();
+  };
 
-  const onClear = () => {
+  const onClearButton = () => {
     // Open Modal
     const modal = MeasureClearModal(
       measure,
       () => setModalOpen(false), // Close Action
-      resetMeasure // Submit
+      submitClear // Submit
     ); // This will need the whole measure eventually
     setModalComponent(
       modal,
@@ -68,7 +66,11 @@ export const MeasureFooterElement = (props: PageElementProps) => {
 
         <Box>
           {footer.clear && (
-            <Button variant="link" marginRight="2rem" onClick={() => onClear()}>
+            <Button
+              variant="link"
+              marginRight="2rem"
+              onClick={() => onClearButton()}
+            >
               Clear measure data
             </Button>
           )}

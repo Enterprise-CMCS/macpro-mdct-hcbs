@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HcbsReportState } from "types";
 import {
   isMeasureTemplate,
@@ -69,8 +70,7 @@ export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   );
   report.pages[pageIndex] = deepMerge(report.pages[pageIndex], answers);
 
-  putReport(report); // Submit to API
-  return { report, lastSavedTime: getLocalHourMinuteTime() };
+  return { report };
 };
 
 export const substitute = (
@@ -81,20 +81,14 @@ export const substitute = (
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  if (selectMeasure) {
-    const substitute = selectMeasure.substitutable?.toString();
-    const measure = measures.find((measure) =>
-      measure.id.includes(substitute!)
-    );
-    if (report && measure) {
-      measure.required = true;
-      selectMeasure.required = false;
-
-      putReport(report);
-    }
+  const substitute = selectMeasure.substitutable?.toString();
+  const measure = measures.find((measure) => measure.id.includes(substitute!));
+  if (measure) {
+    measure.required = true;
+    selectMeasure.required = false;
   }
 
-  return { report, lastSavedTime: getLocalHourMinuteTime() };
+  return { report };
 };
 /**
  * Clear all nested content in the measure, preserving an In Progress state,
@@ -108,7 +102,6 @@ export const clearMeasure = (
   if (!state.report) return;
   const report = structuredClone(state.report);
   performClearMeasure(measureId, report, ignoreList);
-  putReport(report); // Submit to API
   return { report };
 };
 
@@ -120,6 +113,18 @@ export const resetMeasure = (measureId: string, state: HcbsReportState) => {
   const report = structuredClone(state.report);
 
   performResetMeasure(measureId, report);
-  putReport(report); // Submit to API
   return { report };
+};
+
+/**
+ * Action saving a report to the api, updates errors or saved status
+ */
+export const saveReport = async (state: HcbsReportState) => {
+  if (!state.report) return;
+  try {
+    await putReport(state.report); // Submit to API
+  } catch (_) {
+    return { errorMessage: "Something went wrong, try again." };
+  }
+  return { lastSavedTime: getLocalHourMinuteTime() };
 };

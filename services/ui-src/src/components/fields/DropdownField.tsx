@@ -34,7 +34,8 @@ export const DropdownField = (props: PageElementProps) => {
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value);
+    // CMSDS Dropdown not using event.target.value onBlur, innertext or outertext appear to contain the current value
+    form.setValue(key, event.target.innerText);
   };
 
   // prepare error message, hint, and classes
