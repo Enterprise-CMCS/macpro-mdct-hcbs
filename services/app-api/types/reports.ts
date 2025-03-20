@@ -206,7 +206,7 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  QualityMeasureTable = "qualityMeasureTable",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -388,7 +388,7 @@ export type MeasureTableTemplate = {
 };
 
 export type QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable;
+  type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
 };

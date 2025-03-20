@@ -186,7 +186,7 @@ describe("Ignores validation for elements that are not editable", () => {
           clear: true,
         },
         {
-          type: ElementType.QualityMeasureTable,
+          type: ElementType.MeasureResultsNavigationTable,
           measureDisplay: "quality",
           id: "quality-measure-table",
         },

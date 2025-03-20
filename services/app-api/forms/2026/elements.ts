@@ -195,8 +195,8 @@ export const qualityMeasuresSubheader: SubHeaderTemplate = {
   id: "quality-measures-subheader",
 };
 
-export const qualityMeasureTable: QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable,
+export const measureResultsNavigationTable: QualityMeasureTableTemplate = {
+  type: ElementType.MeasureResultsNavigationTable,
   measureDisplay: "quality",
   id: "quality-measure-table",
 };

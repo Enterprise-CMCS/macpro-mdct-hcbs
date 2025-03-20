@@ -139,7 +139,7 @@ const elements: PageElement[] = [
     id: "",
   },
   {
-    type: ElementType.QualityMeasureTable,
+    type: ElementType.MeasureResultsNavigationTable,
     id: "",
     measureDisplay: "quality",
   },

@@ -1,4 +1,4 @@
-import { QualityMeasureTableElement } from "./QualityMeasureTable";
+import { QualityMeasureTableElement } from "./MeasureResultsNavigationTable";
 import { render, screen } from "@testing-library/react";
 import { useStore } from "utils";
 import { mockUseStore } from "utils/testing/setupJest";

@@ -58,7 +58,7 @@ export const Page = ({ elements }: Props) => {
         return buttonLinkElement;
       case ElementType.MeasureTable:
         return MeasureTableElement;
-      case ElementType.QualityMeasureTable:
+      case ElementType.MeasureResultsNavigationTable:
         return QualityMeasureTableElement;
       case ElementType.StatusTable:
         return StatusTableElement;
