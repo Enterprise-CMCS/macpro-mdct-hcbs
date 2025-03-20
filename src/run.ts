@@ -175,11 +175,24 @@ async function run_local() {
     "bootstrap",
     "aws://000000000000/us-east-1",
     "--context",
-    "stage=localstack",
+    "stage=bootstrap",
   ];
   await runner.run_command_and_output(
     "CDK local bootstrap",
     cdklocalBootstrapCmd,
+    "."
+  );
+
+  const deployPrequisitesCmd = [
+    "yarn",
+    "cdklocal",
+    "deploy",
+    "--app",
+    '"npx tsx deployment/prerequisites.ts"',
+  ];
+  await runner.run_command_and_output(
+    "CDK prerequisite deploy",
+    deployPrequisitesCmd,
     "."
   );
 
@@ -221,20 +234,53 @@ async function prepare_services(runner: LabeledProcessRunner) {
   }
 }
 
+async function deploy_prerequisites() {
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+  const deployPrequisitesCmd = [
+    "yarn",
+    "cdk",
+    "deploy",
+    "--app",
+    '"npx tsx deployment/prerequisites.ts"',
+  ];
+  await runner.run_command_and_output(
+    "CDK prerequisite deploy",
+    deployPrequisitesCmd,
+    "."
+  );
+}
+
+const stackExists = async (stackName: string): Promise<boolean> => {
+  const client = new CloudFormationClient({ region });
+  try {
+    await client.send(new DescribeStacksCommand({ StackName: stackName }));
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 async function deploy(options: { stage: string }) {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
-  const deployCmd = [
-    "yarn",
-    "cdk",
-    "deploy",
-    "--context",
-    `stage=${stage}`,
-    "--method=direct",
-    "--all",
-  ];
-  await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+  if (await stackExists("hcbs-prerequisites")) {
+    const deployCmd = [
+      "yarn",
+      "cdk",
+      "deploy",
+      "--context",
+      `stage=${stage}`,
+      "--method=direct",
+      "--all",
+    ];
+    await runner.run_command_and_output("CDK deploy", deployCmd, ".");
+  } else {
+    console.error(
+      "MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application."
+    );
+  }
 }
 
 const waitForStackDeleteComplete = async (
@@ -300,6 +346,12 @@ yargs(process.argv.slice(2))
     "run our app via cdk deployment to localstack locally and react locally together",
     {},
     run_local
+  )
+  .command(
+    "deploy-prerequisites",
+    "deploy the app's AWS account prerequisites with cdk to the cloud",
+    () => {},
+    deploy_prerequisites
   )
   .command(
     "deploy",

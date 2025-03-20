@@ -122,7 +122,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       },
       defaultRootObject: "index.html",
       enableLogging: true,
-      logBucket: logBucket,
+      logBucket,
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {
