@@ -4,11 +4,6 @@ const config = {
   MAX_ATTACHMENT_SIZE: 5000000,
   REACT_APP_LD_SDK_CLIENT: window._env_.REACT_APP_LD_SDK_CLIENT,
   POST_SIGNOUT_REDIRECT: window._env_.POST_SIGNOUT_REDIRECT,
-  s3: {
-    LOCAL_ENDPOINT: window._env_.S3_LOCAL_ENDPOINT,
-    REGION: window._env_.S3_ATTACHMENTS_BUCKET_REGION,
-    BUCKET: window._env_.S3_ATTACHMENTS_BUCKET_NAME,
-  },
   apiGateway: {
     REGION: window._env_.API_REGION,
     URL: window._env_.API_URL,

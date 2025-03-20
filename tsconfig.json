@@ -75,6 +75,8 @@
   "exclude": [
     "node_modules",
     ".cdk",
-    "./services/ui-src/*"
+    "./services/ui-src/*",
+    "./services/database/*",
+    "./tests/**/**.ts"
   ]
 }
