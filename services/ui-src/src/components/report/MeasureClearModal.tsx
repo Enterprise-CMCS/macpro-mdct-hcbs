@@ -8,7 +8,7 @@ export const MeasureClearModal = (
   onSubmit: Function
 ): ReactNode => {
   const submitReset = () => {
-    onSubmit(measure.id);
+    onSubmit();
     onClose();
   };
   const body = `This action cannot be undone. It will clear all data that has been entered into the measure ${measure.id} and reset this measure's status to 'Not started'`;
