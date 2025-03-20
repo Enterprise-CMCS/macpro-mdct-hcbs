@@ -1,4 +1,4 @@
-import { StateAbbr } from "./other";
+import { AnyObject, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
@@ -139,6 +139,7 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
+  PerformanceRate = "performanceRate",
 }
 
 export type PageElement =
@@ -158,7 +159,8 @@ export type PageElement =
   | QualityMeasureTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
-  | MeasureFooterTemplate;
+  | MeasureFooterTemplate
+  | PerformanceRateTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -299,6 +301,36 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
+export type PerformanceData = {
+  rates: AnyObject[];
+  denominator?: number;
+};
+
+export const enum PerformanceRateType {
+  NDR = "NDR",
+  NDR_Ehanced = "NDREnhanced",
+  FIELDS = "Fields",
+  NDRFIELDS = "NDRFields",
+}
+
+export const enum RateCalc {
+  NDRCalc = "NDRCalc",
+  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
+}
+
+export type PerformanceRateTemplate = {
+  id: string;
+  type: ElementType.PerformanceRate;
+  label?: string;
+  helperText?: string;
+  assessments?: { label: string; id: string }[];
+  fields?: { label: string; id: string; autoCalc?: boolean }[];
+  rateType: PerformanceRateType;
+  rateCalc?: RateCalc;
+  multiplier?: number;
+  answer?: PerformanceData;
+};
+
 export type ChoiceTemplate = {
   label: string;
   value: string;
@@ -367,6 +399,7 @@ export enum MeasureTemplateName {
   "LTSS-8" = "LTSS-8",
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
+  "FFS-6" = "FFS-6",
   "MLTSS-1" = "MLTSS-1",
   "MLTSS-2" = "MLTSS-2",
   "POM-1" = "POM-1",
