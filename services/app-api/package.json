@@ -6,8 +6,7 @@
   "scripts": {
     "coverage": "jest --coverage",
     "test": "jest",
-    "test-watch": "jest --watch",
-    "postinstall": "patch-package"
+    "test-watch": "jest --watch"
   },
   "devDependencies": {
     "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
@@ -32,8 +31,6 @@
     "jsdom": "^26.0.0",
     "jwt-decode": "3.1.2",
     "ksuid": "^3.0.0",
-    "patch-package": "^8.0.0",
-    "postinstall-postinstall": "^2.1.0",
     "util": "^0.12.5",
     "yup": "^1.6.1"
   },
