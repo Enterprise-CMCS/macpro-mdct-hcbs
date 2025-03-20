@@ -40,6 +40,10 @@ import {
   shortTermNestedHeading,
   mediumTermNestedHeading,
   longTermNestedHeading,
+  denominatorAutoCalc18to64,
+  denominatorAutoCalc65to74,
+  denominatorAutoCalc75to84,
+  denominatorAutoCalc85orOlder,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -427,12 +431,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-18-to-64",
         label: "Numerator: Short Term Stay (18 to 64 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Denominator (18 to 64 years)",
-      },
+      denominatorAutoCalc18to64,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-18-to-64",
@@ -451,12 +450,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-18-to-64",
         label: "Numerator: Medium Term Stay (18 to 64 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-auto-calc-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Denominator (18 to 64 years)",
-      },
+      denominatorAutoCalc18to64,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-18-to-64",
@@ -475,12 +469,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-18-to-64",
         label: "Numerator: Long Term Stay (18 to 64 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-long-auto-calc-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Denominator (18 to 64 years)",
-      },
+      denominatorAutoCalc18to64,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-18-to-64",
@@ -510,12 +499,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-65-to-74",
         label: "Numerator: Short Term Stay (65 to 74 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-short-auto-calc-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Denominator (65 to 74 years)",
-      },
+      denominatorAutoCalc65to74,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-65-to-74",
@@ -534,12 +518,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-65-to-74",
         label: "Numerator: Medium Term Stay (65 to 74 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-auto-calc-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Denominator (65 to 74 years)",
-      },
+      denominatorAutoCalc65to74,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-65-to-74",
@@ -558,12 +537,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-65-to-74",
         label: "Numerator: Long Term Stay (65 to 74 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-long-auto-calc-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Denominator (65 to 74 years)",
-      },
+      denominatorAutoCalc65to74,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-65-to-74",
@@ -593,12 +567,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-75-to-84",
         label: "Numerator: Short Term Stay (75 to 84 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-short-auto-calc-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Denominator (75 to 84 years)",
-      },
+      denominatorAutoCalc75to84,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-75-to-84",
@@ -617,12 +586,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-75-to-84",
         label: "Numerator: Medium Term Stay (75 to 84 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Denominator (75 to 84 years)",
-      },
+      denominatorAutoCalc75to84,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-75-to-84",
@@ -641,12 +605,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-75-to-84",
         label: "Numerator: Long Term Stay (75 to 84 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-long-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Denominator (75 to 84 years)",
-      },
+      denominatorAutoCalc75to84,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-75-to-84",
@@ -676,12 +635,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-85-or-older",
         label: "Numerator: Short Term Stay (85 years or older)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-short-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Denominator (85 years or older)",
-      },
+      denominatorAutoCalc85orOlder,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-85-or-older",
@@ -700,12 +654,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-85-or-older",
         label: "Numerator: Medium Term Stay (85 years or older)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Denominator (85 years or older)",
-      },
+      denominatorAutoCalc85orOlder,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-85-or-older",
@@ -724,12 +673,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-85-or-older",
         label: "Numerator: Long Term Stay (85 years or older)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-long-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Denominator (85 years or older)",
-      },
+      denominatorAutoCalc85orOlder,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-85-or-older",
@@ -785,12 +729,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-18-to-64",
         label: "Numerator: Short Term Stay (18 to 64 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-short-auto-calc-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Denominator (18 to 64 years)",
-      },
+      denominatorAutoCalc18to64,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-18-to-64",
@@ -809,12 +748,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-18-to-64",
         label: "Numerator: Medium Term Stay (18 to 64 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-auto-calc-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Denominator (18 to 64 years)",
-      },
+      denominatorAutoCalc18to64,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-18-to-64",
@@ -833,12 +767,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-18-to-64",
         label: "Numerator: Long Term Stay (18 to 64 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-auto-calc-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Denominator (18 to 64 years)",
-      },
+      denominatorAutoCalc18to64,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-18-to-64",
@@ -868,12 +797,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-65-to-74",
         label: "Numerator: Short Term Stay (65 to 74 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-short-auto-calc-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Denominator (65 to 74 years)",
-      },
+      denominatorAutoCalc65to74,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-65-to-74",
@@ -892,12 +816,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-65-to-74",
         label: "Numerator: Medium Term Stay (65 to 74 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-auto-calc-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Denominator (65 to 74 years)",
-      },
+      denominatorAutoCalc65to74,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-65-to-74",
@@ -916,12 +835,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-65-to-74",
         label: "Numerator: Long Term Stay (65 to 74 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-long-auto-calc-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Denominator (65 to 74 years)",
-      },
+      denominatorAutoCalc65to74,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-65-to-74",
@@ -951,12 +865,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-75-to-84",
         label: "Numerator: Short Term Stay (75 to 84 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-short-auto-calc-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Denominator (75 to 84 years)",
-      },
+      denominatorAutoCalc75to84,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-75-to-84",
@@ -975,12 +884,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-75-to-84",
         label: "Numerator: Medium Term Stay (75 to 84 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Denominator (75 to 84 years)",
-      },
+      denominatorAutoCalc75to84,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-75-to-84",
@@ -999,12 +903,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-75-to-84",
         label: "Numerator: Long Term Stay (75 to 84 years)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-long-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Denominator (75 to 84 years)",
-      },
+      denominatorAutoCalc75to84,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-75-to-84",
@@ -1034,12 +933,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-short-85-or-older",
         label: "Numerator: Short Term Stay (85 years or older)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-short-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Denominator (85 years or older)",
-      },
+      denominatorAutoCalc85orOlder,
       {
         type: ElementType.Textbox,
         id: "short-term-rate-85-or-older",
@@ -1058,12 +952,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-medium-85-or-older",
         label: "Numerator: Medium Term Stay (85 years or older)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-med-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Denominator (85 years or older)",
-      },
+      denominatorAutoCalc85orOlder,
       {
         type: ElementType.Textbox,
         id: "medium-term-rate-85-or-older",
@@ -1082,12 +971,7 @@ export const measureTemplates: Record<
         id: "performance-rates-num-long-85-or-older",
         label: "Numerator: Long Term Stay (85 years or older)",
       },
-      {
-        type: ElementType.Textbox,
-        id: "denom-long-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Denominator (85 years or older)",
-      },
+      denominatorAutoCalc85orOlder,
       {
         type: ElementType.Textbox,
         id: "long-term-rate-85-or-older",

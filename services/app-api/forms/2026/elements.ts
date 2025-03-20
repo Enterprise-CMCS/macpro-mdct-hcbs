@@ -315,3 +315,31 @@ export const longTermNestedHeading: NestedHeadingTemplate = {
   id: "long-term-subheader",
   text: "Long Term",
 };
+
+export const denominatorAutoCalc18to64: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "denom-auto-calc-18-to-64",
+  helperText: "Auto-calculates",
+  label: "Denominator (18 to 64 years)",
+};
+
+export const denominatorAutoCalc65to74: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "denom-auto-calc-65-to-74",
+  helperText: "Auto-calculates",
+  label: "Denominator (65 to 74 years)",
+};
+
+export const denominatorAutoCalc75to84: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "denom-auto-calc-75-to-84",
+  helperText: "Auto-calculates",
+  label: "Denominator (75 to 84 years)",
+};
+
+export const denominatorAutoCalc85orOlder: TextboxTemplate = {
+  type: ElementType.Textbox,
+  id: "denom-auto-calc-85-or-older",
+  helperText: "Auto-calculates",
+  label: "Denominator (85 years or older)",
+};
