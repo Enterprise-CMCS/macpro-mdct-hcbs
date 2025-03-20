@@ -26,7 +26,10 @@ export interface ReportOptions {
 
 export interface CMIT {
   cmit: number;
-  name: string;
+  measureName: string;
+  measureTitle: string;
+  defaultDeliveryMethods: boolean;
+  deliveryMethodTitles?: string[];
   uid: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
@@ -49,9 +52,9 @@ export enum MeasureTemplateName {
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
   "FFS-3" = "FFS-3",
-  "MLTSS-1" = "MLTSS-1",
-  "MLTSS-2" = "MLTSS-2",
-  "MLTSS-3" = "MLTSS-3",
+  "MTLSS-1" = "MTLSS-1",
+  "MTLSS-2" = "MTLSS-2",
+  "MTLSS-3" = "MTLSS-3",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
@@ -63,9 +66,9 @@ export enum MeasureTemplateName {
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
-  "MLTSS-5-PT1" = "MLTSS-5-PT1",
-  "MLTSS-5-PT2" = "MLTSS-5-PT2",
-  "MLTSS" = "MLTSS",
+  "MTLSS-5-PT1" = "MTLSS-5-PT1",
+  "MTLSS-5-PT2" = "MTLSS-5-PT2",
+  "MTLSS" = "MTLSS",
   // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",

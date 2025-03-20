@@ -95,7 +95,7 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["MLTSS-1"]]: {
+    [MeasureTemplateName["MTLSS-1"]]: {
       id: "",
       title: "",
       cmitId: "",
@@ -119,7 +119,7 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["MLTSS-2"]]: {
+    [MeasureTemplateName["MTLSS-2"]]: {
       id: "",
       title: "",
       cmitId: "",
@@ -143,7 +143,7 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["MLTSS-3"]]: {
+    [MeasureTemplateName["MTLSS-3"]]: {
       id: "",
       title: "",
       cmitId: "",

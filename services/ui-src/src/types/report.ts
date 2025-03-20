@@ -308,9 +308,9 @@ export type ChoiceTemplate = {
 
 export enum DeliverySystem {
   FFS = "FFS",
-  MLTSS = "MLTSS",
-  MLTSSPT1 = "MLTSS-PT1",
-  MLTSSPT2 = "MLTSS-PT2",
+  MTLSS = "MTLSS",
+  MLTSSPT1 = "MTLSS-PT1",
+  MLTSSPT2 = "MTLSS-PT2",
 }
 
 export enum DataSource {
@@ -371,9 +371,9 @@ export enum MeasureTemplateName {
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
   "FFS-3" = "FFS-3",
-  "MLTSS-1" = "MLTSS-1",
-  "MLTSS-2" = "MLTSS-2",
-  "MLTSS-3" = "MLTSS-3",
+  "MTLSS-1" = "MTLSS-1",
+  "MTLSS-2" = "MTLSS-2",
+  "MTLSS-3" = "MTLSS-3",
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
   "POM-3" = "POM-3",
