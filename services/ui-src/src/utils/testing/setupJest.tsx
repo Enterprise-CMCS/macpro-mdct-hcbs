@@ -322,6 +322,7 @@ export const mockReportStore: HcbsReportState = {
       [MeasureTemplateName["FFS-2"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-2"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FASI-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-FASI-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-FASI-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-1"]]: mockMeasureTemplate,
