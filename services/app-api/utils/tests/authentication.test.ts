@@ -1,5 +1,4 @@
 import { authenticatedUser, parseUserFromToken } from "../authentication";
-import { getCognitoParameters } from "../../storage/cognito";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { CognitoIdTokenPayload } from "aws-jwt-verify/jwt-model";
 import { UserRoles } from "../../types/types";
@@ -13,13 +12,6 @@ jest.mock("aws-jwt-verify", () => ({
       verify: mockVerifier,
     })),
   },
-}));
-
-jest.mock("../../storage/cognito", () => ({
-  getCognitoParameters: jest.fn().mockResolvedValue({
-    userPoolId: "pool-id",
-    userPoolClientId: "client-id",
-  }),
 }));
 
 const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
@@ -57,24 +49,16 @@ describe("Authentication methods", () => {
     });
   });
 
-  describe("Test authorization with api key and ssm parameters", () => {
+  describe("Test authorization with api key", () => {
     beforeEach(() => {
       mockVerifier.mockReturnValue(mockToken);
     });
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test("is authorized when api key is passed and ssm parameters exist", async () => {
+    test("is authorized when api key is passed", async () => {
       const authStatus = await authenticatedUser(apiKeyEvent);
       expect(authStatus).toBeTruthy();
-    });
-
-    test("authorization should reach out to SSM when missing cognito info", async () => {
-      delete process.env["COGNITO_USER_POOL_ID"];
-      delete process.env["COGNITO_USER_POOL_CLIENT_ID"];
-
-      await authenticatedUser(apiKeyEvent);
-      expect(getCognitoParameters).toHaveBeenCalled();
     });
   });
 

@@ -10,8 +10,7 @@
     "coverage": "jest --coverage",
     "test": "jest --setupFiles dotenv/config",
     "watchTest": "jest --setupFiles dotenv/config --watch",
-    "a11y": "pa11y --runner axe --runner htmlcs",
-    "postinstall": "patch-package"
+    "a11y": "pa11y --runner axe --runner htmlcs"
   },
   "dependencies": {
     "@chakra-ui/react": "2.10.6",
@@ -68,8 +67,6 @@
     "jest-launchdarkly-mock": "^2.0.2",
     "pa11y": "^6.2.3",
     "pa11y-runner-htmlcs": "^2.0.1",
-    "patch-package": "^6.4.7",
-    "postinstall-postinstall": "^2.1.0",
     "react-helmet": "^6.1.0",
     "serverless-cloudfront-invalidate": "^1.5.0",
     "serverless-s3-sync": "^3.2.0",
