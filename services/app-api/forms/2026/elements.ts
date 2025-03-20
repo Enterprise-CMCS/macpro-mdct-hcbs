@@ -284,7 +284,7 @@ export const stratificationSubheader: SubHeaderTemplate = {
 export const stratificationParagraph: ParagraphTemplate = {
   type: ElementType.Paragraph,
   id: "measure-strat-paragraph",
-  text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
+  text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data.",
 };
 
 export const areYouReportingStratification: RadioTemplate = {
