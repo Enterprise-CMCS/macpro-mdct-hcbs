@@ -9,7 +9,7 @@ export const error = {
 
 export enum DeliverySystem {
   FFS = "FFS",
-  MTLSS = "MTLSS",
+  MLTSS = "MLTSS",
 }
 
 export enum DataSource {

@@ -133,8 +133,8 @@ export const measureTemplates: Record<
       },
     ],
   },
-  [MeasureTemplateName["MTLSS-1"]]: {
-    id: "MTLSS-1",
+  [MeasureTemplateName["MLTSS-1"]]: {
+    id: "MLTSS-1",
     title: "LTSS-1: Managed Care Measure Results",
     type: PageType.MeasureResults,
     sidebar: false,
@@ -292,8 +292,8 @@ export const measureTemplates: Record<
       },
     ],
   },
-  [MeasureTemplateName["MTLSS-2"]]: {
-    id: "MTLSS-2",
+  [MeasureTemplateName["MLTSS-2"]]: {
+    id: "MLTSS-2",
     title: "LTSS-2: Managed Care Measure Results",
     type: PageType.MeasureResults,
     sidebar: false,
@@ -639,9 +639,9 @@ export const measureTemplates: Record<
       },
     ],
   },
-  [MeasureTemplateName["MTLSS-3"]]: {
-    id: "MTLSS-3",
-    title: "LTSS-3: Managed Care (MTLSS)",
+  [MeasureTemplateName["MLTSS-3"]]: {
+    id: "MLTSS-3",
+    title: "LTSS-3: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -654,7 +654,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.Header,
         id: "measure-header",
-        text: "LTSS-1: Managed Care (MTLSS)",
+        text: "LTSS-1: Managed Care (MLTSS)",
       },
       {
         type: ElementType.Accordion,
@@ -817,9 +817,9 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
-  [MeasureTemplateName["MTLSS-5-PT1"]]: {
-    id: "MTLSS-5-PT1",
-    title: "LTSS-5 Part 1: Screening (MTLSS)",
+  [MeasureTemplateName["MLTSS-5-PT1"]]: {
+    id: "MLTSS-5-PT1",
+    title: "LTSS-5 Part 1: Screening (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -832,7 +832,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.Header,
         id: "measure-header",
-        text: "LTSS-5 Part 1: Screening (MTLSS)",
+        text: "LTSS-5 Part 1: Screening (MLTSS)",
       },
       {
         type: ElementType.Accordion,
@@ -996,9 +996,9 @@ export const measureTemplates: Record<
       },
     ],
   },
-  [MeasureTemplateName["MTLSS-5-PT2"]]: {
-    id: "MTLSS-5-PT2",
-    title: "LTSS-5 Part 2: Risk Assessment and Plan of Care (MTLSS)",
+  [MeasureTemplateName["MLTSS-5-PT2"]]: {
+    id: "MLTSS-5-PT2",
+    title: "LTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1011,7 +1011,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.Header,
         id: "measure-header",
-        text: "LTSS-5 Part 2: Risk Assessment and Plan of Care (MTLSS)",
+        text: "LTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
       },
       {
         type: ElementType.Accordion,
@@ -1132,9 +1132,9 @@ export const measureTemplates: Record<
       },
     ],
   },
-  [MeasureTemplateName["MTLSS"]]: {
-    id: "MTLSS",
-    title: "MTLSS: Plan All-Cause Readmission",
+  [MeasureTemplateName["MLTSS"]]: {
+    id: "MLTSS",
+    title: "MLTSS: Plan All-Cause Readmission",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [

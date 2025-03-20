@@ -18,7 +18,7 @@ export const CMIT_LIST: CMIT[] = [
       MeasureSpecification.CMS,
       MeasureSpecification.HEDIS,
     ],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
   {
@@ -32,7 +32,7 @@ export const CMIT_LIST: CMIT[] = [
       MeasureSpecification.CMS,
       MeasureSpecification.HEDIS,
     ],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
   {
@@ -43,7 +43,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "20",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
   },
   {
@@ -54,7 +54,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "968",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
   },
   {
@@ -65,7 +65,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "414",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
   },
   // optional measures
@@ -77,7 +77,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "969",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.RecordReview,
   },
   {
@@ -88,7 +88,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "970",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.RecordReview,
   },
   {
@@ -100,7 +100,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "111",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.MLTSS],
     dataSource: DataSource.CaseRecordManagement,
   },
   {
@@ -114,7 +114,7 @@ export const CMIT_LIST: CMIT[] = [
       MeasureSpecification.CMS,
       MeasureSpecification.HEDIS,
     ],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
   {
@@ -129,7 +129,7 @@ export const CMIT_LIST: CMIT[] = [
       MeasureSpecification.CMS,
       MeasureSpecification.HEDIS,
     ],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
   {
@@ -139,24 +139,24 @@ export const CMIT_LIST: CMIT[] = [
       "Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
     defaultDeliveryMethods: false,
     deliveryMethodTitles: [
-      "Screening (MTLSS)",
-      "Risk Assessment and Plan of Care to Prevent Future Falls (MTLSS)",
+      "Part 1: Screening (MLTSS)",
+      "Risk Assessment and Plan of Care to Prevent Future Falls (MLTSS)",
     ],
     uid: "1255",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],
-    deliverySystem: [DeliverySystem.MTLSS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.MLTSS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
   {
     cmit: 561,
-    measureName: "MTLSS",
+    measureName: "MLTSS",
     measureTitle: "Plan All-Cause Readmission",
     defaultDeliveryMethods: true,
     uid: "561",
     measureSteward: "NCQA",
     measureSpecification: [MeasureSpecification.HEDIS],
-    deliverySystem: [DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
   },
   // POM measures
@@ -168,7 +168,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1822-1",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
   },
   {
@@ -179,7 +179,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1822-2",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
   },
   {
@@ -190,7 +190,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1822-3",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
   },
   {
@@ -201,7 +201,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1822-4",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
   },
   {
@@ -212,7 +212,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1822-5",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
   },
   {
@@ -223,7 +223,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1822-6",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
   },
   {
@@ -234,7 +234,7 @@ export const CMIT_LIST: CMIT[] = [
     uid: "1822-7",
     measureSteward: "CQL",
     measureSpecification: [MeasureSpecification.CQL],
-    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MTLSS],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
   },
 ];

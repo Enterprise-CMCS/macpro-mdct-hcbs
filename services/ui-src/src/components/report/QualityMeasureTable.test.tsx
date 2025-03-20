@@ -46,7 +46,7 @@ describe("Quality Measure Table", () => {
     const ffsRoute = "/report/QMS/CO/mock-id/FFS-1";
     expect(mockUseNavigate).toHaveBeenCalledWith(ffsRoute);
 
-    const mltssRow = screen.getByRole("row", { name: /MTLSS CMIT# 960/ });
+    const mltssRow = screen.getByRole("row", { name: /MLTSS CMIT# 960/ });
     const mltssButton = mltssRow.querySelector("button");
     expect(mltssButton).toBeDisabled();
   });

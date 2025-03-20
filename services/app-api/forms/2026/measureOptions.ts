@@ -9,7 +9,7 @@ export const defaultMeasures: MeasureOptions[] = [
     measureTemplate: MeasureTemplateName["LTSS-1"],
     deliverySystemTemplates: [
       MeasureTemplateName["FFS-1"],
-      MeasureTemplateName["MTLSS-1"],
+      MeasureTemplateName["MLTSS-1"],
     ],
   },
   {
@@ -28,7 +28,7 @@ export const defaultMeasures: MeasureOptions[] = [
     measureTemplate: MeasureTemplateName["LTSS-2"],
     deliverySystemTemplates: [
       MeasureTemplateName["FFS-2"],
-      MeasureTemplateName["MTLSS-2"],
+      MeasureTemplateName["MLTSS-2"],
     ],
   },
   {
@@ -79,7 +79,7 @@ export const defaultMeasures: MeasureOptions[] = [
     measureTemplate: MeasureTemplateName["LTSS-3"],
     deliverySystemTemplates: [
       MeasureTemplateName["FFS-3"],
-      MeasureTemplateName["MTLSS-3"],
+      MeasureTemplateName["MLTSS-3"],
     ],
   },
   {
@@ -97,8 +97,8 @@ export const defaultMeasures: MeasureOptions[] = [
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-5"],
     deliverySystemTemplates: [
-      MeasureTemplateName["MTLSS-5-PT1"],
-      MeasureTemplateName["MTLSS-5-PT2"],
+      MeasureTemplateName["MLTSS-5-PT1"],
+      MeasureTemplateName["MLTSS-5-PT2"],
     ],
   },
   {
@@ -106,7 +106,7 @@ export const defaultMeasures: MeasureOptions[] = [
     uid: "561",
     required: false,
     stratified: false,
-    measureTemplate: MeasureTemplateName["MTLSS"],
+    measureTemplate: MeasureTemplateName["MLTSS"],
     deliverySystemTemplates: [],
   },
 ];

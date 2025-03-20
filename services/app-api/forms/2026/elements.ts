@@ -178,10 +178,10 @@ export const whichDeliverySystemsWereUsed: RadioTemplate = {
   value: [
     { label: "Fee-For-Service (FFS)", value: "FFS" },
     {
-      label: "Managed Long-Term Services and Supports (MTLSS)",
-      value: "MTLSS",
+      label: "Managed Long-Term Services and Supports (MLTSS)",
+      value: "MLTSS",
     },
-    { label: "Both FFS and MTLSS (separate)", value: "FFS,MTLSS" },
+    { label: "Both FFS and MLTSS (separate)", value: "FFS,MLTSS" },
   ],
   hideCondition: {
     controllerElementId: "measure-reporting-radio",
