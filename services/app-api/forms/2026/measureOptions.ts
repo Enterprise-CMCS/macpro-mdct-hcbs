@@ -18,7 +18,10 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["FASI-1"],
-    deliverySystemTemplates: [],
+    deliverySystemTemplates: [
+      MeasureTemplateName["FFS-FASI-1"],
+      MeasureTemplateName["MLTSS-FASI-1"],
+    ],
   },
   {
     cmit: 961,
