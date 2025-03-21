@@ -370,7 +370,6 @@ export interface MeasureOptions {
 export enum MeasureTemplateName {
   "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
-  "LTSS-3" = "LTSS-3",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
   "LTSS-8" = "LTSS-8",
