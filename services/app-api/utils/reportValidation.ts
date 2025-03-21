@@ -274,7 +274,7 @@ const cmitInfoSchema = object().shape({
   uid: string().required(),
   measureSteward: string().required(),
   measureSpecification: array().of(string()).required(),
-  deliverySystem: array().of(string()).required(),
+  deliverySystem: array().of(string()).notRequired(),
   dataSource: string().required(),
 });
 

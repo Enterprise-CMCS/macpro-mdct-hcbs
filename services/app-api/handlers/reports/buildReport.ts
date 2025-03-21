@@ -59,7 +59,8 @@ export const buildReport = async (
         cmitInfo,
         true
       );
-      const deliverySystemPages = measure.deliverySystemTemplates.map(
+      report.pages.push(parentPage);
+      const deliverySystemPages = measure.deliverySystemTemplates?.map(
         (templateName) =>
           initializeQmsPage(
             measure,
@@ -68,7 +69,25 @@ export const buildReport = async (
             false
           )
       );
-      report.pages.push(parentPage, ...deliverySystemPages);
+      deliverySystemPages && report.pages.push(...deliverySystemPages);
+
+      // special case measure: LTSS-5
+      const ltss5Pages = [
+        initializeQmsPage(
+          measure,
+          report.measureTemplates["LTSS-5-PT1"],
+          cmitInfo,
+          false
+        ),
+        initializeQmsPage(
+          measure,
+          report.measureTemplates["LTSS-5-PT2"],
+          cmitInfo,
+          false
+        ),
+      ];
+
+      ltss5Pages && report.pages.push(...ltss5Pages);
     }
   }
 

@@ -28,7 +28,7 @@ export interface CMIT {
   cmit: number;
   name: string;
   uid: string;
-  deliverySystem: DeliverySystem[];
+  deliverySystem?: DeliverySystem[];
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
@@ -40,7 +40,7 @@ export interface MeasureOptions {
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
-  deliverySystemTemplates: MeasureTemplateName[];
+  deliverySystemTemplates?: MeasureTemplateName[];
 }
 
 export enum MeasureTemplateName {
@@ -63,6 +63,8 @@ export enum MeasureTemplateName {
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
+  "LTSS-5-PT1" = "LTSS-5-PT1",
+  "LTSS-5-PT2" = "LTSS-5-PT2",
   "MLTSS" = "MLTSS",
   // pom measures
   "POM-1" = "POM-1",
