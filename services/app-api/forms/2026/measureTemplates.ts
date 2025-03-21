@@ -645,7 +645,7 @@ export const measureTemplates: Record<
         label: "Are you reporting stratification for this measure?",
         value: [
           { label: "Yes", value: "yes" },
-          { label: "Yes", value: "no" },
+          { label: "No", value: "no" },
         ],
       },
       {
@@ -808,26 +808,7 @@ export const measureTemplates: Record<
         label: "Are you reporting stratification for this measure?",
         value: [
           { label: "Yes", value: "yes" },
-          { label: "Yes", value: "no" },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "Yes", value: "no" },
+          { label: "No", value: "no" },
         ],
       },
       {
