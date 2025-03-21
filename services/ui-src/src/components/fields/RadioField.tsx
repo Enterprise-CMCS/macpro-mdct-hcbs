@@ -69,7 +69,6 @@ export const RadioField = (props: PageElementProps) => {
 
   useEffect(() => {
     const formValues = form.getValues() as any;
-    // console.log("FORM VALUES", formValues);
     if (formValues && Object.keys(formValues).length === 0) {
       return;
     }
@@ -77,7 +76,6 @@ export const RadioField = (props: PageElementProps) => {
       const controlElement = formValues?.elements?.find((element: any) => {
         return element?.id === radio.hideCondition?.controllerElementId;
       });
-      // console.log("CONTROL ELEMENT", controlElement);
       if (controlElement?.answer === radio.hideCondition.answer) {
         setHideElement(true);
       } else {
