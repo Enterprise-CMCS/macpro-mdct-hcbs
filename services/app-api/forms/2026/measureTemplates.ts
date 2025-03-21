@@ -424,6 +424,53 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText: "{Instructions}",
+      },
+      performanceRateTarget,
+      {
+        type: ElementType.Textbox,
+        id: "count-success-discharges-to-community",
+        label: "Count of Succcessful Discharges to Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "facility-admission-count",
+        label: "Facility Admission Count",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-count-success-discharges-to-community",
+        label: "Expected Count of Successful Discharges to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "multi-plan-population-rate",
+        label: "Multi-Plan Population Rate",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "observed-performance-rate-auto-calc1",
+        helperText: "Auto-calculates",
+        label:
+          "Observed Performance Rate for the Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-performance-rate-auto-calc2",
+        helperText: "Auto-calculates",
+        label:
+          "Expected Performance Rate for the Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "risk-adjusted-rate-auto-calc3",
+        helperText: "Auto-calculates",
+        label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+      },
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -455,6 +502,53 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText: "{Instructions}",
+      },
+      performanceRateTarget,
+      {
+        type: ElementType.Textbox,
+        id: "count-success-discharges-to-community",
+        label: "Count of Succcessful Discharges to Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "facility-admission-count",
+        label: "Facility Admission Count",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-count-success-discharges-to-community",
+        label: "Expected Count of Successful Discharges to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "multi-plan-population-rate",
+        label: "Multi-Plan Population Rate",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "observed-performance-rate-auto-calc1",
+        helperText: "Auto-calculates",
+        label:
+          "Observed Performance Rate for the Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-performance-rate-auto-calc2",
+        helperText: "Auto-calculates",
+        label:
+          "Expected Performance Rate for the Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "risk-adjusted-rate-auto-calc3",
+        helperText: "Auto-calculates",
+        label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+      },
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
