@@ -15,11 +15,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
 import { currentPageSelector } from "utils/state/selectors";
 
-export const QualityMeasureTableElement = () => {
+export const MeasureResultsNavigationTableElement = () => {
   const { report } = useStore();
-  const currentPage = useStore(currentPageSelector);
-
   const { reportType, state, reportId } = useParams();
+  const currentPage = useStore(currentPageSelector);
   const navigate = useNavigate();
 
   if (!currentPage || currentPage.type !== PageType.Measure) return null;

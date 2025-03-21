@@ -59,16 +59,32 @@ export const buildReport = async (
         cmitInfo,
         true
       );
-      const deliverySystemPages = measure.deliverySystemTemplates.map(
-        (templateName) =>
-          initializeQmsPage(
-            measure,
-            report.measureTemplates[templateName],
-            cmitInfo,
-            false
-          )
-      );
-      report.pages.push(parentPage, ...deliverySystemPages);
+
+      const childPages =
+        measure.measureTemplate == "LTSS-5"
+          ? [
+              initializeQmsPage(
+                measure,
+                report.measureTemplates["LTSS-5-PT1"],
+                cmitInfo,
+                false
+              ),
+              initializeQmsPage(
+                measure,
+                report.measureTemplates["LTSS-5-PT2"],
+                cmitInfo,
+                false
+              ),
+            ]
+          : measure.deliverySystemTemplates?.map((templateName) =>
+              initializeQmsPage(
+                measure,
+                report.measureTemplates[templateName],
+                cmitInfo,
+                false
+              )
+            );
+      if (childPages) report.pages.push(parentPage, ...childPages);
     }
   }
 

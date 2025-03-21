@@ -149,8 +149,10 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
       return measureTableTemplateSchema;
-    case ElementType.QualityMeasureTable:
-      return qualityMeasureTableTemplateSchema;
+    case ElementType.MeasureResultsNavigationTable:
+      return measureResultsNavigationTableTemplateSchema;
+    case ElementType.MeasureResultsNavigationTableLTSS5:
+      return measureResultsNavigationTableLTSS5TemplateSchema;
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
     case ElementType.MeasureDetails:
@@ -218,8 +220,14 @@ const measureTableTemplateSchema = object().shape({
     .required(),
 });
 
-const qualityMeasureTableTemplateSchema = object().shape({
-  type: string().required(ElementType.QualityMeasureTable),
+const measureResultsNavigationTableTemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureResultsNavigationTable),
+  id: string().required(),
+  measureDisplay: string().required("quality"),
+});
+
+const measureResultsNavigationTableLTSS5TemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureResultsNavigationTableLTSS5),
   id: string().required(),
   measureDisplay: string().required("quality"),
 });
@@ -266,7 +274,7 @@ const cmitInfoSchema = object().shape({
   uid: string().required(),
   measureSteward: string().required(),
   measureSpecification: array().of(string()).required(),
-  deliverySystem: array().of(string()).required(),
+  deliverySystem: array().of(string()).notRequired(),
   dataSource: string().required(),
 });
 

@@ -28,7 +28,7 @@ export interface CMIT {
   cmit: number;
   name: string;
   uid: string;
-  deliverySystem: DeliverySystem[];
+  deliverySystem?: DeliverySystem[];
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
@@ -40,7 +40,7 @@ export interface MeasureOptions {
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
-  deliverySystemTemplates: MeasureTemplateName[];
+  deliverySystemTemplates?: MeasureTemplateName[];
 }
 
 export enum MeasureTemplateName {
@@ -61,6 +61,8 @@ export enum MeasureTemplateName {
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
+  "LTSS-5-PT1" = "LTSS-5-PT1",
+  "LTSS-5-PT2" = "LTSS-5-PT2",
   "MLTSS" = "MLTSS",
   // pom measures
   "POM-1" = "POM-1",
@@ -204,7 +206,8 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  QualityMeasureTable = "qualityMeasureTable",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
+  MeasureResultsNavigationTableLTSS5 = "measureResultsNavigationTableLTSS5",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -225,7 +228,8 @@ export type PageElement =
   | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
-  | QualityMeasureTableTemplate
+  | MeasureResultsNavigationTableTemplate
+  | MeasureResultsNavigationTableLTSS5Template
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate;
@@ -385,8 +389,14 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
-export type QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable;
+export type MeasureResultsNavigationTableTemplate = {
+  type: ElementType.MeasureResultsNavigationTable;
+  id: string;
+  measureDisplay: "quality";
+};
+
+export type MeasureResultsNavigationTableLTSS5Template = {
+  type: ElementType.MeasureResultsNavigationTableLTSS5;
   id: string;
   measureDisplay: "quality";
 };

@@ -93,7 +93,6 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-5"],
-    deliverySystemTemplates: [],
   },
   {
     cmit: 561,

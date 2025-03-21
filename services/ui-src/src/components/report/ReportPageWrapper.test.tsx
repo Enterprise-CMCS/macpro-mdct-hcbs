@@ -86,7 +86,7 @@ const testReport: Report = {
           to: "req-measure-result",
         },
         {
-          type: ElementType.QualityMeasureTable,
+          type: ElementType.MeasureResultsNavigationTable,
           measureDisplay: "quality",
         },
       ],
