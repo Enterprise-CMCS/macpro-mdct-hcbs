@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { FieldError, useFormContext } from "react-hook-form";
+import { get, useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -69,6 +69,7 @@ export const RadioField = (props: PageElementProps) => {
 
   useEffect(() => {
     const formValues = form.getValues() as any;
+    // console.log("FORM VALUES", formValues);
     if (formValues && Object.keys(formValues).length === 0) {
       return;
     }
@@ -76,6 +77,7 @@ export const RadioField = (props: PageElementProps) => {
       const controlElement = formValues?.elements?.find((element: any) => {
         return element?.id === radio.hideCondition?.controllerElementId;
       });
+      // console.log("CONTROL ELEMENT", controlElement);
       if (controlElement?.answer === radio.hideCondition.answer) {
         setHideElement(true);
       } else {
@@ -121,11 +123,8 @@ export const RadioField = (props: PageElementProps) => {
   };
 
   // prepare error message, hint, and classes
-  const formErrorState = form?.formState?.errors;
-  const elementErrors = formErrorState?.[props.formkey] as {
-    answer: FieldError;
-  };
-  const errorMessage = elementErrors?.answer?.message;
+  const formErrors = form?.formState?.errors;
+  const errorMessage: string | undefined = get(formErrors, key)?.message;
   const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
   const labelText = radio.label;
 
