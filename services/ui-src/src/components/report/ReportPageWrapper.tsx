@@ -10,25 +10,30 @@ import {
   Page,
   PraDisclosure,
 } from "components";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { elementsValidateSchema } from "utils/validation/reportValidation";
+/*
+ * import { yupResolver } from "@hookform/resolvers/yup";
+ * import { elementsValidateSchema } from "utils/validation/reportValidation";
+ */
+import { currentPageSelector } from "utils/state/selectors";
 
 export const ReportPageWrapper = () => {
   const {
     report,
     pageMap,
     parentPage,
-    currentPageId,
     setReport,
     setAnswers,
     setCurrentPageId,
+    saveReport,
   } = useStore();
+  const currentPage = useStore(currentPageSelector);
+
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const methods = useForm({
     defaultValues: {},
     shouldUnregister: true,
-    resolver: yupResolver(elementsValidateSchema),
+    // resolver: yupResolver(elementsValidateSchema),
   });
 
   const navigate = useNavigate();
@@ -42,9 +47,10 @@ export const ReportPageWrapper = () => {
     }
   }, [report, pageMap, pageId]);
 
-  const handleBlur = (data: any) => {
+  const handleBlur = async (data: any) => {
     if (!report) return;
     setAnswers(data);
+    saveReport();
   };
 
   const fetchReport = async () => {
@@ -69,11 +75,10 @@ export const ReportPageWrapper = () => {
     return <div>bad params</div>; // TODO: error page
   }
 
-  if (isLoading || !report || !pageMap || !currentPageId) {
+  if (isLoading || !currentPage) {
     return <p>Loading</p>;
   }
 
-  const currentPage = report.pages[pageMap.get(currentPageId)!];
   const SetPageIndex = (newPageIndex: number) => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
     const sectionId = parentPage.childPageIds[newPageIndex];
