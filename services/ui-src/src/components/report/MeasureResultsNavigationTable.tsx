@@ -14,7 +14,7 @@ import { MeasurePageTemplate, RadioTemplate } from "types";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
 
-export const MeasureResultsNavigationTable = () => {
+export const MeasureResultsNavigationTableElement = () => {
   const { report, pageMap, currentPageId } = useStore();
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();

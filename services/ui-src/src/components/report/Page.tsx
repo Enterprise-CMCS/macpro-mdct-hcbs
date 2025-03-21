@@ -14,7 +14,7 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
-  QualityMeasureTableElement,
+  MeasureResultsNavigationTableElement,
   RadioField,
   ReportingRadioField,
   StatusTableElement,
@@ -59,7 +59,7 @@ export const Page = ({ elements }: Props) => {
       case ElementType.MeasureTable:
         return MeasureTableElement;
       case ElementType.MeasureResultsNavigationTable:
-        return QualityMeasureTableElement;
+        return MeasureResultsNavigationTableElement;
       case ElementType.StatusTable:
         return StatusTableElement;
       case ElementType.MeasureDetails:

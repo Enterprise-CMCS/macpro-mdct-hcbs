@@ -150,7 +150,9 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
     case ElementType.MeasureTable:
       return measureTableTemplateSchema;
     case ElementType.MeasureResultsNavigationTable:
-      return qualityMeasureTableTemplateSchema;
+      return measureResultsNavigationTableTemplateSchema;
+    case ElementType.MeasureResultsNavigationTable_LTSS5:
+      return measureResultsNavigationTable_LTSS5TemplateSchema;
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
     case ElementType.MeasureDetails:
@@ -218,8 +220,14 @@ const measureTableTemplateSchema = object().shape({
     .required(),
 });
 
-const qualityMeasureTableTemplateSchema = object().shape({
+const measureResultsNavigationTableTemplateSchema = object().shape({
   type: string().required(ElementType.MeasureResultsNavigationTable),
+  id: string().required(),
+  measureDisplay: string().required("quality"),
+});
+
+const measureResultsNavigationTable_LTSS5TemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureResultsNavigationTable_LTSS5),
   id: string().required(),
   measureDisplay: string().required("quality"),
 });
