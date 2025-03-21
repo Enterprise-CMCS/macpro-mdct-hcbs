@@ -450,7 +450,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-FASI-1"]]: {
     id: "FFS-FASI-1",
-    title: "FASI-1: Fee-For-Service Measure Results",
+    title: "FASI-1: Fee-For-Service (FFS FASI-1)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -462,7 +462,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "FASI-1: Fee-For-Service Measure Results",
+        text: "FASI-1: Fee-For-Service (FFS FASI-1)",
       },
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
@@ -485,7 +485,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-FASI-1"]]: {
     id: "MLTSS-FASI-1",
-    title: "FASI-1: Managed Care Measure Results",
+    title: "FASI-1: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -497,7 +497,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "FASI-1: Managed Care Measure Results",
+        text: "FASI-1: Managed Care (MLTSS)",
       },
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
