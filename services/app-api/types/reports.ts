@@ -206,8 +206,8 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  MeasureResultsNavigationTable = "measureResultsNavigationTableElement",
-  MeasureResultsNavigationTable_LTSS5 = "measureResultsNavigationTableElement_LTSS5",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
+  MeasureResultsNavigationTableLTSS5 = "measureResultsNavigationTableLTSS5",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -229,7 +229,7 @@ export type PageElement =
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
-  | MeasureResultsNavigationTable_LTSS5Template
+  | MeasureResultsNavigationTableLTSS5Template
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate;
@@ -395,8 +395,8 @@ export type MeasureResultsNavigationTableTemplate = {
   measureDisplay: "quality";
 };
 
-export type MeasureResultsNavigationTable_LTSS5Template = {
-  type: ElementType.MeasureResultsNavigationTable_LTSS5;
+export type MeasureResultsNavigationTableLTSS5Template = {
+  type: ElementType.MeasureResultsNavigationTableLTSS5;
   id: string;
   measureDisplay: "quality";
 };

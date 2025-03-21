@@ -34,7 +34,7 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-describe("Quality Measure Table", () => {
+describe("Measure Results Navigation Table", () => {
   it("should enable each delivery system's button correctly", async () => {
     render(<MeasureResultsNavigationTableElement />);
 
