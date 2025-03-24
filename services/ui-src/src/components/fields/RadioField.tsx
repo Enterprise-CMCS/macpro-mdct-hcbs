@@ -51,9 +51,6 @@ export const RadioField = (props: PageElementProps) => {
   useEffect(() => {
     const options = { required: radio.required || false };
     form.setValue(key, radio.answer);
-    form.setValue(`${props.formkey}.type`, radio.type);
-    form.setValue(`${props.formkey}.label`, radio.label);
-    form.setValue(`${props.formkey}.id`, radio.id);
     form.register(key, options);
   }, []);
 
