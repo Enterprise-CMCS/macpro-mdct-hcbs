@@ -453,20 +453,20 @@ export const measureTemplates: Record<
         id: "observed-performance-rate-auto-calc1",
         helperText: "Auto-calculates",
         label:
-          "Observed Performance Rate for the Minimizing Length of Facility Stay",
+          "Observed Performance Rate for Minimizing Length of Facility Stay",
       },
       {
         type: ElementType.Textbox,
         id: "expected-performance-rate-auto-calc2",
         helperText: "Auto-calculates",
         label:
-          "Expected Performance Rate for the Minimizing Length of Facility Stay",
+          "Expected Performance Rate for Minimizing Length of Facility Stay",
       },
       {
         type: ElementType.Textbox,
         id: "risk-adjusted-rate-auto-calc3",
         helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
       },
       stratificationSubheader,
       stratificationParagraph,
@@ -531,20 +531,20 @@ export const measureTemplates: Record<
         id: "observed-performance-rate-auto-calc1",
         helperText: "Auto-calculates",
         label:
-          "Observed Performance Rate for the Minimizing Length of Facility Stay",
+          "Observed Performance Rate for Minimizing Length of Facility Stay",
       },
       {
         type: ElementType.Textbox,
         id: "expected-performance-rate-auto-calc2",
         helperText: "Auto-calculates",
         label:
-          "Expected Performance Rate for the Minimizing Length of Facility Stay",
+          "Expected Performance Rate for Minimizing Length of Facility Stay",
       },
       {
         type: ElementType.Textbox,
         id: "risk-adjusted-rate-auto-calc3",
         helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
       },
       stratificationSubheader,
       stratificationParagraph,
