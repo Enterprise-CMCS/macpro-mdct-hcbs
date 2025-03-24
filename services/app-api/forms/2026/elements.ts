@@ -145,20 +145,6 @@ export const didYouFollowSpecifications: RadioTemplate = {
   },
 };
 
-export const doYouWantCmsToCalculateOnYourBehalf: RadioTemplate = {
-  type: ElementType.Radio,
-  id: "measure-cms-calculate",
-  label: "Do you want CMS to calculate this measure on your behalf?",
-  value: [
-    { label: "No", value: "no" },
-    { label: "Yes", value: "yes" },
-  ],
-  hideCondition: {
-    controllerElementId: "measure-reporting-radio",
-    answer: "no",
-  },
-};
-
 export const additionalNotesField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
   id: "additional-notes-field",
