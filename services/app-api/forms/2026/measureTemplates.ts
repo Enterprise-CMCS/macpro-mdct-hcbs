@@ -419,7 +419,6 @@ export const measureTemplates: Record<
       isTheStateReportingThisMeasure,
       wereTheResultsAudited,
       didYouFollowSpecifications,
-      doYouWantCmsToCalculateOnYourBehalf,
       additionalNotesField,
       whichDeliverySystemsWereUsed,
       qualityMeasuresSubheader,
