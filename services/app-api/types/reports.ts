@@ -45,13 +45,15 @@ export interface MeasureOptions {
 
 export enum MeasureTemplateName {
   // required measures
-  "LTSS-1" = "LTSS-1",
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
+  "FFS-3" = "FFS-3",
   "FFS-7" = "FFS-7",
   "MLTSS-1" = "MLTSS-1",
   "MLTSS-2" = "MLTSS-2",
+  "MLTSS-3" = "MLTSS-3",
   "MLTSS-7" = "MLTSS-7",
+  "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",

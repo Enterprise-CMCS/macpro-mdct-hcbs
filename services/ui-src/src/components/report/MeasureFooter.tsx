@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
-import { MeasureFooterTemplate, MeasurePageTemplate, PageType } from "types";
+import { MeasureFooterTemplate } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
@@ -17,18 +17,17 @@ export const MeasureFooterElement = (props: PageElementProps) => {
     useStore();
   const currentPage = useStore(currentPageSelector);
 
-  if (!currentPage || currentPage.type !== PageType.Measure) return null;
-  const measure = currentPage as MeasurePageTemplate;
+  if (!currentPage) return null;
   const navigate = useNavigate();
   const submitClear = () => {
-    resetMeasure(measure.id);
+    resetMeasure(currentPage.id);
     saveReport();
   };
 
   const onClearButton = () => {
     // Open Modal
     const modal = MeasureClearModal(
-      measure,
+      currentPage.id,
       () => setModalOpen(false), // Close Action
       submitClear // Submit
     ); // This will need the whole measure eventually
