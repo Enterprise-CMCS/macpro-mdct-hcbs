@@ -510,6 +510,271 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-3"]]: {
+    id: "FFS-3",
+    title: "LTSS-3: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-3",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-3: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Fee-For-Service Measure Results",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
+        helperText:
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText:
+          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
+      },
+
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-exclusion-rates",
+        text: "Exclusion Rates",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Exclusion Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-nested-heading",
+        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-stratification",
+        text: "Measure Stratification",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-strat-paragraph",
+        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
+      },
+      {
+        type: ElementType.Radio,
+        id: "reporting-strat-radio",
+        label: "Are you reporting stratification for this measure?",
+        value: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-3",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-3"]]: {
+    id: "MLTSS-3",
+    title: "LTSS-3: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-3",
+      },
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "LTSS-3: Managed Care (MLTSS)",
+      },
+      {
+        type: ElementType.Accordion,
+        id: "measure-instructions",
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Managed Care Measure Results",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
+        helperText:
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText:
+          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
+      },
+
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-exclusion-rates",
+        text: "Exclusion Rates",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Exclusion Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-nested-heading",
+        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-stratification",
+        text: "Measure Stratification",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-strat-paragraph",
+        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
+      },
+      {
+        type: ElementType.Radio,
+        id: "reporting-strat-radio",
+        label: "Are you reporting stratification for this measure?",
+        value: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-3",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["LTSS-4"]]: {
     id: "LTSS-4",
     title:
