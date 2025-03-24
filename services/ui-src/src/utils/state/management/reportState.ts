@@ -111,30 +111,6 @@ export const mergeAnswers = (
   return { report };
 };
 
-const mergeAnswersWithErrors = (
-  answers: any,
-  state: HcbsReportState,
-  errors: any
-) => {
-  /*
-   * TODO:
-   * ok so hear me out
-   * when handling erros in react-hook-form, we still want to save good data for auto-save
-   * Take the react-hook-form error syntax, remove it from the react-hook-form structured answers, send it to merge with the form state
-   */
-  if (!state.report) return;
-
-  const report = structuredClone(state.report);
-  const pageIndex = state.report.pages.findIndex(
-    (page) => page.id === state.currentPageId
-  );
-
-  const filteredAnswers = filterErrors(answers, errors);
-  report.pages[pageIndex] = deepMerge(report.pages[pageIndex], filteredAnswers);
-
-  return { report };
-};
-
 export const substitute = (
   report: Report,
   selectMeasure: MeasurePageTemplate

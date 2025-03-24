@@ -19,6 +19,7 @@ import {
   setPage,
   substitute,
   saveReport,
+  filterErrors,
 } from "./reportState";
 import {
   mock2MeasureTemplate,
@@ -311,5 +312,21 @@ describe("state/management/reportState: saveReport", () => {
     const state = buildState(testReport) as unknown as HcbsReportState;
     const result = await saveReport(state);
     expect(result?.lastSavedTime).toBeTruthy();
+  });
+});
+
+describe("state/management/reportState: filterErrors", () => {
+  test("removes errored entries from answers", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const answers = { elements: [{ answer: "dog" }, { answer: "cat" }] };
+    const errors = { elements: [{ answer: { message: "No dog allowed" } }] };
+
+    const result = filterErrors(answers, errors);
+
+    expect("answer" in result.elements).toBeFalsy();
+    expect(result.elements[1].answer).toBe("cat");
   });
 });
