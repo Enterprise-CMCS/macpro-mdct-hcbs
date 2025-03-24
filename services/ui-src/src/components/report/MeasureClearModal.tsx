@@ -1,9 +1,8 @@
 import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
-import { MeasurePageTemplate } from "types";
 
 export const MeasureClearModal = (
-  measure: MeasurePageTemplate,
+  measureId: string,
   onClose: Function,
   onSubmit: Function
 ): ReactNode => {
@@ -11,7 +10,7 @@ export const MeasureClearModal = (
     onSubmit();
     onClose();
   };
-  const body = `This action cannot be undone. It will clear all data that has been entered into the measure ${measure.id} and reset this measure's status to 'Not started'`;
+  const body = `This action cannot be undone. It will clear all data that has been entered into the measure ${measureId} and reset this measure's status to 'Not started'`;
   return (
     <React.Fragment>
       <ModalBody>{body}</ModalBody>
