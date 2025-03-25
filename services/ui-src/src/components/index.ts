@@ -59,7 +59,6 @@ export { MeasureTableElement } from "./report/MeasureTable";
 export { Page } from "./report/Page";
 export { PraDisclosure } from "./report/PraDisclosure";
 export { MeasureResultsNavigationTableElement } from "./report/MeasureResultsNavigationTable";
-export { MeasureResultsNavigationTableElementLTSS5 } from "./report/MeasureResultsNavigationTableLTSS5";
 export { ReportModal } from "./report/ReportModal";
 export { ReportPageWrapper } from "./report/ReportPageWrapper";
 export { Sidebar } from "./report/Sidebar";

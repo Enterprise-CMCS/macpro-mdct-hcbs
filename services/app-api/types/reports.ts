@@ -28,10 +28,16 @@ export interface CMIT {
   cmit: number;
   name: string;
   uid: string;
-  deliverySystem?: DeliverySystem[];
+  deliverySystem: DeliverySystem[];
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
+}
+
+export interface DependantPageInfo {
+  key: string;
+  linkText: string;
+  template: MeasureTemplateName;
 }
 
 export interface MeasureOptions {
@@ -40,7 +46,7 @@ export interface MeasureOptions {
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
-  deliverySystemTemplates?: MeasureTemplateName[];
+  dependantPages: DependantPageInfo[];
 }
 
 export enum MeasureTemplateName {
@@ -104,7 +110,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
-  children?: MeasureTemplateName[];
+  children?: DependantPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -207,7 +213,6 @@ export enum ElementType {
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
-  MeasureResultsNavigationTableLTSS5 = "measureResultsNavigationTableLTSS5",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -229,7 +234,6 @@ export type PageElement =
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
-  | MeasureResultsNavigationTableLTSS5Template
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate;
@@ -391,12 +395,6 @@ export type MeasureTableTemplate = {
 
 export type MeasureResultsNavigationTableTemplate = {
   type: ElementType.MeasureResultsNavigationTable;
-  id: string;
-  measureDisplay: "quality";
-};
-
-export type MeasureResultsNavigationTableLTSS5Template = {
-  type: ElementType.MeasureResultsNavigationTableLTSS5;
   id: string;
   measureDisplay: "quality";
 };

@@ -7,7 +7,6 @@ import {
   MeasureFooterTemplate,
   ParagraphTemplate,
   MeasureResultsNavigationTableTemplate,
-  MeasureResultsNavigationTableLTSS5Template,
   RadioTemplate,
   ReportingRadioTemplate,
   SubHeaderTemplate,
@@ -201,13 +200,6 @@ export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplat
     type: ElementType.MeasureResultsNavigationTable,
     measureDisplay: "quality",
     id: "measure-results-navigation-table",
-  };
-
-export const measureResultsNavigationTableLTSS5: MeasureResultsNavigationTableLTSS5Template =
-  {
-    type: ElementType.MeasureResultsNavigationTableLTSS5,
-    measureDisplay: "quality",
-    id: "measure-results-navigation-table-ltss5",
   };
 
 export const measureFooter: MeasureFooterTemplate = {

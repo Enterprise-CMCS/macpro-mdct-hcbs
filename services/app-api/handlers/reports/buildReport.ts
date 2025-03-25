@@ -60,30 +60,14 @@ export const buildReport = async (
         true
       );
 
-      const childPages =
-        measure.measureTemplate == "LTSS-5"
-          ? [
-              initializeQmsPage(
-                measure,
-                report.measureTemplates["LTSS-5-PT1"],
-                cmitInfo,
-                false
-              ),
-              initializeQmsPage(
-                measure,
-                report.measureTemplates["LTSS-5-PT2"],
-                cmitInfo,
-                false
-              ),
-            ]
-          : measure.deliverySystemTemplates?.map((templateName) =>
-              initializeQmsPage(
-                measure,
-                report.measureTemplates[templateName],
-                cmitInfo,
-                false
-              )
-            );
+      const childPages = measure.dependantPages?.map((pageInfo) =>
+        initializeQmsPage(
+          measure,
+          report.measureTemplates[pageInfo.template],
+          cmitInfo,
+          false
+        )
+      );
       if (childPages) report.pages.push(parentPage, ...childPages);
     }
   }
@@ -121,7 +105,7 @@ const initializeQmsPage = (
   page.required = measure.required;
 
   if (isMeasurePage) {
-    page.children = measure.deliverySystemTemplates;
+    page.children = measure.dependantPages;
     page.cmitInfo = cmitInfo;
   }
 

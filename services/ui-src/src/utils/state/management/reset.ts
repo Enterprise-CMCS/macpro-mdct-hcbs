@@ -34,7 +34,7 @@ export const performClearMeasure = (
   // Clear children of measures
   if (page.type === PageType.Measure) {
     (page as MeasurePageTemplate).children?.forEach((child) => {
-      performClearMeasure(child, report, ignoreList);
+      performClearMeasure(child.template, report, ignoreList);
     });
   }
 

@@ -151,8 +151,6 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return measureTableTemplateSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
-    case ElementType.MeasureResultsNavigationTableLTSS5:
-      return measureResultsNavigationTableLTSS5TemplateSchema;
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
     case ElementType.MeasureDetails:
@@ -226,12 +224,6 @@ const measureResultsNavigationTableTemplateSchema = object().shape({
   measureDisplay: string().required("quality"),
 });
 
-const measureResultsNavigationTableLTSS5TemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureResultsNavigationTableLTSS5),
-  id: string().required(),
-  measureDisplay: string().required("quality"),
-});
-
 const statusTableTemplateSchema = object().shape({
   type: string().required(ElementType.StatusTable),
   id: string().required(),
@@ -278,6 +270,12 @@ const cmitInfoSchema = object().shape({
   dataSource: string().required(),
 });
 
+const dependantPageInfoSchema = object().shape({
+  key: string().required(),
+  linkText: string().required(),
+  template: string().required(),
+});
+
 // MeasurePageTemplate extends FormPageTemplate
 const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmit: number().notRequired(),
@@ -286,7 +284,10 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
-  children: array().of(string()).notRequired().default(undefined),
+  children: array()
+    .of(dependantPageInfoSchema)
+    .notRequired()
+    .default(undefined),
   cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 
@@ -297,7 +298,7 @@ const measureOptionsArraySchema = array().of(
     required: boolean().required(),
     stratified: boolean().required(),
     measureTemplate: string().required(),
-    deliverySystemTemplates: array().of(string()).optional(),
+    dependantPages: array().of(dependantPageInfoSchema).optional(),
   })
 );
 

@@ -16,7 +16,6 @@ import { useLiveElement } from "utils/state/hooks/useLiveElement";
 import { currentPageSelector } from "utils/state/selectors";
 
 export const MeasureResultsNavigationTableElement = () => {
-  const { report } = useStore();
   const { reportType, state, reportId } = useParams();
   const currentPage = useStore(currentPageSelector);
   const navigate = useNavigate();
@@ -27,38 +26,34 @@ export const MeasureResultsNavigationTableElement = () => {
     "delivery-method-radio"
   ) as RadioTemplate;
 
-  const handleEditClick = (deliverySystem: string) => {
-    if (report && report.measureLookup) {
-      const measure = report?.measureLookup.defaultMeasures.find(
-        (measure) => measure.cmit === measurePage.cmit
-      );
-      const deliveryId = measure?.deliverySystemTemplates.find((item) =>
-        item.toString().includes(deliverySystem)
-      );
-      const path = `/report/${reportType}/${state}/${reportId}/${deliveryId}`;
-      navigate(path);
-    }
+  const handleEditClick = (childPageId: string) => {
+    const path = `/report/${reportType}/${state}/${reportId}/${childPageId}`;
+    navigate(path);
   };
+
+  // Note pages like LTSS-5 have 2 child pages, but 1 delivery system.
   const singleOption = measurePage.cmitInfo?.deliverySystem.length == 1;
 
   // Build Rows
-  const rows = measurePage.cmitInfo?.deliverySystem.map((system, index) => {
+  const rows = measurePage.children?.map((childPage, index) => {
     const selections = deliveryMethodRadio?.answer ?? "";
-    const deliverySystemIsSelected = selections.split(",").includes(system);
+    const deliverySystemIsSelected = selections
+      .split(",")
+      .includes(childPage.key);
     return (
       <Tr key={index}>
         <Td>
           <TableStatusIcon tableStatus=""></TableStatusIcon>
         </Td>
         <Td width="100%">
-          <Text fontWeight="bold">Delivery Method: {system}</Text>
+          <Text fontWeight="bold">{childPage.linkText}</Text>
           <Text>CMIT# {measurePage.cmit}</Text>
         </Td>
         <Td>
           <Button
             variant="outline"
             disabled={!singleOption && !deliverySystemIsSelected}
-            onClick={() => handleEditClick(system)}
+            onClick={() => handleEditClick(childPage.template)}
           >
             Edit
           </Button>

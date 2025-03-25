@@ -190,11 +190,6 @@ describe("Ignores validation for elements that are not editable", () => {
           measureDisplay: "quality",
           id: "measure-results-navigation-table",
         },
-        {
-          type: ElementType.MeasureResultsNavigationTableLTSS5,
-          measureDisplay: "quality",
-          id: "measure-results-navigation-table-ltss5",
-        },
       ],
     };
     const validatedData = await yupValidateTestHelper(nonEditableElements);
