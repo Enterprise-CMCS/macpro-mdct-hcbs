@@ -92,7 +92,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
-  children?: DependantPageInfo[];
+  children?: dependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -350,7 +350,7 @@ export interface CMIT {
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
 }
-export interface DependantPageInfo {
+export interface dependentPageInfo {
   key: string;
   linkText: string;
   template: MeasureTemplateName;
@@ -361,7 +361,7 @@ export interface MeasureOptions {
   uid: string;
   required: boolean;
   measureTemplate: MeasureTemplateName;
-  dependantPages: DependantPageInfo[];
+  dependentPages: dependentPageInfo[];
 }
 
 export enum MeasureTemplateName {

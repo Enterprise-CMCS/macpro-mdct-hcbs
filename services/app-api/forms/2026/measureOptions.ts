@@ -8,7 +8,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-1"],
-    dependantPages: [
+    dependentPages: [
       {
         key: DeliverySystem.FFS,
         linkText: "Delivery Method: FFS",
@@ -27,7 +27,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["FASI-1"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 961,
@@ -35,7 +35,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-2"],
-    dependantPages: [
+    dependentPages: [
       {
         key: DeliverySystem.FFS,
         linkText: "Delivery Method: FFS",
@@ -54,7 +54,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["FASI-2"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 20,
@@ -62,7 +62,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-6"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 968,
@@ -70,7 +70,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-7"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 414,
@@ -78,7 +78,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-8"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 111,
@@ -86,7 +86,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["HCBS-10"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 963,
@@ -94,7 +94,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-3"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 962,
@@ -102,7 +102,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-4"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 1255,
@@ -110,7 +110,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-5"],
-    dependantPages: [
+    dependentPages: [
       {
         key: "Part1",
         linkText: "Part 1: Screening (MLTSS)",
@@ -129,7 +129,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["MLTSS"],
-    dependantPages: [],
+    dependentPages: [],
   },
 ];
 
@@ -140,7 +140,7 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-1"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 1822,
@@ -148,7 +148,7 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-2"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 1822,
@@ -156,7 +156,7 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-3"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 1822,
@@ -164,7 +164,7 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-4"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 1822,
@@ -172,7 +172,7 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-5"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 1822,
@@ -180,7 +180,7 @@ export const pomMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-6"],
-    dependantPages: [],
+    dependentPages: [],
   },
   {
     cmit: 1822,
@@ -188,6 +188,6 @@ export const pomMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-7"],
-    dependantPages: [],
+    dependentPages: [],
   },
 ];

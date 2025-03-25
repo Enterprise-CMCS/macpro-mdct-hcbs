@@ -270,7 +270,7 @@ const cmitInfoSchema = object().shape({
   dataSource: string().required(),
 });
 
-const dependantPageInfoSchema = object().shape({
+const dependentPageInfoSchema = object().shape({
   key: string().required(),
   linkText: string().required(),
   template: string().required(),
@@ -285,7 +285,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
   children: array()
-    .of(dependantPageInfoSchema)
+    .of(dependentPageInfoSchema)
     .notRequired()
     .default(undefined),
   cmitInfo: cmitInfoSchema.notRequired().default(undefined),
@@ -298,7 +298,7 @@ const measureOptionsArraySchema = array().of(
     required: boolean().required(),
     stratified: boolean().required(),
     measureTemplate: string().required(),
-    dependantPages: array().of(dependantPageInfoSchema).optional(),
+    dependentPages: array().of(dependentPageInfoSchema).optional(),
   })
 );
 

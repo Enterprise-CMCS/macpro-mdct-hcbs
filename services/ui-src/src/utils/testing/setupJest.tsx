@@ -298,7 +298,7 @@ export const mockReportStore: HcbsReportState = {
           measureTemplate: MeasureTemplateName["FFS-1"],
           required: true,
           uid: "960",
-          dependantPages: [MeasureTemplateName["FFS-1"]],
+          dependentPages: [MeasureTemplateName["FFS-1"]],
         },
       ],
       optionGroups: {},
