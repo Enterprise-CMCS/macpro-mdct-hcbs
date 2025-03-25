@@ -136,7 +136,16 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+
     [MeasureTemplateName["FASI-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-3"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
@@ -152,7 +161,23 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["FFS-3"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["MLTSS-FASI-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-3"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
