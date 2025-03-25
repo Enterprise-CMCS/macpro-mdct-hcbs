@@ -27,8 +27,6 @@ export const ReportingRadioField = (props: PageElementProps) => {
   useEffect(() => {
     const options = { required: radio.required || false };
     form.register(key, options);
-    form.setValue(`${props.formkey}.type`, radio.type);
-    form.setValue(`${props.formkey}.label`, radio.label);
     form.setValue(`${props.formkey}.id`, radio.id);
   }, []);
 
