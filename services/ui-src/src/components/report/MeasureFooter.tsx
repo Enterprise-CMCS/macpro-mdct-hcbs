@@ -12,6 +12,7 @@ const onCompleteSection = () => {};
 
 export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
+  const isFormValid = false;
   const { reportType, state, reportId } = useParams();
   const { resetMeasure, saveReport, setModalComponent, setModalOpen } =
     useStore();
@@ -74,7 +75,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
             </Button>
           )}
           {footer.completeMeasure && (
-            <Button onClick={() => onCompleteMeasure()}>
+            <Button onClick={() => onCompleteMeasure()} disabled={!isFormValid}>
               Complete measure
             </Button>
           )}
