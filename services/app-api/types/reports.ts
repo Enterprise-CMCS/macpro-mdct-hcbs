@@ -61,6 +61,8 @@ export enum MeasureTemplateName {
   // optional measures
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
+  "FFS-FASI-1" = "FFS-FASI-1",
+  "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "HCBS-10" = "HCBS-10",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
