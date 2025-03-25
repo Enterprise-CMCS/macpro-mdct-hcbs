@@ -1181,6 +1181,161 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-8"]]: {
+    id: "FFS-8",
+    title: "LTSS-8: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-8",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-8: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText: "{Instructions}",
+      },
+      performanceRateTarget,
+      {
+        type: ElementType.Textbox,
+        id: "count-success-transitions-to-community",
+        label: "Count of Successful Transitions to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "long-term-facility-count",
+        label: "Long-Term Facility Stay Count",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-count-success-transitions-to-community",
+        label: "Expected Count of Successful Transitions to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "multi-plan-population-rate",
+        label: "Multi-Plan Population Rate",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "observed-performance-rate-auto-calc1",
+        helperText: "Auto-calculates",
+        label:
+          "Observed Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-performance-rate-auto-calc2",
+        helperText: "Auto-calculates",
+        label:
+          "Expected Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "risk-adjusted-rate-auto-calc3",
+        helperText: "Auto-calculates",
+        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-8",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-8"]]: {
+    id: "MLTSS-8",
+    title: "LTSS-8: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-8",
+      },
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "LTSS-8: Managed Care (MLTSS)",
+      },
+      measureInstructions,
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText: "{Instructions}",
+      },
+      performanceRateTarget,
+      {
+        type: ElementType.Textbox,
+        id: "count-success-transitions-to-community",
+        label: "Count of Successful Transitions to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "long-term-facility-count",
+        label: "Long-Term Facility Stay Count",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-count-success-transitions-to-community",
+        label: "Expected Count of Successful Transitions to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "multi-plan-population-rate",
+        label: "Multi-Plan Population Rate",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "observed-performance-rate-auto-calc1",
+        helperText: "Auto-calculates",
+        label:
+          "Observed Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-performance-rate-auto-calc2",
+        helperText: "Auto-calculates",
+        label:
+          "Expected Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "risk-adjusted-rate-auto-calc3",
+        helperText: "Auto-calculates",
+        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-8",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["FASI-1"]]: {
     id: "FASI-1",
     title: "FASI-1: Identification of Person-Centered Priorities",
