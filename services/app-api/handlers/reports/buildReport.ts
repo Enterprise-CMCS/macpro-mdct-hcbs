@@ -60,7 +60,7 @@ export const buildReport = async (
         true
       );
 
-      const childPages = measure.dependentPages?.map((pageInfo) =>
+      const childPages = measure.dependentPages.map((pageInfo) =>
         initializeQmsPage(
           measure,
           report.measureTemplates[pageInfo.template],
@@ -68,7 +68,7 @@ export const buildReport = async (
           false
         )
       );
-      if (childPages) report.pages.push(parentPage, ...childPages);
+      report.pages.push(parentPage, ...childPages);
     }
   }
 

@@ -298,7 +298,7 @@ const measureOptionsArraySchema = array().of(
     required: boolean().required(),
     stratified: boolean().required(),
     measureTemplate: string().required(),
-    dependentPages: array().of(dependentPageInfoSchema).optional(),
+    dependentPages: array().of(dependentPageInfoSchema),
   })
 );
 
