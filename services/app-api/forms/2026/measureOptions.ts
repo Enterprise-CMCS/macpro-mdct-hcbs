@@ -27,9 +27,17 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["FASI-1"],
-    deliverySystemTemplates: [
-      MeasureTemplateName["FFS-FASI-1"],
-      MeasureTemplateName["MLTSS-FASI-1"],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-FASI-1"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-FASI-1"],
+      },
     ],
   },
   {
@@ -65,9 +73,17 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-6"],
-    deliverySystemTemplates: [
-      MeasureTemplateName["FFS-6"],
-      MeasureTemplateName["MLTSS-6"],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-6"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-6"],
+      },
     ],
   },
   {
@@ -76,9 +92,17 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-7"],
-    deliverySystemTemplates: [
-      MeasureTemplateName["FFS-7"],
-      MeasureTemplateName["MLTSS-7"],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-7"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-7"],
+      },
     ],
   },
   {
@@ -87,9 +111,17 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-8"],
-    deliverySystemTemplates: [
-      MeasureTemplateName["FFS-8"],
-      MeasureTemplateName["MLTSS-8"],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-8"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-8"],
+      },
     ],
   },
   {
@@ -106,9 +138,17 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-3"],
-    deliverySystemTemplates: [
-      MeasureTemplateName["FFS-3"],
-      MeasureTemplateName["MLTSS-3"],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-3"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-3"],
+      },
     ],
   },
   {
