@@ -36,6 +36,13 @@ import {
   stratificationSubheader,
   stratificationParagraph,
   areYouReportingStratification,
+  shortTermNestedHeading,
+  mediumTermNestedHeading,
+  longTermNestedHeading,
+  denominatorAutoCalc18to64,
+  denominatorAutoCalc65to74,
+  denominatorAutoCalc75to84,
+  denominatorAutoCalc85orOlder,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -379,6 +386,602 @@ export const measureTemplates: Record<
       qualityMeasuresSubheader,
       qualityMeasureTable,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["FFS-6"]]: {
+    id: "FFS-6",
+    title: "LTSS-6: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-6",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-6: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-18-to-64",
+        text: "Performance Rates: 18 to 64 Years",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom-18-to-64",
+        label: "Denominator (18 to 64 years)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (18 to 64 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-18-to-64",
+        label: "Numerator: Short Term Stay (18 to 64 years)",
+      },
+      denominatorAutoCalc18to64,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-18-to-64",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (18 to 64 years)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-stay-18-to-64",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (18 to 64 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-18-to-64",
+        label: "Numerator: Medium Term Stay (18 to 64 years)",
+      },
+      denominatorAutoCalc18to64,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-18-to-64",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (18 to 64 years)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-18-to-64",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (18 to 64 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-18-to-64",
+        label: "Numerator: Long Term Stay (18 to 64 years)",
+      },
+      denominatorAutoCalc18to64,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-18-to-64",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (18 to 64 years)",
+      },
+      // 65 to 74 Years
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-65-to-74",
+        text: "Performance Rates: 65 to 74 Years",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom-65-to-74",
+        label: "Denominator (65 to 74 years)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-short-term-65-to-74",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (65 to 74 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-65-to-74",
+        label: "Numerator: Short Term Stay (65 to 74 years)",
+      },
+      denominatorAutoCalc65to74,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-65-to-74",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (65 to 74 years)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-65-to-74",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (65 to 74 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-65-to-74",
+        label: "Numerator: Medium Term Stay (65 to 74 years)",
+      },
+      denominatorAutoCalc65to74,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-65-to-74",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (65 to 74 years)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-65-to-74",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (65 to 74 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-65-to-74",
+        label: "Numerator: Long Term Stay (65 to 74 years)",
+      },
+      denominatorAutoCalc65to74,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-65-to-74",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (65 to 74 years)",
+      },
+      // 75 to 84 Years
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-75-to-84",
+        text: "Performance Rates: 75 to 84 Years",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom-75-to-84",
+        label: "Denominator (75 to 84 years)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-short-term-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-75-to-84",
+        label: "Numerator: Short Term Stay (75 to 84 years)",
+      },
+      denominatorAutoCalc75to84,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-75-to-84",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (75 to 84 years)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-75-to-84",
+        label: "Numerator: Medium Term Stay (75 to 84 years)",
+      },
+      denominatorAutoCalc75to84,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-75-to-84",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (75 to 84 years)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-75-to-84",
+        label: "Numerator: Long Term Stay (75 to 84 years)",
+      },
+      denominatorAutoCalc75to84,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-75-to-84",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (75 to 84 years)",
+      },
+      // 85 years or older
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-85-or-older",
+        text: "Performance Rates: 85 years or older",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom-85-or-older",
+        label: "Denominator (85 years or older)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-short-term-85-or-older",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (85 years or older)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-85-or-older",
+        label: "Numerator: Short Term Stay (85 years or older)",
+      },
+      denominatorAutoCalc85orOlder,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-85-or-older",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (85 years or older)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-85-or-older",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (85 years or older)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-85-or-older",
+        label: "Numerator: Medium Term Stay (85 years or older)",
+      },
+      denominatorAutoCalc85orOlder,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-85-or-older",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (85 years or older)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-85-or-older",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (85 years or older)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-85-or-older",
+        label: "Numerator: Long Term Stay (85 years or older)",
+      },
+      denominatorAutoCalc85orOlder,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-85-or-older",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (85 years or older)",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-6",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-6"]]: {
+    id: "MLTSS-6",
+    title: "LTSS-6: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-6",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-6: Managed Care (MLTSS)",
+      },
+      measureInstructions,
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-18-to-64",
+        text: "Performance Rates: 18 to 64 Years",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom-18-to-64",
+        label: "Denominator (18 to 64 years)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (18 to 64 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-18-to-64",
+        label: "Numerator: Short Term Stay (18 to 64 years)",
+      },
+      denominatorAutoCalc18to64,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-18-to-64",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (18 to 64 years)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-stay-18-to-64",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (18 to 64 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-18-to-64",
+        label: "Numerator: Medium Term Stay (18 to 64 years)",
+      },
+      denominatorAutoCalc18to64,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-18-to-64",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (18 to 64 years)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-18-to-64",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (18 to 64 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-18-to-64",
+        label: "Numerator: Long Term Stay (18 to 64 years)",
+      },
+      denominatorAutoCalc18to64,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-18-to-64",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (18 to 64 years)",
+      },
+      // 65 to 74 Years
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-65-to-74",
+        text: "Performance Rates: 65 to 74 Years",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom-65-to-74",
+        label: "Denominator (65 to 74 years)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-short-term-65-to-74",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (65 to 74 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-65-to-74",
+        label: "Numerator: Short Term Stay (65 to 74 years)",
+      },
+      denominatorAutoCalc65to74,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-65-to-74",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (65 to 74 years)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-65-to-74",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (65 to 74 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-65-to-74",
+        label: "Numerator: Medium Term Stay (65 to 74 years)",
+      },
+      denominatorAutoCalc65to74,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-65-to-74",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (65 to 74 years)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-65-to-74",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (65 to 74 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-65-to-74",
+        label: "Numerator: Long Term Stay (65 to 74 years)",
+      },
+      denominatorAutoCalc65to74,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-65-to-74",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (65 to 74 years)",
+      },
+      // 75 to 84 Years
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-75-to-84",
+        text: "Performance Rates: 75 to 84 Years",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom-75-to-84",
+        label: "Denominator (75 to 84 years)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-short-term-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-75-to-84",
+        label: "Numerator: Short Term Stay (75 to 84 years)",
+      },
+      denominatorAutoCalc75to84,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-75-to-84",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (75 to 84 years)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-75-to-84",
+        label: "Numerator: Medium Term Stay (75 to 84 years)",
+      },
+      denominatorAutoCalc75to84,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-75-to-84",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (75 to 84 years)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-75-to-84",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (75 to 84 years)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-75-to-84",
+        label: "Numerator: Long Term Stay (75 to 84 years)",
+      },
+      denominatorAutoCalc75to84,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-75-to-84",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (75 to 84 years)",
+      },
+      // 85 years or older
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rate-85-or-older",
+        text: "Performance Rates: 85 years or older",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom-85-or-older",
+        label: "Denominator (85 years or older)",
+      },
+      shortTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-short-term-85-or-older",
+        label:
+          "What is the [templateYear+2] state performance target for short term stay (85 years or older)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-short-85-or-older",
+        label: "Numerator: Short Term Stay (85 years or older)",
+      },
+      denominatorAutoCalc85orOlder,
+      {
+        type: ElementType.Textbox,
+        id: "short-term-rate-85-or-older",
+        helperText: "Auto-calculates",
+        label: "Short Term Rate (85 years or older)",
+      },
+      mediumTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-medium-term-85-or-older",
+        label:
+          "What is the [templateYear+2] state performance target for medium term stay (85 years or older)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-medium-85-or-older",
+        label: "Numerator: Medium Term Stay (85 years or older)",
+      },
+      denominatorAutoCalc85orOlder,
+      {
+        type: ElementType.Textbox,
+        id: "medium-term-rate-85-or-older",
+        helperText: "Auto-calculates",
+        label: "Medium Term Rate (85 years or older)",
+      },
+      longTermNestedHeading,
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target-long-term-stay-85-or-older",
+        label:
+          "What is the [templateYear+2] state performance target for long term stay (85 years or older)?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-num-long-85-or-older",
+        label: "Numerator: Long Term Stay (85 years or older)",
+      },
+      denominatorAutoCalc85orOlder,
+      {
+        type: ElementType.Textbox,
+        id: "long-term-rate-85-or-older",
+        helperText: "Auto-calculates",
+        label: "Long Term Rate (85 years or older)",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-6",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["LTSS-7"]]: {
