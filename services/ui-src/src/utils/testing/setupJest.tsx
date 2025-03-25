@@ -215,6 +215,18 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
   required: true,
   substitutable: "FASI-1",
   elements: [],
+  children: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: FFS",
+      template: MeasureTemplateName["FFS-1"],
+    },
+    {
+      key: "MLTSS",
+      linkText: "Delivery Method: MLTSS",
+      template: MeasureTemplateName["MLTSS-1"],
+    },
+  ],
 };
 
 export const mock2MeasureTemplate: MeasurePageTemplate = {
@@ -237,6 +249,18 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
   type: PageType.Measure,
   required: true,
   elements: [],
+  children: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: FFS",
+      template: MeasureTemplateName["FFS-2"],
+    },
+    {
+      key: "MLTSS",
+      linkText: "Delivery Method: MLTSS",
+      template: MeasureTemplateName["MLTSS-2"],
+    },
+  ],
 };
 
 export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
@@ -273,6 +297,13 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       answer: "yes",
     },
   ],
+  children: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: FFS",
+      template: MeasureTemplateName["FFS-1"],
+    },
+  ],
 };
 
 export const mockReportStore: HcbsReportState = {
@@ -298,7 +329,18 @@ export const mockReportStore: HcbsReportState = {
           measureTemplate: MeasureTemplateName["FFS-1"],
           required: true,
           uid: "960",
-          deliverySystemTemplates: [MeasureTemplateName["FFS-1"]],
+          dependentPages: [
+            {
+              key: "FFS",
+              linkText: "Delivery Method: FFS",
+              template: MeasureTemplateName["FFS-1"],
+            },
+            {
+              key: "MLTSS",
+              linkText: "Delivery Method: MLTSS",
+              template: MeasureTemplateName["MLTSS-1"],
+            },
+          ],
         },
       ],
       optionGroups: {},

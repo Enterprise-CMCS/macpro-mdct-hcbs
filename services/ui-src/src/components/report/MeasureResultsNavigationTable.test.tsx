@@ -1,4 +1,4 @@
-import { QualityMeasureTableElement } from "./QualityMeasureTable";
+import { MeasureResultsNavigationTableElement } from "./MeasureResultsNavigationTable";
 import { render, screen } from "@testing-library/react";
 import { mockUseStore } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
@@ -38,9 +38,9 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-describe("Quality Measure Table", () => {
+describe("Measure Results Navigation Table", () => {
   it("should enable each delivery system's button correctly", async () => {
-    render(<QualityMeasureTableElement />);
+    render(<MeasureResultsNavigationTableElement />);
 
     const ffsRow = screen.getByRole("row", { name: /FFS CMIT# 960/ });
     const ffsButton = ffsRow.querySelector("button");

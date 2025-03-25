@@ -92,7 +92,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
-  children?: MeasureTemplateName[];
+  children?: DependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -135,7 +135,7 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  QualityMeasureTable = "qualityMeasureTable",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -155,7 +155,7 @@ export type PageElement =
   | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
-  | QualityMeasureTableTemplate
+  | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate;
@@ -242,8 +242,8 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
-export type QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable;
+export type MeasureResultsNavigationTableTemplate = {
+  type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
 };
@@ -350,13 +350,18 @@ export interface CMIT {
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
 }
+export interface DependentPageInfo {
+  key: string;
+  linkText: string;
+  template: MeasureTemplateName;
+}
 
 export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
   measureTemplate: MeasureTemplateName;
-  deliverySystemTemplates: MeasureTemplateName[];
+  dependentPages: DependentPageInfo[];
 }
 
 export enum MeasureTemplateName {

@@ -34,13 +34,19 @@ export interface CMIT {
   dataSource: DataSource;
 }
 
+export interface dependentPageInfo {
+  key: string;
+  linkText: string;
+  template: MeasureTemplateName;
+}
+
 export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
-  deliverySystemTemplates: MeasureTemplateName[];
+  dependentPages: dependentPageInfo[];
 }
 
 export enum MeasureTemplateName {
@@ -71,6 +77,8 @@ export enum MeasureTemplateName {
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
+  "LTSS-5-PT1" = "LTSS-5-PT1",
+  "LTSS-5-PT2" = "LTSS-5-PT2",
   "MLTSS" = "MLTSS",
   // pom measures
   "POM-1" = "POM-1",
@@ -112,7 +120,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
-  children?: MeasureTemplateName[];
+  children?: dependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -214,7 +222,7 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  QualityMeasureTable = "qualityMeasureTable",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -235,7 +243,7 @@ export type PageElement =
   | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
-  | QualityMeasureTableTemplate
+  | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate;
@@ -395,8 +403,8 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
-export type QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable;
+export type MeasureResultsNavigationTableTemplate = {
+  type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
 };
