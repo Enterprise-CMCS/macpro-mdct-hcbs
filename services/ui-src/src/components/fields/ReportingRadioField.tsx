@@ -55,6 +55,9 @@ export const ReportingRadioField = (props: PageElementProps) => {
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     form.setValue(key, event.target.value);
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
   };
 
   // prepare error message, hint, and classes
