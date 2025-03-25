@@ -7,7 +7,6 @@ import {
 import {
   additionalNotesField,
   didYouFollowSpecifications,
-  doYouWantCmsToCalculateOnYourBehalf,
   isTheStateReportingThisMeasure,
   measureDetailsSection,
   measureFooter,
@@ -375,7 +374,6 @@ export const measureTemplates: Record<
       isTheStateReportingThisMeasure,
       wereTheResultsAudited,
       didYouFollowSpecifications,
-      doYouWantCmsToCalculateOnYourBehalf,
       additionalNotesField,
       whichDeliverySystemsWereUsed,
       qualityMeasuresSubheader,
@@ -397,12 +395,166 @@ export const measureTemplates: Record<
       isTheStateReportingThisMeasure,
       wereTheResultsAudited,
       didYouFollowSpecifications,
-      doYouWantCmsToCalculateOnYourBehalf,
       additionalNotesField,
       whichDeliverySystemsWereUsed,
       qualityMeasuresSubheader,
       qualityMeasureTable,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["FFS-7"]]: {
+    id: "FFS-7",
+    title: "LTSS-7: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-7",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-7: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText: "{Instructions}",
+      },
+      performanceRateTarget,
+      {
+        type: ElementType.Textbox,
+        id: "count-success-discharges-to-community",
+        label: "Count of Succcessful Discharges to Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "facility-admission-count",
+        label: "Facility Admission Count",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-count-success-discharges-to-community",
+        label: "Expected Count of Successful Discharges to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "multi-plan-population-rate",
+        label: "Multi-Plan Population Rate",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "observed-performance-rate-auto-calc1",
+        helperText: "Auto-calculates",
+        label:
+          "Observed Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-performance-rate-auto-calc2",
+        helperText: "Auto-calculates",
+        label:
+          "Expected Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "risk-adjusted-rate-auto-calc3",
+        helperText: "Auto-calculates",
+        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-7",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-7"]]: {
+    id: "MLTSS-7",
+    title: "LTSS-7: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-7",
+      },
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "LTSS-7: Managed Care (MLTSS)",
+      },
+      measureInstructions,
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText: "{Instructions}",
+      },
+      performanceRateTarget,
+      {
+        type: ElementType.Textbox,
+        id: "count-success-discharges-to-community",
+        label: "Count of Succcessful Discharges to Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "facility-admission-count",
+        label: "Facility Admission Count",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-count-success-discharges-to-community",
+        label: "Expected Count of Successful Discharges to the Community",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "multi-plan-population-rate",
+        label: "Multi-Plan Population Rate",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "observed-performance-rate-auto-calc1",
+        helperText: "Auto-calculates",
+        label:
+          "Observed Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "expected-performance-rate-auto-calc2",
+        helperText: "Auto-calculates",
+        label:
+          "Expected Performance Rate for Minimizing Length of Facility Stay",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "risk-adjusted-rate-auto-calc3",
+        helperText: "Auto-calculates",
+        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-7",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["LTSS-8"]]: {
@@ -602,6 +754,76 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-FASI-1"]]: {
+    id: "FFS-FASI-1",
+    title: "FASI-1: Fee-For-Service (FFS FASI-1)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-1",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-1: Fee-For-Service (FFS FASI-1)",
+      },
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+      },
+      performanceRateTarget,
+      performanceRateNum,
+      performanceRatesDenomAutoCalculates,
+      performanceRateAutoCalculates,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-1",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-FASI-1"]]: {
+    id: "MLTSS-FASI-1",
+    title: "FASI-1: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-1",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-1: Managed Care (MLTSS)",
+      },
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+      },
+      performanceRateTarget,
+      performanceRateNum,
+      performanceRatesDenomAutoCalculates,
+      performanceRateAutoCalculates,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-1",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["FASI-2"]]: {
     id: "FASI-2",
     title: "FASI-2: Documentation of a Person-Centered Service Plan",
@@ -662,6 +884,271 @@ export const measureTemplates: Record<
       qualityMeasuresSubheader,
       qualityMeasureTable,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["FFS-3"]]: {
+    id: "FFS-3",
+    title: "LTSS-3: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-3",
+      },
+      {
+        ...measureHeader,
+        text: "LTSS-3: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Fee-For-Service Measure Results",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
+        helperText:
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText:
+          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
+      },
+
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-exclusion-rates",
+        text: "Exclusion Rates",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Exclusion Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-nested-heading",
+        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-stratification",
+        text: "Measure Stratification",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-strat-paragraph",
+        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
+      },
+      {
+        type: ElementType.Radio,
+        id: "reporting-strat-radio",
+        label: "Are you reporting stratification for this measure?",
+        value: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-3",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-3"]]: {
+    id: "MLTSS-3",
+    title: "LTSS-3: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-3",
+      },
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "LTSS-3: Managed Care (MLTSS)",
+      },
+      {
+        type: ElementType.Accordion,
+        id: "measure-instructions",
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Managed Care Measure Results",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
+        helperText:
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-performance-rates",
+        text: "Performance Rates",
+        helperText:
+          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Performance Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
+      },
+
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-target",
+        label:
+          "What is the [templateYear+2] state performance target for this assessment?",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-exclusion-rates",
+        text: "Exclusion Rates",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rates-denom",
+        label: "Exclusion Rates Denominator",
+      },
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-nested-heading",
+        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-num",
+        label: "Numerator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "exclusion-rate-denom",
+        helperText: "Auto-calculates",
+        label: "Denominator",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "performance-rate",
+        helperText: "Auto-calculates",
+        label: "Rate",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader-stratification",
+        text: "Measure Stratification",
+      },
+      {
+        type: ElementType.Paragraph,
+        id: "measure-strat-paragraph",
+        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
+      },
+      {
+        type: ElementType.Radio,
+        id: "reporting-strat-radio",
+        label: "Are you reporting stratification for this measure?",
+        value: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-3",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["LTSS-4"]]: {

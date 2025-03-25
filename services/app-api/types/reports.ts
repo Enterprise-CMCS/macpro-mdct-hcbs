@@ -45,13 +45,17 @@ export interface MeasureOptions {
 
 export enum MeasureTemplateName {
   // required measures
-  "LTSS-1" = "LTSS-1",
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
+  "FFS-3" = "FFS-3",
+  "FFS-7" = "FFS-7",
   "FFS-8" = "FFS-8",
   "MLTSS-1" = "MLTSS-1",
   "MLTSS-2" = "MLTSS-2",
+  "MLTSS-3" = "MLTSS-3",
+  "MLTSS-7" = "MLTSS-7",
   "MLTSS-8" = "MLTSS-8",
+  "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
@@ -59,6 +63,8 @@ export enum MeasureTemplateName {
   // optional measures
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
+  "FFS-FASI-1" = "FFS-FASI-1",
+  "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "HCBS-10" = "HCBS-10",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
