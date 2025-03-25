@@ -19,9 +19,6 @@ export const TextField = (props: PageElementProps) => {
     const options = { required: textbox.required || false };
     form.register(key, options);
     form.setValue(key, defaultValue);
-    form.setValue(`${props.formkey}.type`, textbox.type);
-    form.setValue(`${props.formkey}.label`, textbox.label);
-    form.setValue(`${props.formkey}.id`, textbox.id);
   }, []);
 
   // Need to listen to prop updates from the parent for events like a measure clear

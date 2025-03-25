@@ -27,7 +27,10 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["FASI-1"],
-    dependentPages: [],
+    deliverySystemTemplates: [
+      MeasureTemplateName["FFS-FASI-1"],
+      MeasureTemplateName["MLTSS-FASI-1"],
+    ],
   },
   {
     cmit: 961,
@@ -62,7 +65,10 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-6"],
-    dependentPages: [],
+    deliverySystemTemplates: [
+      MeasureTemplateName["FFS-6"],
+      MeasureTemplateName["MLTSS-6"],
+    ],
   },
   {
     cmit: 968,
@@ -70,7 +76,10 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-7"],
-    dependentPages: [],
+    deliverySystemTemplates: [
+      MeasureTemplateName["FFS-7"],
+      MeasureTemplateName["MLTSS-7"],
+    ],
   },
   {
     cmit: 414,
@@ -78,7 +87,10 @@ export const defaultMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-8"],
-    dependentPages: [],
+    deliverySystemTemplates: [
+      MeasureTemplateName["FFS-8"],
+      MeasureTemplateName["MLTSS-8"],
+    ],
   },
   {
     cmit: 111,
@@ -94,7 +106,10 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-3"],
-    dependentPages: [],
+    deliverySystemTemplates: [
+      MeasureTemplateName["FFS-3"],
+      MeasureTemplateName["MLTSS-3"],
+    ],
   },
   {
     cmit: 962,

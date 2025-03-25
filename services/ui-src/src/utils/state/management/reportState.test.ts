@@ -19,6 +19,7 @@ import {
   setPage,
   substitute,
   saveReport,
+  filterErrors,
 } from "./reportState";
 import {
   mock2MeasureTemplate,
@@ -136,11 +137,75 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["LTSS-3"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-3"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-3"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FASI-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-FASI-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-FASI-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-6"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
       title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-6"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-6"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       type: PageType.Measure,
       elements: [],
     },
@@ -152,11 +217,43 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["FFS-7"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-7"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-8"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
       title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-8"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-8"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       type: PageType.Measure,
       elements: [],
     },
@@ -311,5 +408,21 @@ describe("state/management/reportState: saveReport", () => {
     const state = buildState(testReport) as unknown as HcbsReportState;
     const result = await saveReport(state);
     expect(result?.lastSavedTime).toBeTruthy();
+  });
+});
+
+describe("state/management/reportState: filterErrors", () => {
+  test("removes errored entries from answers", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const answers = { elements: [{ answer: "dog" }, { answer: "cat" }] };
+    const errors = { elements: [{ answer: { message: "No dog allowed" } }] };
+
+    const result = filterErrors(answers, errors);
+
+    expect("answer" in result.elements).toBeFalsy();
+    expect(result.elements[1].answer).toBe("cat");
   });
 });

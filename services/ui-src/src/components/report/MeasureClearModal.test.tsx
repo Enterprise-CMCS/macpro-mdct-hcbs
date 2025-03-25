@@ -9,7 +9,11 @@ const mockSubmit = jest.fn();
 
 describe("Test MeasureClearModal", () => {
   it("Test MeasureClearModal Render", async () => {
-    const modal = MeasureClearModal(mockMeasureTemplate, mockClose, mockSubmit);
+    const modal = MeasureClearModal(
+      mockMeasureTemplate.id,
+      mockClose,
+      mockSubmit
+    );
     render(
       <Modal isOpen={true} onClose={mockClose}>
         {modal}
