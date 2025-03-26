@@ -59,16 +59,16 @@ export const buildReport = async (
         cmitInfo,
         true
       );
-      const deliverySystemPages = measure.deliverySystemTemplates.map(
-        (templateName) =>
-          initializeQmsPage(
-            measure,
-            report.measureTemplates[templateName],
-            cmitInfo,
-            false
-          )
+
+      const childPages = measure.dependentPages.map((pageInfo) =>
+        initializeQmsPage(
+          measure,
+          report.measureTemplates[pageInfo.template],
+          cmitInfo,
+          false
+        )
       );
-      report.pages.push(parentPage, ...deliverySystemPages);
+      report.pages.push(parentPage, ...childPages);
     }
   }
 
@@ -105,7 +105,7 @@ const initializeQmsPage = (
   page.required = measure.required;
 
   if (isMeasurePage) {
-    page.children = measure.deliverySystemTemplates;
+    page.children = measure.dependentPages;
     page.cmitInfo = cmitInfo;
   }
 

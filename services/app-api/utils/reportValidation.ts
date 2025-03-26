@@ -149,8 +149,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
       return measureTableTemplateSchema;
-    case ElementType.QualityMeasureTable:
-      return qualityMeasureTableTemplateSchema;
+    case ElementType.MeasureResultsNavigationTable:
+      return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
     case ElementType.MeasureDetails:
@@ -220,8 +220,8 @@ const measureTableTemplateSchema = object().shape({
     .required(),
 });
 
-const qualityMeasureTableTemplateSchema = object().shape({
-  type: string().required(ElementType.QualityMeasureTable),
+const measureResultsNavigationTableTemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureResultsNavigationTable),
   id: string().required(),
   measureDisplay: string().required("quality"),
 });
@@ -296,8 +296,14 @@ const cmitInfoSchema = object().shape({
   uid: string().required(),
   measureSteward: string().required(),
   measureSpecification: array().of(string()).required(),
-  deliverySystem: array().of(string()).required(),
+  deliverySystem: array().of(string()).notRequired(),
   dataSource: string().required(),
+});
+
+const dependentPageInfoSchema = object().shape({
+  key: string().required(),
+  linkText: string().required(),
+  template: string().required(),
 });
 
 // MeasurePageTemplate extends FormPageTemplate
@@ -308,7 +314,10 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
-  children: array().of(string()).notRequired().default(undefined),
+  children: array()
+    .of(dependentPageInfoSchema)
+    .notRequired()
+    .default(undefined),
   cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 
@@ -319,7 +328,7 @@ const measureOptionsArraySchema = array().of(
     required: boolean().required(),
     stratified: boolean().required(),
     measureTemplate: string().required(),
-    deliverySystemTemplates: array().of(string()).optional(),
+    dependentPages: array().of(dependentPageInfoSchema),
   })
 );
 

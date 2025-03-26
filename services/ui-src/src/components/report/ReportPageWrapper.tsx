@@ -10,10 +10,8 @@ import {
   Page,
   PraDisclosure,
 } from "components";
-/*
- * import { yupResolver } from "@hookform/resolvers/yup";
- * import { elementsValidateSchema } from "utils/validation/reportValidation";
- */
+import { yupResolver } from "@hookform/resolvers/yup";
+import { elementsValidateSchema } from "utils/validation/reportValidation";
 import { currentPageSelector } from "utils/state/selectors";
 
 export const ReportPageWrapper = () => {
@@ -33,7 +31,7 @@ export const ReportPageWrapper = () => {
   const methods = useForm({
     defaultValues: {},
     shouldUnregister: true,
-    // resolver: yupResolver(elementsValidateSchema),
+    resolver: yupResolver(elementsValidateSchema),
   });
 
   const navigate = useNavigate();
@@ -45,11 +43,18 @@ export const ReportPageWrapper = () => {
     if (pageId) {
       setCurrentPageId(pageId);
     }
-  }, [report, pageMap, pageId]);
+  }, [pageId]);
 
   const handleBlur = async (data: any) => {
     if (!report) return;
     setAnswers(data);
+    saveReport();
+  };
+
+  const handleError = async (errors: any) => {
+    const data = methods.getValues();
+    if (!report) return;
+    setAnswers(data, errors);
     saveReport();
   };
 
@@ -101,7 +106,7 @@ export const ReportPageWrapper = () => {
             <form
               id="aFormId"
               autoComplete="off"
-              onBlur={handleSubmit(handleBlur)}
+              onBlur={handleSubmit(handleBlur, handleError)}
             >
               {currentPage.elements && (
                 <Page elements={currentPage.elements ?? []}></Page>

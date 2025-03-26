@@ -92,7 +92,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
-  children?: MeasureTemplateName[];
+  children?: DependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -135,7 +135,7 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  QualityMeasureTable = "qualityMeasureTable",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -156,7 +156,7 @@ export type PageElement =
   | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
-  | QualityMeasureTableTemplate
+  | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
@@ -244,8 +244,8 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
-export type QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable;
+export type MeasureResultsNavigationTableTemplate = {
+  type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
 };
@@ -382,26 +382,42 @@ export interface CMIT {
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
 }
+export interface DependentPageInfo {
+  key: string;
+  linkText: string;
+  template: MeasureTemplateName;
+}
 
 export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
   measureTemplate: MeasureTemplateName;
-  deliverySystemTemplates: MeasureTemplateName[];
+  dependentPages: DependentPageInfo[];
 }
 
 export enum MeasureTemplateName {
   "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
+  "LTSS-3" = "LTSS-3",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
   "LTSS-8" = "LTSS-8",
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
+  "FFS-3" = "FFS-3",
   "FFS-6" = "FFS-6",
+  "FFS-7" = "FFS-7",
+  "FFS-8" = "FFS-8",
   "MLTSS-1" = "MLTSS-1",
   "MLTSS-2" = "MLTSS-2",
+  "MLTSS-3" = "MLTSS-3",
+  "MLTSS-6" = "MLTSS-6",
+  "MLTSS-7" = "MLTSS-7",
+  "MLTSS-8" = "MLTSS-8",
+  "FASI-1" = "FASI-1",
+  "FFS-FASI-1" = "FFS-FASI-1",
+  "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
   "POM-3" = "POM-3",

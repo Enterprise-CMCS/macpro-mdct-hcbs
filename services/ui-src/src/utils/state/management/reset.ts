@@ -34,7 +34,7 @@ export const performClearMeasure = (
   // Clear children of measures
   if (page.type === PageType.Measure) {
     (page as MeasurePageTemplate).children?.forEach((child) => {
-      performClearMeasure(child, report, ignoreList);
+      performClearMeasure(child.template, report, ignoreList);
     });
   }
 
@@ -61,7 +61,7 @@ export const performResetMeasure = (measureId: string, report: Report) => {
   // Clear children of measures
   if (page.type === PageType.Measure) {
     (page as MeasurePageTemplate).children?.forEach((child) => {
-      performResetMeasure(child, report);
+      performResetMeasure(child.template, report);
     });
   }
   return { report };

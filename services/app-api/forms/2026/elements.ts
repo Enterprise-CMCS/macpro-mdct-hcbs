@@ -5,10 +5,10 @@ import {
   HeaderTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
+  MeasureResultsNavigationTableTemplate,
   ParagraphTemplate,
   PerformanceRateTemplate,
   PerformanceRateType,
-  QualityMeasureTableTemplate,
   RadioTemplate,
   RateCalc,
   ReportingRadioTemplate,
@@ -139,20 +139,6 @@ export const didYouFollowSpecifications: RadioTemplate = {
   },
 };
 
-export const doYouWantCmsToCalculateOnYourBehalf: RadioTemplate = {
-  type: ElementType.Radio,
-  id: "measure-cms-calculate",
-  label: "Do you want CMS to calculate this measure on your behalf?",
-  value: [
-    { label: "No", value: "no" },
-    { label: "Yes", value: "yes" },
-  ],
-  hideCondition: {
-    controllerElementId: "measure-reporting-radio",
-    answer: "no",
-  },
-};
-
 export const additionalNotesField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
   id: "additional-notes-field",
@@ -189,11 +175,12 @@ export const qualityMeasuresSubheader: SubHeaderTemplate = {
   id: "quality-measures-subheader",
 };
 
-export const qualityMeasureTable: QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable,
-  measureDisplay: "quality",
-  id: "quality-measure-table",
-};
+export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplate =
+  {
+    type: ElementType.MeasureResultsNavigationTable,
+    measureDisplay: "quality",
+    id: "measure-results-navigation-table",
+  };
 
 export const measureFooter: MeasureFooterTemplate = {
   type: ElementType.MeasureFooter,
@@ -220,7 +207,7 @@ export const stratificationSubheader: SubHeaderTemplate = {
 export const stratificationParagraph: ParagraphTemplate = {
   type: ElementType.Paragraph,
   id: "measure-strat-paragraph",
-  text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
+  text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data.",
 };
 
 export const areYouReportingStratification: RadioTemplate = {

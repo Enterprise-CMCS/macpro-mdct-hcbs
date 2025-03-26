@@ -215,6 +215,18 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
   required: true,
   substitutable: "FASI-1",
   elements: [],
+  children: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: FFS",
+      template: MeasureTemplateName["FFS-1"],
+    },
+    {
+      key: "MLTSS",
+      linkText: "Delivery Method: MLTSS",
+      template: MeasureTemplateName["MLTSS-1"],
+    },
+  ],
 };
 
 export const mock2MeasureTemplate: MeasurePageTemplate = {
@@ -237,6 +249,18 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
   type: PageType.Measure,
   required: true,
   elements: [],
+  children: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: FFS",
+      template: MeasureTemplateName["FFS-2"],
+    },
+    {
+      key: "MLTSS",
+      linkText: "Delivery Method: MLTSS",
+      template: MeasureTemplateName["MLTSS-2"],
+    },
+  ],
 };
 
 export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
@@ -273,6 +297,13 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       answer: "yes",
     },
   ],
+  children: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: FFS",
+      template: MeasureTemplateName["FFS-1"],
+    },
+  ],
 };
 
 export const mockReportStore: HcbsReportState = {
@@ -298,7 +329,18 @@ export const mockReportStore: HcbsReportState = {
           measureTemplate: MeasureTemplateName["FFS-1"],
           required: true,
           uid: "960",
-          deliverySystemTemplates: [MeasureTemplateName["FFS-1"]],
+          dependentPages: [
+            {
+              key: "FFS",
+              linkText: "Delivery Method: FFS",
+              template: MeasureTemplateName["FFS-1"],
+            },
+            {
+              key: "MLTSS",
+              linkText: "Delivery Method: MLTSS",
+              template: MeasureTemplateName["MLTSS-1"],
+            },
+          ],
         },
       ],
       optionGroups: {},
@@ -316,13 +358,33 @@ export const mockReportStore: HcbsReportState = {
         ...mockMeasureTemplate,
         stratified: true,
       },
-      [MeasureTemplateName["LTSS-7"]]: mockMeasureTemplate,
-      [MeasureTemplateName["LTSS-8"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-3"]]: {
+        ...mockMeasureTemplate,
+        optional: true,
+      },
+      [MeasureTemplateName["LTSS-7"]]: {
+        ...mockMeasureTemplate,
+        required: true,
+      },
+      [MeasureTemplateName["LTSS-8"]]: {
+        ...mockMeasureTemplate,
+        required: true,
+      },
       [MeasureTemplateName["FFS-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-2"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-3"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-6"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-7"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-8"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-2"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-3"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-6"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-7"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-8"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FASI-1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-FASI-1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-FASI-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-2"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-3"]]: mockMeasureTemplate,

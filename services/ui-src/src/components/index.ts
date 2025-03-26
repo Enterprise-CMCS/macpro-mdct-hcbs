@@ -59,7 +59,7 @@ export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
 export { MeasureTableElement } from "./report/MeasureTable";
 export { Page } from "./report/Page";
 export { PraDisclosure } from "./report/PraDisclosure";
-export { QualityMeasureTableElement } from "./report/QualityMeasureTable";
+export { MeasureResultsNavigationTableElement } from "./report/MeasureResultsNavigationTable";
 export { ReportModal } from "./report/ReportModal";
 export { ReportPageWrapper } from "./report/ReportPageWrapper";
 export { Sidebar } from "./report/Sidebar";

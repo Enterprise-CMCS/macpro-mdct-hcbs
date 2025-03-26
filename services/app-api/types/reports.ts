@@ -35,23 +35,36 @@ export interface CMIT {
   dataSource: DataSource;
 }
 
+export interface dependentPageInfo {
+  key: string;
+  linkText: string;
+  template: MeasureTemplateName;
+}
+
 export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
-  deliverySystemTemplates: MeasureTemplateName[];
+  dependentPages: dependentPageInfo[];
 }
 
 export enum MeasureTemplateName {
   // required measures
-  "LTSS-1" = "LTSS-1",
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
+  "FFS-3" = "FFS-3",
   "FFS-6" = "FFS-6",
+  "FFS-7" = "FFS-7",
+  "FFS-8" = "FFS-8",
   "MLTSS-1" = "MLTSS-1",
   "MLTSS-2" = "MLTSS-2",
+  "MLTSS-3" = "MLTSS-3",
+  "MLTSS-6" = "MLTSS-6",
+  "MLTSS-7" = "MLTSS-7",
+  "MLTSS-8" = "MLTSS-8",
+  "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
@@ -59,10 +72,14 @@ export enum MeasureTemplateName {
   // optional measures
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
+  "FFS-FASI-1" = "FFS-FASI-1",
+  "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "HCBS-10" = "HCBS-10",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
+  "LTSS-5-PT1" = "LTSS-5-PT1",
+  "LTSS-5-PT2" = "LTSS-5-PT2",
   "MLTSS" = "MLTSS",
   // pom measures
   "POM-1" = "POM-1",
@@ -104,7 +121,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
-  children?: MeasureTemplateName[];
+  children?: dependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -206,7 +223,7 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  QualityMeasureTable = "qualityMeasureTable",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
@@ -228,7 +245,7 @@ export type PageElement =
   | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
-  | QualityMeasureTableTemplate
+  | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
@@ -419,8 +436,8 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
-export type QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable;
+export type MeasureResultsNavigationTableTemplate = {
+  type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
 };
