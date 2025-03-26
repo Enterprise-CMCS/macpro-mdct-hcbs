@@ -211,6 +211,7 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
+  FacilityLengthOfStayRate = "facilityLengthOfStayRate",
 }
 
 export type PageElement =
@@ -232,7 +233,8 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate;
+  | PerformanceRateTemplate
+  | FacilityLengthOfStayRateTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -376,6 +378,14 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
+export type FacilityLengthOfStayRateTemplate = {
+  id: string;
+  type: ElementType.FacilityLengthOfStayRate;
+  helperText: string;
+  fields: { label: string; id: string; autoCalc?: boolean }[];
+  answer?: unknown;
+};
+
 export type PerformanceData = {
   rates: AnyObject[];
   denominator?: number;
@@ -384,13 +394,7 @@ export type PerformanceData = {
 export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Ehanced = "NDREnhanced",
-  FIELDS = "Fields",
   NDRFIELDS = "NDRFields",
-}
-
-export const enum RateCalc {
-  NDRCalc = "NDRCalc",
-  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
 }
 
 export type PerformanceRateTemplate = {
@@ -401,7 +405,6 @@ export type PerformanceRateTemplate = {
   assessments?: { label: string; id: string }[];
   fields?: { label: string; id: string; autoCalc?: boolean }[];
   rateType: PerformanceRateType;
-  rateCalc?: RateCalc;
   multiplier?: number;
   answer?: PerformanceData;
 };

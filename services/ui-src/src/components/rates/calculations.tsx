@@ -1,41 +1,34 @@
+import { FacilityLengthOfStayAnswer } from "types";
 import { AnyObject } from "yup";
 
-const isFilled = (item: string) => {
+const isFilled = (item: string | number | undefined) => {
   return item !== "" && item !== undefined;
 };
 
-export const FacilityLengthOfStayCalc = (
-  rate: AnyObject,
-  _multiplier: number
-) => {
-  rate["opr-min-stay"] = "";
-  rate["epr-min-stay"] = "";
-  rate["rar-min-stay"] = "";
+export const FacilityLengthOfStayCalc = (rate: FacilityLengthOfStayAnswer) => {
+  rate.actualRate = "";
+  rate.expectedRate = "";
+  rate.riskAdjustedRate = "";
 
-  //Observed Performance Rate for the Minimizing Length of Facility Stay
-  if (
-    isFilled(rate["count-of-success-dis"]) &&
-    isFilled(rate["fac-admin-count"])
-  )
-    rate["opr-min-stay"] =
-      rate["count-of-success-dis"] / rate["fac-admin-count"];
+  // Observed Performance Rate for the Minimizing Length of Facility Stay
+  if (isFilled(rate.actualDischarges) && isFilled(rate.admissionCount))
+    rate.actualRate =
+      Number(rate.actualDischarges) / Number(rate.admissionCount);
 
-  //Expected Performance Rate for the Minimizing Length of Facility Stay
-  if (
-    isFilled(rate["expected-count-of-success-dis"]) &&
-    isFilled(rate["fac-admin-count"])
-  )
-    rate["epr-min-stay"] =
-      rate["expected-count-of-success-dis"] / rate["fac-admin-count"];
+  // Expected Performance Rate for the Minimizing Length of Facility Stay
+  if (isFilled(rate.expectedDischarges) && isFilled(rate.admissionCount))
+    rate.expectedRate =
+      Number(rate.expectedDischarges) / Number(rate.admissionCount);
 
-  //Risk Adjusted Rate for the Minimizing Length of Facility Stay
+  // Risk Adjusted Rate for the Minimizing Length of Facility Stay
   if (
-    isFilled(rate["opr-min-stay"]) &&
-    isFilled(rate["epr-min-stay"]) &&
-    isFilled(rate["multi-plan"])
+    isFilled(rate.actualRate) &&
+    isFilled(rate.expectedRate) &&
+    isFilled(rate.populationRate)
   )
-    rate["rar-min-stay"] =
-      (rate["opr-min-stay"] / rate["epr-min-stay"]) * rate["multi-plan"];
+    rate.riskAdjustedRate =
+      (Number(rate.actualRate) / Number(rate.expectedRate)) *
+      Number(rate.populationRate);
 
   return rate;
 };

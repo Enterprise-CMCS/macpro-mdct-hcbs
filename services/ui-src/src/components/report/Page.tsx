@@ -11,6 +11,7 @@ import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import {
   DateField,
   DropdownField,
+  FacilityLengthOfStayRate,
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
@@ -69,6 +70,8 @@ export const Page = ({ elements }: Props) => {
         return MeasureFooterElement;
       case ElementType.PerformanceRate:
         return PerformanceRateElement;
+      case ElementType.FacilityLengthOfStayRate:
+        return FacilityLengthOfStayRate;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;

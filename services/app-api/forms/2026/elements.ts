@@ -2,6 +2,7 @@ import {
   AccordionTemplate,
   ButtonLinkTemplate,
   ElementType,
+  FacilityLengthOfStayRateTemplate,
   HeaderTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
@@ -10,7 +11,6 @@ import {
   PerformanceRateType,
   QualityMeasureTableTemplate,
   RadioTemplate,
-  RateCalc,
   ReportingRadioTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
@@ -325,42 +325,40 @@ export const performanceRatePOM: PerformanceRateTemplate = {
 };
 
 //Rates for LTSS-7 & LTSS-8
-export const performanceRateFacility: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateFacility: FacilityLengthOfStayRateTemplate = {
+  type: ElementType.FacilityLengthOfStayRate,
   id: "measure-rates",
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
-      id: "count-of-success-dis",
+      id: "actualDischarges",
       label: "Count of Successful Discharges to the Community",
     },
-    { id: "fac-admin-count", label: "Facility Admission Count" },
+    { id: "admissionCount", label: "Facility Admission Count" },
     {
-      id: "expected-count-of-success-dis",
+      id: "expectedDischarges",
       label: "Expected Count of Successful Discharges to the Community",
     },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
+    { id: "populationRate", label: "Multi-Plan Population Rate" },
     {
-      id: "opr-min-stay",
+      id: "actualRate",
       label:
         "Observed Performance Rate for the Minimizing Length of Facility Stay",
       autoCalc: true,
     },
     {
-      id: "epr-min-stay",
+      id: "expectedRate",
       label:
         "Expected Performance Rate for the Minimizing Length of Facility Stay",
       autoCalc: true,
     },
     {
-      id: "rar-min-stay",
+      id: "riskAdjustedRate",
       label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
       autoCalc: true,
     },
   ],
-  rateType: PerformanceRateType.FIELDS,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
 export const performanceRateTermStay: PerformanceRateTemplate = {
