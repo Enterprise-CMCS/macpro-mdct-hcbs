@@ -689,14 +689,19 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
       },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -724,14 +729,19 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
       },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
