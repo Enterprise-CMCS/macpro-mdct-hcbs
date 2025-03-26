@@ -1752,6 +1752,12 @@ export const measureTemplates: Record<
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-5",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["MLTSS"]]: {
