@@ -1448,6 +1448,76 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-FASI-2"]]: {
+    id: "FFS-FASI-2",
+    title: "FASI-2: Fee-For-Service (FFS FASI-2)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-2",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-2: Fee-For-Service (FFS FASI-2)",
+      },
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+      },
+      performanceRateTarget,
+      performanceRateNum,
+      performanceRatesDenomAutoCalculates,
+      performanceRateAutoCalculates,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-2",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-FASI-2"]]: {
+    id: "MLTSS-FASI-2",
+    title: "FASI-2: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-2",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-2: Managed Care (MLTSS)",
+      },
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.NestedHeading,
+        id: "measure-subheader",
+        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+      },
+      performanceRateTarget,
+      performanceRateNum,
+      performanceRatesDenomAutoCalculates,
+      performanceRateAutoCalculates,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-2",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["HCBS-10"]]: {
     id: "HCBS-10",
     title:
