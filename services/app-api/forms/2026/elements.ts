@@ -171,7 +171,7 @@ export const whichDeliverySystemsWereUsed: RadioTemplate = {
 
 export const qualityMeasuresSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
-  text: "Quality Measures",
+  text: "Enter Measure Results",
   id: "quality-measures-subheader",
 };
 
@@ -226,7 +226,7 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "assess-of-core",
@@ -244,8 +244,7 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   id: "measure-rates",
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
-  helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  helperText: "Hint Text",
   assessments: [
     {
       id: "part-not-connect",
@@ -264,7 +263,7 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "person-plan-core",
@@ -283,7 +282,7 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "part-not-contact",
@@ -302,7 +301,7 @@ export const performanceRatePOM: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "same-env",
@@ -316,7 +315,7 @@ export const performanceRateFacility: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
       id: "count-of-success-dis",
@@ -354,7 +353,7 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },

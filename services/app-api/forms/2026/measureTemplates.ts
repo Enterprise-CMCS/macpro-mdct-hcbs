@@ -886,8 +886,8 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
       qualityMeasuresSubheader,
       measureResultsNavigationTable,
@@ -920,11 +920,6 @@ export const measureTemplates: Record<
       },
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Fall or Problems with Balance or Gait Evaluation",
-      },
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -975,27 +970,6 @@ export const measureTemplates: Record<
       },
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Falls Risk Assessment",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Care: Plan of Care for Falls",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-exclusion-rates",
-        text: "Exclusion Rates",
-        helperText: "Hint Text",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused Risk Assessment",
-      },
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
