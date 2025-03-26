@@ -1,9 +1,9 @@
-import { CMIT } from "../types/reports";
+import { CMIT } from "../../types/reports";
 import {
   DataSource,
   DeliverySystem,
   MeasureSpecification,
-} from "../utils/constants";
+} from "../../utils/constants";
 
 export const CMIT_LIST: CMIT[] = [
   // required measures
@@ -18,7 +18,6 @@ export const CMIT_LIST: CMIT[] = [
     ],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
-    options: "",
   },
   {
     cmit: 961,
@@ -31,7 +30,6 @@ export const CMIT_LIST: CMIT[] = [
     ],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
-    options: "",
   },
   {
     cmit: 20,
@@ -41,7 +39,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CMS],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
-    options: "",
   },
   {
     cmit: 968,
@@ -51,7 +48,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CMS],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
-    options: "",
   },
   {
     cmit: 414,
@@ -61,7 +57,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CMS],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
-    options: "",
   },
   // optional measures
   {
@@ -72,7 +67,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CMS],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.RecordReview,
-    options: "",
   },
   {
     cmit: 970,
@@ -82,7 +76,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CMS],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.RecordReview,
-    options: "",
   },
   {
     cmit: 111,
@@ -92,7 +85,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CMS],
     deliverySystem: [DeliverySystem.MLTSS],
     dataSource: DataSource.CaseRecordManagement,
-    options: "",
   },
   {
     cmit: 963,
@@ -105,7 +97,6 @@ export const CMIT_LIST: CMIT[] = [
     ],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
-    options: "",
   },
   {
     cmit: 962,
@@ -118,7 +109,6 @@ export const CMIT_LIST: CMIT[] = [
     ],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
-    options: "",
   },
   {
     cmit: 1255,
@@ -128,7 +118,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CMS],
     deliverySystem: [DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
-    options: "",
   },
   {
     cmit: 561,
@@ -138,7 +127,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.HEDIS],
     deliverySystem: [DeliverySystem.MLTSS],
     dataSource: DataSource.Administrative,
-    options: "",
   },
   // POM measures
   {
@@ -149,7 +137,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CQL],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
-    options: "",
   },
   {
     cmit: 1822,
@@ -159,7 +146,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CQL],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
-    options: "",
   },
   {
     cmit: 1822,
@@ -169,7 +155,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CQL],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
-    options: "",
   },
   {
     cmit: 1822,
@@ -179,7 +164,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CQL],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
-    options: "",
   },
   {
     cmit: 1822,
@@ -189,7 +173,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CQL],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
-    options: "",
   },
   {
     cmit: 1822,
@@ -199,7 +182,6 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CQL],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
-    options: "",
   },
   {
     cmit: 1822,
@@ -209,6 +191,5 @@ export const CMIT_LIST: CMIT[] = [
     measureSpecification: [MeasureSpecification.CQL],
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Survey,
-    options: "",
   },
 ];

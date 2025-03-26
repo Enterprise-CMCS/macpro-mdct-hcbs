@@ -1,16 +1,30 @@
-import { QualityMeasureTableElement } from "./QualityMeasureTable";
+import { MeasureResultsNavigationTableElement } from "./MeasureResultsNavigationTable";
 import { render, screen } from "@testing-library/react";
-import { useStore } from "utils";
 import { mockUseStore } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
+import { useLiveElement } from "utils/state/hooks/useLiveElement";
+import { ElementType } from "types/report";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({ ...mockUseStore });
-
-jest.mock("react-hook-form", () => ({
-  useWatch: jest.fn().mockReturnValue("FFS"),
+jest.mock("utils/state/useStore", () => ({
+  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
+    if (selector) {
+      return selector(mockUseStore);
+    }
+    return mockUseStore;
+  }),
 }));
+
+jest.mock("utils/state/hooks/useLiveElement");
+const mockedUseLiveElement = useLiveElement as jest.MockedFunction<
+  typeof useLiveElement
+>;
+mockedUseLiveElement.mockReturnValue({
+  type: ElementType.Radio,
+  id: "anId",
+  answer: "FFS",
+  label: "how are you today?",
+  value: [],
+});
 
 const mockUseNavigate = jest.fn();
 
@@ -24,9 +38,9 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-describe("Quality Measure Table", () => {
+describe("Measure Results Navigation Table", () => {
   it("should enable each delivery system's button correctly", async () => {
-    render(<QualityMeasureTableElement />);
+    render(<MeasureResultsNavigationTableElement />);
 
     const ffsRow = screen.getByRole("row", { name: /FFS CMIT# 960/ });
     const ffsButton = ffsRow.querySelector("button");

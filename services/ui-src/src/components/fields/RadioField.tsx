@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { FieldError, useFormContext } from "react-hook-form";
+import { get, useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
 import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
-import { ChoiceProps } from "@cmsgov/design-system/dist/types/ChoiceList/ChoiceList";
+import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
 
 export const formatChoices = (
   parentKey: string,
@@ -47,15 +47,44 @@ export const RadioField = (props: PageElementProps) => {
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
+
   useEffect(() => {
     const options = { required: radio.required || false };
+    form.setValue(key, radio.answer);
     form.register(key, options);
+    if (radio.answer) {
+      form.setValue(`${props.formkey}.type`, radio.type);
+    }
   }, []);
 
-  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>(
-    formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
-  );
+  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
+  const [hideElement, setHideElement] = useState<boolean>(false);
 
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(
+      formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+    );
+  }, [radio.answer]);
+
+  useEffect(() => {
+    const formValues = form.getValues() as any;
+    if (formValues && Object.keys(formValues).length === 0) {
+      return;
+    }
+    if (radio?.hideCondition) {
+      const controlElement = formValues?.elements?.find((element: any) => {
+        return element?.id === radio.hideCondition?.controllerElementId;
+      });
+      if (controlElement?.answer === radio.hideCondition.answer) {
+        setHideElement(true);
+      } else {
+        setHideElement(false);
+      }
+    }
+  }, [form.getValues()]);
+
+  // OnChange handles setting the visual of the radio on click, outside the normal blur
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -65,21 +94,41 @@ export const RadioField = (props: PageElementProps) => {
       return choice;
     });
     setDisplayValue(newValues);
+    /**
+     * This is not ideal but we need to unregister the current radio
+     * element before setting the again values.
+     * There is (seemingly) a bug in react hook form with yup validation:
+     *
+     * If a child of a radio choice has errors and then
+     * the child element gets cleared from the page by switching to
+     * radio option that doesn't have children, the children errors do
+     * not get cleared from the form and it breaks so we have to clear here
+     * manually by doing unregister.
+     *
+     * If there's a bug with saving radio values, it's probably this line.
+     */
+    form.unregister(props.formkey);
     form.setValue(name, value, { shouldValidate: true });
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
+    form.setValue(`${props.formkey}.id`, radio.id);
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value);
+    form.setValue(key, event.target.value, { shouldValidate: true });
+    form.setValue(`${props.formkey}.type`, radio.type);
+    form.setValue(`${props.formkey}.label`, radio.label);
   };
 
   // prepare error message, hint, and classes
-  const formErrorState = form?.formState?.errors;
-  const elementErrors = formErrorState?.[props.formkey] as {
-    answer: FieldError;
-  };
-  const errorMessage = elementErrors?.answer?.message;
+  const formErrors = form?.formState?.errors;
+  const errorMessage: string | undefined = get(formErrors, key)?.message;
   const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
   const labelText = radio.label;
+
+  if (hideElement) {
+    return null;
+  }
 
   return (
     <Box>

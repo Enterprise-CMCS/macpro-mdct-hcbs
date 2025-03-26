@@ -3,11 +3,11 @@ import {
   AlertDescription,
   AlertTitle,
   Box,
-  CSSObject,
   Flex,
   Image,
   Link,
   Text,
+  SystemStyleObject,
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
 import alertIcon from "assets/icons/alert/icon_alert.svg";
@@ -56,7 +56,7 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  sx?: CSSObject;
+  sx?: SystemStyleObject;
   showIcon?: boolean;
   icon?: string;
   title?: string;

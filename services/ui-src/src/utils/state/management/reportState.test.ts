@@ -6,14 +6,24 @@ import {
   MeasureTemplateName,
   PageType,
   Report,
+  ReportingRadioTemplate,
   ReportStatus,
   ReportType,
   TextboxTemplate,
 } from "types/report";
-import { buildState, mergeAnswers, setPage, substitute } from "./reportState";
+import {
+  buildState,
+  clearMeasure,
+  mergeAnswers,
+  resetMeasure,
+  setPage,
+  substitute,
+  saveReport,
+  filterErrors,
+} from "./reportState";
 import {
   mock2MeasureTemplate,
-  mockMeasureTemplate,
+  mockMeasureTemplateNotReporting,
 } from "utils/testing/setupJest";
 
 jest.mock("../../api/requestMethods/report", () => ({
@@ -65,7 +75,7 @@ const testReport: Report = {
         },
       ],
     },
-    mockMeasureTemplate,
+    mockMeasureTemplateNotReporting,
     mock2MeasureTemplate,
   ],
   measureLookup: { defaultMeasures: [], optionGroups: {} },
@@ -82,12 +92,92 @@ const testReport: Report = {
           to: "req-measure-result",
         },
         {
-          type: ElementType.QualityMeasureTable,
+          type: ElementType.MeasureResultsNavigationTable,
           measureDisplay: "quality",
         },
       ],
     } as MeasurePageTemplate,
+    [MeasureTemplateName["FFS-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-2"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-2"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-2"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-3"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-3"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-3"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FASI-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-FASI-1"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-FASI-1"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
@@ -103,11 +193,43 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["FFS-6"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-6"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-7"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
       title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-7"]]: {
+      id: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-7"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       type: PageType.Measure,
       elements: [],
     },
@@ -119,11 +241,19 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["FFS-1"]]: {
+    [MeasureTemplateName["FFS-8"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
       title: "",
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-8"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
       type: PageType.Measure,
       elements: [],
     },
@@ -231,8 +361,68 @@ describe("state/management/reportState: mergeAnswers", () => {
 
 describe("state/management/reportState: substitute", () => {
   test("substitute the measure", () => {
-    const response = substitute(testReport, mockMeasureTemplate);
+    const response = substitute(testReport, mockMeasureTemplateNotReporting);
     const measure = response.report.pages[3] as MeasurePageTemplate;
     expect(measure.required).toBe(false);
+  });
+});
+
+describe("state/management/reportState: resetMeasure", () => {
+  test("reset measure", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport) as unknown as HcbsReportState;
+    const response = resetMeasure("LTSS-1", state);
+    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const question = measure.elements[1] as TextboxTemplate;
+
+    expect(measure.status).toBe(MeasureStatus.NOT_STARTED);
+    expect(reportingRadio.answer).toBeFalsy();
+    expect(question.answer).toBeFalsy();
+  });
+});
+
+describe("state/management/reportState: clearMeasure", () => {
+  test("clear measure", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport) as unknown as HcbsReportState;
+    const response = clearMeasure("LTSS-1", state, ["measure-reporting-radio"]);
+    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const question = measure.elements[1] as TextboxTemplate;
+
+    expect(measure.status).toBe(MeasureStatus.IN_PROGRESS);
+    expect(reportingRadio.answer).toBe("no");
+    expect(question.answer).toBeFalsy();
+  });
+});
+
+describe("state/management/reportState: saveReport", () => {
+  test("updates store on success", async () => {
+    const state = buildState(testReport) as unknown as HcbsReportState;
+    const result = await saveReport(state);
+    expect(result?.lastSavedTime).toBeTruthy();
+  });
+});
+
+describe("state/management/reportState: filterErrors", () => {
+  test("removes errored entries from answers", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const answers = { elements: [{ answer: "dog" }, { answer: "cat" }] };
+    const errors = { elements: [{ answer: { message: "No dog allowed" } }] };
+
+    const result = filterErrors(answers, errors);
+
+    expect("answer" in result.elements).toBeFalsy();
+    expect(result.elements[1].answer).toBe("cat");
   });
 });

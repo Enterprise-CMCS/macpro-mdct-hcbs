@@ -28,11 +28,16 @@ export interface CMIT {
   cmit: number;
   name: string;
   uid: string;
-  options: string;
   deliverySystem: DeliverySystem[];
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
+}
+
+export interface dependentPageInfo {
+  key: string;
+  linkText: string;
+  template: MeasureTemplateName;
 }
 
 export interface MeasureOptions {
@@ -40,13 +45,25 @@ export interface MeasureOptions {
   uid: string;
   required: boolean;
   stratified: boolean;
-  measureTemplate: MeasureTemplateName[];
+  measureTemplate: MeasureTemplateName;
+  dependentPages: dependentPageInfo[];
 }
 
 export enum MeasureTemplateName {
   // required measures
-  "LTSS-1" = "LTSS-1",
   "FFS-1" = "FFS-1",
+  "FFS-2" = "FFS-2",
+  "FFS-3" = "FFS-3",
+  "FFS-6" = "FFS-6",
+  "FFS-7" = "FFS-7",
+  "FFS-8" = "FFS-8",
+  "MLTSS-1" = "MLTSS-1",
+  "MLTSS-2" = "MLTSS-2",
+  "MLTSS-3" = "MLTSS-3",
+  "MLTSS-6" = "MLTSS-6",
+  "MLTSS-7" = "MLTSS-7",
+  "MLTSS-8" = "MLTSS-8",
+  "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
@@ -54,10 +71,14 @@ export enum MeasureTemplateName {
   // optional measures
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
+  "FFS-FASI-1" = "FFS-FASI-1",
+  "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "HCBS-10" = "HCBS-10",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
+  "LTSS-5-PT1" = "LTSS-5-PT1",
+  "LTSS-5-PT2" = "LTSS-5-PT2",
   "MLTSS" = "MLTSS",
   // pom measures
   "POM-1" = "POM-1",
@@ -99,6 +120,8 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   optional?: boolean;
   substitutable?: string;
   status: MeasureStatus;
+  children?: dependentPageInfo[];
+  cmitInfo?: CMIT;
 }
 
 export interface SectionTemplate {
@@ -187,9 +210,11 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
   Date = "date",
+  Dropdown = "dropdown",
   Accordion = "accordion",
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
@@ -197,17 +222,20 @@ export enum ElementType {
   ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
-  QualityMeasureTable = "qualityMeasureTable",
+  MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
+  MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
 }
 
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | NestedHeadingTemplate
   | TextboxTemplate
   | TextAreaBoxTemplate
   | DateTemplate
+  | DropdownTemplate
   | AccordionTemplate
   | ResultRowButtonTemplate
   | ParagraphTemplate
@@ -215,8 +243,9 @@ export type PageElement =
   | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
-  | QualityMeasureTableTemplate
+  | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
+  | MeasureDetailsTemplate
   | MeasureFooterTemplate;
 
 export type HeaderTemplate = {
@@ -224,9 +253,21 @@ export type HeaderTemplate = {
   id: string;
   text: string;
 };
+export const isHeaderTemplate = (
+  element: PageElement
+): element is HeaderTemplate => {
+  return element.type === ElementType.Header;
+};
 
 export type SubHeaderTemplate = {
   type: ElementType.SubHeader;
+  id: string;
+  text: string;
+  helperText?: string;
+};
+
+export type NestedHeadingTemplate = {
+  type: ElementType.NestedHeading;
   id: string;
   text: string;
 };
@@ -245,6 +286,10 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
   required?: string; //takes error message to display if not provided
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type TextAreaBoxTemplate = {
@@ -253,6 +298,10 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type DateTemplate = {
@@ -261,6 +310,16 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
+};
+
+export type DropdownTemplate = {
+  type: ElementType.Dropdown;
+  id: string;
+  label: string;
+  options: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string;
+  required?: string;
 };
 
 export type AccordionTemplate = {
@@ -292,6 +351,10 @@ export type RadioTemplate = {
   value: ChoiceTemplate[];
   answer?: string;
   required?: string; //takes error message to display if not provided
+  hideCondition?: {
+    controllerElementId: string;
+    answer: string;
+  };
 };
 
 export type ReportingRadioTemplate = {
@@ -310,6 +373,11 @@ export type ButtonLinkTemplate = {
   id: string;
   label: string;
   to?: PageId;
+};
+
+export type MeasureDetailsTemplate = {
+  type: ElementType.MeasureDetails;
+  id: string;
 };
 
 export type MeasureFooterTemplate = {
@@ -335,8 +403,8 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "stratified" | "optional";
 };
 
-export type QualityMeasureTableTemplate = {
-  type: ElementType.QualityMeasureTable;
+export type MeasureResultsNavigationTableTemplate = {
+  type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
 };

@@ -74,8 +74,8 @@ resources:
           - AttributeName: id
             KeyType: RANGE
         Tags:
-          - Key: "cpm backup"
-            Value: "no-backup"
+          - Key: "AWS_Backup"
+            Value: "d35"
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
   Outputs:
     BannerTableName:

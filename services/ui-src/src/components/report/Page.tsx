@@ -5,15 +5,23 @@ import {
   paragraphElement,
   accordionElement,
   buttonLinkElement,
+  nestedHeadingElement,
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
-import { MeasureTableElement } from "./MeasureTable";
-import { QualityMeasureTableElement } from "./QualityMeasureTable";
-import { StatusTableElement } from "./StatusTable";
-import { TextField, DateField, RadioField, TextAreaField } from "components";
+import {
+  DateField,
+  DropdownField,
+  MeasureDetailsElement,
+  MeasureFooterElement,
+  MeasureTableElement,
+  MeasureResultsNavigationTableElement,
+  RadioField,
+  ReportingRadioField,
+  StatusTableElement,
+  TextAreaField,
+  TextField,
+} from "components";
 import { useStore } from "utils";
-import { MeasureFooterElement } from "./MeasureFooter";
-import { ReportingRadioField } from "components/fields/ReportingRadioField";
 
 interface Props {
   elements: PageElement[];
@@ -28,6 +36,8 @@ export const Page = ({ elements }: Props) => {
         return headerElement;
       case ElementType.SubHeader:
         return subHeaderElement;
+      case ElementType.NestedHeading:
+        return nestedHeadingElement;
       case ElementType.Paragraph:
         return paragraphElement;
       case ElementType.Textbox:
@@ -36,6 +46,8 @@ export const Page = ({ elements }: Props) => {
         return TextAreaField;
       case ElementType.Date:
         return DateField;
+      case ElementType.Dropdown:
+        return DropdownField;
       case ElementType.Accordion:
         return accordionElement;
       case ElementType.Radio:
@@ -46,10 +58,12 @@ export const Page = ({ elements }: Props) => {
         return buttonLinkElement;
       case ElementType.MeasureTable:
         return MeasureTableElement;
-      case ElementType.QualityMeasureTable:
-        return QualityMeasureTableElement;
+      case ElementType.MeasureResultsNavigationTable:
+        return MeasureResultsNavigationTableElement;
       case ElementType.StatusTable:
         return StatusTableElement;
+      case ElementType.MeasureDetails:
+        return MeasureDetailsElement;
       case ElementType.MeasureFooter:
         return MeasureFooterElement;
       default:

@@ -1,22 +1,22 @@
 import KSUID from "ksuid";
-import { qmsReportTemplate } from "../../forms/qms";
+import {
+  getReportTemplate,
+  getCmitInfo,
+} from "../../forms/yearlyFormSelection";
 import { putReport } from "../../storage/reports";
 import {
-  ElementType,
-  PageElement,
   Report,
   ReportStatus,
   ReportOptions,
   ReportType,
+  isHeaderTemplate,
+  MeasureOptions,
+  MeasurePageTemplate,
+  CMIT,
 } from "../../types/reports";
 import { User } from "../../types/types";
-import { CMIT_LIST } from "../../forms/cmit";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { logger } from "../../libs/debug-lib";
-
-const reportTemplates = {
-  [ReportType.QMS]: qmsReportTemplate,
-};
 
 export const buildReport = async (
   reportType: ReportType,
@@ -24,11 +24,9 @@ export const buildReport = async (
   reportOptions: ReportOptions,
   user: User
 ) => {
-  const report = structuredClone(reportTemplates[reportType]) as Report;
-  // TODO: Get version by year
-  if (reportOptions.year != 2026) {
-    throw new Error("ERROR: Year should be 2026");
-  }
+  const year = reportOptions.year;
+  const report = structuredClone(getReportTemplate(reportType, year));
+  const cmitList = getCmitInfo(year);
   report.state = state;
   report.id = KSUID.randomSync().string;
   report.created = Date.now();
@@ -53,26 +51,25 @@ export const buildReport = async (
       measures.push(...report.measureLookup.pomMeasures);
     }
 
-    const measurePages = measures.map((measure) => {
-      const pages = measure.measureTemplate.map((template) =>
-        structuredClone(report.measureTemplates[template])
+    for (let measure of measures) {
+      const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
+      const parentPage = initializeQmsPage(
+        measure,
+        report.measureTemplates[measure.measureTemplate],
+        cmitInfo,
+        true
       );
 
-      return pages.map((page) => {
-        page.cmit = measure.cmit;
-        page.cmitId = measure.uid;
-        page.stratified = measure.stratified;
-        page.required = measure.required;
-        page.elements = [
-          ...page.elements.map((element) =>
-            findAndReplace(element, measure.uid)
-          ),
-        ];
-        return page;
-      });
-    });
-
-    report.pages = report.pages.concat(...measurePages);
+      const childPages = measure.dependentPages.map((pageInfo) =>
+        initializeQmsPage(
+          measure,
+          report.measureTemplates[pageInfo.template],
+          cmitInfo,
+          false
+        )
+      );
+      report.pages.push(parentPage, ...childPages);
+    }
   }
 
   /**
@@ -92,12 +89,37 @@ export const buildReport = async (
   return report;
 };
 
-export const findAndReplace = (element: PageElement, uid: string) => {
-  const cmitInfo = CMIT_LIST.find((list) => list.uid === uid);
-  if (cmitInfo) {
-    if (element.type === ElementType.Header) {
-      element.text = element.text.replace("{measureName}", cmitInfo.name);
+/**
+ * Clone the given template, and fill it in with the necessary data.
+ */
+const initializeQmsPage = (
+  measure: MeasureOptions,
+  template: MeasurePageTemplate,
+  cmitInfo: CMIT,
+  isMeasurePage: boolean
+) => {
+  const page = structuredClone(template);
+  page.cmit = measure.cmit;
+  page.cmitId = measure.uid;
+  page.stratified = measure.stratified;
+  page.required = measure.required;
+
+  if (isMeasurePage) {
+    page.children = measure.dependentPages;
+    page.cmitInfo = cmitInfo;
+  }
+
+  for (let i = 0; i < page.elements.length; i += 1) {
+    let element = page.elements[i];
+    if (isHeaderTemplate(element)) {
+      /*
+       * Many pages share the same `measureHeader` object, from elements.ts
+       * The extra clone ensures we only alter this page's header.
+       */
+      const clone = structuredClone(element);
+      clone.text = clone.text.replace("{measureName}", cmitInfo.name);
+      page.elements[i] = clone;
     }
   }
-  return element;
+  return page;
 };

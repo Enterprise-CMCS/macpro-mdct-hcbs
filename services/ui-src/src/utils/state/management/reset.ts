@@ -1,4 +1,11 @@
-import { MeasureStatus, PageElement, ElementType, Report } from "types";
+import {
+  MeasureStatus,
+  PageElement,
+  ElementType,
+  Report,
+  PageType,
+  MeasurePageTemplate,
+} from "types";
 
 /**
  * Clear all nested content in the measure, preserving an In Progress state,
@@ -23,7 +30,13 @@ export const performClearMeasure = (
     }
     performResetPageElement(element);
   });
-  // TODO: Clear children measures
+
+  // Clear children of measures
+  if (page.type === PageType.Measure) {
+    (page as MeasurePageTemplate).children?.forEach((child) => {
+      performClearMeasure(child.template, report, ignoreList);
+    });
+  }
 
   return { report };
 };
@@ -37,7 +50,6 @@ export const performResetMeasure = (measureId: string, report: Report) => {
     return;
   }
   if ("status" in page) {
-    // hmm
     page.status = MeasureStatus.NOT_STARTED;
   }
 
@@ -46,8 +58,12 @@ export const performResetMeasure = (measureId: string, report: Report) => {
     performResetPageElement(element);
   });
 
-  // TODO: Clear children measures
-
+  // Clear children of measures
+  if (page.type === PageType.Measure) {
+    (page as MeasurePageTemplate).children?.forEach((child) => {
+      performResetMeasure(child.template, report);
+    });
+  }
   return { report };
 };
 

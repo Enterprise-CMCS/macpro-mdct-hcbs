@@ -18,6 +18,11 @@ export const DateField = (props: PageElementProps) => {
     form.register(key);
   }, []);
 
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(dateTextbox.answer ?? "");
+  }, [dateTextbox.answer]);
+
   const onChangeHandler = (rawValue: string, maskedValue: string) => {
     setDisplayValue(rawValue);
     const isValidDate = checkDateCompleteness(maskedValue);

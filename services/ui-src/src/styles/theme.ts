@@ -12,7 +12,7 @@ export const svgFilters = {
     "brightness(0) saturate(100%) invert(91%) sepia(0%) saturate(89%) hue-rotate(162deg) brightness(97%) contrast(93%);",
 };
 
-const theme = extendTheme({
+export const theme = extendTheme({
   sizes: {
     appMax: "100vw",
     basicPageWidth: "48rem",
@@ -344,6 +344,16 @@ const theme = extendTheme({
             fontSize: "lg",
           },
         },
+        nestedHeading: {
+          fontSize: "18px",
+          fontWeight: "700",
+          p: {
+            margin: "0",
+          },
+          ".mobile &": {
+            fontSize: "lg",
+          },
+        },
         sidebar: {
           fontSize: "21px",
           fontWeight: "700",
@@ -574,6 +584,9 @@ const theme = extendTheme({
           maxWidth: "75%",
           margin: "0 auto",
           textAlign: "center",
+        },
+        helperText: {
+          color: "palette.gray_medium_dark",
         },
       },
     },

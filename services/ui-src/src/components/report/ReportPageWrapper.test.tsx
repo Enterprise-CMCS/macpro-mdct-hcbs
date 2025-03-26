@@ -1,4 +1,10 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import {
+  screen,
+  render,
+  waitFor,
+  act,
+  fireEvent,
+} from "@testing-library/react";
 import {
   ElementType,
   MeasurePageTemplate,
@@ -42,6 +48,11 @@ const testReport: Report = {
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
         },
+        {
+          type: ElementType.Textbox,
+          id: "another-textbox",
+          label: "Another textbox",
+        },
       ],
     },
     {
@@ -75,12 +86,92 @@ const testReport: Report = {
           to: "req-measure-result",
         },
         {
-          type: ElementType.QualityMeasureTable,
+          type: ElementType.MeasureResultsNavigationTable,
           measureDisplay: "quality",
         },
       ],
     },
+    [MeasureTemplateName["FFS-1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-2"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-2"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-2"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-3"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-3"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-3"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FASI-1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-FASI-1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-FASI-1"]]: {
       id: "",
       title: "",
       cmitId: "",
@@ -96,7 +187,39 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["FFS-6"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-6"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-7"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["FFS-7"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-7"]]: {
       id: "",
       title: "",
       cmitId: "",
@@ -112,7 +235,15 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["FFS-1"]]: {
+    [MeasureTemplateName["FFS-8"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-8"]]: {
       id: "",
       title: "",
       cmitId: "",
@@ -189,6 +320,7 @@ const mockGetReport = jest.fn().mockResolvedValue(testReport);
 jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: () => mockGetReport(),
 }));
+
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
     mockUseParams.mockReturnValue({
@@ -214,14 +346,50 @@ describe("ReportPageWrapper", () => {
     expect(screen.getByText("Loading")).toBeTruthy(); // To be updated with real loading page
   });
   test("should render if report exists", async () => {
-    render(<ReportPageWrapper />);
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
 
     await waitFor(() => {
       expect(screen.queryAllByText("General Information")).toBeDefined();
     });
-
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
+  });
+});
+
+describe("Page validation", () => {
+  beforeEach(() => {
+    mockUseParams.mockReturnValue({
+      reportType: "QMS",
+      state: "NJ",
+      reportId: "QMSNJ123",
+    });
+  });
+  test.skip("form should display error when text field is blurred with no input", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
+
+    const contactTitleInput = screen.getByLabelText("Another textbox");
+
+    // blur the textbox without entering anything
+    await act(async () => {
+      fireEvent.blur(contactTitleInput);
+    });
+
+    // validation error will appear since textbox is empty
+    const responseIsRequiredErrorMessage = screen.getAllByText(
+      "A response is required",
+      { exact: false }
+    );
+    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
+    expect(responseIsRequiredErrorMessage.length).toBe(2);
   });
 });

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { TextField } from "components";
@@ -34,6 +34,10 @@ const mockedTextboxElement = {
   type: ElementType.Textbox,
   label: "test label",
   helperText: "helper text",
+  hideCondition: {
+    controllerElementId: "reporting-radio",
+    answer: "yes",
+  },
 } as TextboxTemplate;
 
 const textFieldComponent = (
@@ -57,14 +61,46 @@ describe("<TextField />", () => {
       render(textFieldComponent);
       const textField = screen.getByRole("textbox");
 
-      await userEvent.type(textField, "hello[Tab]");
+      await act(async () => await userEvent.type(textField, "hello[Tab]"));
 
-      // 5 keystrokes + 1 blur = 6 calls
-      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(6);
       expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
         expect.any(String),
         "hello"
       );
+    });
+  });
+
+  describe("Text field hide condition logic", () => {
+    test("Text field is hidden if its hide conditions' controlling element has a matching answer", async () => {
+      mockGetValues({
+        elements: [
+          {
+            answer: "yes",
+            type: "reportingRadio",
+            label: "Should we hide the other radios on this page?",
+            id: "reporting-radio",
+          },
+        ],
+      });
+      render(textFieldComponent);
+      const textField = screen.queryByLabelText("test label");
+      expect(textField).not.toBeInTheDocument();
+    });
+
+    test("Text field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {
+      mockGetValues({
+        elements: [
+          {
+            answer: "idk",
+            type: "reportingRadio",
+            label: "Should we hide the other radios on this page?",
+            id: "reporting-radio",
+          },
+        ],
+      });
+      render(textFieldComponent);
+      const textField = screen.queryByLabelText("test label");
+      expect(textField).toBeVisible();
     });
   });
 
