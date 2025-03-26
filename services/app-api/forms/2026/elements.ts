@@ -151,14 +151,20 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   },
 };
 
-export const whichDeliverySystemsWereUsed: RadioTemplate = {
+export const measureDeliveryMethodsSubheader: SubHeaderTemplate = {
+  type: ElementType.SubHeader,
+  text: "Measure Delivery Methods",
+  id: "measure-delivery-methods-subheader",
+};
+
+export const whichVersionQualityMeasureReported: RadioTemplate = {
   type: ElementType.Radio,
   id: "delivery-method-radio",
-  label: "Which delivery systems were used to report this measure?",
+  label: "Which version of quality measure will be reported?",
   value: [
-    { label: "Fee-For-Service (FFS)", value: "FFS" },
+    { label: "Fee-For-Service (FFS LTSS)", value: "FFS" },
     {
-      label: "Managed Long-Term Services and Supports (MLTSS)",
+      label: "Managed Care (MLTSS)",
       value: "MLTSS",
     },
     { label: "Both FFS and MLTSS (separate)", value: "FFS,MLTSS" },
@@ -169,7 +175,7 @@ export const whichDeliverySystemsWereUsed: RadioTemplate = {
   },
 };
 
-export const qualityMeasuresSubheader: SubHeaderTemplate = {
+export const enterMeasureResultsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   text: "Enter Measure Results",
   id: "quality-measures-subheader",
