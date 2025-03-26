@@ -224,7 +224,7 @@ export const areYouReportingStratification: RadioTemplate = {
 export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Ehanced,
+  rateType: PerformanceRateType.NDR_Enhanced,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -243,7 +243,7 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Ehanced,
+  rateType: PerformanceRateType.NDR_Enhanced,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -262,7 +262,7 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
 export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Ehanced,
+  rateType: PerformanceRateType.NDR_Enhanced,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -281,13 +281,13 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Ehanced,
+  rateType: PerformanceRateType.NDR_Enhanced,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "part-not-contact",
-      label: "Participant Count Not Be Contacted",
+      label: "Participant Could Not be Contacted",
     },
     {
       id: "part-refuse-planning",

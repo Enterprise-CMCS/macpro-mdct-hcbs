@@ -308,7 +308,7 @@ export type PerformanceData = {
 
 export const enum PerformanceRateType {
   NDR = "NDR",
-  NDR_Ehanced = "NDREnhanced",
+  NDR_Enhanced = "NDREnhanced",
   FIELDS = "Fields",
   NDRFIELDS = "NDRFields",
 }
