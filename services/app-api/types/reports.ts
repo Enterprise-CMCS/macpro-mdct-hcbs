@@ -1,5 +1,6 @@
 // Templates
 
+import { AnyObject } from "yup";
 import {
   DataSource,
   DeliverySystem,
@@ -226,6 +227,7 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
+  PerformanceRate = "performanceRate",
 }
 
 export type PageElement =
@@ -246,7 +248,8 @@ export type PageElement =
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
-  | MeasureFooterTemplate;
+  | MeasureFooterTemplate
+  | PerformanceRateTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -388,6 +391,36 @@ export type MeasureFooterTemplate = {
   completeMeasure?: boolean;
   completeSection?: boolean;
   clear?: boolean;
+};
+
+export type PerformanceData = {
+  rates: AnyObject[];
+  denominator?: number;
+};
+
+export const enum PerformanceRateType {
+  NDR = "NDR",
+  NDR_Enhanced = "NDREnhanced",
+  FIELDS = "Fields",
+  NDRFIELDS = "NDRFields",
+}
+
+export const enum RateCalc {
+  NDRCalc = "NDRCalc",
+  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
+}
+
+export type PerformanceRateTemplate = {
+  id: string;
+  type: ElementType.PerformanceRate;
+  label?: string;
+  helperText?: string;
+  assessments?: { label: string; id: string }[];
+  fields?: { label: string; id: string; autoCalc?: boolean }[];
+  rateType: PerformanceRateType;
+  rateCalc?: RateCalc;
+  multiplier?: number;
+  answer?: PerformanceData;
 };
 
 export type ChoiceTemplate = {
