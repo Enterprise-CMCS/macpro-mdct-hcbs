@@ -752,7 +752,7 @@ export const measureTemplates: Record<
             label: "Participant with Person-Centered Plan Transmitted to PCP",
           },
         ],
-      }
+      },
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -842,7 +842,7 @@ export const measureTemplates: Record<
             label: "Participant with Person-Centered Plan Transmitted to PCP",
           },
         ],
-      }
+      },
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
