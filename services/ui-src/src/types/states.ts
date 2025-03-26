@@ -4,7 +4,7 @@ import {
   Report,
   MeasurePageTemplate,
 } from "types/report";
-import React from "react";
+import { ReactNode } from "react";
 import { BannerData, ErrorVerbiage, HcbsUser } from "types";
 
 export interface AdminBannerState {
@@ -42,16 +42,19 @@ export interface HcbsReportState {
   parentPage?: PageData; // used for looking up curr & next page
   currentPageId?: string;
   modalOpen: boolean;
-  modalComponent?: React.ReactFragment;
+  modalHeader?: string;
+  modalComponent?: ReactNode;
   lastSavedTime?: string;
+  errorMessage?: string;
 
   // ACTIONS
   setReport: (report?: Report) => void;
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
-  setModalComponent: (modalComponent: React.ReactFragment) => void;
-  setAnswers: (answers: any) => void;
+  setModalComponent: (modalComponent: ReactNode, modalHeader: string) => void;
+  setAnswers: (answers: any, errors?: any) => void;
   clearMeasure: (measureId: string, ignoreList: string[]) => void;
   resetMeasure: (measureId: string) => void;
   setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => void;
+  saveReport: () => void;
 }

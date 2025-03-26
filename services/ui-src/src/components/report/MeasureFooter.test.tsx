@@ -2,8 +2,18 @@ import { render, screen } from "@testing-library/react";
 import { ElementType, MeasureFooterTemplate } from "types";
 import { MeasureFooterElement } from "./MeasureFooter";
 import userEvent from "@testing-library/user-event";
+import { mockUseStore } from "utils/testing/setupJest";
 
 const mockUseNavigate = jest.fn();
+
+jest.mock("utils/state/useStore", () => ({
+  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
+    if (selector) {
+      return selector(mockUseStore);
+    }
+    return mockUseStore;
+  }),
+}));
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),

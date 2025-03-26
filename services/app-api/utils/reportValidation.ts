@@ -29,6 +29,13 @@ const subHeaderTemplateSchema = object().shape({
   type: string().required(ElementType.SubHeader),
   id: string().required(),
   text: string().required(),
+  helperText: string().notRequired(),
+});
+
+const nestedHeadingTemplateSchema = object().shape({
+  type: string().required(ElementType.NestedHeading),
+  id: string().required(),
+  text: string().required(),
 });
 
 const paragraphTemplateSchema = object().shape({
@@ -45,6 +52,13 @@ const textboxTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   required: string().notRequired(),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const textAreaTemplateSchema = object().shape({
@@ -53,6 +67,13 @@ const textAreaTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const dateTemplateSchema = object().shape({
@@ -61,6 +82,23 @@ const dateTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().required(),
   answer: string().notRequired(),
+});
+
+const dropdownTemplateSchema = object().shape({
+  type: string().required(ElementType.Dropdown),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().required(),
+  options: array().of(
+    object().shape({
+      label: string().required(),
+      value: string().required(),
+      checked: boolean().notRequired(),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+    })
+  ),
+  answer: string().notRequired(),
+  required: string().notRequired(),
 });
 
 const accordionTemplateSchema = object().shape({
@@ -87,6 +125,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return headerTemplateSchema;
     case ElementType.SubHeader:
       return subHeaderTemplateSchema;
+    case ElementType.NestedHeading:
+      return nestedHeadingTemplateSchema;
     case ElementType.Paragraph:
       return paragraphTemplateSchema;
     case ElementType.Textbox:
@@ -95,6 +135,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return textAreaTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
+    case ElementType.Dropdown:
+      return dropdownTemplateSchema;
     case ElementType.Accordion:
       return accordionTemplateSchema;
     case ElementType.ResultRowButton:
@@ -107,10 +149,12 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
       return measureTableTemplateSchema;
-    case ElementType.QualityMeasureTable:
-      return qualityMeasureTableTemplateSchema;
+    case ElementType.MeasureResultsNavigationTable:
+      return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
       return statusTableTemplateSchema;
+    case ElementType.MeasureDetails:
+      return measureDetailsTemplateSchema;
     case ElementType.MeasureFooter:
       return measureFooterSchema;
     default:
@@ -133,6 +177,13 @@ const radioTemplateSchema = object().shape({
   ),
   answer: string().notRequired(),
   required: string().notRequired(),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const reportingRadioTemplateSchema = object().shape({
@@ -167,8 +218,8 @@ const measureTableTemplateSchema = object().shape({
     .required(),
 });
 
-const qualityMeasureTableTemplateSchema = object().shape({
-  type: string().required(ElementType.QualityMeasureTable),
+const measureResultsNavigationTableTemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureResultsNavigationTable),
   id: string().required(),
   measureDisplay: string().required("quality"),
 });
@@ -177,6 +228,11 @@ const statusTableTemplateSchema = object().shape({
   type: string().required(ElementType.StatusTable),
   id: string().required(),
   to: string().required(),
+});
+
+const measureDetailsTemplateSchema = object().shape({
+  type: string().required(ElementType.MeasureDetails),
+  id: string().required(),
 });
 
 const measureFooterSchema = object().shape({
@@ -204,6 +260,22 @@ const formPageTemplateSchema = object().shape({
   childPageIds: array().of(string()).notRequired(),
 });
 
+const cmitInfoSchema = object().shape({
+  cmit: number().required(),
+  name: string().required(),
+  uid: string().required(),
+  measureSteward: string().required(),
+  measureSpecification: array().of(string()).required(),
+  deliverySystem: array().of(string()).notRequired(),
+  dataSource: string().required(),
+});
+
+const dependentPageInfoSchema = object().shape({
+  key: string().required(),
+  linkText: string().required(),
+  template: string().required(),
+});
+
 // MeasurePageTemplate extends FormPageTemplate
 const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmit: number().notRequired(),
@@ -212,6 +284,11 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
+  children: array()
+    .of(dependentPageInfoSchema)
+    .notRequired()
+    .default(undefined),
+  cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 
 const measureOptionsArraySchema = array().of(
@@ -220,7 +297,8 @@ const measureOptionsArraySchema = array().of(
     uid: string().required(),
     required: boolean().required(),
     stratified: boolean().required(),
-    measureTemplate: array().required(),
+    measureTemplate: string().required(),
+    dependentPages: array().of(dependentPageInfoSchema),
   })
 );
 

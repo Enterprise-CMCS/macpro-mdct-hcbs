@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { render, screen, act } from "@testing-library/react";
 import {
   RouterWrappedComponent,
   mockNoUserStore,
@@ -28,9 +27,13 @@ describe("<App />", () => {
       await render(appComponent);
     });
     expect(
-      screen.getByRole("region", { name: "Official government website" })
+      screen.getByRole("region", {
+        name: "Official website of the United States government",
+      })
     ).toBeVisible();
-    expect(screen.getByRole("img", { name: "U.S. Flag" })).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Here's how you know" })
+    ).toBeVisible();
     // Unable to run assertions on collections
     expect(screen.getAllByAltText("HCBS logo"));
     expect(screen.getAllByAltText("Help"));

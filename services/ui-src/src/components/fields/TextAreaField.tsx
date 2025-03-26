@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useFormContext } from "react-hook-form";
+import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
@@ -10,13 +10,37 @@ export const TextAreaField = (props: PageElementProps) => {
   const textbox = props.element as TextAreaBoxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [hideElement, setHideElement] = useState<boolean>(false);
 
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
     form.register(key);
+    form.setValue(key, defaultValue);
   }, []);
+
+  // Need to listen to prop updates from the parent for events like a measure clear
+  useEffect(() => {
+    setDisplayValue(textbox.answer ?? "");
+  }, [textbox.answer]);
+
+  useEffect(() => {
+    const formValues = form.getValues() as any;
+    if (formValues && Object.keys(formValues).length === 0) {
+      return;
+    }
+    if (textbox?.hideCondition) {
+      const controlElement = formValues?.elements?.find((element: any) => {
+        return element?.id === textbox.hideCondition?.controllerElementId;
+      });
+      if (controlElement?.answer === textbox.hideCondition.answer) {
+        setHideElement(true);
+      } else {
+        setHideElement(false);
+      }
+    }
+  }, [form.getValues()]);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -32,9 +56,13 @@ export const TextAreaField = (props: PageElementProps) => {
 
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[key]?.message;
+  const errorMessage: string | undefined = get(formErrorState, key)?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
   const labelText = textbox.label;
+
+  if (hideElement) {
+    return null;
+  }
 
   return (
     <Box>

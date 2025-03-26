@@ -75,7 +75,7 @@ export const LoginCognito = () => {
             />
           </label>
         </Box>
-        <Button sx={sx.button} onClick={handleLogin} isFullWidth type="submit">
+        <Button sx={sx.button} onClick={handleLogin} type="submit">
           Log In with Cognito
         </Button>
       </form>
