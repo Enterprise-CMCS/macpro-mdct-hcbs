@@ -596,7 +596,8 @@ export const measureTemplates: Record<
         assessments: [
           {
             id: "same-env",
-            label: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+            label:
+              "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
           },
         ],
       },
@@ -635,7 +636,8 @@ export const measureTemplates: Record<
         assessments: [
           {
             id: "same-env",
-            label: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+            label:
+              "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
           },
         ],
       },
