@@ -595,9 +595,9 @@ export const measureTemplates: Record<
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
-            id: "same-env",
+            id: "total-personal-priority",
             label:
-              "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
           },
         ],
       },
@@ -635,9 +635,9 @@ export const measureTemplates: Record<
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
-            id: "same-env",
+            id: "total-personal-priority",
             label:
-              "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
           },
         ],
       },
@@ -741,77 +741,31 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "pc-plan",
+            label: "Participant with Person-Centered Plan Transmitted to PCP",
+          },
+        ],
+      }
       {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
-      },
-
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-exclusion-rates",
-        text: "Exclusion Rates",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Exclusion Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        label: "Exclusion Rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "refused-pc-plan",
+            label: "Participant Refused to Share Person-Centered Plan",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,
@@ -877,77 +831,31 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "pc-plan",
+            label: "Participant with Person-Centered Plan Transmitted to PCP",
+          },
+        ],
+      }
       {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
-      },
-
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-exclusion-rates",
-        text: "Exclusion Rates",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Exclusion Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        label: "Exclusion Rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "refused-pc-plan",
+            label: "Participant Refused to Share Person-Centered Plan",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,
@@ -1055,44 +963,17 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Fall or Problems with Balance or Gait Evaluation",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "gait-evaulation",
+            label: "Fall or Problems with Balance or Gait Evaluation",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,
@@ -1158,104 +1039,36 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "fall-risk-assess",
+            label: "Falls Risk Assessment",
+          },
+          {
+            id: "plan-care-falls",
+            label: "Plan of Care for Falls",
+          },
+        ],
       },
+
       {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Falls Risk Assessment",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Plan of Care for Falls",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-exclusion-rates",
-        text: "Exclusion Rates",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Exclusion Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused Risk Assessment",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        label: "Exclusion Rates",
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "refused-risk-assess",
+            label: "Participant Refused Risk Assessment",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,
