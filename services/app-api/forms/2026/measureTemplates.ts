@@ -589,6 +589,86 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-FASI-2"]]: {
+    id: "FFS-FASI-2",
+    title: "FASI-2: Fee-For-Service (FFS FASI-2)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-2",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-2: Fee-For-Service (FFS FASI-2)",
+      },
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-2",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-FASI-2"]]: {
+    id: "MLTSS-FASI-2",
+    title: "FASI-2: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-2",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-2: Managed Care (MLTSS)",
+      },
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-2",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["HCBS-10"]]: {
     id: "HCBS-10",
     title:

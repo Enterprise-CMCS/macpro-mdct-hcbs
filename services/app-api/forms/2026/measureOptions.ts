@@ -65,7 +65,18 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["FASI-2"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-FASI-2"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-FASI-2"],
+      },
+    ],
   },
   {
     cmit: 20,
