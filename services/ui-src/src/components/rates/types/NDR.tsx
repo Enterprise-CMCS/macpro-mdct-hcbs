@@ -42,7 +42,7 @@ export const NDR = (
     const [index, type] = name.split(".");
 
     const newDisplayValue = displayValue.rates[Number(index)];
-    newDisplayValue[type] = value;
+    newDisplayValue[type] = value ?? undefined;
     newDisplayValue.rate = calculation(newDisplayValue, multiplier);
     displayValue.rates[Number(index)] = newDisplayValue;
 

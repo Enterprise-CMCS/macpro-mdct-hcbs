@@ -54,7 +54,7 @@ export const NDREnhanced = (
         }),
       };
     } else {
-      newDisplayValue.rates[Number(index)][type] = value;
+      newDisplayValue.rates[Number(index)][type] = value ?? undefined;
     }
 
     newDisplayValue.rates = newDisplayValue.rates.map((set) => {

@@ -52,11 +52,11 @@ export const NDRFields = (
     if (setKey === "denominator") {
       newValues[Number(setIndex)].denominator = Number(value);
       newValues[Number(setIndex)].rates?.forEach((rate) => {
-        rate.denominator = Number(value);
+        rate.denominator = value ? Number(value) : undefined;
       });
     } else if (setKey === "rates" && newValues[Number(setIndex)].rates) {
       newValues[Number(setIndex)].rates![Number(rateIndex)][type as rateType] =
-        Number(value);
+        value ? Number(value) : undefined;
     }
 
     //run rate calculations if denominator or numerator was changed

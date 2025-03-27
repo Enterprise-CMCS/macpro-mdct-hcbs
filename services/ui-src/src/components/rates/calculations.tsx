@@ -14,19 +14,19 @@ export const FacilityLengthOfStayCalc = (
 
   //Observed Performance Rate for the Minimizing Length of Facility Stay
   if (
-    isFilled(rate["count-of-success-dis"]) &&
+    isFilled(rate["count-of-success"]) &&
     isFilled(rate["fac-admin-count"])
   )
     rate["opr-min-stay"] =
-      rate["count-of-success-dis"] / rate["fac-admin-count"];
+      rate["count-of-success"] / rate["fac-admin-count"];
 
   //Expected Performance Rate for the Minimizing Length of Facility Stay
   if (
-    isFilled(rate["expected-count-of-success-dis"]) &&
+    isFilled(rate["expected-count-of-success"]) &&
     isFilled(rate["fac-admin-count"])
   )
     rate["epr-min-stay"] =
-      rate["expected-count-of-success-dis"] / rate["fac-admin-count"];
+      rate["expected-count-of-success"] / rate["fac-admin-count"];
 
   //Risk Adjusted Rate for the Minimizing Length of Facility Stay
   if (

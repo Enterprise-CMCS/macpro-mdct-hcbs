@@ -35,7 +35,7 @@ export const Fields = (
     const { name, value } = event.target;
     const [index, type] = name.split(".");
     const newDisplayValue = displayValue.rates[Number(index)];
-    newDisplayValue[type] = value;
+    newDisplayValue[type] = value ?? undefined;
 
     const calculatedRate = calculation(newDisplayValue, multiplier);
 
