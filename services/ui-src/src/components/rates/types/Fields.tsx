@@ -17,7 +17,7 @@ export const Fields = (
       return { [field.id]: "" };
     }) ?? [];
   const initialValues = Object.assign({}, ...arr);
-  const defaultValue = answer ?? {
+  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
     rates: [{ performanceTarget: "", ...initialValues }],
   };
   const [displayValue, setDisplayValue] =

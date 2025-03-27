@@ -23,7 +23,7 @@ export const NDREnhanced = (
       };
     }) ?? [];
 
-  const defaultValue = answer ?? {
+  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
     denominator: undefined,
     rates: initialValues,
   };
@@ -48,7 +48,7 @@ export const NDREnhanced = (
     // //set the denominator for all the ndr sets
     if (name === "denominator") {
       newDisplayValue = {
-        denominator: Number(value),
+        denominator: value ? Number(value) : undefined,
         rates: displayValue?.rates?.map((values) => {
           return { ...values, denominator: value };
         }),

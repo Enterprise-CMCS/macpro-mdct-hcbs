@@ -23,7 +23,9 @@ export const NDR = (
       };
     }) ?? [];
 
-  const defaultValue = answer ?? { rates: initialValues };
+  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
+    rates: initialValues,
+  };
   const [displayValue, setDisplayValue] =
     useState<PerformanceData>(defaultValue);
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { PerformanceData, PerformanceRateTemplate } from "types";
+import { PerformanceRateTemplate, RateSetData } from "types";
 
 export const NDRFields = (
   props: PerformanceRateTemplate & {
@@ -12,24 +12,28 @@ export const NDRFields = (
   }
 ) => {
   const { label, assessments, answer, multiplier, calculation, fields } = props;
-  const initialValues =
+
+  const defaultRates: RateSetData[] =
     assessments?.map((assess) => {
       return {
-        numerator: "",
-        denominator: "",
-        rate: "",
-        performanceTarget: "",
+        label: assess.label,
+        denominator: undefined,
         id: assess.id,
+        rates: fields?.map((field) => {
+          return {
+            label: field.label,
+            numerator: undefined,
+            denominator: undefined,
+            rate: undefined,
+            performanceTarget: undefined,
+            id: assess.id,
+          };
+        }),
       };
     }) ?? [];
 
-  const defaultValue = answer ?? {
-    denominator: undefined,
-    rates: initialValues,
-  };
-
-  const [displayValue, setDisplayValue] =
-    useState<PerformanceData>(defaultValue);
+  const defaultValue: RateSetData[] = (answer as RateSetData[]) ?? defaultRates;
+  const [displayValue, setDisplayValue] = useState<RateSetData[]>(defaultValue);
 
   // get form context and register field
   const form = useFormContext();
@@ -41,43 +45,44 @@ export const NDRFields = (
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const [index, type] = name.split(".");
+    const [setIndex, setKey, rateIndex, type] = name.split(".");
+    const newValues = [...displayValue];
+    type rateType = "numerator" | "denominator" | "rate" | "performanceTarget";
 
-    // //set the denominator for all the ndr sets
-    if (type === "denominator") {
-      const newValues = {
-        denominator: Number(value),
-        rates: displayValue?.rates?.map((values) => {
-          return { ...values, denominator: value };
-        }),
-      };
-
-      setDisplayValue(newValues);
-      form.setValue(`${key}`, newValues, { shouldValidate: true });
-    } else {
-      const newDisplayValue = displayValue.rates[Number(index)];
-      newDisplayValue[type] = value;
-      newDisplayValue.rate = calculation(newDisplayValue, multiplier);
-      displayValue.rates[Number(index)] = newDisplayValue;
-      setDisplayValue({ ...displayValue });
-      form.setValue(`${key}`, displayValue, { shouldValidate: true });
-      form.setValue(`${key}.type`, props.type);
+    if (setKey === "denominator") {
+      newValues[Number(setIndex)].denominator = Number(value);
+      newValues[Number(setIndex)].rates?.forEach((rate) => {
+        rate.denominator = Number(value);
+      });
+    } else if (setKey === "rates" && newValues[Number(setIndex)].rates) {
+      newValues[Number(setIndex)].rates![Number(rateIndex)][type as rateType] =
+        Number(value);
     }
+
+    //run rate calculations if denominator or numerator was changed
+    if (setKey === "denominator" || type === "numerator") {
+      newValues[Number(setIndex)].rates?.forEach((rate) => {
+        rate.rate = calculation(rate, multiplier);
+      });
+    }
+
+    setDisplayValue([...newValues]);
+    form.setValue(`${key}`, newValues, { shouldValidate: true });
+    form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     let adjustedName = name === "denominator" ? "" : ".rates";
-    form.setValue(`${key}${adjustedName}.${name}`, value, {
-      shouldValidate: true,
-    });
-    form.setValue(`${key}.type`, props.type);
+    // form.setValue(`${key}${adjustedName}.${name}`, value, {
+    //   shouldValidate: true,
+    // });
+    // form.setValue(`${key}.type`, props.type);
   };
 
   return (
     <Stack gap={4}>
-      {assessments?.map((assess, index) => {
-        const value =
-          displayValue?.rates?.find((item) => item.id === assess.id) ?? {};
+      {assessments?.map((assess, assessIndex) => {
+        const rateSet = displayValue?.find((value) => value.id === assess.id);
 
         return (
           <Stack key={assess.id}>
@@ -89,13 +94,17 @@ export const NDRFields = (
 
             <CmsdsTextField
               label={`Denominator (${assess.label})`}
-              name={`${index}.denominator`}
+              name={`${assessIndex}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.denominator}
+              value={rateSet?.denominator}
             ></CmsdsTextField>
 
-            {fields?.map((field) => {
+            {fields?.map((field, fieldIndex) => {
+              const value = rateSet?.rates?.find(
+                (item) => item.id === assess.id
+              );
+
               return (
                 <Stack>
                   <CmsdsTextField
@@ -104,23 +113,31 @@ export const NDRFields = (
                     } state performance target for this assessment for ${field.label.toLowerCase()} (${
                       assess.label
                     })?`}
-                    name={`${index}.performanceTarget`}
+                    name={`${assessIndex}.rates.${fieldIndex}.performanceTarget`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value.performanceTarget}
+                    value={value?.performanceTarget}
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`Numerator: ${field.label} (${assess.label})`}
-                    name={`${index}.numerator`}
+                    name={`${assessIndex}.rates.${fieldIndex}.numerator`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value.numerator}
+                    value={value?.numerator}
+                  ></CmsdsTextField>
+                  <CmsdsTextField
+                    label={`Denominator (${assess.label})`}
+                    name={`${assessIndex}.rates.${fieldIndex}.denominator`}
+                    onChange={onChangeHandler}
+                    onBlur={onBlurHandler}
+                    value={value?.denominator}
+                    disabled
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`${field.label} Rate (${assess.label})`}
-                    name={`${index}.rate`}
+                    name={`${assessIndex}.rates.${fieldIndex}.rate`}
                     hint="Auto-calculates"
-                    value={value.rate}
+                    value={value?.rate}
                     disabled
                   ></CmsdsTextField>
                 </Stack>
