@@ -50,7 +50,7 @@ export class WafConstruct extends Construct {
       },
       rules: [
         {
-          name: `DDOSRateLimitRule`,
+          name: "DDOSRateLimitRule",
           priority: 10,
           action: { block: {} },
           statement: {
@@ -66,7 +66,7 @@ export class WafConstruct extends Construct {
           },
         },
         {
-          name: `AWSCommonRule`,
+          name: "AWSCommonRule",
           priority: 20,
           overrideAction: { none: {} },
           statement: {
@@ -83,7 +83,7 @@ export class WafConstruct extends Construct {
           },
         },
         {
-          name: `AWSManagedRulesAmazonIpReputationList`,
+          name: "AWSManagedRulesAmazonIpReputationList",
           priority: 30,
           overrideAction: { none: {} },
           statement: {
@@ -99,7 +99,7 @@ export class WafConstruct extends Construct {
           },
         },
         {
-          name: `AWSManagedRulesKnownBadInputsRuleSet`,
+          name: "AWSManagedRulesKnownBadInputsRuleSet",
           priority: 40,
           overrideAction: { none: {} },
           statement: {
@@ -115,7 +115,7 @@ export class WafConstruct extends Construct {
           },
         },
         {
-          name: `allow-usa-plus-territories`,
+          name: "allow-usa-plus-territories",
           priority: 50,
           action: { allow: {} },
           statement: {
