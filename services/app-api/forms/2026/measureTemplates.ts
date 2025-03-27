@@ -648,16 +648,6 @@ export const measureTemplates: Record<
         text: "LTSS-3: Fee-For-Service (FFS LTSS)",
       },
       measureInstructions,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
-      },
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
@@ -678,8 +668,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rates",
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
+        helperText: "Hint Text",
         assessments: [
           {
             id: "refused-pc-plan",
@@ -722,16 +711,6 @@ export const measureTemplates: Record<
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
-      },
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
@@ -752,8 +731,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rates",
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
+        helperText: "Hint Text",
         assessments: [
           {
             id: "refused-pc-plan",
@@ -914,8 +892,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
         label: "Exclusion Rates",
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
+        helperText: "Hint Text",
         assessments: [
           {
             id: "refused-risk-assess",
