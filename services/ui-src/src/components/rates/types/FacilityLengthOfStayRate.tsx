@@ -9,8 +9,7 @@ import { FacilityLengthOfStayCalc } from "../calculations";
 
 export const FacilityLengthOfStayRate = (props: PageElementProps) => {
   const { formkey, element } = props;
-  const { helperText, answer, fields } =
-    element as FacilityLengthOfStayRateTemplate;
+  const { helperText, answer } = element as FacilityLengthOfStayRateTemplate;
   const year = useStore().report?.year;
 
   const defaultValue = answer ?? {
@@ -57,23 +56,63 @@ export const FacilityLengthOfStayRate = (props: PageElementProps) => {
       <Stack gap={4}>
         <CmsdsTextField
           label={`What is the ${year} state performance target for this assessment?`}
-          name={`performanceTarget`}
+          name="performanceTarget"
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
           value={displayValue.performanceTarget}
         ></CmsdsTextField>
-        {fields.map((field) => {
-          return (
-            <CmsdsTextField
-              label={field.label}
-              name={field.id}
-              onChange={onChangeHandler}
-              onBlur={onBlurHandler}
-              value={displayValue[field.id]}
-              disabled={field.autoCalc}
-            ></CmsdsTextField>
-          );
-        })}
+        <CmsdsTextField
+          label="Count of Successful Discharges to the Community"
+          name="actualDischarges"
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue.actualDischarges}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label="Facility Admission Count"
+          name="admissionCount"
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue.admissionCount}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label="Expected Count of Successful Discharges to the Community"
+          name="expectedDischarges"
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue.expectedDischarges}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label="Multi-Plan Population Rate"
+          name="populationRate"
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue.populationRate}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label="Observed Performance Rate for the Minimizing Length of Facility Stay"
+          name="actualRate"
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue.actualRate}
+          disabled={true}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label="Expected Performance Rate for the Minimizing Length of Facility Stay"
+          name="expectedRate"
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue.expectedRate}
+          disabled={true}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label="Risk Adjusted Rate for the Minimizing Length of Facility Stay"
+          name="riskAdjustedRate"
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue.riskAdjustedRate}
+          disabled={true}
+        ></CmsdsTextField>
       </Stack>
     </Stack>
   );

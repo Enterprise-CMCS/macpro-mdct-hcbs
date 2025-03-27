@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { FacilityLengthOfStayRate } from "./FacilityLengthOfStayRate";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
@@ -34,35 +34,6 @@ const mockedPerformanceElement: FacilityLengthOfStayRateTemplate = {
   id: "mock-element-id",
   type: ElementType.FacilityLengthOfStayRate,
   helperText: "helper text",
-  fields: [
-    {
-      id: "actualDischarges",
-      label: "Count of Successful Discharges to the Community",
-    },
-    { id: "admissionCount", label: "Facility Admission Count" },
-    {
-      id: "expectedDischarges",
-      label: "Expected Count of Successful Discharges to the Community",
-    },
-    { id: "populationRate", label: "Multi-Plan Population Rate" },
-    {
-      id: "actualRate",
-      label:
-        "Observed Performance Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "expectedRate",
-      label:
-        "Expected Performance Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "riskAdjustedRate",
-      label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
 };
 
 const fieldsComponent = (
@@ -72,69 +43,62 @@ const fieldsComponent = (
   />
 );
 
+const fieldLabels = {
+  performanceTarget:
+    "What is the 2026 state performance target for this assessment?",
+  actualDischarges: "Count of Successful Discharges to the Community",
+  admissionCount: "Facility Admission Count",
+  expectedDischarges:
+    "Expected Count of Successful Discharges to the Community",
+  populationRate: "Multi-Plan Population Rate",
+  actualRate:
+    "Observed Performance Rate for the Minimizing Length of Facility Stay",
+  expectedRate:
+    "Expected Performance Rate for the Minimizing Length of Facility Stay",
+  riskAdjustedRate:
+    "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+};
+
 describe("<Fields />", () => {
   describe("Test Fields component", () => {
     beforeEach(() => {
       render(fieldsComponent);
     });
-    test("Fields is visible", () => {
-      expect(
-        screen.getByRole("textbox", {
-          name: "What is the 2026 state performance target for this assessment?",
-        })
-      ).toBeInTheDocument();
 
-      mockedPerformanceElement.fields?.forEach((field) => {
-        expect(
-          screen.getByRole("textbox", {
-            name: field.label,
-          })
-        ).toBeInTheDocument();
+    test("Fields are visible and enabled/disabled appropriately", () => {
+      const autoCalculatedLabels = [
+        fieldLabels.actualRate,
+        fieldLabels.expectedRate,
+        fieldLabels.riskAdjustedRate,
+      ];
+      for (let label of Object.values(fieldLabels)) {
+        const element = screen.getByRole("textbox", { name: label });
+        expect(element).toBeInTheDocument();
 
-        if (field.autoCalc)
-          expect(
-            screen.getByRole("textbox", { name: field.label })
-          ).toBeDisabled();
-      });
+        if (autoCalculatedLabels.includes(label)) {
+          expect(element).toBeDisabled();
+        } else {
+          expect(element).not.toBeDisabled();
+        }
+      }
     });
+
     test("Fields should auto-calculate", async () => {
-      const countOfSuccessDis = screen.getByRole("textbox", {
-        name: "Count of Successful Discharges to the Community",
-      });
-      await act(async () => await userEvent.type(countOfSuccessDis, "1"));
+      const fields = Object.fromEntries(
+        Object.entries(fieldLabels).map(([id, label]) => [
+          id,
+          screen.getByRole("textbox", { name: label }),
+        ])
+      ) as Record<keyof typeof fieldLabels, HTMLElement>;
 
-      const facAdminCount = screen.getByRole("textbox", {
-        name: "Facility Admission Count",
-      });
-      await act(async () => await userEvent.type(facAdminCount, "2"));
+      await userEvent.type(fields.actualDischarges, "2");
+      await userEvent.type(fields.admissionCount, "7");
+      await userEvent.type(fields.expectedDischarges, "3");
+      await userEvent.type(fields.populationRate, "2");
 
-      const expectedCountOfSuccessDis = screen.getByRole("textbox", {
-        name: "Expected Count of Successful Discharges to the Community",
-      });
-      await act(
-        async () => await userEvent.type(expectedCountOfSuccessDis, "1")
-      );
-
-      const multiPlan = screen.getByRole("textbox", {
-        name: "Multi-Plan Population Rate",
-      });
-      await act(async () => await userEvent.type(multiPlan, "2"));
-
-      //rates
-      const oprMinStay = screen.getByRole("textbox", {
-        name: "Observed Performance Rate for the Minimizing Length of Facility Stay",
-      });
-      expect(oprMinStay).toHaveValue("0.5");
-
-      const eprMinStay = screen.getByRole("textbox", {
-        name: "Expected Performance Rate for the Minimizing Length of Facility Stay",
-      });
-      expect(eprMinStay).toHaveValue("0.5");
-
-      const rarMinStay = screen.getByRole("textbox", {
-        name: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
-      });
-      expect(rarMinStay).toHaveValue("2");
+      expect(fields.actualRate).toHaveValue("0.29");
+      expect(fields.expectedRate).toHaveValue("0.43");
+      expect(fields.riskAdjustedRate).toHaveValue("1.33");
     });
   });
 

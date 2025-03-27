@@ -393,11 +393,6 @@ export type FacilityLengthOfStayRateTemplate = {
   id: string;
   type: ElementType.FacilityLengthOfStayRate;
   helperText: string;
-  fields: {
-    label: string;
-    id: keyof FacilityLengthOfStayAnswer;
-    autoCalc?: boolean;
-  }[];
   answer?: FacilityLengthOfStayAnswer;
 };
 

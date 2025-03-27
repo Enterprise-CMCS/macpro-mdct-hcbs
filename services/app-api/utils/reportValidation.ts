@@ -281,13 +281,6 @@ const facilityLengthOfStayRateSchema = object().shape({
   type: string().required(ElementType.FacilityLengthOfStayRate),
   id: string().required(),
   helperText: string(),
-  fields: array().of(
-    object().shape({
-      id: string().required(),
-      label: string().required(),
-      autoCalc: boolean().notRequired(),
-    })
-  ),
   answer: mixed().notRequired(),
 });
 
