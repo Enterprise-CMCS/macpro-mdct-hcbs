@@ -26,7 +26,7 @@ export const NDRFields = (
             denominator: undefined,
             rate: undefined,
             performanceTarget: undefined,
-            id: assess.id,
+            id: `${assess.id}.${field.id}`,
           };
         }),
       };
@@ -72,11 +72,8 @@ export const NDRFields = (
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    let adjustedName = name === "denominator" ? "" : ".rates";
-    // form.setValue(`${key}${adjustedName}.${name}`, value, {
-    //   shouldValidate: true,
-    // });
-    // form.setValue(`${key}.type`, props.type);
+    form.setValue(`${key}.${name}`, value, { shouldValidate: true });
+    form.setValue(`${key}.type`, props.type);
   };
 
   return (
@@ -102,7 +99,7 @@ export const NDRFields = (
 
             {fields?.map((field, fieldIndex) => {
               const value = rateSet?.rates?.find(
-                (item) => item.id === assess.id
+                (item) => item.id === `${assess.id}.${field.id}`
               );
 
               return (
