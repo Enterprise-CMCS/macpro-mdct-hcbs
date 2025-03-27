@@ -100,11 +100,11 @@ export class ParentStack extends Stack {
         distribution: distribution!,
         apiGatewayRestApiUrl,
         applicationEndpointUrl:
-          secureCloudfrontDomainName || applicationEndpointUrl!,
+          secureCloudfrontDomainName || applicationEndpointUrl,
         identityPoolId: identityPoolId!,
         userPoolId: userPoolId!,
         userPoolClientId: userPoolClientId!,
-        userPoolClientDomain: `${userPoolDomainName}.auth.${this.region}.amazoncognito.com`,
+        userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
         customResourceRole,
       });
 
