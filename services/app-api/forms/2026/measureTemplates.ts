@@ -33,7 +33,8 @@ import {
   performanceRatesPersonPlanElements,
   exclusionRatesPersonPlanElements,
   performanceRateTermStay,
-  performanceRateFacility,
+  performanceRateFacilityDischarges,
+  performanceRateFacilityTransitions,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -335,7 +336,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRateFacility,
+      performanceRateFacilityDischarges,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -367,7 +368,7 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRateFacility,
+      performanceRateFacilityDischarges,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -420,52 +421,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText: "{Instructions}",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "count-success-transitions-to-community",
-        label: "Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "long-term-facility-count",
-        label: "Long-Term Facility Stay Count",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-count-success-transitions-to-community",
-        label: "Expected Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "multi-plan-population-rate",
-        label: "Multi-Plan Population Rate",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "observed-performance-rate-auto-calc1",
-        helperText: "Auto-calculates",
-        label:
-          "Observed Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-performance-rate-auto-calc2",
-        helperText: "Auto-calculates",
-        label:
-          "Expected Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "risk-adjusted-rate-auto-calc3",
-        helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      },
+      performanceRateFacilityTransitions,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -495,54 +451,9 @@ export const measureTemplates: Record<
         text: "LTSS-8: Managed Care (MLTSS)",
       },
       measureInstructions,
-      managedCareMeasureResultsSubheader,
+      feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText: "{Instructions}",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "count-success-transitions-to-community",
-        label: "Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "long-term-facility-count",
-        label: "Long-Term Facility Stay Count",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-count-success-transitions-to-community",
-        label: "Expected Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "multi-plan-population-rate",
-        label: "Multi-Plan Population Rate",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "observed-performance-rate-auto-calc1",
-        helperText: "Auto-calculates",
-        label:
-          "Observed Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-performance-rate-auto-calc2",
-        helperText: "Auto-calculates",
-        label:
-          "Expected Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "risk-adjusted-rate-auto-calc3",
-        helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      },
+      performanceRateFacilityTransitions,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,

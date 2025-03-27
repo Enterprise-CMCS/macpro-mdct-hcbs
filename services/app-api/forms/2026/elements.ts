@@ -316,8 +316,8 @@ export const performanceRatePOM: PerformanceRateTemplate = {
   ],
 };
 
-//Rates for LTSS-7 & LTSS-8
-export const performanceRateFacility: PerformanceRateTemplate = {
+//Rates for LTSS-7
+export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   helperText:
@@ -331,6 +331,45 @@ export const performanceRateFacility: PerformanceRateTemplate = {
     {
       id: "expected-count-of-success-dis",
       label: "Expected Count of Successful Discharges to the Community",
+    },
+    { id: "multi-plan", label: "Multi-Plan Population Rate" },
+    {
+      id: "opr-min-stay",
+      label:
+        "Observed Performance Rate for the Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "epr-min-stay",
+      label:
+        "Expected Performance Rate for the Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "rar-min-stay",
+      label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+  ],
+  rateType: PerformanceRateType.FIELDS,
+  rateCalc: RateCalc.FacilityLengthOfStayCalc,
+};
+
+//Rates for LTSS-8
+export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  helperText:
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
+  fields: [
+    {
+      id: "count-of-success-transitions",
+      label: "Count of Successful Transitions to the Community",
+    },
+    { id: "long-term-facility-count", label: "Long-Term Facility Stay Count" },
+    {
+      id: "expected-count-of-success-dis",
+      label: "Expected Count of Successful Transitions to the Community",
     },
     { id: "multi-plan", label: "Multi-Plan Population Rate" },
     {
