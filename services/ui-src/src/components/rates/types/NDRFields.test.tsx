@@ -72,10 +72,10 @@ describe("<NDRFields />", () => {
 
       assessments?.forEach((assess) => {
         expect(
-          screen.getByRole("textbox", {
+          screen.getAllByRole("textbox", {
             name: `Denominator (${assess.label})`,
           })
-        ).toBeInTheDocument();
+        ).toHaveLength(4);
         fields?.forEach((field) => {
           expect(
             screen.getByRole("textbox", {
@@ -84,13 +84,11 @@ describe("<NDRFields />", () => {
               })?`,
             })
           ).toBeInTheDocument();
-
           expect(
             screen.getByRole("textbox", {
               name: `Numerator: ${field.label} (${assess.label})`,
             })
           ).toBeInTheDocument();
-
           expect(
             screen.getByRole("textbox", {
               name: `${field.label} Rate (${assess.label})`,
@@ -104,9 +102,9 @@ describe("<NDRFields />", () => {
       const { assessments, fields } = mockedPerformanceElement;
 
       if (assessments && assessments.length > 0) {
-        const denom = screen.getByRole("textbox", {
+        const denom = screen.getAllByRole("textbox", {
           name: `Denominator (${assessments[0].label})`,
-        });
+        })[0];
         await act(async () => await userEvent.type(denom, "1"));
         expect(denom).toHaveValue("1");
 

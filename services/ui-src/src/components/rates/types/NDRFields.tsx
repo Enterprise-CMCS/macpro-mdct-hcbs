@@ -103,7 +103,7 @@ export const NDRFields = (
               );
 
               return (
-                <Stack>
+                <Stack key={`${assess.id}.${field.id}`}>
                   <CmsdsTextField
                     label={`What is the ${
                       props.year
