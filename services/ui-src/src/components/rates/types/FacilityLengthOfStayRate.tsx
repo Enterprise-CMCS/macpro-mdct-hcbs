@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FacilityLengthOfStayAnswer,
-  FacilityLengthOfStayRateTemplate,
-} from "types";
+import { FacilityLengthOfStayRateTemplate } from "types";
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
@@ -12,20 +9,19 @@ import { FacilityLengthOfStayCalc } from "../calculations";
 
 export const FacilityLengthOfStayRate = (props: PageElementProps) => {
   const { formkey, element } = props;
-  const {
-    helperText,
-    answer,
-    fields,
-    type: elementType,
-  } = element as FacilityLengthOfStayRateTemplate;
+  const { helperText, answer, fields } =
+    element as FacilityLengthOfStayRateTemplate;
   const year = useStore().report?.year;
 
-  const arr = fields.map((field) => {
-    return { [field.id]: "" };
-  });
-  const initialValues = Object.assign({}, ...arr);
   const defaultValue = answer ?? {
-    rates: [{ performanceTarget: "", ...initialValues }],
+    performanceTarget: undefined,
+    actualDischarges: undefined,
+    admissionCount: undefined,
+    expectedDischarges: undefined,
+    populationRate: undefined,
+    actualRate: undefined,
+    expectedRate: undefined,
+    riskAdjustedRate: undefined,
   };
   const [displayValue, setDisplayValue] =
     useState<NonNullable<typeof answer>>(defaultValue);
@@ -40,21 +36,18 @@ export const FacilityLengthOfStayRate = (props: PageElementProps) => {
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const [index, type] = name.split(".");
-    const newDisplayValue = displayValue.rates[Number(index)];
-    newDisplayValue[type as keyof FacilityLengthOfStayAnswer] = value;
+    const calculatedRate = FacilityLengthOfStayCalc({
+      ...displayValue,
+      [name]: value,
+    });
 
-    const calculatedRate = FacilityLengthOfStayCalc(newDisplayValue);
-
-    displayValue.rates[Number(index)] = calculatedRate;
-    setDisplayValue({ ...displayValue });
+    setDisplayValue(calculatedRate);
     form.setValue(`${key}`, displayValue, { shouldValidate: true });
-    form.setValue(`${key}.type`, elementType);
   };
+
   const onBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    form.setValue(`${key}.rates.${name}`, value, { shouldValidate: true });
-    form.setValue(`${key}.type`, elementType);
+    form.setValue(`${key}.${name}`, value, { shouldValidate: true });
   };
 
   return (
@@ -64,19 +57,19 @@ export const FacilityLengthOfStayRate = (props: PageElementProps) => {
       <Stack gap={4}>
         <CmsdsTextField
           label={`What is the ${year} state performance target for this assessment?`}
-          name={`0.performanceTarget`}
+          name={`performanceTarget`}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
-          value={displayValue.rates[0].performanceTarget}
+          value={displayValue.performanceTarget}
         ></CmsdsTextField>
         {fields.map((field) => {
           return (
             <CmsdsTextField
               label={field.label}
-              name={`0.${field.id}`}
+              name={field.id}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={displayValue.rates[0][field.id]}
+              value={displayValue[field.id]}
               disabled={field.autoCalc}
             ></CmsdsTextField>
           );

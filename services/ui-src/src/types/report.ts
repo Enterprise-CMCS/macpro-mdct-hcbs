@@ -323,9 +323,7 @@ export type FacilityLengthOfStayRateTemplate = {
     id: keyof FacilityLengthOfStayAnswer;
     autoCalc?: boolean;
   }[];
-  answer?: {
-    rates: [FacilityLengthOfStayAnswer];
-  };
+  answer?: FacilityLengthOfStayAnswer;
 };
 
 export type PerformanceData = {
