@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Heading, Stack } from "@chakra-ui/react";
+import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
 import { PerformanceData, PerformanceRateTemplate } from "types";
@@ -57,13 +57,13 @@ export const NDR = (
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={6}>
       {assessments?.map((assess, index) => {
         const value =
           displayValue.rates.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <Stack key={assess.id}>
+          <Stack key={assess.id} gap={6}>
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}
@@ -97,6 +97,7 @@ export const NDR = (
               value={value.rate}
               disabled
             ></CmsdsTextField>
+            <Divider></Divider>
           </Stack>
         );
       })}

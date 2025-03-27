@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Heading, Stack } from "@chakra-ui/react";
+import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { PerformanceData, PerformanceRateTemplate } from "types";
@@ -75,7 +75,7 @@ export const NDREnhanced = (
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={6}>
       <CmsdsTextField
         label="Performance Rates Denominator"
         name="denominator"
@@ -88,7 +88,7 @@ export const NDREnhanced = (
           displayValue?.rates?.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <Stack key={assess.id}>
+          <Stack key={assess.id} gap={6}>
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}
@@ -127,6 +127,7 @@ export const NDREnhanced = (
           </Stack>
         );
       })}
+      <Divider></Divider>
     </Stack>
   );
 };

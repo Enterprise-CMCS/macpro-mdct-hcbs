@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PerformanceData, PerformanceRateTemplate } from "types";
-import { Stack } from "@chakra-ui/react";
+import { Divider, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
 
@@ -51,7 +51,7 @@ export const Fields = (
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={6}>
       <CmsdsTextField
         label={`What is the ${props.year} state performance target for this assessment?`}
         name={`0.performanceTarget`}
@@ -71,6 +71,7 @@ export const Fields = (
           ></CmsdsTextField>
         );
       })}
+      <Divider></Divider>
     </Stack>
   );
 };
