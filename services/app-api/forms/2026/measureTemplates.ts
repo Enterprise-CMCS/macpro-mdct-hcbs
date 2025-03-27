@@ -612,7 +612,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -652,7 +652,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
