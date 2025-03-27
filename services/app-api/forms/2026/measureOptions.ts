@@ -130,7 +130,13 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["HCBS-10"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-HCBS-10"],
+      },
+    ],
   },
   {
     cmit: 963,

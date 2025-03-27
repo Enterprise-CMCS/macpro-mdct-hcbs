@@ -75,6 +75,7 @@ export enum MeasureTemplateName {
   "FFS-FASI-1" = "FFS-FASI-1",
   "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "HCBS-10" = "HCBS-10",
+  "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
