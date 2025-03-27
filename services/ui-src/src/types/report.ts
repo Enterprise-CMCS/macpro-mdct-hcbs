@@ -303,16 +303,15 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
-type something = string | number | undefined;
 export type FacilityLengthOfStayAnswer = {
-  performanceTarget: something;
-  actualDischarges: something;
-  admissionCount: something;
-  expectedDischarges: something;
-  populationRate: something;
-  actualRate: something;
-  expectedRate: something;
-  riskAdjustedRate: something;
+  performanceTarget: number | undefined;
+  actualDischarges: number | undefined;
+  admissionCount: number | undefined;
+  expectedDischarges: number | undefined;
+  populationRate: number | undefined;
+  actualRate: number | undefined;
+  expectedRate: number | undefined;
+  riskAdjustedRate: number | undefined;
 };
 
 export type FacilityLengthOfStayRateTemplate = {

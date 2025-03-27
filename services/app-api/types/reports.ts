@@ -378,12 +378,29 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
+export type FacilityLengthOfStayAnswer = {
+  performanceTarget: number | undefined;
+  actualDischarges: number | undefined;
+  admissionCount: number | undefined;
+  expectedDischarges: number | undefined;
+  populationRate: number | undefined;
+  actualRate: number | undefined;
+  expectedRate: number | undefined;
+  riskAdjustedRate: number | undefined;
+};
+
 export type FacilityLengthOfStayRateTemplate = {
   id: string;
   type: ElementType.FacilityLengthOfStayRate;
   helperText: string;
-  fields: { label: string; id: string; autoCalc?: boolean }[];
-  answer?: unknown;
+  fields: {
+    label: string;
+    id: keyof FacilityLengthOfStayAnswer;
+    autoCalc?: boolean;
+  }[];
+  answer?: {
+    rates: [FacilityLengthOfStayAnswer];
+  };
 };
 
 export type PerformanceData = {
