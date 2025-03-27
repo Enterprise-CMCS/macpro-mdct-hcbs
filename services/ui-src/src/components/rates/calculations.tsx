@@ -4,6 +4,11 @@ const isFilled = (item: string) => {
   return item !== "" && item !== undefined;
 };
 
+export const isNumber = (value: string) => {
+  const allNumbers = /^-?\d*\.?\d*$/i;
+  return allNumbers.test(value);
+};
+
 export const FacilityLengthOfStayCalc = (
   rate: AnyObject,
   _multiplier: number

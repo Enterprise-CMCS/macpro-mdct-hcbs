@@ -3,6 +3,7 @@ import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { PerformanceRateTemplate, RateSetData } from "types";
+import { isNumber } from "../calculations";
 
 export const NDRFields = (
   props: PerformanceRateTemplate & {
@@ -44,13 +45,17 @@ export const NDRFields = (
   }, []);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     const [setIndex, setKey, rateIndex, type] = name.split(".");
     const newValues = [...displayValue];
     type rateType = "numerator" | "denominator" | "rate" | "performanceTarget";
 
     if (setKey === "denominator") {
-      newValues[Number(setIndex)].denominator = Number(value);
+      newValues[Number(setIndex)].denominator = value
+        ? Number(value)
+        : undefined;
       newValues[Number(setIndex)].rates?.forEach((rate) => {
         rate.denominator = value ? Number(value) : undefined;
       });
@@ -71,6 +76,8 @@ export const NDRFields = (
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     form.setValue(`${key}.${name}`, value, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);

@@ -3,6 +3,7 @@ import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { PerformanceData, PerformanceRateTemplate } from "types";
+import { isNumber } from "../calculations";
 
 export const NDREnhanced = (
   props: PerformanceRateTemplate & {
@@ -40,6 +41,8 @@ export const NDREnhanced = (
   }, []);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     const [index, type] = name.split(".");
 
@@ -66,6 +69,8 @@ export const NDREnhanced = (
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     let adjustedName = name === "denominator" ? "" : ".rates";
     form.setValue(`${key}${adjustedName}.${name}`, value, {

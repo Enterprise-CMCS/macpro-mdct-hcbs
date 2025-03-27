@@ -3,6 +3,7 @@ import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
 import { PerformanceData, PerformanceRateTemplate } from "types";
+import { isNumber } from "../calculations";
 
 export const NDR = (
   props: PerformanceRateTemplate & {
@@ -38,6 +39,8 @@ export const NDR = (
   }, []);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     const [index, type] = name.split(".");
 
@@ -51,6 +54,8 @@ export const NDR = (
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     form.setValue(`${key}.rates.${name}`, value, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
