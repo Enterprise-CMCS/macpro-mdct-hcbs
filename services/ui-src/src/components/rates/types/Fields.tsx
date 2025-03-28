@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { PerformanceData, PerformanceRateTemplate } from "types";
-import { Stack } from "@chakra-ui/react";
+import { Divider, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
+import { isNumber } from "../calculations";
 
 export const Fields = (
   props: PerformanceRateTemplate & {
@@ -17,7 +18,7 @@ export const Fields = (
       return { [field.id]: "" };
     }) ?? [];
   const initialValues = Object.assign({}, ...arr);
-  const defaultValue = answer ?? {
+  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
     rates: [{ performanceTarget: "", ...initialValues }],
   };
   const [displayValue, setDisplayValue] =
@@ -32,10 +33,12 @@ export const Fields = (
   }, []);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     const [index, type] = name.split(".");
     const newDisplayValue = displayValue.rates[Number(index)];
-    newDisplayValue[type] = value;
+    newDisplayValue[type] = value ?? undefined;
 
     const calculatedRate = calculation(newDisplayValue, multiplier);
 
@@ -45,13 +48,15 @@ export const Fields = (
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     form.setValue(`${key}.rates.${name}`, value, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={6}>
       <CmsdsTextField
         label={`What is the ${props.year} state performance target for this assessment?`}
         name={`0.performanceTarget`}
@@ -71,6 +76,7 @@ export const Fields = (
           ></CmsdsTextField>
         );
       })}
+      <Divider></Divider>
     </Stack>
   );
 };

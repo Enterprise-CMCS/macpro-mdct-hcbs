@@ -4,6 +4,11 @@ const isFilled = (item: string) => {
   return item !== "" && item !== undefined;
 };
 
+export const isNumber = (value: string) => {
+  const allNumbers = /^-?\d*\.?\d*$/i;
+  return allNumbers.test(value);
+};
+
 export const FacilityLengthOfStayCalc = (
   rate: AnyObject,
   _multiplier: number
@@ -13,20 +18,16 @@ export const FacilityLengthOfStayCalc = (
   rate["rar-min-stay"] = "";
 
   //Observed Performance Rate for the Minimizing Length of Facility Stay
-  if (
-    isFilled(rate["count-of-success-dis"]) &&
-    isFilled(rate["fac-admin-count"])
-  )
-    rate["opr-min-stay"] =
-      rate["count-of-success-dis"] / rate["fac-admin-count"];
+  if (isFilled(rate["count-of-success"]) && isFilled(rate["fac-admin-count"]))
+    rate["opr-min-stay"] = rate["count-of-success"] / rate["fac-admin-count"];
 
   //Expected Performance Rate for the Minimizing Length of Facility Stay
   if (
-    isFilled(rate["expected-count-of-success-dis"]) &&
+    isFilled(rate["expected-count-of-success"]) &&
     isFilled(rate["fac-admin-count"])
   )
     rate["epr-min-stay"] =
-      rate["expected-count-of-success-dis"] / rate["fac-admin-count"];
+      rate["expected-count-of-success"] / rate["fac-admin-count"];
 
   //Risk Adjusted Rate for the Minimizing Length of Facility Stay
   if (

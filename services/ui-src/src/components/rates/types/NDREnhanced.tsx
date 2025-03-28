@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Heading, Stack } from "@chakra-ui/react";
+import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { PerformanceData, PerformanceRateTemplate } from "types";
+import { isNumber } from "../calculations";
 
 export const NDREnhanced = (
   props: PerformanceRateTemplate & {
@@ -23,7 +24,7 @@ export const NDREnhanced = (
       };
     }) ?? [];
 
-  const defaultValue = answer ?? {
+  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
     denominator: undefined,
     rates: initialValues,
   };
@@ -40,6 +41,8 @@ export const NDREnhanced = (
   }, []);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     const [index, type] = name.split(".");
 
@@ -48,13 +51,13 @@ export const NDREnhanced = (
     // //set the denominator for all the ndr sets
     if (name === "denominator") {
       newDisplayValue = {
-        denominator: Number(value),
+        denominator: value ? Number(value) : undefined,
         rates: displayValue?.rates?.map((values) => {
           return { ...values, denominator: value };
         }),
       };
     } else {
-      newDisplayValue.rates[Number(index)][type] = value;
+      newDisplayValue.rates[Number(index)][type] = value ?? undefined;
     }
 
     newDisplayValue.rates = newDisplayValue.rates.map((set) => {
@@ -66,6 +69,8 @@ export const NDREnhanced = (
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     let adjustedName = name === "denominator" ? "" : ".rates";
     form.setValue(`${key}${adjustedName}.${name}`, value, {
@@ -75,7 +80,7 @@ export const NDREnhanced = (
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={6}>
       <CmsdsTextField
         label="Performance Rates Denominator"
         name="denominator"
@@ -88,7 +93,7 @@ export const NDREnhanced = (
           displayValue?.rates?.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <Stack key={assess.id}>
+          <Stack key={assess.id} gap={6}>
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}
@@ -127,6 +132,7 @@ export const NDREnhanced = (
           </Stack>
         );
       })}
+      <Divider></Divider>
     </Stack>
   );
 };

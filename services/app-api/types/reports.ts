@@ -400,6 +400,22 @@ export type PerformanceData = {
   denominator?: number;
 };
 
+export type RateType = {
+  label: string;
+  performanceTarget?: string;
+  numerator?: number;
+  denominator?: number;
+  rate?: number;
+  id?: string;
+};
+
+export type RateSetData = {
+  id: string;
+  label: string;
+  denominator?: number;
+  rates?: RateType[];
+};
+
 export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
@@ -422,7 +438,7 @@ export type PerformanceRateTemplate = {
   rateType: PerformanceRateType;
   rateCalc?: RateCalc;
   multiplier?: number;
-  answer?: PerformanceData;
+  answer?: PerformanceData | RateSetData[];
 };
 
 export type ChoiceTemplate = {
