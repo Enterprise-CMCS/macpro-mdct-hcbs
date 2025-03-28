@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Heading, Stack } from "@chakra-ui/react";
+import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
 import { PerformanceData, PerformanceRateTemplate } from "types";
+import { isNumber } from "../calculations";
 
 export const NDR = (
   props: PerformanceRateTemplate & {
@@ -23,7 +24,9 @@ export const NDR = (
       };
     }) ?? [];
 
-  const defaultValue = answer ?? { rates: initialValues };
+  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
+    rates: initialValues,
+  };
   const [displayValue, setDisplayValue] =
     useState<PerformanceData>(defaultValue);
 
@@ -36,11 +39,13 @@ export const NDR = (
   }, []);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     const [index, type] = name.split(".");
 
     const newDisplayValue = displayValue.rates[Number(index)];
-    newDisplayValue[type] = value;
+    newDisplayValue[type] = value ?? undefined;
     newDisplayValue.rate = calculation(newDisplayValue, multiplier);
     displayValue.rates[Number(index)] = newDisplayValue;
 
@@ -49,19 +54,21 @@ export const NDR = (
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isNumber(event.target.value)) return;
+
     const { name, value } = event.target;
     form.setValue(`${key}.rates.${name}`, value, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={6}>
       {assessments?.map((assess, index) => {
         const value =
           displayValue.rates.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <Stack key={assess.id}>
+          <Stack key={assess.id} gap={6}>
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}
@@ -95,6 +102,7 @@ export const NDR = (
               value={value.rate}
               disabled
             ></CmsdsTextField>
+            <Divider></Divider>
           </Stack>
         );
       })}

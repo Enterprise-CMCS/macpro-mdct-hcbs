@@ -36,12 +36,12 @@ const mockedPerformanceElement = {
   helperText: "helper text",
   fields: [
     {
-      id: "count-of-success-dis",
+      id: "count-of-success",
       label: "Count of Successful Discharges to the Community",
     },
     { id: "fac-admin-count", label: "Facility Admission Count" },
     {
-      id: "expected-count-of-success-dis",
+      id: "expected-count-of-success",
       label: "Expected Count of Successful Discharges to the Community",
     },
     { id: "multi-plan", label: "Multi-Plan Population Rate" },

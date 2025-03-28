@@ -324,30 +324,28 @@ export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
     "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
-      id: "count-of-success-dis",
+      id: "count-of-success",
       label: "Count of Successful Discharges to the Community",
     },
     { id: "fac-admin-count", label: "Facility Admission Count" },
     {
-      id: "expected-count-of-success-dis",
+      id: "expected-count-of-success",
       label: "Expected Count of Successful Discharges to the Community",
     },
     { id: "multi-plan", label: "Multi-Plan Population Rate" },
     {
       id: "opr-min-stay",
-      label:
-        "Observed Performance Rate for the Minimizing Length of Facility Stay",
+      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
       autoCalc: true,
     },
     {
       id: "epr-min-stay",
-      label:
-        "Expected Performance Rate for the Minimizing Length of Facility Stay",
+      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
       autoCalc: true,
     },
     {
       id: "rar-min-stay",
-      label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
+      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
       autoCalc: true,
     },
   ],
