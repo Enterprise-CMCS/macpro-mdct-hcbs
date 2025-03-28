@@ -411,3 +411,21 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDRFIELDS,
   multiplier: 1000,
 };
+
+export const performanceRateSelfDirection: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  helperText:
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    { id: "self-direction-offer", label: "Self-Direction Offer" },
+    { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
+  ],
+  fields: [
+    { id: "year-0", label: " " },
+    { id: "year-1", label: "18 to 64 years old" },
+    { id: "year-2", label: "65 years or older" },
+  ],
+  rateType: PerformanceRateType.NDRFIELDS,
+  multiplier: 1000,
+};

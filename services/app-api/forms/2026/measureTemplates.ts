@@ -35,6 +35,7 @@ import {
   performanceRateTermStay,
   performanceRateFacilityDischarges,
   performanceRateFacilityTransitions,
+  performanceRateSelfDirection,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -708,74 +709,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
-        assessments: [
-          {
-            id: "self-dir-offer",
-            label: "Self-Direction Offer",
-          },
-        ],
-      },
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
-        assessments: [
-          {
-            id: "sd-offer-18-to-64-years-old",
-            label: "18 to 64 years old Self-Direction Offer",
-          },
-        ],
-      },
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
-        assessments: [
-          {
-            id: "sd-offer-64-or-older",
-            label: "65 years or older Self-Direction Offer",
-          },
-        ],
-      },
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
-        assessments: [
-          {
-            id: "self-dir-opt-in",
-            label: "Self-Direction Opt-In",
-          },
-        ],
-      },
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
-        assessments: [
-          {
-            id: "sd-opt-in-18-to-64-years-old",
-            label: "18 to 64 years old Self-Direction Opt-In",
-          },
-        ],
-      },
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
-        assessments: [
-          {
-            id: "sd-opt-in-64-or-older",
-            label: "65 years or older Self-Direction Opt-In",
-          },
-        ],
-      },
+      performanceRateSelfDirection,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
