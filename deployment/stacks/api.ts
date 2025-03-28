@@ -4,9 +4,9 @@ import {
   aws_iam as iam,
   aws_logs as logs,
   aws_wafv2 as wafv2,
+  CfnOutput,
   Duration,
   RemovalPolicy,
-  Tags,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
@@ -40,7 +40,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   } = props;
 
   const service = "app-api";
-  Tags.of(scope).add("SERVICE", service);
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
@@ -210,8 +209,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     iamPath
   );
 
+  const apiGatewayRestApiUrl = api.url.slice(0, -1);
+
+  new CfnOutput(scope, "ApiUrl", {
+    value: apiGatewayRestApiUrl,
+  });
+
   return {
     restApiId: api.restApiId,
-    apiGatewayRestApiUrl: api.url.slice(0, -1),
+    apiGatewayRestApiUrl,
   };
 }
