@@ -111,6 +111,7 @@ export const NDRFields = (
 
               return (
                 <Stack key={`${assess.id}.${field.id}`} gap={6}>
+                  <Heading variant="nestedHeading">{field.label}</Heading>
                   <CmsdsTextField
                     label={`What is the ${
                       props.year
