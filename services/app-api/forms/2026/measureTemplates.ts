@@ -4,7 +4,6 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   PerformanceRateType,
-  RateCalc,
 } from "../../types/reports";
 import {
   additionalNotesField,
@@ -15,13 +14,14 @@ import {
   measureHeader,
   measureInformationSubheader,
   measureInstructions,
-  qualityMeasuresSubheader,
+  enterMeasureResultsSubheader,
   measureResultsNavigationTable,
   returnToOptionalDashboard,
   returnToRequiredDashboard,
   wereTheResultsAudited,
   whatSpecificationsAreYouUsing,
-  whichDeliverySystemsWereUsed,
+  measureDeliveryMethodsSubheader,
+  whichVersionQualityMeasureReported,
   whichMedicaidHCBSprograms,
   feeForServiceMeasureResultsSubheader,
   managedCareMeasureResultsSubheader,
@@ -33,7 +33,9 @@ import {
   performanceRatesPersonPlanElements,
   exclusionRatesPersonPlanElements,
   performanceRateTermStay,
-  performanceRateFacility,
+  performanceRateFacilityDischarges,
+  performanceRateFacilityTransitions,
+  performanceRateSelfDirection,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -52,19 +54,20 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       whatSpecificationsAreYouUsing,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
   },
   [MeasureTemplateName["FFS-1"]]: {
     id: "FFS-1",
-    title: "LTSS-1: Fee-For-Service Measure Results",
+    title: "LTSS-1: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -76,7 +79,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "LTSS-1: Fee-For-Service Measure Results",
+        text: "LTSS-1: Fee-For-Service (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -96,7 +99,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-1"]]: {
     id: "MLTSS-1",
-    title: "LTSS-1: Managed Care Measure Results",
+    title: "LTSS-1: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -109,7 +112,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.Header,
         id: "measure-header",
-        text: "LTSS-1: Managed Care Measure Results",
+        text: "LTSS-1: Managed Care (MLTSS)",
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
@@ -139,19 +142,20 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       whatSpecificationsAreYouUsing,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
   },
   [MeasureTemplateName["FFS-2"]]: {
     id: "FFS-2",
-    title: "LTSS-2: Fee-For-Service Measure Results",
+    title: "LTSS-2: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -163,7 +167,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "LTSS-2: Fee-For-Service Measure Results",
+        text: "LTSS-2: Fee-For-Service (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -183,7 +187,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-2"]]: {
     id: "MLTSS-2",
-    title: "LTSS-2: Managed Care Measure Results",
+    title: "LTSS-2: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -196,7 +200,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.Header,
         id: "measure-header",
-        text: "LTSS-2: Managed Care Measure Results",
+        text: "LTSS-2: Managed Care (MLTSS)",
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
@@ -226,11 +230,12 @@ export const measureTemplates: Record<
       measureDetailsSection,
       measureInformationSubheader,
       isTheStateReportingThisMeasure,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -303,11 +308,12 @@ export const measureTemplates: Record<
       measureDetailsSection,
       measureInformationSubheader,
       isTheStateReportingThisMeasure,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -331,7 +337,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRateFacility,
+      performanceRateFacilityDischarges,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -363,7 +369,7 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRateFacility,
+      performanceRateFacilityDischarges,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -387,11 +393,12 @@ export const measureTemplates: Record<
       measureDetailsSection,
       measureInformationSubheader,
       isTheStateReportingThisMeasure,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -415,43 +422,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
-        fields: [
-          {
-            id: "count-of-success",
-            label: "Count of Successful Transitions to the Community",
-          },
-          { id: "fac-admin-count", label: "Long-Term Facility Stay Count" },
-          {
-            id: "expected-count-of-success",
-            label: "Expected Count of Successful Transitions to the Community",
-          },
-          { id: "multi-plan", label: "Multi-Plan Population Rate" },
-          {
-            id: "opr-min-stay",
-            label:
-              "Observed Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "epr-min-stay",
-            label:
-              "Expected Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "rar-min-stay",
-            label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-        ],
-        rateType: PerformanceRateType.FIELDS,
-        rateCalc: RateCalc.FacilityLengthOfStayCalc,
-      },
+      performanceRateFacilityTransitions,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -481,45 +452,9 @@ export const measureTemplates: Record<
         text: "LTSS-8: Managed Care (MLTSS)",
       },
       measureInstructions,
-      managedCareMeasureResultsSubheader,
+      feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
-        fields: [
-          {
-            id: "count-of-success",
-            label: "Count of Successful Transitions to the Community",
-          },
-          { id: "fac-admin-count", label: "Long-Term Facility Stay Count" },
-          {
-            id: "expected-count-of-success",
-            label: "Expected Count of Successful Transitions to the Community",
-          },
-          { id: "multi-plan", label: "Multi-Plan Population Rate" },
-          {
-            id: "opr-min-stay",
-            label:
-              "Observed Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "epr-min-stay",
-            label:
-              "Expected Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "rar-min-stay",
-            label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-        ],
-        rateType: PerformanceRateType.FIELDS,
-        rateCalc: RateCalc.FacilityLengthOfStayCalc,
-      },
+      performanceRateFacilityTransitions,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -543,11 +478,12 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -575,7 +511,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -615,7 +551,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -644,11 +580,12 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -676,7 +613,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -716,7 +653,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -745,12 +682,40 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      qualityMeasuresSubheader,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["MLTSS-HCBS-10"]]: {
+    id: "MLTSS-HCBS-10",
+    title: "HCBS-10: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "HCBS-10",
+      },
+      {
+        ...measureHeader,
+        text: "HCBS-10: Managed Care (MLTSS)",
+      },
+      measureInstructions,
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      performanceRateSelfDirection,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "HCBS-10",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["LTSS-3"]]: {
@@ -764,12 +729,13 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       whatSpecificationsAreYouUsing,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -791,24 +757,14 @@ export const measureTemplates: Record<
         text: "LTSS-3: Fee-For-Service (FFS LTSS)",
       },
       measureInstructions,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader",
-        text: "Fee-For-Service Measure Results",
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "measure-programs-text",
-        label: "Which Medicaid HCBS programs are being reported? (optional)",
-        helperText:
-          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
-      },
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "pc-plan",
@@ -821,8 +777,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rates",
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        helperText: "Hint Text",
         assessments: [
           {
             id: "refused-pc-plan",
@@ -830,25 +785,9 @@ export const measureTemplates: Record<
           },
         ],
       },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -881,24 +820,14 @@ export const measureTemplates: Record<
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader",
-        text: "Managed Care Measure Results",
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "measure-programs-text",
-        label: "Which Medicaid HCBS programs are being reported? (optional)",
-        helperText:
-          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
-      },
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "pc-plan",
@@ -911,8 +840,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rates",
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        helperText: "Hint Text",
         assessments: [
           {
             id: "refused-pc-plan",
@@ -920,25 +848,9 @@ export const measureTemplates: Record<
           },
         ],
       },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -959,12 +871,13 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       whatSpecificationsAreYouUsing,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -981,10 +894,10 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
-      qualityMeasuresSubheader,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -1013,24 +926,14 @@ export const measureTemplates: Record<
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader",
-        text: "Managed Care Measure Results",
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "measure-programs-text",
-        label: "Which Medicaid HCBS programs are being reported? (optional)",
-        helperText:
-          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
-      },
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "gait-evaulation",
@@ -1038,25 +941,9 @@ export const measureTemplates: Record<
           },
         ],
       },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1089,24 +976,14 @@ export const measureTemplates: Record<
         value:
           "[Optional instructional content that could support the user in completing this page]",
       },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader",
-        text: "Managed Care Measure Results",
-      },
-      {
-        type: ElementType.TextAreaField,
-        id: "measure-programs-text",
-        label: "Which Medicaid HCBS programs are being reported? (optional)",
-        helperText:
-          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
-      },
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "fall-risk-assess",
@@ -1124,8 +1001,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
         label: "Exclusion Rates",
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        helperText: "Hint Text",
         assessments: [
           {
             id: "refused-risk-assess",
@@ -1133,25 +1009,9 @@ export const measureTemplates: Record<
           },
         ],
       },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+      stratificationSubheader,
+      stratificationParagraph,
+      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1171,9 +1031,9 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
-      qualityMeasuresSubheader,
+      wereTheResultsAudited,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       additionalNotesField,
       measureFooter,
@@ -1193,8 +1053,9 @@ export const measureTemplates: Record<
       didYouFollowSpecifications,
       wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -1213,8 +1074,9 @@ export const measureTemplates: Record<
       didYouFollowSpecifications,
       wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -1233,8 +1095,9 @@ export const measureTemplates: Record<
       didYouFollowSpecifications,
       wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -1253,8 +1116,9 @@ export const measureTemplates: Record<
       didYouFollowSpecifications,
       wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -1273,8 +1137,9 @@ export const measureTemplates: Record<
       didYouFollowSpecifications,
       wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -1293,8 +1158,9 @@ export const measureTemplates: Record<
       didYouFollowSpecifications,
       wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
@@ -1313,8 +1179,9 @@ export const measureTemplates: Record<
       didYouFollowSpecifications,
       wereTheResultsAudited,
       additionalNotesField,
-      whichDeliverySystemsWereUsed,
-      qualityMeasuresSubheader,
+      measureDeliveryMethodsSubheader,
+      whichVersionQualityMeasureReported,
+      enterMeasureResultsSubheader,
       measureResultsNavigationTable,
       measureFooter,
     ],
