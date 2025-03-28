@@ -1,14 +1,5 @@
-/* eslint-disable no-console */
 import { Construct } from "constructs";
-import {
-  Aws,
-  aws_cloudfront as cloudfront,
-  aws_iam as iam,
-  aws_s3 as s3,
-  CfnOutput,
-  Stack,
-  StackProps,
-} from "aws-cdk-lib";
+import { Aws, aws_iam as iam, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
@@ -25,7 +16,6 @@ export class ParentStack extends Stack {
     props: StackProps & DeploymentConfigProperties
   ) {
     const { isDev, secureCloudfrontDomainName } = props;
-    console.log(isDev);
     super(scope, id, {
       ...props,
       terminationProtection: !isDev,
@@ -49,32 +39,36 @@ export class ParentStack extends Stack {
 
     const { tables } = createDataComponents(commonProps);
 
-    let applicationEndpointUrl: string | undefined,
-      distribution: cloudfront.Distribution | undefined,
-      uiBucket: s3.Bucket | undefined,
-      userPoolDomainName: string | undefined,
-      identityPoolId: string | undefined,
-      userPoolId: string | undefined,
-      userPoolClientId: string | undefined,
-      cognitoAuthRole: iam.Role | undefined = undefined;
-
-    if (!isLocalStack) {
-      ({ applicationEndpointUrl, distribution, uiBucket } = createUiComponents({
+    if (isLocalStack) {
+      createApiComponents({
         ...commonProps,
-      }));
-
-      ({
-        userPoolDomainName,
-        identityPoolId,
-        userPoolId,
-        userPoolClientId,
-        cognitoAuthRole,
-      } = createUiAuthComponents({
-        ...commonProps,
-        applicationEndpointUrl,
-        customResourceRole,
-      }));
+        tables,
+      });
+      /*
+       * For local dev, the LocalStack container will host the database and API.
+       * The UI will self-host, so we don't need to tell CDK anything about it.
+       * Also, we skip authorization locally. So we don't set up Cognito,
+       * or configure the API to interact with it. Therefore, we're done.
+       */
+      return;
     }
+
+    const { applicationEndpointUrl, distribution, uiBucket } =
+      createUiComponents({
+        ...commonProps,
+      });
+
+    const {
+      userPoolDomainName,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
+      createAuthRole,
+    } = createUiAuthComponents({
+      ...commonProps,
+      applicationEndpointUrl,
+      customResourceRole,
+    });
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
@@ -83,38 +77,24 @@ export class ParentStack extends Stack {
       tables,
     });
 
-    if (!isLocalStack) {
-      cognitoAuthRole!.addToPolicy(
-        new iam.PolicyStatement({
-          actions: ["execute-api:Invoke"],
-          resources: [
-            `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
-          ],
-          effect: iam.Effect.ALLOW,
-        })
-      );
+    createAuthRole(restApiId);
 
-      deployFrontend({
-        ...commonProps,
-        uiBucket: uiBucket!,
-        distribution: distribution!,
-        apiGatewayRestApiUrl,
-        applicationEndpointUrl:
-          secureCloudfrontDomainName || applicationEndpointUrl,
-        identityPoolId: identityPoolId!,
-        userPoolId: userPoolId!,
-        userPoolClientId: userPoolClientId!,
-        userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-        customResourceRole,
-      });
+    deployFrontend({
+      ...commonProps,
+      uiBucket,
+      distribution,
+      apiGatewayRestApiUrl,
+      applicationEndpointUrl:
+        secureCloudfrontDomainName ?? applicationEndpointUrl,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
+      userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
+      customResourceRole,
+    });
 
-      new CfnOutput(this, "CloudFrontUrl", {
-        value: applicationEndpointUrl!,
-      });
-    }
-
-    new CfnOutput(this, "ApiUrl", {
-      value: apiGatewayRestApiUrl,
+    new CfnOutput(this, "CloudFrontUrl", {
+      value: applicationEndpointUrl,
     });
   }
 }
