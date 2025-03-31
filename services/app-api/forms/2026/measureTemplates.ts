@@ -4,7 +4,6 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   PerformanceRateType,
-  RateCalc,
 } from "../../types/reports";
 import {
   additionalNotesField,
@@ -33,7 +32,7 @@ import {
   performanceRatesPersonPlanElements,
   exclusionRatesPersonPlanElements,
   performanceRateTermStay,
-  performanceRateFacility,
+  facilityLengthOfStayElements,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -331,7 +330,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRateFacility,
+      facilityLengthOfStayElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -363,7 +362,7 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRateFacility,
+      facilityLengthOfStayElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -415,43 +414,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
-        fields: [
-          {
-            id: "count-of-success",
-            label: "Count of Successful Transitions to the Community",
-          },
-          { id: "fac-admin-count", label: "Long-Term Facility Stay Count" },
-          {
-            id: "expected-count-of-success",
-            label: "Expected Count of Successful Transitions to the Community",
-          },
-          { id: "multi-plan", label: "Multi-Plan Population Rate" },
-          {
-            id: "opr-min-stay",
-            label:
-              "Observed Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "epr-min-stay",
-            label:
-              "Expected Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "rar-min-stay",
-            label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-        ],
-        rateType: PerformanceRateType.FIELDS,
-        rateCalc: RateCalc.FacilityLengthOfStayCalc,
-      },
+      facilityLengthOfStayElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -483,43 +446,7 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.PerformanceRate,
-        id: "measure-rates",
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
-        fields: [
-          {
-            id: "count-of-success",
-            label: "Count of Successful Transitions to the Community",
-          },
-          { id: "fac-admin-count", label: "Long-Term Facility Stay Count" },
-          {
-            id: "expected-count-of-success",
-            label: "Expected Count of Successful Transitions to the Community",
-          },
-          { id: "multi-plan", label: "Multi-Plan Population Rate" },
-          {
-            id: "opr-min-stay",
-            label:
-              "Observed Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "epr-min-stay",
-            label:
-              "Expected Performance Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-          {
-            id: "rar-min-stay",
-            label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-            autoCalc: true,
-          },
-        ],
-        rateType: PerformanceRateType.FIELDS,
-        rateCalc: RateCalc.FacilityLengthOfStayCalc,
-      },
+      facilityLengthOfStayElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
