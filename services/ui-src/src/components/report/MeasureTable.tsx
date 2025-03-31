@@ -14,6 +14,7 @@ import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
+  MeasureStatus,
   MeasureTableTemplate,
   PageType,
 } from "types";
@@ -61,12 +62,25 @@ export const MeasureTableElement = (props: PageElementProps) => {
     navigate(path);
   };
 
+  const getTableStatus = (measure: MeasurePageTemplate) => {
+    //optional measures should return nothing if they aren't started
+    if (!measure.required) {
+      if (measure.status === MeasureStatus.NOT_STARTED) {
+        return undefined;
+      }
+    }
+
+    return measure.status;
+  };
+
   // Build Rows
   const rows = selectedMeasures.map((measure, index) => {
     return (
       <Tr key={index}>
         <Td>
-          <TableStatusIcon tableStatus=""></TableStatusIcon>
+          <TableStatusIcon
+            tableStatus={getTableStatus(measure)}
+          ></TableStatusIcon>
         </Td>
         <Td width="100%">
           <Text fontWeight="bold">{measure.title}</Text>

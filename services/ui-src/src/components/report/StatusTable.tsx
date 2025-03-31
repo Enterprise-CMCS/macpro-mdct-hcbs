@@ -14,7 +14,7 @@ import {
 import { useStore, submitReport } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
-import { ParentPageTemplate } from "types/report";
+import { MeasureStatus, ParentPageTemplate } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 
@@ -52,7 +52,7 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-          <TableStatusIcon tableStatus={"complete"} isPdf={true} />
+          <TableStatusIcon tableStatus={MeasureStatus.COMPLETE} isPdf={true} />
         </Td>
         <Td>
           <Button
