@@ -73,6 +73,14 @@ export const MeasureTableElement = (props: PageElementProps) => {
     return measure.status;
   };
 
+  const errorMessage = (measure: MeasurePageTemplate) => {
+    if (measure.status !== MeasureStatus.COMPLETE) {
+      if (measure.status === MeasureStatus.IN_PROGRESS || measure.required)
+        return <Text variant="error">Select "Edit" to begin measure.</Text>;
+    }
+    return <></>;
+  };
+
   // Build Rows
   const rows = selectedMeasures.map((measure, index) => {
     return (
@@ -85,6 +93,8 @@ export const MeasureTableElement = (props: PageElementProps) => {
         <Td width="100%">
           <Text fontWeight="bold">{measure.title}</Text>
           <Text>CMIT# {measure.cmit}</Text>
+          <Text>Status: {measure.status}</Text>
+          {errorMessage(measure)}
         </Td>
         <Td>
           {measure.substitutable && measure.required ? (

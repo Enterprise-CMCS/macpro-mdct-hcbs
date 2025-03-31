@@ -588,6 +588,11 @@ export const theme = extendTheme({
         helperText: {
           color: "palette.gray_medium_dark",
         },
+        error: {
+          color: "palette.error",
+          fontSize: "12px",
+          marginTop: "4px",
+        },
       },
     },
   },

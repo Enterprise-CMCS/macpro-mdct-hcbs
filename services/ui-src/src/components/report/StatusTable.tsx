@@ -34,6 +34,16 @@ export const StatusTableElement = () => {
     return report?.pages[pageIdx] as ParentPageTemplate;
   });
 
+  const getTableStatus = (section: ParentPageTemplate) => {
+    //TO DO: Add code for checking status
+    return MeasureStatus.COMPLETE;
+  };
+
+  const submittable = () => {
+    //TO DO: Check if report can be submitted
+    return true;
+  };
+
   const navigate = useNavigate();
 
   const handleEditClick = (sectionId: string) => {
@@ -52,7 +62,7 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-          <TableStatusIcon tableStatus={MeasureStatus.COMPLETE} isPdf={true} />
+          <TableStatusIcon tableStatus={getTableStatus(section)} isPdf={true} />
         </Td>
         <Td>
           <Button
@@ -102,6 +112,7 @@ export const StatusTableElement = () => {
             onBlur={(event) => {
               event.stopPropagation();
             }}
+            disabled={!submittable()}
           >
             Submit QMS Report
           </Button>
