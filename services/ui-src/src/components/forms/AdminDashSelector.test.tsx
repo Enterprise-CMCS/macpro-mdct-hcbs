@@ -66,7 +66,7 @@ describe("AdminDashSelector Component", () => {
 
     // Select a report
     const radioButton = screen.getByLabelText(
-      "Quality Measure Set (QMS)"
+      "Quality Measure Set Report(QMS)"
     ) as HTMLElement;
     await userEvent.click(radioButton);
     expect(dropdown.value).toBe("CA");

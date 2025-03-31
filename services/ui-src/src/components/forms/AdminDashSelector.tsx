@@ -29,11 +29,15 @@ export const AdminDashSelector = () => {
   const reportChoices = [
     {
       value: "QMS",
-      label: "Quality Measure Set (QMS)",
+      label: "Quality Measure Set Report (QMS)",
     },
     {
-      value: "TBD",
-      label: "To be determined (TBD)",
+      value: "CI",
+      label: "Critical Incident Report (CI)",
+    },
+    {
+      value: "TA",
+      label: "Timely Access Report (TA)",
     },
   ];
 

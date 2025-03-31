@@ -81,10 +81,27 @@ export const DashboardPage = () => {
         >
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
             <Box sx={sx.accordionPanel}>
-              <p>
-                [Optional - Include instructions that would support the state in
-                the completion of the report]
-              </p>
+              <Heading size="sm" fontWeight="bold">
+                Admin Instructions
+              </Heading>
+              <ul>
+                <li>To view a state or territory’s submission, use “View”.</li>
+                <li>
+                  To allow a state or territory to make corrections or edits to
+                  a submission use “Unlock” to release the submission. The
+                  status will change to “In revision”.
+                </li>
+                <li>
+                  Submission count is shown in the # column. Submissions started
+                  and submitted once have a count of 1. When a state or
+                  territory resubmits a previous submission, the count increases
+                  by 1.
+                </li>
+                <li>
+                  To archive a submission and hide it from a state or
+                  territory’s dashboard, use “Archive
+                </li>
+              </ul>
             </Box>
           </AccordionItem>
         </Accordion>
@@ -99,8 +116,8 @@ export const DashboardPage = () => {
         )}
         {!reports?.length && (
           <Text variant="tableEmpty">
-            Keep track of your Quality Measure Set Reports, once you start a
-            report you can access it here.
+            Once a state or territory begins a QMS Report, you will be able to
+            view it here.
           </Text>
         )}
         {userIsEndUser && (
