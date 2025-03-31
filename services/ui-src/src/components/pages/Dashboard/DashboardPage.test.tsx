@@ -67,9 +67,12 @@ describe("DashboardPage with state user", () => {
       })
     ).toBeVisible();
     expect(
-      screen.getByText("once you start a report you can access it here", {
-        exact: false,
-      })
+      screen.getByText(
+        "Once a state or territory begins a QMS Report, you will be able to view it here.",
+        {
+          exact: false,
+        }
+      )
     ).toBeVisible();
   });
 
