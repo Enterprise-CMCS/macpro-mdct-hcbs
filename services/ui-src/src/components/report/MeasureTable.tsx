@@ -65,12 +65,12 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const getTableStatus = (measure: MeasurePageTemplate) => {
     //optional measures should return nothing if they aren't started
     if (!measure.required) {
-      if (measure.status === MeasureStatus.NOT_STARTED) {
+      if (measure.status === MeasureStatus.NOT_STARTED || !measure.status) {
         return undefined;
       }
     }
 
-    return measure.status;
+    return measure.status ?? MeasureStatus.NOT_STARTED;
   };
 
   const errorMessage = (measure: MeasurePageTemplate) => {
@@ -93,7 +93,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
         <Td width="100%">
           <Text fontWeight="bold">{measure.title}</Text>
           <Text>CMIT# {measure.cmit}</Text>
-          <Text>Status: {measure.status}</Text>
+          <Text>Status: {measure.status ?? "Not started"}</Text>
           {errorMessage(measure)}
         </Td>
         <Td>
