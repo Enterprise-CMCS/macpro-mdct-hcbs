@@ -805,6 +805,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.Divider,
+        id: "divider",
       },
       {
         type: ElementType.PerformanceRate,
@@ -898,6 +899,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.Divider,
+        id: "divider",
       },
       {
         type: ElementType.PerformanceRate,
@@ -1033,6 +1035,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.Divider,
+        id: "divider",
       },
       {
         type: ElementType.PerformanceRate,
@@ -1112,6 +1115,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.Divider,
+        id: "divider",
       },
       {
         type: ElementType.PerformanceRate,

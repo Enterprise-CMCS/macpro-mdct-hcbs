@@ -148,6 +148,10 @@ const elements: PageElement[] = [
     id: "",
     prevTo: "mock-prev-page",
   },
+  {
+    type: ElementType.Divider,
+    id: "",
+  },
 ];
 
 const textFieldElement: PageElement[] = [

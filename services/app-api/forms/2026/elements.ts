@@ -199,7 +199,7 @@ export const whichMedicaidHCBSprograms = [
     helperText:
       "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
   } as TextAreaBoxTemplate,
-  { type: ElementType.Divider } as DividerTemplate,
+  { type: ElementType.Divider, id: "divider" } as DividerTemplate,
 ];
 
 export const stratificationSubheader: SubHeaderTemplate = {

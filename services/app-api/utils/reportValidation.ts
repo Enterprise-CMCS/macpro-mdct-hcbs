@@ -218,6 +218,7 @@ const buttonLinkTemplateSchema = object().shape({
 
 const dividerSchema = object().shape({
   type: string().required(ElementType.Divider),
+  id: string().required(),
 });
 
 const measureTableTemplateSchema = object().shape({
