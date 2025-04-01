@@ -38,8 +38,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   };
 
   return (
-    <Box width="100%">
-      <Divider marginBottom="2rem" />
+    <Box width="100%" marginTop="4">
       <Flex justifyContent="space-between">
         <Button
           variant="outline"

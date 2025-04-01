@@ -17,6 +17,7 @@ export const theme = extendTheme({
     appMax: "100vw",
     basicPageWidth: "48rem",
     reportPageWidth: "46rem",
+    fullPageWidth: "48rem",
     // font sizes: https://design.cms.gov/utilities/font-size/
     xs: "0.75rem", // 12px
     sm: "0.875rem", // 14px
