@@ -230,6 +230,7 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
+  StatusAlert = "statusAlert",
 }
 
 export type PageElement =
@@ -251,7 +252,8 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate;
+  | PerformanceRateTemplate
+  | StatusAlertTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -464,6 +466,14 @@ export type StatusTableTemplate = {
   type: ElementType.StatusTable;
   id: string;
   to: PageId;
+};
+
+export type StatusAlertTemplate = {
+  type: ElementType.StatusAlert;
+  id: string;
+  title?: string;
+  text: string;
+  status: string;
 };
 
 /**

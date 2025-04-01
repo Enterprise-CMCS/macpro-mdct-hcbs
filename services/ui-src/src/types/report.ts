@@ -1,4 +1,4 @@
-import { AnyObject, StateAbbr } from "./other";
+import { AlertTypes, AnyObject, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
@@ -140,6 +140,7 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
+  StatusAlert = "statusAlert",
 }
 
 export type PageElement =
@@ -160,7 +161,8 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate;
+  | PerformanceRateTemplate
+  | StatusAlertTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -186,6 +188,14 @@ export type ParagraphTemplate = {
   id: string;
   title?: string;
   text: string;
+};
+
+export type StatusAlertTemplate = {
+  type: ElementType.StatusAlert;
+  id: string;
+  title?: string;
+  text: string;
+  status: AlertTypes;
 };
 
 export type TextboxTemplate = {

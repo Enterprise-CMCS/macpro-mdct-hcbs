@@ -21,6 +21,7 @@ import {
   StatusTableElement,
   TextAreaField,
   TextField,
+  StatusAlert,
 } from "components";
 import { useStore } from "utils";
 
@@ -69,6 +70,8 @@ export const Page = ({ elements }: Props) => {
         return MeasureFooterElement;
       case ElementType.PerformanceRate:
         return PerformanceRateElement;
+      case ElementType.StatusAlert:
+        return StatusAlert;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;

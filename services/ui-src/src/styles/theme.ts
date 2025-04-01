@@ -16,7 +16,7 @@ export const theme = extendTheme({
   sizes: {
     appMax: "100vw",
     basicPageWidth: "48rem",
-    reportPageWidth: "48rem",
+    reportPageWidth: "46rem",
     // font sizes: https://design.cms.gov/utilities/font-size/
     xs: "0.75rem", // 12px
     sm: "0.875rem", // 14px
@@ -333,6 +333,7 @@ export const theme = extendTheme({
           ".mobile &": {
             fontSize: "2xl",
           },
+          margin: "0 0 10px 0"
         },
         subHeader: {
           fontSize: "21px",
