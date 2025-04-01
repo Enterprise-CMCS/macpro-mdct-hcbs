@@ -12,7 +12,9 @@ export const StatusAlert = (props: PageElementProps) => {
     return false;
   };
 
-  if (submittable()) return;
+  if (submittable()) {
+    return <></>;
+  }
 
   return (
     <Alert
