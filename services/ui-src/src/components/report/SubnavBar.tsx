@@ -49,10 +49,15 @@ export const SubnavBar = () => {
 const sx = {
   subnavBar: {
     position: "sticky",
-    top: "86px",
     zIndex: "sticky",
     bg: "palette.secondary_lightest",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    ".desktop &": {
+      top: "6rem",
+    },
+    ".mobile &": {
+      top: "7rem",
+    },
   },
   subnavContainer: {
     maxW: "appMax",
