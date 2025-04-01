@@ -161,6 +161,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return performanceRateSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
+    case ElementType.Divider:
+      return dividerSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -212,6 +214,10 @@ const buttonLinkTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   to: string().optional(),
+});
+
+const dividerSchema = object().shape({
+  type: string().required(ElementType.Divider),
 });
 
 const measureTableTemplateSchema = object().shape({

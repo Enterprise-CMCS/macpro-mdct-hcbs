@@ -80,7 +80,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       stratificationSubheader,
@@ -113,7 +113,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       stratificationSubheader,
@@ -167,7 +167,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       stratificationSubheader,
@@ -200,7 +200,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       stratificationSubheader,
@@ -253,7 +253,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -281,7 +281,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -330,7 +330,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateFacility,
       stratificationSubheader,
       stratificationParagraph,
@@ -362,7 +362,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateFacility,
       stratificationSubheader,
       stratificationParagraph,
@@ -414,7 +414,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -482,7 +482,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -569,7 +569,7 @@ export const measureTemplates: Record<
         text: "FASI-1: Fee-For-Service (FFS FASI-1)",
       },
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -609,7 +609,7 @@ export const measureTemplates: Record<
         text: "FASI-1: Managed Care (MLTSS)",
       },
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -670,7 +670,7 @@ export const measureTemplates: Record<
         text: "FASI-2: Fee-For-Service (FFS FASI-2)",
       },
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -710,7 +710,7 @@ export const measureTemplates: Record<
         text: "FASI-2: Managed Care (MLTSS)",
       },
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -804,6 +804,9 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
+        type: ElementType.Divider,
+      },
+      {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
@@ -892,6 +895,9 @@ export const measureTemplates: Record<
         label: "Which Medicaid HCBS programs are being reported? (optional)",
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.Divider,
       },
       {
         type: ElementType.PerformanceRate,
@@ -1026,6 +1032,9 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
+        type: ElementType.Divider,
+      },
+      {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         rateType: PerformanceRateType.NDR_Enhanced,
@@ -1100,6 +1109,9 @@ export const measureTemplates: Record<
         label: "Which Medicaid HCBS programs are being reported? (optional)",
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.Divider,
       },
       {
         type: ElementType.PerformanceRate,

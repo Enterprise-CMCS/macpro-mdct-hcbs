@@ -1,6 +1,7 @@
 import {
   AccordionTemplate,
   ButtonLinkTemplate,
+  DividerTemplate,
   ElementType,
   HeaderTemplate,
   MeasureDetailsTemplate,
@@ -190,13 +191,16 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-export const whichMedicaidHCBSprograms: TextAreaBoxTemplate = {
-  type: ElementType.TextAreaField,
-  id: "measure-programs-text",
-  label: "Which Medicaid HCBS programs are being reported? (optional)",
-  helperText:
-    "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
-};
+export const whichMedicaidHCBSprograms = [
+  {
+    type: ElementType.TextAreaField,
+    id: "measure-programs-text",
+    label: "Which Medicaid HCBS programs are being reported? (optional)",
+    helperText:
+      "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+  } as TextAreaBoxTemplate,
+  { type: ElementType.Divider } as DividerTemplate,
+];
 
 export const stratificationSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,

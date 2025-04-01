@@ -141,6 +141,7 @@ export enum ElementType {
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
   StatusAlert = "statusAlert",
+  Divider = "divider",
 }
 
 export type PageElement =
@@ -162,7 +163,8 @@ export type PageElement =
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
   | PerformanceRateTemplate
-  | StatusAlertTemplate;
+  | StatusAlertTemplate
+  | DividerTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -239,6 +241,10 @@ export type DropdownTemplate = {
   helperText?: string;
   answer?: string;
   required?: string;
+};
+
+export type DividerTemplate = {
+  type: ElementType.Divider;
 };
 
 export type AccordionTemplate = {

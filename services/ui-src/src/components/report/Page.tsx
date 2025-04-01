@@ -6,6 +6,7 @@ import {
   accordionElement,
   buttonLinkElement,
   nestedHeadingElement,
+  dividerElement,
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import {
@@ -72,6 +73,8 @@ export const Page = ({ elements }: Props) => {
         return PerformanceRateElement;
       case ElementType.StatusAlert:
         return StatusAlert;
+      case ElementType.Divider:
+        return dividerElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;

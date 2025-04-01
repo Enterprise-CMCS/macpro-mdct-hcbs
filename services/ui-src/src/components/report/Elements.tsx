@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   Accordion,
+  Divider,
 } from "@chakra-ui/react";
 import {
   HeaderTemplate,
@@ -85,6 +86,10 @@ export const accordionElement = (props: PageElementProps) => {
       </AccordionItem>
     </Accordion>
   );
+};
+
+export const dividerElement = (_props: PageElementProps) => {
+  return <Divider></Divider>;
 };
 
 export const buttonLinkElement = (props: PageElementProps) => {
