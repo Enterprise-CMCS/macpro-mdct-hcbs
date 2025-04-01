@@ -245,6 +245,7 @@ export type DropdownTemplate = {
 
 export type DividerTemplate = {
   type: ElementType.Divider;
+  id?: string;
 };
 
 export type AccordionTemplate = {

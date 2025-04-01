@@ -1,11 +1,11 @@
-import { useStore } from "utils";
+// import { useStore } from "utils";
 import { Alert } from "components/alerts/Alert";
 import { PageElementProps } from "./Elements";
 import { StatusAlertTemplate } from "types";
 
 export const StatusAlert = (props: PageElementProps) => {
   const alert = props.element as StatusAlertTemplate;
-  const { report } = useStore();
+  // const { report } = useStore();
 
   const submittable = () => {
     //TO DO: wait for Ben's part to finish to do a check

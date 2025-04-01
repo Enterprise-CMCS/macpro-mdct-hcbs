@@ -34,7 +34,7 @@ export const StatusTableElement = () => {
     return report?.pages[pageIdx] as ParentPageTemplate;
   });
 
-  const getTableStatus = (section: ParentPageTemplate) => {
+  const getTableStatus = (_section: ParentPageTemplate) => {
     //TO DO: Add code for checking status
     return MeasureStatus.COMPLETE;
   };

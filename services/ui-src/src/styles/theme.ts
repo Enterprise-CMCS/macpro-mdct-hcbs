@@ -334,7 +334,7 @@ export const theme = extendTheme({
           ".mobile &": {
             fontSize: "2xl",
           },
-          margin: "0 0 10px 0"
+          margin: "0 0 10px 0",
         },
         subHeader: {
           fontSize: "21px",
