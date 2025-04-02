@@ -367,7 +367,7 @@ describe("ReportPageWrapper", () => {
     mockGetReport.mockResolvedValueOnce(undefined);
     render(<ReportPageWrapper />);
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
-    expect(screen.getByText("Loading")).toBeTruthy(); // To be updated with real loading page
+    expect(screen.getByText("Loading...")).toBeTruthy();
   });
   test("should render if report exists", async () => {
     await act(async () => {
