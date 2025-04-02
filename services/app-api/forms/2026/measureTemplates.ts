@@ -34,6 +34,7 @@ import {
   exclusionRatesPersonPlanElements,
   performanceRateTermStay,
   performanceRateFacility,
+  returnToDashboard,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -47,7 +48,7 @@ export const measureTemplates: Record<
     substitutable: MeasureTemplateName["FASI-1"],
     sidebar: false,
     elements: [
-      returnToRequiredDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -134,7 +135,7 @@ export const measureTemplates: Record<
     sidebar: false,
     substitutable: MeasureTemplateName["FASI-2"],
     elements: [
-      returnToRequiredDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -538,7 +539,7 @@ export const measureTemplates: Record<
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      returnToOptionalDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -639,7 +640,7 @@ export const measureTemplates: Record<
     substitutable: MeasureTemplateName["LTSS-2"],
     sidebar: false,
     elements: [
-      returnToOptionalDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,

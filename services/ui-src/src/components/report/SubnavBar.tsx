@@ -1,4 +1,4 @@
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
@@ -47,12 +47,6 @@ const sx = {
   subnavBar: {
     position: "sticky",
     bg: "palette.secondary_lightest",
-    ".desktop &": {
-      top: "6rem",
-    },
-    ".mobile &": {
-      top: "7rem",
-    },
   },
   subnavContainer: {
     maxW: "appMax",

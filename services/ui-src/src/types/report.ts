@@ -299,8 +299,8 @@ export type ReportingRadioTemplate = {
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
-  label: string;
-  to: PageId;
+  label?: string;
+  to?: PageId;
 };
 
 export type MeasureDetailsTemplate = {

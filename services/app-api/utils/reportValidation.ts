@@ -212,7 +212,7 @@ const reportingRadioTemplateSchema = object().shape({
 const buttonLinkTemplateSchema = object().shape({
   type: string().required(ElementType.ButtonLink),
   id: string().required(),
-  label: string().required(),
+  label: string().optional(),
   to: string().optional(),
 });
 

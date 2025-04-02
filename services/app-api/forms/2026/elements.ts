@@ -31,6 +31,11 @@ export const returnToOptionalDashboard: ButtonLinkTemplate = {
   to: "optional-measure-result",
 };
 
+export const returnToDashboard: ButtonLinkTemplate = {
+  type: ElementType.ButtonLink,
+  id: "return-button",
+}
+
 export const measureHeader: HeaderTemplate = {
   type: ElementType.Header,
   id: "measure-header",

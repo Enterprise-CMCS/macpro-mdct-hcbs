@@ -11,13 +11,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { getReport, useStore } from "utils";
-import {
-  ReportModal,
-  Sidebar,
-  SubnavBar,
-  Page,
-  PraDisclosure,
-} from "components";
+import { ReportModal, Sidebar, Page, PraDisclosure } from "components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { elementsValidateSchema } from "utils/validation/reportValidation";
 import { currentPageSelector } from "utils/state/selectors";
