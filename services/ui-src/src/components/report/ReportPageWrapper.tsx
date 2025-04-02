@@ -9,6 +9,7 @@ import {
   HStack,
   VStack,
   Image,
+  Spinner,
 } from "@chakra-ui/react";
 import { getReport, useStore } from "utils";
 import { ReportModal, Sidebar, Page, PraDisclosure } from "components";
@@ -86,7 +87,11 @@ export const ReportPageWrapper = () => {
   }
 
   if (isLoading || !currentPage) {
-    return <p>Loading</p>;
+    return (
+      <Flex sx={sx.spinnerContainer}>
+        <Spinner size="md" />
+      </Flex>
+    );
   }
 
   const SetPageIndex = (newPageIndex: number) => {
@@ -152,4 +157,13 @@ export const ReportPageWrapper = () => {
       </HStack>
     </FormProvider>
   );
+};
+
+const sx = {
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
+  },
 };
