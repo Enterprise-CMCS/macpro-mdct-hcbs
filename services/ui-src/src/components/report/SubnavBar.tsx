@@ -1,22 +1,19 @@
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
-import { ReportType } from "types/report";
 
 export const SubnavBar = () => {
-  const { reportType } = useParams();
   const { report, lastSavedTime } = useStore();
   const saveStatusText = "Last saved " + lastSavedTime;
+
   return (
     <Flex sx={sx.subnavBar}>
       <Container sx={sx.subnavContainer}>
         <Flex sx={sx.subnavFlex}>
           <Flex>
             <Text sx={sx.submissionNameText}>
-              {reportType == ReportType.QMS
-                ? report?.state + " QMS Report"
-                : ""}
+              {report?.state + " QMS Report"}
             </Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
@@ -49,9 +46,7 @@ export const SubnavBar = () => {
 const sx = {
   subnavBar: {
     position: "sticky",
-    zIndex: "sticky",
     bg: "palette.secondary_lightest",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     ".desktop &": {
       top: "6rem",
     },

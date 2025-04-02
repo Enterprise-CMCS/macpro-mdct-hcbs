@@ -103,7 +103,6 @@ export const ReportPageWrapper = () => {
 
   return (
     <FormProvider {...methods}>
-      <SubnavBar />
       <HStack width="100%" height="100%" position="relative" spacing="0">
         {currentPage.sidebar && <Sidebar />}
         <VStack
