@@ -28,10 +28,10 @@ yarn install
 rm -rf node_modules
 yarn install
 ./run update-env
-IMPORT_VARIANT=empty ./run deploy --stage pete-dunlap-tester
-IMPORT_VARIANT=imports_included PROJECT=hcbs cdk import --context stage=pete-dunlap-tester --force
-IMPORT_VARIANT=imports_included ./run deploy --stage pete-dunlap-tester
-./run deploy --stage pete-dunlap-tester
+IMPORT_VARIANT=empty ./run deploy --stage <YOUR_BRANCH_NAME>
+IMPORT_VARIANT=imports_included PROJECT=hcbs cdk import --context stage=<YOUR_BRANCH_NAME> --force
+IMPORT_VARIANT=imports_included ./run deploy --stage <YOUR_BRANCH_NAME>
+./run deploy --stage <YOUR_BRANCH_NAME>
 ```
 
 Log into app using all options (Cognito and/or IDM) and follow instructions that app lead has provided to ensure app is working.
