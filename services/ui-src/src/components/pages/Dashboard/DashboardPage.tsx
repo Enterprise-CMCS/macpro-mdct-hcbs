@@ -102,7 +102,7 @@ export const DashboardPage = () => {
                   </li>
                   <li>
                     To archive a submission and hide it from a state or
-                    territory’s dashboard, use “Archive
+                    territory’s dashboard, use “Archive”.
                   </li>
                 </ul>
               </Box>
