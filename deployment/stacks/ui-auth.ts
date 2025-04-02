@@ -107,8 +107,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
           "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
         given_name:
           "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-        "custom:cms_roles": "cms_roles",
-        "custom:cms_state": "cms_state",
+        "custom:cms_roles": "cmsRoles",
+        "custom:cms_state": "state",
       },
       idpIdentifiers: ["IdpIdentifier"],
     }
@@ -126,11 +126,11 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     userPoolClientName: `${stage}-user-pool-client`,
     userPool,
     authFlows: {
-      userPassword: true,
+      adminUserPassword: true,
     },
     oAuth: {
       flows: {
-        implicitCodeGrant: true,
+        authorizationCodeGrant: true,
       },
       scopes: [
         cognito.OAuthScope.EMAIL,

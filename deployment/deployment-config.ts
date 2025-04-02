@@ -7,6 +7,7 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   oktaMetadataUrl: string;
   launchDarklyClient: string;
+  redirectSignout: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
   secureCloudfrontDomainName?: string;
@@ -70,6 +71,7 @@ function validateConfig(config: {
     "stage",
     "oktaMetadataUrl",
     "launchDarklyClient",
+    "redirectSignout",
   ];
 
   const invalidKeys = expectedKeys.filter(

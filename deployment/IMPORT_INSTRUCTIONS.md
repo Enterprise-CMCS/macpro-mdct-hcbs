@@ -28,6 +28,7 @@ yarn install
 rm -rf node_modules
 yarn install
 ./run update-env
+# COMMENT OUT ALL .env COGNITO_* env variables
 IMPORT_VARIANT=empty ./run deploy --stage <YOUR_BRANCH_NAME>
 IMPORT_VARIANT=imports_included PROJECT=hcbs cdk import --context stage=<YOUR_BRANCH_NAME> --force
 IMPORT_VARIANT=imports_included ./run deploy --stage <YOUR_BRANCH_NAME>

@@ -10,8 +10,8 @@ window._env_ = {
   COGNITO_USER_POOL_CLIENT_DOMAIN: "{{userPoolClientDomain}}",
   COGNITO_IDP_NAME: "Okta",
   COGNITO_REDIRECT_SIGNIN: "{{applicationEndpointUrl}}",
-  COGNITO_REDIRECT_SIGNOUT: "{{applicationEndpointUrl}}",
-  POST_SIGNOUT_REDIRECT: "{{applicationEndpointUrl}}postLogout",
+  COGNITO_REDIRECT_SIGNOUT: "{{applicationEndpointUrl}}postLogout",
+  POST_SIGNOUT_REDIRECT: "{{redirectSignout}}",
   REACT_APP_LD_SDK_CLIENT: "{{launchDarklyClient}}",
   TIMESTAMP: "{{timestamp}}",
 };

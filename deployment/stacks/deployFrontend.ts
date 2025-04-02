@@ -25,6 +25,7 @@ interface DeployFrontendProps {
   iamPath: string;
   customResourceRole: iam.Role;
   launchDarklyClient: string;
+  redirectSignout: string;
 }
 
 export function deployFrontend(props: DeployFrontendProps) {
@@ -42,6 +43,7 @@ export function deployFrontend(props: DeployFrontendProps) {
     iamPath,
     uiBucket,
     launchDarklyClient,
+    redirectSignout,
   } = props;
 
   const reactAppPath = "./services/ui-src/";
@@ -108,12 +110,14 @@ export function deployFrontend(props: DeployFrontendProps) {
       destinationKey: "env-config.js",
       source: path.join("./deployment/stacks/", "env-config.template.js"),
       substitutions: {
+        stage,
         apiGatewayRestApiUrl,
         applicationEndpointUrl,
         identityPoolId,
         userPoolId,
         userPoolClientId,
         userPoolClientDomain,
+        redirectSignout,
         launchDarklyClient,
         timestamp: new Date().toISOString(),
       },
