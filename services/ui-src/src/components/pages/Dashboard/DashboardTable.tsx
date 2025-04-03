@@ -67,18 +67,10 @@ export const DashboardTable = ({
           {isAdmin && (
             <>
               <td>
-                <Button
-                  onClick={() => navigate(reportBasePath(report))}
-                  variant="link"
-                >
-                  Unlock
-                </Button>
+                <Button variant="link">Unlock</Button>
               </td>
               <td>
-                <Button
-                  onClick={() => navigate(reportBasePath(report))}
-                  variant="link"
-                >
+                <Button variant="link">
                   {report.archived ? "Unarchive" : "Archive"}
                 </Button>
               </td>
