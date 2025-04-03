@@ -122,7 +122,6 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
-            isAdmin={userIsAdmin}
           />
         )}
         {!reports?.length &&

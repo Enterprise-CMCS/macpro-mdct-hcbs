@@ -1,6 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { DashboardTable } from "components";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { useStore } from "utils";
+import {
+  mockUseAdminStore,
+  mockUseStore,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
+
+jest.mock("utils/state/useStore", () => ({
+  useStore: jest.fn().mockReturnValue({}),
+}));
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockUseStore);
 
 const reports = [
   {
@@ -31,11 +42,7 @@ const dashboardTableComponent = (
 
 const adminDashboardTableComponent = (
   <RouterWrappedComponent>
-    <DashboardTable
-      reports={reports}
-      openAddEditReportModal={jest.fn}
-      isAdmin={true}
-    />
+    <DashboardTable reports={reports} openAddEditReportModal={jest.fn} />
   </RouterWrappedComponent>
 );
 
@@ -49,7 +56,11 @@ describe("Dashboard table with state user", () => {
 });
 
 describe("Dashboard table with admin user", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockedUseStore.mockReturnValue(mockUseAdminStore);
+  });
+
   it("should not render the proper controls when admin", async () => {
     render(adminDashboardTableComponent);
     expect(screen.getByText("report 1")).toBeInTheDocument();

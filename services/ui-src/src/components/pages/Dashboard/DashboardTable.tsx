@@ -7,7 +7,6 @@ import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 
 interface DashboardTableProps {
   reports: Report[];
-  isAdmin?: boolean;
   openAddEditReportModal: Function;
 }
 
@@ -15,32 +14,31 @@ interface DashboardTableProps {
  * Return the dashboard table column headers. If user is admin, there will be
  * an extra empty row that is for the edit report name button column.
  */
-const getHeadRow = (isAdmin?: boolean) =>
-  isAdmin
+const getHeadRow = (role: string | undefined) =>
+  role === UserRoles.ADMIN
     ? ["Submission name", "Last edited", "Edited by", "Status", "#", ""]
     : ["", "Submission name", "Last edited", "Edited by", "Status", ""];
 
 export const DashboardTable = ({
   reports,
-  isAdmin,
   openAddEditReportModal,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
-  const store = useStore();
-  const user = store.user;
-  const isStateUser = user?.userRole === UserRoles.STATE_USER;
-  const editButtonText = isStateUser ? "Edit" : "View";
+  const { user } = useStore();
+  const role = user?.userRole;
+
+  const editButtonText = role === UserRoles.STATE_USER ? "Edit" : "View";
 
   const tableContent = {
     caption: "Quality Measure Reports",
-    headRow: getHeadRow(isAdmin),
+    headRow: getHeadRow(role),
   };
 
   return (
     <Table content={tableContent}>
       {reports.map((report) => (
         <Tr key={report.id}>
-          {!isAdmin && (
+          {role === UserRoles.STATE_USER && (
             <Td fontWeight={"bold"}>
               <button onClick={() => openAddEditReportModal(report)}>
                 <Image src={editIcon} alt="Edit Report Name" />
@@ -55,7 +53,7 @@ export const DashboardTable = ({
           </Td>
           <Td>{report.lastEditedBy}</Td>
           <Td>{report.status}</Td>
-          {isAdmin && <Td>{report.submissionCount}</Td>}
+          {role === UserRoles.ADMIN && <Td>{report.submissionCount}</Td>}
           <Td>
             <Button
               onClick={() => navigate(reportBasePath(report))}
@@ -64,7 +62,7 @@ export const DashboardTable = ({
               {editButtonText}
             </Button>
           </Td>
-          {isAdmin && (
+          {role === UserRoles.ADMIN && (
             <>
               <td>
                 <Button variant="link">Unlock</Button>
