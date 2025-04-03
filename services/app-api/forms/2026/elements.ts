@@ -36,6 +36,11 @@ export const returnToDashboard: ButtonLinkTemplate = {
   id: "return-button",
 };
 
+export const divider: DividerTemplate = {
+  type: ElementType.Divider,
+  id: "divdier",
+};
+
 export const measureHeader: HeaderTemplate = {
   type: ElementType.Header,
   id: "measure-header",
@@ -204,7 +209,7 @@ export const whichMedicaidHCBSprograms = [
     helperText:
       "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
   } as TextAreaBoxTemplate,
-  { type: ElementType.Divider, id: "divider" } as DividerTemplate,
+  divider,
 ];
 
 export const stratificationSubheader: SubHeaderTemplate = {

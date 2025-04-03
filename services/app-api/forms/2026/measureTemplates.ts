@@ -35,6 +35,7 @@ import {
   performanceRateTermStay,
   performanceRateFacility,
   returnToDashboard,
+  divider,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -804,10 +805,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
-      {
-        type: ElementType.Divider,
-        id: "divider",
-      },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -898,10 +896,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
-      {
-        type: ElementType.Divider,
-        id: "divider",
-      },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -1034,10 +1029,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
-      {
-        type: ElementType.Divider,
-        id: "divider",
-      },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -1114,10 +1106,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
-      {
-        type: ElementType.Divider,
-        id: "divider",
-      },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
