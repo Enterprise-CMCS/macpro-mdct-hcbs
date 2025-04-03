@@ -2,6 +2,7 @@ import {
   AccordionTemplate,
   ButtonLinkTemplate,
   ElementType,
+  FacilityLengthOfStayRateTemplate,
   HeaderTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
@@ -10,11 +11,12 @@ import {
   PerformanceRateTemplate,
   PerformanceRateType,
   RadioTemplate,
-  RateCalc,
   ReportingRadioTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
+
+const REPORT_YEAR = 2026;
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
   type: ElementType.ButtonLink,
@@ -312,40 +314,27 @@ export const performanceRatePOM: PerformanceRateTemplate = {
 };
 
 //Rates for LTSS-7
-export const performanceRateFacility: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const facilityLengthOfStayElements: FacilityLengthOfStayRateTemplate = {
+  type: ElementType.FacilityLengthOfStayRate,
   id: "measure-rates",
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Discharges to the Community",
-    },
-    { id: "fac-admin-count", label: "Facility Admission Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Discharges to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
-  rateType: PerformanceRateType.FIELDS,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
+  labels: {
+    performanceTarget: `What is the ${
+      REPORT_YEAR + 2
+    } state performance target for this assessment?`,
+    actualTransitions: "Count of Successful Transitions to the Community",
+    stayCount: "Long-Term Facility Stay Count",
+    expectedTransitions:
+      "Expected Count of Successful Transitions to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    riskAdjustedRate:
+      "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
 };
 
 export const performanceRateTermStay: PerformanceRateTemplate = {

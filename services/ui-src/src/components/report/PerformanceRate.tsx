@@ -7,11 +7,11 @@ import * as Calculations from "./../rates/calculations";
 
 export const PerformanceRateElement = (props: PageElementProps) => {
   const performanceRateProp = props.element as PerformanceRateTemplate;
-  const { rateType, rateCalc, helperText, label } = performanceRateProp;
+  const { rateType, helperText, label } = performanceRateProp;
   const { report } = useStore();
 
   const PerformanceRate = PerformanceType[rateType];
-  const Calculation = Calculations[rateCalc ?? "NDRCalc"];
+  const Calculation = Calculations.NDRCalc;
   performanceRateProp.multiplier = performanceRateProp.multiplier ?? 1;
 
   return (

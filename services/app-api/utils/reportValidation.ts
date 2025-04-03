@@ -159,6 +159,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return measureFooterSchema;
     case ElementType.PerformanceRate:
       return performanceRateSchema;
+    case ElementType.FacilityLengthOfStayRate:
+      return facilityLengthOfStayRateSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -273,6 +275,37 @@ const performanceRateSchema = object().shape({
   rateCalc: string().notRequired(),
   multiplier: number().notRequired(),
   answer: mixed().notRequired(),
+});
+
+const facilityLengthOfStayFields = [
+  "performanceTarget",
+  "actualTransitions",
+  "stayCount",
+  "expectedTransitions",
+  "populationRate",
+  "actualRate",
+  "expectedRate",
+  "riskAdjustedRate",
+] as const;
+
+const facilityLengthOfStayRateSchema = object().shape({
+  type: string().required(ElementType.PerformanceRate),
+  id: string().required(),
+  helperText: string().required(),
+  labels: object()
+    .shape(
+      Object.fromEntries(
+        facilityLengthOfStayFields.map((id) => [id, string().required()])
+      )
+    )
+    .required(),
+  answer: object()
+    .shape(
+      Object.fromEntries(
+        facilityLengthOfStayFields.map((id) => [id, number().notRequired()])
+      )
+    )
+    .notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({

@@ -53,6 +53,7 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 // report
 export { PerformanceRateElement } from "./report/PerformanceRate";
+export { FacilityLengthOfStayRate } from "./rates/types/FacilityLengthOfStayRate";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";

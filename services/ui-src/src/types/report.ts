@@ -140,6 +140,7 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
+  FacilityLengthOfStayRate = "facilityLengthOfStayRate",
 }
 
 export type PageElement =
@@ -160,7 +161,8 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate;
+  | PerformanceRateTemplate
+  | FacilityLengthOfStayRateTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -325,13 +327,7 @@ export type RateSetData = {
 export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
-  FIELDS = "Fields",
   NDRFIELDS = "NDRFields",
-}
-
-export const enum RateCalc {
-  NDRCalc = "NDRCalc",
-  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
 }
 
 export type PerformanceRateTemplate = {
@@ -342,9 +338,27 @@ export type PerformanceRateTemplate = {
   assessments?: { label: string; id: string }[];
   fields?: { label: string; id: string; autoCalc?: boolean }[];
   rateType: PerformanceRateType;
-  rateCalc?: RateCalc;
   multiplier?: number;
   answer?: PerformanceData | RateSetData[];
+};
+
+export type FacilityLengthOfStayRateTemplate = {
+  id: string;
+  type: ElementType.FacilityLengthOfStayRate;
+  helperText: string;
+  labels: Record<keyof FacilityLengthOfStayAnswer, string>;
+  answer?: FacilityLengthOfStayAnswer;
+};
+
+export type FacilityLengthOfStayAnswer = {
+  performanceTarget: number | undefined;
+  actualTransitions: number | undefined;
+  stayCount: number | undefined;
+  expectedTransitions: number | undefined;
+  populationRate: number | undefined;
+  actualRate: number | undefined;
+  expectedRate: number | undefined;
+  riskAdjustedRate: number | undefined;
 };
 
 export type ChoiceTemplate = {
