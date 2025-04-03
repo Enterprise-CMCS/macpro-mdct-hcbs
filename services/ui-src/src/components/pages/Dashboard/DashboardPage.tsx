@@ -123,7 +123,6 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
-            readOnlyUser={!userIsEndUser}
           />
         )}
         {isLoading && (

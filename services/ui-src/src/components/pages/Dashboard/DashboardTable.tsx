@@ -12,29 +12,21 @@ import {
 } from "@chakra-ui/react";
 import { Table } from "components";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { Report, UserRoles } from "types";
+import { Report } from "types";
 import { formatMonthDayYear, reportBasePath, useStore } from "utils";
 import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 
 interface DashboardTableProps {
   reports: Report[];
-  readOnlyUser?: boolean;
   openAddEditReportModal: Function;
 }
-
-/**
- * Return the dashboard table column headers. If user is admin, there will be
- * an extra empty row that is for the edit report name button column.
- */
-const getHeadRow = (readOnlyUser?: boolean) =>
-  readOnlyUser
-    ? ["Submission name", "Last edited", "Edited by", "Status", ""]
-    : ["", "Submission name", "Last edited", "Edited by", "Status", ""];
 
 export const HorizontalTable = (
   tableContent: { caption: string; headRow: string[] },
   reports: Report[],
-  readOnlyUser: boolean | undefined,
+  showEditNameColumn: boolean | undefined,
+  showReportSubmissionsColumn: boolean,
+  showAdminControlsColumn: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   editButtonText: string
@@ -43,7 +35,7 @@ export const HorizontalTable = (
     <Table content={tableContent}>
       {reports.map((report) => (
         <Tr key={report.id}>
-          {!readOnlyUser && (
+          {showEditNameColumn && (
             <Td fontWeight={"bold"}>
               <button onClick={() => openAddEditReportModal(report)}>
                 <Image src={editIcon} alt="Edit Report Name" />
@@ -58,6 +50,7 @@ export const HorizontalTable = (
           </Td>
           <Td>{report.lastEditedBy}</Td>
           <Td>{report.status}</Td>
+          {showReportSubmissionsColumn && <Td>{report.submissionCount}</Td>}
           <Td>
             <Button
               onClick={() => navigate(reportBasePath(report))}
@@ -66,6 +59,18 @@ export const HorizontalTable = (
               {editButtonText}
             </Button>
           </Td>
+          {showAdminControlsColumn && (
+            <>
+              <td>
+                <Button variant="link">Unlock</Button>
+              </td>
+              <td>
+                <Button variant="link">
+                  {report.archived ? "Unarchive" : "Archive"}
+                </Button>
+              </td>
+            </>
+          )}
         </Tr>
       ))}
     </Table>
@@ -74,7 +79,9 @@ export const HorizontalTable = (
 
 export const VerticleTable = (
   reports: Report[],
-  readOnlyUser: boolean | undefined,
+  showEditNameColumn: boolean | undefined,
+  showReportSubmissionsColumn: boolean,
+  showAdminControlsColumn: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   editButtonText: string
@@ -86,7 +93,7 @@ export const VerticleTable = (
           <div>
             <Text variant="grey">Submission name</Text>
             <HStack>
-              {!readOnlyUser && (
+              {showEditNameColumn && (
                 <button onClick={() => openAddEditReportModal(report)}>
                   <Image src={editIcon} alt="Edit Report Name" />
                 </button>
@@ -108,15 +115,30 @@ export const VerticleTable = (
             <Text variant="grey">Status</Text>
             <Text>{report.status}</Text>
           </div>
-          <Button
-            onClick={() => navigate(reportBasePath(report))}
-            variant="outline"
-            width="100px"
-            height="30px"
-            fontSize="sm"
-          >
-            {editButtonText}
-          </Button>
+          {showReportSubmissionsColumn && <Text>{report.submissionCount}</Text>}
+          <HStack gap={"6"}>
+            <Button
+              onClick={() => navigate(reportBasePath(report))}
+              variant="outline"
+              width="100px"
+              height="30px"
+              fontSize="sm"
+            >
+              {editButtonText}
+            </Button>
+            {showAdminControlsColumn && (
+              <>
+                <td>
+                  <Button variant="link">Unlock</Button>
+                </td>
+                <td>
+                  <Button variant="link">
+                    {report.archived ? "Unarchive" : "Archive"}
+                  </Button>
+                </td>
+              </>
+            )}
+          </HStack>
           <Divider></Divider>
         </>
       ))}
@@ -126,18 +148,27 @@ export const VerticleTable = (
 
 export const DashboardTable = ({
   reports,
-  readOnlyUser,
   openAddEditReportModal,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
-  const store = useStore();
-  const user = store.user;
-  const isStateUser = user?.userRole === UserRoles.STATE_USER;
-  const editButtonText = isStateUser ? "Edit" : "View";
+  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
+
+  // Translate role to defined behaviors
+  const showEditNameColumn = userIsEndUser;
+  const showReportSubmissionsColumn = !userIsEndUser;
+  const showAdminControlsColumn = userIsAdmin;
+  const editButtonText = userIsEndUser ? "Edit" : "View";
+
+  // Build header columns based on defined behaviors per role
+  const headers = [];
+  if (showEditNameColumn) headers.push("");
+  headers.push(...["Submission name", "Last edited", "Edited by", "Status"]);
+  if (showReportSubmissionsColumn) headers.push("#");
+  headers.push("");
 
   const tableContent = {
     caption: "Quality Measure Reports",
-    headRow: getHeadRow(readOnlyUser),
+    headRow: headers,
   };
 
   return (
@@ -146,7 +177,9 @@ export const DashboardTable = ({
         {HorizontalTable(
           tableContent,
           reports,
-          readOnlyUser,
+          showEditNameColumn,
+          showReportSubmissionsColumn,
+          showAdminControlsColumn,
           openAddEditReportModal,
           navigate,
           editButtonText
@@ -155,7 +188,9 @@ export const DashboardTable = ({
       <Show below="sm">
         {VerticleTable(
           reports,
-          readOnlyUser,
+          showEditNameColumn,
+          showReportSubmissionsColumn,
+          showAdminControlsColumn,
           openAddEditReportModal,
           navigate,
           editButtonText

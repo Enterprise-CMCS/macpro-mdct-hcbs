@@ -26,6 +26,8 @@ const testReport: Report = {
   year: 2026,
   options: {},
   status: ReportStatus.NOT_STARTED,
+  archived: false,
+  submissionCount: 0,
   pages: [
     {
       id: "root",

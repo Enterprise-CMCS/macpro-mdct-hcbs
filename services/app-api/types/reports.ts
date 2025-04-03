@@ -113,6 +113,8 @@ export interface Report extends ReportTemplate {
   lastEditedBy: string;
   lastEditedByEmail: string;
   status: ReportStatus;
+  submissionCount: number;
+  archived: boolean;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
