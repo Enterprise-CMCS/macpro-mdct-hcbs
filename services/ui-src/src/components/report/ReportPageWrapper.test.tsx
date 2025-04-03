@@ -16,6 +16,7 @@ import {
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
+import userEvent from "@testing-library/user-event";
 
 const testReport: Report = {
   type: ReportType.QMS,
@@ -335,9 +336,11 @@ const testReport: Report = {
 };
 
 const mockUseParams = jest.fn();
+const mockNavigate = jest.fn();
+
 jest.mock("react-router-dom", () => ({
   useParams: () => mockUseParams(),
-  useNavigate: jest.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
 const mockGetReport = jest.fn().mockResolvedValue(testReport);
@@ -380,6 +383,17 @@ describe("ReportPageWrapper", () => {
     });
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
+  });
+  test("button should be clickable", async () => {
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+
+    const continueBtn = screen.getByRole("button", { name: "Continue" });
+    await userEvent.click(continueBtn);
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/report/QMS/NJ/QMSNJ123/req-measure-result"
+    );
   });
 });
 
