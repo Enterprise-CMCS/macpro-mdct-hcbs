@@ -1,4 +1,15 @@
-import { Button, Image, Td, Tr, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Hide,
+  Image,
+  Show,
+  Td,
+  Tr,
+  VStack,
+  Text,
+  Divider,
+  HStack,
+} from "@chakra-ui/react";
 import { Table } from "components";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Report, UserRoles } from "types";
@@ -23,7 +34,7 @@ const getHeadRow = (readOnlyUser?: boolean) =>
 export const HorizontalTable = (
   tableContent: { caption: string; headRow: string[] },
   reports: Report[],
-  readOnlyUser: boolean,
+  readOnlyUser: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   editButtonText: string
@@ -42,7 +53,7 @@ export const HorizontalTable = (
           <Td fontWeight={"bold"}>
             {report.name ? report.name : "{Name of form}"}
           </Td>
-          <Td minWidth={"25rem"}>
+          <Td>
             {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
           </Td>
           <Td>{report.lastEditedBy}</Td>
@@ -62,14 +73,55 @@ export const HorizontalTable = (
 };
 
 export const VerticleTable = (
-  tableContent: { caption: string; headRow: string[] },
   reports: Report[],
-  readOnlyUser: boolean,
+  readOnlyUser: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   editButtonText: string
 ) => {
-  return <VStack></VStack>;
+  return (
+    <VStack alignItems="start" gap={4}>
+      {reports.map((report) => (
+        <>
+          <div>
+            <Text variant="grey">Submission name</Text>
+            <HStack>
+              {!readOnlyUser && (
+                <button onClick={() => openAddEditReportModal(report)}>
+                  <Image src={editIcon} alt="Edit Report Name" />
+                </button>
+              )}
+              <Text fontWeight="bold">{report.name}</Text>
+            </HStack>
+          </div>
+          <HStack gap="4rem">
+            <div>
+              <Text variant="grey">Last Edited</Text>
+              <Text>{formatMonthDayYear(report.lastEdited!)}</Text>
+            </div>
+            <div>
+              <Text variant="grey">Edited By</Text>
+              <Text>{report.lastEditedBy}</Text>
+            </div>
+          </HStack>
+          <div>
+            <Text variant="grey">Status</Text>
+            <Text>{report.status}</Text>
+          </div>
+          <Button
+            onClick={() => navigate(reportBasePath(report))}
+            variant="outline"
+            width="100px"
+            height="30px"
+            fontSize="sm"
+          >
+            {editButtonText}
+          </Button>
+          <Divider></Divider>
+        </>
+      ))}
+    </VStack>
+  );
 };
 
 export const DashboardTable = ({
@@ -89,34 +141,26 @@ export const DashboardTable = ({
   };
 
   return (
-    <Table content={tableContent}>
-      {reports.map((report) => (
-        <Tr key={report.id}>
-          {!readOnlyUser && (
-            <Td fontWeight={"bold"}>
-              <button onClick={() => openAddEditReportModal(report)}>
-                <Image src={editIcon} alt="Edit Report Name" />
-              </button>
-            </Td>
-          )}
-          <Td fontWeight={"bold"}>
-            {report.name ? report.name : "{Name of form}"}
-          </Td>
-          <Td minWidth={"25rem"}>
-            {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
-          </Td>
-          <Td>{report.lastEditedBy}</Td>
-          <Td>{report.status}</Td>
-          <Td>
-            <Button
-              onClick={() => navigate(reportBasePath(report))}
-              variant="outline"
-            >
-              {editButtonText}
-            </Button>
-          </Td>
-        </Tr>
-      ))}
-    </Table>
+    <>
+      <Hide below="sm">
+        {HorizontalTable(
+          tableContent,
+          reports,
+          readOnlyUser,
+          openAddEditReportModal,
+          navigate,
+          editButtonText
+        )}
+      </Hide>
+      <Show below="sm">
+        {VerticleTable(
+          reports,
+          readOnlyUser,
+          openAddEditReportModal,
+          navigate,
+          editButtonText
+        )}
+      </Show>
+    </>
   );
 };

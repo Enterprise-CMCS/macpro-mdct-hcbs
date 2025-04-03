@@ -595,6 +595,13 @@ export const theme = extendTheme({
           fontSize: "12px",
           marginTop: "4px",
         },
+        grey: {
+          color: "palette.gray_medium",
+          fontWeight: "bold",
+          textTransform: "none",
+          letterSpacing: "normal",
+          fontSize: "sm",
+        },
       },
     },
   },
