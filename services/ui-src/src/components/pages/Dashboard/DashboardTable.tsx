@@ -7,7 +7,7 @@ import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 
 interface DashboardTableProps {
   reports: Report[];
-  readOnlyUser?: boolean;
+  isAdmin?: boolean;
   openAddEditReportModal: Function;
 }
 
@@ -15,14 +15,14 @@ interface DashboardTableProps {
  * Return the dashboard table column headers. If user is admin, there will be
  * an extra empty row that is for the edit report name button column.
  */
-const getHeadRow = (readOnlyUser?: boolean) =>
-  readOnlyUser
-    ? ["Submission name", "Last edited", "Edited by", "Status", ""]
+const getHeadRow = (isAdmin?: boolean) =>
+  isAdmin
+    ? ["Submission name", "Last edited", "Edited by", "Status", "#", ""]
     : ["", "Submission name", "Last edited", "Edited by", "Status", ""];
 
 export const DashboardTable = ({
   reports,
-  readOnlyUser,
+  isAdmin,
   openAddEditReportModal,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
@@ -33,14 +33,14 @@ export const DashboardTable = ({
 
   const tableContent = {
     caption: "Quality Measure Reports",
-    headRow: getHeadRow(readOnlyUser),
+    headRow: getHeadRow(isAdmin),
   };
 
   return (
     <Table content={tableContent}>
       {reports.map((report) => (
         <Tr key={report.id}>
-          {!readOnlyUser && (
+          {!isAdmin && (
             <Td fontWeight={"bold"}>
               <button onClick={() => openAddEditReportModal(report)}>
                 <Image src={editIcon} alt="Edit Report Name" />
@@ -55,6 +55,7 @@ export const DashboardTable = ({
           </Td>
           <Td>{report.lastEditedBy}</Td>
           <Td>{report.status}</Td>
+          {isAdmin && <Td>{report.submissionCount}</Td>}
           <Td>
             <Button
               onClick={() => navigate(reportBasePath(report))}
@@ -63,6 +64,26 @@ export const DashboardTable = ({
               {editButtonText}
             </Button>
           </Td>
+          {isAdmin && (
+            <>
+              <td>
+                <Button
+                  onClick={() => navigate(reportBasePath(report))}
+                  variant="link"
+                >
+                  Unlock
+                </Button>
+              </td>
+              <td>
+                <Button
+                  onClick={() => navigate(reportBasePath(report))}
+                  variant="link"
+                >
+                  {report.archived ? "Unarchive" : "Archive"}
+                </Button>
+              </td>
+            </>
+          )}
         </Tr>
       ))}
     </Table>

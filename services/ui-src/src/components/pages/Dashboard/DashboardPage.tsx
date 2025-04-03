@@ -122,7 +122,7 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
-            readOnlyUser={!userIsEndUser}
+            isAdmin={userIsAdmin}
           />
         )}
         {!reports?.length &&
