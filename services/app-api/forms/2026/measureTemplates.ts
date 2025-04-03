@@ -707,7 +707,7 @@ export const measureTemplates: Record<
         text: "HCBS-10: Managed Care (MLTSS)",
       },
       measureInstructions,
-      feeForServiceMeasureResultsSubheader,
+      managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       performanceRateSelfDirection,
       {

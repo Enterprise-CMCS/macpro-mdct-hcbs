@@ -392,6 +392,7 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
+// Rates for LTSS-6
 export const performanceRateTermStay: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
@@ -412,6 +413,7 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
   multiplier: 1000,
 };
 
+// Rates for HCBS-10
 export const performanceRateSelfDirection: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
