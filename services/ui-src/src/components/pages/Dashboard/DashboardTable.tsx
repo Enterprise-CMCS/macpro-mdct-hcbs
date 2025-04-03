@@ -1,7 +1,7 @@
 import { Button, Image, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 import { useNavigate } from "react-router-dom";
-import { Report, UserRoles } from "types";
+import { Report } from "types";
 import { formatMonthDayYear, reportBasePath, useStore } from "utils";
 import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 
@@ -14,8 +14,8 @@ interface DashboardTableProps {
  * Return the dashboard table column headers. If user is admin, there will be
  * an extra empty row that is for the edit report name button column.
  */
-const getHeadRow = (role: string | undefined) =>
-  role === UserRoles.ADMIN
+const getHeadRow = (userIsAdmin: boolean | undefined) =>
+  userIsAdmin
     ? ["Submission name", "Last edited", "Edited by", "Status", "#", ""]
     : ["", "Submission name", "Last edited", "Edited by", "Status", ""];
 
@@ -24,21 +24,20 @@ export const DashboardTable = ({
   openAddEditReportModal,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
-  const { user } = useStore();
-  const role = user?.userRole;
+  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
 
-  const editButtonText = role === UserRoles.STATE_USER ? "Edit" : "View";
+  const editButtonText = userIsEndUser ? "Edit" : "View";
 
   const tableContent = {
     caption: "Quality Measure Reports",
-    headRow: getHeadRow(role),
+    headRow: getHeadRow(userIsAdmin),
   };
 
   return (
     <Table content={tableContent}>
       {reports.map((report) => (
         <Tr key={report.id}>
-          {role === UserRoles.STATE_USER && (
+          {userIsEndUser && (
             <Td fontWeight={"bold"}>
               <button onClick={() => openAddEditReportModal(report)}>
                 <Image src={editIcon} alt="Edit Report Name" />
@@ -53,7 +52,7 @@ export const DashboardTable = ({
           </Td>
           <Td>{report.lastEditedBy}</Td>
           <Td>{report.status}</Td>
-          {role === UserRoles.ADMIN && <Td>{report.submissionCount}</Td>}
+          {!userIsEndUser && <Td>{report.submissionCount}</Td>}
           <Td>
             <Button
               onClick={() => navigate(reportBasePath(report))}
@@ -62,7 +61,7 @@ export const DashboardTable = ({
               {editButtonText}
             </Button>
           </Td>
-          {role === UserRoles.ADMIN && (
+          {userIsAdmin && (
             <>
               <td>
                 <Button variant="link">Unlock</Button>
