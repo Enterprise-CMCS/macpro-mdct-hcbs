@@ -2,6 +2,7 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import { DashboardPage } from "components";
 import {
   RouterWrappedComponent,
+  mockUseAdminStore,
   mockUseReadOnlyUserStore,
   mockUseStore,
 } from "utils/testing/setupJest";
@@ -120,5 +121,47 @@ describe("DashboardPage with Read only user", () => {
       name: "Start Quality Measure Set Report",
     });
     expect(startReportButton).not.toBeInTheDocument();
+  });
+});
+
+describe("DashboardPage with Admin user", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockUseAdminStore);
+  });
+  it("should not render the Start Report button when user is read only", async () => {
+    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
+
+    render(dashboardComponent);
+    await waitFor(() => {
+      expect(getReportsForState).toHaveBeenCalled();
+    });
+
+    const startReportButton = screen.queryByRole("button", {
+      name: "Start Quality Measure Set Report",
+    });
+    expect(startReportButton).not.toBeInTheDocument();
+  });
+
+  it("should render an empty state when there are no reports", async () => {
+    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
+
+    render(dashboardComponent);
+    await waitFor(() => {
+      expect(getReportsForState).toHaveBeenCalled();
+    });
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Colorado Quality Measure Set Report",
+      })
+    ).toBeVisible();
+    expect(
+      screen.getByText(
+        "Once a state or territory begins a QMS Report, you will be able to view it here.",
+        {
+          exact: false,
+        }
+      )
+    ).toBeVisible();
   });
 });

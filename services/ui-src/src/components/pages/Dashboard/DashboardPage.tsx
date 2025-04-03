@@ -25,7 +25,7 @@ import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
-  const { userIsEndUser } = useStore().user ?? {};
+  const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<Report[]>([]);
@@ -81,12 +81,40 @@ export const DashboardPage = () => {
           defaultIndex={[0]} // sets the accordion to open by default
         >
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
-            <Box sx={sx.accordionPanel}>
-              <p>
-                [Optional - Include instructions that would support the state in
-                the completion of the report]
-              </p>
-            </Box>
+            {userIsAdmin ? (
+              <Box sx={sx.accordionPanel}>
+                <Heading size="sm" fontWeight="bold">
+                  Admin Instructions
+                </Heading>
+                <ul>
+                  <li>
+                    To view a state or territory’s submission, use “View”.
+                  </li>
+                  <li>
+                    To allow a state or territory to make corrections or edits
+                    to a submission use “Unlock” to release the submission. The
+                    status will change to “In revision”.
+                  </li>
+                  <li>
+                    Submission count is shown in the # column. Submissions
+                    started and submitted once have a count of 1. When a state
+                    or territory resubmits a previous submission, the count
+                    increases by 1.
+                  </li>
+                  <li>
+                    To archive a submission and hide it from a state or
+                    territory’s dashboard, use “Archive”.
+                  </li>
+                </ul>
+              </Box>
+            ) : (
+              <Box sx={sx.accordionPanel}>
+                <p>
+                  [Optional - Include instructions that would support the state
+                  in the completion of the report]
+                </p>
+              </Box>
+            )}
           </AccordionItem>
         </Accordion>
       </Box>
@@ -103,12 +131,18 @@ export const DashboardPage = () => {
             <Spinner size="md" />
           </Flex>
         )}
-        {!reports?.length && (
-          <Text variant="tableEmpty">
-            Keep track of your Quality Measure Set Reports, once you start a
-            report you can access it here.
-          </Text>
-        )}
+        {!reports?.length &&
+          (userIsAdmin ? (
+            <Text variant="tableEmpty">
+              Once a state or territory begins a QMS Report, you will be able to
+              view it here.
+            </Text>
+          ) : (
+            <Text variant="tableEmpty">
+              Keep track of your Quality Measure Set Reports, once you start a
+              report you can access it here.
+            </Text>
+          ))}
         {userIsEndUser && (
           <Flex justifyContent="center">
             <Button onClick={() => openAddEditReportModal()} type="submit">
