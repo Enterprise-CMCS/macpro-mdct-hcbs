@@ -1,20 +1,20 @@
 {
-    "name": "topics",
-    "version": "1.0.0",
-    "description": "Create mmdl topics in CMS BigMac",
-    "author": "",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "devDependencies": {
-      "@stratiformdigital/serverless-iam-helper": "^3.2.0",
-      "@stratiformdigital/serverless-online": "^3.2.0",
-      "@stratiformdigital/serverless-s3-security-helper": "^4.0.0",
-      "serverless-disable-functions": "^1.0.0",
-      "serverless-plugin-common-excludes": "^4.0.0",
-      "serverless-plugin-include-dependencies": "^5.1.0"
-    },
-    "dependencies": {
-      "kafkajs": "^2.2.4"
-    }
+  "name": "topics",
+  "version": "1.0.0",
+  "description": "Create mmdl topics in CMS BigMac",
+  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@stratiformdigital/serverless-iam-helper": "^3.2.0",
+    "@stratiformdigital/serverless-online": "^3.2.0",
+    "@stratiformdigital/serverless-s3-security-helper": "^4.0.0",
+    "serverless-disable-functions": "^1.0.0",
+    "serverless-plugin-common-excludes": "^4.0.0",
+    "serverless-plugin-include-dependencies": "^5.1.0"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
   }
+}
