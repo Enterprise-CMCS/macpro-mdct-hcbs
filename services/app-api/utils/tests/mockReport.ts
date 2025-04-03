@@ -22,6 +22,8 @@ export const validReport: Report = {
   status: ReportStatus.NOT_STARTED,
   name: "yeehaw",
   year: 2026,
+  archived: false,
+  submissionCount: 0,
   options: {},
 };
 
