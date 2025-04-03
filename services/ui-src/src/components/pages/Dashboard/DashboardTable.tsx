@@ -50,7 +50,9 @@ export const HorizontalTable = (
           </Td>
           <Td>{report.lastEditedBy}</Td>
           <Td>{report.status}</Td>
-          {showReportSubmissionsColumn && <Td>{report.submissionCount}</Td>}
+          {showReportSubmissionsColumn && (
+            <Td width="3rem">{report.submissionCount ?? 0}</Td>
+          )}
           <Td>
             <Button
               onClick={() => navigate(reportBasePath(report))}
@@ -115,7 +117,9 @@ export const VerticleTable = (
             <Text variant="grey">Status</Text>
             <Text>{report.status}</Text>
           </div>
-          {showReportSubmissionsColumn && <Text>{report.submissionCount}</Text>}
+          {showReportSubmissionsColumn && (
+            <Text>{report.submissionCount ?? 0}</Text>
+          )}
           <HStack gap={"6"}>
             <Button
               onClick={() => navigate(reportBasePath(report))}
