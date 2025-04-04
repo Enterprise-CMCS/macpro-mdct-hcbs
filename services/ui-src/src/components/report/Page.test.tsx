@@ -8,6 +8,7 @@ import { render, screen } from "@testing-library/react";
 import { ElementType, PageElement } from "types/report";
 import { useStore } from "utils";
 import { Page } from "./Page";
+import { AlertTypes } from "types";
 
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
@@ -151,6 +152,12 @@ const elements: PageElement[] = [
   {
     type: ElementType.Divider,
     id: "",
+  },
+  {
+    type: ElementType.StatusAlert,
+    id: "",
+    text: "mock status",
+    status: AlertTypes.ERROR,
   },
 ];
 
