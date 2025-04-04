@@ -253,7 +253,7 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   helperText: "Hint Text",
   assessments: [
     {
-      id: "part-not-connect",
+      id: "part-not-contact",
       label: "Participant Could Not be Contacted",
     },
     {
@@ -424,10 +424,9 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
     { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
   ],
   fields: [
-    { id: "year-0", label: " " },
-    { id: "year-1", label: "18 to 64 years old" },
-    { id: "year-2", label: "65 years or older" },
+    { id: "self-label", label: "self-label" },
+    { id: "18-to-64-years", label: "18 to 64 Years" },
+    { id: "65-years-or-older", label: "65 years or older" },
   ],
-  rateType: PerformanceRateType.NDRFIELDS,
-  multiplier: 1000,
+  rateType: PerformanceRateType.NDRFIELDS_HCBS,
 };
