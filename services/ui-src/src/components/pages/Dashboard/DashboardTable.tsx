@@ -13,13 +13,17 @@ import {
 import { Table } from "components";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Report, ReportStatus } from "types";
-import { formatMonthDayYear, reportBasePath, useStore } from "utils";
+import {
+  formatMonthDayYear,
+  releaseReport,
+  reportBasePath,
+  useStore,
+} from "utils";
 import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 
 interface DashboardTableProps {
   reports: Report[];
   openAddEditReportModal: Function;
-  releaseReport: Function;
 }
 
 export const getStatus = (report: Report) => {
@@ -41,7 +45,7 @@ export const HorizontalTable = (
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   userIsEndUser: boolean | undefined,
-  releaseReport: Function
+  toggleRelease: Function
 ) => {
   return (
     <Table content={tableContent}>
@@ -78,7 +82,7 @@ export const HorizontalTable = (
               <td>
                 <Button
                   variant="link"
-                  onClick={() => releaseReport(report)}
+                  onClick={() => toggleRelease(report)}
                   disabled={report.status !== ReportStatus.SUBMITTED}
                 >
                   Unlock
@@ -105,7 +109,7 @@ export const VerticleTable = (
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   userIsEndUser: boolean | undefined,
-  releaseReport: Function
+  toggleRelease: Function
 ) => {
   return (
     <VStack alignItems="start" gap={4}>
@@ -154,7 +158,7 @@ export const VerticleTable = (
                 <td>
                   <Button
                     variant="link"
-                    onClick={() => releaseReport(report)}
+                    onClick={() => toggleRelease(report)}
                     disabled={report.status !== ReportStatus.SUBMITTED}
                   >
                     Unlock
@@ -178,7 +182,6 @@ export const VerticleTable = (
 export const DashboardTable = ({
   reports,
   openAddEditReportModal,
-  releaseReport,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
@@ -201,6 +204,12 @@ export const DashboardTable = ({
     headRow: headers,
   };
 
+  const toggleReport = async (report: Report) => {
+    if (userIsAdmin) {
+      await releaseReport(report);
+    }
+  };
+
   return (
     <>
       <Hide below="sm">
@@ -213,7 +222,7 @@ export const DashboardTable = ({
           openAddEditReportModal,
           navigate,
           userIsEndUser,
-          releaseReport
+          toggleReport
         )}
       </Hide>
       <Show below="sm">
@@ -225,7 +234,7 @@ export const DashboardTable = ({
           openAddEditReportModal,
           navigate,
           userIsEndUser,
-          releaseReport
+          toggleReport
         )}
       </Show>
     </>
