@@ -1,7 +1,6 @@
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { releaseReport } from "./release";
 import { canWriteBanner } from "../../utils/authorization";
-import { getReport } from "../../storage/reports";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { validReport } from "../../utils/tests/mockReport";
