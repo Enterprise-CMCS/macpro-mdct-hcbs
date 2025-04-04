@@ -26,8 +26,6 @@ export const releaseReport = handler(parseReportParameters, async (request) => {
     return ok(report);
   }
 
-  console.log("report", report);
-
   //can't unlock and archived report
   const isArchived = report.archived;
   if (isArchived) {

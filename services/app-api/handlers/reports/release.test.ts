@@ -17,8 +17,12 @@ jest.mock("../../utils/authorization", () => ({
   canWriteBanner: jest.fn().mockReturnValue(true),
 }));
 
+const getReportMock = jest
+  .fn()
+  .mockReturnValue({ id: "A report", locked: true });
+
 jest.mock("../../storage/reports", () => ({
-  getReport: jest.fn().mockReturnValue({ id: "A report", locked: true }),
+  getReport: () => getReportMock(),
   putReport: jest.fn(),
 }));
 
@@ -65,7 +69,24 @@ describe("Test releaseReport handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test successful unlock of report", async () => {
+  test("Test archived report", async () => {
+    getReportMock.mockReturnValueOnce({
+      id: "A report",
+      locked: true,
+      archived: true,
+    });
+    const res = await releaseReport(testEvent);
+
+    expect(res.statusCode).toBe(StatusCodes.Forbidden);
+  });
+
+  test("Test unlocked report", async () => {
+    getReportMock.mockReturnValueOnce({ id: "A report", locked: false });
+    const res = await releaseReport(testEvent);
+
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+  });
+  test("Test successful lock of report", async () => {
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
