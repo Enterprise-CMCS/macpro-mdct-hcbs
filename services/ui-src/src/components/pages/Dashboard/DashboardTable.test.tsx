@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
 import { useStore } from "utils";
 import {
@@ -12,6 +13,11 @@ jest.mock("utils/state/useStore", () => ({
 }));
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockUseStore);
+
+const mockArchive = jest.fn();
+jest.mock("utils/api/requestMethods/report", () => ({
+  updateArchivedStatus: () => mockArchive(),
+}));
 
 const reports = [
   {
@@ -68,5 +74,14 @@ describe("Dashboard table with admin user", () => {
     expect(screen.getAllByText("Archive").length).toBe(2);
     expect(screen.getAllByText("View").length).toBe(3);
     expect(screen.getAllByText("Unlock").length).toBe(3);
+  });
+
+  it("should archive a report on click", async () => {
+    render(adminDashboardTableComponent);
+    await act(async () => {
+      const button = screen.getAllByText("Archive")[0];
+      await userEvent.click(button);
+    });
+    expect(mockArchive).toHaveBeenCalled();
   });
 });
