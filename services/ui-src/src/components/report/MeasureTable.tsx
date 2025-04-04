@@ -64,11 +64,11 @@ export const MeasureTableElement = (props: PageElementProps) => {
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
-    //optional measures should return nothing if they aren't started
     if (
       !measure.required &&
       (measure.status === MeasureStatus.NOT_STARTED || !measure.status)
     ) {
+      //optional measures should return nothing if they aren't started
       return undefined;
     }
 
