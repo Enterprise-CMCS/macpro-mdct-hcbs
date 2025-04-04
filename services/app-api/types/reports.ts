@@ -1,5 +1,6 @@
 // Templates
 
+import { AnyObject } from "yup";
 import {
   DataSource,
   DeliverySystem,
@@ -73,6 +74,8 @@ export enum MeasureTemplateName {
   "FASI-2" = "FASI-2",
   "FFS-FASI-1" = "FFS-FASI-1",
   "MLTSS-FASI-1" = "MLTSS-FASI-1",
+  "FFS-FASI-2" = "FFS-FASI-2",
+  "MLTSS-FASI-2" = "MLTSS-FASI-2",
   "HCBS-10" = "HCBS-10",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
@@ -226,6 +229,7 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
+  PerformanceRate = "performanceRate",
 }
 
 export type PageElement =
@@ -246,7 +250,8 @@ export type PageElement =
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
-  | MeasureFooterTemplate;
+  | MeasureFooterTemplate
+  | PerformanceRateTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -388,6 +393,52 @@ export type MeasureFooterTemplate = {
   completeMeasure?: boolean;
   completeSection?: boolean;
   clear?: boolean;
+};
+
+export type PerformanceData = {
+  rates: AnyObject[];
+  denominator?: number;
+};
+
+export type RateType = {
+  label: string;
+  performanceTarget?: string;
+  numerator?: number;
+  denominator?: number;
+  rate?: number;
+  id?: string;
+};
+
+export type RateSetData = {
+  id: string;
+  label: string;
+  denominator?: number;
+  rates?: RateType[];
+};
+
+export const enum PerformanceRateType {
+  NDR = "NDR",
+  NDR_Enhanced = "NDREnhanced",
+  FIELDS = "Fields",
+  NDRFIELDS = "NDRFields",
+}
+
+export const enum RateCalc {
+  NDRCalc = "NDRCalc",
+  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
+}
+
+export type PerformanceRateTemplate = {
+  id: string;
+  type: ElementType.PerformanceRate;
+  label?: string;
+  helperText?: string;
+  assessments?: { label: string; id: string }[];
+  fields?: { label: string; id: string; autoCalc?: boolean }[];
+  rateType: PerformanceRateType;
+  rateCalc?: RateCalc;
+  multiplier?: number;
+  answer?: PerformanceData | RateSetData[];
 };
 
 export type ChoiceTemplate = {

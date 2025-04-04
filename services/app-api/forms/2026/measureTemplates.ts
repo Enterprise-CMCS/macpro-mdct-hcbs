@@ -3,6 +3,8 @@ import {
   ElementType,
   MeasureTemplateName,
   MeasurePageTemplate,
+  PerformanceRateType,
+  RateCalc,
 } from "../../types/reports";
 import {
   additionalNotesField,
@@ -23,26 +25,15 @@ import {
   whichMedicaidHCBSprograms,
   feeForServiceMeasureResultsSubheader,
   managedCareMeasureResultsSubheader,
-  performanceRatesSubheader,
-  performanceRateAutoCalculates,
-  performanceRateNum,
-  performanceRateTarget,
-  performanceRatesDenomTextbox,
-  performanceRatesDenomAutoCalculates,
-  exclusionRatesMeasureSubheader,
-  exclusionRatesDenomAutoCalculates,
-  exclusionRateNum,
-  exclusionRatesDenomTextBox,
   stratificationSubheader,
   stratificationParagraph,
   areYouReportingStratification,
-  shortTermNestedHeading,
-  mediumTermNestedHeading,
-  longTermNestedHeading,
-  denominatorAutoCalc18to64,
-  denominatorAutoCalc65to74,
-  denominatorAutoCalc75to84,
-  denominatorAutoCalc85orOlder,
+  exclusionRatesAssessmentElements,
+  performanceRatesAssessmentElements,
+  performanceRatesPersonPlanElements,
+  exclusionRatesPersonPlanElements,
+  performanceRateTermStay,
+  performanceRateFacility,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -90,44 +81,8 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRatesSubheader,
-      performanceRatesDenomTextbox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Assessment of Core Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Assessment of Supplemental Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      exclusionRatesMeasureSubheader,
-      exclusionRatesDenomTextBox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Count Not Be Contacted",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Exclusion Rate: Participant Refused Assessment",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
+      performanceRatesAssessmentElements,
+      exclusionRatesAssessmentElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -159,44 +114,8 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRatesSubheader,
-      performanceRatesDenomTextbox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Assessment of Core Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Assessment of Supplemental Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      exclusionRatesMeasureSubheader,
-      exclusionRatesDenomTextBox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Count Not Be Contacted",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Exclusion Rate: Participant Refused Assessment",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
+      performanceRatesAssessmentElements,
+      exclusionRatesAssessmentElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -249,44 +168,8 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRatesSubheader,
-      performanceRatesDenomTextbox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Person-Centered Plan with Core Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Person-Centered Plan with Supplemental Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      exclusionRatesMeasureSubheader,
-      exclusionRatesDenomTextBox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Count Not Be Contacted",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Exclusion Rate: Participant Refused Person-Centered Planning",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
+      performanceRatesPersonPlanElements,
+      exclusionRatesPersonPlanElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -318,44 +201,8 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      performanceRatesSubheader,
-      performanceRatesDenomTextbox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Person-Centered Plan with Core Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Person-Centered Plan with Supplemental Elements",
-      },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      exclusionRatesMeasureSubheader,
-      exclusionRatesDenomTextBox,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Count Not Be Contacted",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Exclusion Rate: Participant Refused Person-Centered Planning",
-      },
-      exclusionRateNum,
-      exclusionRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
+      performanceRatesPersonPlanElements,
+      exclusionRatesPersonPlanElements,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -407,277 +254,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-18-to-64",
-        text: "Performance Rates: 18 to 64 Years",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom-18-to-64",
-        label: "Denominator (18 to 64 years)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (18 to 64 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-18-to-64",
-        label: "Numerator: Short Term Stay (18 to 64 years)",
-      },
-      denominatorAutoCalc18to64,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (18 to 64 years)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-stay-18-to-64",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (18 to 64 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-18-to-64",
-        label: "Numerator: Medium Term Stay (18 to 64 years)",
-      },
-      denominatorAutoCalc18to64,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (18 to 64 years)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-18-to-64",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (18 to 64 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-18-to-64",
-        label: "Numerator: Long Term Stay (18 to 64 years)",
-      },
-      denominatorAutoCalc18to64,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (18 to 64 years)",
-      },
-      // 65 to 74 Years
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-65-to-74",
-        text: "Performance Rates: 65 to 74 Years",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom-65-to-74",
-        label: "Denominator (65 to 74 years)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-short-term-65-to-74",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (65 to 74 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-65-to-74",
-        label: "Numerator: Short Term Stay (65 to 74 years)",
-      },
-      denominatorAutoCalc65to74,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (65 to 74 years)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-65-to-74",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (65 to 74 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-65-to-74",
-        label: "Numerator: Medium Term Stay (65 to 74 years)",
-      },
-      denominatorAutoCalc65to74,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (65 to 74 years)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-65-to-74",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (65 to 74 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-65-to-74",
-        label: "Numerator: Long Term Stay (65 to 74 years)",
-      },
-      denominatorAutoCalc65to74,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (65 to 74 years)",
-      },
-      // 75 to 84 Years
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-75-to-84",
-        text: "Performance Rates: 75 to 84 Years",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom-75-to-84",
-        label: "Denominator (75 to 84 years)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-short-term-75-to-84",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (75 to 84 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-75-to-84",
-        label: "Numerator: Short Term Stay (75 to 84 years)",
-      },
-      denominatorAutoCalc75to84,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (75 to 84 years)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-75-to-84",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (75 to 84 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-75-to-84",
-        label: "Numerator: Medium Term Stay (75 to 84 years)",
-      },
-      denominatorAutoCalc75to84,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (75 to 84 years)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-75-to-84",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (75 to 84 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-75-to-84",
-        label: "Numerator: Long Term Stay (75 to 84 years)",
-      },
-      denominatorAutoCalc75to84,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (75 to 84 years)",
-      },
-      // 85 years or older
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-85-or-older",
-        text: "Performance Rates: 85 years or older",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom-85-or-older",
-        label: "Denominator (85 years or older)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-short-term-85-or-older",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (85 years or older)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-85-or-older",
-        label: "Numerator: Short Term Stay (85 years or older)",
-      },
-      denominatorAutoCalc85orOlder,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (85 years or older)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-85-or-older",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (85 years or older)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-85-or-older",
-        label: "Numerator: Medium Term Stay (85 years or older)",
-      },
-      denominatorAutoCalc85orOlder,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (85 years or older)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-85-or-older",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (85 years or older)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-85-or-older",
-        label: "Numerator: Long Term Stay (85 years or older)",
-      },
-      denominatorAutoCalc85orOlder,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (85 years or older)",
-      },
+      performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -705,277 +282,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-18-to-64",
-        text: "Performance Rates: 18 to 64 Years",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom-18-to-64",
-        label: "Denominator (18 to 64 years)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (18 to 64 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-18-to-64",
-        label: "Numerator: Short Term Stay (18 to 64 years)",
-      },
-      denominatorAutoCalc18to64,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (18 to 64 years)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-stay-18-to-64",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (18 to 64 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-18-to-64",
-        label: "Numerator: Medium Term Stay (18 to 64 years)",
-      },
-      denominatorAutoCalc18to64,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (18 to 64 years)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-18-to-64",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (18 to 64 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-18-to-64",
-        label: "Numerator: Long Term Stay (18 to 64 years)",
-      },
-      denominatorAutoCalc18to64,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-18-to-64",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (18 to 64 years)",
-      },
-      // 65 to 74 Years
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-65-to-74",
-        text: "Performance Rates: 65 to 74 Years",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom-65-to-74",
-        label: "Denominator (65 to 74 years)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-short-term-65-to-74",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (65 to 74 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-65-to-74",
-        label: "Numerator: Short Term Stay (65 to 74 years)",
-      },
-      denominatorAutoCalc65to74,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (65 to 74 years)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-65-to-74",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (65 to 74 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-65-to-74",
-        label: "Numerator: Medium Term Stay (65 to 74 years)",
-      },
-      denominatorAutoCalc65to74,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (65 to 74 years)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-65-to-74",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (65 to 74 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-65-to-74",
-        label: "Numerator: Long Term Stay (65 to 74 years)",
-      },
-      denominatorAutoCalc65to74,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-65-to-74",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (65 to 74 years)",
-      },
-      // 75 to 84 Years
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-75-to-84",
-        text: "Performance Rates: 75 to 84 Years",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom-75-to-84",
-        label: "Denominator (75 to 84 years)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-short-term-75-to-84",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (75 to 84 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-75-to-84",
-        label: "Numerator: Short Term Stay (75 to 84 years)",
-      },
-      denominatorAutoCalc75to84,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (75 to 84 years)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-75-to-84",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (75 to 84 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-75-to-84",
-        label: "Numerator: Medium Term Stay (75 to 84 years)",
-      },
-      denominatorAutoCalc75to84,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (75 to 84 years)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-75-to-84",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (75 to 84 years)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-75-to-84",
-        label: "Numerator: Long Term Stay (75 to 84 years)",
-      },
-      denominatorAutoCalc75to84,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-75-to-84",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (75 to 84 years)",
-      },
-      // 85 years or older
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rate-85-or-older",
-        text: "Performance Rates: 85 years or older",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom-85-or-older",
-        label: "Denominator (85 years or older)",
-      },
-      shortTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-short-term-85-or-older",
-        label:
-          "What is the [templateYear+2] state performance target for short term stay (85 years or older)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-short-85-or-older",
-        label: "Numerator: Short Term Stay (85 years or older)",
-      },
-      denominatorAutoCalc85orOlder,
-      {
-        type: ElementType.Textbox,
-        id: "short-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Short Term Rate (85 years or older)",
-      },
-      mediumTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-medium-term-85-or-older",
-        label:
-          "What is the [templateYear+2] state performance target for medium term stay (85 years or older)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-medium-85-or-older",
-        label: "Numerator: Medium Term Stay (85 years or older)",
-      },
-      denominatorAutoCalc85orOlder,
-      {
-        type: ElementType.Textbox,
-        id: "medium-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Medium Term Rate (85 years or older)",
-      },
-      longTermNestedHeading,
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target-long-term-stay-85-or-older",
-        label:
-          "What is the [templateYear+2] state performance target for long term stay (85 years or older)?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-num-long-85-or-older",
-        label: "Numerator: Long Term Stay (85 years or older)",
-      },
-      denominatorAutoCalc85orOlder,
-      {
-        type: ElementType.Textbox,
-        id: "long-term-rate-85-or-older",
-        helperText: "Auto-calculates",
-        label: "Long Term Rate (85 years or older)",
-      },
+      performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1024,53 +331,7 @@ export const measureTemplates: Record<
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText: "{Instructions}",
-      },
-      performanceRateTarget,
-      {
-        type: ElementType.Textbox,
-        id: "count-success-discharges-to-community",
-        label: "Count of Succcessful Discharges to Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "facility-admission-count",
-        label: "Facility Admission Count",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-count-success-discharges-to-community",
-        label: "Expected Count of Successful Discharges to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "multi-plan-population-rate",
-        label: "Multi-Plan Population Rate",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "observed-performance-rate-auto-calc1",
-        helperText: "Auto-calculates",
-        label:
-          "Observed Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-performance-rate-auto-calc2",
-        helperText: "Auto-calculates",
-        label:
-          "Expected Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "risk-adjusted-rate-auto-calc3",
-        helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      },
+      performanceRateFacility,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -1102,53 +363,7 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText: "{Instructions}",
-      },
-      performanceRateTarget,
-      {
-        type: ElementType.Textbox,
-        id: "count-success-discharges-to-community",
-        label: "Count of Succcessful Discharges to Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "facility-admission-count",
-        label: "Facility Admission Count",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-count-success-discharges-to-community",
-        label: "Expected Count of Successful Discharges to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "multi-plan-population-rate",
-        label: "Multi-Plan Population Rate",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "observed-performance-rate-auto-calc1",
-        helperText: "Auto-calculates",
-        label:
-          "Observed Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-performance-rate-auto-calc2",
-        helperText: "Auto-calculates",
-        label:
-          "Expected Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "risk-adjusted-rate-auto-calc3",
-        helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      },
+      performanceRateFacility,
       stratificationSubheader,
       stratificationParagraph,
       areYouReportingStratification,
@@ -1201,51 +416,41 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText: "{Instructions}",
-      },
-      performanceRateTarget,
-      {
-        type: ElementType.Textbox,
-        id: "count-success-transitions-to-community",
-        label: "Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "long-term-facility-count",
-        label: "Long-Term Facility Stay Count",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-count-success-transitions-to-community",
-        label: "Expected Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "multi-plan-population-rate",
-        label: "Multi-Plan Population Rate",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "observed-performance-rate-auto-calc1",
-        helperText: "Auto-calculates",
-        label:
-          "Observed Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-performance-rate-auto-calc2",
-        helperText: "Auto-calculates",
-        label:
-          "Expected Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "risk-adjusted-rate-auto-calc3",
-        helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        fields: [
+          {
+            id: "count-of-success",
+            label: "Count of Successful Transitions to the Community",
+          },
+          { id: "fac-admin-count", label: "Long-Term Facility Stay Count" },
+          {
+            id: "expected-count-of-success",
+            label: "Expected Count of Successful Transitions to the Community",
+          },
+          { id: "multi-plan", label: "Multi-Plan Population Rate" },
+          {
+            id: "opr-min-stay",
+            label:
+              "Observed Performance Rate for Minimizing Length of Facility Stay",
+            autoCalc: true,
+          },
+          {
+            id: "epr-min-stay",
+            label:
+              "Expected Performance Rate for Minimizing Length of Facility Stay",
+            autoCalc: true,
+          },
+          {
+            id: "rar-min-stay",
+            label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+            autoCalc: true,
+          },
+        ],
+        rateType: PerformanceRateType.FIELDS,
+        rateCalc: RateCalc.FacilityLengthOfStayCalc,
       },
       stratificationSubheader,
       stratificationParagraph,
@@ -1279,51 +484,41 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
-        helperText: "{Instructions}",
-      },
-      performanceRateTarget,
-      {
-        type: ElementType.Textbox,
-        id: "count-success-transitions-to-community",
-        label: "Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "long-term-facility-count",
-        label: "Long-Term Facility Stay Count",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-count-success-transitions-to-community",
-        label: "Expected Count of Successful Transitions to the Community",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "multi-plan-population-rate",
-        label: "Multi-Plan Population Rate",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "observed-performance-rate-auto-calc1",
-        helperText: "Auto-calculates",
-        label:
-          "Observed Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "expected-performance-rate-auto-calc2",
-        helperText: "Auto-calculates",
-        label:
-          "Expected Performance Rate for Minimizing Length of Facility Stay",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "risk-adjusted-rate-auto-calc3",
-        helperText: "Auto-calculates",
-        label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        fields: [
+          {
+            id: "count-of-success",
+            label: "Count of Successful Transitions to the Community",
+          },
+          { id: "fac-admin-count", label: "Long-Term Facility Stay Count" },
+          {
+            id: "expected-count-of-success",
+            label: "Expected Count of Successful Transitions to the Community",
+          },
+          { id: "multi-plan", label: "Multi-Plan Population Rate" },
+          {
+            id: "opr-min-stay",
+            label:
+              "Observed Performance Rate for Minimizing Length of Facility Stay",
+            autoCalc: true,
+          },
+          {
+            id: "epr-min-stay",
+            label:
+              "Expected Performance Rate for Minimizing Length of Facility Stay",
+            autoCalc: true,
+          },
+          {
+            id: "rar-min-stay",
+            label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+            autoCalc: true,
+          },
+        ],
+        rateType: PerformanceRateType.FIELDS,
+        rateCalc: RateCalc.FacilityLengthOfStayCalc,
       },
       stratificationSubheader,
       stratificationParagraph,
@@ -1376,14 +571,19 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
       },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1411,14 +611,19 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       whichMedicaidHCBSprograms,
       {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
       },
-      performanceRateTarget,
-      performanceRateNum,
-      performanceRatesDenomAutoCalculates,
-      performanceRateAutoCalculates,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1446,6 +651,86 @@ export const measureTemplates: Record<
       qualityMeasuresSubheader,
       measureResultsNavigationTable,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["FFS-FASI-2"]]: {
+    id: "FFS-FASI-2",
+    title: "FASI-2: Fee-For-Service (FFS FASI-2)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-2",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-2: Fee-For-Service (FFS FASI-2)",
+      },
+      feeForServiceMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-2",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-FASI-2"]]: {
+    id: "MLTSS-FASI-2",
+    title: "FASI-2: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "FASI-2",
+      },
+      {
+        ...measureHeader,
+        text: "FASI-2: Managed Care (MLTSS)",
+      },
+      managedCareMeasureResultsSubheader,
+      whichMedicaidHCBSprograms,
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "total-personal-priority",
+            label:
+              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "FASI-2",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["HCBS-10"]]: {
@@ -1519,77 +804,31 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "pc-plan",
+            label: "Participant with Person-Centered Plan Transmitted to PCP",
+          },
+        ],
       },
       {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
-      },
-
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-exclusion-rates",
-        text: "Exclusion Rates",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Exclusion Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        label: "Exclusion Rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "refused-pc-plan",
+            label: "Participant Refused to Share Person-Centered Plan",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,
@@ -1655,77 +894,31 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "pc-plan",
+            label: "Participant with Person-Centered Plan Transmitted to PCP",
+          },
+        ],
       },
       {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Performance Rate: Participant with Person-Centered Plan Transmitted to PCP",
-      },
-
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-exclusion-rates",
-        text: "Exclusion Rates",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Exclusion Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused to Share Person-Centered Plan",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        label: "Exclusion Rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "refused-pc-plan",
+            label: "Participant Refused to Share Person-Centered Plan",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,
@@ -1833,44 +1026,17 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Fall or Problems with Balance or Gait Evaluation",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "gait-evaulation",
+            label: "Fall or Problems with Balance or Gait Evaluation",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,
@@ -1936,104 +1102,36 @@ export const measureTemplates: Record<
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-performance-rates",
-        text: "Performance Rates",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
-          "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "fall-risk-assess",
+            label: "Falls Risk Assessment",
+          },
+          {
+            id: "plan-care-falls",
+            label: "Plan of Care for Falls",
+          },
+        ],
       },
+
       {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Performance Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Falls Risk Assessment",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-subheader",
-        text: "Plan of Care for Falls",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-target",
-        label:
-          "What is the [templateYear+2] state performance target for this assessment?",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-exclusion-rates",
-        text: "Exclusion Rates",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rates-denom",
-        label: "Exclusion Rates Denominator",
-      },
-      {
-        type: ElementType.NestedHeading,
-        id: "measure-nested-heading",
-        text: "Exclusion Rate: Participant Refused Risk Assessment",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-num",
-        label: "Numerator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "exclusion-rate-denom",
-        helperText: "Auto-calculates",
-        label: "Denominator",
-      },
-      {
-        type: ElementType.Textbox,
-        id: "performance-rate",
-        helperText: "Auto-calculates",
-        label: "Rate",
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        label: "Exclusion Rates",
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "refused-risk-assess",
+            label: "Participant Refused Risk Assessment",
+          },
+        ],
       },
       {
         type: ElementType.SubHeader,

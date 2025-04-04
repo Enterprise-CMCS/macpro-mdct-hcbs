@@ -5,14 +5,15 @@ import {
   HeaderTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
-  NestedHeadingTemplate,
-  ParagraphTemplate,
   MeasureResultsNavigationTableTemplate,
+  ParagraphTemplate,
+  PerformanceRateTemplate,
+  PerformanceRateType,
   RadioTemplate,
+  RateCalc,
   ReportingRadioTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
-  TextboxTemplate,
 } from "../../types/reports";
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
@@ -64,14 +65,6 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   id: "managed-care-measure-results-subheader",
   text: "Managed Care Measure Results",
-};
-
-export const performanceRatesSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  id: "measure-subheader-performance-rates",
-  text: "Performance Rates",
-  helperText:
-    "The performance rate is based on a review of this measures participant case management records, selected via a systematic sample drawn from the eligible population.",
 };
 
 export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
@@ -205,64 +198,6 @@ export const whichMedicaidHCBSprograms: TextAreaBoxTemplate = {
     "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
 };
 
-export const performanceRatesDenomTextbox: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rates-denom",
-  label: "Performance Rates Denominator",
-};
-
-export const performanceRatesDenomAutoCalculates: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rates-denom-auto-calc",
-  helperText: "Auto-calculates",
-  label: "Denominator",
-};
-
-export const exclusionRatesDenomAutoCalculates: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "exclusion-rates-denom-auto-calc",
-  helperText: "Auto-calculates",
-  label: "Denominator",
-};
-
-export const performanceRateAutoCalculates: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rate-auto-calc",
-  helperText: "Auto-calculates",
-  label: "Rate",
-};
-
-export const performanceRateNum: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rate-num",
-  label: "Numerator",
-};
-
-export const exclusionRateNum: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "exclusion-rate-num",
-  label: "Numerator",
-};
-
-export const performanceRateTarget: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "performance-rate-target",
-  label:
-    "What is the [templateYear+2] state performance target for this assessment?",
-};
-
-export const exclusionRatesMeasureSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  id: "measure-subheader-exclusion-rates",
-  text: "Exclusion Rates",
-};
-
-export const exclusionRatesDenomTextBox: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "exclusion-rates-denom",
-  label: "Exclusion Rates Denominator",
-};
-
 export const stratificationSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   id: "measure-subheader-stratification",
@@ -285,48 +220,150 @@ export const areYouReportingStratification: RadioTemplate = {
   ],
 };
 
-export const shortTermNestedHeading: NestedHeadingTemplate = {
-  type: ElementType.NestedHeading,
-  id: "short-term-subheader",
-  text: "Short Term",
+//Rates for LTSS-1
+export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  rateType: PerformanceRateType.NDR_Enhanced,
+  helperText:
+    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "assess-of-core",
+      label: "Assessment of Core Elements",
+    },
+    {
+      id: "assess-of-supplemental",
+      label: "Assessment of Supplemental Elements",
+    },
+  ],
 };
 
-export const mediumTermNestedHeading: NestedHeadingTemplate = {
-  type: ElementType.NestedHeading,
-  id: "medium-term-subheader",
-  text: "Medium Term",
+export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  label: "Exclusion Rates",
+  rateType: PerformanceRateType.NDR_Enhanced,
+  helperText:
+    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "part-not-connect",
+      label: "Participant Could Not be Contacted",
+    },
+    {
+      id: "part-refuse-assess",
+      label: "Participant Refused Assessment",
+    },
+  ],
 };
 
-export const longTermNestedHeading: NestedHeadingTemplate = {
-  type: ElementType.NestedHeading,
-  id: "long-term-subheader",
-  text: "Long Term",
+//Rates for LTSS-2
+export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  rateType: PerformanceRateType.NDR_Enhanced,
+  helperText:
+    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "person-plan-core",
+      label: "Person-Centered Plan with Core Elements",
+    },
+    {
+      id: "person-plan-supplemental",
+      label: "Person-Centered Plan with Supplemental Elements",
+    },
+  ],
 };
 
-export const denominatorAutoCalc18to64: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "denom-auto-calc-18-to-64",
-  helperText: "Auto-calculates",
-  label: "Denominator (18 to 64 years)",
+export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  label: "Exclusion Rates",
+  rateType: PerformanceRateType.NDR_Enhanced,
+  helperText:
+    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "part-not-contact",
+      label: "Participant Could Not be Contacted",
+    },
+    {
+      id: "part-refuse-planning",
+      label: "Participant Refused Person-Centered Planning",
+    },
+  ],
 };
 
-export const denominatorAutoCalc65to74: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "denom-auto-calc-65-to-74",
-  helperText: "Auto-calculates",
-  label: "Denominator (65 to 74 years)",
+//Rates for POM
+export const performanceRatePOM: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  rateType: PerformanceRateType.NDR,
+  helperText:
+    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    {
+      id: "same-env",
+      label: "Person uses the same environments as people without disabilities",
+    },
+  ],
 };
 
-export const denominatorAutoCalc75to84: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "denom-auto-calc-75-to-84",
-  helperText: "Auto-calculates",
-  label: "Denominator (75 to 84 years)",
+//Rates for LTSS-7
+export const performanceRateFacility: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  helperText:
+    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  fields: [
+    {
+      id: "count-of-success",
+      label: "Count of Successful Discharges to the Community",
+    },
+    { id: "fac-admin-count", label: "Facility Admission Count" },
+    {
+      id: "expected-count-of-success",
+      label: "Expected Count of Successful Discharges to the Community",
+    },
+    { id: "multi-plan", label: "Multi-Plan Population Rate" },
+    {
+      id: "opr-min-stay",
+      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "epr-min-stay",
+      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "rar-min-stay",
+      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+  ],
+  rateType: PerformanceRateType.FIELDS,
+  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
-export const denominatorAutoCalc85orOlder: TextboxTemplate = {
-  type: ElementType.Textbox,
-  id: "denom-auto-calc-85-or-older",
-  helperText: "Auto-calculates",
-  label: "Denominator (85 years or older)",
+export const performanceRateTermStay: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  helperText:
+    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years" },
+    { id: "year-2", label: "65 to 74 Years" },
+    { id: "year-3", label: "75 to 84 Years" },
+    { id: "year-4", label: "85 years or older" },
+  ],
+  fields: [
+    { id: "short-term", label: "Short Term Stay" },
+    { id: "med-term", label: "Medium Term Stay" },
+    { id: "long-term", label: "Long Term Stay" },
+  ],
+  rateType: PerformanceRateType.NDRFIELDS,
+  multiplier: 1000,
 };

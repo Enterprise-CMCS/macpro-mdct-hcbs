@@ -52,6 +52,7 @@ export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 // report
+export { PerformanceRateElement } from "./report/PerformanceRate";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
