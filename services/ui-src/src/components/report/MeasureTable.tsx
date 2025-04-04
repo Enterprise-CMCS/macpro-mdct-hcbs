@@ -63,20 +63,25 @@ export const MeasureTableElement = (props: PageElementProps) => {
   };
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
+    //TO DO: clean up when report check code is ready
     //optional measures should return nothing if they aren't started
-    if (!measure.required) {
-      if (measure.status === MeasureStatus.NOT_STARTED || !measure.status) {
-        return undefined;
-      }
+    if (
+      !measure.required &&
+      (measure.status === MeasureStatus.NOT_STARTED || !measure.status)
+    ) {
+      return undefined;
     }
 
     return measure.status ?? MeasureStatus.NOT_STARTED;
   };
 
   const errorMessage = (measure: MeasurePageTemplate) => {
-    if (measure.status !== MeasureStatus.COMPLETE) {
-      if (measure.status === MeasureStatus.IN_PROGRESS || measure.required)
-        return <Text variant="error">Select "Edit" to begin measure.</Text>;
+    //TO DO: clean up when report check code is ready
+    if (
+      measure.status === MeasureStatus.IN_PROGRESS ||
+      (measure.required && measure.status != MeasureStatus.COMPLETE)
+    ) {
+      return <Text variant="error">Select "Edit" to begin measure.</Text>;
     }
     return <></>;
   };
