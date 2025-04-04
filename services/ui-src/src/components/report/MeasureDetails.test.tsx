@@ -11,12 +11,12 @@ jest.mock("utils/state/useStore", () => ({
   }),
 }));
 
-describe("Measure Footer", () => {
-  it("Test Measure Footer component", async () => {
+describe("Measure Details", () => {
+  it("Test Measure Details component", async () => {
     render(<MeasureDetailsElement />);
 
     expect(screen.getByText(/LTSS-1/)).toBeInTheDocument(); // name from store
     expect(screen.getByText(/960/)).toBeInTheDocument(); // CMIT from store
-    expect(screen.getByText(/Hybrid/)).toBeInTheDocument(); // Collection method from store
+    expect(screen.getByText(/2/)).toBeInTheDocument(); // Collection method from store
   });
 });
