@@ -19,6 +19,7 @@ import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 interface DashboardTableProps {
   reports: Report[];
   openAddEditReportModal: Function;
+  releaseReport: Function;
 }
 
 export const HorizontalTable = (
@@ -29,7 +30,8 @@ export const HorizontalTable = (
   showAdminControlsColumn: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
-  editButtonText: string
+  userIsEndUser: boolean | undefined,
+  releaseReport: Function
 ) => {
   return (
     <Table content={tableContent}>
@@ -58,13 +60,15 @@ export const HorizontalTable = (
               onClick={() => navigate(reportBasePath(report))}
               variant="outline"
             >
-              {editButtonText}
+              {userIsEndUser && !report.locked ? "Edit" : "View"}
             </Button>
           </Td>
           {showAdminControlsColumn && (
             <>
               <td>
-                <Button variant="link">Unlock</Button>
+                <Button variant="link" onClick={() => releaseReport(report)}>
+                  Unlock
+                </Button>
               </td>
               <td>
                 <Button variant="link">
@@ -86,7 +90,8 @@ export const VerticleTable = (
   showAdminControlsColumn: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
-  editButtonText: string
+  userIsEndUser: boolean | undefined,
+  releaseReport: Function
 ) => {
   return (
     <VStack alignItems="start" gap={4}>
@@ -128,12 +133,14 @@ export const VerticleTable = (
               height="30px"
               fontSize="sm"
             >
-              {editButtonText}
+              {userIsEndUser && !report.locked ? "Edit" : "View"}
             </Button>
             {showAdminControlsColumn && (
               <>
                 <td>
-                  <Button variant="link">Unlock</Button>
+                  <Button variant="link" onClick={() => releaseReport(report)}>
+                    Unlock
+                  </Button>
                 </td>
                 <td>
                   <Button variant="link">
@@ -153,6 +160,7 @@ export const VerticleTable = (
 export const DashboardTable = ({
   reports,
   openAddEditReportModal,
+  releaseReport,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
@@ -161,7 +169,7 @@ export const DashboardTable = ({
   const showEditNameColumn = userIsEndUser;
   const showReportSubmissionsColumn = !userIsEndUser;
   const showAdminControlsColumn = userIsAdmin;
-  const editButtonText = userIsEndUser ? "Edit" : "View";
+  // const editButtonText = userIsEndUser ? "Edit" : "View";
 
   // Build header columns based on defined behaviors per role
   const headers = [];
@@ -186,7 +194,8 @@ export const DashboardTable = ({
           showAdminControlsColumn,
           openAddEditReportModal,
           navigate,
-          editButtonText
+          userIsEndUser,
+          releaseReport
         )}
       </Hide>
       <Show below="sm">
@@ -197,7 +206,8 @@ export const DashboardTable = ({
           showAdminControlsColumn,
           openAddEditReportModal,
           navigate,
-          editButtonText
+          userIsEndUser,
+          releaseReport
         )}
       </Show>
     </>

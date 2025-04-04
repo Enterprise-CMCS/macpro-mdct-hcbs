@@ -22,7 +22,10 @@ import {
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
-import { getReportsForState } from "utils/api/requestMethods/report";
+import {
+  getReportsForState,
+  releaseReport,
+} from "utils/api/requestMethods/report";
 
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
@@ -49,6 +52,12 @@ export const DashboardPage = () => {
       setReports(result);
       setIsLoading(false);
     })();
+  };
+
+  const toggleReport = async (report: Report) => {
+    if (userIsAdmin) {
+      await releaseReport(report);
+    }
   };
 
   const openAddEditReportModal = (report?: Report) => {
@@ -123,6 +132,7 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
+            releaseReport={toggleReport}
           />
         )}
         {isLoading && (

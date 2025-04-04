@@ -153,6 +153,19 @@ functions:
                 reportType: true
                 state: true
                 id: true
+  releaseReport:
+    handler: handlers/reports/release.releaseReport
+    events:
+      - http:
+          path: reports/release/{reportType}/{state}/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                state: true
+                id: true
   submitReport:
     handler: handlers/reports/submit.submitReport
     events:

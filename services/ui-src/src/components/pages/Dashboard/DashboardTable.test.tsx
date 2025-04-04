@@ -19,18 +19,21 @@ const reports = [
     name: "report 1",
     submissionCount: 0,
     archived: false,
+    locked: false,
   },
   {
     id: "xyz",
     name: "report 2",
     submissionCount: 0,
     archived: false,
+    locked: true,
   },
   {
     id: "123",
     name: "report 3",
     submissionCount: 1,
     archived: true,
+    locked: false,
   },
 ] as unknown as any;
 

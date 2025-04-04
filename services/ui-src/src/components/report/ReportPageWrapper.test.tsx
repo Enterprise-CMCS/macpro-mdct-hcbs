@@ -27,6 +27,7 @@ const testReport: Report = {
   options: {},
   status: ReportStatus.NOT_STARTED,
   archived: false,
+  locked: false,
   submissionCount: 0,
   pages: [
     {
