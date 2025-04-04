@@ -1,6 +1,7 @@
 import {
   AccordionTemplate,
   ButtonLinkTemplate,
+  DividerTemplate,
   ElementType,
   HeaderTemplate,
   MeasureDetailsTemplate,
@@ -28,6 +29,16 @@ export const returnToOptionalDashboard: ButtonLinkTemplate = {
   id: "return-button",
   label: "Return to Optional Measures Dashboard",
   to: "optional-measure-result",
+};
+
+export const returnToDashboard: ButtonLinkTemplate = {
+  type: ElementType.ButtonLink,
+  id: "return-button",
+};
+
+export const divider: DividerTemplate = {
+  type: ElementType.Divider,
+  id: "divdier",
 };
 
 export const measureHeader: HeaderTemplate = {
@@ -190,13 +201,16 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-export const whichMedicaidHCBSprograms: TextAreaBoxTemplate = {
-  type: ElementType.TextAreaField,
-  id: "measure-programs-text",
-  label: "Which Medicaid HCBS programs are being reported? (optional)",
-  helperText:
-    "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
-};
+export const whichMedicaidHCBSprograms = [
+  {
+    type: ElementType.TextAreaField,
+    id: "measure-programs-text",
+    label: "Which Medicaid HCBS programs are being reported? (optional)",
+    helperText:
+      "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+  } as TextAreaBoxTemplate,
+  divider,
+];
 
 export const stratificationSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,

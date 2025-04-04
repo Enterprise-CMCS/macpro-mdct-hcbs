@@ -18,6 +18,7 @@ import {
   Flex,
   useDisclosure,
   Accordion,
+  Spinner,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -123,6 +124,11 @@ export const DashboardPage = () => {
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
           />
+        )}
+        {isLoading && (
+          <Flex justify="center">
+            <Spinner size="md" />
+          </Flex>
         )}
         {!reports?.length &&
           (userIsAdmin ? (

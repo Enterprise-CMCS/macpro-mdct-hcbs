@@ -34,6 +34,8 @@ import {
   exclusionRatesPersonPlanElements,
   performanceRateTermStay,
   performanceRateFacility,
+  returnToDashboard,
+  divider,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -47,7 +49,7 @@ export const measureTemplates: Record<
     substitutable: MeasureTemplateName["FASI-1"],
     sidebar: false,
     elements: [
-      returnToRequiredDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -80,7 +82,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       stratificationSubheader,
@@ -113,7 +115,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       stratificationSubheader,
@@ -134,7 +136,7 @@ export const measureTemplates: Record<
     sidebar: false,
     substitutable: MeasureTemplateName["FASI-2"],
     elements: [
-      returnToRequiredDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -167,7 +169,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       stratificationSubheader,
@@ -200,7 +202,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       stratificationSubheader,
@@ -253,7 +255,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -281,7 +283,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -330,7 +332,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateFacility,
       stratificationSubheader,
       stratificationParagraph,
@@ -362,7 +364,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       performanceRateFacility,
       stratificationSubheader,
       stratificationParagraph,
@@ -414,7 +416,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -482,7 +484,7 @@ export const measureTemplates: Record<
       },
       measureInstructions,
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -538,7 +540,7 @@ export const measureTemplates: Record<
     type: PageType.Measure,
     sidebar: false,
     elements: [
-      returnToOptionalDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -569,7 +571,7 @@ export const measureTemplates: Record<
         text: "FASI-1: Fee-For-Service (FFS FASI-1)",
       },
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -609,7 +611,7 @@ export const measureTemplates: Record<
         text: "FASI-1: Managed Care (MLTSS)",
       },
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -639,7 +641,7 @@ export const measureTemplates: Record<
     substitutable: MeasureTemplateName["LTSS-2"],
     sidebar: false,
     elements: [
-      returnToOptionalDashboard,
+      returnToDashboard,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -670,7 +672,7 @@ export const measureTemplates: Record<
         text: "FASI-2: Fee-For-Service (FFS FASI-2)",
       },
       feeForServiceMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -710,7 +712,7 @@ export const measureTemplates: Record<
         text: "FASI-2: Managed Care (MLTSS)",
       },
       managedCareMeasureResultsSubheader,
-      whichMedicaidHCBSprograms,
+      ...whichMedicaidHCBSprograms,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -803,6 +805,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -893,6 +896,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -1025,6 +1029,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -1101,6 +1106,7 @@ export const measureTemplates: Record<
         helperText:
           "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
       },
+      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
