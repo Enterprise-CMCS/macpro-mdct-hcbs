@@ -52,6 +52,21 @@ describe("Test archive report handler", () => {
       expect(response.statusCode).toBe(StatusCodes.Forbidden);
     });
 
+    it("should return Bad Request if user is not authorized", async () => {
+      const noBodyEvent: APIGatewayProxyEvent = {
+        ...proxyEvent,
+        pathParameters: {
+          reportType: "QMS",
+          state: "PA",
+          id: "myVeryFavoriteReport",
+        },
+        headers: { "cognito-identity-id": "test" },
+      };
+
+      const response = await updateArchiveStatus(noBodyEvent);
+      expect(response.statusCode).toBe(StatusCodes.BadRequest);
+    });
+
     test("Test Successful archival", async () => {
       const res = await updateArchiveStatus(testEvent);
 

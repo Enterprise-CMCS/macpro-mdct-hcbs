@@ -10,20 +10,19 @@ export const updateArchiveStatus = handler(
   async (request) => {
     const { reportType, state, id } = request.parameters;
     const user = request.user;
-
+    const body = request.body as { archived: boolean | undefined };
     if (!canArchiveReport(user)) {
       return forbidden(error.UNAUTHORIZED);
     }
 
-    if (!request?.body) {
+    if (body?.archived === undefined) {
       return badRequest("Invalid request");
     }
 
-    const { archived } = request.body as { archived: boolean };
     const report = await getReport(reportType, state, id);
 
     if (!report) return notFound();
-    report.archived = archived;
+    report.archived = body.archived;
     await putReport(report);
 
     return ok();
