@@ -19,10 +19,10 @@ export const MeasureDetailsElement = () => {
     if (!method) return "";
     return method.replace(/([A-Z])/g, " $1").trim();
   };
-
   const formattedCollectionMethod = formatCollectionMethod(
     collectionMethod?.toString()
   );
+
   return (
     <Box width="110%">
       <Flex flexDirection="column" alignItems="space-between">
