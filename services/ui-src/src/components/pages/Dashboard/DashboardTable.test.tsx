@@ -1,5 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
+import { ReportStatus } from "types";
 import { useStore } from "utils";
 import {
   mockUseAdminStore,
@@ -13,24 +15,35 @@ jest.mock("utils/state/useStore", () => ({
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockUseStore);
 
+const mockArchive = jest.fn();
+const mockRelease = jest.fn();
+jest.mock("utils/api/requestMethods/report", () => ({
+  updateArchivedStatus: () => mockArchive(),
+  releaseReport: () => mockRelease(),
+}));
+
 const reports = [
   {
     id: "abc",
     name: "report 1",
     submissionCount: 0,
     archived: false,
+    locked: false,
   },
   {
     id: "xyz",
     name: "report 2",
     submissionCount: 0,
     archived: false,
+    locked: true,
+    status: ReportStatus.SUBMITTED,
   },
   {
     id: "123",
     name: "report 3",
     submissionCount: 1,
     archived: true,
+    locked: false,
   },
 ] as unknown as any;
 
@@ -68,5 +81,14 @@ describe("Dashboard table with admin user", () => {
     expect(screen.getAllByText("Archive").length).toBe(2);
     expect(screen.getAllByText("View").length).toBe(3);
     expect(screen.getAllByText("Unlock").length).toBe(3);
+  });
+
+  it("should unlock a report on click", async () => {
+    render(adminDashboardTableComponent);
+    await act(async () => {
+      const releaseBtn = screen.getAllByRole("button", { name: "Unlock" })[1];
+      await userEvent.click(releaseBtn);
+    });
+    expect(mockRelease).toHaveBeenCalled();
   });
 });

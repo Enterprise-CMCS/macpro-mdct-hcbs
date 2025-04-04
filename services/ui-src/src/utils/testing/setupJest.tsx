@@ -319,6 +319,7 @@ export const mockReportStore: HcbsReportState = {
     options: {},
     state: "PR",
     archived: false,
+    locked: false,
     submissionCount: 0,
     pages: [
       { ...mockMeasureTemplate, cmit: 960 },

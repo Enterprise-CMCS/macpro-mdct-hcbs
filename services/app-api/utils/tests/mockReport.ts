@@ -23,6 +23,7 @@ export const validReport: Report = {
   name: "yeehaw",
   year: 2026,
   archived: false,
+  locked: false,
   submissionCount: 0,
   options: {},
 };

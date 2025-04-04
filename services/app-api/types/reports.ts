@@ -115,6 +115,7 @@ export interface Report extends ReportTemplate {
   status: ReportStatus;
   submissionCount: number;
   archived: boolean;
+  locked: boolean;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {

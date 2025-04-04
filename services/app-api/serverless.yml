@@ -194,6 +194,19 @@ functions:
               paths:
                 reportType: true
                 state: true
+  releaseReport:
+    handler: handlers/reports/release.releaseReport
+    events:
+      - http:
+          path: reports/release/{reportType}/{state}/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+          request:
+            parameters:
+              paths:
+                state: true
+                id: true
 resources:
   Resources:
     GatewayResponseDefault4XX:

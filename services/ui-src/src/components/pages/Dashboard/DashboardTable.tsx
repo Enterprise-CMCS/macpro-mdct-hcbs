@@ -12,14 +12,29 @@ import {
 } from "@chakra-ui/react";
 import { Table } from "components";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { Report } from "types";
-import { formatMonthDayYear, reportBasePath, useStore } from "utils";
+import { Report, ReportStatus } from "types";
+import {
+  formatMonthDayYear,
+  releaseReport,
+  reportBasePath,
+  useStore,
+} from "utils";
 import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 
 interface DashboardTableProps {
   reports: Report[];
   openAddEditReportModal: Function;
 }
+
+export const getStatus = (report: Report) => {
+  if (
+    report.status === ReportStatus.IN_PROGRESS &&
+    report.submissionCount > 1
+  ) {
+    return "In Revision";
+  }
+  return report.status;
+};
 
 export const HorizontalTable = (
   tableContent: { caption: string; headRow: string[] },
@@ -29,7 +44,8 @@ export const HorizontalTable = (
   showAdminControlsColumn: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
-  editButtonText: string
+  userIsEndUser: boolean | undefined,
+  toggleRelease: Function
 ) => {
   return (
     <Table content={tableContent}>
@@ -49,7 +65,7 @@ export const HorizontalTable = (
             {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
           </Td>
           <Td>{report.lastEditedBy}</Td>
-          <Td>{report.status}</Td>
+          <Td>{getStatus(report)}</Td>
           {showReportSubmissionsColumn && (
             <Td width="3rem">{report.submissionCount ?? 0}</Td>
           )}
@@ -58,13 +74,19 @@ export const HorizontalTable = (
               onClick={() => navigate(reportBasePath(report))}
               variant="outline"
             >
-              {editButtonText}
+              {userIsEndUser && !report.locked ? "Edit" : "View"}
             </Button>
           </Td>
           {showAdminControlsColumn && (
             <>
               <td>
-                <Button variant="link">Unlock</Button>
+                <Button
+                  variant="link"
+                  onClick={() => toggleRelease(report)}
+                  disabled={report.status !== ReportStatus.SUBMITTED}
+                >
+                  Unlock
+                </Button>
               </td>
               <td>
                 <Button variant="link">
@@ -86,7 +108,8 @@ export const VerticleTable = (
   showAdminControlsColumn: boolean | undefined,
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
-  editButtonText: string
+  userIsEndUser: boolean | undefined,
+  toggleRelease: Function
 ) => {
   return (
     <VStack alignItems="start" gap={4}>
@@ -115,7 +138,7 @@ export const VerticleTable = (
           </HStack>
           <div>
             <Text variant="grey">Status</Text>
-            <Text>{report.status}</Text>
+            <Text>{getStatus(report)}</Text>
           </div>
           {showReportSubmissionsColumn && (
             <Text>{report.submissionCount ?? 0}</Text>
@@ -128,12 +151,18 @@ export const VerticleTable = (
               height="30px"
               fontSize="sm"
             >
-              {editButtonText}
+              {userIsEndUser && !report.locked ? "Edit" : "View"}
             </Button>
             {showAdminControlsColumn && (
               <>
                 <td>
-                  <Button variant="link">Unlock</Button>
+                  <Button
+                    variant="link"
+                    onClick={() => toggleRelease(report)}
+                    disabled={report.status !== ReportStatus.SUBMITTED}
+                  >
+                    Unlock
+                  </Button>
                 </td>
                 <td>
                   <Button variant="link">
@@ -161,7 +190,7 @@ export const DashboardTable = ({
   const showEditNameColumn = userIsEndUser;
   const showReportSubmissionsColumn = !userIsEndUser;
   const showAdminControlsColumn = userIsAdmin;
-  const editButtonText = userIsEndUser ? "Edit" : "View";
+  // const editButtonText = userIsEndUser ? "Edit" : "View";
 
   // Build header columns based on defined behaviors per role
   const headers = [];
@@ -175,6 +204,12 @@ export const DashboardTable = ({
     headRow: headers,
   };
 
+  const toggleReport = async (report: Report) => {
+    if (userIsAdmin) {
+      await releaseReport(report);
+    }
+  };
+
   return (
     <>
       <Hide below="sm">
@@ -186,7 +221,8 @@ export const DashboardTable = ({
           showAdminControlsColumn,
           openAddEditReportModal,
           navigate,
-          editButtonText
+          userIsEndUser,
+          toggleReport
         )}
       </Hide>
       <Show below="sm">
@@ -197,7 +233,8 @@ export const DashboardTable = ({
           showAdminControlsColumn,
           openAddEditReportModal,
           navigate,
-          editButtonText
+          userIsEndUser,
+          toggleReport
         )}
       </Show>
     </>

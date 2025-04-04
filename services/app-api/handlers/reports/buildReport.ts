@@ -39,6 +39,7 @@ export const buildReport = async (
   report.year = reportOptions.year;
   report.options = reportOptions.options;
   report.archived = false;
+  report.locked = false;
   report.submissionCount = 0;
 
   if (reportType == ReportType.QMS) {

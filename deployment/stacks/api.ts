@@ -186,6 +186,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "releaseReport", {
+    entry: "services/app-api/handlers/reports/release.ts",
+    handler: "releaseReport",
+    path: "reports/release/{reportType}/{state}/{id}",
+    method: "PUT",
+    ...commonProps,
+  });
+
   if (!isLocalStack) {
     const waf = new WafConstruct(
       scope,

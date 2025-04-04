@@ -26,6 +26,7 @@ export const canWriteState = (user: User, state: StateAbbr) => {
   return false;
 };
 
+//TO DO: rename this to canWriteAdmin
 export const canWriteBanner = (user: User) => {
   return user.role == UserRoles.ADMIN;
 };
