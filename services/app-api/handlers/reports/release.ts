@@ -1,15 +1,16 @@
 import { handler } from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
-import { canWriteState } from "../../utils/authorization";
+import { canWriteBanner } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { getReport, putReport } from "../../storage/reports";
+import { ReportStatus } from "../../types/reports";
 
 export const releaseReport = handler(parseReportParameters, async (request) => {
   const { reportType, state, id } = request.parameters;
   const user = request.user;
 
-  if (!canWriteState(user, state)) {
+  if (!canWriteBanner(user)) {
     return forbidden(error.UNAUTHORIZED);
   }
 
@@ -25,12 +26,15 @@ export const releaseReport = handler(parseReportParameters, async (request) => {
     return ok(report);
   }
 
+  console.log("report", report);
+
   //can't unlock and archived report
   const isArchived = report.archived;
   if (isArchived) {
     return forbidden(error.ALREADY_ARCHIVED);
   }
 
+  report.status = ReportStatus.IN_PROGRESS;
   report.locked = false;
 
   // save the report that's being submitted (with the new information on top of it)

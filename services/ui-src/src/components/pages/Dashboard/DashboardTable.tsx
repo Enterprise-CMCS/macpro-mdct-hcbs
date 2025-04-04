@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Table } from "components";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { Report } from "types";
+import { Report, ReportStatus } from "types";
 import { formatMonthDayYear, reportBasePath, useStore } from "utils";
 import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 
@@ -21,6 +21,16 @@ interface DashboardTableProps {
   openAddEditReportModal: Function;
   releaseReport: Function;
 }
+
+export const getStatus = (report: Report) => {
+  if (
+    report.status === ReportStatus.IN_PROGRESS &&
+    report.submissionCount > 1
+  ) {
+    return "In Revision";
+  }
+  return report.status;
+};
 
 export const HorizontalTable = (
   tableContent: { caption: string; headRow: string[] },
@@ -51,7 +61,7 @@ export const HorizontalTable = (
             {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
           </Td>
           <Td>{report.lastEditedBy}</Td>
-          <Td>{report.status}</Td>
+          <Td>{getStatus(report)}</Td>
           {showReportSubmissionsColumn && (
             <Td width="3rem">{report.submissionCount ?? 0}</Td>
           )}
@@ -66,7 +76,11 @@ export const HorizontalTable = (
           {showAdminControlsColumn && (
             <>
               <td>
-                <Button variant="link" onClick={() => releaseReport(report)}>
+                <Button
+                  variant="link"
+                  onClick={() => releaseReport(report)}
+                  disabled={report.status !== ReportStatus.SUBMITTED}
+                >
                   Unlock
                 </Button>
               </td>
@@ -120,7 +134,7 @@ export const VerticleTable = (
           </HStack>
           <div>
             <Text variant="grey">Status</Text>
-            <Text>{report.status}</Text>
+            <Text>{getStatus(report)}</Text>
           </div>
           {showReportSubmissionsColumn && (
             <Text>{report.submissionCount ?? 0}</Text>
@@ -138,7 +152,11 @@ export const VerticleTable = (
             {showAdminControlsColumn && (
               <>
                 <td>
-                  <Button variant="link" onClick={() => releaseReport(report)}>
+                  <Button
+                    variant="link"
+                    onClick={() => releaseReport(report)}
+                    disabled={report.status !== ReportStatus.SUBMITTED}
+                  >
                     Unlock
                   </Button>
                 </td>
