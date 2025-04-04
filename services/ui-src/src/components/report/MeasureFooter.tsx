@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
 import { MeasureFooterTemplate } from "types";
 import { useNavigate, useParams } from "react-router-dom";
@@ -38,8 +38,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   };
 
   return (
-    <Box width="100%">
-      <Divider marginBottom="2rem" />
+    <Box width="100%" marginTop="4">
       <Flex justifyContent="space-between">
         <Button
           variant="outline"

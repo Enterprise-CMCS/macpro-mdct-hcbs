@@ -1,25 +1,7 @@
 import { APIGatewayProxyEvent, isUserRole, User } from "../types/types";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import { getCognitoParameters as getCognitoParamsFromSSM } from "../storage/cognito";
 import { CognitoIdTokenPayload } from "aws-jwt-verify/jwt-model";
 import { isStateAbbreviation } from "./constants";
-
-const loadCognitoValues = async () => {
-  if (
-    process.env.COGNITO_USER_POOL_ID &&
-    process.env.COGNITO_USER_POOL_CLIENT_ID
-  ) {
-    return {
-      userPoolId: process.env.COGNITO_USER_POOL_ID,
-      userPoolClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
-    };
-  } else {
-    const { userPoolId, userPoolClientId } = await getCognitoParamsFromSSM();
-    process.env.COGNITO_USER_POOL_ID = userPoolId;
-    process.env.COGNITO_USER_POOL_CLIENT_ID = userPoolClientId;
-    return { userPoolId, userPoolClientId };
-  }
-};
 
 /**
  * Extract user information from the event's auth headers.
@@ -40,11 +22,10 @@ export const authenticatedUser = async (
 
 /** Verify the signature on the JWT */
 const verifyAndParseToken = async (apiKey: string | undefined) => {
-  const cognitoValues = await loadCognitoValues();
   const verifier = CognitoJwtVerifier.create({
-    userPoolId: cognitoValues.userPoolId,
+    userPoolId: process.env.COGNITO_USER_POOL_ID!,
     tokenUse: "id",
-    clientId: cognitoValues.userPoolClientId,
+    clientId: process.env.COGNITO_USER_POOL_CLIENT_ID!,
   });
 
   try {

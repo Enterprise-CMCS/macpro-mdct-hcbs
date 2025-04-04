@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
-import { Box, Button, Divider, Flex, HStack, VStack } from "@chakra-ui/react";
-import { getReport, useStore } from "utils";
 import {
-  ReportModal,
-  Sidebar,
-  SubnavBar,
-  Page,
-  PraDisclosure,
-} from "components";
+  Box,
+  Button,
+  Divider,
+  Flex,
+  HStack,
+  VStack,
+  Image,
+  Spinner,
+} from "@chakra-ui/react";
+import { getReport, useStore } from "utils";
+import { ReportModal, Sidebar, Page, PraDisclosure } from "components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { elementsValidateSchema } from "utils/validation/reportValidation";
 import { currentPageSelector } from "utils/state/selectors";
+
+import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
+import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
 
 export const ReportPageWrapper = () => {
   const {
@@ -81,7 +87,11 @@ export const ReportPageWrapper = () => {
   }
 
   if (isLoading || !currentPage) {
-    return <p>Loading</p>;
+    return (
+      <Flex sx={sx.spinnerContainer}>
+        <Spinner size="md" />
+      </Flex>
+    );
   }
 
   const SetPageIndex = (newPageIndex: number) => {
@@ -92,14 +102,14 @@ export const ReportPageWrapper = () => {
 
   return (
     <FormProvider {...methods}>
-      <SubnavBar />
       <HStack width="100%" height="100%" position="relative" spacing="0">
         {currentPage.sidebar && <Sidebar />}
         <VStack
           height="100%"
-          padding={{ base: "4rem 1rem", md: "4rem 4rem 4rem 4rem" }}
+          padding={{ base: "4rem 1rem", md: "4rem 0rem" }}
+          margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
           width="100%"
-          maxWidth="reportPageWidth"
+          maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
           gap="1rem"
         >
           <Box flex="auto" alignItems="flex-start" width="100%">
@@ -115,14 +125,14 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              {/* TO-DO: solidify the Divider behavior for our form controls vs elements in a page 
-             i.e, when table appears as the last element on a form page */}
-              <Divider></Divider>
-              <Flex width="100%">
+              {parentPage.index == 0 && <Divider></Divider>}
+              <Flex width="100%" marginTop="4">
                 {parentPage.index > 0 && (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index - 1)}
+                    fontWeight="bold"
                     variant="outline"
+                    leftIcon={<Image src={prevArrowIcon} />}
                   >
                     Previous
                   </Button>
@@ -131,6 +141,7 @@ export const ReportPageWrapper = () => {
                   <Button
                     onClick={() => SetPageIndex(parentPage.index + 1)}
                     marginLeft="auto"
+                    rightIcon={<Image src={nextArrowIcon} />}
                   >
                     Continue
                   </Button>
@@ -146,4 +157,13 @@ export const ReportPageWrapper = () => {
       </HStack>
     </FormProvider>
   );
+};
+
+const sx = {
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
+  },
 };

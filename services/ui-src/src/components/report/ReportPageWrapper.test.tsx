@@ -16,6 +16,7 @@ import {
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
+import userEvent from "@testing-library/user-event";
 
 const testReport: Report = {
   type: ReportType.QMS,
@@ -25,6 +26,8 @@ const testReport: Report = {
   year: 2026,
   options: {},
   status: ReportStatus.NOT_STARTED,
+  archived: false,
+  submissionCount: 0,
   pages: [
     {
       id: "root",
@@ -335,9 +338,11 @@ const testReport: Report = {
 };
 
 const mockUseParams = jest.fn();
+const mockNavigate = jest.fn();
+
 jest.mock("react-router-dom", () => ({
   useParams: () => mockUseParams(),
-  useNavigate: jest.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
 const mockGetReport = jest.fn().mockResolvedValue(testReport);
@@ -367,7 +372,7 @@ describe("ReportPageWrapper", () => {
     mockGetReport.mockResolvedValueOnce(undefined);
     render(<ReportPageWrapper />);
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
-    expect(screen.getByText("Loading")).toBeTruthy(); // To be updated with real loading page
+    expect(screen.getByText("Loading...")).toBeTruthy();
   });
   test("should render if report exists", async () => {
     await act(async () => {
@@ -380,6 +385,17 @@ describe("ReportPageWrapper", () => {
     });
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
+  });
+  test("button should be clickable", async () => {
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+
+    const continueBtn = screen.getByRole("button", { name: "Continue" });
+    await userEvent.click(continueBtn);
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/report/QMS/NJ/QMSNJ123/req-measure-result"
+    );
   });
 });
 

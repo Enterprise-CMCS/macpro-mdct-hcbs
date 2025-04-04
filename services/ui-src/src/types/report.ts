@@ -1,4 +1,4 @@
-import { AnyObject, StateAbbr } from "./other";
+import { AlertTypes, AnyObject, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
@@ -46,6 +46,8 @@ export interface Report extends ReportTemplate {
   lastEdited?: number;
   lastEditedBy?: string;
   status: ReportStatus;
+  submissionCount: number;
+  archived: boolean;
 }
 
 export type PageTemplate =
@@ -140,6 +142,8 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
+  StatusAlert = "statusAlert",
+  Divider = "divider",
 }
 
 export type PageElement =
@@ -160,7 +164,9 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate;
+  | PerformanceRateTemplate
+  | StatusAlertTemplate
+  | DividerTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -186,6 +192,14 @@ export type ParagraphTemplate = {
   id: string;
   title?: string;
   text: string;
+};
+
+export type StatusAlertTemplate = {
+  type: ElementType.StatusAlert;
+  id: string;
+  title?: string;
+  text: string;
+  status: AlertTypes;
 };
 
 export type TextboxTemplate = {
@@ -229,6 +243,11 @@ export type DropdownTemplate = {
   helperText?: string;
   answer?: string;
   required?: string;
+};
+
+export type DividerTemplate = {
+  type: ElementType.Divider;
+  id: string;
 };
 
 export type AccordionTemplate = {
@@ -282,8 +301,8 @@ export type ReportingRadioTemplate = {
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
-  label: string;
-  to: PageId;
+  label?: string;
+  to?: PageId;
 };
 
 export type MeasureDetailsTemplate = {
