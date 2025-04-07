@@ -38,7 +38,6 @@ const testReport: Report = {
   id: "NJQMS123",
   status: ReportStatus.NOT_STARTED,
   archived: false,
-  locked: false,
   submissionCount: 0,
   pages: [
     {

@@ -32,7 +32,7 @@ interface DashboardTableProps {
 export const getStatus = (report: Report) => {
   if (
     report.status === ReportStatus.IN_PROGRESS &&
-    report.submissionCount > 1
+    report.submissionCount >= 1
   ) {
     return "In Revision";
   }
@@ -79,7 +79,9 @@ export const HorizontalTable = (
               variant="outline"
               disabled={report.archived}
             >
-              {userIsEndUser && !report.locked ? "Edit" : "View"}
+              {userIsEndUser && report.status !== ReportStatus.SUBMITTED
+                ? "Edit"
+                : "View"}
             </Button>
           </Td>
           {showAdminControlsColumn && (
@@ -87,8 +89,10 @@ export const HorizontalTable = (
               <td>
                 <Button
                   variant="link"
-                  onClick={() => toggleRelease(report)}
-                  disabled={report.status !== ReportStatus.SUBMITTED}
+                  onClick={async () => await toggleRelease(idx)}
+                  disabled={
+                    report.status !== ReportStatus.SUBMITTED || report.archived
+                  }
                 >
                   Unlock
                 </Button>
@@ -161,15 +165,20 @@ export const VerticleTable = (
               fontSize="sm"
               disabled={report.archived}
             >
-              {userIsEndUser && !report.locked ? "Edit" : "View"}
+              {userIsEndUser && report.status !== ReportStatus.SUBMITTED
+                ? "Edit"
+                : "View"}
             </Button>
             {showAdminControlsColumn && (
               <>
                 <td>
                   <Button
                     variant="link"
-                    onClick={() => toggleRelease(report)}
-                    disabled={report.status !== ReportStatus.SUBMITTED}
+                    onClick={async () => await toggleRelease(idx)}
+                    disabled={
+                      report.status !== ReportStatus.SUBMITTED ||
+                      report.archived
+                    }
                   >
                     Unlock
                   </Button>
@@ -204,7 +213,6 @@ export const DashboardTable = ({
   const showEditNameColumn = userIsEndUser;
   const showReportSubmissionsColumn = !userIsEndUser;
   const showAdminControlsColumn = userIsAdmin;
-  // const editButtonText = userIsEndUser ? "Edit" : "View";
 
   // Build header columns based on defined behaviors per role
   const headers = [];
@@ -227,10 +235,13 @@ export const DashboardTable = ({
     setReportsInView(reports);
   };
 
-  const toggleReport = async (report: Report) => {
-    if (userIsAdmin) {
-      await releaseReport(report);
-    }
+  const toggleReport = async (idx: number) => {
+    const reports = [...reportsInView];
+    const report = reports[idx];
+    await releaseReport(report);
+    report.status = ReportStatus.IN_PROGRESS;
+    reports[idx] = report;
+    setReportsInView(reports);
   };
 
   return (

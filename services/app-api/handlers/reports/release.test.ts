@@ -1,27 +1,27 @@
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { releaseReport } from "./release";
-import { canWriteBanner } from "../../utils/authorization";
+import { canReleaseReport } from "../../utils/authorization";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { validReport } from "../../utils/tests/mockReport";
+import { ReportStatus } from "../../types/reports";
 
 jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn().mockResolvedValue({
     role: UserRoles.ADMIN,
-    state: "PA",
   }),
 }));
 
 jest.mock("../../utils/authorization", () => ({
-  canWriteBanner: jest.fn().mockReturnValue(true),
+  canReleaseReport: jest.fn().mockReturnValue(true),
 }));
 
-const getReportMock = jest
+const mockGet = jest
   .fn()
-  .mockReturnValue({ id: "A report", locked: true });
+  .mockReturnValue({ id: "A report", status: ReportStatus.SUBMITTED });
 
 jest.mock("../../storage/reports", () => ({
-  getReport: () => getReportMock(),
+  getReport: () => mockGet(),
   putReport: jest.fn(),
 }));
 
@@ -53,7 +53,7 @@ describe("Test releaseReport handler", () => {
   });
 
   it("should return 403 if user is not authorized", async () => {
-    (canWriteBanner as jest.Mock).mockReturnValueOnce(false);
+    (canReleaseReport as jest.Mock).mockReturnValueOnce(false);
     const response = await releaseReport(testEvent);
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
@@ -69,10 +69,10 @@ describe("Test releaseReport handler", () => {
   });
 
   test("Test archived report", async () => {
-    getReportMock.mockReturnValueOnce({
+    mockGet.mockReturnValueOnce({
       id: "A report",
-      locked: true,
       archived: true,
+      status: ReportStatus.SUBMITTED,
     });
     const res = await releaseReport(testEvent);
 
@@ -80,7 +80,10 @@ describe("Test releaseReport handler", () => {
   });
 
   test("Test unlocked report", async () => {
-    getReportMock.mockReturnValueOnce({ id: "A report", locked: false });
+    mockGet.mockReturnValueOnce({
+      id: "A report",
+      status: ReportStatus.SUBMITTED,
+    });
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);

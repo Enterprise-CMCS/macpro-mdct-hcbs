@@ -33,7 +33,6 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   report.lastEdited = Date.now();
   report.lastEditedBy = user.fullName;
   report.submissionCount += 1;
-  report.locked = true;
 
   // leave space for validating that the report can be submitted
 

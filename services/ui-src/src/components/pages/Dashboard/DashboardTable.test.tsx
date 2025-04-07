@@ -28,14 +28,13 @@ const reports = [
     name: "report 1",
     submissionCount: 0,
     archived: false,
-    locked: false,
+    status: ReportStatus.IN_PROGRESS,
   },
   {
     id: "xyz",
     name: "report 2",
     submissionCount: 0,
     archived: false,
-    locked: true,
     status: ReportStatus.SUBMITTED,
   },
   {
@@ -43,7 +42,7 @@ const reports = [
     name: "report 3",
     submissionCount: 1,
     archived: true,
-    locked: false,
+    status: ReportStatus.IN_PROGRESS,
   },
 ] as unknown as any;
 
@@ -95,9 +94,15 @@ describe("Dashboard table with admin user", () => {
   it("should archive a report on click", async () => {
     render(adminDashboardTableComponent);
     await act(async () => {
-      const button = screen.getAllByText("Archive")[0];
+      const button = screen.getAllByRole("button", { name: "Archive" })[0];
       await userEvent.click(button);
     });
     expect(mockArchive).toHaveBeenCalled();
+  });
+
+  it("should render In Revision text for a returned report", async () => {
+    render(adminDashboardTableComponent);
+    // Setup data includes In Progress with Submission Count >= 1
+    expect(screen.getByText("In Revision")).toBeInTheDocument();
   });
 });

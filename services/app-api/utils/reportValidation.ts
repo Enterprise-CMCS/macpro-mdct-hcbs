@@ -424,7 +424,6 @@ const reportValidateSchema = object().shape({
   year: number().required(),
   submissionCount: number().required(),
   archived: boolean().required(),
-  locked: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
   measureLookup: measureLookupSchema,
