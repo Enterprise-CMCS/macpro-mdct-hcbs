@@ -91,7 +91,7 @@ export const NDRHCBS = (
         return (
           <Stack key={assess.id} gap={6}>
             <Heading variant="subHeader">
-              {label ?? "Performance Rate"}
+              {label ?? "Performance Rates"}
               {": "}
               {assess.label}
             </Heading>
