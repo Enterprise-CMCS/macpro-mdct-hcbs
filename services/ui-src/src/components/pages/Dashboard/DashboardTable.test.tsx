@@ -91,4 +91,13 @@ describe("Dashboard table with admin user", () => {
     });
     expect(mockRelease).toHaveBeenCalled();
   });
+
+  it("should archive a report on click", async () => {
+    render(adminDashboardTableComponent);
+    await act(async () => {
+      const button = screen.getAllByText("Archive")[0];
+      await userEvent.click(button);
+    });
+    expect(mockArchive).toHaveBeenCalled();
+  });
 });

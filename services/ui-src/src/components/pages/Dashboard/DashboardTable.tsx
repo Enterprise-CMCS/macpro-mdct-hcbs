@@ -17,9 +17,12 @@ import {
   formatMonthDayYear,
   releaseReport,
   reportBasePath,
+  updateArchivedStatus,
   useStore,
 } from "utils";
+
 import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
+import { useState } from "react";
 
 interface DashboardTableProps {
   reports: Report[];
@@ -45,11 +48,12 @@ export const HorizontalTable = (
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   userIsEndUser: boolean | undefined,
+  toggleArchived: Function,
   toggleRelease: Function
 ) => {
   return (
     <Table content={tableContent}>
-      {reports.map((report) => (
+      {reports.map((report, idx) => (
         <Tr key={report.id}>
           {showEditNameColumn && (
             <Td fontWeight={"bold"}>
@@ -73,6 +77,7 @@ export const HorizontalTable = (
             <Button
               onClick={() => navigate(reportBasePath(report))}
               variant="outline"
+              disabled={report.archived}
             >
               {userIsEndUser && !report.locked ? "Edit" : "View"}
             </Button>
@@ -89,7 +94,10 @@ export const HorizontalTable = (
                 </Button>
               </td>
               <td>
-                <Button variant="link">
+                <Button
+                  variant="link"
+                  onClick={async () => await toggleArchived(idx)}
+                >
                   {report.archived ? "Unarchive" : "Archive"}
                 </Button>
               </td>
@@ -109,11 +117,12 @@ export const VerticleTable = (
   openAddEditReportModal: Function,
   navigate: NavigateFunction,
   userIsEndUser: boolean | undefined,
+  toggleArchived: Function,
   toggleRelease: Function
 ) => {
   return (
     <VStack alignItems="start" gap={4}>
-      {reports.map((report) => (
+      {reports.map((report, idx) => (
         <>
           <div>
             <Text variant="grey">Submission name</Text>
@@ -150,6 +159,7 @@ export const VerticleTable = (
               width="100px"
               height="30px"
               fontSize="sm"
+              disabled={report.archived}
             >
               {userIsEndUser && !report.locked ? "Edit" : "View"}
             </Button>
@@ -165,7 +175,10 @@ export const VerticleTable = (
                   </Button>
                 </td>
                 <td>
-                  <Button variant="link">
+                  <Button
+                    variant="link"
+                    onClick={async () => await toggleArchived(idx)}
+                  >
                     {report.archived ? "Unarchive" : "Archive"}
                   </Button>
                 </td>
@@ -185,6 +198,7 @@ export const DashboardTable = ({
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
+  const [reportsInView, setReportsInView] = useState<Report[]>(reports);
 
   // Translate role to defined behaviors
   const showEditNameColumn = userIsEndUser;
@@ -202,6 +216,15 @@ export const DashboardTable = ({
   const tableContent = {
     caption: "Quality Measure Reports",
     headRow: headers,
+  };
+
+  const toggleArchived = async (idx: number) => {
+    const reports = [...reportsInView];
+    const report = reports[idx];
+    await updateArchivedStatus(report, !report.archived);
+    report.archived = !report.archived;
+    reports[idx] = report;
+    setReportsInView(reports);
   };
 
   const toggleReport = async (report: Report) => {
@@ -222,6 +245,7 @@ export const DashboardTable = ({
           openAddEditReportModal,
           navigate,
           userIsEndUser,
+          toggleArchived,
           toggleReport
         )}
       </Hide>
@@ -234,6 +258,7 @@ export const DashboardTable = ({
           openAddEditReportModal,
           navigate,
           userIsEndUser,
+          toggleArchived,
           toggleReport
         )}
       </Show>
