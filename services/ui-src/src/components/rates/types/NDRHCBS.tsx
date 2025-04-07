@@ -140,6 +140,7 @@ export const NDRHCBS = (
                     name={`${fieldIndex}.denominator.${assessIndex}.rates`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
+                    hint="Auto-calculates"
                     value={value?.denominator}
                     disabled
                   ></CmsdsTextField>
