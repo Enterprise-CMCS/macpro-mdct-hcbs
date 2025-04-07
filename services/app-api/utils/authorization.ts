@@ -29,3 +29,7 @@ export const canWriteState = (user: User, state: StateAbbr) => {
 export const canWriteBanner = (user: User) => {
   return user.role == UserRoles.ADMIN;
 };
+
+export const canArchiveReport = (user: User) => {
+  return user.role == UserRoles.ADMIN;
+};

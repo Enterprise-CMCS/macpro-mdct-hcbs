@@ -45,7 +45,11 @@ export const DashboardPage = () => {
   const reloadReports = (reportType: string, state: string) => {
     (async () => {
       setIsLoading(true);
-      const result = await getReportsForState(reportType, state);
+      let result = await getReportsForState(reportType, state);
+      if (!userIsAdmin) {
+        result = result.filter((report: Report) => !report.archived);
+      }
+
       setReports(result);
       setIsLoading(false);
     })();
