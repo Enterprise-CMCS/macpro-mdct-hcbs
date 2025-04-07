@@ -114,6 +114,8 @@ export interface Report extends ReportTemplate {
   lastEditedBy: string;
   lastEditedByEmail: string;
   status: ReportStatus;
+  submissionCount: number;
+  archived: boolean;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -231,6 +233,8 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
+  StatusAlert = "statusAlert",
+  Divider = "divider",
 }
 
 export type PageElement =
@@ -252,7 +256,9 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate;
+  | PerformanceRateTemplate
+  | StatusAlertTemplate
+  | DividerTemplate;
 
 export type HeaderTemplate = {
   type: ElementType.Header;
@@ -328,6 +334,11 @@ export type DropdownTemplate = {
   required?: string;
 };
 
+export type DividerTemplate = {
+  type: ElementType.Divider;
+  id: string;
+};
+
 export type AccordionTemplate = {
   type: ElementType.Accordion;
   id: string;
@@ -377,7 +388,7 @@ export type ReportingRadioTemplate = {
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
-  label: string;
+  label?: string;
   to?: PageId;
 };
 
@@ -466,6 +477,14 @@ export type StatusTableTemplate = {
   type: ElementType.StatusTable;
   id: string;
   to: PageId;
+};
+
+export type StatusAlertTemplate = {
+  type: ElementType.StatusAlert;
+  id: string;
+  title?: string;
+  text: string;
+  status: string;
 };
 
 /**

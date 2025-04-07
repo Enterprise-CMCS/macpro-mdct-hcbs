@@ -1,13 +1,15 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
-import { Menu, MenuOption } from "components";
+import { Menu, MenuOption, SubnavBar } from "components";
 import { useBreakpoint } from "utils";
 import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
+  const { pathname } = useLocation();
+  const paths = pathname.split("/");
 
   return (
     <Box sx={sx.root} id="header">
@@ -40,6 +42,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
+      {paths.length > 4 && <SubnavBar />}
     </Box>
   );
 };
@@ -51,8 +54,8 @@ interface Props {
 const sx = {
   root: {
     position: "sticky",
-    top: 0,
     zIndex: "sticky",
+    top: 0,
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     "@media print": {
       display: "none",

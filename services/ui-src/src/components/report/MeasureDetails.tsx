@@ -24,7 +24,7 @@ export const MeasureDetailsElement = () => {
   );
 
   return (
-    <Box width="110%">
+    <Box width="80%">
       <Flex flexDirection="column" alignItems="space-between">
         <>
           <Text fontSize="18px" fontWeight="bold" paddingBottom="16px">
@@ -40,7 +40,7 @@ export const MeasureDetailsElement = () => {
           </Text>
         </>
       </Flex>
-      <Divider margin="32px 0px" />
+      <Divider margin="16px 0px" />
     </Box>
   );
 };

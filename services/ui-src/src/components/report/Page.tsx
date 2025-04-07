@@ -6,6 +6,7 @@ import {
   accordionElement,
   buttonLinkElement,
   nestedHeadingElement,
+  dividerElement,
 } from "./Elements";
 import { assertExhaustive, ElementType, PageElement } from "../../types/report";
 import {
@@ -21,6 +22,7 @@ import {
   StatusTableElement,
   TextAreaField,
   TextField,
+  StatusAlert,
 } from "components";
 import { useStore } from "utils";
 
@@ -69,6 +71,10 @@ export const Page = ({ elements }: Props) => {
         return MeasureFooterElement;
       case ElementType.PerformanceRate:
         return PerformanceRateElement;
+      case ElementType.StatusAlert:
+        return StatusAlert;
+      case ElementType.Divider:
+        return dividerElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;

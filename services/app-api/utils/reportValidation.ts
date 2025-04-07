@@ -159,6 +159,10 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return measureFooterSchema;
     case ElementType.PerformanceRate:
       return performanceRateSchema;
+    case ElementType.StatusAlert:
+      return statusAlertSchema;
+    case ElementType.Divider:
+      return dividerSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -208,8 +212,13 @@ const reportingRadioTemplateSchema = object().shape({
 const buttonLinkTemplateSchema = object().shape({
   type: string().required(ElementType.ButtonLink),
   id: string().required(),
-  label: string().required(),
+  label: string().optional(),
   to: string().optional(),
+});
+
+const dividerSchema = object().shape({
+  type: string().required(ElementType.Divider),
+  id: string().required(),
 });
 
 const measureTableTemplateSchema = object().shape({
@@ -278,6 +287,14 @@ const performanceRateSchema = object().shape({
 const parentPageTemplateSchema = object().shape({
   id: string().required(),
   childPageIds: array().of(string()).required(),
+});
+
+const statusAlertSchema = object().shape({
+  type: string().required(ElementType.StatusAlert),
+  id: string().required(),
+  title: string().notRequired(),
+  text: string().required(),
+  status: string().required(),
 });
 
 const formPageTemplateSchema = object().shape({
@@ -405,6 +422,8 @@ const reportValidateSchema = object().shape({
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),
   title: string().required(),
   year: number().required(),
+  submissionCount: number().required(),
+  archived: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
   measureLookup: measureLookupSchema,

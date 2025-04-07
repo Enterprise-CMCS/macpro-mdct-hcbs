@@ -50,6 +50,21 @@ export async function submitReport(report: Report) {
   );
 }
 
+export async function updateArchivedStatus(
+  report: Report,
+  archiveStatus: boolean
+) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    body: { archived: archiveStatus },
+  };
+  return await apiLib.put(
+    `/reports/${report.type}/${report.state}/${report.id}/archive`,
+    options
+  );
+}
+
 export async function getReportsForState(reportType: string, state: string) {
   const requestHeaders = await getRequestHeaders();
   const options = {
