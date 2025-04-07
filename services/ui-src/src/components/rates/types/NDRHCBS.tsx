@@ -9,25 +9,25 @@ export const NDRHCBS = (
   props: PerformanceRateTemplate & {
     formkey: string;
     year?: number;
-    calculation: Function;
+    calculation?: Function;
   }
 ) => {
   const { label, assessments, answer, multiplier, calculation, fields } = props;
 
   const defaultRates: RateSetData[] =
-    assessments?.map((assess) => {
+    fields?.map((field) => {
       return {
-        label: assess.label,
+        label: field.label,
         denominator: undefined,
-        id: assess.id,
-        rates: fields?.map((field) => {
+        id: field.id,
+        rates: assessments?.map((assess) => {
           return {
             label: field.label,
             numerator: undefined,
             denominator: undefined,
             rate: undefined,
             performanceTarget: undefined,
-            id: `${assess.id}.${field.id}`,
+            id: `${field.id}.${assess.id}`,
           };
         }),
       };
@@ -67,7 +67,7 @@ export const NDRHCBS = (
     //run rate calculations if denominator or numerator was changed
     if (setKey === "denominator" || type === "numerator") {
       newValues[Number(setIndex)].rates?.forEach((rate) => {
-        rate.rate = calculation(rate, multiplier);
+        rate.rate = calculation ? calculation(rate, multiplier) : undefined;
       });
     }
 

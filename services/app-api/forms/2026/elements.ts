@@ -429,4 +429,5 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
     { id: "65-years-or-older", label: "65 years or older" },
   ],
   rateType: PerformanceRateType.NDRFIELDS_HCBS,
+  rateCalc: RateCalc.NDRCalc,
 };
