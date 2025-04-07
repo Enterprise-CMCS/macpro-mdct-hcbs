@@ -64,6 +64,7 @@ export const HorizontalTable = (
             <Button
               onClick={() => navigate(reportBasePath(report))}
               variant="outline"
+              disabled={report.archived}
             >
               {editButtonText}
             </Button>
@@ -138,6 +139,7 @@ export const VerticleTable = (
               width="100px"
               height="30px"
               fontSize="sm"
+              disabled={report.archived}
             >
               {editButtonText}
             </Button>
