@@ -3,6 +3,7 @@ import {
   getReport,
   getReportsForState,
   putReport,
+  releaseReport,
   submitReport,
   updateArchivedStatus,
 } from "./report";
@@ -63,6 +64,11 @@ describe("utils/report", () => {
 
   test("updateArchivedStatus", async () => {
     await updateArchivedStatus(report, true);
+    expect(mockPut).toHaveBeenCalledTimes(1);
+  });
+
+  test("releaseReport", async () => {
+    await releaseReport(report);
     expect(mockPut).toHaveBeenCalledTimes(1);
   });
 });
