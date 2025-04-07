@@ -17,6 +17,6 @@ describe("Measure Details", () => {
 
     expect(screen.getByText(/LTSS-1/)).toBeInTheDocument(); // name from store
     expect(screen.getByText(/960/)).toBeInTheDocument(); // CMIT from store
-    expect(screen.getByText(/2/)).toBeInTheDocument(); // Collection method from store
+    expect(screen.getByText(/Hybrid/)).toBeInTheDocument(); // Collection method from store
   });
 });
