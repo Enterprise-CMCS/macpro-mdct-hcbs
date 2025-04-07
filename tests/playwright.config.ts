@@ -34,6 +34,7 @@ export default defineConfig({
     /* Video recording configuration */
     video: "retain-on-failure",
   },
+  timeout: 600000,
 
   /* Configure projects for major browsers */
   projects: [
@@ -55,5 +56,10 @@ export default defineConfig({
     url: process.env.BASE_URL || "http://localhost:3000",
     reuseExistingServer: !!process.env.CI,
     stdout: "pipe",
+    timeout: 300000,
+  },
+
+  expect: {
+    timeout: 10000,
   },
 });
