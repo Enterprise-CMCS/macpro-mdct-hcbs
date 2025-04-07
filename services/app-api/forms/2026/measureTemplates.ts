@@ -924,7 +924,6 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
-      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -969,7 +968,6 @@ export const measureTemplates: Record<
       measureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
-      divider,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
