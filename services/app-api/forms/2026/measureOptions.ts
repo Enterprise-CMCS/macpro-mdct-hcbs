@@ -195,13 +195,7 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["MLTSS-0"],
-    dependentPages: [
-      {
-        key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
-        template: MeasureTemplateName["MLTSS"],
-      },
-    ],
+    dependentPages: [],
   },
 ];
 
