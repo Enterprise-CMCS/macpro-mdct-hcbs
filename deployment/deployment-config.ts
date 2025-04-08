@@ -14,6 +14,8 @@ export interface DeploymentConfigProperties {
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
   userPoolDomainPrefix?: string;
+  vpcName: string;
+  kafkaAuthorizedSubnetIds: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
