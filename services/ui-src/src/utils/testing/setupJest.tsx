@@ -372,7 +372,7 @@ export const mockReportStore: HcbsReportState = {
         ...mockMeasureTemplate,
         required: true,
       },
-      [MeasureTemplateName["MLTSS-0"]]: {
+      [MeasureTemplateName["MLTSS"]]: {
         ...mockMeasureTemplate,
         optional: true,
       },
