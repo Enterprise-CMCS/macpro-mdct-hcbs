@@ -155,7 +155,7 @@ const testReport: Report = {
       title: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
-      type: PageType.MeasureResults,
+      type: PageType.Measure,
       elements: [],
     },
     [MeasureTemplateName["FFS-3"]]: {
