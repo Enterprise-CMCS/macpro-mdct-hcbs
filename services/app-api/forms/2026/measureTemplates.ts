@@ -1185,6 +1185,32 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["MLTSS-DM"]]: {
+    id: "MLTSS-DM",
+    title: "MLTSS: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "MLTSS",
+      },
+      {
+        ...measureHeader,
+        text: "MLTSS: Managed Care (MLTSS)",
+      },
+      managedCareMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "MLTSS",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["POM-1"]]: {
     id: "POM-1",
     title: "POM: People Live in Integrated Environments",
