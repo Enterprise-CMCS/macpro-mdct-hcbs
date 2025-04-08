@@ -331,14 +331,6 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["MLTSS-0"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
     [MeasureTemplateName["MLTSS"]]: {
       id: "",
       title: "",
