@@ -1,5 +1,33 @@
 /* eslint-disable no-console */
-import { ConfigResourceTypes, Kafka } from "kafkajs";
+const { ConfigResourceTypes, Kafka } = require("kafkajs");
+
+/**
+ * Removes topics in BigMac given the following
+ * @param {*} brokerString - Comma delimited list of brokers
+ * @param {*} namespace - String in the format of `--${event.project}--`, only used for temp branches for easy identification and cleanup
+ */
+exports.listTopics = async function (brokerString, namespace) {
+  const brokers = brokerString.split(",");
+
+  const kafka = new Kafka({
+    clientId: "admin",
+    brokers: brokers,
+    ssl: true,
+  });
+  var admin = kafka.admin();
+
+  await admin.connect();
+
+  const currentTopics = await admin.listTopics();
+  var lingeringTopics = currentTopics.filter(
+    (topic) =>
+      topic.startsWith(namespace) ||
+      topic.startsWith(`_confluent-ksql-${namespace}`)
+  );
+
+  await admin.disconnect();
+  return lingeringTopics;
+};
 
 /**
  * Generates topics in BigMac given the following
@@ -8,7 +36,7 @@ import { ConfigResourceTypes, Kafka } from "kafkajs";
  *   desiredTopicConfigs - array of topics to create or update.
  *   The `topic` property should include any namespace.
  */
-export async function createTopics(brokers, desiredTopicConfigs) {
+exports.createTopics = async function (brokers, desiredTopicConfigs) {
   const kafka = new Kafka({
     clientId: "admin",
     brokers,
@@ -90,14 +118,14 @@ export async function createTopics(brokers, desiredTopicConfigs) {
   }
 
   await admin.disconnect();
-}
+};
 
 /**
  * Deletes all topics for an ephemeral (`--` prefixed) namespace
  * @param { string[] } brokers - List of brokers
  * @param {string} topicNamespace
  */
-export async function deleteTopics(brokers, topicNamespace) {
+exports.deleteTopics = async function (brokers, topicNamespace) {
   if (!topicNamespace.startsWith("--")) {
     throw "ERROR:  The deleteTopics function only operates against topics that begin with --.";
   }
@@ -124,4 +152,7 @@ export async function deleteTopics(brokers, topicNamespace) {
   await admin.deleteTopics({
     topics: topicsToDelete,
   });
-}
+
+  await admin.disconnect();
+  return topicsToDelete;
+};
