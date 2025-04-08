@@ -379,11 +379,11 @@ export enum DeliverySystem {
 }
 
 export enum DataSource {
-  CaseRecordManagement,
-  Administrative,
-  Hybrid,
-  RecordReview,
-  Survey,
+  CaseRecordManagement = "CaseRecordManagement",
+  Administrative = "Administrative",
+  Hybrid = "Hybrid",
+  RecordReview = "RecordReview",
+  Survey = "Survey",
 }
 
 export enum MeasureSteward {
