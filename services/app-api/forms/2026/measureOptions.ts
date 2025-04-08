@@ -3,20 +3,6 @@ import { DeliverySystem } from "../../utils/constants";
 
 export const defaultMeasures: MeasureOptions[] = [
   {
-    cmit: 561,
-    uid: "561",
-    required: false,
-    stratified: false,
-    measureTemplate: MeasureTemplateName["MLTSS-0"],
-    dependentPages: [
-      {
-        key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
-        template: MeasureTemplateName["MLTSS-0"],
-      },
-    ],
-  },
-  {
     cmit: 960,
     uid: "960",
     required: true,
@@ -208,8 +194,14 @@ export const defaultMeasures: MeasureOptions[] = [
     uid: "561",
     required: false,
     stratified: false,
-    measureTemplate: MeasureTemplateName["MLTSS"],
-    dependentPages: [],
+    measureTemplate: MeasureTemplateName["MLTSS-0"],
+    dependentPages: [
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS"],
+      },
+    ],
   },
 ];
 
