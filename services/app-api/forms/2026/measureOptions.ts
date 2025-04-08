@@ -194,7 +194,7 @@ export const defaultMeasures: MeasureOptions[] = [
     uid: "561",
     required: false,
     stratified: false,
-    measureTemplate: MeasureTemplateName["MLTSS-0"],
+    measureTemplate: MeasureTemplateName["MLTSS"],
     dependentPages: [],
   },
 ];

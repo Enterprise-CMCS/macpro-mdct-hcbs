@@ -463,7 +463,7 @@ export enum MeasureTemplateName {
   "LTSS-5" = "LTSS-5",
   "LTSS-5-PT1" = "LTSS-5-PT1",
   "LTSS-5-PT2" = "LTSS-5-PT2",
-  "MLTSS-0" = "MLTSS-0",
+  "MLTSS" = "MLTSS",
   // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",

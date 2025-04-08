@@ -142,7 +142,7 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["MLTSS-0"]]: {
+    [MeasureTemplateName["MLTSS"]]: {
       id: "",
       title: "",
       cmitId: "",
