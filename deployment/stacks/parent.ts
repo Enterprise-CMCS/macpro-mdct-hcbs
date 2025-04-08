@@ -30,6 +30,7 @@ export class ParentStack extends Stack {
       kafkaAuthorizedSubnetIds,
       vpcName,
     } = props;
+
     super(scope, id, {
       ...props,
       terminationProtection: !isDev,
