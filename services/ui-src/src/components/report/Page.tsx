@@ -8,7 +8,12 @@ import {
   nestedHeadingElement,
   dividerElement,
 } from "./Elements";
-import { assertExhaustive, ElementType, PageElement } from "../../types/report";
+import {
+  assertExhaustive,
+  ElementType,
+  PageElement,
+  ReportStatus,
+} from "../../types/report";
 import {
   DateField,
   DropdownField,
@@ -32,6 +37,8 @@ interface Props {
 
 export const Page = ({ elements }: Props) => {
   const { userIsEndUser } = useStore().user || {};
+  const { report } = useStore();
+
   const renderElement = (element: PageElement) => {
     const elementType = element.type;
     switch (elementType) {
@@ -89,7 +96,7 @@ export const Page = ({ elements }: Props) => {
         formkey={formKey}
         key={index}
         element={element}
-        disabled={!userIsEndUser}
+        disabled={!userIsEndUser || report?.status === ReportStatus.SUBMITTED}
       />
     );
   });

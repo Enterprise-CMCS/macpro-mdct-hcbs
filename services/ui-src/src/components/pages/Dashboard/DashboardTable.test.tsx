@@ -1,6 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
+import { ReportStatus } from "types";
 import { useStore } from "utils";
 import {
   mockUseAdminStore,
@@ -15,8 +16,10 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockUseStore);
 
 const mockArchive = jest.fn();
+const mockRelease = jest.fn();
 jest.mock("utils/api/requestMethods/report", () => ({
   updateArchivedStatus: () => mockArchive(),
+  releaseReport: () => mockRelease(),
 }));
 
 const reports = [
@@ -25,18 +28,21 @@ const reports = [
     name: "report 1",
     submissionCount: 0,
     archived: false,
+    status: ReportStatus.IN_PROGRESS,
   },
   {
     id: "xyz",
     name: "report 2",
     submissionCount: 0,
     archived: false,
+    status: ReportStatus.SUBMITTED,
   },
   {
     id: "123",
     name: "report 3",
     submissionCount: 1,
     archived: true,
+    status: ReportStatus.IN_PROGRESS,
   },
 ] as unknown as any;
 
@@ -76,12 +82,27 @@ describe("Dashboard table with admin user", () => {
     expect(screen.getAllByText("Unlock").length).toBe(3);
   });
 
+  it("should unlock a report on click", async () => {
+    render(adminDashboardTableComponent);
+    await act(async () => {
+      const releaseBtn = screen.getAllByRole("button", { name: "Unlock" })[1];
+      await userEvent.click(releaseBtn);
+    });
+    expect(mockRelease).toHaveBeenCalled();
+  });
+
   it("should archive a report on click", async () => {
     render(adminDashboardTableComponent);
     await act(async () => {
-      const button = screen.getAllByText("Archive")[0];
+      const button = screen.getAllByRole("button", { name: "Archive" })[0];
       await userEvent.click(button);
     });
     expect(mockArchive).toHaveBeenCalled();
+  });
+
+  it("should render In Revision text for a returned report", async () => {
+    render(adminDashboardTableComponent);
+    // Setup data includes In Progress with Submission Count >= 1
+    expect(screen.getByText("In Revision")).toBeInTheDocument();
   });
 });

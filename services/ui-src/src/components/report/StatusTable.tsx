@@ -14,7 +14,7 @@ import {
 import { useStore, submitReport } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
-import { MeasureStatus, ParentPageTemplate } from "types/report";
+import { MeasureStatus, ParentPageTemplate, ReportStatus } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 
@@ -41,7 +41,7 @@ export const StatusTableElement = () => {
 
   const submittable = () => {
     //TO DO: Check if report can be submitted
-    return true;
+    return report?.status !== ReportStatus.SUBMITTED;
   };
 
   const navigate = useNavigate();
