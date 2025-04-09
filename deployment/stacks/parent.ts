@@ -57,6 +57,10 @@ export class ParentStack extends Stack {
       kafkaAuthorizedSubnetIds ?? ""
     );
 
+    console.log("PARENT PROPS:", props);
+
+    console.log("KAFKA SUBNET IDS:", kafkaAuthorizedSubnetIds);
+
     const customResourceRole = createCustomResourceRole({ ...commonProps });
 
     const { tables } = createDataComponents(commonProps);
