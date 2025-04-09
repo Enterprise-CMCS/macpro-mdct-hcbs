@@ -1,6 +1,5 @@
 import { test, expect, Page } from "@playwright/test";
 import { stateUserAuthPath } from "./utils/consts";
-("./consts");
 
 test.use({ storageState: stateUserAuthPath });
 
