@@ -1185,6 +1185,50 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["MLTSS-pt1"]]: {
+    id: "MLTSS-pt1",
+    title: "MLTSS: Plan All-Cause Readmission",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "MLTSS",
+      },
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "MLTSS: Plan All-Cause Readmission",
+      },
+      {
+        type: ElementType.Accordion,
+        id: "measure-instructions",
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
+      },
+      {
+        type: ElementType.SubHeader,
+        id: "measure-subheader",
+        text: "Managed Care Measure Results",
+      },
+      {
+        type: ElementType.TextAreaField,
+        id: "measure-programs-text",
+        label: "Which Medicaid HCBS programs are being reported? (optional)",
+        helperText:
+          "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "MLTSS",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["POM-1"]]: {
     id: "POM-1",
     title: "POM: People Live in Integrated Environments",
