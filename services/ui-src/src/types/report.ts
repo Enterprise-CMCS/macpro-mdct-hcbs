@@ -346,6 +346,7 @@ export const enum PerformanceRateType {
   NDR_Enhanced = "NDREnhanced",
   FIELDS = "Fields",
   NDRFIELDS = "NDRFields",
+  NDRFIELDS_HCBS = "NDRHCBS",
 }
 
 export const enum RateCalc {
@@ -379,11 +380,11 @@ export enum DeliverySystem {
 }
 
 export enum DataSource {
-  CaseRecordManagement,
-  Administrative,
-  Hybrid,
-  RecordReview,
-  Survey,
+  CaseRecordManagement = "CaseRecordManagement",
+  Administrative = "Administrative",
+  Hybrid = "Hybrid",
+  RecordReview = "RecordReview",
+  Survey = "Survey",
 }
 
 export enum MeasureSteward {
@@ -456,6 +457,8 @@ export enum MeasureTemplateName {
   "FFS-FASI-2" = "FFS-FASI-2",
   "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "MLTSS-FASI-2" = "MLTSS-FASI-2",
+  "HCBS-10" = "HCBS-10",
+  "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
   "POM-3" = "POM-3",

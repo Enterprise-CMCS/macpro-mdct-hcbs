@@ -11,8 +11,8 @@ jest.mock("utils/state/useStore", () => ({
   }),
 }));
 
-describe("Measure Footer", () => {
-  it("Test Measure Footer component", async () => {
+describe("Measure Details", () => {
+  it("Test Measure Details component", async () => {
     render(<MeasureDetailsElement />);
 
     expect(screen.getByText(/LTSS-1/)).toBeInTheDocument(); // name from store

@@ -73,10 +73,11 @@ export enum MeasureTemplateName {
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
   "FFS-FASI-1" = "FFS-FASI-1",
-  "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "FFS-FASI-2" = "FFS-FASI-2",
+  "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "MLTSS-FASI-2" = "MLTSS-FASI-2",
   "HCBS-10" = "HCBS-10",
+  "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
@@ -432,6 +433,7 @@ export const enum PerformanceRateType {
   NDR_Enhanced = "NDREnhanced",
   FIELDS = "Fields",
   NDRFIELDS = "NDRFields",
+  NDRFIELDS_HCBS = "NDRHCBS",
 }
 
 export const enum RateCalc {
