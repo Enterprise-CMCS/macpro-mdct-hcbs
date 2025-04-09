@@ -1169,7 +1169,7 @@ export const measureTemplates: Record<
   [MeasureTemplateName["MLTSS"]]: {
     id: "MLTSS",
     title: "MLTSS: Plan All-Cause Readmission",
-    type: PageType.MeasureResults,
+    type: PageType.Measure,
     sidebar: false,
     elements: [
       returnToOptionalDashboard,
@@ -1179,10 +1179,36 @@ export const measureTemplates: Record<
       measureInformationSubheader,
       wereTheResultsAudited,
       didYouFollowSpecifications,
+      additionalNotesField,
       qualityMeasuresSubheader,
       measureResultsNavigationTable,
-      additionalNotesField,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["MLTSS-DM"]]: {
+    id: "MLTSS-DM",
+    title: "MLTSS: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "MLTSS",
+      },
+      {
+        ...measureHeader,
+        text: "MLTSS: Managed Care (MLTSS)",
+      },
+      managedCareMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "MLTSS",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["POM-1"]]: {

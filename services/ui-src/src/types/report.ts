@@ -379,11 +379,11 @@ export enum DeliverySystem {
 }
 
 export enum DataSource {
-  CaseRecordManagement,
-  Administrative,
-  Hybrid,
-  RecordReview,
-  Survey,
+  CaseRecordManagement = "CaseRecordManagement",
+  Administrative = "Administrative",
+  Hybrid = "Hybrid",
+  RecordReview = "RecordReview",
+  Survey = "Survey",
 }
 
 export enum MeasureSteward {
@@ -432,12 +432,7 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  "LTSS-1" = "LTSS-1",
-  "LTSS-2" = "LTSS-2",
-  "LTSS-3" = "LTSS-3",
-  "LTSS-6" = "LTSS-6",
-  "LTSS-7" = "LTSS-7",
-  "LTSS-8" = "LTSS-8",
+  // required measures
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
   "FFS-3" = "FFS-3",
@@ -450,12 +445,27 @@ export enum MeasureTemplateName {
   "MLTSS-6" = "MLTSS-6",
   "MLTSS-7" = "MLTSS-7",
   "MLTSS-8" = "MLTSS-8",
+  "LTSS-1" = "LTSS-1",
+  "LTSS-2" = "LTSS-2",
+  "LTSS-6" = "LTSS-6",
+  "LTSS-7" = "LTSS-7",
+  "LTSS-8" = "LTSS-8",
+  // optional measures
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
   "FFS-FASI-1" = "FFS-FASI-1",
-  "FFS-FASI-2" = "FFS-FASI-2",
   "MLTSS-FASI-1" = "MLTSS-FASI-1",
+  "FFS-FASI-2" = "FFS-FASI-2",
   "MLTSS-FASI-2" = "MLTSS-FASI-2",
+  "HCBS-10" = "HCBS-10",
+  "LTSS-3" = "LTSS-3",
+  "LTSS-4" = "LTSS-4",
+  "LTSS-5" = "LTSS-5",
+  "LTSS-5-PT1" = "LTSS-5-PT1",
+  "LTSS-5-PT2" = "LTSS-5-PT2",
+  "MLTSS" = "MLTSS",
+  "MLTSS-DM" = "MLTSS-DM",
+  // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
   "POM-3" = "POM-3",
