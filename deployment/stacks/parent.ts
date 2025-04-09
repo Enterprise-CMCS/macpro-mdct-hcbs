@@ -121,7 +121,6 @@ export class ParentStack extends Stack {
 
     createTopicsComponents({
       ...commonProps,
-      brokerString: "", // TODO: do i need this? jon doesn't have this in mfp....
       kafkaAuthorizedSubnets,
       vpc,
     });

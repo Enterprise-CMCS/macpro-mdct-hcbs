@@ -16,6 +16,7 @@ export interface DeploymentConfigProperties {
   userPoolDomainPrefix?: string;
   vpcName: string;
   kafkaAuthorizedSubnetIds: string;
+  brokerString: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
