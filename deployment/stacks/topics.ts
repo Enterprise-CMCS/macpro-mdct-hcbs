@@ -92,4 +92,15 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
       value: deleteTopicsLambda.lambda.functionName,
     });
   }
+
+  const listTopicsLambda = new Lambda(scope, "ListTopics", {
+    entry: "services/topics/handlers/listTopics.js",
+    handler: "handler",
+    timeout: Duration.seconds(300),
+    ...commonProps,
+  });
+
+  new CfnOutput(scope, "ListTopicsFunctionName", {
+    value: listTopicsLambda.lambda.functionName,
+  });
 }
