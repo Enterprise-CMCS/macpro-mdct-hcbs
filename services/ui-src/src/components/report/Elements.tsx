@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   Accordion,
+  Divider,
 } from "@chakra-ui/react";
 import {
   HeaderTemplate,
@@ -87,6 +88,10 @@ export const accordionElement = (props: PageElementProps) => {
   );
 };
 
+export const dividerElement = (_props: PageElementProps) => {
+  return <Divider></Divider>;
+};
+
 export const buttonLinkElement = (props: PageElementProps) => {
   const { reportType, state, reportId, pageId } = useParams();
   const { report } = useStore();
@@ -102,13 +107,20 @@ export const buttonLinkElement = (props: PageElementProps) => {
   };
 
   const page = button.to ?? findPrevPage();
+
+  //auto generate the label for measures that are substitutable
+  const setLabel =
+    button.label ??
+    `Return to ${
+      page === "req-measure-result" ? "Required" : "Optional"
+    } Measure Dashboard`;
   const nav = () =>
     navigate(`/report/${reportType}/${state}/${reportId}/${page}`);
 
   return (
     <Button variant="return" onClick={() => nav()}>
       <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
-      {button.label}
+      {setLabel}
     </Button>
   );
 };

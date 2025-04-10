@@ -14,7 +14,7 @@ import {
 import { useStore, submitReport } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
-import { ParentPageTemplate } from "types/report";
+import { MeasureStatus, ParentPageTemplate, ReportStatus } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 
@@ -34,6 +34,16 @@ export const StatusTableElement = () => {
     return report?.pages[pageIdx] as ParentPageTemplate;
   });
 
+  const getTableStatus = (_section: ParentPageTemplate) => {
+    //TO DO: Add code for checking status
+    return MeasureStatus.COMPLETE;
+  };
+
+  const submittable = () => {
+    //TO DO: Check if report can be submitted
+    return report?.status !== ReportStatus.SUBMITTED;
+  };
+
   const navigate = useNavigate();
 
   const handleEditClick = (sectionId: string) => {
@@ -52,7 +62,7 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-          <TableStatusIcon tableStatus={"complete"} isPdf={true} />
+          <TableStatusIcon tableStatus={getTableStatus(section)} isPdf={true} />
         </Td>
         <Td>
           <Button
@@ -102,6 +112,7 @@ export const StatusTableElement = () => {
             onBlur={(event) => {
               event.stopPropagation();
             }}
+            disabled={!submittable()}
           >
             Submit QMS Report
           </Button>

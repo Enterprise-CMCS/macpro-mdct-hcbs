@@ -107,6 +107,13 @@ export const qmsReportTemplate: ReportTemplate = {
       hideNavButtons: true,
       elements: [
         {
+          type: ElementType.StatusAlert,
+          id: "review-alert",
+          status: "error",
+          title: "Your form is not ready for submission",
+          text: "Some sections of the QMS Report have errors or are missing required responses. Ensure all required and in-progress measures are completed with valid responses before submitting. If an optional measure is showing as ‘in-progress’ and you do not want to complete that measure, go into the measure and clear the measure data to reset the measure.",
+        },
+        {
           type: ElementType.Header,
           id: "review-header",
           text: "Review & Submit",

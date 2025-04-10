@@ -32,6 +32,7 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   report.status = ReportStatus.SUBMITTED;
   report.lastEdited = Date.now();
   report.lastEditedBy = user.fullName;
+  report.submissionCount += 1;
 
   // leave space for validating that the report can be submitted
 

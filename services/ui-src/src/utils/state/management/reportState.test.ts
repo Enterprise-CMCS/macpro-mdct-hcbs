@@ -37,6 +37,8 @@ const testReport: Report = {
   state: "NJ",
   id: "NJQMS123",
   status: ReportStatus.NOT_STARTED,
+  archived: false,
+  submissionCount: 0,
   pages: [
     {
       id: "root",
@@ -217,15 +219,47 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["LTSS-6"]]: {
+    [MeasureTemplateName["HCBS-10"]]: {
       id: "",
+      title: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
-      title: "",
       type: PageType.Measure,
       elements: [],
     },
-    [MeasureTemplateName["FFS-6"]]: {
+    [MeasureTemplateName["LTSS-4"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-5"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-5-PT1"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-5-PT2"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["LTSS-6"]]: {
       id: "",
       cmitId: "",
       status: MeasureStatus.IN_PROGRESS,
@@ -282,6 +316,22 @@ const testReport: Report = {
       elements: [],
     },
     [MeasureTemplateName["MLTSS-8"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: MeasureStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
+    [MeasureTemplateName["MLTSS-DM"]]: {
       id: "",
       title: "",
       cmitId: "",

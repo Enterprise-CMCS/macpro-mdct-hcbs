@@ -7,6 +7,7 @@ export const error = {
   INVALID_DATA: "Provided data is not valid.",
   SERVER_ERROR: "An unspecified server error occured.",
   CREATION_ERROR: "Could not be created due to a database error.",
+  ALREADY_ARCHIVED: "Cannot update archived report.",
 };
 
 export enum DeliverySystem {

@@ -18,6 +18,7 @@ import {
   Flex,
   useDisclosure,
   Accordion,
+  Spinner,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -44,7 +45,11 @@ export const DashboardPage = () => {
   const reloadReports = (reportType: string, state: string) => {
     (async () => {
       setIsLoading(true);
-      const result = await getReportsForState(reportType, state);
+      let result = await getReportsForState(reportType, state);
+      if (!userIsAdmin) {
+        result = result.filter((report: Report) => !report.archived);
+      }
+
       setReports(result);
       setIsLoading(false);
     })();
@@ -122,8 +127,12 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
-            readOnlyUser={!userIsEndUser}
           />
+        )}
+        {isLoading && (
+          <Flex justify="center">
+            <Spinner size="md" />
+          </Flex>
         )}
         {!reports?.length &&
           (userIsAdmin ? (

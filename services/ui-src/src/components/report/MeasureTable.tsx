@@ -14,6 +14,7 @@ import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
+  MeasureStatus,
   MeasureTableTemplate,
   PageType,
 } from "types";
@@ -61,16 +62,44 @@ export const MeasureTableElement = (props: PageElementProps) => {
     navigate(path);
   };
 
+  const getTableStatus = (measure: MeasurePageTemplate) => {
+    //TO DO: clean up when report check code is ready
+    if (
+      !measure.required &&
+      (measure.status === MeasureStatus.NOT_STARTED || !measure.status)
+    ) {
+      //optional measures should return nothing if they aren't started
+      return undefined;
+    }
+
+    return measure.status ?? MeasureStatus.NOT_STARTED;
+  };
+
+  const errorMessage = (measure: MeasurePageTemplate) => {
+    //TO DO: clean up when report check code is ready
+    if (
+      measure.status === MeasureStatus.IN_PROGRESS ||
+      (measure.required && measure.status != MeasureStatus.COMPLETE)
+    ) {
+      return <Text variant="error">Select "Edit" to begin measure.</Text>;
+    }
+    return <></>;
+  };
+
   // Build Rows
   const rows = selectedMeasures.map((measure, index) => {
     return (
       <Tr key={index}>
         <Td>
-          <TableStatusIcon tableStatus=""></TableStatusIcon>
+          <TableStatusIcon
+            tableStatus={getTableStatus(measure)}
+          ></TableStatusIcon>
         </Td>
         <Td width="100%">
           <Text fontWeight="bold">{measure.title}</Text>
           <Text>CMIT# {measure.cmit}</Text>
+          <Text>Status: {measure.status ?? "Not started"}</Text>
+          {errorMessage(measure)}
         </Td>
         <Td>
           {measure.substitutable && measure.required ? (

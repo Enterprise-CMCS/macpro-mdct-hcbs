@@ -196,11 +196,27 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "updateArchiveStatus", {
+    entry: "services/app-api/handlers/reports/archive.ts",
+    handler: "updateArchiveStatus",
+    path: "reports/{reportType}/{state}/{id}/archive",
+    method: "PUT",
+    ...commonProps,
+  });
+
   new Lambda(scope, "getReportsForState", {
     entry: "services/app-api/handlers/reports/get.ts",
     handler: "getReportsForState",
     path: "reports/{reportType}/{state}",
     method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "releaseReport", {
+    entry: "services/app-api/handlers/reports/release.ts",
+    handler: "releaseReport",
+    path: "reports/release/{reportType}/{state}/{id}",
+    method: "PUT",
     ...commonProps,
   });
 
