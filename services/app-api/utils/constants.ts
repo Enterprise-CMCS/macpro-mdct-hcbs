@@ -1,3 +1,5 @@
+import { ReportType } from "../types/reports";
+
 export const error = {
   UNAUTHORIZED: "User is not authorized to access this resource.",
   NO_KEY: "Must provide key for table.",
@@ -95,4 +97,20 @@ export enum StateNames {
 export type StateAbbr = keyof typeof StateNames;
 export const isStateAbbreviation = (x: string | undefined): x is StateAbbr => {
   return Object.keys(StateNames).includes(x!);
+};
+
+export const reportTables: { [key in ReportType]: string } = {
+  QMS: process.env.QmsReportsTable!,
+};
+
+export const bucketTopics: { [key in ReportType]: string } = {
+  QMS: "qms-reports", // TODO: Find out what this bucket topic name is
+};
+
+export const reportBuckets: { [key in ReportType]: string } = {
+  QMS: process.env.QMS_REPORT_BUCKET!, // TODO: what is this bucket you speak of
+};
+
+export const tableTopics: { [key in ReportType]: string } = {
+  QMS: "sar-reports",
 };

@@ -65,6 +65,8 @@ export class ParentStack extends Stack {
       createApiComponents({
         ...commonProps,
         tables,
+        vpc,
+        kafkaAuthorizedSubnets,
       });
       /*
        * For local dev, the LocalStack container will host the database and API.
@@ -97,6 +99,8 @@ export class ParentStack extends Stack {
       userPoolId,
       userPoolClientId,
       tables,
+      vpc,
+      kafkaAuthorizedSubnets,
     });
 
     createAuthRole(restApiId);
