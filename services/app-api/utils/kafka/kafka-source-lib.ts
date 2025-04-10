@@ -65,7 +65,7 @@ class KafkaSourceLib {
 
     const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
     kafka = new Kafka({
-      clientId: `mfp-${this.stage}`,
+      clientId: `hcbs-${this.stage}`,
       brokers: brokerStrings!.split(","),
       retry: {
         initialRetryTime: 300,

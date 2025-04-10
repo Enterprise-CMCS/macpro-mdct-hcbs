@@ -112,5 +112,5 @@ export const reportBuckets: { [key in ReportType]: string } = {
 };
 
 export const tableTopics: { [key in ReportType]: string } = {
-  QMS: "sar-reports",
+  QMS: "qms-reports",
 };
