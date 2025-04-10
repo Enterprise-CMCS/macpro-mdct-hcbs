@@ -1198,11 +1198,33 @@ export const measureTemplates: Record<
         to: "MLTSS",
       },
       {
+        type: ElementType.Accordion,
+        id: "measure-instructions",
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
+      },
+      {
         ...measureHeader,
         text: "MLTSS: Managed Care (MLTSS)",
       },
       managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        label: "Performance Rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "acute-readmission-plan",
+            label:
+              "Acute inpatient and observation stays during the measurement year that were followed by an unplanned acute readmission for any diagnosis within 30 days, for participants 65 years of age",
+          },
+        ],
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
