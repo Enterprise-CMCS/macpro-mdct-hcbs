@@ -128,7 +128,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
 
 export const didYouFollowSpecifications: RadioTemplate = {
   type: ElementType.Radio,
-  label: "Did you follow the [reportYear] Technical Specifications?",
+  label: "Did you follow the 2026 Technical Specifications?",
   id: "measure-following-tech-specs",
   value: [
     { label: "Yes", value: "yes" },
