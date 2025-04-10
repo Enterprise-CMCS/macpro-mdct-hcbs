@@ -1,0 +1,13 @@
+{
+  "name": "topics",
+  "version": "1.0.0",
+  "description": "Create mmdl topics in CMS BigMac",
+  "author": "",
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "resolutions": {
+    "nwsapi": "^2.2.5",
+    "xml2js": "^0.5.0"
+  }
+}

@@ -15,7 +15,14 @@ import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 // load .env
 dotenv.config();
 
-const deployedServices = ["database", "app-api", "ui", "ui-auth", "ui-src"];
+const deployedServices = [
+  "database",
+  "app-api",
+  "topics",
+  "ui",
+  "ui-auth",
+  "ui-src",
+];
 
 const project = process.env.PROJECT;
 const region = process.env.REGION_A;
