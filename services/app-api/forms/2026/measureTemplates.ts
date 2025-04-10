@@ -36,6 +36,7 @@ import {
   performanceRateFacility,
   returnToDashboard,
   divider,
+  measureSubHeading,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -50,6 +51,7 @@ export const measureTemplates: Record<
     sidebar: false,
     elements: [
       returnToDashboard,
+      measureSubHeading,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1196,6 +1198,13 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "MLTSS",
+      },
+      {
+        type: ElementType.Accordion,
+        id: "measure-instructions",
+        label: "Instructions",
+        value:
+          "[Optional instructional content that could support the user in completing this page]",
       },
       {
         ...measureHeader,
