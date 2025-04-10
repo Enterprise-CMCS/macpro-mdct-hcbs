@@ -36,7 +36,6 @@ import {
   performanceRateFacility,
   returnToDashboard,
   divider,
-  measureSubHeading,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -51,7 +50,6 @@ export const measureTemplates: Record<
     sidebar: false,
     elements: [
       returnToDashboard,
-      measureSubHeading,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
