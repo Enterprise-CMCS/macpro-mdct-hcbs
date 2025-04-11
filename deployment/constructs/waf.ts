@@ -5,6 +5,7 @@ import { LogGroup } from "aws-cdk-lib/aws-logs";
 
 interface WafProps {
   readonly name: string;
+  readonly isDev: boolean;
   readonly blockByDefault?: boolean;
   readonly blockRequestBodyOver8KB?: boolean;
 }
@@ -23,6 +24,7 @@ export class WafConstruct extends Construct {
 
     const {
       name,
+      isDev,
       blockByDefault = true,
       blockRequestBodyOver8KB = true,
     } = props;
@@ -144,9 +146,11 @@ export class WafConstruct extends Construct {
       name: `${name}`,
     });
 
-    new CfnLoggingConfiguration(this, "LoggingConfiguration", {
-      resourceArn: this.webAcl.attrArn,
-      logDestinationConfigs: [this.logGroup.logGroupArn],
-    });
+    if (!isDev) {
+      new CfnLoggingConfiguration(this, "LoggingConfiguration", {
+        resourceArn: this.webAcl.attrArn,
+        logDestinationConfigs: [this.logGroup.logGroupArn],
+      });
+    }
   }
 }
