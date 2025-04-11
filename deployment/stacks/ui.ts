@@ -137,7 +137,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
   );
   if (!isLocalStack) {
-    const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
+    const waf = setupWaf(scope, stage, project, isDev); // vpnIpSetArn, vpnIpv6SetArn
     distribution.attachWebAclId(waf.webAcl.attrArn);
   }
 
@@ -161,7 +161,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 function setupWaf(
   scope: Construct,
   stage: string,
-  project: string
+  project: string,
+  isDev: boolean
   /*
    * vpnIpSetArn?: string,
    * vpnIpv6SetArn?: string,
@@ -173,6 +174,7 @@ function setupWaf(
     {
       name: `${project}-${stage}-ui`,
       blockByDefault: false,
+      isDev,
     },
     "CLOUDFRONT"
   );
