@@ -104,14 +104,6 @@ export const reportTables: { [key in ReportType]: string } = {
   QMS: process.env.QmsReportsTable!,
 };
 
-export const bucketTopics: { [key in ReportType]: string } = {
-  QMS: "qms-reports", // TODO: Find out what this bucket topic name is
-};
-
-export const reportBuckets: { [key in ReportType]: string } = {
-  QMS: process.env.QMS_REPORT_BUCKET!, // TODO: what is this bucket you speak of
-};
-
 export const tableTopics: { [key in ReportType]: string } = {
   QMS: "qms-reports",
 };

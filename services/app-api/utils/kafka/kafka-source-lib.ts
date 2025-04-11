@@ -1,9 +1,6 @@
 /* eslint-disable no-console */
-import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { Kafka, Producer } from "kafkajs";
-import { S3EventRecord } from "../types";
-import { createClient } from "../../storage/s3/s3-lib";
 
 type KafkaPayload = {
   key: string;
@@ -40,15 +37,13 @@ class KafkaSourceLib {
   topicPrefix: string;
   version: string | null;
   tables: SourceTopicMapping[];
-  buckets: SourceTopicMapping[];
   connected: boolean;
   topicNamespace: string;
   stage: string;
   constructor(
     topicPrefix: string,
     version: string | null,
-    tables: SourceTopicMapping[],
-    buckets: SourceTopicMapping[]
+    tables: SourceTopicMapping[]
   ) {
     if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
       throw new Error("Missing Broker Config. ");
@@ -61,7 +56,6 @@ class KafkaSourceLib {
     this.topicPrefix = topicPrefix;
     this.version = version;
     this.tables = tables;
-    this.buckets = buckets;
 
     const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
     kafka = new Kafka({
@@ -106,20 +100,6 @@ class KafkaSourceLib {
     console.log(`Topic not found for table arn: ${streamARN}`);
   }
 
-  /**
-   * Checks if a bucketArn is a valid topic. Returns undefined otherwise.
-   * @param bucketArn - ARN formatted like 'arn:aws:s3:::{stack}-{stage}-{bucket}' e.g. arn:aws:s3:::database-main-mcpar
-   * @returns A formatted topic name with "-form" specified
-   */
-  determineS3TopicName(bucketArn: string) {
-    for (const bucket of this.buckets) {
-      if (bucketArn.includes(bucket.sourceName)) {
-        return this.topic(bucket.topicName);
-      }
-    }
-    console.log(`Topic not found for bucket arn: ${bucketArn}`);
-  }
-
   unmarshall(r: any) {
     return unmarshall(r);
   }
@@ -140,35 +120,6 @@ class KafkaSourceLib {
     };
   }
 
-  async createS3Payload(record: S3EventRecord): Promise<KafkaPayload> {
-    const { eventName, eventTime } = record;
-    let entry = "";
-    if (!eventName.includes("ObjectRemoved")) {
-      const client = createClient();
-      const response = await client.send(
-        new GetObjectCommand({
-          Bucket: record.s3.bucket.name,
-          Key: record.s3.object.key,
-        })
-      );
-      const responseString = await response.Body?.transformToString();
-      if (responseString) {
-        entry = responseString;
-      } else {
-        throw new Error(
-          `Failed to fetch S3 object with key: "${record.s3.object.key}"`
-        );
-      }
-    }
-
-    return {
-      key: record.s3.object.key,
-      value: entry,
-      partition: 0,
-      headers: { eventName, eventTime },
-    };
-  }
-
   topic(t: string) {
     if (this.version) {
       return `${this.topicNamespace}${this.topicPrefix}.${t}.${this.version}`;
@@ -181,29 +132,13 @@ class KafkaSourceLib {
     let outboundEvents: { [key: string]: any } = {};
     for (const record of records) {
       let payload, topicName;
-      if (record["s3"]) {
-        // Handle any S3 events
-        const s3Record = record as S3EventRecord;
-        const key: string = s3Record.s3.object.key;
-        topicName = this.determineS3TopicName(s3Record.s3.bucket.arn);
 
-        // Filter for only the response info
-        if (
-          !topicName ||
-          !key.startsWith("fieldData/") ||
-          !key.includes(".json")
-        ) {
-          continue;
-        }
-        payload = await this.createS3Payload(record);
-      } else {
-        // DYNAMO
-        topicName = this.determineDynamoTopicName(
-          String(record.eventSourceARN.toString())
-        );
-        if (!topicName) continue;
-        payload = this.createDynamoPayload(record);
-      }
+      // DYNAMO
+      topicName = this.determineDynamoTopicName(
+        String(record.eventSourceARN.toString())
+      );
+      if (!topicName) continue;
+      payload = this.createDynamoPayload(record);
 
       //initialize configuration object keyed to topic for quick lookup
       if (!(outboundEvents[topicName] instanceof Object))
