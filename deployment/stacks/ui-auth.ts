@@ -233,7 +233,10 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     const webAcl = new WafConstruct(
       scope,
       "CognitoWafConstruct",
-      { name: `${project}-${stage}-ui-auth` },
+      {
+        name: `${project}-${stage}-ui-auth`,
+        isDev,
+      },
       "REGIONAL"
     ).webAcl;
 
