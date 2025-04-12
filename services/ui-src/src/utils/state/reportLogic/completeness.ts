@@ -23,12 +23,13 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
 
   // Check Child Pages are Complete if they allow statuses
   if (!("children" in targetPage) || !targetPage.children) return true;
+  // Same logic as MeasureResultsNavigationTable
+  const deliveryMethodRadio = targetPage.elements.find(
+    (element) => element.id === "delivery-method-radio"
+  ) as RadioTemplate;
+  if (!deliveryMethodRadio) return true; // no selection to be made, no dependency
+  const selections = deliveryMethodRadio?.answer ?? "";
   for (const dependentPage of targetPage.children) {
-    // Same logic as MeasureResultsNavigationTable
-    const deliveryMethodRadio = targetPage.elements.find(
-      (element) => element.id === "delivery-method-radio"
-    ) as RadioTemplate;
-    const selections = deliveryMethodRadio?.answer ?? "";
     const deliverySystemIsSelected = selections
       .split(",")
       .includes(dependentPage.key);
@@ -36,7 +37,7 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
       (page) => page.id === dependentPage.template
     );
     if (
-      deliverySystemIsSelected &&
+      (!deliveryMethodRadio || deliverySystemIsSelected) &&
       childPage &&
       "status" in childPage &&
       childPage.status !== PageStatus.COMPLETE

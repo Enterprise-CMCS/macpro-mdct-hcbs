@@ -10,6 +10,7 @@ import {
   ReportStatus,
   ReportType,
   TextboxTemplate,
+  FormPageTemplate,
 } from "types/report";
 import {
   buildState,
@@ -20,6 +21,7 @@ import {
   substitute,
   saveReport,
   filterErrors,
+  markPageComplete,
 } from "./reportActions";
 import {
   mock2MeasureTemplate,
@@ -48,6 +50,7 @@ const testReport: Report = {
       id: "general-info",
       title: "General Information",
       type: PageType.Standard,
+      status: PageStatus.NOT_STARTED,
       sidebar: true,
       elements: [
         {
@@ -434,9 +437,10 @@ describe("state/management/reportState: mergeAnswers", () => {
     const answers = { elements: [null, { answer: "ANSWERED" }] };
     const result = mergeAnswers(answers, state);
 
-    const page = result?.report.pages[1];
+    const page = result?.report.pages[1] as FormPageTemplate;
     const elements = page?.elements!;
     const question = elements[1] as TextboxTemplate;
+    expect(page.status).toEqual(PageStatus.IN_PROGRESS);
     expect(question.answer).toEqual("ANSWERED");
   });
 });
@@ -482,6 +486,20 @@ describe("state/management/reportState: clearMeasure", () => {
     expect(measure.status).toBe(PageStatus.IN_PROGRESS);
     expect(reportingRadio.answer).toBe("no");
     expect(question.answer).toBeFalsy();
+  });
+});
+
+describe("state/management/reportState: markPageComplete", () => {
+  test("complete measure", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport) as unknown as HcbsReportState;
+    const response = markPageComplete("LTSS-1", state);
+    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+
+    expect(measure.status).toBe(PageStatus.COMPLETE);
   });
 });
 
