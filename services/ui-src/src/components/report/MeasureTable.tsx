@@ -14,7 +14,7 @@ import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
-  MeasureStatus,
+  PageStatus,
   MeasureTableTemplate,
   PageType,
 } from "types";
@@ -66,20 +66,20 @@ export const MeasureTableElement = (props: PageElementProps) => {
     //TO DO: clean up when report check code is ready
     if (
       !measure.required &&
-      (measure.status === MeasureStatus.NOT_STARTED || !measure.status)
+      (measure.status === PageStatus.NOT_STARTED || !measure.status)
     ) {
       //optional measures should return nothing if they aren't started
       return undefined;
     }
 
-    return measure.status ?? MeasureStatus.NOT_STARTED;
+    return measure.status ?? PageStatus.NOT_STARTED;
   };
 
   const errorMessage = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
     if (
-      measure.status === MeasureStatus.IN_PROGRESS ||
-      (measure.required && measure.status != MeasureStatus.COMPLETE)
+      measure.status === PageStatus.IN_PROGRESS ||
+      (measure.required && measure.status != PageStatus.COMPLETE)
     ) {
       return <Text variant="error">Select "Edit" to begin measure.</Text>;
     }

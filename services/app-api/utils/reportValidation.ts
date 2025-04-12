@@ -301,6 +301,7 @@ const formPageTemplateSchema = object().shape({
   id: string().required(),
   title: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
+  status: string().notRequired(),
   elements: array().of(pageElementSchema).required(),
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),
@@ -331,7 +332,6 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
-  status: string().notRequired(),
   children: array()
     .of(dependentPageInfoSchema)
     .notRequired()

@@ -12,7 +12,7 @@ import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import {
   MeasurePageTemplate,
-  MeasureStatus,
+  PageStatus,
   PageType,
   RadioTemplate,
 } from "types";
@@ -50,7 +50,7 @@ export const MeasureResultsNavigationTableElement = () => {
     if (disabled) return;
 
     //TO DO: add real code
-    if (measure.status !== MeasureStatus.COMPLETE)
+    if (measure.status !== PageStatus.COMPLETE)
       return <Text variant="error">Select "Edit" to report progress.</Text>;
 
     return <></>;

@@ -14,7 +14,7 @@ import {
 import { useStore, submitReport } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
-import { MeasureStatus, ParentPageTemplate, ReportStatus } from "types/report";
+import { PageStatus, ParentPageTemplate, ReportStatus } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 
@@ -36,7 +36,7 @@ export const StatusTableElement = () => {
 
   const getTableStatus = (_section: ParentPageTemplate) => {
     //TO DO: Add code for checking status
-    return MeasureStatus.COMPLETE;
+    return PageStatus.COMPLETE;
   };
 
   const submittable = () => {

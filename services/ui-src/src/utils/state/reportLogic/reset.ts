@@ -3,7 +3,7 @@
  * Clearing is referred to here as a soft reset of page, and reset is a full wipe of progress.
  */
 import {
-  MeasureStatus,
+  PageStatus,
   PageElement,
   ElementType,
   Report,
@@ -25,7 +25,7 @@ export const performClearMeasure = (
     return;
   }
   if ("status" in page) {
-    page.status = MeasureStatus.IN_PROGRESS;
+    page.status = PageStatus.IN_PROGRESS;
   }
   // Clean measure
   page.elements?.forEach((element) => {
@@ -54,7 +54,7 @@ export const performResetMeasure = (measureId: string, report: Report) => {
     return;
   }
   if ("status" in page) {
-    page.status = MeasureStatus.NOT_STARTED;
+    page.status = PageStatus.NOT_STARTED;
   }
 
   // Clean measure

@@ -7,7 +7,7 @@ import { HcbsReportState } from "types";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
-  MeasureStatus,
+  PageStatus,
   PageType,
   ParentPageTemplate,
   Report,
@@ -116,11 +116,11 @@ export const mergeAnswers = (
 
   // Handle status dirtying
   if ("status" in result) {
-    result.status = MeasureStatus.IN_PROGRESS;
+    result.status = PageStatus.IN_PROGRESS;
   }
   for (const page of report.pages) {
     if (page.childPageIds?.includes(state.currentPageId) && "status" in page) {
-      page.status == MeasureStatus.IN_PROGRESS;
+      page.status == PageStatus.IN_PROGRESS;
     }
   }
   report.pages[pageIndex] = result;
@@ -153,7 +153,7 @@ export const markPageComplete = (pageId: string, state: HcbsReportState) => {
     (page) => page.id === pageId
   ) as MeasurePageTemplate; // TODO: fix cast
 
-  page.status = MeasureStatus.COMPLETE;
+  page.status = PageStatus.COMPLETE;
 
   return { report };
 };

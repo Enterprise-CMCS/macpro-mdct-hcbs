@@ -100,7 +100,7 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
-export enum MeasureStatus {
+export enum PageStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
   COMPLETE = "Complete",
@@ -125,7 +125,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   stratified?: boolean;
   optional?: boolean;
   substitutable?: string;
-  status: MeasureStatus;
   children?: dependentPageInfo[];
   cmitInfo?: CMIT;
 }
@@ -195,6 +194,7 @@ export type FormPageTemplate = {
   id: PageId;
   title: string;
   type: PageType;
+  status?: PageStatus;
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;

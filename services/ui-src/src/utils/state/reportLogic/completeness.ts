@@ -4,7 +4,7 @@
 import {
   ElementType,
   HideCondition,
-  MeasureStatus,
+  PageStatus,
   PageElement,
   RadioTemplate,
   Report,
@@ -38,7 +38,7 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
       deliverySystemIsSelected &&
       childPage &&
       "status" in childPage &&
-      childPage.status !== MeasureStatus.COMPLETE
+      childPage.status !== PageStatus.COMPLETE
     )
       return false;
   }
