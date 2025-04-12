@@ -243,6 +243,7 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
+  required: true,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -262,6 +263,7 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   id: "measure-rates",
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
+  required: true,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -281,6 +283,7 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
+  required: true,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -300,6 +303,7 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
   id: "measure-rates",
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
+  required: true,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -319,6 +323,7 @@ export const performanceRatePOM: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   rateType: PerformanceRateType.NDR,
+  required: true,
   helperText:
     "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -363,6 +368,7 @@ export const performanceRateFacility: PerformanceRateTemplate = {
     },
   ],
   rateType: PerformanceRateType.FIELDS,
+  required: true,
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
@@ -382,6 +388,7 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
   ],
-  rateType: PerformanceRateType.NDRFIELDS,
+  rateType: PerformanceRateType.NDR_FIELDS,
+  required: true,
   multiplier: 1000,
 };

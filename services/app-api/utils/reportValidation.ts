@@ -278,6 +278,7 @@ const performanceRateSchema = object().shape({
       })
     )
     .notRequired(),
+  required: boolean().notRequired(),
   rateType: string().required(),
   rateCalc: string().notRequired(),
   multiplier: number().notRequired(),

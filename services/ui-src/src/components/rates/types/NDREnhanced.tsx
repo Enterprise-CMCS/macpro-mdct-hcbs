@@ -77,6 +77,7 @@ export const NDREnhanced = (
       shouldValidate: true,
     });
     form.setValue(`${key}.type`, props.type);
+    // TODO: This doesn't save
   };
 
   return (

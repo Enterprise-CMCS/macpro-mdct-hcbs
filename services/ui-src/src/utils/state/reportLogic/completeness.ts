@@ -8,6 +8,7 @@ import {
   PageElement,
   RadioTemplate,
   Report,
+  PerformanceRateTemplate,
 } from "types";
 
 export const pageIsCompletable = (report: Report, pageId: string) => {
@@ -56,11 +57,12 @@ export const elementSatisfiesRequired = (
   if ("hideCondition" in element) {
     if (elementIsHidden(element.hideCondition, pageElements)) return true;
   }
-  if (!("answer" in element) || !element.answer || element.answer.length == 0)
+  if (!("answer" in element) || !element.answer) {
+    // TODO: number fields are currently represented as strings, need to be handled here when fixed
     return false;
-  // TODO: number fields
-
-  if (element.type == ElementType.Radio) {
+  }
+  // Special handling - nested children
+  if (element.type === ElementType.Radio) {
     for (const choice of element.value) {
       if (choice.value !== element.answer || !choice.checkedChildren) continue;
       for (const childElement of choice.checkedChildren) {
@@ -69,10 +71,35 @@ export const elementSatisfiesRequired = (
       }
     }
   }
-  // TODO: Rates
+  // Special handling - rates
+  if (element.type === ElementType.PerformanceRate) {
+    if (!rateIsComplete(element)) return false;
+  }
   return true;
 };
 
+const rateIsComplete = (element: PerformanceRateTemplate) => {
+  if (!element.answer) return false;
+  if ("rates" in element.answer) {
+    // PerformanceData
+    element.answer.rates;
+    for (const uniqueRate of element.answer.rates) {
+      // TODO: number fields are currently represented as strings, need to be handled here when fixed
+      if (!uniqueRate.rate) return false;
+      // TODO: confirm this
+    }
+  } else {
+    // RateSetData[]
+    for (const rateAnswer of element.answer) {
+      if (!rateAnswer.rates) return false;
+      for (const uniqueRate of rateAnswer.rates) {
+        // TODO: number fields are currently represented as strings, need to be handled here when fixed
+        if (!uniqueRate.rate) return false;
+      }
+    }
+  }
+  return true;
+};
 export const elementIsHidden = (
   hideCondition: HideCondition | undefined,
   elements: Partial<PageElement>[]

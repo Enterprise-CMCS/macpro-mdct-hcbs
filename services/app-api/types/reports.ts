@@ -428,7 +428,7 @@ export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
   FIELDS = "Fields",
-  NDRFIELDS = "NDRFields",
+  NDR_FIELDS = "NDRFields",
 }
 
 export const enum RateCalc {
@@ -447,6 +447,7 @@ export type PerformanceRateTemplate = {
   rateCalc?: RateCalc;
   multiplier?: number;
   answer?: PerformanceData | RateSetData[];
+  required?: boolean;
 };
 
 export type ChoiceTemplate = {
