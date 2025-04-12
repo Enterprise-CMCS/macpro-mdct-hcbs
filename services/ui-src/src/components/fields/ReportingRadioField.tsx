@@ -7,7 +7,7 @@ import { parseCustomHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { formatChoices } from "./RadioField";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
-import { requiredResponse } from "constants";
+import { requiredResponse } from "../../constants";
 
 export const ReportingRadioField = (props: PageElementProps) => {
   const radio = props.element as ReportingRadioTemplate;

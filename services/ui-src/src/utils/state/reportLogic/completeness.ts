@@ -53,9 +53,13 @@ export const elementSatisfiesRequired = (
   pageElements: PageElement[]
 ) => {
   // TODO: make less ugly
-  if (!("required" in element) || !element.required) return true;
-  if ("hideCondition" in element) {
-    if (elementIsHidden(element.hideCondition, pageElements)) return true;
+  if (
+    !("required" in element) ||
+    !element.required ||
+    ("hideCondition" in element &&
+      elementIsHidden(element.hideCondition, pageElements))
+  ) {
+    return true;
   }
   if (!("answer" in element) || !element.answer) {
     // TODO: number fields are currently represented as strings, need to be handled here when fixed
@@ -72,8 +76,11 @@ export const elementSatisfiesRequired = (
     }
   }
   // Special handling - rates
-  if (element.type === ElementType.PerformanceRate) {
-    if (!rateIsComplete(element)) return false;
+  if (
+    element.type === ElementType.PerformanceRate &&
+    !rateIsComplete(element)
+  ) {
+    return false;
   }
   return true;
 };
@@ -100,6 +107,7 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
   }
   return true;
 };
+
 export const elementIsHidden = (
   hideCondition: HideCondition | undefined,
   elements: Partial<PageElement>[]

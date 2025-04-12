@@ -7,7 +7,7 @@ import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
-import { requiredResponse } from "constants";
+import { requiredResponse } from "../../constants";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 export const formatChoices = (

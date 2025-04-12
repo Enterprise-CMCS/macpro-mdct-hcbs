@@ -6,7 +6,7 @@ import { parseCustomHtml } from "utils";
 import { TextboxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
-import { requiredResponse } from "constants";
+import { requiredResponse } from "../../constants";
 
 export const TextField = (props: PageElementProps) => {
   const textbox = props.element as TextboxTemplate;
