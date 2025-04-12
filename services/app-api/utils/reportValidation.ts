@@ -51,7 +51,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
   hideCondition: object()
     .shape({
       controllerElementId: string().required(),
@@ -98,7 +98,7 @@ const dropdownTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
 });
 
 const accordionTemplateSchema = object().shape({
@@ -182,7 +182,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
   hideCondition: object()
     .shape({
       controllerElementId: string().required(),
@@ -206,7 +206,7 @@ const reportingRadioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({
@@ -331,6 +331,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
+  status: string().notRequired(),
   children: array()
     .of(dependentPageInfoSchema)
     .notRequired()

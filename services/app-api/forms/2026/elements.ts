@@ -89,6 +89,7 @@ export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
       value: "no",
     },
   ],
+  required: true,
 };
 
 export const wereTheResultsAudited: RadioTemplate = {
@@ -114,6 +115,7 @@ export const wereTheResultsAudited: RadioTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: true,
 };
 
 export const whatSpecificationsAreYouUsing: RadioTemplate = {
@@ -148,6 +150,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: true,
 };
 
 export const additionalNotesField: TextAreaBoxTemplate = {
@@ -178,6 +181,7 @@ export const whichDeliverySystemsWereUsed: RadioTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: true,
 };
 
 export const qualityMeasuresSubheader: SubHeaderTemplate = {

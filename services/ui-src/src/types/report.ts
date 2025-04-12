@@ -208,7 +208,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
+  required?: boolean;
   hideCondition?: {
     controllerElementId: string;
     answer: string;
@@ -242,7 +242,7 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string;
+  required?: boolean;
 };
 
 export type DividerTemplate = {
@@ -281,7 +281,7 @@ export type RadioTemplate = {
   value: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
+  required?: boolean;
   hideCondition?: {
     controllerElementId: string;
     answer: string;
@@ -295,7 +295,7 @@ export type ReportingRadioTemplate = {
   value: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
+  required?: boolean;
 };
 
 export type ButtonLinkTemplate = {

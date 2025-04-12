@@ -13,6 +13,7 @@ import { ReactNode } from "react";
 import {
   buildState,
   clearMeasure,
+  markPageComplete,
   mergeAnswers,
   resetMeasure,
   saveReport,
@@ -105,6 +106,11 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
   setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => {
     set(() => substitute(report, selectMeasure), false, {
       type: "setSubstitute",
+    });
+  },
+  completePage: (measureId: string) => {
+    set((state: HcbsReportState) => markPageComplete(measureId, state), false, {
+      type: "resetMeasure",
     });
   },
   resetMeasure: (measureId: string) =>

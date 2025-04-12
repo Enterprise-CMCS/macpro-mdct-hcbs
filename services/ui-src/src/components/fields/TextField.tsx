@@ -5,6 +5,7 @@ import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
 import { TextboxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
+import { requiredResponse } from "constants";
 
 export const TextField = (props: PageElementProps) => {
   const textbox = props.element as TextboxTemplate;
@@ -16,7 +17,7 @@ export const TextField = (props: PageElementProps) => {
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
-    const options = { required: textbox.required || false };
+    const options = { required: textbox.required ? requiredResponse : false };
     form.register(key, options);
     form.setValue(key, defaultValue);
   }, []);

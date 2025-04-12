@@ -3,6 +3,8 @@ import { HcbsReportState } from "types";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
+  MeasureStatus,
+  PageType,
   ParentPageTemplate,
   Report,
 } from "types/report";
@@ -99,15 +101,26 @@ export const mergeAnswers = (
   state: HcbsReportState,
   errors?: any
 ) => {
-  if (!state.report) return;
+  if (!state.report || !state.currentPageId) return;
   const report = structuredClone(state.report);
   const pageIndex = state.report.pages.findIndex(
     (page) => page.id === state.currentPageId
   );
 
   const filteredAnswers = errors ? filterErrors(answers, errors) : answers;
+  const result = deepMerge(report.pages[pageIndex], filteredAnswers);
 
-  report.pages[pageIndex] = deepMerge(report.pages[pageIndex], filteredAnswers);
+  // Handle status dirtying
+  if ("status" in result) {
+    result.status = MeasureStatus.IN_PROGRESS;
+  }
+  for (const page of report.pages) {
+    if (page.childPageIds?.includes(state.currentPageId) && "status" in page) {
+      page.status == MeasureStatus.IN_PROGRESS;
+    }
+  }
+  report.pages[pageIndex] = result;
+
   return { report };
 };
 
@@ -128,6 +141,19 @@ export const substitute = (
 
   return { report };
 };
+
+export const markPageComplete = (pageId: string, state: HcbsReportState) => {
+  if (!state.report) return;
+  const report = structuredClone(state.report);
+  const page = report.pages.find(
+    (page) => page.id === pageId
+  ) as MeasurePageTemplate; // TODO: fix cast
+
+  page.status = MeasureStatus.COMPLETE;
+
+  return { report };
+};
+
 /**
  * Clear all nested content in the measure, preserving an In Progress state,
  * and ignoring any fields with special treatment

@@ -7,6 +7,7 @@ import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
+import { requiredResponse } from "constants";
 
 export const formatChoices = (
   parentKey: string,
@@ -49,7 +50,8 @@ export const RadioField = (props: PageElementProps) => {
   const key = `${props.formkey}.answer`;
 
   useEffect(() => {
-    const options = { required: radio.required || false };
+    const options = { required: radio.required ? requiredResponse : false };
+
     form.setValue(key, radio.answer);
     form.register(key, options);
     if (radio.answer) {
@@ -129,7 +131,6 @@ export const RadioField = (props: PageElementProps) => {
   if (hideElement) {
     return null;
   }
-
   return (
     <Box>
       <CmsdsChoiceList

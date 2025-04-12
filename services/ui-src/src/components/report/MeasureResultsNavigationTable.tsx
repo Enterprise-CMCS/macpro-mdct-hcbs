@@ -22,10 +22,12 @@ import { currentPageSelector } from "utils/state/selectors";
 
 export const MeasureResultsNavigationTableElement = () => {
   const { reportType, state, reportId } = useParams();
+  const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
   const navigate = useNavigate();
 
-  if (!currentPage || currentPage.type !== PageType.Measure) return null;
+  if (!report || !currentPage || currentPage.type !== PageType.Measure)
+    return null;
   const measurePage = currentPage as MeasurePageTemplate;
   const deliveryMethodRadio = useLiveElement(
     "delivery-method-radio"
@@ -36,10 +38,11 @@ export const MeasureResultsNavigationTableElement = () => {
     navigate(path);
   };
 
-  const getTableStatus = (measure: MeasurePageTemplate, disabled: boolean) => {
-    if (disabled) return;
-
-    //TO DO: add real code
+  const getTableStatus = (
+    measure: MeasurePageTemplate | undefined,
+    disabled: boolean
+  ) => {
+    if (disabled || !measure) return;
     return measure.status;
   };
 
@@ -57,29 +60,32 @@ export const MeasureResultsNavigationTableElement = () => {
   const singleOption = measurePage.cmitInfo?.deliverySystem.length == 1;
 
   // Build Rows
-  const rows = measurePage.children?.map((childPage, index) => {
+  const rows = measurePage.children?.map((childLink, index) => {
     const selections = deliveryMethodRadio?.answer ?? "";
     const deliverySystemIsSelected = selections
       .split(",")
-      .includes(childPage.key);
+      .includes(childLink.key);
+    const childPage = report.pages.find(
+      (page) => page.id === childLink.template
+    ) as MeasurePageTemplate;
     return (
       <Tr key={index}>
         <Td>
           <TableStatusIcon
             tableStatus={getTableStatus(
-              measurePage,
+              childPage,
               !singleOption && !deliverySystemIsSelected
             )}
           ></TableStatusIcon>
         </Td>
         <Td width="100%">
-          <Text fontWeight="bold">{childPage.linkText}</Text>
+          <Text fontWeight="bold">{childLink.linkText}</Text>
           <Text>CMIT# {measurePage.cmit}</Text>
           <Text>
             Status:{" "}
             {!singleOption && !deliverySystemIsSelected
               ? "N/A"
-              : measurePage.status}
+              : childPage?.status}
           </Text>
           {errorMessage(
             measurePage,
@@ -90,7 +96,7 @@ export const MeasureResultsNavigationTableElement = () => {
           <Button
             variant="outline"
             disabled={!singleOption && !deliverySystemIsSelected}
-            onClick={() => handleEditClick(childPage.template)}
+            onClick={() => handleEditClick(childLink.template)}
           >
             Edit
           </Button>
