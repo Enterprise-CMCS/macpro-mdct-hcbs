@@ -1,3 +1,7 @@
+/**
+ * File wrapping high level actions away from the useStore file for cleanliness.
+ * This contains the root for logic for actions such as updating an answer, handling resetting, saving, etc.
+ */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HcbsReportState } from "types";
 import {

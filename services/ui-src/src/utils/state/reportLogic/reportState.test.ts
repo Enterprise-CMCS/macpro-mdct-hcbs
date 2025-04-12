@@ -20,7 +20,7 @@ import {
   substitute,
   saveReport,
   filterErrors,
-} from "./reportState";
+} from "./reportActions";
 import {
   mock2MeasureTemplate,
   mockMeasureTemplateNotReporting,

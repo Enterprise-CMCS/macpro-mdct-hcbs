@@ -260,6 +260,11 @@ export type PageElement =
   | StatusAlertTemplate
   | DividerTemplate;
 
+export type HideCondition = {
+  controllerElementId: string;
+  answer: string;
+};
+
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
@@ -298,10 +303,7 @@ export type TextboxTemplate = {
   helperText?: string;
   answer?: string;
   required?: boolean;
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  hideCondition?: HideCondition;
 };
 
 export type TextAreaBoxTemplate = {
@@ -310,10 +312,7 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  hideCondition?: HideCondition;
 };
 
 export type DateTemplate = {
@@ -368,10 +367,7 @@ export type RadioTemplate = {
   value: ChoiceTemplate[];
   answer?: string;
   required?: boolean;
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  hideCondition?: HideCondition;
 };
 
 export type ReportingRadioTemplate = {

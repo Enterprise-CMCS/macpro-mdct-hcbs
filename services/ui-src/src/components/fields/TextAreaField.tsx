@@ -5,12 +5,13 @@ import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
 import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 export const TextAreaField = (props: PageElementProps) => {
   const textbox = props.element as TextAreaBoxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-  const [hideElement, setHideElement] = useState<boolean>(false);
+  const hideElement = useElementIsHidden(textbox.hideCondition);
 
   // get form context and register field
   const form = useFormContext();
@@ -24,23 +25,6 @@ export const TextAreaField = (props: PageElementProps) => {
   useEffect(() => {
     setDisplayValue(textbox.answer ?? "");
   }, [textbox.answer]);
-
-  useEffect(() => {
-    const formValues = form.getValues() as any;
-    if (formValues && Object.keys(formValues).length === 0) {
-      return;
-    }
-    if (textbox?.hideCondition) {
-      const controlElement = formValues?.elements?.find((element: any) => {
-        return element?.id === textbox.hideCondition?.controllerElementId;
-      });
-      if (controlElement?.answer === textbox.hideCondition.answer) {
-        setHideElement(true);
-      } else {
-        setHideElement(false);
-      }
-    }
-  }, [form.getValues()]);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>

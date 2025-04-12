@@ -19,7 +19,7 @@ import {
   saveReport,
   setPage,
   substitute,
-} from "./management/reportState";
+} from "./reportLogic/reportActions";
 
 // USER STORE
 const userStore = (set: Function) => ({

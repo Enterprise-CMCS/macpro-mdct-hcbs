@@ -1,3 +1,7 @@
+/**
+ * Logic for what it means to reset or clear a report.
+ * Clearing is referred to here as a soft reset of page, and reset is a full wipe of progress.
+ */
 import {
   MeasureStatus,
   PageElement,
