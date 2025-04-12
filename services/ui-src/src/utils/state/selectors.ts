@@ -1,5 +1,5 @@
 import { HcbsReportState } from "types";
-import { isCompletable } from "./reportLogic/completeness";
+import { pageIsCompletable } from "./reportLogic/completeness";
 
 export const currentPageSelector = (state: HcbsReportState) => {
   const { report, pageMap, currentPageId } = state;
@@ -13,5 +13,5 @@ export const currentPageSelector = (state: HcbsReportState) => {
 
 export const currentPageCompletableSelector = (state: HcbsReportState) => {
   if (!state.report || !state.currentPageId) return false;
-  return isCompletable(state.report, state.currentPageId);
+  return pageIsCompletable(state.report, state.currentPageId);
 };

@@ -1,20 +1,49 @@
 /**
  * Logic pertaining to what it means to be completable, by page and report.
  */
-import { ElementType, HideCondition, PageElement, Report } from "types";
+import {
+  ElementType,
+  HideCondition,
+  MeasureStatus,
+  PageElement,
+  RadioTemplate,
+  Report,
+} from "types";
 
-export const isCompletable = (report: Report, pageId: string) => {
+export const pageIsCompletable = (report: Report, pageId: string) => {
   const targetPage = report.pages.find((page) => page.id === pageId);
   if (!targetPage) return false;
   if (!targetPage.elements) return true;
 
-  // TODO: check questions on page
   for (const element of targetPage.elements) {
     const satisfied = elementSatisfiesRequired(element, targetPage.elements);
     if (!satisfied) return false;
   }
 
-  // TODO: check children pages
+  // Check Child Pages are Complete if they allow statuses
+  if (!("children" in targetPage) || !targetPage.children) return true;
+  for (const dependentPage of targetPage.children) {
+    // Same logic as MeasureResultsNavigationTable
+    const deliveryMethodRadio = targetPage.elements.find(
+      (element) => element.id === "delivery-method-radio"
+    ) as RadioTemplate;
+    const selections = deliveryMethodRadio?.answer ?? "";
+    const deliverySystemIsSelected = selections
+      .split(",")
+      .includes(dependentPage.key);
+    const childPage = report.pages.find(
+      (page) => page.id === dependentPage.template
+    );
+    if (
+      deliverySystemIsSelected &&
+      childPage &&
+      "status" in childPage &&
+      childPage.status !== MeasureStatus.COMPLETE
+    )
+      return false;
+  }
+  targetPage.childPageIds;
+
   return true;
 };
 
