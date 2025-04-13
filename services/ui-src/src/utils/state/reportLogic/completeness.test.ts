@@ -1,5 +1,5 @@
 import { ElementType, PageStatus } from "types";
-import { pageIsCompletable } from "./completeness";
+import { elementSatisfiesRequired, pageIsCompletable } from "./completeness";
 
 describe("pageIsCompletable", () => {
   test("handles empty conditions", () => {
@@ -71,5 +71,48 @@ describe("pageIsCompletable", () => {
       ],
     } as any;
     expect(pageIsCompletable(report, "my-id")).toBeFalsy();
+  });
+
+  test("succeeds when complete element", () => {
+    const report = {
+      pages: [
+        {
+          id: "my-id",
+          status: PageStatus.IN_PROGRESS,
+          elements: [
+            {
+              id: "good-question",
+              type: ElementType.Textbox,
+              answer: "WOW",
+              required: true,
+            },
+          ],
+        },
+      ],
+    } as any;
+    expect(pageIsCompletable(report, "my-id")).toBeTruthy();
+  });
+});
+
+describe("elementSatisfiesRequired", () => {
+  test("returns true when hidden or not required", () => {
+    const hiddenElement = {
+      id: "other-element",
+      answer: "foo",
+      type: ElementType.Textbox,
+      required: true,
+    } as any;
+    const notRequired = {
+      id: "not-element",
+      answer: "foo",
+      type: ElementType.Textbox,
+    } as any;
+    const elements = [
+      { id: "other-element", answer: "foo", type: ElementType.Textbox },
+      hiddenElement,
+      notRequired,
+    ] as any;
+    expect(elementSatisfiesRequired(hiddenElement, elements)).toBeTruthy();
+    expect(elementSatisfiesRequired(notRequired, elements)).toBeTruthy();
   });
 });

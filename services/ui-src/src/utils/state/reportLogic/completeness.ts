@@ -44,8 +44,6 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
     )
       return false;
   }
-  targetPage.childPageIds;
-
   return true;
 };
 

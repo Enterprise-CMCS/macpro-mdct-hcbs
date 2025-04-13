@@ -87,10 +87,7 @@ export const MeasureResultsNavigationTableElement = () => {
               ? "N/A"
               : childPage?.status}
           </Text>
-          {errorMessage(
-            measurePage,
-            !singleOption && !deliverySystemIsSelected
-          )}
+          {errorMessage(childPage, !singleOption && !deliverySystemIsSelected)}
         </Td>
         <Td>
           <Button
