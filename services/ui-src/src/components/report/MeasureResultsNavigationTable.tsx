@@ -50,7 +50,7 @@ export const MeasureResultsNavigationTableElement = () => {
     if (disabled) return;
 
     //TO DO: add real code
-    if (measure.status !== PageStatus.COMPLETE)
+    if (measure?.status !== PageStatus.COMPLETE)
       return <Text variant="error">Select "Edit" to report progress.</Text>;
 
     return <></>;
