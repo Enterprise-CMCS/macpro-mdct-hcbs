@@ -119,8 +119,14 @@ export const mergeAnswers = (
     result.status = PageStatus.IN_PROGRESS;
   }
   for (const page of report.pages) {
-    if (page.childPageIds?.includes(state.currentPageId) && "status" in page) {
-      page.status == PageStatus.IN_PROGRESS;
+    if (
+      "dependentPages" in page &&
+      page.dependentPages?.find(
+        (link) => link.template === state.currentPageId
+      ) &&
+      "status" in page
+    ) {
+      page.status = PageStatus.IN_PROGRESS;
     }
   }
   report.pages[pageIndex] = result;

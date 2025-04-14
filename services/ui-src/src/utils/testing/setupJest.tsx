@@ -215,7 +215,7 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
   required: true,
   substitutable: "FASI-1",
   elements: [],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -249,7 +249,7 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
   type: PageType.Measure,
   required: true,
   elements: [],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -297,7 +297,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       answer: "yes",
     },
   ],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",

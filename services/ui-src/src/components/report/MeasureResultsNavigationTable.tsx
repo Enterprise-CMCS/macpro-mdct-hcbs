@@ -58,9 +58,8 @@ export const MeasureResultsNavigationTableElement = () => {
 
   // Note pages like LTSS-5 have 2 child pages, but 1 delivery system.
   const singleOption = measurePage.cmitInfo?.deliverySystem.length == 1;
-
   // Build Rows
-  const rows = measurePage.children?.map((childLink, index) => {
+  const rows = measurePage.dependentPages?.map((childLink, index) => {
     const selections = deliveryMethodRadio?.answer ?? "";
     const deliverySystemIsSelected = selections
       .split(",")

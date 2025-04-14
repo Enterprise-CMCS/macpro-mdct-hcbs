@@ -69,14 +69,15 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
   }
 
   // Check Child Pages are Complete if they allow statuses
-  if (!("children" in targetPage) || !targetPage.children) return true;
+  if (!("dependentPages" in targetPage) || !targetPage.dependentPages)
+    return true;
   // Same logic as MeasureResultsNavigationTable
   const deliveryMethodRadio = targetPage.elements.find(
     (element) => element.id === "delivery-method-radio"
   ) as RadioTemplate;
   if (!deliveryMethodRadio) return true; // no selection to be made, no dependency
   const selections = deliveryMethodRadio?.answer ?? "";
-  for (const dependentPage of targetPage.children) {
+  for (const dependentPage of targetPage.dependentPages) {
     const deliverySystemIsSelected = selections
       .split(",")
       .includes(dependentPage.key);
@@ -98,18 +99,26 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
 const requiredRollupPageStatus = (report: Report) => {
   const requiredMeasures = report.pages.filter(
     (page) => isMeasureTemplate(page) && "required" in page && page.required
-  );
-  let status = PageStatus.COMPLETE;
-  for (const measure of requiredMeasures as MeasurePageTemplate[]) {
-    if (measure.status === PageStatus.IN_PROGRESS)
-      return PageStatus.IN_PROGRESS;
-    if (measure.status === PageStatus.NOT_STARTED)
-      status = PageStatus.NOT_STARTED;
-  }
-  return status;
+  ) as MeasurePageTemplate[];
+
+  if (
+    requiredMeasures.every((measure) => measure.status === PageStatus.COMPLETE)
+  )
+    return PageStatus.COMPLETE;
+  if (
+    requiredMeasures.find(
+      (measure) =>
+        measure.status &&
+        [PageStatus.COMPLETE, PageStatus.IN_PROGRESS].includes(
+          measure.status || ""
+        )
+    )
+  )
+    return PageStatus.IN_PROGRESS;
+  return PageStatus.NOT_STARTED;
 };
 
-// Return in progress if any in flight, then complete if any complete, in progress if at least one in progress
+// Return in progress if any in flight, then complete if any complete, not started otherwise
 const optionalRollupPageStatus = (report: Report) => {
   const requiredMeasures = report.pages.filter(
     (page) => isMeasureTemplate(page) && "required" in page && !page.required

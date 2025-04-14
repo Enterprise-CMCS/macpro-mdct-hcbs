@@ -109,7 +109,7 @@ const initializeQmsPage = (
   page.status = PageStatus.NOT_STARTED;
 
   if (isMeasurePage) {
-    page.children = measure.dependentPages;
+    page.dependentPages = measure.dependentPages;
     page.cmitInfo = cmitInfo;
   }
 

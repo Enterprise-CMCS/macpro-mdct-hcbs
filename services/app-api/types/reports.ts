@@ -125,7 +125,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   stratified?: boolean;
   optional?: boolean;
   substitutable?: string;
-  children?: dependentPageInfo[];
+  dependentPages?: dependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
