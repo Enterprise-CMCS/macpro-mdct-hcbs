@@ -39,6 +39,7 @@ custom:
   bannerTableName: ${env:BANNER_TABLE_NAME, param:BannerTableName}
   qmsReportTableName: ${env:QMS_REPORT_TABLE_NAME, param:QmsReportTableName}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
+  bootstrapBrokerStringTls: ${env:BROKER_STRINGS, ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
