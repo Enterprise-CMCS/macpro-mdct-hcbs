@@ -23,6 +23,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   method?: string;
   stackName: string;
   api?: apigateway.RestApi;
+  brokerString?: string;
   additionalPolicies?: PolicyStatement[];
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;

@@ -31,7 +31,6 @@ class KafkaSourceLib {
    * topicPrefix = "[data_center].[system_of_record].[business_domain].[event_type]";
    * version = "some version";
    * tables = [list of table mappings];
-   * buckets = [list of bucket mappings];
    */
 
   topicPrefix: string;
@@ -169,7 +168,6 @@ class KafkaSourceLib {
       return;
     }
 
-    // if dynamo
     const outboundEvents = await this.createOutboundEvents(event.Records);
 
     const topicMessages = Object.values(outboundEvents);

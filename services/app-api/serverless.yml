@@ -207,6 +207,32 @@ functions:
               paths:
                 state: true
                 id: true
+  postKafkaData:
+    handler: handlers/kafka/post/postKafkaData.handler
+    environment:
+      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
+      STAGE: ${self:custom.stage}
+      topicNamespace: ${param:topicNamespace}
+    maximumRetryAttempts: 2
+    timeout: 120
+    memorySize: 2048
+    vpc:
+      securityGroupIds:
+        - Ref: KafkaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    events:
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.wpReportTableStreamArn}
+          startingPosition: TRIM_HORIZON
+          maximumRetryAttempts: 2
+          enabled: true
+      - stream:
+          type: dynamodb
+          arn: ${self:custom.sarReportTableStreamArn}
+          startingPosition: TRIM_HORIZON
+          maximumRetryAttempts: 2
+          enabled: true
 resources:
   Resources:
     GatewayResponseDefault4XX:
