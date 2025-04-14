@@ -88,6 +88,7 @@ provider:
     STAGE: ${self:custom.stage}
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     QMS_REPORT_TABLE_NAME: ${self:custom.qmsReportTableName}
+    BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
 
 functions:
   createBanner:
