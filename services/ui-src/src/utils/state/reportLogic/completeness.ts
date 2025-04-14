@@ -75,7 +75,7 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
   const deliveryMethodRadio = targetPage.elements.find(
     (element) => element.id === "delivery-method-radio"
   ) as RadioTemplate;
-  if (!deliveryMethodRadio) return true; // no selection to be made, no dependency
+
   const selections = deliveryMethodRadio?.answer ?? "";
   for (const dependentPage of targetPage.dependentPages) {
     const deliverySystemIsSelected = selections
@@ -173,7 +173,6 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
   if (!element.answer) return false;
   if ("rates" in element.answer) {
     // PerformanceData
-    element.answer.rates;
     for (const uniqueRate of element.answer.rates) {
       // TODO: number fields are currently represented as strings, need to be handled here when fixed
       if (!uniqueRate.rate) return false;
