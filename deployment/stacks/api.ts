@@ -209,7 +209,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       {
         name: `${project}-${stage}-${service}`,
         blockRequestBodyOver8KB: false,
-        isDev,
       },
       "REGIONAL"
     );
