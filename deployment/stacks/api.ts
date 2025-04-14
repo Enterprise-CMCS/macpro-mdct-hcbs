@@ -15,6 +15,7 @@ import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isLocalStack } from "../local/util";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
+import { isDefined } from "../utils/misc";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -130,6 +131,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Query",
       ],
       resources: tables.map((table) => table.arn),
+    }),
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        "dynamodb:DescribeStream",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:ListShards",
+        "dynamodb:ListStreams",
+      ],
+      resources: tables.map((table) => table.streamArn).filter(isDefined),
     }),
   ];
 
