@@ -39,6 +39,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     isDev,
     vpc,
     kafkaAuthorizedSubnets,
+    brokerString,
     userPoolId,
     userPoolClientId,
     tables,
@@ -113,6 +114,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])
     ),
+    BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     COGNITO_USER_POOL_ID: userPoolId || process.env.COGNITO_USER_POOL_ID,
     COGNITO_USER_POOL_CLIENT_ID:
       userPoolClientId || process.env.COGNITO_USER_POOL_CLIENT_ID,
@@ -132,6 +134,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   ];
 
   const commonProps = {
+    brokerString,
     stackName: `${service}-${stage}`,
     api,
     environment,
