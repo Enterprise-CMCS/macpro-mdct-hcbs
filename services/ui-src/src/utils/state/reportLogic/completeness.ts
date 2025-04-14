@@ -9,8 +9,55 @@ import {
   RadioTemplate,
   Report,
   PerformanceRateTemplate,
+  isMeasureTemplate,
+  MeasurePageTemplate,
 } from "types";
 
+/**
+ * Calculate the status of any page, including calculated values.
+ * Special consideration for pages that calculate their display-only status based off many pages.
+ * Returns an implied status for pages like the general page that don't have a manual click.
+ * @param report
+ * @param pageId
+ * @returns
+ */
+export const inferredReportStatus = (report: Report, pageId: string) => {
+  // Manual signoff pages
+  const targetPage = report.pages.find((page) => page.id === pageId);
+  if (targetPage && "status" in targetPage) return targetPage.status;
+
+  // Calculated Pages with rollups
+  if (pageId === "req-measure-result") return requiredRollupPageStatus(report);
+  if (pageId === "optional-measure-result")
+    return optionalRollupPageStatus(report);
+
+  // inferred pages
+  if (pageIsCompletable(report, pageId)) return PageStatus.COMPLETE;
+  return pageInProgress(report, pageId)
+    ? PageStatus.IN_PROGRESS
+    : PageStatus.NOT_STARTED;
+};
+
+// Simple check to see if a page has been dirtied if it is not keeping a signoff status
+export const pageInProgress = (report: Report, pageId: string) => {
+  const targetPage = report.pages.find((page) => page.id === pageId);
+  if (!targetPage) return false;
+  if (!targetPage.elements) return true;
+
+  const anyEdited = targetPage.elements.find(
+    (element) => "answer" in element && element.answer
+  );
+  return !!anyEdited;
+};
+
+/**
+ * Returns whether a given page can be considered completable.
+ * In QMS for a measure or measure details page, this means the status can be marked "complete".
+ * For elements without a status this means they can be considered complete enough to submit, such as General Info.
+ * @param report
+ * @param pageId
+ * @returns Completable status.
+ */
 export const pageIsCompletable = (report: Report, pageId: string) => {
   const targetPage = report.pages.find((page) => page.id === pageId);
   if (!targetPage) return false;
@@ -45,6 +92,35 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
       return false;
   }
   return true;
+};
+
+// Return complete if all complete, in progress if at least one in progress, else not started
+const requiredRollupPageStatus = (report: Report) => {
+  const requiredMeasures = report.pages.filter(
+    (page) => isMeasureTemplate(page) && "required" in page && page.required
+  );
+  let status = PageStatus.COMPLETE;
+  for (const measure of requiredMeasures as MeasurePageTemplate[]) {
+    if (measure.status === PageStatus.IN_PROGRESS)
+      return PageStatus.IN_PROGRESS;
+    if (measure.status === PageStatus.NOT_STARTED)
+      status = PageStatus.NOT_STARTED;
+  }
+  return status;
+};
+
+// Return in progress if any in flight, then complete if any complete, in progress if at least one in progress
+const optionalRollupPageStatus = (report: Report) => {
+  const requiredMeasures = report.pages.filter(
+    (page) => isMeasureTemplate(page) && "required" in page && !page.required
+  );
+  let status = PageStatus.NOT_STARTED;
+  for (const measure of requiredMeasures as MeasurePageTemplate[]) {
+    if (measure.status === PageStatus.IN_PROGRESS)
+      return PageStatus.IN_PROGRESS;
+    if (measure.status === PageStatus.COMPLETE) status = PageStatus.COMPLETE;
+  }
+  return status;
 };
 
 export const elementSatisfiesRequired = (

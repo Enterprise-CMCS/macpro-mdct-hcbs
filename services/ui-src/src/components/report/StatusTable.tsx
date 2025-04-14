@@ -17,31 +17,42 @@ import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { PageStatus, ParentPageTemplate, ReportStatus } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
+import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 
 export const StatusTableElement = () => {
   const { pageMap, report, user } = useStore();
   const { reportType, state, reportId } = useParams();
 
-  if (!pageMap) {
+  if (!pageMap || !report) {
     return null;
   }
 
-  const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate)
+  const childPages = (report.pages[pageMap.get("root")!] as ParentPageTemplate)
     .childPageIds;
   const sections = childPages.slice(0, -1).map((id) => {
     const pageIdx = pageMap.get(id);
     if (!pageIdx) return null;
-    return report?.pages[pageIdx] as ParentPageTemplate;
+    const section = report.pages[pageIdx] as ParentPageTemplate;
+    let displayStatus = inferredReportStatus(report, section.id);
+    let submittable = displayStatus === PageStatus.COMPLETE;
+
+    if (section.id === "optional-measure-result") {
+      submittable = displayStatus !== PageStatus.IN_PROGRESS;
+      if (displayStatus === PageStatus.NOT_STARTED) displayStatus = undefined;
+    }
+
+    return {
+      section: section,
+      displayStatus: displayStatus,
+      submittable: submittable,
+    };
   });
 
-  const getTableStatus = (_section: ParentPageTemplate) => {
-    //TO DO: Add code for checking status
-    return PageStatus.COMPLETE;
-  };
-
   const submittable = () => {
-    //TO DO: Check if report can be submitted
-    return report?.status !== ReportStatus.SUBMITTED;
+    const allPagesSubmittable = sections.every(
+      (sectionInfo) => !!sectionInfo?.submittable
+    );
+    return report.status !== ReportStatus.SUBMITTED && allPagesSubmittable;
   };
 
   const navigate = useNavigate();
@@ -52,9 +63,11 @@ export const StatusTableElement = () => {
   };
 
   // Build Rows
-  const rows = sections.map((section, index) => {
-    if (!section) return;
 
+  // TODO: figure our how optional plays on this table
+  const rows = sections.map((sectionDetails, index) => {
+    if (!sectionDetails) return;
+    const { section, displayStatus: status } = sectionDetails;
     return (
       <Tr key={section.id || index} p={0}>
         <Td>
@@ -62,7 +75,7 @@ export const StatusTableElement = () => {
         </Td>
         <Td>
           {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-          <TableStatusIcon tableStatus={getTableStatus(section)} isPdf={true} />
+          <TableStatusIcon tableStatus={status} isPdf={true} />
         </Td>
         <Td>
           <Button
@@ -97,7 +110,7 @@ export const StatusTableElement = () => {
       >
         <Button
           as={RouterLink}
-          to={reportBasePath(report!) + "/export"}
+          to={reportBasePath(report) + "/export"}
           target="_blank"
           colorScheme="blue"
           variant="outline"
@@ -108,7 +121,7 @@ export const StatusTableElement = () => {
         {user?.userIsEndUser && (
           <Button
             alignSelf="flex-end"
-            onClick={async () => submitReport(report!)}
+            onClick={async () => submitReport(report)}
             onBlur={(event) => {
               event.stopPropagation();
             }}
