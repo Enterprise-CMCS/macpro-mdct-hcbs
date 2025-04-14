@@ -79,7 +79,7 @@ describe("<NDRFields />", () => {
         fields?.forEach((field) => {
           expect(
             screen.getByRole("textbox", {
-              name: `What is the 2026 state performance target for this assessment for ${field.label.toLowerCase()} (${
+              name: `What is the 2028 state performance target for this assessment for ${field.label.toLowerCase()} (${
                 assess.label
               })?`,
             })
