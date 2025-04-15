@@ -481,7 +481,6 @@ export type StatusAlertTemplate = {
   title?: string;
   text: string;
   status: string;
-  pageType: PageType;
 };
 
 /**
