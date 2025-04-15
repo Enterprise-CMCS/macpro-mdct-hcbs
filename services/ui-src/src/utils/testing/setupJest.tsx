@@ -14,7 +14,7 @@ import {
   PageType,
   MeasureTemplateName,
   MeasurePageTemplate,
-  MeasureStatus,
+  PageStatus,
   DataSource,
   DeliverySystem,
   MeasureSpecification,
@@ -209,13 +209,13 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title",
   type: PageType.Measure,
   required: true,
   substitutable: "FASI-1",
   elements: [],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -244,12 +244,12 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
   elements: [],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -266,7 +266,7 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
 export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   id: "LTSS-1",
   cmitId: "960",
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
@@ -297,7 +297,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       answer: "yes",
     },
   ],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -417,6 +417,7 @@ export const mockReportStore: HcbsReportState = {
   resetMeasure: () => {},
   clearMeasure: () => {},
   setSubstitute: () => {},
+  completePage: () => {},
   saveReport: async () => {},
 };
 

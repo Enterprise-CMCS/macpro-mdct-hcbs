@@ -13,6 +13,7 @@ import {
   MeasureOptions,
   MeasurePageTemplate,
   CMIT,
+  PageStatus,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -105,9 +106,10 @@ const initializeQmsPage = (
   page.cmitId = measure.uid;
   page.stratified = measure.stratified;
   page.required = measure.required;
+  page.status = PageStatus.NOT_STARTED;
 
   if (isMeasurePage) {
-    page.children = measure.dependentPages;
+    page.dependentPages = measure.dependentPages;
     page.cmitInfo = cmitInfo;
   }
 

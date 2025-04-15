@@ -7,6 +7,8 @@ import { parseCustomHtml } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
+import { requiredResponse } from "../../constants";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 export const formatChoices = (
   parentKey: string,
@@ -49,7 +51,8 @@ export const RadioField = (props: PageElementProps) => {
   const key = `${props.formkey}.answer`;
 
   useEffect(() => {
-    const options = { required: radio.required || false };
+    const options = { required: radio.required ? requiredResponse : false };
+
     form.setValue(key, radio.answer);
     form.register(key, options);
     if (radio.answer) {
@@ -58,7 +61,7 @@ export const RadioField = (props: PageElementProps) => {
   }, []);
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
-  const [hideElement, setHideElement] = useState<boolean>(false);
+  const hideElement = useElementIsHidden(radio.hideCondition);
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
@@ -66,23 +69,6 @@ export const RadioField = (props: PageElementProps) => {
       formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
     );
   }, [radio.answer]);
-
-  useEffect(() => {
-    const formValues = form.getValues() as any;
-    if (formValues && Object.keys(formValues).length === 0) {
-      return;
-    }
-    if (radio?.hideCondition) {
-      const controlElement = formValues?.elements?.find((element: any) => {
-        return element?.id === radio.hideCondition?.controllerElementId;
-      });
-      if (controlElement?.answer === radio.hideCondition.answer) {
-        setHideElement(true);
-      } else {
-        setHideElement(false);
-      }
-    }
-  }, [form.getValues()]);
 
   // OnChange handles setting the visual of the radio on click, outside the normal blur
   const onChangeHandler = async (
@@ -129,7 +115,6 @@ export const RadioField = (props: PageElementProps) => {
   if (hideElement) {
     return null;
   }
-
   return (
     <Box>
       <CmsdsChoiceList

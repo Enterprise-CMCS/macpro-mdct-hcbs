@@ -1,5 +1,9 @@
+/**
+ * Logic for what it means to reset or clear a report.
+ * Clearing is referred to here as a soft reset of page, and reset is a full wipe of progress.
+ */
 import {
-  MeasureStatus,
+  PageStatus,
   PageElement,
   ElementType,
   Report,
@@ -21,7 +25,7 @@ export const performClearMeasure = (
     return;
   }
   if ("status" in page) {
-    page.status = MeasureStatus.IN_PROGRESS;
+    page.status = PageStatus.IN_PROGRESS;
   }
   // Clean measure
   page.elements?.forEach((element) => {
@@ -33,7 +37,7 @@ export const performClearMeasure = (
 
   // Clear children of measures
   if (page.type === PageType.Measure) {
-    (page as MeasurePageTemplate).children?.forEach((child) => {
+    (page as MeasurePageTemplate).dependentPages?.forEach((child) => {
       performClearMeasure(child.template, report, ignoreList);
     });
   }
@@ -50,7 +54,7 @@ export const performResetMeasure = (measureId: string, report: Report) => {
     return;
   }
   if ("status" in page) {
-    page.status = MeasureStatus.NOT_STARTED;
+    page.status = PageStatus.NOT_STARTED;
   }
 
   // Clean measure
@@ -60,7 +64,7 @@ export const performResetMeasure = (measureId: string, report: Report) => {
 
   // Clear children of measures
   if (page.type === PageType.Measure) {
-    (page as MeasurePageTemplate).children?.forEach((child) => {
+    (page as MeasurePageTemplate).dependentPages?.forEach((child) => {
       performResetMeasure(child.template, report);
     });
   }

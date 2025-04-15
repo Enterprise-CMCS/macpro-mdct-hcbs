@@ -4,23 +4,36 @@ import { MeasureFooterTemplate } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
-import { currentPageSelector } from "utils/state/selectors";
-
-const onCompleteMeasure = () => {};
-
-const onCompleteSection = () => {};
+import {
+  currentPageCompletableSelector,
+  currentPageSelector,
+} from "utils/state/selectors";
 
 export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
   const { reportType, state, reportId } = useParams();
-  const { resetMeasure, saveReport, setModalComponent, setModalOpen } =
-    useStore();
+  const {
+    resetMeasure,
+    saveReport,
+    setModalComponent,
+    setModalOpen,
+    completePage,
+  } = useStore();
   const currentPage = useStore(currentPageSelector);
+  const completable = useStore(currentPageCompletableSelector);
 
   if (!currentPage) return null;
   const navigate = useNavigate();
   const submitClear = () => {
     resetMeasure(currentPage.id);
+    saveReport();
+  };
+
+  const onCompletePage = () => {
+    /*
+     * TODO: Nav back?
+     */
+    completePage(currentPage.id);
     saveReport();
   };
 
@@ -67,18 +80,33 @@ export const MeasureFooterElement = (props: PageElementProps) => {
             <Button
               variant="link"
               marginRight="2rem"
+              onBlur={(event) => {
+                event.stopPropagation();
+              }}
               onClick={() => onClearButton()}
             >
               Clear measure data
             </Button>
           )}
           {footer.completeMeasure && (
-            <Button onClick={() => onCompleteMeasure()}>
+            <Button
+              disabled={!completable}
+              onBlur={(event) => {
+                event.stopPropagation();
+              }}
+              onClick={() => onCompletePage()}
+            >
               Complete measure
             </Button>
           )}
           {footer.completeSection && (
-            <Button onClick={() => onCompleteSection()}>
+            <Button
+              disabled={!completable}
+              onBlur={(event) => {
+                event.stopPropagation();
+              }}
+              onClick={() => onCompletePage()}
+            >
               Complete section
             </Button>
           )}

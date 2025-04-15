@@ -18,7 +18,7 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
-export enum MeasureStatus {
+export enum PageStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
   COMPLETE = "Complete",
@@ -80,6 +80,7 @@ export type FormPageTemplate = {
   id: PageId;
   title: string;
   type: PageType;
+  status?: PageStatus;
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
@@ -93,8 +94,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   stratified?: boolean;
   optional?: boolean;
   substitutable?: string;
-  status: MeasureStatus;
-  children?: DependentPageInfo[];
+  dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -168,6 +168,11 @@ export type PageElement =
   | StatusAlertTemplate
   | DividerTemplate;
 
+export type HideCondition = {
+  controllerElementId: string;
+  answer: string;
+};
+
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
@@ -208,11 +213,8 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  required?: boolean;
+  hideCondition?: HideCondition;
 };
 
 export type TextAreaBoxTemplate = {
@@ -221,10 +223,7 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  hideCondition?: HideCondition;
 };
 
 export type DateTemplate = {
@@ -242,7 +241,7 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string;
+  required?: boolean;
 };
 
 export type DividerTemplate = {
@@ -281,11 +280,8 @@ export type RadioTemplate = {
   value: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  required?: boolean;
+  hideCondition?: HideCondition;
 };
 
 export type ReportingRadioTemplate = {
@@ -295,7 +291,7 @@ export type ReportingRadioTemplate = {
   value: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
+  required?: boolean;
 };
 
 export type ButtonLinkTemplate = {
@@ -345,7 +341,7 @@ export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
   FIELDS = "Fields",
-  NDRFIELDS = "NDRFields",
+  NDR_FIELDS = "NDRFields",
 }
 
 export const enum RateCalc {
@@ -364,6 +360,7 @@ export type PerformanceRateTemplate = {
   rateCalc?: RateCalc;
   multiplier?: number;
   answer?: PerformanceData | RateSetData[];
+  required?: boolean;
 };
 
 export type ChoiceTemplate = {

@@ -452,6 +452,7 @@ export const measureTemplates: Record<
           },
         ],
         rateType: PerformanceRateType.FIELDS,
+        required: true,
         rateCalc: RateCalc.FacilityLengthOfStayCalc,
       },
       stratificationSubheader,
@@ -520,6 +521,7 @@ export const measureTemplates: Record<
           },
         ],
         rateType: PerformanceRateType.FIELDS,
+        required: true,
         rateCalc: RateCalc.FacilityLengthOfStayCalc,
       },
       stratificationSubheader,
@@ -575,6 +577,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -615,6 +618,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -676,6 +680,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -716,6 +721,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -809,6 +815,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -823,6 +830,7 @@ export const measureTemplates: Record<
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         label: "Exclusion Rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -900,6 +908,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -914,6 +923,7 @@ export const measureTemplates: Record<
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         label: "Exclusion Rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -1033,6 +1043,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -1110,6 +1121,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -1128,6 +1140,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         label: "Exclusion Rates",
         helperText:

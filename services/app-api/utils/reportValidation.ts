@@ -51,7 +51,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
   hideCondition: object()
     .shape({
       controllerElementId: string().required(),
@@ -98,7 +98,7 @@ const dropdownTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
 });
 
 const accordionTemplateSchema = object().shape({
@@ -182,7 +182,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
   hideCondition: object()
     .shape({
       controllerElementId: string().required(),
@@ -206,7 +206,7 @@ const reportingRadioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({
@@ -278,6 +278,7 @@ const performanceRateSchema = object().shape({
       })
     )
     .notRequired(),
+  required: boolean().notRequired(),
   rateType: string().required(),
   rateCalc: string().notRequired(),
   multiplier: number().notRequired(),
@@ -301,6 +302,7 @@ const formPageTemplateSchema = object().shape({
   id: string().required(),
   title: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
+  status: string().notRequired(),
   elements: array().of(pageElementSchema).required(),
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),
@@ -331,7 +333,7 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
-  children: array()
+  dependentPages: array()
     .of(dependentPageInfoSchema)
     .notRequired()
     .default(undefined),
