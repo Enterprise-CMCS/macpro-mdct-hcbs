@@ -64,8 +64,8 @@ export const NDREnhanced = (
       return { ...set, rate: calculation(set, multiplier) };
     });
 
-    setDisplayValue({ ...newDisplayValue });
-    form.setValue(`${key}`, displayValue, { shouldValidate: true });
+    setDisplayValue(newDisplayValue);
+    form.setValue(`${key}`, newDisplayValue, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +77,6 @@ export const NDREnhanced = (
       shouldValidate: true,
     });
     form.setValue(`${key}.type`, props.type);
-    // TODO: This doesn't save
   };
 
   return (
