@@ -1,7 +1,17 @@
 import { render, screen } from "@testing-library/react";
+import { mockUseStore } from "utils/testing/setupJest";
 import { StatusAlert } from "./StatusAlert";
 import { ElementType, StatusAlertTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
+import { useStore } from "utils";
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockUseStore);
+
+jest.mock("utils/state/reportLogic/completeness", () => ({
+  inferredReportStatus: jest.fn().mockReturnValue("Complete"),
+}));
 
 const mockStatusAlert = {
   type: ElementType.StatusAlert,
