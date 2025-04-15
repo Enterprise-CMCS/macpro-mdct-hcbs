@@ -7,12 +7,14 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
+  PageType,
   ParagraphTemplate,
   PerformanceRateTemplate,
   PerformanceRateType,
   RadioTemplate,
   RateCalc,
   ReportingRadioTemplate,
+  StatusAlertTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
@@ -391,4 +393,22 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR_FIELDS,
   required: true,
   multiplier: 1000,
+};
+
+export const sectionCompleteBanner: StatusAlertTemplate = {
+  type: ElementType.StatusAlert,
+  id: "status-alert",
+  title: "Measure has been completed",
+  text: "You can still edit the this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section button. Click here or select ‘Return to measure details’ button above to return to the previous page.",
+  status: "success",
+  pageType: PageType.MeasureResults,
+};
+
+export const measureCompleteBanner: StatusAlertTemplate = {
+  type: ElementType.StatusAlert,
+  id: "status-alert",
+  title: "Measure has been completed",
+  text: "You can still edit the this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section button. Click here or select ‘Return to measure details’ button above to return to the previous page.",
+  status: "success",
+  pageType: PageType.Measure,
 };

@@ -205,6 +205,7 @@ export type StatusAlertTemplate = {
   title?: string;
   text: string;
   status: AlertTypes;
+  pageType: PageType;
 };
 
 export type TextboxTemplate = {
