@@ -12,16 +12,20 @@ export const StatusAlert = (props: PageElementProps) => {
 
   switch (currentPageId) {
     case "review-submit":
-      const childPages = report.pages[0].childPageIds?.slice(0, -1);
-      const status = childPages?.every(
-        (page) => inferredReportStatus(report, page) === PageStatus.COMPLETE
-      );
+      {
+        const childPages = report.pages[0].childPageIds?.slice(0, -1);
+        const status = childPages?.every(
+          (page) => inferredReportStatus(report, page) === PageStatus.COMPLETE
+        );
 
-      if (status) return <></>;
+        if (status) return <></>;
+      }
       break;
     default:
-      const displayStatus = inferredReportStatus(report, currentPageId!);
-      if (displayStatus != PageStatus.COMPLETE) return <></>;
+      {
+        const displayStatus = inferredReportStatus(report, currentPageId!);
+        if (displayStatus != PageStatus.COMPLETE) return <></>;
+      }
       break;
   }
 
