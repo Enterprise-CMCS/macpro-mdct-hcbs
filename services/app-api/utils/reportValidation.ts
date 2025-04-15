@@ -296,7 +296,6 @@ const statusAlertSchema = object().shape({
   title: string().notRequired(),
   text: string().required(),
   status: string().required(),
-  pageType: string().required(),
 });
 
 const formPageTemplateSchema = object().shape({

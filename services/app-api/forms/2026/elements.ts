@@ -7,7 +7,6 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
-  PageType,
   ParagraphTemplate,
   PerformanceRateTemplate,
   PerformanceRateType,
