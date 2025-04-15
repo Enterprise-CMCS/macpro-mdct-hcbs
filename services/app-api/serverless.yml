@@ -39,7 +39,6 @@ custom:
   bannerTableName: ${env:BANNER_TABLE_NAME, param:BannerTableName}
   qmsReportTableName: ${env:QMS_REPORT_TABLE_NAME, param:QmsReportTableName}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
-  bootstrapBrokerStringTls: ${env:BROKER_STRINGS, ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
@@ -89,7 +88,6 @@ provider:
     STAGE: ${self:custom.stage}
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     QMS_REPORT_TABLE_NAME: ${self:custom.qmsReportTableName}
-    BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
 
 functions:
   createBanner:
@@ -209,32 +207,6 @@ functions:
               paths:
                 state: true
                 id: true
-  postKafkaData:
-    handler: handlers/kafka/post/postKafkaData.handler
-    environment:
-      BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
-      STAGE: ${self:custom.stage}
-      topicNamespace: ${param:topicNamespace}
-    maximumRetryAttempts: 2
-    timeout: 120
-    memorySize: 2048
-    vpc:
-      securityGroupIds:
-        - Ref: KafkaSecurityGroup
-      subnetIds: ${self:custom.privateSubnets}
-    events:
-      - stream:
-          type: dynamodb
-          arn: ${self:custom.wpReportTableStreamArn}
-          startingPosition: TRIM_HORIZON
-          maximumRetryAttempts: 2
-          enabled: true
-      - stream:
-          type: dynamodb
-          arn: ${self:custom.sarReportTableStreamArn}
-          startingPosition: TRIM_HORIZON
-          maximumRetryAttempts: 2
-          enabled: true
 resources:
   Resources:
     GatewayResponseDefault4XX:

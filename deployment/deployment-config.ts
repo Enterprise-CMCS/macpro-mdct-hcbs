@@ -75,11 +75,9 @@ function validateConfig(config: {
     "oktaMetadataUrl",
     "launchDarklyClient",
     "redirectSignout",
-    /*
-     * "vpcName",
-     * "brokerString",
-     * "kafkaAuthorizedSubnetIds",
-     */
+    "vpcName",
+    "brokerString",
+    "kafkaAuthorizedSubnetIds",
   ];
 
   const invalidKeys = expectedKeys.filter(
