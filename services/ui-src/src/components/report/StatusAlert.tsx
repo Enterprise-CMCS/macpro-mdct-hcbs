@@ -10,23 +10,18 @@ export const StatusAlert = (props: PageElementProps) => {
 
   if (!report) return <></>;
 
-  switch (currentPageId) {
-    case "review-submit":
-      {
-        const childPages = report.pages[0].childPageIds?.slice(0, -1);
-        const status = childPages?.every(
-          (page) => inferredReportStatus(report, page) === PageStatus.COMPLETE
-        );
+  if (currentPageId === "review-submit") {
+    const childPages = report.pages[0].childPageIds?.slice(0, -1);
+    const status = childPages?.every(
+      (page) => inferredReportStatus(report, page) === PageStatus.COMPLETE
+    );
 
-        if (status) return <></>;
-      }
-      break;
-    default:
-      {
-        const displayStatus = inferredReportStatus(report, currentPageId!);
-        if (displayStatus != PageStatus.COMPLETE) return <></>;
-      }
-      break;
+    //TO DO: add code for handling optional page
+
+    if (status) return <></>;
+  } else {
+    const displayStatus = inferredReportStatus(report, currentPageId!);
+    if (displayStatus != PageStatus.COMPLETE) return <></>;
   }
 
   return (
