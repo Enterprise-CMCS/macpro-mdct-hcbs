@@ -403,7 +403,7 @@ const testReport: Report = {
 
 describe("state/management/reportState: buildState", () => {
   test("initializes relevant parts of the state", () => {
-    const result = buildState(testReport);
+    const result = buildState(testReport, false);
     expect(result.pageMap!.size).toEqual(5);
     expect(result.report).not.toBeUndefined();
     expect(result.rootPage).not.toBeUndefined();
@@ -419,7 +419,7 @@ describe("state/management/reportState: buildState", () => {
 
 describe("state/management/reportState: setPage", () => {
   test("updates the page info", () => {
-    const state = buildState(testReport) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
     const result = setPage("req-measure-result", state);
     expect(result.currentPageId).toEqual("req-measure-result");
   });
@@ -432,7 +432,7 @@ describe("state/management/reportState: mergeAnswers", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
 
     const answers = { elements: [null, { answer: "ANSWERED" }] };
     const result = mergeAnswers(answers, state);
@@ -459,7 +459,7 @@ describe("state/management/reportState: resetMeasure", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = resetMeasure("LTSS-1", state);
     const measure = response!.report!.pages[3] as MeasurePageTemplate;
     const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
@@ -477,7 +477,7 @@ describe("state/management/reportState: clearMeasure", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = clearMeasure("LTSS-1", state, ["measure-reporting-radio"]);
     const measure = response!.report!.pages[3] as MeasurePageTemplate;
     const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
@@ -495,7 +495,7 @@ describe("state/management/reportState: markPageComplete", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = markPageComplete("LTSS-1", state);
     const measure = response!.report!.pages[3] as MeasurePageTemplate;
 
@@ -505,7 +505,7 @@ describe("state/management/reportState: markPageComplete", () => {
 
 describe("state/management/reportState: saveReport", () => {
   test("updates store on success", async () => {
-    const state = buildState(testReport) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
     const result = await saveReport(state);
     expect(result?.lastSavedTime).toBeTruthy();
   });
