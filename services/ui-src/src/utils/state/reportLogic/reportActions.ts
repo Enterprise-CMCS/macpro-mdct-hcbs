@@ -213,16 +213,3 @@ export const saveReport = async (state: HcbsReportState) => {
   }
   return { lastSavedTime: getLocalHourMinuteTime() };
 };
-
-/**
- * Action submitting a report to the api. Full reinsert of report on success.
- */
-export const submitReport = async (state: HcbsReportState) => {
-  if (!state.report) return;
-  try {
-    const report = await postSubmitReport(state.report); // Submit to API
-    return { lastSavedTime: getLocalHourMinuteTime(), report: report };
-  } catch (_) {
-    return { errorMessage: "Something went wrong, try again." };
-  }
-};
