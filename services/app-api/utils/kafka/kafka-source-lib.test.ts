@@ -21,7 +21,7 @@ jest.mock("kafkajs", () => ({
 }));
 
 const stage = "testing";
-const namespace = "--mfp--test-stage--";
+const namespace = "--hcbs--test-stage--";
 const table = { sourceName: `${stage}-aTable`, topicName: "aTable-reports" };
 const brokerString = "brokerA,brokerB,brokerC";
 const dynamoEvent = {
@@ -95,21 +95,21 @@ describe("Test Kafka Lib", () => {
   });
 
   test("Handles a dynamo event", async () => {
-    const sourceLib = new KafkaSourceLib("mfp", "v0", [table]);
+    const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(1);
   });
 
   test("Handles events without versions", async () => {
-    const sourceLib = new KafkaSourceLib("mfp", null, [table]);
+    const sourceLib = new KafkaSourceLib("hcbs", null, [table]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(1);
   });
 
   test("Does not pass through events from unrelated tables", async () => {
-    const sourceLib = new KafkaSourceLib("mfp", "v0", [
+    const sourceLib = new KafkaSourceLib("hcbs", "v0", [
       { sourceName: "unrelated-table", topicName: "unrelated-topic" },
     ]);
     await sourceLib.handler(dynamoEvent);
@@ -118,7 +118,7 @@ describe("Test Kafka Lib", () => {
   });
 
   test("Ignores items with bad keys or missing events", async () => {
-    const sourceLib = new KafkaSourceLib("mfp", "v0", [table]);
+    const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler({});
     expect(consoleSpy.log).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(0);
@@ -139,7 +139,7 @@ describe("Test Kafka Lib", () => {
         },
       ],
     };
-    const sourceLib = new KafkaSourceLib("mfp", "v0", [table]);
+    const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler(dynamoInsertEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledWith({
@@ -155,7 +155,7 @@ describe("Test Kafka Lib", () => {
               value: `{"NewImage":{"foo":"bar"},"OldImage":{},"Keys":{"foo":"bar"}}`,
             }),
           ],
-          topic: "--mfp--test-stage--mfp.aTable-reports.v0",
+          topic: "--hcbs--test-stage--hcbs.aTable-reports.v0",
         },
       ],
     });
