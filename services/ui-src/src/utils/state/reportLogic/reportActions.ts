@@ -12,11 +12,14 @@ import {
   ParentPageTemplate,
   Report,
 } from "types/report";
-import { putReport } from "utils/api/requestMethods/report";
+import { putReport, postSubmitReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
 
-export const buildState = (report: Report | undefined) => {
+export const buildState = (
+  report: Report | undefined,
+  preserveCurrentPage: boolean
+) => {
   if (!report) return { report: undefined };
   const pageMap = new Map<string, number>(
     report.pages.map((page, index) => [page.id, index])
@@ -27,9 +30,17 @@ export const buildState = (report: Report | undefined) => {
     childPageIds: rootPage.childPageIds,
     index: 0,
   };
-  const currentPageId = parentPage.childPageIds[parentPage.index];
 
-  return { report, pageMap, rootPage, parentPage, currentPageId };
+  const currentPageId = parentPage.childPageIds[parentPage.index];
+  const state: Partial<HcbsReportState> = {
+    report,
+    pageMap,
+    rootPage,
+    parentPage,
+    currentPageId,
+  };
+  if (preserveCurrentPage) delete state.currentPageId;
+  return state;
 };
 
 export const setPage = (
@@ -201,4 +212,17 @@ export const saveReport = async (state: HcbsReportState) => {
     return { errorMessage: "Something went wrong, try again." };
   }
   return { lastSavedTime: getLocalHourMinuteTime() };
+};
+
+/**
+ * Action submitting a report to the api. Full reinsert of report on success.
+ */
+export const submitReport = async (state: HcbsReportState) => {
+  if (!state.report) return;
+  try {
+    const report = await postSubmitReport(state.report); // Submit to API
+    return { lastSavedTime: getLocalHourMinuteTime(), report: report };
+  } catch (_) {
+    return { errorMessage: "Something went wrong, try again." };
+  }
 };

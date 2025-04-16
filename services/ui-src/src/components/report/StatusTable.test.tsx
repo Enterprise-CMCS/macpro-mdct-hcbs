@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter } from "react-router-dom";
-import { useStore, submitReport } from "utils";
+import { useStore, postSubmitReport } from "utils";
 import {
   mockUseReadOnlyUserStore,
   mockStateUserStore,
@@ -103,7 +103,7 @@ describe("StatusTable with state user", () => {
     })[0];
     await userEvent.click(submitButton);
 
-    expect(submitReport).toBeCalled();
+    expect(postSubmitReport).toBeCalled();
   });
 
   test("if pageMap is not defined return null", () => {

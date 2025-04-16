@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
-import { MeasureFooterTemplate } from "types";
+import { isFormPageTemplate, MeasureFooterTemplate, PageStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
@@ -21,7 +21,11 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   } = useStore();
   const currentPage = useStore(currentPageSelector);
   const completable = useStore(currentPageCompletableSelector);
-
+  const completeEnabled =
+    completable &&
+    currentPage &&
+    isFormPageTemplate(currentPage) &&
+    currentPage.status !== PageStatus.COMPLETE;
   if (!currentPage) return null;
   const navigate = useNavigate();
   const submitClear = () => {
@@ -90,7 +94,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
           )}
           {footer.completeMeasure && (
             <Button
-              disabled={!completable}
+              disabled={!completeEnabled}
               onBlur={(event) => {
                 event.stopPropagation();
               }}
@@ -101,7 +105,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
           )}
           {footer.completeSection && (
             <Button
-              disabled={!completable}
+              disabled={!completeEnabled}
               onBlur={(event) => {
                 event.stopPropagation();
               }}

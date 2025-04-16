@@ -9,8 +9,10 @@ import {
   RadioTemplate,
   Report,
   PerformanceRateTemplate,
-  isMeasureTemplate,
   MeasurePageTemplate,
+  isFormPageTemplate,
+  isMeasurePageTemplate,
+  PerformanceRateType,
 } from "types";
 
 /**
@@ -24,7 +26,9 @@ import {
 export const inferredReportStatus = (report: Report, pageId: string) => {
   // Manual signoff pages
   const targetPage = report.pages.find((page) => page.id === pageId);
-  if (targetPage && "status" in targetPage) return targetPage.status;
+  if (!targetPage) return;
+  if (isFormPageTemplate(targetPage) && targetPage.status)
+    return targetPage.status;
 
   // Calculated Pages with rollups
   if (pageId === "req-measure-result") return requiredRollupPageStatus(report);
@@ -69,7 +73,7 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
   }
 
   // Check Child Pages are Complete if they allow statuses
-  if (!("dependentPages" in targetPage) || !targetPage.dependentPages)
+  if (!isMeasurePageTemplate(targetPage) || !targetPage.dependentPages)
     return true;
   // Same logic as MeasureResultsNavigationTable
   const deliveryMethodRadio = targetPage.elements.find(
@@ -87,7 +91,7 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
     if (
       (!deliveryMethodRadio || deliverySystemIsSelected) &&
       childPage &&
-      "status" in childPage &&
+      isFormPageTemplate(childPage) &&
       childPage.status !== PageStatus.COMPLETE
     )
       return false;
@@ -98,7 +102,7 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
 // Return complete if all complete, in progress if at least one in progress, else not started
 const requiredRollupPageStatus = (report: Report) => {
   const requiredMeasures = report.pages.filter(
-    (page) => isMeasureTemplate(page) && "required" in page && page.required
+    (page) => isMeasurePageTemplate(page) && page.required
   ) as MeasurePageTemplate[];
 
   if (
@@ -121,7 +125,7 @@ const requiredRollupPageStatus = (report: Report) => {
 // Return in progress if any in flight, then complete if any complete, not started otherwise
 const optionalRollupPageStatus = (report: Report) => {
   const requiredMeasures = report.pages.filter(
-    (page) => isMeasureTemplate(page) && "required" in page && !page.required
+    (page) => isMeasurePageTemplate(page) && !page.required
   );
   let status = PageStatus.NOT_STARTED;
   for (const measure of requiredMeasures as MeasurePageTemplate[]) {
@@ -172,19 +176,28 @@ export const elementSatisfiesRequired = (
 const rateIsComplete = (element: PerformanceRateTemplate) => {
   if (!element.answer) return false;
   if ("rates" in element.answer) {
-    // PerformanceData
-    for (const uniqueRate of element.answer.rates) {
-      // TODO: number fields are currently represented as strings, need to be handled here when fixed
-      if (!uniqueRate.rate) return false;
-      // TODO: confirm this
+    // Fields
+    if (element.rateType === PerformanceRateType.FIELDS) {
+      if (!element.fields) return false;
+      for (const fieldName of element.fields) {
+        const fieldAnswer = element.answer.rates[0][fieldName.id];
+        if (fieldAnswer === "" || fieldAnswer === undefined) return false;
+      }
+    } else {
+      // PerformanceData
+      for (const uniqueRate of element.answer.rates) {
+        // TODO: Fields mapping
+        if (uniqueRate.rate === undefined || uniqueRate.rate === "")
+          return false;
+      }
     }
   } else {
-    // RateSetData[]
+    // RateSetData[] - NDR Fields?
     for (const rateAnswer of element.answer) {
       if (!rateAnswer.rates) return false;
       for (const uniqueRate of rateAnswer.rates) {
-        // TODO: number fields are currently represented as strings, need to be handled here when fixed
-        if (!uniqueRate.rate) return false;
+        if (uniqueRate.performanceTarget === undefined) return false;
+        if (uniqueRate.rate === undefined) return false;
       }
     }
   }

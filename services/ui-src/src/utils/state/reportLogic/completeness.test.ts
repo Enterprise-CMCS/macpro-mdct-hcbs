@@ -18,6 +18,8 @@ describe("inferredReportStatus", () => {
       pages: [
         {
           id: "my-id",
+          cmitId: "MyCmit",
+          title: "a title",
           status: PageStatus.COMPLETE,
           required: true,
           type: PageType.Measure,
@@ -32,6 +34,7 @@ describe("inferredReportStatus", () => {
         },
         {
           id: "optional-id",
+          cmitId: "OtherCmit",
           status: PageStatus.IN_PROGRESS,
           required: false,
           type: PageType.Measure,
@@ -57,6 +60,7 @@ describe("inferredReportStatus", () => {
         {
           id: "general-id",
           required: true,
+          title: "a title",
           elements: [
             {
               id: "good-question",
@@ -69,6 +73,7 @@ describe("inferredReportStatus", () => {
         {
           id: "other-id",
           required: true,
+          title: "a title",
           elements: [
             {
               id: "no-question",
@@ -133,7 +138,9 @@ describe("pageIsCompletable", () => {
       pages: [
         {
           id: "my-id",
+          title: "my title",
           status: PageStatus.IN_PROGRESS,
+          cmitId: "MyCmit",
           elements: [
             {
               id: "delivery-method-radio",
@@ -152,6 +159,7 @@ describe("pageIsCompletable", () => {
         },
         {
           id: "FFS-1",
+          title: "child title",
           status: PageStatus.IN_PROGRESS,
           elements: [
             {
