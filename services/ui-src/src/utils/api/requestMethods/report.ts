@@ -73,3 +73,16 @@ export async function getReportsForState(reportType: string, state: string) {
 
   return await apiLib.get(`/reports/${reportType}/${state}`, options);
 }
+
+export async function releaseReport(report: Report) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    body: { ...report },
+  };
+
+  return await apiLib.put(
+    `/reports/release/${report.type}/${report.state}/${report.id}`,
+    options
+  );
+}

@@ -18,7 +18,7 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
-export enum MeasureStatus {
+export enum PageStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
   COMPLETE = "Complete",
@@ -80,6 +80,7 @@ export type FormPageTemplate = {
   id: PageId;
   title: string;
   type: PageType;
+  status?: PageStatus;
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
@@ -93,8 +94,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   stratified?: boolean;
   optional?: boolean;
   substitutable?: string;
-  status: MeasureStatus;
-  children?: DependentPageInfo[];
+  dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -168,6 +168,11 @@ export type PageElement =
   | StatusAlertTemplate
   | DividerTemplate;
 
+export type HideCondition = {
+  controllerElementId: string;
+  answer: string;
+};
+
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
@@ -208,11 +213,8 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  required?: boolean;
+  hideCondition?: HideCondition;
 };
 
 export type TextAreaBoxTemplate = {
@@ -221,10 +223,7 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  hideCondition?: HideCondition;
 };
 
 export type DateTemplate = {
@@ -242,7 +241,7 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string;
+  required?: boolean;
 };
 
 export type DividerTemplate = {
@@ -281,11 +280,8 @@ export type RadioTemplate = {
   value: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  required?: boolean;
+  hideCondition?: HideCondition;
 };
 
 export type ReportingRadioTemplate = {
@@ -295,7 +291,7 @@ export type ReportingRadioTemplate = {
   value: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
+  required?: boolean;
 };
 
 export type ButtonLinkTemplate = {
@@ -345,7 +341,7 @@ export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
   FIELDS = "Fields",
-  NDRFIELDS = "NDRFields",
+  NDR_FIELDS = "NDRFields",
   NDRFIELDS_HCBS = "NDRHCBS",
 }
 
@@ -365,6 +361,7 @@ export type PerformanceRateTemplate = {
   rateCalc?: RateCalc;
   multiplier?: number;
   answer?: PerformanceData | RateSetData[];
+  required?: boolean;
 };
 
 export type ChoiceTemplate = {
@@ -433,12 +430,7 @@ export interface MeasureOptions {
 }
 
 export enum MeasureTemplateName {
-  "LTSS-1" = "LTSS-1",
-  "LTSS-2" = "LTSS-2",
-  "LTSS-3" = "LTSS-3",
-  "LTSS-6" = "LTSS-6",
-  "LTSS-7" = "LTSS-7",
-  "LTSS-8" = "LTSS-8",
+  // required measures
   "FFS-1" = "FFS-1",
   "FFS-2" = "FFS-2",
   "FFS-3" = "FFS-3",
@@ -451,14 +443,28 @@ export enum MeasureTemplateName {
   "MLTSS-6" = "MLTSS-6",
   "MLTSS-7" = "MLTSS-7",
   "MLTSS-8" = "MLTSS-8",
+  "LTSS-1" = "LTSS-1",
+  "LTSS-2" = "LTSS-2",
+  "LTSS-6" = "LTSS-6",
+  "LTSS-7" = "LTSS-7",
+  "LTSS-8" = "LTSS-8",
+  // optional measures
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
   "FFS-FASI-1" = "FFS-FASI-1",
-  "FFS-FASI-2" = "FFS-FASI-2",
   "MLTSS-FASI-1" = "MLTSS-FASI-1",
+  "FFS-FASI-2" = "FFS-FASI-2",
   "MLTSS-FASI-2" = "MLTSS-FASI-2",
   "HCBS-10" = "HCBS-10",
   "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
+  "LTSS-3" = "LTSS-3",
+  "LTSS-4" = "LTSS-4",
+  "LTSS-5" = "LTSS-5",
+  "LTSS-5-PT1" = "LTSS-5-PT1",
+  "LTSS-5-PT2" = "LTSS-5-PT2",
+  "MLTSS" = "MLTSS",
+  "MLTSS-DM" = "MLTSS-DM",
+  // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
   "POM-3" = "POM-3",

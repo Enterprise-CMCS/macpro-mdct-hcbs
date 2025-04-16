@@ -5,18 +5,20 @@ import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
 import { TextboxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
+import { requiredResponse } from "../../constants";
 
 export const TextField = (props: PageElementProps) => {
   const textbox = props.element as TextboxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-  const [hideElement, setHideElement] = useState<boolean>(false);
+  const hideElement = useElementIsHidden(textbox.hideCondition);
 
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
-    const options = { required: textbox.required || false };
+    const options = { required: textbox.required ? requiredResponse : false };
     form.register(key, options);
     form.setValue(key, defaultValue);
   }, []);
@@ -25,23 +27,6 @@ export const TextField = (props: PageElementProps) => {
   useEffect(() => {
     setDisplayValue(textbox.answer ?? "");
   }, [textbox.answer]);
-
-  useEffect(() => {
-    const formValues = form.getValues() as any;
-    if (formValues && Object.keys(formValues).length === 0) {
-      return;
-    }
-    if (textbox?.hideCondition) {
-      const controlElement = formValues?.elements?.find((element: any) => {
-        return element?.id === textbox.hideCondition?.controllerElementId;
-      });
-      if (controlElement?.answer === textbox.hideCondition.answer) {
-        setHideElement(true);
-      } else {
-        setHideElement(false);
-      }
-    }
-  }, [form.getValues()]);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>

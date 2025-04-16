@@ -39,6 +39,7 @@ export const qmsReportTemplate: ReportTemplate = {
           id: "contact-name",
           type: ElementType.Textbox,
           label: "Contact name",
+          required: true,
           helperText:
             "Enter person's name or a position title for CMS to contact with questions about this report.",
         },
@@ -46,6 +47,7 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Textbox,
           id: "contact-email",
           label: "Contact email address",
+          required: true,
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",
         },

@@ -6,6 +6,8 @@ export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
 
 export const notAnsweredText = "Not answered";
 
+export const requiredResponse = "A response is required";
+
 export const HELP_DESK_EMAIL_ADDRESS = "mdct_help@cms.hhs.gov" as const;
 
 // STATES

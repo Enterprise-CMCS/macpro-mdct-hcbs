@@ -92,7 +92,7 @@ export const AddEditReportModal = ({
                 helperText:
                   "Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
                 answer: selectedReport?.name,
-                required: "A response is required",
+                required: true,
               }}
               formkey={"reportTitle"}
             />
@@ -103,7 +103,7 @@ export const AddEditReportModal = ({
                 label: "Select the quality measure set reporting year",
                 options: dropdownYears,
                 answer: selectedReport?.year.toString(),
-                required: "A response is required",
+                required: true,
               }}
               disabled={!!selectedReport}
               formkey={"year"}
@@ -126,7 +126,7 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
-                required: "A response is required",
+                required: true,
                 answer: selectedReport?.options.cahps?.toString(),
               }}
               disabled={!!selectedReport}
@@ -150,7 +150,7 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
-                required: "A response is required",
+                required: true,
                 answer: selectedReport?.options.hciidd?.toString(),
               }}
               disabled={!!selectedReport}
@@ -174,7 +174,7 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
-                required: "A response is required",
+                required: true,
                 answer: selectedReport?.options.nciad?.toString(),
               }}
               disabled={!!selectedReport}
@@ -197,7 +197,7 @@ export const AddEditReportModal = ({
                     checked: false,
                   },
                 ],
-                required: "A response is required",
+                required: true,
                 answer: selectedReport?.options.pom?.toString(),
               }}
               disabled={!!selectedReport}

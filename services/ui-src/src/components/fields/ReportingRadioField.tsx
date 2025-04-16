@@ -7,6 +7,7 @@ import { parseCustomHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { formatChoices } from "./RadioField";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
+import { requiredResponse } from "../../constants";
 
 export const ReportingRadioField = (props: PageElementProps) => {
   const radio = props.element as ReportingRadioTemplate;
@@ -25,7 +26,7 @@ export const ReportingRadioField = (props: PageElementProps) => {
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
   useEffect(() => {
-    const options = { required: radio.required || false };
+    const options = { required: radio.required ? requiredResponse : false };
     form.register(key, options);
     form.setValue(`${props.formkey}.id`, radio.id);
   }, []);

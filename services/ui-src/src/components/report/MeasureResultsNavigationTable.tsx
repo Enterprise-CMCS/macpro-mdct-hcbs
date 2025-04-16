@@ -12,7 +12,7 @@ import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import {
   MeasurePageTemplate,
-  MeasureStatus,
+  PageStatus,
   PageType,
   RadioTemplate,
 } from "types";
@@ -22,10 +22,12 @@ import { currentPageSelector } from "utils/state/selectors";
 
 export const MeasureResultsNavigationTableElement = () => {
   const { reportType, state, reportId } = useParams();
+  const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
   const navigate = useNavigate();
 
-  if (!currentPage || currentPage.type !== PageType.Measure) return null;
+  if (!report || !currentPage || currentPage.type !== PageType.Measure)
+    return null;
   const measurePage = currentPage as MeasurePageTemplate;
   const deliveryMethodRadio = useLiveElement(
     "delivery-method-radio"
@@ -36,10 +38,11 @@ export const MeasureResultsNavigationTableElement = () => {
     navigate(path);
   };
 
-  const getTableStatus = (measure: MeasurePageTemplate, disabled: boolean) => {
-    if (disabled) return;
-
-    //TO DO: add real code
+  const getTableStatus = (
+    measure: MeasurePageTemplate | undefined,
+    disabled: boolean
+  ) => {
+    if (disabled || !measure) return;
     return measure.status;
   };
 
@@ -47,7 +50,7 @@ export const MeasureResultsNavigationTableElement = () => {
     if (disabled) return;
 
     //TO DO: add real code
-    if (measure.status !== MeasureStatus.COMPLETE)
+    if (measure?.status !== PageStatus.COMPLETE)
       return <Text variant="error">Select "Edit" to report progress.</Text>;
 
     return <></>;
@@ -55,42 +58,41 @@ export const MeasureResultsNavigationTableElement = () => {
 
   // Note pages like LTSS-5 have 2 child pages, but 1 delivery system.
   const singleOption = measurePage.cmitInfo?.deliverySystem.length == 1;
-
   // Build Rows
-  const rows = measurePage.children?.map((childPage, index) => {
+  const rows = measurePage.dependentPages?.map((childLink, index) => {
     const selections = deliveryMethodRadio?.answer ?? "";
     const deliverySystemIsSelected = selections
       .split(",")
-      .includes(childPage.key);
+      .includes(childLink.key);
+    const childPage = report.pages.find(
+      (page) => page.id === childLink.template
+    ) as MeasurePageTemplate;
     return (
       <Tr key={index}>
         <Td>
           <TableStatusIcon
             tableStatus={getTableStatus(
-              measurePage,
+              childPage,
               !singleOption && !deliverySystemIsSelected
             )}
           ></TableStatusIcon>
         </Td>
         <Td width="100%">
-          <Text fontWeight="bold">{childPage.linkText}</Text>
+          <Text fontWeight="bold">{childLink.linkText}</Text>
           <Text>CMIT# {measurePage.cmit}</Text>
           <Text>
             Status:{" "}
             {!singleOption && !deliverySystemIsSelected
               ? "N/A"
-              : measurePage.status}
+              : childPage?.status}
           </Text>
-          {errorMessage(
-            measurePage,
-            !singleOption && !deliverySystemIsSelected
-          )}
+          {errorMessage(childPage, !singleOption && !deliverySystemIsSelected)}
         </Td>
         <Td>
           <Button
             variant="outline"
             disabled={!singleOption && !deliverySystemIsSelected}
-            onClick={() => handleEditClick(childPage.template)}
+            onClick={() => handleEditClick(childLink.template)}
           >
             Edit
           </Button>

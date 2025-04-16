@@ -14,7 +14,7 @@ import {
   PageType,
   MeasureTemplateName,
   MeasurePageTemplate,
-  MeasureStatus,
+  PageStatus,
   DataSource,
   DeliverySystem,
   MeasureSpecification,
@@ -209,13 +209,13 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title",
   type: PageType.Measure,
   required: true,
   substitutable: "FASI-1",
   elements: [],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -244,12 +244,12 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
   elements: [],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -266,7 +266,7 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
 export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   id: "LTSS-1",
   cmitId: "960",
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
@@ -297,7 +297,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       answer: "yes",
     },
   ],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
       linkText: "Delivery Method: FFS",
@@ -372,6 +372,10 @@ export const mockReportStore: HcbsReportState = {
         ...mockMeasureTemplate,
         required: true,
       },
+      [MeasureTemplateName["MLTSS"]]: {
+        ...mockMeasureTemplate,
+        optional: true,
+      },
       [MeasureTemplateName["FASI-1"]]: {
         ...mockMeasureTemplate,
         optional: true,
@@ -384,6 +388,7 @@ export const mockReportStore: HcbsReportState = {
         ...mockMeasureTemplate,
         optional: true,
       },
+      [MeasureTemplateName["MLTSS-DM"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-2"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-3"]]: mockMeasureTemplate,
@@ -408,6 +413,10 @@ export const mockReportStore: HcbsReportState = {
       [MeasureTemplateName["POM-5"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-6"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-7"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-4"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-5"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-5-PT1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-5-PT2"]]: mockMeasureTemplate,
     },
   },
   setReport: () => {},
@@ -418,6 +427,7 @@ export const mockReportStore: HcbsReportState = {
   resetMeasure: () => {},
   clearMeasure: () => {},
   setSubstitute: () => {},
+  completePage: () => {},
   saveReport: async () => {},
 };
 

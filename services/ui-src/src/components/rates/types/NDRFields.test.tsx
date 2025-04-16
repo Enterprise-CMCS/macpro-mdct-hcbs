@@ -50,7 +50,7 @@ const mockedPerformanceElement = {
     { id: "long-term", label: "Long Term Stay" },
   ],
   multiplier: 1000,
-  rateType: PerformanceRateType.NDRFIELDS,
+  rateType: PerformanceRateType.NDR_FIELDS,
 } as PerformanceRateTemplate;
 
 const ndrNDRFieldsComponent = (

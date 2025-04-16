@@ -512,6 +512,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -553,6 +554,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -616,6 +618,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -657,6 +660,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -769,6 +773,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -783,6 +788,7 @@ export const measureTemplates: Record<
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         label: "Exclusion Rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText: "Hint Text",
         assessments: [
@@ -827,6 +833,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -841,6 +848,7 @@ export const measureTemplates: Record<
         type: ElementType.PerformanceRate,
         id: "measure-rates",
         label: "Exclusion Rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText: "Hint Text",
         assessments: [
@@ -927,6 +935,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -971,6 +980,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         helperText:
           "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
@@ -989,6 +999,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
+        required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
         label: "Exclusion Rates",
         helperText: "Hint Text",
@@ -1013,7 +1024,7 @@ export const measureTemplates: Record<
   [MeasureTemplateName["MLTSS"]]: {
     id: "MLTSS",
     title: "MLTSS: Plan All-Cause Readmission",
-    type: PageType.MeasureResults,
+    type: PageType.Measure,
     sidebar: false,
     elements: [
       returnToOptionalDashboard,
@@ -1021,12 +1032,54 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      didYouFollowSpecifications,
       wereTheResultsAudited,
+      didYouFollowSpecifications,
+      additionalNotesField,
       enterMeasureResultsSubheader,
       measureResultsNavigationTable,
-      additionalNotesField,
       measureFooter,
+    ],
+  },
+  [MeasureTemplateName["MLTSS-DM"]]: {
+    id: "MLTSS-DM",
+    title: "MLTSS: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "MLTSS",
+      },
+      measureInstructions,
+      {
+        ...measureHeader,
+        text: "MLTSS: Managed Care (MLTSS)",
+      },
+      managedCareMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      {
+        type: ElementType.PerformanceRate,
+        id: "measure-rates",
+        label: "Performance Rates",
+        rateType: PerformanceRateType.NDR_Enhanced,
+        helperText:
+          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+        assessments: [
+          {
+            id: "acute-readmission-plan",
+            label:
+              "Acute inpatient and observation stays during the measurement year that were followed by an unplanned acute readmission for any diagnosis within 30 days, for participants 65 years of age",
+          },
+        ],
+      },
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "MLTSS",
+        completeSection: true,
+      },
     ],
   },
   [MeasureTemplateName["POM-1"]]: {
