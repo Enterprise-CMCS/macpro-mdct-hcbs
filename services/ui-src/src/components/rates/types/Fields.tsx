@@ -8,7 +8,7 @@ import { isNumber } from "../calculations";
 export const Fields = (
   props: PerformanceRateTemplate & {
     formkey: string;
-    year?: number;
+    year: number;
     calculation: Function;
   }
 ) => {
@@ -58,7 +58,9 @@ export const Fields = (
   return (
     <Stack gap={6}>
       <CmsdsTextField
-        label={`What is the ${props.year} state performance target for this assessment?`}
+        label={`What is the ${
+          props.year + 2
+        } state performance target for this assessment?`}
         name={`0.performanceTarget`}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
