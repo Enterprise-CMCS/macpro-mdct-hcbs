@@ -245,7 +245,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
-    environment: { topicNamespace: "", ...commonProps.environment },
+    environment: {
+      topicNamespace: isDev ? `--${project}--${stage}--` : "",
+      ...commonProps.environment,
+    },
     tables: tables.filter((table) => table.id === "QmsReports"),
   });
 

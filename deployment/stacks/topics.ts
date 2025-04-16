@@ -78,7 +78,10 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     handler: "handler",
     timeout: Duration.seconds(60),
     ...commonProps,
-    environment: { topicNamespace: "", ...commonProps.environment },
+    environment: {
+      topicNamespace: isDev ? `--${project}--${stage}--` : "",
+      ...commonProps.environment,
+    },
   });
 
   if (!deleteTopicsEnabled) {
