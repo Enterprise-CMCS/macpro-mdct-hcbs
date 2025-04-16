@@ -25,9 +25,6 @@ import {
   whichMedicaidHCBSprograms,
   feeForServiceMeasureResultsSubheader,
   managedCareMeasureResultsSubheader,
-  stratificationSubheader,
-  stratificationParagraph,
-  areYouReportingStratification,
   exclusionRatesAssessmentElements,
   performanceRatesAssessmentElements,
   performanceRatesPersonPlanElements,
@@ -85,9 +82,6 @@ export const measureTemplates: Record<
       ...whichMedicaidHCBSprograms,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -118,9 +112,6 @@ export const measureTemplates: Record<
       ...whichMedicaidHCBSprograms,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -172,9 +163,6 @@ export const measureTemplates: Record<
       ...whichMedicaidHCBSprograms,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -205,9 +193,6 @@ export const measureTemplates: Record<
       ...whichMedicaidHCBSprograms,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -334,9 +319,6 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRateFacility,
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -366,9 +348,6 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRateFacility,
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -455,9 +434,6 @@ export const measureTemplates: Record<
         required: true,
         rateCalc: RateCalc.FacilityLengthOfStayCalc,
       },
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -524,9 +500,6 @@ export const measureTemplates: Record<
         required: true,
         rateCalc: RateCalc.FacilityLengthOfStayCalc,
       },
-      stratificationSubheader,
-      stratificationParagraph,
-      areYouReportingStratification,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -842,25 +815,6 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
-      {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "LTSS-3",
@@ -932,25 +886,6 @@ export const measureTemplates: Record<
             id: "refused-pc-plan",
             label: "Participant Refused to Share Person-Centered Plan",
           },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
         ],
       },
       {
@@ -1055,25 +990,6 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
-      {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "LTSS-5",
@@ -1150,25 +1066,6 @@ export const measureTemplates: Record<
             id: "refused-risk-assess",
             label: "Participant Refused Risk Assessment",
           },
-        ],
-      },
-      {
-        type: ElementType.SubHeader,
-        id: "measure-subheader-stratification",
-        text: "Measure Stratification",
-      },
-      {
-        type: ElementType.Paragraph,
-        id: "measure-strat-paragraph",
-        text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data",
-      },
-      {
-        type: ElementType.Radio,
-        id: "reporting-strat-radio",
-        label: "Are you reporting stratification for this measure?",
-        value: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
         ],
       },
       {
