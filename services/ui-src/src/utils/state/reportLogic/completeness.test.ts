@@ -261,14 +261,22 @@ describe("elementSatisfiesRequired", () => {
       type: ElementType.PerformanceRate,
       required: true,
       rateType: PerformanceRateType.NDR,
-      answer: { rates: [{ rate: 15 }] }, // when calculating finished has rate
+      answer: { rates: [{ performanceTarget: 1, rate: 15 }] }, // when calculating finished has rate
     } as PerformanceRateTemplate;
     const goodRateB = {
       id: "good-rate-b",
       type: ElementType.PerformanceRate,
       required: true,
       rateType: PerformanceRateType.NDR,
-      answer: [{ rates: [{ rate: 15 }] }], // when calculating finished has rate
+      answer: [{ rates: [{ performanceTarget: 1, rate: 15 }] }], // when calculating finished has rate
+    } as PerformanceRateTemplate;
+    const fieldsRate = {
+      id: "field-rate",
+      type: ElementType.PerformanceRate,
+      required: true,
+      rateType: PerformanceRateType.FIELDS,
+      fields: [{ label: "abc", id: "abc" }],
+      answer: { rates: [{ abc: 1 }] }, // when calculating finished has rate
     } as PerformanceRateTemplate;
     const badRate = {
       id: "bad-rate",
@@ -279,6 +287,7 @@ describe("elementSatisfiesRequired", () => {
     const elements = [goodRateA, goodRateB, badRate];
     expect(elementSatisfiesRequired(goodRateA, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(goodRateB, elements)).toBeTruthy();
+    expect(elementSatisfiesRequired(fieldsRate, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(badRate, elements)).toBeFalsy();
   });
 });

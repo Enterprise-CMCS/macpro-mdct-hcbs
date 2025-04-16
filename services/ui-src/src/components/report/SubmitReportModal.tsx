@@ -1,12 +1,8 @@
-import { ModalBody, ModalFooter, Button, Spinner } from "@chakra-ui/react";
-import { useState } from "react";
+import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
 
 export const SubmitReportModal = (onClose: Function, onSubmit: Function) => {
-  const [submitting, setSubmitting] = useState(false);
   const submitHandler = async () => {
-    setSubmitting(true);
     await onSubmit();
-    setSubmitting(false);
   };
   return (
     <>
@@ -19,7 +15,7 @@ export const SubmitReportModal = (onClose: Function, onSubmit: Function) => {
       </ModalBody>
       <ModalFooter gap="4">
         <Button colorScheme="blue" mr={3} onClick={() => submitHandler()}>
-          {submitting ? <Spinner size="md" /> : "Submit QMS Report"}
+          Submit QMS Report
         </Button>
         <Button variant="link" onClick={() => onClose(false)}>
           Cancel
