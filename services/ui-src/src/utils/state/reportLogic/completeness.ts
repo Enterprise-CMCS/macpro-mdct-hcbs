@@ -186,7 +186,6 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
     } else {
       // PerformanceData
       for (const uniqueRate of element.answer.rates) {
-        // TODO: Fields mapping
         if (uniqueRate.rate === undefined || uniqueRate.rate === "")
           return false;
       }

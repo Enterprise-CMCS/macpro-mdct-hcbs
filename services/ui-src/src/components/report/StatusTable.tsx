@@ -71,7 +71,7 @@ export const StatusTableElement = () => {
 
   const onSubmit = async () => {
     const submittedReport = await postSubmitReport(report);
-    updateReport(submittedReport); // TODO: this isn't overwriting the state
+    updateReport(submittedReport);
     setModalOpen(false);
   };
 
@@ -82,7 +82,6 @@ export const StatusTableElement = () => {
   };
   // Build Rows
 
-  // TODO: figure our how optional plays on this table
   const rows = sections.map((sectionDetails, index) => {
     if (!sectionDetails) return;
     const { section, displayStatus: status } = sectionDetails;
@@ -92,7 +91,6 @@ export const StatusTableElement = () => {
           <Text>{section.title}</Text>
         </Td>
         <Td>
-          {/* TODO: Logic for when a page is incomplete to change status icon and text */}
           <TableStatusIcon tableStatus={status} isPdf={true} />
         </Td>
         <Td>
