@@ -7,7 +7,6 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
-  ParagraphTemplate,
   PerformanceRateTemplate,
   PerformanceRateType,
   RadioTemplate,
@@ -215,28 +214,6 @@ export const whichMedicaidHCBSprograms = [
   } as TextAreaBoxTemplate,
   divider,
 ];
-
-export const stratificationSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  id: "measure-subheader-stratification",
-  text: "Measure Stratification",
-};
-
-export const stratificationParagraph: ParagraphTemplate = {
-  type: ElementType.Paragraph,
-  id: "measure-strat-paragraph",
-  text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data.",
-};
-
-export const areYouReportingStratification: RadioTemplate = {
-  type: ElementType.Radio,
-  id: "reporting-strat-radio",
-  label: "Are you reporting stratification for this measure?",
-  value: [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ],
-};
 
 //Rates for LTSS-1
 export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
