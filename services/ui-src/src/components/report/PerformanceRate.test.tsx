@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { useFormContext } from "react-hook-form";
 import { PerformanceRateElement } from "components";
-import { mockStateUserStore } from "utils/testing/setupJest";
+import { mockStateUserStore, mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 import {
@@ -53,14 +53,14 @@ const performanceRateComponent = (
 describe("<PerformanceRateElement />", () => {
   describe("Test PerformanceRateElement component", () => {
     beforeEach(() => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
+      mockedUseStore.mockReturnValue(mockUseStore);
       mockGetValues("");
       render(performanceRateComponent);
     });
     test("PerformanceRateElement is visible", () => {
       expect(
         screen.getByRole("textbox", {
-          name: "What is the undefined state performance target for this assessment?",
+          name: "What is the 2028 state performance target for this assessment?",
         })
       ).toBeInTheDocument();
       expect(
