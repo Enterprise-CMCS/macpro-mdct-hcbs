@@ -125,6 +125,7 @@ export class ParentStack extends Stack {
 
     createTopicsComponents({
       ...commonProps,
+      customResourceRole,
       kafkaAuthorizedSubnets,
       vpc,
     });
