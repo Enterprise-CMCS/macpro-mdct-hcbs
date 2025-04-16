@@ -440,6 +440,8 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
 export const performanceRateSelfDirection: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
+  rateType: PerformanceRateType.NDR_Enhanced,
+  required: true,
   helperText:
     "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
@@ -451,6 +453,4 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
     { id: "18-to-64-years", label: "18 to 64 Years" },
     { id: "65-years-or-older", label: "65 years or older" },
   ],
-  rateType: PerformanceRateType.NDRFIELDS_HCBS,
-  rateCalc: RateCalc.NDRCalc,
 };
