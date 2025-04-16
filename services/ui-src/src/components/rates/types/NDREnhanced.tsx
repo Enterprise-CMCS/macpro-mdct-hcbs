@@ -8,7 +8,7 @@ import { isNumber } from "../calculations";
 export const NDREnhanced = (
   props: PerformanceRateTemplate & {
     formkey: string;
-    year?: number;
+    year: number;
     calculation: Function;
   }
 ) => {
@@ -100,7 +100,9 @@ export const NDREnhanced = (
               {assess.label}
             </Heading>
             <CmsdsTextField
-              label={`What is the ${props.year} state performance target for this assessment?`}
+              label={`What is the ${
+                props.year + 2
+              } state performance target for this assessment?`}
               name={`${index}.performanceTarget`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}

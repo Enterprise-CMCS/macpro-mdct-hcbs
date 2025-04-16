@@ -10,6 +10,8 @@ export const PerformanceRateElement = (props: PageElementProps) => {
   const { rateType, rateCalc, helperText, label } = performanceRateProp;
   const { report } = useStore();
 
+  if (!report?.year) return null;
+
   const PerformanceRate = PerformanceType[rateType];
   const Calculation = Calculations[rateCalc ?? "NDRCalc"];
   performanceRateProp.multiplier = performanceRateProp.multiplier ?? 1;
@@ -21,7 +23,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
       <PerformanceRate
         {...{
           formkey: props.formkey,
-          year: report?.year,
+          year: report.year,
           ...performanceRateProp,
           calculation: Calculation,
         }}
