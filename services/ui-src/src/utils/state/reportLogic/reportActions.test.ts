@@ -412,7 +412,7 @@ describe("state/management/reportState: buildState", () => {
   });
 
   test("returns early when no report provided", () => {
-    const result = buildState(undefined);
+    const result = buildState(undefined, false);
     expect(result.report).toBeUndefined();
   });
 });
