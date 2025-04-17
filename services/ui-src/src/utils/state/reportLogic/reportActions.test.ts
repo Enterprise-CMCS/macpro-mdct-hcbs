@@ -230,6 +230,14 @@ const testReport: Report = {
       type: PageType.Measure,
       elements: [],
     },
+    [MeasureTemplateName["MLTSS-HCBS-10"]]: {
+      id: "",
+      title: "",
+      cmitId: "",
+      status: PageStatus.IN_PROGRESS,
+      type: PageType.Measure,
+      elements: [],
+    },
     [MeasureTemplateName["LTSS-4"]]: {
       id: "",
       title: "",

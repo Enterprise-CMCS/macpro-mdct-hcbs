@@ -8,7 +8,7 @@ import { isNumber } from "../calculations";
 export const NDRFields = (
   props: PerformanceRateTemplate & {
     formkey: string;
-    year?: number;
+    year: number;
     calculation: Function;
   }
 ) => {
@@ -91,7 +91,7 @@ export const NDRFields = (
         return (
           <Stack key={assess.id} gap={6}>
             <Heading variant="subHeader">
-              {label ?? "Performance Rate"}
+              {label ?? "Performance Rates"}
               {": "}
               {assess.label}
             </Heading>
@@ -114,7 +114,7 @@ export const NDRFields = (
                   <Heading variant="nestedHeading">{field.label}</Heading>
                   <CmsdsTextField
                     label={`What is the ${
-                      props.year
+                      props.year + 2
                     } state performance target for this assessment for ${field.label.toLowerCase()} (${
                       assess.label
                     })?`}

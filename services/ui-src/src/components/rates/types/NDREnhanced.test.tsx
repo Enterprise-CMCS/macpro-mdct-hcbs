@@ -55,7 +55,7 @@ describe("<NDREnhanced />", () => {
     test("NDREnhanced is visible", () => {
       expect(
         screen.getByLabelText(
-          "What is the 2026 state performance target for this assessment?"
+          "What is the 2028 state performance target for this assessment?"
         )
       ).toBeInTheDocument();
 

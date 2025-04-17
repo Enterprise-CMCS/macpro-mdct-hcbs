@@ -7,7 +7,6 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
-  ParagraphTemplate,
   PerformanceRateTemplate,
   PerformanceRateType,
   RadioTemplate,
@@ -131,7 +130,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
 
 export const didYouFollowSpecifications: RadioTemplate = {
   type: ElementType.Radio,
-  label: "Did you follow the [reportYear] Technical Specifications?",
+  label: "Did you follow the 2026 Technical Specifications?",
   id: "measure-following-tech-specs",
   value: [
     { label: "Yes", value: "yes" },
@@ -166,14 +165,20 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   },
 };
 
-export const whichDeliverySystemsWereUsed: RadioTemplate = {
+export const measureDeliveryMethodsSubheader: SubHeaderTemplate = {
+  type: ElementType.SubHeader,
+  text: "Measure Delivery Methods",
+  id: "measure-delivery-methods-subheader",
+};
+
+export const whichVersionQualityMeasureReported: RadioTemplate = {
   type: ElementType.Radio,
   id: "delivery-method-radio",
-  label: "Which delivery systems were used to report this measure?",
+  label: "Which version of quality measure will be reported?",
   value: [
-    { label: "Fee-For-Service (FFS)", value: "FFS" },
+    { label: "Fee-For-Service (FFS LTSS)", value: "FFS" },
     {
-      label: "Managed Long-Term Services and Supports (MLTSS)",
+      label: "Managed Care (MLTSS)",
       value: "MLTSS",
     },
     { label: "Both FFS and MLTSS (separate)", value: "FFS,MLTSS" },
@@ -185,9 +190,9 @@ export const whichDeliverySystemsWereUsed: RadioTemplate = {
   required: true,
 };
 
-export const qualityMeasuresSubheader: SubHeaderTemplate = {
+export const enterMeasureResultsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
-  text: "Quality Measures",
+  text: "Enter Measure Results",
   id: "quality-measures-subheader",
 };
 
@@ -217,28 +222,6 @@ export const whichMedicaidHCBSprograms = [
   divider,
 ];
 
-export const stratificationSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  id: "measure-subheader-stratification",
-  text: "Measure Stratification",
-};
-
-export const stratificationParagraph: ParagraphTemplate = {
-  type: ElementType.Paragraph,
-  id: "measure-strat-paragraph",
-  text: "If the stratification factor applies to this measure, select it and enter the stratified measure results specific to the demographic group. Do not select categories and sub-classifications for which you will not be reporting any data.",
-};
-
-export const areYouReportingStratification: RadioTemplate = {
-  type: ElementType.Radio,
-  id: "reporting-strat-radio",
-  label: "Are you reporting stratification for this measure?",
-  value: [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ],
-};
-
 //Rates for LTSS-1
 export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
@@ -246,7 +229,7 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "assess-of-core",
@@ -265,11 +248,10 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+  helperText: "Hint Text",
   assessments: [
     {
-      id: "part-not-connect",
+      id: "part-not-contact",
       label: "Participant Could Not be Contacted",
     },
     {
@@ -286,7 +268,7 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "person-plan-core",
@@ -306,7 +288,7 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "part-not-contact",
@@ -326,7 +308,7 @@ export const performanceRatePOM: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR,
   required: true,
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "same-env",
@@ -336,11 +318,11 @@ export const performanceRatePOM: PerformanceRateTemplate = {
 };
 
 //Rates for LTSS-7
-export const performanceRateFacility: PerformanceRateTemplate = {
+export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
       id: "count-of-success",
@@ -373,11 +355,49 @@ export const performanceRateFacility: PerformanceRateTemplate = {
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
+//Rates for LTSS-8
+export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  helperText:
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
+  fields: [
+    {
+      id: "count-of-success-transitions",
+      label: "Count of Successful Transitions to the Community",
+    },
+    { id: "long-term-facility-count", label: "Long-Term Facility Stay Count" },
+    {
+      id: "expected-count-of-success-dis",
+      label: "Expected Count of Successful Transitions to the Community",
+    },
+    { id: "multi-plan", label: "Multi-Plan Population Rate" },
+    {
+      id: "opr-min-stay",
+      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "epr-min-stay",
+      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+    {
+      id: "rar-min-stay",
+      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      autoCalc: true,
+    },
+  ],
+  rateType: PerformanceRateType.FIELDS,
+  rateCalc: RateCalc.FacilityLengthOfStayCalc,
+};
+
+// Rates for LTSS-6
 export const performanceRateTermStay: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
   helperText:
-    "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -392,6 +412,26 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR_FIELDS,
   required: true,
   multiplier: 1000,
+};
+
+// Rates for HCBS-10
+export const performanceRateSelfDirection: PerformanceRateTemplate = {
+  type: ElementType.PerformanceRate,
+  id: "measure-rates",
+  rateType: PerformanceRateType.NDR_FIELDS,
+  rateCalc: RateCalc.NDRCalc,
+  required: true,
+  helperText:
+    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
+  assessments: [
+    { id: "self-direction-offer", label: "Self-Direction Offer" },
+    { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
+  ],
+  fields: [
+    { id: "self-label", label: "Total" },
+    { id: "18-to-64-years", label: "18 to 64 Years" },
+    { id: "65-years-or-older", label: "65 years or older" },
+  ],
 };
 
 export const sectionCompleteBanner: StatusAlertTemplate = {
