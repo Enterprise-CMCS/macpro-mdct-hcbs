@@ -50,7 +50,7 @@ export interface Report extends ReportTemplate {
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
-  lastEditedByEmail: string;
+  lastEditedByEmail?: string;
   submitted?: number;
   submittedBy?: string;
   submittedByEmail?: number;

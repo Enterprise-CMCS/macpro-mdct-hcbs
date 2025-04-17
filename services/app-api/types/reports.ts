@@ -126,8 +126,8 @@ export interface Report extends ReportTemplate {
   state: string;
   created?: number;
   lastEdited?: number;
-  lastEditedBy: string;
-  lastEditedByEmail: string;
+  lastEditedBy?: string;
+  lastEditedByEmail?: string;
   submitted?: number;
   submittedBy?: string;
   submittedByEmail?: string;
