@@ -130,6 +130,122 @@
     ]
   },
   {
+    "username": "stateuser1@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser1@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Jane"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Doe"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "NY"
+      }
+    ]
+  },
+  {
+    "username": "stateuser2@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser2@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "William"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Penn"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "PA"
+      }
+    ]
+  },
+  {
+    "username": "stateuser3@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser3@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "John"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Oregano"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "NJ"
+      }
+    ]
+  },
+  {
+    "username": "stateuser4@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuser4@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Jimmy"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Shoes"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "TX"
+      }
+    ]
+  },
+  {
     "username": "staterep@test.com",
     "attributes": [
       {
