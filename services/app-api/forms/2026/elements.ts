@@ -12,6 +12,7 @@ import {
   RadioTemplate,
   RateCalc,
   ReportingRadioTemplate,
+  StatusAlertTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
@@ -431,4 +432,20 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
     { id: "18-to-64-years", label: "18 to 64 Years" },
     { id: "65-years-or-older", label: "65 years or older" },
   ],
+};
+
+export const sectionCompleteBanner: StatusAlertTemplate = {
+  type: ElementType.StatusAlert,
+  id: "status-alert",
+  title: "Measure has been completed",
+  text: "You can still edit the this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section button. Click here or select ‘Return to measure details’ button above to return to the previous page.",
+  status: "success",
+};
+
+export const measureCompleteBanner: StatusAlertTemplate = {
+  type: ElementType.StatusAlert,
+  id: "status-alert",
+  title: "Measure has been completed",
+  text: "You can still edit the this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section button. Click here or select ‘Return to measure details’ button above to return to the previous page.",
+  status: "success",
 };
