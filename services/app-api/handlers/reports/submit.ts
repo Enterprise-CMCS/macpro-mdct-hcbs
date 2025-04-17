@@ -34,6 +34,10 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   report.status = ReportStatus.SUBMITTED;
   report.lastEdited = Date.now();
   report.lastEditedBy = user.fullName;
+  report.lastEditedByEmail = user.email;
+  report.submitted = Date.now();
+  report.submittedBy = user.fullName;
+  report.submittedByEmail = user.email;
   report.submissionCount += 1;
 
   let validatedPayload: Report | undefined;

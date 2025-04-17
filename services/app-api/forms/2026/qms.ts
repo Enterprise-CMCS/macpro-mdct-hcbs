@@ -148,10 +148,8 @@ export const qmsReportTemplate: ReportTemplate = {
           icon: HeaderIcon.Check,
         },
         {
-          type: ElementType.Paragraph,
-          title: "Thank You",
+          type: ElementType.SubmissionParagraph,
           id: "submitted-thank-you",
-          text: "QMS Report submission for {State/Territory} was submitted on {Month day, year} by {Submitter's Name}",
         },
         {
           type: ElementType.Divider,
@@ -161,7 +159,7 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing',
+          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,

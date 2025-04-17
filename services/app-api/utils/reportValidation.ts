@@ -165,6 +165,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return statusAlertSchema;
     case ElementType.Divider:
       return dividerSchema;
+    case ElementType.SubmissionParagraph:
+      return submissionParagraphSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -220,6 +222,11 @@ const buttonLinkTemplateSchema = object().shape({
 
 const dividerSchema = object().shape({
   type: string().required(ElementType.Divider),
+  id: string().required(),
+});
+
+const submissionParagraphSchema = object().shape({
+  type: string().required(ElementType.SubmissionParagraph),
   id: string().required(),
 });
 
@@ -430,6 +437,9 @@ const reportValidateSchema = object().shape({
   lastEdited: number().notRequired(),
   lastEditedBy: string().required(),
   lastEditedByEmail: string().required(),
+  submitted: number().notRequired(),
+  submittedBy: string().notRequired(),
+  submittedByEmail: string().notRequired(),
   status: mixed<ReportStatus>().oneOf(Object.values(ReportStatus)).required(),
   name: string().notRequired(),
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),

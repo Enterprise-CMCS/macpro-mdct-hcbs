@@ -50,6 +50,10 @@ export interface Report extends ReportTemplate {
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
+  lastEditedByEmail: string;
+  submitted?: number;
+  submittedBy?: string;
+  submittedByEmail?: number;
   status: ReportStatus;
   submissionCount: number;
   archived: boolean;
@@ -170,6 +174,7 @@ export enum ElementType {
   PerformanceRate = "performanceRate",
   StatusAlert = "statusAlert",
   Divider = "divider",
+  SubmissionParagraph = "submissionParagraph",
 }
 
 export type PageElement =
@@ -192,7 +197,8 @@ export type PageElement =
   | MeasureFooterTemplate
   | PerformanceRateTemplate
   | StatusAlertTemplate
-  | DividerTemplate;
+  | DividerTemplate
+  | SubmissionParagraphTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -278,6 +284,11 @@ export type DropdownTemplate = {
 
 export type DividerTemplate = {
   type: ElementType.Divider;
+  id: string;
+};
+
+export type SubmissionParagraphTemplate = {
+  type: ElementType.SubmissionParagraph;
   id: string;
 };
 
