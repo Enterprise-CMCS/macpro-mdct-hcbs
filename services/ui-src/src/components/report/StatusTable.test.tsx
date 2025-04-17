@@ -7,6 +7,7 @@ import {
   mockUseReadOnlyUserStore,
   mockStateUserStore,
 } from "utils/testing/setupJest";
+import { PageStatus } from "types";
 
 jest.mock("utils", () => ({
   useStore: jest.fn(),
@@ -42,11 +43,30 @@ describe("StatusTable with state user", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      pageMap: mockPageMap,
-      report: report,
-      setModalComponent: mockSetModalComponent,
+    mockedUseStore.mockImplementation((selector: Function | undefined) => {
+      if (selector) {
+        return {
+          sections: [
+            {
+              section: { title: "Section 1", id: "id-1" },
+              displayStatus: PageStatus.COMPLETE,
+              submittable: true,
+            },
+            {
+              section: { title: "Section 2", id: "id-2" },
+              displayStatus: PageStatus.IN_PROGRESS,
+              submittable: false,
+            },
+          ],
+          submittable: true,
+        };
+      }
+      return {
+        ...mockStateUserStore,
+        pageMap: mockPageMap,
+        report: report,
+        setModalComponent: mockSetModalComponent,
+      };
     });
   });
 
@@ -124,10 +144,30 @@ describe("StatusTable with state user", () => {
 
 describe("StatusPage with Read only user", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue({
-      ...mockUseReadOnlyUserStore,
-      pageMap: mockPageMap,
-      report: report,
+    mockedUseStore.mockImplementation((selector: Function | undefined) => {
+      if (selector) {
+        return {
+          sections: [
+            {
+              section: { title: "Section 1", id: "id-1" },
+              displayStatus: PageStatus.COMPLETE,
+              submittable: true,
+            },
+            {
+              section: { title: "Section 2", id: "id-2" },
+              displayStatus: PageStatus.IN_PROGRESS,
+              submittable: false,
+            },
+          ],
+          submittable: true,
+        };
+      }
+      return {
+        ...mockUseReadOnlyUserStore,
+        pageMap: mockPageMap,
+        report: report,
+        setModalComponent: mockSetModalComponent,
+      };
     });
   });
   it("should not render the Submit QMS Report button when user is read only", async () => {
