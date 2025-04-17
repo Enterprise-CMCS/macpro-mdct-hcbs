@@ -114,7 +114,18 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     scope,
     "InvokeCreateTopicsFunction",
     {
-      onCreate: undefined,
+      onCreate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: createTopicsLambda.lambda.functionName,
+          InvocationType: "Event",
+          Payload: JSON.stringify({}),
+        },
+        physicalResourceId: cr.PhysicalResourceId.of(
+          `InvokeCreateTopicsFunction-${stage}`
+        ),
+      },
       onUpdate: {
         service: "Lambda",
         action: "invoke",
