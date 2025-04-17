@@ -38,7 +38,7 @@ export async function putReport(report: Report) {
   );
 }
 
-export async function submitReport(report: Report) {
+export async function postSubmitReport(report: Report) {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },

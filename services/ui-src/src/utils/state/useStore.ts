@@ -81,9 +81,13 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
   errorMessage: undefined,
 
   // actions
-  setReport: (report: Report | undefined) =>
-    set(() => buildState(report), false, {
-      type: "setReport",
+  loadReport: (report: Report | undefined) =>
+    set(() => buildState(report, false), false, {
+      type: "loadReport",
+    }),
+  updateReport: (report: Report | undefined) =>
+    set(() => buildState(report, true), false, {
+      type: "updateReport",
     }),
   setCurrentPageId: (currentPageId: string) =>
     set((state: HcbsReportState) => setPage(currentPageId, state), false, {

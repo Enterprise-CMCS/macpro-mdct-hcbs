@@ -24,7 +24,8 @@ export const updateReport = handler(parseReportParameters, async (request) => {
   if (
     reportType !== report.type ||
     state !== report.state ||
-    id !== report.id
+    id !== report.id ||
+    report.status === ReportStatus.SUBMITTED
   ) {
     return badRequest("Invalid request");
   }

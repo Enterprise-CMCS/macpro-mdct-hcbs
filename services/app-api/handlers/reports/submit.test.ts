@@ -2,12 +2,14 @@ import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
+import { validReport } from "../../utils/tests/mockReport";
 import { submitReport } from "./submit";
 
 jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
-    state: "PA",
+    state: validReport.state,
+    fullName: "myname",
   }),
 }));
 
@@ -19,12 +21,21 @@ jest.mock("../../storage/reports", () => ({
   putReport: () => jest.fn(),
 }));
 
-const reportObj = { type: "QMS", state: "PA", id: "QMSPA123" };
-const report = JSON.stringify(reportObj);
+const invalidReport = JSON.stringify({
+  type: "QMS",
+  state: "PA",
+  id: "QMSPA123",
+});
+const report = JSON.stringify(validReport);
 
+const validPath = {
+  reportType: validReport.type,
+  state: validReport.state,
+  id: validReport.id,
+};
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
-  pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
+  pathParameters: validPath,
   headers: { "cognito-identity-id": "test" },
   body: report,
 };
@@ -52,8 +63,18 @@ describe("Test submit report handler", () => {
   test("Test missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
+      pathParameters: validPath,
       body: null,
+    } as APIGatewayProxyEvent;
+    const res = await submitReport(emptyBodyEvent);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  });
+
+  test("Test invalid report", async () => {
+    const emptyBodyEvent = {
+      ...proxyEvent,
+      pathParameters: validPath,
+      body: invalidReport,
     } as APIGatewayProxyEvent;
     const res = await submitReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
@@ -62,17 +83,17 @@ describe("Test submit report handler", () => {
   test("Test body + param mismatch", async () => {
     const badType = {
       ...proxyEvent,
-      pathParameters: { reportType: "ZZ", state: "PA", id: "QMSPA123" },
+      pathParameters: { ...validPath, reportType: "ZZ" },
       body: report,
     } as APIGatewayProxyEvent;
     const badState = {
       ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
-      body: JSON.stringify({ ...reportObj, state: "OR" }),
+      pathParameters: validPath,
+      body: JSON.stringify({ ...validReport, state: "OR" }),
     } as APIGatewayProxyEvent;
     const badId = {
       ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "ZZOR1234" },
+      pathParameters: { ...validPath, id: "ZZOR1234" },
       body: report,
     } as APIGatewayProxyEvent;
 
