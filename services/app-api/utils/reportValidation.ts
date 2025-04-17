@@ -30,6 +30,13 @@ const subHeaderTemplateSchema = object().shape({
   id: string().required(),
   text: string().required(),
   helperText: string().notRequired(),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const nestedHeadingTemplateSchema = object().shape({
@@ -233,6 +240,14 @@ const measureResultsNavigationTableTemplateSchema = object().shape({
   type: string().required(ElementType.MeasureResultsNavigationTable),
   id: string().required(),
   measureDisplay: string().required("quality"),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
+  required: boolean().notRequired(),
 });
 
 const statusTableTemplateSchema = object().shape({

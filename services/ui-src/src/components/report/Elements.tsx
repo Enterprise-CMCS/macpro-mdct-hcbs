@@ -21,6 +21,7 @@ import {
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { parseCustomHtml, useStore } from "utils";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 export interface PageElementProps {
   element: PageElement;
@@ -39,7 +40,10 @@ export const headerElement = (props: PageElementProps) => {
 
 export const subHeaderElement = (props: PageElementProps) => {
   const element = props.element as SubHeaderTemplate;
-
+  const hideElement = useElementIsHidden(element.hideCondition);
+  if (hideElement) {
+    return null;
+  }
   return (
     <Stack>
       <Heading as="h2" variant="subHeader">
