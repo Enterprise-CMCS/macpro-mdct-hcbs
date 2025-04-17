@@ -87,12 +87,26 @@ export enum MeasureTemplateName {
   "MLTSS-DM" = "MLTSS-DM",
   // pom measures
   "POM-1" = "POM-1",
+  "FFS-POM-1" = "FFS-POM-1",
+  "MLTSS-POM-1" = "MLTSS-POM-1",
   "POM-2" = "POM-2",
+  "FFS-POM-2" = "FFS-POM-2",
+  "MLTSS-POM-2" = "MLTSS-POM-2",
   "POM-3" = "POM-3",
+  "FFS-POM-3" = "FFS-POM-3",
+  "MLTSS-POM-3" = "MLTSS-POM-3",
   "POM-4" = "POM-4",
+  "FFS-POM-4" = "FFS-POM-4",
+  "MLTSS-POM-4" = "MLTSS-POM-4",
   "POM-5" = "POM-5",
+  "FFS-POM-5" = "FFS-POM-5",
+  "MLTSS-POM-5" = "MLTSS-POM-5",
   "POM-6" = "POM-6",
+  "FFS-POM-6" = "FFS-POM-6",
+  "MLTSS-POM-6" = "MLTSS-POM-6",
   "POM-7" = "POM-7",
+  "FFS-POM-7" = "FFS-POM-7",
+  "MLTSS-POM-7" = "MLTSS-POM-7",
 }
 
 export enum ReportStatus {
