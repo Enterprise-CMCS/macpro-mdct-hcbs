@@ -114,7 +114,8 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     scope,
     "InvokeCreateTopicsFunction",
     {
-      onCreate: {
+      onCreate: undefined,
+      onUpdate: {
         service: "Lambda",
         action: "invoke",
         parameters: {
@@ -126,7 +127,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
           `InvokeCreateTopicsFunction-${stage}`
         ),
       },
-      onUpdate: undefined,
       onDelete: undefined,
       policy: cr.AwsCustomResourcePolicy.fromStatements([
         new iam.PolicyStatement({
