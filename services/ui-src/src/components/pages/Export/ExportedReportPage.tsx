@@ -8,6 +8,7 @@ import {
   PageType,
   ParentPageTemplate,
   Report,
+  ReviewSubmitTemplate,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 
@@ -56,11 +57,20 @@ export const reportTitle = (report: Report) => {
 };
 
 export const renderReportSections = (
-  reportPages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[]
+  reportPages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[]
 ) => {
   // recursively render sections
   const renderSection = (
-    section: ParentPageTemplate | FormPageTemplate | MeasurePageTemplate
+    section:
+      | ParentPageTemplate
+      | FormPageTemplate
+      | MeasurePageTemplate
+      | ReviewSubmitTemplate
   ) => {
     return (
       <Box key={section.id}>
@@ -79,7 +89,11 @@ export const renderReportSections = (
     )
     .map(
       (
-        section: ParentPageTemplate | FormPageTemplate | MeasurePageTemplate,
+        section:
+          | ParentPageTemplate
+          | FormPageTemplate
+          | MeasurePageTemplate
+          | ReviewSubmitTemplate,
         idx
       ) => (
         <Box key={`${section.id}.${idx}`} mt="3.5rem">

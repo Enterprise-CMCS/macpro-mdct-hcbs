@@ -335,6 +335,7 @@ export const theme = extendTheme({
             fontSize: "2xl",
           },
           margin: "0 0 10px 0",
+          display: "inline-block",
         },
         subHeader: {
           fontSize: "21px",

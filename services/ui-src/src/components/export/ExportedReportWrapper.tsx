@@ -14,6 +14,7 @@ import {
   FormPageTemplate,
   MeasurePageTemplate,
   ParentPageTemplate,
+  ReviewSubmitTemplate,
 } from "types";
 
 export const ExportedReportWrapper = ({ section }: Props) => {
@@ -73,5 +74,9 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 };
 
 export interface Props {
-  section: ParentPageTemplate | FormPageTemplate | MeasurePageTemplate;
+  section:
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate;
 }

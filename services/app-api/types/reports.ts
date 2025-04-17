@@ -133,6 +133,10 @@ export interface Report extends ReportTemplate {
   archived: boolean;
 }
 
+export interface ReviewSubmitTemplate extends FormPageTemplate {
+  submittedView: PageElement[];
+}
+
 export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
   cmitId: string;
@@ -178,7 +182,12 @@ export interface Form {
 export type ReportTemplate = ReportOptions & {
   type: ReportType;
   title: string;
-  pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
+  pages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     pomMeasures: MeasureOptions[];
@@ -189,7 +198,8 @@ export type ReportTemplate = ReportOptions & {
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate
-  | MeasurePageTemplate;
+  | MeasurePageTemplate
+  | ReviewSubmitTemplate;
 
 export type ParentPageTemplate = {
   id: PageId;
@@ -226,6 +236,7 @@ export enum PageType {
   Modal = "modal",
   Measure = "measure",
   MeasureResults = "measureResults",
+  ReviewSubmit = "reviewSubmit",
 }
 
 export enum ElementType {
@@ -280,11 +291,17 @@ export type HideCondition = {
   answer: string;
 };
 
+export enum HeaderIcon {
+  Check = "check",
+}
+
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
   text: string;
+  icon?: HeaderIcon;
 };
+
 export const isHeaderTemplate = (
   element: PageElement
 ): element is HeaderTemplate => {
@@ -309,6 +326,7 @@ export type ParagraphTemplate = {
   id: string;
   title?: string;
   text: string;
+  weight?: string;
 };
 
 export type TextboxTemplate = {

@@ -31,7 +31,12 @@ export const isReportStatus = (status: string): status is ReportStatus => {
 export type ReportTemplate = ReportOptions & {
   type: ReportType;
   title: string;
-  pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
+  pages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     optionGroups: Record<string, MeasureOptions[]>;
@@ -53,7 +58,8 @@ export interface Report extends ReportTemplate {
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate
-  | MeasurePageTemplate;
+  | MeasurePageTemplate
+  | ReviewSubmitTemplate;
 
 export type ParentPageTemplate = {
   id: PageId;
@@ -85,6 +91,16 @@ export type FormPageTemplate = {
   sidebar?: boolean;
   hideNavButtons?: boolean;
   childPageIds?: PageId[];
+};
+
+export interface ReviewSubmitTemplate extends FormPageTemplate {
+  submittedView: PageElement[];
+}
+
+export const isReviewSubmitPage = (
+  page: PageTemplate
+): page is ReviewSubmitTemplate => {
+  return page.type === PageType.ReviewSubmit && "submittedView" in page;
 };
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -127,7 +143,9 @@ export type PageId = string;
 export enum PageType {
   Standard = "standard",
   Modal = "modal",
-  Measure = "measure", // guarantees lookup info
+  Measure = "measure",
+  MeasureResults = "measureResults",
+  ReviewSubmit = "reviewSubmit",
 }
 
 export enum ElementType {
@@ -181,10 +199,15 @@ export type HideCondition = {
   answer: string;
 };
 
+export enum HeaderIcon {
+  Check = "check",
+}
+
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
   text: string;
+  icon?: HeaderIcon;
 };
 
 export type SubHeaderTemplate = {
@@ -205,6 +228,7 @@ export type ParagraphTemplate = {
   id: string;
   title?: string;
   text: string;
+  weight?: string;
 };
 
 export type StatusAlertTemplate = {

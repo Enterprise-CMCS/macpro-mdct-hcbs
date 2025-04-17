@@ -5,6 +5,7 @@ import {
   ReportType,
   MeasureTemplateName,
   MeasurePageTemplate,
+  HeaderIcon,
 } from "../../types/reports";
 import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { measureTemplates } from "./measureTemplates";
@@ -104,7 +105,7 @@ export const qmsReportTemplate: ReportTemplate = {
     {
       id: "review-submit",
       title: "Review & Submit",
-      type: PageType.Standard,
+      type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
       elements: [
@@ -130,12 +131,43 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Paragraph,
           id: "review-compliance",
           title: "Compliance review",
+          weight: "bold",
           text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
         },
         {
           type: ElementType.StatusTable,
           id: "review-status",
           to: "review-submit",
+        },
+      ],
+      submittedView: [
+        {
+          type: ElementType.Header,
+          id: "submitted-header",
+          text: "Successfully Submitted",
+          icon: HeaderIcon.Check,
+        },
+        {
+          type: ElementType.Paragraph,
+          title: "Thank You",
+          id: "submitted-thank-you",
+          text: "QMS Report submission for {State/Territory} was submitted on {Month day, year} by {Submitter's Name}",
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "submitted-what-explanation",
+          title: "What happens now?",
+          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing',
+        },
+        {
+          type: ElementType.Paragraph,
+          weight: "bold",
+          id: "submitted-what-happens",
+          text: "Email your CMS representative to inform them you submitted the QMS Report and it is ready for their review.",
         },
       ],
     },

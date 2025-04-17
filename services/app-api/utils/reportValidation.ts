@@ -23,6 +23,7 @@ const headerTemplateSchema = object().shape({
   type: string().required(ElementType.Header),
   id: string().required(),
   text: string().required(),
+  icon: string().notRequired(),
 });
 
 const subHeaderTemplateSchema = object().shape({
@@ -43,6 +44,7 @@ const paragraphTemplateSchema = object().shape({
   id: string().required(),
   text: string().required(),
   title: string().notRequired(),
+  weight: string().notRequired(),
 });
 
 const textboxTemplateSchema = object().shape({
@@ -340,6 +342,10 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 
+const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
+  submittedView: array().of(pageElementSchema).required(),
+});
+
 const measureOptionsArraySchema = array().of(
   object().shape({
     cmit: number().required(),
@@ -381,10 +387,15 @@ const pagesSchema = array()
           throw new Error();
         }
       } else {
-        if (pageObject.type == PageType.Measure) {
-          return measurePageTemplateSchema;
+        switch (pageObject.type) {
+          case PageType.ReviewSubmit:
+            return reviewSubmitTemplateSchema;
+          case PageType.Measure:
+            return measurePageTemplateSchema;
+          case PageType.Standard:
+          default:
+            return formPageTemplateSchema;
         }
-        return formPageTemplateSchema;
       }
     })
   )
