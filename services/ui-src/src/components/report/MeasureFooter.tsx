@@ -39,6 +39,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
      */
     completePage(currentPage.id);
     saveReport();
+    window.scrollTo(0, 0);
   };
 
   const onClearButton = () => {
