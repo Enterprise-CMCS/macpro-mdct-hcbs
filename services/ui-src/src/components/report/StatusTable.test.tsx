@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter } from "react-router-dom";
-import { useStore, submitReport } from "utils";
+import { useStore } from "utils";
 import {
   mockUseReadOnlyUserStore,
   mockStateUserStore,
@@ -36,6 +36,7 @@ mockPageMap.set("1", 1);
 mockPageMap.set("2", 2);
 
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockSetModalComponent = jest.fn();
 
 describe("StatusTable with state user", () => {
   beforeEach(() => {
@@ -45,6 +46,7 @@ describe("StatusTable with state user", () => {
       ...mockStateUserStore,
       pageMap: mockPageMap,
       report: report,
+      setModalComponent: mockSetModalComponent,
     });
   });
 
@@ -103,7 +105,7 @@ describe("StatusTable with state user", () => {
     })[0];
     await userEvent.click(submitButton);
 
-    expect(submitReport).toBeCalled();
+    expect(mockSetModalComponent).toBeCalled();
   });
 
   test("if pageMap is not defined return null", () => {

@@ -48,7 +48,8 @@ export interface HcbsReportState {
   errorMessage?: string;
 
   // ACTIONS
-  setReport: (report?: Report) => void;
+  loadReport: (report?: Report) => void;
+  updateReport: (report?: Report) => void;
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
   setModalComponent: (modalComponent: ReactNode, modalHeader: string) => void;

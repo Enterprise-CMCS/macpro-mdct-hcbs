@@ -25,7 +25,7 @@ export const ReportPageWrapper = () => {
     report,
     pageMap,
     parentPage,
-    setReport,
+    loadReport: setReport,
     setAnswers,
     setCurrentPageId,
     saveReport,

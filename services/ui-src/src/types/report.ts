@@ -110,8 +110,16 @@ export const isMeasureTemplate = (
   return element.type === PageType.Measure;
 };
 
-export const isChildPage = (page: PageTemplate): page is FormPageTemplate => {
-  return "elements" in page;
+export const isFormPageTemplate = (
+  page: PageTemplate
+): page is FormPageTemplate => {
+  return (page as FormPageTemplate).title != undefined;
+};
+
+export const isMeasurePageTemplate = (
+  page: PageTemplate
+): page is MeasurePageTemplate => {
+  return (page as MeasurePageTemplate).cmitId != undefined;
 };
 
 export type PageId = string;
@@ -489,9 +497,6 @@ export interface Text extends FormComponent {
   type: "text";
   text: string;
 }
-
-export type PageElements = Input | Text;
-
 export interface Form {
   name: string;
   createdBy: string;

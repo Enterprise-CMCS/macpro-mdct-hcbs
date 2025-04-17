@@ -11,17 +11,26 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { useStore, submitReport } from "utils";
+import { postSubmitReport, useStore } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
 import { PageStatus, ParentPageTemplate, ReportStatus } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";
+import { SubmitReportModal } from "./SubmitReportModal";
 
 export const StatusTableElement = () => {
-  const { pageMap, report, user } = useStore();
+  const {
+    pageMap,
+    report,
+    user,
+    setModalComponent,
+    setModalOpen,
+    updateReport,
+  } = useStore();
   const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
 
   if (!pageMap || !report) {
     return null;
@@ -55,16 +64,24 @@ export const StatusTableElement = () => {
     return report.status !== ReportStatus.SUBMITTED && allPagesSubmittable;
   };
 
-  const navigate = useNavigate();
-
   const handleEditClick = (sectionId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
     navigate(path);
   };
 
+  const onSubmit = async () => {
+    const submittedReport = await postSubmitReport(report);
+    updateReport(submittedReport);
+    setModalOpen(false);
+  };
+
+  const modal = SubmitReportModal(() => setModalOpen(false), onSubmit);
+
+  const displayModal = () => {
+    setModalComponent(modal, "Are you sure you want to submit?");
+  };
   // Build Rows
 
-  // TODO: figure our how optional plays on this table
   const rows = sections.map((sectionDetails, index) => {
     if (!sectionDetails) return;
     const { section, displayStatus: status } = sectionDetails;
@@ -74,7 +91,6 @@ export const StatusTableElement = () => {
           <Text>{section.title}</Text>
         </Td>
         <Td>
-          {/* TODO: Logic for when a page is incomplete to change status icon and text */}
           <TableStatusIcon tableStatus={status} isPdf={true} />
         </Td>
         <Td>
@@ -121,7 +137,7 @@ export const StatusTableElement = () => {
         {user?.userIsEndUser && (
           <Button
             alignSelf="flex-end"
-            onClick={async () => submitReport(report)}
+            onClick={async () => displayModal()}
             onBlur={(event) => {
               event.stopPropagation();
             }}
