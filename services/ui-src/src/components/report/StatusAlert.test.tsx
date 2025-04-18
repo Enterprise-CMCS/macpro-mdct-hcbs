@@ -4,6 +4,7 @@ import { StatusAlert } from "./StatusAlert";
 import { ElementType, StatusAlertTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("utils/state/reportLogic/completeness", () => ({
   inferredReportStatus: jest.fn().mockReturnValue("Complete"),
@@ -18,10 +19,29 @@ jest.mock("utils/state/useStore", () => ({
   }),
 }));
 
+const mockUseNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockUseNavigate,
+  useParams: jest.fn(() => ({
+    reportType: "QMS",
+    state: "CO",
+    reportId: "mock-id",
+  })),
+}));
+
 const mockStatusAlert = {
   type: ElementType.StatusAlert,
   title: "mock alert",
   text: "mock text",
+  status: "error",
+} as StatusAlertTemplate;
+
+const mockStatusLink = {
+  type: ElementType.StatusAlert,
+  title: "mock alert",
+  text: "mock text <a>Click here</a>",
   status: "error",
 } as StatusAlertTemplate;
 
@@ -39,6 +59,21 @@ describe("<StatusAlert />", () => {
       render(statusAlertComponent);
       expect(screen.getByText("mock alert")).toBeVisible();
       expect(screen.getByText("mock text")).toBeVisible();
+    });
+
+    test("StatusAlert with link is clickable", async () => {
+      render(
+        <StatusAlert
+          element={mockStatusLink}
+          index={0}
+          formkey="elements.0"
+        ></StatusAlert>
+      );
+
+      expect(screen.getByText("mock alert")).toBeVisible();
+      const link = screen.getByText("Click here");
+
+      await userEvent.click(link);
     });
 
     test("Test Review & Submit banner", () => {
