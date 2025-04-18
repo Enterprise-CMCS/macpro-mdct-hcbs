@@ -1,11 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
-import {
-  isFormPageTemplate,
-  MeasureFooterTemplate,
-  MeasurePageTemplate,
-  PageStatus,
-} from "types";
+import { isFormPageTemplate, MeasureFooterTemplate, PageStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { measurePrevPage, useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";

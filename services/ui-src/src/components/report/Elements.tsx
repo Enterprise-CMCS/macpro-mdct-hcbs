@@ -16,7 +16,6 @@ import {
   AccordionTemplate,
   ButtonLinkTemplate,
   PageElement,
-  MeasurePageTemplate,
   NestedHeadingTemplate,
   HeaderIcon,
 } from "types";
