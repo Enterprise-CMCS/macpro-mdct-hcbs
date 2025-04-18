@@ -390,7 +390,6 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
   rateType: PerformanceRateType.FIELDS,
   required: true,
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
-  required: true,
 };
 
 // Rates for LTSS-6
