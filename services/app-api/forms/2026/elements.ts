@@ -387,8 +387,8 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
       autoCalc: true,
     },
   ],
-  rateType: PerformanceRateType.FIELDS,
   required: true,
+  rateType: PerformanceRateType.FIELDS,
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 

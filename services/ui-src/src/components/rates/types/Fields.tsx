@@ -29,6 +29,8 @@ export const Fields = (
   const key = `${props.formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
+    // Register the specific field because it's separate from key fields
+    form.register(`${key}.rates.0.performanceTarget`, { required: true });
     form.setValue(key, defaultValue);
   }, []);
 
