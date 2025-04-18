@@ -18,6 +18,18 @@ jest.mock("utils/state/useStore", () => ({
   }),
 }));
 
+const mockUseNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockUseNavigate,
+  useParams: jest.fn(() => ({
+    reportType: "QMS",
+    state: "CO",
+    reportId: "mock-id",
+  })),
+}));
+
 const mockStatusAlert = {
   type: ElementType.StatusAlert,
   title: "mock alert",
