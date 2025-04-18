@@ -18,6 +18,7 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 import { SubmitReportModal } from "./SubmitReportModal";
 import { submittableMetricsSelector } from "utils/state/selectors";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const StatusTableElement = () => {
   const { report, user, setModalComponent, setModalOpen, updateReport } =
@@ -25,6 +26,7 @@ export const StatusTableElement = () => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
   const submittableMetrics = useStore(submittableMetricsSelector);
+  const isPdfActive = useFlags()?.viewPdf;
 
   if (!report) {
     return null;
@@ -90,16 +92,18 @@ export const StatusTableElement = () => {
         justifyContent="space-between"
         mt={5}
       >
-        <Button
-          as={RouterLink}
-          to={reportBasePath(report) + "/export"}
-          target="_blank"
-          colorScheme="blue"
-          variant="outline"
-          leftIcon={<Image src={lookupIconPrimary} />}
-        >
-          Review PDF
-        </Button>
+        {isPdfActive && (
+          <Button
+            as={RouterLink}
+            to={reportBasePath(report) + "/export"}
+            target="_blank"
+            colorScheme="blue"
+            variant="outline"
+            leftIcon={<Image src={lookupIconPrimary} />}
+          >
+            Review PDF
+          </Button>
+        )}
         {user?.userIsEndUser && (
           <Button
             alignSelf="flex-end"

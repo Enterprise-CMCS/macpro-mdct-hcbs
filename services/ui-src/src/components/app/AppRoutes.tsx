@@ -13,11 +13,13 @@ import {
 } from "components";
 import { useStore } from "utils";
 import { useEffect } from "react";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
 
   const { pathname } = useLocation();
+  const isPdfActive = useFlags()?.viewPdf;
 
   useEffect(() => {
     const appWrapper = document.getElementById("app-wrapper")!;
@@ -43,10 +45,12 @@ export const AppRoutes = () => {
             element={<DashboardPage />}
           />
           <Route path="/report/QMS" element={<CreateReportOptions />} />
-          <Route
-            path="/report/:reportType/:state/:reportId/export"
-            element={<ExportedReportPage />}
-          />
+          {isPdfActive && (
+            <Route
+              path="/report/:reportType/:state/:reportId/export"
+              element={<ExportedReportPage />}
+            />
+          )}
           <Route
             path="/report/:reportType/:state/:reportId/:pageId?"
             element={<ReportPageWrapper />}

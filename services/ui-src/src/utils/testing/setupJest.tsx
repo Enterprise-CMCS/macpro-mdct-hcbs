@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
-import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
 import {
   UserRoles,
   HcbsUserState,
@@ -49,13 +48,6 @@ jest.mock("@chakra-ui/transition", () => ({
     <div hidden={!inProp}>{children}</div>
   )),
 }));
-
-/* Mock LaunchDarkly (see https://bit.ly/3QAeS7j) */
-export const mockLDFlags = {
-  setDefault: (baseline: any) => mockFlags(baseline),
-  clear: resetLDMocks,
-  set: mockFlags,
-};
 
 /* Mock Amplify */
 jest.mock("aws-amplify/api", () => ({
@@ -371,6 +363,14 @@ export const mockReportStore: HcbsReportState = {
         ...mockMeasureTemplate,
         optional: true,
       },
+      [MeasureTemplateName["LTSS-4"]]: {
+        ...mockMeasureTemplate,
+        optional: true,
+      },
+      [MeasureTemplateName["LTSS-5"]]: {
+        ...mockMeasureTemplate,
+        optional: true,
+      },
       [MeasureTemplateName["LTSS-7"]]: {
         ...mockMeasureTemplate,
         required: true,
@@ -395,16 +395,20 @@ export const mockReportStore: HcbsReportState = {
         ...mockMeasureTemplate,
         optional: true,
       },
+      [MeasureTemplateName["LTSS-5-PT1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["LTSS-5-PT2"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-DM"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-2"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-3"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-4"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-6"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-7"]]: mockMeasureTemplate,
       [MeasureTemplateName["FFS-8"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-1"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-2"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-3"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-4"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-6"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-7"]]: mockMeasureTemplate,
       [MeasureTemplateName["MLTSS-8"]]: mockMeasureTemplate,
@@ -420,10 +424,20 @@ export const mockReportStore: HcbsReportState = {
       [MeasureTemplateName["POM-5"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-6"]]: mockMeasureTemplate,
       [MeasureTemplateName["POM-7"]]: mockMeasureTemplate,
-      [MeasureTemplateName["LTSS-4"]]: mockMeasureTemplate,
-      [MeasureTemplateName["LTSS-5"]]: mockMeasureTemplate,
-      [MeasureTemplateName["LTSS-5-PT1"]]: mockMeasureTemplate,
-      [MeasureTemplateName["LTSS-5-PT2"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-POM-1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-POM-2"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-POM-3"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-POM-4"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-POM-5"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-POM-6"]]: mockMeasureTemplate,
+      [MeasureTemplateName["FFS-POM-7"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-POM-1"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-POM-2"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-POM-3"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-POM-4"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-POM-5"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-POM-6"]]: mockMeasureTemplate,
+      [MeasureTemplateName["MLTSS-POM-7"]]: mockMeasureTemplate,
     },
   },
   loadReport: () => {},

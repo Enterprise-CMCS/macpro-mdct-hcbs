@@ -20,6 +20,12 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
 }));
 
+jest.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: jest.fn().mockReturnValue({
+    viewPdf: true,
+  }),
+}));
+
 const report = {
   type: "QMS",
   id: "mock-report-id",
