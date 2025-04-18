@@ -27,16 +27,20 @@ jest.mock("react-router-dom", () => ({
 
 const mockedMeasureFooterElement = {
   type: ElementType.MeasureFooter,
-  prevTo: "mock-prev-link",
   nextTo: "mock-next-link",
   completeMeasure: true,
-  completeSection: true,
   clear: true,
 } as MeasureFooterTemplate;
 
 const mockedMeasureFooterEmpty = {
   type: ElementType.MeasureFooter,
   prevTo: "mock-prev-link",
+} as MeasureFooterTemplate;
+
+const mockedMeasureSectionFooterElement = {
+  type: ElementType.MeasureFooter,
+  prevTo: "mock-prev-link",
+  completeSection: true,
 } as MeasureFooterTemplate;
 
 describe("Measure Footer", () => {
@@ -54,7 +58,7 @@ describe("Measure Footer", () => {
       name: "Previous",
     });
     await userEvent.click(previousLink);
-    const prevRoute = "/report/QMS/CO/mock-id/mock-prev-link";
+    const prevRoute = "/report/QMS/CO/mock-id/req-measure-result";
     expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
     //click next
@@ -76,6 +80,24 @@ describe("Measure Footer", () => {
       name: "Complete measure",
     });
     await userEvent.click(completeMeasureBtn);
+  });
+
+  it("Test Measure Footer component as a measure section", async () => {
+    render(
+      <MeasureFooterElement
+        element={mockedMeasureSectionFooterElement}
+        index={0}
+        formkey="elements.0"
+      />
+    );
+
+    //click previous
+    const previousLink = screen.getByRole("button", {
+      name: "Previous",
+    });
+    await userEvent.click(previousLink);
+    const prevRoute = "/report/QMS/CO/mock-id/mock-prev-link";
+    expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
     //click complete section
     const completeSectionBtn = screen.getByRole("button", {
