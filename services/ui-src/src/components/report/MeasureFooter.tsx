@@ -34,9 +34,6 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   };
 
   const onCompletePage = () => {
-    /*
-     * TODO: Nav back?
-     */
     completePage(currentPage.id);
     saveReport();
     window.scrollTo(0, 0);
