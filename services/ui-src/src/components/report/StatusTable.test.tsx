@@ -6,7 +6,6 @@ import { useStore } from "utils";
 import {
   mockUseReadOnlyUserStore,
   mockStateUserStore,
-  mockLDFlags,
 } from "utils/testing/setupJest";
 import { PageStatus } from "types";
 
@@ -21,7 +20,11 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
 }));
 
-mockLDFlags.setDefault({ viewPdf: true });
+jest.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: jest.fn().mockReturnValue({
+    viewPdf: true,
+  }),
+}));
 
 const report = {
   type: "QMS",
