@@ -10,9 +10,11 @@ export const NDREnhanced = (
     formkey: string;
     year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { label, assessments, answer, multiplier, calculation } = props;
+  const { label, assessments, answer, multiplier, calculation, disabled } =
+    props;
   const initialValues =
     assessments?.map((assess) => {
       return {
@@ -107,6 +109,7 @@ export const NDREnhanced = (
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={value.performanceTarget}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Numerator"
@@ -114,6 +117,7 @@ export const NDREnhanced = (
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={value.numerator}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Denominator"

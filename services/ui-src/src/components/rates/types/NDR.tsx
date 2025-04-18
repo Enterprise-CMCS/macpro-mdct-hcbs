@@ -10,9 +10,11 @@ export const NDR = (
     formkey: string;
     year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { label, assessments, answer, multiplier, calculation } = props;
+  const { label, assessments, answer, multiplier, calculation, disabled } =
+    props;
   const initialValues =
     assessments?.map((assess) => {
       return {
@@ -82,6 +84,7 @@ export const NDR = (
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={value.performanceTarget}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Numerator"

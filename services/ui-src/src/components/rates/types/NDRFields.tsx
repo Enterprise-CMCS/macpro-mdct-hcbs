@@ -10,9 +10,18 @@ export const NDRFields = (
     formkey: string;
     year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { label, assessments, answer, multiplier, calculation, fields } = props;
+  const {
+    label,
+    assessments,
+    answer,
+    multiplier,
+    calculation,
+    fields,
+    disabled,
+  } = props;
 
   const defaultRates: RateSetData[] =
     assessments?.map((assess) => {
@@ -102,6 +111,7 @@ export const NDRFields = (
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={rateSet?.denominator}
+              disabled={disabled}
             ></CmsdsTextField>
 
             {fields?.map((field, fieldIndex) => {
@@ -122,6 +132,7 @@ export const NDRFields = (
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
                     value={value?.performanceTarget}
+                    disabled={disabled}
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`Numerator: ${field.label} (${assess.label})`}
@@ -129,6 +140,7 @@ export const NDRFields = (
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
                     value={value?.numerator}
+                    disabled={disabled}
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`Denominator (${assess.label})`}

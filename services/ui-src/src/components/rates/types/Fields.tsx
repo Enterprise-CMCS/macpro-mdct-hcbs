@@ -10,9 +10,10 @@ export const Fields = (
     formkey: string;
     year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { answer, fields, calculation, multiplier } = props;
+  const { answer, fields, calculation, multiplier, disabled } = props;
   const arr =
     fields?.map((field) => {
       return { [field.id]: "" };
@@ -74,7 +75,7 @@ export const Fields = (
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
             value={displayValue.rates[0][field.id]}
-            disabled={field.autoCalc}
+            disabled={field.autoCalc || disabled}
           ></CmsdsTextField>
         );
       })}
