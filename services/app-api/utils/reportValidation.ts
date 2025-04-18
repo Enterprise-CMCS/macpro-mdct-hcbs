@@ -258,7 +258,7 @@ const measureDetailsTemplateSchema = object().shape({
 const measureFooterSchema = object().shape({
   type: string().required(ElementType.MeasureFooter),
   id: string().required(),
-  prevTo: string().required(),
+  prevTo: string().notRequired(),
   nextTo: string().notRequired(),
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
