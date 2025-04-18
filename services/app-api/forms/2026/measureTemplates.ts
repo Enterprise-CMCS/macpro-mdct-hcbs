@@ -888,6 +888,67 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-4"]]: {
+    id: "FFS-4",
+    title: "LTSS-4: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-4",
+      },
+      sectionCompleteBanner,
+      {
+        ...measureHeader,
+        text: "LTSS-4: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      feeForServiceMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      performanceRatesAssessmentElements,
+      exclusionRatesAssessmentElements,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-4",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-4"]]: {
+    id: "MLTSS-4",
+    title: "LTSS-4: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-4",
+      },
+      sectionCompleteBanner,
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "LTSS-4: Managed Care (MLTSS)",
+      },
+      measureInstructions,
+      managedCareMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      performanceRatesAssessmentElements,
+      exclusionRatesAssessmentElements,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-4",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["LTSS-5"]]: {
     id: "LTSS-5",
     title:
