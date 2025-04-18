@@ -108,7 +108,6 @@
       "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts"
     },
     "setupFiles": [
-      "jest-launchdarkly-mock"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/src/utils/testing/setupJest.tsx"
