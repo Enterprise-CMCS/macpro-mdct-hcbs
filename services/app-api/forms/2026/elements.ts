@@ -328,7 +328,7 @@ export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
       id: "count-of-success",
       label: "Count of Successful Discharges to the Community",
     },
-    { id: "fac-admin-count", label: "Facility Admission Count" },
+    { id: "fac-count", label: "Facility Admission Count" },
     {
       id: "expected-count-of-success",
       label: "Expected Count of Successful Discharges to the Community",
@@ -363,12 +363,12 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
     "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
-      id: "count-of-success-transitions",
+      id: "count-of-success",
       label: "Count of Successful Transitions to the Community",
     },
-    { id: "long-term-facility-count", label: "Long-Term Facility Stay Count" },
+    { id: "fac-count", label: "Long-Term Facility Stay Count" },
     {
-      id: "expected-count-of-success-dis",
+      id: "expected-count-of-success",
       label: "Expected Count of Successful Transitions to the Community",
     },
     { id: "multi-plan", label: "Multi-Plan Population Rate" },
@@ -389,6 +389,7 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
     },
   ],
   rateType: PerformanceRateType.FIELDS,
+  required: true,
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
