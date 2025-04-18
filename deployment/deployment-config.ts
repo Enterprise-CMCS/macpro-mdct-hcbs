@@ -14,6 +14,9 @@ export interface DeploymentConfigProperties {
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
   userPoolDomainPrefix?: string;
+  vpcName: string;
+  kafkaAuthorizedSubnetIds: string;
+  brokerString: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
@@ -72,6 +75,9 @@ function validateConfig(config: {
     "oktaMetadataUrl",
     "launchDarklyClient",
     "redirectSignout",
+    "vpcName",
+    "brokerString",
+    "kafkaAuthorizedSubnetIds",
   ];
 
   const invalidKeys = expectedKeys.filter(

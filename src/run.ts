@@ -11,11 +11,19 @@ import {
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
 import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
+import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 
 // load .env
 dotenv.config();
 
-const deployedServices = ["database", "app-api", "ui", "ui-auth", "ui-src"];
+const deployedServices = [
+  "database",
+  "app-api",
+  "topics",
+  "ui",
+  "ui-auth",
+  "ui-src",
+];
 
 const project = process.env.PROJECT;
 const region = process.env.REGION_A;
@@ -328,6 +336,52 @@ async function destroy({
       `Stack ${stackName} delete initiated. Not waiting for completion as --wait is set to false.`
     );
   }
+
+  await delete_topics({ stage });
+}
+
+async function delete_topics(options: { stage: string }) {
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+
+  const lambdaClient = new LambdaClient({ region });
+  const functionName = await getCloudFormationStackOutputValue(
+    `${project}-${options.stage}`,
+    "DeleteTopicsFunctionName"
+  );
+
+  const payload = JSON.stringify({ project, stage: options.stage });
+
+  const command = new InvokeCommand({
+    FunctionName: functionName,
+    Payload: Buffer.from(payload),
+  });
+
+  const response = await lambdaClient.send(command);
+  const result = Buffer.from(response.Payload || []).toString();
+  console.log("deleteTopics response:", result);
+}
+
+async function list_topics(options: { stage: string | undefined }) {
+  const runner = new LabeledProcessRunner();
+  await prepare_services(runner);
+
+  const lambdaClient = new LambdaClient({ region });
+  const functionName = await getCloudFormationStackOutputValue(
+    `${project}-${options.stage}`,
+    "ListTopicsFunctionName"
+  );
+
+  const payload = JSON.stringify({ stage: options.stage });
+
+  const command = new InvokeCommand({
+    FunctionName: functionName,
+    Payload: Buffer.from(payload),
+  });
+
+  const response = await lambdaClient.send(command);
+  const result = Buffer.from(response.Payload || []).toString();
+  console.log("listTopics response:", result);
 }
 
 /*
@@ -371,6 +425,22 @@ yargs(process.argv.slice(2))
       verify: { type: "boolean", demandOption: false, default: true },
     },
     destroy
+  )
+  .command(
+    "delete-topics",
+    "delete topics tied to serverless stage",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    delete_topics
+  )
+  .command(
+    "list-topics",
+    "list topics for the project or for the stage",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    list_topics
   )
   .command(
     "update-env",

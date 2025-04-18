@@ -22,7 +22,8 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
   method?: string;
   stackName: string;
-  api: apigateway.RestApi;
+  api?: apigateway.RestApi;
+  brokerString?: string;
   additionalPolicies?: PolicyStatement[];
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
@@ -41,6 +42,7 @@ export class Lambda extends Construct {
       environment = {},
       path,
       method,
+      api,
       additionalPolicies = [],
       ...restProps
     } = props;
@@ -93,8 +95,8 @@ export class Lambda extends Construct {
       ...restProps,
     });
 
-    if (path && method) {
-      const resource = props.api.root.resourceForPath(path);
+    if (api && path && method) {
+      const resource = api.root.resourceForPath(path);
       resource.addMethod(
         method,
         new apigateway.LambdaIntegration(this.lambda),
