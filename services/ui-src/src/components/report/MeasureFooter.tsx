@@ -44,7 +44,11 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   const onCompletePage = () => {
     completePage(currentPage.id);
     saveReport();
-    window.scrollTo(0, 0);
+
+    //there's some interference with the scroll so we need a delay before it will work
+    setTimeout(function () {
+      window.scrollTo(0, 0);
+    }, 5);
   };
 
   const onClearButton = () => {
