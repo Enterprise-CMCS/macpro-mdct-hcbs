@@ -7,6 +7,7 @@ import {
   invalidMeasureTemplatesReport,
   invalidMeasureLookupReport,
   invalidFormPageReport,
+  invalidMeasurePageReport,
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
   invalidPageElementType,
@@ -48,6 +49,11 @@ describe("Test invalid reports", () => {
   it("throws an error when validating invalid form page object", () => {
     expect(async () => {
       await validateReportPayload(invalidFormPageReport);
+    }).rejects.toThrow();
+  });
+  it("throws an error when validating invalid measure page object", () => {
+    expect(async () => {
+      await validateReportPayload(invalidMeasurePageReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating invalid parent page object", () => {

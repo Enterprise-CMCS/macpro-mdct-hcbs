@@ -1,8 +1,7 @@
 import { Stack, Text } from "@chakra-ui/react";
-import { PageElement } from "types";
 import { useStore } from "utils";
 
-export const SubmissionParagraph = (_props: PageElement) => {
+export const SubmissionParagraph = () => {
   const { report } = useStore();
   if (!report || !report.submitted) return null;
 
