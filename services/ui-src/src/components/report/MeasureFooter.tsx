@@ -7,7 +7,7 @@ import {
   PageStatus,
 } from "types";
 import { useNavigate, useParams } from "react-router-dom";
-import { useStore } from "utils";
+import { measurePrevPage, useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
 import {
   currentPageCompletableSelector,
@@ -40,16 +40,10 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   };
 
   const getPrevPageId = () => {
-    //this indicates it's a parent measure page
-    if (footer.completeMeasure) {
-      const measure = report?.pages.find(
-        (measure) => measure.id === currentPage.id
-      ) as MeasurePageTemplate;
-      return measure?.required
-        ? "req-measure-result"
-        : "optional-measure-result";
-    }
-    return footer.prevTo;
+    //if a measure parent, search for the id, else use the one being passed in
+    return footer.completeMeasure
+      ? measurePrevPage(report!, currentPage.id)
+      : footer.prevTo;
   };
 
   const onCompletePage = () => {

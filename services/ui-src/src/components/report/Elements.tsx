@@ -22,7 +22,7 @@ import {
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
-import { parseCustomHtml, useStore } from "utils";
+import { measurePrevPage, parseCustomHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 export interface PageElementProps {
   element: PageElement;
@@ -131,15 +131,7 @@ export const buttonLinkElement = (props: PageElementProps) => {
 
   const navigate = useNavigate();
   const button = props.element as ButtonLinkTemplate;
-
-  const findPrevPage = () => {
-    const measure = report?.pages.find(
-      (measure) => measure.id === pageId
-    ) as MeasurePageTemplate;
-    return measure?.required ? "req-measure-result" : "optional-measure-result";
-  };
-
-  const page = button.to ?? findPrevPage();
+  const page = button.to ?? measurePrevPage(report!, pageId!);
 
   //auto generate the label for measures that are substitutable
   const setLabel =
