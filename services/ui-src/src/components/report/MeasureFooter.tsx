@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
 import { isFormPageTemplate, MeasureFooterTemplate, PageStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
-import { useStore } from "utils";
+import { measurePrevPage, useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
 import {
   currentPageCompletableSelector,
@@ -13,6 +13,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
   const { reportType, state, reportId } = useParams();
   const {
+    report,
     resetMeasure,
     saveReport,
     setModalComponent,
@@ -31,6 +32,13 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   const submitClear = () => {
     resetMeasure(currentPage.id);
     saveReport();
+  };
+
+  const getPrevPageId = () => {
+    //if a measure parent, search for the id, else use the one being passed in
+    return footer.completeMeasure
+      ? measurePrevPage(report!, currentPage.id)
+      : footer.prevTo;
   };
 
   const onCompletePage = () => {
@@ -59,7 +67,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
           variant="outline"
           onClick={() =>
             navigate(
-              `/report/${reportType}/${state}/${reportId}/${footer.prevTo}`
+              `/report/${reportType}/${state}/${reportId}/${getPrevPageId()}`
             )
           }
         >

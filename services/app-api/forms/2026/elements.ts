@@ -206,7 +206,6 @@ export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplat
 export const measureFooter: MeasureFooterTemplate = {
   type: ElementType.MeasureFooter,
   id: "measure-footer",
-  prevTo: "req-measure-result",
   completeMeasure: true,
   clear: true,
 };
