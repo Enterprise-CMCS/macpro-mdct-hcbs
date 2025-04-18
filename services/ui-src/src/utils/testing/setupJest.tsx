@@ -308,8 +308,11 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
 
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
-  currentPageId: "mock-template-id",
-  pageMap: new Map([["mock-template-id", 0]]),
+  currentPageId: "LTSS-1",
+  pageMap: new Map([
+    ["root", 0],
+    [mockMeasureTemplate.id, 1],
+  ]),
   report: {
     id: "mock-id",
     type: ReportType.QMS,
@@ -321,6 +324,10 @@ export const mockReportStore: HcbsReportState = {
     archived: false,
     submissionCount: 0,
     pages: [
+      {
+        id: "root",
+        childPageIds: [mockMeasureTemplate.id, mock2MeasureTemplate.id],
+      },
       { ...mockMeasureTemplate, cmit: 960 },
       { ...mock2MeasureTemplate, cmit: 961 },
     ],

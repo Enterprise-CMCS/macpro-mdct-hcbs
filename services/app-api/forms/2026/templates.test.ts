@@ -21,7 +21,11 @@ describe("QMS Template", () => {
 
   it("Should have a child page for every ID referenced by a parent page", () => {
     const allPageIds = qmsReportTemplate.pages
-      .filter((page) => page.type === PageType.Standard)
+      .filter(
+        (page) =>
+          page.type &&
+          [PageType.Standard, PageType.ReviewSubmit].includes(page.type)
+      )
       .map((page) => page.id);
     const referencedChildren = qmsReportTemplate.pages.flatMap(
       (page) => page.childPageIds ?? []

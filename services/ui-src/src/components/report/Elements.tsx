@@ -7,6 +7,7 @@ import {
   Text,
   Accordion,
   Divider,
+  Flex,
 } from "@chakra-ui/react";
 import {
   HeaderTemplate,
@@ -17,11 +18,12 @@ import {
   PageElement,
   MeasurePageTemplate,
   NestedHeadingTemplate,
+  HeaderIcon,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { parseCustomHtml, useStore } from "utils";
-
+import successIcon from "assets/icons/status/icon_status_check.svg";
 export interface PageElementProps {
   element: PageElement;
   index?: number;
@@ -30,9 +32,38 @@ export interface PageElementProps {
 }
 
 export const headerElement = (props: PageElementProps) => {
+  const element = props.element as HeaderTemplate;
+  const buildIcon = (icon: HeaderIcon | undefined) => {
+    switch (icon) {
+      case HeaderIcon.Check:
+        return {
+          src: successIcon,
+          alt: "complete icon",
+          text: "Complete",
+        };
+      default:
+        return undefined;
+    }
+  };
+  const icon = buildIcon(element.icon);
+
   return (
     <Heading as="h1" variant="h1">
-      {(props.element as HeaderTemplate).text}
+      <Flex direction="row" width="100%">
+        {icon && (
+          <span>
+            <Image
+              src={icon.src}
+              alt={icon.alt}
+              marginRight="1rem"
+              boxSize="xl"
+              height="27px"
+              display="inline-block"
+            />
+          </span>
+        )}
+        {element.text}
+      </Flex>
     </Heading>
   );
 };
@@ -72,7 +103,9 @@ export const paragraphElement = (props: PageElementProps) => {
           {(props.element as ParagraphTemplate).title}
         </Text>
       )}
-      <Text fontSize="16px">{(props.element as ParagraphTemplate).text}</Text>
+      <Text fontSize="16px" fontWeight={element.weight}>
+        {(props.element as ParagraphTemplate).text}
+      </Text>
     </Stack>
   );
 };

@@ -14,55 +14,21 @@ import {
 import { postSubmitReport, useStore } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
-import { PageStatus, ParentPageTemplate, ReportStatus } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
-import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { SubmitReportModal } from "./SubmitReportModal";
+import { submittableMetricsSelector } from "utils/state/selectors";
 
 export const StatusTableElement = () => {
-  const {
-    pageMap,
-    report,
-    user,
-    setModalComponent,
-    setModalOpen,
-    updateReport,
-  } = useStore();
+  const { report, user, setModalComponent, setModalOpen, updateReport } =
+    useStore();
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
+  const submittableMetrics = useStore(submittableMetricsSelector);
 
-  if (!pageMap || !report) {
+  if (!report) {
     return null;
   }
-
-  const childPages = (report.pages[pageMap.get("root")!] as ParentPageTemplate)
-    .childPageIds;
-  const sections = childPages.slice(0, -1).map((id) => {
-    const pageIdx = pageMap.get(id);
-    if (!pageIdx) return null;
-    const section = report.pages[pageIdx] as ParentPageTemplate;
-    let displayStatus = inferredReportStatus(report, section.id);
-    let submittable = displayStatus === PageStatus.COMPLETE;
-
-    if (section.id === "optional-measure-result") {
-      submittable = displayStatus !== PageStatus.IN_PROGRESS;
-      if (displayStatus === PageStatus.NOT_STARTED) displayStatus = undefined;
-    }
-
-    return {
-      section: section,
-      displayStatus: displayStatus,
-      submittable: submittable,
-    };
-  });
-
-  const submittable = () => {
-    const allPagesSubmittable = sections.every(
-      (sectionInfo) => !!sectionInfo?.submittable
-    );
-    return report.status !== ReportStatus.SUBMITTED && allPagesSubmittable;
-  };
 
   const handleEditClick = (sectionId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
@@ -82,7 +48,7 @@ export const StatusTableElement = () => {
   };
   // Build Rows
 
-  const rows = sections.map((sectionDetails, index) => {
+  const rows = submittableMetrics?.sections.map((sectionDetails, index) => {
     if (!sectionDetails) return;
     const { section, displayStatus: status } = sectionDetails;
     return (
@@ -141,7 +107,7 @@ export const StatusTableElement = () => {
             onBlur={(event) => {
               event.stopPropagation();
             }}
-            disabled={!submittable()}
+            disabled={!submittableMetrics?.submittable}
           >
             Submit QMS Report
           </Button>

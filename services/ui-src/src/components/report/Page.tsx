@@ -30,6 +30,7 @@ import {
   StatusAlert,
 } from "components";
 import { useStore } from "utils";
+import { SubmissionParagraph } from "./SubmissionParagraph";
 
 interface Props {
   elements: PageElement[];
@@ -82,6 +83,8 @@ export const Page = ({ elements }: Props) => {
         return StatusAlert;
       case ElementType.Divider:
         return dividerElement;
+      case ElementType.SubmissionParagraph:
+        return SubmissionParagraph;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;

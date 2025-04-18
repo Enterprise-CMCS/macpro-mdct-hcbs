@@ -10,9 +10,12 @@ jest.mock("utils/state/reportLogic/completeness", () => ({
 }));
 
 jest.mock("utils/state/useStore", () => ({
-  useStore: jest
-    .fn()
-    .mockReturnValue({ ...mockUseStore, currentPageId: "mock-id" }),
+  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
+    if (selector) {
+      return false;
+    }
+    return { ...mockUseStore, currentPageId: "mock-id" };
+  }),
 }));
 
 const mockStatusAlert = {
@@ -39,10 +42,15 @@ describe("<StatusAlert />", () => {
     });
 
     test("Test Review & Submit banner", () => {
-      (useStore as unknown as jest.Mock).mockReturnValue({
-        ...mockUseStore,
-        report: { pages: [{ childPageIds: ["test-1"] }] },
-        currentPageId: "review-submit",
+      (useStore as unknown as jest.Mock).mockImplementation((selector) => {
+        if (selector) {
+          return { submittable: true };
+        }
+        return {
+          ...mockUseStore,
+          report: { pages: [{ childPageIds: ["test-1"] }] },
+          currentPageId: "review-submit",
+        };
       });
       render(statusAlertComponent);
 

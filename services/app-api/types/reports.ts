@@ -126,11 +126,18 @@ export interface Report extends ReportTemplate {
   state: string;
   created?: number;
   lastEdited?: number;
-  lastEditedBy: string;
-  lastEditedByEmail: string;
+  lastEditedBy?: string;
+  lastEditedByEmail?: string;
+  submitted?: number;
+  submittedBy?: string;
+  submittedByEmail?: string;
   status: ReportStatus;
   submissionCount: number;
   archived: boolean;
+}
+
+export interface ReviewSubmitTemplate extends FormPageTemplate {
+  submittedView: PageElement[];
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -178,7 +185,12 @@ export interface Form {
 export type ReportTemplate = ReportOptions & {
   type: ReportType;
   title: string;
-  pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
+  pages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     pomMeasures: MeasureOptions[];
@@ -189,7 +201,8 @@ export type ReportTemplate = ReportOptions & {
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate
-  | MeasurePageTemplate;
+  | MeasurePageTemplate
+  | ReviewSubmitTemplate;
 
 export type ParentPageTemplate = {
   id: PageId;
@@ -226,6 +239,7 @@ export enum PageType {
   Modal = "modal",
   Measure = "measure",
   MeasureResults = "measureResults",
+  ReviewSubmit = "reviewSubmit",
 }
 
 export enum ElementType {
@@ -250,6 +264,7 @@ export enum ElementType {
   PerformanceRate = "performanceRate",
   StatusAlert = "statusAlert",
   Divider = "divider",
+  SubmissionParagraph = "submissionParagraph",
 }
 
 export type PageElement =
@@ -273,18 +288,25 @@ export type PageElement =
   | MeasureFooterTemplate
   | PerformanceRateTemplate
   | StatusAlertTemplate
-  | DividerTemplate;
+  | DividerTemplate
+  | SubmissionParagraphTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
   answer: string;
 };
 
+export enum HeaderIcon {
+  Check = "check",
+}
+
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
   text: string;
+  icon?: HeaderIcon;
 };
+
 export const isHeaderTemplate = (
   element: PageElement
 ): element is HeaderTemplate => {
@@ -309,6 +331,7 @@ export type ParagraphTemplate = {
   id: string;
   title?: string;
   text: string;
+  weight?: string;
 };
 
 export type TextboxTemplate = {
@@ -350,6 +373,11 @@ export type DropdownTemplate = {
 
 export type DividerTemplate = {
   type: ElementType.Divider;
+  id: string;
+};
+
+export type SubmissionParagraphTemplate = {
+  type: ElementType.SubmissionParagraph;
   id: string;
 };
 
