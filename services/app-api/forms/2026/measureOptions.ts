@@ -174,7 +174,18 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-4"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-4"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-4"],
+      },
+    ],
   },
   {
     cmit: 1255,
