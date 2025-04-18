@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
-import { MeasureFooterTemplate } from "types";
+import { MeasureFooterTemplate, MeasurePageTemplate } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
@@ -13,6 +13,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
   const { reportType, state, reportId } = useParams();
   const {
+    report,
     resetMeasure,
     saveReport,
     setModalComponent,
@@ -28,6 +29,21 @@ export const MeasureFooterElement = (props: PageElementProps) => {
     resetMeasure(currentPage.id);
     saveReport();
   };
+
+  const getPrevPageId = () => {
+    //this indicates it's a parent measure page
+    if (footer.completeMeasure) {
+      const measure = report?.pages.find(
+        (measure) => measure.id === currentPage.id
+      ) as MeasurePageTemplate;
+      return measure?.required
+        ? "req-measure-result"
+        : "optional-measure-result";
+    }
+    return footer.prevTo;
+  };
+
+  getPrevPageId();
 
   const onCompletePage = () => {
     /*
@@ -58,7 +74,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
           variant="outline"
           onClick={() =>
             navigate(
-              `/report/${reportType}/${state}/${reportId}/${footer.prevTo}`
+              `/report/${reportType}/${state}/${reportId}/${getPrevPageId()}`
             )
           }
         >

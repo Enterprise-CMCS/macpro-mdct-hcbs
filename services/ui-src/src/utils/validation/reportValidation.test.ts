@@ -181,7 +181,6 @@ describe("Ignores validation for elements that are not editable", () => {
         {
           type: ElementType.MeasureFooter,
           id: "measure-footer",
-          prevTo: "req-measure-result",
           completeMeasure: true,
           clear: true,
         },

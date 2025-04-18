@@ -201,7 +201,6 @@ export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplat
 export const measureFooter: MeasureFooterTemplate = {
   type: ElementType.MeasureFooter,
   id: "measure-footer",
-  prevTo: "req-measure-result",
   completeMeasure: true,
   clear: true,
 };
@@ -397,7 +396,7 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
 export const sectionCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
-  title: "Measure has been completed",
+  title: "This section has been completed",
   text: "You can still edit the this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section button. Click here or select ‘Return to measure details’ button above to return to the previous page.",
   status: "success",
 };
@@ -406,6 +405,6 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
   title: "Measure has been completed",
-  text: "You can still edit the this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section button. Click here or select ‘Return to measure details’ button above to return to the previous page.",
+  text: "You can still edit the measure but the measure will change to ‘In progress’ and you will need to re-select the ‘Complete measure’ button. Click here or select ‘Return to required measure dashboard’ button above to return to all measures.",
   status: "success",
 };

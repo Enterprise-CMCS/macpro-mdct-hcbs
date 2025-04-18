@@ -396,7 +396,7 @@ export type MeasureDetailsTemplate = {
 export type MeasureFooterTemplate = {
   type: ElementType.MeasureFooter;
   id: string;
-  prevTo: string;
+  prevTo?: string;
   nextTo?: string;
   completeMeasure?: boolean;
   completeSection?: boolean;
