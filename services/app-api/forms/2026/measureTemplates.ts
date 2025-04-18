@@ -888,6 +888,67 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
+  [MeasureTemplateName["FFS-4"]]: {
+    id: "FFS-4",
+    title: "LTSS-4: Fee-For-Service (FFS LTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-4",
+      },
+      sectionCompleteBanner,
+      {
+        ...measureHeader,
+        text: "LTSS-4: Fee-For-Service (FFS LTSS)",
+      },
+      measureInstructions,
+      feeForServiceMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      performanceRatesAssessmentElements,
+      exclusionRatesAssessmentElements,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-4",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-4"]]: {
+    id: "MLTSS-4",
+    title: "LTSS-4: Managed Care (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "LTSS-4",
+      },
+      sectionCompleteBanner,
+      {
+        type: ElementType.Header,
+        id: "measure-header",
+        text: "LTSS-4: Managed Care (MLTSS)",
+      },
+      measureInstructions,
+      managedCareMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      performanceRatesAssessmentElements,
+      exclusionRatesAssessmentElements,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "LTSS-4",
+        completeSection: true,
+      },
+    ],
+  },
   [MeasureTemplateName["LTSS-5"]]: {
     id: "LTSS-5",
     title:
@@ -1100,7 +1161,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-1"]]: {
     id: "FFS-POM-1",
-    title: "POM: People live in integrated environments (FFS LTSS)",
+    title: "POM: People Live in Integrated Environments (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1112,7 +1173,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People live in integrated environments (FFS LTSS)",
+        text: "POM: People Live in Integrated Environments (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -1128,7 +1189,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-1"]]: {
     id: "MLTSS-POM-1",
-    title: "POM: People live in integrated environments (MLTSS)",
+    title: "POM: People Live in Integrated Environments (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1140,10 +1201,10 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People live in integrated environments (MLTSS)",
+        text: "POM: People Live in Integrated Environments (MLTSS)",
       },
       measureInstructions,
-      feeForServiceMeasureResultsSubheader,
+      managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRatePOM,
       {
@@ -1178,7 +1239,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-2"]]: {
     id: "FFS-POM-2",
-    title: "POM: People participate in the life of the community (FFS LTSS)",
+    title: "POM: People Participate in the Life of the Community (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1190,7 +1251,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People participate in the life of the community (FFS LTSS)",
+        text: "POM: People Participate in the Life of the Community (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -1206,7 +1267,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-2"]]: {
     id: "MLTSS-POM-1",
-    title: "POM: People participate in the life of the community (MLTSS)",
+    title: "POM: People Participate in the Life of the Community (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1218,10 +1279,10 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People participate in the life of the community (MLTSS)",
+        text: "POM: People Participate in the Life of the Community (MLTSS)",
       },
       measureInstructions,
-      feeForServiceMeasureResultsSubheader,
+      managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRatePOM,
       {
@@ -1256,7 +1317,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-3"]]: {
     id: "FFS-POM-3",
-    title: "POM: People choose services (FFS LTSS)",
+    title: "POM: People Choose Services (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1268,7 +1329,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People choose services (FFS LTSS)",
+        text: "POM: People Choose Services (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -1284,7 +1345,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-3"]]: {
     id: "MLTSS-POM-3",
-    title: "POM: People choose services (MLTSS)",
+    title: "POM: People Choose Services (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1296,10 +1357,10 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People choose services (MLTSS)",
+        text: "POM: People Choose Services (MLTSS)",
       },
       measureInstructions,
-      feeForServiceMeasureResultsSubheader,
+      managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRatePOM,
       {
@@ -1312,7 +1373,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-4"]]: {
     id: "POM-4",
-    title: "POM: People Realize Personal Goalss",
+    title: "POM: People Realize Personal Goals",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1334,7 +1395,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-4"]]: {
     id: "FFS-POM-4",
-    title: "POM: People realize personal goals (FFS LTSS)",
+    title: "POM: People Realize Personal Goals (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1346,7 +1407,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People realize personal goals (FFS LTSS)",
+        text: "POM: People Realize Personal Goals (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -1362,7 +1423,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-4"]]: {
     id: "MLTSS-POM-4",
-    title: "POM: People participate in the life of the community (MLTSS)",
+    title: "POM: People Realize Personal Goals (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1374,10 +1435,10 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People realize personal goals (MLTSS)",
+        text: "POM: People Realize Personal Goals (MLTSS)",
       },
       measureInstructions,
-      feeForServiceMeasureResultsSubheader,
+      managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRatePOM,
       {
@@ -1412,35 +1473,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-5"]]: {
     id: "FFS-POM-5",
-    title: "POM: People are free from abuse and neglect (FFS LTSS)",
-    type: PageType.MeasureResults,
-    sidebar: false,
-    elements: [
-      {
-        type: ElementType.ButtonLink,
-        id: "return-button",
-        label: "Return to Measure Information",
-        to: "POM-3",
-      },
-      {
-        ...measureHeader,
-        text: "POM: People are free from abuse and neglect (FFS LTSS)",
-      },
-      measureInstructions,
-      feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
-      performanceRatePOM,
-      {
-        type: ElementType.MeasureFooter,
-        id: "measure-footer",
-        prevTo: "POM-3",
-        completeSection: true,
-      },
-    ],
-  },
-  [MeasureTemplateName["MLTSS-POM-5"]]: {
-    id: "MLTSS-POM-5",
-    title: "POM: People are free from abuse and neglect (MLTSS)",
+    title: "POM: People are Free from Abuse and Neglect (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1452,10 +1485,38 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People are free from abuse and neglect (MLTSS)",
+        text: "POM: People are Free from Abuse and Neglect (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
+      ...whichMedicaidHCBSprograms,
+      performanceRatePOM,
+      {
+        type: ElementType.MeasureFooter,
+        id: "measure-footer",
+        prevTo: "POM-5",
+        completeSection: true,
+      },
+    ],
+  },
+  [MeasureTemplateName["MLTSS-POM-5"]]: {
+    id: "MLTSS-POM-5",
+    title: "POM: People are Free from Abuse and Neglect (MLTSS)",
+    type: PageType.MeasureResults,
+    sidebar: false,
+    elements: [
+      {
+        type: ElementType.ButtonLink,
+        id: "return-button",
+        label: "Return to Measure Information",
+        to: "POM-5",
+      },
+      {
+        ...measureHeader,
+        text: "POM: People are Free from Abuse and Neglect (MLTSS)",
+      },
+      measureInstructions,
+      managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRatePOM,
       {
@@ -1490,7 +1551,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-6"]]: {
     id: "FFS-POM-6",
-    title: "POM: People choose services (FFS LTSS)",
+    title: "POM: People Have the Best Possible Health (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1502,7 +1563,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People choose services (FFS LTSS)",
+        text: "POM: People Have the Best Possible Health (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -1518,7 +1579,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-6"]]: {
     id: "MLTSS-POM-6",
-    title: "POM: People have the best possible health (MLTSS)",
+    title: "POM: People Have the Best Possible Health (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1530,10 +1591,10 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "POM: People have the best possible health (MLTSS)",
+        text: "POM: People Have the Best Possible Health (MLTSS)",
       },
       measureInstructions,
-      feeForServiceMeasureResultsSubheader,
+      managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRatePOM,
       {
@@ -1568,7 +1629,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-7"]]: {
     id: "FFS-POM-7",
-    title: "People interact with other members of the community (FFS LTSS)",
+    title: "People Interact with Other Members of the Community (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1580,7 +1641,7 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "People interact with other members of the community (FFS LTSS)",
+        text: "People Interact with Other Members of the Community (FFS LTSS)",
       },
       measureInstructions,
       feeForServiceMeasureResultsSubheader,
@@ -1596,7 +1657,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-7"]]: {
     id: "MLTSS-POM-7",
-    title: "People interact with other members of the community (MLTSS)",
+    title: "People Interact with Other Members of the Community (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1608,10 +1669,10 @@ export const measureTemplates: Record<
       },
       {
         ...measureHeader,
-        text: "People interact with other members of the community (MLTSS)",
+        text: "People Interact with Other Members of the Community (MLTSS)",
       },
       measureInstructions,
-      feeForServiceMeasureResultsSubheader,
+      managedCareMeasureResultsSubheader,
       ...whichMedicaidHCBSprograms,
       performanceRatePOM,
       {
