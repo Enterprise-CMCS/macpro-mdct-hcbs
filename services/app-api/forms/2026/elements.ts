@@ -107,6 +107,7 @@ export const wereTheResultsAudited: RadioTemplate = {
           id: "measure-audited-entity",
           label:
             "Enter the name of the entity that conducted the audit or validation.",
+          required: true,
         },
       ],
     },
@@ -142,6 +143,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
           type: ElementType.TextAreaField,
           id: "measure-following-tech-specs-no-explain",
           label: "Please explain the variance.",
+          required: true,
         },
       ],
     },

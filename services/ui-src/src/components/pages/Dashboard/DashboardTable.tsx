@@ -58,11 +58,11 @@ export const HorizontalTable = (
           {showEditNameColumn && (
             <Td fontWeight={"bold"}>
               <button onClick={() => openAddEditReportModal(report)}>
-                <Image src={editIcon} alt="Edit Report Name" />
+                <Image src={editIcon} alt="Edit Report Name" minW={"1.75rem"} />
               </button>
             </Td>
           )}
-          <Td fontWeight={"bold"}>
+          <Td fontWeight={"bold"} maxWidth={"14.25rem"}>
             {report.name ? report.name : "{Name of form}"}
           </Td>
           <Td>
@@ -133,7 +133,11 @@ export const VerticleTable = (
             <HStack>
               {showEditNameColumn && (
                 <button onClick={() => openAddEditReportModal(report)}>
-                  <Image src={editIcon} alt="Edit Report Name" />
+                  <Image
+                    src={editIcon}
+                    alt="Edit Report Name"
+                    minW={"1.75rem"}
+                  />
                 </button>
               )}
               <Text fontWeight="bold">{report.name}</Text>
