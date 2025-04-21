@@ -107,6 +107,7 @@ export const wereTheResultsAudited: RadioTemplate = {
           id: "measure-audited-entity",
           label:
             "Enter the name of the entity that conducted the audit or validation.",
+          required: true,
         },
       ],
     },
@@ -142,6 +143,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
           type: ElementType.TextAreaField,
           id: "measure-following-tech-specs-no-explain",
           label: "Please explain the variance.",
+          required: true,
         },
       ],
     },
@@ -438,7 +440,7 @@ export const sectionCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
   title: "Measure has been completed",
-  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. Click here or select ‘Return to measure details’ link above to return to the previous page.",
+  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. {ReturnButton} or select ‘Return to measure details’ link above to return to the previous page.",
   status: "success",
 };
 
@@ -446,6 +448,6 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
   title: "Measure has been completed",
-  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. Click here or select ‘Return to measure details’ link above to return to the previous page.",
+  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. {ReturnButton} or select ‘Return to measure details’ link above to return to the previous page.",
   status: "success",
 };

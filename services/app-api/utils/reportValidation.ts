@@ -76,6 +76,7 @@ const textAreaTemplateSchema = object().shape({
     })
     .notRequired()
     .default(undefined),
+  required: boolean().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
