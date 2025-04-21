@@ -29,6 +29,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
           year: report.year,
           ...performanceRateProp,
           calculation: Calculation,
+          disabled: disabled,
         }}
       ></PerformanceRate>
     </Stack>
