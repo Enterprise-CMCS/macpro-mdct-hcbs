@@ -92,6 +92,7 @@ export const NDR = (
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={value.numerator ?? ""}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Denominator"
@@ -99,6 +100,7 @@ export const NDR = (
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
               value={value.denominator ?? ""}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Rate"

@@ -66,6 +66,7 @@ export const Fields = (
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue.rates[0].performanceTarget ?? ""}
+        disabled={disabled}
       ></CmsdsTextField>
       {fields?.map((field) => {
         return (

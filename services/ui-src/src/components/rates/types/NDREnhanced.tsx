@@ -89,6 +89,7 @@ export const NDREnhanced = (
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue?.denominator ?? ""}
+        disabled={disabled}
       ></CmsdsTextField>
       {assessments?.map((assess, index) => {
         const value =
