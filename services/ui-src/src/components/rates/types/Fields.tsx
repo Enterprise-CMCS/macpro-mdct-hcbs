@@ -65,7 +65,7 @@ export const Fields = (
         name={`0.performanceTarget`}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        value={displayValue.rates[0].performanceTarget}
+        value={displayValue.rates[0].performanceTarget ?? ""}
       ></CmsdsTextField>
       {fields?.map((field) => {
         return (
@@ -74,7 +74,7 @@ export const Fields = (
             name={`0.${field.id}`}
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
-            value={displayValue.rates[0][field.id]}
+            value={displayValue.rates[0][field.id] ?? ""}
             disabled={field.autoCalc || disabled}
           ></CmsdsTextField>
         );

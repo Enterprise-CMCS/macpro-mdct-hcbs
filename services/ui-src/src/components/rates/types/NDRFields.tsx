@@ -110,7 +110,7 @@ export const NDRFields = (
               name={`${assessIndex}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={rateSet?.denominator}
+              value={rateSet?.denominator ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
 
@@ -131,7 +131,7 @@ export const NDRFields = (
                     name={`${assessIndex}.rates.${fieldIndex}.performanceTarget`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value?.performanceTarget}
+                    value={value?.performanceTarget ?? ""}
                     disabled={disabled}
                   ></CmsdsTextField>
                   <CmsdsTextField
@@ -139,7 +139,7 @@ export const NDRFields = (
                     name={`${assessIndex}.rates.${fieldIndex}.numerator`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value?.numerator}
+                    value={value?.numerator ?? ""}
                     disabled={disabled}
                   ></CmsdsTextField>
                   <CmsdsTextField
@@ -147,14 +147,14 @@ export const NDRFields = (
                     name={`${assessIndex}.rates.${fieldIndex}.denominator`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value?.denominator}
+                    value={value?.denominator ?? ""}
                     disabled
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`${field.label} Rate (${assess.label})`}
                     name={`${assessIndex}.rates.${fieldIndex}.rate`}
                     hint="Auto-calculates"
-                    value={value?.rate}
+                    value={value?.rate ?? ""}
                     disabled
                   ></CmsdsTextField>
                 </Stack>

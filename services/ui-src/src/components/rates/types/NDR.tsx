@@ -83,7 +83,7 @@ export const NDR = (
               name={`${index}.performanceTarget`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.performanceTarget}
+              value={value.performanceTarget ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
@@ -91,20 +91,20 @@ export const NDR = (
               name={`${index}.numerator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.numerator}
+              value={value.numerator ?? ""}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Denominator"
               name={`${index}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.denominator}
+              value={value.denominator ?? ""}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Rate"
               name={`${index}.rate`}
               hint="Auto-calculates"
-              value={value.rate}
+              value={value.rate ?? ""}
               disabled
             ></CmsdsTextField>
             <Divider></Divider>
