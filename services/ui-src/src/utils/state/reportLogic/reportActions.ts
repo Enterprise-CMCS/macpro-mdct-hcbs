@@ -153,7 +153,7 @@ export const substitute = (
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  const substitute = selectMeasure.substitutable?.toString();
+  const substitute = selectMeasure?.substitutable?.toString();
   const measure = measures.find((measure) => measure.id.includes(substitute!));
   if (measure) {
     measure.required = true;
