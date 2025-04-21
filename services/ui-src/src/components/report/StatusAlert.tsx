@@ -1,18 +1,23 @@
-// import { useStore } from "utils";
+import { useStore } from "utils";
 import { Alert } from "components/alerts/Alert";
 import { PageElementProps } from "./Elements";
-import { StatusAlertTemplate } from "types";
+import { PageStatus, StatusAlertTemplate } from "types";
+import { submittableMetricsSelector } from "utils/state/selectors";
+import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 
 export const StatusAlert = (props: PageElementProps) => {
   const alert = props.element as StatusAlertTemplate;
-  // const { report } = useStore();
+  const { report, currentPageId } = useStore();
+  const submittableMetrics = useStore(submittableMetricsSelector);
 
-  const submittable = () => {
-    //TO DO: wait for Ben's part to finish to do a check
-    return false;
-  };
+  if (!report || !currentPageId) return <></>;
 
-  if (submittable()) {
+  const isReviewPage = currentPageId === "review-submit";
+  if (isReviewPage && submittableMetrics?.submittable) {
+    return <></>;
+  } else if (
+    inferredReportStatus(report, currentPageId) !== PageStatus.COMPLETE
+  ) {
     return <></>;
   }
 

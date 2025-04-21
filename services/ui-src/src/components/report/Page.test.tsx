@@ -159,6 +159,10 @@ const elements: PageElement[] = [
     text: "mock status",
     status: AlertTypes.ERROR,
   },
+  {
+    type: ElementType.SubmissionParagraph,
+    id: "",
+  },
 ];
 
 const textFieldElement: PageElement[] = [

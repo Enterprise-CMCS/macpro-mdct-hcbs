@@ -12,6 +12,7 @@ import {
   RadioTemplate,
   RateCalc,
   ReportingRadioTemplate,
+  StatusAlertTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
@@ -212,13 +213,11 @@ export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplat
       controllerElementId: "measure-reporting-radio",
       answer: "no",
     },
-    required: true,
   };
 
 export const measureFooter: MeasureFooterTemplate = {
   type: ElementType.MeasureFooter,
   id: "measure-footer",
-  prevTo: "req-measure-result",
   completeMeasure: true,
   clear: true,
 };
@@ -340,7 +339,7 @@ export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
       id: "count-of-success",
       label: "Count of Successful Discharges to the Community",
     },
-    { id: "fac-admin-count", label: "Facility Admission Count" },
+    { id: "fac-count", label: "Facility Admission Count" },
     {
       id: "expected-count-of-success",
       label: "Expected Count of Successful Discharges to the Community",
@@ -375,12 +374,12 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
     "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
-      id: "count-of-success-transitions",
+      id: "count-of-success",
       label: "Count of Successful Transitions to the Community",
     },
-    { id: "long-term-facility-count", label: "Long-Term Facility Stay Count" },
+    { id: "fac-count", label: "Long-Term Facility Stay Count" },
     {
-      id: "expected-count-of-success-dis",
+      id: "expected-count-of-success",
       label: "Expected Count of Successful Transitions to the Community",
     },
     { id: "multi-plan", label: "Multi-Plan Population Rate" },
@@ -401,6 +400,7 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
     },
   ],
   rateType: PerformanceRateType.FIELDS,
+  required: true,
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
@@ -444,4 +444,20 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
     { id: "18-to-64-years", label: "18 to 64 Years" },
     { id: "65-years-or-older", label: "65 years or older" },
   ],
+};
+
+export const sectionCompleteBanner: StatusAlertTemplate = {
+  type: ElementType.StatusAlert,
+  id: "status-alert",
+  title: "Measure has been completed",
+  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. Click here or select ‘Return to measure details’ link above to return to the previous page.",
+  status: "success",
+};
+
+export const measureCompleteBanner: StatusAlertTemplate = {
+  type: ElementType.StatusAlert,
+  id: "status-alert",
+  title: "Measure has been completed",
+  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. Click here or select ‘Return to measure details’ link above to return to the previous page.",
+  status: "success",
 };

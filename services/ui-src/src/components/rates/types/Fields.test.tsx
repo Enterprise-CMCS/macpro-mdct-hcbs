@@ -39,7 +39,7 @@ const mockedPerformanceElement = {
       id: "count-of-success",
       label: "Count of Successful Discharges to the Community",
     },
-    { id: "fac-admin-count", label: "Facility Admission Count" },
+    { id: "fac-count", label: "Facility Admission Count" },
     {
       id: "expected-count-of-success",
       label: "Expected Count of Successful Discharges to the Community",

@@ -8,8 +8,6 @@ export const useElementIsHidden = (hideCondition?: HideCondition) => {
   const form = useFormContext();
   const [hideElement, setHideElement] = useState<boolean>(false);
 
-  if (!hideCondition) return hideElement;
-
   useEffect(() => {
     const formValues = form.getValues() as any;
     if (formValues && Object.keys(formValues).length === 0) {

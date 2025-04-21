@@ -4,7 +4,7 @@ import {
   getReportsForState,
   putReport,
   releaseReport,
-  submitReport,
+  postSubmitReport,
   updateArchivedStatus,
 } from "./report";
 // types
@@ -58,7 +58,7 @@ describe("utils/report", () => {
   });
 
   test("submitReport", async () => {
-    await submitReport(report);
+    await postSubmitReport(report);
     expect(mockPost).toHaveBeenCalledTimes(1);
   });
 

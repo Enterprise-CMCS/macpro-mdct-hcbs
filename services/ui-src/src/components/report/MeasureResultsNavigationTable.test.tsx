@@ -3,7 +3,10 @@ import { render, screen } from "@testing-library/react";
 import { mockUseStore } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
-import { ElementType } from "types/report";
+import {
+  ElementType,
+  MeasureResultsNavigationTableTemplate,
+} from "types/report";
 
 jest.mock("utils/state/useStore", () => ({
   useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
@@ -38,9 +41,28 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
+const mockedMeasureResultsNavigationTableElement = {
+  type: ElementType.MeasureResultsNavigationTable,
+  id: "test measure results table",
+  measureDisplay: "quality",
+  hideCondition: {
+    controllerElementId: "reporting-radio",
+    answer: "yes",
+  },
+  required: true,
+} as MeasureResultsNavigationTableTemplate;
+
+const MeasureResultsNavigationTableComponent = (
+  <MeasureResultsNavigationTableElement
+    element={mockedMeasureResultsNavigationTableElement}
+    index={0}
+    formkey="elements.0"
+  />
+);
+
 describe("Measure Results Navigation Table", () => {
   it("should enable each delivery system's button correctly", async () => {
-    render(<MeasureResultsNavigationTableElement />);
+    render(MeasureResultsNavigationTableComponent);
 
     const ffsRow = screen.getByRole("row", { name: /FFS CMIT# 960/ });
     const ffsButton = ffsRow.querySelector("button");

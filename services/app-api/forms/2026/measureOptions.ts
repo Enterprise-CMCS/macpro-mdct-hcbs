@@ -174,7 +174,18 @@ export const defaultMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["LTSS-4"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-4"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-4"],
+      },
+    ],
   },
   {
     cmit: 1255,
@@ -218,7 +229,18 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-1"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-POM-1"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-POM-1"],
+      },
+    ],
   },
   {
     cmit: 1822,
@@ -226,7 +248,18 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-2"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-POM-2"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-POM-2"],
+      },
+    ],
   },
   {
     cmit: 1822,
@@ -234,7 +267,18 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-3"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-POM-3"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-POM-3"],
+      },
+    ],
   },
   {
     cmit: 1822,
@@ -242,7 +286,18 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-4"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-POM-4"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-POM-4"],
+      },
+    ],
   },
   {
     cmit: 1822,
@@ -250,7 +305,18 @@ export const pomMeasures: MeasureOptions[] = [
     required: true,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-5"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-POM-5"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-POM-5"],
+      },
+    ],
   },
   {
     cmit: 1822,
@@ -258,7 +324,18 @@ export const pomMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-6"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-POM-6"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-POM-6"],
+      },
+    ],
   },
   {
     cmit: 1822,
@@ -266,6 +343,17 @@ export const pomMeasures: MeasureOptions[] = [
     required: false,
     stratified: false,
     measureTemplate: MeasureTemplateName["POM-7"],
-    dependentPages: [],
+    dependentPages: [
+      {
+        key: DeliverySystem.FFS,
+        linkText: "Delivery Method: FFS",
+        template: MeasureTemplateName["FFS-POM-7"],
+      },
+      {
+        key: DeliverySystem.MLTSS,
+        linkText: "Delivery Method: MLTSS",
+        template: MeasureTemplateName["MLTSS-POM-7"],
+      },
+    ],
   },
 ];

@@ -4,6 +4,7 @@ import {
   aws_iam as iam,
   aws_logs as logs,
   aws_wafv2 as wafv2,
+  aws_ec2 as ec2,
   CfnOutput,
   Duration,
   RemovalPolicy,
@@ -13,6 +14,8 @@ import { WafConstruct } from "../constructs/waf";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isLocalStack } from "../local/util";
 import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
+import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
+import { isDefined } from "../utils/misc";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -24,6 +27,9 @@ interface CreateApiComponentsProps {
   tables: DynamoDBTableIdentifiers[];
   iamPermissionsBoundary: iam.IManagedPolicy;
   iamPath: string;
+  vpc: ec2.IVpc;
+  kafkaAuthorizedSubnets: ec2.ISubnet[];
+  brokerString: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -32,6 +38,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     stage,
     project,
     isDev,
+    vpc,
+    kafkaAuthorizedSubnets,
+    brokerString,
     userPoolId,
     userPoolClientId,
     tables,
@@ -40,6 +49,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   } = props;
 
   const service = "app-api";
+
+  const kafkaSecurityGroup = new ec2.SecurityGroup(
+    scope,
+    "KafkaSecurityGroup",
+    {
+      vpc,
+      description:
+        "Security Group for streaming functions. Egress all is set by default.",
+      allowAllOutbound: true,
+    }
+  );
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
@@ -95,6 +115,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...Object.fromEntries(
       tables.map((table) => [`${table.id}Table`, table.name])
     ),
+    BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     COGNITO_USER_POOL_ID: userPoolId || process.env.COGNITO_USER_POOL_ID,
     COGNITO_USER_POOL_CLIENT_ID:
       userPoolClientId || process.env.COGNITO_USER_POOL_CLIENT_ID,
@@ -111,9 +132,21 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       ],
       resources: tables.map((table) => table.arn),
     }),
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        "dynamodb:DescribeStream",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:ListShards",
+        "dynamodb:ListStreams",
+      ],
+      resources: tables.map((table) => table.streamArn).filter(isDefined),
+    }),
   ];
 
   const commonProps = {
+    brokerString,
     stackName: `${service}-${stage}`,
     api,
     environment,
@@ -200,6 +233,23 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/release/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
+  });
+
+  new LambdaDynamoEventSource(scope, "postKafkaData", {
+    entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
+    handler: "handler",
+    timeout: Duration.seconds(120),
+    memorySize: 2048,
+    retryAttempts: 2,
+    vpc,
+    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
+    securityGroups: [kafkaSecurityGroup],
+    ...commonProps,
+    environment: {
+      topicNamespace: isDev ? `--${project}--${stage}--` : "",
+      ...commonProps.environment,
+    },
+    tables: tables.filter((table) => table.id === "QmsReports"),
   });
 
   if (!isLocalStack) {

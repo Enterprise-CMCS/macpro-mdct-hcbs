@@ -12,11 +12,14 @@ import {
   ParentPageTemplate,
   Report,
 } from "types/report";
-import { putReport } from "utils/api/requestMethods/report";
+import { putReport, postSubmitReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
 
-export const buildState = (report: Report | undefined) => {
+export const buildState = (
+  report: Report | undefined,
+  preserveCurrentPage: boolean
+) => {
   if (!report) return { report: undefined };
   const pageMap = new Map<string, number>(
     report.pages.map((page, index) => [page.id, index])
@@ -27,9 +30,17 @@ export const buildState = (report: Report | undefined) => {
     childPageIds: rootPage.childPageIds,
     index: 0,
   };
-  const currentPageId = parentPage.childPageIds[parentPage.index];
 
-  return { report, pageMap, rootPage, parentPage, currentPageId };
+  const currentPageId = parentPage.childPageIds[parentPage.index];
+  const state: Partial<HcbsReportState> = {
+    report,
+    pageMap,
+    rootPage,
+    parentPage,
+    currentPageId,
+  };
+  if (preserveCurrentPage) delete state.currentPageId;
+  return state;
 };
 
 export const setPage = (
@@ -142,7 +153,7 @@ export const substitute = (
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  const substitute = selectMeasure.substitutable?.toString();
+  const substitute = selectMeasure?.substitutable?.toString();
   const measure = measures.find((measure) => measure.id.includes(substitute!));
   if (measure) {
     measure.required = true;

@@ -1,3 +1,4 @@
+import { logger } from "../../libs/debug-lib";
 import { handler } from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
@@ -5,6 +6,7 @@ import { putReport } from "../../storage/reports";
 import { Report, ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
+import { validateReportPayload } from "../../utils/reportValidation";
 
 export const submitReport = handler(parseReportParameters, async (request) => {
   const { reportType, state, id } = request.parameters;
@@ -32,12 +34,22 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   report.status = ReportStatus.SUBMITTED;
   report.lastEdited = Date.now();
   report.lastEditedBy = user.fullName;
+  report.lastEditedByEmail = user.email;
+  report.submitted = Date.now();
+  report.submittedBy = user.fullName;
+  report.submittedByEmail = user.email;
   report.submissionCount += 1;
 
-  // leave space for validating that the report can be submitted
+  let validatedPayload: Report | undefined;
+  try {
+    validatedPayload = await validateReportPayload(report);
+  } catch (err) {
+    logger.error(err);
+    return badRequest("Invalid request");
+  }
 
   // save the report that's being submitted (with the new information on top of it)
-  await putReport(report);
+  await putReport(validatedPayload);
 
-  return ok();
+  return ok(validatedPayload);
 });

@@ -23,6 +23,7 @@ const headerTemplateSchema = object().shape({
   type: string().required(ElementType.Header),
   id: string().required(),
   text: string().required(),
+  icon: string().notRequired(),
 });
 
 const subHeaderTemplateSchema = object().shape({
@@ -50,6 +51,7 @@ const paragraphTemplateSchema = object().shape({
   id: string().required(),
   text: string().required(),
   title: string().notRequired(),
+  weight: string().notRequired(),
 });
 
 const textboxTemplateSchema = object().shape({
@@ -170,6 +172,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return statusAlertSchema;
     case ElementType.Divider:
       return dividerSchema;
+    case ElementType.SubmissionParagraph:
+      return submissionParagraphSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -228,6 +232,11 @@ const dividerSchema = object().shape({
   id: string().required(),
 });
 
+const submissionParagraphSchema = object().shape({
+  type: string().required(ElementType.SubmissionParagraph),
+  id: string().required(),
+});
+
 const measureTableTemplateSchema = object().shape({
   type: string().required(ElementType.MeasureTable),
   id: string().required(),
@@ -247,7 +256,6 @@ const measureResultsNavigationTableTemplateSchema = object().shape({
     })
     .notRequired()
     .default(undefined),
-  required: boolean().notRequired(),
 });
 
 const statusTableTemplateSchema = object().shape({
@@ -264,7 +272,7 @@ const measureDetailsTemplateSchema = object().shape({
 const measureFooterSchema = object().shape({
   type: string().required(ElementType.MeasureFooter),
   id: string().required(),
-  prevTo: string().required(),
+  prevTo: string().notRequired(),
   nextTo: string().notRequired(),
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
@@ -355,6 +363,10 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 
+const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
+  submittedView: array().of(pageElementSchema).required(),
+});
+
 const measureOptionsArraySchema = array().of(
   object().shape({
     cmit: number().required(),
@@ -396,10 +408,15 @@ const pagesSchema = array()
           throw new Error();
         }
       } else {
-        if (pageObject.type == PageType.Measure) {
-          return measurePageTemplateSchema;
+        switch (pageObject.type) {
+          case PageType.ReviewSubmit:
+            return reviewSubmitTemplateSchema;
+          case PageType.Measure:
+            return measurePageTemplateSchema;
+          case PageType.Standard:
+          default:
+            return formPageTemplateSchema;
         }
-        return formPageTemplateSchema;
       }
     })
   )
@@ -433,7 +450,10 @@ const reportValidateSchema = object().shape({
   created: number().notRequired(),
   lastEdited: number().notRequired(),
   lastEditedBy: string().required(),
-  lastEditedByEmail: string().required(),
+  lastEditedByEmail: string().notRequired(),
+  submitted: number().notRequired(),
+  submittedBy: string().notRequired(),
+  submittedByEmail: string().notRequired(),
   status: mixed<ReportStatus>().oneOf(Object.values(ReportStatus)).required(),
   name: string().notRequired(),
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),

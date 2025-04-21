@@ -52,39 +52,42 @@ export interface MeasureOptions {
 
 export enum MeasureTemplateName {
   // required measures
-  "FFS-1" = "FFS-1",
-  "FFS-2" = "FFS-2",
-  "FFS-3" = "FFS-3",
-  "FFS-6" = "FFS-6",
-  "FFS-7" = "FFS-7",
-  "FFS-8" = "FFS-8",
-  "MLTSS-1" = "MLTSS-1",
-  "MLTSS-2" = "MLTSS-2",
-  "MLTSS-3" = "MLTSS-3",
-  "MLTSS-6" = "MLTSS-6",
-  "MLTSS-7" = "MLTSS-7",
-  "MLTSS-8" = "MLTSS-8",
   "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
   "LTSS-8" = "LTSS-8",
+  "FFS-1" = "FFS-1",
+  "FFS-2" = "FFS-2",
+  "FFS-6" = "FFS-6",
+  "FFS-7" = "FFS-7",
+  "FFS-8" = "FFS-8",
+  "MLTSS-1" = "MLTSS-1",
+  "MLTSS-2" = "MLTSS-2",
+  "MLTSS-6" = "MLTSS-6",
+  "MLTSS-7" = "MLTSS-7",
+  "MLTSS-8" = "MLTSS-8",
   // optional measures
+  "MLTSS" = "MLTSS",
+  "LTSS-3" = "LTSS-3",
+  "LTSS-4" = "LTSS-4",
+  "LTSS-5" = "LTSS-5",
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
+  "HCBS-10" = "HCBS-10",
+  "FFS-3" = "FFS-3",
+  "FFS-4" = "FFS-4",
+  "MLTSS-3" = "MLTSS-3",
+  "MLTSS-4" = "MLTSS-4",
   "FFS-FASI-1" = "FFS-FASI-1",
   "FFS-FASI-2" = "FFS-FASI-2",
   "MLTSS-FASI-1" = "MLTSS-FASI-1",
   "MLTSS-FASI-2" = "MLTSS-FASI-2",
-  "HCBS-10" = "HCBS-10",
-  "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
-  "LTSS-3" = "LTSS-3",
-  "LTSS-4" = "LTSS-4",
-  "LTSS-5" = "LTSS-5",
+  // unique
+  "MLTSS-DM" = "MLTSS-DM",
   "LTSS-5-PT1" = "LTSS-5-PT1",
   "LTSS-5-PT2" = "LTSS-5-PT2",
-  "MLTSS" = "MLTSS",
-  "MLTSS-DM" = "MLTSS-DM",
+  "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
   // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
@@ -93,6 +96,20 @@ export enum MeasureTemplateName {
   "POM-5" = "POM-5",
   "POM-6" = "POM-6",
   "POM-7" = "POM-7",
+  "FFS-POM-1" = "FFS-POM-1",
+  "FFS-POM-2" = "FFS-POM-2",
+  "FFS-POM-3" = "FFS-POM-3",
+  "FFS-POM-4" = "FFS-POM-4",
+  "FFS-POM-5" = "FFS-POM-5",
+  "FFS-POM-6" = "FFS-POM-6",
+  "FFS-POM-7" = "FFS-POM-7",
+  "MLTSS-POM-1" = "MLTSS-POM-1",
+  "MLTSS-POM-2" = "MLTSS-POM-2",
+  "MLTSS-POM-3" = "MLTSS-POM-3",
+  "MLTSS-POM-4" = "MLTSS-POM-4",
+  "MLTSS-POM-5" = "MLTSS-POM-5",
+  "MLTSS-POM-6" = "MLTSS-POM-6",
+  "MLTSS-POM-7" = "MLTSS-POM-7",
 }
 
 export enum ReportStatus {
@@ -112,11 +129,18 @@ export interface Report extends ReportTemplate {
   state: string;
   created?: number;
   lastEdited?: number;
-  lastEditedBy: string;
-  lastEditedByEmail: string;
+  lastEditedBy?: string;
+  lastEditedByEmail?: string;
+  submitted?: number;
+  submittedBy?: string;
+  submittedByEmail?: string;
   status: ReportStatus;
   submissionCount: number;
   archived: boolean;
+}
+
+export interface ReviewSubmitTemplate extends FormPageTemplate {
+  submittedView: PageElement[];
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -164,7 +188,12 @@ export interface Form {
 export type ReportTemplate = ReportOptions & {
   type: ReportType;
   title: string;
-  pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
+  pages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[];
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     pomMeasures: MeasureOptions[];
@@ -175,7 +204,8 @@ export type ReportTemplate = ReportOptions & {
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate
-  | MeasurePageTemplate;
+  | MeasurePageTemplate
+  | ReviewSubmitTemplate;
 
 export type ParentPageTemplate = {
   id: PageId;
@@ -212,6 +242,7 @@ export enum PageType {
   Modal = "modal",
   Measure = "measure",
   MeasureResults = "measureResults",
+  ReviewSubmit = "reviewSubmit",
 }
 
 export enum ElementType {
@@ -236,6 +267,7 @@ export enum ElementType {
   PerformanceRate = "performanceRate",
   StatusAlert = "statusAlert",
   Divider = "divider",
+  SubmissionParagraph = "submissionParagraph",
 }
 
 export type PageElement =
@@ -259,18 +291,25 @@ export type PageElement =
   | MeasureFooterTemplate
   | PerformanceRateTemplate
   | StatusAlertTemplate
-  | DividerTemplate;
+  | DividerTemplate
+  | SubmissionParagraphTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
   answer: string;
 };
 
+export enum HeaderIcon {
+  Check = "check",
+}
+
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
   text: string;
+  icon?: HeaderIcon;
 };
+
 export const isHeaderTemplate = (
   element: PageElement
 ): element is HeaderTemplate => {
@@ -296,6 +335,7 @@ export type ParagraphTemplate = {
   id: string;
   title?: string;
   text: string;
+  weight?: string;
 };
 
 export type TextboxTemplate = {
@@ -337,6 +377,11 @@ export type DropdownTemplate = {
 
 export type DividerTemplate = {
   type: ElementType.Divider;
+  id: string;
+};
+
+export type SubmissionParagraphTemplate = {
+  type: ElementType.SubmissionParagraph;
   id: string;
 };
 
@@ -398,7 +443,7 @@ export type MeasureDetailsTemplate = {
 export type MeasureFooterTemplate = {
   type: ElementType.MeasureFooter;
   id: string;
-  prevTo: string;
+  prevTo?: string;
   nextTo?: string;
   completeMeasure?: boolean;
   completeSection?: boolean;
@@ -469,7 +514,6 @@ export type MeasureResultsNavigationTableTemplate = {
   type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
-  required?: boolean;
   hideCondition?: HideCondition;
 };
 

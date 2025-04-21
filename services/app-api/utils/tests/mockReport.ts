@@ -123,6 +123,55 @@ export const invalidFormPageReport = {
   ],
 };
 
+export const invalidMeasurePageReport = {
+  ...validReport,
+  pages: [
+    {
+      id: "my-measure",
+      // missing title field
+      type: PageType.Measure,
+      cmitId: "abc",
+      required: true,
+      substitutable: true,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          text: "General Information",
+        },
+        {
+          type: ElementType.SubHeader,
+          text: "State of Program Information",
+        },
+        {
+          type: ElementType.Textbox,
+          label: "Contact title",
+          helperText:
+            "Enter person's title or a position title for CMS to contact with questions about this request.",
+        },
+        {
+          type: ElementType.Textbox,
+          label: "Contact email address",
+          helperText:
+            "Enter email address. Department or program-wide email addresses ok.",
+        },
+        {
+          type: ElementType.Date,
+          label: "Reporting period start date",
+          helperText:
+            "What is the reporting period Start Date applicable to the measure results?",
+        },
+        {
+          type: ElementType.Date,
+          label: "Reporting period end date",
+          helperText:
+            "What is the reporting period End Date applicable to the measure results?",
+        },
+      ],
+    },
+  ],
+};
+
 export const invalidParentPageReport = {
   ...validReport,
   pages: [

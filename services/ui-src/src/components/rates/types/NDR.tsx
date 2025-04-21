@@ -18,7 +18,7 @@ export const NDR = (
       return {
         numerator: "",
         denominator: "",
-        rate: "",
+        rate: undefined,
         performanceTarget: "",
         id: assess.id,
       };

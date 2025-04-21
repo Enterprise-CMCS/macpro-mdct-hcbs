@@ -19,13 +19,14 @@ import { currentPageSelector } from "utils/state/selectors";
 
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
+import { isReviewSubmitPage, ReportStatus } from "types";
 
 export const ReportPageWrapper = () => {
   const {
     report,
     pageMap,
     parentPage,
-    setReport,
+    loadReport: setReport,
     setAnswers,
     setCurrentPageId,
     saveReport,
@@ -100,6 +101,12 @@ export const ReportPageWrapper = () => {
     navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
   };
 
+  const submittedView =
+    isReviewSubmitPage(currentPage) &&
+    report?.status === ReportStatus.SUBMITTED;
+  const renderedElements = submittedView
+    ? currentPage.submittedView
+    : currentPage.elements;
   return (
     <FormProvider {...methods}>
       <HStack width="100%" height="100%" position="relative" spacing="0">
@@ -119,7 +126,7 @@ export const ReportPageWrapper = () => {
               onBlur={handleSubmit(handleBlur, handleError)}
             >
               {currentPage.elements && (
-                <Page elements={currentPage.elements ?? []}></Page>
+                <Page elements={renderedElements ?? []}></Page>
               )}
             </form>
           </Box>
