@@ -54,23 +54,21 @@ export const ReportPageWrapper = () => {
     }
   }, [pageId]);
 
-  const useDebounce = (func: Function, arg: any, delay: number = 2000) => {
+  const useDebounce = (func: Function, delay: number = 2000) => {
     if (timerId) clearTimeout(timerId);
 
     let timer = setTimeout(() => {
-      func(arg);
+      func();
     }, delay);
     setTimerId(timer);
   };
 
   const handleChange = async (data: any) => {
     useDebounce(() => {
-      {
-        if (!report) return;
-        setAnswers(data);
-        saveReport();
-      }
-    }, data);
+      if (!report) return;
+      setAnswers(data);
+      saveReport();
+    });
   };
 
   const handleError = async (errors: any) => {
