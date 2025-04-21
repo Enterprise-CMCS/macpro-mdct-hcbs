@@ -46,7 +46,7 @@ export const determineDeploymentConfig = async (stage: string) => {
 };
 
 export const loadDefaultSecret = async (project: string, stage?: string) => {
-  if (isLocalStack || stage === "bootstrap") {
+  if (stage === "bootstrap") {
     return {};
   } else {
     return JSON.parse((await getSecret(`${project}-default`))!);
