@@ -42,7 +42,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {paths.length > 4 && <SubnavBar paths={paths} />}
+      {paths.length > 4 && <SubnavBar stateName={paths[3]} />}
     </Box>
   );
 };
