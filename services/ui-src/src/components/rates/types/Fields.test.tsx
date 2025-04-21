@@ -71,6 +71,7 @@ const fieldsComponent = (
     formkey={"mock-key"}
     calculation={FacilityLengthOfStayCalc}
     year={2026}
+    disabled={false}
     {...mockedPerformanceElement}
   />
 );

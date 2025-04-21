@@ -10,9 +10,11 @@ export const NDREnhanced = (
     formkey: string;
     year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { label, assessments, answer, multiplier, calculation } = props;
+  const { label, assessments, answer, multiplier, calculation, disabled } =
+    props;
   const initialValues =
     assessments?.map((assess) => {
       return {
@@ -86,7 +88,8 @@ export const NDREnhanced = (
         name="denominator"
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        value={displayValue?.denominator}
+        value={displayValue?.denominator ?? ""}
+        disabled={disabled}
       ></CmsdsTextField>
       {assessments?.map((assess, index) => {
         const value =
@@ -106,21 +109,23 @@ export const NDREnhanced = (
               name={`${index}.performanceTarget`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.performanceTarget}
+              value={value.performanceTarget ?? ""}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Numerator"
               name={`${index}.numerator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.numerator}
+              value={value.numerator ?? ""}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Denominator"
               name={`${index}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.denominator}
+              value={value.denominator ?? ""}
               hint="Auto-calculates"
               disabled
             ></CmsdsTextField>
@@ -128,7 +133,7 @@ export const NDREnhanced = (
               label="Rate"
               name={`${index}.rate`}
               hint="Auto-calculates"
-              value={value.rate}
+              value={value.rate ?? ""}
               disabled
             ></CmsdsTextField>
           </Stack>
