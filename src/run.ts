@@ -191,6 +191,19 @@ async function run_local() {
     "."
   );
 
+  const deployLocalPrequisitesCmd = [
+    "yarn",
+    "cdklocal",
+    "deploy",
+    "--app",
+    '"npx tsx deployment/local/prerequisites.ts"',
+  ];
+  await runner.run_command_and_output(
+    "CDK local prerequisite deploy",
+    deployLocalPrequisitesCmd,
+    "."
+  );
+
   const deployPrequisitesCmd = [
     "yarn",
     "cdklocal",
