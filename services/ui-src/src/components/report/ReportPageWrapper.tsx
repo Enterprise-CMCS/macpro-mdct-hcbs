@@ -35,6 +35,8 @@ export const ReportPageWrapper = () => {
 
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [timerId, setTimeId] = useState<NodeJS.Timeout>();
+
   const methods = useForm({
     defaultValues: {},
     shouldUnregister: true,
@@ -52,10 +54,24 @@ export const ReportPageWrapper = () => {
     }
   }, [pageId]);
 
-  const handleBlur = async (data: any) => {
+  const useDebounce = (func: Function, arg: any, delay: number = 2000) => {
+    if (timerId) clearTimeout(timerId);
+
+    let timer = setTimeout(() => {
+      func(arg);
+    }, delay);
+    setTimeId(timer);
+  };
+
+  const handleChange = async (data: any) => {
     if (!report) return;
     setAnswers(data);
     saveReport();
+  };
+
+  const test = (data: any) => {
+    console.log("test");
+    useDebounce(handleChange, data);
   };
 
   const handleError = async (errors: any) => {
@@ -123,7 +139,7 @@ export const ReportPageWrapper = () => {
             <form
               id="aFormId"
               autoComplete="off"
-              onBlur={handleSubmit(handleBlur, handleError)}
+              onChange={handleSubmit(test, handleError)}
             >
               {currentPage.elements && (
                 <Page elements={renderedElements ?? []}></Page>

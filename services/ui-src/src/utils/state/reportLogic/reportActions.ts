@@ -205,6 +205,7 @@ export const resetMeasure = (measureId: string, state: HcbsReportState) => {
  * Action saving a report to the api, updates errors or saved status
  */
 export const saveReport = async (state: HcbsReportState) => {
+  console.log("save report");
   if (!state.report) return;
   try {
     await putReport(state.report); // Submit to API
