@@ -49,7 +49,6 @@ const mockedMeasureResultsNavigationTableElement = {
     controllerElementId: "reporting-radio",
     answer: "yes",
   },
-  required: true,
 } as MeasureResultsNavigationTableTemplate;
 
 const MeasureResultsNavigationTableComponent = (
