@@ -24,8 +24,8 @@ export const FacilityLengthOfStayCalc = (
 
   //Observed Performance Rate for the Minimizing Length of Facility Stay
   if (isFilled(rate["count-of-success"]) && isFilled(rate["fac-count"]))
-    roundTo(
-      (rate["opr-min-stay"] = rate["count-of-success"] / rate["fac-count"]),
+    rate["opr-min-stay"] = roundTo(
+      rate["count-of-success"] / rate["fac-count"],
       2
     );
 
