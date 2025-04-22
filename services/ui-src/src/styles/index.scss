@@ -54,6 +54,12 @@ a {
   display: flex;
   flex-direction: column;
   background-color: var(--chakra-colors-palette-gray_lightest);
+
+  header {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
 }
 
 // SCROLLBARS
