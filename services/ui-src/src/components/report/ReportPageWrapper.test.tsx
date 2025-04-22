@@ -17,6 +17,7 @@ import {
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
 import userEvent from "@testing-library/user-event";
+import { saveReport } from "utils/state/reportLogic/reportActions";
 
 const testReport: Report = {
   type: ReportType.QMS,
@@ -526,6 +527,7 @@ const testReport: Report = {
 
 const mockUseParams = jest.fn();
 const mockNavigate = jest.fn();
+const mockSaveReport = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   useParams: () => mockUseParams(),
@@ -535,6 +537,11 @@ jest.mock("react-router-dom", () => ({
 const mockGetReport = jest.fn().mockResolvedValue(testReport);
 jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: () => mockGetReport(),
+}));
+
+jest.mock("utils/state/useStore", () => ({
+  ...jest.requireActual("utils/state/useStore"),
+  saveReport: () => mockSaveReport,
 }));
 
 describe("ReportPageWrapper", () => {
@@ -573,8 +580,6 @@ describe("ReportPageWrapper", () => {
     });
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
-
-    screen.debug();
   });
   test("button should be clickable", async () => {
     await act(async () => {
@@ -589,6 +594,8 @@ describe("ReportPageWrapper", () => {
   });
 
   test("run autosave when a text field has changed", async () => {
+    jest.useFakeTimers();
+
     global.structuredClone = (val: unknown) => {
       return JSON.parse(JSON.stringify(val));
     };
@@ -601,6 +608,10 @@ describe("ReportPageWrapper", () => {
     await act(async () => {
       fireEvent.change(textbox, { target: { value: "2027" } });
     });
+    expect(textbox).toHaveValue("2027");
+
+    jest.runAllTimers();
+    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
   });
 });
 
