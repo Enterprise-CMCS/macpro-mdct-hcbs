@@ -414,6 +414,9 @@ export const theme = extendTheme({
             color: "palette.gray_lighter",
             textDecorationColor: "palette.gray_lighter",
           },
+          ":active, :focus, :focus:visited": {
+            color: "palette.white",
+          },
         },
         unstyled: {
           textDecoration: "none",

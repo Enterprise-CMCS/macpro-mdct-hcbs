@@ -40,9 +40,6 @@ a {
   &:hover {
     color: var(--chakra-colors-palette-gray_light);
   }
-  &:visited {
-    color: inherit;
-  }
   transition: all 0.3s ease !important;
 }
 
