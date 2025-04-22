@@ -17,7 +17,6 @@ import {
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
 import userEvent from "@testing-library/user-event";
-import { saveReport } from "utils/state/reportLogic/reportActions";
 
 const testReport: Report = {
   type: ReportType.QMS,
