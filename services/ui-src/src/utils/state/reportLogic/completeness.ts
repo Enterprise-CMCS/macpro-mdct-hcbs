@@ -186,7 +186,12 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
     } else {
       // PerformanceData
       for (const uniqueRate of element.answer.rates) {
-        if (uniqueRate.rate === undefined || uniqueRate.rate === "")
+        if (
+          uniqueRate.rate === undefined ||
+          uniqueRate.rate === "" ||
+          uniqueRate.performanceTarget === undefined ||
+          uniqueRate.performanceTarget === ""
+        )
           return false;
       }
     }
