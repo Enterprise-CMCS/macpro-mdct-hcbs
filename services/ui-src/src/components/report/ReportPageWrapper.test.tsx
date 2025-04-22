@@ -40,13 +40,8 @@ const testReport: Report = {
       sidebar: true,
       elements: [
         {
-          type: ElementType.Header,
-          id: "",
-          text: "General Information",
-        },
-        {
           type: ElementType.Textbox,
-          id: "",
+          id: "mock-textbox",
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
@@ -531,6 +526,7 @@ const testReport: Report = {
 
 const mockUseParams = jest.fn();
 const mockNavigate = jest.fn();
+const mockSaveReport = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   useParams: () => mockUseParams(),
@@ -542,8 +538,14 @@ jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: () => mockGetReport(),
 }));
 
+jest.mock("utils/state/useStore", () => ({
+  ...jest.requireActual("utils/state/useStore"),
+  saveReport: () => mockSaveReport,
+}));
+
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     mockUseParams.mockReturnValue({
       reportType: "QMS",
       state: "NJ",
@@ -588,6 +590,27 @@ describe("ReportPageWrapper", () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       "/report/QMS/NJ/QMSNJ123/req-measure-result"
     );
+  });
+
+  test("run autosave when a text field has changed", async () => {
+    jest.useFakeTimers();
+
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+
+    const textbox = screen.getByLabelText("Contact title");
+    await act(async () => {
+      fireEvent.change(textbox, { target: { value: "2027" } });
+    });
+    expect(textbox).toHaveValue("2027");
+
+    jest.runAllTimers();
+    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
   });
 });
 
