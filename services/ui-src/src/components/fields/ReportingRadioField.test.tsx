@@ -25,6 +25,7 @@ const mockGetValues = (returnValue: any) =>
     ...mockRhfMethods,
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
+jest.mock("utils/state/hooks/useElementIsHidden");
 
 const mockRadioElement = {
   type: ReportingRadioField,
