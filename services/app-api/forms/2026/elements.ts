@@ -160,7 +160,7 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   id: "additional-notes-field",
   helperText:
     "If applicable, add any notes or comments to provide context to the reported measure result",
-  label: "Additional notes/comments (optional)",
+  label: "Additional notes/comments",
   hideCondition: {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
@@ -216,7 +216,7 @@ export const whichMedicaidHCBSprograms = [
   {
     type: ElementType.TextAreaField,
     id: "measure-programs-text",
-    label: "Which Medicaid HCBS programs are being reported? (optional)",
+    label: "Which Medicaid HCBS programs are being reported?",
     helperText:
       "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
   } as TextAreaBoxTemplate,

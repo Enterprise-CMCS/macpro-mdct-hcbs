@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
 import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
@@ -42,7 +42,11 @@ export const TextAreaField = (props: PageElementProps) => {
   const formErrorState = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrorState, key)?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
-  const labelText = textbox.label;
+
+  const labelText = [
+    textbox.label,
+    !textbox.required && <span className="optionalText"> (optional)</span>,
+  ];
 
   if (hideElement) {
     return null;

@@ -285,7 +285,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       id: "additional-notes-field",
       helperText:
         "If applicable, add any notes or comments to provide context to the reported measure result",
-      label: "Additional notes/comments (optional)",
+      label: "Additional notes/comments",
       answer: "yes",
     },
   ],
