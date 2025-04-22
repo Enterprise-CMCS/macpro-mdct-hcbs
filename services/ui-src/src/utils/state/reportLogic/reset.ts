@@ -18,7 +18,7 @@ import {
 export const performClearMeasure = (
   measureId: string,
   report: Report,
-  ignoreList: string[]
+  ignoreList: { [key: string]: string }
 ) => {
   const page = report.pages.find((page) => page.id === measureId);
   if (!page) {
@@ -29,16 +29,17 @@ export const performClearMeasure = (
   }
   // Clean measure
   page.elements?.forEach((element) => {
-    if (ignoreList.includes(element.id)) {
+    if (element.id in ignoreList && "answer" in element) {
+      element.answer = ignoreList[element.id];
       return;
     }
     performResetPageElement(element);
   });
 
-  // Clear children of measures
+  // Clear children of measures - hard reset
   if (page.type === PageType.Measure) {
     (page as MeasurePageTemplate).dependentPages?.forEach((child) => {
-      performClearMeasure(child.template, report, ignoreList);
+      performResetMeasure(child.template, report);
     });
   }
 

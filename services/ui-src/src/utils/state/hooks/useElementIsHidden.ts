@@ -2,22 +2,34 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { HideCondition } from "types";
 import { elementIsHidden } from "../reportLogic/completeness";
+import { useStore } from "../useStore";
+import { currentPageSelector } from "../selectors";
 
-export const useElementIsHidden = (hideCondition?: HideCondition) => {
-  // TODO: Existing bug: Page reload doesn't get set correctly, possible lifecycle issue with form default
+export const useElementIsHidden = (
+  hideCondition?: HideCondition,
+  answerKey?: string
+) => {
   const form = useFormContext();
+  const currentPage = useStore(currentPageSelector);
   const [hideElement, setHideElement] = useState<boolean>(false);
 
   useEffect(() => {
-    const formValues = form.getValues() as any;
-    if (formValues && Object.keys(formValues).length === 0) {
+    if (!hideCondition || !currentPage?.elements) {
+      setHideElement(false);
       return;
     }
-    const hidden =
-      formValues?.elements &&
-      elementIsHidden(hideCondition, formValues.elements);
-    setHideElement(hidden);
-  }, [form.getValues()]);
 
+    const newHideState = elementIsHidden(hideCondition, currentPage.elements);
+    if (!hideElement && newHideState && answerKey) {
+      // Hiding - unbind so future updates don't continue overwriting
+      form.unregister(answerKey);
+      setHideElement(newHideState);
+    } else if (hideElement && !newHideState && answerKey) {
+      // Unhiding
+
+      // form.clearErrors(answerKey); // continue to investigate
+      setHideElement(newHideState);
+    }
+  }, [currentPage]);
   return hideElement;
 };

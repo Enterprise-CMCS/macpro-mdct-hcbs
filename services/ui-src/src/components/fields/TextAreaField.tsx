@@ -11,11 +11,11 @@ export const TextAreaField = (props: PageElementProps) => {
   const textbox = props.element as TextAreaBoxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-  const hideElement = useElementIsHidden(textbox.hideCondition);
 
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
+  const hideElement = useElementIsHidden(textbox.hideCondition, key);
   useEffect(() => {
     form.register(key);
     form.setValue(key, defaultValue);

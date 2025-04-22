@@ -29,6 +29,7 @@ export const ReportingRadioField = (props: PageElementProps) => {
     const options = { required: radio.required ? requiredResponse : false };
     form.register(key, options);
     form.setValue(`${props.formkey}.id`, radio.id);
+    form.setValue(key, radio.answer);
   }, []);
 
   const onChangeHandler = async (
@@ -46,8 +47,9 @@ export const ReportingRadioField = (props: PageElementProps) => {
     form.setValue(`${props.formkey}.id`, radio.id);
 
     if (value === "no") {
-      clearMeasure(currentPageId ?? "", [radio.id]);
+      clearMeasure(currentPageId ?? "", { [radio.id]: value });
       saveReport();
+      event.stopPropagation(); // This action is doing its own effect outside of normal change.
       return;
     }
   };
