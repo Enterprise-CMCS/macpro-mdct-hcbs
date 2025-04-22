@@ -64,9 +64,9 @@ export const ReportPageWrapper = () => {
   };
 
   const handleChange = async (data: any) => {
+    setAnswers(data);
     useDebounce(() => {
       if (!report) return;
-      setAnswers(data);
       saveReport();
     });
   };
