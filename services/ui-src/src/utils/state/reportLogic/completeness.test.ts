@@ -147,7 +147,7 @@ describe("pageIsCompletable", () => {
               type: ElementType.Radio,
               answer: "FFS",
               required: true,
-              value: [{ value: "FFS" }],
+              choices: [{ value: "FFS" }],
             },
           ],
           dependentPages: [

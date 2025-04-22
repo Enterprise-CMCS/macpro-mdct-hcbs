@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ReportingRadioField } from "components";
 import { useFormContext } from "react-hook-form";
-import { ElementType, PageElement } from "types";
+import { ElementType, ReportingRadioTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
@@ -26,10 +26,11 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-const mockRadioElement = {
-  type: ReportingRadioField,
+const mockRadioElement: ReportingRadioTemplate = {
+  id: "mock-radio-element",
+  type: ElementType.ReportingRadio,
   label: "mock label",
-  value: [
+  choices: [
     {
       label: "Yes",
       value: "yes",
@@ -40,6 +41,7 @@ const mockRadioElement = {
       value: "no",
       checkedChildren: [
         {
+          id: "mock-text-box-id",
           type: ElementType.Textbox,
           label: "mock-text-box",
         },
@@ -52,7 +54,7 @@ const mockRadioElement = {
 const ReportingRadioFieldComponent = (
   <div data-testid="test-radio-list">
     <ReportingRadioField
-      element={mockRadioElement as unknown as PageElement}
+      element={mockRadioElement}
       index={0}
       formkey="elements.0"
     />
