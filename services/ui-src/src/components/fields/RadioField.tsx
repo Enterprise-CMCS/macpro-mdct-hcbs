@@ -12,12 +12,9 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 export const formatChoices = (
   parentKey: string,
-  choices: ChoiceTemplate[] | undefined,
+  choices: ChoiceTemplate[],
   answer?: string
 ): ChoiceProps[] => {
-  if (!choices) {
-    return [];
-  }
   return choices.map((choice, choiceIndex) => {
     if (!choice?.checkedChildren) {
       return {
