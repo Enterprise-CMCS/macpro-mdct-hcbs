@@ -40,13 +40,8 @@ const testReport: Report = {
       sidebar: true,
       elements: [
         {
-          type: ElementType.Header,
-          id: "",
-          text: "General Information",
-        },
-        {
           type: ElementType.Textbox,
-          id: "",
+          id: "mock-textbox",
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
@@ -544,6 +539,7 @@ jest.mock("../../utils/api/requestMethods/report", () => ({
 
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     mockUseParams.mockReturnValue({
       reportType: "QMS",
       state: "NJ",
@@ -577,6 +573,8 @@ describe("ReportPageWrapper", () => {
     });
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
+
+    screen.debug();
   });
   test("button should be clickable", async () => {
     await act(async () => {
@@ -588,6 +586,21 @@ describe("ReportPageWrapper", () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       "/report/QMS/NJ/QMSNJ123/req-measure-result"
     );
+  });
+
+  test("run autosave when a text field has changed", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+
+    const textbox = screen.getByLabelText("Contact title");
+    await act(async () => {
+      fireEvent.change(textbox, { target: { value: "2027" } });
+    });
   });
 });
 
