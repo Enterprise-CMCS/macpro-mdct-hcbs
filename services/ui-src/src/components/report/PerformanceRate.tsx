@@ -1,5 +1,5 @@
 import { PageElementProps } from "components/report/Elements";
-import { PerformanceRateTemplate } from "types";
+import { PerformanceRateTemplate, ReportStatus } from "types";
 import * as PerformanceType from "./../rates/types";
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
@@ -9,12 +9,15 @@ export const PerformanceRateElement = (props: PageElementProps) => {
   const performanceRateProp = props.element as PerformanceRateTemplate;
   const { rateType, rateCalc, helperText, label } = performanceRateProp;
   const { report } = useStore();
+  const { userIsEndUser } = useStore().user || {};
 
   if (!report?.year) return null;
 
   const PerformanceRate = PerformanceType[rateType];
   const Calculation = Calculations[rateCalc ?? "NDRCalc"];
   performanceRateProp.multiplier = performanceRateProp.multiplier ?? 1;
+
+  const disabled = !userIsEndUser || report?.status === ReportStatus.SUBMITTED;
 
   return (
     <Stack gap={4} sx={sx.performance}>
@@ -26,6 +29,7 @@ export const PerformanceRateElement = (props: PageElementProps) => {
           year: report.year,
           ...performanceRateProp,
           calculation: Calculation,
+          disabled: disabled,
         }}
       ></PerformanceRate>
     </Stack>

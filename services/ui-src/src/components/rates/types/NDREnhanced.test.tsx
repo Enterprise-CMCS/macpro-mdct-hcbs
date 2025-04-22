@@ -43,6 +43,7 @@ const ndrEnhancedComponent = (
     formkey={"mock-key"}
     calculation={NDRCalc}
     year={2026}
+    disabled={false}
     {...mockedPerformanceElement}
   />
 );
@@ -88,7 +89,7 @@ describe("<NDREnhanced />", () => {
       expect(denominator).toHaveValue("2");
 
       const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("50");
+      expect(rate).toHaveValue("0.5");
     });
   });
 

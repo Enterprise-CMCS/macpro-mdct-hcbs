@@ -32,7 +32,6 @@ export const SubnavBar = () => {
               to={`/report/${report?.type}/${report?.state}` || "/"}
               sx={sx.leaveFormLink}
               variant="outlineButton"
-              tabIndex={-1}
             >
               Leave form
             </Link>
