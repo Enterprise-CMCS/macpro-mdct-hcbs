@@ -35,7 +35,7 @@ export const ReportPageWrapper = () => {
 
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [timerId, setTimerId] = useState<NodeJS.Timeout>();
+  const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout>>();
 
   const methods = useForm({
     defaultValues: {},
