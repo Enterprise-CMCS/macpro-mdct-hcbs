@@ -155,7 +155,7 @@ export const elementSatisfiesRequired = (
   }
   // Special handling - nested children
   if (element.type === ElementType.Radio) {
-    for (const choice of element.value) {
+    for (const choice of element.choices) {
       if (choice.value !== element.answer || !choice.checkedChildren) continue;
       for (const childElement of choice.checkedChildren) {
         const satisfied = elementSatisfiesRequired(childElement, pageElements);

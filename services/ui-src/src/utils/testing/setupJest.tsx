@@ -268,7 +268,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       type: ElementType.ReportingRadio,
       label: "Is the state reporting on this measure?",
       id: "measure-reporting-radio",
-      value: [
+      choices: [
         {
           label: "Yes, the state is reporting on this measure",
           value: "yes",

@@ -411,7 +411,7 @@ export type RadioTemplate = {
   formKey?: string;
   label: string;
   helperText?: string;
-  value: ChoiceTemplate[];
+  choices: ChoiceTemplate[];
   answer?: string;
   required?: boolean;
   hideCondition?: HideCondition;
@@ -423,7 +423,7 @@ export type ReportingRadioTemplate = {
   formKey?: string;
   label: string;
   helperText?: string;
-  value: ChoiceTemplate[];
+  choices: ChoiceTemplate[];
   answer?: string;
   required?: boolean;
 };

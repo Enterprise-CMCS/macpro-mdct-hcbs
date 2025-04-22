@@ -114,7 +114,7 @@ export const AddEditReportModal = ({
                 id: "",
                 label:
                   "Does your state administer the HCBS CAHPS beneficiary survey?",
-                value: [
+                choices: [
                   {
                     label: "Yes",
                     value: "true",
@@ -138,7 +138,7 @@ export const AddEditReportModal = ({
                 id: "",
                 label:
                   "Does your state administer the HCI-IDD beneficiary survey?",
-                value: [
+                choices: [
                   {
                     label: "Yes",
                     value: "true",
@@ -162,7 +162,7 @@ export const AddEditReportModal = ({
                 id: "",
                 label:
                   "Does your state administer the NCI-AD beneficiary survey?",
-                value: [
+                choices: [
                   {
                     label: "Yes",
                     value: "true",
@@ -185,7 +185,7 @@ export const AddEditReportModal = ({
                 type: ElementType.Radio,
                 id: "",
                 label: "Does your state administer the POM beneficiary survey?",
-                value: [
+                choices: [
                   {
                     label: "Yes",
                     value: "true",

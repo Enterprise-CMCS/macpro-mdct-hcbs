@@ -12,9 +12,12 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 export const formatChoices = (
   parentKey: string,
-  choices: ChoiceTemplate[],
+  choices: ChoiceTemplate[] | undefined,
   answer?: string
 ): ChoiceProps[] => {
+  if (!choices) {
+    return [];
+  }
   return choices.map((choice, choiceIndex) => {
     if (!choice?.checkedChildren) {
       return {
@@ -66,7 +69,7 @@ export const RadioField = (props: PageElementProps) => {
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
     setDisplayValue(
-      formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+      formatChoices(`${props.formkey}`, radio.choices, radio.answer) ?? []
     );
   }, [radio.answer]);
 

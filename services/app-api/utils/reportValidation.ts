@@ -178,7 +178,7 @@ const radioTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
-  value: array().of(
+  choices: array().of(
     object().shape({
       label: string().required(),
       value: string().required(),
@@ -202,7 +202,7 @@ const reportingRadioTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
-  value: array().of(
+  choices: array().of(
     object().shape({
       label: string().required(),
       value: string().required(),

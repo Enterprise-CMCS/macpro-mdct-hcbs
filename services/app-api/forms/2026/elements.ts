@@ -82,7 +82,7 @@ export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
   type: ElementType.ReportingRadio,
   label: "Is the state reporting on this measure?",
   id: "measure-reporting-radio",
-  value: [
+  choices: [
     { label: "Yes, the state is reporting on this measure", value: "yes" },
     {
       label: "No, CMS is reporting this measure on the state's behalf",
@@ -96,7 +96,7 @@ export const wereTheResultsAudited: RadioTemplate = {
   type: ElementType.Radio,
   id: "measure-audited-radio",
   label: "Were the reported measure results audited or validated?",
-  value: [
+  choices: [
     { label: "No", value: "no" },
     {
       label: "Yes",
@@ -123,7 +123,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
   type: ElementType.Radio,
   label: "What Technical Specifications are you using to report this measure?",
   id: "measure-tech-specs-radio",
-  value: [
+  choices: [
     { label: "CMS", value: "cms" },
     { label: "HEDIS", value: "hedis" },
   ],
@@ -133,7 +133,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
   type: ElementType.Radio,
   label: "Did you follow the 2026 Technical Specifications?",
   id: "measure-following-tech-specs",
-  value: [
+  choices: [
     { label: "Yes", value: "yes" },
     {
       label: "No",
@@ -177,7 +177,7 @@ export const whichVersionQualityMeasureReported: RadioTemplate = {
   type: ElementType.Radio,
   id: "delivery-method-radio",
   label: "Which version of quality measure will be reported?",
-  value: [
+  choices: [
     { label: "Fee-For-Service (FFS LTSS)", value: "FFS" },
     {
       label: "Managed Care (MLTSS)",

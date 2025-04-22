@@ -321,7 +321,7 @@ export type RadioTemplate = {
   type: ElementType.Radio;
   id: string;
   label: string;
-  value: ChoiceTemplate[];
+  choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
   required?: boolean;
@@ -332,7 +332,7 @@ export type ReportingRadioTemplate = {
   type: ElementType.ReportingRadio;
   id: string;
   label: string;
-  value: ChoiceTemplate[];
+  choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
   required?: boolean;

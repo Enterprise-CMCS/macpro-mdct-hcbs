@@ -18,7 +18,7 @@ export const ReportingRadioField = (props: PageElementProps) => {
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
     setDisplayValue(
-      formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+      formatChoices(`${props.formkey}`, radio.choices, radio.answer) ?? []
     );
   }, [radio.answer]);
 

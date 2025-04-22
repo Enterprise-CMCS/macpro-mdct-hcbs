@@ -79,7 +79,7 @@ const performResetPageElement = (element: PageElement) => {
     element.answer = undefined;
   }
   if (element.type == ElementType.Radio) {
-    for (const choice of element.value) {
+    for (const choice of element.choices) {
       if (!choice.checkedChildren) continue;
       for (const childElement of choice.checkedChildren) {
         performResetPageElement(childElement);
