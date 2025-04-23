@@ -40,7 +40,7 @@ const sx = {
       maxWidth: "basicPageWidth",
       margin: "3.5rem auto",
     },
-    ".mobile &":{
+    ".mobile &": {
       margin: "2.5rem auto",
     },
     "&.report": {

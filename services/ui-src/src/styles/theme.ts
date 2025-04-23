@@ -319,7 +319,6 @@ export const theme = extendTheme({
     Divider: {
       baseStyle: {
         borderColor: "palette.gray_light",
-        paddingTop: "1rem",
       },
     },
     Heading: {
@@ -335,7 +334,6 @@ export const theme = extendTheme({
           ".mobile &": {
             fontSize: "2xl",
           },
-          margin: "0 0 10px 0",
           display: "inline-block",
         },
         subHeader: {

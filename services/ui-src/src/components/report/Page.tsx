@@ -104,7 +104,7 @@ export const Page = ({ elements }: Props) => {
     );
   });
   return (
-    <VStack alignItems="flex-start" gap="1rem">
+    <VStack alignItems="flex-start" gap="2rem" marginBottom="2rem">
       {composedElements}
     </VStack>
   );
