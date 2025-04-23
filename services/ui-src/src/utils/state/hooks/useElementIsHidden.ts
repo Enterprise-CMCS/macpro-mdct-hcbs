@@ -9,7 +9,7 @@ export const useElementIsHidden = (hideCondition?: HideCondition) => {
   const [hideElement, setHideElement] = useState<boolean>(false);
 
   useEffect(() => {
-    const formValues = form.getValues() as any;
+    const formValues = form?.getValues() as any;
     if (formValues && Object.keys(formValues).length === 0) {
       return;
     }
@@ -17,7 +17,7 @@ export const useElementIsHidden = (hideCondition?: HideCondition) => {
       formValues?.elements &&
       elementIsHidden(hideCondition, formValues.elements);
     setHideElement(hidden);
-  }, [form.getValues()]);
+  }, [form?.getValues()]);
 
   return hideElement;
 };

@@ -171,6 +171,10 @@ export const measureDeliveryMethodsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   text: "Measure Delivery Methods",
   id: "measure-delivery-methods-subheader",
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const whichVersionQualityMeasureReported: RadioTemplate = {
@@ -198,6 +202,10 @@ export const enterMeasureResultsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   text: "Enter Measure Results",
   id: "quality-measures-subheader",
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplate =
@@ -205,6 +213,10 @@ export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplat
     type: ElementType.MeasureResultsNavigationTable,
     measureDisplay: "quality",
     id: "measure-results-navigation-table",
+    hideCondition: {
+      controllerElementId: "measure-reporting-radio",
+      answer: "no",
+    },
   };
 
 export const measureFooter: MeasureFooterTemplate = {

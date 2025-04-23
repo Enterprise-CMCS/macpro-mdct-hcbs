@@ -3,7 +3,7 @@ import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
 
-export const SubnavBar = () => {
+export const SubnavBar = ({ stateName }: Props) => {
   const { report, lastSavedTime } = useStore();
   const saveStatusText = "Last saved " + lastSavedTime;
 
@@ -12,9 +12,7 @@ export const SubnavBar = () => {
       <Container sx={sx.subnavContainer}>
         <Flex sx={sx.subnavFlex}>
           <Flex>
-            <Text sx={sx.submissionNameText}>
-              {report?.state + " QMS Report"}
-            </Text>
+            <Text sx={sx.submissionNameText}>{stateName + " QMS Report"}</Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
             {lastSavedTime && (
@@ -41,6 +39,10 @@ export const SubnavBar = () => {
     </Flex>
   );
 };
+
+interface Props {
+  stateName: string;
+}
 
 const sx = {
   subnavBar: {
