@@ -465,6 +465,7 @@ export const mockReportStore: HcbsReportState = {
   setAnswers: () => {},
   resetMeasure: () => {},
   clearMeasure: () => {},
+  changeDeliveryMethods: () => {},
   setSubstitute: () => {},
   completePage: () => {},
   saveReport: async () => {},
