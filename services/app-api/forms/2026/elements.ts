@@ -192,6 +192,8 @@ export const whichVersionQualityMeasureReported: RadioTemplate = {
     answer: "no",
   },
   required: true,
+  helperText:
+    "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.",
 };
 
 export const enterMeasureResultsSubheader: SubHeaderTemplate = {
