@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { RadioField } from "components";
 import { useFormContext } from "react-hook-form";
 import { ElementType, RadioTemplate } from "types";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { testA11y } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
@@ -26,6 +27,10 @@ const mockGetValues = (returnValue: any) =>
     ...mockRhfMethods,
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
+jest.mock("utils/state/hooks/useElementIsHidden");
+const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
+  typeof useElementIsHidden
+>;
 
 const mockRadioElement: RadioTemplate = {
   id: "mock-radio-id",
@@ -103,32 +108,14 @@ describe("<RadioField />", () => {
 
 describe("Radio field hide condition logic", () => {
   test("Radio field is hidden if its hide conditions' controlling element has a matching answer", async () => {
-    mockGetValues({
-      elements: [
-        {
-          answer: "yes",
-          type: "reportingRadio",
-          label: "Should we hide the other radios on this page?",
-          id: "reporting-radio",
-        },
-      ],
-    });
+    mockedUseElementIsHidden.mockReturnValue(true);
     render(RadioFieldComponent);
     const radioField = screen.queryByText("Choice 1");
     expect(radioField).not.toBeInTheDocument();
   });
 
   test("Radio field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {
-    mockGetValues({
-      elements: [
-        {
-          answer: "idk",
-          type: "reportingRadio",
-          label: "Should we hide the other radios on this page?",
-          id: "reporting-radio",
-        },
-      ],
-    });
+    mockedUseElementIsHidden.mockReturnValue(false);
     render(RadioFieldComponent);
     const radioField = screen.queryByText("Choice 1");
     expect(radioField).toBeVisible();

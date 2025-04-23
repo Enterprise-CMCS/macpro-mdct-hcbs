@@ -81,6 +81,8 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
 export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
   type: ElementType.ReportingRadio,
   label: "Is the state reporting on this measure?",
+  helperText:
+    "Warning: Changing this response will clear any data previously entered in this measure.",
   id: "measure-reporting-radio",
   choices: [
     { label: "Yes, the state is reporting on this measure", value: "yes" },
@@ -171,6 +173,10 @@ export const measureDeliveryMethodsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   text: "Measure Delivery Methods",
   id: "measure-delivery-methods-subheader",
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const whichVersionQualityMeasureReported: RadioTemplate = {
@@ -190,12 +196,18 @@ export const whichVersionQualityMeasureReported: RadioTemplate = {
     answer: "no",
   },
   required: true,
+  helperText:
+    "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.",
 };
 
 export const enterMeasureResultsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   text: "Enter Measure Results",
   id: "quality-measures-subheader",
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
 };
 
 export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplate =
@@ -203,6 +215,10 @@ export const measureResultsNavigationTable: MeasureResultsNavigationTableTemplat
     type: ElementType.MeasureResultsNavigationTable,
     measureDisplay: "quality",
     id: "measure-results-navigation-table",
+    hideCondition: {
+      controllerElementId: "measure-reporting-radio",
+      answer: "no",
+    },
   };
 
 export const measureFooter: MeasureFooterTemplate = {
@@ -389,8 +405,8 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
       autoCalc: true,
     },
   ],
-  rateType: PerformanceRateType.FIELDS,
   required: true,
+  rateType: PerformanceRateType.FIELDS,
   rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 

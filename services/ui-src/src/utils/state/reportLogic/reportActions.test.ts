@@ -614,7 +614,9 @@ describe("state/management/reportState: clearMeasure", () => {
     };
 
     const state = buildState(testReport, false) as unknown as HcbsReportState;
-    const response = clearMeasure("LTSS-1", state, ["measure-reporting-radio"]);
+    const response = clearMeasure("LTSS-1", state, {
+      ["measure-reporting-radio"]: "no",
+    });
     const measure = response!.report!.pages[3] as MeasurePageTemplate;
     const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;

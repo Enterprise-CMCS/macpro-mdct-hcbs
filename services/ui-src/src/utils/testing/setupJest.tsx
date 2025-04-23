@@ -206,7 +206,24 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
   type: PageType.Measure,
   required: true,
   substitutable: "FASI-1",
-  elements: [],
+  elements: [
+    {
+      type: ElementType.ReportingRadio,
+      label: "Is the state reporting on this measure?",
+      id: "measure-reporting-radio",
+      value: [
+        {
+          label: "Yes, the state is reporting on this measure",
+          value: "yes",
+        },
+        {
+          label: "No, CMS is reporting this measure on the state's behalf",
+          value: "no",
+        },
+      ],
+      answer: "yes",
+    },
+  ],
   dependentPages: [
     {
       key: "FFS",

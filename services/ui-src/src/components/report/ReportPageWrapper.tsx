@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -20,6 +20,7 @@ import { currentPageSelector } from "utils/state/selectors";
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
 import { isReviewSubmitPage, ReportStatus } from "types";
+import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const ReportPageWrapper = () => {
   const {
@@ -29,12 +30,13 @@ export const ReportPageWrapper = () => {
     loadReport: setReport,
     setAnswers,
     setCurrentPageId,
-    saveReport,
   } = useStore();
   const currentPage = useStore(currentPageSelector);
 
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { autosave } = useContext(ReportAutosaveContext);
+
   const methods = useForm({
     defaultValues: {},
     shouldUnregister: true,
@@ -52,17 +54,16 @@ export const ReportPageWrapper = () => {
     }
   }, [pageId]);
 
-  const handleBlur = async (data: any) => {
-    if (!report) return;
+  const handleChange = async (data: any) => {
     setAnswers(data);
-    saveReport();
+    autosave();
   };
 
   const handleError = async (errors: any) => {
     const data = methods.getValues();
     if (!report) return;
     setAnswers(data, errors);
-    saveReport();
+    autosave();
   };
 
   const fetchReport = async () => {
@@ -123,7 +124,7 @@ export const ReportPageWrapper = () => {
             <form
               id="aFormId"
               autoComplete="off"
-              onBlur={handleSubmit(handleBlur, handleError)}
+              onChange={handleSubmit(handleChange, handleError)}
             >
               {currentPage.elements && (
                 <Page elements={renderedElements ?? []}></Page>

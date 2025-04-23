@@ -12,11 +12,12 @@ export const TextField = (props: PageElementProps) => {
   const textbox = props.element as TextboxTemplate;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-  const hideElement = useElementIsHidden(textbox.hideCondition);
 
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
+  const hideElement = useElementIsHidden(textbox.hideCondition, key);
+
   useEffect(() => {
     const options = { required: textbox.required ? requiredResponse : false };
     form.register(key, options);

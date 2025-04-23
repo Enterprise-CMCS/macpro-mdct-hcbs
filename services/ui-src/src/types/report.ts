@@ -221,6 +221,7 @@ export type SubHeaderTemplate = {
   id: string;
   text: string;
   helperText?: string;
+  hideCondition?: HideCondition;
 };
 
 export type NestedHeadingTemplate = {
@@ -310,6 +311,8 @@ export type MeasureResultsNavigationTableTemplate = {
   type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
+  hideCondition?: HideCondition;
+  required?: boolean;
 };
 
 export type StatusTableTemplate = {

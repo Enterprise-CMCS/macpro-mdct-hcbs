@@ -8,6 +8,8 @@ import {
   currentPageCompletableSelector,
   currentPageSelector,
 } from "utils/state/selectors";
+import { useContext } from "react";
+import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
@@ -15,11 +17,11 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   const {
     report,
     resetMeasure,
-    saveReport,
     setModalComponent,
     setModalOpen,
     completePage,
   } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
   const currentPage = useStore(currentPageSelector);
   const completable = useStore(currentPageCompletableSelector);
   const completeEnabled =
@@ -31,7 +33,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   const navigate = useNavigate();
   const submitClear = () => {
     resetMeasure(currentPage.id);
-    saveReport();
+    autosave();
   };
 
   const getPrevPageId = () => {
@@ -43,7 +45,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
 
   const onCompletePage = () => {
     completePage(currentPage.id);
-    saveReport();
+    autosave();
 
     //there's some interference with the scroll so we need a delay before it will work
     setTimeout(function () {

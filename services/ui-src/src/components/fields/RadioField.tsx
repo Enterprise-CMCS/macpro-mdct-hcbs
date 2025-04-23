@@ -61,7 +61,7 @@ export const RadioField = (props: PageElementProps) => {
   }, []);
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
-  const hideElement = useElementIsHidden(radio.hideCondition);
+  const hideElement = useElementIsHidden(radio.hideCondition, key);
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {

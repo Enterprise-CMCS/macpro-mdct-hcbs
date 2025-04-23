@@ -6,6 +6,7 @@ import { mockStateUserStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 import { ElementType, TextAreaBoxTemplate } from "types/report";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -26,6 +27,10 @@ const mockGetValues = (returnValue: any) =>
     ...mockRhfMethods,
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
+jest.mock("utils/state/hooks/useElementIsHidden");
+const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
+  typeof useElementIsHidden
+>;
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -78,16 +83,7 @@ describe("<TextAreaField />", () => {
 
   describe("Text area field hide condition logic", () => {
     test("Text area field is hidden if its hide conditions' controlling element has a matching answer", async () => {
-      mockGetValues({
-        elements: [
-          {
-            answer: "yes",
-            type: "reportingRadio",
-            label: "Should we hide the other radios on this page?",
-            id: "reporting-radio",
-          },
-        ],
-      });
+      mockedUseElementIsHidden.mockReturnValueOnce(true);
       render(textAreaFieldComponent);
       const textField = screen.queryByLabelText("test label");
       expect(textField).not.toBeInTheDocument();
