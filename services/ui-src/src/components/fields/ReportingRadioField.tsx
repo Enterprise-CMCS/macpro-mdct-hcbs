@@ -17,6 +17,13 @@ export const ReportingRadioField = (props: PageElementProps) => {
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
 
+  useEffect(() => {
+    const options = { required: radio.required ? requiredResponse : false };
+    form.register(key, options);
+    form.setValue(`${props.formkey}.id`, radio.id);
+    form.setValue(key, radio.answer);
+  }, []);
+
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
     setDisplayValue(
@@ -27,12 +34,6 @@ export const ReportingRadioField = (props: PageElementProps) => {
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
-  useEffect(() => {
-    const options = { required: radio.required ? requiredResponse : false };
-    form.register(key, options);
-    form.setValue(`${props.formkey}.id`, radio.id);
-    form.setValue(key, radio.answer);
-  }, []);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>

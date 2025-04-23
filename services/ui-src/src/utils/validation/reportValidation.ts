@@ -53,7 +53,6 @@ const pageElementSchema = lazy((element: PageElement): any => {
       // TODO: make date schema
       return textboxSchema;
     case ElementType.Radio:
-    case ElementType.ReportingRadio:
       if (element.value) {
         return radioWithChildrenSchema;
       }

@@ -6,11 +6,11 @@ import {
   MeasureTemplateName,
   PageType,
   Report,
-  ReportingRadioTemplate,
   ReportStatus,
   ReportType,
   TextboxTemplate,
   FormPageTemplate,
+  RadioTemplate,
 } from "types/report";
 import {
   buildState,
@@ -598,7 +598,7 @@ describe("state/management/reportState: resetMeasure", () => {
     const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = resetMeasure("LTSS-1", state);
     const measure = response!.report!.pages[3] as MeasurePageTemplate;
-    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
     expect(measure.status).toBe(PageStatus.NOT_STARTED);
@@ -618,7 +618,7 @@ describe("state/management/reportState: clearMeasure", () => {
       ["measure-reporting-radio"]: "no",
     });
     const measure = response!.report!.pages[3] as MeasurePageTemplate;
-    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
     expect(measure.status).toBe(PageStatus.IN_PROGRESS);
