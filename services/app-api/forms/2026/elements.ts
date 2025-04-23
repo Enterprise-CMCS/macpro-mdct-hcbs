@@ -81,6 +81,8 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
 export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
   type: ElementType.ReportingRadio,
   label: "Is the state reporting on this measure?",
+  helperText:
+    "Warning: Changing this response will clear any data previously entered in this measure.",
   id: "measure-reporting-radio",
   value: [
     { label: "Yes, the state is reporting on this measure", value: "yes" },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { FieldError, useFormContext } from "react-hook-form";
@@ -8,10 +8,12 @@ import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { formatChoices } from "./RadioField";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
 import { requiredResponse } from "../../constants";
+import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
 
 export const ReportingRadioField = (props: PageElementProps) => {
   const radio = props.element as ReportingRadioTemplate;
-  const { clearMeasure, saveReport, currentPageId } = useStore();
+  const { clearMeasure, currentPageId } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
 
@@ -29,6 +31,7 @@ export const ReportingRadioField = (props: PageElementProps) => {
     const options = { required: radio.required ? requiredResponse : false };
     form.register(key, options);
     form.setValue(`${props.formkey}.id`, radio.id);
+    form.setValue(key, radio.answer);
   }, []);
 
   const onChangeHandler = async (
@@ -46,8 +49,9 @@ export const ReportingRadioField = (props: PageElementProps) => {
     form.setValue(`${props.formkey}.id`, radio.id);
 
     if (value === "no") {
-      clearMeasure(currentPageId ?? "", [radio.id]);
-      saveReport();
+      clearMeasure(currentPageId ?? "", { [radio.id]: value });
+      autosave();
+      event.stopPropagation(); // This action is doing its own effect outside of normal change.
       return;
     }
   };

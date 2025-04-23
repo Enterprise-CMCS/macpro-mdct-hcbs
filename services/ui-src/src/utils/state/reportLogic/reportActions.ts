@@ -182,7 +182,7 @@ export const markPageComplete = (pageId: string, state: HcbsReportState) => {
 export const clearMeasure = (
   measureId: string,
   state: HcbsReportState,
-  ignoreList: string[]
+  ignoreList: { [key: string]: string }
 ) => {
   if (!state.report) return;
   const report = structuredClone(state.report);
