@@ -56,7 +56,6 @@ export const Sidebar = () => {
             onNavSelect(page.id);
           }}
           role="link"
-          aria-label={`Navigate to ${page.title}`}
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box width="100%" height="100%">
