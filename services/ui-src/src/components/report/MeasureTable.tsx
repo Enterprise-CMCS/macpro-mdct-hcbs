@@ -117,7 +117,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
           {/* TO-DO: Fix format of measure id */}
           <Button
             as={Link}
-            variant="outline"
+            variant={"outline"}
             href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
             onClick={(e) => {
               e.preventDefault();
