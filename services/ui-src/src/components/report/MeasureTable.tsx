@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Button,
   Table,
@@ -55,11 +55,9 @@ export const MeasureTableElement = (props: PageElementProps) => {
   };
 
   const { reportType, state, reportId } = useParams();
-  const navigate = useNavigate();
 
   const handleEditClick = (measureId: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
-    navigate(path);
+    return `/report/${reportType}/${state}/${reportId}/${measureId}`;
   };
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
@@ -103,7 +101,17 @@ export const MeasureTableElement = (props: PageElementProps) => {
         </Td>
         <Td>
           {measure.substitutable && measure.required ? (
-            <Link onClick={() => buildModal(measure)}>Substitute measure</Link>
+            <Button
+              as={Link}
+              variant="link"
+              href={handleEditClick(measure.id)}
+              onClick={(e) => {
+                e.preventDefault(); // Prevent default navigation if needed
+                buildModal(measure);
+              }}
+            >
+              Substitute measure
+            </Button>
           ) : null}
         </Td>
 
