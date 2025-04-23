@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Table,
@@ -55,9 +55,10 @@ export const MeasureTableElement = (props: PageElementProps) => {
   };
 
   const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
 
   const handleEditClick = (measureId: string) => {
-    return `/report/${reportType}/${state}/${reportId}/${measureId}`;
+    navigate(`/report/${reportType}/${state}/${reportId}/${measureId}`);
   };
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
@@ -104,9 +105,9 @@ export const MeasureTableElement = (props: PageElementProps) => {
             <Button
               as={Link}
               variant="link"
-              href={handleEditClick(measure.id)}
+              href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
               onClick={(e) => {
-                e.preventDefault(); // Prevent default navigation if needed
+                e.preventDefault();
                 buildModal(measure);
               }}
             >
@@ -114,12 +115,15 @@ export const MeasureTableElement = (props: PageElementProps) => {
             </Button>
           ) : null}
         </Td>
-
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
+          <Link
+            as={Button}
+            variant="secondary"
+            onClick={() => handleEditClick(measure.id)}
+          >
             Edit
-          </Button>
+          </Link>
         </Td>
       </Tr>
     );
