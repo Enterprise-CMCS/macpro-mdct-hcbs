@@ -103,11 +103,9 @@ export const MeasureTableElement = (props: PageElementProps) => {
         <Td>
           {measure.substitutable && measure.required ? (
             <Button
-              as={Link}
               variant="link"
-              href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
-              onClick={(e) => {
-                e.preventDefault();
+              sx={{ fontSize: "14px" }}
+              onClick={() => {
                 buildModal(measure);
               }}
             >
@@ -117,13 +115,18 @@ export const MeasureTableElement = (props: PageElementProps) => {
         </Td>
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Link
-            as={Button}
-            variant="secondary"
-            onClick={() => handleEditClick(measure.id)}
+          <Button
+            as={Link}
+            variant="outline"
+            href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleEditClick(measure.id);
+            }}
+            sx={{ fontWeight: "800" }}
           >
             Edit
-          </Link>
+          </Button>
         </Td>
       </Tr>
     );
