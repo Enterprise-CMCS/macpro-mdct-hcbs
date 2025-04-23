@@ -26,7 +26,7 @@ export const formatChoices = (
 
     const children = choice.checkedChildren.map((child, childIndex) => ({
       ...child,
-      formKey: `${parentKey}.value.${choiceIndex}.checkedChildren.${childIndex}`,
+      formKey: `${parentKey}.choices.${choiceIndex}.checkedChildren.${childIndex}`,
     }));
 
     const checkedChildren = [
