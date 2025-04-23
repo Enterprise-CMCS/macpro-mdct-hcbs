@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { extendTheme } from "@chakra-ui/react";
+import { background, extendTheme } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
@@ -318,7 +318,7 @@ export const theme = extendTheme({
     },
     Divider: {
       baseStyle: {
-        borderColor: "palette.gray_light",
+        borderColor: "palette.gray_lighter",
       },
     },
     Heading: {
@@ -546,6 +546,11 @@ export const theme = extendTheme({
               ".mobile &": {
                 whiteSpace: "wrap",
               },
+            },
+          },
+          tr: {
+            "th, td": {
+              borderColor: "palette.gray_lighter",
             },
           },
         },

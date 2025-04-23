@@ -40,7 +40,7 @@ export const MeasureDetailsElement = () => {
           </Text>
         </>
       </Flex>
-      <Divider margin="16px 0px" />
+      <Divider margin="2rem 0 0 0" />
     </Box>
   );
 };

@@ -57,7 +57,7 @@ export const Fields = (
   };
 
   return (
-    <Stack gap={6}>
+    <Stack gap="2rem">
       <CmsdsTextField
         label={`What is the ${
           props.year + 2
