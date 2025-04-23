@@ -31,6 +31,7 @@ export const radioWithChildrenSchema = object().shape({
     })
   ),
   id: string().notRequired(),
+  clickAction: string().notRequired(),
 });
 
 export const radioSchema = object().shape({
@@ -38,6 +39,7 @@ export const radioSchema = object().shape({
   type: string().notRequired(),
   label: string().notRequired(),
   id: string().notRequired(),
+  clickAction: string().notRequired(),
 });
 
 const pageElementSchema = lazy((element: PageElement): any => {

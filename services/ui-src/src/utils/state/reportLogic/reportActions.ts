@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HcbsReportState } from "types";
 import {
+  isMeasurePageTemplate,
   isMeasureTemplate,
   MeasurePageTemplate,
   PageStatus,
@@ -198,6 +199,35 @@ export const resetMeasure = (measureId: string, state: HcbsReportState) => {
   const report = structuredClone(state.report);
 
   performResetMeasure(measureId, report);
+  return { report };
+};
+
+/**
+ * In QMS, when swapping delivery methods, the content of the unused pages should be purged.
+ * @param measureId
+ * @param selections
+ * @param state
+ * @returns A modified report
+ */
+export const changeDeliveryMethods = (
+  measureId: string,
+  selections: string,
+  state: HcbsReportState
+) => {
+  if (!state.report || !state.currentPageId || selections === "both") return;
+  const report = structuredClone(state.report);
+
+  const page = report.pages.find((page) => page.id === measureId);
+
+  if (!page || !isMeasurePageTemplate(page) || !page.dependentPages) return;
+  for (const dependentPage of page.dependentPages) {
+    const deliverySystemIsSelected = selections
+      .split(",")
+      .includes(dependentPage.key);
+    if (!deliverySystemIsSelected) {
+      performResetMeasure(dependentPage.template, report);
+    }
+  }
   return { report };
 };
 

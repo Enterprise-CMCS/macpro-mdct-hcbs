@@ -46,7 +46,7 @@ const formatChoices = (
 
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
-  const { clearMeasure, currentPageId } = useStore();
+  const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
   // get form context and register field
@@ -102,18 +102,18 @@ export const RadioField = (props: PageElementProps) => {
     form.setValue(`${props.formkey}.label`, radio.label);
     form.setValue(`${props.formkey}.id`, radio.id);
 
-    if (!radio.clickAction) return;
+    if (!radio.clickAction || !currentPageId) return;
     switch (radio.clickAction) {
       case "qmReportingChange":
         if (value === "no") {
-          clearMeasure(currentPageId ?? "", { [radio.id]: value });
+          clearMeasure(currentPageId, { [radio.id]: value });
           autosave();
           event.stopPropagation(); // This action is doing its own effect outside of normal change.
         }
         return;
       case "qmDeliveryMethodChange":
-        // TODO: Clear measure
-        return;
+        changeDeliveryMethods(currentPageId, value);
+        return; // after the clear, allow normal setting of this page to occur
     }
   };
 
