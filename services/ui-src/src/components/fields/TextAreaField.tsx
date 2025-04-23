@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { parseCustomHtml } from "utils";
 import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";

@@ -38,7 +38,10 @@ const sx = {
     flexDirection: "column",
     "&.standard": {
       maxWidth: "basicPageWidth",
-      margin: "5.5rem auto",
+      margin: "3.5rem auto",
+    },
+    ".mobile &":{
+      margin: "2.5rem auto",
     },
     "&.report": {
       height: "100%",

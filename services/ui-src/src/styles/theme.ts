@@ -214,6 +214,7 @@ export const theme = extendTheme({
           border: "1px solid",
           borderColor: "palette.primary",
           textDecoration: "none",
+          fontWeight: "bold",
           "&:disabled, &:disabled:hover": {
             color: "palette.gray",
             borderColor: "palette.gray",
@@ -540,9 +541,6 @@ export const theme = extendTheme({
             },
             "&:last-of-type": {
               minWidth: "4rem",
-              button: {
-                fontWeight: "800",
-              },
             },
             a: {
               fontSize: "14px",

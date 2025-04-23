@@ -150,7 +150,6 @@ export const ReportPageWrapper = () => {
                 {parentPage.index > 0 && (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index - 1)}
-                    fontWeight="bold"
                     variant="outline"
                     leftIcon={<Image src={prevArrowIcon} />}
                   >
