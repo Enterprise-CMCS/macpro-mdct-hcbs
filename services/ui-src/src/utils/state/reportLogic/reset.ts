@@ -29,8 +29,10 @@ export const performClearMeasure = (
   }
   // Clean measure
   page.elements?.forEach((element) => {
-    if (element.id in ignoreList && "answer" in element) {
-      element.answer = ignoreList[element.id];
+    if (element.id in ignoreList) {
+      // Answer may not be set yet, typeguard can derail
+      const elementWithAnswer = element as Partial<{ answer: any }>;
+      elementWithAnswer.answer = ignoreList[element.id];
       return;
     }
     performResetPageElement(element);

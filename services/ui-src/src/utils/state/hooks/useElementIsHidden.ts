@@ -15,21 +15,14 @@ export const useElementIsHidden = (
 
   useEffect(() => {
     if (!hideCondition || !currentPage?.elements) {
-      setHideElement(false);
       return;
     }
 
-    const newHideState = elementIsHidden(hideCondition, currentPage.elements);
-    if (!hideElement && newHideState && answerKey) {
-      // Hiding - unbind so future updates don't continue overwriting
-      form.unregister(answerKey);
-      setHideElement(newHideState);
-    } else if (hideElement && !newHideState && answerKey) {
-      // Unhiding
-
-      // form.clearErrors(answerKey); // continue to investigate
-      setHideElement(newHideState);
+    const hidden = elementIsHidden(hideCondition, currentPage.elements);
+    if (hidden && answerKey) {
+      form.unregister(answerKey); // unbind so future updates don't continue overwriting
     }
+    setHideElement(hidden);
   }, [currentPage]);
   return hideElement;
 };
