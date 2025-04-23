@@ -23,6 +23,7 @@ import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { measurePrevPage, parseCustomHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 export interface PageElementProps {
   element: PageElement;
   index?: number;
@@ -69,7 +70,10 @@ export const headerElement = (props: PageElementProps) => {
 
 export const subHeaderElement = (props: PageElementProps) => {
   const element = props.element as SubHeaderTemplate;
-
+  const hideElement = useElementIsHidden(element.hideCondition);
+  if (hideElement) {
+    return null;
+  }
   return (
     <Stack>
       <Heading as="h2" variant="subHeader">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -20,6 +20,7 @@ import { currentPageSelector } from "utils/state/selectors";
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
 import { isReviewSubmitPage, ReportStatus } from "types";
+import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const ReportPageWrapper = () => {
   const {
@@ -29,13 +30,12 @@ export const ReportPageWrapper = () => {
     loadReport: setReport,
     setAnswers,
     setCurrentPageId,
-    saveReport,
   } = useStore();
   const currentPage = useStore(currentPageSelector);
 
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout>>();
+  const { autosave } = useContext(ReportAutosaveContext);
 
   const methods = useForm({
     defaultValues: {},
@@ -54,28 +54,16 @@ export const ReportPageWrapper = () => {
     }
   }, [pageId]);
 
-  const useDebounce = (func: Function, delay: number = 2000) => {
-    if (timerId) clearTimeout(timerId);
-
-    let timer = setTimeout(() => {
-      func();
-    }, delay);
-    setTimerId(timer);
-  };
-
   const handleChange = async (data: any) => {
     setAnswers(data);
-    useDebounce(() => {
-      if (!report) return;
-      saveReport();
-    });
+    autosave();
   };
 
   const handleError = async (errors: any) => {
     const data = methods.getValues();
     if (!report) return;
     setAnswers(data, errors);
-    saveReport();
+    autosave();
   };
 
   const fetchReport = async () => {

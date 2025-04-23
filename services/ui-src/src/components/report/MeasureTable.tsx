@@ -20,11 +20,13 @@ import {
 } from "types";
 import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
+import { useContext } from "react";
+import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setModalComponent, setModalOpen, setSubstitute, saveReport } =
-    useStore();
+  const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -40,7 +42,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const onSubstitute = async (selectMeasure: MeasurePageTemplate) => {
     if (report) {
       setSubstitute(report, selectMeasure);
-      saveReport();
+      autosave();
     }
     setModalOpen(false);
   };

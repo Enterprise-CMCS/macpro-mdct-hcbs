@@ -12,6 +12,7 @@ import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import {
   MeasurePageTemplate,
+  MeasureResultsNavigationTableTemplate,
   PageStatus,
   PageType,
   RadioTemplate,
@@ -19,12 +20,18 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
 import { currentPageSelector } from "utils/state/selectors";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
+import { PageElementProps } from "../report/Elements";
 
-export const MeasureResultsNavigationTableElement = () => {
+export const MeasureResultsNavigationTableElement = (
+  props: PageElementProps
+) => {
+  const table = props.element as MeasureResultsNavigationTableTemplate;
   const { reportType, state, reportId } = useParams();
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
   const navigate = useNavigate();
+  const hideElement = useElementIsHidden(table.hideCondition);
 
   if (!report || !currentPage || currentPage.type !== PageType.Measure)
     return null;
@@ -55,6 +62,10 @@ export const MeasureResultsNavigationTableElement = () => {
 
     return <></>;
   };
+
+  if (hideElement) {
+    return null;
+  }
 
   // Note pages like LTSS-5 have 2 child pages, but 1 delivery system.
   const singleOption = measurePage.cmitInfo?.deliverySystem.length == 1;
