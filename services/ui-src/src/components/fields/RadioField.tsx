@@ -55,7 +55,6 @@ export const RadioField = (props: PageElementProps) => {
 
   useEffect(() => {
     const options = { required: radio.required ? requiredResponse : false };
-    // TODO: This is where it might get weird, reporting always sets its value even if empty
     form.setValue(key, radio.answer);
     form.register(key, options);
     if (radio.answer) {
