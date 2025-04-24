@@ -42,7 +42,7 @@ export const qmsReportTemplate: ReportTemplate = {
           label: "Contact name",
           required: true,
           helperText:
-            "Enter person's name or a position title for CMS to contact with questions about this report.",
+            "Enter a person's name or a position title for CMS to contact with questions about this report.",
         },
         {
           type: ElementType.Textbox,
@@ -50,7 +50,7 @@ export const qmsReportTemplate: ReportTemplate = {
           label: "Contact email address",
           required: true,
           helperText:
-            "Enter email address. Department or program-wide email addresses ok.",
+            "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
       ],
     },
