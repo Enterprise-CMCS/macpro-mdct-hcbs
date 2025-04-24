@@ -102,7 +102,7 @@ export const subHeaderMeasureElement = (_props: PageElementProps) => {
   const parent = templates.find(
     (template) =>
       template?.measureTemplate === currentPageId ||
-      template?.dependentPages.find(
+      template?.dependentPages?.find(
         (page: any) => page.template === currentPageId
       )
   );
@@ -110,6 +110,8 @@ export const subHeaderMeasureElement = (_props: PageElementProps) => {
   const measure = report?.pages.find(
     (measure) => measure.id === parent?.measureTemplate
   ) as MeasurePageTemplate;
+
+  if (!measure) return <></>;
 
   return (
     <Heading as="h2" variant="nestedHeading">
