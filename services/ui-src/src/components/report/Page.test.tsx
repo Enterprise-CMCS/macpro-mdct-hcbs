@@ -163,6 +163,10 @@ const elements: PageElement[] = [
     type: ElementType.SubmissionParagraph,
     id: "",
   },
+  {
+    type: ElementType.SubHeaderMeasure,
+    id: "",
+  },
 ];
 
 const textFieldElement: PageElement[] = [

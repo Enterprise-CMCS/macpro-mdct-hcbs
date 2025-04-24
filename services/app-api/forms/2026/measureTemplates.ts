@@ -38,6 +38,7 @@ import {
   measureCompleteBanner,
   sectionCompleteBanner,
   performanceRatePOM,
+  measureType,
 } from "./elements";
 
 export const measureTemplates: Record<
@@ -53,6 +54,7 @@ export const measureTemplates: Record<
     elements: [
       returnToDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -81,6 +83,7 @@ export const measureTemplates: Record<
         to: "LTSS-1",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-1: Fee-For-Service (FFS LTSS)",
@@ -111,6 +114,7 @@ export const measureTemplates: Record<
         to: "LTSS-1",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -138,6 +142,7 @@ export const measureTemplates: Record<
     elements: [
       returnToDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -166,6 +171,7 @@ export const measureTemplates: Record<
         to: "LTSS-2",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-2: Fee-For-Service (FFS LTSS)",
@@ -196,6 +202,7 @@ export const measureTemplates: Record<
         to: "LTSS-2",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -222,6 +229,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -250,6 +258,7 @@ export const measureTemplates: Record<
         to: "LTSS-6",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-6: Fee-For-Service (FFS LTSS)",
@@ -279,6 +288,7 @@ export const measureTemplates: Record<
         to: "LTSS-6",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-6: Managed Care (MLTSS)",
@@ -303,6 +313,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -331,6 +342,7 @@ export const measureTemplates: Record<
         to: "LTSS-7",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-7: Fee-For-Service (FFS LTSS)",
@@ -360,6 +372,7 @@ export const measureTemplates: Record<
         to: "LTSS-7",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -385,6 +398,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -413,6 +427,7 @@ export const measureTemplates: Record<
         to: "LTSS-8",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-8: Fee-For-Service (FFS LTSS)",
@@ -442,6 +457,7 @@ export const measureTemplates: Record<
         to: "LTSS-8",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -468,6 +484,7 @@ export const measureTemplates: Record<
     elements: [
       returnToDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -495,6 +512,7 @@ export const measureTemplates: Record<
         to: "FASI-1",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "FASI-1: Fee-For-Service (FFS FASI-1)",
@@ -538,6 +556,7 @@ export const measureTemplates: Record<
         to: "FASI-1",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "FASI-1: Managed Care (MLTSS)",
@@ -577,6 +596,7 @@ export const measureTemplates: Record<
     elements: [
       returnToDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -604,6 +624,7 @@ export const measureTemplates: Record<
         to: "FASI-2",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "FASI-2: Fee-For-Service (FFS FASI-2)",
@@ -647,6 +668,7 @@ export const measureTemplates: Record<
         to: "FASI-2",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "FASI-2: Managed Care (MLTSS)",
@@ -686,6 +708,7 @@ export const measureTemplates: Record<
     elements: [
       returnToOptionalDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -734,6 +757,7 @@ export const measureTemplates: Record<
     elements: [
       returnToOptionalDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -762,6 +786,7 @@ export const measureTemplates: Record<
         to: "LTSS-3",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-3: Fee-For-Service (FFS LTSS)",
@@ -819,6 +844,7 @@ export const measureTemplates: Record<
         to: "LTSS-3",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -873,6 +899,7 @@ export const measureTemplates: Record<
     elements: [
       returnToOptionalDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -901,6 +928,7 @@ export const measureTemplates: Record<
         to: "LTSS-4",
       },
       sectionCompleteBanner,
+      measureType,
       {
         ...measureHeader,
         text: "LTSS-4: Fee-For-Service (FFS LTSS)",
@@ -931,6 +959,7 @@ export const measureTemplates: Record<
         to: "LTSS-4",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -958,6 +987,7 @@ export const measureTemplates: Record<
     elements: [
       returnToOptionalDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -983,6 +1013,7 @@ export const measureTemplates: Record<
         to: "LTSS-5",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -1026,6 +1057,7 @@ export const measureTemplates: Record<
         to: "LTSS-5",
       },
       sectionCompleteBanner,
+      measureType,
       {
         type: ElementType.Header,
         id: "measure-header",
@@ -1082,6 +1114,7 @@ export const measureTemplates: Record<
     elements: [
       returnToOptionalDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1107,6 +1140,7 @@ export const measureTemplates: Record<
         to: "MLTSS",
       },
       sectionCompleteBanner,
+      measureType,
       measureInstructions,
       {
         ...measureHeader,
@@ -1145,6 +1179,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1223,6 +1258,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1301,6 +1337,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1379,6 +1416,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1457,6 +1495,7 @@ export const measureTemplates: Record<
     elements: [
       returnToRequiredDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1535,6 +1574,7 @@ export const measureTemplates: Record<
     elements: [
       returnToOptionalDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,
@@ -1613,6 +1653,7 @@ export const measureTemplates: Record<
     elements: [
       returnToOptionalDashboard,
       measureCompleteBanner,
+      measureType,
       measureHeader,
       measureInstructions,
       measureDetailsSection,

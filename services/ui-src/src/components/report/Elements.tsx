@@ -12,12 +12,15 @@ import {
 import {
   HeaderTemplate,
   SubHeaderTemplate,
+  SubHeaderMeasureTemplate,
   ParagraphTemplate,
   AccordionTemplate,
   ButtonLinkTemplate,
   PageElement,
   NestedHeadingTemplate,
   HeaderIcon,
+  MeasurePageTemplate,
+  DependentPageInfo,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -85,6 +88,33 @@ export const subHeaderElement = (props: PageElementProps) => {
         </Text>
       )}
     </Stack>
+  );
+};
+
+export const subHeaderMeasureElement = (_props: PageElementProps) => {
+  const { report, currentPageId } = useStore();
+
+  const templates = [
+    report?.measureLookup.defaultMeasures,
+    report?.measureLookup.optionGroups,
+  ].flat();
+
+  const parent = templates.find(
+    (template) =>
+      template?.measureTemplate === currentPageId ||
+      template?.dependentPages.find(
+        (page: any) => page.template === currentPageId
+      )
+  );
+
+  const measure = report?.pages.find(
+    (measure) => measure.id === parent?.measureTemplate
+  ) as MeasurePageTemplate;
+
+  return (
+    <Heading as="h2" variant="nestedHeading">
+      {measure.required ? "Required" : "Optional"} Measure
+    </Heading>
   );
 };
 

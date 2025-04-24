@@ -13,6 +13,7 @@ import {
   RateCalc,
   ReportingRadioTemplate,
   StatusAlertTemplate,
+  SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
@@ -38,7 +39,12 @@ export const returnToDashboard: ButtonLinkTemplate = {
 
 export const divider: DividerTemplate = {
   type: ElementType.Divider,
-  id: "divdier",
+  id: "divider",
+};
+
+export const measureType: SubHeaderMeasureTemplate = {
+  type: ElementType.SubHeaderMeasure,
+  id: "sub-header-measure",
 };
 
 export const measureHeader: HeaderTemplate = {

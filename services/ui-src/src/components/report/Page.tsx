@@ -7,6 +7,7 @@ import {
   buttonLinkElement,
   nestedHeadingElement,
   dividerElement,
+  subHeaderMeasureElement,
 } from "./Elements";
 import {
   assertExhaustive,
@@ -85,6 +86,8 @@ export const Page = ({ elements }: Props) => {
         return dividerElement;
       case ElementType.SubmissionParagraph:
         return SubmissionParagraph;
+      case ElementType.SubHeaderMeasure:
+        return subHeaderMeasureElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;
