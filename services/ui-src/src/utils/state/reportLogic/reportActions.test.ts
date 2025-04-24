@@ -6,11 +6,12 @@ import {
   MeasureTemplateName,
   PageType,
   Report,
-  ReportingRadioTemplate,
   ReportStatus,
   ReportType,
   TextboxTemplate,
   FormPageTemplate,
+  RadioTemplate,
+  DeliverySystem,
 } from "types/report";
 import {
   buildState,
@@ -22,6 +23,7 @@ import {
   saveReport,
   filterErrors,
   markPageComplete,
+  changeDeliveryMethods,
 } from "./reportActions";
 import {
   mock2MeasureTemplate,
@@ -80,6 +82,20 @@ const testReport: Report = {
         },
       ],
     },
+    {
+      id: "FFS-1",
+      title: "FFS",
+      type: PageType.MeasureResults,
+      status: PageStatus.IN_PROGRESS,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "header",
+          text: "FFS page",
+        },
+      ],
+    },
     mockMeasureTemplateNotReporting,
     mock2MeasureTemplate,
   ],
@@ -99,6 +115,18 @@ const testReport: Report = {
         {
           type: ElementType.MeasureResultsNavigationTable,
           measureDisplay: "quality",
+        },
+      ],
+      dependentPages: [
+        {
+          key: DeliverySystem.FFS,
+          linkText: "Delivery Method: FFS",
+          template: MeasureTemplateName["FFS-1"],
+        },
+        {
+          key: DeliverySystem.MLTSS,
+          linkText: "Delivery Method: MLTSS",
+          template: MeasureTemplateName["MLTSS-1"],
         },
       ],
     } as MeasurePageTemplate,
@@ -540,7 +568,7 @@ const testReport: Report = {
 describe("state/management/reportState: buildState", () => {
   test("initializes relevant parts of the state", () => {
     const result = buildState(testReport, false);
-    expect(result.pageMap!.size).toEqual(5);
+    expect(result.pageMap!.size).toEqual(6);
     expect(result.report).not.toBeUndefined();
     expect(result.rootPage).not.toBeUndefined();
     expect(result.parentPage?.parent).toEqual("root");
@@ -584,7 +612,7 @@ describe("state/management/reportState: mergeAnswers", () => {
 describe("state/management/reportState: substitute", () => {
   test("substitute the measure", () => {
     const response = substitute(testReport, mockMeasureTemplateNotReporting);
-    const measure = response.report.pages[3] as MeasurePageTemplate;
+    const measure = response.report.pages[4] as MeasurePageTemplate;
     expect(measure.required).toBe(false);
   });
 });
@@ -597,8 +625,8 @@ describe("state/management/reportState: resetMeasure", () => {
 
     const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = resetMeasure("LTSS-1", state);
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
-    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
     expect(measure.status).toBe(PageStatus.NOT_STARTED);
@@ -617,8 +645,8 @@ describe("state/management/reportState: clearMeasure", () => {
     const response = clearMeasure("LTSS-1", state, {
       ["measure-reporting-radio"]: "no",
     });
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
-    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
     expect(measure.status).toBe(PageStatus.IN_PROGRESS);
@@ -635,7 +663,7 @@ describe("state/management/reportState: markPageComplete", () => {
 
     const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = markPageComplete("LTSS-1", state);
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
 
     expect(measure.status).toBe(PageStatus.COMPLETE);
   });
@@ -662,5 +690,34 @@ describe("state/management/reportState: filterErrors", () => {
 
     expect("answer" in result.elements).toBeFalsy();
     expect(result.elements[1].answer).toBe("cat");
+  });
+});
+
+describe("state/management/reportState: changeDeliveryMethods", () => {
+  test("should clear unused methods", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const response = changeDeliveryMethods("LTSS-1", "MLTSS", state);
+    const ffs = response!.report.pages.find(
+      (page) => page.id === MeasureTemplateName["FFS-1"]
+    ) as MeasurePageTemplate;
+
+    expect(ffs!.status).toBe(PageStatus.NOT_STARTED);
+  });
+  test("should ignore used methods", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const response = changeDeliveryMethods("LTSS-1", "FFS", state);
+    const ffs = response!.report.pages.find(
+      (page) => page.id === MeasureTemplateName["FFS-1"]
+    ) as MeasurePageTemplate;
+
+    expect(ffs!.status).toBe(PageStatus.IN_PROGRESS);
   });
 });

@@ -12,6 +12,7 @@ import { MeasurePageTemplate, Report } from "types/report";
 import { ReactNode } from "react";
 import {
   buildState,
+  changeDeliveryMethods,
   clearMeasure,
   markPageComplete,
   mergeAnswers,
@@ -127,6 +128,15 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
       false,
       {
         type: "clearMeasure",
+      }
+    ),
+  changeDeliveryMethods: (measureId: string, selection: string) =>
+    set(
+      (state: HcbsReportState) =>
+        changeDeliveryMethods(measureId, selection, state),
+      false,
+      {
+        type: "changeDeliveryMethods",
       }
     ),
   saveReport: async () => {

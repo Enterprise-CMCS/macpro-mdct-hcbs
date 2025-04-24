@@ -208,7 +208,7 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
   substitutable: "FASI-1",
   elements: [
     {
-      type: ElementType.ReportingRadio,
+      type: ElementType.Radio,
       label: "Is the state reporting on this measure?",
       id: "measure-reporting-radio",
       value: [
@@ -282,7 +282,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   substitutable: "FASI-1",
   elements: [
     {
-      type: ElementType.ReportingRadio,
+      type: ElementType.Radio,
       label: "Is the state reporting on this measure?",
       id: "measure-reporting-radio",
       value: [
@@ -465,6 +465,7 @@ export const mockReportStore: HcbsReportState = {
   setAnswers: () => {},
   resetMeasure: () => {},
   clearMeasure: () => {},
+  changeDeliveryMethods: () => {},
   setSubstitute: () => {},
   completePage: () => {},
   saveReport: async () => {},

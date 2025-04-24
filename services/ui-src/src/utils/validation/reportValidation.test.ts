@@ -89,7 +89,7 @@ describe("Radio validation", () => {
         },
         {
           answer: "no",
-          type: ElementType.ReportingRadio,
+          type: ElementType.Radio,
           label: "reporting radio extrordinare",
           id: "reporting-radio",
         },
