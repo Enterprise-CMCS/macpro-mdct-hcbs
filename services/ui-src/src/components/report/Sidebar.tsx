@@ -51,13 +51,13 @@ export const Sidebar = () => {
         <Button
           variant={"sidebar"}
           className={page.id === currentPageId ? "selected" : ""}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavSelect(page.id);
+          }}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            <Box
-              width="100%"
-              height="100%"
-              onClick={() => onNavSelect(page.id)}
-            >
+            <Box width="100%" height="100%">
               {navItem(page.title!, index)}
             </Box>
             {childSections?.length! > 0 && (

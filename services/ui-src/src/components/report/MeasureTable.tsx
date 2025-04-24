@@ -60,8 +60,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const navigate = useNavigate();
 
   const handleEditClick = (measureId: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
-    navigate(path);
+    navigate(`/report/${reportType}/${state}/${reportId}/${measureId}`);
   };
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
@@ -105,13 +104,29 @@ export const MeasureTableElement = (props: PageElementProps) => {
         </Td>
         <Td>
           {measure.substitutable && measure.required ? (
-            <Link onClick={() => buildModal(measure)}>Substitute measure</Link>
+            <Button
+              variant="link"
+              sx={{ fontSize: "14px" }}
+              onClick={() => {
+                buildModal(measure);
+              }}
+            >
+              Substitute measure
+            </Button>
           ) : null}
         </Td>
-
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
+          <Button
+            as={Link}
+            variant={"outline"}
+            href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleEditClick(measure.id);
+            }}
+            sx={{ fontWeight: "800" }}
+          >
             Edit
           </Button>
         </Td>

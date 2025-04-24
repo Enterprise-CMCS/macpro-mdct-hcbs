@@ -1,8 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RadioField } from "components";
 import { useFormContext } from "react-hook-form";
 import { ElementType, PageElement } from "types";
+import { useStore } from "utils";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -31,6 +32,15 @@ jest.mock("utils/state/hooks/useElementIsHidden");
 const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
   typeof useElementIsHidden
 >;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockClearMeasure = jest.fn();
+const mockChangeDeliveryMethods = jest.fn();
+mockedUseStore.mockReturnValue({
+  currentPageId: "my-id",
+  clearMeasure: mockClearMeasure,
+  changeDeliveryMethods: mockChangeDeliveryMethods,
+});
 
 const mockRadioElement = {
   type: RadioField,
@@ -121,5 +131,65 @@ describe("Radio field hide condition logic", () => {
     render(RadioFieldComponent);
     const radioField = screen.queryByText("Choice 1");
     expect(radioField).toBeVisible();
+  });
+});
+
+describe("Radio field click action logic", () => {
+  test("Radio field triggers a report delivery methods change when toggled", async () => {
+    const deliveryElement = {
+      ...mockRadioElement,
+      clickAction: "qmDeliveryMethodChange",
+    };
+    const deliveryRadio = (
+      <div data-testid="test-radio-list">
+        <RadioField
+          element={deliveryElement as unknown as PageElement}
+          index={0}
+          formkey="elements.0"
+        />
+      </div>
+    );
+    render(deliveryRadio);
+    const radioField = screen.queryByText("Choice 1");
+    expect(radioField).toBeVisible();
+    await act(async () => {
+      await userEvent.click(radioField!);
+    });
+    expect(mockChangeDeliveryMethods).toHaveBeenCalled();
+  });
+
+  test("Radio field triggers a clear action when not reporting.", async () => {
+    const deliveryElement = {
+      ...mockRadioElement,
+      clickAction: "qmReportingChange",
+      value: [
+        {
+          label: "Hey, no thanks",
+          value: "no",
+          checked: false,
+        },
+        {
+          label: "Sure thing partner",
+          value: "yes",
+          checked: false,
+        },
+      ],
+    };
+    const deliveryRadio = (
+      <div data-testid="test-radio-list">
+        <RadioField
+          element={deliveryElement as unknown as PageElement}
+          index={0}
+          formkey="elements.0"
+        />
+      </div>
+    );
+    render(deliveryRadio);
+    const radioField = screen.queryByText("Hey, no thanks");
+    expect(radioField).toBeVisible();
+    await act(async () => {
+      await userEvent.click(radioField!);
+    });
+    expect(mockClearMeasure).toHaveBeenCalled();
   });
 });

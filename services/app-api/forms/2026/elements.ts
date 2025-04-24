@@ -11,7 +11,6 @@ import {
   PerformanceRateType,
   RadioTemplate,
   RateCalc,
-  ReportingRadioTemplate,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
@@ -84,8 +83,8 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
   text: "Managed Care Measure Results",
 };
 
-export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
-  type: ElementType.ReportingRadio,
+export const isTheStateReportingThisMeasure: RadioTemplate = {
+  type: ElementType.Radio,
   label: "Is the state reporting on this measure?",
   helperText:
     "Warning: Changing this response will clear any data previously entered in this measure.",
@@ -98,6 +97,7 @@ export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
     },
   ],
   required: true,
+  clickAction: "qmReportingChange",
 };
 
 export const wereTheResultsAudited: RadioTemplate = {
@@ -204,6 +204,7 @@ export const whichVersionQualityMeasureReported: RadioTemplate = {
   required: true,
   helperText:
     "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.",
+  clickAction: "qmDeliveryMethodChange",
 };
 
 export const enterMeasureResultsSubheader: SubHeaderTemplate = {

@@ -258,7 +258,6 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
-  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -284,7 +283,6 @@ export type PageElement =
   | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
-  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
@@ -423,17 +421,7 @@ export type RadioTemplate = {
   answer?: string;
   required?: boolean;
   hideCondition?: HideCondition;
-};
-
-export type ReportingRadioTemplate = {
-  type: ElementType.ReportingRadio;
-  id: string;
-  formKey?: string;
-  label: string;
-  helperText?: string;
-  value: ChoiceTemplate[];
-  answer?: string;
-  required?: boolean;
+  clickAction?: string;
 };
 
 export type ButtonLinkTemplate = {

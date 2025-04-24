@@ -19,6 +19,14 @@ import {
 } from "../types/reports";
 import { error } from "./constants";
 
+const hideConditionSchema = object()
+  .shape({
+    controllerElementId: string().required(),
+    answer: string().required(),
+  })
+  .notRequired()
+  .default(undefined);
+
 const headerTemplateSchema = object().shape({
   type: string().required(ElementType.Header),
   id: string().required(),
@@ -31,13 +39,7 @@ const subHeaderTemplateSchema = object().shape({
   id: string().required(),
   text: string().required(),
   helperText: string().notRequired(),
-  hideCondition: object()
-    .shape({
-      controllerElementId: string().required(),
-      answer: string().required(),
-    })
-    .notRequired()
-    .default(undefined),
+  hideCondition: hideConditionSchema,
 });
 
 const subHeaderMeasureSchema = object().shape({
@@ -66,13 +68,7 @@ const textboxTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   required: boolean().notRequired(),
-  hideCondition: object()
-    .shape({
-      controllerElementId: string().required(),
-      answer: string().required(),
-    })
-    .notRequired()
-    .default(undefined),
+  hideCondition: hideConditionSchema,
 });
 
 const textAreaTemplateSchema = object().shape({
@@ -81,13 +77,7 @@ const textAreaTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  hideCondition: object()
-    .shape({
-      controllerElementId: string().required(),
-      answer: string().required(),
-    })
-    .notRequired()
-    .default(undefined),
+  hideCondition: hideConditionSchema,
   required: boolean().notRequired(),
 });
 
@@ -160,8 +150,6 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return resultRowButtonTemplateSchema;
     case ElementType.Radio:
       return radioTemplateSchema;
-    case ElementType.ReportingRadio:
-      return reportingRadioTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
@@ -202,30 +190,8 @@ const radioTemplateSchema = object().shape({
   ),
   answer: string().notRequired(),
   required: boolean().notRequired(),
-  hideCondition: object()
-    .shape({
-      controllerElementId: string().required(),
-      answer: string().required(),
-    })
-    .notRequired()
-    .default(undefined),
-});
-
-const reportingRadioTemplateSchema = object().shape({
-  type: string().required(ElementType.ReportingRadio),
-  id: string().required(),
-  label: string().required(),
-  helperText: string().notRequired(),
-  value: array().of(
-    object().shape({
-      label: string().required(),
-      value: string().required(),
-      checked: boolean().notRequired(),
-      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
-    })
-  ),
-  answer: string().notRequired(),
-  required: boolean().notRequired(),
+  clickAction: string().notRequired(),
+  hideCondition: hideConditionSchema,
 });
 
 const buttonLinkTemplateSchema = object().shape({

@@ -24,7 +24,6 @@ import {
   PerformanceRateElement,
   MeasureResultsNavigationTableElement,
   RadioField,
-  ReportingRadioField,
   StatusTableElement,
   TextAreaField,
   TextField,
@@ -64,8 +63,6 @@ export const Page = ({ elements }: Props) => {
         return accordionElement;
       case ElementType.Radio:
         return RadioField;
-      case ElementType.ReportingRadio:
-        return ReportingRadioField;
       case ElementType.ButtonLink:
         return buttonLinkElement;
       case ElementType.MeasureTable:
