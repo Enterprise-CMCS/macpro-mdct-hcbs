@@ -69,7 +69,15 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Accordion,
           id: "required-instructions",
           label: "Instructions",
-          value: "I am an accordion",
+          value:
+            "<b>Instructions for Completing the QMS Report</b>" +
+            "<br><br>Below is a list of all required measures.  Select the respective “Start” or “Edit” buttons to navigate to each measure overview page and begin filling in all required fields.  Once all required fields are completed for the measure, and any associated sub-measure sections, the “Complete Measure” button will become active.  Clicking the button will complete the measure and place it in the <b>Complete</b> status." +
+            "<br><br><b>Understanding Measure Statuses </b>" +
+            "<br><br><b>Not Started</b>:  No data has been entered or actions taken on the measure." +
+            "<br><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered." +
+            "<br><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered." +
+            "<br><b>Complete</b>:  The measure has been completed." +
+            "<br><br>Before submitting this form, all required measures must be in the <b>Complete</b> status.",
         },
         {
           type: ElementType.MeasureTable,
