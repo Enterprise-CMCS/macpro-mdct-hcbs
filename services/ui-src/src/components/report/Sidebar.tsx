@@ -55,7 +55,6 @@ export const Sidebar = () => {
             e.preventDefault();
             onNavSelect(page.id);
           }}
-          role="link"
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box width="100%" height="100%">
