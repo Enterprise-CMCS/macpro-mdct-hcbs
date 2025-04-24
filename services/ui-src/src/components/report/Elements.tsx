@@ -12,7 +12,6 @@ import {
 import {
   HeaderTemplate,
   SubHeaderTemplate,
-  SubHeaderMeasureTemplate,
   ParagraphTemplate,
   AccordionTemplate,
   ButtonLinkTemplate,
@@ -20,7 +19,6 @@ import {
   NestedHeadingTemplate,
   HeaderIcon,
   MeasurePageTemplate,
-  DependentPageInfo,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -94,12 +92,8 @@ export const subHeaderElement = (props: PageElementProps) => {
 export const subHeaderMeasureElement = (_props: PageElementProps) => {
   const { report, currentPageId } = useStore();
 
-  const templates = [
-    report?.measureLookup.defaultMeasures,
-    report?.measureLookup.optionGroups,
-  ].flat();
-
-  const parent = templates.find(
+  //search for the measure that the currentId is tied to, it maybe a child so we have to check the dependents too.
+  const parentMeasure = report?.measureLookup.defaultMeasures.find(
     (template) =>
       template?.measureTemplate === currentPageId ||
       template?.dependentPages?.find(
@@ -107,16 +101,19 @@ export const subHeaderMeasureElement = (_props: PageElementProps) => {
       )
   );
 
+  //find the parent measure to get the page type
   const measure = report?.pages.find(
-    (measure) => measure.id === parent?.measureTemplate
+    (measure) => measure.id === parentMeasure?.measureTemplate
   ) as MeasurePageTemplate;
 
-  if (!measure) return <></>;
-
   return (
-    <Heading as="h2" variant="nestedHeading">
-      {measure.required ? "Required" : "Optional"} Measure
-    </Heading>
+    <>
+      {measure && (
+        <Heading as="h2" variant="nestedHeading">
+          {measure.required ? "Required" : "Optional"} Measure
+        </Heading>
+      )}
+    </>
   );
 };
 
