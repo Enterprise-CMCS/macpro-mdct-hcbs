@@ -213,11 +213,11 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
       id: "measure-reporting-radio",
       value: [
         {
-          label: "Yes, the state is reporting on this measure",
+          label: "Yes, the state is reporting on this measure.",
           value: "yes",
         },
         {
-          label: "No, CMS is reporting this measure on the state's behalf",
+          label: "No, CMS is reporting this measure on the state's behalf.",
           value: "no",
         },
       ],
@@ -227,7 +227,7 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
   dependentPages: [
     {
       key: "FFS",
-      linkText: "Delivery Method: FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
       template: MeasureTemplateName["FFS-1"],
     },
     {
@@ -261,7 +261,7 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
   dependentPages: [
     {
       key: "FFS",
-      linkText: "Delivery Method: FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
       template: MeasureTemplateName["FFS-2"],
     },
     {
@@ -287,11 +287,11 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       id: "measure-reporting-radio",
       value: [
         {
-          label: "Yes, the state is reporting on this measure",
+          label: "Yes, the state is reporting on this measure.",
           value: "yes",
         },
         {
-          label: "No, CMS is reporting this measure on the state's behalf",
+          label: "No, CMS is reporting this measure on the state's behalf.",
           value: "no",
         },
       ],
@@ -301,7 +301,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       type: ElementType.TextAreaField,
       id: "additional-notes-field",
       helperText:
-        "If applicable, add any notes or comments to provide context to the reported measure result",
+        "If applicable, add any notes or comments to provide context to the reported measure results.",
       label: "Additional notes/comments (optional)",
       answer: "yes",
     },
@@ -309,7 +309,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   dependentPages: [
     {
       key: "FFS",
-      linkText: "Delivery Method: FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
       template: MeasureTemplateName["FFS-1"],
     },
   ],
@@ -350,7 +350,7 @@ export const mockReportStore: HcbsReportState = {
           dependentPages: [
             {
               key: "FFS",
-              linkText: "Delivery Method: FFS",
+              linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
               template: MeasureTemplateName["FFS-1"],
             },
             {

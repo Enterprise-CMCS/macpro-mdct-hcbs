@@ -28,7 +28,7 @@ export const MeasureDetailsElement = () => {
       <Flex flexDirection="column" alignItems="space-between">
         <>
           <Text fontSize="18px" fontWeight="bold" paddingBottom="16px">
-            Quality Measure Details:
+            Quality Measure Details
           </Text>
           <Text fontSize="22px" fontWeight="bold">
             Measure Name: {title}

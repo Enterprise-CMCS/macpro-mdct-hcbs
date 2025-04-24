@@ -11,12 +11,12 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-1"],
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-1"],
       },
     ],
@@ -30,12 +30,12 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-FASI-1"],
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-FASI-1"],
       },
     ],
@@ -49,7 +49,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-2"],
       },
       {
@@ -68,7 +68,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-FASI-2"],
       },
       {
@@ -87,7 +87,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-6"],
       },
       {
@@ -106,7 +106,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-7"],
       },
       {
@@ -125,7 +125,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-8"],
       },
       {
@@ -158,7 +158,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-3"],
       },
       {
@@ -177,7 +177,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-4"],
       },
       {
@@ -232,7 +232,7 @@ export const pomMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-POM-1"],
       },
       {
@@ -251,7 +251,7 @@ export const pomMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-POM-2"],
       },
       {
@@ -270,7 +270,7 @@ export const pomMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-POM-3"],
       },
       {
@@ -289,7 +289,7 @@ export const pomMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-POM-4"],
       },
       {
@@ -308,7 +308,7 @@ export const pomMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-POM-5"],
       },
       {
@@ -327,7 +327,7 @@ export const pomMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-POM-6"],
       },
       {
@@ -346,7 +346,7 @@ export const pomMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.FFS,
-        linkText: "Delivery Method: FFS",
+        linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
         template: MeasureTemplateName["FFS-POM-7"],
       },
       {
