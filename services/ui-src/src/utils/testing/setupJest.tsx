@@ -317,6 +317,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
 
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
+  sidebarOpen: true,
   currentPageId: "LTSS-1",
   pageMap: new Map([
     ["root", 0],
