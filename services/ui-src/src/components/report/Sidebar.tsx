@@ -15,16 +15,10 @@ const navItem = (title: string, index: number) => {
 };
 
 export const Sidebar = () => {
-  const { report, pageMap, currentPageId } = useStore();
+  const { report, pageMap, currentPageId, setSidebar, sidebarOpen } =
+    useStore();
   const { reportType, state, reportId } = useParams();
-  const { isDesktop } = useBreakpoint();
-  const [isOpen, setIsOpen] = useState<boolean>(isDesktop);
   const [toggleList, setToggleList] = useState<{ [key: string]: boolean }>({});
-
-  //TO FIX: temporary fix, for some reason isDesktop sometimes returns false so it messes with the sidebar on load
-  useEffect(() => {
-    setIsOpen(isDesktop);
-  }, [isDesktop]);
 
   if (!report || !pageMap) {
     return null;
@@ -85,7 +79,7 @@ export const Sidebar = () => {
   if (root == undefined) return null;
 
   return (
-    <Box sx={sx.sidebar} className={isOpen ? "open" : "closed"}>
+    <Box sx={sx.sidebar} className={sidebarOpen ? "open" : "closed"}>
       <Flex sx={sx.sidebarNav}>
         <Flex sx={sx.sidebarList}>
           <Heading variant="sidebar">Quality Measure Set Report</Heading>
@@ -96,13 +90,13 @@ export const Sidebar = () => {
         <Button
           aria-label="Open/Close sidebar menu"
           variant="sidebarToggle"
-          onClick={() => setIsOpen(!isOpen)}
-          className={isOpen ? "open" : "closed"}
+          onClick={() => setSidebar(!sidebarOpen)}
+          className={sidebarOpen ? "open" : "closed"}
         >
           <Image
             src={arrowDownIcon}
-            alt={isOpen ? "Arrow left" : "Arrow right"}
-            className={isOpen ? "left" : "right"}
+            alt={sidebarOpen ? "Arrow left" : "Arrow right"}
+            className={sidebarOpen ? "left" : "right"}
           />
         </Button>
       </Flex>
