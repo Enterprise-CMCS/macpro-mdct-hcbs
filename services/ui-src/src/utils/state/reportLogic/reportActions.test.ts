@@ -568,7 +568,7 @@ const testReport: Report = {
 describe("state/management/reportState: buildState", () => {
   test("initializes relevant parts of the state", () => {
     const result = buildState(testReport, false);
-    expect(result.pageMap!.size).toEqual(5);
+    expect(result.pageMap!.size).toEqual(6);
     expect(result.report).not.toBeUndefined();
     expect(result.rootPage).not.toBeUndefined();
     expect(result.parentPage?.parent).toEqual("root");
@@ -612,7 +612,7 @@ describe("state/management/reportState: mergeAnswers", () => {
 describe("state/management/reportState: substitute", () => {
   test("substitute the measure", () => {
     const response = substitute(testReport, mockMeasureTemplateNotReporting);
-    const measure = response.report.pages[3] as MeasurePageTemplate;
+    const measure = response.report.pages[4] as MeasurePageTemplate;
     expect(measure.required).toBe(false);
   });
 });
@@ -625,7 +625,7 @@ describe("state/management/reportState: resetMeasure", () => {
 
     const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = resetMeasure("LTSS-1", state);
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
     const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
@@ -645,7 +645,7 @@ describe("state/management/reportState: clearMeasure", () => {
     const response = clearMeasure("LTSS-1", state, {
       ["measure-reporting-radio"]: "no",
     });
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
     const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
@@ -663,7 +663,7 @@ describe("state/management/reportState: markPageComplete", () => {
 
     const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = markPageComplete("LTSS-1", state);
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
 
     expect(measure.status).toBe(PageStatus.COMPLETE);
   });
