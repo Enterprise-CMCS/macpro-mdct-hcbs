@@ -11,6 +11,7 @@ import {
   TextboxTemplate,
   FormPageTemplate,
   RadioTemplate,
+  DeliverySystem,
 } from "types/report";
 import {
   buildState,
@@ -22,6 +23,7 @@ import {
   saveReport,
   filterErrors,
   markPageComplete,
+  changeDeliveryMethods,
 } from "./reportActions";
 import {
   mock2MeasureTemplate,
@@ -80,6 +82,20 @@ const testReport: Report = {
         },
       ],
     },
+    {
+      id: "FFS-1",
+      title: "FFS",
+      type: PageType.MeasureResults,
+      status: PageStatus.IN_PROGRESS,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "header",
+          text: "FFS page",
+        },
+      ],
+    },
     mockMeasureTemplateNotReporting,
     mock2MeasureTemplate,
   ],
@@ -99,6 +115,18 @@ const testReport: Report = {
         {
           type: ElementType.MeasureResultsNavigationTable,
           measureDisplay: "quality",
+        },
+      ],
+      dependentPages: [
+        {
+          key: DeliverySystem.FFS,
+          linkText: "Delivery Method: FFS",
+          template: MeasureTemplateName["FFS-1"],
+        },
+        {
+          key: DeliverySystem.MLTSS,
+          linkText: "Delivery Method: MLTSS",
+          template: MeasureTemplateName["MLTSS-1"],
         },
       ],
     } as MeasurePageTemplate,
@@ -662,5 +690,34 @@ describe("state/management/reportState: filterErrors", () => {
 
     expect("answer" in result.elements).toBeFalsy();
     expect(result.elements[1].answer).toBe("cat");
+  });
+});
+
+describe("state/management/reportState: changeDeliveryMethods", () => {
+  test("should clear unused methods", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const response = changeDeliveryMethods("LTSS-1", "MLTSS", state);
+    const ffs = response!.report.pages.find(
+      (page) => page.id === MeasureTemplateName["FFS-1"]
+    ) as MeasurePageTemplate;
+
+    expect(ffs!.status).toBe(PageStatus.NOT_STARTED);
+  });
+  test("should ignore used methods", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const response = changeDeliveryMethods("LTSS-1", "FFS", state);
+    const ffs = response!.report.pages.find(
+      (page) => page.id === MeasureTemplateName["FFS-1"]
+    ) as MeasurePageTemplate;
+
+    expect(ffs!.status).toBe(PageStatus.IN_PROGRESS);
   });
 });
