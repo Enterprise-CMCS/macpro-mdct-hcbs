@@ -32,12 +32,13 @@ export const StatusAlert = (props: PageElementProps) => {
   const pageTo = returnElement?.to
     ? returnElement.to
     : measurePrevPage(report, pageId!);
-  const textElements = alert.text.split("{ReturnButton}");
 
   const nav = () =>
     navigate(`/report/${reportType}/${state}/${reportId}/${pageTo}`);
 
-  const link = <Link onClick={() => nav()}>Click here</Link>;
+  const hasLink = alert.text.includes("{ReturnButton}");
+  const textElements = alert.text.split("{ReturnButton}");
+  const link = hasLink ? <Link onClick={() => nav()}>Click here</Link> : "";
 
   return (
     <Alert

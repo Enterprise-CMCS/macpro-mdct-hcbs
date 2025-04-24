@@ -541,7 +541,6 @@ export const theme = extendTheme({
               minWidth: "4rem",
             },
             a: {
-              fontSize: "14px",
               whiteSpace: "nowrap",
               ".mobile &": {
                 whiteSpace: "wrap",

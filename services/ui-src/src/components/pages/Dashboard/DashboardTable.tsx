@@ -62,7 +62,12 @@ export const HorizontalTable = (
               </button>
             </Td>
           )}
-          <Td fontWeight={"bold"} maxWidth={"14.25rem"} fontSize="16px">
+          <Td
+            fontWeight={"bold"}
+            maxWidth={"14.25rem"}
+            fontSize="16px"
+            padding="16px 8px 16px 0"
+          >
             {report.name ? report.name : "{Name of form}"}
           </Td>
           <Td>
