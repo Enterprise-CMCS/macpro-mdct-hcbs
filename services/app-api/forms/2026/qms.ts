@@ -75,7 +75,6 @@ export const qmsReportTemplate: ReportTemplate = {
             "<p><b>Understanding Measure Statuses </b></p>" +
             "<p><b>Not Started</b>:  No data has been entered or actions taken on the measure.</p>" +
             "<p>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</p>" +
-            "<p>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</p>" +
             "<p>Complete</b>:  The measure has been completed.</p>" +
             "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
