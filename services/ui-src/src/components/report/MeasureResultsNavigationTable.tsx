@@ -90,7 +90,7 @@ export const MeasureResultsNavigationTableElement = (
         </Td>
         <Td width="100%">
           <Text fontWeight="bold">{childLink.linkText}</Text>
-          <Text>CMIT number: # {measurePage.cmit}</Text>
+          <Text>CMIT number: #{measurePage.cmit}</Text>
           <Text>
             Status:{" "}
             {!singleOption && !deliverySystemIsSelected

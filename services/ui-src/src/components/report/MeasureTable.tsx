@@ -98,7 +98,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
         </Td>
         <Td width="100%">
           <Text fontWeight="bold">{measure.title}</Text>
-          <Text>CMIT number: # {measure.cmit}</Text>
+          <Text>CMIT number: #{measure.cmit}</Text>
           <Text>Status: {measure.status ?? "Not started"}</Text>
           {errorMessage(measure)}
         </Td>

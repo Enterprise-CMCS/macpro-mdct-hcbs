@@ -129,12 +129,12 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
   label: "What technical specifications are being used to report this measure?",
   id: "measure-tech-specs-radio",
   value: [
-    { label: "Centers for Medicare and Medicaid Services (CMS)", value: "cms" },
     {
       label:
         "National Committee for Quality Assurance (NCQA)/Healthcare Effectiveness Data and Information Set (HEDIS)",
       value: "hedis",
     },
+    { label: "Centers for Medicare and Medicaid Services (CMS)", value: "cms" },
   ],
   helperText:
     "Select the technical specifications the state used to report this measure.",

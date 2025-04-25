@@ -120,7 +120,7 @@ const testReport: Report = {
       dependentPages: [
         {
           key: DeliverySystem.FFS,
-          linkText: "Delivery Method: FFS",
+          linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
           template: MeasureTemplateName["FFS-1"],
         },
         {

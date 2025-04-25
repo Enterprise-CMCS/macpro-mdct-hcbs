@@ -63,7 +63,7 @@ describe("Measure Results Navigation Table", () => {
   it("should enable each delivery system's button correctly", async () => {
     render(MeasureResultsNavigationTableComponent);
 
-    const ffsRow = screen.getByRole("row", { name: /FFS CMIT# 960/ });
+    const ffsRow = screen.getByRole("row", { name: /FFS CMIT number: #960/ });
     const ffsButton = ffsRow.querySelector("button");
     expect(ffsButton).toBeEnabled();
 
@@ -71,7 +71,9 @@ describe("Measure Results Navigation Table", () => {
     const ffsRoute = "/report/QMS/CO/mock-id/FFS-1";
     expect(mockUseNavigate).toHaveBeenCalledWith(ffsRoute);
 
-    const mltssRow = screen.getByRole("row", { name: /MLTSS CMIT# 960/ });
+    const mltssRow = screen.getByRole("row", {
+      name: /MLTSS CMIT number: #960/,
+    });
     const mltssButton = mltssRow.querySelector("button");
     expect(mltssButton).toBeDisabled();
   });
