@@ -41,7 +41,7 @@ const mockStatusAlert = {
 const mockStatusLink = {
   type: ElementType.StatusAlert,
   title: "mock alert",
-  text: "mock text <a>Click here</a>",
+  text: "mock text {ReturnButton}",
   status: "error",
 } as StatusAlertTemplate;
 
