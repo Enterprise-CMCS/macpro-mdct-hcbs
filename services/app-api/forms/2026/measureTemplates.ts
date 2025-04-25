@@ -23,7 +23,7 @@ import {
   whatSpecificationsAreYouUsing,
   measureDeliveryMethodsSubheader,
   whichVersionQualityMeasureReported,
-  whichMedicaidHCBSprograms,
+  whichProgramsWaivers,
   feeForServiceMeasureResultsSubheader,
   managedCareMeasureResultsSubheader,
   exclusionRatesAssessmentElements,
@@ -88,7 +88,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       {
@@ -119,7 +119,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       {
@@ -173,7 +173,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       {
@@ -204,7 +204,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       {
@@ -257,7 +257,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -286,7 +286,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -338,7 +338,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRateFacilityDischarges,
       {
         type: ElementType.MeasureFooter,
@@ -368,7 +368,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRateFacilityDischarges,
       {
         type: ElementType.MeasureFooter,
@@ -420,7 +420,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRateFacilityTransitions,
       {
         type: ElementType.MeasureFooter,
@@ -450,7 +450,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRateFacilityTransitions,
       {
         type: ElementType.MeasureFooter,
@@ -502,7 +502,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -545,7 +545,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -611,7 +611,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -654,7 +654,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -717,7 +717,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRateSelfDirection,
       {
         type: ElementType.MeasureFooter,
@@ -769,7 +769,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       divider,
       {
         type: ElementType.PerformanceRate,
@@ -827,7 +827,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       divider,
       {
         type: ElementType.PerformanceRate,
@@ -908,7 +908,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       {
@@ -939,7 +939,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       {
@@ -991,7 +991,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -1034,7 +1034,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -1114,7 +1114,7 @@ export const measureTemplates: Record<
         text: "MLTSS: Managed Care (MLTSS)",
       },
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       {
         type: ElementType.PerformanceRate,
         id: "measure-rates",
@@ -1178,7 +1178,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1206,7 +1206,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1256,7 +1256,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1284,7 +1284,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1334,7 +1334,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1362,7 +1362,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1412,7 +1412,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1440,7 +1440,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1490,7 +1490,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1518,7 +1518,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1568,7 +1568,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1596,7 +1596,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1646,7 +1646,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1674,7 +1674,7 @@ export const measureTemplates: Record<
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
-      ...whichMedicaidHCBSprograms,
+      ...whichProgramsWaivers,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
