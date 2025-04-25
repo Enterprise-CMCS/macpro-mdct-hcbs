@@ -1,9 +1,9 @@
 import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useBreakpoint, useStore } from "utils";
+import { useStore } from "utils";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
