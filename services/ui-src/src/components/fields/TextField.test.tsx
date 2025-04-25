@@ -6,6 +6,7 @@ import { mockStateUserStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 import { ElementType, TextboxTemplate } from "types/report";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -29,14 +30,18 @@ const mockGetValues = (returnValue: any) =>
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+jest.mock("utils/state/hooks/useElementIsHidden");
+const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
+  typeof useElementIsHidden
+>;
 
 const mockedTextboxElement = {
   type: ElementType.Textbox,
   label: "test label",
   helperText: "helper text",
   hideCondition: {
-    controllerElementId: "reporting-radio",
-    answer: "yes",
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
   },
 } as TextboxTemplate;
 
@@ -72,16 +77,8 @@ describe("<TextField />", () => {
 
   describe("Text field hide condition logic", () => {
     test("Text field is hidden if its hide conditions' controlling element has a matching answer", async () => {
-      mockGetValues({
-        elements: [
-          {
-            answer: "yes",
-            type: "reportingRadio",
-            label: "Should we hide the other radios on this page?",
-            id: "reporting-radio",
-          },
-        ],
-      });
+      mockedUseStore.mockReturnValue(mockStateUserStore);
+      mockedUseElementIsHidden.mockReturnValueOnce(true);
       render(textFieldComponent);
       const textField = screen.queryByLabelText("test label");
       expect(textField).not.toBeInTheDocument();
@@ -92,7 +89,7 @@ describe("<TextField />", () => {
         elements: [
           {
             answer: "idk",
-            type: "reportingRadio",
+            type: "radio",
             label: "Should we hide the other radios on this page?",
             id: "reporting-radio",
           },

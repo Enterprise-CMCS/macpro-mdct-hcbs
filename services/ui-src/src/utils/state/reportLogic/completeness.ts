@@ -218,7 +218,7 @@ export const elementIsHidden = (
     return target?.id === hideCondition?.controllerElementId;
   });
   return (
-    controlElement &&
+    !!controlElement &&
     "answer" in controlElement &&
     controlElement.answer === hideCondition?.answer
   );

@@ -106,7 +106,7 @@ const elements: PageElement[] = [
     ],
   },
   {
-    type: ElementType.ReportingRadio,
+    type: ElementType.Radio,
     id: "",
     label: "label",
     value: [

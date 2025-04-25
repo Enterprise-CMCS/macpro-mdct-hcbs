@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Heading, Flex, Image, Link } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBreakpoint, useStore } from "utils";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
@@ -48,16 +48,17 @@ export const Sidebar = () => {
 
     return (
       <Box key={page.id}>
-        <Button
+        <Link
           variant={"sidebar"}
           className={page.id === currentPageId ? "selected" : ""}
+          href={`/report/${reportType}/${state}/${reportId}/${page.id}`}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavSelect(page.id);
+          }}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            <Box
-              width="100%"
-              height="100%"
-              onClick={() => onNavSelect(page.id)}
-            >
+            <Box width="100%" height="100%">
               {navItem(page.title!, index)}
             </Box>
             {childSections?.length! > 0 && (
@@ -73,7 +74,7 @@ export const Sidebar = () => {
               </Box>
             )}
           </Flex>
-        </Button>
+        </Link>
         {childSections?.length! > 0 &&
           toggleList[page.id] &&
           childSections!.map((sec) => navSection(sec!, index + 1))}
