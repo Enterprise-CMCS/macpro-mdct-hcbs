@@ -1,5 +1,4 @@
-import { Button, Flex, Image } from "@chakra-ui/react";
-import downloadIcon from "assets/icons/download/icon_download_primary.svg";
+import { Button, Flex, Image, Link } from "@chakra-ui/react";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType } from "types";
@@ -18,23 +17,23 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   return (
     <Flex sx={sx.actionsFlex}>
       <Button
-        variant="link"
-        sx={sx.userGuideDownloadButton}
-        leftIcon={
-          <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
-        }
-        onClick={async () => {
-          await downloadUserGuide(reportType);
+        as={Link}
+        variant={"primary"}
+        href={`/report/${reportType}/${state}`}
+        onClick={(e) => {
+          e.preventDefault();
+          navigate(dashboardRoute);
+        }}
+        rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
+        sx={{
+          textDecoration: "none",
+          color: "white",
+          "&:hover, &:visited": {
+            color: "white",
+          },
         }}
       >
-        User Guide and Help File
-      </Button>
-      {/* TODO: this Button is for navigation, so it maybe should be a Link instead. */}
-      <Button
-        onClick={() => navigate(dashboardRoute)}
-        rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
-      >
-        Enter HCBS {reportType} online
+        Enter {reportType} Report online
       </Button>
     </Flex>
   );
@@ -55,24 +54,12 @@ interface Props {
 
 const sx = {
   actionsFlex: {
-    flexFlow: "wrap",
+    flexFlow: "no-wrap",
     gridGap: "1rem",
     justifyContent: "space-between",
     margin: "1rem 0 0 1rem",
     ".mobile &": {
       flexDirection: "column",
-    },
-  },
-  userGuideDownloadButton: {
-    justifyContent: "start",
-    marginRight: "1rem",
-    padding: "0",
-    span: {
-      marginLeft: "0rem",
-      marginRight: "0.5rem",
-    },
-    ".mobile &": {
-      marginRight: "0",
     },
   },
 };
