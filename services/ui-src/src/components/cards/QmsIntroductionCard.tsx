@@ -10,7 +10,7 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
  */
 export const QmsIntroductionCard = () => {
   return (
-    <ReportIntroCard title="HCBS Quality Measure Set Report">
+    <ReportIntroCard title="Quality Measure Set Report">
       The HCBS Quality Measure Set supports ongoing efforts to safeguard the
       health and welfare of HCBS participants by promoting quality monitoring
       and accountability across state systems. The federally required

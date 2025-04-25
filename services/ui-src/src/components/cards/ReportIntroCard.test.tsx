@@ -22,7 +22,7 @@ jest.mock("react-router-dom", () => ({
 
 const qmsReportTypeCardComponent = (
   <RouterWrappedComponent>
-    <ReportIntroCard title="HCBS Quality Measure Set">
+    <ReportIntroCard title="Quality Measure Set">
       This is the body of the report intro card. Normally it would contain a
       description of the report, as well as an instance of
       <code>&lt;IntroCardActions&gt;</code>
@@ -37,7 +37,7 @@ describe("<ReportTypeCard />", () => {
     });
 
     test("QMS ReportTypeCard is visible", () => {
-      expect(screen.getByText("HCBS Quality Measure Set")).toBeVisible();
+      expect(screen.getByText("Quality Measure Set")).toBeVisible();
     });
 
     test("QMS ReportTypeCard image is visible on desktop", () => {
