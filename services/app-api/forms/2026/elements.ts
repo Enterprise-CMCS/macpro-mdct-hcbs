@@ -155,6 +155,8 @@ export const didYouFollowSpecifications: RadioTemplate = {
           id: "measure-following-tech-specs-no-explain",
           label: "Please explain the variance.",
           required: true,
+          helperText:
+            "Include the name of which technical specifications that were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
         },
       ],
     },
