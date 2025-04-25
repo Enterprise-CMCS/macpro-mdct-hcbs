@@ -113,8 +113,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-1: Managed Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -198,8 +197,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-2: Managed Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -362,8 +360,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-7: Managed Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -444,8 +441,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-8: Managed Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -508,8 +504,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -551,8 +545,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -617,8 +609,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -660,8 +650,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "total-personal-priority",
@@ -776,8 +764,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "pc-plan",
@@ -821,8 +807,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-3: Managed Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -834,8 +819,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "pc-plan",
@@ -933,8 +916,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-4: Managed Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -985,8 +967,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-5 Part 1: Screening (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -997,8 +978,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "gait-evaulation",
@@ -1028,8 +1007,7 @@ export const measureTemplates: Record<
       },
       sectionCompleteBanner,
       {
-        type: ElementType.Header,
-        id: "measure-header",
+        ...measureHeader,
         text: "LTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
@@ -1040,8 +1018,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "fall-risk-assess",
@@ -1120,8 +1096,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Performance Rates",
         rateType: PerformanceRateType.NDR_Enhanced,
-        helperText:
-          "The performance rate is based on a review of this measure’s participant case management records, selected via a systematic sample drawn from the eligible population.",
         assessments: [
           {
             id: "acute-readmission-plan",
