@@ -131,7 +131,6 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Paragraph,
           id: "review-compliance",
           title: "Compliance review",
-          weight: "bold",
           text: "Your CMS HCBS Lead will review your report and may unlock it for editing if corrections are needed.",
         },
         {
