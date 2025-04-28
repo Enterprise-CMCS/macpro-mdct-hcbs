@@ -14,7 +14,6 @@ import {
   MeasurePageTemplate,
   CMIT,
   PageStatus,
-  ReportTemplate,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -28,27 +27,24 @@ export const buildReport = async (
 ) => {
   const year = reportOptions.year;
   const template = getReportTemplate(reportType, year);
-  const report = structuredClone(template) as unknown as Report;
   const cmitList = getCmitInfo(year);
 
-  // Remove template only data, filter ReportMeasureConfig
-  delete (report as Partial<ReportTemplate>).measureLookup;
-  delete (report as Partial<ReportTemplate>).measureTemplates;
-
-  // Build
-  report.state = state;
-  report.id = KSUID.randomSync().string;
-  report.created = Date.now();
-  report.lastEdited = Date.now();
-  report.lastEditedBy = user.fullName;
-  report.lastEditedByEmail = user.email;
-  report.type = reportType;
-  report.status = ReportStatus.NOT_STARTED;
-  report.name = reportOptions.name;
-  report.year = reportOptions.year;
-  report.options = reportOptions.options;
-  report.archived = false;
-  report.submissionCount = 0;
+  const report: Report = {
+    state: state,
+    id: KSUID.randomSync().string,
+    created: Date.now(),
+    lastEdited: Date.now(),
+    lastEditedBy: user.fullName,
+    lastEditedByEmail: user.email,
+    type: reportType,
+    status: ReportStatus.NOT_STARTED,
+    name: reportOptions.name,
+    year: reportOptions.year,
+    options: reportOptions.options,
+    archived: false,
+    submissionCount: 0,
+    pages: structuredClone(template.pages),
+  };
 
   if (reportType == ReportType.QMS) {
     // Collect all measures, based on selected rules.
