@@ -109,7 +109,12 @@ export const subHeaderMeasureElement = (_props: PageElementProps) => {
   return (
     <>
       {measure && (
-        <Heading as="h2" variant="nestedHeading">
+        <Heading
+          as="h2"
+          variant="nestedHeading"
+          color="#5a5a5a"
+          marginBottom="-1.5rem"
+        >
           {measure.required ? "Required" : "Optional"} Measure
         </Heading>
       )}
