@@ -20,7 +20,7 @@ import userEvent from "@testing-library/user-event";
 
 const testReport: Report = {
   type: ReportType.QMS,
-  title: "plan id",
+  name: "plan id",
   state: "NJ",
   id: "NJQMS123",
   year: 2026,

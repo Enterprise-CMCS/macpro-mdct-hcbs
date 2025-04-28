@@ -35,7 +35,7 @@ jest.mock("../../api/requestMethods/report", () => ({
 }));
 const testReport: Report = {
   type: ReportType.QMS,
-  title: "plan id",
+  name: "plan id",
   year: 2026,
   options: {},
   state: "NJ",

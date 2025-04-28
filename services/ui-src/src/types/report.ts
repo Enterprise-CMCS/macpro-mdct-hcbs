@@ -50,6 +50,7 @@ export type ReportTemplate = ReportBase & ReportOptions & ReportMeasureConfig;
 
 export interface Report extends ReportBase, ReportOptions {
   id?: string;
+  name: string;
   state: StateAbbr;
   created?: number;
   lastEdited?: number;
@@ -435,7 +436,7 @@ export enum MeasureSpecification {
 }
 
 export interface ReportOptions {
-  name?: string;
+  name: string;
   year: number;
   options: {
     cahps?: boolean;

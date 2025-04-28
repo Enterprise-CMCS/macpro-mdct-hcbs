@@ -15,7 +15,7 @@ export const isReportType = (x: string | undefined): x is ReportType => {
 };
 
 export interface ReportOptions {
-  name?: string;
+  name: string;
   year: number;
   options: {
     cahps?: boolean;
@@ -126,6 +126,7 @@ export enum PageStatus {
 
 export interface Report extends ReportBase, ReportOptions {
   id?: string;
+  name: string;
   state: string;
   created?: number;
   lastEdited?: number;
@@ -195,7 +196,6 @@ export type ReportMeasureConfig = {
 
 export type ReportBase = {
   type: ReportType;
-  title: string;
   pages: (
     | ParentPageTemplate
     | FormPageTemplate
