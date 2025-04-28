@@ -38,7 +38,7 @@ export type ReportMeasureConfig = {
 
 export type ReportBase = {
   type: ReportType;
-  title: string;
+  year: number;
   pages: (
     | ParentPageTemplate
     | FormPageTemplate
@@ -46,7 +46,7 @@ export type ReportBase = {
     | ReviewSubmitTemplate
   )[];
 };
-export type ReportTemplate = ReportBase & ReportOptions & ReportMeasureConfig;
+export type ReportTemplate = ReportBase & ReportMeasureConfig;
 
 export interface Report extends ReportBase, ReportOptions {
   id?: string;

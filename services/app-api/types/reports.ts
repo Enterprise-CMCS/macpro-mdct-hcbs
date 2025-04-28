@@ -196,6 +196,7 @@ export type ReportMeasureConfig = {
 
 export type ReportBase = {
   type: ReportType;
+  year: number;
   pages: (
     | ParentPageTemplate
     | FormPageTemplate
@@ -203,7 +204,7 @@ export type ReportBase = {
     | ReviewSubmitTemplate
   )[];
 };
-export type ReportTemplate = ReportBase & ReportOptions & ReportMeasureConfig;
+export type ReportTemplate = ReportBase & ReportMeasureConfig;
 
 export type PageTemplate =
   | ParentPageTemplate

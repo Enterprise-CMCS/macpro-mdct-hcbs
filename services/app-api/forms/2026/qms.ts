@@ -13,7 +13,6 @@ import { measureTemplates } from "./measureTemplates";
 export const qmsReportTemplate: ReportTemplate = {
   type: ReportType.QMS,
   year: 2026,
-  options: {},
   pages: [
     {
       id: "root",

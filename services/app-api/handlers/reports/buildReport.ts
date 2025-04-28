@@ -53,7 +53,7 @@ export const buildReport = async (
   if (reportType == ReportType.QMS) {
     // Collect all measures, based on selected rules.
     let measures = template.measureLookup.defaultMeasures;
-    if (template.options.pom) {
+    if (report.options.pom) {
       measures.push(...template.measureLookup.pomMeasures);
     }
 
