@@ -2,7 +2,7 @@ import { Button, Flex, Image, Link } from "@chakra-ui/react";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType } from "types";
-import { getSignedTemplateUrl, useStore } from "utils";
+import { useStore } from "utils";
 
 /**
  * This component is contained within each card on the stat user home page.
@@ -37,15 +37,6 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
       </Button>
     </Flex>
   );
-};
-
-export const downloadUserGuide = async (reportType: ReportType) => {
-  const signedUrl = await getSignedTemplateUrl(reportType);
-  const link = document.createElement("a");
-  link.setAttribute("target", "_blank");
-  link.setAttribute("href", signedUrl);
-  link.click();
-  link.remove();
 };
 
 interface Props {
