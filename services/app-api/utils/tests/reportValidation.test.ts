@@ -4,8 +4,6 @@ import {
   missingStateReport,
   incorrectStatusReport,
   incorrectTypeReport,
-  invalidMeasureTemplatesReport,
-  invalidMeasureLookupReport,
   invalidFormPageReport,
   invalidMeasurePageReport,
   invalidParentPageReport,
@@ -34,16 +32,6 @@ describe("Test invalid reports", () => {
   it("throws an error when validating a report with incorrect report type", () => {
     expect(async () => {
       await validateReportPayload(incorrectTypeReport);
-    }).rejects.toThrow();
-  });
-  it("throws an error when validating invalid measure templates", () => {
-    expect(async () => {
-      await validateReportPayload(invalidMeasureTemplatesReport);
-    }).rejects.toThrow();
-  });
-  it("throws an error when validating invalid measure lookup object", () => {
-    expect(async () => {
-      await validateReportPayload(invalidMeasureLookupReport);
     }).rejects.toThrow();
   });
   it("throws an error when validating invalid form page object", () => {

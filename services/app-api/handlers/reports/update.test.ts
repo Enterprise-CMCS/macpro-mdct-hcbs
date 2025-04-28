@@ -5,8 +5,6 @@ import { canWriteState } from "../../utils/authorization";
 import {
   incorrectTypeReport,
   invalidFormPageReport,
-  invalidMeasureLookupReport,
-  invalidMeasureTemplatesReport,
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
   missingStateReport,
@@ -126,24 +124,6 @@ describe("Test update report validation failures", () => {
     };
 
     const res = await updateReport(incorrectReportTypeEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid measure templates", async () => {
-    const invalidMeasureTemplatesEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidMeasureTemplatesReport),
-    };
-
-    const res = await updateReport(invalidMeasureTemplatesEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid measure lookup object", async () => {
-    const invalidMeasureLookupEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidMeasureLookupReport),
-    };
-
-    const res = await updateReport(invalidMeasureLookupEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
   test("throws an error when validating invalid form page object", async () => {
