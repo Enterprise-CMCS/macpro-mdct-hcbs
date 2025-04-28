@@ -245,7 +245,7 @@ export const whichProgramsWaivers = [
     id: "measure-programs-text",
     label: "Which programs and waivers are included?",
     helperText:
-      "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are included in this report (or measure). Include the program name and control numbers in your response.",
+      "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
   } as TextAreaBoxTemplate,
   divider,
 ];
