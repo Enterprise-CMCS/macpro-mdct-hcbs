@@ -14,6 +14,7 @@ import {
   MeasurePageTemplate,
   CMIT,
   PageStatus,
+  ReportTemplate,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -26,8 +27,15 @@ export const buildReport = async (
   user: User
 ) => {
   const year = reportOptions.year;
-  const report = structuredClone(getReportTemplate(reportType, year));
+  const template = getReportTemplate(reportType, year);
+  const report = structuredClone(template) as unknown as Report;
   const cmitList = getCmitInfo(year);
+
+  // Remove template only data, filter ReportMeasureConfig
+  delete (report as Partial<ReportTemplate>).measureLookup;
+  delete (report as Partial<ReportTemplate>).measureTemplates;
+
+  // Build
   report.state = state;
   report.id = KSUID.randomSync().string;
   report.created = Date.now();
@@ -43,22 +51,17 @@ export const buildReport = async (
   report.submissionCount = 0;
 
   if (reportType == ReportType.QMS) {
-    /*
-     * Collect all measures, based on selected rules.
-     * TODO is measure order important? May need to sort.
-     * TODO could a measure be included by multiple rules? May need to deduplicate.
-     */
-
-    let measures = report.measureLookup.defaultMeasures;
-    if (report.options.pom) {
-      measures.push(...report.measureLookup.pomMeasures);
+    // Collect all measures, based on selected rules.
+    let measures = template.measureLookup.defaultMeasures;
+    if (template.options.pom) {
+      measures.push(...template.measureLookup.pomMeasures);
     }
 
     for (let measure of measures) {
       const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
       const parentPage = initializeQmsPage(
         measure,
-        report.measureTemplates[measure.measureTemplate],
+        template.measureTemplates[measure.measureTemplate],
         cmitInfo,
         true
       );
@@ -66,7 +69,7 @@ export const buildReport = async (
       const childPages = measure.dependentPages.map((pageInfo) =>
         initializeQmsPage(
           measure,
-          report.measureTemplates[pageInfo.template],
+          template.measureTemplates[pageInfo.template],
           cmitInfo,
           false
         )

@@ -1,4 +1,4 @@
-import { assertExhaustive, Report, ReportType } from "../types/reports";
+import { assertExhaustive, ReportTemplate, ReportType } from "../types/reports";
 import { CMIT_LIST as CMIT_LIST_2026 } from "./2026/cmit";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms";
 
@@ -30,7 +30,7 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
   assertYearIsValid(year);
   switch (reportType) {
     case ReportType.QMS:
-      return formsByYear[year].qmsReportTemplate as Report;
+      return formsByYear[year].qmsReportTemplate as ReportTemplate;
     default:
       assertExhaustive(reportType);
       throw new Error(

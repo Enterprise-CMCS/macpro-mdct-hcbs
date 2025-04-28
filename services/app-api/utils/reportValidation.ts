@@ -12,7 +12,6 @@ import {
   Report,
   ReportStatus,
   ReportType,
-  MeasureTemplateName,
   PageType,
   ElementType,
   PageElement,
@@ -334,23 +333,6 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
   submittedView: array().of(pageElementSchema).required(),
 });
 
-const measureOptionsArraySchema = array().of(
-  object().shape({
-    cmit: number().required(),
-    uid: string().required(),
-    required: boolean().required(),
-    stratified: boolean().required(),
-    measureTemplate: string().required(),
-    dependentPages: array().of(dependentPageInfoSchema),
-  })
-);
-
-const measureLookupSchema = object().shape({
-  defaultMeasures: measureOptionsArraySchema,
-  pomMeasures: measureOptionsArraySchema,
-  // TODO: Add option groups
-});
-
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
   hciidd: boolean().notRequired(),
@@ -389,28 +371,6 @@ const pagesSchema = array()
   )
   .required();
 
-/**
- * This schema represents a typescript type of Record<MeasureTemplateName, MeasurePageTemplate>
- *
- * The following code is looping through the MeasureTemplateName enum and building
- * a yup validation object that looks like so:
- * {
- *   [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
- *   [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
- *   [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
- *   ...
- *   ...
- *  }
- */
-const measureTemplatesSchema = object().shape(
-  Object.fromEntries(
-    Object.keys(MeasureTemplateName).map((meas) => [
-      meas,
-      measurePageTemplateSchema,
-    ])
-  )
-);
-
 const reportValidateSchema = object().shape({
   id: string().notRequired(),
   state: string().required(),
@@ -430,8 +390,6 @@ const reportValidateSchema = object().shape({
   archived: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
-  measureLookup: measureLookupSchema,
-  measureTemplates: measureTemplatesSchema,
 });
 
 export const validateReportPayload = async (payload: object | undefined) => {

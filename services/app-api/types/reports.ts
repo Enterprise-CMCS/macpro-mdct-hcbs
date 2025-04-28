@@ -124,7 +124,7 @@ export enum PageStatus {
   COMPLETE = "Complete",
 }
 
-export interface Report extends ReportTemplate {
+export interface Report extends ReportBase, ReportOptions {
   id?: string;
   state: string;
   created?: number;
@@ -185,7 +185,15 @@ export interface Form {
   sections: [];
 }
 
-export type ReportTemplate = ReportOptions & {
+export type ReportMeasureConfig = {
+  measureLookup: {
+    defaultMeasures: MeasureOptions[];
+    pomMeasures: MeasureOptions[];
+  };
+  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
+};
+
+export type ReportBase = {
   type: ReportType;
   title: string;
   pages: (
@@ -194,12 +202,8 @@ export type ReportTemplate = ReportOptions & {
     | MeasurePageTemplate
     | ReviewSubmitTemplate
   )[];
-  measureLookup: {
-    defaultMeasures: MeasureOptions[];
-    pomMeasures: MeasureOptions[];
-  };
-  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
+export type ReportTemplate = ReportBase & ReportOptions & ReportMeasureConfig;
 
 export type PageTemplate =
   | ParentPageTemplate
