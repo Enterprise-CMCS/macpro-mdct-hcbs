@@ -175,15 +175,18 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   },
 };
 
-export const measureDeliveryMethodsSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  text: "Measure Delivery Methods",
-  id: "measure-delivery-methods-subheader",
-  hideCondition: {
-    controllerElementId: "measure-reporting-radio",
-    answer: "no",
-  },
-};
+export const measureDeliveryMethodsSubheader = [
+  divider,
+  {
+    type: ElementType.SubHeader,
+    text: "Measure Delivery Methods",
+    id: "measure-delivery-methods-subheader",
+    hideCondition: {
+      controllerElementId: "measure-reporting-radio",
+      answer: "no",
+    },
+  } as SubHeaderTemplate,
+];
 
 export const whichVersionQualityMeasureReported: RadioTemplate = {
   type: ElementType.Radio,
