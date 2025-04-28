@@ -12,7 +12,11 @@ const component = (
 describe("QmsIntroductionCard", () => {
   it("should render", () => {
     render(component);
-    expect(screen.getByText("The HCBS is", { exact: false })).toBeVisible();
+    expect(
+      screen.getByText("The HCBS Quality Measure Set supports", {
+        exact: false,
+      })
+    ).toBeVisible();
   });
 
   testA11y(component);

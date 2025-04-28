@@ -85,8 +85,8 @@ describe("Sidebar", () => {
         <Sidebar />
       </Router>
     );
-    const button = screen.getByText("Section 1");
-    await userEvent.click(button);
+    const link = screen.getByText("Section 1");
+    await userEvent.click(link);
     const reportPath = "/report/exampleReport/exampleState/123/id-1";
     expect(mockUseNavigate).toHaveBeenCalledWith(reportPath);
   });
