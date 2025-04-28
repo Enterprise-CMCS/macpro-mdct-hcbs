@@ -69,7 +69,12 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Accordion,
           id: "required-instructions",
           label: "Instructions",
-          value: "I am an accordion",
+          value:
+            "<b>Instructions for Completing the QMS Report</b>" +
+            "<p>Below is a list of all required measures.  Select the respective “Start” or “Edit” buttons to navigate to each measure overview page and begin filling in all required fields.  Once all required fields are completed for the measure, and any associated sub-measure sections, the “Complete Measure” button will become active.  Clicking the button will complete the measure and place it in the <b>Complete</b> status.</p>" +
+            "<p><b>Understanding Measure Statuses </b></p>" +
+            "<ul><li><b>Not Started</b>:  No data has been entered or actions taken on the measure.</li><li><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</li><li><b>Complete</b>:  The measure has been completed.</li></ul>" +
+            "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
           type: ElementType.MeasureTable,
@@ -93,7 +98,13 @@ export const qmsReportTemplate: ReportTemplate = {
           type: ElementType.Accordion,
           id: "optional-instructions",
           label: "Instructions",
-          value: "I am an accordion",
+          value:
+            "<b>Instructions for Completing the QMS Report</b>" +
+            "<p>Below is a list of all optional measures.  Select the respective “Start” or “Edit” buttons to navigate to each measure overview page and begin filling in all required fields.  Once all required fields are completed for the measure, and any associated sub-measure sections, the “Complete Measure” button will become active.  Clicking the button will complete the measure and place it in the <b>Complete</b> status.</p>" +
+            "<p>Please note, the report cannot be submitted as long as any optional measures remain in the <b>In Progress</b> status. If you do not wish to complete an optional measure, you may clear the measure details which will return the measure to the <b>Not Started</b> status." +
+            "<p><b>Understanding Measure Statuses </b></p>" +
+            "<ul><li><b>Not Started</b>:  No data has been entered or actions taken on the measure.</li><li><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</li><li><b>Complete</b>:  The measure has been completed.</li></ul>" +
+            "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
           type: ElementType.MeasureTable,
@@ -114,7 +125,7 @@ export const qmsReportTemplate: ReportTemplate = {
           id: "review-alert",
           status: "error",
           title: "Your form is not ready for submission",
-          text: "Some sections of the QMS Report have errors or are missing required responses. Ensure all required and in-progress measures are completed with valid responses before submitting. If an optional measure is showing as ‘in-progress’ and you do not want to complete that measure, go into the measure and clear the measure data to reset the measure.",
+          text: "Some sections of the QMS Report have errors or are missing required responses. Ensure all required and in-progress measures are completed with valid responses before submitting. If an optional measure is showing as ‘in-progress’ and you do not want to complete that measure, go into the measure and clear the data to reset it.",
         },
         {
           type: ElementType.Header,
@@ -124,15 +135,14 @@ export const qmsReportTemplate: ReportTemplate = {
         {
           type: ElementType.Paragraph,
           id: "review-text",
-          title: "Ready to Submit?",
-          text: "Double check that everything in your QMS Report is accurate. You will be able to make edits after submitting if you contact your [CMS representative] to unlock your report while it is in “Submitted” status.",
+          title: "Ready to submit?",
+          text: "Double check that everything in your QMS Report is accurate. To make edits to your report after submitting, contact your CMS HCBS Lead to unlock your report.",
         },
         {
           type: ElementType.Paragraph,
           id: "review-compliance",
           title: "Compliance review",
-          weight: "bold",
-          text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
+          text: "Your CMS HCBS Lead will review your report and may unlock it for editing if corrections are needed.",
         },
         {
           type: ElementType.StatusTable,
