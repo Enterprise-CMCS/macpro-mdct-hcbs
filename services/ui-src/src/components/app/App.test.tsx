@@ -43,7 +43,7 @@ describe("<App />", () => {
       screen.getAllByAltText("Department of Health and Human Services, USA")
     );
     expect(screen.getAllByAltText("Medicaid.gov: Keeping America Healthy"));
-    expect(screen.getAllByRole("button").length).toBe(5);
+    expect(screen.getAllByRole("button").length).toBe(3);
   });
 
   test("App renders local logins if there is no user", async () => {
