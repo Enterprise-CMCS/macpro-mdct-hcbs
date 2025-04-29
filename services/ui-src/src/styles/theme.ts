@@ -1,5 +1,5 @@
 // Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
-import { extendTheme } from "@chakra-ui/react";
+import { background, extendTheme } from "@chakra-ui/react";
 
 export const svgFilters = {
   primary:
@@ -392,6 +392,12 @@ export const theme = extendTheme({
           lineHeight: "1.2",
           paddingLeft: "1rem",
           height: "var(--chakra-sizes-10)",
+          _visited: {
+            color: "palette.base",
+          },
+          ":focus, :focus:visited": {
+            color: "palette.secondary_darkest",
+          },
           _hover: {
             color: "palette.secondary_darkest",
             backgroundColor: "palette.gray_lightest_highlight",

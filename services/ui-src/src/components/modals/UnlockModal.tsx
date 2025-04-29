@@ -1,18 +1,24 @@
 import { Modal } from "components";
+import { Text } from "@chakra-ui/react";
 
 export const UnlockModal = ({ modalDisclosure }: Props) => {
   return (
     <Modal
       data-testid="unlock-modal"
-      formId="UnlockModal"
       modalDisclosure={modalDisclosure}
+      onConfirmHandler={() => modalDisclosure.onClose()}
       content={{
         heading: "You unlocked this QMS Report",
         subheading: undefined,
         actionButtonText: "Return to dashboard",
         closeButtonText: undefined,
       }}
-    ></Modal>
+    >
+      <Text>
+        Email the state or territory contact and let them know it requires
+        edits.
+      </Text>
+    </Modal>
   );
 };
 

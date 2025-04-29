@@ -95,6 +95,7 @@ export const HorizontalTable = (
               <td>
                 <Button
                   variant="link"
+                  fontSize="sm"
                   onClick={async () => await toggleRelease(idx)}
                   disabled={
                     report.status !== ReportStatus.SUBMITTED || report.archived
@@ -106,6 +107,7 @@ export const HorizontalTable = (
               <td>
                 <Button
                   variant="link"
+                  fontSize="sm"
                   onClick={async () => await toggleArchived(idx)}
                 >
                   {report.archived ? "Unarchive" : "Archive"}
@@ -252,10 +254,10 @@ export const DashboardTable = ({
     const reports = [...reportsInView];
     const report = reports[idx];
     await releaseReport(report);
+    unlockModalOnOpenHandler();
     report.status = ReportStatus.IN_PROGRESS;
     reports[idx] = report;
     setReportsInView(reports);
-    unlockModalOnOpenHandler();
   };
 
   return (
