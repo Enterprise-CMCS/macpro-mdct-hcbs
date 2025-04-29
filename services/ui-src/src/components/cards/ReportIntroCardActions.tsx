@@ -25,13 +25,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           navigate(dashboardRoute);
         }}
         rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
-        sx={{
-          textDecoration: "none",
-          color: "white",
-          "&:hover, &:visited": {
-            color: "white",
-          },
-        }}
+        sx={sx.link}
       >
         Enter {reportType} Report online
       </Button>
@@ -51,6 +45,18 @@ const sx = {
     margin: "1rem 0 0 1rem",
     ".mobile &": {
       flexDirection: "column",
+    },
+  },
+  link: {
+    textDecoration: "none",
+    "&:visited, &:visited:hover": {
+      color: "white",
+      textDecoration: "none",
+    },
+    "&:hover": {
+      color: "white",
+      textDecoration: "none",
+      backgroundColor: "palette.primary_darker",
     },
   },
 };
