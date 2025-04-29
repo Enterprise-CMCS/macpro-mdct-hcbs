@@ -27,6 +27,7 @@ import { useState } from "react";
 interface DashboardTableProps {
   reports: Report[];
   openAddEditReportModal: Function;
+  unlockModalOnOpenHandler: Function;
 }
 
 export const getStatus = (report: Report) => {
@@ -208,6 +209,7 @@ export const VerticleTable = (
 export const DashboardTable = ({
   reports,
   openAddEditReportModal,
+  unlockModalOnOpenHandler,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
@@ -246,6 +248,7 @@ export const DashboardTable = ({
     report.status = ReportStatus.IN_PROGRESS;
     reports[idx] = report;
     setReportsInView(reports);
+    unlockModalOnOpenHandler();
   };
 
   return (

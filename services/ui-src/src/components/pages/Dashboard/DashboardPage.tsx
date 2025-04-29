@@ -23,6 +23,7 @@ import {
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
+import { UnlockModal } from "components/modals/UnlockModal";
 
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
@@ -66,6 +67,12 @@ export const DashboardPage = () => {
     isOpen: addEditReportModalIsOpen,
     onOpen: addEditReportModalOnOpenHandler,
     onClose: addEditReportModalOnCloseHandler,
+  } = useDisclosure();
+
+  const {
+    isOpen: unlockModalIsOpen,
+    onOpen: unlockModalOnOpenHandler,
+    onClose: unlockModalOnCloseHandler,
   } = useDisclosure();
 
   return (
@@ -127,6 +134,7 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
+            unlockModalOnOpenHandler={unlockModalOnOpenHandler}
           />
         )}
         {isLoading && (
@@ -164,6 +172,12 @@ export const DashboardPage = () => {
         reportHandler={reloadReports}
         selectedReport={selectedReport}
       />
+      <UnlockModal
+        modalDisclosure={{
+          isOpen: unlockModalIsOpen,
+          onClose: unlockModalOnCloseHandler,
+        }}
+      ></UnlockModal>
     </PageTemplate>
   );
 };
