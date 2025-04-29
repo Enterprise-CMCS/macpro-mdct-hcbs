@@ -12,9 +12,7 @@ import { measureTemplates } from "./measureTemplates";
 
 export const qmsReportTemplate: ReportTemplate = {
   type: ReportType.QMS,
-  title: "plan id",
   year: 2026,
-  options: {},
   pages: [
     {
       id: "root",
@@ -125,7 +123,7 @@ export const qmsReportTemplate: ReportTemplate = {
           id: "review-alert",
           status: "error",
           title: "Your form is not ready for submission",
-          text: "Some sections of the QMS Report have errors or are missing required responses. Ensure all required and in-progress measures are completed with valid responses before submitting. If an optional measure is showing as ‘in-progress’ and you do not want to complete that measure, go into the measure and clear the measure data to reset the measure.",
+          text: "Some sections of the QMS Report have errors or are missing required responses. Ensure all required and in-progress measures are completed with valid responses before submitting. If an optional measure is showing as ‘in-progress’ and you do not want to complete that measure, go into the measure and clear the data to reset it.",
         },
         {
           type: ElementType.Header,
@@ -135,15 +133,14 @@ export const qmsReportTemplate: ReportTemplate = {
         {
           type: ElementType.Paragraph,
           id: "review-text",
-          title: "Ready to Submit?",
-          text: "Double check that everything in your QMS Report is accurate. You will be able to make edits after submitting if you contact your [CMS representative] to unlock your report while it is in “Submitted” status.",
+          title: "Ready to submit?",
+          text: "Double check that everything in your QMS Report is accurate. To make edits to your report after submitting, contact your CMS HCBS Lead to unlock your report.",
         },
         {
           type: ElementType.Paragraph,
           id: "review-compliance",
           title: "Compliance review",
-          weight: "bold",
-          text: "Your Project Officer will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
+          text: "Your CMS HCBS Lead will review your report and may unlock it for editing if corrections are needed.",
         },
         {
           type: ElementType.StatusTable,

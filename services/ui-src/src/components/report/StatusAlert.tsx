@@ -6,6 +6,7 @@ import { ButtonLinkTemplate, PageStatus, StatusAlertTemplate } from "types";
 import { submittableMetricsSelector } from "utils/state/selectors";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { Link } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 export const StatusAlert = (props: PageElementProps) => {
   const navigate = useNavigate();
@@ -32,18 +33,22 @@ export const StatusAlert = (props: PageElementProps) => {
   const pageTo = returnElement?.to
     ? returnElement.to
     : measurePrevPage(report, pageId!);
-  const textElements = alert.text.split("{ReturnButton}");
 
   const nav = () =>
     navigate(`/report/${reportType}/${state}/${reportId}/${pageTo}`);
 
-  const link = <Link onClick={() => nav()}>Click here</Link>;
+  let children: ReactNode = alert.text;
+  if (alert.text.includes("{ReturnButton}")) {
+    const link = <Link onClick={() => nav()}>Click here</Link>;
+    const textElements = alert.text.split("{ReturnButton}");
+    children = [textElements[0], link, textElements[1]];
+  }
 
   return (
     <Alert
       status={alert.status}
       title={alert.title}
-      children={[textElements[0], link, textElements[1]]}
+      children={children}
     ></Alert>
   );
 };

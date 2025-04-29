@@ -1,6 +1,11 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
-import { isFormPageTemplate, MeasureFooterTemplate, PageStatus } from "types";
+import {
+  isFormPageTemplate,
+  MeasureFooterTemplate,
+  PageStatus,
+  ReportStatus,
+} from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { measurePrevPage, useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
@@ -22,6 +27,9 @@ export const MeasureFooterElement = (props: PageElementProps) => {
     completePage,
   } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
+  const { userIsEndUser } = useStore().user ?? {};
+  const readOnlyView =
+    !userIsEndUser || report?.status === ReportStatus.SUBMITTED;
   const currentPage = useStore(currentPageSelector);
   const completable = useStore(currentPageCompletableSelector);
   const completeEnabled =
@@ -92,7 +100,7 @@ export const MeasureFooterElement = (props: PageElementProps) => {
         )}
 
         <Box>
-          {footer.clear && (
+          {footer.clear && !readOnlyView && (
             <Button
               variant="link"
               marginRight="2rem"

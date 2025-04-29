@@ -66,7 +66,7 @@ export const ExportedReportPage = () => {
 };
 
 export const reportTitle = (report: Report) => {
-  return `${report.state} ${report.title}`;
+  return `${report.state} ${report.name}`;
 };
 
 export const renderReportSections = (
