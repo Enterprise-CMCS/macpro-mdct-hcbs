@@ -23,7 +23,6 @@ export const UnlockModal = ({ modalDisclosure }: Props) => {
 };
 
 interface Props {
-  selectedReport?: Report;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
