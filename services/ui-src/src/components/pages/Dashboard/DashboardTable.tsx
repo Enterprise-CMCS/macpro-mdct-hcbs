@@ -144,16 +144,21 @@ export const VerticleTable = (
           <div>
             <Text variant="grey">Submission name</Text>
             <HStack>
-              {showEditNameColumn &&
-                report?.status !== ReportStatus.SUBMITTED && (
-                  <button onClick={() => openAddEditReportModal(report)}>
-                    <Image
-                      src={editIcon}
-                      alt="Edit Report Name"
-                      minW={"1.75rem"}
-                    />
-                  </button>
-                )}
+              {showEditNameColumn && (
+                <>
+                  {report.status !== ReportStatus.SUBMITTED ? (
+                    <button onClick={() => openAddEditReportModal(report)}>
+                      <Image
+                        src={editIcon}
+                        alt="Edit Report Name"
+                        minW={"1.75rem"}
+                      />
+                    </button>
+                  ) : (
+                    <div />
+                  )}
+                </>
+              )}
               <Text fontWeight="bold" fontSize="16px">
                 {report.name}
               </Text>
