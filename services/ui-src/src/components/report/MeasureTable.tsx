@@ -17,6 +17,7 @@ import {
   PageStatus,
   MeasureTableTemplate,
   PageType,
+  ReportStatus,
 } from "types";
 import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
@@ -103,7 +104,9 @@ export const MeasureTableElement = (props: PageElementProps) => {
           {errorMessage(measure)}
         </Td>
         <Td>
-          {measure.substitutable && measure.required ? (
+          {measure.substitutable &&
+          measure.required &&
+          report?.status !== ReportStatus.SUBMITTED ? (
             <Button
               variant="link"
               sx={{ fontSize: "14px" }}
