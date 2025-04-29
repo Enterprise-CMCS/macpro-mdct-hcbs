@@ -89,9 +89,9 @@ const sx = {
     flex: "1 0 auto",
     padding: "0rem",
     section: {
-      padding: "1rem 2rem",
+      padding: "0rem 2rem",
     },
-    ".tablet &, .mobile &": {
+    ".mobile &": {
       section: {
         padding: "1rem",
       },

@@ -44,6 +44,16 @@ const formatChoices = (
   });
 };
 
+const hintTextColor = (clickAction: string) => {
+  switch (clickAction) {
+    case "qmReportingChange":
+    case "qmDeliveryMethodChange":
+      return "palette.warn_darkest";
+    default:
+      return "palette.gray";
+  }
+};
+
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
   const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
@@ -125,7 +135,12 @@ export const RadioField = (props: PageElementProps) => {
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
-  const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
+
+  const parsedHint = (
+    <Box color={hintTextColor(radio.clickAction!)}>
+      {radio.helperText && parseCustomHtml(radio.helperText)}
+    </Box>
+  );
   const labelText = radio.label;
 
   if (hideElement) {

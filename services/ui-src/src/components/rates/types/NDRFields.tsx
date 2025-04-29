@@ -93,12 +93,12 @@ export const NDRFields = (
   };
 
   return (
-    <Stack gap={6}>
+    <Stack gap="2rem">
       {assessments?.map((assess, assessIndex) => {
         const rateSet = displayValue?.find((value) => value.id === assess.id);
 
         return (
-          <Stack key={assess.id} gap={6}>
+          <Stack key={assess.id} gap="2rem">
             <Heading variant="subHeader">
               {label ?? "Performance Rates"}
               {": "}
@@ -120,7 +120,7 @@ export const NDRFields = (
               );
 
               return (
-                <Stack key={`${assess.id}.${field.id}`} gap={6}>
+                <Stack key={`${assess.id}.${field.id}`} gap="2rem">
                   <Heading variant="nestedHeading">{field.label}</Heading>
                   <CmsdsTextField
                     label={`What is the ${
