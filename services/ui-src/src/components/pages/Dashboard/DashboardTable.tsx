@@ -57,9 +57,17 @@ export const HorizontalTable = (
         <Tr key={report.id}>
           {showEditNameColumn && (
             <Td fontWeight={"bold"}>
-              <button onClick={() => openAddEditReportModal(report)}>
-                <Image src={editIcon} alt="Edit Report Name" minW={"1.75rem"} />
-              </button>
+              {report.status !== ReportStatus.SUBMITTED ? (
+                <button onClick={() => openAddEditReportModal(report)}>
+                  <Image
+                    src={editIcon}
+                    alt="Edit Report Name"
+                    minW={"1.75rem"}
+                  />
+                </button>
+              ) : (
+                <div />
+              )}
             </Td>
           )}
           <Td fontWeight={"bold"} maxWidth={"14.25rem"}>
@@ -131,15 +139,16 @@ export const VerticleTable = (
           <div>
             <Text variant="grey">Submission name</Text>
             <HStack>
-              {showEditNameColumn && (
-                <button onClick={() => openAddEditReportModal(report)}>
-                  <Image
-                    src={editIcon}
-                    alt="Edit Report Name"
-                    minW={"1.75rem"}
-                  />
-                </button>
-              )}
+              {showEditNameColumn &&
+                report?.status !== ReportStatus.SUBMITTED && (
+                  <button onClick={() => openAddEditReportModal(report)}>
+                    <Image
+                      src={editIcon}
+                      alt="Edit Report Name"
+                      minW={"1.75rem"}
+                    />
+                  </button>
+                )}
               <Text fontWeight="bold">{report.name}</Text>
             </HStack>
           </div>
