@@ -47,11 +47,11 @@ const formatChoices = (
 const hintTextColor = (clickAction: string) => {
   switch (clickAction) {
     case "qmReportingChange":
-    case "qmDeliveryMethodChange": {
+    case "qmDeliveryMethodChange":
       return "palette.warn_darkest";
-    }
+    default:
+      return "palette.gray";
   }
-  return "palatte.gray";
 };
 
 export const RadioField = (props: PageElementProps) => {
