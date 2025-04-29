@@ -9,6 +9,7 @@ import {
   Text,
   Divider,
   HStack,
+  Spinner,
 } from "@chakra-ui/react";
 import { Table } from "components";
 import { NavigateFunction, useNavigate } from "react-router-dom";
@@ -30,6 +31,21 @@ interface DashboardTableProps {
   unlockModalOnOpenHandler: Function;
 }
 
+interface TableProps {
+  tableContent: { caption: string; headRow: string[] };
+  reports: Report[];
+  showEditNameColumn: boolean | undefined;
+  showReportSubmissionsColumn: boolean;
+  showAdminControlsColumn: boolean | undefined;
+  openAddEditReportModal: Function;
+  navigate: NavigateFunction;
+  userIsEndUser: boolean | undefined;
+  toggleArchived: Function;
+  toggleRelease: Function;
+  archiving: number | undefined;
+  unlocking: number | undefined;
+}
+
 export const getStatus = (report: Report) => {
   if (
     report.status === ReportStatus.IN_PROGRESS &&
@@ -40,25 +56,14 @@ export const getStatus = (report: Report) => {
   return report.status;
 };
 
-export const HorizontalTable = (
-  tableContent: { caption: string; headRow: string[] },
-  reports: Report[],
-  showEditNameColumn: boolean | undefined,
-  showReportSubmissionsColumn: boolean,
-  showAdminControlsColumn: boolean | undefined,
-  openAddEditReportModal: Function,
-  navigate: NavigateFunction,
-  userIsEndUser: boolean | undefined,
-  toggleArchived: Function,
-  toggleRelease: Function
-) => {
+export const HorizontalTable = (props: TableProps) => {
   return (
-    <Table content={tableContent}>
-      {reports.map((report, idx) => (
+    <Table content={props.tableContent}>
+      {props.reports.map((report, idx) => (
         <Tr key={report.id}>
-          {showEditNameColumn && (
+          {props.showEditNameColumn && (
             <Td fontWeight={"bold"}>
-              <button onClick={() => openAddEditReportModal(report)}>
+              <button onClick={() => props.openAddEditReportModal(report)}>
                 <Image src={editIcon} alt="Edit Report Name" minW={"1.75rem"} />
               </button>
             </Td>
@@ -76,31 +81,36 @@ export const HorizontalTable = (
           </Td>
           <Td>{report.lastEditedBy}</Td>
           <Td>{getStatus(report)}</Td>
-          {showReportSubmissionsColumn && (
+          {props.showReportSubmissionsColumn && (
             <Td width="3rem">{report.submissionCount ?? 0}</Td>
           )}
           <Td>
             <Button
-              onClick={() => navigate(reportBasePath(report))}
+              onClick={() => props.navigate(reportBasePath(report))}
               variant="outline"
               disabled={report.archived}
             >
-              {userIsEndUser && report.status !== ReportStatus.SUBMITTED
+              {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
                 ? "Edit"
                 : "View"}
             </Button>
           </Td>
-          {showAdminControlsColumn && (
+          {props.showAdminControlsColumn && (
             <>
               <td>
                 <Button
                   variant="link"
                   fontSize="sm"
-                  onClick={async () => await toggleRelease(idx)}
+                  onClick={async () => await props.toggleRelease(idx)}
                   disabled={
-                    report.status !== ReportStatus.SUBMITTED || report.archived
+                    report.status !== ReportStatus.SUBMITTED ||
+                    report.archived ||
+                    props.unlocking === idx
                   }
                 >
+                  {props.unlocking === idx && (
+                    <Spinner size="sm" marginRight="0.25rem" />
+                  )}
                   Unlock
                 </Button>
               </td>
@@ -108,8 +118,12 @@ export const HorizontalTable = (
                 <Button
                   variant="link"
                   fontSize="sm"
-                  onClick={async () => await toggleArchived(idx)}
+                  onClick={async () => await props.toggleArchived(idx)}
+                  disabled={props.archiving === idx}
                 >
+                  {props.archiving === idx && (
+                    <Spinner size="sm" marginRight="0.25rem" />
+                  )}
                   {report.archived ? "Unarchive" : "Archive"}
                 </Button>
               </td>
@@ -121,26 +135,16 @@ export const HorizontalTable = (
   );
 };
 
-export const VerticleTable = (
-  reports: Report[],
-  showEditNameColumn: boolean | undefined,
-  showReportSubmissionsColumn: boolean,
-  showAdminControlsColumn: boolean | undefined,
-  openAddEditReportModal: Function,
-  navigate: NavigateFunction,
-  userIsEndUser: boolean | undefined,
-  toggleArchived: Function,
-  toggleRelease: Function
-) => {
+export const VerticleTable = (props: TableProps) => {
   return (
     <VStack alignItems="start" gap={4}>
-      {reports.map((report, idx) => (
+      {props.reports.map((report, idx) => (
         <>
           <div>
             <Text variant="grey">Submission name</Text>
             <HStack>
-              {showEditNameColumn && (
-                <button onClick={() => openAddEditReportModal(report)}>
+              {props.showEditNameColumn && (
+                <button onClick={() => props.openAddEditReportModal(report)}>
                   <Image
                     src={editIcon}
                     alt="Edit Report Name"
@@ -167,41 +171,49 @@ export const VerticleTable = (
             <Text variant="grey">Status</Text>
             <Text>{getStatus(report)}</Text>
           </div>
-          {showReportSubmissionsColumn && (
+          {props.showReportSubmissionsColumn && (
             <Text>{report.submissionCount ?? 0}</Text>
           )}
           <HStack gap={"6"}>
             <Button
-              onClick={() => navigate(reportBasePath(report))}
+              onClick={() => props.navigate(reportBasePath(report))}
               variant="outline"
               width="100px"
               height="30px"
               fontSize="sm"
               disabled={report.archived}
             >
-              {userIsEndUser && report.status !== ReportStatus.SUBMITTED
+              {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
                 ? "Edit"
                 : "View"}
             </Button>
-            {showAdminControlsColumn && (
+            {props.showAdminControlsColumn && (
               <>
                 <td>
                   <Button
                     variant="link"
-                    onClick={async () => await toggleRelease(idx)}
+                    onClick={async () => await props.toggleRelease(idx)}
                     disabled={
                       report.status !== ReportStatus.SUBMITTED ||
-                      report.archived
+                      report.archived ||
+                      props.unlocking === idx
                     }
                   >
+                    {props.unlocking === idx && (
+                      <Spinner size="sm" marginRight="0.25rem" />
+                    )}
                     Unlock
                   </Button>
                 </td>
                 <td>
                   <Button
                     variant="link"
-                    onClick={async () => await toggleArchived(idx)}
+                    onClick={async () => await props.toggleArchived(idx)}
+                    disabled={props.archiving === idx}
                   >
+                    {props.archiving === idx && (
+                      <Spinner size="sm" marginRight="0.25rem" />
+                    )}
                     {report.archived ? "Unarchive" : "Archive"}
                   </Button>
                 </td>
@@ -224,6 +236,9 @@ export const DashboardTable = ({
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
   const [reportsInView, setReportsInView] = useState<Report[]>(reports);
 
+  const [archiving, setArchiving] = useState<number>();
+  const [unlocking, setUnlocking] = useState<number>();
+
   // Translate role to defined behaviors
   const showEditNameColumn = userIsEndUser;
   const showReportSubmissionsColumn = !userIsEndUser;
@@ -242,15 +257,18 @@ export const DashboardTable = ({
   };
 
   const toggleArchived = async (idx: number) => {
+    setArchiving(idx);
     const reports = [...reportsInView];
     const report = reports[idx];
     await updateArchivedStatus(report, !report.archived);
     report.archived = !report.archived;
     reports[idx] = report;
     setReportsInView(reports);
+    setArchiving(undefined);
   };
 
-  const toggleReport = async (idx: number) => {
+  const toggleRelease = async (idx: number) => {
+    setUnlocking(idx);
     const reports = [...reportsInView];
     const report = reports[idx];
     await releaseReport(report);
@@ -258,12 +276,13 @@ export const DashboardTable = ({
     report.status = ReportStatus.IN_PROGRESS;
     reports[idx] = report;
     setReportsInView(reports);
+    setUnlocking(undefined);
   };
 
   return (
     <>
       <Hide below="sm">
-        {HorizontalTable(
+        {HorizontalTable({
           tableContent,
           reports,
           showEditNameColumn,
@@ -273,11 +292,14 @@ export const DashboardTable = ({
           navigate,
           userIsEndUser,
           toggleArchived,
-          toggleReport
-        )}
+          toggleRelease,
+          archiving,
+          unlocking,
+        })}
       </Hide>
       <Show below="sm">
-        {VerticleTable(
+        {VerticleTable({
+          tableContent,
           reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
@@ -286,8 +308,10 @@ export const DashboardTable = ({
           navigate,
           userIsEndUser,
           toggleArchived,
-          toggleReport
-        )}
+          toggleRelease,
+          archiving,
+          unlocking,
+        })}
       </Show>
     </>
   );
