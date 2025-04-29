@@ -17,7 +17,12 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
+mockedUseStore.mockImplementation((selector: Function | undefined) => {
+  if (selector) {
+    return selector(mockUseStore);
+  }
+  return mockUseStore;
+});
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
