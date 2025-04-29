@@ -125,7 +125,6 @@ export const MeasureTableElement = (props: PageElementProps) => {
               e.preventDefault();
               handleEditClick(measure.id);
             }}
-            sx={{ fontWeight: "800" }}
           >
             Edit
           </Button>

@@ -43,6 +43,7 @@ const mockedTextAreaElement = {
     controllerElementId: "reporting-radio",
     answer: "yes",
   },
+  required: true,
 } as TextAreaBoxTemplate;
 
 const textAreaFieldComponent = (

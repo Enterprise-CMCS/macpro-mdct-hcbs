@@ -301,8 +301,8 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       type: ElementType.TextAreaField,
       id: "additional-notes-field",
       helperText:
-        "If applicable, add any notes or comments to provide context to the reported measure results.",
-      label: "Additional notes/comments (optional)",
+        "If applicable, add any notes or comments to provide context to the reported measure result",
+      label: "Additional notes/comments",
       answer: "yes",
     },
   ],

@@ -27,20 +27,16 @@ export const MeasureDetailsElement = () => {
     <Box width="80%">
       <Flex flexDirection="column" alignItems="space-between">
         <>
-          <Text fontSize="18px" fontWeight="bold" paddingBottom="16px">
-            Quality Measure Details
+          <Text fontWeight="bold" paddingBottom="1rem">
+            Quality Measure Details:
           </Text>
-          <Text fontSize="22px" fontWeight="bold">
-            Measure Name: {title}
-          </Text>
-          <Text fontSize="18px">CMIT number: #{cmit}</Text>
-          <Text fontSize="18px">Steward: {steward}</Text>
-          <Text fontSize="18px">
-            Collection method: {formattedCollectionMethod}
-          </Text>
+          <Text>Measure Name: {title}</Text>
+          <Text>CMIT number: #{cmit}</Text>
+          <Text>Steward: {steward}</Text>
+          <Text>Collection method: {formattedCollectionMethod}</Text>
         </>
       </Flex>
-      <Divider margin="16px 0px" />
+      <Divider margin="2rem 0 0 0" />
     </Box>
   );
 };

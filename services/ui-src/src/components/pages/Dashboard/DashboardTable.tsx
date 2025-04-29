@@ -62,7 +62,12 @@ export const HorizontalTable = (
               </button>
             </Td>
           )}
-          <Td fontWeight={"bold"} maxWidth={"14.25rem"}>
+          <Td
+            fontWeight={"bold"}
+            maxWidth={"14.25rem"}
+            fontSize="16px"
+            padding="16px 16px 16px 0"
+          >
             {report.name ? report.name : "{Name of form}"}
           </Td>
           <Td>
@@ -140,7 +145,9 @@ export const VerticleTable = (
                   />
                 </button>
               )}
-              <Text fontWeight="bold">{report.name}</Text>
+              <Text fontWeight="bold" fontSize="16px">
+                {report.name}
+              </Text>
             </HStack>
           </div>
           <HStack gap="4rem">
