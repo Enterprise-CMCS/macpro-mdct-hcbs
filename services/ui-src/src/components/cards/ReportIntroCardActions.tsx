@@ -5,9 +5,8 @@ import { ReportType } from "types";
 import { useStore } from "utils";
 
 /**
- * This component is contained within each card on the stat user home page.
- * It has a button to download the user guide for that report type,
- * and a link to that report type's dashboard.
+ * This component is contained within each card on the state user home page.
+ * It has a link to that report type's dashboard.
  */
 export const ReportIntroCardActions = ({ reportType }: Props) => {
   const navigate = useNavigate();
