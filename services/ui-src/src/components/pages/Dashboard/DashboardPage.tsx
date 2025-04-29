@@ -7,6 +7,7 @@ import {
   DashboardTable,
   AddEditReportModal,
   AccordionItem,
+  UnlockModal,
 } from "components";
 import {
   Box,
@@ -23,7 +24,6 @@ import {
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
-import { UnlockModal } from "components/modals/UnlockModal";
 
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
