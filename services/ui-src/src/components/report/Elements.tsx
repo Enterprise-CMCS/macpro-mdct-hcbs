@@ -18,12 +18,15 @@ import {
   PageElement,
   NestedHeadingTemplate,
   HeaderIcon,
+  MeasurePageTemplate,
+  isMeasurePageTemplate,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { measurePrevPage, parseCustomHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
+import { currentPageSelector } from "utils/state/selectors";
 export interface PageElementProps {
   element: PageElement;
   index?: number;
@@ -85,6 +88,37 @@ export const subHeaderElement = (props: PageElementProps) => {
         </Text>
       )}
     </Stack>
+  );
+};
+
+export const subHeaderMeasureElement = (_props: PageElementProps) => {
+  const { report } = useStore();
+  const currentPage = useStore(currentPageSelector);
+  if (!currentPage) return null;
+
+  let required = false;
+  if (isMeasurePageTemplate(currentPage)) {
+    required = !!currentPage.required;
+  } else {
+    //find the parent measure to get the page type
+    const measure = report?.pages.find(
+      (page) =>
+        isMeasurePageTemplate(page) &&
+        page.dependentPages &&
+        page.dependentPages.find((child) => child.template === currentPage.id)
+    ) as MeasurePageTemplate;
+    required = !!measure.required;
+  }
+
+  return (
+    <Heading
+      as="h2"
+      variant="nestedHeading"
+      color="#5a5a5a"
+      marginBottom="-1.5rem"
+    >
+      {required ? "Required" : "Optional"} Measure
+    </Heading>
   );
 };
 

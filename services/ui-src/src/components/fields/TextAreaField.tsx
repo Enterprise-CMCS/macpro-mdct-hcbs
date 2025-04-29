@@ -42,7 +42,11 @@ export const TextAreaField = (props: PageElementProps) => {
   const formErrorState = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrorState, key)?.message;
   const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
-  const labelText = textbox.label;
+
+  const labelText = [
+    textbox.label,
+    !textbox.required && <span className="optionalText"> (optional)</span>,
+  ];
 
   if (hideElement) {
     return null;

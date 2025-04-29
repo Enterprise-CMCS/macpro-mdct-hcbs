@@ -16,9 +16,11 @@ jest.mock("../../utils/authorization", () => ({
   canReleaseReport: jest.fn().mockReturnValue(true),
 }));
 
-const mockGet = jest
-  .fn()
-  .mockReturnValue({ id: "A report", status: ReportStatus.SUBMITTED });
+const mockGet = jest.fn().mockReturnValue({
+  id: "A report",
+  status: ReportStatus.SUBMITTED,
+  name: "name",
+});
 
 jest.mock("../../storage/reports", () => ({
   getReport: () => mockGet(),
