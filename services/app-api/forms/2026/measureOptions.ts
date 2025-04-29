@@ -54,7 +54,7 @@ export const defaultMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-2"],
       },
     ],
@@ -73,7 +73,7 @@ export const defaultMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-FASI-2"],
       },
     ],
@@ -92,7 +92,7 @@ export const defaultMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-6"],
       },
     ],
@@ -111,7 +111,7 @@ export const defaultMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-7"],
       },
     ],
@@ -130,7 +130,7 @@ export const defaultMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-8"],
       },
     ],
@@ -144,7 +144,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-HCBS-10"],
       },
     ],
@@ -163,7 +163,7 @@ export const defaultMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-3"],
       },
     ],
@@ -182,7 +182,7 @@ export const defaultMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-4"],
       },
     ],
@@ -215,7 +215,7 @@ export const defaultMeasures: MeasureOptions[] = [
     dependentPages: [
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-DM"],
       },
     ],
@@ -237,7 +237,7 @@ export const pomMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-POM-1"],
       },
     ],
@@ -256,7 +256,7 @@ export const pomMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-POM-2"],
       },
     ],
@@ -275,7 +275,7 @@ export const pomMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-POM-3"],
       },
     ],
@@ -294,7 +294,7 @@ export const pomMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-POM-4"],
       },
     ],
@@ -313,7 +313,7 @@ export const pomMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-POM-5"],
       },
     ],
@@ -332,7 +332,7 @@ export const pomMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-POM-6"],
       },
     ],
@@ -351,7 +351,7 @@ export const pomMeasures: MeasureOptions[] = [
       },
       {
         key: DeliverySystem.MLTSS,
-        linkText: "Delivery Method: MLTSS",
+        linkText: "Delivery Method: Managed Care (MLTSS)",
         template: MeasureTemplateName["MLTSS-POM-7"],
       },
     ],

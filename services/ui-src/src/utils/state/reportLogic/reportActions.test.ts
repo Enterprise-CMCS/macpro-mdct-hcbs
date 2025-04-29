@@ -125,7 +125,7 @@ const testReport: Report = {
         },
         {
           key: DeliverySystem.MLTSS,
-          linkText: "Delivery Method: MLTSS",
+          linkText: "Delivery Method: Managed Care (MLTSS)",
           template: MeasureTemplateName["MLTSS-1"],
         },
       ],

@@ -232,7 +232,7 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
     },
     {
       key: "MLTSS",
-      linkText: "Delivery Method: MLTSS",
+      linkText: "Delivery Method: Managed Care (MLTSS)",
       template: MeasureTemplateName["MLTSS-1"],
     },
   ],
@@ -266,7 +266,7 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
     },
     {
       key: "MLTSS",
-      linkText: "Delivery Method: MLTSS",
+      linkText: "Delivery Method: Managed Care (MLTSS)",
       template: MeasureTemplateName["MLTSS-2"],
     },
   ],
@@ -355,7 +355,7 @@ export const mockReportStore: HcbsReportState = {
             },
             {
               key: "MLTSS",
-              linkText: "Delivery Method: MLTSS",
+              linkText: "Delivery Method: Managed Care (MLTSS)",
               template: MeasureTemplateName["MLTSS-1"],
             },
           ],

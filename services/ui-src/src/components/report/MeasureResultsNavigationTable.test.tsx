@@ -63,7 +63,9 @@ describe("Measure Results Navigation Table", () => {
   it("should enable each delivery system's button correctly", async () => {
     render(MeasureResultsNavigationTableComponent);
 
-    const ffsRow = screen.getByRole("row", { name: /FFS CMIT number: #960/ });
+    const ffsRow = screen.getByRole("row", {
+      name: /Delivery Method: Fee-for-Service/,
+    });
     const ffsButton = ffsRow.querySelector("button");
     expect(ffsButton).toBeEnabled();
 
@@ -72,7 +74,7 @@ describe("Measure Results Navigation Table", () => {
     expect(mockUseNavigate).toHaveBeenCalledWith(ffsRoute);
 
     const mltssRow = screen.getByRole("row", {
-      name: /MLTSS CMIT number: #960/,
+      name: /Delivery Method: Managed Care/,
     });
     const mltssButton = mltssRow.querySelector("button");
     expect(mltssButton).toBeDisabled();
