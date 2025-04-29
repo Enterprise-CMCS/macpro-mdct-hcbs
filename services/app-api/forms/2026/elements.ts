@@ -60,6 +60,16 @@ export const measureInstructions: AccordionTemplate = {
     "[Optional instructional content that could support the user in completing this page]",
 };
 
+export const deliveryMethodMeasureInstructions: AccordionTemplate = {
+  type: ElementType.Accordion,
+  id: "delivery-method-measure-instructions",
+  label: "Instructions",
+  value: `<b>Instructions for Completing this section</b> <p>Before you can click the "<b>Complete section</b>" button, 
+    you must answer all required (non-optional) questions for the measure section.</p>
+    <p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>
+    <p>Once complete, you can still edit this section but the status will change to ‘In progress’ and you will need to re-select the ‘Complete section’ button.</p>`,
+};
+
 export const measureDetailsSection: MeasureDetailsTemplate = {
   type: ElementType.MeasureDetails,
   id: "measure-details-section",
@@ -238,13 +248,13 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-export const whichMedicaidHCBSprograms = [
+export const whichProgramsWaivers = [
   {
     type: ElementType.TextAreaField,
     id: "measure-programs-text",
-    label: "Which Medicaid HCBS programs are being reported?",
+    label: "Which programs and waivers are included?",
     helperText:
-      "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
   } as TextAreaBoxTemplate,
   divider,
 ];
@@ -255,8 +265,6 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "assess-of-core",
@@ -275,7 +283,6 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText: "Hint Text",
   assessments: [
     {
       id: "part-not-contact",
@@ -294,8 +301,6 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "person-plan-core",
@@ -314,8 +319,6 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "part-not-contact",
@@ -334,8 +337,6 @@ export const performanceRatePOM: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "same-env",
@@ -348,8 +349,6 @@ export const performanceRatePOM: PerformanceRateTemplate = {
 export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
       id: "count-of-success",
@@ -386,8 +385,6 @@ export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
 export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
       id: "count-of-success",
@@ -424,8 +421,6 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
 export const performanceRateTermStay: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -449,8 +444,6 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR_FIELDS,
   rateCalc: RateCalc.NDRCalc,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },
     { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },

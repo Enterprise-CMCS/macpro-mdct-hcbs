@@ -28,24 +28,29 @@ export const isReportStatus = (status: string): status is ReportStatus => {
   return Object.values(ReportStatus).includes(status as ReportStatus);
 };
 
-export type ReportTemplate = ReportOptions & {
+export type ReportMeasureConfig = {
+  measureLookup: {
+    defaultMeasures: MeasureOptions[];
+    pomMeasures: MeasureOptions[];
+  };
+  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
+};
+
+export type ReportBase = {
   type: ReportType;
-  title: string;
+  year: number;
   pages: (
     | ParentPageTemplate
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate
   )[];
-  measureLookup: {
-    defaultMeasures: MeasureOptions[];
-    optionGroups: Record<string, MeasureOptions[]>;
-  };
-  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
+export type ReportTemplate = ReportBase & ReportMeasureConfig;
 
-export interface Report extends ReportTemplate {
+export interface Report extends ReportBase, ReportOptions {
   id?: string;
+  name: string;
   state: StateAbbr;
   created?: number;
   lastEdited?: number;
@@ -53,7 +58,7 @@ export interface Report extends ReportTemplate {
   lastEditedByEmail?: string;
   submitted?: number;
   submittedBy?: string;
-  submittedByEmail?: number;
+  submittedByEmail?: string;
   status: ReportStatus;
   submissionCount: number;
   archived: boolean;
@@ -438,7 +443,7 @@ export enum MeasureSpecification {
 }
 
 export interface ReportOptions {
-  name?: string;
+  name: string;
   year: number;
   options: {
     cahps?: boolean;

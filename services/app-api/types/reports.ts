@@ -15,7 +15,7 @@ export const isReportType = (x: string | undefined): x is ReportType => {
 };
 
 export interface ReportOptions {
-  name?: string;
+  name: string;
   year: number;
   options: {
     cahps?: boolean;
@@ -124,8 +124,9 @@ export enum PageStatus {
   COMPLETE = "Complete",
 }
 
-export interface Report extends ReportTemplate {
+export interface Report extends ReportBase, ReportOptions {
   id?: string;
+  name: string;
   state: string;
   created?: number;
   lastEdited?: number;
@@ -185,21 +186,25 @@ export interface Form {
   sections: [];
 }
 
-export type ReportTemplate = ReportOptions & {
-  type: ReportType;
-  title: string;
-  pages: (
-    | ParentPageTemplate
-    | FormPageTemplate
-    | MeasurePageTemplate
-    | ReviewSubmitTemplate
-  )[];
+export type ReportMeasureConfig = {
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     pomMeasures: MeasureOptions[];
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
+
+export type ReportBase = {
+  type: ReportType;
+  year: number;
+  pages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[];
+};
+export type ReportTemplate = ReportBase & ReportMeasureConfig;
 
 export type PageTemplate =
   | ParentPageTemplate

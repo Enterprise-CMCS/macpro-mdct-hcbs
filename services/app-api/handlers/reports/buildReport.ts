@@ -26,39 +26,38 @@ export const buildReport = async (
   user: User
 ) => {
   const year = reportOptions.year;
-  const report = structuredClone(getReportTemplate(reportType, year));
+  const template = getReportTemplate(reportType, year);
   const cmitList = getCmitInfo(year);
-  report.state = state;
-  report.id = KSUID.randomSync().string;
-  report.created = Date.now();
-  report.lastEdited = Date.now();
-  report.lastEditedBy = user.fullName;
-  report.lastEditedByEmail = user.email;
-  report.type = reportType;
-  report.status = ReportStatus.NOT_STARTED;
-  report.name = reportOptions.name;
-  report.year = reportOptions.year;
-  report.options = reportOptions.options;
-  report.archived = false;
-  report.submissionCount = 0;
+
+  const report: Report = {
+    state: state,
+    id: KSUID.randomSync().string,
+    created: Date.now(),
+    lastEdited: Date.now(),
+    lastEditedBy: user.fullName,
+    lastEditedByEmail: user.email,
+    type: reportType,
+    status: ReportStatus.NOT_STARTED,
+    name: reportOptions.name,
+    year: reportOptions.year,
+    options: reportOptions.options,
+    archived: false,
+    submissionCount: 0,
+    pages: structuredClone(template.pages),
+  };
 
   if (reportType == ReportType.QMS) {
-    /*
-     * Collect all measures, based on selected rules.
-     * TODO is measure order important? May need to sort.
-     * TODO could a measure be included by multiple rules? May need to deduplicate.
-     */
-
-    let measures = report.measureLookup.defaultMeasures;
+    // Collect all measures, based on selected rules.
+    let measures = template.measureLookup.defaultMeasures;
     if (report.options.pom) {
-      measures.push(...report.measureLookup.pomMeasures);
+      measures.push(...template.measureLookup.pomMeasures);
     }
 
     for (let measure of measures) {
       const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
       const parentPage = initializeQmsPage(
         measure,
-        report.measureTemplates[measure.measureTemplate],
+        template.measureTemplates[measure.measureTemplate],
         cmitInfo,
         true
       );
@@ -66,7 +65,7 @@ export const buildReport = async (
       const childPages = measure.dependentPages.map((pageInfo) =>
         initializeQmsPage(
           measure,
-          report.measureTemplates[pageInfo.template],
+          template.measureTemplates[pageInfo.template],
           cmitInfo,
           false
         )

@@ -17,16 +17,33 @@ import {
   ReviewSubmitTemplate,
 } from "types";
 
-export const ExportedReportWrapper = ({ section }: Props) => {
-  const elements = section.elements
-    ?.filter(
-      (element) =>
-        element.type !== ElementType.ButtonLink &&
-        element.type !== ElementType.Accordion &&
-        element.type !== ElementType.Header &&
-        element.type !== ElementType.MeasureTable
-    )
-    .map((element: any) => {
+const skipElements = [
+  ElementType.ButtonLink,
+  ElementType.Accordion,
+  ElementType.MeasureTable,
+  ElementType.MeasureResultsNavigationTable,
+  ElementType.Header,
+  ElementType.MeasureFooter,
+];
+
+export const ExportedReportWrapper = ({ section, displayHidden }: Props) => {
+  const filtered = !displayHidden
+    ? section.elements?.filter(
+        (element) => !skipElements.includes(element?.type)
+      )
+    : section.elements;
+
+  const elements = filtered?.map((element: any) => {
+    if (displayHidden && skipElements.includes(element.type)) {
+      return {
+        label: "DEBUG",
+        helperText: element.type ?? "",
+        value: element.value ?? "",
+        answer: element.answer ?? "",
+        type: element.type ?? "",
+      };
+    }
+    if (element.type)
       return {
         label: element?.label ?? "",
         helperText: element.helperText ?? "",
@@ -34,7 +51,8 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         answer: element.answer ?? "No Response",
         type: element.type ?? "",
       };
-    });
+    return { label: "How" };
+  });
 
   return (
     <Stack>
@@ -44,6 +62,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
             <Tr>
               <Th>Indicator</Th>
               <Th>Response</Th>
+              {displayHidden && <Th>Type</Th>}
             </Tr>
           </Thead>
           <Tbody>
@@ -61,6 +80,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
                       )}
                     </Td>
                     <Td>{element?.answer}</Td>
+                    {displayHidden && <Td>{element?.type}</Td>}
                   </Tr>
                 )
             )}
@@ -79,4 +99,5 @@ export interface Props {
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate;
+  displayHidden?: boolean;
 }
