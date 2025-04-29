@@ -12,6 +12,7 @@ import {
   RadioTemplate,
   RateCalc,
   StatusAlertTemplate,
+  SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
@@ -37,7 +38,12 @@ export const returnToDashboard: ButtonLinkTemplate = {
 
 export const divider: DividerTemplate = {
   type: ElementType.Divider,
-  id: "divdier",
+  id: "divider",
+};
+
+export const measureType: SubHeaderMeasureTemplate = {
+  type: ElementType.SubHeaderMeasure,
+  id: "sub-header-measure",
 };
 
 export const measureHeader: HeaderTemplate = {
@@ -172,22 +178,25 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   id: "additional-notes-field",
   helperText:
     "If applicable, add any notes or comments to provide context to the reported measure result",
-  label: "Additional notes/comments (optional)",
+  label: "Additional notes/comments",
   hideCondition: {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
 };
 
-export const measureDeliveryMethodsSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  text: "Measure Delivery Methods",
-  id: "measure-delivery-methods-subheader",
-  hideCondition: {
-    controllerElementId: "measure-reporting-radio",
-    answer: "no",
-  },
-};
+export const measureDeliveryMethodsSubheader = [
+  divider,
+  {
+    type: ElementType.SubHeader,
+    text: "Measure Delivery Methods",
+    id: "measure-delivery-methods-subheader",
+    hideCondition: {
+      controllerElementId: "measure-reporting-radio",
+      answer: "no",
+    },
+  } as SubHeaderTemplate,
+];
 
 export const whichVersionQualityMeasureReported: RadioTemplate = {
   type: ElementType.Radio,
@@ -243,7 +252,7 @@ export const whichProgramsWaivers = [
   {
     type: ElementType.TextAreaField,
     id: "measure-programs-text",
-    label: "Which programs and waivers are included? (optional)",
+    label: "Which programs and waivers are included?",
     helperText:
       "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
   } as TextAreaBoxTemplate,

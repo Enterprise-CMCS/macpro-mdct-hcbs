@@ -45,6 +45,7 @@ export const Modal = ({
             leftIcon={<Image src={closeIcon} alt="Close" sx={sx.closeIcon} />}
             variant="link"
             onClick={modalDisclosure.onClose}
+            fontWeight="bold"
           >
             Close
           </Button>
@@ -75,6 +76,7 @@ export const Modal = ({
               sx={sx.close}
               variant="link"
               onClick={modalDisclosure.onClose}
+              fontWeight="bold"
             >
               {content.closeButtonText}
             </Button>
@@ -116,7 +118,7 @@ const sx = {
     margin: "0 0 2rem 0",
   },
   modalHeaderText: {
-    padding: "0 4rem 0 0",
+    padding: "0 2rem 0 0",
     fontSize: "2xl",
     fontWeight: "bold",
   },

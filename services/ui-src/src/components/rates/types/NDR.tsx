@@ -64,13 +64,13 @@ export const NDR = (
   };
 
   return (
-    <Stack gap={6}>
+    <Stack gap="2rem">
       {assessments?.map((assess, index) => {
         const value =
           displayValue.rates.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <Stack key={assess.id} gap={6}>
+          <Stack key={assess.id} gap="2rem">
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}

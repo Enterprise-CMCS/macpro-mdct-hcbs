@@ -114,11 +114,15 @@ export const ReportPageWrapper = () => {
         {currentPage.sidebar && <Sidebar />}
         <VStack
           height="100%"
-          padding={{ base: "4rem 1rem", md: "4rem 0rem" }}
+          padding={
+            currentPage.sidebar
+              ? { base: "3.5rem 1rem", md: "3.5rem 0rem" }
+              : { base: "2rem 1rem", md: "2rem 0rem" }
+          }
           margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
           width="100%"
           maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
-          gap="1rem"
+          gap="0rem"
         >
           <Box flex="auto" alignItems="flex-start" width="100%">
             <form
@@ -134,11 +138,10 @@ export const ReportPageWrapper = () => {
           {!currentPage.hideNavButtons && parentPage && (
             <>
               {parentPage.index == 0 && <Divider></Divider>}
-              <Flex width="100%" marginTop="4">
+              <Flex width="100%" margin="1.5rem 0 0 0">
                 {parentPage.index > 0 && (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index - 1)}
-                    fontWeight="bold"
                     variant="outline"
                     leftIcon={<Image src={prevArrowIcon} />}
                   >
@@ -155,9 +158,11 @@ export const ReportPageWrapper = () => {
                   </Button>
                 )}
               </Flex>
-              <Box flex="auto">
-                {parentPage.index == 0 && <PraDisclosure />}
-              </Box>
+              {parentPage.index == 0 && (
+                <Box flex="auto" marginTop="3.5rem">
+                  <PraDisclosure />
+                </Box>
+              )}
             </>
           )}
         </VStack>

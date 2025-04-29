@@ -41,6 +41,11 @@ const subHeaderTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const subHeaderMeasureSchema = object().shape({
+  type: string().required(ElementType.SubHeaderMeasure),
+  id: string().required(),
+});
+
 const nestedHeadingTemplateSchema = object().shape({
   type: string().required(ElementType.NestedHeading),
   id: string().required(),
@@ -124,6 +129,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return headerTemplateSchema;
     case ElementType.SubHeader:
       return subHeaderTemplateSchema;
+    case ElementType.SubHeaderMeasure:
+      return subHeaderMeasureSchema;
     case ElementType.NestedHeading:
       return nestedHeadingTemplateSchema;
     case ElementType.Paragraph:

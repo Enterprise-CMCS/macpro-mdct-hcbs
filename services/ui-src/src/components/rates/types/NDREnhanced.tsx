@@ -82,7 +82,7 @@ export const NDREnhanced = (
   };
 
   return (
-    <Stack gap={6}>
+    <Stack gap="2rem">
       <CmsdsTextField
         label="Performance Rates Denominator"
         name="denominator"
@@ -96,7 +96,7 @@ export const NDREnhanced = (
           displayValue?.rates?.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <Stack key={assess.id} gap={6}>
+          <Stack key={assess.id} gap="2rem">
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}
