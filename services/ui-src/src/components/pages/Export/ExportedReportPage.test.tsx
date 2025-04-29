@@ -10,7 +10,7 @@ const report = {
   type: "QMS",
   id: "mock-report-id",
   state: "CO",
-  title: "mock-title",
+  name: "mock-title",
   pages: [
     { childPageIds: ["1", "2"] },
     { title: "Section 1", id: "id-1" },

@@ -12,7 +12,6 @@ import {
   Report,
   ReportStatus,
   ReportType,
-  MeasureTemplateName,
   PageType,
   ElementType,
   PageElement,
@@ -40,6 +39,11 @@ const subHeaderTemplateSchema = object().shape({
   text: string().required(),
   helperText: string().notRequired(),
   hideCondition: hideConditionSchema,
+});
+
+const subHeaderMeasureSchema = object().shape({
+  type: string().required(ElementType.SubHeaderMeasure),
+  id: string().required(),
 });
 
 const nestedHeadingTemplateSchema = object().shape({
@@ -125,6 +129,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return headerTemplateSchema;
     case ElementType.SubHeader:
       return subHeaderTemplateSchema;
+    case ElementType.SubHeaderMeasure:
+      return subHeaderMeasureSchema;
     case ElementType.NestedHeading:
       return nestedHeadingTemplateSchema;
     case ElementType.Paragraph:
@@ -334,23 +340,6 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
   submittedView: array().of(pageElementSchema).required(),
 });
 
-const measureOptionsArraySchema = array().of(
-  object().shape({
-    cmit: number().required(),
-    uid: string().required(),
-    required: boolean().required(),
-    stratified: boolean().required(),
-    measureTemplate: string().required(),
-    dependentPages: array().of(dependentPageInfoSchema),
-  })
-);
-
-const measureLookupSchema = object().shape({
-  defaultMeasures: measureOptionsArraySchema,
-  pomMeasures: measureOptionsArraySchema,
-  // TODO: Add option groups
-});
-
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
   hciidd: boolean().notRequired(),
@@ -389,28 +378,6 @@ const pagesSchema = array()
   )
   .required();
 
-/**
- * This schema represents a typescript type of Record<MeasureTemplateName, MeasurePageTemplate>
- *
- * The following code is looping through the MeasureTemplateName enum and building
- * a yup validation object that looks like so:
- * {
- *   [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
- *   [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
- *   [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
- *   ...
- *   ...
- *  }
- */
-const measureTemplatesSchema = object().shape(
-  Object.fromEntries(
-    Object.keys(MeasureTemplateName).map((meas) => [
-      meas,
-      measurePageTemplateSchema,
-    ])
-  )
-);
-
 const reportValidateSchema = object().shape({
   id: string().notRequired(),
   state: string().required(),
@@ -422,16 +389,13 @@ const reportValidateSchema = object().shape({
   submittedBy: string().notRequired(),
   submittedByEmail: string().notRequired(),
   status: mixed<ReportStatus>().oneOf(Object.values(ReportStatus)).required(),
-  name: string().notRequired(),
+  name: string().required(),
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),
-  title: string().required(),
   year: number().required(),
   submissionCount: number().required(),
   archived: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
-  measureLookup: measureLookupSchema,
-  measureTemplates: measureTemplatesSchema,
 });
 
 export const validateReportPayload = async (payload: object | undefined) => {

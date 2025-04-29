@@ -1,11 +1,17 @@
-import { ComponentClass } from "react";
+import { ComponentClass, useState } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
-import { Box, Center, Heading, Spinner, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Heading,
+  Spinner,
+  Flex,
+  Checkbox,
+} from "@chakra-ui/react";
 import { useStore } from "utils";
 import {
   FormPageTemplate,
   MeasurePageTemplate,
-  PageType,
   ParentPageTemplate,
   Report,
   ReviewSubmitTemplate,
@@ -14,10 +20,9 @@ import { ExportedReportBanner, ExportedReportWrapper } from "components";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const reportPages =
-    report?.pages.filter(
-      (page) => page.type !== PageType.Modal && page.type !== PageType.Measure
-    ) || [];
+  const [displayHidden, setDisplayHidden] = useState(false);
+  const reportPages = report?.pages;
+  if (!reportPages) return null;
 
   //package import issue, can be removed once we get to react >= 18.3.0 and types/react >= 18.3.0
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
@@ -26,6 +31,14 @@ export const ExportedReportPage = () => {
     <Box>
       <ExportedReportBanner />
       <Box sx={sx.container}>
+        <Checkbox
+          id="debug"
+          checked={displayHidden}
+          onChange={() => setDisplayHidden(!displayHidden)}
+        >
+          Debug
+        </Checkbox>
+
         {(report && reportPages.length > 0 && (
           <Box sx={sx.innerContainer}>
             {/* pdf metadata */}
@@ -40,7 +53,7 @@ export const ExportedReportPage = () => {
               {reportTitle(report)}
             </Heading>
             {/* report sections */}
-            {renderReportSections(reportPages)}
+            {renderReportSections(reportPages, displayHidden)}
           </Box>
         )) || (
           <Center>
@@ -53,7 +66,7 @@ export const ExportedReportPage = () => {
 };
 
 export const reportTitle = (report: Report) => {
-  return `${report.state} ${report.title}`;
+  return `${report.state} ${report.name}`;
 };
 
 export const renderReportSections = (
@@ -62,7 +75,8 @@ export const renderReportSections = (
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate
-  )[]
+  )[],
+  displayHidden: boolean
 ) => {
   // recursively render sections
   const renderSection = (
@@ -77,7 +91,10 @@ export const renderReportSections = (
         {/* if section does not have children and has content to render, render it */}
         <Flex gap="2rem" flexDirection="column">
           <Heading variant="subHeader">{section.title}</Heading>
-          <ExportedReportWrapper section={section} />
+          <ExportedReportWrapper
+            section={section}
+            displayHidden={displayHidden}
+          />
         </Flex>
       </Box>
     );
