@@ -51,10 +51,10 @@ export const measureInstructions: AccordionTemplate = {
   id: "measure-instructions",
   label: "Instructions",
   value:
-    "<b>Instructions for Completing this Measure</b>" +
-    "<br><br>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part)." +
-    "<br><br>Please review your responses to ensure all mandatory fields are filled out before proceeding." +
-    "<br><br>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections).  All data previously entered will be cleared and not submitted upon report completion.",
+    "<strong>Instructions for Completing this Measure</strong>" +
+    "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).<p>" +
+    "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
+    "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections).  All data previously entered will be cleared and not submitted upon report completion.</p>",
 };
 
 export const deliveryMethodMeasureInstructions: AccordionTemplate = {
@@ -166,7 +166,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
           label: "Please explain the variance.",
           required: true,
           helperText:
-            "Include the name of which technical specifications that were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
+            "Include the name of which technical specifications were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
         },
       ],
     },
