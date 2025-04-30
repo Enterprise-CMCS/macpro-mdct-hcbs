@@ -147,7 +147,7 @@ describe("pageIsCompletable", () => {
               type: ElementType.Radio,
               answer: "FFS",
               required: true,
-              value: [{ value: "FFS" }],
+              choices: [{ value: "FFS" }],
             },
           ],
           dependentPages: [
@@ -223,7 +223,7 @@ describe("elementSatisfiesRequired", () => {
       id: "other-element",
       answer: "foo",
       type: ElementType.Radio,
-      value: [
+      choices: [
         {
           label: "me",
           value: "me",
@@ -235,7 +235,7 @@ describe("elementSatisfiesRequired", () => {
       id: "bad-element",
       answer: "me",
       type: ElementType.Radio,
-      value: [
+      choices: [
         {
           label: "me",
           value: "me",

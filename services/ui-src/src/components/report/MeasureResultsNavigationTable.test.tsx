@@ -26,7 +26,7 @@ mockedUseLiveElement.mockReturnValue({
   id: "anId",
   answer: "FFS",
   label: "how are you today?",
-  value: [],
+  choices: [],
 });
 
 const mockUseNavigate = jest.fn();

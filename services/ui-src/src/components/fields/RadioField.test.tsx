@@ -2,7 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RadioField } from "components";
 import { useFormContext } from "react-hook-form";
-import { ElementType, PageElement } from "types";
+import { ElementType, RadioTemplate } from "types";
 import { useStore } from "utils";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { testA11y } from "utils/testing/commonTests";
@@ -42,10 +42,11 @@ mockedUseStore.mockReturnValue({
   changeDeliveryMethods: mockChangeDeliveryMethods,
 });
 
-const mockRadioElement = {
-  type: RadioField,
+const mockRadioElement: RadioTemplate = {
+  id: "mock-radio-id",
+  type: ElementType.Radio,
   label: "mock label",
-  value: [
+  choices: [
     {
       label: "Choice 1",
       value: "A",
@@ -56,6 +57,7 @@ const mockRadioElement = {
       value: "B",
       checkedChildren: [
         {
+          id: "mock-text-box-id",
           type: ElementType.Textbox,
           label: "mock-text-box",
         },
@@ -76,11 +78,7 @@ const mockRadioElement = {
 
 const RadioFieldComponent = (
   <div data-testid="test-radio-list">
-    <RadioField
-      element={mockRadioElement as unknown as PageElement}
-      index={0}
-      formkey="elements.0"
-    />
+    <RadioField element={mockRadioElement} index={0} formkey="elements.0" />
   </div>
 );
 
@@ -142,11 +140,7 @@ describe("Radio field click action logic", () => {
     };
     const deliveryRadio = (
       <div data-testid="test-radio-list">
-        <RadioField
-          element={deliveryElement as unknown as PageElement}
-          index={0}
-          formkey="elements.0"
-        />
+        <RadioField element={deliveryElement} index={0} formkey="elements.0" />
       </div>
     );
     render(deliveryRadio);
@@ -162,7 +156,7 @@ describe("Radio field click action logic", () => {
     const deliveryElement = {
       ...mockRadioElement,
       clickAction: "qmReportingChange",
-      value: [
+      choices: [
         {
           label: "Hey, no thanks",
           value: "no",
@@ -177,11 +171,7 @@ describe("Radio field click action logic", () => {
     };
     const deliveryRadio = (
       <div data-testid="test-radio-list">
-        <RadioField
-          element={deliveryElement as unknown as PageElement}
-          index={0}
-          formkey="elements.0"
-        />
+        <RadioField element={deliveryElement} index={0} formkey="elements.0" />
       </div>
     );
     render(deliveryRadio);
