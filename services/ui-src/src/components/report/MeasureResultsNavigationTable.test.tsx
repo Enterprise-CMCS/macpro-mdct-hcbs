@@ -41,15 +41,16 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const mockedMeasureResultsNavigationTableElement = {
-  type: ElementType.MeasureResultsNavigationTable,
-  id: "test measure results table",
-  measureDisplay: "quality",
-  hideCondition: {
-    controllerElementId: "reporting-radio",
-    answer: "yes",
-  },
-} as MeasureResultsNavigationTableTemplate;
+const mockedMeasureResultsNavigationTableElement: MeasureResultsNavigationTableTemplate =
+  {
+    type: ElementType.MeasureResultsNavigationTable,
+    id: "test measure results table",
+    measureDisplay: "quality",
+    hideCondition: {
+      controllerElementId: "reporting-radio",
+      answer: "yes",
+    },
+  };
 
 const MeasureResultsNavigationTableComponent = (
   <MeasureResultsNavigationTableElement

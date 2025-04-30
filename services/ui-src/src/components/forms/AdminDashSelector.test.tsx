@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdminDashSelector } from "./AdminDashSelector";
 import { useNavigate } from "react-router-dom";
+import assert from "node:assert";
 
 jest.mock("@cmsgov/design-system", () => ({
   Dropdown: ({ label, options, onChange, value }: any) => (
@@ -59,15 +60,14 @@ describe("AdminDashSelector Component", () => {
     render(<AdminDashSelector />);
 
     // Select a state
-    const dropdown = screen.getByLabelText(
-      "Select state or territory:"
-    ) as HTMLSelectElement;
+    const dropdown = screen.getByLabelText("Select state or territory:");
+    assert(dropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(dropdown, "CA");
 
     // Select a report
     const radioButton = screen.getByLabelText(
       "Quality Measure Set Report (QMS)"
-    ) as HTMLElement;
+    );
     await userEvent.click(radioButton);
     expect(dropdown.value).toBe("CA");
     expect(radioButton).toBeChecked();

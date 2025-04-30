@@ -25,23 +25,26 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const mockedMeasureFooterElement = {
+const mockedMeasureFooterElement: MeasureFooterTemplate = {
+  id: "mock-footer-id",
   type: ElementType.MeasureFooter,
   nextTo: "mock-next-link",
   completeMeasure: true,
   clear: true,
-} as MeasureFooterTemplate;
+};
 
-const mockedMeasureFooterEmpty = {
+const mockedMeasureFooterEmpty: MeasureFooterTemplate = {
+  id: "mock-footer-id",
   type: ElementType.MeasureFooter,
   prevTo: "mock-prev-link",
-} as MeasureFooterTemplate;
+};
 
-const mockedMeasureSectionFooterElement = {
+const mockedMeasureSectionFooterElement: MeasureFooterTemplate = {
+  id: "mock-footer-id",
   type: ElementType.MeasureFooter,
   prevTo: "mock-prev-link",
   completeSection: true,
-} as MeasureFooterTemplate;
+};
 
 describe("Measure Footer", () => {
   it("Test Measure Footer component", async () => {

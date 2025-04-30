@@ -29,7 +29,7 @@ describe("Test create report handler", () => {
       options: {
         pom: true,
       },
-    } as unknown as ReportOptions;
+    } as ReportOptions;
     const report = await buildReport(
       ReportType.QMS,
       state,

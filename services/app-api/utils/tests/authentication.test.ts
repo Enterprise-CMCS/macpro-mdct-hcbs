@@ -2,6 +2,7 @@ import { authenticatedUser, parseUserFromToken } from "../authentication";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { CognitoIdTokenPayload } from "aws-jwt-verify/jwt-model";
 import { UserRoles } from "../../types/types";
+import { JsonObject } from "aws-jwt-verify/safe-json-parse";
 
 const mockVerifier = jest.fn();
 
@@ -22,7 +23,7 @@ const mockToken = {
   email: "stateuser@test.com",
   given_name: "Helen Hunt",
   family_name: "Jackson",
-} as unknown as CognitoIdTokenPayload;
+} as JsonObject as CognitoIdTokenPayload;
 
 describe("Authentication methods", () => {
   describe("Test authorization with api key and environment variables", () => {

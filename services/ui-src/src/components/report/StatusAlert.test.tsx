@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { mockUseStore } from "utils/testing/setupJest";
 import { StatusAlert } from "./StatusAlert";
-import { ElementType, StatusAlertTemplate } from "types";
+import { AlertTypes, ElementType, StatusAlertTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import userEvent from "@testing-library/user-event";
@@ -31,19 +31,21 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const mockStatusAlert = {
+const mockStatusAlert: StatusAlertTemplate = {
+  id: "mock-alert-id",
   type: ElementType.StatusAlert,
   title: "mock alert",
   text: "mock text",
-  status: "error",
-} as StatusAlertTemplate;
+  status: AlertTypes.ERROR,
+};
 
-const mockStatusLink = {
+const mockStatusLink: StatusAlertTemplate = {
+  id: "mock-alert-id",
   type: ElementType.StatusAlert,
   title: "mock alert",
   text: "mock text {ReturnButton}",
-  status: "error",
-} as StatusAlertTemplate;
+  status: AlertTypes.ERROR,
+};
 
 const statusAlertComponent = (
   <StatusAlert

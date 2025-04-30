@@ -4,7 +4,11 @@ import { NDR } from "./NDR";
 import { useFormContext } from "react-hook-form";
 import { NDRCalc } from "../calculations";
 import { useStore } from "utils";
-import { ElementType, PerformanceRateTemplate } from "types";
+import {
+  ElementType,
+  PerformanceRateTemplate,
+  PerformanceRateType,
+} from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { mockStateUserStore } from "utils/testing/setupJest";
 
@@ -30,13 +34,15 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedPerformanceElement = {
+const mockedPerformanceElement: PerformanceRateTemplate = {
+  id: "mock-perf-id",
   type: ElementType.PerformanceRate,
+  rateType: PerformanceRateType.NDR,
   label: "test label",
   helperText: "helper text",
   assessments: [{ id: "test-1", label: "assessment 1" }],
   multiplier: 1,
-} as PerformanceRateTemplate;
+};
 
 const ndrComponent = (
   <NDR

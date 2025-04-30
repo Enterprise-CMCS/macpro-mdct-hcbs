@@ -8,7 +8,7 @@ import {
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { getReportsForState } from "utils/api/requestMethods/report";
-import { Report } from "types";
+import { Report, ReportStatus } from "types";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -40,8 +40,8 @@ jest.mock("utils/api/requestMethods/report", () => ({
       state: "CO",
       lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
       lastEditedBy: "Mock User",
-      status: "Not Started",
-    } as unknown as Report,
+      status: ReportStatus.NOT_STARTED,
+    } as Report,
   ]),
 }));
 
