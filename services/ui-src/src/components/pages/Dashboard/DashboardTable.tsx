@@ -153,9 +153,8 @@ export const VerticleTable = (
                         minW={"1.75rem"}
                       />
                     </button>
-                  ) : (
-                    <div />
-                  )}
+                  ) : null
+                  }
                 </>
               )}
               <Text fontWeight="bold" fontSize="16px">
