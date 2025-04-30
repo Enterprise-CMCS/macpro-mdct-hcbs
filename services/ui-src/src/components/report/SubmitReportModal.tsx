@@ -4,6 +4,7 @@ export const SubmitReportModal = (onClose: Function, onSubmit: Function) => {
   const submitHandler = async () => {
     await onSubmit();
   };
+
   return (
     <>
       <ModalBody>

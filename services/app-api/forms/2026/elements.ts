@@ -57,7 +57,10 @@ export const measureInstructions: AccordionTemplate = {
   id: "measure-instructions",
   label: "Instructions",
   value:
-    "[Optional instructional content that could support the user in completing this page]",
+    "<strong>Instructions for Completing this Measure</strong>" +
+    "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).<p>" +
+    "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
+    "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections).  All data previously entered will be cleared and not submitted upon report completion.</p>",
 };
 
 export const deliveryMethodMeasureInstructions: AccordionTemplate = {
@@ -99,10 +102,10 @@ export const isTheStateReportingThisMeasure: RadioTemplate = {
   helperText:
     "Warning: Changing this response will clear any data previously entered in this measure.",
   id: "measure-reporting-radio",
-  value: [
-    { label: "Yes, the state is reporting on this measure", value: "yes" },
+  choices: [
+    { label: "Yes, the state is reporting on this measure.", value: "yes" },
     {
-      label: "No, CMS is reporting this measure on the state's behalf",
+      label: "No, CMS is reporting this measure on the state's behalf.",
       value: "no",
     },
   ],
@@ -114,7 +117,7 @@ export const wereTheResultsAudited: RadioTemplate = {
   type: ElementType.Radio,
   id: "measure-audited-radio",
   label: "Were the reported measure results audited or validated?",
-  value: [
+  choices: [
     { label: "No", value: "no" },
     {
       label: "Yes",
@@ -139,19 +142,25 @@ export const wereTheResultsAudited: RadioTemplate = {
 
 export const whatSpecificationsAreYouUsing: RadioTemplate = {
   type: ElementType.Radio,
-  label: "What Technical Specifications are you using to report this measure?",
+  label: "What technical specifications are being used to report this measure?",
   id: "measure-tech-specs-radio",
-  value: [
-    { label: "CMS", value: "cms" },
-    { label: "HEDIS", value: "hedis" },
+  choices: [
+    {
+      label:
+        "National Committee for Quality Assurance (NCQA)/Healthcare Effectiveness Data and Information Set (HEDIS)",
+      value: "hedis",
+    },
+    { label: "Centers for Medicare and Medicaid Services (CMS)", value: "cms" },
   ],
+  helperText:
+    "Select the technical specifications the state used to report this measure.",
 };
 
 export const didYouFollowSpecifications: RadioTemplate = {
   type: ElementType.Radio,
-  label: "Did you follow the 2026 Technical Specifications?",
+  label: "Did you follow, with no variance, the 2026 specifications?",
   id: "measure-following-tech-specs",
-  value: [
+  choices: [
     { label: "Yes", value: "yes" },
     {
       label: "No",
@@ -162,6 +171,8 @@ export const didYouFollowSpecifications: RadioTemplate = {
           id: "measure-following-tech-specs-no-explain",
           label: "Please explain the variance.",
           required: true,
+          helperText:
+            "Include the name of which technical specifications were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
         },
       ],
     },
@@ -201,8 +212,8 @@ export const measureDeliveryMethodsSubheader = [
 export const whichVersionQualityMeasureReported: RadioTemplate = {
   type: ElementType.Radio,
   id: "delivery-method-radio",
-  label: "Which version of quality measure will be reported?",
-  value: [
+  label: "Which delivery methods will be reported on for this measure?",
+  choices: [
     { label: "Fee-For-Service (FFS LTSS)", value: "FFS" },
     {
       label: "Managed Care (MLTSS)",

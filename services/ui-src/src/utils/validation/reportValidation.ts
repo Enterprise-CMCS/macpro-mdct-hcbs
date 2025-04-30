@@ -21,7 +21,7 @@ export const radioWithChildrenSchema = object().shape({
   answer: string().required("A response is required"),
   type: string().notRequired(),
   label: string().notRequired(),
-  value: array().of(
+  choices: array().of(
     object().shape({
       checkedChildren: array().of(
         object().shape({
@@ -55,7 +55,7 @@ const pageElementSchema = lazy((element: PageElement): any => {
       // TODO: make date schema
       return textboxSchema;
     case ElementType.Radio:
-      if (element.value) {
+      if (element.choices) {
         return radioWithChildrenSchema;
       }
       return radioSchema;

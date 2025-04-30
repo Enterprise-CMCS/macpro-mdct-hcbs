@@ -80,6 +80,7 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
   modalComponent: undefined,
   lastSavedTime: undefined,
   errorMessage: undefined,
+  sidebarOpen: true,
 
   // actions
   loadReport: (report: Report | undefined) =>
@@ -112,6 +113,9 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
     set(() => substitute(report, selectMeasure), false, {
       type: "setSubstitute",
     });
+  },
+  setSidebar: (sidebarOpen: boolean) => {
+    set(() => ({ sidebarOpen }), false, { type: "setSidebarOpen" });
   },
   completePage: (measureId: string) => {
     set((state: HcbsReportState) => markPageComplete(measureId, state), false, {

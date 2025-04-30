@@ -7,6 +7,7 @@ import {
   DashboardTable,
   AddEditReportModal,
   AccordionItem,
+  UnlockModal,
 } from "components";
 import {
   Box,
@@ -66,6 +67,12 @@ export const DashboardPage = () => {
     isOpen: addEditReportModalIsOpen,
     onOpen: addEditReportModalOnOpenHandler,
     onClose: addEditReportModalOnCloseHandler,
+  } = useDisclosure();
+
+  const {
+    isOpen: unlockModalIsOpen,
+    onOpen: unlockModalOnOpenHandler,
+    onClose: unlockModalOnCloseHandler,
   } = useDisclosure();
 
   return (
@@ -136,25 +143,27 @@ export const DashboardPage = () => {
                 <p>
                   <strong>Understanding Report Statuses</strong>
                 </p>
-                <ul>
-                  <li>
-                    <strong>Not Started:</strong> The report has been created
-                    but no data has been entered or actions taken.
-                  </li>
-                  <li>
-                    <strong>In Progress:</strong> The report is actively being
-                    worked on, with some or all data entered.
-                  </li>
-                  <li>
-                    <strong>Submitted:</strong> The report has been completed
-                    and submitted to CMS for review.
-                  </li>
-                  <li>
-                    <strong>In-Revision:</strong> The report has been sent back
-                    to the state for revisions or additional information after
-                    submission.
-                  </li>
-                </ul>
+                <p>
+                  <ul>
+                    <li>
+                      <strong>Not Started:</strong> The report has been created
+                      but no data has been entered or actions taken.
+                    </li>
+                    <li>
+                      <strong>In Progress:</strong> The report is actively being
+                      worked on, with some or all data entered.
+                    </li>
+                    <li>
+                      <strong>Submitted:</strong> The report has been completed
+                      and submitted to CMS for review.
+                    </li>
+                    <li>
+                      <strong>In-Revision:</strong> The report has been sent
+                      back to the state for revisions or additional information
+                      after submission.
+                    </li>
+                  </ul>
+                </p>
                 <p>
                   Use the dashboard below to check your report’s status and take
                   any necessary follow-up actions.
@@ -169,6 +178,7 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
+            unlockModalOnOpenHandler={unlockModalOnOpenHandler}
           />
         )}
         {isLoading && (
@@ -206,6 +216,12 @@ export const DashboardPage = () => {
         reportHandler={reloadReports}
         selectedReport={selectedReport}
       />
+      <UnlockModal
+        modalDisclosure={{
+          isOpen: unlockModalIsOpen,
+          onClose: unlockModalOnCloseHandler,
+        }}
+      ></UnlockModal>
     </PageTemplate>
   );
 };

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
@@ -10,6 +11,7 @@ import {
   Thead,
   Tr,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import { postSubmitReport, useStore } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
@@ -27,6 +29,7 @@ export const StatusTableElement = () => {
   const navigate = useNavigate();
   const submittableMetrics = useStore(submittableMetricsSelector);
   const isPdfActive = useFlags()?.viewPdf;
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   if (!report) {
     return null;
@@ -38,9 +41,11 @@ export const StatusTableElement = () => {
   };
 
   const onSubmit = async () => {
+    setModalOpen(false);
+    setSubmitting(true);
     const submittedReport = await postSubmitReport(report);
     updateReport(submittedReport);
-    setModalOpen(false);
+    setSubmitting(false);
   };
 
   const modal = SubmitReportModal(() => setModalOpen(false), onSubmit);
@@ -111,8 +116,9 @@ export const StatusTableElement = () => {
             onBlur={(event) => {
               event.stopPropagation();
             }}
-            disabled={!submittableMetrics?.submittable}
+            disabled={!submittableMetrics?.submittable || submitting}
           >
+            {submitting && <Spinner size="sm" marginRight="1rem" />}
             Submit QMS Report
           </Button>
         )}
