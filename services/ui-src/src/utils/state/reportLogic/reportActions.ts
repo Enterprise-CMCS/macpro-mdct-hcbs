@@ -1,16 +1,26 @@
+/**
+ * File wrapping high level actions away from the useStore file for cleanliness.
+ * This contains the root for logic for actions such as updating an answer, handling resetting, saving, etc.
+ */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HcbsReportState } from "types";
 import {
+  isMeasurePageTemplate,
   isMeasureTemplate,
   MeasurePageTemplate,
+  PageStatus,
+  PageType,
   ParentPageTemplate,
   Report,
 } from "types/report";
-import { putReport } from "utils/api/requestMethods/report";
+import { putReport, postSubmitReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
 
-export const buildState = (report: Report | undefined) => {
+export const buildState = (
+  report: Report | undefined,
+  preserveCurrentPage: boolean
+) => {
   if (!report) return { report: undefined };
   const pageMap = new Map<string, number>(
     report.pages.map((page, index) => [page.id, index])
@@ -21,9 +31,17 @@ export const buildState = (report: Report | undefined) => {
     childPageIds: rootPage.childPageIds,
     index: 0,
   };
-  const currentPageId = parentPage.childPageIds[parentPage.index];
 
-  return { report, pageMap, rootPage, parentPage, currentPageId };
+  const currentPageId = parentPage.childPageIds[parentPage.index];
+  const state: Partial<HcbsReportState> = {
+    report,
+    pageMap,
+    rootPage,
+    parentPage,
+    currentPageId,
+  };
+  if (preserveCurrentPage) delete state.currentPageId;
+  return state;
 };
 
 export const setPage = (
@@ -99,15 +117,32 @@ export const mergeAnswers = (
   state: HcbsReportState,
   errors?: any
 ) => {
-  if (!state.report) return;
+  if (!state.report || !state.currentPageId) return;
   const report = structuredClone(state.report);
   const pageIndex = state.report.pages.findIndex(
     (page) => page.id === state.currentPageId
   );
 
   const filteredAnswers = errors ? filterErrors(answers, errors) : answers;
+  const result = deepMerge(report.pages[pageIndex], filteredAnswers);
 
-  report.pages[pageIndex] = deepMerge(report.pages[pageIndex], filteredAnswers);
+  // Handle status dirtying
+  if ("status" in result) {
+    result.status = PageStatus.IN_PROGRESS;
+  }
+  for (const page of report.pages) {
+    if (
+      "dependentPages" in page &&
+      page.dependentPages?.find(
+        (link) => link.template === state.currentPageId
+      ) &&
+      "status" in page
+    ) {
+      page.status = PageStatus.IN_PROGRESS;
+    }
+  }
+  report.pages[pageIndex] = result;
+
   return { report };
 };
 
@@ -119,7 +154,7 @@ export const substitute = (
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
-  const substitute = selectMeasure.substitutable?.toString();
+  const substitute = selectMeasure?.substitutable?.toString();
   const measure = measures.find((measure) => measure.id.includes(substitute!));
   if (measure) {
     measure.required = true;
@@ -128,6 +163,19 @@ export const substitute = (
 
   return { report };
 };
+
+export const markPageComplete = (pageId: string, state: HcbsReportState) => {
+  if (!state.report) return;
+  const report = structuredClone(state.report);
+  const page = report.pages.find(
+    (page) => page.id === pageId
+  ) as MeasurePageTemplate; // TODO: fix cast
+
+  page.status = PageStatus.COMPLETE;
+
+  return { report };
+};
+
 /**
  * Clear all nested content in the measure, preserving an In Progress state,
  * and ignoring any fields with special treatment
@@ -135,7 +183,7 @@ export const substitute = (
 export const clearMeasure = (
   measureId: string,
   state: HcbsReportState,
-  ignoreList: string[]
+  ignoreList: { [key: string]: string }
 ) => {
   if (!state.report) return;
   const report = structuredClone(state.report);
@@ -151,6 +199,35 @@ export const resetMeasure = (measureId: string, state: HcbsReportState) => {
   const report = structuredClone(state.report);
 
   performResetMeasure(measureId, report);
+  return { report };
+};
+
+/**
+ * In QMS, when swapping delivery methods, the content of the unused pages should be purged.
+ * @param measureId
+ * @param selections
+ * @param state
+ * @returns A modified report
+ */
+export const changeDeliveryMethods = (
+  measureId: string,
+  selections: string,
+  state: HcbsReportState
+) => {
+  if (!state.report || !state.currentPageId || selections === "both") return;
+  const report = structuredClone(state.report);
+
+  const page = report.pages.find((page) => page.id === measureId);
+
+  if (!page || !isMeasurePageTemplate(page) || !page.dependentPages) return;
+  for (const dependentPage of page.dependentPages) {
+    const deliverySystemIsSelected = selections
+      .split(",")
+      .includes(dependentPage.key);
+    if (!deliverySystemIsSelected) {
+      performResetMeasure(dependentPage.template, report);
+    }
+  }
   return { report };
 };
 

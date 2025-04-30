@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
-import { mockFlags, resetLDMocks } from "jest-launchdarkly-mock";
 import {
   UserRoles,
   HcbsUserState,
@@ -14,7 +13,7 @@ import {
   PageType,
   MeasureTemplateName,
   MeasurePageTemplate,
-  MeasureStatus,
+  PageStatus,
   DataSource,
   DeliverySystem,
   MeasureSpecification,
@@ -49,13 +48,6 @@ jest.mock("@chakra-ui/transition", () => ({
     <div hidden={!inProp}>{children}</div>
   )),
 }));
-
-/* Mock LaunchDarkly (see https://bit.ly/3QAeS7j) */
-export const mockLDFlags = {
-  setDefault: (baseline: any) => mockFlags(baseline),
-  clear: resetLDMocks,
-  set: mockFlags,
-};
 
 /* Mock Amplify */
 jest.mock("aws-amplify/api", () => ({
@@ -209,21 +201,38 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title",
   type: PageType.Measure,
   required: true,
   substitutable: "FASI-1",
-  elements: [],
-  children: [
+  elements: [
+    {
+      type: ElementType.Radio,
+      label: "Is the state reporting on this measure?",
+      id: "measure-reporting-radio",
+      choices: [
+        {
+          label: "Yes, the state is reporting on this measure.",
+          value: "yes",
+        },
+        {
+          label: "No, CMS is reporting this measure on the state's behalf.",
+          value: "no",
+        },
+      ],
+      answer: "yes",
+    },
+  ],
+  dependentPages: [
     {
       key: "FFS",
-      linkText: "Delivery Method: FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
       template: MeasureTemplateName["FFS-1"],
     },
     {
       key: "MLTSS",
-      linkText: "Delivery Method: MLTSS",
+      linkText: "Delivery Method: Managed Care (MLTSS)",
       template: MeasureTemplateName["MLTSS-1"],
     },
   ],
@@ -244,20 +253,20 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
     deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
     dataSource: DataSource.Hybrid,
   },
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
   elements: [],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
-      linkText: "Delivery Method: FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
       template: MeasureTemplateName["FFS-2"],
     },
     {
       key: "MLTSS",
-      linkText: "Delivery Method: MLTSS",
+      linkText: "Delivery Method: Managed Care (MLTSS)",
       template: MeasureTemplateName["MLTSS-2"],
     },
   ],
@@ -266,23 +275,23 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
 export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   id: "LTSS-1",
   cmitId: "960",
-  status: MeasureStatus.IN_PROGRESS,
+  status: PageStatus.IN_PROGRESS,
   title: "mock-title-2",
   type: PageType.Measure,
   required: true,
   substitutable: "FASI-1",
   elements: [
     {
-      type: ElementType.ReportingRadio,
+      type: ElementType.Radio,
       label: "Is the state reporting on this measure?",
       id: "measure-reporting-radio",
-      value: [
+      choices: [
         {
-          label: "Yes, the state is reporting on this measure",
+          label: "Yes, the state is reporting on this measure.",
           value: "yes",
         },
         {
-          label: "No, CMS is reporting this measure on the state's behalf",
+          label: "No, CMS is reporting this measure on the state's behalf.",
           value: "no",
         },
       ],
@@ -293,14 +302,14 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       id: "additional-notes-field",
       helperText:
         "If applicable, add any notes or comments to provide context to the reported measure result",
-      label: "Additional notes/comments (optional)",
+      label: "Additional notes/comments",
       answer: "yes",
     },
   ],
-  children: [
+  dependentPages: [
     {
       key: "FFS",
-      linkText: "Delivery Method: FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
       template: MeasureTemplateName["FFS-1"],
     },
   ],
@@ -308,103 +317,43 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
 
 export const mockReportStore: HcbsReportState = {
   modalOpen: false,
-  currentPageId: "mock-template-id",
-  pageMap: new Map([["mock-template-id", 0]]),
+  sidebarOpen: true,
+  currentPageId: "LTSS-1",
+  pageMap: new Map([
+    ["root", 0],
+    [mockMeasureTemplate.id, 1],
+  ]),
   report: {
     id: "mock-id",
     type: ReportType.QMS,
     status: ReportStatus.IN_PROGRESS,
-    title: "mock-report-title",
+    name: "mock-report-title",
     year: 2026,
     options: {},
     state: "PR",
+    archived: false,
+    submissionCount: 0,
     pages: [
+      {
+        id: "root",
+        childPageIds: [mockMeasureTemplate.id, mock2MeasureTemplate.id],
+      },
       { ...mockMeasureTemplate, cmit: 960 },
       { ...mock2MeasureTemplate, cmit: 961 },
     ],
-    measureLookup: {
-      defaultMeasures: [
-        {
-          cmit: 960,
-          measureTemplate: MeasureTemplateName["FFS-1"],
-          required: true,
-          uid: "960",
-          dependentPages: [
-            {
-              key: "FFS",
-              linkText: "Delivery Method: FFS",
-              template: MeasureTemplateName["FFS-1"],
-            },
-            {
-              key: "MLTSS",
-              linkText: "Delivery Method: MLTSS",
-              template: MeasureTemplateName["MLTSS-1"],
-            },
-          ],
-        },
-      ],
-      optionGroups: {},
-    },
-    measureTemplates: {
-      [MeasureTemplateName["LTSS-1"]]: {
-        ...mockMeasureTemplate,
-        required: true,
-      },
-      [MeasureTemplateName["LTSS-2"]]: {
-        ...mockMeasureTemplate,
-        optional: true,
-      },
-      [MeasureTemplateName["LTSS-6"]]: {
-        ...mockMeasureTemplate,
-        stratified: true,
-      },
-      [MeasureTemplateName["LTSS-3"]]: {
-        ...mockMeasureTemplate,
-        optional: true,
-      },
-      [MeasureTemplateName["LTSS-7"]]: {
-        ...mockMeasureTemplate,
-        required: true,
-      },
-      [MeasureTemplateName["LTSS-8"]]: {
-        ...mockMeasureTemplate,
-        required: true,
-      },
-      [MeasureTemplateName["FFS-1"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FFS-2"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FFS-3"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FFS-6"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FFS-7"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FFS-8"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-1"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-2"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-3"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-6"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-7"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-8"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FASI-1"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FASI-2"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FFS-FASI-1"]]: mockMeasureTemplate,
-      [MeasureTemplateName["FFS-FASI-2"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-FASI-1"]]: mockMeasureTemplate,
-      [MeasureTemplateName["MLTSS-FASI-2"]]: mockMeasureTemplate,
-      [MeasureTemplateName["POM-1"]]: mockMeasureTemplate,
-      [MeasureTemplateName["POM-2"]]: mockMeasureTemplate,
-      [MeasureTemplateName["POM-3"]]: mockMeasureTemplate,
-      [MeasureTemplateName["POM-4"]]: mockMeasureTemplate,
-      [MeasureTemplateName["POM-5"]]: mockMeasureTemplate,
-      [MeasureTemplateName["POM-6"]]: mockMeasureTemplate,
-      [MeasureTemplateName["POM-7"]]: mockMeasureTemplate,
-    },
   },
-  setReport: () => {},
+  loadReport: () => {},
+  updateReport: () => {},
   setCurrentPageId: () => {},
   setModalOpen: () => {},
   setModalComponent: () => {},
   setAnswers: () => {},
   resetMeasure: () => {},
   clearMeasure: () => {},
+  changeDeliveryMethods: () => {},
   setSubstitute: () => {},
+  setSidebar: () => {},
+  completePage: () => {},
   saveReport: async () => {},
 };
 

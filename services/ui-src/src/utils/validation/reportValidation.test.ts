@@ -12,6 +12,7 @@ const yupValidateTestHelper = async (payload: any) => {
 
   return validatedPayload;
 };
+
 describe("Textbox validation", () => {
   it("successfully validates valid types of textboxes", async () => {
     const textboxFormData = {
@@ -45,6 +46,7 @@ describe("Textbox validation", () => {
     const validatedTextboxData = await yupValidateTestHelper(textboxFormData);
     expect(validatedTextboxData).toEqual(textboxFormData);
   });
+
   it("throws an error when validating an invalid textbox", () => {
     const invalidTextboxFormData = {
       elements: [
@@ -60,6 +62,7 @@ describe("Textbox validation", () => {
       await yupValidateTestHelper(invalidTextboxFormData);
     }).rejects.toThrow("A response is required");
   });
+
   it("throws an error when email is invalid", () => {
     const invalidTextboxFormData = {
       elements: [
@@ -89,7 +92,7 @@ describe("Radio validation", () => {
         },
         {
           answer: "no",
-          type: ElementType.ReportingRadio,
+          type: ElementType.Radio,
           label: "reporting radio extrordinare",
           id: "reporting-radio",
         },
@@ -97,7 +100,7 @@ describe("Radio validation", () => {
           answer: "no",
           type: ElementType.Radio,
           label: "radio with children",
-          value: [
+          choices: [
             {
               checkedChildren: [{ answer: "i'm a child" }],
             },
@@ -109,6 +112,7 @@ describe("Radio validation", () => {
     const validatedRadioData = await yupValidateTestHelper(radioFormData);
     expect(validatedRadioData).toEqual(radioFormData);
   });
+
   it("throws an error when validating an invalid radio", () => {
     const emptyRadioFormData = {
       elements: [
@@ -132,7 +136,7 @@ describe("Radio validation", () => {
           answer: "no",
           type: ElementType.Radio,
           label: "radio with children",
-          value: [
+          choices: [
             {
               checkedChildren: [{ answer: "" }],
             },
@@ -181,7 +185,6 @@ describe("Ignores validation for elements that are not editable", () => {
         {
           type: ElementType.MeasureFooter,
           id: "measure-footer",
-          prevTo: "req-measure-result",
           completeMeasure: true,
           clear: true,
         },
@@ -189,6 +192,10 @@ describe("Ignores validation for elements that are not editable", () => {
           type: ElementType.MeasureResultsNavigationTable,
           measureDisplay: "quality",
           id: "measure-results-navigation-table",
+        },
+        {
+          type: ElementType.SubmissionParagraph,
+          id: "submitted",
         },
       ],
     };

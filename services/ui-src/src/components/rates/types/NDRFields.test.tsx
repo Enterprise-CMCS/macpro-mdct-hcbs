@@ -50,7 +50,7 @@ const mockedPerformanceElement = {
     { id: "long-term", label: "Long Term Stay" },
   ],
   multiplier: 1000,
-  rateType: PerformanceRateType.NDRFIELDS,
+  rateType: PerformanceRateType.NDR_FIELDS,
 } as PerformanceRateTemplate;
 
 const ndrNDRFieldsComponent = (
@@ -58,6 +58,7 @@ const ndrNDRFieldsComponent = (
     formkey={"mock-key"}
     calculation={FacilityLengthOfStayCalc}
     year={2026}
+    disabled={false}
     {...mockedPerformanceElement}
   />
 );
@@ -79,7 +80,7 @@ describe("<NDRFields />", () => {
         fields?.forEach((field) => {
           expect(
             screen.getByRole("textbox", {
-              name: `What is the 2026 state performance target for this assessment for ${field.label.toLowerCase()} (${
+              name: `What is the 2028 state performance target for this assessment for ${field.label.toLowerCase()} (${
                 assess.label
               })?`,
             })

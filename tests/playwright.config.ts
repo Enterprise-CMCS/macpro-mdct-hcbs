@@ -34,6 +34,8 @@ export default defineConfig({
     /* Video recording configuration */
     video: "retain-on-failure",
   },
+  /* Give each test plenty of time to run. 600000ms = 10min */
+  timeout: 600000,
 
   /* Configure projects for major browsers */
   projects: [
@@ -55,5 +57,12 @@ export default defineConfig({
     url: process.env.BASE_URL || "http://localhost:3000",
     reuseExistingServer: !!process.env.CI,
     stdout: "pipe",
+    /* Give Localstack enough time to start up initially. 300000ms = 5min */
+    timeout: 300000,
+  },
+
+  expect: {
+    /* Give each individual action time to complete. Each `expect()` call will wait 10000ms = 10s */
+    timeout: 10000,
   },
 });

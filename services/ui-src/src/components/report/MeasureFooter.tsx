@@ -1,27 +1,64 @@
-import { Box, Button, Divider, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
-import { MeasureFooterTemplate } from "types";
+import {
+  isFormPageTemplate,
+  MeasureFooterTemplate,
+  PageStatus,
+  ReportStatus,
+} from "types";
 import { useNavigate, useParams } from "react-router-dom";
-import { useStore } from "utils";
+import { measurePrevPage, useStore } from "utils";
 import { MeasureClearModal } from "./MeasureClearModal";
-import { currentPageSelector } from "utils/state/selectors";
-
-const onCompleteMeasure = () => {};
-
-const onCompleteSection = () => {};
+import {
+  currentPageCompletableSelector,
+  currentPageSelector,
+} from "utils/state/selectors";
+import { useContext } from "react";
+import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const MeasureFooterElement = (props: PageElementProps) => {
   const footer = props.element as MeasureFooterTemplate;
   const { reportType, state, reportId } = useParams();
-  const { resetMeasure, saveReport, setModalComponent, setModalOpen } =
-    useStore();
+  const {
+    report,
+    resetMeasure,
+    setModalComponent,
+    setModalOpen,
+    completePage,
+  } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
+  const { userIsEndUser } = useStore().user ?? {};
+  const readOnlyView =
+    !userIsEndUser || report?.status === ReportStatus.SUBMITTED;
   const currentPage = useStore(currentPageSelector);
-
+  const completable = useStore(currentPageCompletableSelector);
+  const completeEnabled =
+    completable &&
+    currentPage &&
+    isFormPageTemplate(currentPage) &&
+    currentPage.status !== PageStatus.COMPLETE;
   if (!currentPage) return null;
   const navigate = useNavigate();
   const submitClear = () => {
     resetMeasure(currentPage.id);
-    saveReport();
+    autosave();
+  };
+
+  const getPrevPageId = () => {
+    //if a measure parent, search for the id, else use the one being passed in
+    return footer.completeMeasure
+      ? measurePrevPage(report!, currentPage.id)
+      : footer.prevTo;
+  };
+
+  const onCompletePage = () => {
+    completePage(currentPage.id);
+    autosave();
+
+    //there's some interference with the scroll so we need a delay before it will work
+    setTimeout(function () {
+      window.scrollTo(0, 0);
+    }, 5);
   };
 
   const onClearButton = () => {
@@ -38,14 +75,13 @@ export const MeasureFooterElement = (props: PageElementProps) => {
   };
 
   return (
-    <Box width="100%">
-      <Divider marginBottom="2rem" />
+    <Box width="100%" marginTop="4">
       <Flex justifyContent="space-between">
         <Button
           variant="outline"
           onClick={() =>
             navigate(
-              `/report/${reportType}/${state}/${reportId}/${footer.prevTo}`
+              `/report/${reportType}/${state}/${reportId}/${getPrevPageId()}`
             )
           }
         >
@@ -64,22 +100,37 @@ export const MeasureFooterElement = (props: PageElementProps) => {
         )}
 
         <Box>
-          {footer.clear && (
+          {footer.clear && !readOnlyView && (
             <Button
               variant="link"
               marginRight="2rem"
+              onBlur={(event) => {
+                event.stopPropagation();
+              }}
               onClick={() => onClearButton()}
             >
               Clear measure data
             </Button>
           )}
           {footer.completeMeasure && (
-            <Button onClick={() => onCompleteMeasure()}>
+            <Button
+              disabled={!completeEnabled}
+              onBlur={(event) => {
+                event.stopPropagation();
+              }}
+              onClick={() => onCompletePage()}
+            >
               Complete measure
             </Button>
           )}
           {footer.completeSection && (
-            <Button onClick={() => onCompleteSection()}>
+            <Button
+              disabled={!completeEnabled}
+              onBlur={(event) => {
+                event.stopPropagation();
+              }}
+              onClick={() => onCompletePage()}
+            >
               Complete section
             </Button>
           )}

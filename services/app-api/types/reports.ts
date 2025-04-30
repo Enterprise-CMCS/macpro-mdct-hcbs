@@ -15,7 +15,7 @@ export const isReportType = (x: string | undefined): x is ReportType => {
 };
 
 export interface ReportOptions {
-  name?: string;
+  name: string;
   year: number;
   options: {
     cahps?: boolean;
@@ -52,37 +52,42 @@ export interface MeasureOptions {
 
 export enum MeasureTemplateName {
   // required measures
-  "FFS-1" = "FFS-1",
-  "FFS-2" = "FFS-2",
-  "FFS-3" = "FFS-3",
-  "FFS-6" = "FFS-6",
-  "FFS-7" = "FFS-7",
-  "FFS-8" = "FFS-8",
-  "MLTSS-1" = "MLTSS-1",
-  "MLTSS-2" = "MLTSS-2",
-  "MLTSS-3" = "MLTSS-3",
-  "MLTSS-6" = "MLTSS-6",
-  "MLTSS-7" = "MLTSS-7",
-  "MLTSS-8" = "MLTSS-8",
   "LTSS-1" = "LTSS-1",
   "LTSS-2" = "LTSS-2",
   "LTSS-6" = "LTSS-6",
   "LTSS-7" = "LTSS-7",
   "LTSS-8" = "LTSS-8",
+  "FFS-1" = "FFS-1",
+  "FFS-2" = "FFS-2",
+  "FFS-6" = "FFS-6",
+  "FFS-7" = "FFS-7",
+  "FFS-8" = "FFS-8",
+  "MLTSS-1" = "MLTSS-1",
+  "MLTSS-2" = "MLTSS-2",
+  "MLTSS-6" = "MLTSS-6",
+  "MLTSS-7" = "MLTSS-7",
+  "MLTSS-8" = "MLTSS-8",
   // optional measures
-  "FASI-1" = "FASI-1",
-  "FASI-2" = "FASI-2",
-  "FFS-FASI-1" = "FFS-FASI-1",
-  "MLTSS-FASI-1" = "MLTSS-FASI-1",
-  "FFS-FASI-2" = "FFS-FASI-2",
-  "MLTSS-FASI-2" = "MLTSS-FASI-2",
-  "HCBS-10" = "HCBS-10",
+  "MLTSS" = "MLTSS",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
   "LTSS-5" = "LTSS-5",
+  "FASI-1" = "FASI-1",
+  "FASI-2" = "FASI-2",
+  "HCBS-10" = "HCBS-10",
+  "FFS-3" = "FFS-3",
+  "FFS-4" = "FFS-4",
+  "MLTSS-3" = "MLTSS-3",
+  "MLTSS-4" = "MLTSS-4",
+  "FFS-FASI-1" = "FFS-FASI-1",
+  "FFS-FASI-2" = "FFS-FASI-2",
+  "MLTSS-FASI-1" = "MLTSS-FASI-1",
+  "MLTSS-FASI-2" = "MLTSS-FASI-2",
+  // unique
+  "MLTSS-DM" = "MLTSS-DM",
   "LTSS-5-PT1" = "LTSS-5-PT1",
   "LTSS-5-PT2" = "LTSS-5-PT2",
-  "MLTSS" = "MLTSS",
+  "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
   // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",
@@ -91,6 +96,20 @@ export enum MeasureTemplateName {
   "POM-5" = "POM-5",
   "POM-6" = "POM-6",
   "POM-7" = "POM-7",
+  "FFS-POM-1" = "FFS-POM-1",
+  "FFS-POM-2" = "FFS-POM-2",
+  "FFS-POM-3" = "FFS-POM-3",
+  "FFS-POM-4" = "FFS-POM-4",
+  "FFS-POM-5" = "FFS-POM-5",
+  "FFS-POM-6" = "FFS-POM-6",
+  "FFS-POM-7" = "FFS-POM-7",
+  "MLTSS-POM-1" = "MLTSS-POM-1",
+  "MLTSS-POM-2" = "MLTSS-POM-2",
+  "MLTSS-POM-3" = "MLTSS-POM-3",
+  "MLTSS-POM-4" = "MLTSS-POM-4",
+  "MLTSS-POM-5" = "MLTSS-POM-5",
+  "MLTSS-POM-6" = "MLTSS-POM-6",
+  "MLTSS-POM-7" = "MLTSS-POM-7",
 }
 
 export enum ReportStatus {
@@ -99,20 +118,30 @@ export enum ReportStatus {
   SUBMITTED = "Submitted",
 }
 
-export enum MeasureStatus {
+export enum PageStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
   COMPLETE = "Complete",
 }
 
-export interface Report extends ReportTemplate {
+export interface Report extends ReportBase, ReportOptions {
   id?: string;
+  name: string;
   state: string;
   created?: number;
   lastEdited?: number;
-  lastEditedBy: string;
-  lastEditedByEmail: string;
+  lastEditedBy?: string;
+  lastEditedByEmail?: string;
+  submitted?: number;
+  submittedBy?: string;
+  submittedByEmail?: string;
   status: ReportStatus;
+  submissionCount: number;
+  archived: boolean;
+}
+
+export interface ReviewSubmitTemplate extends FormPageTemplate {
+  submittedView: PageElement[];
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -122,8 +151,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   stratified?: boolean;
   optional?: boolean;
   substitutable?: string;
-  status: MeasureStatus;
-  children?: dependentPageInfo[];
+  dependentPages?: dependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -158,10 +186,7 @@ export interface Form {
   sections: [];
 }
 
-export type ReportTemplate = ReportOptions & {
-  type: ReportType;
-  title: string;
-  pages: (ParentPageTemplate | FormPageTemplate | MeasurePageTemplate)[];
+export type ReportMeasureConfig = {
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     pomMeasures: MeasureOptions[];
@@ -169,10 +194,23 @@ export type ReportTemplate = ReportOptions & {
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
 
+export type ReportBase = {
+  type: ReportType;
+  year: number;
+  pages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[];
+};
+export type ReportTemplate = ReportBase & ReportMeasureConfig;
+
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate
-  | MeasurePageTemplate;
+  | MeasurePageTemplate
+  | ReviewSubmitTemplate;
 
 export type ParentPageTemplate = {
   id: PageId;
@@ -192,6 +230,7 @@ export type FormPageTemplate = {
   id: PageId;
   title: string;
   type: PageType;
+  status?: PageStatus;
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
@@ -208,11 +247,13 @@ export enum PageType {
   Modal = "modal",
   Measure = "measure",
   MeasureResults = "measureResults",
+  ReviewSubmit = "reviewSubmit",
 }
 
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
@@ -222,7 +263,6 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
-  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -230,11 +270,15 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   PerformanceRate = "performanceRate",
+  StatusAlert = "statusAlert",
+  Divider = "divider",
+  SubmissionParagraph = "submissionParagraph",
 }
 
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
   | TextAreaBoxTemplate
@@ -244,20 +288,33 @@ export type PageElement =
   | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
-  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate;
+  | PerformanceRateTemplate
+  | StatusAlertTemplate
+  | DividerTemplate
+  | SubmissionParagraphTemplate;
+
+export type HideCondition = {
+  controllerElementId: string;
+  answer: string;
+};
+
+export enum HeaderIcon {
+  Check = "check",
+}
 
 export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
   text: string;
+  icon?: HeaderIcon;
 };
+
 export const isHeaderTemplate = (
   element: PageElement
 ): element is HeaderTemplate => {
@@ -269,6 +326,12 @@ export type SubHeaderTemplate = {
   id: string;
   text: string;
   helperText?: string;
+  hideCondition?: HideCondition;
+};
+
+export type SubHeaderMeasureTemplate = {
+  type: ElementType.SubHeaderMeasure;
+  id: string;
 };
 
 export type NestedHeadingTemplate = {
@@ -282,6 +345,7 @@ export type ParagraphTemplate = {
   id: string;
   title?: string;
   text: string;
+  weight?: string;
 };
 
 export type TextboxTemplate = {
@@ -290,11 +354,8 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: string; //takes error message to display if not provided
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  required?: boolean;
+  hideCondition?: HideCondition;
 };
 
 export type TextAreaBoxTemplate = {
@@ -303,10 +364,8 @@ export type TextAreaBoxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
+  hideCondition?: HideCondition;
+  required?: boolean;
 };
 
 export type DateTemplate = {
@@ -324,7 +383,17 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: string;
+  required?: boolean;
+};
+
+export type DividerTemplate = {
+  type: ElementType.Divider;
+  id: string;
+};
+
+export type SubmissionParagraphTemplate = {
+  type: ElementType.SubmissionParagraph;
+  id: string;
 };
 
 export type AccordionTemplate = {
@@ -353,30 +422,17 @@ export type RadioTemplate = {
   formKey?: string;
   label: string;
   helperText?: string;
-  value: ChoiceTemplate[];
+  choices: ChoiceTemplate[];
   answer?: string;
-  required?: string; //takes error message to display if not provided
-  hideCondition?: {
-    controllerElementId: string;
-    answer: string;
-  };
-};
-
-export type ReportingRadioTemplate = {
-  type: ElementType.ReportingRadio;
-  id: string;
-  formKey?: string;
-  label: string;
-  helperText?: string;
-  value: ChoiceTemplate[];
-  answer?: string;
-  required?: string; //takes error message to display if not provided
+  required?: boolean;
+  hideCondition?: HideCondition;
+  clickAction?: string;
 };
 
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
-  label: string;
+  label?: string;
   to?: PageId;
 };
 
@@ -388,7 +444,7 @@ export type MeasureDetailsTemplate = {
 export type MeasureFooterTemplate = {
   type: ElementType.MeasureFooter;
   id: string;
-  prevTo: string;
+  prevTo?: string;
   nextTo?: string;
   completeMeasure?: boolean;
   completeSection?: boolean;
@@ -420,7 +476,7 @@ export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
   FIELDS = "Fields",
-  NDRFIELDS = "NDRFields",
+  NDR_FIELDS = "NDRFields",
 }
 
 export const enum RateCalc {
@@ -439,6 +495,7 @@ export type PerformanceRateTemplate = {
   rateCalc?: RateCalc;
   multiplier?: number;
   answer?: PerformanceData | RateSetData[];
+  required?: boolean;
 };
 
 export type ChoiceTemplate = {
@@ -458,12 +515,21 @@ export type MeasureResultsNavigationTableTemplate = {
   type: ElementType.MeasureResultsNavigationTable;
   id: string;
   measureDisplay: "quality";
+  hideCondition?: HideCondition;
 };
 
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
   id: string;
   to: PageId;
+};
+
+export type StatusAlertTemplate = {
+  type: ElementType.StatusAlert;
+  id: string;
+  title?: string;
+  text: string;
+  status: string;
 };
 
 /**

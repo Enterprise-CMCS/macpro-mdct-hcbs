@@ -8,17 +8,19 @@ import { isNumber } from "../calculations";
 export const NDREnhanced = (
   props: PerformanceRateTemplate & {
     formkey: string;
-    year?: number;
+    year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { label, assessments, answer, multiplier, calculation } = props;
+  const { label, assessments, answer, multiplier, calculation, disabled } =
+    props;
   const initialValues =
     assessments?.map((assess) => {
       return {
         numerator: "",
         denominator: "",
-        rate: "",
+        rate: undefined,
         performanceTarget: "",
         id: assess.id,
       };
@@ -64,8 +66,8 @@ export const NDREnhanced = (
       return { ...set, rate: calculation(set, multiplier) };
     });
 
-    setDisplayValue({ ...newDisplayValue });
-    form.setValue(`${key}`, displayValue, { shouldValidate: true });
+    setDisplayValue(newDisplayValue);
+    form.setValue(`${key}`, newDisplayValue, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,45 +82,50 @@ export const NDREnhanced = (
   };
 
   return (
-    <Stack gap={6}>
+    <Stack gap="2rem">
       <CmsdsTextField
         label="Performance Rates Denominator"
         name="denominator"
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        value={displayValue?.denominator}
+        value={displayValue?.denominator ?? ""}
+        disabled={disabled}
       ></CmsdsTextField>
       {assessments?.map((assess, index) => {
         const value =
           displayValue?.rates?.find((item) => item.id === assess.id) ?? {};
 
         return (
-          <Stack key={assess.id} gap={6}>
+          <Stack key={assess.id} gap="2rem">
             <Heading variant="subHeader">
               {label ?? "Performance Rate"}
               {": "}
               {assess.label}
             </Heading>
             <CmsdsTextField
-              label={`What is the ${props.year} state performance target for this assessment?`}
+              label={`What is the ${
+                props.year + 2
+              } state performance target for this assessment?`}
               name={`${index}.performanceTarget`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.performanceTarget}
+              value={value.performanceTarget ?? ""}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Numerator"
               name={`${index}.numerator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.numerator}
+              value={value.numerator ?? ""}
+              disabled={disabled}
             ></CmsdsTextField>
             <CmsdsTextField
               label="Denominator"
               name={`${index}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={value.denominator}
+              value={value.denominator ?? ""}
               hint="Auto-calculates"
               disabled
             ></CmsdsTextField>
@@ -126,7 +133,7 @@ export const NDREnhanced = (
               label="Rate"
               name={`${index}.rate`}
               hint="Auto-calculates"
-              value={value.rate}
+              value={value.rate ?? ""}
               disabled
             ></CmsdsTextField>
           </Stack>

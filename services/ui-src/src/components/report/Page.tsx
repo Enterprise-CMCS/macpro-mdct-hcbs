@@ -6,8 +6,15 @@ import {
   accordionElement,
   buttonLinkElement,
   nestedHeadingElement,
+  dividerElement,
+  subHeaderMeasureElement,
 } from "./Elements";
-import { assertExhaustive, ElementType, PageElement } from "../../types/report";
+import {
+  assertExhaustive,
+  ElementType,
+  PageElement,
+  ReportStatus,
+} from "../../types/report";
 import {
   DateField,
   DropdownField,
@@ -17,12 +24,13 @@ import {
   PerformanceRateElement,
   MeasureResultsNavigationTableElement,
   RadioField,
-  ReportingRadioField,
   StatusTableElement,
   TextAreaField,
   TextField,
+  StatusAlert,
 } from "components";
 import { useStore } from "utils";
+import { SubmissionParagraph } from "./SubmissionParagraph";
 
 interface Props {
   elements: PageElement[];
@@ -30,6 +38,8 @@ interface Props {
 
 export const Page = ({ elements }: Props) => {
   const { userIsEndUser } = useStore().user || {};
+  const { report } = useStore();
+
   const renderElement = (element: PageElement) => {
     const elementType = element.type;
     switch (elementType) {
@@ -53,8 +63,6 @@ export const Page = ({ elements }: Props) => {
         return accordionElement;
       case ElementType.Radio:
         return RadioField;
-      case ElementType.ReportingRadio:
-        return ReportingRadioField;
       case ElementType.ButtonLink:
         return buttonLinkElement;
       case ElementType.MeasureTable:
@@ -69,6 +77,14 @@ export const Page = ({ elements }: Props) => {
         return MeasureFooterElement;
       case ElementType.PerformanceRate:
         return PerformanceRateElement;
+      case ElementType.StatusAlert:
+        return StatusAlert;
+      case ElementType.Divider:
+        return dividerElement;
+      case ElementType.SubmissionParagraph:
+        return SubmissionParagraph;
+      case ElementType.SubHeaderMeasure:
+        return subHeaderMeasureElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;
@@ -83,12 +99,12 @@ export const Page = ({ elements }: Props) => {
         formkey={formKey}
         key={index}
         element={element}
-        disabled={!userIsEndUser}
+        disabled={!userIsEndUser || report?.status === ReportStatus.SUBMITTED}
       />
     );
   });
   return (
-    <VStack alignItems="flex-start" gap="1rem">
+    <VStack alignItems="flex-start" gap="2rem" marginBottom="2rem">
       {composedElements}
     </VStack>
   );

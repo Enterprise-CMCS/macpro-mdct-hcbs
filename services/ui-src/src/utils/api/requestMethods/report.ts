@@ -38,7 +38,7 @@ export async function putReport(report: Report) {
   );
 }
 
-export async function submitReport(report: Report) {
+export async function postSubmitReport(report: Report) {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -50,6 +50,21 @@ export async function submitReport(report: Report) {
   );
 }
 
+export async function updateArchivedStatus(
+  report: Report,
+  archiveStatus: boolean
+) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    body: { archived: archiveStatus },
+  };
+  return await apiLib.put(
+    `/reports/${report.type}/${report.state}/${report.id}/archive`,
+    options
+  );
+}
+
 export async function getReportsForState(reportType: string, state: string) {
   const requestHeaders = await getRequestHeaders();
   const options = {
@@ -57,4 +72,17 @@ export async function getReportsForState(reportType: string, state: string) {
   };
 
   return await apiLib.get(`/reports/${reportType}/${state}`, options);
+}
+
+export async function releaseReport(report: Report) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    body: { ...report },
+  };
+
+  return await apiLib.put(
+    `/reports/release/${report.type}/${report.state}/${report.id}`,
+    options
+  );
 }

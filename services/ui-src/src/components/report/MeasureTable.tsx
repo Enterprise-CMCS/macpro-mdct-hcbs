@@ -14,16 +14,20 @@ import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
+  PageStatus,
   MeasureTableTemplate,
   PageType,
+  ReportStatus,
 } from "types";
 import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
+import { useContext } from "react";
+import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const MeasureTableElement = (props: PageElementProps) => {
   const table = props.element as MeasureTableTemplate;
-  const { report, setModalComponent, setModalOpen, setSubstitute, saveReport } =
-    useStore();
+  const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -39,7 +43,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const onSubstitute = async (selectMeasure: MeasurePageTemplate) => {
     if (report) {
       setSubstitute(report, selectMeasure);
-      saveReport();
+      autosave();
     }
     setModalOpen(false);
   };
@@ -57,8 +61,31 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const navigate = useNavigate();
 
   const handleEditClick = (measureId: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
-    navigate(path);
+    navigate(`/report/${reportType}/${state}/${reportId}/${measureId}`);
+  };
+
+  const getTableStatus = (measure: MeasurePageTemplate) => {
+    //TO DO: clean up when report check code is ready
+    if (
+      !measure.required &&
+      (measure.status === PageStatus.NOT_STARTED || !measure.status)
+    ) {
+      //optional measures should return nothing if they aren't started
+      return undefined;
+    }
+
+    return measure.status ?? PageStatus.NOT_STARTED;
+  };
+
+  const errorMessage = (measure: MeasurePageTemplate) => {
+    //TO DO: clean up when report check code is ready
+    if (
+      measure.status === PageStatus.IN_PROGRESS ||
+      (measure.required && measure.status != PageStatus.COMPLETE)
+    ) {
+      return <Text variant="error">Select "Edit" to begin measure.</Text>;
+    }
+    return <></>;
   };
 
   // Build Rows
@@ -66,21 +93,42 @@ export const MeasureTableElement = (props: PageElementProps) => {
     return (
       <Tr key={index}>
         <Td>
-          <TableStatusIcon tableStatus=""></TableStatusIcon>
+          <TableStatusIcon
+            tableStatus={getTableStatus(measure)}
+          ></TableStatusIcon>
         </Td>
         <Td width="100%">
           <Text fontWeight="bold">{measure.title}</Text>
-          <Text>CMIT# {measure.cmit}</Text>
+          <Text>CMIT number: #{measure.cmit}</Text>
+          <Text>Status: {measure.status ?? "Not started"}</Text>
+          {errorMessage(measure)}
         </Td>
         <Td>
-          {measure.substitutable && measure.required ? (
-            <Link onClick={() => buildModal(measure)}>Substitute measure</Link>
+          {measure.substitutable &&
+          measure.required &&
+          report?.status !== ReportStatus.SUBMITTED ? (
+            <Button
+              variant="link"
+              sx={{ fontSize: "14px" }}
+              onClick={() => {
+                buildModal(measure);
+              }}
+            >
+              Substitute measure
+            </Button>
           ) : null}
         </Td>
-
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
+          <Button
+            as={Link}
+            variant={"outline"}
+            href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleEditClick(measure.id);
+            }}
+          >
             Edit
           </Button>
         </Td>

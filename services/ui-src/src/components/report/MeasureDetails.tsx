@@ -1,6 +1,6 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { DataSource, MeasurePageTemplate, PageType } from "types";
+import { MeasurePageTemplate, PageType } from "types";
 import { currentPageSelector } from "utils/state/selectors";
 
 export const MeasureDetailsElement = () => {
@@ -13,23 +13,30 @@ export const MeasureDetailsElement = () => {
   const title = cmitInfo!.name;
   const cmit = cmitInfo?.cmit;
   const steward = cmitInfo?.measureSteward;
-  const collectionMethod = DataSource[cmitInfo!.dataSource];
+  const collectionMethod = cmitInfo?.dataSource;
+
+  const formatCollectionMethod = (method: string | undefined) => {
+    if (!method) return "";
+    return method.replace(/([A-Z])/g, " $1").trim();
+  };
+  const formattedCollectionMethod = formatCollectionMethod(
+    collectionMethod?.toString()
+  );
+
   return (
-    <Box width="110%">
+    <Box width="80%">
       <Flex flexDirection="column" alignItems="space-between">
         <>
-          <Text fontSize="18px" fontWeight="bold" paddingBottom="16px">
+          <Text fontWeight="bold" paddingBottom="1rem">
             Quality Measure Details:
           </Text>
-          <Text fontSize="22px" fontWeight="bold">
-            Measure Name: {title}
-          </Text>
-          <Text fontSize="18px">CMIT number: {cmit}</Text>
-          <Text fontSize="18px">Steward: {steward}</Text>
-          <Text fontSize="18px">Collection method: {collectionMethod}</Text>
+          <Text>Measure Name: {title}</Text>
+          <Text>CMIT number: #{cmit}</Text>
+          <Text>Steward: {steward}</Text>
+          <Text>Collection method: {formattedCollectionMethod}</Text>
         </>
       </Flex>
-      <Divider margin="32px 0px" />
+      <Divider margin="2rem 0 0 0" />
     </Box>
   );
 };

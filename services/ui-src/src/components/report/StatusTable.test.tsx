@@ -2,11 +2,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter } from "react-router-dom";
-import { useStore, submitReport } from "utils";
+import { useStore } from "utils";
 import {
   mockUseReadOnlyUserStore,
   mockStateUserStore,
 } from "utils/testing/setupJest";
+import { PageStatus } from "types";
 
 jest.mock("utils", () => ({
   useStore: jest.fn(),
@@ -17,6 +18,12 @@ const mockNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
+}));
+
+jest.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: jest.fn().mockReturnValue({
+    viewPdf: true,
+  }),
 }));
 
 const report = {
@@ -36,15 +43,36 @@ mockPageMap.set("1", 1);
 mockPageMap.set("2", 2);
 
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockSetModalComponent = jest.fn();
 
 describe("StatusTable with state user", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      pageMap: mockPageMap,
-      report: report,
+    mockedUseStore.mockImplementation((selector: Function | undefined) => {
+      if (selector) {
+        return {
+          sections: [
+            {
+              section: { title: "Section 1", id: "id-1" },
+              displayStatus: PageStatus.COMPLETE,
+              submittable: true,
+            },
+            {
+              section: { title: "Section 2", id: "id-2" },
+              displayStatus: PageStatus.IN_PROGRESS,
+              submittable: false,
+            },
+          ],
+          submittable: true,
+        };
+      }
+      return {
+        ...mockStateUserStore,
+        pageMap: mockPageMap,
+        report: report,
+        setModalComponent: mockSetModalComponent,
+      };
     });
   });
 
@@ -103,7 +131,7 @@ describe("StatusTable with state user", () => {
     })[0];
     await userEvent.click(submitButton);
 
-    expect(submitReport).toBeCalled();
+    expect(mockSetModalComponent).toBeCalled();
   });
 
   test("if pageMap is not defined return null", () => {
@@ -122,10 +150,30 @@ describe("StatusTable with state user", () => {
 
 describe("StatusPage with Read only user", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue({
-      ...mockUseReadOnlyUserStore,
-      pageMap: mockPageMap,
-      report: report,
+    mockedUseStore.mockImplementation((selector: Function | undefined) => {
+      if (selector) {
+        return {
+          sections: [
+            {
+              section: { title: "Section 1", id: "id-1" },
+              displayStatus: PageStatus.COMPLETE,
+              submittable: true,
+            },
+            {
+              section: { title: "Section 2", id: "id-2" },
+              displayStatus: PageStatus.IN_PROGRESS,
+              submittable: false,
+            },
+          ],
+          submittable: true,
+        };
+      }
+      return {
+        ...mockUseReadOnlyUserStore,
+        pageMap: mockPageMap,
+        report: report,
+        setModalComponent: mockSetModalComponent,
+      };
     });
   });
   it("should not render the Submit QMS Report button when user is read only", async () => {

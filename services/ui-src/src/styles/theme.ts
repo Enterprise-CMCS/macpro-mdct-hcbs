@@ -16,7 +16,8 @@ export const theme = extendTheme({
   sizes: {
     appMax: "100vw",
     basicPageWidth: "48rem",
-    reportPageWidth: "48rem",
+    reportPageWidth: "46rem",
+    fullPageWidth: "48rem",
     // font sizes: https://design.cms.gov/utilities/font-size/
     xs: "0.75rem", // 12px
     sm: "0.875rem", // 14px
@@ -168,34 +169,6 @@ export const theme = extendTheme({
             },
           },
         },
-        sidebar: {
-          display: "block",
-          width: "100%",
-          textAlign: "left",
-          background: "transparent",
-          color: "palette.base",
-          fontWeight: "normal",
-          border: "1px solid",
-          borderRadius: "0",
-          borderColor: "palette.gray_lighter",
-          borderWidth: "0 0 1px 0",
-          fontSize: "14px",
-          paddingLeft: "1rem",
-          _hover: {
-            color: "palette.secondary_darkest",
-            backgroundColor: "palette.gray_lightest_highlight",
-            border: "1px solid",
-            borderColor: "palette.secondary",
-            borderWidth: "0 0 0 4px",
-          },
-          "&.selected": {
-            border: "1px solid",
-            borderColor: "palette.secondary",
-            borderWidth: "0 0 0 2px",
-            color: "palette.secondary_darkest",
-            backgroundColor: "palette.gray_lightest_highlight",
-          },
-        },
         sidebarToggle: {
           position: "absolute",
           background: "palette.gray_lightest",
@@ -213,6 +186,7 @@ export const theme = extendTheme({
           border: "1px solid",
           borderColor: "palette.primary",
           textDecoration: "none",
+          fontWeight: "bold",
           "&:disabled, &:disabled:hover": {
             color: "palette.gray",
             borderColor: "palette.gray",
@@ -316,8 +290,7 @@ export const theme = extendTheme({
     },
     Divider: {
       baseStyle: {
-        borderColor: "palette.gray_light",
-        paddingTop: "1rem",
+        borderColor: "palette.gray_lighter",
       },
     },
     Heading: {
@@ -333,6 +306,7 @@ export const theme = extendTheme({
           ".mobile &": {
             fontSize: "2xl",
           },
+          display: "inline-block",
         },
         subHeader: {
           fontSize: "21px",
@@ -401,6 +375,45 @@ export const theme = extendTheme({
             marginRight: "0.5rem",
           },
         },
+        sidebar: {
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          textAlign: "left",
+          textDecoration: "none",
+          background: "transparent",
+          color: "palette.base",
+          fontWeight: "normal",
+          border: "1px solid",
+          borderRadius: "0",
+          borderColor: "palette.gray_lighter",
+          borderWidth: "0 0 1px 0",
+          fontSize: "14px",
+          lineHeight: "1.2",
+          paddingLeft: "1rem",
+          height: "var(--chakra-sizes-10)",
+          _visited: {
+            color: "palette.base",
+          },
+          ":focus, :focus:visited": {
+            color: "palette.secondary_darkest",
+          },
+          _hover: {
+            color: "palette.secondary_darkest",
+            backgroundColor: "palette.gray_lightest_highlight",
+            border: "1px solid",
+            borderColor: "palette.secondary",
+            borderWidth: "0 0 0 4px",
+            textDecoration: "none",
+          },
+          "&.selected": {
+            backgroundColor: "palette.gray_lightest_highlight",
+            border: "1px solid",
+            borderColor: "palette.secondary",
+            borderWidth: "0 0 0 2px",
+            color: "palette.secondary_darkest",
+          },
+        },
         inverse: {
           color: "palette.white",
           _visited: {
@@ -410,6 +423,9 @@ export const theme = extendTheme({
           ":hover, :visited:hover": {
             color: "palette.gray_lighter",
             textDecorationColor: "palette.gray_lighter",
+          },
+          ":active, :focus, :focus:visited": {
+            color: "palette.white",
           },
         },
         unstyled: {
@@ -534,16 +550,17 @@ export const theme = extendTheme({
             },
             "&:last-of-type": {
               minWidth: "4rem",
-              button: {
-                fontWeight: "800",
-              },
             },
             a: {
-              fontSize: "14px",
               whiteSpace: "nowrap",
               ".mobile &": {
                 whiteSpace: "wrap",
               },
+            },
+          },
+          tr: {
+            "th, td": {
+              borderColor: "palette.gray_lighter",
             },
           },
         },
@@ -587,6 +604,18 @@ export const theme = extendTheme({
         },
         helperText: {
           color: "palette.gray_medium_dark",
+        },
+        error: {
+          color: "palette.error",
+          fontSize: "12px",
+          marginTop: "4px",
+        },
+        grey: {
+          color: "palette.gray_medium",
+          fontWeight: "bold",
+          textTransform: "none",
+          letterSpacing: "normal",
+          fontSize: "sm",
         },
       },
     },

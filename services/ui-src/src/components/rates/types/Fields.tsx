@@ -8,11 +8,12 @@ import { isNumber } from "../calculations";
 export const Fields = (
   props: PerformanceRateTemplate & {
     formkey: string;
-    year?: number;
+    year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { answer, fields, calculation, multiplier } = props;
+  const { answer, fields, calculation, multiplier, disabled } = props;
   const arr =
     fields?.map((field) => {
       return { [field.id]: "" };
@@ -56,13 +57,16 @@ export const Fields = (
   };
 
   return (
-    <Stack gap={6}>
+    <Stack gap="2rem">
       <CmsdsTextField
-        label={`What is the ${props.year} state performance target for this assessment?`}
+        label={`What is the ${
+          props.year + 2
+        } state performance target for this assessment?`}
         name={`0.performanceTarget`}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        value={displayValue.rates[0].performanceTarget}
+        value={displayValue.rates[0].performanceTarget ?? ""}
+        disabled={disabled}
       ></CmsdsTextField>
       {fields?.map((field) => {
         return (
@@ -71,8 +75,8 @@ export const Fields = (
             name={`0.${field.id}`}
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
-            value={displayValue.rates[0][field.id]}
-            disabled={field.autoCalc}
+            value={displayValue.rates[0][field.id] ?? ""}
+            disabled={field.autoCalc || disabled}
           ></CmsdsTextField>
         );
       })}

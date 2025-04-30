@@ -3,7 +3,9 @@ import {
   getReport,
   getReportsForState,
   putReport,
-  submitReport,
+  releaseReport,
+  postSubmitReport,
+  updateArchivedStatus,
 } from "./report";
 // types
 import { Report, ReportOptions, ReportType } from "types/report";
@@ -56,7 +58,17 @@ describe("utils/report", () => {
   });
 
   test("submitReport", async () => {
-    await submitReport(report);
+    await postSubmitReport(report);
     expect(mockPost).toHaveBeenCalledTimes(1);
+  });
+
+  test("updateArchivedStatus", async () => {
+    await updateArchivedStatus(report, true);
+    expect(mockPut).toHaveBeenCalledTimes(1);
+  });
+
+  test("releaseReport", async () => {
+    await releaseReport(report);
+    expect(mockPut).toHaveBeenCalledTimes(1);
   });
 });

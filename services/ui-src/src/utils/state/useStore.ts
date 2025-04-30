@@ -12,13 +12,15 @@ import { MeasurePageTemplate, Report } from "types/report";
 import { ReactNode } from "react";
 import {
   buildState,
+  changeDeliveryMethods,
   clearMeasure,
+  markPageComplete,
   mergeAnswers,
   resetMeasure,
   saveReport,
   setPage,
   substitute,
-} from "./management/reportState";
+} from "./reportLogic/reportActions";
 
 // USER STORE
 const userStore = (set: Function) => ({
@@ -78,11 +80,16 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
   modalComponent: undefined,
   lastSavedTime: undefined,
   errorMessage: undefined,
+  sidebarOpen: true,
 
   // actions
-  setReport: (report: Report | undefined) =>
-    set(() => buildState(report), false, {
-      type: "setReport",
+  loadReport: (report: Report | undefined) =>
+    set(() => buildState(report, false), false, {
+      type: "loadReport",
+    }),
+  updateReport: (report: Report | undefined) =>
+    set(() => buildState(report, true), false, {
+      type: "updateReport",
     }),
   setCurrentPageId: (currentPageId: string) =>
     set((state: HcbsReportState) => setPage(currentPageId, state), false, {
@@ -107,16 +114,33 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
       type: "setSubstitute",
     });
   },
+  setSidebar: (sidebarOpen: boolean) => {
+    set(() => ({ sidebarOpen }), false, { type: "setSidebarOpen" });
+  },
+  completePage: (measureId: string) => {
+    set((state: HcbsReportState) => markPageComplete(measureId, state), false, {
+      type: "resetMeasure",
+    });
+  },
   resetMeasure: (measureId: string) =>
     set((state: HcbsReportState) => resetMeasure(measureId, state), false, {
       type: "resetMeasure",
     }),
-  clearMeasure: (measureId: string, ignoreList: string[]) =>
+  clearMeasure: (measureId: string, ignoreList: { [key: string]: string }) =>
     set(
       (state: HcbsReportState) => clearMeasure(measureId, state, ignoreList),
       false,
       {
         type: "clearMeasure",
+      }
+    ),
+  changeDeliveryMethods: (measureId: string, selection: string) =>
+    set(
+      (state: HcbsReportState) =>
+        changeDeliveryMethods(measureId, selection, state),
+      false,
+      {
+        type: "changeDeliveryMethods",
       }
     ),
   saveReport: async () => {

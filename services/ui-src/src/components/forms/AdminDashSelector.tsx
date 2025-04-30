@@ -76,14 +76,14 @@ export const AdminDashSelector = () => {
             value: selectedState,
           })}
         </>
-        <ChoiceList
-          name="radio"
-          type="radio"
-          label="Select a report:"
-          choices={reportChoices}
-          onChange={handleReportChange}
-        />
-        <Flex sx={sx.navigationButton}>
+        <Flex sx={sx.navigationButton} flexDirection="column" gap="2rem">
+          <ChoiceList
+            name="radio"
+            type="radio"
+            label="Select a report:"
+            choices={reportChoices}
+            onChange={handleReportChange}
+          />
           <Button
             type="submit"
             form="adminDashSelector"

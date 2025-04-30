@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
@@ -10,49 +11,60 @@ import {
   Thead,
   Tr,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
-import { useStore, submitReport } from "utils";
+import { postSubmitReport, useStore } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
 import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
-import { ParentPageTemplate } from "types/report";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
+import { SubmitReportModal } from "./SubmitReportModal";
+import { submittableMetricsSelector } from "utils/state/selectors";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const StatusTableElement = () => {
-  const { pageMap, report, user } = useStore();
+  const { report, user, setModalComponent, setModalOpen, updateReport } =
+    useStore();
   const { reportType, state, reportId } = useParams();
+  const navigate = useNavigate();
+  const submittableMetrics = useStore(submittableMetricsSelector);
+  const isPdfActive = useFlags()?.viewPdf;
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-  if (!pageMap) {
+  if (!report) {
     return null;
   }
-
-  const childPages = (report?.pages[pageMap.get("root")!] as ParentPageTemplate)
-    .childPageIds;
-  const sections = childPages.slice(0, -1).map((id) => {
-    const pageIdx = pageMap.get(id);
-    if (!pageIdx) return null;
-    return report?.pages[pageIdx] as ParentPageTemplate;
-  });
-
-  const navigate = useNavigate();
 
   const handleEditClick = (sectionId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${sectionId}`;
     navigate(path);
   };
 
-  // Build Rows
-  const rows = sections.map((section, index) => {
-    if (!section) return;
+  const onSubmit = async () => {
+    setModalOpen(false);
+    setSubmitting(true);
+    const submittedReport = await postSubmitReport(report);
+    updateReport(submittedReport);
+    setSubmitting(false);
+  };
 
+  const modal = SubmitReportModal(() => setModalOpen(false), onSubmit);
+
+  const displayModal = () => {
+    setModalComponent(modal, "Are you sure you want to submit?");
+  };
+  // Build Rows
+
+  const rows = submittableMetrics?.sections.map((sectionDetails, index) => {
+    if (!sectionDetails) return;
+    const { section, displayStatus: status } = sectionDetails;
     return (
       <Tr key={section.id || index} p={0}>
         <Td>
           <Text>{section.title}</Text>
         </Td>
         <Td>
-          {/* TODO: Logic for when a page is incomplete to change status icon and text */}
-          <TableStatusIcon tableStatus={"complete"} isPdf={true} />
+          <TableStatusIcon tableStatus={status} isPdf={true} />
         </Td>
         <Td>
           <Button
@@ -85,24 +97,28 @@ export const StatusTableElement = () => {
         justifyContent="space-between"
         mt={5}
       >
-        <Button
-          as={RouterLink}
-          to={reportBasePath(report!) + "/export"}
-          target="_blank"
-          colorScheme="blue"
-          variant="outline"
-          leftIcon={<Image src={lookupIconPrimary} />}
-        >
-          Review PDF
-        </Button>
+        {isPdfActive && (
+          <Button
+            as={RouterLink}
+            to={reportBasePath(report) + "/export"}
+            target="_blank"
+            colorScheme="blue"
+            variant="outline"
+            leftIcon={<Image src={lookupIconPrimary} />}
+          >
+            Review PDF
+          </Button>
+        )}
         {user?.userIsEndUser && (
           <Button
             alignSelf="flex-end"
-            onClick={async () => submitReport(report!)}
+            onClick={async () => displayModal()}
             onBlur={(event) => {
               event.stopPropagation();
             }}
+            disabled={!submittableMetrics?.submittable || submitting}
           >
+            {submitting && <Spinner size="sm" marginRight="1rem" />}
             Submit QMS Report
           </Button>
         )}

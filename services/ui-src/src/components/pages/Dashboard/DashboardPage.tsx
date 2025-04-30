@@ -7,6 +7,7 @@ import {
   DashboardTable,
   AddEditReportModal,
   AccordionItem,
+  UnlockModal,
 } from "components";
 import {
   Box,
@@ -18,6 +19,7 @@ import {
   Flex,
   useDisclosure,
   Accordion,
+  Spinner,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -44,7 +46,11 @@ export const DashboardPage = () => {
   const reloadReports = (reportType: string, state: string) => {
     (async () => {
       setIsLoading(true);
-      const result = await getReportsForState(reportType, state);
+      let result = await getReportsForState(reportType, state);
+      if (!userIsAdmin) {
+        result = result.filter((report: Report) => !report.archived);
+      }
+
       setReports(result);
       setIsLoading(false);
     })();
@@ -61,6 +67,12 @@ export const DashboardPage = () => {
     isOpen: addEditReportModalIsOpen,
     onOpen: addEditReportModalOnOpenHandler,
     onClose: addEditReportModalOnCloseHandler,
+  } = useDisclosure();
+
+  const {
+    isOpen: unlockModalIsOpen,
+    onOpen: unlockModalOnOpenHandler,
+    onClose: unlockModalOnCloseHandler,
   } = useDisclosure();
 
   return (
@@ -109,8 +121,52 @@ export const DashboardPage = () => {
             ) : (
               <Box sx={sx.accordionPanel}>
                 <p>
-                  [Optional - Include instructions that would support the state
-                  in the completion of the report]
+                  <strong>Creating a New Report</strong>
+                </p>
+                <p>
+                  Click the <b>“Start Quality Measure Set Report”</b> button to
+                  begin creating your report. A series of questions will appear
+                  to gather the necessary information for your report. Fill out
+                  each field accurately to ensure your report is complete.
+                  Before submitting, review the information you’ve provided. If
+                  everything looks good, confirm your entries and proceed.
+                </p>
+                <p>
+                  Once the report is generated, you can edit the name of the
+                  report and monitor its status in the dashboard below.
+                </p>
+                <p>
+                  Please note, while you can generate multiple reports for the
+                  same reporting period, you should only submit a single report
+                  for the state.
+                </p>
+                <p>
+                  <strong>Understanding Report Statuses</strong>
+                </p>
+                <p>
+                  <ul>
+                    <li>
+                      <strong>Not Started:</strong> The report has been created
+                      but no data has been entered or actions taken.
+                    </li>
+                    <li>
+                      <strong>In Progress:</strong> The report is actively being
+                      worked on, with some or all data entered.
+                    </li>
+                    <li>
+                      <strong>Submitted:</strong> The report has been completed
+                      and submitted to CMS for review.
+                    </li>
+                    <li>
+                      <strong>In-Revision:</strong> The report has been sent
+                      back to the state for revisions or additional information
+                      after submission.
+                    </li>
+                  </ul>
+                </p>
+                <p>
+                  Use the dashboard below to check your report’s status and take
+                  any necessary follow-up actions.
                 </p>
               </Box>
             )}
@@ -122,8 +178,13 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
-            readOnlyUser={!userIsEndUser}
+            unlockModalOnOpenHandler={unlockModalOnOpenHandler}
           />
+        )}
+        {isLoading && (
+          <Flex justify="center">
+            <Spinner size="md" />
+          </Flex>
         )}
         {!reports?.length &&
           (userIsAdmin ? (
@@ -155,6 +216,12 @@ export const DashboardPage = () => {
         reportHandler={reloadReports}
         selectedReport={selectedReport}
       />
+      <UnlockModal
+        modalDisclosure={{
+          isOpen: unlockModalIsOpen,
+          onClose: unlockModalOnCloseHandler,
+        }}
+      ></UnlockModal>
     </PageTemplate>
   );
 };
@@ -163,7 +230,7 @@ const sx = {
   layout: {
     ".contentFlex": {
       maxWidth: "appMax",
-      marginTop: "1rem",
+      marginTop: "2rem",
       marginBottom: "3.5rem",
     },
   },
