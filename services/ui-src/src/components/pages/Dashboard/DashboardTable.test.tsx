@@ -48,13 +48,21 @@ const reports = [
 
 const dashboardTableComponent = (
   <RouterWrappedComponent>
-    <DashboardTable reports={reports} openAddEditReportModal={jest.fn} />
+    <DashboardTable
+      reports={reports}
+      openAddEditReportModal={jest.fn}
+      unlockModalOnOpenHandler={jest.fn}
+    />
   </RouterWrappedComponent>
 );
 
 const adminDashboardTableComponent = (
   <RouterWrappedComponent>
-    <DashboardTable reports={reports} openAddEditReportModal={jest.fn} />
+    <DashboardTable
+      reports={reports}
+      openAddEditReportModal={jest.fn}
+      unlockModalOnOpenHandler={jest.fn}
+    />
   </RouterWrappedComponent>
 );
 

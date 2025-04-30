@@ -7,6 +7,7 @@ import {
   DashboardTable,
   AddEditReportModal,
   AccordionItem,
+  UnlockModal,
 } from "components";
 import {
   Box,
@@ -66,6 +67,12 @@ export const DashboardPage = () => {
     isOpen: addEditReportModalIsOpen,
     onOpen: addEditReportModalOnOpenHandler,
     onClose: addEditReportModalOnCloseHandler,
+  } = useDisclosure();
+
+  const {
+    isOpen: unlockModalIsOpen,
+    onOpen: unlockModalOnOpenHandler,
+    onClose: unlockModalOnCloseHandler,
   } = useDisclosure();
 
   return (
@@ -171,6 +178,7 @@ export const DashboardPage = () => {
           <DashboardTable
             reports={reports}
             openAddEditReportModal={openAddEditReportModal}
+            unlockModalOnOpenHandler={unlockModalOnOpenHandler}
           />
         )}
         {isLoading && (
@@ -208,6 +216,12 @@ export const DashboardPage = () => {
         reportHandler={reloadReports}
         selectedReport={selectedReport}
       />
+      <UnlockModal
+        modalDisclosure={{
+          isOpen: unlockModalIsOpen,
+          onClose: unlockModalOnCloseHandler,
+        }}
+      ></UnlockModal>
     </PageTemplate>
   );
 };

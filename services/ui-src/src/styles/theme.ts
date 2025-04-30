@@ -392,6 +392,12 @@ export const theme = extendTheme({
           lineHeight: "1.2",
           paddingLeft: "1rem",
           height: "var(--chakra-sizes-10)",
+          _visited: {
+            color: "palette.base",
+          },
+          ":focus, :focus:visited": {
+            color: "palette.secondary_darkest",
+          },
           _hover: {
             color: "palette.secondary_darkest",
             backgroundColor: "palette.gray_lightest_highlight",
