@@ -71,7 +71,7 @@ export const qmsReportTemplate: ReportTemplate = {
             "<b>Instructions for Completing the QMS Report</b>" +
             "<p>Below is a list of all required measures.  Select the respective “Start” or “Edit” buttons to navigate to each measure overview page and begin filling in all required fields.  Once all required fields are completed for the measure, and any associated sub-measure sections, the “Complete Measure” button will become active.  Clicking the button will complete the measure and place it in the <b>Complete</b> status.</p>" +
             "<p><b>Understanding Measure Statuses </b></p>" +
-            "<ul><li><b>Not Started</b>:  No data has been entered or actions taken on the measure.</li><li><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</li><li><b>Complete</b>:  The measure has been completed.</li></ul>" +
+            "<p><ul><li><b>Not Started</b>:  No data has been entered or actions taken on the measure.</li><li><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</li><li><b>Complete</b>:  The measure has been completed.</li></ul><p>" +
             "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
@@ -101,7 +101,7 @@ export const qmsReportTemplate: ReportTemplate = {
             "<p>Below is a list of all optional measures.  Select the respective “Start” or “Edit” buttons to navigate to each measure overview page and begin filling in all required fields.  Once all required fields are completed for the measure, and any associated sub-measure sections, the “Complete Measure” button will become active.  Clicking the button will complete the measure and place it in the <b>Complete</b> status.</p>" +
             "<p>Please note, the report cannot be submitted as long as any optional measures remain in the <b>In Progress</b> status. If you do not wish to complete an optional measure, you may clear the measure details which will return the measure to the <b>Not Started</b> status." +
             "<p><b>Understanding Measure Statuses </b></p>" +
-            "<ul><li><b>Not Started</b>:  No data has been entered or actions taken on the measure.</li><li><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</li><li><b>Complete</b>:  The measure has been completed.</li></ul>" +
+            "<p><ul><li><b>Not Started</b>:  No data has been entered or actions taken on the measure.</li><li><b>In Progress</b>:  The measure is actively being worked on, with some or all data entered.</li><li><b>Complete</b>:  The measure has been completed.</li></ul><p>" +
             "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
