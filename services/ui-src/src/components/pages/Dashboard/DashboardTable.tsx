@@ -65,9 +65,8 @@ export const HorizontalTable = (
                     minW={"1.75rem"}
                   />
                 </button>
-              ) : (
-                <div />
-              )}
+              ) : null
+              }
             </Td>
           )}
           <Td
