@@ -31,10 +31,6 @@ export const DateField = (props: PageElementProps) => {
     }
   };
 
-  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value);
-  };
-
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
@@ -50,7 +46,6 @@ export const DateField = (props: PageElementProps) => {
         name={key}
         label={labelText || ""}
         onChange={onChangeHandler}
-        onBlur={onBlurHandler}
         value={displayValue}
         hint={parsedHint}
         errorMessage={errorMessage}

@@ -55,13 +55,6 @@ export const NDR = (
     form.setValue(`${key}`, displayValue, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
-  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
-
-    const { name, value } = event.target;
-    form.setValue(`${key}.rates.${name}`, value, { shouldValidate: true });
-    form.setValue(`${key}.type`, props.type);
-  };
 
   return (
     <Stack gap="2rem">
@@ -82,7 +75,6 @@ export const NDR = (
               } state performance target for this assessment?`}
               name={`${index}.performanceTarget`}
               onChange={onChangeHandler}
-              onBlur={onBlurHandler}
               value={value.performanceTarget ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
@@ -90,7 +82,6 @@ export const NDR = (
               label="Numerator"
               name={`${index}.numerator`}
               onChange={onChangeHandler}
-              onBlur={onBlurHandler}
               value={value.numerator ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
@@ -98,7 +89,6 @@ export const NDR = (
               label="Denominator"
               name={`${index}.denominator`}
               onChange={onChangeHandler}
-              onBlur={onBlurHandler}
               value={value.denominator ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
