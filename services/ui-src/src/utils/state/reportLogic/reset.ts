@@ -1,5 +1,9 @@
+/**
+ * Logic for what it means to reset or clear a report.
+ * Clearing is referred to here as a soft reset of page, and reset is a full wipe of progress.
+ */
 import {
-  MeasureStatus,
+  PageStatus,
   PageElement,
   ElementType,
   Report,
@@ -14,27 +18,30 @@ import {
 export const performClearMeasure = (
   measureId: string,
   report: Report,
-  ignoreList: string[]
+  ignoreList: { [key: string]: string }
 ) => {
   const page = report.pages.find((page) => page.id === measureId);
   if (!page) {
     return;
   }
   if ("status" in page) {
-    page.status = MeasureStatus.IN_PROGRESS;
+    page.status = PageStatus.IN_PROGRESS;
   }
   // Clean measure
   page.elements?.forEach((element) => {
-    if (ignoreList.includes(element.id)) {
+    if (element.id in ignoreList) {
+      // Answer may not be set yet, typeguard can derail
+      const elementWithAnswer = element as Partial<{ answer: any }>;
+      elementWithAnswer.answer = ignoreList[element.id];
       return;
     }
     performResetPageElement(element);
   });
 
-  // Clear children of measures
+  // Clear children of measures - hard reset
   if (page.type === PageType.Measure) {
-    (page as MeasurePageTemplate).children?.forEach((child) => {
-      performClearMeasure(child.template, report, ignoreList);
+    (page as MeasurePageTemplate).dependentPages?.forEach((child) => {
+      performResetMeasure(child.template, report);
     });
   }
 
@@ -50,7 +57,7 @@ export const performResetMeasure = (measureId: string, report: Report) => {
     return;
   }
   if ("status" in page) {
-    page.status = MeasureStatus.NOT_STARTED;
+    page.status = PageStatus.NOT_STARTED;
   }
 
   // Clean measure
@@ -60,7 +67,7 @@ export const performResetMeasure = (measureId: string, report: Report) => {
 
   // Clear children of measures
   if (page.type === PageType.Measure) {
-    (page as MeasurePageTemplate).children?.forEach((child) => {
+    (page as MeasurePageTemplate).dependentPages?.forEach((child) => {
       performResetMeasure(child.template, report);
     });
   }
@@ -75,7 +82,7 @@ const performResetPageElement = (element: PageElement) => {
     element.answer = undefined;
   }
   if (element.type == ElementType.Radio) {
-    for (const choice of element.value) {
+    for (const choice of element.choices) {
       if (!choice.checkedChildren) continue;
       for (const childElement of choice.checkedChildren) {
         performResetPageElement(childElement);

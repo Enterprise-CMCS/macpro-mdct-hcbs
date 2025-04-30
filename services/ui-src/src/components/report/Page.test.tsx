@@ -8,6 +8,7 @@ import { render, screen } from "@testing-library/react";
 import { ElementType, PageElement } from "types/report";
 import { useStore } from "utils";
 import { Page } from "./Page";
+import { AlertTypes } from "types";
 
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
@@ -16,7 +17,12 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
+mockedUseStore.mockImplementation((selector: Function | undefined) => {
+  if (selector) {
+    return selector(mockUseStore);
+  }
+  return mockUseStore;
+});
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
@@ -99,16 +105,16 @@ const elements: PageElement[] = [
     type: ElementType.Radio,
     id: "",
     label: "date label",
-    value: [
+    choices: [
       { label: "a", value: "1", checkedChildren: [] },
       { label: "b", value: "2" },
     ],
   },
   {
-    type: ElementType.ReportingRadio,
+    type: ElementType.Radio,
     id: "",
     label: "label",
-    value: [
+    choices: [
       { label: "a", value: "1", checkedChildren: [] },
       { label: "b", value: "2" },
     ],
@@ -148,6 +154,24 @@ const elements: PageElement[] = [
     id: "",
     prevTo: "mock-prev-page",
   },
+  {
+    type: ElementType.Divider,
+    id: "",
+  },
+  {
+    type: ElementType.StatusAlert,
+    id: "",
+    text: "mock status",
+    status: AlertTypes.ERROR,
+  },
+  {
+    type: ElementType.SubmissionParagraph,
+    id: "",
+  },
+  {
+    type: ElementType.SubHeaderMeasure,
+    id: "",
+  },
 ];
 
 const textFieldElement: PageElement[] = [
@@ -160,7 +184,7 @@ const textFieldElement: PageElement[] = [
     type: ElementType.Radio,
     id: "",
     label: "radio button",
-    value: [
+    choices: [
       { label: "radio choice 1", value: "1", checkedChildren: [] },
       { label: "radio choice 2", value: "2" },
     ],

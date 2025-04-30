@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { get, useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
-import { parseCustomHtml } from "utils";
+import { parseCustomHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
+import { requiredResponse } from "../../constants";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
+import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
 
-export const formatChoices = (
+const formatChoices = (
   parentKey: string,
   choices: ChoiceTemplate[],
   answer?: string
@@ -24,7 +27,7 @@ export const formatChoices = (
 
     const children = choice.checkedChildren.map((child, childIndex) => ({
       ...child,
-      formKey: `${parentKey}.value.${choiceIndex}.checkedChildren.${childIndex}`,
+      formKey: `${parentKey}.choices.${choiceIndex}.checkedChildren.${childIndex}`,
     }));
 
     const checkedChildren = [
@@ -41,15 +44,27 @@ export const formatChoices = (
   });
 };
 
+const hintTextColor = (clickAction: string) => {
+  switch (clickAction) {
+    case "qmReportingChange":
+    case "qmDeliveryMethodChange":
+      return "palette.warn_darkest";
+    default:
+      return "palette.gray";
+  }
+};
+
 export const RadioField = (props: PageElementProps) => {
   const radio = props.element as RadioTemplate;
+  const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
 
   // get form context and register field
   const form = useFormContext();
   const key = `${props.formkey}.answer`;
 
   useEffect(() => {
-    const options = { required: radio.required || false };
+    const options = { required: radio.required ? requiredResponse : false };
     form.setValue(key, radio.answer);
     form.register(key, options);
     if (radio.answer) {
@@ -58,31 +73,14 @@ export const RadioField = (props: PageElementProps) => {
   }, []);
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
-  const [hideElement, setHideElement] = useState<boolean>(false);
+  const hideElement = useElementIsHidden(radio.hideCondition, key);
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
     setDisplayValue(
-      formatChoices(`${props.formkey}`, radio.value, radio.answer) ?? []
+      formatChoices(`${props.formkey}`, radio.choices, radio.answer) ?? []
     );
   }, [radio.answer]);
-
-  useEffect(() => {
-    const formValues = form.getValues() as any;
-    if (formValues && Object.keys(formValues).length === 0) {
-      return;
-    }
-    if (radio?.hideCondition) {
-      const controlElement = formValues?.elements?.find((element: any) => {
-        return element?.id === radio.hideCondition?.controllerElementId;
-      });
-      if (controlElement?.answer === radio.hideCondition.answer) {
-        setHideElement(true);
-      } else {
-        setHideElement(false);
-      }
-    }
-  }, [form.getValues()]);
 
   // OnChange handles setting the visual of the radio on click, outside the normal blur
   const onChangeHandler = async (
@@ -112,6 +110,20 @@ export const RadioField = (props: PageElementProps) => {
     form.setValue(`${props.formkey}.type`, radio.type);
     form.setValue(`${props.formkey}.label`, radio.label);
     form.setValue(`${props.formkey}.id`, radio.id);
+
+    if (!radio.clickAction || !currentPageId) return;
+    switch (radio.clickAction) {
+      case "qmReportingChange":
+        if (value === "no") {
+          clearMeasure(currentPageId, { [radio.id]: value });
+          autosave();
+          event.stopPropagation(); // This action is doing its own effect outside of normal change.
+        }
+        return;
+      case "qmDeliveryMethodChange":
+        changeDeliveryMethods(currentPageId, value);
+        return; // after the clear, allow normal setting of this page to occur
+    }
   };
 
   const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,13 +135,17 @@ export const RadioField = (props: PageElementProps) => {
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
-  const parsedHint = radio.helperText && parseCustomHtml(radio.helperText);
+
+  const parsedHint = (
+    <Box color={hintTextColor(radio.clickAction!)}>
+      {radio.helperText && parseCustomHtml(radio.helperText)}
+    </Box>
+  );
   const labelText = radio.label;
 
   if (hideElement) {
     return null;
   }
-
   return (
     <Box>
       <CmsdsChoiceList

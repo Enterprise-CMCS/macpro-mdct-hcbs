@@ -21,7 +21,7 @@ export const radioWithChildrenSchema = object().shape({
   answer: string().required("A response is required"),
   type: string().notRequired(),
   label: string().notRequired(),
-  value: array().of(
+  choices: array().of(
     object().shape({
       checkedChildren: array().of(
         object().shape({
@@ -31,6 +31,7 @@ export const radioWithChildrenSchema = object().shape({
     })
   ),
   id: string().notRequired(),
+  clickAction: string().notRequired(),
 });
 
 export const radioSchema = object().shape({
@@ -38,6 +39,7 @@ export const radioSchema = object().shape({
   type: string().notRequired(),
   label: string().notRequired(),
   id: string().notRequired(),
+  clickAction: string().notRequired(),
 });
 
 const pageElementSchema = lazy((element: PageElement): any => {
@@ -53,8 +55,7 @@ const pageElementSchema = lazy((element: PageElement): any => {
       // TODO: make date schema
       return textboxSchema;
     case ElementType.Radio:
-    case ElementType.ReportingRadio:
-      if (element.value) {
+      if (element.choices) {
         return radioWithChildrenSchema;
       }
       return radioSchema;

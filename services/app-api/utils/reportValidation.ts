@@ -12,17 +12,25 @@ import {
   Report,
   ReportStatus,
   ReportType,
-  MeasureTemplateName,
   PageType,
   ElementType,
   PageElement,
 } from "../types/reports";
 import { error } from "./constants";
 
+const hideConditionSchema = object()
+  .shape({
+    controllerElementId: string().required(),
+    answer: string().required(),
+  })
+  .notRequired()
+  .default(undefined);
+
 const headerTemplateSchema = object().shape({
   type: string().required(ElementType.Header),
   id: string().required(),
   text: string().required(),
+  icon: string().notRequired(),
 });
 
 const subHeaderTemplateSchema = object().shape({
@@ -30,6 +38,12 @@ const subHeaderTemplateSchema = object().shape({
   id: string().required(),
   text: string().required(),
   helperText: string().notRequired(),
+  hideCondition: hideConditionSchema,
+});
+
+const subHeaderMeasureSchema = object().shape({
+  type: string().required(ElementType.SubHeaderMeasure),
+  id: string().required(),
 });
 
 const nestedHeadingTemplateSchema = object().shape({
@@ -43,6 +57,7 @@ const paragraphTemplateSchema = object().shape({
   id: string().required(),
   text: string().required(),
   title: string().notRequired(),
+  weight: string().notRequired(),
 });
 
 const textboxTemplateSchema = object().shape({
@@ -51,14 +66,8 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  required: string().notRequired(),
-  hideCondition: object()
-    .shape({
-      controllerElementId: string().required(),
-      answer: string().required(),
-    })
-    .notRequired()
-    .default(undefined),
+  required: boolean().notRequired(),
+  hideCondition: hideConditionSchema,
 });
 
 const textAreaTemplateSchema = object().shape({
@@ -67,13 +76,8 @@ const textAreaTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  hideCondition: object()
-    .shape({
-      controllerElementId: string().required(),
-      answer: string().required(),
-    })
-    .notRequired()
-    .default(undefined),
+  hideCondition: hideConditionSchema,
+  required: boolean().notRequired(),
 });
 
 const dateTemplateSchema = object().shape({
@@ -98,7 +102,7 @@ const dropdownTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
 });
 
 const accordionTemplateSchema = object().shape({
@@ -125,6 +129,8 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return headerTemplateSchema;
     case ElementType.SubHeader:
       return subHeaderTemplateSchema;
+    case ElementType.SubHeaderMeasure:
+      return subHeaderMeasureSchema;
     case ElementType.NestedHeading:
       return nestedHeadingTemplateSchema;
     case ElementType.Paragraph:
@@ -143,8 +149,6 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return resultRowButtonTemplateSchema;
     case ElementType.Radio:
       return radioTemplateSchema;
-    case ElementType.ReportingRadio:
-      return reportingRadioTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
@@ -159,6 +163,12 @@ const pageElementSchema = lazy((value: PageElement): Schema<any> => {
       return measureFooterSchema;
     case ElementType.PerformanceRate:
       return performanceRateSchema;
+    case ElementType.StatusAlert:
+      return statusAlertSchema;
+    case ElementType.Divider:
+      return dividerSchema;
+    case ElementType.SubmissionParagraph:
+      return submissionParagraphSchema;
     default:
       throw new Error("Page Element type is not valid");
   }
@@ -169,7 +179,7 @@ const radioTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
-  value: array().of(
+  choices: array().of(
     object().shape({
       label: string().required(),
       value: string().required(),
@@ -178,38 +188,26 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: string().notRequired(),
-  hideCondition: object()
-    .shape({
-      controllerElementId: string().required(),
-      answer: string().required(),
-    })
-    .notRequired()
-    .default(undefined),
-});
-
-const reportingRadioTemplateSchema = object().shape({
-  type: string().required(ElementType.ReportingRadio),
-  id: string().required(),
-  label: string().required(),
-  helperText: string().notRequired(),
-  value: array().of(
-    object().shape({
-      label: string().required(),
-      value: string().required(),
-      checked: boolean().notRequired(),
-      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
-    })
-  ),
-  answer: string().notRequired(),
-  required: string().notRequired(),
+  required: boolean().notRequired(),
+  clickAction: string().notRequired(),
+  hideCondition: hideConditionSchema,
 });
 
 const buttonLinkTemplateSchema = object().shape({
   type: string().required(ElementType.ButtonLink),
   id: string().required(),
-  label: string().required(),
+  label: string().optional(),
   to: string().optional(),
+});
+
+const dividerSchema = object().shape({
+  type: string().required(ElementType.Divider),
+  id: string().required(),
+});
+
+const submissionParagraphSchema = object().shape({
+  type: string().required(ElementType.SubmissionParagraph),
+  id: string().required(),
 });
 
 const measureTableTemplateSchema = object().shape({
@@ -224,6 +222,13 @@ const measureResultsNavigationTableTemplateSchema = object().shape({
   type: string().required(ElementType.MeasureResultsNavigationTable),
   id: string().required(),
   measureDisplay: string().required("quality"),
+  hideCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      answer: string().required(),
+    })
+    .notRequired()
+    .default(undefined),
 });
 
 const statusTableTemplateSchema = object().shape({
@@ -240,7 +245,7 @@ const measureDetailsTemplateSchema = object().shape({
 const measureFooterSchema = object().shape({
   type: string().required(ElementType.MeasureFooter),
   id: string().required(),
-  prevTo: string().required(),
+  prevTo: string().notRequired(),
   nextTo: string().notRequired(),
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
@@ -269,6 +274,7 @@ const performanceRateSchema = object().shape({
       })
     )
     .notRequired(),
+  required: boolean().notRequired(),
   rateType: string().required(),
   rateCalc: string().notRequired(),
   multiplier: number().notRequired(),
@@ -280,10 +286,19 @@ const parentPageTemplateSchema = object().shape({
   childPageIds: array().of(string()).required(),
 });
 
+const statusAlertSchema = object().shape({
+  type: string().required(ElementType.StatusAlert),
+  id: string().required(),
+  title: string().notRequired(),
+  text: string().required(),
+  status: string().required(),
+});
+
 const formPageTemplateSchema = object().shape({
   id: string().required(),
   title: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
+  status: string().notRequired(),
   elements: array().of(pageElementSchema).required(),
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),
@@ -314,28 +329,15 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   stratified: boolean().notRequired(),
   optional: boolean().notRequired(),
   substitutable: string().notRequired(),
-  children: array()
+  dependentPages: array()
     .of(dependentPageInfoSchema)
     .notRequired()
     .default(undefined),
   cmitInfo: cmitInfoSchema.notRequired().default(undefined),
 });
 
-const measureOptionsArraySchema = array().of(
-  object().shape({
-    cmit: number().required(),
-    uid: string().required(),
-    required: boolean().required(),
-    stratified: boolean().required(),
-    measureTemplate: string().required(),
-    dependentPages: array().of(dependentPageInfoSchema),
-  })
-);
-
-const measureLookupSchema = object().shape({
-  defaultMeasures: measureOptionsArraySchema,
-  pomMeasures: measureOptionsArraySchema,
-  // TODO: Add option groups
+const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
+  submittedView: array().of(pageElementSchema).required(),
 });
 
 const optionsSchema = object().shape({
@@ -362,36 +364,19 @@ const pagesSchema = array()
           throw new Error();
         }
       } else {
-        if (pageObject.type == PageType.Measure) {
-          return measurePageTemplateSchema;
+        switch (pageObject.type) {
+          case PageType.ReviewSubmit:
+            return reviewSubmitTemplateSchema;
+          case PageType.Measure:
+            return measurePageTemplateSchema;
+          case PageType.Standard:
+          default:
+            return formPageTemplateSchema;
         }
-        return formPageTemplateSchema;
       }
     })
   )
   .required();
-
-/**
- * This schema represents a typescript type of Record<MeasureTemplateName, MeasurePageTemplate>
- *
- * The following code is looping through the MeasureTemplateName enum and building
- * a yup validation object that looks like so:
- * {
- *   [MeasureTemplateName["LTSS-1"]]: measurePageTemplateSchema,
- *   [MeasureTemplateName["LTSS-2"]]: measurePageTemplateSchema,
- *   [MeasureTemplateName["LTSS-6"]]: measurePageTemplateSchema,
- *   ...
- *   ...
- *  }
- */
-const measureTemplatesSchema = object().shape(
-  Object.fromEntries(
-    Object.keys(MeasureTemplateName).map((meas) => [
-      meas,
-      measurePageTemplateSchema,
-    ])
-  )
-);
 
 const reportValidateSchema = object().shape({
   id: string().notRequired(),
@@ -399,16 +384,18 @@ const reportValidateSchema = object().shape({
   created: number().notRequired(),
   lastEdited: number().notRequired(),
   lastEditedBy: string().required(),
-  lastEditedByEmail: string().required(),
+  lastEditedByEmail: string().notRequired(),
+  submitted: number().notRequired(),
+  submittedBy: string().notRequired(),
+  submittedByEmail: string().notRequired(),
   status: mixed<ReportStatus>().oneOf(Object.values(ReportStatus)).required(),
-  name: string().notRequired(),
+  name: string().required(),
   type: mixed<ReportType>().oneOf(Object.values(ReportType)).required(),
-  title: string().required(),
   year: number().required(),
+  submissionCount: number().required(),
+  archived: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
-  measureLookup: measureLookupSchema,
-  measureTemplates: measureTemplatesSchema,
 });
 
 export const validateReportPayload = async (payload: object | undefined) => {

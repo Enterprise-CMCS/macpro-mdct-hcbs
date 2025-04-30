@@ -7,24 +7,24 @@ import {
 } from "@testing-library/react";
 import {
   ElementType,
-  MeasurePageTemplate,
-  MeasureStatus,
-  MeasureTemplateName,
   PageType,
   Report,
   ReportStatus,
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
+import userEvent from "@testing-library/user-event";
 
 const testReport: Report = {
   type: ReportType.QMS,
-  title: "plan id",
+  name: "plan id",
   state: "NJ",
   id: "NJQMS123",
   year: 2026,
   options: {},
   status: ReportStatus.NOT_STARTED,
+  archived: false,
+  submissionCount: 0,
   pages: [
     {
       id: "root",
@@ -37,13 +37,8 @@ const testReport: Report = {
       sidebar: true,
       elements: [
         {
-          type: ElementType.Header,
-          id: "",
-          text: "General Information",
-        },
-        {
           type: ElementType.Textbox,
-          id: "",
+          id: "mock-textbox",
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
@@ -69,275 +64,15 @@ const testReport: Report = {
       ],
     },
   ],
-  measureLookup: { defaultMeasures: [], optionGroups: {} },
-  measureTemplates: {
-    [MeasureTemplateName["LTSS-1"]]: {
-      id: "req-measure-report",
-      title: "Example Measure",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          id: "",
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-result",
-        },
-        {
-          type: ElementType.MeasureResultsNavigationTable,
-          measureDisplay: "quality",
-        },
-      ],
-    },
-    [MeasureTemplateName["FFS-1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-3"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-3"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-3"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FASI-1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-FASI-1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-FASI-1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FASI-2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-FASI-2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-FASI-2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-6"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-6"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-6"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-7"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-7"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-7"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-8"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-8"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-8"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-2"]]: {
-      id: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-3"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-4"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-5"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-6"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-7"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: MeasureStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-  } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
 
 const mockUseParams = jest.fn();
+const mockNavigate = jest.fn();
+const mockSaveReport = jest.fn();
+
 jest.mock("react-router-dom", () => ({
   useParams: () => mockUseParams(),
-  useNavigate: jest.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
 const mockGetReport = jest.fn().mockResolvedValue(testReport);
@@ -345,8 +80,14 @@ jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: () => mockGetReport(),
 }));
 
+jest.mock("utils/state/useStore", () => ({
+  ...jest.requireActual("utils/state/useStore"),
+  saveReport: () => mockSaveReport,
+}));
+
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     mockUseParams.mockReturnValue({
       reportType: "QMS",
       state: "NJ",
@@ -367,7 +108,7 @@ describe("ReportPageWrapper", () => {
     mockGetReport.mockResolvedValueOnce(undefined);
     render(<ReportPageWrapper />);
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
-    expect(screen.getByText("Loading")).toBeTruthy(); // To be updated with real loading page
+    expect(screen.getByText("Loading...")).toBeTruthy();
   });
   test("should render if report exists", async () => {
     await act(async () => {
@@ -380,6 +121,38 @@ describe("ReportPageWrapper", () => {
     });
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
+  });
+  test("button should be clickable", async () => {
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+
+    const continueBtn = screen.getByRole("button", { name: "Continue" });
+    await userEvent.click(continueBtn);
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/report/QMS/NJ/QMSNJ123/req-measure-result"
+    );
+  });
+
+  test("run autosave when a text field has changed", async () => {
+    jest.useFakeTimers();
+
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
+
+    const textbox = screen.getByLabelText("Contact title");
+    await act(async () => {
+      fireEvent.change(textbox, { target: { value: "2027" } });
+    });
+    expect(textbox).toHaveValue("2027");
+
+    jest.runAllTimers();
+    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
   });
 });
 

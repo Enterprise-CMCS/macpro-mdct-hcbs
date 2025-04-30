@@ -40,9 +40,6 @@ a {
   &:hover {
     color: var(--chakra-colors-palette-gray_light);
   }
-  &:visited {
-    color: inherit;
-  }
   transition: all 0.3s ease !important;
 }
 
@@ -54,6 +51,13 @@ a {
   display: flex;
   flex-direction: column;
   background-color: var(--chakra-colors-palette-gray_lightest);
+
+  header {
+    display: flex;
+    justify-content: flex-start;
+    min-width: 100%;
+    padding: 0.5rem 0;
+  }
 }
 
 // SCROLLBARS
@@ -149,11 +153,23 @@ button {
   }
 }
 
+.ds-c-hint {
+  font-size: 14px;
+}
+
 .ds-c-field {
   margin: 8px 0 0 0;
   font-weight: 100;
 }
 
+.ds-c-fieldset {
+  margin: 0;
+}
+
 .chakra-modal__header {
   width: 85%;
+}
+
+.optionalText {
+  font-weight: normal;
 }

@@ -39,7 +39,7 @@ const mockedPerformanceElement = {
       id: "count-of-success",
       label: "Count of Successful Discharges to the Community",
     },
-    { id: "fac-admin-count", label: "Facility Admission Count" },
+    { id: "fac-count", label: "Facility Admission Count" },
     {
       id: "expected-count-of-success",
       label: "Expected Count of Successful Discharges to the Community",
@@ -71,6 +71,7 @@ const fieldsComponent = (
     formkey={"mock-key"}
     calculation={FacilityLengthOfStayCalc}
     year={2026}
+    disabled={false}
     {...mockedPerformanceElement}
   />
 );
@@ -83,7 +84,7 @@ describe("<Fields />", () => {
     test("Fields is visible", () => {
       expect(
         screen.getByRole("textbox", {
-          name: "What is the 2026 state performance target for this assessment?",
+          name: "What is the 2028 state performance target for this assessment?",
         })
       ).toBeInTheDocument();
 

@@ -14,6 +14,9 @@ export interface DeploymentConfigProperties {
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
   userPoolDomainPrefix?: string;
+  vpcName: string;
+  kafkaAuthorizedSubnetIds: string;
+  brokerString: string;
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
@@ -35,7 +38,7 @@ export const determineDeploymentConfig = async (stage: string) => {
     config.secureCloudfrontDomainName = `https://${config.cloudfrontDomainName}/`;
   }
 
-  if (!isLocalStack) {
+  if (!isLocalStack && stage !== "bootstrap") {
     validateConfig(config);
   }
 
@@ -43,7 +46,7 @@ export const determineDeploymentConfig = async (stage: string) => {
 };
 
 export const loadDefaultSecret = async (project: string, stage?: string) => {
-  if (isLocalStack || stage === "bootstrap") {
+  if (stage === "bootstrap") {
     return {};
   } else {
     return JSON.parse((await getSecret(`${project}-default`))!);
@@ -72,6 +75,9 @@ function validateConfig(config: {
     "oktaMetadataUrl",
     "launchDarklyClient",
     "redirectSignout",
+    "vpcName",
+    "brokerString",
+    "kafkaAuthorizedSubnetIds",
   ];
 
   const invalidKeys = expectedKeys.filter(

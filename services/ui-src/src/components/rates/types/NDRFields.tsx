@@ -8,11 +8,20 @@ import { isNumber } from "../calculations";
 export const NDRFields = (
   props: PerformanceRateTemplate & {
     formkey: string;
-    year?: number;
+    year: number;
     calculation: Function;
+    disabled: boolean;
   }
 ) => {
-  const { label, assessments, answer, multiplier, calculation, fields } = props;
+  const {
+    label,
+    assessments,
+    answer,
+    multiplier,
+    calculation,
+    fields,
+    disabled,
+  } = props;
 
   const defaultRates: RateSetData[] =
     assessments?.map((assess) => {
@@ -84,14 +93,14 @@ export const NDRFields = (
   };
 
   return (
-    <Stack gap={6}>
+    <Stack gap="2rem">
       {assessments?.map((assess, assessIndex) => {
         const rateSet = displayValue?.find((value) => value.id === assess.id);
 
         return (
-          <Stack key={assess.id} gap={6}>
+          <Stack key={assess.id} gap="2rem">
             <Heading variant="subHeader">
-              {label ?? "Performance Rate"}
+              {label ?? "Performance Rates"}
               {": "}
               {assess.label}
             </Heading>
@@ -101,7 +110,8 @@ export const NDRFields = (
               name={`${assessIndex}.denominator`}
               onChange={onChangeHandler}
               onBlur={onBlurHandler}
-              value={rateSet?.denominator}
+              value={rateSet?.denominator ?? ""}
+              disabled={disabled}
             ></CmsdsTextField>
 
             {fields?.map((field, fieldIndex) => {
@@ -110,39 +120,41 @@ export const NDRFields = (
               );
 
               return (
-                <Stack key={`${assess.id}.${field.id}`} gap={6}>
+                <Stack key={`${assess.id}.${field.id}`} gap="2rem">
                   <Heading variant="nestedHeading">{field.label}</Heading>
                   <CmsdsTextField
                     label={`What is the ${
-                      props.year
+                      props.year + 2
                     } state performance target for this assessment for ${field.label.toLowerCase()} (${
                       assess.label
                     })?`}
                     name={`${assessIndex}.rates.${fieldIndex}.performanceTarget`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value?.performanceTarget}
+                    value={value?.performanceTarget ?? ""}
+                    disabled={disabled}
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`Numerator: ${field.label} (${assess.label})`}
                     name={`${assessIndex}.rates.${fieldIndex}.numerator`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value?.numerator}
+                    value={value?.numerator ?? ""}
+                    disabled={disabled}
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`Denominator (${assess.label})`}
                     name={`${assessIndex}.rates.${fieldIndex}.denominator`}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
-                    value={value?.denominator}
+                    value={value?.denominator ?? ""}
                     disabled
                   ></CmsdsTextField>
                   <CmsdsTextField
                     label={`${field.label} Rate (${assess.label})`}
                     name={`${assessIndex}.rates.${fieldIndex}.rate`}
                     hint="Auto-calculates"
-                    value={value?.rate}
+                    value={value?.rate ?? ""}
                     disabled
                   ></CmsdsTextField>
                 </Stack>

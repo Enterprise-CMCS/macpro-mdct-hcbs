@@ -3,7 +3,10 @@ import { render, screen } from "@testing-library/react";
 import { mockUseStore } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
 import { useLiveElement } from "utils/state/hooks/useLiveElement";
-import { ElementType } from "types/report";
+import {
+  ElementType,
+  MeasureResultsNavigationTableTemplate,
+} from "types/report";
 
 jest.mock("utils/state/useStore", () => ({
   useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
@@ -23,7 +26,7 @@ mockedUseLiveElement.mockReturnValue({
   id: "anId",
   answer: "FFS",
   label: "how are you today?",
-  value: [],
+  choices: [],
 });
 
 const mockUseNavigate = jest.fn();
@@ -38,11 +41,31 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
+const mockedMeasureResultsNavigationTableElement = {
+  type: ElementType.MeasureResultsNavigationTable,
+  id: "test measure results table",
+  measureDisplay: "quality",
+  hideCondition: {
+    controllerElementId: "reporting-radio",
+    answer: "yes",
+  },
+} as MeasureResultsNavigationTableTemplate;
+
+const MeasureResultsNavigationTableComponent = (
+  <MeasureResultsNavigationTableElement
+    element={mockedMeasureResultsNavigationTableElement}
+    index={0}
+    formkey="elements.0"
+  />
+);
+
 describe("Measure Results Navigation Table", () => {
   it("should enable each delivery system's button correctly", async () => {
-    render(<MeasureResultsNavigationTableElement />);
+    render(MeasureResultsNavigationTableComponent);
 
-    const ffsRow = screen.getByRole("row", { name: /FFS CMIT# 960/ });
+    const ffsRow = screen.getByRole("row", {
+      name: /Delivery Method: Fee-for-Service/,
+    });
     const ffsButton = ffsRow.querySelector("button");
     expect(ffsButton).toBeEnabled();
 
@@ -50,7 +73,9 @@ describe("Measure Results Navigation Table", () => {
     const ffsRoute = "/report/QMS/CO/mock-id/FFS-1";
     expect(mockUseNavigate).toHaveBeenCalledWith(ffsRoute);
 
-    const mltssRow = screen.getByRole("row", { name: /MLTSS CMIT# 960/ });
+    const mltssRow = screen.getByRole("row", {
+      name: /Delivery Method: Managed Care/,
+    });
     const mltssButton = mltssRow.querySelector("button");
     expect(mltssButton).toBeDisabled();
   });

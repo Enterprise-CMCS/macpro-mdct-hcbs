@@ -1,3 +1,5 @@
+import { ReportType } from "../types/reports";
+
 export const error = {
   UNAUTHORIZED: "User is not authorized to access this resource.",
   NO_KEY: "Must provide key for table.",
@@ -5,6 +7,7 @@ export const error = {
   INVALID_DATA: "Provided data is not valid.",
   SERVER_ERROR: "An unspecified server error occured.",
   CREATION_ERROR: "Could not be created due to a database error.",
+  ALREADY_ARCHIVED: "Cannot update archived report.",
 };
 
 export enum DeliverySystem {
@@ -95,4 +98,12 @@ export enum StateNames {
 export type StateAbbr = keyof typeof StateNames;
 export const isStateAbbreviation = (x: string | undefined): x is StateAbbr => {
   return Object.keys(StateNames).includes(x!);
+};
+
+export const reportTables: { [key in ReportType]: string } = {
+  QMS: process.env.QmsReportsTable!,
+};
+
+export const tableTopics: { [key in ReportType]: string } = {
+  QMS: "qms-reports",
 };

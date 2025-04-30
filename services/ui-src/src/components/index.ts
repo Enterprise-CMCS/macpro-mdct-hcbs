@@ -35,7 +35,6 @@ export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { DateField } from "./fields/DateField";
 export { DropdownField } from "./fields/DropdownField";
 export { RadioField } from "./fields/RadioField";
-export { ReportingRadioField } from "./fields/ReportingRadioField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
 // forms
@@ -57,6 +56,7 @@ export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
 export { MeasureTableElement } from "./report/MeasureTable";
+export { StatusAlert } from "./report/StatusAlert";
 export { Page } from "./report/Page";
 export { PraDisclosure } from "./report/PraDisclosure";
 export { MeasureResultsNavigationTableElement } from "./report/MeasureResultsNavigationTable";
@@ -71,6 +71,7 @@ export { MenuOption } from "./menus/MenuOption";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditReportModal } from "./modals/AddEditReportModal";
+export { UnlockModal } from "./modals/UnlockModal";
 // Redirects
 export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables

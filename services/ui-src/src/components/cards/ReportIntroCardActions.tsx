@@ -1,14 +1,12 @@
-import { Button, Flex, Image } from "@chakra-ui/react";
-import downloadIcon from "assets/icons/download/icon_download_primary.svg";
+import { Button, Flex, Image, Link } from "@chakra-ui/react";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType } from "types";
-import { getSignedTemplateUrl, useStore } from "utils";
+import { useStore } from "utils";
 
 /**
- * This component is contained within each card on the stat user home page.
- * It has a button to download the user guide for that report type,
- * and a link to that report type's dashboard.
+ * This component is contained within each card on the state user home page.
+ * It has a link to that report type's dashboard.
  */
 export const ReportIntroCardActions = ({ reportType }: Props) => {
   const navigate = useNavigate();
@@ -18,35 +16,20 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   return (
     <Flex sx={sx.actionsFlex}>
       <Button
-        variant="link"
-        sx={sx.userGuideDownloadButton}
-        leftIcon={
-          <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
-        }
-        onClick={async () => {
-          await downloadUserGuide(reportType);
+        as={Link}
+        variant={"primary"}
+        href={`/report/${reportType}/${state}`}
+        onClick={(e) => {
+          e.preventDefault();
+          navigate(dashboardRoute);
         }}
-      >
-        User Guide and Help File
-      </Button>
-      {/* TODO: this Button is for navigation, so it maybe should be a Link instead. */}
-      <Button
-        onClick={() => navigate(dashboardRoute)}
         rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
+        sx={sx.link}
       >
-        Enter HCBS {reportType} online
+        Enter {reportType} Report online
       </Button>
     </Flex>
   );
-};
-
-export const downloadUserGuide = async (reportType: ReportType) => {
-  const signedUrl = await getSignedTemplateUrl(reportType);
-  const link = document.createElement("a");
-  link.setAttribute("target", "_blank");
-  link.setAttribute("href", signedUrl);
-  link.click();
-  link.remove();
 };
 
 interface Props {
@@ -55,7 +38,7 @@ interface Props {
 
 const sx = {
   actionsFlex: {
-    flexFlow: "wrap",
+    flexFlow: "no-wrap",
     gridGap: "1rem",
     justifyContent: "space-between",
     margin: "1rem 0 0 1rem",
@@ -63,16 +46,16 @@ const sx = {
       flexDirection: "column",
     },
   },
-  userGuideDownloadButton: {
-    justifyContent: "start",
-    marginRight: "1rem",
-    padding: "0",
-    span: {
-      marginLeft: "0rem",
-      marginRight: "0.5rem",
+  link: {
+    textDecoration: "none",
+    "&:visited, &:visited:hover": {
+      color: "white",
+      textDecoration: "none",
     },
-    ".mobile &": {
-      marginRight: "0",
+    "&:hover": {
+      color: "white",
+      textDecoration: "none",
+      backgroundColor: "palette.primary_darker",
     },
   },
 };
