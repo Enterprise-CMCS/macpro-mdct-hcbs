@@ -200,8 +200,16 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
     for (const rateAnswer of element.answer) {
       if (!rateAnswer.rates) return false;
       for (const uniqueRate of rateAnswer.rates) {
-        if (uniqueRate.performanceTarget === undefined) return false;
-        if (uniqueRate.rate === undefined) return false;
+        if (
+          uniqueRate.performanceTarget === undefined ||
+          (uniqueRate.performanceTarget as number | string) === ""
+        )
+          return false;
+        if (
+          uniqueRate.rate === undefined ||
+          (uniqueRate.rate as number | string) === ""
+        )
+          return false;
       }
     }
   }
