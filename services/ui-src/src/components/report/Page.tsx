@@ -7,6 +7,7 @@ import {
   buttonLinkElement,
   nestedHeadingElement,
   dividerElement,
+  subHeaderMeasureElement,
 } from "./Elements";
 import {
   assertExhaustive,
@@ -23,7 +24,6 @@ import {
   PerformanceRateElement,
   MeasureResultsNavigationTableElement,
   RadioField,
-  ReportingRadioField,
   StatusTableElement,
   TextAreaField,
   TextField,
@@ -63,8 +63,6 @@ export const Page = ({ elements }: Props) => {
         return accordionElement;
       case ElementType.Radio:
         return RadioField;
-      case ElementType.ReportingRadio:
-        return ReportingRadioField;
       case ElementType.ButtonLink:
         return buttonLinkElement;
       case ElementType.MeasureTable:
@@ -85,6 +83,8 @@ export const Page = ({ elements }: Props) => {
         return dividerElement;
       case ElementType.SubmissionParagraph:
         return SubmissionParagraph;
+      case ElementType.SubHeaderMeasure:
+        return subHeaderMeasureElement;
       default:
         assertExhaustive(elementType);
         return (_element: any, _key: number) => <></>;
@@ -104,7 +104,7 @@ export const Page = ({ elements }: Props) => {
     );
   });
   return (
-    <VStack alignItems="flex-start" gap="1rem">
+    <VStack alignItems="flex-start" gap="2rem" marginBottom="2rem">
       {composedElements}
     </VStack>
   );

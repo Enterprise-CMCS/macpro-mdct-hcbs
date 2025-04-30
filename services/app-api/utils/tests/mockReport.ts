@@ -12,7 +12,9 @@ import {
 const qmsReportTemplate = getReportTemplate(ReportType.QMS, 2026);
 
 export const validReport: Report = {
-  ...qmsReportTemplate,
+  type: qmsReportTemplate.type,
+  year: qmsReportTemplate.year,
+  pages: qmsReportTemplate.pages,
   state: "NJ",
   id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
   created: 1736524513631,
@@ -21,7 +23,6 @@ export const validReport: Report = {
   lastEditedByEmail: "stateuser2@test.com",
   status: ReportStatus.NOT_STARTED,
   name: "yeehaw",
-  year: 2026,
   archived: false,
   submissionCount: 0,
   options: {},
@@ -40,41 +41,6 @@ export const incorrectStatusReport = {
 export const incorrectTypeReport = {
   ...validReport,
   type: "wrong type", // Doesn't use ReportType enum
-};
-
-export const invalidMeasureTemplatesReport = {
-  ...validReport,
-  measureTemplates: {
-    ...qmsReportTemplate.measureTemplates,
-    [MeasureTemplateName["LTSS-1"]]: {
-      id: "LTSS-1",
-      title: "LTSS-1: Comprehensive Assessment and Update",
-      //   type: PageType.Measure,
-      substitutable: MeasureTemplateName["FASI-1"],
-      sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Dashboard",
-          to: "req-measure-result",
-        },
-      ],
-    },
-  },
-};
-
-export const invalidMeasureLookupReport = {
-  ...validReport,
-  measureLookup: {
-    defaultMeasures: [
-      {
-        cmit: 960,
-        required: true,
-        stratified: false,
-        measureTemplate: "hi", // not a MeasureTemplate enum value
-      },
-    ],
-  },
 };
 
 export const invalidFormPageReport = {
@@ -189,7 +155,7 @@ export const invalidParentPageReport = {
 
 export const invalidRadioCheckedChildrenReport = {
   ...validReport,
-  measureTemplates: {
+  pages: {
     ...qmsReportTemplate.measureTemplates,
     [MeasureTemplateName["LTSS-1"]]: {
       id: "LTSS-1",

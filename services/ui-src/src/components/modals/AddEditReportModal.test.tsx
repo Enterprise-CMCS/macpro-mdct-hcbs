@@ -94,7 +94,9 @@ describe("Test Add Report Modal", () => {
     expect(
       screen.getByText("Add new Quality Measure Set Report")
     ).toBeInTheDocument();
-    expect(screen.getByText("QMS report name")).toBeInTheDocument();
+    expect(
+      screen.getByText("Quality Measure Set Report Name")
+    ).toBeInTheDocument();
     expect(screen.getByText("Start new")).toBeInTheDocument();
   });
 });
@@ -125,14 +127,14 @@ describe("Test dropdown for year", () => {
 
   test("Assert dropdown options are rendered", () => {
     const dropdown = screen.getByRole("button", {
-      name: "2026 Select the quality measure set reporting year",
+      name: "2026 Select the quality measure set reporting year.",
     });
     expect(dropdown).toBeInTheDocument();
   });
 
   test("Simulate selecting a year", async () => {
     const dropdown = screen.getAllByLabelText(
-      "Select the quality measure set reporting year"
+      "Select the quality measure set reporting year."
     )[0] as HTMLSelectElement;
     userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
@@ -143,7 +145,7 @@ describe("Test submit", () => {
   it("Simulate submitting modal", async () => {
     render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
-      name: "QMS report name",
+      name: "Quality Measure Set Report Name",
     });
     await act(async () => await userEvent.type(nameTextbox, "mock-name"));
 
@@ -164,7 +166,7 @@ describe("Test submit", () => {
     render(editModalComponent);
 
     const nameTextbox = screen.getByRole("textbox", {
-      name: "QMS report name",
+      name: "Quality Measure Set Report Name",
     });
     await act(
       async () => await userEvent.type(nameTextbox, "mock-edit-report")

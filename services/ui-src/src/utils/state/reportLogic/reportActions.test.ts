@@ -6,11 +6,11 @@ import {
   MeasureTemplateName,
   PageType,
   Report,
-  ReportingRadioTemplate,
   ReportStatus,
   ReportType,
   TextboxTemplate,
   FormPageTemplate,
+  RadioTemplate,
 } from "types/report";
 import {
   buildState,
@@ -22,6 +22,7 @@ import {
   saveReport,
   filterErrors,
   markPageComplete,
+  changeDeliveryMethods,
 } from "./reportActions";
 import {
   mock2MeasureTemplate,
@@ -33,7 +34,7 @@ jest.mock("../../api/requestMethods/report", () => ({
 }));
 const testReport: Report = {
   type: ReportType.QMS,
-  title: "plan id",
+  name: "plan id",
   year: 2026,
   options: {},
   state: "NJ",
@@ -80,467 +81,29 @@ const testReport: Report = {
         },
       ],
     },
+    {
+      id: "FFS-1",
+      title: "FFS",
+      type: PageType.MeasureResults,
+      status: PageStatus.IN_PROGRESS,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "header",
+          text: "FFS page",
+        },
+      ],
+    },
     mockMeasureTemplateNotReporting,
     mock2MeasureTemplate,
   ],
-  measureLookup: { defaultMeasures: [], optionGroups: {} },
-  measureTemplates: {
-    [MeasureTemplateName["LTSS-1"]]: {
-      id: "req-measure-report",
-      title: "Example Measure",
-      type: PageType.Measure,
-      sidebar: false,
-      elements: [
-        {
-          type: ElementType.ButtonLink,
-          label: "Return to Required Measures Results Dashboard",
-          to: "req-measure-result",
-        },
-        {
-          type: ElementType.MeasureResultsNavigationTable,
-          measureDisplay: "quality",
-        },
-      ],
-    } as MeasurePageTemplate,
-    [MeasureTemplateName["FFS-1"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-6"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-3"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-3"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-3"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FASI-1"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-FASI-1"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-FASI-1"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FASI-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-FASI-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-FASI-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["HCBS-10"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-HCBS-10"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-4"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-4"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-4"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-5"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-5-PT1"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-5-PT2"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-6"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-6"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-7"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-7"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-7"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["LTSS-8"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-8"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-8"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-DM"]]: {
-      id: "",
-      title: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-1"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-3"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-4"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-5"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-6"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["POM-7"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-POM-1"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-POM-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-POM-3"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-POM-4"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-POM-5"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-POM-6"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["FFS-POM-7"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-POM-1"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-POM-2"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-POM-3"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-POM-4"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-POM-5"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-POM-6"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-    [MeasureTemplateName["MLTSS-POM-7"]]: {
-      id: "",
-      cmitId: "",
-      status: PageStatus.IN_PROGRESS,
-      title: "",
-      type: PageType.Measure,
-      elements: [],
-    },
-  } as Record<MeasureTemplateName, MeasurePageTemplate>,
 };
 
 describe("state/management/reportState: buildState", () => {
   test("initializes relevant parts of the state", () => {
     const result = buildState(testReport, false);
-    expect(result.pageMap!.size).toEqual(5);
+    expect(result.pageMap!.size).toEqual(6);
     expect(result.report).not.toBeUndefined();
     expect(result.rootPage).not.toBeUndefined();
     expect(result.parentPage?.parent).toEqual("root");
@@ -584,7 +147,7 @@ describe("state/management/reportState: mergeAnswers", () => {
 describe("state/management/reportState: substitute", () => {
   test("substitute the measure", () => {
     const response = substitute(testReport, mockMeasureTemplateNotReporting);
-    const measure = response.report.pages[3] as MeasurePageTemplate;
+    const measure = response.report.pages[4] as MeasurePageTemplate;
     expect(measure.required).toBe(false);
   });
 });
@@ -597,8 +160,8 @@ describe("state/management/reportState: resetMeasure", () => {
 
     const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = resetMeasure("LTSS-1", state);
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
-    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
     expect(measure.status).toBe(PageStatus.NOT_STARTED);
@@ -617,8 +180,8 @@ describe("state/management/reportState: clearMeasure", () => {
     const response = clearMeasure("LTSS-1", state, {
       ["measure-reporting-radio"]: "no",
     });
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
-    const reportingRadio = measure.elements[0] as ReportingRadioTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
+    const reportingRadio = measure.elements[0] as RadioTemplate;
     const question = measure.elements[1] as TextboxTemplate;
 
     expect(measure.status).toBe(PageStatus.IN_PROGRESS);
@@ -635,7 +198,7 @@ describe("state/management/reportState: markPageComplete", () => {
 
     const state = buildState(testReport, false) as unknown as HcbsReportState;
     const response = markPageComplete("LTSS-1", state);
-    const measure = response!.report!.pages[3] as MeasurePageTemplate;
+    const measure = response!.report!.pages[4] as MeasurePageTemplate;
 
     expect(measure.status).toBe(PageStatus.COMPLETE);
   });
@@ -662,5 +225,34 @@ describe("state/management/reportState: filterErrors", () => {
 
     expect("answer" in result.elements).toBeFalsy();
     expect(result.elements[1].answer).toBe("cat");
+  });
+});
+
+describe("state/management/reportState: changeDeliveryMethods", () => {
+  test("should clear unused methods", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const response = changeDeliveryMethods("LTSS-1", "MLTSS", state);
+    const ffs = response!.report.pages.find(
+      (page) => page.id === MeasureTemplateName["FFS-1"]
+    ) as MeasurePageTemplate;
+
+    expect(ffs!.status).toBe(PageStatus.NOT_STARTED);
+  });
+  test("should ignore used methods", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const response = changeDeliveryMethods("LTSS-1", "FFS", state);
+    const ffs = response!.report.pages.find(
+      (page) => page.id === MeasureTemplateName["FFS-1"]
+    ) as MeasurePageTemplate;
+
+    expect(ffs!.status).toBe(PageStatus.IN_PROGRESS);
   });
 });

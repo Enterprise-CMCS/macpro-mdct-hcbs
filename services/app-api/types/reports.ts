@@ -15,7 +15,7 @@ export const isReportType = (x: string | undefined): x is ReportType => {
 };
 
 export interface ReportOptions {
-  name?: string;
+  name: string;
   year: number;
   options: {
     cahps?: boolean;
@@ -124,8 +124,9 @@ export enum PageStatus {
   COMPLETE = "Complete",
 }
 
-export interface Report extends ReportTemplate {
+export interface Report extends ReportBase, ReportOptions {
   id?: string;
+  name: string;
   state: string;
   created?: number;
   lastEdited?: number;
@@ -185,21 +186,25 @@ export interface Form {
   sections: [];
 }
 
-export type ReportTemplate = ReportOptions & {
-  type: ReportType;
-  title: string;
-  pages: (
-    | ParentPageTemplate
-    | FormPageTemplate
-    | MeasurePageTemplate
-    | ReviewSubmitTemplate
-  )[];
+export type ReportMeasureConfig = {
   measureLookup: {
     defaultMeasures: MeasureOptions[];
     pomMeasures: MeasureOptions[];
   };
   measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
+
+export type ReportBase = {
+  type: ReportType;
+  year: number;
+  pages: (
+    | ParentPageTemplate
+    | FormPageTemplate
+    | MeasurePageTemplate
+    | ReviewSubmitTemplate
+  )[];
+};
+export type ReportTemplate = ReportBase & ReportMeasureConfig;
 
 export type PageTemplate =
   | ParentPageTemplate
@@ -248,6 +253,7 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
@@ -257,7 +263,6 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
-  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -273,6 +278,7 @@ export enum ElementType {
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
   | TextAreaBoxTemplate
@@ -282,7 +288,6 @@ export type PageElement =
   | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
-  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
@@ -322,6 +327,11 @@ export type SubHeaderTemplate = {
   text: string;
   helperText?: string;
   hideCondition?: HideCondition;
+};
+
+export type SubHeaderMeasureTemplate = {
+  type: ElementType.SubHeaderMeasure;
+  id: string;
 };
 
 export type NestedHeadingTemplate = {
@@ -416,17 +426,7 @@ export type RadioTemplate = {
   answer?: string;
   required?: boolean;
   hideCondition?: HideCondition;
-};
-
-export type ReportingRadioTemplate = {
-  type: ElementType.ReportingRadio;
-  id: string;
-  formKey?: string;
-  label: string;
-  helperText?: string;
-  choices: ChoiceTemplate[];
-  answer?: string;
-  required?: boolean;
+  clickAction?: string;
 };
 
 export type ButtonLinkTemplate = {

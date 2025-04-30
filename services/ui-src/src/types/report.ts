@@ -28,24 +28,29 @@ export const isReportStatus = (status: string): status is ReportStatus => {
   return Object.values(ReportStatus).includes(status as ReportStatus);
 };
 
-export type ReportTemplate = ReportOptions & {
+export type ReportMeasureConfig = {
+  measureLookup: {
+    defaultMeasures: MeasureOptions[];
+    pomMeasures: MeasureOptions[];
+  };
+  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
+};
+
+export type ReportBase = {
   type: ReportType;
-  title: string;
+  year: number;
   pages: (
     | ParentPageTemplate
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate
   )[];
-  measureLookup: {
-    defaultMeasures: MeasureOptions[];
-    optionGroups: Record<string, MeasureOptions[]>;
-  };
-  measureTemplates: Record<MeasureTemplateName, MeasurePageTemplate>;
 };
+export type ReportTemplate = ReportBase & ReportMeasureConfig;
 
-export interface Report extends ReportTemplate {
+export interface Report extends ReportBase, ReportOptions {
   id?: string;
+  name: string;
   state: StateAbbr;
   created?: number;
   lastEdited?: number;
@@ -53,7 +58,7 @@ export interface Report extends ReportTemplate {
   lastEditedByEmail?: string;
   submitted?: number;
   submittedBy?: string;
-  submittedByEmail?: number;
+  submittedByEmail?: string;
   status: ReportStatus;
   submissionCount: number;
   archived: boolean;
@@ -155,6 +160,7 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
@@ -164,7 +170,6 @@ export enum ElementType {
   ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
-  ReportingRadio = "reportingRadio",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -180,6 +185,7 @@ export enum ElementType {
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
   | TextAreaBoxTemplate
@@ -188,7 +194,6 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
-  | ReportingRadioTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
@@ -222,6 +227,11 @@ export type SubHeaderTemplate = {
   text: string;
   helperText?: string;
   hideCondition?: HideCondition;
+};
+
+export type SubHeaderMeasureTemplate = {
+  type: ElementType.SubHeaderMeasure;
+  id: string;
 };
 
 export type NestedHeadingTemplate = {
@@ -329,16 +339,7 @@ export type RadioTemplate = {
   answer?: string;
   required?: boolean;
   hideCondition?: HideCondition;
-};
-
-export type ReportingRadioTemplate = {
-  type: ElementType.ReportingRadio;
-  id: string;
-  label: string;
-  choices: ChoiceTemplate[];
-  helperText?: string;
-  answer?: string;
-  required?: boolean;
+  clickAction?: string;
 };
 
 export type ButtonLinkTemplate = {
@@ -442,7 +443,7 @@ export enum MeasureSpecification {
 }
 
 export interface ReportOptions {
-  name?: string;
+  name: string;
   year: number;
   options: {
     cahps?: boolean;

@@ -58,6 +58,7 @@ export interface HcbsReportState {
     measureId: string,
     ignoreList: { [key: string]: string }
   ) => void;
+  changeDeliveryMethods: (measureId: string, selection: string) => void;
   completePage: (measureId: string) => void;
   resetMeasure: (measureId: string) => void;
   setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => void;

@@ -43,6 +43,7 @@ const mockedTextAreaElement = {
     controllerElementId: "reporting-radio",
     answer: "yes",
   },
+  required: true,
 } as TextAreaBoxTemplate;
 
 const textAreaFieldComponent = (
@@ -94,7 +95,7 @@ describe("<TextAreaField />", () => {
         elements: [
           {
             answer: "idk",
-            type: "reportingRadio",
+            type: "radio",
             label: "Should we hide the other radios on this page?",
             id: "reporting-radio",
           },

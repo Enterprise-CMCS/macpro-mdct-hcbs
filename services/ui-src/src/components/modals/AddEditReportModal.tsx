@@ -81,16 +81,18 @@ export const AddEditReportModal = ({
         <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
           <Flex direction="column" gap="1.5rem">
             <Text>
-              Answering 'Yes' or 'No' to the following questions will impact
+              Answering “Yes” or “No” to the following questions will impact
               which measure results must be reported.
             </Text>
             <TextField
               element={{
                 type: ElementType.Textbox,
                 id: "",
-                label: "QMS report name",
+                label: "Quality Measure Set Report Name",
                 helperText:
-                  "Name this QMS report so you can easily refer to it. Consider using timeframe(s).",
+                  "Name the QMS report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: " +
+                  activeState +
+                  " HCBS QMS Report for 2026",
                 answer: selectedReport?.name,
                 required: true,
               }}
@@ -100,10 +102,12 @@ export const AddEditReportModal = ({
               element={{
                 type: ElementType.Dropdown,
                 id: "",
-                label: "Select the quality measure set reporting year",
+                label: "Select the quality measure set reporting year.",
                 options: dropdownYears,
                 answer: selectedReport?.year.toString(),
                 required: true,
+                helperText:
+                  "This is the final year in a multi-year reporting period, used to indicate the endpoint of data collection.  For example, if a report covers the period of 2025 and 2026, the reporting year would be 2026.",
               }}
               disabled={!!selectedReport}
               formkey={"year"}
@@ -113,7 +117,7 @@ export const AddEditReportModal = ({
                 type: ElementType.Radio,
                 id: "",
                 label:
-                  "Does your state administer the HCBS CAHPS beneficiary survey?",
+                  "Is your state reporting on the HCBS CAHPS beneficiary Survey?",
                 choices: [
                   {
                     label: "Yes",
@@ -137,7 +141,7 @@ export const AddEditReportModal = ({
                 type: ElementType.Radio,
                 id: "",
                 label:
-                  "Does your state administer the HCI-IDD beneficiary survey?",
+                  "Is your state reporting on the HCI-IDD beneficiary Survey?",
                 choices: [
                   {
                     label: "Yes",
@@ -161,7 +165,7 @@ export const AddEditReportModal = ({
                 type: ElementType.Radio,
                 id: "",
                 label:
-                  "Does your state administer the NCI-AD beneficiary survey?",
+                  "Is your state reporting on the NCI-AD beneficiary Survey?",
                 choices: [
                   {
                     label: "Yes",
@@ -184,7 +188,7 @@ export const AddEditReportModal = ({
               element={{
                 type: ElementType.Radio,
                 id: "",
-                label: "Does your state administer the POM beneficiary survey?",
+                label: "Is your state reporting on the POM beneficiary Survey?",
                 choices: [
                   {
                     label: "Yes",

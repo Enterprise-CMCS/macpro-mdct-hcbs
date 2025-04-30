@@ -17,6 +17,7 @@ import {
   PageStatus,
   MeasureTableTemplate,
   PageType,
+  ReportStatus,
 } from "types";
 import { useStore } from "utils";
 import { PageElementProps } from "./Elements";
@@ -60,8 +61,7 @@ export const MeasureTableElement = (props: PageElementProps) => {
   const navigate = useNavigate();
 
   const handleEditClick = (measureId: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${measureId}`;
-    navigate(path);
+    navigate(`/report/${reportType}/${state}/${reportId}/${measureId}`);
   };
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
@@ -99,19 +99,36 @@ export const MeasureTableElement = (props: PageElementProps) => {
         </Td>
         <Td width="100%">
           <Text fontWeight="bold">{measure.title}</Text>
-          <Text>CMIT# {measure.cmit}</Text>
+          <Text>CMIT number: #{measure.cmit}</Text>
           <Text>Status: {measure.status ?? "Not started"}</Text>
           {errorMessage(measure)}
         </Td>
         <Td>
-          {measure.substitutable && measure.required ? (
-            <Link onClick={() => buildModal(measure)}>Substitute measure</Link>
+          {measure.substitutable &&
+          measure.required &&
+          report?.status !== ReportStatus.SUBMITTED ? (
+            <Button
+              variant="link"
+              sx={{ fontSize: "14px" }}
+              onClick={() => {
+                buildModal(measure);
+              }}
+            >
+              Substitute measure
+            </Button>
           ) : null}
         </Td>
-
         <Td>
           {/* TO-DO: Fix format of measure id */}
-          <Button variant="outline" onClick={() => handleEditClick(measure.id)}>
+          <Button
+            as={Link}
+            variant={"outline"}
+            href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleEditClick(measure.id);
+            }}
+          >
             Edit
           </Button>
         </Td>

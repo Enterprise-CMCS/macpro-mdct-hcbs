@@ -11,8 +11,8 @@ import {
   PerformanceRateType,
   RadioTemplate,
   RateCalc,
-  ReportingRadioTemplate,
   StatusAlertTemplate,
+  SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
@@ -38,7 +38,12 @@ export const returnToDashboard: ButtonLinkTemplate = {
 
 export const divider: DividerTemplate = {
   type: ElementType.Divider,
-  id: "divdier",
+  id: "divider",
+};
+
+export const measureType: SubHeaderMeasureTemplate = {
+  type: ElementType.SubHeaderMeasure,
+  id: "sub-header-measure",
 };
 
 export const measureHeader: HeaderTemplate = {
@@ -52,7 +57,20 @@ export const measureInstructions: AccordionTemplate = {
   id: "measure-instructions",
   label: "Instructions",
   value:
-    "[Optional instructional content that could support the user in completing this page]",
+    "<strong>Instructions for Completing this Measure</strong>" +
+    "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).<p>" +
+    "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
+    "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections).  All data previously entered will be cleared and not submitted upon report completion.</p>",
+};
+
+export const deliveryMethodMeasureInstructions: AccordionTemplate = {
+  type: ElementType.Accordion,
+  id: "delivery-method-measure-instructions",
+  label: "Instructions",
+  value: `<b>Instructions for Completing this section</b> <p>Before you can click the "<b>Complete section</b>" button, 
+    you must answer all required (non-optional) questions for the measure section.</p>
+    <p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>
+    <p>Once complete, you can still edit this section but the status will change to ‘In progress’ and you will need to re-select the ‘Complete section’ button.</p>`,
 };
 
 export const measureDetailsSection: MeasureDetailsTemplate = {
@@ -78,20 +96,21 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
   text: "Managed Care Measure Results",
 };
 
-export const isTheStateReportingThisMeasure: ReportingRadioTemplate = {
-  type: ElementType.ReportingRadio,
+export const isTheStateReportingThisMeasure: RadioTemplate = {
+  type: ElementType.Radio,
   label: "Is the state reporting on this measure?",
   helperText:
     "Warning: Changing this response will clear any data previously entered in this measure.",
   id: "measure-reporting-radio",
   choices: [
-    { label: "Yes, the state is reporting on this measure", value: "yes" },
+    { label: "Yes, the state is reporting on this measure.", value: "yes" },
     {
-      label: "No, CMS is reporting this measure on the state's behalf",
+      label: "No, CMS is reporting this measure on the state's behalf.",
       value: "no",
     },
   ],
   required: true,
+  clickAction: "qmReportingChange",
 };
 
 export const wereTheResultsAudited: RadioTemplate = {
@@ -123,17 +142,23 @@ export const wereTheResultsAudited: RadioTemplate = {
 
 export const whatSpecificationsAreYouUsing: RadioTemplate = {
   type: ElementType.Radio,
-  label: "What Technical Specifications are you using to report this measure?",
+  label: "What technical specifications are being used to report this measure?",
   id: "measure-tech-specs-radio",
   choices: [
-    { label: "CMS", value: "cms" },
-    { label: "HEDIS", value: "hedis" },
+    {
+      label:
+        "National Committee for Quality Assurance (NCQA)/Healthcare Effectiveness Data and Information Set (HEDIS)",
+      value: "hedis",
+    },
+    { label: "Centers for Medicare and Medicaid Services (CMS)", value: "cms" },
   ],
+  helperText:
+    "Select the technical specifications the state used to report this measure.",
 };
 
 export const didYouFollowSpecifications: RadioTemplate = {
   type: ElementType.Radio,
-  label: "Did you follow the 2026 Technical Specifications?",
+  label: "Did you follow, with no variance, the 2026 specifications?",
   id: "measure-following-tech-specs",
   choices: [
     { label: "Yes", value: "yes" },
@@ -146,6 +171,8 @@ export const didYouFollowSpecifications: RadioTemplate = {
           id: "measure-following-tech-specs-no-explain",
           label: "Please explain the variance.",
           required: true,
+          helperText:
+            "Include the name of which technical specifications were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
         },
       ],
     },
@@ -162,27 +189,30 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   id: "additional-notes-field",
   helperText:
     "If applicable, add any notes or comments to provide context to the reported measure result",
-  label: "Additional notes/comments (optional)",
+  label: "Additional notes/comments",
   hideCondition: {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
 };
 
-export const measureDeliveryMethodsSubheader: SubHeaderTemplate = {
-  type: ElementType.SubHeader,
-  text: "Measure Delivery Methods",
-  id: "measure-delivery-methods-subheader",
-  hideCondition: {
-    controllerElementId: "measure-reporting-radio",
-    answer: "no",
-  },
-};
+export const measureDeliveryMethodsSubheader = [
+  divider,
+  {
+    type: ElementType.SubHeader,
+    text: "Measure Delivery Methods",
+    id: "measure-delivery-methods-subheader",
+    hideCondition: {
+      controllerElementId: "measure-reporting-radio",
+      answer: "no",
+    },
+  } as SubHeaderTemplate,
+];
 
 export const whichVersionQualityMeasureReported: RadioTemplate = {
   type: ElementType.Radio,
   id: "delivery-method-radio",
-  label: "Which version of quality measure will be reported?",
+  label: "Which delivery methods will be reported on for this measure?",
   choices: [
     { label: "Fee-For-Service (FFS LTSS)", value: "FFS" },
     {
@@ -198,6 +228,7 @@ export const whichVersionQualityMeasureReported: RadioTemplate = {
   required: true,
   helperText:
     "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.",
+  clickAction: "qmDeliveryMethodChange",
 };
 
 export const enterMeasureResultsSubheader: SubHeaderTemplate = {
@@ -228,13 +259,13 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-export const whichMedicaidHCBSprograms = [
+export const whichProgramsWaivers = [
   {
     type: ElementType.TextAreaField,
     id: "measure-programs-text",
-    label: "Which Medicaid HCBS programs are being reported? (optional)",
+    label: "Which programs and waivers are included?",
     helperText:
-      "Please provide waiver, SPA or 1115 demonstration names and associated control numbers.",
+      "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
   } as TextAreaBoxTemplate,
   divider,
 ];
@@ -245,8 +276,6 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "assess-of-core",
@@ -265,7 +294,6 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText: "Hint Text",
   assessments: [
     {
       id: "part-not-contact",
@@ -284,8 +312,6 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "person-plan-core",
@@ -304,8 +330,6 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
   label: "Exclusion Rates",
   rateType: PerformanceRateType.NDR_Enhanced,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "part-not-contact",
@@ -324,8 +348,6 @@ export const performanceRatePOM: PerformanceRateTemplate = {
   id: "measure-rates",
   rateType: PerformanceRateType.NDR,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     {
       id: "same-env",
@@ -338,8 +360,6 @@ export const performanceRatePOM: PerformanceRateTemplate = {
 export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
       id: "count-of-success",
@@ -376,8 +396,6 @@ export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
 export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   fields: [
     {
       id: "count-of-success",
@@ -414,8 +432,6 @@ export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
 export const performanceRateTermStay: PerformanceRateTemplate = {
   type: ElementType.PerformanceRate,
   id: "measure-rates",
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -439,8 +455,6 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
   rateType: PerformanceRateType.NDR_FIELDS,
   rateCalc: RateCalc.NDRCalc,
   required: true,
-  helperText:
-    "The performance rate is based on a review of this measure's participant case management records, selected via a systematic sample drawn from the eligible population.",
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },
     { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },

@@ -35,7 +35,6 @@ export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 export { DateField } from "./fields/DateField";
 export { DropdownField } from "./fields/DropdownField";
 export { RadioField } from "./fields/RadioField";
-export { ReportingRadioField } from "./fields/ReportingRadioField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
 // forms
