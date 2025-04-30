@@ -42,7 +42,9 @@ interface TableProps {
   userIsEndUser: boolean | undefined;
   toggleArchived: Function;
   toggleRelease: Function;
+  /** Used to store the archive index of the table row */
   archiving: number | undefined;
+  /** Used to store the unlock index of the table row */
   unlocking: number | undefined;
 }
 
@@ -135,7 +137,7 @@ export const HorizontalTable = (props: TableProps) => {
   );
 };
 
-export const VerticleTable = (props: TableProps) => {
+export const VerticalTable = (props: TableProps) => {
   return (
     <VStack alignItems="start" gap={4}>
       {props.reports.map((report, idx) => (
@@ -298,7 +300,7 @@ export const DashboardTable = ({
         })}
       </Hide>
       <Show below="sm">
-        {VerticleTable({
+        {VerticalTable({
           tableContent,
           reports,
           showEditNameColumn,
