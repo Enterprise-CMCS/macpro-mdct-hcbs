@@ -92,7 +92,7 @@ export const AddEditReportModal = ({
                 helperText:
                   "Name the QMS report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: " +
                   activeState +
-                  " HCBS QMS Report for 2026”",
+                  " HCBS QMS Report for 2026",
                 answer: selectedReport?.name,
                 required: true,
               }}
