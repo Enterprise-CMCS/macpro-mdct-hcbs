@@ -202,10 +202,7 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
       for (const uniqueRate of rateAnswer.rates) {
         if (
           uniqueRate.performanceTarget === undefined ||
-          (uniqueRate.performanceTarget as number | string) === ""
-        )
-          return false;
-        if (
+          (uniqueRate.performanceTarget as number | string) === "" ||
           uniqueRate.rate === undefined ||
           (uniqueRate.rate as number | string) === ""
         )

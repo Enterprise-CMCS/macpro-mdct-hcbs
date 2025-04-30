@@ -5,6 +5,7 @@ import {
   PerformanceRateTemplate,
   PerformanceRateType,
   RadioTemplate,
+  RateSetData,
 } from "types";
 import {
   elementSatisfiesRequired,
@@ -284,10 +285,30 @@ describe("elementSatisfiesRequired", () => {
       required: true,
       rateType: PerformanceRateType.NDR,
     } as PerformanceRateTemplate;
+    const badNDRFieldRate = {
+      id: "bad-ndr-field-rate",
+      type: ElementType.PerformanceRate,
+      required: true,
+      rateType: PerformanceRateType.NDR_FIELDS,
+      fields: [{ label: "abc", id: "abc" }],
+      answer: [
+        {
+          id: "mock-id",
+          label: "abc",
+          rates: [
+            {
+              label: "abc",
+              performanceTarget: undefined,
+            },
+          ],
+        },
+      ] as RateSetData[],
+    } as PerformanceRateTemplate;
     const elements = [goodRateA, goodRateB, badRate];
     expect(elementSatisfiesRequired(goodRateA, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(goodRateB, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(fieldsRate, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(badRate, elements)).toBeFalsy();
+    expect(elementSatisfiesRequired(badNDRFieldRate, elements)).toBeFalsy();
   });
 });
