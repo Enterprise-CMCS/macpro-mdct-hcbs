@@ -4,7 +4,7 @@ import { Spinner, Flex, Text } from "@chakra-ui/react";
 import { ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
-import { ReportOptions } from "types/report";
+import { ReportOptions, ReportStatus } from "types/report";
 
 export const AddEditReportModal = ({
   activeState,
@@ -14,7 +14,7 @@ export const AddEditReportModal = ({
   reportHandler,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-
+  const readOnly = selectedReport?.status === ReportStatus.SUBMITTED;
   // TO-DO to update when we add template versioning by year
   const dropdownYears = [{ label: "2026", value: "2026" }];
 
@@ -76,6 +76,7 @@ export const AddEditReportModal = ({
         ),
         closeButtonText: "Cancel",
       }}
+      disableConfirm={readOnly}
     >
       <FormProvider {...form}>
         <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
@@ -96,6 +97,7 @@ export const AddEditReportModal = ({
                 answer: selectedReport?.name,
                 required: true,
               }}
+              disabled={readOnly}
               formkey={"reportTitle"}
             />
             <DropdownField

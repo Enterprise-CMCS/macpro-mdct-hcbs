@@ -65,15 +65,9 @@ export const HorizontalTable = (props: TableProps) => {
         <Tr key={report.id}>
           {props.showEditNameColumn && (
             <Td fontWeight={"bold"}>
-              {report.status !== ReportStatus.SUBMITTED ? (
-                <button onClick={() => props.openAddEditReportModal(report)}>
-                  <Image
-                    src={editIcon}
-                    alt="Edit Report Name"
-                    minW={"1.75rem"}
-                  />
-                </button>
-              ) : null}
+              <button onClick={() => props.openAddEditReportModal(report)}>
+                <Image src={editIcon} alt="Edit Report Name" minW={"1.75rem"} />
+              </button>
             </Td>
           )}
           <Td
@@ -152,19 +146,13 @@ export const VerticalTable = (props: TableProps) => {
             <Text variant="grey">Submission name</Text>
             <HStack>
               {props.showEditNameColumn && (
-                <>
-                  {report.status !== ReportStatus.SUBMITTED ? (
-                    <button
-                      onClick={() => props.openAddEditReportModal(report)}
-                    >
-                      <Image
-                        src={editIcon}
-                        alt="Edit Report Name"
-                        minW={"1.75rem"}
-                      />
-                    </button>
-                  ) : null}
-                </>
+                <button onClick={() => props.openAddEditReportModal(report)}>
+                  <Image
+                    src={editIcon}
+                    alt="Edit Report Name"
+                    minW={"1.75rem"}
+                  />
+                </button>
               )}
               <Text fontWeight="bold" fontSize="16px">
                 {report.name}
