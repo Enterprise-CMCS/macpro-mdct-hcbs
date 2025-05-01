@@ -25,12 +25,6 @@ export interface TableContentShape {
   footRow?: string[][];
 }
 
-export interface TimeShape {
-  hour: number;
-  minute: number;
-  second: number;
-}
-
 // OTHER
 export interface AnyObject {
   [key: string]: any;

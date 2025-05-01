@@ -24,6 +24,21 @@ export interface ReportOptions {
     pom?: boolean;
   };
 }
+export const isReportOptions = (
+  obj: object | undefined
+): obj is ReportOptions => {
+  if (!obj) return false;
+  if (!("name" in obj) || "string" !== typeof obj.name) return false;
+  if (!("year" in obj) || "number" !== typeof obj.year) return false;
+  if (!("options" in obj) || "object" !== typeof obj.options) return false;
+  const options = obj.options;
+  if (!options) return false;
+  if ("cahps" in options && "boolean" !== typeof options.cahps) return false;
+  if ("hcidd" in options && "boolean" !== typeof options.hcidd) return false;
+  if ("nciad" in options && "boolean" !== typeof options.nciad) return false;
+  if ("pom" in options && "boolean" !== typeof options.pom) return false;
+  return true;
+};
 
 export interface CMIT {
   cmit: number;
@@ -419,7 +434,6 @@ export const isResultRowButton = (
 export type RadioTemplate = {
   type: ElementType.Radio;
   id: string;
-  formKey?: string;
   label: string;
   helperText?: string;
   choices: ChoiceTemplate[];

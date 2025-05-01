@@ -13,9 +13,9 @@ import {
 const ADMIN_BANNER_ID = bannerId;
 
 export const AdminBannerContext = createContext<AdminBannerShape>({
-  fetchAdminBanner: Function,
-  writeAdminBanner: Function,
-  deleteAdminBanner: Function,
+  fetchAdminBanner: async () => {},
+  writeAdminBanner: async (_data: BannerData) => {},
+  deleteAdminBanner: async () => {},
 });
 
 export const AdminBannerProvider = ({ children }: Props) => {
@@ -37,8 +37,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
     setBannerLoading(true);
     try {
       const currentBanner = await getBanner(ADMIN_BANNER_ID);
-      const newBannerData = currentBanner as BannerData | undefined;
-      setBannerData(newBannerData);
+      setBannerData(currentBanner);
       setBannerErrorMessage(undefined);
     } catch (e: any) {
       // 404 expected when no current banner exists

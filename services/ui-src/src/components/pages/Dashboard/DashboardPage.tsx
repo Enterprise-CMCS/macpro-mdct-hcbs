@@ -33,7 +33,7 @@ export const DashboardPage = () => {
   const [selectedReport, setSelectedReport] = useState<Report | undefined>(
     undefined
   );
-  const fullStateName = StateNames[state as keyof typeof StateNames];
+  const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
 
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {

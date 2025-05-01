@@ -13,7 +13,7 @@ export async function createReport(
     body: { ...reportOptions },
   };
 
-  return await apiLib.post(`/reports/${reportType}/${state}`, options);
+  return await apiLib.post<Report>(`/reports/${reportType}/${state}`, options);
 }
 
 export async function getReport(reportType: string, state: string, id: string) {
@@ -22,7 +22,10 @@ export async function getReport(reportType: string, state: string, id: string) {
     headers: { ...requestHeaders },
   };
 
-  return await apiLib.get(`/reports/${reportType}/${state}/${id}`, options);
+  return await apiLib.get<Report>(
+    `/reports/${reportType}/${state}/${id}`,
+    options
+  )!;
 }
 
 export async function putReport(report: Report) {
@@ -71,7 +74,7 @@ export async function getReportsForState(reportType: string, state: string) {
     headers: { ...requestHeaders },
   };
 
-  return await apiLib.get(`/reports/${reportType}/${state}`, options);
+  return await apiLib.get<Report[]>(`/reports/${reportType}/${state}`, options);
 }
 
 export async function releaseReport(report: Report) {

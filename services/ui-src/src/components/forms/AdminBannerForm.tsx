@@ -30,11 +30,11 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       link: formData["bannerLink"]?.answer || undefined,
       startDate: convertDatetimeStringToNumber(
         formData["bannerStartDate"]?.answer,
-        "startDate"
+        { hour: 0, minute: 0, second: 0 }
       ),
       endDate: convertDatetimeStringToNumber(
         formData["bannerEndDate"]?.answer,
-        "endDate"
+        { hour: 23, minute: 59, second: 59 }
       ),
     };
 

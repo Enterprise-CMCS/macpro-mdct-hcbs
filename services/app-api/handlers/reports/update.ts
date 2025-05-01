@@ -20,7 +20,14 @@ export const updateReport = handler(parseReportParameters, async (request) => {
     return badRequest("Invalid request");
   }
 
-  const report = request.body as Report;
+  let report: Report;
+  try {
+    report = await validateReportPayload(request.body);
+  } catch (err) {
+    logger.error(err);
+    return badRequest("Invalid request");
+  }
+
   if (
     reportType !== report.type ||
     state !== report.state ||
@@ -34,15 +41,7 @@ export const updateReport = handler(parseReportParameters, async (request) => {
   report.lastEdited = Date.now();
   report.lastEditedBy = user.fullName;
 
-  let validatedPayload: Report | undefined;
-  try {
-    validatedPayload = await validateReportPayload(request.body);
-  } catch (err) {
-    logger.error(err);
-    return badRequest("Invalid request");
-  }
-
-  await putReport(validatedPayload);
+  await putReport(report);
 
   return ok();
 });
