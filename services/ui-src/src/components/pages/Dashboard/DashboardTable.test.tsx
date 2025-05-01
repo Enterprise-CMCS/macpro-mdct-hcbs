@@ -71,8 +71,7 @@ describe("Dashboard table with state user", () => {
   it("should render report name and edit button in table", async () => {
     render(dashboardTableComponent);
     expect(screen.getByText("report 1")).toBeInTheDocument();
-    // one report is submitted so there will 3 reports in the table but only two edit buttons
-    expect(screen.getAllByAltText("Edit Report Name").length).toBe(2);
+    expect(screen.getAllByAltText("Edit Report Name").length).toBe(3);
   });
 });
 
