@@ -104,9 +104,6 @@ export const MeasureFooterElement = (props: PageElementProps) => {
             <Button
               variant="link"
               marginRight="2rem"
-              onBlur={(event) => {
-                event.stopPropagation();
-              }}
               onClick={() => onClearButton()}
             >
               Clear measure data
@@ -115,9 +112,6 @@ export const MeasureFooterElement = (props: PageElementProps) => {
           {footer.completeMeasure && (
             <Button
               disabled={!completeEnabled}
-              onBlur={(event) => {
-                event.stopPropagation();
-              }}
               onClick={() => onCompletePage()}
             >
               Complete measure
@@ -126,9 +120,6 @@ export const MeasureFooterElement = (props: PageElementProps) => {
           {footer.completeSection && (
             <Button
               disabled={!completeEnabled}
-              onBlur={(event) => {
-                event.stopPropagation();
-              }}
               onClick={() => onCompletePage()}
             >
               Complete section

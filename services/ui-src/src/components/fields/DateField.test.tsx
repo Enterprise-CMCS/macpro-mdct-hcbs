@@ -64,18 +64,12 @@ describe("<DateField />", () => {
       render(dateFieldComponent);
       const dateFieldInput = screen.getByRole("textbox");
 
-      await userEvent.type(dateFieldInput, "10162024[Tab]");
-
-      /*
-       *   1 onChange (which passed validation) (value: 10162024)
-       * + 1 onChange (performed automatically by masking) (value: 10/16/2024)
-       * + 1 onBlur
-       * = 3 calls
-       */
-      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(3);
+      await userEvent.type(dateFieldInput, "10162024");
+      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(1);
       expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
         `${testKey}.answer`,
-        "10/16/2024"
+        "10/16/2024",
+        expect.any(Object)
       );
     });
   });
