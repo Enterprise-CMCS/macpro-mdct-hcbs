@@ -469,8 +469,8 @@ export const performanceRateSelfDirection: PerformanceRateTemplate = {
 export const sectionCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
-  title: "Measure has been completed",
-  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. {ReturnButton} or select ‘Return to measure details’ link above to return to the previous page.",
+  title: "This section has been completed",
+  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section' button. {ReturnButton} or select ‘Return to measure details’ link above to return to the previous page.",
   status: "success",
 };
 
@@ -478,6 +478,6 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
   title: "Measure has been completed",
-  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete‘ section button. {ReturnButton} or select ‘Return to measure details’ link above to return to the previous page.",
+  text: "You can still edit the measure but the status will change to ‘In progress’ and you will need to re-select the ‘Complete measure' button. {ReturnButton} or select ‘Return to required measure dashboard’ button above to return to all measures.",
   status: "success",
 };
