@@ -87,7 +87,7 @@ export const Page = ({ elements }: Props) => {
         return subHeaderMeasureElement;
       default:
         assertExhaustive(elementType);
-        return (_element: any, _key: number) => <></>;
+        return () => <></>;
     }
   };
 

@@ -120,7 +120,7 @@ const resultRowButtonTemplateSchema = object().shape({
   to: string().required(),
 });
 
-const pageElementSchema = lazy((value: PageElement): Schema<any> => {
+const pageElementSchema = lazy((value: PageElement): Schema => {
   if (!value.type) {
     throw new Error();
   }

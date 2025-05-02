@@ -5,20 +5,39 @@ import { AdminDashSelector } from "./AdminDashSelector";
 import { useNavigate } from "react-router-dom";
 import assert from "node:assert";
 
+type DropdownProps = {
+  label: string;
+  options: {
+    label: string;
+    value: string;
+  }[];
+  onChange: () => void;
+  value: string;
+};
+
+type ChoiceListProps = {
+  label: string;
+  choices: {
+    label: string;
+    value: string;
+  }[];
+  onChange: () => void;
+};
+
 jest.mock("@cmsgov/design-system", () => ({
-  Dropdown: ({ label, options, onChange, value }: any) => (
+  Dropdown: ({ label, options, onChange, value }: DropdownProps) => (
     <select aria-label={label} onChange={onChange} value={value}>
-      {options.map((option: any) => (
+      {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}
         </option>
       ))}
     </select>
   ),
-  ChoiceList: ({ label, choices, onChange }: any) => (
+  ChoiceList: ({ label, choices, onChange }: ChoiceListProps) => (
     <fieldset>
       <legend>{label}</legend>
-      {choices.map((choice: any) => (
+      {choices.map((choice) => (
         <div key={choice.value}>
           <input
             type="radio"

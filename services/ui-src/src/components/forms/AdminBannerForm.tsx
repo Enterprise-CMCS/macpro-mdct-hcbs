@@ -20,7 +20,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     resolver: yupResolver(bannerFormValidateSchema),
   });
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: Record<string, { answer: string }>) => {
     setSubmitting(true);
 
     const newBannerData = {

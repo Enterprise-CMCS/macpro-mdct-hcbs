@@ -39,9 +39,9 @@ export const AdminBannerProvider = ({ children }: Props) => {
       const currentBanner = await getBanner(ADMIN_BANNER_ID);
       setBannerData(currentBanner);
       setBannerErrorMessage(undefined);
-    } catch (e: any) {
+    } catch (e: unknown) {
       // 404 expected when no current banner exists
-      if (!e.toString().includes("404")) {
+      if (!!e && typeof e === "object" && e.toString().includes("404")) {
         setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
       }
     }

@@ -90,7 +90,7 @@ export const Modal = ({
 interface Props {
   modalDisclosure: {
     isOpen: boolean;
-    onClose: any;
+    onClose: () => void;
   };
   content: {
     heading: string;
