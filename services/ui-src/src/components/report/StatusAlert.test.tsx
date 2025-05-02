@@ -11,12 +11,16 @@ jest.mock("utils/state/reportLogic/completeness", () => ({
 }));
 
 jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
-    if (selector) {
-      return false;
-    }
-    return { ...mockUseStore, currentPageId: "mock-id" };
-  }),
+  useStore: jest
+    .fn()
+    .mockImplementation(
+      (selector?: (state: typeof mockUseStore) => unknown) => {
+        if (selector) {
+          return false;
+        }
+        return { ...mockUseStore, currentPageId: "mock-id" };
+      }
+    ),
 }));
 
 const mockUseNavigate = jest.fn();

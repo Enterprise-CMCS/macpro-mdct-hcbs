@@ -99,7 +99,7 @@ interface Props {
     closeButtonText?: string;
   };
   submitting?: boolean;
-  onConfirmHandler?: Function;
+  onConfirmHandler?: () => void;
   formId?: string;
   children?: ReactNode;
   [key: string]: any;

@@ -5,7 +5,7 @@ import { ErrorAlert, PreviewBanner, TextField, DateField } from "components";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
-import { ElementType, ErrorVerbiage } from "types";
+import { AdminBannerMethods, ElementType, ErrorVerbiage } from "types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   bannerFormValidateSchema,
@@ -116,7 +116,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 };
 
 interface Props {
-  writeAdminBanner: Function;
+  writeAdminBanner: AdminBannerMethods["writeAdminBanner"];
 }
 
 const sx = {

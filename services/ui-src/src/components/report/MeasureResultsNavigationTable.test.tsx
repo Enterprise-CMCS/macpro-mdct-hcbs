@@ -9,12 +9,16 @@ import {
 } from "types/report";
 
 jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
-    if (selector) {
-      return selector(mockUseStore);
-    }
-    return mockUseStore;
-  }),
+  useStore: jest
+    .fn()
+    .mockImplementation(
+      (selector?: (state: typeof mockUseStore) => unknown) => {
+        if (selector) {
+          return selector(mockUseStore);
+        }
+        return mockUseStore;
+      }
+    ),
 }));
 
 jest.mock("utils/state/hooks/useLiveElement");

@@ -28,7 +28,7 @@ export const UserContext = createContext<UserContextShape>({
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 });
 
 const authenticateWithIDM = async () => {

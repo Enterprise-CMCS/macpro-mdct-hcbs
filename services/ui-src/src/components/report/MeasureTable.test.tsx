@@ -70,8 +70,8 @@ const mockTemplate: MeasureTableTemplate = {
 jest.mock("./MeasureReplacementModal", () => ({
   MeasureReplacementModal: (
     measure: MeasurePageTemplate,
-    _onClose: Function,
-    onSubmit: Function
+    _onClose: unknown,
+    onSubmit: (page: MeasurePageTemplate) => void
   ) => {
     onSubmit(measure);
   },

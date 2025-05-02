@@ -47,7 +47,7 @@ export async function postSubmitReport(report: Report) {
     headers: { ...requestHeaders },
     body: { ...report },
   };
-  return await apiLib.post(
+  return await apiLib.post<Report>(
     `/reports/submit/${report.type}/${report.state}/${report.id}`,
     options
   );

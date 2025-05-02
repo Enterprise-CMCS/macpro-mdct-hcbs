@@ -8,7 +8,7 @@ export const mockNoUser: UserContextShape = {
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: async () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 };
 
 export const mockStateUser: UserContextShape = {
@@ -25,7 +25,7 @@ export const mockStateUser: UserContextShape = {
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: async () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 };
 
 export const mockStateUserNoReports: UserContextShape = {
@@ -42,7 +42,7 @@ export const mockStateUserNoReports: UserContextShape = {
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: async () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 };
 
 export const mockStateApprover: UserContextShape = {
@@ -59,7 +59,7 @@ export const mockStateApprover: UserContextShape = {
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: async () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 };
 
 export const mockHelpDeskUser: UserContextShape = {
@@ -76,7 +76,7 @@ export const mockHelpDeskUser: UserContextShape = {
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: async () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 };
 
 export const mockAdminUser: UserContextShape = {
@@ -93,5 +93,5 @@ export const mockAdminUser: UserContextShape = {
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: async () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 };
