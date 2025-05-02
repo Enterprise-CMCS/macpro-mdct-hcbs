@@ -40,10 +40,6 @@ export const TextField = (props: PageElementProps) => {
     form.setValue(`${props.formkey}.id`, textbox.id);
   };
 
-  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value);
-  };
-
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
@@ -62,7 +58,6 @@ export const TextField = (props: PageElementProps) => {
         label={labelText || ""}
         hint={parsedHint}
         onChange={onChangeHandler}
-        onBlur={onBlurHandler}
         value={displayValue}
         errorMessage={errorMessage}
         {...props}

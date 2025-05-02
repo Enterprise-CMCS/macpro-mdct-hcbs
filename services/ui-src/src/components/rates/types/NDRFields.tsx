@@ -84,13 +84,6 @@ export const NDRFields = (
     form.setValue(`${key}`, newValues, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
-  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
-
-    const { name, value } = event.target;
-    form.setValue(`${key}.${name}`, value, { shouldValidate: true });
-    form.setValue(`${key}.type`, props.type);
-  };
 
   return (
     <Stack gap="2rem">
@@ -109,7 +102,6 @@ export const NDRFields = (
               label={`Denominator (${assess.label})`}
               name={`${assessIndex}.denominator`}
               onChange={onChangeHandler}
-              onBlur={onBlurHandler}
               value={rateSet?.denominator ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
@@ -130,7 +122,6 @@ export const NDRFields = (
                     })?`}
                     name={`${assessIndex}.rates.${fieldIndex}.performanceTarget`}
                     onChange={onChangeHandler}
-                    onBlur={onBlurHandler}
                     value={value?.performanceTarget ?? ""}
                     disabled={disabled}
                   ></CmsdsTextField>
@@ -138,7 +129,6 @@ export const NDRFields = (
                     label={`Numerator: ${field.label} (${assess.label})`}
                     name={`${assessIndex}.rates.${fieldIndex}.numerator`}
                     onChange={onChangeHandler}
-                    onBlur={onBlurHandler}
                     value={value?.numerator ?? ""}
                     disabled={disabled}
                   ></CmsdsTextField>
@@ -146,7 +136,6 @@ export const NDRFields = (
                     label={`Denominator (${assess.label})`}
                     name={`${assessIndex}.rates.${fieldIndex}.denominator`}
                     onChange={onChangeHandler}
-                    onBlur={onBlurHandler}
                     value={value?.denominator ?? ""}
                     disabled
                   ></CmsdsTextField>

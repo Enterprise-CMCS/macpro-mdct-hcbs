@@ -126,12 +126,6 @@ export const RadioField = (props: PageElementProps) => {
     }
   };
 
-  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value, { shouldValidate: true });
-    form.setValue(`${props.formkey}.type`, radio.type);
-    form.setValue(`${props.formkey}.label`, radio.label);
-  };
-
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
@@ -156,7 +150,6 @@ export const RadioField = (props: PageElementProps) => {
         hint={parsedHint}
         errorMessage={errorMessage}
         onChange={onChangeHandler}
-        onComponentBlur={onBlurHandler}
         {...props}
       />
     </Box>
