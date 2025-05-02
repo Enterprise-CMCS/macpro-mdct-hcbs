@@ -174,6 +174,8 @@ export const elementSatisfiesRequired = (
 };
 
 const rateIsComplete = (element: PerformanceRateTemplate) => {
+  const emptyAnswers = ["", undefined];
+
   if (!element.answer) return false;
   if ("rates" in element.answer) {
     // Fields
@@ -187,10 +189,8 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
       // PerformanceData
       for (const uniqueRate of element.answer.rates) {
         if (
-          uniqueRate.rate === undefined ||
-          uniqueRate.rate === "" ||
-          uniqueRate.performanceTarget === undefined ||
-          uniqueRate.performanceTarget === ""
+          emptyAnswers.includes(uniqueRate.performanceTarget) ||
+          emptyAnswers.includes(uniqueRate.rate)
         )
           return false;
       }
@@ -200,8 +200,13 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
     for (const rateAnswer of element.answer) {
       if (!rateAnswer.rates) return false;
       for (const uniqueRate of rateAnswer.rates) {
-        if (uniqueRate.performanceTarget === undefined) return false;
-        if (uniqueRate.rate === undefined) return false;
+        if (
+          emptyAnswers.includes(
+            uniqueRate.performanceTarget as string | undefined
+          ) ||
+          emptyAnswers.includes(uniqueRate.rate as string | undefined)
+        )
+          return false;
       }
     }
   }

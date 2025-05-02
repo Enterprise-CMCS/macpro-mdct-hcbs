@@ -113,9 +113,6 @@ export const StatusTableElement = () => {
           <Button
             alignSelf="flex-end"
             onClick={async () => displayModal()}
-            onBlur={(event) => {
-              event.stopPropagation();
-            }}
             disabled={!submittableMetrics?.submittable || submitting}
           >
             {submitting && <Spinner size="sm" marginRight="1rem" />}

@@ -34,10 +34,6 @@ export const TextAreaField = (props: PageElementProps) => {
     form.setValue(name, value, { shouldValidate: true });
   };
 
-  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue(key, event.target.value);
-  };
-
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrorState, key)?.message;
@@ -60,7 +56,6 @@ export const TextAreaField = (props: PageElementProps) => {
         label={labelText || ""}
         hint={parsedHint}
         onChange={onChangeHandler}
-        onBlur={onBlurHandler}
         value={displayValue}
         errorMessage={errorMessage}
         multiline
