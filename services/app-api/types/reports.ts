@@ -24,6 +24,7 @@ export interface ReportOptions {
     pom?: boolean;
   };
 }
+
 export const isReportOptions = (
   obj: object | undefined
 ): obj is ReportOptions => {
@@ -31,12 +32,22 @@ export const isReportOptions = (
   if (!("name" in obj) || "string" !== typeof obj.name) return false;
   if (!("year" in obj) || "number" !== typeof obj.year) return false;
   if (!("options" in obj) || "object" !== typeof obj.options) return false;
+  const extraKeys = Object.keys(obj).filter(
+    (key) => !["name", "year", "options"].includes(key)
+  );
+  if (extraKeys.length > 0) return false;
+
   const options = obj.options;
   if (!options) return false;
   if ("cahps" in options && "boolean" !== typeof options.cahps) return false;
   if ("hcidd" in options && "boolean" !== typeof options.hcidd) return false;
   if ("nciad" in options && "boolean" !== typeof options.nciad) return false;
   if ("pom" in options && "boolean" !== typeof options.pom) return false;
+  const extraOptions = Object.keys(options).filter(
+    (key) => !["cahps", "hcidd", "nciad", "pom"].includes(key)
+  );
+  if (extraOptions.length > 0) return false;
+
   return true;
 };
 
