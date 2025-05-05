@@ -1,5 +1,5 @@
 import { StatusCodes } from "../../libs/response-lib";
-import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
 import { createReport } from "./create";
 
@@ -38,7 +38,7 @@ describe("Test create report handler", () => {
     const badTestEvent = {
       ...testEvent,
       pathParameters: {},
-    } as APIGatewayProxyEvent;
+    };
     const res = await createReport(badTestEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
@@ -54,7 +54,7 @@ describe("Test create report handler", () => {
       ...testEvent,
       pathParameters: { reportType: "QMS", state: "PA" },
       body: null,
-    } as APIGatewayProxyEvent;
+    };
     const res = await createReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
@@ -70,7 +70,7 @@ test("Test invalid report type", async () => {
   const invalidDataEvent = {
     ...testEvent,
     pathParameters: { reportType: "BM", state: "NM" },
-  } as APIGatewayProxyEvent;
+  };
   const res = await createReport(invalidDataEvent);
   expect(res.statusCode).toBe(StatusCodes.BadRequest);
 });
