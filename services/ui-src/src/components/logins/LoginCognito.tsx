@@ -31,7 +31,7 @@ export const LoginCognito = () => {
         Log In with Cognito
       </Heading>
       <ErrorAlert error={error} alertSxOverride={sx.error} />
-      <form onSubmit={(event) => handleLogin(event)}>
+      <form onSubmit={handleLogin}>
         <Box sx={sx.label}>
           <label>
             <Text sx={sx.labelDescription}>Email</Text>
