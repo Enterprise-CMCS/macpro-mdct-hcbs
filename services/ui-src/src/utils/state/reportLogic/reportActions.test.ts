@@ -236,7 +236,7 @@ describe("state/management/reportState: changeDeliveryMethods", () => {
 
     const state = buildState(testReport, false) as HcbsReportState;
     const response = changeDeliveryMethods("LTSS-1", "MLTSS", state);
-    const ffs = response!.report?.pages.find(
+    const ffs = response.report?.pages.find(
       (page) => page.id === MeasureTemplateName["FFS-1"]
     ) as MeasurePageTemplate;
 
@@ -249,7 +249,7 @@ describe("state/management/reportState: changeDeliveryMethods", () => {
 
     const state = buildState(testReport, false) as HcbsReportState;
     const response = changeDeliveryMethods("LTSS-1", "FFS", state);
-    const ffs = response!.report?.pages.find(
+    const ffs = response.report?.pages.find(
       (page) => page.id === MeasureTemplateName["FFS-1"]
     ) as MeasurePageTemplate;
 
