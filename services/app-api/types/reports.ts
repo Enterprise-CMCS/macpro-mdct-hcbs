@@ -40,11 +40,11 @@ export const isReportOptions = (
   const options = obj.options;
   if (!options) return false;
   if ("cahps" in options && "boolean" !== typeof options.cahps) return false;
-  if ("hcidd" in options && "boolean" !== typeof options.hcidd) return false;
+  if ("hciidd" in options && "boolean" !== typeof options.hciidd) return false;
   if ("nciad" in options && "boolean" !== typeof options.nciad) return false;
   if ("pom" in options && "boolean" !== typeof options.pom) return false;
   const extraOptions = Object.keys(options).filter(
-    (key) => !["cahps", "hcidd", "nciad", "pom"].includes(key)
+    (key) => !["cahps", "hciidd", "nciad", "pom"].includes(key)
   );
   if (extraOptions.length > 0) return false;
 
