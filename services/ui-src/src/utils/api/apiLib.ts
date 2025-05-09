@@ -12,7 +12,7 @@ type ResponsePayload = Awaited<ReturnType<typeof get>["response"]>["body"];
  * Below we just key off of these API calls as our source of user activity to make sure
  * credentials don't expire.
  *
- * TODO: These `undefined as T` casts are really gross! Do... something.
+ * TO maybe DO: These `undefined as T` casts are really gross! Do... something.
  */
 const apiRequest = async <T = unknown>(
   request: typeof del | typeof get | typeof post | typeof put,
