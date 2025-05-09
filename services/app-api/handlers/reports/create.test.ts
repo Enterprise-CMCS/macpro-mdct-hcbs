@@ -1,4 +1,5 @@
 import { StatusCodes } from "../../libs/response-lib";
+import { putReport } from "../../storage/reports";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
@@ -17,6 +18,10 @@ jest.mock("../../utils/authorization", () => ({
 
 jest.mock("./buildReport", () => ({
   buildReport: jest.fn().mockReturnValue({ id: "A report" }),
+}));
+
+jest.mock("../../storage/reports", () => ({
+  putReport: jest.fn(),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -58,6 +63,7 @@ describe("Test create report handler", () => {
   test("Test Successful create", async () => {
     const res = await createReport(testEvent);
 
+    expect(putReport).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 });
