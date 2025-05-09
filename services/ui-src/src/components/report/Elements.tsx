@@ -15,7 +15,6 @@ import {
   ParagraphTemplate,
   AccordionTemplate,
   ButtonLinkTemplate,
-  PageElement,
   NestedHeadingTemplate,
   HeaderIcon,
   MeasurePageTemplate,
@@ -28,14 +27,13 @@ import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
 export interface PageElementProps {
-  element: PageElement;
   index?: number;
   formkey: string;
   disabled?: boolean;
 }
 
-export const headerElement = (props: PageElementProps) => {
-  const element = props.element as HeaderTemplate;
+type HeaderProps = PageElementProps & { element: HeaderTemplate };
+export const HeaderElement = ({ element }: HeaderProps) => {
   const buildIcon = (icon: HeaderIcon | undefined) => {
     switch (icon) {
       case HeaderIcon.Check:
@@ -71,8 +69,8 @@ export const headerElement = (props: PageElementProps) => {
   );
 };
 
-export const subHeaderElement = (props: PageElementProps) => {
-  const element = props.element as SubHeaderTemplate;
+type SubHeaderProps = PageElementProps & { element: SubHeaderTemplate };
+export const SubHeaderElement = ({ element }: SubHeaderProps) => {
   const hideElement = useElementIsHidden(element.hideCondition);
   if (hideElement) {
     return null;
@@ -89,7 +87,7 @@ export const subHeaderElement = (props: PageElementProps) => {
   );
 };
 
-export const subHeaderMeasureElement = (_props: PageElementProps) => {
+export const SubHeaderMeasureElement = (_props: PageElementProps) => {
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
   if (!currentPage) return null;
@@ -120,20 +118,20 @@ export const subHeaderMeasureElement = (_props: PageElementProps) => {
   );
 };
 
-export const nestedHeadingElement = (props: PageElementProps) => {
+type NestedHeadingProps = PageElementProps & { element: NestedHeadingTemplate };
+export const NestedHeadingElement = ({ element }: NestedHeadingProps) => {
   return (
     <Heading as="h3" variant="nestedHeading">
-      {(props.element as NestedHeadingTemplate).text}
+      {element.text}
     </Heading>
   );
 };
 
-export const paragraphElement = (props: PageElementProps) => {
-  const element = props.element as ParagraphTemplate;
-
+type ParagraphProps = PageElementProps & { element: ParagraphTemplate };
+export const ParagraphElement = ({ element }: ParagraphProps) => {
   return (
     <Stack>
-      {element?.title && (
+      {element.title && (
         <Text fontSize="16px" fontWeight="bold">
           {element.title}
         </Text>
@@ -145,8 +143,8 @@ export const paragraphElement = (props: PageElementProps) => {
   );
 };
 
-export const accordionElement = (props: PageElementProps) => {
-  const accordion = props.element as AccordionTemplate;
+type AccordionProps = PageElementProps & { element: AccordionTemplate };
+export const AccordionElement = ({ element: accordion }: AccordionProps) => {
   return (
     <Accordion allowToggle={true}>
       <AccordionItem label={accordion.label}>
@@ -156,16 +154,16 @@ export const accordionElement = (props: PageElementProps) => {
   );
 };
 
-export const dividerElement = (_props: PageElementProps) => {
+export const DividerElement = (_props: PageElementProps) => {
   return <Divider></Divider>;
 };
 
-export const buttonLinkElement = (props: PageElementProps) => {
+type ButtonLinkProps = PageElementProps & { element: ButtonLinkTemplate };
+export const ButtonLinkElement = ({ element: button }: ButtonLinkProps) => {
   const { reportType, state, reportId, pageId } = useParams();
   const { report } = useStore();
 
   const navigate = useNavigate();
-  const button = props.element as ButtonLinkTemplate;
   const page = button.to ?? measurePrevPage(report!, pageId!);
 
   //auto generate the label for measures that are substitutable

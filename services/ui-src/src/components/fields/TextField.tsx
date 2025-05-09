@@ -8,8 +8,9 @@ import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { requiredResponse } from "../../constants";
 
-export const TextField = (props: PageElementProps) => {
-  const textbox = props.element as TextboxTemplate;
+type TextFieldProps = PageElementProps & { element: TextboxTemplate };
+export const TextField = (props: TextFieldProps) => {
+  const textbox = props.element;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 

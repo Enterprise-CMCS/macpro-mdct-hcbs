@@ -24,8 +24,11 @@ import { PageElementProps } from "./Elements";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
-export const MeasureTableElement = (props: PageElementProps) => {
-  const table = props.element as MeasureTableTemplate;
+type MeasureTableElementProps = PageElementProps & {
+  element: MeasureTableTemplate;
+};
+export const MeasureTableElement = (props: MeasureTableElementProps) => {
+  const table = props.element;
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
   const measures = report?.pages.filter((page) =>

@@ -5,8 +5,11 @@ import { Heading, Stack, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import * as Calculations from "./../rates/calculations";
 
-export const PerformanceRateElement = (props: PageElementProps) => {
-  const performanceRateProp = props.element as PerformanceRateTemplate;
+type PerformanceRateElementProps = PageElementProps & {
+  element: PerformanceRateTemplate;
+};
+export const PerformanceRateElement = (props: PerformanceRateElementProps) => {
+  const performanceRateProp = props.element;
   const { rateType, rateCalc, helperText, label } = performanceRateProp;
   const { report } = useStore();
   const { userIsEndUser } = useStore().user || {};

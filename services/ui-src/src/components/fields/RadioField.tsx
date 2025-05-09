@@ -54,8 +54,9 @@ const hintTextColor = (clickAction: string) => {
   }
 };
 
-export const RadioField = (props: PageElementProps) => {
-  const radio = props.element as RadioTemplate;
+type RadioFieldProps = PageElementProps & { element: RadioTemplate };
+export const RadioField = (props: RadioFieldProps) => {
+  const radio = props.element;
   const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 

@@ -23,10 +23,13 @@ import { currentPageSelector } from "utils/state/selectors";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { PageElementProps } from "../report/Elements";
 
+type MeasureResultsNavigationTableProps = PageElementProps & {
+  element: MeasureResultsNavigationTableTemplate;
+};
 export const MeasureResultsNavigationTableElement = (
-  props: PageElementProps
+  props: MeasureResultsNavigationTableProps
 ) => {
-  const table = props.element as MeasureResultsNavigationTableTemplate;
+  const table = props.element;
   const { reportType, state, reportId } = useParams();
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
