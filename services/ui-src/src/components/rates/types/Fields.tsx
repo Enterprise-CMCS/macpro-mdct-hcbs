@@ -48,13 +48,6 @@ export const Fields = (
     form.setValue(`${key}`, displayValue, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
-  const onBlurHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
-
-    const { name, value } = event.target;
-    form.setValue(`${key}.rates.${name}`, value, { shouldValidate: true });
-    form.setValue(`${key}.type`, props.type);
-  };
 
   return (
     <Stack gap="2rem">
@@ -64,7 +57,6 @@ export const Fields = (
         } state performance target for this assessment?`}
         name={`0.performanceTarget`}
         onChange={onChangeHandler}
-        onBlur={onBlurHandler}
         value={displayValue.rates[0].performanceTarget ?? ""}
         disabled={disabled}
       ></CmsdsTextField>
@@ -74,7 +66,6 @@ export const Fields = (
             label={field.label}
             name={`0.${field.id}`}
             onChange={onChangeHandler}
-            onBlur={onBlurHandler}
             value={displayValue.rates[0][field.id] ?? ""}
             disabled={field.autoCalc || disabled}
           ></CmsdsTextField>

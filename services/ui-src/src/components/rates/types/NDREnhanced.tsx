@@ -70,16 +70,6 @@ export const NDREnhanced = (
     form.setValue(`${key}`, newDisplayValue, { shouldValidate: true });
     form.setValue(`${key}.type`, props.type);
   };
-  const onBlurHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
-
-    const { name, value } = event.target;
-    let adjustedName = name === "denominator" ? "" : ".rates";
-    form.setValue(`${key}${adjustedName}.${name}`, value, {
-      shouldValidate: true,
-    });
-    form.setValue(`${key}.type`, props.type);
-  };
 
   return (
     <Stack gap="2rem">
@@ -87,7 +77,6 @@ export const NDREnhanced = (
         label="Performance Rates Denominator"
         name="denominator"
         onChange={onChangeHandler}
-        onBlur={onBlurHandler}
         value={displayValue?.denominator ?? ""}
         disabled={disabled}
       ></CmsdsTextField>
@@ -108,7 +97,6 @@ export const NDREnhanced = (
               } state performance target for this assessment?`}
               name={`${index}.performanceTarget`}
               onChange={onChangeHandler}
-              onBlur={onBlurHandler}
               value={value.performanceTarget ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
@@ -116,7 +104,6 @@ export const NDREnhanced = (
               label="Numerator"
               name={`${index}.numerator`}
               onChange={onChangeHandler}
-              onBlur={onBlurHandler}
               value={value.numerator ?? ""}
               disabled={disabled}
             ></CmsdsTextField>
@@ -124,7 +111,6 @@ export const NDREnhanced = (
               label="Denominator"
               name={`${index}.denominator`}
               onChange={onChangeHandler}
-              onBlur={onBlurHandler}
               value={value.denominator ?? ""}
               hint="Auto-calculates"
               disabled

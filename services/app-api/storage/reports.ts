@@ -8,13 +8,10 @@ import {
   collectPageItems,
   createClient as createDynamoClient,
 } from "./dynamo/dynamodb-lib";
-import { StateAbbr } from "../utils/constants";
+import { reportTables, StateAbbr } from "../utils/constants";
 import { Report, ReportType } from "../types/reports";
 
 const dynamoClient = createDynamoClient();
-const reportTables: { [key in ReportType]: string } = {
-  QMS: process.env.QmsReportsTable!,
-};
 
 export const putReport = async (report: Report) => {
   await dynamoClient.send(

@@ -6,6 +6,8 @@ const formsByYear = {
   2026: {
     CMIT_LIST: CMIT_LIST_2026,
     qmsReportTemplate: qmsReportTemplate2026,
+    taReportTemplate: undefined,
+    ciReportTemplate: undefined,
   },
 };
 
@@ -31,6 +33,9 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
   switch (reportType) {
     case ReportType.QMS:
       return formsByYear[year].qmsReportTemplate;
+    case ReportType.TA:
+    case ReportType.CI:
+      throw new Error("Reports not yet available");
     default:
       assertExhaustive(reportType);
       throw new Error(

@@ -67,11 +67,15 @@ describe("<TextField />", () => {
       render(textFieldComponent);
       const textField = screen.getByRole("textbox");
 
-      await act(async () => await userEvent.type(textField, "hello[Tab]"));
+      await act(async () => await userEvent.type(textField, "h"));
 
-      expect(mockRhfMethods.setValue).toHaveBeenCalledWith(
+      // hydrate + enter letter + type + label + id
+      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(5);
+      expect(mockRhfMethods.setValue).toHaveBeenNthCalledWith(
+        2,
         expect.any(String),
-        "hello"
+        "h",
+        expect.any(Object)
       );
     });
   });

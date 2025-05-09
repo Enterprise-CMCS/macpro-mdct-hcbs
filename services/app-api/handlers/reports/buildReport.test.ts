@@ -1,15 +1,10 @@
 import { ReportOptions, ReportType } from "../../types/reports";
 import { User } from "../../types/types";
+import { validateReportPayload } from "../../utils/reportValidation";
 import { buildReport } from "./buildReport";
 
-const putMock = jest.fn();
-jest.mock("../../storage/reports", () => ({
-  putReport: () => putMock(),
-}));
-
-const validateReportPayloadMock = jest.fn();
 jest.mock("../../utils/reportValidation", () => ({
-  validateReportPayload: () => validateReportPayloadMock(),
+  validateReportPayload: jest.fn().mockImplementation(async (rpt) => rpt),
 }));
 
 describe("Test create report handler", () => {
@@ -41,7 +36,6 @@ describe("Test create report handler", () => {
     expect(report.type).toBe(ReportType.QMS);
     expect(report.lastEditedBy).toBe("James Holden");
     expect(report.lastEditedByEmail).toBe("james.holden@test.com");
-    expect(putMock).toHaveBeenCalled();
   });
 });
 
@@ -52,7 +46,7 @@ describe("Test validation error", () => {
 
   test("Test that a validation failure throws invalid request error", async () => {
     // Manually throw validation error
-    validateReportPayloadMock.mockImplementation(() => {
+    (validateReportPayload as jest.Mock).mockImplementationOnce(() => {
       throw new Error("you be havin some validatin errors");
     });
 

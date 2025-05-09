@@ -1,4 +1,5 @@
 import { StatusCodes } from "../../libs/response-lib";
+import { putReport } from "../../storage/reports";
 import { UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
 import { createReport } from "./create";
@@ -16,6 +17,14 @@ jest.mock("../../utils/authorization", () => ({
 
 jest.mock("./buildReport", () => ({
   buildReport: jest.fn().mockReturnValue({ id: "A report" }),
+}));
+
+jest.mock("../../storage/reports", () => ({
+  putReport: jest.fn(),
+}));
+
+jest.mock("../../storage/reports", () => ({
+  putReport: jest.fn(),
 }));
 
 const testEvent = {
@@ -62,6 +71,7 @@ describe("Test create report handler", () => {
   test("Test Successful create", async () => {
     const res = await createReport(testEvent);
 
+    expect(putReport).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 });

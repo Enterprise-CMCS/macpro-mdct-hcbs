@@ -5,6 +5,7 @@ import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { buildReport } from "./buildReport";
 import { isReportOptions } from "../../types/reports";
+import { putReport } from "../../storage/reports";
 
 export const createReport = handler(
   parseReportTypeAndState,
@@ -21,6 +22,7 @@ export const createReport = handler(
     }
 
     const report = await buildReport(reportType, state, body, user);
+    await putReport(report);
 
     return ok(report);
   }
