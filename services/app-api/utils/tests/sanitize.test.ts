@@ -1,3 +1,6 @@
+import { buildReport } from "../../handlers/reports/buildReport";
+import { ReportType } from "../../types/reports";
+import { User } from "../../types/types";
 import { sanitizeArray, sanitizeObject, sanitizeString } from "../sanitize";
 
 // SAFE TYPES
@@ -108,3 +111,47 @@ describe("Test sanitizeObject", () => {
     expect(sanitizeObject(dirtyComplexObject)).toEqual(cleanComplexObject);
   });
 });
+
+describe("Test sanitizeObject is friendly to the markup embedded in our report templates", () => {
+  test("Test that a freshly created 2026 QMS report will not be affected by sanitization", async () => {
+    for (let optionValues of booleanCombinations(4)) {
+      const [cahps, hciiad, nciad, pom] = optionValues;
+      const options = {
+        name: "mock-report",
+        year: 2026,
+        options: { cahps, hciiad, nciad, pom },
+      };
+      const user = {
+        fullName: "Mock User",
+        email: "mock.user@test.com",
+      } as User;
+      const original = await buildReport(ReportType.QMS, "CO", options, user);
+      const sanitized = sanitizeObject(original as any);
+      expect(sanitized).toEqual(original);
+    }
+  });
+});
+
+/**
+ * Generate every combination of the given number of boolean values.
+ *
+ * @example
+ * for (let combo of booleanCombinations(2)) {
+ *  console.log(combo);
+ * }
+ * // [true, true]
+ * // [true, false]
+ * // [false, true]
+ * // [false, false]
+ */
+function* booleanCombinations(count: number): Generator<boolean[]> {
+  if (count <= 1) {
+    yield [true];
+    yield [false];
+  } else {
+    for (let combo of booleanCombinations(count - 1)) {
+      yield [true, ...combo];
+      yield [false, ...combo];
+    }
+  }
+}
