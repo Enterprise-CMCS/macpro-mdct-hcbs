@@ -115,11 +115,11 @@ describe("Test sanitizeObject", () => {
 describe("Test sanitizeObject is friendly to the markup embedded in our report templates", () => {
   test("Test that a freshly created 2026 QMS report will not be affected by sanitization", async () => {
     for (let optionValues of booleanCombinations(4)) {
-      const [cahps, hciiad, nciad, pom] = optionValues;
+      const [cahps, hciidd, nciad, pom] = optionValues;
       const options = {
         name: "mock-report",
         year: 2026,
-        options: { cahps, hciiad, nciad, pom },
+        options: { cahps, hciidd, nciad, pom },
       };
       const user = {
         fullName: "Mock User",
