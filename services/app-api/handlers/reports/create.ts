@@ -4,8 +4,8 @@ import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { buildReport } from "./buildReport";
-import { isReportOptions } from "../../types/reports";
 import { putReport } from "../../storage/reports";
+import { isReportOptions } from "../../utils/reportValidation";
 
 export const createReport = handler(
   parseReportTypeAndState,
