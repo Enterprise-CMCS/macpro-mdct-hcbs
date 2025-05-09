@@ -23,10 +23,6 @@ jest.mock("../../storage/reports", () => ({
   putReport: jest.fn(),
 }));
 
-jest.mock("../../storage/reports", () => ({
-  putReport: jest.fn(),
-}));
-
 const testEvent = {
   queryStringParameters: {},
   pathParameters: { reportType: "QMS", state: "PA" },
