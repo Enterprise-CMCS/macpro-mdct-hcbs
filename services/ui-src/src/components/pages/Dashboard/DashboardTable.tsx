@@ -27,21 +27,20 @@ import { useState } from "react";
 
 interface DashboardTableProps {
   reports: Report[];
-  openAddEditReportModal: Function;
-  unlockModalOnOpenHandler: Function;
+  openAddEditReportModal: (report: Report) => void;
+  unlockModalOnOpenHandler: () => void;
 }
 
-interface TableProps {
+interface TableProps
+  extends Omit<DashboardTableProps, "unlockModalOnOpenHandler"> {
   tableContent: { caption: string; headRow: string[] };
-  reports: Report[];
   showEditNameColumn: boolean | undefined;
   showReportSubmissionsColumn: boolean;
   showAdminControlsColumn: boolean | undefined;
-  openAddEditReportModal: Function;
   navigate: NavigateFunction;
   userIsEndUser: boolean | undefined;
-  toggleArchived: Function;
-  toggleRelease: Function;
+  toggleArchived: (rowIndex: number) => void;
+  toggleRelease: (rowIndex: number) => void;
   /** Used to store the archive index of the table row */
   archiving: number | undefined;
   /** Used to store the unlock index of the table row */

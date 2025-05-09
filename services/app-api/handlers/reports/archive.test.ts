@@ -1,6 +1,7 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { Report } from "../../types/reports";
 import { updateArchiveStatus } from "./archive";
 
 jest.mock("../../utils/authentication", () => ({
@@ -17,7 +18,7 @@ jest.mock("../../utils/authorization", () => ({
 const putMock = jest.fn();
 jest.mock("../../storage/reports", () => ({
   getReport: jest.fn().mockReturnValue({ id: "A report", archived: false }),
-  putReport: (report: any) => putMock(report),
+  putReport: (report: Report) => putMock(report),
 }));
 
 const testEvent: APIGatewayProxyEvent = {

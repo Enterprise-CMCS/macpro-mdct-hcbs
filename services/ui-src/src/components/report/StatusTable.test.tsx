@@ -49,31 +49,33 @@ describe("StatusTable with state user", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    mockedUseStore.mockImplementation((selector: Function | undefined) => {
-      if (selector) {
+    mockedUseStore.mockImplementation(
+      (selector?: Parameters<typeof useStore>[0]) => {
+        if (selector) {
+          return {
+            sections: [
+              {
+                section: { title: "Section 1", id: "id-1" },
+                displayStatus: PageStatus.COMPLETE,
+                submittable: true,
+              },
+              {
+                section: { title: "Section 2", id: "id-2" },
+                displayStatus: PageStatus.IN_PROGRESS,
+                submittable: false,
+              },
+            ],
+            submittable: true,
+          };
+        }
         return {
-          sections: [
-            {
-              section: { title: "Section 1", id: "id-1" },
-              displayStatus: PageStatus.COMPLETE,
-              submittable: true,
-            },
-            {
-              section: { title: "Section 2", id: "id-2" },
-              displayStatus: PageStatus.IN_PROGRESS,
-              submittable: false,
-            },
-          ],
-          submittable: true,
+          ...mockStateUserStore,
+          pageMap: mockPageMap,
+          report: report,
+          setModalComponent: mockSetModalComponent,
         };
       }
-      return {
-        ...mockStateUserStore,
-        pageMap: mockPageMap,
-        report: report,
-        setModalComponent: mockSetModalComponent,
-      };
-    });
+    );
   });
 
   test("table with section titles and status icons render", () => {
@@ -150,31 +152,33 @@ describe("StatusTable with state user", () => {
 
 describe("StatusPage with Read only user", () => {
   beforeEach(() => {
-    mockedUseStore.mockImplementation((selector: Function | undefined) => {
-      if (selector) {
+    mockedUseStore.mockImplementation(
+      (selector?: Parameters<typeof useStore>[0]) => {
+        if (selector) {
+          return {
+            sections: [
+              {
+                section: { title: "Section 1", id: "id-1" },
+                displayStatus: PageStatus.COMPLETE,
+                submittable: true,
+              },
+              {
+                section: { title: "Section 2", id: "id-2" },
+                displayStatus: PageStatus.IN_PROGRESS,
+                submittable: false,
+              },
+            ],
+            submittable: true,
+          };
+        }
         return {
-          sections: [
-            {
-              section: { title: "Section 1", id: "id-1" },
-              displayStatus: PageStatus.COMPLETE,
-              submittable: true,
-            },
-            {
-              section: { title: "Section 2", id: "id-2" },
-              displayStatus: PageStatus.IN_PROGRESS,
-              submittable: false,
-            },
-          ],
-          submittable: true,
+          ...mockUseReadOnlyUserStore,
+          pageMap: mockPageMap,
+          report: report,
+          setModalComponent: mockSetModalComponent,
         };
       }
-      return {
-        ...mockUseReadOnlyUserStore,
-        pageMap: mockPageMap,
-        report: report,
-        setModalComponent: mockSetModalComponent,
-      };
-    });
+    );
   });
   it("should not render the Submit QMS Report button when user is read only", async () => {
     render(

@@ -1,6 +1,6 @@
 import { fetchAuthSession } from "aws-amplify/auth";
 
-export const getRequestHeaders = async (): Promise<any> => {
+export const getRequestHeaders = async () => {
   try {
     const { idToken } = (await fetchAuthSession()).tokens ?? {};
     const headers = {
@@ -9,5 +9,6 @@ export const getRequestHeaders = async (): Promise<any> => {
     return headers;
   } catch (error) {
     console.log(error); //eslint-disable-line no-console
+    return undefined;
   }
 };

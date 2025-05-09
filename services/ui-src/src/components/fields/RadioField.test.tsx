@@ -93,7 +93,7 @@ describe("<RadioField />", () => {
   test("RadioField allows checking radio choices", async () => {
     mockGetValues(undefined);
     render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 1") as HTMLInputElement;
+    const firstRadio = screen.getByLabelText("Choice 1");
     await userEvent.click(firstRadio);
     expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "A", {
       shouldValidate: true,
@@ -103,7 +103,7 @@ describe("<RadioField />", () => {
   test("RadioField displays children fields after selection", async () => {
     mockGetValues(undefined);
     render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 2") as HTMLInputElement;
+    const firstRadio = screen.getByLabelText("Choice 2");
     await userEvent.click(firstRadio);
     expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "B", {
       shouldValidate: true,

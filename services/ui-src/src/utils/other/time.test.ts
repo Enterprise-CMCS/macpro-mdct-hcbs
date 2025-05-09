@@ -1,7 +1,6 @@
 import {
   calculateNextQuarter,
   calculateRemainingSeconds,
-  calculateTimeByType,
   checkDateCompleteness,
   checkDateRangeStatus,
   convertDateEtToUtc,
@@ -10,9 +9,6 @@ import {
   convertDateUtcToEt,
   formatMonthDayYear,
   getLocalHourMinuteTime,
-  midnight,
-  noon,
-  oneSecondToMidnight,
   twoDigitCalendarDate,
 } from "./time";
 
@@ -30,21 +26,6 @@ describe("utils/time", () => {
     test("returns correct hourminute format", () => {
       const localHourMinuteTime = getLocalHourMinuteTime();
       expect(localHourMinuteTime).toMatch(getLocalHourMinuteTimeRegex);
-    });
-  });
-
-  describe("calculateTimeByType()", () => {
-    test("known timeType returns correct datetime", () => {
-      const startDateTest = calculateTimeByType("startDate");
-      expect(startDateTest).toEqual(midnight);
-
-      const endDateTest = calculateTimeByType("endDate");
-      expect(endDateTest).toEqual(oneSecondToMidnight);
-    });
-
-    test("unknown timeType returns noon datetime", () => {
-      const unknownTest = calculateTimeByType("whatever");
-      expect(unknownTest).toEqual(noon);
     });
   });
 
@@ -142,20 +123,22 @@ describe("utils/time", () => {
   });
 
   describe("convertDatetimeStringToNumber()", () => {
-    test("that when passed in a date and a timeType are passed, the correct epoch value is returned", () => {
-      expect(convertDatetimeStringToNumber("10/22/2024", "startDate")).toEqual(
-        1729569600000
-      );
+    it("should return the correct epoch for midnight", () => {
+      const result = convertDatetimeStringToNumber("10/22/2024", {
+        hour: 0,
+        minute: 0,
+        second: 0,
+      });
+      expect(result).toBe(1729569600000);
     });
-    test("that when passed in a date and a timeType are passed, the correct epoch value is returned", () => {
-      expect(convertDatetimeStringToNumber("10/22/2024", "endDate")).toEqual(
-        1729655999000
-      );
-    });
-    test("that when passed in a date and a timeType are passed, the correct epoch value is returned", () => {
-      expect(
-        convertDatetimeStringToNumber("10/22/2024", "NotATimeType")
-      ).toEqual(1729612800000);
+
+    it("should return the correct epoch for one second before midnight", () => {
+      const result = convertDatetimeStringToNumber("10/22/2024", {
+        hour: 23,
+        minute: 59,
+        second: 59,
+      });
+      expect(result).toBe(1729655999000);
     });
   });
 

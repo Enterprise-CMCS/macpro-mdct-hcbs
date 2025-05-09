@@ -117,7 +117,9 @@ export const mergeAnswers = (
   state: HcbsReportState,
   errors?: any
 ) => {
-  if (!state.report || !state.currentPageId) return;
+  if (!state.report || !state.currentPageId) {
+    return {};
+  }
   const report = structuredClone(state.report);
   const pageIndex = state.report.pages.findIndex(
     (page) => page.id === state.currentPageId
@@ -148,8 +150,12 @@ export const mergeAnswers = (
 
 export const substitute = (
   report: Report,
-  selectMeasure: MeasurePageTemplate
+  selectMeasure: MeasurePageTemplate | undefined
 ) => {
+  if (!selectMeasure) {
+    return { report };
+  }
+
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
@@ -165,7 +171,9 @@ export const substitute = (
 };
 
 export const markPageComplete = (pageId: string, state: HcbsReportState) => {
-  if (!state.report) return;
+  if (!state.report) {
+    return {};
+  }
   const report = structuredClone(state.report);
   const page = report.pages.find(
     (page) => page.id === pageId
@@ -185,7 +193,9 @@ export const clearMeasure = (
   state: HcbsReportState,
   ignoreList: { [key: string]: string }
 ) => {
-  if (!state.report) return;
+  if (!state.report) {
+    return {};
+  }
   const report = structuredClone(state.report);
   performClearMeasure(measureId, report, ignoreList);
   return { report };
@@ -195,7 +205,9 @@ export const clearMeasure = (
  * Hard reset a measure back to the Not Started state
  */
 export const resetMeasure = (measureId: string, state: HcbsReportState) => {
-  if (!state.report) return;
+  if (!state.report) {
+    return {};
+  }
   const report = structuredClone(state.report);
 
   performResetMeasure(measureId, report);
@@ -214,12 +226,16 @@ export const changeDeliveryMethods = (
   selections: string,
   state: HcbsReportState
 ) => {
-  if (!state.report || !state.currentPageId || selections === "both") return;
+  if (!state.report || !state.currentPageId || selections === "both") {
+    return {};
+  }
   const report = structuredClone(state.report);
 
   const page = report.pages.find((page) => page.id === measureId);
 
-  if (!page || !isMeasurePageTemplate(page) || !page.dependentPages) return;
+  if (!page || !isMeasurePageTemplate(page) || !page.dependentPages) {
+    return {};
+  }
   for (const dependentPage of page.dependentPages) {
     const deliverySystemIsSelected = selections
       .split(",")
@@ -235,7 +251,7 @@ export const changeDeliveryMethods = (
  * Action saving a report to the api, updates errors or saved status
  */
 export const saveReport = async (state: HcbsReportState) => {
-  if (!state.report) return;
+  if (!state.report) return {};
   try {
     await putReport(state.report); // Submit to API
   } catch (_) {

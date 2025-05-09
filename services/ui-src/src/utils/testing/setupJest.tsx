@@ -114,7 +114,7 @@ export const mockUserContext: UserContextShape = {
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: async () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 };
 
 // USER STATES / STORE

@@ -1,4 +1,4 @@
-import { useContext, MouseEventHandler } from "react";
+import { useContext } from "react";
 import {
   Box,
   Button,
@@ -74,7 +74,7 @@ export const AdminPage = () => {
                     <Button
                       variant="danger"
                       sx={sx.deleteBannerButton}
-                      onClick={deleteAdminBanner as MouseEventHandler}
+                      onClick={deleteAdminBanner}
                     >
                       {bannerDeleting ? (
                         <Spinner size="md" />

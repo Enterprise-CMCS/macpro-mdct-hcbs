@@ -15,6 +15,7 @@ import {
   PageType,
   ElementType,
   PageElement,
+  ReportOptions,
 } from "../types/reports";
 import { error } from "./constants";
 
@@ -120,7 +121,7 @@ const resultRowButtonTemplateSchema = object().shape({
   to: string().required(),
 });
 
-const pageElementSchema = lazy((value: PageElement): Schema<any> => {
+const pageElementSchema = lazy((value: PageElement): Schema => {
   if (!value.type) {
     throw new Error();
   }
@@ -377,6 +378,24 @@ const pagesSchema = array()
     })
   )
   .required();
+
+export const isReportOptions = (
+  obj: object | undefined
+): obj is ReportOptions => {
+  const reportOptionsValidationSchema = object()
+    .shape({
+      name: string().required(),
+      year: number().required(),
+      options: optionsSchema.required().noUnknown(),
+    })
+    .required()
+    .noUnknown();
+
+  return reportOptionsValidationSchema.isValidSync(obj, {
+    stripUnknown: false,
+    strict: true,
+  });
+};
 
 const reportValidateSchema = object().shape({
   id: string().notRequired(),

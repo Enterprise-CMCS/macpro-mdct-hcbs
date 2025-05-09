@@ -40,7 +40,9 @@ export const MeasureTableElement = (props: PageElementProps) => {
       page.type === PageType.Measure
   );
 
-  const onSubstitute = async (selectMeasure: MeasurePageTemplate) => {
+  const onSubstitute = async (
+    selectMeasure: MeasurePageTemplate | undefined
+  ) => {
     if (report) {
       setSubstitute(report, selectMeasure);
       autosave();

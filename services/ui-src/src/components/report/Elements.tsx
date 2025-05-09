@@ -80,12 +80,10 @@ export const subHeaderElement = (props: PageElementProps) => {
   return (
     <Stack>
       <Heading as="h2" variant="subHeader">
-        {(props.element as SubHeaderTemplate).text}
+        {element.text}
       </Heading>
       {element?.helperText && (
-        <Text variant="helperText">
-          {(props.element as SubHeaderTemplate).helperText}
-        </Text>
+        <Text variant="helperText">{element.helperText}</Text>
       )}
     </Stack>
   );
@@ -137,11 +135,11 @@ export const paragraphElement = (props: PageElementProps) => {
     <Stack>
       {element?.title && (
         <Text fontSize="16px" fontWeight="bold">
-          {(props.element as ParagraphTemplate).title}
+          {element.title}
         </Text>
       )}
       <Text fontSize="16px" fontWeight={element.weight}>
-        {(props.element as ParagraphTemplate).text}
+        {element.text}
       </Text>
     </Stack>
   );

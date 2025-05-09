@@ -62,7 +62,10 @@ export interface HcbsReportState {
   changeDeliveryMethods: (measureId: string, selection: string) => void;
   completePage: (measureId: string) => void;
   resetMeasure: (measureId: string) => void;
-  setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => void;
+  setSubstitute: (
+    report: Report,
+    selectMeasure: MeasurePageTemplate | undefined
+  ) => void;
   setSidebar: (sidebarOpen: boolean) => void;
   saveReport: () => void;
 }

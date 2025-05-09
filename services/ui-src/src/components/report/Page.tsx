@@ -87,16 +87,15 @@ export const Page = ({ elements }: Props) => {
         return subHeaderMeasureElement;
       default:
         assertExhaustive(elementType);
-        return (_element: any, _key: number) => <></>;
+        return () => <></>;
     }
   };
 
   const composedElements = elements.map((element, index) => {
     const ComposedElement = renderElement(element);
-    const formKey = (element as any).formKey ?? buildFormKey(index);
     return (
       <ComposedElement
-        formkey={formKey}
+        formkey={`elements.${index}`}
         key={index}
         element={element}
         disabled={!userIsEndUser || report?.status === ReportStatus.SUBMITTED}
@@ -108,8 +107,4 @@ export const Page = ({ elements }: Props) => {
       {composedElements}
     </VStack>
   );
-};
-
-const buildFormKey = (index: number) => {
-  return `elements.${index}`;
 };

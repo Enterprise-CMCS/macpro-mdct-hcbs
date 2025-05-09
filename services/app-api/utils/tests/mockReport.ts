@@ -4,7 +4,6 @@ import {
   PageType,
   ElementType,
   MeasureTemplateName,
-  MeasurePageTemplate,
   ReportStatus,
   ReportType,
 } from "../../types/reports";
@@ -184,7 +183,7 @@ export const invalidRadioCheckedChildrenReport = {
         },
       ],
     },
-  } as Record<MeasureTemplateName, MeasurePageTemplate>,
+  },
 };
 
 export const invalidPageElementType = {

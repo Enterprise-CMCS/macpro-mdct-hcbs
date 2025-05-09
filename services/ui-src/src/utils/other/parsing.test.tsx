@@ -37,7 +37,7 @@ const testElementArray = [
   },
 ];
 
-const undefinedElement: any = [
+const undefinedElement = [
   {
     type: "ul",
     content: "",
@@ -148,7 +148,9 @@ const testComponentWithChildren = (
   <div>{parseCustomHtml(mockElementsWithChildren)}</div>
 );
 
-const undefinedTypeComponent = <div>{parseCustomHtml(undefinedElement)}</div>;
+const undefinedTypeComponent = (
+  <div>{parseCustomHtml(undefinedElement as any)}</div>
+);
 
 describe("utils/parsing", () => {
   describe("parseCustomHtml()", () => {

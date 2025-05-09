@@ -118,7 +118,7 @@ describe("state/management/reportState: buildState", () => {
 
 describe("state/management/reportState: setPage", () => {
   test("updates the page info", () => {
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
     const result = setPage("req-measure-result", state);
     expect(result.currentPageId).toEqual("req-measure-result");
   });
@@ -131,12 +131,12 @@ describe("state/management/reportState: mergeAnswers", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
 
     const answers = { elements: [null, { answer: "ANSWERED" }] };
     const result = mergeAnswers(answers, state);
 
-    const page = result?.report.pages[1] as FormPageTemplate;
+    const page = result?.report?.pages[1] as FormPageTemplate;
     const elements = page?.elements!;
     const question = elements[1] as TextboxTemplate;
     expect(page.status).toEqual(PageStatus.IN_PROGRESS);
@@ -158,7 +158,7 @@ describe("state/management/reportState: resetMeasure", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
     const response = resetMeasure("LTSS-1", state);
     const measure = response!.report!.pages[4] as MeasurePageTemplate;
     const reportingRadio = measure.elements[0] as RadioTemplate;
@@ -176,7 +176,7 @@ describe("state/management/reportState: clearMeasure", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
     const response = clearMeasure("LTSS-1", state, {
       ["measure-reporting-radio"]: "no",
     });
@@ -196,7 +196,7 @@ describe("state/management/reportState: markPageComplete", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
     const response = markPageComplete("LTSS-1", state);
     const measure = response!.report!.pages[4] as MeasurePageTemplate;
 
@@ -206,7 +206,7 @@ describe("state/management/reportState: markPageComplete", () => {
 
 describe("state/management/reportState: saveReport", () => {
   test("updates store on success", async () => {
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
     const result = await saveReport(state);
     expect(result?.lastSavedTime).toBeTruthy();
   });
@@ -234,9 +234,9 @@ describe("state/management/reportState: changeDeliveryMethods", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
     const response = changeDeliveryMethods("LTSS-1", "MLTSS", state);
-    const ffs = response!.report.pages.find(
+    const ffs = response.report?.pages.find(
       (page) => page.id === MeasureTemplateName["FFS-1"]
     ) as MeasurePageTemplate;
 
@@ -247,9 +247,9 @@ describe("state/management/reportState: changeDeliveryMethods", () => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    const state = buildState(testReport, false) as unknown as HcbsReportState;
+    const state = buildState(testReport, false) as HcbsReportState;
     const response = changeDeliveryMethods("LTSS-1", "FFS", state);
-    const ffs = response!.report.pages.find(
+    const ffs = response.report?.pages.find(
       (page) => page.id === MeasureTemplateName["FFS-1"]
     ) as MeasurePageTemplate;
 

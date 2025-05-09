@@ -42,11 +42,8 @@ export const AdminDashSelector = () => {
   ];
 
   const buildStates = (): DropdownOptions[] => {
-    const dropdownStates: DropdownOptions[] = Object.keys(StateNames).map(
-      (value) => ({
-        label: StateNames[value as keyof typeof StateNames],
-        value,
-      })
+    const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
+      ([abbr, name]) => ({ label: name, value: abbr })
     );
     return [
       {

@@ -1,44 +1,27 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "aws-amplify/auth";
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
 import { ErrorVerbiage } from "types";
 
-const useFormFields = (initialState: any) => {
-  const [fields, setValues] = useState(initialState);
-  return [
-    fields,
-    function (event: Event) {
-      setValues({
-        ...fields,
-        [(event.target as HTMLTextAreaElement).id]: (
-          event.target as HTMLTextAreaElement
-        ).value,
-      });
-    },
-  ];
-};
-
 export const LoginCognito = () => {
   const navigate = useNavigate();
-  const [fields, handleFieldChange] = useFormFields({
-    email: "",
-    password: "",
-  });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<ErrorVerbiage>();
 
-  const handleLogin = async (event: any) => {
+  const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      await signIn({ username: fields.email, password: fields.password });
+      await signIn({ username, password });
       navigate(`/`);
-    } catch (error: any) {
-      let errorMessage: ErrorVerbiage = {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : undefined;
+      setError({
         title: "Unable to login",
-        children: error.message,
-      };
-      setError(errorMessage);
+        children: message,
+      });
     }
   };
 
@@ -48,7 +31,7 @@ export const LoginCognito = () => {
         Log In with Cognito
       </Heading>
       <ErrorAlert error={error} alertSxOverride={sx.error} />
-      <form onSubmit={(event) => handleLogin(event)}>
+      <form onSubmit={handleLogin}>
         <Box sx={sx.label}>
           <label>
             <Text sx={sx.labelDescription}>Email</Text>
@@ -56,8 +39,8 @@ export const LoginCognito = () => {
               id="email"
               name="email"
               type="email"
-              value={fields.email}
-              onChange={handleFieldChange}
+              value={username}
+              onChange={(evt) => setUsername(evt.target.value)}
               className="field"
             />
           </label>
@@ -69,8 +52,8 @@ export const LoginCognito = () => {
               id="password"
               name="password"
               type="password"
-              value={fields.password}
-              onChange={handleFieldChange}
+              value={password}
+              onChange={(evt) => setPassword(evt.target.value)}
               className="field"
             />
           </label>

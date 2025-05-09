@@ -1,26 +1,12 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import { DateShape, TimeShape } from "types";
+import { DateShape } from "types";
 import { differenceInSeconds, parseISO } from "date-fns";
 
-export const midnight: TimeShape = { hour: 0, minute: 0, second: 0 };
-export const oneSecondToMidnight: TimeShape = {
-  hour: 23,
-  minute: 59,
-  second: 59,
-};
-export const noon: TimeShape = {
-  hour: 12,
-  minute: 0,
-  second: 0,
-};
-
-export const calculateTimeByType = (timeType?: string): TimeShape => {
-  const timeMap: any = {
-    startDate: midnight,
-    endDate: oneSecondToMidnight,
-  };
-  return timeMap?.[timeType as keyof typeof timeMap] || noon;
-};
+interface TimeShape {
+  hour: number;
+  minute: number;
+  second: number;
+}
 
 /*
  * Returns local time in HH:mm format with the "am/pm" indicator
@@ -123,12 +109,11 @@ export const checkDateCompleteness = (date: string) => {
 
 export const convertDatetimeStringToNumber = (
   date: string,
-  timeType: string | undefined
+  time: TimeShape
 ): number | undefined => {
   const completeDate = checkDateCompleteness(date);
   let convertedTime;
   if (completeDate) {
-    const time = calculateTimeByType(timeType);
     convertedTime = convertDateTimeEtToUtc(completeDate, time);
   }
   return convertedTime || undefined;

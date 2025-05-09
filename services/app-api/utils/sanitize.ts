@@ -1,7 +1,7 @@
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 
-const windowEmulator: any = new JSDOM("").window;
+const windowEmulator = new JSDOM("").window;
 const DOMPurify = createDOMPurify(windowEmulator);
 
 /*
@@ -32,26 +32,26 @@ export const sanitizeArray = (array: unknown[]): unknown[] =>
   array.map((entry: unknown) => sanitizeEntry(entry));
 
 // iterates over object key-value pairs, sanitizing values recursively
-export const sanitizeObject = (object: { [key: string]: unknown }) => {
-  if (object) {
-    const entries = Object.entries(object);
-    const sanitizedEntries = entries.map((entry: [string, unknown]) => {
-      const [key, value] = entry;
-      return [key, sanitizeEntry(value)];
-    });
-    return Object.fromEntries(sanitizedEntries);
-  }
-};
-
-const sanitizerMap: any = {
-  string: sanitizeString,
-  array: sanitizeArray,
-  object: sanitizeObject,
+export const sanitizeObject = <T extends object>(object: T): T => {
+  const entries = Object.entries(object);
+  const sanitizedEntries = entries.map((entry: [string, unknown]) => {
+    const [key, value] = entry;
+    return [key, sanitizeEntry(value)];
+  });
+  return Object.fromEntries(sanitizedEntries);
 };
 
 // return sanitized entry, or if safe type, return entry
 const sanitizeEntry = (entry: unknown) => {
-  const entryType = Array.isArray(entry) ? "array" : typeof entry;
-  const sanitizer = sanitizerMap[entryType];
-  return sanitizer?.(entry) || entry;
+  if (typeof entry === "string") {
+    return sanitizeString(entry);
+  } else if (Array.isArray(entry)) {
+    return sanitizeArray(entry);
+  } else if (entry === null) {
+    return null;
+  } else if (typeof entry === "object") {
+    return sanitizeObject(entry);
+  } else {
+    return entry;
+  }
 };

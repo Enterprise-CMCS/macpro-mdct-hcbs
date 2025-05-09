@@ -8,15 +8,20 @@ import {
   updateArchivedStatus,
 } from "./report";
 // types
-import { Report, ReportOptions, ReportType } from "types/report";
+import {
+  MeasurePageTemplate,
+  Report,
+  ReportOptions,
+  ReportType,
+} from "types/report";
 import { AnyObject } from "types";
 
 const report = {
   type: ReportType.QMS,
   state: "NJ",
-  title: "A Title",
-  pages: [],
-} as unknown as Report;
+  name: "A Title",
+  pages: [] as MeasurePageTemplate[],
+} as Report;
 
 const mockGet = jest.fn();
 const mockPost = jest.fn();
@@ -29,9 +34,11 @@ jest.mock("../apiLib", () => ({
   },
 }));
 
-const mockReport = {
+const mockReport: ReportOptions = {
   name: "report name",
-} as ReportOptions;
+  year: 2026,
+  options: {} as ReportOptions["options"],
+};
 
 describe("utils/report", () => {
   beforeEach(() => {

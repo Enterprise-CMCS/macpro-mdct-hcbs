@@ -33,8 +33,9 @@ export const MeasureResultsNavigationTableElement = (
   const navigate = useNavigate();
   const hideElement = useElementIsHidden(table.hideCondition);
 
-  if (!report || !currentPage || currentPage.type !== PageType.Measure)
+  if (!report || !currentPage || currentPage.type !== PageType.Measure) {
     return null;
+  }
   const measurePage = currentPage as MeasurePageTemplate;
   const deliveryMethodRadio = useLiveElement(
     "delivery-method-radio"

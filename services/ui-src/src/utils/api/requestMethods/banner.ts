@@ -9,7 +9,7 @@ async function getBanner(bannerKey: string) {
   };
 
   updateTimeout();
-  return await apiLib.get(`/banners/${bannerKey}`, options);
+  return await apiLib.get<BannerData>(`/banners/${bannerKey}`, options);
 }
 
 async function writeBanner(bannerData: BannerData) {
@@ -20,7 +20,7 @@ async function writeBanner(bannerData: BannerData) {
   };
 
   updateTimeout();
-  return await apiLib.post(`/banners/${bannerData.key}`, options);
+  return await apiLib.post<BannerData>(`/banners/${bannerData.key}`, options);
 }
 
 async function deleteBanner(bannerKey: string) {

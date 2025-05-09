@@ -40,10 +40,10 @@ const testComponent = (
 );
 
 // HELPERS
-const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
+const originalLocationDescriptor = Object.getOwnPropertyDescriptor(
   global,
   "location"
-);
+)!;
 
 const setWindowOrigin = (windowOrigin: string) => {
   global.window = Object.create(window);

@@ -23,7 +23,7 @@ export interface HcbsUser {
 
 export interface UserContextShape {
   user?: HcbsUser;
-  getExpiration: Function;
+  getExpiration: () => string;
   logout: () => Promise<void>;
   loginWithIDM: () => Promise<void>;
   showLocalLogins?: boolean;

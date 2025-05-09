@@ -12,7 +12,8 @@ const loginCognitoComponent = (
 
 const mockSignIn = jest.fn();
 jest.mock("aws-amplify/auth", () => ({
-  signIn: (credentials: any) => mockSignIn(credentials),
+  signIn: (credentials: { username: string; password: string }) =>
+    mockSignIn(credentials),
 }));
 
 const mockUseNavigate = jest.fn();

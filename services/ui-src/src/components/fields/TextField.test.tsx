@@ -35,7 +35,8 @@ const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
   typeof useElementIsHidden
 >;
 
-const mockedTextboxElement = {
+const mockedTextboxElement: TextboxTemplate = {
+  id: "mock-textbox-id",
   type: ElementType.Textbox,
   label: "test label",
   helperText: "helper text",
@@ -43,7 +44,7 @@ const mockedTextboxElement = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
-} as TextboxTemplate;
+};
 
 const textFieldComponent = (
   <TextField element={mockedTextboxElement} index={0} formkey="elements.0" />
