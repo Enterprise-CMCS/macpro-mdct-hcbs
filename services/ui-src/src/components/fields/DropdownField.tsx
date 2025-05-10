@@ -9,8 +9,7 @@ import {
 } from "@cmsgov/design-system";
 import { parseCustomHtml } from "utils";
 
-type DropdownFieldProps = PageElementProps & { element: DropdownTemplate };
-export const DropdownField = (props: DropdownFieldProps) => {
+export const DropdownField = (props: PageElementProps<DropdownTemplate>) => {
   /**
    * TODO:
    * https://design.cms.gov/components/dropdown/?theme=core

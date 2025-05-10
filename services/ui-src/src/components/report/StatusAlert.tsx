@@ -8,8 +8,7 @@ import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { Link } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-type StatusAlertProps = PageElementProps & { element: StatusAlertTemplate };
-export const StatusAlert = (props: StatusAlertProps) => {
+export const StatusAlert = (props: PageElementProps<StatusAlertTemplate>) => {
   const navigate = useNavigate();
   const { report, currentPageId } = useStore();
   const { reportType, state, reportId, pageId } = useParams();

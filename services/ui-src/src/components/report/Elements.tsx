@@ -19,6 +19,7 @@ import {
   HeaderIcon,
   MeasurePageTemplate,
   isMeasurePageTemplate,
+  PageElement,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -26,14 +27,16 @@ import { measurePrevPage, parseCustomHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
-export interface PageElementProps {
-  index?: number;
+
+export interface PageElementProps<T extends PageElement = PageElement> {
+  element: T;
   formkey: string;
   disabled?: boolean;
 }
 
-type HeaderProps = PageElementProps & { element: HeaderTemplate };
-export const HeaderElement = ({ element }: HeaderProps) => {
+export const HeaderElement = ({
+  element,
+}: PageElementProps<HeaderTemplate>) => {
   const buildIcon = (icon: HeaderIcon | undefined) => {
     switch (icon) {
       case HeaderIcon.Check:
@@ -69,8 +72,9 @@ export const HeaderElement = ({ element }: HeaderProps) => {
   );
 };
 
-type SubHeaderProps = PageElementProps & { element: SubHeaderTemplate };
-export const SubHeaderElement = ({ element }: SubHeaderProps) => {
+export const SubHeaderElement = ({
+  element,
+}: PageElementProps<SubHeaderTemplate>) => {
   const hideElement = useElementIsHidden(element.hideCondition);
   if (hideElement) {
     return null;
@@ -80,7 +84,7 @@ export const SubHeaderElement = ({ element }: SubHeaderProps) => {
       <Heading as="h2" variant="subHeader">
         {element.text}
       </Heading>
-      {element?.helperText && (
+      {element.helperText && (
         <Text variant="helperText">{element.helperText}</Text>
       )}
     </Stack>
@@ -118,8 +122,9 @@ export const SubHeaderMeasureElement = (_props: PageElementProps) => {
   );
 };
 
-type NestedHeadingProps = PageElementProps & { element: NestedHeadingTemplate };
-export const NestedHeadingElement = ({ element }: NestedHeadingProps) => {
+export const NestedHeadingElement = ({
+  element,
+}: PageElementProps<NestedHeadingTemplate>) => {
   return (
     <Heading as="h3" variant="nestedHeading">
       {element.text}
@@ -127,8 +132,9 @@ export const NestedHeadingElement = ({ element }: NestedHeadingProps) => {
   );
 };
 
-type ParagraphProps = PageElementProps & { element: ParagraphTemplate };
-export const ParagraphElement = ({ element }: ParagraphProps) => {
+export const ParagraphElement = ({
+  element,
+}: PageElementProps<ParagraphTemplate>) => {
   return (
     <Stack>
       {element.title && (
@@ -143,8 +149,9 @@ export const ParagraphElement = ({ element }: ParagraphProps) => {
   );
 };
 
-type AccordionProps = PageElementProps & { element: AccordionTemplate };
-export const AccordionElement = ({ element: accordion }: AccordionProps) => {
+export const AccordionElement = ({
+  element: accordion,
+}: PageElementProps<AccordionTemplate>) => {
   return (
     <Accordion allowToggle={true}>
       <AccordionItem label={accordion.label}>
@@ -158,8 +165,9 @@ export const DividerElement = (_props: PageElementProps) => {
   return <Divider></Divider>;
 };
 
-type ButtonLinkProps = PageElementProps & { element: ButtonLinkTemplate };
-export const ButtonLinkElement = ({ element: button }: ButtonLinkProps) => {
+export const ButtonLinkElement = ({
+  element: button,
+}: PageElementProps<ButtonLinkTemplate>) => {
   const { reportType, state, reportId, pageId } = useParams();
   const { report } = useStore();
 

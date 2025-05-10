@@ -6,8 +6,7 @@ import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { PageElementProps } from "../report/Elements";
 import { DateTemplate } from "../../types/report";
 
-type DateFieldProps = PageElementProps & { element: DateTemplate };
-export const DateField = (props: DateFieldProps) => {
+export const DateField = (props: PageElementProps<DateTemplate>) => {
   const dateTextbox = props.element;
   const defaultValue = dateTextbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);

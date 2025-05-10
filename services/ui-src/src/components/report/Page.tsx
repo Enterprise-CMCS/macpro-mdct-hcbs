@@ -42,8 +42,8 @@ export const Page = ({ elements }: Props) => {
 
   const composedElements = elements.map((element, index) => {
     const props = {
-      formkey: `elements.${index}`,
       key: index,
+      formkey: `elements.${index}`,
       disabled: !userIsEndUser || report?.status === ReportStatus.SUBMITTED,
     };
     switch (element.type) {
