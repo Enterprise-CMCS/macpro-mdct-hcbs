@@ -3,7 +3,6 @@ import {
   getReportTemplate,
   getCmitInfo,
 } from "../../forms/yearlyFormSelection";
-import { putReport } from "../../storage/reports";
 import {
   Report,
   ReportStatus,
@@ -91,9 +90,7 @@ export const buildReport = async (
     throw new Error("Invalid request");
   }
 
-  // Save
-  await putReport(validatedReport);
-  return report;
+  return validatedReport;
 };
 
 /**
