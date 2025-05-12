@@ -67,8 +67,6 @@
     "pa11y": "^6.2.3",
     "pa11y-runner-htmlcs": "^2.0.1",
     "react-helmet": "^6.1.0",
-    "serverless-cloudfront-invalidate": "^1.5.0",
-    "serverless-s3-sync": "^3.2.0",
     "typescript": "^4.6.3"
   },
   "resolutions": {
@@ -107,8 +105,7 @@
       "^.+\\.(css|less|scss)$": "identity-obj-proxy",
       "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts"
     },
-    "setupFiles": [
-    ],
+    "setupFiles": [],
     "setupFilesAfterEnv": [
       "<rootDir>/src/utils/testing/setupJest.tsx"
     ],

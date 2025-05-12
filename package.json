@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
-    "@stratiformdigital/serverless-stage-destroyer": "^2.0.0",
     "@types/dotenv": "^8.2.0",
     "@types/flat": "^5.0.2",
     "@types/node": "^20.12.7",
@@ -55,13 +54,6 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.4.1",
-    "serverless": "^4.4.18",
-    "serverless-dotenv-plugin": "^3.0.0",
-    "serverless-dynamodb": "^0.2.54",
-    "serverless-iam-helper": "github:Enterprise-CMCS/serverless-iam-helper",
-    "serverless-offline": "^14.4.0",
-    "serverless-plugin-scripts": "^1.0.2",
-    "serverless-stack-termination-protection": "^2.0.2",
     "typescript": "^5.8.2",
     "util": "^0.12.4",
     "yargs": "^16.1.1"
