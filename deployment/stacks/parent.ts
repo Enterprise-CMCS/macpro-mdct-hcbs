@@ -1,12 +1,5 @@
 import { Construct } from "constructs";
-import {
-  Aws,
-  aws_iam as iam,
-  aws_ec2 as ec2,
-  CfnOutput,
-  Stack,
-  StackProps,
-} from "aws-cdk-lib";
+import { Aws, aws_ec2 as ec2, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
@@ -36,18 +29,9 @@ export class ParentStack extends Stack {
       terminationProtection: !isDev,
     });
 
-    const iamPermissionsBoundaryArn = `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`;
-    const iamPath = "/delegatedadmin/developer/";
-
     const commonProps = {
       scope: this,
       ...props,
-      iamPermissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
-        this,
-        "iamPermissionsBoundary",
-        iamPermissionsBoundaryArn
-      ),
-      iamPath,
       isDev,
     };
 
@@ -61,49 +45,27 @@ export class ParentStack extends Stack {
 
     const { tables } = createDataComponents(commonProps);
 
-    if (isLocalStack) {
-      createApiComponents({
-        ...commonProps,
-        tables,
-        vpc,
-        kafkaAuthorizedSubnets,
-      });
-      /*
-       * For local dev, the LocalStack container will host the database and API.
-       * The UI will self-host, so we don't need to tell CDK anything about it.
-       * Also, we skip authorization locally. So we don't set up Cognito,
-       * or configure the API to interact with it. Therefore, we're done.
-       */
-      return;
-    }
+    const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
+      ...commonProps,
+      tables,
+      vpc,
+      kafkaAuthorizedSubnets,
+    });
+
+    if (isLocalStack) return;
 
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({
         ...commonProps,
       });
 
-    const {
-      userPoolDomainName,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-      createAuthRole,
-    } = createUiAuthComponents({
-      ...commonProps,
-      applicationEndpointUrl,
-      customResourceRole,
-    });
-
-    const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
-      ...commonProps,
-      userPoolId,
-      userPoolClientId,
-      tables,
-      vpc,
-      kafkaAuthorizedSubnets,
-    });
-
-    createAuthRole(restApiId);
+    const { userPoolDomainName, identityPoolId, userPoolId, userPoolClientId } =
+      createUiAuthComponents({
+        ...commonProps,
+        applicationEndpointUrl,
+        customResourceRole,
+        restApiId,
+      });
 
     deployFrontend({
       ...commonProps,

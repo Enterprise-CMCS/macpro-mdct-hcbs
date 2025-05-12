@@ -13,7 +13,6 @@ import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isLocalStack } from "../local/util";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { isDefined } from "../utils/misc";
 
@@ -25,8 +24,6 @@ interface CreateApiComponentsProps {
   userPoolId?: string;
   userPoolClientId?: string;
   tables: DynamoDBTableIdentifiers[];
-  iamPermissionsBoundary: iam.IManagedPolicy;
-  iamPath: string;
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   brokerString: string;
@@ -44,8 +41,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     userPoolId,
     userPoolClientId,
     tables,
-    iamPermissionsBoundary,
-    iamPath,
   } = props;
 
   const service = "app-api";
@@ -151,8 +146,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
-    iamPermissionsBoundary,
-    iamPath,
   };
 
   new Lambda(scope, "createBanner", {
@@ -268,12 +261,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       webAclArn: waf.webAcl.attrArn,
     });
   }
-
-  addIamPropertiesToBucketAutoDeleteRole(
-    scope,
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
 
   const apiGatewayRestApiUrl = api.url.slice(0, -1);
 
