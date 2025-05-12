@@ -1,7 +1,7 @@
 import { isResultRowButton, PageType } from "../../types/reports";
 import { CMIT_LIST } from "./cmit";
-import { defaultMeasures, pomMeasures } from "./measureOptions";
-import { qmsReportTemplate } from "./qms";
+import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
+import { qmsReportTemplate } from "./qms/qms";
 
 describe("QMS Template", () => {
   it("Should exist", () => {

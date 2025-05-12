@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { StateNames } from "../../../constants";
-import { isReportType, isStateAbbr, Report } from "types";
+import { isReportType, isStateAbbr, Report, ReportType } from "types";
 import {
   PageTemplate,
   DashboardTable,
@@ -34,6 +34,21 @@ export const DashboardPage = () => {
     undefined
   );
   const fullStateName = StateNames[state as keyof typeof StateNames];
+
+  const getReportName = (type: string | undefined) => {
+    switch (type) {
+      case ReportType.QMS:
+        return "Quality Measure Set Report";
+      case ReportType.TA:
+        return "Timely Access Report";
+      case ReportType.CI:
+        return "Critical Incident Report";
+      default:
+        return "";
+    }
+  };
+
+  const reportName = getReportName(reportType);
 
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {
@@ -84,7 +99,7 @@ export const DashboardPage = () => {
 
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" variant="h1">
-          {fullStateName} Quality Measure Set Report
+          {fullStateName} {reportName}
         </Heading>
         <Accordion
           allowToggle={true}
@@ -124,11 +139,11 @@ export const DashboardPage = () => {
                   <strong>Creating a New Report</strong>
                 </p>
                 <p>
-                  Click the <b>“Start Quality Measure Set Report”</b> button to
-                  begin creating your report. A series of questions will appear
-                  to gather the necessary information for your report. Fill out
-                  each field accurately to ensure your report is complete.
-                  Before submitting, review the information you’ve provided. If
+                  Click the <b>“Start {reportName}”</b> button to begin creating
+                  your report. A series of questions will appear to gather the
+                  necessary information for your report. Fill out each field
+                  accurately to ensure your report is complete. Before
+                  submitting, review the information you’ve provided. If
                   everything looks good, confirm your entries and proceed.
                 </p>
                 <p>
@@ -194,14 +209,14 @@ export const DashboardPage = () => {
             </Text>
           ) : (
             <Text variant="tableEmpty">
-              Keep track of your Quality Measure Set Reports, once you start a
-              report you can access it here.
+              Keep track of your {reportName}s, once you start a report you can
+              access it here.
             </Text>
           ))}
         {userIsEndUser && (
           <Flex justifyContent="center">
             <Button onClick={() => openAddEditReportModal()} type="submit">
-              Start Quality Measure Set Report
+              Start {reportName}
             </Button>
           </Flex>
         )}

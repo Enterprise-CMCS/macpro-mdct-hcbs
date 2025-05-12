@@ -4,6 +4,7 @@ import { useStore } from "utils";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
 import { ReactNode, useState } from "react";
+import { isReportType, Report, ReportType } from "types";
 
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
@@ -12,6 +13,18 @@ const navItem = (title: string, index: number) => {
       {navItem(title, index - 1)}
     </Box>
   );
+};
+
+const getTitle = (report: Report) => {
+  if (!isReportType(report.type)) return "";
+  switch (report.type) {
+    case ReportType.CI:
+      return "CICM Report";
+    case ReportType.QMS:
+      return "Quality Measure Set Report";
+    case ReportType.TA:
+      return "Timely Access Report";
+  }
 };
 
 export const Sidebar = () => {
@@ -24,6 +37,7 @@ export const Sidebar = () => {
     return null;
   }
 
+  const title = getTitle(report);
   const setToggle = (sectionId: string) => {
     const list = toggleList;
     list[sectionId] = !toggleList[sectionId];
@@ -83,7 +97,7 @@ export const Sidebar = () => {
     <Box sx={sx.sidebar} className={sidebarOpen ? "open" : "closed"}>
       <Flex sx={sx.sidebarNav}>
         <Flex sx={sx.sidebarList}>
-          <Heading variant="sidebar">Quality Measure Set Report</Heading>
+          <Heading variant="sidebar">{title}</Heading>
           {report.pages[root].childPageIds?.map((child) =>
             navSection(pageMap.get(child)!)
           )}

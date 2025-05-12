@@ -1,16 +1,16 @@
 import {
-  ReportTemplate,
+  ReportWithMeasuresTemplate,
   PageType,
   ElementType,
   ReportType,
   MeasureTemplateName,
   MeasurePageTemplate,
   HeaderIcon,
-} from "../../types/reports";
+} from "../../../types/reports";
 import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { measureTemplates } from "./measureTemplates";
 
-export const qmsReportTemplate: ReportTemplate = {
+export const qmsReportTemplate: ReportWithMeasuresTemplate = {
   type: ReportType.QMS,
   year: 2026,
   pages: [

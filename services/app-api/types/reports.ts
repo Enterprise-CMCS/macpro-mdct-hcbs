@@ -206,7 +206,13 @@ export type ReportBase = {
     | ReviewSubmitTemplate
   )[];
 };
-export type ReportTemplate = ReportBase & ReportMeasureConfig;
+export type ReportWithMeasuresTemplate = ReportBase & ReportMeasureConfig;
+
+export const isReportWithMeasuresTemplate = (
+  report: ReportBase
+): report is ReportWithMeasuresTemplate => {
+  return "measureLookup" in report && "measureTemplates" in report;
+};
 
 export type PageTemplate =
   | ParentPageTemplate
