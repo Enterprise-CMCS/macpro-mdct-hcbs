@@ -11,7 +11,7 @@ describe("Test SubnavBar component", () => {
   test("SubnavBar is visible", () => {
     render(
       <RouterWrappedComponent>
-        <SubnavBar stateName={"PR"} />
+        <SubnavBar reportType="QMS" stateName={"PR"} />
       </RouterWrappedComponent>
     );
     expect(screen.getByText("PR QMS Report")).toBeVisible();
