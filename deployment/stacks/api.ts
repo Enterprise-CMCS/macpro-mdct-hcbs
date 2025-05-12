@@ -21,8 +21,6 @@ interface CreateApiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  userPoolId?: string;
-  userPoolClientId?: string;
   tables: DynamoDBTableIdentifiers[];
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
@@ -38,8 +36,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpc,
     kafkaAuthorizedSubnets,
     brokerString,
-    userPoolId,
-    userPoolClientId,
     tables,
   } = props;
 
@@ -111,9 +107,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.id}Table`, table.name])
     ),
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
-    COGNITO_USER_POOL_ID: userPoolId || process.env.COGNITO_USER_POOL_ID,
-    COGNITO_USER_POOL_CLIENT_ID:
-      userPoolClientId || process.env.COGNITO_USER_POOL_CLIENT_ID,
   };
 
   const additionalPolicies = [

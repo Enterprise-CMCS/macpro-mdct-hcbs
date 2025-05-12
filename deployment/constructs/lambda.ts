@@ -56,11 +56,6 @@ export class Lambda extends Construct {
           statements: [
             new PolicyStatement({
               effect: Effect.ALLOW,
-              actions: ["ssm:GetParameter"],
-              resources: ["*"],
-            }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
               actions: [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
