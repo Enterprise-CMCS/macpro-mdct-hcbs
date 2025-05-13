@@ -47,8 +47,8 @@ jobs:
         with:
           oidc: true
           files: |
-            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
       - name: Store unit test results
         if: failure()
         uses: actions/upload-artifact@v4
