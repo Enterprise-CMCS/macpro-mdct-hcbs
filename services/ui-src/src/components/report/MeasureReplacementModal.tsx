@@ -14,14 +14,16 @@ export const MeasureReplacementModal = (
     selectMeasure = event.target.value === "0" ? measure : undefined;
   };
 
-  const label = `Do you want to substitute ${measure.substitutable} for ${measure.id} ?`;
+  const label = `Do you want to substitute ${measure.substitutable} for ${measure.id}?`;
 
   return (
     <React.Fragment>
       <ModalBody>
-        You can substitute an optional measure for the original. The new measure
-        will now appear on the Required Measure Results page, and the original
-        will now appear on the Optional Measure Results page.
+        <p>
+          You can substitute an optional measure for the original. The new
+          measure will now appear on the Required Measure Results page, and the
+          original will now appear on the Optional Measure Results page.
+        </p>
         <ChoiceList
           name={"subsitute"}
           type={"radio"}

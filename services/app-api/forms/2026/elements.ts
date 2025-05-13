@@ -478,7 +478,7 @@ export const sectionCompleteBanner: StatusAlertTemplate = {
 export const measureCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
-  title: "Measure has been completed",
+  title: "This measure has been completed",
   text: "You can still edit the measure, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete measure’ button. {ReturnButton} or select the ‘Return to measure dashboard’ button above to return to the previous page.",
   status: "success",
 };

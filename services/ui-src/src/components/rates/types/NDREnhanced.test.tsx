@@ -61,7 +61,7 @@ describe("<NDREnhanced />", () => {
       ).toBeInTheDocument();
 
       expect(
-        screen.getByRole("textbox", { name: "Performance Rates Denominator" })
+        screen.getByRole("textbox", { name: "test label Denominator" })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("textbox", { name: "Numerator" })
@@ -77,7 +77,7 @@ describe("<NDREnhanced />", () => {
     });
     test("Rate should calculate", async () => {
       const performDenominator = screen.getByRole("textbox", {
-        name: "Performance Rates Denominator",
+        name: "test label Denominator",
       });
       await act(async () => await userEvent.type(performDenominator, "2"));
 

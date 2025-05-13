@@ -74,7 +74,7 @@ export const NDREnhanced = (
   return (
     <Stack gap="2rem">
       <CmsdsTextField
-        label={(label ?? "Performance Rate") + " Denominator"}
+        label={(label ?? "Performance Rates") + " Denominator"}
         name="denominator"
         onChange={onChangeHandler}
         value={displayValue?.denominator ?? ""}
