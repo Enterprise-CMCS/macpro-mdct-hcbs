@@ -1,8 +1,8 @@
 # MDCT-HCBS
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/93cd54dad7df73b09209/maintainability)](https://codeclimate.com/repos/664553bb1a9a4300ce1216ac/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/93cd54dad7df73b09209/test_coverage)](https://codeclimate.com/repos/664553bb1a9a4300ce1216ac/test_coverage)
+[![Maintainability](https://qlty.sh/badges/5213e13f-d38a-4a72-aa4c-87979bb19c6b/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-hcbs)
+[![Code Coverage](https://qlty.sh/badges/5213e13f-d38a-4a72-aa4c-87979bb19c6b/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-hcbs)
 
 ### Integration Environment Deploy Status:
 | Branch  | Build Status |
