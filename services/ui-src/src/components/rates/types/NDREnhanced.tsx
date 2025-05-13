@@ -74,7 +74,7 @@ export const NDREnhanced = (
   return (
     <Stack gap="2rem">
       <CmsdsTextField
-        label="Performance Rates Denominator"
+        label={(label ?? "Performance Rate") + " Denominator"}
         name="denominator"
         onChange={onChangeHandler}
         value={displayValue?.denominator ?? ""}
@@ -112,13 +112,13 @@ export const NDREnhanced = (
               name={`${index}.denominator`}
               onChange={onChangeHandler}
               value={value.denominator ?? ""}
-              hint="Auto-calculates"
+              hint="Auto-populates"
               disabled
             ></CmsdsTextField>
             <CmsdsTextField
               label="Rate"
               name={`${index}.rate`}
-              hint="Auto-calculates"
+              hint="Auto-populates"
               value={value.rate ?? ""}
               disabled
             ></CmsdsTextField>
