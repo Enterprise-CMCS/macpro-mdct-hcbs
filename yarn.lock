@@ -2466,9 +2466,9 @@ aws-cdk-local@^2.19.2:
     diff "^5.0.0"
 
 aws-cdk@^2.182.0:
-  version "2.1007.0"
-  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.1007.0.tgz#cdeca2bd3a4a628c73c9dab3ac37f29d3f63b223"
-  integrity sha512-/UOYOTGWUm+pP9qxg03tID5tL6euC+pb+xo0RBue+xhnUWwj/Bbsw6DbqbpOPMrNzTUxmM723/uMEQmM6S26dw==
+  version "2.1014.0"
+  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.1014.0.tgz#bd27af4060df15a05836a7ed3d19861e10740fd7"
+  integrity sha512-es101rtRAClix9BncNL54iW90MiOyRv4iCC5tv/firGDnidS6pPinuK0IIFt0RO6w0+3heRxWBXg8HY+f9877w==
   optionalDependencies:
     fsevents "2.3.2"
 

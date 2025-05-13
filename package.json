@@ -29,7 +29,6 @@
     "@aws-sdk/client-lambda": "^3.678.0",
     "@aws-sdk/client-s3": "^3.678.0",
     "@aws-sdk/client-secrets-manager": "^3.678.0",
-    "aws-cdk-lib": "^2.182.0",
     "constructs": "^10.3.0",
     "jsdom": "^26.0.0",
     "source-map-support": "^0.5.21"
@@ -43,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",
     "aws-cdk": "^2.182.0",
+    "aws-cdk-lib": "^2.182.0",
     "aws-cdk-local": "^2.19.2",
     "dotenv": "^8.2.0",
     "eslint": "^8.33.0",
