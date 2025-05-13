@@ -5,11 +5,12 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/93cd54dad7df73b09209/test_coverage)](https://codeclimate.com/repos/664553bb1a9a4300ce1216ac/test_coverage)
 
 ### Integration Environment Deploy Status:
-| Branch  | Build Status |
-| ------------- | ------------- |
-| main  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg)  |
-| val  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg?branch=val)  |
-| production  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg?branch=production)  |
+
+| Branch     | Build Status                                                                                                            |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| main       | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg)                   |
+| val        | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg?branch=val)        |
+| production | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg?branch=production) |
 
 HCBS is the CMCS MDCT application for collecting state data related to Home- and Community-Based Services (HCBS) programs and performance. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
@@ -26,7 +27,8 @@ HCBS are types of person-centered care delivered in the home and community which
 ## Quick Start
 
 ### Running MDCT Workspace Setup
-Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can refer to the Running the project locally section below to proceed with running the application. 
+
+Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can refer to the Running the project locally section below to proceed with running the application.
 
 ### One time only
 
@@ -38,7 +40,6 @@ Before starting the project we're going to install some tools. We recommend havi
 
 - Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 - Install specified version of node. We enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating): `nvm install`, then `nvm use`
-- Install [Serverless](https://www.serverless.com/framework/docs/providers/aws/guide/installation/): `npm install -g serverless`
 - Install [yarn](https://classic.yarnpkg.com/en/docs/install/): `brew install yarn`
 - Install pre-commit on your machine with either: `pip install pre-commit` or `brew install pre-commit`
 
@@ -85,9 +86,9 @@ If you're getting an error such as `inaccessible host: 'localhost' at port '8000
 
 Local dev is configured as a Typescript project. The entrypoint in `./src/run.ts` manages running the moving pieces locally: the API, database, filestore, and frontend.
 
-Local dev is built around the Serverless plugin [serverless-offline](https://github.com/dherault/serverless-offline). `serverless-offline` runs an API Gateway locally configured by `./services/app-api/serverless.yml` and hot reloads your Lambdas on every save. The plugins [serverless-dynamodb-local](https://github.com/99x/serverless-dynamodb-local) and [serverless-s3-local](https://github.com/ar90n/serverless-s3-local) stand up the local database and s3 in a similar fashion.
+Local dev is built around the cdk setup which gets run locally by Localstack.
 
-Local authorization bypasses Cognito. The frontend mimics login in local storage with a mock user and sends an id in the `cognito-identity-id` header on every request. `serverless-offline` expects that and sets it as the cognitoId in the requestContext for your lambdas, just like Cognito would in AWS.
+Local authorization uses Cognito from the main/master stack in dev. The credentials are injected locally by the `./run update-env` command which fetches values from 1password and puts them into a gitignored `.env` file.
 
 The [postman folder](./postman/) contains a full API collection and environment for this application. See the [README](./postman/README.md) for more information.
 
@@ -187,9 +188,8 @@ If you have a PR that needs Product/Design input, the easiest way to get it to t
 
 HCBS pipes updates from fieldData and the report object tables to BigMac for downstream consumption. To add a topic for a new report type, update the following locations:
 
-- `services/app-api/serverless.yaml`
-  - Add table streams to postKafkaData's event triggers
-  - Declare another lambda to listen to events from the relevant s3 buckets. The same handler file can be used, but serverless has a limitation of 1 existing bucket per lambda.
+- `deployment/topics.ts`
+  - Any new table with come with streaming (tables are defined here: `deployment/data.ts`)
 - `services/app-api/handlers/kafka/post/postKafkaData.ts` - Add the bucket and table names into the appropriate arrays. They will be parsed with their event types accordingly.
 - `services/topics/createTopics.js` - Declare the new topic names. Both the stream name for the bucket and table should be added here.
 
@@ -201,7 +201,8 @@ HCBS pipes updates from fieldData and the report object tables to BigMac for dow
 Dropdown and dynamic fields are not currently supported as nested child fields. All other field types are.
 
 ## GitHub Actions Secret Management
-- Secrets are added to GitHub secrets by GitHub Admins 
+
+- Secrets are added to GitHub secrets by GitHub Admins
 - Development secrets are maintained in a 1Password vault
 
 ## Copyright and license
