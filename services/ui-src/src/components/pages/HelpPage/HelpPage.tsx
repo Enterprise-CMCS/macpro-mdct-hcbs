@@ -1,5 +1,5 @@
-import { Accordion, Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { AccordionItem, HelpCard, PageTemplate } from "components";
+import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { HelpCard, PageTemplate } from "components";
 import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
 import { useBreakpoint } from "utils";
 
@@ -38,23 +38,6 @@ export const HelpPage = () => {
           </Text>
         </HelpCard>
       </Flex>
-      <Box>
-        <Accordion allowMultiple={true} defaultIndex={[]}>
-          <AccordionItem
-            label="How do I log into my IDM account?"
-            sx={sx.accordionItem}
-          >
-            <Box sx={sx.accordionPanel}>
-              <Text>TBD</Text>
-            </Box>
-          </AccordionItem>
-          <AccordionItem label="Question #2" sx={sx.accordionItem}>
-            <Box sx={sx.accordionPanel}>
-              <Text>TBD</Text>
-            </Box>
-          </AccordionItem>
-        </Accordion>
-      </Box>
     </PageTemplate>
   );
 };
