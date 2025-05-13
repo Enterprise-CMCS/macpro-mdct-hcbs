@@ -1,33 +1,40 @@
 import { isResultRowButton, PageType } from "../../types/reports";
+import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
 import { qmsReportTemplate } from "./qms/qms";
+import { taReportTemplate } from "./ta/ta";
 
-describe("QMS Template", () => {
-  it("Should exist", () => {
-    expect(qmsReportTemplate).toBeDefined();
+const reportsToTest = [
+  { template: qmsReportTemplate, name: "QMS" },
+  { template: taReportTemplate, name: "TA" },
+  { template: ciReportTemplate, name: "CI" },
+];
+describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
+  it(`${name} should exist`, () => {
+    expect(template).toBeDefined();
   });
 
-  it("Should have a root page", () => {
-    const root = qmsReportTemplate.pages.find((page) => page.id === "root");
+  it(`${name} should have a root page`, () => {
+    const root = template.pages.find((page) => page.id === "root");
     expect(root).toBeDefined();
   });
 
-  it("Should not contain duplicate page IDs", () => {
-    const pageIds = qmsReportTemplate.pages.map((page) => page.id);
+  it(`${name} should not contain duplicate page IDs`, () => {
+    const pageIds = template.pages.map((page) => page.id);
     const uniqueIds = pageIds.filter((x, i, a) => i === a.indexOf(x));
     expect(pageIds).toEqual(uniqueIds);
   });
 
-  it("Should have a child page for every ID referenced by a parent page", () => {
-    const allPageIds = qmsReportTemplate.pages
+  it(`${name} should have a child page for every ID referenced by a parent page`, () => {
+    const allPageIds = template.pages
       .filter(
         (page) =>
           page.type &&
           [PageType.Standard, PageType.ReviewSubmit].includes(page.type)
       )
       .map((page) => page.id);
-    const referencedChildren = qmsReportTemplate.pages.flatMap(
+    const referencedChildren = template.pages.flatMap(
       (page) => page.childPageIds ?? []
     );
     for (let childPageId of referencedChildren) {
@@ -35,11 +42,11 @@ describe("QMS Template", () => {
     }
   });
 
-  it("Should have a modal for every ID referenced by a page", () => {
-    const modalPageIds = qmsReportTemplate.pages
+  it(`${name} should have a modal for every ID referenced by a page`, () => {
+    const modalPageIds = template.pages
       .filter((page) => page.type === PageType.Modal)
       .map((page) => page.id);
-    const referencedModals = qmsReportTemplate.pages
+    const referencedModals = template.pages
       .flatMap((page) => page.elements ?? [])
       .filter(isResultRowButton)
       .map((button) => button.modalId);
