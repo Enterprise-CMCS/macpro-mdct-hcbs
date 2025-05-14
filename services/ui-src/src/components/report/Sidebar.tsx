@@ -4,7 +4,7 @@ import { useStore } from "utils";
 import arrowDownIcon from "assets/icons/arrows/icon_arrow_down_gray.svg";
 import arrowUpIcon from "assets/icons/arrows/icon_arrow_up_gray.svg";
 import { ReactNode, useState } from "react";
-import { isReportType, Report, ReportType } from "types";
+import { assertExhaustive, isReportType, Report, ReportType } from "types";
 
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
@@ -24,6 +24,9 @@ const getTitle = (report: Report) => {
       return "Quality Measure Set Report";
     case ReportType.TA:
       return "Timely Access Report";
+    default:
+      assertExhaustive(report.type);
+      return "";
   }
 };
 

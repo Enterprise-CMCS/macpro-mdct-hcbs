@@ -1,3 +1,5 @@
+import { AddEditReportModalOptions } from "../AddEditReportModal";
+
 const verbiage = {
   reportName: "TACM Report",
   yearSelect: "Select the TACM measurement year.",
@@ -5,7 +7,7 @@ const verbiage = {
   sampleName: "HCBS TACM Report for 2026",
 };
 
-export const TaOptions = () => ({
+export const TaOptions = (): AddEditReportModalOptions => ({
   verbiage: verbiage,
   reportOptions: {},
   optionsElements: null,

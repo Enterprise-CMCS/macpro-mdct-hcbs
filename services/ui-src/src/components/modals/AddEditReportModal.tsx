@@ -5,6 +5,7 @@ import { ElementType, Report } from "types";
 import { createReport, putReport } from "utils/api/requestMethods/report";
 import { FormProvider, useForm } from "react-hook-form";
 import {
+  assertExhaustive,
   isReportType,
   ReportOptions,
   ReportStatus,
@@ -14,10 +15,24 @@ import { QmsOptions } from "./AddFormOptions/QmsOptions";
 import { TaOptions } from "./AddFormOptions/TaOptions";
 import { CiOptions } from "./AddFormOptions/CiOptions";
 
+export type AddEditReportModalOptions = {
+  verbiage: {
+    reportName: string;
+    yearSelect: string;
+    shortName: string;
+    sampleName: string;
+  };
+  reportOptions: {
+    [key: string]: any;
+  };
+  optionsElements: React.ReactNode;
+  parseFormDataOptions: (formData: any) => { [key: string]: any };
+};
+
 const buildModalOptions = (
   reportType: ReportType,
   selectedReport: Report | undefined
-) => {
+): AddEditReportModalOptions => {
   switch (reportType) {
     case ReportType.QMS:
       return QmsOptions(selectedReport);
@@ -25,6 +40,19 @@ const buildModalOptions = (
       return TaOptions();
     case ReportType.CI:
       return CiOptions();
+    default:
+      assertExhaustive(reportType);
+      return {
+        verbiage: {
+          reportName: "",
+          yearSelect: "",
+          shortName: "",
+          sampleName: "",
+        },
+        reportOptions: {},
+        optionsElements: undefined,
+        parseFormDataOptions: () => ({}),
+      };
   }
 };
 

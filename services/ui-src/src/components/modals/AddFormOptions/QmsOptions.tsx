@@ -1,5 +1,6 @@
 import { RadioField } from "components/fields/RadioField";
 import { ElementType, Report } from "types";
+import { AddEditReportModalOptions } from "../AddEditReportModal";
 
 const verbiage = {
   reportName: "Quality Measure Set Report",
@@ -126,7 +127,9 @@ export const buildOptionElements = (selectedReport: Report | undefined) => {
   );
 };
 
-export const QmsOptions = (selectedReport: Report | undefined) => ({
+export const QmsOptions = (
+  selectedReport: Report | undefined
+): AddEditReportModalOptions => ({
   verbiage: verbiage,
   reportOptions: parseReportOptions(selectedReport),
   optionsElements: buildOptionElements(selectedReport),
