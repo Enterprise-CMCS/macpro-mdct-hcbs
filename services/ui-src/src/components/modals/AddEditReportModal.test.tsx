@@ -191,7 +191,6 @@ describe("Test AddEditReportModal types", () => {
     { type: ReportType.TA, text: "TACM Report" },
     { type: ReportType.CI, text: "CICM Report" },
   ])("$type report type renders a title", ({ type, text }) => {
-    screen.debug();
     render(
       <RouterWrappedComponent>
         <AddEditReportModal
