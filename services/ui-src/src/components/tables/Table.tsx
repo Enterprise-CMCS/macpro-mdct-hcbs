@@ -33,8 +33,8 @@ export const Table = ({ content, variant, children }: Props) => {
         </Thead>
       )}
       <Tbody>
-        {/* if children prop is passed, just render the children */}
-        {children && children}
+        {/* if children prop is passed, render the children */}
+        {children}
         {/* if content prop is passed, parse and render rows and cells */}
         {content.bodyRows &&
           content.bodyRows!.map((row: string[], index: number) => (
@@ -103,15 +103,6 @@ const sx = {
   tableCell: {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
-    fontWeight: "normal",
-    ".mobile &": {
-      fontSize: "xs",
-    },
-  },
-  tableCellBorder: {
-    padding: "0.75rem 0.5rem",
-    borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
     fontWeight: "normal",
     ".mobile &": {
       fontSize: "xs",
