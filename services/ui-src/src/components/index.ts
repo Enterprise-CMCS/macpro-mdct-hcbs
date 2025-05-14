@@ -45,7 +45,6 @@ export { LoginCognito } from "./logins/LoginCognito";
 export { LoginIDM } from "./logins/LoginIDM";
 // pages
 export { AdminPage } from "./pages/Admin/AdminPage";
-export { CreateReportOptions } from "./pages/CreateReportOptions/CreateReportOptions";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";

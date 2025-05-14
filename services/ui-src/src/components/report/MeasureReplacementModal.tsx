@@ -5,8 +5,8 @@ import { MeasurePageTemplate } from "types";
 
 export const MeasureReplacementModal = (
   measure: MeasurePageTemplate,
-  onClose: Function,
-  onSubmit: Function
+  onClose: (modalOpen: boolean) => void,
+  onSubmit: (page: MeasurePageTemplate | undefined) => void
 ): ReactNode => {
   let selectMeasure: MeasurePageTemplate | undefined;
 

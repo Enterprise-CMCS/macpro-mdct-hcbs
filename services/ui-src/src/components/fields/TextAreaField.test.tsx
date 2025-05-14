@@ -35,7 +35,8 @@ const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedTextAreaElement = {
+const mockedTextAreaElement: TextAreaBoxTemplate = {
+  id: "mock-textarea-id",
   type: ElementType.TextAreaField,
   label: "test label",
   helperText: "helper text",
@@ -44,7 +45,7 @@ const mockedTextAreaElement = {
     answer: "yes",
   },
   required: true,
-} as TextAreaBoxTemplate;
+};
 
 const textAreaFieldComponent = (
   <TextAreaField

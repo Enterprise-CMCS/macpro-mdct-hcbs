@@ -1,41 +1,32 @@
 import { APIGatewayProxyEvent, isUserRole, User } from "../types/types";
-import { CognitoJwtVerifier } from "aws-jwt-verify";
-import { CognitoIdTokenPayload } from "aws-jwt-verify/jwt-model";
+import jwt_decode from "jwt-decode";
 import { isStateAbbreviation } from "./constants";
+
+export interface DecodedToken {
+  "custom:cms_roles"?: string;
+  "custom:cms_state"?: string;
+  email?: string;
+  given_name?: string;
+  family_name?: string;
+}
 
 /**
  * Extract user information from the event's auth headers.
  *
  * Returns `undefined` if the headers are invalid.
  */
-export const authenticatedUser = async (
+export const authenticatedUser = (
   event: APIGatewayProxyEvent
-): Promise<User | undefined> => {
+): User | undefined => {
   const apiKey = event.headers?.["x-api-key"];
-  const token = await verifyAndParseToken(apiKey);
-  if (!token) {
-    return undefined;
+  if (apiKey) {
+    const token = jwt_decode(apiKey) as DecodedToken;
+    return token ? parseUserFromToken(token) : undefined;
   }
-
-  return parseUserFromToken(token);
+  return undefined;
 };
 
-/** Verify the signature on the JWT */
-const verifyAndParseToken = async (apiKey: string | undefined) => {
-  const verifier = CognitoJwtVerifier.create({
-    userPoolId: process.env.COGNITO_USER_POOL_ID!,
-    tokenUse: "id",
-    clientId: process.env.COGNITO_USER_POOL_CLIENT_ID!,
-  });
-
-  try {
-    return await verifier.verify(apiKey!);
-  } catch {
-    return undefined;
-  }
-};
-
-export const parseUserFromToken = (token: CognitoIdTokenPayload) => {
+export const parseUserFromToken = (token: DecodedToken) => {
   return {
     role: parseRoleFromToken(token),
     state: parseStateFromToken(token),
@@ -48,7 +39,7 @@ export const parseUserFromToken = (token: CognitoIdTokenPayload) => {
   };
 };
 
-const parseRoleFromToken = (token: CognitoIdTokenPayload) => {
+const parseRoleFromToken = (token: DecodedToken) => {
   if (!("custom:cms_roles" in token)) {
     throw new Error(`Token is missing key "custom:cms_roles"`);
   }
@@ -60,7 +51,7 @@ const parseRoleFromToken = (token: CognitoIdTokenPayload) => {
   return role;
 };
 
-const parseStateFromToken = (token: CognitoIdTokenPayload) => {
+const parseStateFromToken = (token: DecodedToken) => {
   if (!("custom:cms_state" in token)) {
     return undefined;
   }
@@ -71,7 +62,7 @@ const parseStateFromToken = (token: CognitoIdTokenPayload) => {
   return state;
 };
 
-const parseFullNameFromToken = (token: CognitoIdTokenPayload) => {
+const parseFullNameFromToken = (token: DecodedToken) => {
   return [token["given_name"], token["family_name"]]
     .filter((name) => !!name)
     .join(" ");

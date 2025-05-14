@@ -427,7 +427,6 @@ export const isResultRowButton = (
 export type RadioTemplate = {
   type: ElementType.Radio;
   id: string;
-  formKey?: string;
   label: string;
   helperText?: string;
   choices: ChoiceTemplate[];

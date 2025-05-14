@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { DateField } from "components/fields/DateField";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { PageElement } from "types/report";
+import { DateTemplate, ElementType } from "types/report";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -31,19 +31,16 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedDateTextboxElement = {
-  type: DateField,
+const mockedDateTextboxElement: DateTemplate = {
+  id: "mock-date-id",
+  type: ElementType.Date,
   label: "test-date-field",
   helperText: "helper text",
 };
 
 const testKey = "unique.form.key";
 const dateFieldComponent = (
-  <DateField
-    element={mockedDateTextboxElement as unknown as PageElement}
-    formkey={testKey}
-    index={0}
-  />
+  <DateField element={mockedDateTextboxElement} formkey={testKey} index={0} />
 );
 
 describe("<DateField />", () => {

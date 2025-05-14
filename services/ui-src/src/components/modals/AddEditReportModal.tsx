@@ -170,7 +170,7 @@ interface Props {
   selectedReport?: Report;
   modalDisclosure: {
     isOpen: boolean;
-    onClose: any;
+    onClose: () => void;
   };
   reportHandler: (reportType: string, activeState: string) => void;
 }

@@ -10,7 +10,6 @@ tests_output
 package-lock.json
 .vscode/
 *._S3rver_cors.xml
-.serverless
 tests/test-results/
 tests/playwright-report/
 tests/playwright/.cache/

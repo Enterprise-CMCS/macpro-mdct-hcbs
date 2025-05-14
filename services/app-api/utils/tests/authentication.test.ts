@@ -1,18 +1,20 @@
-import { authenticatedUser, parseUserFromToken } from "../authentication";
+import {
+  authenticatedUser,
+  parseUserFromToken,
+  DecodedToken,
+} from "../authentication";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { CognitoIdTokenPayload } from "aws-jwt-verify/jwt-model";
 import { UserRoles } from "../../types/types";
 
-const mockVerifier = jest.fn();
+var mockDecode: jest.Mock;
 
-jest.mock("aws-jwt-verify", () => ({
-  __esModule: true,
-  CognitoJwtVerifier: {
-    create: jest.fn().mockImplementation(() => ({
-      verify: mockVerifier,
-    })),
-  },
-}));
+jest.mock("jwt-decode", () => {
+  mockDecode = jest.fn();
+  return {
+    __esModule: true,
+    default: mockDecode,
+  };
+});
 
 const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
 const mockToken = {
@@ -22,42 +24,36 @@ const mockToken = {
   email: "stateuser@test.com",
   given_name: "Helen Hunt",
   family_name: "Jackson",
-} as unknown as CognitoIdTokenPayload;
+} as DecodedToken;
 
 describe("Authentication methods", () => {
   describe("Test authorization with api key and environment variables", () => {
-    beforeEach(() => {
-      process.env["COGNITO_USER_POOL_ID"] = "fakeId";
-      process.env["COGNITO_USER_POOL_CLIENT_ID"] = "fakeClientId";
-    });
     afterEach(() => {
-      delete process.env.COGNITO_USER_POOL_ID;
-      delete process.env.COGNITO_USER_POOL_CLIENT_ID;
       jest.clearAllMocks();
     });
-    test("is not authorized when token is missing or invalid", async () => {
-      mockVerifier.mockImplementation(() => {
-        throw new Error("could not verify");
+    test("is not authorized when token is missing or invalid", () => {
+      mockDecode.mockImplementation(() => {
+        return undefined;
       });
-      const authStatus = await authenticatedUser(apiKeyEvent);
+      const authStatus = authenticatedUser(apiKeyEvent);
       expect(authStatus).toBeFalsy();
     });
-    test("is authorized when api key is passed and environment variables are set", async () => {
-      mockVerifier.mockReturnValue(mockToken);
-      const authStatus = await authenticatedUser(apiKeyEvent);
+    test("is authorized when api key is passed and environment variables are set", () => {
+      mockDecode.mockReturnValue(mockToken);
+      const authStatus = authenticatedUser(apiKeyEvent);
       expect(authStatus).toBeTruthy();
     });
   });
 
   describe("Test authorization with api key", () => {
     beforeEach(() => {
-      mockVerifier.mockReturnValue(mockToken);
+      mockDecode.mockReturnValue(mockToken);
     });
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test("is authorized when api key is passed", async () => {
-      const authStatus = await authenticatedUser(apiKeyEvent);
+    test("is authorized when api key is passed", () => {
+      const authStatus = authenticatedUser(apiKeyEvent);
       expect(authStatus).toBeTruthy();
     });
   });
@@ -96,7 +92,7 @@ describe("Authentication methods", () => {
     });
 
     it("should omit first name if it is not in the token", () => {
-      const noGivenNameToken = { ...mockToken, given_name: null };
+      const noGivenNameToken = { ...mockToken, given_name: undefined };
       const user = parseUserFromToken(noGivenNameToken);
       expect(user.fullName).toBe("Jackson");
     });

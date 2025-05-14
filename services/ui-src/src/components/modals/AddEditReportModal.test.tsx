@@ -7,7 +7,8 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { ReportType } from "types";
+import { Report, ReportType } from "../../types";
+import assert from "node:assert";
 
 const mockCloseHandler = jest.fn();
 const mockReportHandler = jest.fn();
@@ -47,14 +48,14 @@ const editModalComponent = (
       selectedReport={
         {
           name: "report name thing",
-          year: "2026",
+          year: 2026,
           options: {
-            cahps: "true",
-            hciidd: "true",
-            nciad: "true",
-            pom: "true",
+            cahps: true,
+            hciidd: true,
+            nciad: true,
+            pom: true,
           },
-        } as unknown as any
+        } as Report
       }
     />
   </RouterWrappedComponent>
@@ -136,7 +137,8 @@ describe("Test dropdown for year", () => {
   test("Simulate selecting a year", async () => {
     const dropdown = screen.getAllByLabelText(
       "Select the quality measure set reporting year."
-    )[0] as HTMLSelectElement;
+    )[0];
+    assert(dropdown instanceof HTMLSelectElement);
     userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
   });

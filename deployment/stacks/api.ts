@@ -13,7 +13,6 @@ import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isLocalStack } from "../local/util";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { isDefined } from "../utils/misc";
 
@@ -22,11 +21,7 @@ interface CreateApiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  userPoolId?: string;
-  userPoolClientId?: string;
   tables: DynamoDBTableIdentifiers[];
-  iamPermissionsBoundary: iam.IManagedPolicy;
-  iamPath: string;
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   brokerString: string;
@@ -41,11 +36,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpc,
     kafkaAuthorizedSubnets,
     brokerString,
-    userPoolId,
-    userPoolClientId,
     tables,
-    iamPermissionsBoundary,
-    iamPath,
   } = props;
 
   const service = "app-api";
@@ -116,9 +107,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.id}Table`, table.name])
     ),
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
-    COGNITO_USER_POOL_ID: userPoolId || process.env.COGNITO_USER_POOL_ID,
-    COGNITO_USER_POOL_CLIENT_ID:
-      userPoolClientId || process.env.COGNITO_USER_POOL_CLIENT_ID,
   };
 
   const additionalPolicies = [
@@ -151,8 +139,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
-    iamPermissionsBoundary,
-    iamPath,
   };
 
   new Lambda(scope, "createBanner", {
@@ -268,12 +254,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       webAclArn: waf.webAcl.attrArn,
     });
   }
-
-  addIamPropertiesToBucketAutoDeleteRole(
-    scope,
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
 
   const apiGatewayRestApiUrl = api.url.slice(0, -1);
 

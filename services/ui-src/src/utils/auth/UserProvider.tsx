@@ -14,14 +14,21 @@ import {
 import config from "config";
 import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
 import { PRODUCTION_HOST_DOMAIN } from "../../constants";
-
 import { HcbsUser, UserContextShape, UserRoles } from "types/users";
+
+type ExpectedTokenShape = {
+  email: string;
+  given_name: string;
+  family_name: string;
+  "custom:cms_roles": string;
+  "custom:cms_state": string | undefined;
+};
 
 export const UserContext = createContext<UserContextShape>({
   logout: async () => {},
   loginWithIDM: async () => {},
   updateTimeout: () => {},
-  getExpiration: () => {},
+  getExpiration: () => "",
 });
 
 const authenticateWithIDM = async () => {
@@ -61,14 +68,16 @@ export const UserProvider = ({ children }: Props) => {
         throw new Error("Missing tokens auth session.");
       }
       const payload = tokens.idToken.payload;
-      const { email, given_name, family_name } = payload as Record<
-        string,
-        string
-      >;
+      const {
+        email,
+        given_name,
+        family_name,
+        "custom:cms_roles": cms_role,
+        "custom:cms_state": state,
+      } = payload as ExpectedTokenShape;
+
       // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to HCBS
-      const cms_role = payload["custom:cms_roles"] as string;
       const userRole = cms_role.split(",").find((r) => r.includes("mdcthcbs"));
-      const state = payload["custom:cms_state"] as string | undefined;
       const full_name = [given_name, " ", family_name].join("");
       const userCheck = {
         userIsAdmin:

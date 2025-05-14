@@ -4,7 +4,7 @@ import config from "config";
 
 describe("PostLogoutRedirect", () => {
   test("should redirect to POST_SIGNOUT_REDIRECT", () => {
-    (config as any).POST_SIGNOUT_REDIRECT = "https://example.com/logout";
+    config.POST_SIGNOUT_REDIRECT = "https://example.com/logout";
     const originalHref = window.location.href;
 
     Object.defineProperty(window, "location", {

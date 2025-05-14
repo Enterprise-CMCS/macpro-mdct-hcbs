@@ -441,7 +441,7 @@ yargs(process.argv.slice(2))
   )
   .command(
     "delete-topics",
-    "delete topics tied to serverless stage",
+    "delete topics tied to stage",
     {
       stage: { type: "string", demandOption: true },
     },

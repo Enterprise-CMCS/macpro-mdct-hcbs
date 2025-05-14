@@ -24,7 +24,10 @@ export const ExportedReportPage = () => {
   const reportPages = report?.pages;
   if (!reportPages) return null;
 
-  //package import issue, can be removed once we get to react >= 18.3.0 and types/react >= 18.3.0
+  /*
+   * This rename & cast is due to a package import issue.
+   * It can be removed once we get to react >= 18.3.0 and @types/react >= 18.3.0
+   */
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   return (
