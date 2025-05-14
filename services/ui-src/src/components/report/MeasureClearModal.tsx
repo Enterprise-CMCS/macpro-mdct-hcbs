@@ -3,8 +3,8 @@ import React, { ReactNode } from "react";
 
 export const MeasureClearModal = (
   measureId: string,
-  onClose: Function,
-  onSubmit: Function
+  onClose: () => void,
+  onSubmit: () => void
 ): ReactNode => {
   const submitReset = () => {
     onSubmit();

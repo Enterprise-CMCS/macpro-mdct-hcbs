@@ -1,11 +1,14 @@
 import {
   ElementType,
+  MeasurePageTemplate,
   PageStatus,
   PageType,
   PerformanceRateTemplate,
   PerformanceRateType,
   RadioTemplate,
   RateSetData,
+  Report,
+  TextboxTemplate,
 } from "types";
 import {
   elementSatisfiesRequired,
@@ -85,7 +88,7 @@ describe("inferredReportStatus", () => {
           ],
         },
       ],
-    } as any;
+    } as Report;
     expect(inferredReportStatus(report, "my-id")).toEqual(PageStatus.COMPLETE);
     expect(inferredReportStatus(report, "req-measure-result")).toEqual(
       PageStatus.COMPLETE
@@ -104,13 +107,13 @@ describe("inferredReportStatus", () => {
 describe("pageIsCompletable", () => {
   test("handles empty conditions", () => {
     const missingPageReport = {
-      pages: [],
-    } as any;
+      pages: [] as MeasurePageTemplate[],
+    } as Report;
     expect(pageIsCompletable(missingPageReport, "my-id")).toBeFalsy();
 
     const noElementsOnPage = {
       pages: [{ id: "my-id" }],
-    } as any;
+    } as Report;
     expect(pageIsCompletable(noElementsOnPage, "my-id")).toBeTruthy();
   });
 
@@ -130,7 +133,7 @@ describe("pageIsCompletable", () => {
           ],
         },
       ],
-    } as any;
+    } as Report;
     expect(pageIsCompletable(report, "my-id")).toBeFalsy();
   });
 
@@ -172,7 +175,7 @@ describe("pageIsCompletable", () => {
           ],
         },
       ],
-    } as any;
+    } as Report;
     expect(pageIsCompletable(report, "my-id")).toBeFalsy();
   });
 
@@ -192,29 +195,33 @@ describe("pageIsCompletable", () => {
           ],
         },
       ],
-    } as any;
+    } as Report;
     expect(pageIsCompletable(report, "my-id")).toBeTruthy();
   });
 });
 
 describe("elementSatisfiesRequired", () => {
   test("returns true when hidden or not required", () => {
-    const hiddenElement = {
+    const hiddenElement: TextboxTemplate = {
       id: "other-element",
+      label: "hidden textbox",
       answer: "foo",
       type: ElementType.Textbox,
       required: true,
-    } as any;
-    const notRequired = {
+    };
+    const notRequired: TextboxTemplate = {
       id: "not-element",
+      label: "optional textbox",
       answer: "foo",
       type: ElementType.Textbox,
-    } as any;
-    const elements = [
-      { id: "other-element", answer: "foo", type: ElementType.Textbox },
-      hiddenElement,
-      notRequired,
-    ] as any;
+    };
+    const otherElement: TextboxTemplate = {
+      id: "other-element",
+      label: "irrelevant other textbox",
+      answer: "foo",
+      type: ElementType.Textbox,
+    };
+    const elements = [otherElement, hiddenElement, notRequired];
     expect(elementSatisfiesRequired(hiddenElement, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(notRequired, elements)).toBeTruthy();
   });

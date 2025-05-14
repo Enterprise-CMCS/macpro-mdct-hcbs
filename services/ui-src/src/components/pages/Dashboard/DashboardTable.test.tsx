@@ -1,7 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
-import { ReportStatus } from "types";
+import { ReportStatus, Report } from "types";
 import { useStore } from "utils";
 import {
   mockUseAdminStore,
@@ -44,7 +44,7 @@ const reports = [
     archived: true,
     status: ReportStatus.IN_PROGRESS,
   },
-] as unknown as any;
+] as Report[];
 
 const dashboardTableComponent = (
   <RouterWrappedComponent>

@@ -23,7 +23,7 @@ const mockReport = {
       cmit: 42,
       substitutable: "mock-measure-3",
       required: true,
-    } as MeasurePageTemplate,
+    },
     {
       type: PageType.Measure,
       id: "mock-measure-2",
@@ -31,7 +31,7 @@ const mockReport = {
       cmit: 43,
       required: true,
       stratified: true,
-    } as MeasurePageTemplate,
+    },
     {
       type: PageType.Measure,
       id: "mock-measure-3",
@@ -39,7 +39,7 @@ const mockReport = {
       cmit: 44,
       substitutable: "mock-measure-1",
       required: false,
-    } as MeasurePageTemplate,
+    },
   ],
 } as Report;
 
@@ -70,8 +70,8 @@ const mockTemplate: MeasureTableTemplate = {
 jest.mock("./MeasureReplacementModal", () => ({
   MeasureReplacementModal: (
     measure: MeasurePageTemplate,
-    _onClose: Function,
-    onSubmit: Function
+    _onClose: unknown,
+    onSubmit: (page: MeasurePageTemplate) => void
   ) => {
     onSubmit(measure);
   },

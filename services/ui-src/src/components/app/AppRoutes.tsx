@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import {
   AdminPage,
-  CreateReportOptions,
   HelpPage,
   HomePage,
   ProfilePage,
@@ -48,7 +47,6 @@ export const AppRoutes = () => {
               path="/report/:reportType/:state"
               element={<DashboardPage />}
             />
-            <Route path="/report/QMS" element={<CreateReportOptions />} />
             {isPdfActive && (
               <Route
                 path="/report/:reportType/:state/:reportId/export"
