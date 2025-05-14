@@ -142,7 +142,7 @@ export const NDRFields = (
                   <CmsdsTextField
                     label={`${field.label} Rate (${assess.label})`}
                     name={`${assessIndex}.rates.${fieldIndex}.rate`}
-                    hint="Auto-populates"
+                    hint="Auto-calculates"
                     value={value?.rate ?? ""}
                     disabled
                   ></CmsdsTextField>

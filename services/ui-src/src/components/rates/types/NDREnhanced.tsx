@@ -118,7 +118,7 @@ export const NDREnhanced = (
             <CmsdsTextField
               label="Rate"
               name={`${index}.rate`}
-              hint="Auto-populates"
+              hint="Auto-calculates"
               value={value.rate ?? ""}
               disabled
             ></CmsdsTextField>
