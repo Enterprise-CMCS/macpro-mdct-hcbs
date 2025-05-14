@@ -76,7 +76,7 @@ export const DashboardPage = () => {
   } = useDisclosure();
 
   return (
-    <PageTemplate type="report" sx={sx.layout}>
+    <PageTemplate type="report" sxOverride={sx.layout}>
       <Link as={RouterLink} to="/" variant="return">
         <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
         Return home

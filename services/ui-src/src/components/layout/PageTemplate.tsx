@@ -1,15 +1,14 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, SystemStyleObject } from "@chakra-ui/react";
 
 export const PageTemplate = ({
   type = "standard",
   children,
   sxOverride,
-  ...props
 }: Props) => {
   return (
     <section>
-      <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
+      <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type}>
         <Flex sx={sx.contentFlex} className={`contentFlex ${type}`} gap="8">
           {children}
         </Flex>
@@ -21,8 +20,7 @@ export const PageTemplate = ({
 interface Props {
   type?: "standard" | "report";
   children: React.ReactNode;
-  sxOverride?: any;
-  [key: string]: any;
+  sxOverride?: SystemStyleObject;
 }
 
 const sx = {
