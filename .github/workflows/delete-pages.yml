@@ -1,3 +1,12 @@
+#
+#                 ⚠️ ⚠️ ⚠️ WARNING ⚠️ ⚠️ ⚠️
+#
+# Updating this file in the main branch will do nothing!
+#
+# It is only run on the gh-pages branch.
+# Any changes _must_ be merged to gh-pages to take effect.
+#
+
 name: Delete old folders from GitHub Pages
 
 on:
@@ -19,16 +28,16 @@ jobs:
         with:
           ref: gh-pages
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          python-version: 3.9
+          node-version-file: ".nvmrc"
 
       - name: Get current directory
         run: echo "CURRENT_DIR=$(pwd)" >> $GITHUB_ENV
 
       - name: Run the script
-        run: python rm_old_folders.py --n-days 30 --folder-name "${{ env.CURRENT_DIR }}"
+        run: node removeOldFolders.js "${{ env.CURRENT_DIR }}"
 
       - name: Commit all changed files back to the repository
         uses: stefanzweifel/git-auto-commit-action@v5
