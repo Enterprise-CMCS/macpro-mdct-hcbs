@@ -93,9 +93,16 @@ export const Page = ({ elements }: Props) => {
 
   const composedElements = elements.map((element, index) => {
     const ComposedElement = renderElement(element);
+    /*
+     * This `any` is currently needed to support element nesting.
+     * None of the PageElement template types include a formkey property...
+     * yet any of them _could_ be given a formkey, if they appear as children
+     * of (for example) a radio button. See RadioField.tsx:formatChoices().
+     */
+    const formkey = (element as any).formkey ?? `elements.${index}`;
     return (
       <ComposedElement
-        formkey={`elements.${index}`}
+        formkey={formkey}
         key={index}
         element={element}
         disabled={!userIsEndUser || report?.status === ReportStatus.SUBMITTED}
