@@ -7,6 +7,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { ReportType } from "types";
 
 const mockCloseHandler = jest.fn();
 const mockReportHandler = jest.fn();
@@ -174,6 +175,37 @@ describe("Test submit", () => {
 
     const submitBtn = screen.getByText("Save");
     await act(async () => await userEvent.click(submitBtn));
+  });
+});
+
+describe("Test AddEditReportModal types", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  test.each([
+    { type: ReportType.QMS, text: "Quality Measure Set Report" },
+    { type: ReportType.TA, text: "TACM Report" },
+    { type: ReportType.CI, text: "CICM Report" },
+  ])("$type report type renders a title", ({ type, text }) => {
+    screen.debug();
+    render(
+      <RouterWrappedComponent>
+        <AddEditReportModal
+          activeState="AB"
+          reportType={type}
+          modalDisclosure={{
+            isOpen: true,
+            onClose: mockCloseHandler,
+          }}
+          reportHandler={mockReportHandler}
+        />
+      </RouterWrappedComponent>
+    );
+    expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
   });
 });
 
