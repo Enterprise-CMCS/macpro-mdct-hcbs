@@ -15,6 +15,7 @@ const mockReportHandler = jest.fn();
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockStateUserStore);
 
 jest.mock("utils/api/requestMethods/report", () => ({
   putReport: jest.fn(),
@@ -63,7 +64,6 @@ const editModalComponent = (
 
 describe("Test general modal functionality", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(addModalComponent);
   });
 
@@ -84,7 +84,6 @@ describe("Test general modal functionality", () => {
 
 describe("Test Add Report Modal", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(addModalComponent);
   });
 
@@ -105,7 +104,6 @@ describe("Test Add Report Modal", () => {
 
 describe("Test Edit Report Modal", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(editModalComponent);
   });
 
@@ -181,13 +179,6 @@ describe("Test submit", () => {
 });
 
 describe("Test AddEditReportModal types", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
   test.each([
     { type: ReportType.QMS, text: "Quality Measure Set Report" },
     { type: ReportType.TA, text: "TACM Report" },

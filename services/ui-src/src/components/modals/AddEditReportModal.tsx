@@ -22,11 +22,9 @@ export type AddEditReportModalOptions = {
     shortName: string;
     sampleName: string;
   };
-  reportOptions: {
-    [key: string]: any;
-  };
+  reportOptions: Record<string, any>;
   optionsElements: React.ReactNode;
-  parseFormDataOptions: (formData: any) => { [key: string]: any };
+  parseFormDataOptions: (formData: any) => Record<string, any>;
 };
 
 const buildModalOptions = (
