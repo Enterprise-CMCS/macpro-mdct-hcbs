@@ -78,7 +78,7 @@ const mockRadioElement: RadioTemplate = {
 
 const RadioFieldComponent = (
   <div data-testid="test-radio-list">
-    <RadioField element={mockRadioElement} index={0} formkey="elements.0" />
+    <RadioField element={mockRadioElement} formkey="elements.0" />
   </div>
 );
 
@@ -140,7 +140,7 @@ describe("Radio field click action logic", () => {
     };
     const deliveryRadio = (
       <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} index={0} formkey="elements.0" />
+        <RadioField element={deliveryElement} formkey="elements.0" />
       </div>
     );
     render(deliveryRadio);
@@ -171,7 +171,7 @@ describe("Radio field click action logic", () => {
     };
     const deliveryRadio = (
       <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} index={0} formkey="elements.0" />
+        <RadioField element={deliveryElement} formkey="elements.0" />
       </div>
     );
     render(deliveryRadio);

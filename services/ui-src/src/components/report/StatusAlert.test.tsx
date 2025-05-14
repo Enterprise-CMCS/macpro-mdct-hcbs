@@ -52,11 +52,7 @@ const mockStatusLink: StatusAlertTemplate = {
 };
 
 const statusAlertComponent = (
-  <StatusAlert
-    element={mockStatusAlert}
-    index={0}
-    formkey="elements.0"
-  ></StatusAlert>
+  <StatusAlert element={mockStatusAlert} formkey="elements.0"></StatusAlert>
 );
 
 describe("<StatusAlert />", () => {
@@ -71,7 +67,6 @@ describe("<StatusAlert />", () => {
       render(
         <StatusAlert
           element={mockStatusLink}
-          index={0}
           formkey="elements.0"
         ></StatusAlert>
       );
