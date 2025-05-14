@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
-import { parseCustomHtml } from "utils";
+import { parseHtml } from "utils";
 import { TextboxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
@@ -43,7 +43,7 @@ export const TextField = (props: PageElementProps) => {
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
-  const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
+  const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
   const labelText = textbox.label;
 
   if (hideElement) {

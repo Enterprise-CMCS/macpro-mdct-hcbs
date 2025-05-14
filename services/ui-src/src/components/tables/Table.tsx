@@ -10,7 +10,7 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { sanitizeAndParseHtml } from "utils";
+import { parseHtml } from "utils";
 import { TableContentShape } from "types";
 import { notAnsweredText } from "../../constants";
 
@@ -26,7 +26,7 @@ export const Table = ({ content, variant, children }: Props) => {
           <Tr>
             {content.headRow.map((headerCell: string, index: number) => (
               <Th key={`${index}-head-cell`} scope="col" sx={sx.tableHeader}>
-                {sanitizeAndParseHtml(headerCell)}
+                {parseHtml(headerCell)}
               </Th>
             ))}
           </Tr>
@@ -48,7 +48,7 @@ export const Table = ({ content, variant, children }: Props) => {
                       cell == notAnsweredText ? "palette.error_darker" : "",
                   }}
                 >
-                  {sanitizeAndParseHtml(cell)}
+                  {parseHtml(cell)}
                 </Td>
               ))}
             </Tr>
@@ -66,7 +66,7 @@ export const Table = ({ content, variant, children }: Props) => {
                       scope="col"
                       sx={sx.tableHeader}
                     >
-                      {sanitizeAndParseHtml(headerCell)}
+                      {parseHtml(headerCell)}
                     </Th>
                   );
                 })}
