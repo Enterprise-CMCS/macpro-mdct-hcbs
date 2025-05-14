@@ -66,7 +66,11 @@ export const HorizontalTable = (props: TableProps) => {
           {props.showEditNameColumn && (
             <Td fontWeight={"bold"}>
               <button onClick={() => props.openAddEditReportModal(report)}>
-                <Image src={editIcon} alt="Edit Report Name" minW={"1.75rem"} />
+                <Image
+                  src={editIcon}
+                  aria-label={"Edit " + report.name + " report name"}
+                  minW={"1.75rem"}
+                />
               </button>
             </Td>
           )}
@@ -91,6 +95,11 @@ export const HorizontalTable = (props: TableProps) => {
               onClick={() => props.navigate(reportBasePath(report))}
               variant="outline"
               disabled={report.archived}
+              aria-label={
+                report.status !== ReportStatus.SUBMITTED
+                  ? "Edit " + report.name + " report"
+                  : "View " + report.name + " report"
+              }
             >
               {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
                 ? "Edit"
@@ -149,7 +158,7 @@ export const VerticalTable = (props: TableProps) => {
                 <button onClick={() => props.openAddEditReportModal(report)}>
                   <Image
                     src={editIcon}
-                    alt="Edit Report Name"
+                    aria-label={"Edit " + report.name + " report name"}
                     minW={"1.75rem"}
                   />
                 </button>
@@ -184,6 +193,11 @@ export const VerticalTable = (props: TableProps) => {
               height="30px"
               fontSize="sm"
               disabled={report.archived}
+              aria-label={
+                report.status !== ReportStatus.SUBMITTED
+                  ? "Edit " + report.name + " report"
+                  : "View " + report.name + " report"
+              }
             >
               {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
                 ? "Edit"
