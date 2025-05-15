@@ -68,7 +68,7 @@ export const HorizontalTable = (props: TableProps) => {
               <button onClick={() => props.openAddEditReportModal(report)}>
                 <Image
                   src={editIcon}
-                  aria-label={"Edit " + report.name + " report name"}
+                  aria-label={`Edit ${report.name} report name`}
                   minW={"1.75rem"}
                 />
               </button>
@@ -97,8 +97,8 @@ export const HorizontalTable = (props: TableProps) => {
               disabled={report.archived}
               aria-label={
                 report.status !== ReportStatus.SUBMITTED
-                  ? "Edit " + report.name + " report"
-                  : "View " + report.name + " report"
+                  ? `Edit ${report.name} report`
+                  : `View ${report.name} report`
               }
             >
               {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
@@ -158,7 +158,7 @@ export const VerticalTable = (props: TableProps) => {
                 <button onClick={() => props.openAddEditReportModal(report)}>
                   <Image
                     src={editIcon}
-                    aria-label={"Edit " + report.name + " report name"}
+                    aria-label={`Edit ${report.name} report name`}
                     minW={"1.75rem"}
                   />
                 </button>
