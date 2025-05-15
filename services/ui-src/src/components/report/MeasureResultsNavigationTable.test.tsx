@@ -59,7 +59,6 @@ const mockedMeasureResultsNavigationTableElement: MeasureResultsNavigationTableT
 const MeasureResultsNavigationTableComponent = (
   <MeasureResultsNavigationTableElement
     element={mockedMeasureResultsNavigationTableElement}
-    index={0}
     formkey="elements.0"
   />
 );

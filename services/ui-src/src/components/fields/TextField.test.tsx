@@ -47,7 +47,7 @@ const mockedTextboxElement: TextboxTemplate = {
 };
 
 const textFieldComponent = (
-  <TextField element={mockedTextboxElement} index={0} formkey="elements.0" />
+  <TextField element={mockedTextboxElement} formkey="elements.0" />
 );
 
 describe("<TextField />", () => {

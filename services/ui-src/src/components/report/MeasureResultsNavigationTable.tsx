@@ -24,9 +24,9 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { PageElementProps } from "../report/Elements";
 
 export const MeasureResultsNavigationTableElement = (
-  props: PageElementProps
+  props: PageElementProps<MeasureResultsNavigationTableTemplate>
 ) => {
-  const table = props.element as MeasureResultsNavigationTableTemplate;
+  const table = props.element;
   const { reportType, state, reportId } = useParams();
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);

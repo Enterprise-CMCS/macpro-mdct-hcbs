@@ -55,7 +55,6 @@ describe("Measure Footer", () => {
     render(
       <MeasureFooterElement
         element={mockedMeasureFooterElement}
-        index={0}
         formkey="elements.0"
       />
     );
@@ -93,7 +92,6 @@ describe("Measure Footer", () => {
     render(
       <MeasureFooterElement
         element={mockedMeasureSectionFooterElement}
-        index={0}
         formkey="elements.0"
       />
     );
@@ -117,7 +115,6 @@ describe("Measure Footer", () => {
     render(
       <MeasureFooterElement
         element={mockedMeasureFooterEmpty}
-        index={0}
         formkey="elements.0"
       />
     );

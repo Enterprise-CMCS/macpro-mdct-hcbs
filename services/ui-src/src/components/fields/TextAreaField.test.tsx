@@ -48,11 +48,7 @@ const mockedTextAreaElement: TextAreaBoxTemplate = {
 };
 
 const textAreaFieldComponent = (
-  <TextAreaField
-    element={mockedTextAreaElement}
-    index={0}
-    formkey="elements.0"
-  />
+  <TextAreaField element={mockedTextAreaElement} formkey="elements.0" />
 );
 
 describe("<TextAreaField />", () => {

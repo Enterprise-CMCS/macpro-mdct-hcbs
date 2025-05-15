@@ -8,11 +8,11 @@ import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { Link } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-export const StatusAlert = (props: PageElementProps) => {
+export const StatusAlert = (props: PageElementProps<StatusAlertTemplate>) => {
   const navigate = useNavigate();
   const { report, currentPageId } = useStore();
   const { reportType, state, reportId, pageId } = useParams();
-  const alert = props.element as StatusAlertTemplate;
+  const alert = props.element;
   const submittableMetrics = useStore(submittableMetricsSelector);
 
   if (!report || !currentPageId) return <></>;

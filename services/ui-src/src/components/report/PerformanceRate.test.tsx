@@ -46,7 +46,6 @@ const mockedPerformanceRateElement: PerformanceRateTemplate = {
 const performanceRateComponent = (
   <PerformanceRateElement
     element={mockedPerformanceRateElement}
-    index={0}
     formkey="elements.0"
   />
 );

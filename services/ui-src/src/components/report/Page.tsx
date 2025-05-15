@@ -1,13 +1,13 @@
 import { VStack } from "@chakra-ui/react";
 import {
-  headerElement,
-  subHeaderElement,
-  paragraphElement,
-  accordionElement,
-  buttonLinkElement,
-  nestedHeadingElement,
-  dividerElement,
-  subHeaderMeasureElement,
+  HeaderElement,
+  SubHeaderElement,
+  ParagraphElement,
+  AccordionElement,
+  ButtonLinkElement,
+  NestedHeadingElement,
+  DividerElement,
+  SubHeaderMeasureElement,
 } from "./Elements";
 import {
   assertExhaustive,
@@ -40,75 +40,69 @@ export const Page = ({ elements }: Props) => {
   const { userIsEndUser } = useStore().user || {};
   const { report } = useStore();
 
-  const renderElement = (element: PageElement) => {
-    const elementType = element.type;
-    switch (elementType) {
-      case ElementType.Header:
-        return headerElement;
-      case ElementType.SubHeader:
-        return subHeaderElement;
-      case ElementType.NestedHeading:
-        return nestedHeadingElement;
-      case ElementType.Paragraph:
-        return paragraphElement;
-      case ElementType.Textbox:
-        return TextField;
-      case ElementType.TextAreaField:
-        return TextAreaField;
-      case ElementType.Date:
-        return DateField;
-      case ElementType.Dropdown:
-        return DropdownField;
-      case ElementType.Accordion:
-        return accordionElement;
-      case ElementType.Radio:
-        return RadioField;
-      case ElementType.ButtonLink:
-        return buttonLinkElement;
-      case ElementType.MeasureTable:
-        return MeasureTableElement;
-      case ElementType.MeasureResultsNavigationTable:
-        return MeasureResultsNavigationTableElement;
-      case ElementType.StatusTable:
-        return StatusTableElement;
-      case ElementType.MeasureDetails:
-        return MeasureDetailsElement;
-      case ElementType.MeasureFooter:
-        return MeasureFooterElement;
-      case ElementType.PerformanceRate:
-        return PerformanceRateElement;
-      case ElementType.StatusAlert:
-        return StatusAlert;
-      case ElementType.Divider:
-        return dividerElement;
-      case ElementType.SubmissionParagraph:
-        return SubmissionParagraph;
-      case ElementType.SubHeaderMeasure:
-        return subHeaderMeasureElement;
-      default:
-        assertExhaustive(elementType);
-        return () => <></>;
-    }
-  };
-
   const composedElements = elements.map((element, index) => {
-    const ComposedElement = renderElement(element);
-    /*
-     * This `any` is currently needed to support element nesting.
-     * None of the PageElement template types include a formkey property...
-     * yet any of them _could_ be given a formkey, if they appear as children
-     * of (for example) a radio button. See RadioField.tsx:formatChoices().
-     */
-    const formkey = (element as any).formkey ?? `elements.${index}`;
-    return (
-      <ComposedElement
-        formkey={formkey}
-        key={index}
-        element={element}
-        disabled={!userIsEndUser || report?.status === ReportStatus.SUBMITTED}
-      />
-    );
+    const props = {
+      key: index,
+      /*
+       * This `any` is currently needed to support element nesting.
+       * None of the PageElement template types include a formkey property...
+       * yet any of them _could_ be given a formkey, if they appear as children
+       * of (for example) a radio button. See RadioField.tsx:formatChoices().
+       */
+      formkey: (element as any).formkey ?? `elements.${index}`,
+      disabled: !userIsEndUser || report?.status === ReportStatus.SUBMITTED,
+    };
+    switch (element.type) {
+      case ElementType.Header:
+        return <HeaderElement {...{ ...props, element }} />;
+      case ElementType.SubHeader:
+        return <SubHeaderElement {...{ ...props, element }} />;
+      case ElementType.NestedHeading:
+        return <NestedHeadingElement {...{ ...props, element }} />;
+      case ElementType.Paragraph:
+        return <ParagraphElement {...{ ...props, element }} />;
+      case ElementType.Textbox:
+        return <TextField {...{ ...props, element }} />;
+      case ElementType.TextAreaField:
+        return <TextAreaField {...{ ...props, element }} />;
+      case ElementType.Date:
+        return <DateField {...{ ...props, element }} />;
+      case ElementType.Dropdown:
+        return <DropdownField {...{ ...props, element }} />;
+      case ElementType.Accordion:
+        return <AccordionElement {...{ ...props, element }} />;
+      case ElementType.Radio:
+        return <RadioField {...{ ...props, element }} />;
+      case ElementType.ButtonLink:
+        return <ButtonLinkElement {...{ ...props, element }} />;
+      case ElementType.MeasureTable:
+        return <MeasureTableElement {...{ ...props, element }} />;
+      case ElementType.MeasureResultsNavigationTable:
+        return (
+          <MeasureResultsNavigationTableElement {...{ ...props, element }} />
+        );
+      case ElementType.StatusTable:
+        return <StatusTableElement {...{ ...props, element }} />;
+      case ElementType.MeasureDetails:
+        return <MeasureDetailsElement {...{ ...props, element }} />;
+      case ElementType.MeasureFooter:
+        return <MeasureFooterElement {...{ ...props, element }} />;
+      case ElementType.PerformanceRate:
+        return <PerformanceRateElement {...{ ...props, element }} />;
+      case ElementType.StatusAlert:
+        return <StatusAlert {...{ ...props, element }} />;
+      case ElementType.Divider:
+        return <DividerElement {...{ ...props, element }} />;
+      case ElementType.SubmissionParagraph:
+        return <SubmissionParagraph {...{ ...props, element }} />;
+      case ElementType.SubHeaderMeasure:
+        return <SubHeaderMeasureElement {...{ ...props, element }} />;
+      default:
+        assertExhaustive(element);
+        return null;
+    }
   });
+
   return (
     <VStack alignItems="flex-start" gap="2rem" marginBottom="2rem">
       {composedElements}

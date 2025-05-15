@@ -46,7 +46,7 @@ const mockedDropdownElement: DropdownTemplate = {
 const testKey = "unique.form.key";
 
 const dropdownFieldComponent = (
-  <DropdownField element={mockedDropdownElement} formkey={testKey} index={0} />
+  <DropdownField element={mockedDropdownElement} formkey={testKey} />
 );
 
 describe("<DropdownField />", () => {
