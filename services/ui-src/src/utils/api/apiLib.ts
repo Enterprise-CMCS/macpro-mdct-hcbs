@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { get, put, post, del } from "aws-amplify/api";
-import { AnyObject } from "types";
 import { updateTimeout } from "utils";
 
 const apiName = "hcbs";
@@ -17,7 +16,7 @@ type ResponsePayload = Awaited<ReturnType<typeof get>["response"]>["body"];
 const apiRequest = async <T = unknown>(
   request: typeof del | typeof get | typeof post | typeof put,
   path: string,
-  options: AnyObject
+  options: Record<string, any>
 ) => {
   try {
     updateTimeout();
@@ -44,12 +43,12 @@ const apiRequest = async <T = unknown>(
 };
 
 export const apiLib = {
-  del: async (path: string, options: AnyObject) =>
+  del: async (path: string, options: Record<string, any>) =>
     apiRequest(del, path, options),
-  get: async <T>(path: string, options: AnyObject) =>
+  get: async <T>(path: string, options: Record<string, any>) =>
     apiRequest<T>(get, path, options),
-  post: async <T>(path: string, options: AnyObject) =>
+  post: async <T>(path: string, options: Record<string, any>) =>
     apiRequest<T>(post, path, options),
-  put: async <T>(path: string, options: AnyObject) =>
+  put: async <T>(path: string, options: Record<string, any>) =>
     apiRequest<T>(put, path, options),
 };

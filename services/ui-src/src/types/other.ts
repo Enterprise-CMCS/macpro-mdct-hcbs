@@ -30,14 +30,6 @@ export interface AnyObject {
   [key: string]: any;
 }
 
-export interface CustomHtmlElement {
-  type: string;
-  content: string | any;
-  as?: string;
-  props?: { [key: string]: any };
-  children?: CustomHtmlElement[];
-}
-
 export interface ErrorVerbiage {
   title: string;
   children: ReactNode;

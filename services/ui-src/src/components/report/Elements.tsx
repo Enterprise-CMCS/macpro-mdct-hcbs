@@ -23,7 +23,7 @@ import {
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
-import { measurePrevPage, parseCustomHtml, useStore } from "utils";
+import { measurePrevPage, parseHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
@@ -150,7 +150,7 @@ export const accordionElement = (props: PageElementProps) => {
   return (
     <Accordion allowToggle={true}>
       <AccordionItem label={accordion.label}>
-        {parseCustomHtml(accordion.value)}
+        {parseHtml(accordion.value)}
       </AccordionItem>
     </Accordion>
   );

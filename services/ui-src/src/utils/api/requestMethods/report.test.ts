@@ -14,7 +14,6 @@ import {
   ReportOptions,
   ReportType,
 } from "types/report";
-import { AnyObject } from "types";
 
 const report = {
   type: ReportType.QMS,
@@ -28,9 +27,9 @@ const mockPost = jest.fn();
 const mockPut = jest.fn();
 jest.mock("../apiLib", () => ({
   apiLib: {
-    get: (path: string, options: AnyObject) => mockGet(path, options),
-    post: (path: string, options: AnyObject) => mockPost(path, options),
-    put: (path: string, options: AnyObject) => mockPut(path, options),
+    get: (path: string, opts: Record<string, any>) => mockGet(path, opts),
+    post: (path: string, opts: Record<string, any>) => mockPost(path, opts),
+    put: (path: string, opts: Record<string, any>) => mockPut(path, opts),
   },
 }));
 

@@ -55,7 +55,8 @@ describe("<AdminPage />", () => {
     });
 
     test("Check that AdminPage renders", () => {
-      expect(screen.getByTestId("admin-view")).toBeVisible();
+      const heading = screen.getByRole("heading", { name: "Banner Admin" });
+      expect(heading).toBeVisible();
     });
 
     test("Check that current banner info does not render", () => {
@@ -77,7 +78,8 @@ describe("<AdminPage />", () => {
     });
 
     test("Check that AdminPage renders", () => {
-      expect(screen.getByTestId("admin-view")).toBeVisible();
+      const heading = screen.getByRole("heading", { name: "Banner Admin" });
+      expect(heading).toBeVisible();
     });
 
     test("Check that current banner info renders", () => {

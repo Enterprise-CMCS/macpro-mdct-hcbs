@@ -106,7 +106,6 @@ interface Props {
   disableConfirm?: boolean;
   formId?: string;
   children?: ReactNode;
-  [key: string]: any;
 }
 
 const sx = {

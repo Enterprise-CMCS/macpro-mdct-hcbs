@@ -5,7 +5,7 @@ import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
 
 export const NotFoundPage = () => {
   return (
-    <PageTemplate data-testid="404-view" sxOverride={sx.layout}>
+    <PageTemplate sxOverride={sx.layout}>
       <Flex sx={sx.heading}>
         <Image src={warningIcon} alt="warning icon" sx={sx.warningIcon} />
         <Heading as="h1" variant="h1">

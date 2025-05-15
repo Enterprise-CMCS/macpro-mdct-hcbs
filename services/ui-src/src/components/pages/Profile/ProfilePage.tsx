@@ -22,7 +22,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <PageTemplate sx={sx.layout}>
+    <PageTemplate sxOverride={sx.layout}>
       <Heading as="h1" variant="h1">
         My Account
       </Heading>

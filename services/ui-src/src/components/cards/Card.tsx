@@ -1,18 +1,8 @@
-import { ReactChild } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react";
 
-export const Card = ({ children, ...props }: Props) => {
-  return (
-    <Box {...props} sx={sx.root}>
-      {children}
-    </Box>
-  );
+export const Card = ({ ...props }: Omit<BoxProps, "sx">) => {
+  return <Box {...props} sx={sx.root} />;
 };
-
-interface Props {
-  children?: ReactChild | ReactChild[];
-  [key: string]: any;
-}
 
 const sx = {
   root: {
