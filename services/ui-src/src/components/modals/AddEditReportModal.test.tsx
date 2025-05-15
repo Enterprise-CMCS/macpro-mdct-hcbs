@@ -7,7 +7,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { Report } from "../../types";
+import { Report, ReportType } from "../../types";
 import assert from "node:assert";
 
 const mockCloseHandler = jest.fn();
@@ -15,6 +15,7 @@ const mockReportHandler = jest.fn();
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockStateUserStore);
 
 jest.mock("utils/api/requestMethods/report", () => ({
   putReport: jest.fn(),
@@ -63,7 +64,6 @@ const editModalComponent = (
 
 describe("Test general modal functionality", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(addModalComponent);
   });
 
@@ -84,7 +84,6 @@ describe("Test general modal functionality", () => {
 
 describe("Test Add Report Modal", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(addModalComponent);
   });
 
@@ -105,7 +104,6 @@ describe("Test Add Report Modal", () => {
 
 describe("Test Edit Report Modal", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(editModalComponent);
   });
 
@@ -177,6 +175,29 @@ describe("Test submit", () => {
 
     const submitBtn = screen.getByText("Save");
     await act(async () => await userEvent.click(submitBtn));
+  });
+});
+
+describe("Test AddEditReportModal types", () => {
+  test.each([
+    { type: ReportType.QMS, text: "Quality Measure Set Report" },
+    { type: ReportType.TA, text: "TACM Report" },
+    { type: ReportType.CI, text: "CICM Report" },
+  ])("$type report type renders a title", ({ type, text }) => {
+    render(
+      <RouterWrappedComponent>
+        <AddEditReportModal
+          activeState="AB"
+          reportType={type}
+          modalDisclosure={{
+            isOpen: true,
+            onClose: mockCloseHandler,
+          }}
+          reportHandler={mockReportHandler}
+        />
+      </RouterWrappedComponent>
+    );
+    expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
   });
 });
 

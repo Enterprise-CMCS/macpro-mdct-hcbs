@@ -1,5 +1,5 @@
-import { MeasureTemplateName, MeasureOptions } from "../../types/reports";
-import { DeliverySystem } from "../../utils/constants";
+import { MeasureTemplateName, MeasureOptions } from "../../../types/reports";
+import { DeliverySystem } from "../../../utils/constants";
 
 export const defaultMeasures: MeasureOptions[] = [
   {
