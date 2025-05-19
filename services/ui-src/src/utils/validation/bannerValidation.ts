@@ -56,7 +56,7 @@ export const bannerFormValidateSchema = object()
   })
   .test(
     "start-date-before-end-date-form",
-    "End date must be after start date",
+    error.END_DATE_BEFORE_START_DATE,
     function (value) {
       const { bannerStartDate, bannerEndDate } = value || {};
       const startDateString = bannerStartDate?.answer;
@@ -70,7 +70,7 @@ export const bannerFormValidateSchema = object()
           if (endDate <= startDate) {
             return this.createError({
               path: "bannerEndDate.answer",
-              message: "End date must be after start date",
+              message: error.END_DATE_BEFORE_START_DATE,
             });
           }
         } else {
