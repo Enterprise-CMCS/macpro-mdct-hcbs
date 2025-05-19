@@ -40,7 +40,7 @@ const mockedDateTextboxElement: DateTemplate = {
 
 const testKey = "unique.form.key";
 const dateFieldComponent = (
-  <DateField element={mockedDateTextboxElement} formkey={testKey} index={0} />
+  <DateField element={mockedDateTextboxElement} formkey={testKey} />
 );
 
 describe("<DateField />", () => {
