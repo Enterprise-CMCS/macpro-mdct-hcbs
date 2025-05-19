@@ -8,6 +8,7 @@ export const error = {
   SERVER_ERROR: "An unspecified server error occured.",
   CREATION_ERROR: "Could not be created due to a database error.",
   ALREADY_ARCHIVED: "Cannot update archived report.",
+  END_DATE_BEFORE_START_DATE: "End date must be after start date.",
 };
 
 export enum DeliverySystem {

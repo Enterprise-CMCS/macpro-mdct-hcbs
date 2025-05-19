@@ -148,3 +148,28 @@ export const calculateNextQuarter = (previousQuarter: string) => {
   }
   return "";
 };
+
+// Parses a date string in the format "MM/DD/YYYY" and returns a Date object
+export const parseMMDDYYYY = (dateString: string): Date | null => {
+  if (!dateString || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+    return null;
+  }
+  const parts = dateString.split("/");
+  // Month is 0 indexed in JavaScript Date constructor
+  const month = parseInt(parts[0], 10) - 1;
+  const day = parseInt(parts[1], 10);
+  const year = parseInt(parts[2], 10);
+
+  const dateObj = new Date(year, month, day);
+
+  // Check if the date is valid
+  if (
+    dateObj.getFullYear() === year &&
+    dateObj.getMonth() === month &&
+    dateObj.getDate() === day
+  ) {
+    dateObj.setHours(0, 0, 0, 0); // Make sure the time is set to midnight
+    return dateObj;
+  }
+  return null;
+};

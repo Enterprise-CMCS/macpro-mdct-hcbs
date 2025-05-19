@@ -8,7 +8,26 @@ const bannerValidateSchema = object().shape({
   description: string().required(),
   link: string().url().notRequired(),
   startDate: number().notRequired(),
-  endDate: number().notRequired(),
+  endDate: number()
+    .notRequired()
+    .when("startDate", (startDate, schema) => {
+      const actualStartDate = Array.isArray(startDate)
+        ? startDate[0]
+        : startDate;
+      if (typeof actualStartDate === "number") {
+        return schema.test({
+          name: "is-after-start-date",
+          message: error.END_DATE_BEFORE_START_DATE,
+          test: function (endDateValue) {
+            if (typeof endDateValue === "number") {
+              return endDateValue > actualStartDate;
+            }
+            return true;
+          },
+        });
+      }
+      return schema;
+    }),
   isActive: boolean().notRequired(),
 });
 
