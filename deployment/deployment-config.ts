@@ -67,9 +67,9 @@ const loadStageSecret = async (project: string, stage: string) => {
   }
 };
 
-function validateConfig(config: {
-  [key: string]: any;
-}): asserts config is DeploymentConfigProperties {
+function validateConfig(
+  config: Record<string, any>
+): asserts config is DeploymentConfigProperties {
   const expectedKeys = [
     "project",
     "stage",

@@ -7,7 +7,7 @@ import {
   DropdownChangeObject,
   DropdownProps,
 } from "@cmsgov/design-system";
-import { parseCustomHtml } from "utils";
+import { parseHtml } from "utils";
 
 export const DropdownField = (props: PageElementProps) => {
   /**
@@ -46,8 +46,7 @@ export const DropdownField = (props: PageElementProps) => {
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
-  const parsedHint =
-    dropdown.helperText && parseCustomHtml(dropdown.helperText);
+  const parsedHint = dropdown.helperText && parseHtml(dropdown.helperText);
   const labelText = dropdown.label;
 
   const dropdownProps: DropdownProps = {
