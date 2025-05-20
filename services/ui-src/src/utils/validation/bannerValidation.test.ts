@@ -40,8 +40,8 @@ describe("bannerFormValidateSchema (UI Form", () => {
     bannerTitle: { answer: "mock title" },
     bannerDescription: { answer: "mock description" },
     bannerLink: { answer: "http://example.com" },
-    bannerStartDate: { answer: startDate || "" },
-    bannerEndDate: { answer: endDate || "" },
+    bannerStartDate: { answer: startDate ?? "" },
+    bannerEndDate: { answer: endDate ?? "" },
   });
 
   it("should pass when startDate is before endDate", async () => {
