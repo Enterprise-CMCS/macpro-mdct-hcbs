@@ -10,26 +10,13 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { sanitizeAndParseHtml } from "utils";
-import { AnyObject, TableContentShape } from "types";
+import { parseHtml } from "utils";
+import { TableContentShape } from "types";
 import { notAnsweredText } from "../../constants";
 
-export const Table = ({
-  content,
-  variant,
-  border,
-  sxOverride,
-  ariaOverride,
-  children,
-  ...props
-}: Props) => {
+export const Table = ({ content, variant, children }: Props) => {
   return (
-    <TableRoot
-      variant={variant}
-      size="sm"
-      sx={{ ...sx.root, ...sxOverride }}
-      {...props}
-    >
+    <TableRoot variant={variant} size="sm" sx={sx.root}>
       <TableCaption placement="top" sx={sx.captionBox}>
         <VisuallyHidden>{content.caption}</VisuallyHidden>
       </TableCaption>
@@ -38,21 +25,16 @@ export const Table = ({
           {/* Head Row */}
           <Tr>
             {content.headRow.map((headerCell: string, index: number) => (
-              <Th
-                key={`${index}-head-cell`}
-                scope="col"
-                sx={{ ...sx.tableHeader, ...sxOverride }}
-                aria-label={ariaOverride?.headRow?.[index]}
-              >
-                {sanitizeAndParseHtml(headerCell)}
+              <Th key={`${index}-head-cell`} scope="col" sx={sx.tableHeader}>
+                {parseHtml(headerCell)}
               </Th>
             ))}
           </Tr>
         </Thead>
       )}
-      <Tbody sx={sxOverride?.container}>
-        {/* if children prop is passed, just render the children */}
-        {children && children}
+      <Tbody>
+        {/* if children prop is passed, render the children */}
+        {children}
         {/* if content prop is passed, parse and render rows and cells */}
         {content.bodyRows &&
           content.bodyRows!.map((row: string[], index: number) => (
@@ -61,13 +43,12 @@ export const Table = ({
                 <Td
                   key={`${cell}${rowIndex}-body-cell`}
                   sx={{
-                    tableCell: border ? sx.tableCellBorder : sx.tableCell,
+                    tableCell: sx.tableCell,
                     color:
                       cell == notAnsweredText ? "palette.error_darker" : "",
                   }}
-                  aria-label={ariaOverride?.bodyRows?.[index][rowIndex]}
                 >
-                  {sanitizeAndParseHtml(cell)}
+                  {parseHtml(cell)}
                 </Td>
               ))}
             </Tr>
@@ -83,10 +64,9 @@ export const Table = ({
                     <Th
                       key={`${rowIndex}-foot-cell`}
                       scope="col"
-                      sx={{ ...sx.tableHeader, ...sxOverride }}
-                      aria-label={ariaOverride?.footRow?.[index][rowIndex]}
+                      sx={sx.tableHeader}
                     >
-                      {sanitizeAndParseHtml(headerCell)}
+                      {parseHtml(headerCell)}
                     </Th>
                   );
                 })}
@@ -101,11 +81,7 @@ export const Table = ({
 interface Props {
   content: TableContentShape;
   variant?: string;
-  border?: boolean;
-  sxOverride?: AnyObject;
-  ariaOverride?: TableContentShape;
   children?: ReactNode;
-  [key: string]: any;
 }
 
 const sx = {
@@ -127,15 +103,6 @@ const sx = {
   tableCell: {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
-    fontWeight: "normal",
-    ".mobile &": {
-      fontSize: "xs",
-    },
-  },
-  tableCellBorder: {
-    padding: "0.75rem 0.5rem",
-    borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
     fontWeight: "normal",
     ".mobile &": {
       fontSize: "xs",

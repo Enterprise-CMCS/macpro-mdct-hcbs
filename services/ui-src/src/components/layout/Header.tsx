@@ -10,7 +10,6 @@ export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
   const paths = pathname.split("/");
-
   return (
     <Box sx={sx.root} id="header">
       <Flex sx={sx.usaBannerContainer}>
@@ -42,7 +41,9 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {paths.length > 4 && <SubnavBar stateName={paths[3]} />}
+      {paths.length > 4 && (
+        <SubnavBar reportType={paths[2]} stateName={paths[3]} />
+      )}
     </Box>
   );
 };

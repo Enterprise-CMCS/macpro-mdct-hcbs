@@ -9,17 +9,18 @@ import {
 import { mockBannerData } from "utils/testing/mockBanner";
 import { bannerErrors } from "verbiage/errors";
 import { testA11yAct } from "utils/testing/commonTests";
+import { AdminBannerShape } from "types";
 
 const mockBannerMethods = {
-  fetchAdminBanner: jest.fn(() => {}),
-  writeAdminBanner: jest.fn(() => {}),
-  deleteAdminBanner: jest.fn(() => {}),
+  fetchAdminBanner: jest.fn(async () => {}),
+  writeAdminBanner: jest.fn(async () => {}),
+  deleteAdminBanner: jest.fn(async () => {}),
 };
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const adminView = (context: any) => (
+const adminView = (context: AdminBannerShape) => (
   <RouterWrappedComponent>
     <AdminBannerContext.Provider value={context}>
       <AdminPage />
@@ -54,7 +55,8 @@ describe("<AdminPage />", () => {
     });
 
     test("Check that AdminPage renders", () => {
-      expect(screen.getByTestId("admin-view")).toBeVisible();
+      const heading = screen.getByRole("heading", { name: "Banner Admin" });
+      expect(heading).toBeVisible();
     });
 
     test("Check that current banner info does not render", () => {
@@ -76,7 +78,8 @@ describe("<AdminPage />", () => {
     });
 
     test("Check that AdminPage renders", () => {
-      expect(screen.getByTestId("admin-view")).toBeVisible();
+      const heading = screen.getByRole("heading", { name: "Banner Admin" });
+      expect(heading).toBeVisible();
     });
 
     test("Check that current banner info renders", () => {

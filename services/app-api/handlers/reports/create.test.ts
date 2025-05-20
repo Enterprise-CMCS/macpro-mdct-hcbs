@@ -1,6 +1,6 @@
 import { StatusCodes } from "../../libs/response-lib";
-import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
+import { putReport } from "../../storage/reports";
+import { UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
 import { createReport } from "./create";
 
@@ -19,10 +19,19 @@ jest.mock("./buildReport", () => ({
   buildReport: jest.fn().mockReturnValue({ id: "A report" }),
 }));
 
-const testEvent: APIGatewayProxyEvent = {
-  ...proxyEvent,
+jest.mock("../../storage/reports", () => ({
+  putReport: jest.fn(),
+}));
+
+const testEvent = {
+  queryStringParameters: {},
   pathParameters: { reportType: "QMS", state: "PA" },
   headers: { "cognito-identity-id": "test" },
+  body: JSON.stringify({
+    year: 2026,
+    name: "test report",
+    options: {},
+  }),
 };
 
 describe("Test create report handler", () => {
@@ -32,9 +41,9 @@ describe("Test create report handler", () => {
 
   test("Test missing path params", async () => {
     const badTestEvent = {
-      ...proxyEvent,
+      ...testEvent,
       pathParameters: {},
-    } as APIGatewayProxyEvent;
+    };
     const res = await createReport(badTestEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
@@ -47,10 +56,10 @@ describe("Test create report handler", () => {
 
   test("Test missing body", async () => {
     const emptyBodyEvent = {
-      ...proxyEvent,
+      ...testEvent,
       pathParameters: { reportType: "QMS", state: "PA" },
       body: null,
-    } as APIGatewayProxyEvent;
+    };
     const res = await createReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
@@ -58,15 +67,16 @@ describe("Test create report handler", () => {
   test("Test Successful create", async () => {
     const res = await createReport(testEvent);
 
+    expect(putReport).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 });
 
 test("Test invalid report type", async () => {
   const invalidDataEvent = {
-    ...proxyEvent,
+    ...testEvent,
     pathParameters: { reportType: "BM", state: "NM" },
-  } as APIGatewayProxyEvent;
+  };
   const res = await createReport(invalidDataEvent);
   expect(res.statusCode).toBe(StatusCodes.BadRequest);
 });

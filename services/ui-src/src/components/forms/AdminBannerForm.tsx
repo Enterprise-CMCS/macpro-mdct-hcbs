@@ -5,7 +5,7 @@ import { ErrorAlert, PreviewBanner, TextField, DateField } from "components";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
-import { ElementType, ErrorVerbiage } from "types";
+import { AdminBannerMethods, ElementType, ErrorVerbiage } from "types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   bannerFormValidateSchema,
@@ -20,7 +20,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     resolver: yupResolver(bannerFormValidateSchema),
   });
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: Record<string, { answer: string }>) => {
     setSubmitting(true);
 
     const newBannerData = {
@@ -30,11 +30,11 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       link: formData["bannerLink"]?.answer || undefined,
       startDate: convertDatetimeStringToNumber(
         formData["bannerStartDate"]?.answer,
-        "startDate"
+        { hour: 0, minute: 0, second: 0 }
       ),
       endDate: convertDatetimeStringToNumber(
         formData["bannerEndDate"]?.answer,
-        "endDate"
+        { hour: 23, minute: 59, second: 59 }
       ),
     };
 
@@ -116,7 +116,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 };
 
 interface Props {
-  writeAdminBanner: Function;
+  writeAdminBanner: AdminBannerMethods["writeAdminBanner"];
 }
 
 const sx = {

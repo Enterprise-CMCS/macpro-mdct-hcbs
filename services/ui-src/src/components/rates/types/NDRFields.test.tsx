@@ -34,8 +34,10 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedPerformanceElement = {
+const mockedPerformanceElement: PerformanceRateTemplate = {
+  id: "mock-perf-id",
   type: ElementType.PerformanceRate,
+  rateType: PerformanceRateType.NDR_FIELDS,
   label: "test label",
   helperText: "helper text",
   assessments: [
@@ -50,8 +52,7 @@ const mockedPerformanceElement = {
     { id: "long-term", label: "Long Term Stay" },
   ],
   multiplier: 1000,
-  rateType: PerformanceRateType.NDR_FIELDS,
-} as PerformanceRateTemplate;
+};
 
 const ndrNDRFieldsComponent = (
   <NDRFields

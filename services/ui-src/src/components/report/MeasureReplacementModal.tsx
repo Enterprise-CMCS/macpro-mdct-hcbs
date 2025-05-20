@@ -5,8 +5,8 @@ import { MeasurePageTemplate } from "types";
 
 export const MeasureReplacementModal = (
   measure: MeasurePageTemplate,
-  onClose: Function,
-  onSubmit: Function
+  onClose: (modalOpen: boolean) => void,
+  onSubmit: (page: MeasurePageTemplate | undefined) => void
 ): ReactNode => {
   let selectMeasure: MeasurePageTemplate | undefined;
 
@@ -14,12 +14,16 @@ export const MeasureReplacementModal = (
     selectMeasure = event.target.value === "0" ? measure : undefined;
   };
 
-  const label = `Do you want to substitute ${measure.id} for ${measure.substitutable}`;
+  const label = `Do you want to substitute ${measure.substitutable} for ${measure.id}?`;
 
   return (
     <React.Fragment>
       <ModalBody>
-        [hint text explaining what happens when substituting a measure]
+        <p>
+          You can substitute an optional measure for the original. The new
+          measure will now appear on the Required Measure Results page, and the
+          original will now appear on the Optional Measure Results page.
+        </p>
         <ChoiceList
           name={"subsitute"}
           type={"radio"}

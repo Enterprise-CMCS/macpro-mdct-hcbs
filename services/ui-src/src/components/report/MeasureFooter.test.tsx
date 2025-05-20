@@ -7,12 +7,16 @@ import { mockUseStore } from "utils/testing/setupJest";
 const mockUseNavigate = jest.fn();
 
 jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
-    if (selector) {
-      return selector(mockUseStore);
-    }
-    return mockUseStore;
-  }),
+  useStore: jest
+    .fn()
+    .mockImplementation(
+      (selector?: (state: typeof mockUseStore) => unknown) => {
+        if (selector) {
+          return selector(mockUseStore);
+        }
+        return mockUseStore;
+      }
+    ),
 }));
 
 jest.mock("react-router-dom", () => ({
@@ -25,30 +29,32 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const mockedMeasureFooterElement = {
+const mockedMeasureFooterElement: MeasureFooterTemplate = {
+  id: "mock-footer-id",
   type: ElementType.MeasureFooter,
   nextTo: "mock-next-link",
   completeMeasure: true,
   clear: true,
-} as MeasureFooterTemplate;
+};
 
-const mockedMeasureFooterEmpty = {
+const mockedMeasureFooterEmpty: MeasureFooterTemplate = {
+  id: "mock-footer-id",
   type: ElementType.MeasureFooter,
   prevTo: "mock-prev-link",
-} as MeasureFooterTemplate;
+};
 
-const mockedMeasureSectionFooterElement = {
+const mockedMeasureSectionFooterElement: MeasureFooterTemplate = {
+  id: "mock-footer-id",
   type: ElementType.MeasureFooter,
   prevTo: "mock-prev-link",
   completeSection: true,
-} as MeasureFooterTemplate;
+};
 
 describe("Measure Footer", () => {
   it("Test Measure Footer component", async () => {
     render(
       <MeasureFooterElement
         element={mockedMeasureFooterElement}
-        index={0}
         formkey="elements.0"
       />
     );
@@ -86,7 +92,6 @@ describe("Measure Footer", () => {
     render(
       <MeasureFooterElement
         element={mockedMeasureSectionFooterElement}
-        index={0}
         formkey="elements.0"
       />
     );
@@ -110,7 +115,6 @@ describe("Measure Footer", () => {
     render(
       <MeasureFooterElement
         element={mockedMeasureFooterEmpty}
-        index={0}
         formkey="elements.0"
       />
     );

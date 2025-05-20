@@ -3,7 +3,6 @@ import {
   getReportTemplate,
   getCmitInfo,
 } from "../../forms/yearlyFormSelection";
-import { putReport } from "../../storage/reports";
 import {
   Report,
   ReportStatus,
@@ -14,6 +13,7 @@ import {
   MeasurePageTemplate,
   CMIT,
   PageStatus,
+  isReportWithMeasuresTemplate,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -46,7 +46,11 @@ export const buildReport = async (
     pages: structuredClone(template.pages),
   };
 
-  if (reportType == ReportType.QMS) {
+  /**
+   * QMS uses MeasureConfig to define additional pages to add to the report and the relationships between them.
+   * Reports using ReportBase alone skip this step and just proceed with what is included.
+   */
+  if (isReportWithMeasuresTemplate(template)) {
     // Collect all measures, based on selected rules.
     let measures = template.measureLookup.defaultMeasures;
     if (report.options.pom) {
@@ -55,7 +59,7 @@ export const buildReport = async (
 
     for (let measure of measures) {
       const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
-      const parentPage = initializeQmsPage(
+      const parentPage = initializeMeasurePage(
         measure,
         template.measureTemplates[measure.measureTemplate],
         cmitInfo,
@@ -63,7 +67,7 @@ export const buildReport = async (
       );
 
       const childPages = measure.dependentPages.map((pageInfo) =>
-        initializeQmsPage(
+        initializeMeasurePage(
           measure,
           template.measureTemplates[pageInfo.template],
           cmitInfo,
@@ -86,15 +90,13 @@ export const buildReport = async (
     throw new Error("Invalid request");
   }
 
-  // Save
-  await putReport(validatedReport);
-  return report;
+  return validatedReport;
 };
 
 /**
  * Clone the given template, and fill it in with the necessary data.
  */
-const initializeQmsPage = (
+const initializeMeasurePage = (
   measure: MeasureOptions,
   template: MeasurePageTemplate,
   cmitInfo: CMIT,

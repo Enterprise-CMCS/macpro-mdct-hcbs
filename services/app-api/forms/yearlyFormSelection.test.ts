@@ -1,5 +1,5 @@
 import { ReportType } from "../types/reports";
-import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms";
+import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { getReportTemplate } from "./yearlyFormSelection";
 
 describe("Yearly Form Selection", () => {

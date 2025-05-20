@@ -34,6 +34,32 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }).identifiers,
+    new DynamoDBTable(scope, "TaReports", {
+      stage,
+      isDev,
+      name: "ta-reports",
+      partitionKey: {
+        name: "state",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    }).identifiers,
+    new DynamoDBTable(scope, "CiReports", {
+      stage,
+      isDev,
+      name: "ci-reports",
+      partitionKey: {
+        name: "state",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    }).identifiers,
   ];
 
   return { tables };

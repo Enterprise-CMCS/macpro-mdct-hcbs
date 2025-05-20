@@ -20,7 +20,7 @@ test("create a report as a state user", async ({ page }) => {
 const navigateToAddEditReportModal = async (page: Page) => {
   await page.goto("/");
   const qmsReportButton = page.getByRole("button", {
-    name: "Enter HCBS QMS online",
+    name: "Enter QMS Report online",
   });
   await qmsReportButton.click();
   const startQmsReportButton = page.getByRole("button", {

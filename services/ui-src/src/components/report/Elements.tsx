@@ -15,27 +15,28 @@ import {
   ParagraphTemplate,
   AccordionTemplate,
   ButtonLinkTemplate,
-  PageElement,
   NestedHeadingTemplate,
   HeaderIcon,
   MeasurePageTemplate,
   isMeasurePageTemplate,
+  PageElement,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
-import { measurePrevPage, parseCustomHtml, useStore } from "utils";
+import { measurePrevPage, parseHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
-export interface PageElementProps {
-  element: PageElement;
-  index?: number;
+
+export interface PageElementProps<T extends PageElement = PageElement> {
+  element: T;
   formkey: string;
   disabled?: boolean;
 }
 
-export const headerElement = (props: PageElementProps) => {
-  const element = props.element as HeaderTemplate;
+export const HeaderElement = ({
+  element,
+}: PageElementProps<HeaderTemplate>) => {
   const buildIcon = (icon: HeaderIcon | undefined) => {
     switch (icon) {
       case HeaderIcon.Check:
@@ -71,8 +72,9 @@ export const headerElement = (props: PageElementProps) => {
   );
 };
 
-export const subHeaderElement = (props: PageElementProps) => {
-  const element = props.element as SubHeaderTemplate;
+export const SubHeaderElement = ({
+  element,
+}: PageElementProps<SubHeaderTemplate>) => {
   const hideElement = useElementIsHidden(element.hideCondition);
   if (hideElement) {
     return null;
@@ -80,18 +82,16 @@ export const subHeaderElement = (props: PageElementProps) => {
   return (
     <Stack>
       <Heading as="h2" variant="subHeader">
-        {(props.element as SubHeaderTemplate).text}
+        {element.text}
       </Heading>
-      {element?.helperText && (
-        <Text variant="helperText">
-          {(props.element as SubHeaderTemplate).helperText}
-        </Text>
+      {element.helperText && (
+        <Text variant="helperText">{element.helperText}</Text>
       )}
     </Stack>
   );
 };
 
-export const subHeaderMeasureElement = (_props: PageElementProps) => {
+export const SubHeaderMeasureElement = (_props: PageElementProps) => {
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
   if (!currentPage) return null;
@@ -122,52 +122,56 @@ export const subHeaderMeasureElement = (_props: PageElementProps) => {
   );
 };
 
-export const nestedHeadingElement = (props: PageElementProps) => {
+export const NestedHeadingElement = ({
+  element,
+}: PageElementProps<NestedHeadingTemplate>) => {
   return (
     <Heading as="h3" variant="nestedHeading">
-      {(props.element as NestedHeadingTemplate).text}
+      {element.text}
     </Heading>
   );
 };
 
-export const paragraphElement = (props: PageElementProps) => {
-  const element = props.element as ParagraphTemplate;
-
+export const ParagraphElement = ({
+  element,
+}: PageElementProps<ParagraphTemplate>) => {
   return (
     <Stack>
-      {element?.title && (
+      {element.title && (
         <Text fontSize="16px" fontWeight="bold">
-          {(props.element as ParagraphTemplate).title}
+          {element.title}
         </Text>
       )}
       <Text fontSize="16px" fontWeight={element.weight}>
-        {(props.element as ParagraphTemplate).text}
+        {element.text}
       </Text>
     </Stack>
   );
 };
 
-export const accordionElement = (props: PageElementProps) => {
-  const accordion = props.element as AccordionTemplate;
+export const AccordionElement = ({
+  element: accordion,
+}: PageElementProps<AccordionTemplate>) => {
   return (
     <Accordion allowToggle={true}>
       <AccordionItem label={accordion.label}>
-        {parseCustomHtml(accordion.value)}
+        {parseHtml(accordion.value)}
       </AccordionItem>
     </Accordion>
   );
 };
 
-export const dividerElement = (_props: PageElementProps) => {
+export const DividerElement = (_props: PageElementProps) => {
   return <Divider></Divider>;
 };
 
-export const buttonLinkElement = (props: PageElementProps) => {
+export const ButtonLinkElement = ({
+  element: button,
+}: PageElementProps<ButtonLinkTemplate>) => {
   const { reportType, state, reportId, pageId } = useParams();
   const { report } = useStore();
 
   const navigate = useNavigate();
-  const button = props.element as ButtonLinkTemplate;
   const page = button.to ?? measurePrevPage(report!, pageId!);
 
   //auto generate the label for measures that are substitutable

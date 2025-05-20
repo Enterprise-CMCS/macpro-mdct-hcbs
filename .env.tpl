@@ -1,6 +1,8 @@
 # Dynamo
 BannersTable=local-banners
 QmsReportsTable=local-qms-reports
+TaReportsTable=local-ta-reports
+CiReportsTable=local-ci-reports
 
 DYNAMODB_URL=http://host.docker.internal:8000
 DISABLE_ESLINT_PLUGIN=true

@@ -9,12 +9,16 @@ import {
 } from "types/report";
 
 jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
-    if (selector) {
-      return selector(mockUseStore);
-    }
-    return mockUseStore;
-  }),
+  useStore: jest
+    .fn()
+    .mockImplementation(
+      (selector?: (state: typeof mockUseStore) => unknown) => {
+        if (selector) {
+          return selector(mockUseStore);
+        }
+        return mockUseStore;
+      }
+    ),
 }));
 
 jest.mock("utils/state/hooks/useLiveElement");
@@ -41,20 +45,20 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const mockedMeasureResultsNavigationTableElement = {
-  type: ElementType.MeasureResultsNavigationTable,
-  id: "test measure results table",
-  measureDisplay: "quality",
-  hideCondition: {
-    controllerElementId: "reporting-radio",
-    answer: "yes",
-  },
-} as MeasureResultsNavigationTableTemplate;
+const mockedMeasureResultsNavigationTableElement: MeasureResultsNavigationTableTemplate =
+  {
+    type: ElementType.MeasureResultsNavigationTable,
+    id: "test measure results table",
+    measureDisplay: "quality",
+    hideCondition: {
+      controllerElementId: "reporting-radio",
+      answer: "yes",
+    },
+  };
 
 const MeasureResultsNavigationTableComponent = (
   <MeasureResultsNavigationTableElement
     element={mockedMeasureResultsNavigationTableElement}
-    index={0}
     formkey="elements.0"
   />
 );

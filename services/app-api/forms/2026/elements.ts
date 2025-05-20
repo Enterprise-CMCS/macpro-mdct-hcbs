@@ -58,19 +58,20 @@ export const measureInstructions: AccordionTemplate = {
   label: "Instructions",
   value:
     "<strong>Instructions for Completing this Measure</strong>" +
-    "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).<p>" +
+    "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).</p>" +
     "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
-    "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections).  All data previously entered will be cleared and not submitted upon report completion.</p>",
+    "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections). All data previously entered will be cleared and not submitted upon report completion.</p>",
 };
 
 export const deliveryMethodMeasureInstructions: AccordionTemplate = {
   type: ElementType.Accordion,
   id: "delivery-method-measure-instructions",
   label: "Instructions",
-  value: `<b>Instructions for Completing this section</b> <p>Before you can click the "<b>Complete section</b>" button, 
-    you must answer all required (non-optional) questions for the measure section.</p>
-    <p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>
-    <p>Once complete, you can still edit this section but the status will change to ‘In progress’ and you will need to re-select the ‘Complete section’ button.</p>`,
+  value:
+    "<b>Instructions for Completing this section</b>" +
+    "<p>Before you can click the <b>“Complete section”</b> button, you must answer all required (non-optional) questions for the measure section.</p>" +
+    "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
+    "<p>Once complete, you can still edit this section but the status will change to “In progress” and you will need to re-select the “Complete section” button.</p>",
 };
 
 export const measureDetailsSection: MeasureDetailsTemplate = {
@@ -470,14 +471,14 @@ export const sectionCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
   title: "This section has been completed",
-  text: "You can still edit this section but the the status will change to ‘In progress’ and you will need to re-select the ‘Complete section' button. {ReturnButton} or select ‘Return to measure details’ link above to return to the previous page.",
+  text: "You can still edit this section, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete section’ button. {ReturnButton} or select the ‘Return to measure information’ button above to return to the previous page.",
   status: "success",
 };
 
 export const measureCompleteBanner: StatusAlertTemplate = {
   type: ElementType.StatusAlert,
   id: "status-alert",
-  title: "Measure has been completed",
-  text: "You can still edit the measure but the status will change to ‘In progress’ and you will need to re-select the ‘Complete measure' button. {ReturnButton} or select ‘Return to required measure dashboard’ link above to return to all measures.",
+  title: "This measure has been completed",
+  text: "You can still edit the measure, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete measure’ button. {ReturnButton} or select the ‘Return to measure dashboard’ button above to return to the previous page.",
   status: "success",
 };

@@ -2,17 +2,31 @@ import { Link as RouterLink } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
+import { isReportType, ReportType } from "types";
 
-export const SubnavBar = ({ stateName }: Props) => {
+const getTitle = (reportType: string) => {
+  if (!isReportType(reportType)) return "";
+  switch (reportType) {
+    case ReportType.CI:
+      return "CICM Report";
+    case ReportType.QMS:
+      return "QMS Report";
+    case ReportType.TA:
+      return "TACM Report";
+  }
+};
+
+export const SubnavBar = ({ stateName, reportType }: Props) => {
   const { report, lastSavedTime } = useStore();
   const saveStatusText = "Last saved " + lastSavedTime;
+  const title = getTitle(reportType);
 
   return (
     <Flex sx={sx.subnavBar}>
       <Container sx={sx.subnavContainer}>
         <Flex sx={sx.subnavFlex}>
           <Flex>
-            <Text sx={sx.submissionNameText}>{stateName + " QMS Report"}</Text>
+            <Text sx={sx.submissionNameText}>{`${stateName} ${title}`}</Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
             {lastSavedTime && (
@@ -42,6 +56,7 @@ export const SubnavBar = ({ stateName }: Props) => {
 
 interface Props {
   stateName: string;
+  reportType: string;
 }
 
 const sx = {

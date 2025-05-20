@@ -1,10 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { PageElement } from "types";
+import { DropdownTemplate, ElementType } from "types";
 import { DropdownField } from "./DropdownField";
 import { useFormContext } from "react-hook-form";
 import { mockStateUserStore } from "utils/testing/setupJest";
+import assert from "node:assert";
 
 const mockTrigger = jest.fn();
 const mockSetValue = jest.fn();
@@ -31,8 +32,9 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedDateTextboxElement = {
-  type: DropdownField,
+const mockedDropdownElement: DropdownTemplate = {
+  id: "mock-dropdown-id",
+  type: ElementType.Dropdown,
   label: "test-dropdown-field",
   helperText: "helper text",
   options: [
@@ -44,25 +46,20 @@ const mockedDateTextboxElement = {
 const testKey = "unique.form.key";
 
 const dropdownFieldComponent = (
-  <DropdownField
-    element={mockedDateTextboxElement as unknown as PageElement}
-    formkey={testKey}
-    index={0}
-  />
+  <DropdownField element={mockedDropdownElement} formkey={testKey} />
 );
 
 describe("<DropdownField />", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   describe("Test DropdownField basic functionality", () => {
     test("DropdownField is visible", () => {
       render(dropdownFieldComponent);
-      const dropdown = screen.getAllByLabelText(
-        "test-dropdown-field"
-      )[0] as HTMLSelectElement;
+      const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
       expect(dropdown).toBeInTheDocument();
-
+      assert(dropdown instanceof HTMLSelectElement);
       expect(dropdown.options.length).toBe(3);
     });
 
@@ -70,9 +67,7 @@ describe("<DropdownField />", () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockGetValues("");
       render(dropdownFieldComponent);
-      const dropdown = screen.getAllByLabelText(
-        "test-dropdown-field"
-      )[0] as HTMLSelectElement;
+      const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
 
       fireEvent.change(dropdown, { target: { value: "2027" } });
 

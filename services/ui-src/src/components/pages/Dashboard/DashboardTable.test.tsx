@@ -1,7 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
-import { ReportStatus } from "types";
+import { ReportStatus, Report } from "types";
 import { useStore } from "utils";
 import {
   mockUseAdminStore,
@@ -44,7 +44,7 @@ const reports = [
     archived: true,
     status: ReportStatus.IN_PROGRESS,
   },
-] as unknown as any;
+] as Report[];
 
 const dashboardTableComponent = (
   <RouterWrappedComponent>
@@ -71,7 +71,9 @@ describe("Dashboard table with state user", () => {
   it("should render report name and edit button in table", async () => {
     render(dashboardTableComponent);
     expect(screen.getByText("report 1")).toBeInTheDocument();
-    expect(screen.getAllByAltText("Edit Report Name").length).toBe(3);
+    expect(screen.getAllByLabelText("Edit report 1 report name").length).toBe(
+      1
+    );
   });
 });
 
@@ -84,7 +86,9 @@ describe("Dashboard table with admin user", () => {
   it("should not render the proper controls when admin", async () => {
     render(adminDashboardTableComponent);
     expect(screen.getByText("report 1")).toBeInTheDocument();
-    expect(screen.queryByAltText("Edit Report Name")).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Edit report 1 report name")
+    ).not.toBeInTheDocument();
     expect(screen.getAllByText("Archive").length).toBe(2);
     expect(screen.getAllByText("View").length).toBe(3);
     expect(screen.getAllByText("Unlock").length).toBe(3);

@@ -11,9 +11,9 @@ export interface BannerData {
 }
 
 export interface AdminBannerMethods {
-  fetchAdminBanner: Function;
-  writeAdminBanner: Function;
-  deleteAdminBanner: Function;
+  fetchAdminBanner: () => Promise<void>;
+  writeAdminBanner: (data: BannerData) => Promise<void>;
+  deleteAdminBanner: () => Promise<void>;
 }
 
 export interface AdminBannerShape extends AdminBannerMethods {}

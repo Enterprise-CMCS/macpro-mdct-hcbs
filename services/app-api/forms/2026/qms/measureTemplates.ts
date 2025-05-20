@@ -4,7 +4,7 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   PerformanceRateType,
-} from "../../types/reports";
+} from "../../../types/reports";
 import {
   additionalNotesField,
   didYouFollowSpecifications,
@@ -40,7 +40,7 @@ import {
   sectionCompleteBanner,
   performanceRatePOM,
   measureType,
-} from "./elements";
+} from "../elements";
 
 export const measureTemplates: Record<
   MeasureTemplateName,

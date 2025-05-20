@@ -23,7 +23,7 @@ import {
 } from "./reportLogic/reportActions";
 
 // USER STORE
-const userStore = (set: Function) => ({
+const userStore = (set: Set<HcbsUserState>) => ({
   // initial state
   user: undefined,
   // show local logins
@@ -37,7 +37,7 @@ const userStore = (set: Function) => ({
 });
 
 // BANNER STORE
-const bannerStore = (set: Function) => ({
+const bannerStore = (set: Set<AdminBannerState>) => ({
   // initial state
   bannerData: undefined,
   bannerActive: false,
@@ -68,7 +68,7 @@ const bannerStore = (set: Function) => ({
 });
 
 // REPORT STORE
-const reportStore = (set: Function, get: Function): HcbsReportState => ({
+const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
   // initial state
   report: undefined, // raw report
   pageMap: undefined, // all page indexes mapped by Id
@@ -101,7 +101,7 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
     set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
       type: "setModalComponent",
     }),
-  setAnswers: (answers, errors) =>
+  setAnswers: (answers: any, errors: any) =>
     set(
       (state: HcbsReportState) => mergeAnswers(answers, state, errors),
       false,
@@ -109,7 +109,10 @@ const reportStore = (set: Function, get: Function): HcbsReportState => ({
         type: "setAnswers",
       }
     ),
-  setSubstitute: (report: Report, selectMeasure: MeasurePageTemplate) => {
+  setSubstitute: (
+    report: Report,
+    selectMeasure: MeasurePageTemplate | undefined
+  ) => {
     set(() => substitute(report, selectMeasure), false, {
       type: "setSubstitute",
     });
@@ -166,3 +169,27 @@ export const useStore = create(
     }
   )
 );
+
+/*
+ * Zustand doesn't directly export the type signatures of its callbacks.
+ * These were manually written to precisely match what Zustand expects,
+ * as of Zustand v4.5.2
+ *
+ * Note that it _is_ possible to access these types indirectly.
+ * For example, Set<T> is `Parameters<Parameters<typeof devtools<T>>[0][0]`.
+ * However, even though Typescript can handle that, our linter currently cannot.
+ * If/when we upgrade our linter, it may be worthwhile to switch to that method.
+ */
+
+/** The type of a Set callback within Zustand. */
+type Set<TState> = <A extends string | { type: string }>(
+  partial:
+    | TState
+    | Partial<TState>
+    | ((state: TState) => TState | Partial<TState>),
+  replace?: boolean,
+  action?: A
+) => void;
+
+/** The type of a Get callback within Zustand. */
+type Get<TState> = () => TState;

@@ -43,9 +43,11 @@ export const handler = <TParams>(
       const request = { body, user, parameters };
 
       return await lambda(request);
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error("Error: %O", error);
-      return internalServerError(error.message);
+      const message =
+        error instanceof Error ? error.message : "Internal Server Error";
+      return internalServerError(message);
     } finally {
       logger.flush();
     }

@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { get, useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
-import { parseCustomHtml, useStore } from "utils";
+import { parseHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
@@ -27,7 +27,7 @@ const formatChoices = (
 
     const children = choice.checkedChildren.map((child, childIndex) => ({
       ...child,
-      formKey: `${parentKey}.choices.${choiceIndex}.checkedChildren.${childIndex}`,
+      formkey: `${parentKey}.choices.${choiceIndex}.checkedChildren.${childIndex}`,
     }));
 
     const checkedChildren = [
@@ -54,8 +54,8 @@ const hintTextColor = (clickAction: string) => {
   }
 };
 
-export const RadioField = (props: PageElementProps) => {
-  const radio = props.element as RadioTemplate;
+export const RadioField = (props: PageElementProps<RadioTemplate>) => {
+  const radio = props.element;
   const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
@@ -132,7 +132,7 @@ export const RadioField = (props: PageElementProps) => {
 
   const parsedHint = (
     <Box color={hintTextColor(radio.clickAction!)}>
-      {radio.helperText && parseCustomHtml(radio.helperText)}
+      {radio.helperText && parseHtml(radio.helperText)}
     </Box>
   );
   const labelText = radio.label;
