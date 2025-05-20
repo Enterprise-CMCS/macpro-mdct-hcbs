@@ -22,7 +22,8 @@ export interface DeploymentConfigProperties {
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
-    isLocalStack || !["main", "val", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
+    isLocalStack ||
+    !["main", "master", "val", "prod", "production"].includes(stage);
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
@@ -66,9 +67,9 @@ const loadStageSecret = async (project: string, stage: string) => {
   }
 };
 
-function validateConfig(config: {
-  [key: string]: any;
-}): asserts config is DeploymentConfigProperties {
+function validateConfig(
+  config: Record<string, any>
+): asserts config is DeploymentConfigProperties {
   const expectedKeys = [
     "project",
     "stage",

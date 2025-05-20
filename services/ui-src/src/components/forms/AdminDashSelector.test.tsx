@@ -3,21 +3,41 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdminDashSelector } from "./AdminDashSelector";
 import { useNavigate } from "react-router-dom";
+import assert from "node:assert";
+
+type DropdownProps = {
+  label: string;
+  options: {
+    label: string;
+    value: string;
+  }[];
+  onChange: () => void;
+  value: string;
+};
+
+type ChoiceListProps = {
+  label: string;
+  choices: {
+    label: string;
+    value: string;
+  }[];
+  onChange: () => void;
+};
 
 jest.mock("@cmsgov/design-system", () => ({
-  Dropdown: ({ label, options, onChange, value }: any) => (
+  Dropdown: ({ label, options, onChange, value }: DropdownProps) => (
     <select aria-label={label} onChange={onChange} value={value}>
-      {options.map((option: any) => (
+      {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}
         </option>
       ))}
     </select>
   ),
-  ChoiceList: ({ label, choices, onChange }: any) => (
+  ChoiceList: ({ label, choices, onChange }: ChoiceListProps) => (
     <fieldset>
       <legend>{label}</legend>
-      {choices.map((choice: any) => (
+      {choices.map((choice) => (
         <div key={choice.value}>
           <input
             type="radio"
@@ -59,15 +79,14 @@ describe("AdminDashSelector Component", () => {
     render(<AdminDashSelector />);
 
     // Select a state
-    const dropdown = screen.getByLabelText(
-      "Select state or territory:"
-    ) as HTMLSelectElement;
+    const dropdown = screen.getByLabelText("Select state or territory:");
+    assert(dropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(dropdown, "CA");
 
     // Select a report
     const radioButton = screen.getByLabelText(
       "Quality Measure Set Report (QMS)"
-    ) as HTMLElement;
+    );
     await userEvent.click(radioButton);
     expect(dropdown.value).toBe("CA");
     expect(radioButton).toBeChecked();

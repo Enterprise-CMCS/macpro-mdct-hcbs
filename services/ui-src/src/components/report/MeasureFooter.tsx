@@ -16,8 +16,10 @@ import {
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
-export const MeasureFooterElement = (props: PageElementProps) => {
-  const footer = props.element as MeasureFooterTemplate;
+export const MeasureFooterElement = (
+  props: PageElementProps<MeasureFooterTemplate>
+) => {
+  const footer = props.element;
   const { reportType, state, reportId } = useParams();
   const {
     report,

@@ -21,7 +21,7 @@ checks:
     enabled: true
 exclude_patterns:
   - "**/node_modules/"
-  - ".github/"
+  - ".github/*"
   - ".images/"
   - "**/*.test.tsx"
   - "**/*.scss"

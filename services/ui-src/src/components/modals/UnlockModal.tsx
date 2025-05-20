@@ -25,6 +25,6 @@ export const UnlockModal = ({ modalDisclosure }: Props) => {
 interface Props {
   modalDisclosure: {
     isOpen: boolean;
-    onClose: any;
+    onClose: () => void;
   };
 }

@@ -7,15 +7,15 @@ import {
   DropdownChangeObject,
   DropdownProps,
 } from "@cmsgov/design-system";
-import { parseCustomHtml } from "utils";
+import { parseHtml } from "utils";
 
-export const DropdownField = (props: PageElementProps) => {
+export const DropdownField = (props: PageElementProps<DropdownTemplate>) => {
   /**
    * TODO:
    * https://design.cms.gov/components/dropdown/?theme=core
    * WCAG 2.1 Level AA Conformance missing - Roll as custom dropdown
    */
-  const dropdown = props.element as DropdownTemplate;
+  const dropdown = props.element;
   const defaultValue = dropdown.answer ?? dropdown.options[0].value;
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
@@ -46,8 +46,7 @@ export const DropdownField = (props: PageElementProps) => {
   // prepare error message, hint, and classes
   const formErrors = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrors, key)?.message;
-  const parsedHint =
-    dropdown.helperText && parseCustomHtml(dropdown.helperText);
+  const parsedHint = dropdown.helperText && parseHtml(dropdown.helperText);
   const labelText = dropdown.label;
 
   const dropdownProps: DropdownProps = {

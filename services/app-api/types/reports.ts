@@ -9,6 +9,8 @@ import {
 
 export enum ReportType {
   QMS = "QMS",
+  TA = "TA",
+  CI = "CI",
 }
 export const isReportType = (x: string | undefined): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);
@@ -204,7 +206,13 @@ export type ReportBase = {
     | ReviewSubmitTemplate
   )[];
 };
-export type ReportTemplate = ReportBase & ReportMeasureConfig;
+export type ReportWithMeasuresTemplate = ReportBase & ReportMeasureConfig;
+
+export const isReportWithMeasuresTemplate = (
+  report: ReportBase
+): report is ReportWithMeasuresTemplate => {
+  return "measureLookup" in report && "measureTemplates" in report;
+};
 
 export type PageTemplate =
   | ParentPageTemplate
@@ -419,7 +427,6 @@ export const isResultRowButton = (
 export type RadioTemplate = {
   type: ElementType.Radio;
   id: string;
-  formKey?: string;
   label: string;
   helperText?: string;
   choices: ChoiceTemplate[];

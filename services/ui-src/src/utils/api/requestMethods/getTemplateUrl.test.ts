@@ -1,12 +1,11 @@
 import { getSignedTemplateUrl } from "./getTemplateUrl";
-import { AnyObject } from "types";
 
 const testTemplateName = "TestName";
 
 const mockGet = jest.fn();
 jest.mock("../apiLib", () => ({
   apiLib: {
-    get: (path: string, options: AnyObject) => mockGet(path, options),
+    get: (path: string, options: Record<string, any>) => mockGet(path, options),
   },
 }));
 

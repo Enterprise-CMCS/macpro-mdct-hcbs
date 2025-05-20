@@ -78,7 +78,7 @@ const mockRadioElement: RadioTemplate = {
 
 const RadioFieldComponent = (
   <div data-testid="test-radio-list">
-    <RadioField element={mockRadioElement} index={0} formkey="elements.0" />
+    <RadioField element={mockRadioElement} formkey="elements.0" />
   </div>
 );
 
@@ -93,7 +93,7 @@ describe("<RadioField />", () => {
   test("RadioField allows checking radio choices", async () => {
     mockGetValues(undefined);
     render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 1") as HTMLInputElement;
+    const firstRadio = screen.getByLabelText("Choice 1");
     await userEvent.click(firstRadio);
     expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "A", {
       shouldValidate: true,
@@ -103,7 +103,7 @@ describe("<RadioField />", () => {
   test("RadioField displays children fields after selection", async () => {
     mockGetValues(undefined);
     render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 2") as HTMLInputElement;
+    const firstRadio = screen.getByLabelText("Choice 2");
     await userEvent.click(firstRadio);
     expect(mockSetValue).toHaveBeenCalledWith("elements.0.answer", "B", {
       shouldValidate: true,
@@ -140,7 +140,7 @@ describe("Radio field click action logic", () => {
     };
     const deliveryRadio = (
       <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} index={0} formkey="elements.0" />
+        <RadioField element={deliveryElement} formkey="elements.0" />
       </div>
     );
     render(deliveryRadio);
@@ -171,7 +171,7 @@ describe("Radio field click action logic", () => {
     };
     const deliveryRadio = (
       <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} index={0} formkey="elements.0" />
+        <RadioField element={deliveryElement} formkey="elements.0" />
       </div>
     );
     render(deliveryRadio);

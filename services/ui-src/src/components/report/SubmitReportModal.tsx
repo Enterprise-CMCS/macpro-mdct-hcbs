@@ -1,6 +1,9 @@
 import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
 
-export const SubmitReportModal = (onClose: Function, onSubmit: Function) => {
+export const SubmitReportModal = (
+  onClose: (modalOpen: boolean) => void,
+  onSubmit: () => Promise<void>
+) => {
   const submitHandler = async () => {
     await onSubmit();
   };

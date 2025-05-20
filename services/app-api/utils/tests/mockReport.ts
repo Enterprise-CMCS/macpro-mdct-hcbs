@@ -1,15 +1,13 @@
-import { getReportTemplate } from "../../forms/yearlyFormSelection";
+import { qmsReportTemplate as qmsReportTemplate2026 } from "../../forms/2026/qms/qms";
 import {
   Report,
   PageType,
   ElementType,
   MeasureTemplateName,
-  MeasurePageTemplate,
   ReportStatus,
-  ReportType,
 } from "../../types/reports";
 
-const qmsReportTemplate = getReportTemplate(ReportType.QMS, 2026);
+const qmsReportTemplate = qmsReportTemplate2026;
 
 export const validReport: Report = {
   type: qmsReportTemplate.type,
@@ -184,7 +182,7 @@ export const invalidRadioCheckedChildrenReport = {
         },
       ],
     },
-  } as Record<MeasureTemplateName, MeasurePageTemplate>,
+  },
 };
 
 export const invalidPageElementType = {

@@ -13,7 +13,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "styles/theme";
 import "./styles/index.scss";
 
-let apiRestConfig: any = {
+let apiRestConfig = {
   hcbs: {
     endpoint: config.apiGateway.URL,
     region: config.apiGateway.REGION,

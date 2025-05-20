@@ -15,12 +15,12 @@ const condensedTopicList = [
     version: ".v0",
     numPartitions: 1,
     replicationFactor: 3,
-    topics: [".qms-reports"],
+    topics: [".qms-reports", ".ta-reports", ".ci-reports"],
   },
 ];
 
 /**
- * Handler triggered on deploy by the serverless js to create known topics in bigmac
+ * Handler triggered on deploy to create known topics in bigmac
  * @param {*} event
  * @param {*} _context
  * @param {*} _callback

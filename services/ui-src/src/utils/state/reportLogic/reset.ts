@@ -30,8 +30,8 @@ export const performClearMeasure = (
   // Clean measure
   page.elements?.forEach((element) => {
     if (element.id in ignoreList) {
-      // Answer may not be set yet, typeguard can derail
-      const elementWithAnswer = element as Partial<{ answer: any }>;
+      // Ignore typeguards for now; the answer may not be set yet.
+      const elementWithAnswer = element as { answer: any };
       elementWithAnswer.answer = ignoreList[element.id];
       return;
     }

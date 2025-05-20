@@ -4,7 +4,11 @@ import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { NDRCalc } from "../calculations";
 import { useStore } from "utils";
-import { ElementType, PerformanceRateTemplate } from "types";
+import {
+  ElementType,
+  PerformanceRateTemplate,
+  PerformanceRateType,
+} from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { mockStateUserStore } from "utils/testing/setupJest";
 
@@ -30,13 +34,15 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedPerformanceElement = {
+const mockedPerformanceElement: PerformanceRateTemplate = {
+  id: "mock-perf-id",
   type: ElementType.PerformanceRate,
+  rateType: PerformanceRateType.NDR_Enhanced,
   label: "test label",
   helperText: "helper text",
   assessments: [{ id: "test-1", label: "assessment 1" }],
   multiplier: 1,
-} as PerformanceRateTemplate;
+};
 
 const ndrEnhancedComponent = (
   <NDREnhanced
@@ -61,7 +67,7 @@ describe("<NDREnhanced />", () => {
       ).toBeInTheDocument();
 
       expect(
-        screen.getByRole("textbox", { name: "Performance Rates Denominator" })
+        screen.getByRole("textbox", { name: "test label Denominator" })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("textbox", { name: "Numerator" })
@@ -77,7 +83,7 @@ describe("<NDREnhanced />", () => {
     });
     test("Rate should calculate", async () => {
       const performDenominator = screen.getByRole("textbox", {
-        name: "Performance Rates Denominator",
+        name: "test label Denominator",
       });
       await act(async () => await userEvent.type(performDenominator, "2"));
 

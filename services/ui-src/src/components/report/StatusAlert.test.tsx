@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { mockUseStore } from "utils/testing/setupJest";
 import { StatusAlert } from "./StatusAlert";
-import { ElementType, StatusAlertTemplate } from "types";
+import { AlertTypes, ElementType, StatusAlertTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import userEvent from "@testing-library/user-event";
@@ -11,12 +11,16 @@ jest.mock("utils/state/reportLogic/completeness", () => ({
 }));
 
 jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockImplementation((selector: Function | undefined) => {
-    if (selector) {
-      return false;
-    }
-    return { ...mockUseStore, currentPageId: "mock-id" };
-  }),
+  useStore: jest
+    .fn()
+    .mockImplementation(
+      (selector?: (state: typeof mockUseStore) => unknown) => {
+        if (selector) {
+          return false;
+        }
+        return { ...mockUseStore, currentPageId: "mock-id" };
+      }
+    ),
 }));
 
 const mockUseNavigate = jest.fn();
@@ -31,26 +35,24 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const mockStatusAlert = {
+const mockStatusAlert: StatusAlertTemplate = {
+  id: "mock-alert-id",
   type: ElementType.StatusAlert,
   title: "mock alert",
   text: "mock text",
-  status: "error",
-} as StatusAlertTemplate;
+  status: AlertTypes.ERROR,
+};
 
-const mockStatusLink = {
+const mockStatusLink: StatusAlertTemplate = {
+  id: "mock-alert-id",
   type: ElementType.StatusAlert,
   title: "mock alert",
   text: "mock text {ReturnButton}",
-  status: "error",
-} as StatusAlertTemplate;
+  status: AlertTypes.ERROR,
+};
 
 const statusAlertComponent = (
-  <StatusAlert
-    element={mockStatusAlert}
-    index={0}
-    formkey="elements.0"
-  ></StatusAlert>
+  <StatusAlert element={mockStatusAlert} formkey="elements.0"></StatusAlert>
 );
 
 describe("<StatusAlert />", () => {
@@ -65,7 +67,6 @@ describe("<StatusAlert />", () => {
       render(
         <StatusAlert
           element={mockStatusLink}
-          index={0}
           formkey="elements.0"
         ></StatusAlert>
       );

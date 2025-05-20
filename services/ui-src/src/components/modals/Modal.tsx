@@ -93,7 +93,7 @@ export const Modal = ({
 interface Props {
   modalDisclosure: {
     isOpen: boolean;
-    onClose: any;
+    onClose: () => void;
   };
   content: {
     heading: string;
@@ -102,11 +102,10 @@ interface Props {
     closeButtonText?: string;
   };
   submitting?: boolean;
-  onConfirmHandler?: Function;
+  onConfirmHandler?: () => void;
   disableConfirm?: boolean;
   formId?: string;
   children?: ReactNode;
-  [key: string]: any;
 }
 
 const sx = {

@@ -3,7 +3,6 @@ import {
   aws_ec2 as ec2,
   aws_iam as iam,
   custom_resources as cr,
-  Aws,
   CfnOutput,
   Duration,
 } from "aws-cdk-lib";
@@ -11,8 +10,6 @@ import { Lambda } from "../constructs/lambda";
 
 interface CreateTopicsComponentsProps {
   brokerString: string;
-  iamPath: string;
-  iamPermissionsBoundary: iam.IManagedPolicy;
   customResourceRole: iam.Role;
   isDev: boolean;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
@@ -25,8 +22,6 @@ interface CreateTopicsComponentsProps {
 export function createTopicsComponents(props: CreateTopicsComponentsProps) {
   const {
     brokerString,
-    iamPath,
-    iamPermissionsBoundary,
     isDev,
     kafkaAuthorizedSubnets,
     customResourceRole,
@@ -57,17 +52,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
       brokerString,
       project,
     },
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["ssm:GetParameter"],
-        resources: [
-          `arn:aws:ssm:${Aws.REGION}:${Aws.ACCOUNT_ID}:parameter/configuration/${stage}/*`,
-        ],
-      }),
-    ],
-    iamPermissionsBoundary,
-    iamPath,
     vpc,
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [lambdaSecurityGroup],

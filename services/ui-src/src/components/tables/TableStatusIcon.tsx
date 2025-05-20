@@ -53,5 +53,4 @@ export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
 interface Props {
   tableStatus: TableStatusType;
   isPdf?: boolean;
-  [key: string]: any;
 }

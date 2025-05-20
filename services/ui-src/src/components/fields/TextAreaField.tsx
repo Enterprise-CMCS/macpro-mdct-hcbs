@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
-import { parseCustomHtml } from "utils";
+import { parseHtml } from "utils";
 import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
-export const TextAreaField = (props: PageElementProps) => {
-  const textbox = props.element as TextAreaBoxTemplate;
+export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
+  const textbox = props.element;
   const defaultValue = textbox.answer ?? "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
 
@@ -37,7 +37,7 @@ export const TextAreaField = (props: PageElementProps) => {
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage: string | undefined = get(formErrorState, key)?.message;
-  const parsedHint = textbox.helperText && parseCustomHtml(textbox.helperText);
+  const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
 
   const labelText = [
     textbox.label,

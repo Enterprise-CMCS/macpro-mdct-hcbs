@@ -3,11 +3,14 @@ import { AdminBannerForm } from "components";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 import userEvent from "@testing-library/user-event";
 import { testA11y } from "utils/testing/commonTests";
+import { AdminBannerMethods } from "types";
 
 const mockWriteAdminBanner = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-const adminBannerFormComponent = (writeAdminBanner: Function) => (
+const adminBannerFormComponent = (
+  writeAdminBanner: AdminBannerMethods["writeAdminBanner"]
+) => (
   <RouterWrappedComponent>
     <AdminBannerForm writeAdminBanner={writeAdminBanner} />
   </RouterWrappedComponent>

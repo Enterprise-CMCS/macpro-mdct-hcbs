@@ -25,23 +25,9 @@ export interface TableContentShape {
   footRow?: string[][];
 }
 
-export interface TimeShape {
-  hour: number;
-  minute: number;
-  second: number;
-}
-
 // OTHER
 export interface AnyObject {
   [key: string]: any;
-}
-
-export interface CustomHtmlElement {
-  type: string;
-  content: string | any;
-  as?: string;
-  props?: { [key: string]: any };
-  children?: CustomHtmlElement[];
 }
 
 export interface ErrorVerbiage {
