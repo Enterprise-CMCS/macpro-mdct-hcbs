@@ -1,5 +1,5 @@
 import { BannerData } from "types/banners";
-import { checkDateCompleteness, parseMMDDYYYY } from "utils/other/time";
+import { parseMMDDYYYY } from "utils/other/time";
 import { boolean, number, object, string } from "yup";
 import { error } from "../../constants";
 /**
@@ -28,10 +28,7 @@ export const bannerFormValidateSchema = object()
             "Start date is invalid. Please enter date in MM/DD/YYYY format",
           test: (value) => {
             if (value) {
-              return (
-                checkDateCompleteness(value) !== null &&
-                parseMMDDYYYY(value) !== null
-              );
+              return parseMMDDYYYY(value) !== null;
             } else return true;
           },
         })
@@ -44,10 +41,7 @@ export const bannerFormValidateSchema = object()
             "End date is invalid. Please enter date in MM/DD/YYYY format",
           test: (value) => {
             if (value) {
-              return (
-                checkDateCompleteness(value) !== null &&
-                parseMMDDYYYY(value) !== null
-              );
+              return parseMMDDYYYY(value) !== null;
             } else return true;
           },
         })

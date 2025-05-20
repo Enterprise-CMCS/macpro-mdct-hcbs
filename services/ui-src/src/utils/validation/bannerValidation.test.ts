@@ -44,6 +44,12 @@ describe("bannerFormValidateSchema (UI Form", () => {
     bannerEndDate: { answer: endDate ?? "" },
   });
 
+  it("should throw an error if the payload is undefined", async () => {
+    await expect(validateBannerPayload(undefined)).rejects.toThrow(
+      "missing data"
+    );
+  });
+
   it("should pass when startDate is before endDate", async () => {
     const formValues = createFormValues("01/01/1970", "01/02/1970");
     await expect(

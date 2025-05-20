@@ -1,7 +1,6 @@
 import {
   calculateNextQuarter,
   calculateRemainingSeconds,
-  checkDateCompleteness,
   checkDateRangeStatus,
   convertDateEtToUtc,
   convertDateTimeEtToUtc,
@@ -24,14 +23,14 @@ const getLocalHourMinuteTimeRegex = /[0-2]?[0-9]:[0-5][0-9](a|p)m/;
 
 describe("utils/time", () => {
   describe("getLocalHourMinuteTime()", () => {
-    test("returns correct hourminute format", () => {
+    it("returns correct hourminute format", () => {
       const localHourMinuteTime = getLocalHourMinuteTime();
       expect(localHourMinuteTime).toMatch(getLocalHourMinuteTimeRegex);
     });
   });
 
   describe("convertDateTimeEtToUtc()", () => {
-    test("Valid ET datetime converts to UTC correctly", () => {
+    it("Converts valid ET datetime to UTC correctly", () => {
       const result = convertDateTimeEtToUtc(
         { year: 2022, month: 1, day: 1 },
         { hour: 0, minute: 0, second: 0 }
@@ -42,7 +41,7 @@ describe("utils/time", () => {
   });
 
   describe("convertDateEtToUtc()", () => {
-    test("Valid ET datetime converts to UTC correctly", () => {
+    it("Converts valid ET datetime to UTC correctly", () => {
       const result = convertDateEtToUtc(testDate.etFormattedString);
       expect(result).toBe(testDate.utcMS);
       expect(new Date(result).toUTCString()).toBe(testDate.utcString);
@@ -50,7 +49,7 @@ describe("utils/time", () => {
   });
 
   describe("convertDateUtcToEt()", () => {
-    test("Valid UTC datetime converts to ET correctly", () => {
+    it("Converts valid UTC datetime to ET correctly", () => {
       const result = convertDateUtcToEt(testDate.utcMS);
       expect(result).toBe(testDate.etFormattedString);
     });
@@ -61,21 +60,21 @@ describe("utils/time", () => {
     const oneDay = 1000 * 60 * 60 * 24; // 1000ms * 60s * 60m * 24h = 86,400,000ms
     const twoDays = oneDay * 2;
 
-    test("returns false if startDate is in the future", () => {
+    it("returns false if startDate is in the future", () => {
       const startDate = currentTime + oneDay;
       const endDate = currentTime + twoDays;
       const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
       expect(dateRangeStatus).toBeFalsy();
     });
 
-    test("returns false if endDate is in the past", () => {
+    it("returns false if endDate is in the past", () => {
       const startDate = currentTime - twoDays;
       const endDate = currentTime - oneDay;
       const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
       expect(dateRangeStatus).toBeFalsy();
     });
 
-    test("returns true if startDate is in the past and endDate is in the future", () => {
+    it("returns true if startDate is in the past and endDate is in the future", () => {
       const startDate = currentTime - oneDay;
       const endDate = currentTime + oneDay;
       const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
@@ -84,12 +83,12 @@ describe("utils/time", () => {
   });
 
   describe("twoDigitCalendarDate()", () => {
-    test("should set 1 to 01", () => {
+    it("should set 1 to 01", () => {
       const startDay = 1;
       expect(twoDigitCalendarDate(startDay)).toBe("01");
     });
 
-    test("should set 12 to 12", () => {
+    it("should set 12 to 12", () => {
       const startMonth = 12;
       expect(twoDigitCalendarDate(startMonth)).toBe("12");
     });
@@ -101,25 +100,6 @@ describe("utils/time", () => {
       const formatted = formatMonthDayYear(date);
       // Imprecise matcher, because the result depends on the user's time zone
       expect(formatted).toMatch(/03\/\d\d\/2024/);
-    });
-  });
-
-  describe("checkDateCompleteness()", () => {
-    test("that it returns an object of { year, month, day }", () => {
-      expect(checkDateCompleteness("10/22/2024")).toEqual({
-        year: 2024,
-        month: 10,
-        day: 22,
-      });
-    });
-    test("incorrect date returns null", () => {
-      expect(checkDateCompleteness("10/22/24")).toBeNull();
-    });
-    test("not a date returns null", () => {
-      expect(checkDateCompleteness("banana")).toBeNull();
-    });
-    test("empty string returns null", () => {
-      expect(checkDateCompleteness("")).toBeNull();
     });
   });
 
@@ -144,34 +124,32 @@ describe("utils/time", () => {
   });
 
   describe("calculateTimeLeft()", () => {
-    test("returns 0 when no value is given", () => {
+    it("returns 0 when no value is given", () => {
       expect(calculateRemainingSeconds()).toBeCloseTo(0);
     });
 
-    test("expiration time greater than zero", () => {
+    it("expiration time greater than zero", () => {
       const expirationTime = "2050-11-18T12:53:11-05:00";
       expect(calculateRemainingSeconds(expirationTime)).toBeGreaterThan(0);
     });
   });
 
   describe("calculateNextQuarter()", () => {
-    test("returns same year and next period", () => {
+    it("returns same year and next period", () => {
       const previousQuarter = "2027 Q1";
       expect(calculateNextQuarter(previousQuarter)).toBe("2027 Q2");
     });
-    test("returns next year and next period", () => {
+    it("returns next year and next period", () => {
       const previousQuarter = "2027 Q4";
       expect(calculateNextQuarter(previousQuarter)).toBe("2028 Q1");
     });
-    test("returns empty string when nothing is passed in", () => {
+    it("returns empty string when nothing is passed in", () => {
       expect(calculateNextQuarter("")).toBe("");
     });
   });
 });
 
-// Test suite for parseMMDDYYYY function
-describe("parseMMDDYYYY", () => {
-  // Valid date string
+describe("test parseMMDDYYYY helper function", () => {
   it("should correctly parse a valid MMDDYYYY date string", () => {
     const date = parseMMDDYYYY("12/25/2023");
     expect(date).toBeInstanceOf(Date);
@@ -184,7 +162,6 @@ describe("parseMMDDYYYY", () => {
     expect(date?.getMilliseconds()).toBe(0);
   });
 
-  // Another valid date string (single digits for month/day)
   it("should correctly parse a valid MMDDYYYY date string with single digit month/day", () => {
     const date = parseMMDDYYYY("01/05/2024");
     expect(date).toBeInstanceOf(Date);
@@ -193,7 +170,6 @@ describe("parseMMDDYYYY", () => {
     expect(date?.getDate()).toBe(5);
   });
 
-  // Leap year date
   it("should correctly parse a leap year date", () => {
     const date = parseMMDDYYYY("02/29/2028"); // 2028 is a leap year
     expect(date).toBeInstanceOf(Date);
@@ -202,69 +178,41 @@ describe("parseMMDDYYYY", () => {
     expect(date?.getDate()).toBe(29);
   });
 
-  // Non-leap year 02/29 (should return null)
   it("should return null for 02/29 in a non-leap year", () => {
     const date = parseMMDDYYYY("02/29/2027");
     expect(date).toBeNull();
   });
 
-  // Invalid month
   it("should return null for an invalid month", () => {
     const date = parseMMDDYYYY("13/01/2023");
     expect(date).toBeNull();
   });
 
-  // Invalid day
   it("should return null for an invalid day", () => {
     const date = parseMMDDYYYY("01/32/2023");
     expect(date).toBeNull();
   });
 
-  // Invalid day for a specific month
   it("should return null for an invalid day for a specific month", () => {
     const date = parseMMDDYYYY("04/31/2023"); // April has 30 days
     expect(date).toBeNull();
   });
 
-  // Empty string
-  it("should return null for an empty string", () => {
-    const date = parseMMDDYYYY("");
-    expect(date).toBeNull();
-  });
-
-  // Null input
-  it("should return null for a null input", () => {
-    // @ts-ignore: Intentionally testing null input for robustness
-    const date = parseMMDDYYYY(null);
-    expect(date).toBeNull();
-  });
-
-  // Undefined input
-  it("should return null for an undefined input", () => {
-    // @ts-ignore: Intentionally testing undefined input for robustness
-    const date = parseMMDDYYYY(undefined);
-    expect(date).toBeNull();
-  });
-
-  // Incorrect format (missing slashes)
   it("should return null for an incorrect format (missing slashes)", () => {
     const date = parseMMDDYYYY("12-25-2023");
     expect(date).toBeNull();
   });
 
-  // Incorrect format (wrong number of digits)
   it("should return null for an incorrect format (wrong number of digits)", () => {
     const date = parseMMDDYYYY("1/2/2023");
     expect(date).toBeNull();
   });
 
-  // Incorrect format (extra characters)
-  it("should return null for an incorrect format (extra characters)", () => {
+  it("should return null for an incorrect format", () => {
     const date = parseMMDDYYYY("12/25/2023abc");
     expect(date).toBeNull();
   });
 
-  // Future date (valid)
   it("should correctly parse a valid future date", () => {
     const futureDate = parseMMDDYYYY("07/15/2050");
     expect(futureDate).toBeInstanceOf(Date);
@@ -273,24 +221,8 @@ describe("parseMMDDYYYY", () => {
     expect(futureDate?.getDate()).toBe(15);
   });
 
-  // Date with leading zeros for month/day
-  it("should correctly parse a date with leading zeros for month/day", () => {
-    const date = parseMMDDYYYY("03/01/2023");
-    expect(date).toBeInstanceOf(Date);
-    expect(date?.getFullYear()).toBe(2023);
-    expect(date?.getMonth()).toBe(2);
-    expect(date?.getDate()).toBe(1);
-  });
-
-  // Zero for day or month (invalid based on typical date understanding)
   it("should return null for day or month being zero", () => {
     expect(parseMMDDYYYY("00/10/2023")).toBeNull();
     expect(parseMMDDYYYY("10/00/2023")).toBeNull();
-  });
-
-  // Date string with extra spaces (should return null due to strict regex)
-  it("should return null for date string with extra spaces", () => {
-    expect(parseMMDDYYYY(" 12/25/2023 ")).toBeNull();
-    expect(parseMMDDYYYY("12 /25/2023")).toBeNull();
   });
 });

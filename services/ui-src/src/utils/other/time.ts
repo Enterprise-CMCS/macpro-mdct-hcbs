@@ -99,22 +99,19 @@ export const formatMonthDayYear = (date: number) => {
   return [getPart("month"), getPart("day"), getPart("year")].join("/");
 };
 
-export const checkDateCompleteness = (date: string) => {
-  const month = parseInt(date.split("/")?.[0]);
-  const day = parseInt(date.split("/")?.[1]);
-  const year = parseInt(date.split("/")?.[2]);
-  const dateIsComplete = month && day && year.toString().length === 4;
-  return dateIsComplete ? { year, month, day } : null;
-};
-
 export const convertDatetimeStringToNumber = (
   date: string,
   time: TimeShape
 ): number | undefined => {
-  const completeDate = checkDateCompleteness(date);
+  const completeDate = parseMMDDYYYY(date);
   let convertedTime;
   if (completeDate) {
-    convertedTime = convertDateTimeEtToUtc(completeDate, time);
+    let dateShape = {
+      year: completeDate?.getFullYear(),
+      month: completeDate?.getMonth() + 1,
+      day: completeDate?.getDate(),
+    };
+    convertedTime = convertDateTimeEtToUtc(dateShape, time);
   }
   return convertedTime || undefined;
 };
@@ -156,9 +153,9 @@ export const parseMMDDYYYY = (dateString: string): Date | null => {
   }
   const parts = dateString.split("/");
   // Month is 0 indexed in JavaScript Date constructor
-  const month = parseInt(parts[0], 10) - 1;
-  const day = parseInt(parts[1], 10);
-  const year = parseInt(parts[2], 10);
+  const month = parseInt(parts[0]) - 1;
+  const day = parseInt(parts[1]);
+  const year = parseInt(parts[2]);
 
   const dateObj = new Date(year, month, day);
 
@@ -168,7 +165,7 @@ export const parseMMDDYYYY = (dateString: string): Date | null => {
     dateObj.getMonth() === month &&
     dateObj.getDate() === day
   ) {
-    dateObj.setHours(0, 0, 0, 0); // Make sure the time is set to midnight
+    dateObj.setHours(0, 0, 0, 0); // Set time to midnight
     return dateObj;
   }
   return null;
