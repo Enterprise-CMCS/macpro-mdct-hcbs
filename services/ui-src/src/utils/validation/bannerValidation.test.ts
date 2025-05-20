@@ -1,4 +1,7 @@
-import { validateBannerPayload } from "./bannerValidation";
+import {
+  bannerFormValidateSchema,
+  validateBannerPayload,
+} from "./bannerValidation";
 import { error } from "../../constants";
 
 const validObject = {
@@ -32,46 +35,25 @@ describe("Test validateBannerPayload function", () => {
   });
 });
 
-describe("validateBannerPayload (API)", () => {
-  const basePayload = {
-    key: "admin-banner-id",
-    title: "mock title",
-    description: "mock description",
-  };
-
-  it("should throw an error if the payload is undefined", async () => {
-    await expect(validateBannerPayload(undefined)).rejects.toThrow(
-      "missing data"
-    );
+describe("bannerFormValidateSchema (UI Form", () => {
+  const createFormValues = (startDate?: string, endDate?: string) => ({
+    bannerTitle: { answer: "mock title" },
+    bannerDescription: { answer: "mock description" },
+    bannerLink: { answer: "http://example.com" },
+    bannerStartDate: { answer: startDate || "" },
+    bannerEndDate: { answer: endDate || "" },
   });
 
   it("should pass when startDate is before endDate", async () => {
-    const payload = {
-      ...basePayload,
-      startDate: 11022933,
-      endDate: 103444405,
-    };
-    await expect(validateBannerPayload(payload)).resolves.toEqual(payload);
+    const formValues = createFormValues("01/01/1970", "01/02/1970");
+    await expect(
+      bannerFormValidateSchema.validate(formValues)
+    ).resolves.toEqual(formValues);
   });
 
-  it("should throw an error when endDate is before startDate", async () => {
-    const payload = {
-      ...basePayload,
-      startDate: 103444405,
-      endDate: 11022933,
-    };
-    await expect(validateBannerPayload(payload)).rejects.toThrow(
-      error.END_DATE_BEFORE_START_DATE
-    );
-  });
-
-  it("should fail when endDate is equal to startDate", async () => {
-    const payload = {
-      ...basePayload,
-      startDate: 11022933,
-      endDate: 11022933,
-    };
-    await expect(validateBannerPayload(payload)).rejects.toThrow(
+  it("should throw an error when startDate is after endDate", async () => {
+    const formValues = createFormValues("01/02/1970", "01/01/1970");
+    await expect(bannerFormValidateSchema.validate(formValues)).rejects.toThrow(
       error.END_DATE_BEFORE_START_DATE
     );
   });
