@@ -162,7 +162,7 @@ describe("AdminBannerForm validation", () => {
 
     // Ensure that the error message for the end date is not displayed
     expect(
-      screen.queryByText("End date must be after start date")
+      screen.queryByText("End date can't be before start date")
     ).not.toBeInTheDocument();
 
     expect(mockWriteAdminBanner).toHaveBeenCalledWith({

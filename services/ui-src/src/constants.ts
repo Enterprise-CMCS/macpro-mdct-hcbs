@@ -3,7 +3,7 @@ export const bannerId = "admin-banner-id";
 
 // ERRORS
 export const error = {
-  END_DATE_BEFORE_START_DATE: "End date must be after start date.",
+  END_DATE_BEFORE_START_DATE: "End date can't be before start date",
 };
 
 // HOST DOMAIN
