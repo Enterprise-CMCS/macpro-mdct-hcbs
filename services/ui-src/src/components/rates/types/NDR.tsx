@@ -10,7 +10,7 @@ export const NDR = (
     formkey: string;
     year: number;
     calculation: Function;
-    disabled: boolean;
+    disabled?: boolean;
   }
 ) => {
   const { label, assessments, answer, multiplier, calculation, disabled } =

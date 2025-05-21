@@ -162,6 +162,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureDetailsTemplateSchema;
     case ElementType.MeasureFooter:
       return measureFooterSchema;
+    case ElementType.LengthOfStayRate:
+      return lengthOfStayRateSchema;
     case ElementType.PerformanceRate:
       return performanceRateSchema;
     case ElementType.StatusAlert:
@@ -251,6 +253,34 @@ const measureFooterSchema = object().shape({
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
   clear: boolean().notRequired(),
+});
+
+const lengthOfStayRateSchema = object().shape({
+  type: string().required(ElementType.LengthOfStayRate),
+  id: string().required(),
+  labels: object().shape({
+    performanceTarget: string().required(),
+    actualCount: string().required(),
+    denominator: string().required(),
+    expectedCount: string().required(),
+    populationRate: string().required(),
+    actualRate: string().required(),
+    expectedRate: string().required(),
+    adjustedRate: string().required(),
+  }),
+  required: boolean().notRequired(),
+  answer: object()
+    .shape({
+      performanceTarget: number().notRequired(),
+      actualCount: number().notRequired(),
+      denominator: number().notRequired(),
+      expectedCount: number().notRequired(),
+      populationRate: number().notRequired(),
+      actualRate: number().notRequired(),
+      expectedRate: number().notRequired(),
+      adjustedRate: number().notRequired(),
+    })
+    .notRequired(),
 });
 
 const performanceRateSchema = object().shape({
