@@ -44,7 +44,7 @@ describe("Test validateBannerPayload function", () => {
   });
 });
 
-describe("validateBannerPayload (API)", () => {
+describe("validateBannerPayload for startDate (API)", () => {
   const basePayload = {
     key: "admin-banner-id",
     title: "mock title",

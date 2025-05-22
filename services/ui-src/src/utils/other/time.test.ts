@@ -30,7 +30,7 @@ describe("utils/time", () => {
   });
 
   describe("convertDateTimeEtToUtc()", () => {
-    it("Converts valid ET datetime to UTC correctly", () => {
+    it("converts valid ET datetime to UTC correctly", () => {
       const result = convertDateTimeEtToUtc(
         { year: 2022, month: 1, day: 1 },
         { hour: 0, minute: 0, second: 0 }
@@ -41,7 +41,7 @@ describe("utils/time", () => {
   });
 
   describe("convertDateEtToUtc()", () => {
-    it("Converts valid ET datetime to UTC correctly", () => {
+    it("converts valid ET datetime to UTC correctly", () => {
       const result = convertDateEtToUtc(testDate.etFormattedString);
       expect(result).toBe(testDate.utcMS);
       expect(new Date(result).toUTCString()).toBe(testDate.utcString);
@@ -49,7 +49,7 @@ describe("utils/time", () => {
   });
 
   describe("convertDateUtcToEt()", () => {
-    it("Converts valid UTC datetime to ET correctly", () => {
+    it("converts valid UTC datetime to ET correctly", () => {
       const result = convertDateUtcToEt(testDate.utcMS);
       expect(result).toBe(testDate.etFormattedString);
     });
@@ -95,7 +95,7 @@ describe("utils/time", () => {
   });
 
   describe("formatMonthDayYear()", () => {
-    it("Should render dates as MM/dd/yyyy", () => {
+    it("should render dates as MM/dd/yyyy", () => {
       const date = new Date("2024-03-20").valueOf();
       const formatted = formatMonthDayYear(date);
       // Imprecise matcher, because the result depends on the user's time zone
@@ -128,7 +128,7 @@ describe("utils/time", () => {
       expect(calculateRemainingSeconds()).toBeCloseTo(0);
     });
 
-    it("expiration time greater than zero", () => {
+    it("checks that expiration time is greater than zero", () => {
       const expirationTime = "2050-11-18T12:53:11-05:00";
       expect(calculateRemainingSeconds(expirationTime)).toBeGreaterThan(0);
     });
