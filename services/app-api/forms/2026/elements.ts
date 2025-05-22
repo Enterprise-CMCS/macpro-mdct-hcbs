@@ -4,6 +4,7 @@ import {
   DividerTemplate,
   ElementType,
   HeaderTemplate,
+  LengthOfStayRateTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
@@ -16,6 +17,8 @@ import {
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
+
+const REPORT_YEAR = 2026;
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
   type: ElementType.ButtonLink,
@@ -358,75 +361,45 @@ export const performanceRatePOM: PerformanceRateTemplate = {
 };
 
 //Rates for LTSS-7
-export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
   id: "measure-rates",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Discharges to the Community",
-    },
-    { id: "fac-count", label: "Facility Admission Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Discharges to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
-  rateType: PerformanceRateType.FIELDS,
+  labels: {
+    performanceTarget: `What is the ${
+      REPORT_YEAR + 2
+    } state performance target for this assessment?`,
+    actualCount: "Count of Successful Discharges to the Community",
+    denominator: "Facility Admission Count",
+    expectedCount: "Expected Count of Successful Discharges to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
   required: true,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
 //Rates for LTSS-8
-export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
   id: "measure-rates",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Transitions to the Community",
-    },
-    { id: "fac-count", label: "Long-Term Facility Stay Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Transitions to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
+  labels: {
+    performanceTarget: `What is the ${
+      REPORT_YEAR + 2
+    } state performance target for this assessment?`,
+    actualCount: "Count of Successful Transitions to the Community",
+    denominator: "Long-Term Facility Stay Count",
+    expectedCount: "Expected Count of Successful Transitions to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
   required: true,
-  rateType: PerformanceRateType.FIELDS,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
 // Rates for LTSS-6
