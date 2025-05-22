@@ -180,37 +180,37 @@ describe("test parseMMDDYYYY helper function", () => {
 
   it("should return null for 02/29 in a non-leap year", () => {
     const date = parseMMDDYYYY("02/29/2027");
-    expect(date).toBeNull();
+    expect(date).toBeFalsy();
   });
 
   it("should return null for an invalid month", () => {
     const date = parseMMDDYYYY("13/01/2023");
-    expect(date).toBeNull();
+    expect(date).toBeFalsy();
   });
 
   it("should return null for an invalid day", () => {
     const date = parseMMDDYYYY("01/32/2023");
-    expect(date).toBeNull();
+    expect(date).toBeFalsy();
   });
 
   it("should return null for an invalid day for a specific month", () => {
     const date = parseMMDDYYYY("04/31/2023"); // April has 30 days
-    expect(date).toBeNull();
+    expect(date).toBeFalsy();
   });
 
   it("should return null for an incorrect format (missing slashes)", () => {
     const date = parseMMDDYYYY("12-25-2023");
-    expect(date).toBeNull();
+    expect(date).toBeFalsy();
   });
 
   it("should return null for an incorrect format (wrong number of digits)", () => {
     const date = parseMMDDYYYY("1/2/2023");
-    expect(date).toBeNull();
+    expect(date).toBeFalsy();
   });
 
   it("should return null for an incorrect format", () => {
     const date = parseMMDDYYYY("12/25/2023abc");
-    expect(date).toBeNull();
+    expect(date).toBeFalsy();
   });
 
   it("should correctly parse a valid future date", () => {
@@ -222,7 +222,7 @@ describe("test parseMMDDYYYY helper function", () => {
   });
 
   it("should return null for day or month being zero", () => {
-    expect(parseMMDDYYYY("00/10/2023")).toBeNull();
-    expect(parseMMDDYYYY("10/00/2023")).toBeNull();
+    expect(parseMMDDYYYY("00/10/2023")).toBeFalsy();
+    expect(parseMMDDYYYY("10/00/2023")).toBeFalsy();
   });
 });

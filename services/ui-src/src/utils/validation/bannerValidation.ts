@@ -28,7 +28,7 @@ export const bannerFormValidateSchema = object()
             "Start date is invalid. Please enter date in MM/DD/YYYY format",
           test: (value) => {
             if (value) {
-              return parseMMDDYYYY(value) !== null;
+              return parseMMDDYYYY(value) !== undefined;
             } else return true;
           },
         })
@@ -41,7 +41,7 @@ export const bannerFormValidateSchema = object()
             "End date is invalid. Please enter date in MM/DD/YYYY format",
           test: (value) => {
             if (value) {
-              return parseMMDDYYYY(value) !== null;
+              return parseMMDDYYYY(value) !== undefined;
             } else return true;
           },
         })
@@ -84,16 +84,13 @@ const bannerWriteValidateSchema = object().shape({
   endDate: number()
     .notRequired()
     .when("startDate", (startDate, schema) => {
-      const actualStartDate = Array.isArray(startDate)
-        ? startDate[0]
-        : startDate;
-      if (typeof actualStartDate === "number") {
+      if (typeof startDate === "number") {
         return schema.test({
           name: "is-after-start-date-write",
           message: error.END_DATE_BEFORE_START_DATE,
           test: function (endDateValue) {
             if (typeof endDateValue === "number") {
-              return endDateValue > actualStartDate;
+              return endDateValue > startDate;
             }
             return true;
           },

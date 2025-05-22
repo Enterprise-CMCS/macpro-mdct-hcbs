@@ -107,9 +107,9 @@ export const convertDatetimeStringToNumber = (
   let convertedTime;
   if (completeDate) {
     let dateShape = {
-      year: completeDate?.getFullYear(),
-      month: completeDate?.getMonth() + 1,
-      day: completeDate?.getDate(),
+      year: completeDate.getFullYear(),
+      month: completeDate.getMonth() + 1,
+      day: completeDate.getDate(),
     };
     convertedTime = convertDateTimeEtToUtc(dateShape, time);
   }
@@ -146,10 +146,18 @@ export const calculateNextQuarter = (previousQuarter: string) => {
   return "";
 };
 
-// Parses a date string in the format "MM/DD/YYYY" and returns a Date object
-export const parseMMDDYYYY = (dateString: string): Date | null => {
+/**
+ * Parse a date string in the format "MM/DD/YYYY"
+ * @returns a Date, or `undefined` if the input is invalid
+ * @example
+ * parseMMDDYYYY("") === undefined
+ * parseMMDDYYYY("not a date") === undefined
+ * parseMMDDYYYY("99/99/9999") === undefined
+ * parseMMDDYYYY("12/31/2025") // December 31st, 2025
+ */
+export const parseMMDDYYYY = (dateString: string): Date | undefined => {
   if (!dateString || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
-    return null;
+    return undefined;
   }
   const parts = dateString.split("/");
   // Month is 0 indexed in JavaScript Date constructor
@@ -165,8 +173,7 @@ export const parseMMDDYYYY = (dateString: string): Date | null => {
     dateObj.getMonth() === month &&
     dateObj.getDate() === day
   ) {
-    dateObj.setHours(0, 0, 0, 0); // Set time to midnight
     return dateObj;
   }
-  return null;
+  return undefined;
 };
