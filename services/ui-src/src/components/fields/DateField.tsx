@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { get, useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
-import { checkDateCompleteness, parseHtml } from "utils";
+import { parseMMDDYYYY, parseHtml } from "utils";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { PageElementProps } from "../report/Elements";
 import { DateTemplate } from "../../types/report";
@@ -25,7 +25,7 @@ export const DateField = (props: PageElementProps<DateTemplate>) => {
 
   const onChangeHandler = (rawValue: string, maskedValue: string) => {
     setDisplayValue(rawValue);
-    const isValidDate = checkDateCompleteness(maskedValue);
+    const isValidDate = parseMMDDYYYY(maskedValue);
     if (isValidDate || maskedValue === "") {
       form.setValue(key, maskedValue, { shouldValidate: true });
     }

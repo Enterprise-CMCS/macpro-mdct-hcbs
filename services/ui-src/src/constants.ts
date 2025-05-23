@@ -1,6 +1,11 @@
 // BANNERS
 export const bannerId = "admin-banner-id";
 
+// ERRORS
+export const error = {
+  END_DATE_BEFORE_START_DATE: "End date can't be before start date",
+};
+
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
 

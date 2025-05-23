@@ -16,7 +16,12 @@ const adminBannerFormComponent = (
   </RouterWrappedComponent>
 );
 
+const HOURS = 60 * 60 * 1000;
+
 describe("<AdminBannerForm />", () => {
+  beforeEach(() => {
+    mockWriteAdminBanner.mockClear();
+  });
   test("AdminBannerForm is visible", () => {
     render(adminBannerFormComponent(mockWriteAdminBanner));
     expect(screen.getByRole("textbox", { name: "Title text" })).toBeVisible();
@@ -48,13 +53,12 @@ describe("<AdminBannerForm />", () => {
       await userEvent.type(startDateInput, "01/01/1970");
 
       const endDateInput = screen.getByLabelText("End date");
-      await userEvent.type(endDateInput, "01/01/1970");
+      // Modified: End date must be after start date
+      await userEvent.type(endDateInput, "01/02/1970");
 
       const submitButton = screen.getByText("Replace Current Banner");
       await userEvent.click(submitButton);
     });
-
-    const HOURS = 60 * 60 * 1000;
 
     expect(mockWriteAdminBanner).toHaveBeenCalledWith({
       key: "admin-banner-id",
@@ -62,11 +66,11 @@ describe("<AdminBannerForm />", () => {
       description: "mock description",
       link: "http://example.com",
       startDate: 5 * HOURS, // midnight UTC, in New York
-      endDate: 29 * HOURS - 1000, // 1 second before midnight of the next day
+      endDate: 53 * HOURS - 1000, // End of the next day in NY
     });
   });
 
-  test("AdminBannerForm shows an error when submit fails", async () => {
+  test("AdminBannerForm shows an error when submit fails (backend error)", async () => {
     mockWriteAdminBanner.mockImplementationOnce(() => {
       throw new Error("FAILURE");
     });
@@ -87,7 +91,7 @@ describe("<AdminBannerForm />", () => {
       await userEvent.type(startDateInput, "01/01/1970");
 
       const endDateInput = screen.getByLabelText("End date");
-      await userEvent.type(endDateInput, "01/01/1970");
+      await userEvent.type(endDateInput, "01/02/1970");
 
       const submitButton = screen.getByText("Replace Current Banner");
       await userEvent.click(submitButton);
@@ -147,7 +151,7 @@ describe("AdminBannerForm validation", () => {
       await userEvent.type(descriptionInput, "mock description");
       await userEvent.type(linkInput, "http://example.com");
       await userEvent.type(startDateInput, "01/01/1970");
-      await userEvent.type(endDateInput, "01/01/1970");
+      await userEvent.type(endDateInput, "01/02/1970");
       await userEvent.click(submitButton);
     });
 
@@ -156,7 +160,10 @@ describe("AdminBannerForm validation", () => {
       screen.queryAllByText("A response is required", { exact: false })
     ).toStrictEqual([]);
 
-    const HOURS = 60 * 60 * 1000;
+    // Ensure that the error message for the end date is not displayed
+    expect(
+      screen.queryByText("End date can't be before start date")
+    ).not.toBeInTheDocument();
 
     expect(mockWriteAdminBanner).toHaveBeenCalledWith({
       key: "admin-banner-id",
@@ -164,7 +171,7 @@ describe("AdminBannerForm validation", () => {
       description: "mock description",
       link: "http://example.com",
       startDate: 5 * HOURS, // midnight UTC, in New York
-      endDate: 29 * HOURS - 1000, // 1 second before midnight of the next day
+      endDate: 53 * HOURS - 1000, // Expected end date for 01/02/1970
     });
   });
 });
