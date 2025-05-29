@@ -83,7 +83,7 @@ const bannerWriteValidateSchema = object().shape({
   startDate: number().notRequired(),
   endDate: number()
     .notRequired()
-    .when("startDate", (startDate, schema) => {
+    .when("startDate", ([startDate], schema) => {
       if (typeof startDate === "number") {
         return schema.test({
           name: "is-after-start-date-write",

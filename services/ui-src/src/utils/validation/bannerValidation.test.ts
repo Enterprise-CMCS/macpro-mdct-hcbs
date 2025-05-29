@@ -28,9 +28,19 @@ describe("Test validateBannerPayload function", () => {
     const validatedData = await validateBannerPayload(validObject);
     expect(validatedData).toEqual(validObject);
   });
+
   it("throws an error when validating an invalid object", () => {
     expect(async () => {
       await validateBannerPayload(invalidObject);
+    }).rejects.toThrow();
+  });
+
+  it("rejects payloads with start date after end date", () => {
+    expect(async () => {
+      await validateBannerPayload({
+        ...validObject,
+        startDate: validObject.endDate + 1,
+      });
     }).rejects.toThrow();
   });
 });
