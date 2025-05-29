@@ -1,5 +1,7 @@
 import {
   ElementType,
+  LengthOfStayRateFields,
+  LengthOfStayRateTemplate,
   MeasurePageTemplate,
   PageStatus,
   PageType,
@@ -280,12 +282,15 @@ describe("elementSatisfiesRequired", () => {
     } as PerformanceRateTemplate;
     const fieldsRate = {
       id: "field-rate",
-      type: ElementType.PerformanceRate,
+      type: ElementType.LengthOfStayRate,
       required: true,
-      rateType: PerformanceRateType.FIELDS,
-      fields: [{ label: "abc", id: "abc" }],
-      answer: { rates: [{ abc: 1 }] }, // when calculating finished has rate
-    } as PerformanceRateTemplate;
+      labels: Object.fromEntries(
+        LengthOfStayRateFields.map((field) => [field, "label"])
+      ),
+      answer: Object.fromEntries(
+        LengthOfStayRateFields.map((field) => [field, 42])
+      ),
+    } as LengthOfStayRateTemplate;
     const badRate = {
       id: "bad-rate",
       type: ElementType.PerformanceRate,

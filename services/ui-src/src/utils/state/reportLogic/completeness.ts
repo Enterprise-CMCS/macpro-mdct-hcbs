@@ -12,7 +12,7 @@ import {
   MeasurePageTemplate,
   isFormPageTemplate,
   isMeasurePageTemplate,
-  PerformanceRateType,
+  LengthOfStayRateFields,
 } from "types";
 
 /**
@@ -170,6 +170,11 @@ export const elementSatisfiesRequired = (
   ) {
     return false;
   }
+  if (element.type === ElementType.LengthOfStayRate) {
+    return LengthOfStayRateFields.every(
+      (fieldId) => element.answer?.[fieldId] !== undefined
+    );
+  }
   return true;
 };
 
@@ -178,22 +183,13 @@ const rateIsComplete = (element: PerformanceRateTemplate) => {
 
   if (!element.answer) return false;
   if ("rates" in element.answer) {
-    // Fields
-    if (element.rateType === PerformanceRateType.FIELDS) {
-      if (!element.fields) return false;
-      for (const fieldName of element.fields) {
-        const fieldAnswer = element.answer.rates[0][fieldName.id];
-        if (fieldAnswer === "" || fieldAnswer === undefined) return false;
-      }
-    } else {
-      // PerformanceData
-      for (const uniqueRate of element.answer.rates) {
-        if (
-          emptyAnswers.includes(uniqueRate.performanceTarget) ||
-          emptyAnswers.includes(uniqueRate.rate)
-        )
-          return false;
-      }
+    // PerformanceData
+    for (const uniqueRate of element.answer.rates) {
+      if (
+        emptyAnswers.includes(uniqueRate.performanceTarget) ||
+        emptyAnswers.includes(uniqueRate.rate)
+      )
+        return false;
     }
   } else {
     // RateSetData[] - NDR Fields?
