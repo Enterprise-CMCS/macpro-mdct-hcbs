@@ -460,7 +460,7 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
-const LengthOfStayRateFields = [
+export const LengthOfStayRateFields = [
   "performanceTarget",
   "actualCount",
   "denominator",
