@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { paginateScan, PutCommand } from "@aws-sdk/lib-dynamodb";
-import { createClient } from "./utils";
+import { createClient, iteratePageItems } from "./utils";
 
 /**
  * This is a data migration function for the QMS elements
@@ -20,28 +20,26 @@ export const main = async () => {
 
     console.info("Scanning for existing QMS reports");
 
+    const paginator = paginateScan({ client }, { TableName });
+
     let reportCount = 0;
     let migratedCount = 0;
-    for await (let dynamoPage of paginateScan({ client }, { TableName })) {
-      for (let report of dynamoPage.Items ?? []) {
-        reportCount += 1;
-        for (let reportPage of report.pages) {
-          for (let element of reportPage.elements) {
-            if (needsMigration(element)) {
-              migratedCount += 1;
-              console.debug(
-                `Updating an element in ${report.state} report '${report.name}'`
-              );
+    for await (let report of iteratePageItems(paginator)) {
+      reportCount += 1;
+      for (let reportPage of report.pages) {
+        for (let element of reportPage.elements.filter(needsMigration)) {
+          migratedCount += 1;
+          console.debug(
+            `Updating an element in ${report.state} report '${report.name}'`
+          );
 
-              updateElement(element);
-              await client.send(
-                new PutCommand({
-                  TableName,
-                  Item: report,
-                })
-              );
-            }
-          }
+          updateElement(element);
+          await client.send(
+            new PutCommand({
+              TableName,
+              Item: report,
+            })
+          );
         }
       }
     }

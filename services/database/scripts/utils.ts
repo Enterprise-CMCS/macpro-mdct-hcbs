@@ -1,9 +1,10 @@
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-  DynamoDBClient,
+  DynamoDBDocumentClient,
+  Paginator,
   QueryCommandOutput,
   ScanCommandOutput,
-} from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, Paginator } from "@aws-sdk/lib-dynamodb";
+} from "@aws-sdk/lib-dynamodb";
 
 const config = {
   region: "us-east-1",
@@ -35,3 +36,12 @@ export const collectPageItems = async <
   }
   return items;
 };
+
+/** Given a paginator, lazily visit all of its items */
+export async function* iteratePageItems<
+  T extends QueryCommandOutput | ScanCommandOutput
+>(paginator: Paginator<T>) {
+  for await (let page of paginator) {
+    yield* page.Items ?? [];
+  }
+}
