@@ -112,9 +112,9 @@ describe("Dashboard table with admin user", () => {
     expect(mockArchive).toHaveBeenCalled();
   });
 
-  it("should render In Revision text for a returned report", async () => {
+  it("should render In revision text for a returned report", async () => {
     render(adminDashboardTableComponent);
     // Setup data includes In Progress with Submission Count >= 1
-    expect(screen.getByText("In Revision")).toBeInTheDocument();
+    expect(screen.getByText("In revision")).toBeInTheDocument();
   });
 });

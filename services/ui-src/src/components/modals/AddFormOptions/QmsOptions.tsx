@@ -34,8 +34,7 @@ export const buildOptionElements = (selectedReport: Report | undefined) => {
         element={{
           type: ElementType.Radio,
           id: "",
-          label:
-            "Is your state reporting on the HCBS CAHPS beneficiary Survey?",
+          label: "Is your state reporting on the HCBS CAHPS Survey?",
           choices: [
             {
               label: "Yes",
@@ -58,7 +57,7 @@ export const buildOptionElements = (selectedReport: Report | undefined) => {
         element={{
           type: ElementType.Radio,
           id: "",
-          label: "Is your state reporting on the HCI-IDD beneficiary Survey?",
+          label: "Is your state reporting on the NCI-IDD Survey?",
           choices: [
             {
               label: "Yes",
@@ -81,7 +80,7 @@ export const buildOptionElements = (selectedReport: Report | undefined) => {
         element={{
           type: ElementType.Radio,
           id: "",
-          label: "Is your state reporting on the NCI-AD beneficiary Survey?",
+          label: "Is your state reporting on the NCI-AD Survey?",
           choices: [
             {
               label: "Yes",
@@ -104,7 +103,7 @@ export const buildOptionElements = (selectedReport: Report | undefined) => {
         element={{
           type: ElementType.Radio,
           id: "",
-          label: "Is your state reporting on the POM beneficiary Survey?",
+          label: "Is your state reporting on the POM Survey?",
           choices: [
             {
               label: "Yes",

@@ -1,4 +1,4 @@
-import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Collapse, Heading, Text } from "@chakra-ui/react";
 import {
   AdminDashSelector,
   Banner,
@@ -44,18 +44,11 @@ export const HomePage = () => {
           <>
             <Box>
               <Heading as="h1" variant="h1">
-                Home and Community Based Services (HCBS) Portal
+                Home and Community-Based Services (HCBS) Portal
               </Heading>
               <Text>
                 Get started by completing the Home and Community-Based Services
-                (HCBS) for your state or territory. Learn more about this{" "}
-                <Link
-                  href="https://www.medicaid.gov/medicaid/home-community-based-services/index.html"
-                  isExternal
-                >
-                  new data collection tool
-                </Link>{" "}
-                from CMS.
+                (HCBS) for your state or territory.
               </Text>
             </Box>
             <QmsIntroductionCard />

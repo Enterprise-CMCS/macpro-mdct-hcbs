@@ -202,7 +202,7 @@ export const clearMeasure = (
 };
 
 /**
- * Hard reset a measure back to the Not Started state
+ * Hard reset a measure back to the Not started state
  */
 export const resetMeasure = (measureId: string, state: HcbsReportState) => {
   if (!state.report) {
