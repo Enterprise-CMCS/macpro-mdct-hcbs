@@ -33,7 +33,7 @@ test("authenticate as user", async ({ page }) => {
   await passwordInput.fill(statePassword);
   await loginButton.click();
   const landingPageHeading = page.getByRole("heading", {
-    name: "Home and Community Based Services (HCBS) Portal",
+    name: "Home and Community-Based Services (HCBS) Portal",
   });
   await expect(landingPageHeading).toBeVisible();
   await page.waitForTimeout(1000);

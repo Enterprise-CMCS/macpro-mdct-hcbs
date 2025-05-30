@@ -3,7 +3,7 @@ import { HelpCard, PageTemplate } from "components";
 import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
 import { useBreakpoint } from "utils";
 
-const hcbsDemoEmailAddress = "HCBSDemo@cms.hhs.gov";
+const hcbsDemoEmailAddress = "HCBSQuality@cms.hhs.gov";
 
 export const HelpPage = () => {
   const { isDesktop } = useBreakpoint();

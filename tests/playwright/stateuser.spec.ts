@@ -38,16 +38,16 @@ const fillAddEditReportModal = async (page: Page) => {
     name: "Quality Measure Set Report Name",
   });
   const cahpsRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the HCBS CAHPS beneficiary Survey?",
+    name: "Does your state administer the HCBS CAHPS survey?",
   });
   const hciiddRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the HCI-IDD beneficiary Survey?",
+    name: "Does your state administer the NCI-IDD survey?",
   });
   const nciadRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the NCI-AD beneficiary Survey?",
+    name: "Does your state administer the NCI-AD survey?",
   });
   const pomRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the POM beneficiary Survey?",
+    name: "Does your state administer the POM survey?",
   });
   await qmsSetReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
