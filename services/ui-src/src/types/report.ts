@@ -1,4 +1,4 @@
-import { AlertTypes, AnyObject, StateAbbr } from "./other";
+import { AlertTypes, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
@@ -179,7 +179,7 @@ export enum ElementType {
   LengthOfStayRate = "lengthOfStay",
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
-  PerformanceRate = "performanceRate",
+  Ndr = "ndr",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -206,7 +206,7 @@ export type PageElement =
   | LengthOfStayRateTemplate
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
-  | PerformanceRateTemplate
+  | NdrTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -425,25 +425,17 @@ export type NdrEnhancedTemplate = {
   required?: boolean;
 };
 
-export type PerformanceData = {
-  rates: AnyObject[];
-  denominator?: number;
-};
-
-export const enum PerformanceRateType {
-  NDR = "NDR",
-}
-
-export type PerformanceRateTemplate = {
+export type NdrTemplate = {
   id: string;
-  type: ElementType.PerformanceRate;
-  label?: string;
-  helperText?: string;
-  assessments?: { label: string; id: string }[];
-  fields?: { label: string; id: string; autoCalc?: boolean }[];
-  rateType: PerformanceRateType;
-  multiplier?: number;
-  answer?: PerformanceData | RateSetData[];
+  type: ElementType.Ndr;
+  label: string;
+  performanceTargetLabel: string;
+  answer?: {
+    performanceTarget: number | undefined;
+    numerator: number | undefined;
+    denominator: number | undefined;
+    rate: number | undefined;
+  };
   required?: boolean;
 };
 

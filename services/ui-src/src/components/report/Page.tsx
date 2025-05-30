@@ -22,7 +22,6 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
-  PerformanceRateElement,
   MeasureResultsNavigationTableElement,
   RadioField,
   StatusTableElement,
@@ -30,6 +29,7 @@ import {
   TextField,
   StatusAlert,
   Fields,
+  NDR,
   NDRFields,
   NDREnhanced,
 } from "components";
@@ -98,8 +98,8 @@ export const Page = ({ elements }: Props) => {
         return <NDRFields {...{ formkey, disabled, element }} />;
       case ElementType.NdrEnhanced:
         return <NDREnhanced {...{ formkey, disabled, element }} />;
-      case ElementType.PerformanceRate:
-        return <PerformanceRateElement {...{ formkey, disabled, element }} />;
+      case ElementType.Ndr:
+        return <NDR {...{ formkey, disabled, element }} />;
       case ElementType.StatusAlert:
         return <StatusAlert {...{ formkey, disabled, element }} />;
       case ElementType.Divider:

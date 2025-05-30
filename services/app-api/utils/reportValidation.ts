@@ -29,14 +29,14 @@ const hideConditionSchema = object()
   .default(undefined);
 
 const headerTemplateSchema = object().shape({
-  type: string().required(ElementType.Header),
+  type: string().required().matches(new RegExp(ElementType.Header)),
   id: string().required(),
   text: string().required(),
   icon: string().notRequired(),
 });
 
 const subHeaderTemplateSchema = object().shape({
-  type: string().required(ElementType.SubHeader),
+  type: string().required().matches(new RegExp(ElementType.SubHeader)),
   id: string().required(),
   text: string().required(),
   helperText: string().notRequired(),
@@ -44,18 +44,18 @@ const subHeaderTemplateSchema = object().shape({
 });
 
 const subHeaderMeasureSchema = object().shape({
-  type: string().required(ElementType.SubHeaderMeasure),
+  type: string().required().matches(new RegExp(ElementType.SubHeaderMeasure)),
   id: string().required(),
 });
 
 const nestedHeadingTemplateSchema = object().shape({
-  type: string().required(ElementType.NestedHeading),
+  type: string().required().matches(new RegExp(ElementType.NestedHeading)),
   id: string().required(),
   text: string().required(),
 });
 
 const paragraphTemplateSchema = object().shape({
-  type: string().required(ElementType.Paragraph),
+  type: string().required().matches(new RegExp(ElementType.Paragraph)),
   id: string().required(),
   text: string().required(),
   title: string().notRequired(),
@@ -63,7 +63,7 @@ const paragraphTemplateSchema = object().shape({
 });
 
 const textboxTemplateSchema = object().shape({
-  type: string().required(ElementType.Textbox),
+  type: string().required().matches(new RegExp(ElementType.Textbox)),
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
@@ -73,7 +73,7 @@ const textboxTemplateSchema = object().shape({
 });
 
 const textAreaTemplateSchema = object().shape({
-  type: string().required(ElementType.Textbox),
+  type: string().required().matches(new RegExp(ElementType.TextAreaField)),
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
@@ -83,7 +83,7 @@ const textAreaTemplateSchema = object().shape({
 });
 
 const dateTemplateSchema = object().shape({
-  type: string().required(ElementType.Date),
+  type: string().required().matches(new RegExp(ElementType.Date)),
   id: string().required(),
   label: string().required(),
   helperText: string().required(),
@@ -91,7 +91,7 @@ const dateTemplateSchema = object().shape({
 });
 
 const dropdownTemplateSchema = object().shape({
-  type: string().required(ElementType.Dropdown),
+  type: string().required().matches(new RegExp(ElementType.Dropdown)),
   id: string().required(),
   label: string().required(),
   helperText: string().required(),
@@ -108,14 +108,14 @@ const dropdownTemplateSchema = object().shape({
 });
 
 const accordionTemplateSchema = object().shape({
-  type: string().required(ElementType.Accordion),
+  type: string().required().matches(new RegExp(ElementType.Accordion)),
   id: string().required(),
   label: string().required(),
   value: string().required(),
 });
 
 const resultRowButtonTemplateSchema = object().shape({
-  type: string().required(ElementType.ResultRowButton),
+  type: string().required().matches(new RegExp(ElementType.ResultRowButton)),
   id: string().required(),
   value: string().required(),
   modalId: string().required(),
@@ -169,8 +169,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return ndrFieldsRateSchema;
     case ElementType.NdrEnhanced:
       return ndrEnhancedRateSchema;
-    case ElementType.PerformanceRate:
-      return performanceRateSchema;
+    case ElementType.Ndr:
+      return ndrRateSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
     case ElementType.Divider:
@@ -184,7 +184,7 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
 });
 
 const radioTemplateSchema = object().shape({
-  type: string().required(ElementType.Radio),
+  type: string().required().matches(new RegExp(ElementType.Radio)),
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
@@ -203,24 +203,26 @@ const radioTemplateSchema = object().shape({
 });
 
 const buttonLinkTemplateSchema = object().shape({
-  type: string().required(ElementType.ButtonLink),
+  type: string().required().matches(new RegExp(ElementType.ButtonLink)),
   id: string().required(),
   label: string().optional(),
   to: string().optional(),
 });
 
 const dividerSchema = object().shape({
-  type: string().required(ElementType.Divider),
+  type: string().required().matches(new RegExp(ElementType.Divider)),
   id: string().required(),
 });
 
 const submissionParagraphSchema = object().shape({
-  type: string().required(ElementType.SubmissionParagraph),
+  type: string()
+    .required()
+    .matches(new RegExp(ElementType.SubmissionParagraph)),
   id: string().required(),
 });
 
 const measureTableTemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureTable),
+  type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string()
     .oneOf(["required", "stratified", "optional"])
@@ -228,7 +230,9 @@ const measureTableTemplateSchema = object().shape({
 });
 
 const measureResultsNavigationTableTemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureResultsNavigationTable),
+  type: string()
+    .required()
+    .matches(new RegExp(ElementType.MeasureResultsNavigationTable)),
   id: string().required(),
   measureDisplay: string().required("quality"),
   hideCondition: object()
@@ -241,18 +245,18 @@ const measureResultsNavigationTableTemplateSchema = object().shape({
 });
 
 const statusTableTemplateSchema = object().shape({
-  type: string().required(ElementType.StatusTable),
+  type: string().required().matches(new RegExp(ElementType.StatusTable)),
   id: string().required(),
   to: string().required(),
 });
 
 const measureDetailsTemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureDetails),
+  type: string().required().matches(new RegExp(ElementType.MeasureDetails)),
   id: string().required(),
 });
 
 const measureFooterSchema = object().shape({
-  type: string().required(ElementType.MeasureFooter),
+  type: string().required().matches(new RegExp(ElementType.MeasureFooter)),
   id: string().required(),
   prevTo: string().notRequired(),
   nextTo: string().notRequired(),
@@ -262,7 +266,7 @@ const measureFooterSchema = object().shape({
 });
 
 const lengthOfStayRateSchema = object().shape({
-  type: string().required(ElementType.LengthOfStayRate),
+  type: string().required().matches(new RegExp(ElementType.LengthOfStayRate)),
   id: string().required(),
   labels: object().shape({
     performanceTarget: string().required(),
@@ -290,7 +294,7 @@ const lengthOfStayRateSchema = object().shape({
 });
 
 const ndrFieldsRateSchema = object().shape({
-  type: string().required(ElementType.NdrFields),
+  type: string().required().matches(new RegExp(ElementType.NdrFields)),
   id: string().required(),
   labelTemplate: string().required(),
   assessments: array()
@@ -316,7 +320,7 @@ const ndrFieldsRateSchema = object().shape({
 });
 
 const ndrEnhancedRateSchema = object().shape({
-  type: string().required(ElementType.PerformanceRate),
+  type: string().required().matches(new RegExp(ElementType.NdrEnhanced)),
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
@@ -332,32 +336,12 @@ const ndrEnhancedRateSchema = object().shape({
   answer: mixed().notRequired(),
 });
 
-const performanceRateSchema = object().shape({
-  type: string().required(ElementType.PerformanceRate),
+const ndrRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.Ndr)),
   id: string().required(),
-  label: string().notRequired(),
-  helperText: string().notRequired(),
-  assessments: array()
-    .of(
-      object().shape({
-        id: string().required(),
-        label: string().required(),
-      })
-    )
-    .notRequired(),
-  fields: array()
-    .of(
-      object().shape({
-        id: string().required(),
-        label: string().required(),
-        autoCalc: boolean().notRequired(),
-      })
-    )
-    .notRequired(),
+  label: string().required(),
+  performanceTargetLabel: string().required(),
   required: boolean().notRequired(),
-  rateType: string().required(),
-  rateCalc: string().notRequired(),
-  multiplier: number().notRequired(),
   answer: mixed().notRequired(),
 });
 
@@ -367,7 +351,7 @@ const parentPageTemplateSchema = object().shape({
 });
 
 const statusAlertSchema = object().shape({
-  type: string().required(ElementType.StatusAlert),
+  type: string().required().matches(new RegExp(ElementType.StatusAlert)),
   id: string().required(),
   title: string().notRequired(),
   text: string().required(),

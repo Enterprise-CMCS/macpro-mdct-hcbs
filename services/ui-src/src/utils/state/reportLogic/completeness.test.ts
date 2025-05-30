@@ -3,10 +3,9 @@ import {
   LengthOfStayRateTemplate,
   MeasurePageTemplate,
   NdrFieldsTemplate,
+  NdrTemplate,
   PageStatus,
   PageType,
-  PerformanceRateTemplate,
-  PerformanceRateType,
   RadioTemplate,
   RateSetData,
   Report,
@@ -268,18 +267,15 @@ describe("elementSatisfiesRequired", () => {
   test("handles rates", () => {
     const goodRateA = {
       id: "good-rate",
-      type: ElementType.PerformanceRate,
+      type: ElementType.Ndr,
       required: true,
-      rateType: PerformanceRateType.NDR,
-      answer: { rates: [{ performanceTarget: 1, rate: 15 }] }, // when calculating finished has rate
-    } as PerformanceRateTemplate;
-    const goodRateB = {
-      id: "good-rate-b",
-      type: ElementType.PerformanceRate,
-      required: true,
-      rateType: PerformanceRateType.NDR,
-      answer: [{ rates: [{ performanceTarget: 1, rate: 15 }] }], // when calculating finished has rate
-    } as PerformanceRateTemplate;
+      answer: {
+        performanceTarget: 1,
+        numerator: 4,
+        denominator: 60,
+        rate: 15,
+      },
+    } as NdrTemplate;
     const fieldsRate = {
       id: "field-rate",
       type: ElementType.LengthOfStayRate,
@@ -298,10 +294,9 @@ describe("elementSatisfiesRequired", () => {
     } as LengthOfStayRateTemplate;
     const badRate = {
       id: "bad-rate",
-      type: ElementType.PerformanceRate,
+      type: ElementType.Ndr,
       required: true,
-      rateType: PerformanceRateType.NDR,
-    } as PerformanceRateTemplate;
+    } as NdrTemplate;
     const goodNDRFieldRate = {
       id: "good-ndr-field-rate",
       type: ElementType.NdrFields,
@@ -337,9 +332,8 @@ describe("elementSatisfiesRequired", () => {
         },
       ] as RateSetData[],
     } as NdrFieldsTemplate;
-    const elements = [goodRateA, goodRateB, badRate];
+    const elements = [goodRateA, badRate];
     expect(elementSatisfiesRequired(goodRateA, elements)).toBeTruthy();
-    expect(elementSatisfiesRequired(goodRateB, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(fieldsRate, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(badRate, elements)).toBeFalsy();
     expect(elementSatisfiesRequired(goodNDRFieldRate, elements)).toBeTruthy();

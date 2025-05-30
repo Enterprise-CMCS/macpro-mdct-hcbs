@@ -10,8 +10,7 @@ import {
   MeasureResultsNavigationTableTemplate,
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
-  PerformanceRateTemplate,
-  PerformanceRateType,
+  NdrTemplate,
   RadioTemplate,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
@@ -275,7 +274,7 @@ export const whichProgramsWaivers = [
   divider,
 ];
 
-export const ndrEnhancedPerformanceTargetLabel = {
+export const statePerformanceTargetLabel = {
   performanceTargetLabel: `What is the ${
     REPORT_YEAR + 2
   } state performance target for this assessment?`,
@@ -285,7 +284,7 @@ export const ndrEnhancedPerformanceTargetLabel = {
 export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  ...ndrEnhancedPerformanceTargetLabel,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -303,7 +302,7 @@ export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  ...ndrEnhancedPerformanceTargetLabel,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -321,7 +320,7 @@ export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
 export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  ...ndrEnhancedPerformanceTargetLabel,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -339,7 +338,7 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  ...ndrEnhancedPerformanceTargetLabel,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -354,17 +353,12 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
 };
 
 //Rates for POM
-export const performanceRatePOM: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatePOM: NdrTemplate = {
+  type: ElementType.Ndr,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR,
   required: true,
-  assessments: [
-    {
-      id: "same-env",
-      label: "Person uses the same environments as people without disabilities",
-    },
-  ],
+  label: "Person uses the same environments as people without disabilities",
+  ...statePerformanceTargetLabel,
 };
 
 //Rates for LTSS-7

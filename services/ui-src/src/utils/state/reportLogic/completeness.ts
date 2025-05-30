@@ -8,7 +8,6 @@ import {
   PageElement,
   RadioTemplate,
   Report,
-  PerformanceRateTemplate,
   MeasurePageTemplate,
   isFormPageTemplate,
   isMeasurePageTemplate,
@@ -163,13 +162,7 @@ export const elementSatisfiesRequired = (
       }
     }
   }
-  // Special handling - rates
-  if (
-    element.type === ElementType.PerformanceRate &&
-    !rateIsComplete(element)
-  ) {
-    return false;
-  }
+
   if (element.type === ElementType.LengthOfStayRate) {
     return LengthOfStayRateFields.every(
       (fieldId) => element.answer?.[fieldId] !== undefined
@@ -195,37 +188,13 @@ export const elementSatisfiesRequired = (
       return true;
     });
   }
-  return true;
-};
-
-const rateIsComplete = (element: PerformanceRateTemplate) => {
-  const emptyAnswers = ["", undefined];
-
-  if (!element.answer) return false;
-  if ("rates" in element.answer) {
-    // PerformanceData
-    for (const uniqueRate of element.answer.rates) {
-      if (
-        emptyAnswers.includes(uniqueRate.performanceTarget) ||
-        emptyAnswers.includes(uniqueRate.rate)
-      )
-        return false;
-    }
-  } else {
-    // RateSetData[] - NDR Fields?
-    for (const rateAnswer of element.answer) {
-      if (!rateAnswer.rates) return false;
-      for (const uniqueRate of rateAnswer.rates) {
-        if (
-          emptyAnswers.includes(
-            uniqueRate.performanceTarget as string | undefined
-          ) ||
-          emptyAnswers.includes(uniqueRate.rate as string | undefined)
-        )
-          return false;
-      }
-    }
+  if (element.type === ElementType.Ndr) {
+    if (element.answer.performanceTarget === undefined) return false;
+    if (element.answer.numerator === undefined) return false;
+    if (element.answer.denominator === undefined) return false;
+    if (element.answer.rate === undefined) return false;
   }
+
   return true;
 };
 

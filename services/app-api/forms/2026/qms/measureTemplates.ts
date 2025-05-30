@@ -3,7 +3,6 @@ import {
   ElementType,
   MeasureTemplateName,
   MeasurePageTemplate,
-  PerformanceRateType,
 } from "../../../types/reports";
 import {
   additionalNotesField,
@@ -40,7 +39,7 @@ import {
   sectionCompleteBanner,
   performanceRatePOM,
   measureType,
-  ndrEnhancedPerformanceTargetLabel,
+  statePerformanceTargetLabel,
 } from "../elements";
 
 export const measureTemplates: Record<
@@ -519,17 +518,12 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
+        label:
+          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -561,17 +555,12 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
+        label:
+          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -627,17 +616,12 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
+        label:
+          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -669,17 +653,12 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
+        label:
+          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        ...statePerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
       },
       {
         type: ElementType.MeasureFooter,
@@ -788,7 +767,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -803,7 +782,7 @@ export const measureTemplates: Record<
         label: "Exclusion Rates",
         required: true,
         helperText: "Hint Text",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -844,7 +823,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -859,7 +838,7 @@ export const measureTemplates: Record<
         label: "Exclusion Rates",
         required: true,
         helperText: "Hint Text",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -1008,7 +987,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -1049,7 +1028,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -1068,7 +1047,7 @@ export const measureTemplates: Record<
         required: true,
         label: "Exclusion Rates",
         helperText: "Hint Text",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         assessments: [
           {
             id: "refused-risk-assess",
@@ -1130,7 +1109,7 @@ export const measureTemplates: Record<
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
         label: "Performance Rates",
-        ...ndrEnhancedPerformanceTargetLabel,
+        ...statePerformanceTargetLabel,
         assessments: [
           {
             id: "acute-readmission-plan",

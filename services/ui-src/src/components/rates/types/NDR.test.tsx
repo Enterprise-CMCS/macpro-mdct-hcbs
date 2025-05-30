@@ -2,13 +2,8 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NDR } from "./NDR";
 import { useFormContext } from "react-hook-form";
-import { NDRCalc } from "../calculations";
 import { useStore } from "utils";
-import {
-  ElementType,
-  PerformanceRateTemplate,
-  PerformanceRateType,
-} from "types";
+import { ElementType, NdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { mockStateUserStore } from "utils/testing/setupJest";
 
@@ -34,23 +29,19 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedPerformanceElement: PerformanceRateTemplate = {
+const mockedPerformanceElement: NdrTemplate = {
   id: "mock-perf-id",
-  type: ElementType.PerformanceRate,
-  rateType: PerformanceRateType.NDR,
+  type: ElementType.Ndr,
   label: "test label",
-  helperText: "helper text",
-  assessments: [{ id: "test-1", label: "assessment 1" }],
-  multiplier: 1,
+  performanceTargetLabel:
+    "What is the 2028 state performance target for this assessment?",
 };
 
 const ndrComponent = (
   <NDR
     formkey={"mock-key"}
-    calculation={NDRCalc}
-    year={2026}
     disabled={false}
-    {...mockedPerformanceElement}
+    element={mockedPerformanceElement}
   />
 );
 

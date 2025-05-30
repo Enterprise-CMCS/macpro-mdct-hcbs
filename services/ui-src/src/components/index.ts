@@ -53,7 +53,7 @@ export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { Fields } from "../components/rates/types/Fields";
 export { NDRFields } from "../components/rates/types/NDRFields";
 export { NDREnhanced } from "../components/rates/types/NDREnhanced";
-export { PerformanceRateElement } from "./report/PerformanceRate";
+export { NDR } from "../components/rates/types/NDR";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
