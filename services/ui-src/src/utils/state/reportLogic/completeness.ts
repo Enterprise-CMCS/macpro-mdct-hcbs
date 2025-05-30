@@ -175,6 +175,17 @@ export const elementSatisfiesRequired = (
       (fieldId) => element.answer?.[fieldId] !== undefined
     );
   }
+  if (element.type === ElementType.NdrFields) {
+    return element.answer.every((assessObj) => {
+      if (assessObj.denominator === undefined) return false;
+      return assessObj.rates.every((rateObj) => {
+        if (rateObj.performanceTarget === undefined) return false;
+        if (rateObj.numerator === undefined) return false;
+        if (rateObj.rate === undefined) return false;
+        return true;
+      });
+    });
+  }
   return true;
 };
 

@@ -2,6 +2,7 @@ import {
   ElementType,
   LengthOfStayRateTemplate,
   MeasurePageTemplate,
+  NdrFieldsTemplate,
   PageStatus,
   PageType,
   PerformanceRateTemplate,
@@ -301,11 +302,31 @@ describe("elementSatisfiesRequired", () => {
       required: true,
       rateType: PerformanceRateType.NDR,
     } as PerformanceRateTemplate;
+    const goodNDRFieldRate = {
+      id: "good-ndr-field-rate",
+      type: ElementType.NdrFields,
+      required: true,
+      fields: [{ label: "abc", id: "abc" }],
+      answer: [
+        {
+          id: "mock-id",
+          label: "abc",
+          denominator: 34,
+          rates: [
+            {
+              label: "abc",
+              performanceTarget: 56,
+              numerator: 78,
+              rate: 2.2,
+            },
+          ],
+        },
+      ] as RateSetData[],
+    } as NdrFieldsTemplate;
     const badNDRFieldRate = {
       id: "bad-ndr-field-rate",
-      type: ElementType.PerformanceRate,
+      type: ElementType.NdrFields,
       required: true,
-      rateType: PerformanceRateType.NDR_FIELDS,
       fields: [{ label: "abc", id: "abc" }],
       answer: [
         {
@@ -319,12 +340,13 @@ describe("elementSatisfiesRequired", () => {
           ],
         },
       ] as RateSetData[],
-    } as PerformanceRateTemplate;
+    } as NdrFieldsTemplate;
     const elements = [goodRateA, goodRateB, badRate];
     expect(elementSatisfiesRequired(goodRateA, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(goodRateB, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(fieldsRate, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(badRate, elements)).toBeFalsy();
+    expect(elementSatisfiesRequired(goodNDRFieldRate, elements)).toBeTruthy();
     expect(elementSatisfiesRequired(badNDRFieldRate, elements)).toBeFalsy();
   });
 });

@@ -8,10 +8,10 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
+  NdrFieldsTemplate,
   PerformanceRateTemplate,
   PerformanceRateType,
   RadioTemplate,
-  RateCalc,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
@@ -403,9 +403,12 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
 };
 
 // Rates for LTSS-6
-export const performanceRateTermStay: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateTermStay: NdrFieldsTemplate = {
+  type: ElementType.NdrFields,
   id: "measure-rates",
+  labelTemplate: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for {{field}} ({{assessment}})?`,
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -417,17 +420,17 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
   ],
-  rateType: PerformanceRateType.NDR_FIELDS,
   required: true,
   multiplier: 1000,
 };
 
 // Rates for HCBS-10
-export const performanceRateSelfDirection: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateSelfDirection: NdrFieldsTemplate = {
+  type: ElementType.NdrFields,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_FIELDS,
-  rateCalc: RateCalc.NDRCalc,
+  labelTemplate: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for {{field}} ({{assessment}})?`,
   required: true,
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },

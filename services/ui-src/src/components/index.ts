@@ -51,6 +51,7 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 // report
 export { Fields } from "../components/rates/types/Fields";
+export { NDRFields } from "../components/rates/types/NDRFields";
 export { PerformanceRateElement } from "./report/PerformanceRate";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";

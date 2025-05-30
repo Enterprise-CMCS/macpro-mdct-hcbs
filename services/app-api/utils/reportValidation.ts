@@ -164,6 +164,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureFooterSchema;
     case ElementType.LengthOfStayRate:
       return lengthOfStayRateSchema;
+    case ElementType.NdrFields:
+      return ndrFieldsRateSchema;
     case ElementType.PerformanceRate:
       return performanceRateSchema;
     case ElementType.StatusAlert:
@@ -258,6 +260,7 @@ const measureFooterSchema = object().shape({
 const lengthOfStayRateSchema = object().shape({
   type: string().required(ElementType.LengthOfStayRate),
   id: string().required(),
+  labelTemplate: string().required(),
   labels: object().shape({
     performanceTarget: string().required(),
     actualCount: string().required(),
@@ -281,6 +284,31 @@ const lengthOfStayRateSchema = object().shape({
       adjustedRate: number().notRequired(),
     })
     .notRequired(),
+});
+
+const ndrFieldsRateSchema = object().shape({
+  type: string().required(ElementType.NdrFields),
+  id: string().required(),
+  assessments: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+      })
+    )
+    .required(),
+  fields: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+        autoCalc: boolean().notRequired(),
+      })
+    )
+    .required(),
+  required: boolean().notRequired(),
+  multiplier: number().notRequired(),
+  answer: mixed().notRequired(),
 });
 
 const performanceRateSchema = object().shape({

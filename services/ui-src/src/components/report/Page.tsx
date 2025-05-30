@@ -30,6 +30,7 @@ import {
   TextField,
   StatusAlert,
   Fields,
+  NDRFields,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -92,6 +93,8 @@ export const Page = ({ elements }: Props) => {
         return <MeasureFooterElement {...{ formkey, disabled, element }} />;
       case ElementType.LengthOfStayRate:
         return <Fields {...{ formkey, disabled, element }} />;
+      case ElementType.NdrFields:
+        return <NDRFields {...{ formkey, disabled, element }} />;
       case ElementType.PerformanceRate:
         return <PerformanceRateElement {...{ formkey, disabled, element }} />;
       case ElementType.StatusAlert:

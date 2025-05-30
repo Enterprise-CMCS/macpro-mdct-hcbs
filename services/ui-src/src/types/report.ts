@@ -177,6 +177,7 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   LengthOfStayRate = "lengthOfStay",
+  NdrFields = "ndrFields",
   PerformanceRate = "performanceRate",
   StatusAlert = "statusAlert",
   Divider = "divider",
@@ -202,6 +203,7 @@ export type PageElement =
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
   | LengthOfStayRateTemplate
+  | NdrFieldsTemplate
   | PerformanceRateTemplate
   | StatusAlertTemplate
   | DividerTemplate
@@ -366,7 +368,7 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
-const LengthOfStayRateFields = [
+export const LengthOfStayRateFields = [
   "performanceTarget",
   "actualCount",
   "denominator",
@@ -386,35 +388,40 @@ export type LengthOfStayRateTemplate = {
   required?: boolean;
 };
 
-export type PerformanceData = {
-  rates: AnyObject[];
-  denominator?: number;
-};
-
 export type RateType = {
+  id: string;
   label: string;
-  performanceTarget?: number;
-  numerator?: number;
-  denominator?: number;
-  rate?: number;
-  id?: string;
+  numerator: number | undefined;
+  rate: number | undefined;
+  performanceTarget: number | undefined;
 };
 
 export type RateSetData = {
   id: string;
   label: string;
+  denominator: number | undefined;
+  rates: RateType[];
+};
+
+export type NdrFieldsTemplate = {
+  id: string;
+  type: ElementType.NdrFields;
+  labelTemplate: string;
+  assessments: { label: string; id: string }[];
+  fields: { label: string; id: string; autoCalc?: boolean }[];
+  multiplier?: number;
+  answer?: RateSetData[];
+  required?: boolean;
+};
+
+export type PerformanceData = {
+  rates: AnyObject[];
   denominator?: number;
-  rates?: RateType[];
 };
 
 export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
-  NDR_FIELDS = "NDRFields",
-}
-
-export const enum RateCalc {
-  NDRCalc = "NDRCalc",
 }
 
 export type PerformanceRateTemplate = {
@@ -425,7 +432,6 @@ export type PerformanceRateTemplate = {
   assessments?: { label: string; id: string }[];
   fields?: { label: string; id: string; autoCalc?: boolean }[];
   rateType: PerformanceRateType;
-  rateCalc?: RateCalc;
   multiplier?: number;
   answer?: PerformanceData | RateSetData[];
   required?: boolean;

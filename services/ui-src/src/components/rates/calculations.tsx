@@ -5,7 +5,7 @@ const isFilled = (item: string) => {
   return item !== "" && item !== undefined;
 };
 
-const roundTo = (value: number, decimal: number) => {
+export const roundTo = (value: number, decimal: number) => {
   const shift = Math.pow(10, decimal);
   return Math.round(value * shift) / shift;
 };
@@ -85,7 +85,7 @@ export const FacilityLengthOfStayCalc = (
 export const NDRCalc = (rate: AnyObject, multiplier: number) => {
   const { numerator, denominator } = rate;
 
-  if (!isFilled(numerator) || !isFilled(denominator)) return "";
+  if (!isFilled(numerator) || !isFilled(denominator)) return undefined;
 
   return roundTo(numerator / denominator, 1) * multiplier;
 };
