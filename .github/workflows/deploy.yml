@@ -36,7 +36,6 @@ jobs:
         with:
           path: |
             **/node_modules
-            ~/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: set path
         run: |
@@ -93,7 +92,6 @@ jobs:
         with:
           path: |
             **/node_modules
-            ~/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: set path
         run: |
