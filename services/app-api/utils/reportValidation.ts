@@ -16,6 +16,7 @@ import {
   ElementType,
   PageElement,
   ReportOptions,
+  assertExhaustive,
 } from "../types/reports";
 import { error } from "./constants";
 
@@ -166,6 +167,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return lengthOfStayRateSchema;
     case ElementType.NdrFields:
       return ndrFieldsRateSchema;
+    case ElementType.NdrEnhanced:
+      return ndrEnhancedRateSchema;
     case ElementType.PerformanceRate:
       return performanceRateSchema;
     case ElementType.StatusAlert:
@@ -175,6 +178,7 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
     case ElementType.SubmissionParagraph:
       return submissionParagraphSchema;
     default:
+      assertExhaustive(value);
       throw new Error("Page Element type is not valid");
   }
 });
@@ -260,7 +264,6 @@ const measureFooterSchema = object().shape({
 const lengthOfStayRateSchema = object().shape({
   type: string().required(ElementType.LengthOfStayRate),
   id: string().required(),
-  labelTemplate: string().required(),
   labels: object().shape({
     performanceTarget: string().required(),
     actualCount: string().required(),
@@ -289,6 +292,7 @@ const lengthOfStayRateSchema = object().shape({
 const ndrFieldsRateSchema = object().shape({
   type: string().required(ElementType.NdrFields),
   id: string().required(),
+  labelTemplate: string().required(),
   assessments: array()
     .of(
       object().shape({
@@ -308,6 +312,23 @@ const ndrFieldsRateSchema = object().shape({
     .required(),
   required: boolean().notRequired(),
   multiplier: number().notRequired(),
+  answer: mixed().notRequired(),
+});
+
+const ndrEnhancedRateSchema = object().shape({
+  type: string().required(ElementType.PerformanceRate),
+  id: string().required(),
+  label: string().notRequired(),
+  helperText: string().notRequired(),
+  assessments: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+      })
+    )
+    .required(),
+  required: boolean().notRequired(),
   answer: mixed().notRequired(),
 });
 

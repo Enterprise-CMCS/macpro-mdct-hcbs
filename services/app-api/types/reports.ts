@@ -279,6 +279,7 @@ export enum ElementType {
   MeasureFooter = "measureFooter",
   LengthOfStayRate = "lengthOfStay",
   NdrFields = "ndrFields",
+  NdrEnhanced = "ndrEnhanced",
   PerformanceRate = "performanceRate",
   StatusAlert = "statusAlert",
   Divider = "divider",
@@ -306,6 +307,7 @@ export type PageElement =
   | MeasureFooterTemplate
   | LengthOfStayRateTemplate
   | NdrFieldsTemplate
+  | NdrEnhancedTemplate
   | PerformanceRateTemplate
   | StatusAlertTemplate
   | DividerTemplate
@@ -484,7 +486,6 @@ export type LengthOfStayRateTemplate = {
 
 export type RateType = {
   id: string;
-  label: string;
   numerator: number | undefined;
   rate: number | undefined;
   performanceTarget: number | undefined;
@@ -508,6 +509,25 @@ export type NdrFieldsTemplate = {
   required?: boolean;
 };
 
+export type NdrEnhancedTemplate = {
+  id: string;
+  type: ElementType.NdrEnhanced;
+  label?: string;
+  helperText?: string;
+  performanceTargetLabel: string;
+  assessments: { label: string; id: string }[];
+  answer?: {
+    denominator: number | undefined;
+    rates: {
+      id: string;
+      performanceTarget: number | undefined;
+      numerator: number | undefined;
+      rate: number | undefined;
+    }[];
+  };
+  required?: boolean;
+};
+
 export type PerformanceData = {
   rates: AnyObject[];
   denominator?: number;
@@ -515,7 +535,6 @@ export type PerformanceData = {
 
 export const enum PerformanceRateType {
   NDR = "NDR",
-  NDR_Enhanced = "NDREnhanced",
 }
 
 export type PerformanceRateTemplate = {

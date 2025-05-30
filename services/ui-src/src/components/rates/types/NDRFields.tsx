@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { ElementType, NdrFieldsTemplate, RateSetData } from "types";
+import { ElementType, NdrFieldsTemplate } from "types";
 import { parseNumber, roundTo } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
 
@@ -16,7 +16,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     fields,
   } = element;
 
-  const defaultRates: RateSetData[] = assessments.map((assess) => {
+  const defaultRates = assessments.map((assess) => {
     return {
       id: assess.id,
       label: assess.label,
@@ -24,7 +24,6 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
       rates: fields.map((field) => {
         return {
           id: `${assess.id}.${field.id}`,
-          label: field.label,
           numerator: undefined,
           rate: undefined,
           performanceTarget: undefined,
@@ -33,8 +32,8 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     };
   });
 
-  const defaultValue = (answer as RateSetData[]) ?? defaultRates;
-  const [displayValue, setDisplayValue] = useState<RateSetData[]>(defaultValue);
+  const defaultValue = answer ?? defaultRates;
+  const [displayValue, setDisplayValue] = useState(defaultValue);
 
   // get form context and register field
   const form = useFormContext();

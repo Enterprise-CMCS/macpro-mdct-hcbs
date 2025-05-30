@@ -8,6 +8,7 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
+  NdrEnhancedTemplate,
   NdrFieldsTemplate,
   PerformanceRateTemplate,
   PerformanceRateType,
@@ -274,11 +275,17 @@ export const whichProgramsWaivers = [
   divider,
 ];
 
+export const ndrEnhancedPerformanceTargetLabel = {
+  performanceTargetLabel: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for this assessment?`,
+};
+
 //Rates for LTSS-1
-export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...ndrEnhancedPerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -292,11 +299,11 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   ],
 };
 
-export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...ndrEnhancedPerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -311,10 +318,10 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
 };
 
 //Rates for LTSS-2
-export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...ndrEnhancedPerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -328,11 +335,11 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   ],
 };
 
-export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...ndrEnhancedPerformanceTargetLabel,
   required: true,
   assessments: [
     {

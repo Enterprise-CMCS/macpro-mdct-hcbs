@@ -31,6 +31,7 @@ import {
   StatusAlert,
   Fields,
   NDRFields,
+  NDREnhanced,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -95,6 +96,8 @@ export const Page = ({ elements }: Props) => {
         return <Fields {...{ formkey, disabled, element }} />;
       case ElementType.NdrFields:
         return <NDRFields {...{ formkey, disabled, element }} />;
+      case ElementType.NdrEnhanced:
+        return <NDREnhanced {...{ formkey, disabled, element }} />;
       case ElementType.PerformanceRate:
         return <PerformanceRateElement {...{ formkey, disabled, element }} />;
       case ElementType.StatusAlert:

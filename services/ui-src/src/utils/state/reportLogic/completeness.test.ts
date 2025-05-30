@@ -310,11 +310,9 @@ describe("elementSatisfiesRequired", () => {
       answer: [
         {
           id: "mock-id",
-          label: "abc",
           denominator: 34,
           rates: [
             {
-              label: "abc",
               performanceTarget: 56,
               numerator: 78,
               rate: 2.2,
@@ -331,10 +329,8 @@ describe("elementSatisfiesRequired", () => {
       answer: [
         {
           id: "mock-id",
-          label: "abc",
           rates: [
             {
-              label: "abc",
               performanceTarget: undefined,
             },
           ],

@@ -1,131 +1,144 @@
 import React, { useEffect, useState } from "react";
-import { Divider, Heading, Stack } from "@chakra-ui/react";
+import { Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { PerformanceData, PerformanceRateTemplate } from "types";
-import { isNumber } from "../calculations";
+import { ElementType, NdrEnhancedTemplate } from "types";
+import { parseNumber, roundTo } from "../calculations";
+import { PageElementProps } from "components/report/Elements";
 
-export const NDREnhanced = (
-  props: PerformanceRateTemplate & {
-    formkey: string;
-    year: number;
-    calculation: Function;
-    disabled?: boolean;
-  }
-) => {
-  const { label, assessments, answer, multiplier, calculation, disabled } =
-    props;
-  const initialValues =
-    assessments?.map((assess) => {
-      return {
-        numerator: "",
-        denominator: "",
-        rate: undefined,
-        performanceTarget: "",
-        id: assess.id,
-      };
-    }) ?? [];
+export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
+  const { formkey, disabled } = props;
+  const { assessments, answer, helperText, performanceTargetLabel, label } =
+    props.element;
 
-  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
+  const initialValue = {
+    id: props.element.id,
     denominator: undefined,
-    rates: initialValues,
+    rates: assessments.map((assess) => ({
+      id: assess.id,
+      performanceTarget: undefined,
+      numerator: undefined,
+      rate: undefined,
+    })),
   };
 
-  const [displayValue, setDisplayValue] =
-    useState<PerformanceData>(defaultValue);
+  const [displayValue, setDisplayValue] = useState(answer ?? initialValue);
 
   // get form context and register field
   const form = useFormContext();
-  const key = `${props?.formkey}.answer`;
+  const key = `${formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
-    form.setValue(key, defaultValue);
+    form.setValue(key, initialValue);
   }, []);
 
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
+  const onChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    fieldType: "performanceTarget" | "denominator" | "numerator",
+    assessIndex?: number
+  ) => {
+    const newValue = parseNumber(event.target.value);
+    if (newValue === undefined) return;
 
-    const { name, value } = event.target;
-    const [index, type] = name.split(".");
+    const answer = structuredClone(displayValue);
 
-    let newDisplayValue = { ...displayValue };
+    switch (fieldType) {
+      case "performanceTarget":
+        answer.rates[assessIndex!].performanceTarget = newValue;
+        break;
+      case "denominator":
+        answer.denominator = newValue;
 
-    // //set the denominator for all the ndr sets
-    if (name === "denominator") {
-      newDisplayValue = {
-        denominator: value ? Number(value) : undefined,
-        rates: displayValue?.rates?.map((values) => {
-          return { ...values, denominator: value };
-        }),
-      };
-    } else {
-      newDisplayValue.rates[Number(index)][type] = value ?? undefined;
+        for (let rateObject of answer.rates) {
+          const numerator = rateObject.numerator;
+          if (numerator !== undefined && newValue !== 0) {
+            rateObject.rate = roundTo(numerator / newValue, 1);
+          }
+        }
+        break;
+      case "numerator":
+        {
+          const denominator = answer.denominator;
+          const rateObject = answer.rates[assessIndex!];
+          rateObject.numerator = newValue;
+
+          if (denominator !== undefined && denominator !== 0) {
+            rateObject.rate = roundTo(newValue / denominator, 1);
+          }
+        }
+        break;
     }
 
-    newDisplayValue.rates = newDisplayValue.rates.map((set) => {
-      return { ...set, rate: calculation(set, multiplier) };
-    });
-
-    setDisplayValue(newDisplayValue);
-    form.setValue(`${key}`, newDisplayValue, { shouldValidate: true });
-    form.setValue(`${key}.type`, props.type);
+    setDisplayValue(answer);
+    form.setValue(`${key}`, answer, { shouldValidate: true });
+    form.setValue(`${key}.type`, ElementType.NdrEnhanced);
   };
 
   return (
-    <Stack gap="2rem">
-      <CmsdsTextField
-        label={`${label ?? "Performance Rates"} Denominator`}
-        name="denominator"
-        onChange={onChangeHandler}
-        value={displayValue?.denominator ?? ""}
-        disabled={disabled}
-      ></CmsdsTextField>
-      {assessments?.map((assess, index) => {
-        const value =
-          displayValue?.rates?.find((item) => item.id === assess.id) ?? {};
+    <Stack gap={4} sx={sx.performance}>
+      <Heading variant="subHeader">{label ?? "Performance Rates"}</Heading>
+      <Text>{helperText}</Text>
+      <Stack gap="2rem">
+        <CmsdsTextField
+          label={`${label ?? "Performance Rates"} Denominator`}
+          name="denominator"
+          onChange={(evt) => onChangeHandler(evt, "denominator")}
+          value={displayValue?.denominator ?? ""}
+          disabled={disabled}
+        ></CmsdsTextField>
+        {assessments.map((assess, index) => {
+          const value = displayValue.rates[index];
 
-        return (
-          <Stack key={assess.id} gap="2rem">
-            <Heading variant="subHeader">
-              {label ?? "Performance Rate"}
-              {": "}
-              {assess.label}
-            </Heading>
-            <CmsdsTextField
-              label={`What is the ${
-                props.year + 2
-              } state performance target for this assessment?`}
-              name={`${index}.performanceTarget`}
-              onChange={onChangeHandler}
-              value={value.performanceTarget ?? ""}
-              disabled={disabled}
-            ></CmsdsTextField>
-            <CmsdsTextField
-              label="Numerator"
-              name={`${index}.numerator`}
-              onChange={onChangeHandler}
-              value={value.numerator ?? ""}
-              disabled={disabled}
-            ></CmsdsTextField>
-            <CmsdsTextField
-              label="Denominator"
-              name={`${index}.denominator`}
-              onChange={onChangeHandler}
-              value={value.denominator ?? ""}
-              hint="Auto-populates"
-              disabled
-            ></CmsdsTextField>
-            <CmsdsTextField
-              label="Rate"
-              name={`${index}.rate`}
-              hint="Auto-calculates"
-              value={value.rate ?? ""}
-              disabled
-            ></CmsdsTextField>
-          </Stack>
-        );
-      })}
-      <Divider></Divider>
+          return (
+            <Stack key={assess.id} gap="2rem">
+              <Heading variant="subHeader">
+                {label ?? "Performance Rate"}
+                {": "}
+                {assess.label}
+              </Heading>
+              <CmsdsTextField
+                label={performanceTargetLabel}
+                name={`${index}.performanceTarget`}
+                onChange={(evt) =>
+                  onChangeHandler(evt, "performanceTarget", index)
+                }
+                value={value.performanceTarget ?? ""}
+                disabled={disabled}
+              ></CmsdsTextField>
+              <CmsdsTextField
+                label="Numerator"
+                name={`${index}.numerator`}
+                onChange={(evt) => onChangeHandler(evt, "numerator", index)}
+                value={value.numerator ?? ""}
+                disabled={disabled}
+              ></CmsdsTextField>
+              <CmsdsTextField
+                label="Denominator"
+                name={`${index}.denominator`}
+                value={displayValue.denominator ?? ""}
+                hint="Auto-populates"
+                disabled
+              ></CmsdsTextField>
+              <CmsdsTextField
+                label="Rate"
+                name={`${index}.rate`}
+                hint="Auto-calculates"
+                value={value.rate ?? ""}
+                disabled
+              ></CmsdsTextField>
+            </Stack>
+          );
+        })}
+        <Divider></Divider>
+      </Stack>
     </Stack>
   );
+};
+
+const sx = {
+  performance: {
+    input: {
+      width: "240px",
+    },
+  },
 };

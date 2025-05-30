@@ -40,6 +40,7 @@ import {
   sectionCompleteBanner,
   performanceRatePOM,
   measureType,
+  ndrEnhancedPerformanceTargetLabel,
 } from "../elements";
 
 export const measureTemplates: Record<
@@ -785,10 +786,10 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       divider,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...ndrEnhancedPerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "pc-plan",
@@ -797,12 +798,12 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
         label: "Exclusion Rates",
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         helperText: "Hint Text",
+        ...ndrEnhancedPerformanceTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -841,10 +842,10 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       divider,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...ndrEnhancedPerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "pc-plan",
@@ -853,12 +854,12 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
         label: "Exclusion Rates",
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         helperText: "Hint Text",
+        ...ndrEnhancedPerformanceTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -1005,10 +1006,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...ndrEnhancedPerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "gait-evaulation",
@@ -1046,10 +1047,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...ndrEnhancedPerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "fall-risk-assess",
@@ -1062,12 +1063,12 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         label: "Exclusion Rates",
         helperText: "Hint Text",
+        ...ndrEnhancedPerformanceTargetLabel,
         assessments: [
           {
             id: "refused-risk-assess",
@@ -1126,10 +1127,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
         label: "Performance Rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
+        ...ndrEnhancedPerformanceTargetLabel,
         assessments: [
           {
             id: "acute-readmission-plan",
