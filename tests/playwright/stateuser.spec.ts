@@ -19,7 +19,7 @@ test("create a report as a state user", async ({ page }) => {
 
 const navigateToAddEditReportModal = async (page: Page) => {
   await page.goto("/");
-  const qmsReportButton = page.getByRole("button", {
+  const qmsReportButton = page.getByRole("link", {
     name: "Enter QMS Report online",
   });
   await qmsReportButton.click();
@@ -35,7 +35,7 @@ const fillAddEditReportModal = async (page: Page) => {
   });
   await expect(addQMSReportHeading).toBeVisible();
   const qmsSetReportNameInput = page.getByRole("textbox", {
-    name: "QMS report name",
+    name: "Quality Measure Set Report Name",
   });
   const cahpsRadioButton = page.getByRole("radiogroup", {
     name: "Does your state administer the HCBS CAHPS survey?",
