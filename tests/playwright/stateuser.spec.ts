@@ -19,7 +19,7 @@ test("create a report as a state user", async ({ page }) => {
 
 const navigateToAddEditReportModal = async (page: Page) => {
   await page.goto("/");
-  const qmsReportButton = page.getByRole("button", {
+  const qmsReportButton = page.getByRole("link", {
     name: "Enter QMS Report online",
   });
   await qmsReportButton.click();
@@ -35,19 +35,19 @@ const fillAddEditReportModal = async (page: Page) => {
   });
   await expect(addQMSReportHeading).toBeVisible();
   const qmsSetReportNameInput = page.getByRole("textbox", {
-    name: "QMS report name",
+    name: "Quality Measure Set Report Name",
   });
   const cahpsRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the HCBS CAHPS beneficiary survey?",
+    name: "Is your state reporting on the HCBS CAHPS beneficiary Survey?",
   });
   const hciiddRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the HCI-IDD beneficiary survey?",
+    name: "Is your state reporting on the HCI-IDD beneficiary Survey?",
   });
   const nciadRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the NCI-AD beneficiary survey?",
+    name: "Is your state reporting on the NCI-AD beneficiary Survey?",
   });
   const pomRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the POM beneficiary survey?",
+    name: "Is your state reporting on the POM beneficiary Survey?",
   });
   await qmsSetReportNameInput.fill(
     testModalData.reportName + testModalData.datetime

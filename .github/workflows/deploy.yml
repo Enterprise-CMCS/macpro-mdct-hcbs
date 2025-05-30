@@ -36,7 +36,6 @@ jobs:
         with:
           path: |
             **/node_modules
-            ~/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: set path
         run: |
@@ -93,7 +92,6 @@ jobs:
         with:
           path: |
             **/node_modules
-            ~/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: set path
         run: |
@@ -299,22 +297,22 @@ jobs:
           echo "## Playwright Test Results" >> $GITHUB_STEP_SUMMARY
           echo "https://${ORG_NAME}.github.io/${REPO_NAME}/${{ steps.timestampid.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
 
-  # cleanup:
-  #   name: Clean Up
-  #   if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - register-runner
-  #     - test
-  #   env:
-  #     SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Configure AWS credentials for GitHub Actions
-  #       uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-  #         aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+  cleanup:
+    name: Clean Up
+    if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
+    runs-on: ubuntu-latest
+    needs:
+      # - register-runner
+      - test
+    env:
+      SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
   #     - name: output account id
   #       id: output_account_id
   #       run: |
@@ -327,9 +325,9 @@ jobs:
   #       env:
   #         AWS_RETRY_MODE: adaptive
   #         AWS_MAX_ATTEMPTS: 10
-  #     - name: Fail if tests did not pass
-  #       if: ${{ needs.test.outputs.test_outcome != 'success' }}
-  #       run: |
-  #         echo "End-to-end tests in the deployed environment were not successful."
-  #         echo "See the Playwright Report for details."
-  #         exit 1
+      - name: Fail if tests did not pass
+        if: ${{ needs.test.outputs.test_outcome != 'success' }}
+        run: |
+          echo "End-to-end tests in the deployed environment were not successful."
+          echo "See the Playwright Report for details."
+          exit 1
