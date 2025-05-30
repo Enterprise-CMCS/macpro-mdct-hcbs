@@ -10,7 +10,7 @@ export const NDRFields = (
     formkey: string;
     year: number;
     calculation: Function;
-    disabled: boolean;
+    disabled?: boolean;
   }
 ) => {
   const {

@@ -1,3 +1,4 @@
+import { LengthOfStayRateTemplate } from "types";
 import { AnyObject } from "yup";
 
 const isFilled = (item: string) => {
@@ -9,48 +10,76 @@ const roundTo = (value: number, decimal: number) => {
   return Math.round(value * shift) / shift;
 };
 
+/**
+ * Converts a string to a floating-point number.
+ *
+ * Designed to accept user-entered values, but reject typos.
+ * For examples of how this function behaves, see the unit tests.
+ *
+ * Type coercions, partial successes, and edge cases make JS parsing hard.
+ * For more see https://stackoverflow.com/questions/175739
+ */
+export const parseNumber = (value: string) => {
+  if (value.trim().length === 0) return undefined;
+  if (isNaN(Number(value))) return undefined;
+  const nonNumericChars = /[^.-\d]/;
+  if (value.match(nonNumericChars)) return undefined;
+  const parsed = parseFloat(value);
+  if (isNaN(parsed)) return undefined;
+  if (Object.is(parsed, -0)) return 0;
+  return parsed;
+};
+
 export const isNumber = (value: string) => {
-  const allNumbers = /^-?\d*\.?\d*$/i;
-  return allNumbers.test(value);
+  return parseNumber(value) !== undefined;
 };
 
 export const FacilityLengthOfStayCalc = (
-  rate: AnyObject,
-  _multiplier: number
+  rate: NonNullable<LengthOfStayRateTemplate["answer"]>
 ) => {
-  rate["opr-min-stay"] = "";
-  rate["epr-min-stay"] = "";
-  rate["rar-min-stay"] = "";
+  const maybeRound = (x: number | undefined) => {
+    if (x === undefined) return undefined;
+    return roundTo(x, 2);
+  };
 
-  //Observed Performance Rate for the Minimizing Length of Facility Stay
-  if (isFilled(rate["count-of-success"]) && isFilled(rate["fac-count"]))
-    rate["opr-min-stay"] = roundTo(
-      rate["count-of-success"] / rate["fac-count"],
-      2
-    );
+  const {
+    performanceTarget,
+    actualCount,
+    denominator,
+    expectedCount,
+    populationRate,
+  } = rate;
 
-  //Expected Performance Rate for the Minimizing Length of Facility Stay
+  let actualRate: number | undefined = undefined;
+  let expectedRate: number | undefined = undefined;
+  let adjustedRate: number | undefined = undefined;
+
+  // If we don't have a denominator then none of these calculations will work
+  const canCalc = denominator !== undefined && denominator !== 0;
+
+  if (canCalc && actualCount !== undefined)
+    actualRate = actualCount / denominator;
+
+  if (canCalc && expectedCount !== undefined)
+    expectedRate = expectedCount / denominator;
+
   if (
-    isFilled(rate["expected-count-of-success"]) &&
-    isFilled(rate["fac-count"])
+    actualRate !== undefined &&
+    expectedRate !== undefined &&
+    populationRate !== undefined
   )
-    rate["epr-min-stay"] = roundTo(
-      rate["expected-count-of-success"] / rate["fac-count"],
-      2
-    );
+    adjustedRate = (populationRate * actualRate) / expectedRate;
 
-  //Risk Adjusted Rate for the Minimizing Length of Facility Stay
-  if (
-    isFilled(rate["opr-min-stay"]) &&
-    isFilled(rate["epr-min-stay"]) &&
-    isFilled(rate["multi-plan"])
-  )
-    rate["rar-min-stay"] = roundTo(
-      (rate["opr-min-stay"] / rate["epr-min-stay"]) * rate["multi-plan"],
-      2
-    );
-
-  return rate;
+  return {
+    performanceTarget,
+    actualCount,
+    denominator,
+    expectedCount,
+    populationRate,
+    actualRate: maybeRound(actualRate),
+    expectedRate: maybeRound(expectedRate),
+    adjustedRate: maybeRound(adjustedRate),
+  };
 };
 
 export const NDRCalc = (rate: AnyObject, multiplier: number) => {

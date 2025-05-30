@@ -176,6 +176,7 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
+  LengthOfStayRate = "lengthOfStay",
   PerformanceRate = "performanceRate",
   StatusAlert = "statusAlert",
   Divider = "divider",
@@ -200,6 +201,7 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
+  | LengthOfStayRateTemplate
   | PerformanceRateTemplate
   | StatusAlertTemplate
   | DividerTemplate
@@ -364,6 +366,26 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
+const LengthOfStayRateFields = [
+  "performanceTarget",
+  "actualCount",
+  "denominator",
+  "expectedCount",
+  "populationRate",
+  "actualRate",
+  "expectedRate",
+  "adjustedRate",
+] as const;
+export type LengthOfStayField = typeof LengthOfStayRateFields[number];
+
+export type LengthOfStayRateTemplate = {
+  id: string;
+  type: ElementType.LengthOfStayRate;
+  labels: Record<LengthOfStayField, string>;
+  answer?: Record<LengthOfStayField, number | undefined>;
+  required?: boolean;
+};
+
 export type PerformanceData = {
   rates: AnyObject[];
   denominator?: number;
@@ -388,13 +410,11 @@ export type RateSetData = {
 export const enum PerformanceRateType {
   NDR = "NDR",
   NDR_Enhanced = "NDREnhanced",
-  FIELDS = "Fields",
   NDR_FIELDS = "NDRFields",
 }
 
 export const enum RateCalc {
   NDRCalc = "NDRCalc",
-  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
 }
 
 export type PerformanceRateTemplate = {
