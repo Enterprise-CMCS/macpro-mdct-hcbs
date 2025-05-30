@@ -173,7 +173,7 @@ export const DashboardPage = () => {
                       and submitted to CMS for review.
                     </li>
                     <li>
-                      <strong>In-Revision:</strong> The report has been sent
+                      <strong>In revision:</strong> The report has been sent
                       back to the state for revisions or additional information
                       after submission.
                     </li>
