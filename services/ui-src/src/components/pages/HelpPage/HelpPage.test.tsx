@@ -23,8 +23,10 @@ describe("Test HelpPage", () => {
   test("Check for email links", () => {
     const email1 = screen.getByRole("link", { name: "mdct_help@cms.hhs.gov" });
     expect(email1).toHaveAttribute("href", "mailto:mdct_help@cms.hhs.gov");
-    const email2 = screen.getByRole("link", { name: "HCBSDemo@cms.hhs.gov" });
-    expect(email2).toHaveAttribute("href", "mailto:HCBSDemo@cms.hhs.gov");
+    const email2 = screen.getByRole("link", {
+      name: "HCBSQuality@cms.hhs.gov",
+    });
+    expect(email2).toHaveAttribute("href", "mailto:HCBSQuality@cms.hhs.gov");
   });
 });
 
