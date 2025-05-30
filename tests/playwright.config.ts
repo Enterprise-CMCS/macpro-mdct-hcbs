@@ -34,8 +34,6 @@ export default defineConfig({
     /* Video recording configuration */
     video: "retain-on-failure",
   },
-  /* Give each test plenty of time to run. 600000ms = 10min */
-  timeout: 600000,
 
   /* Configure projects for major browsers */
   projects: [
