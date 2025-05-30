@@ -7,7 +7,7 @@ import {
 } from "../../../types/reports";
 
 export const ciReportTemplate: ReportBase = {
-  type: ReportType.TA,
+  type: ReportType.CI,
   year: 2026,
   pages: [
     {

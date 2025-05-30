@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy, Tags } from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface DynamoDBTableProps {
@@ -40,6 +40,8 @@ export class DynamoDBTable extends Construct {
       },
       removalPolicy: props.isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     });
+
+    Tags.of(this.table).add("AWS_Backup", "d35");
 
     this.identifiers = {
       id,
