@@ -133,6 +133,9 @@ describe("Radio field hide condition logic", () => {
 });
 
 describe("Radio field click action logic", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   test("Radio field triggers a report delivery methods change when toggled", async () => {
     const deliveryElement = {
       ...mockRadioElement,
@@ -150,6 +153,58 @@ describe("Radio field click action logic", () => {
       await userEvent.click(radioField!);
     });
     expect(mockChangeDeliveryMethods).toHaveBeenCalled();
+  });
+
+  test("Confirmation modal is shown when delivery method is changed, and clicking yes changes the radio value", async () => {
+    const deliveryElement = {
+      ...mockRadioElement,
+      clickAction: "qmDeliveryMethodChange",
+      answer: "mock-answer",
+    };
+    const deliveryRadio = (
+      <div data-testid="test-radio-list">
+        <RadioField element={deliveryElement} formkey="elements.0" />
+      </div>
+    );
+    render(deliveryRadio);
+    const radioField = screen.getByText("Choice 1");
+    await act(async () => {
+      await userEvent.click(radioField!);
+    });
+    expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
+
+    const modalYes = screen.getByText("Yes");
+    expect(modalYes).toBeVisible();
+    await act(async () => {
+      await userEvent.click(modalYes!);
+    });
+    expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(1);
+  });
+
+  test("Confirmation modal is shown when delivery method is changed, and clicking no does not change the radio value", async () => {
+    const deliveryElement = {
+      ...mockRadioElement,
+      clickAction: "qmDeliveryMethodChange",
+      answer: "mock-answer",
+    };
+    const deliveryRadio = (
+      <div data-testid="test-radio-list">
+        <RadioField element={deliveryElement} formkey="elements.0" />
+      </div>
+    );
+    render(deliveryRadio);
+    const radioField = screen.getByText("Choice 1");
+    await act(async () => {
+      await userEvent.click(radioField!);
+    });
+    expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
+
+    const modalNo = screen.getByText("No");
+    expect(modalNo).toBeVisible();
+    await act(async () => {
+      await userEvent.click(modalNo!);
+    });
+    expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
   });
 
   test("Radio field triggers a clear action when not reporting.", async () => {
