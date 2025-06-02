@@ -188,7 +188,8 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
         onConfirmHandler={modalConfirmHandler}
         content={{
           heading: "Are you sure?",
-          subheading: undefined,
+          subheading:
+            "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.",
           actionButtonText: "Yes",
           closeButtonText: "No",
         }}
