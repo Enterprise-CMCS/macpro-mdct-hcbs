@@ -1,4 +1,4 @@
-import { Accordion, Link } from "@chakra-ui/react";
+import { Accordion } from "@chakra-ui/react";
 import { AccordionItem, ReportIntroCard } from "components";
 import { ReportType } from "types";
 import { ReportIntroCardActions } from "./ReportIntroCardActions";
@@ -9,19 +9,18 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
  */
 export const TaIntroductionCard = () => {
   return (
-    <ReportIntroCard title="HCBS Timely Access Report">
-      The HCBS is ...
-      <Link
-        isExternal={true}
-        href="https://www.govinfo.gov/content/pkg/PLAW-109publ171/pdf/PLAW-109publ171.pdf"
-      >
-        6071(a)(1) of the Deficit Reduction Act (DRA)
-      </Link>
-      as "increasing the use of home and community-based, rather than
-      institutional, long-term care services."
+    <ReportIntroCard title="Timely Access Compliance Measure Report (TACM) Report">
+      The Timely Access Compliance Measures support the ongoing efforts to
+      safeguard the health and welfare of HCBS participants by promoting quality
+      monitoring and accountability across state systems. The compliance
+      measures in this set assess state performance in key domains such as
+      Homemaker, Home Health Aide, Personal Care, and Habilitation Services.
+      These compliance measures are reported annually and help track whether
+      states are effectively implementing quality strategies and delivering
+      services that meet participant needs.
       <ReportIntroCardActions reportType={ReportType.TA} />
       <Accordion allowToggle={true}>
-        <AccordionItem label="When is the HCBS Timely Access Report due?">
+        <AccordionItem label="When is the Timely Access Compliance Measure Report due?">
           <p>The HCBS Timely Access will be created and submitted ...</p>
           <p>The HCBS Timely Access deadlines are TBD ...</p>
         </AccordionItem>

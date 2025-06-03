@@ -12,7 +12,11 @@ const component = (
 describe("TaIntroductionCard", () => {
   it("should render", () => {
     render(component);
-    expect(screen.getByText("The HCBS is", { exact: false })).toBeVisible();
+    expect(
+      screen.getByText("The Timely Access Compliance Measures support", {
+        exact: false,
+      })
+    ).toBeVisible();
   });
 
   testA11y(component);

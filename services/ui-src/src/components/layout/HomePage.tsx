@@ -59,8 +59,8 @@ export const HomePage = () => {
               </Text>
             </Box>
             <QmsIntroductionCard />
-            {isTAReportActive && <TaIntroductionCard />}
             {isCIReportActive && <CiIntroductionCard />}
+            {isTAReportActive && <TaIntroductionCard />}
           </>
         ) : (
           // show read-only view to non-state users
