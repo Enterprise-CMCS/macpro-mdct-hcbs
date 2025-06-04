@@ -1,7 +1,7 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
-import { ReportType, isReportType, assertExhaustive } from "types";
+import { ReportType, isReportType } from "types";
 import { useStore } from "utils";
 
 /**
@@ -13,7 +13,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   const state = useStore().user?.state;
   const dashboardRoute = `/report/${reportType}/${state}`;
 
-  const getAbbreviation = (reportType: ReportType) => {
+  const getAbbreviation = (reportType: string) => {
     if (!isReportType(reportType)) return "";
     switch (reportType) {
       case ReportType.CI:
@@ -22,9 +22,6 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         return "QMS";
       case ReportType.TA:
         return "TACM";
-      default:
-        assertExhaustive(reportType);
-        return "";
     }
   };
 
