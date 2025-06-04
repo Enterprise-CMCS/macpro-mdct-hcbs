@@ -12,7 +12,7 @@ const verbiage = {
 const parseReportOptions = (selectedReport: Report | undefined) => {
   return {
     cahps: selectedReport?.options.cahps,
-    hciidd: selectedReport?.options.hciidd,
+    nciidd: selectedReport?.options.nciidd,
     nciad: selectedReport?.options.nciad,
     pom: selectedReport?.options.pom,
   };
@@ -21,7 +21,7 @@ const parseReportOptions = (selectedReport: Report | undefined) => {
 const parseFormDataOptions = (formData: any) => {
   return {
     cahps: formData.cahps.answer == "true",
-    hciidd: formData.hciidd.answer == "true",
+    nciidd: formData.nciidd.answer == "true",
     nciad: formData.nciad.answer == "true",
     pom: formData.pom.answer == "true",
   };
@@ -58,7 +58,7 @@ export const buildOptionElements = (selectedReport: Report | undefined) => {
         element={{
           type: ElementType.Radio,
           id: "",
-          label: "Is your state reporting on the HCI-IDD beneficiary Survey?",
+          label: "Is your state reporting on the NCI-IDD beneficiary Survey?",
           choices: [
             {
               label: "Yes",
@@ -72,10 +72,10 @@ export const buildOptionElements = (selectedReport: Report | undefined) => {
             },
           ],
           required: true,
-          answer: selectedReport?.options.hciidd?.toString(),
+          answer: selectedReport?.options.nciidd?.toString(),
         }}
         disabled={!!selectedReport}
-        formkey={"hciidd"}
+        formkey={"nciidd"}
       />
       <RadioField
         element={{
