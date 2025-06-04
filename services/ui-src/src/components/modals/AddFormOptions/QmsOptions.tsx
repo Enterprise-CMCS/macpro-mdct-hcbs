@@ -3,7 +3,7 @@ import { ElementType, Report } from "types";
 import { AddEditReportModalOptions } from "../AddEditReportModal";
 
 const verbiage = {
-  reportName: "Quality Measure Set Report",
+  reportName: "Quality Measure Set Report Name",
   yearSelect: "Select the quality measure set reporting year.",
   shortName: "QMS",
   sampleName: "HCBS QMS Report for 2026",
