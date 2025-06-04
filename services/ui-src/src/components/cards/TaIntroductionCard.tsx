@@ -9,7 +9,7 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
  */
 export const TaIntroductionCard = () => {
   return (
-    <ReportIntroCard title="Timely Access Compliance Measure Report Report">
+    <ReportIntroCard title="Timely Access Compliance Measure Report">
       The Timely Access Compliance Measures support the ongoing efforts to
       safeguard the health and welfare of HCBS participants by promoting quality
       monitoring and accountability across state systems. The compliance
