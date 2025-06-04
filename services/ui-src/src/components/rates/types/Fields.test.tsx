@@ -134,17 +134,17 @@ describe("<Fields />", () => {
       const oprMinStay = screen.getByRole("textbox", {
         name: "Observed Performance Rate for the Minimizing Length of Facility Stay",
       });
-      expect(oprMinStay).toHaveValue("0.5");
+      expect(oprMinStay).toHaveValue("0.50");
 
       const eprMinStay = screen.getByRole("textbox", {
         name: "Expected Performance Rate for the Minimizing Length of Facility Stay",
       });
-      expect(eprMinStay).toHaveValue("0.5");
+      expect(eprMinStay).toHaveValue("0.50");
 
       const rarMinStay = screen.getByRole("textbox", {
         name: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
       });
-      expect(rarMinStay).toHaveValue("2");
+      expect(rarMinStay).toHaveValue("2.00");
     });
   });
 
