@@ -58,5 +58,5 @@ export const NDRCalc = (rate: AnyObject, multiplier: number) => {
 
   if (!isFilled(numerator) || !isFilled(denominator)) return "";
 
-  return roundTo(numerator / denominator, 2) * multiplier;
+  return roundTo(numerator / denominator, 1) * multiplier;
 };
