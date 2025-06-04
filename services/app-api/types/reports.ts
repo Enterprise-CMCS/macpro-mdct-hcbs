@@ -21,7 +21,7 @@ export interface ReportOptions {
   year: number;
   options: {
     cahps?: boolean;
-    nciidd?: boolean;
+    hciidd?: boolean;
     nciad?: boolean;
     pom?: boolean;
   };

@@ -52,7 +52,7 @@ const editModalComponent = (
           year: 2026,
           options: {
             cahps: true,
-            nciidd: true,
+            hciidd: true,
             nciad: true,
             pom: true,
           },
