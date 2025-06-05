@@ -7,7 +7,7 @@ const testModalData = {
   reportName: "test report name",
   datetime: new Date().getTime(),
   cahpsSurveyOption: "No",
-  hciiddSurveyOption: "No",
+  nciiddSurveyOption: "No",
   nciadSurveyOption: "No",
   pomSurveyOption: "No",
 };
@@ -38,22 +38,22 @@ const fillAddEditReportModal = async (page: Page) => {
     name: "Quality Measure Set Report Name",
   });
   const cahpsRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the HCBS CAHPS beneficiary Survey?",
+    name: "Is your state reporting on the HCBS CAHPS Survey?",
   });
-  const hciiddRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the HCI-IDD beneficiary Survey?",
+  const nciiddRadioButton = page.getByRole("radiogroup", {
+    name: "Is your state reporting on the NCI-IDD Survey?",
   });
   const nciadRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the NCI-AD beneficiary Survey?",
+    name: "Is your state reporting on the NCI-AD Survey?",
   });
   const pomRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the POM beneficiary Survey?",
+    name: "Is your state reporting on the POM Survey?",
   });
   await qmsSetReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
   );
   await cahpsRadioButton.getByLabel(testModalData.cahpsSurveyOption).check();
-  await hciiddRadioButton.getByLabel(testModalData.hciiddSurveyOption).check();
+  await nciiddRadioButton.getByLabel(testModalData.nciiddSurveyOption).check();
   await nciadRadioButton.getByLabel(testModalData.nciadSurveyOption).check();
   await pomRadioButton.getByLabel(testModalData.pomSurveyOption).check();
   const addEditReportButton = page.getByRole("button", {

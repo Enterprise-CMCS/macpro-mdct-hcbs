@@ -52,7 +52,7 @@ export const getStatus = (report: Report) => {
     report.status === ReportStatus.IN_PROGRESS &&
     report.submissionCount >= 1
   ) {
-    return "In Revision";
+    return "In revision";
   }
   return report.status;
 };
