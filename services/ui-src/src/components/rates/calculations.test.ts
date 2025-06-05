@@ -1,6 +1,61 @@
-import { parseNumber } from "./calculations";
+import {
+  parseNumber,
+  roundRate,
+  stringifyInput,
+  stringifyResult,
+} from "./calculations";
 
 describe("Rate calculations", () => {
+  describe("roundRate", () => {
+    it.each([
+      // Reject undefined
+      { input: undefined, expected: undefined },
+      // Preserve precision left of the decimal
+      { input: 1234, expected: 1234 },
+      { input: 123.4, expected: 123.4 },
+      { input: 12.34, expected: 12.34 },
+      // Round at the 2nd decimal place
+      { input: 1.234, expected: 1.23 },
+      { input: 0.1234, expected: 0.12 },
+      // Round 5s towards positive infinity
+      { input: -0.015, expected: -0.01 },
+      { input: -0.005, expected: 0 },
+      { input: 0.005, expected: 0.01 },
+      { input: 0.015, expected: 0.02 },
+    ])("should return $expected given $input", ({ input, expected }) => {
+      expect(roundRate(input)).toBe(expected);
+    });
+  });
+
+  describe("stringifyInput", () => {
+    it.each([
+      { input: undefined, expected: "" },
+      { input: 1234, expected: "1234" },
+      { input: 123.4, expected: "123.4" },
+      { input: 12.34, expected: "12.34" },
+      { input: 1.234, expected: "1.234" },
+      { input: 0.1234, expected: "0.1234" },
+      { input: -0.1, expected: "-0.1" },
+    ])("should return $expected given $input", ({ input, expected }) => {
+      expect(stringifyInput(input)).toBe(expected);
+    });
+  });
+
+  describe("stringifyResult", () => {
+    it.each([
+      { input: undefined, expected: "" },
+      { input: 0, expected: "0.00" },
+      { input: 1234, expected: "1234" },
+      { input: 123.4, expected: "123.4" },
+      { input: 12.34, expected: "12.34" },
+      { input: 1.234, expected: "1.234" },
+      { input: 0.1234, expected: "0.1234" },
+      { input: -0.1, expected: "-0.1" },
+    ])("should return $expected given $input", ({ input, expected }) => {
+      expect(stringifyResult(input)).toBe(expected);
+    });
+  });
+
   describe("parseNumber", () => {
     it.each([
       { input: "42", expected: 42 },

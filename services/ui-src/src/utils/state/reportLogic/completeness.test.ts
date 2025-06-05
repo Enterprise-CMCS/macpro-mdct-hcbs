@@ -304,7 +304,6 @@ describe("elementSatisfiesRequired", () => {
       fields: [{ label: "abc", id: "abc" }],
       answer: [
         {
-          id: "mock-id",
           denominator: 34,
           rates: [
             {
@@ -323,7 +322,6 @@ describe("elementSatisfiesRequired", () => {
       fields: [{ label: "abc", id: "abc" }],
       answer: [
         {
-          id: "mock-id",
           rates: [
             {
               performanceTarget: undefined,

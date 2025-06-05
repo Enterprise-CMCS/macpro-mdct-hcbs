@@ -1,13 +1,44 @@
-import { LengthOfStayRateTemplate } from "types";
-import { AnyObject } from "yup";
+/**
+ * Every calculation in the QMS report rounds its result to two decimal places.
+ */
+const DECIMAL_PLACES = 2;
 
-const isFilled = (item: string) => {
-  return item !== "" && item !== undefined;
+/**
+ * Round the given number to {@link DECIMAL_PLACES}.
+ * If it is undefined, return undefined.
+ */
+export const roundRate = (value: number | undefined): number | undefined => {
+  if (value === undefined) return undefined;
+
+  const shift = Math.pow(10, DECIMAL_PLACES);
+  const result = Math.round(value * shift) / shift;
+  if (Object.is(result, -0)) return 0;
+  return result;
 };
 
-export const roundTo = (value: number, decimal: number) => {
-  const shift = Math.pow(10, decimal);
-  return Math.round(value * shift) / shift;
+/**
+ * Convert the given number to a string.
+ * If it is undefined, return an empty string.
+ */
+export const stringifyInput = (value: number | undefined) => {
+  if (value === undefined) return "";
+  return value.toString();
+};
+
+/**
+ * Convert the given number to a string.
+ * If it is undefined, return an empty string.
+ * If it is zero, include {@link DECIMAL_PLACES} trailing zeroes.
+ *
+ * Note: We include trailing zeroes for calculated zeroes to assure the user
+ * that a calculation took place. For example, if the calculation is `1 / 1000`,
+ * and we only display `0`, it may seem that the calculation errored out.
+ * Whereas displaying `0.00` gives a nicer impression.
+ */
+export const stringifyResult = (value: number | undefined) => {
+  if (value === undefined) return "";
+  if (value === 0) return (0).toFixed(DECIMAL_PLACES);
+  return value.toString();
 };
 
 /**
@@ -28,64 +59,4 @@ export const parseNumber = (value: string) => {
   if (isNaN(parsed)) return undefined;
   if (Object.is(parsed, -0)) return 0;
   return parsed;
-};
-
-export const isNumber = (value: string) => {
-  return parseNumber(value) !== undefined;
-};
-
-export const FacilityLengthOfStayCalc = (
-  rate: NonNullable<LengthOfStayRateTemplate["answer"]>
-) => {
-  const maybeRound = (x: number | undefined) => {
-    if (x === undefined) return undefined;
-    return roundTo(x, 2);
-  };
-
-  const {
-    performanceTarget,
-    actualCount,
-    denominator,
-    expectedCount,
-    populationRate,
-  } = rate;
-
-  let actualRate: number | undefined = undefined;
-  let expectedRate: number | undefined = undefined;
-  let adjustedRate: number | undefined = undefined;
-
-  // If we don't have a denominator then none of these calculations will work
-  const canCalc = denominator !== undefined && denominator !== 0;
-
-  if (canCalc && actualCount !== undefined)
-    actualRate = actualCount / denominator;
-
-  if (canCalc && expectedCount !== undefined)
-    expectedRate = expectedCount / denominator;
-
-  if (
-    actualRate !== undefined &&
-    expectedRate !== undefined &&
-    populationRate !== undefined
-  )
-    adjustedRate = (populationRate * actualRate) / expectedRate;
-
-  return {
-    performanceTarget,
-    actualCount,
-    denominator,
-    expectedCount,
-    populationRate,
-    actualRate: maybeRound(actualRate),
-    expectedRate: maybeRound(expectedRate),
-    adjustedRate: maybeRound(adjustedRate),
-  };
-};
-
-export const NDRCalc = (rate: AnyObject, multiplier: number) => {
-  const { numerator, denominator } = rate;
-
-  if (!isFilled(numerator) || !isFilled(denominator)) return undefined;
-
-  return roundTo(numerator / denominator, 1) * multiplier;
 };

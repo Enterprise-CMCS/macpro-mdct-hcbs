@@ -1,56 +1,121 @@
 import React, { useEffect, useState } from "react";
-import {
-  ElementType,
-  LengthOfStayField,
-  LengthOfStayRateTemplate,
-} from "types";
+import { LengthOfStayField, LengthOfStayRateTemplate } from "types";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
-import { FacilityLengthOfStayCalc, parseNumber } from "../calculations";
+import {
+  parseNumber,
+  roundRate,
+  stringifyInput,
+  stringifyResult,
+} from "../calculations";
 import { PageElementProps } from "components/report/Elements";
 
 export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const { formkey, disabled } = props;
   const { labels, answer } = props.element;
 
-  const defaultAnswer = {
-    performanceTarget: undefined,
-    actualCount: undefined,
-    denominator: undefined,
-    expectedCount: undefined,
-    populationRate: undefined,
-    actualRate: undefined,
-    expectedRate: undefined,
-    adjustedRate: undefined,
+  const stringifyAnswer = (newAnswer: typeof answer) => {
+    return {
+      performanceTarget: stringifyInput(newAnswer?.performanceTarget),
+      actualCount: stringifyInput(newAnswer?.actualCount),
+      denominator: stringifyInput(newAnswer?.denominator),
+      expectedCount: stringifyInput(newAnswer?.expectedCount),
+      populationRate: stringifyInput(newAnswer?.populationRate),
+      actualRate: stringifyResult(newAnswer?.actualRate),
+      expectedRate: stringifyResult(newAnswer?.expectedRate),
+      adjustedRate: stringifyResult(newAnswer?.adjustedRate),
+    };
   };
-  const [displayValue, setDisplayValue] = useState<
-    NonNullable<LengthOfStayRateTemplate["answer"]>
-  >(answer ?? defaultAnswer);
+
+  const defaultValue = stringifyAnswer(answer);
+  const [displayValue, setDisplayValue] = useState(defaultValue);
 
   // Get form context and register field
   const form = useFormContext();
   const key = `${formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
-    form.setValue(key, defaultAnswer);
+    form.setValue(key, defaultValue);
   }, []);
 
+  const updatedDisplayValue = (input: HTMLInputElement) => {
+    const fieldType = input.name as LengthOfStayField;
+    const stringValue = input.value;
+
+    const newDisplayValue = structuredClone(displayValue);
+    newDisplayValue[fieldType] = stringValue;
+
+    return newDisplayValue;
+  };
+
+  const computeAnswer = (newDisplayValue: typeof displayValue) => {
+    const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
+    const actualCount = parseNumber(newDisplayValue.actualCount);
+    const denominator = parseNumber(newDisplayValue.denominator);
+    const expectedCount = parseNumber(newDisplayValue.expectedCount);
+    const populationRate = parseNumber(newDisplayValue.populationRate);
+    let actualRate: number | undefined = undefined;
+    let expectedRate: number | undefined = undefined;
+    let adjustedRate: number | undefined = undefined;
+
+    const canDivide = denominator !== undefined && denominator !== 0;
+
+    if (canDivide && actualCount !== undefined) {
+      actualRate = actualCount / denominator;
+    }
+
+    if (canDivide && expectedCount !== undefined) {
+      expectedRate = expectedCount / denominator;
+    }
+
+    if (
+      actualRate !== undefined &&
+      expectedRate !== undefined &&
+      populationRate !== undefined
+    ) {
+      adjustedRate = (populationRate * actualRate) / expectedRate;
+    }
+
+    return {
+      performanceTarget: roundRate(performanceTarget),
+      actualCount: roundRate(actualCount),
+      denominator: roundRate(denominator),
+      expectedCount: roundRate(expectedCount),
+      populationRate: roundRate(populationRate),
+      actualRate: roundRate(actualRate),
+      expectedRate: roundRate(expectedRate),
+      adjustedRate: roundRate(adjustedRate),
+    };
+  };
+
+  const updateCalculatedValues = (
+    newDisplayValue: typeof displayValue,
+    newAnswer: NonNullable<typeof answer>
+  ) => {
+    newDisplayValue.actualRate = stringifyResult(newAnswer.actualRate);
+    newDisplayValue.expectedRate = stringifyResult(newAnswer.expectedRate);
+    newDisplayValue.adjustedRate = stringifyResult(newAnswer.adjustedRate);
+  };
+
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    const parsedValue = parseNumber(value);
+    // displayValue corresponds to the inputs on screen. Its values are strings.
+    const newDisplayValue = updatedDisplayValue(event.target);
 
-    if (parsedValue === undefined) return;
+    // answer corresponds to the report data. Its values are numbers.
+    const newAnswer = computeAnswer(newDisplayValue);
 
-    const calculatedRate = FacilityLengthOfStayCalc({
-      ...displayValue,
-      [name as LengthOfStayField]: parsedValue,
-    });
+    // Instantly display calculation results
+    updateCalculatedValues(newDisplayValue, newAnswer);
+    setDisplayValue(newDisplayValue);
 
-    setDisplayValue(calculatedRate);
+    // Instantly save parsed and calculated values to the form, store, and API
+    form.setValue(`${key}`, newAnswer, { shouldValidate: true });
+  };
 
-    form.setValue(`${key}`, displayValue, { shouldValidate: true });
-    form.setValue(`${key}.type`, ElementType.LengthOfStayRate);
+  const onBlurHandler = () => {
+    // When the user is done typing, overwrite the answer with the parsed value.
+    setDisplayValue(stringifyAnswer(form.getValues(key)));
   };
 
   return (
@@ -61,56 +126,58 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           label={labels.performanceTarget}
           name="performanceTarget"
           onChange={onChangeHandler}
-          value={displayValue.performanceTarget ?? ""}
+          onBlur={onBlurHandler}
+          value={displayValue.performanceTarget}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualCount}
           name="actualCount"
           onChange={onChangeHandler}
-          value={displayValue.actualCount ?? ""}
+          onBlur={onBlurHandler}
+          value={displayValue.actualCount}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.denominator}
           name="denominator"
           onChange={onChangeHandler}
-          value={displayValue.denominator ?? ""}
+          onBlur={onBlurHandler}
+          value={displayValue.denominator}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.expectedCount}
           name="expectedCount"
           onChange={onChangeHandler}
-          value={displayValue.expectedCount ?? ""}
+          onBlur={onBlurHandler}
+          value={displayValue.expectedCount}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.populationRate}
           name="populationRate"
           onChange={onChangeHandler}
-          value={displayValue.populationRate ?? ""}
+          onBlur={onBlurHandler}
+          value={displayValue.populationRate}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualRate}
           name="actualRate"
-          onChange={onChangeHandler}
-          value={displayValue.actualRate ?? ""}
+          value={displayValue.actualRate}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.expectedRate}
           name="expectedRate"
-          onChange={onChangeHandler}
-          value={displayValue.expectedRate ?? ""}
+          value={displayValue.expectedRate}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.adjustedRate}
           name="adjustedRate"
-          onChange={onChangeHandler}
-          value={displayValue.adjustedRate ?? ""}
+          value={displayValue.adjustedRate}
           disabled={true}
         ></CmsdsTextField>
         <Divider></Divider>

@@ -11,7 +11,7 @@ import {
   MeasurePageTemplate,
   isFormPageTemplate,
   isMeasurePageTemplate,
-  LengthOfStayRateFields,
+  LengthOfStayFieldNames,
 } from "types";
 
 /**
@@ -164,7 +164,7 @@ export const elementSatisfiesRequired = (
   }
 
   if (element.type === ElementType.LengthOfStayRate) {
-    return LengthOfStayRateFields.every(
+    return Object.values(LengthOfStayFieldNames).every(
       (fieldId) => element.answer?.[fieldId] !== undefined
     );
   }

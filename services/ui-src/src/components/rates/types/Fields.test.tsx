@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { Fields } from "./Fields";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
@@ -95,7 +95,7 @@ describe("<Fields />", () => {
 
     test("Fields should auto-calculate", async () => {
       const enterValue = async (fieldId: LengthOfStayField, value: string) => {
-        await userEvent.type(getInput(fieldId), value);
+        await act(() => userEvent.type(getInput(fieldId), value));
       };
 
       await enterValue("actualCount", "1");

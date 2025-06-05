@@ -324,6 +324,7 @@ const ndrEnhancedRateSchema = object().shape({
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
+  performanceTargetLabel: string().required(),
   assessments: array()
     .of(
       object().shape({
