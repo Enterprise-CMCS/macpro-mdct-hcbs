@@ -37,7 +37,7 @@ export const AdminDashSelector = () => {
     },
     {
       value: "TA",
-      label: "Timely Access Report (TA)",
+      label: "Timely Access Compliance Measure Report (TACM)",
     },
   ];
 

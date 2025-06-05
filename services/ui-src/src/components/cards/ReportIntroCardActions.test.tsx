@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, getDefaultNormalizer } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ReportIntroCardActions } from "./ReportIntroCardActions";
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
@@ -22,19 +22,16 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const reportActionsComponent = (
+const reportActionsComponent = (reportType: ReportType) => (
   <RouterWrappedComponent>
-    <ReportIntroCardActions reportType={ReportType.QMS} />
+    <ReportIntroCardActions reportType={reportType} />
   </RouterWrappedComponent>
 );
 
 describe("<ReportIntroCardActions />", () => {
   describe("Renders", () => {
-    beforeEach(() => {
-      render(reportActionsComponent);
-    });
-
     test("QMS ReportTypeCard navigates to next route on link click", async () => {
+      render(reportActionsComponent(ReportType.QMS));
       const dashboardLink = screen.getByRole("link", {
         name: "Enter QMS Report online",
       });
@@ -43,7 +40,21 @@ describe("<ReportIntroCardActions />", () => {
       const expectedRoute = "/report/QMS/MN";
       expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
+
+    test.each([
+      { type: ReportType.QMS, text: "QMS" },
+      { type: ReportType.TA, text: "TACM" },
+      { type: ReportType.CI, text: "CI" },
+      { type: "bad name" as ReportType, text: "" },
+    ])("$type report card renders action button", ({ type, text }) => {
+      render(reportActionsComponent(type));
+      expect(
+        screen.getByText(`Enter ${text} Report online`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      ).toBeVisible();
+    });
   });
 
-  testA11y(reportActionsComponent);
+  testA11y(reportActionsComponent(ReportType.QMS));
 });

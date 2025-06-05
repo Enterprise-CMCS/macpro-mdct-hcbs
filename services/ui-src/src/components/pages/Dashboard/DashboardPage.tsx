@@ -40,7 +40,7 @@ export const DashboardPage = () => {
       case ReportType.QMS:
         return "Quality Measure Set Report";
       case ReportType.TA:
-        return "Timely Access Report";
+        return "Timely Access Compliance Measure Report";
       case ReportType.CI:
         return "Critical Incident Report";
       default:

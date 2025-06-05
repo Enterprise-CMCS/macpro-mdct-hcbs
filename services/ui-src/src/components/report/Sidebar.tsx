@@ -23,7 +23,7 @@ const getTitle = (report: Report) => {
     case ReportType.QMS:
       return "Quality Measure Set Report";
     case ReportType.TA:
-      return "Timely Access Report";
+      return "Timely Access Compliance Measure Report";
     default:
       assertExhaustive(report.type);
       return "";
