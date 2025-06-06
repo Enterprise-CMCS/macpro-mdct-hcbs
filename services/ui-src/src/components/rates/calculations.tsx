@@ -51,6 +51,7 @@ export const stringifyResult = (value: number | undefined) => {
  * For more see https://stackoverflow.com/questions/175739
  */
 export const parseNumber = (value: string) => {
+  value = value.trim();
   if (value === "") return undefined;
   const nonNumericChars = /[^.-\d]/;
   if (value.match(nonNumericChars)) return undefined;

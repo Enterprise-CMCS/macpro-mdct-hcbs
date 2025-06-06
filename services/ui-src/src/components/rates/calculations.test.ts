@@ -65,6 +65,7 @@ describe("Rate calculations", () => {
       { input: "-77", expected: -77 },
       { input: "-.3", expected: -0.3 },
       { input: "0", expected: 0 },
+      { input: " 123\n", expected: 123 }, // trim any whitespace from copy/paste
       { input: "-0", expected: 0 }, // even though 0 and -0 are different things
       { input: "", expected: undefined },
       { input: "    ", expected: undefined },
