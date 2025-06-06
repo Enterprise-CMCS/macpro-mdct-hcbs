@@ -36,7 +36,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const key = `${formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
-    form.setValue(key, initialValue);
   }, []);
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
