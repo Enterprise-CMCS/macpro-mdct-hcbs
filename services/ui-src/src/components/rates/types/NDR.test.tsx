@@ -65,6 +65,7 @@ describe("<NDR />", () => {
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
     });
+
     test("Rate should calculate", async () => {
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await act(async () => await userEvent.type(numerator, "1"));
@@ -76,6 +77,28 @@ describe("<NDR />", () => {
 
       const rate = screen.getByRole("textbox", { name: "Rate" });
       expect(rate).toHaveValue("0.5");
+    });
+
+    test("Rate should not display a decimal point if it is not needed", async () => {
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "27"));
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await act(async () => await userEvent.type(denominator, "3"));
+
+      const rate = screen.getByRole("textbox", { name: "Rate" });
+      expect(rate).toHaveValue("9");
+    });
+
+    test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "4"));
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await act(async () => await userEvent.type(denominator, "2000"));
+
+      const rate = screen.getByRole("textbox", { name: "Rate" });
+      expect(rate).toHaveValue("0.00");
     });
   });
 
