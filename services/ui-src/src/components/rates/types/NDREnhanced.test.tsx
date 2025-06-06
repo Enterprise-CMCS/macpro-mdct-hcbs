@@ -95,7 +95,7 @@ describe("<NDREnhanced />", () => {
       expect(denominator).toHaveValue("2");
 
       const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("0.5");
+      expect(rate).toHaveValue("0.50");
     });
   });
 

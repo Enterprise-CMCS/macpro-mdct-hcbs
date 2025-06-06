@@ -27,7 +27,7 @@ export const FacilityLengthOfStayCalc = (
     rate["opr-min-stay"] = roundTo(
       rate["count-of-success"] / rate["fac-count"],
       2
-    );
+    ).toFixed(2);
 
   //Expected Performance Rate for the Minimizing Length of Facility Stay
   if (
@@ -37,7 +37,7 @@ export const FacilityLengthOfStayCalc = (
     rate["epr-min-stay"] = roundTo(
       rate["expected-count-of-success"] / rate["fac-count"],
       2
-    );
+    ).toFixed(2);
 
   //Risk Adjusted Rate for the Minimizing Length of Facility Stay
   if (
@@ -48,7 +48,7 @@ export const FacilityLengthOfStayCalc = (
     rate["rar-min-stay"] = roundTo(
       (rate["opr-min-stay"] / rate["epr-min-stay"]) * rate["multi-plan"],
       2
-    );
+    ).toFixed(2);
 
   return rate;
 };
@@ -58,5 +58,5 @@ export const NDRCalc = (rate: AnyObject, multiplier: number) => {
 
   if (!isFilled(numerator) || !isFilled(denominator)) return "";
 
-  return roundTo(numerator / denominator, 1) * multiplier;
+  return roundTo((numerator * multiplier) / denominator, 2).toFixed(2);
 };
