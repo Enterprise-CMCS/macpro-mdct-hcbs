@@ -79,7 +79,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
        *     (actualRate / expectedRate) * populationRate
        * since the factor of `1/denominator` in both actualRate and expectedRate
        * cancels out. So we can compute it before the user gives a denominator.
-       * Additionally, we may get a more precise answer from this direct
+       * Additionally, we may get a more precise answer from this more direct
        * computation - although roundRate() discards most/all of that precision.
        */
       adjustedRate = (populationRate * actualCount) / expectedCount;

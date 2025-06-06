@@ -2,12 +2,12 @@ import {
   ElementType,
   LengthOfStayRateTemplate,
   MeasurePageTemplate,
+  NdrEnhancedTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
   PageStatus,
   PageType,
   RadioTemplate,
-  RateSetData,
   Report,
   TextboxTemplate,
 } from "types";
@@ -264,77 +264,140 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(incompleteChildren, radios)).toBeFalsy();
   });
 
-  test("handles rates", () => {
-    const goodRateA = {
-      id: "good-rate",
-      type: ElementType.Ndr,
-      required: true,
+  test("accepts complete LengthOfStay rates", () => {
+    const element = {
+      type: ElementType.LengthOfStayRate,
       answer: {
         performanceTarget: 1,
-        numerator: 4,
-        denominator: 60,
-        rate: 15,
+        actualCount: 2,
+        denominator: 3,
+        expectedCount: 4,
+        populationRate: 5,
+        actualRate: 0.67,
+        expectedRate: 1.33,
+        adjustedRate: 2.52,
       },
-    } as NdrTemplate;
-    const fieldsRate = {
-      id: "field-rate",
-      type: ElementType.LengthOfStayRate,
       required: true,
-      labels: {},
-      answer: {
-        performanceTarget: 0,
-        actualCount: 1,
-        denominator: 2,
-        expectedCount: 3,
-        populationRate: 4,
-        actualRate: 5,
-        expectedRate: 6,
-        adjustedRate: 7,
-      },
     } as LengthOfStayRateTemplate;
-    const badRate = {
-      id: "bad-rate",
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+
+  test.each([
+    undefined,
+    {},
+    {
+      performanceTarget: 1,
+      actualCount: 2,
+      expectedCount: 4,
+      populationRate: 5,
+      adjustedRate: 2.52,
+    },
+  ])("rejects incomplete LengthOfStay rates", (answer) => {
+    const element = {
+      type: ElementType.LengthOfStayRate,
+      answer,
+      required: true,
+    } as LengthOfStayRateTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test("accepts complete NDR rates", () => {
+    const element = {
       type: ElementType.Ndr,
+      answer: {
+        performanceTarget: 2,
+        numerator: 1,
+        denominator: 3,
+        rate: 0.33,
+      },
       required: true,
     } as NdrTemplate;
-    const goodNDRFieldRate = {
-      id: "good-ndr-field-rate",
-      type: ElementType.NdrFields,
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+
+  test.each([
+    undefined,
+    {},
+    { numerator: 1, denominator: 3, rate: 0.33 },
+    { performanceTarget: 2, denominator: 3, rate: 0.33 },
+    { performanceTarget: 2, numerator: 1, rate: 0.33 },
+    { performanceTarget: 2, numerator: 1, denominator: 3 },
+  ])("rejects incomplete NDR rates", (answer) => {
+    const element = {
+      type: ElementType.Ndr,
+      answer,
       required: true,
-      fields: [{ label: "abc", id: "abc" }],
+    } as NdrTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test("accepts complete NDREnhanced rates", () => {
+    const element = {
+      type: ElementType.NdrEnhanced,
+      answer: {
+        denominator: 5,
+        rates: [
+          {
+            performanceTarget: 6,
+            numerator: 7,
+            rate: 1.4,
+          },
+        ],
+      },
+      required: true,
+    } as NdrEnhancedTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+
+  test.each([
+    undefined,
+    {},
+    { rates: [{ performanceTarget: 6, numerator: 7, rate: 1.4 }] },
+    { denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] },
+    { denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] },
+    { denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] },
+  ])("rejects incomplete NDREnhanced rates", (answer) => {
+    const element = {
+      type: ElementType.NdrEnhanced,
+      answer,
+      required: true,
+    } as NdrEnhancedTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test("accepts complete NDREnhanced rates", () => {
+    const element = {
+      type: ElementType.NdrFields,
       answer: [
         {
-          denominator: 34,
+          denominator: 5,
           rates: [
             {
-              performanceTarget: 56,
-              numerator: 78,
-              rate: 2.2,
+              performanceTarget: 6,
+              numerator: 7,
+              rate: 1.4,
             },
           ],
         },
-      ] as RateSetData[],
-    } as NdrFieldsTemplate;
-    const badNDRFieldRate = {
-      id: "bad-ndr-field-rate",
-      type: ElementType.NdrFields,
+      ],
       required: true,
-      fields: [{ label: "abc", id: "abc" }],
-      answer: [
-        {
-          rates: [
-            {
-              performanceTarget: undefined,
-            },
-          ],
-        },
-      ] as RateSetData[],
     } as NdrFieldsTemplate;
-    const elements = [goodRateA, badRate];
-    expect(elementSatisfiesRequired(goodRateA, elements)).toBeTruthy();
-    expect(elementSatisfiesRequired(fieldsRate, elements)).toBeTruthy();
-    expect(elementSatisfiesRequired(badRate, elements)).toBeFalsy();
-    expect(elementSatisfiesRequired(goodNDRFieldRate, elements)).toBeTruthy();
-    expect(elementSatisfiesRequired(badNDRFieldRate, elements)).toBeFalsy();
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+
+  test.each([
+    undefined,
+    [{}],
+    [{ rates: [{ performanceTarget: 6, numerator: 7, rate: 1.4 }] }],
+    [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
+    [{ denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] }],
+    [{ denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] }],
+  ])("rejects incomplete NDREnhanced rates", (answer) => {
+    const element = {
+      type: ElementType.NdrFields,
+      answer,
+      required: true,
+    } as unknown as NdrFieldsTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
 });
