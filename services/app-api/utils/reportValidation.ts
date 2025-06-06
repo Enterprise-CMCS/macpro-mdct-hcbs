@@ -316,7 +316,21 @@ const ndrFieldsRateSchema = object().shape({
     .required(),
   required: boolean().notRequired(),
   multiplier: number().notRequired(),
-  answer: mixed().notRequired(),
+  answer: array()
+    .of(
+      object().shape({
+        denominator: number().notRequired(),
+        rates: array().of(
+          object().shape({
+            id: string().required(),
+            numerator: number().notRequired(),
+            rate: number().notRequired(),
+            performanceTarget: number().notRequired(),
+          })
+        ),
+      })
+    )
+    .notRequired(),
 });
 
 const ndrEnhancedRateSchema = object().shape({
@@ -334,7 +348,19 @@ const ndrEnhancedRateSchema = object().shape({
     )
     .required(),
   required: boolean().notRequired(),
-  answer: mixed().notRequired(),
+  answer: object()
+    .shape({
+      denominator: number().notRequired(),
+      rates: array().of(
+        object().shape({
+          id: string().required(),
+          numerator: number().notRequired(),
+          rate: number().notRequired(),
+          performanceTarget: number().notRequired(),
+        })
+      ),
+    })
+    .notRequired(),
 });
 
 const ndrRateSchema = object().shape({
@@ -343,7 +369,14 @@ const ndrRateSchema = object().shape({
   label: string().required(),
   performanceTargetLabel: string().required(),
   required: boolean().notRequired(),
-  answer: mixed().notRequired(),
+  answer: object()
+    .shape({
+      performanceTarget: number().notRequired(),
+      numerator: number().notRequired(),
+      denominator: number().notRequired(),
+      rate: number().notRequired(),
+    })
+    .notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({
