@@ -463,17 +463,18 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
-export const LengthOfStayRateFields = [
-  "performanceTarget",
-  "actualCount",
-  "denominator",
-  "expectedCount",
-  "populationRate",
-  "actualRate",
-  "expectedRate",
-  "adjustedRate",
-] as const;
-export type LengthOfStayField = typeof LengthOfStayRateFields[number];
+export const LengthOfStayFieldNames = {
+  performanceTarget: "performanceTarget",
+  actualCount: "actualCount",
+  denominator: "denominator",
+  expectedCount: "expectedCount",
+  populationRate: "populationRate",
+  actualRate: "actualRate",
+  expectedRate: "expectedRate",
+  adjustedRate: "adjustedRate",
+} as const;
+export type LengthOfStayField =
+  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
 
 export type LengthOfStayRateTemplate = {
   id: string;
@@ -483,6 +484,14 @@ export type LengthOfStayRateTemplate = {
   required?: boolean;
 };
 
+export const RateInputFieldNames = {
+  performanceTarget: "performanceTarget",
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+export type RateInputFieldName =
+  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+
 export type RateType = {
   id: string;
   numerator: number | undefined;
@@ -491,7 +500,6 @@ export type RateType = {
 };
 
 export type RateSetData = {
-  id: string;
   denominator: number | undefined;
   rates: RateType[];
 };
