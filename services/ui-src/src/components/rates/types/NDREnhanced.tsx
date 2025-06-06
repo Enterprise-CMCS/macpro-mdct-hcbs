@@ -21,16 +21,18 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
   const { assessments, answer, helperText, performanceTargetLabel, label } =
     element;
 
-  const stringifyAnswer = (newAnswer: typeof answer) => {
+  const stringifyAnswer = (
+    newAnswer: typeof answer | Record<string, undefined>
+  ) => {
     return {
       denominator: stringifyInput(newAnswer?.denominator),
       rates: assessments.map((assessment, i) => ({
         id: assessment.id,
         performanceTarget: stringifyInput(
-          newAnswer?.rates[i].performanceTarget
+          newAnswer?.rates?.[i].performanceTarget
         ),
-        numerator: stringifyInput(newAnswer?.rates[i].numerator),
-        rate: stringifyResult(newAnswer?.rates[i].rate),
+        numerator: stringifyInput(newAnswer?.rates?.[i].numerator),
+        rate: stringifyResult(newAnswer?.rates?.[i].rate),
       })),
     };
   };
