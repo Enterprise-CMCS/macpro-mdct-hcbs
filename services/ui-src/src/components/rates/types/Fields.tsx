@@ -70,11 +70,19 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     }
 
     if (
-      actualRate !== undefined &&
-      expectedRate !== undefined &&
+      actualCount !== undefined &&
+      expectedCount !== undefined &&
       populationRate !== undefined
     ) {
-      adjustedRate = (populationRate * actualRate) / expectedRate;
+      /*
+       * Note that this is algebraically equivalent to the prescribed formula:
+       *     (actualRate / expectedRate) * populationRate
+       * since the factor of `1/denominator` in both actualRate and expectedRate
+       * cancels out. So we can compute it before the user gives a denominator.
+       * Additionally, we may get a more precise answer from this direct
+       * computation - although roundRate() discards most/all of that precision.
+       */
+      adjustedRate = (populationRate * actualCount) / expectedCount;
     }
 
     return {
