@@ -2,13 +2,8 @@ import { act, render, screen } from "@testing-library/react";
 import { NDREnhanced } from "./NDREnhanced";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
-import { NDRCalc } from "../calculations";
 import { useStore } from "utils";
-import {
-  ElementType,
-  PerformanceRateTemplate,
-  PerformanceRateType,
-} from "types";
+import { ElementType, NdrEnhancedTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { mockStateUserStore } from "utils/testing/setupJest";
 
@@ -34,23 +29,21 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedPerformanceElement: PerformanceRateTemplate = {
+const mockedPerformanceElement: NdrEnhancedTemplate = {
   id: "mock-perf-id",
-  type: ElementType.PerformanceRate,
-  rateType: PerformanceRateType.NDR_Enhanced,
+  type: ElementType.NdrEnhanced,
   label: "test label",
   helperText: "helper text",
+  performanceTargetLabel:
+    "What is the 2028 state performance target for this assessment?",
   assessments: [{ id: "test-1", label: "assessment 1" }],
-  multiplier: 1,
 };
 
 const ndrEnhancedComponent = (
   <NDREnhanced
     formkey={"mock-key"}
-    calculation={NDRCalc}
-    year={2026}
     disabled={false}
-    {...mockedPerformanceElement}
+    element={mockedPerformanceElement}
   />
 );
 
@@ -95,7 +88,7 @@ describe("<NDREnhanced />", () => {
       expect(denominator).toHaveValue("2");
 
       const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("0.50");
+      expect(rate).toHaveValue("0.5");
     });
   });
 
