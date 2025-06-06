@@ -483,7 +483,7 @@ export interface ReportOptions {
   year: number;
   options: {
     cahps?: boolean;
-    hciidd?: boolean;
+    nciidd?: boolean;
     nciad?: boolean;
     pom?: boolean;
   };

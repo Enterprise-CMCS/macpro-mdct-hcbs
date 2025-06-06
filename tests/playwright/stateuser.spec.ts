@@ -7,7 +7,7 @@ const testModalData = {
   reportName: "test report name",
   datetime: new Date().getTime(),
   cahpsSurveyOption: "No",
-  hciiddSurveyOption: "No",
+  nciiddSurveyOption: "No",
   nciadSurveyOption: "No",
   pomSurveyOption: "No",
 };
@@ -19,7 +19,7 @@ test("create a report as a state user", async ({ page }) => {
 
 const navigateToAddEditReportModal = async (page: Page) => {
   await page.goto("/");
-  const qmsReportButton = page.getByRole("button", {
+  const qmsReportButton = page.getByRole("link", {
     name: "Enter QMS Report online",
   });
   await qmsReportButton.click();
@@ -35,25 +35,25 @@ const fillAddEditReportModal = async (page: Page) => {
   });
   await expect(addQMSReportHeading).toBeVisible();
   const qmsSetReportNameInput = page.getByRole("textbox", {
-    name: "QMS report name",
+    name: "Quality Measure Set Report Name",
   });
   const cahpsRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the HCBS CAHPS beneficiary survey?",
+    name: "Is your state reporting on the HCBS CAHPS Survey?",
   });
-  const hciiddRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the HCI-IDD beneficiary survey?",
+  const nciiddRadioButton = page.getByRole("radiogroup", {
+    name: "Is your state reporting on the NCI-IDD Survey?",
   });
   const nciadRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the NCI-AD beneficiary survey?",
+    name: "Is your state reporting on the NCI-AD Survey?",
   });
   const pomRadioButton = page.getByRole("radiogroup", {
-    name: "Does your state administer the POM beneficiary survey?",
+    name: "Is your state reporting on the POM Survey?",
   });
   await qmsSetReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
   );
   await cahpsRadioButton.getByLabel(testModalData.cahpsSurveyOption).check();
-  await hciiddRadioButton.getByLabel(testModalData.hciiddSurveyOption).check();
+  await nciiddRadioButton.getByLabel(testModalData.nciiddSurveyOption).check();
   await nciadRadioButton.getByLabel(testModalData.nciadSurveyOption).check();
   await pomRadioButton.getByLabel(testModalData.pomSurveyOption).check();
   const addEditReportButton = page.getByRole("button", {

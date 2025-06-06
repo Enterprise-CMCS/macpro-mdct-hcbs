@@ -67,7 +67,7 @@ describe("isReportOptions", () => {
     year: 2026,
     options: {
       cahps: true,
-      hciidd: false,
+      nciidd: false,
       nciad: true,
       pom: false,
     },
@@ -121,8 +121,8 @@ describe("isReportOptions", () => {
     yield { obj, reason: "have options.cahps of the wrong type" };
 
     obj = buildValidReportOptions();
-    obj.options.hciidd = "false";
-    yield { obj, reason: "have options.hciidd of the wrong type" };
+    obj.options.nciidd = "false";
+    yield { obj, reason: "have options.nciidd of the wrong type" };
 
     obj = buildValidReportOptions();
     obj.options.nciad = 17;

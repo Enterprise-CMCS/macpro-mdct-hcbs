@@ -440,7 +440,7 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
 
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
-  hciidd: boolean().notRequired(),
+  nciidd: boolean().notRequired(),
   nciad: boolean().notRequired(),
   pom: boolean().notRequired(),
 });

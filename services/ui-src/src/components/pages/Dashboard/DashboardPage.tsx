@@ -40,7 +40,7 @@ export const DashboardPage = () => {
       case ReportType.QMS:
         return "Quality Measure Set Report";
       case ReportType.TA:
-        return "Timely Access Report";
+        return "Timely Access Compliance Measure Report";
       case ReportType.CI:
         return "Critical Incident Report";
       default:
@@ -161,11 +161,11 @@ export const DashboardPage = () => {
                 <p>
                   <ul>
                     <li>
-                      <strong>Not Started:</strong> The report has been created
+                      <strong>Not started:</strong> The report has been created
                       but no data has been entered or actions taken.
                     </li>
                     <li>
-                      <strong>In Progress:</strong> The report is actively being
+                      <strong>In progress:</strong> The report is actively being
                       worked on, with some or all data entered.
                     </li>
                     <li>
@@ -173,7 +173,7 @@ export const DashboardPage = () => {
                       and submitted to CMS for review.
                     </li>
                     <li>
-                      <strong>In-Revision:</strong> The report has been sent
+                      <strong>In revision:</strong> The report has been sent
                       back to the state for revisions or additional information
                       after submission.
                     </li>

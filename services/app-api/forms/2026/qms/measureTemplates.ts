@@ -620,7 +620,7 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         label:
-          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
         ...statePerformanceTargetLabel,
       },
       {
@@ -656,7 +656,7 @@ export const measureTemplates: Record<
         type: ElementType.Ndr,
         id: "measure-rates",
         label:
-          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
         ...statePerformanceTargetLabel,
         required: true,
       },
