@@ -68,6 +68,11 @@ describe("Rate calculations", () => {
       { input: "-0", expected: 0 }, // even though 0 and -0 are different things
       { input: "", expected: undefined },
       { input: "    ", expected: undefined },
+      { input: "-", expected: undefined },
+      { input: ".", expected: undefined },
+      { input: "-.", expected: undefined },
+      { input: "1.2.3", expected: undefined },
+      { input: "NaN", expected: undefined },
       { input: "1abc", expected: undefined }, // even though parseFloat("1abc") === 1
       { input: "Infinity", expected: undefined }, // even though isNaN(Infinity) === false
       { input: "1.5e2", expected: undefined }, // even though 1.5e2 === 150

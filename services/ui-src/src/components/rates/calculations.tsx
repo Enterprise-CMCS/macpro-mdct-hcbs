@@ -51,12 +51,11 @@ export const stringifyResult = (value: number | undefined) => {
  * For more see https://stackoverflow.com/questions/175739
  */
 export const parseNumber = (value: string) => {
-  if (value.trim().length === 0) return undefined;
-  if (isNaN(Number(value))) return undefined;
+  if (value === "") return undefined;
   const nonNumericChars = /[^.-\d]/;
   if (value.match(nonNumericChars)) return undefined;
+  if (isNaN(Number(value))) return undefined;
   const parsed = parseFloat(value);
-  if (isNaN(parsed)) return undefined;
   if (Object.is(parsed, -0)) return 0;
   return parsed;
 };
