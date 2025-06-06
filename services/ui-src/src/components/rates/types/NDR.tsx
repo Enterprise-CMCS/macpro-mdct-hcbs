@@ -24,15 +24,15 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     };
   };
 
-  const defaultValue = stringifyAnswer(answer);
-  const [displayValue, setDisplayValue] = useState(defaultValue);
+  const initialValue = stringifyAnswer(answer);
+  const [displayValue, setDisplayValue] = useState(initialValue);
 
   // get form context and register field
   const form = useFormContext();
   const key = `${formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
-    form.setValue(key, defaultValue);
+    form.setValue(key, initialValue);
   }, []);
 
   const updatedDisplayValue = (input: HTMLInputElement) => {

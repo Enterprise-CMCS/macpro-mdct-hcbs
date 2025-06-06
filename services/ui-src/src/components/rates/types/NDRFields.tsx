@@ -109,10 +109,8 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     newAnswer: NonNullable<typeof answer>
   ) => {
     for (let [displayObj, answerObj] of zip(newDisplayValue, newAnswer)) {
-      for (let [displayRate, answerRate] of zip(
-        displayObj.rates,
-        answerObj.rates
-      )) {
+      for (let pair of zip(displayObj.rates, answerObj.rates)) {
+        const [displayRate, answerRate] = pair;
         displayRate.rate = stringifyResult(answerRate.rate);
       }
     }

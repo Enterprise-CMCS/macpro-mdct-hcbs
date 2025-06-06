@@ -17,9 +17,9 @@ import { PageElementProps } from "components/report/Elements";
 import { zip } from "utils/other/arrays";
 
 export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
-  const { formkey, disabled } = props;
+  const { formkey, disabled, element } = props;
   const { assessments, answer, helperText, performanceTargetLabel, label } =
-    props.element;
+    element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
