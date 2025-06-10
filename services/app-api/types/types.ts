@@ -32,6 +32,7 @@ export interface APIGatewayProxyEvent {
   headers: Record<string, string | undefined>;
   pathParameters: Record<string, string | undefined> | null;
   queryStringParameters: Record<string, string | undefined> | null;
+  requestContext: any;
 }
 
 /**
