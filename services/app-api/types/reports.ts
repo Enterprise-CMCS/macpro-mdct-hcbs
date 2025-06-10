@@ -530,7 +530,7 @@ export type NdrTemplate = {
   id: string;
   type: ElementType.Ndr;
   label: string;
-  performanceTargetLabel: string;
+  performanceTargetLabel?: string;
   answer?: {
     performanceTarget: number | undefined;
     numerator: number | undefined;
@@ -538,6 +538,7 @@ export type NdrTemplate = {
     rate: number | undefined;
   };
   required?: boolean;
+  multiplier?: number;
 };
 
 export type ChoiceTemplate = {

@@ -361,6 +361,14 @@ export const performanceRatePOM: NdrTemplate = {
   ...statePerformanceTargetLabel,
 };
 
+//Rates for homemaker
+export const homemakerRate: NdrTemplate = {
+  type: ElementType.Ndr,
+  id: "homemaker-rate",
+  required: true,
+  label: "Homemaker",
+};
+
 //Rates for LTSS-7
 export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,

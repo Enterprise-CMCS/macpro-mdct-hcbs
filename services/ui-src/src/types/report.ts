@@ -445,6 +445,7 @@ export type NdrTemplate = {
     rate: number | undefined;
   };
   required?: boolean;
+  multiplier?: number;
 };
 
 export type ChoiceTemplate = {

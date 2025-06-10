@@ -13,7 +13,8 @@ import { PageElementProps } from "components/report/Elements";
 
 export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const { formkey, disabled, element } = props;
-  const { label, performanceTargetLabel, answer } = element;
+  const { label, performanceTargetLabel, answer, multiplier } = element;
+  const multiplierVal = multiplier ?? 1; // default multiplier value
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
@@ -50,7 +51,9 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     const denominator = parseNumber(newDisplayValue.denominator);
     const canCompute =
       numerator !== undefined && denominator !== undefined && denominator !== 0;
-    const rate = canCompute ? numerator / denominator : undefined;
+    const rate = canCompute
+      ? (numerator / denominator) * multiplierVal
+      : undefined;
 
     return {
       performanceTarget: roundRate(performanceTarget),
@@ -93,14 +96,16 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
       <Stack gap="2rem">
         <Stack gap="2rem">
           <Heading variant="subHeader">Performance Rate: {label}</Heading>
-          <CmsdsTextField
-            label={performanceTargetLabel}
-            name={RateInputFieldNames.performanceTarget}
-            onChange={onChangeHandler}
-            onBlur={onBlurHandler}
-            value={displayValue.performanceTarget}
-            disabled={disabled}
-          ></CmsdsTextField>
+          {performanceTargetLabel && (
+            <CmsdsTextField
+              label={performanceTargetLabel}
+              name={RateInputFieldNames.performanceTarget}
+              onChange={onChangeHandler}
+              onBlur={onBlurHandler}
+              value={displayValue.performanceTarget}
+              disabled={disabled}
+            ></CmsdsTextField>
+          )}
           <CmsdsTextField
             label="Numerator"
             name={RateInputFieldNames.numerator}
