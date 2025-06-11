@@ -5,7 +5,6 @@ import {
   HeaderIcon,
   ReportBase,
 } from "../../../types/reports";
-import { homemakerRate } from "../elements";
 
 export const taReportTemplate: ReportBase = {
   type: ReportType.TA,
@@ -69,7 +68,12 @@ export const taReportTemplate: ReportBase = {
           label: "Instructions",
           value: "[Instructions to follow]",
         },
-        homemakerRate,
+        {
+          type: ElementType.NdrBasic,
+          id: "homemaker-rate",
+          required: true,
+          label: "Homemaker",
+        },
       ],
     },
     {

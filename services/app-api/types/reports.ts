@@ -280,6 +280,7 @@ export enum ElementType {
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
   Ndr = "ndr",
+  NdrBasic = "ndrBasic",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -308,6 +309,7 @@ export type PageElement =
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
+  | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -533,6 +535,19 @@ export type NdrTemplate = {
   performanceTargetLabel?: string;
   answer?: {
     performanceTarget: number | undefined;
+    numerator: number | undefined;
+    denominator: number | undefined;
+    rate: number | undefined;
+  };
+  required?: boolean;
+  multiplier?: number;
+};
+
+export type NdrBasicTemplate = {
+  id: string;
+  type: ElementType.NdrBasic;
+  label: string;
+  answer?: {
     numerator: number | undefined;
     denominator: number | undefined;
     rate: number | undefined;

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
-import { NdrTemplate, RateInputFieldName, RateInputFieldNames } from "types";
+import {
+  NdrBasicTemplate,
+  RateInputFieldNameBasic,
+  RateInputFieldNamesBasic,
+} from "types";
 import {
   parseNumber,
   roundRate,
@@ -11,13 +15,14 @@ import {
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
 
-export const NDR = (props: PageElementProps<NdrTemplate>) => {
+export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const { formkey, disabled, element } = props;
-  const { label, performanceTargetLabel, answer } = element;
+  const { label, answer, multiplier } = element;
+  const multiplierVal = multiplier ?? 1; // default multiplier value
+  //console.log("multiplierVal: ", multiplierVal);
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
-      performanceTarget: stringifyInput(newAnswer?.performanceTarget),
       numerator: stringifyInput(newAnswer?.numerator),
       denominator: stringifyInput(newAnswer?.denominator),
       rate: stringifyResult(newAnswer?.rate),
@@ -35,7 +40,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   }, []);
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
-    const fieldType = input.name as RateInputFieldName;
+    const fieldType = input.name as RateInputFieldNameBasic;
     const stringValue = input.value;
 
     const newDisplayValue = structuredClone(displayValue);
@@ -45,15 +50,15 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   };
 
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
-    const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
     const numerator = parseNumber(newDisplayValue.numerator);
     const denominator = parseNumber(newDisplayValue.denominator);
     const canCompute =
       numerator !== undefined && denominator !== undefined && denominator !== 0;
-    const rate = canCompute ? numerator / denominator : undefined;
+    const rate = canCompute
+      ? (multiplierVal * numerator) / denominator
+      : undefined;
 
     return {
-      performanceTarget: roundRate(performanceTarget),
       numerator: roundRate(numerator),
       denominator: roundRate(denominator),
       rate: roundRate(rate),
@@ -89,23 +94,12 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
 
   return (
     <Stack gap={4} sx={sx.performance}>
-      <Heading variant="subHeader">Performance Rates</Heading>
+      <Heading variant="subHeader">{label}</Heading>
       <Stack gap="2rem">
         <Stack gap="2rem">
-          <Heading variant="subHeader">Performance Rate: {label}</Heading>
-          {performanceTargetLabel && (
-            <CmsdsTextField
-              label={performanceTargetLabel}
-              name={RateInputFieldNames.performanceTarget}
-              onChange={onChangeHandler}
-              onBlur={onBlurHandler}
-              value={displayValue.performanceTarget}
-              disabled={disabled}
-            ></CmsdsTextField>
-          )}
           <CmsdsTextField
             label="Numerator"
-            name={RateInputFieldNames.numerator}
+            name={RateInputFieldNamesBasic.numerator}
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
             value={displayValue.numerator}
@@ -113,7 +107,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
           ></CmsdsTextField>
           <CmsdsTextField
             label="Denominator"
-            name={RateInputFieldNames.denominator}
+            name={RateInputFieldNamesBasic.denominator}
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
             value={displayValue.denominator}

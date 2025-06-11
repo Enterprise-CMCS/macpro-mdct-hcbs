@@ -11,6 +11,7 @@ import {
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
+  NdrBasicTemplate,
   RadioTemplate,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
@@ -362,8 +363,8 @@ export const performanceRatePOM: NdrTemplate = {
 };
 
 //Rates for homemaker
-export const homemakerRate: NdrTemplate = {
-  type: ElementType.Ndr,
+export const homemakerRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
   id: "homemaker-rate",
   required: true,
   label: "Homemaker",
