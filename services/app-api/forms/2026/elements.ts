@@ -461,7 +461,7 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   status: "success",
 };
 
-//Rates for Homemaker
+// Rates for Homemaker
 export const homemakerRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "homemaker-rate",
@@ -477,7 +477,7 @@ export const homemakerRate: NdrBasicTemplate = {
   },
 };
 
-//Rates for Home Health Aide
+// Rates for Home Health Aide
 export const homeHealthAideRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "home-health-aide-rate",
@@ -493,7 +493,7 @@ export const homeHealthAideRate: NdrBasicTemplate = {
   },
 };
 
-//Rates for Personal Care
+// Rates for Personal Care
 export const personalCareRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "personal-care-rate",
@@ -509,7 +509,7 @@ export const personalCareRate: NdrBasicTemplate = {
   },
 };
 
-//Rates for Personal Care
+// Rates for Habilitation
 export const habilitationRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "habilitation-rate",
@@ -523,4 +523,46 @@ export const habilitationRate: NdrBasicTemplate = {
     rateHint:
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received habilitation services within the measurement period across all applicable HCBS programs.",
   },
+};
+
+// State Sampling Methodology Radio Question
+export const stateSamplingMethologyQuestion: RadioTemplate = {
+  type: ElementType.Radio,
+  id: "state-sampling-methodology-question",
+  required: true,
+  label: "What sampling methodology was used?",
+  choices: [
+    { label: "Entire population", value: "Entire population" },
+    {
+      label: "Probability sample",
+      value: "Probability sample",
+      checkedChildren: [
+        {
+          type: ElementType.TextAreaField,
+          id: "sampling-approach-used",
+          label: "Describe the sampling approach used",
+          required: true,
+        },
+        {
+          type: ElementType.Textbox,
+          id: "total-eligible-population",
+          label: "Total eligible population",
+          required: true,
+        },
+        {
+          type: ElementType.Textbox,
+          id: "sample-size",
+          label: "Sample size",
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "sampling-process-used",
+          label:
+            "Describe the process used to pull a simple random sample of the eligible population",
+          required: true,
+        },
+      ],
+    },
+  ],
 };

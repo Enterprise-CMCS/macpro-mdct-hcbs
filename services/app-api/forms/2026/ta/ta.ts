@@ -12,6 +12,7 @@ import {
   homeHealthAideRate,
   homemakerRate,
   personalCareRate,
+  stateSamplingMethologyQuestion,
 } from "../elements";
 
 export const taReportTemplate: ReportBase = {
@@ -85,6 +86,7 @@ export const taReportTemplate: ReportBase = {
         habilitationRate,
         divider,
         additionalNotesField,
+        stateSamplingMethologyQuestion,
       ],
     },
     {
