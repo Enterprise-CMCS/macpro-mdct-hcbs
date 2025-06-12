@@ -466,6 +466,11 @@ export type NdrBasicTemplate = {
     denominator: number | undefined;
     rate: number | undefined;
   };
+  hintText?: {
+    numHint: string;
+    denomHint: string;
+    rateHint: string;
+  };
   required?: boolean;
   multiplier?: number;
 };

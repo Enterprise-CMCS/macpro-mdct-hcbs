@@ -32,6 +32,7 @@ import {
   NDR,
   NDRFields,
   NDREnhanced,
+  NDRBasic,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -100,6 +101,8 @@ export const Page = ({ elements }: Props) => {
         return <NDREnhanced {...{ formkey, disabled, element }} />;
       case ElementType.Ndr:
         return <NDR {...{ formkey, disabled, element }} />;
+      case ElementType.NdrBasic:
+        return <NDRBasic {...{ formkey, disabled, element }} />;
       case ElementType.StatusAlert:
         return <StatusAlert {...{ formkey, disabled, element }} />;
       case ElementType.Divider:

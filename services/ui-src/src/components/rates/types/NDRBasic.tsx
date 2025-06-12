@@ -17,9 +17,8 @@ import { PageElementProps } from "components/report/Elements";
 
 export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const { formkey, disabled, element } = props;
-  const { label, answer, multiplier } = element;
+  const { label, answer, multiplier, hintText } = element;
   const multiplierVal = multiplier ?? 1; // default multiplier value
-  //console.log("multiplierVal: ", multiplierVal);
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
@@ -99,6 +98,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
         <Stack gap="2rem">
           <CmsdsTextField
             label="Numerator"
+            hint={hintText?.numHint}
             name={RateInputFieldNamesBasic.numerator}
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
@@ -107,6 +107,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
           ></CmsdsTextField>
           <CmsdsTextField
             label="Denominator"
+            hint={hintText?.denomHint}
             name={RateInputFieldNamesBasic.denominator}
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
@@ -115,8 +116,8 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
           ></CmsdsTextField>
           <CmsdsTextField
             label="Rate"
+            hint={hintText?.rateHint}
             name="rate"
-            hint="Auto-calculates"
             value={displayValue.rate}
             disabled
           ></CmsdsTextField>

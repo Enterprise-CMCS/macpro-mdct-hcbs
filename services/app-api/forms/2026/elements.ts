@@ -362,14 +362,6 @@ export const performanceRatePOM: NdrTemplate = {
   ...statePerformanceTargetLabel,
 };
 
-//Rates for homemaker
-export const homemakerRate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
-  id: "homemaker-rate",
-  required: true,
-  label: "Homemaker",
-};
-
 //Rates for LTSS-7
 export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
@@ -467,4 +459,68 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   title: "This measure has been completed",
   text: "You can still edit the measure, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete measure’ button. {ReturnButton} or select the ‘Return to measure dashboard’ button above to return to the previous page.",
   status: "success",
+};
+
+//Rates for Homemaker
+export const homemakerRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "homemaker-rate",
+  required: true,
+  label: "Homemaker",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program. ",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received homemaker services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received homemaker services within the measurement period across all applicable HCBS programs.",
+  },
+};
+
+//Rates for Home Health Aide
+export const homeHealthAideRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "home-health-aide-rate",
+  required: true,
+  label: "Home Health Aide",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of home health aide services for all beneficiaries who received services through an applicable HCBS program.",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received home health aide services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received home health aide services within the measurement period across all applicable HCBS programs.",
+  },
+};
+
+//Rates for Personal Care
+export const personalCareRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "personal-care-rate",
+  required: true,
+  label: "Personal Care",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of personal care services for all beneficiaries who received services through an applicable HCBS program.",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received personal care services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received personal care services within the measurement period across all applicable HCBS programs.",
+  },
+};
+
+//Rates for Personal Care
+export const habilitationRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "habilitation-rate",
+  required: true,
+  label: "Habilitation",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of habilitation services for all beneficiaries who received services through an applicable HCBS program. ",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received habilitation services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received habilitation services within the measurement period across all applicable HCBS programs.",
+  },
 };
