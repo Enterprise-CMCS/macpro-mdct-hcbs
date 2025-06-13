@@ -1,62 +1,62 @@
-import { AnyObject } from "yup";
+/**
+ * Every calculation in the QMS report rounds its result to two decimal places.
+ */
+const DECIMAL_PLACES = 2;
 
-const isFilled = (item: string) => {
-  return item !== "" && item !== undefined;
+/**
+ * Round the given number to {@link DECIMAL_PLACES}.
+ * If it is undefined, return undefined.
+ */
+export const roundRate = (value: number | undefined): number | undefined => {
+  if (value === undefined) return undefined;
+
+  const shift = Math.pow(10, DECIMAL_PLACES);
+  const result = Math.round(value * shift) / shift;
+  if (Object.is(result, -0)) return 0;
+  return result;
 };
 
-const roundTo = (value: number, decimal: number) => {
-  const shift = Math.pow(10, decimal);
-  return Math.round(value * shift) / shift;
+/**
+ * Convert the given number to a string.
+ * If it is undefined, return an empty string.
+ */
+export const stringifyInput = (value: number | undefined) => {
+  if (value === undefined) return "";
+  return value.toString();
 };
 
-export const isNumber = (value: string) => {
-  const allNumbers = /^-?\d*\.?\d*$/i;
-  return allNumbers.test(value);
+/**
+ * Convert the given number to a string.
+ * If it is undefined, return an empty string.
+ * If it is zero, include {@link DECIMAL_PLACES} trailing zeroes.
+ *
+ * Note: We include trailing zeroes for calculated zeroes to assure the user
+ * that a calculation took place. For example, if the calculation is `1 / 1000`,
+ * and we only display `0`, it may seem that the calculation errored out.
+ * Whereas displaying `0.00` gives a nicer impression.
+ */
+export const stringifyResult = (value: number | undefined) => {
+  if (value === undefined) return "";
+  if (value === 0) return (0).toFixed(DECIMAL_PLACES);
+  return value.toString();
 };
 
-export const FacilityLengthOfStayCalc = (
-  rate: AnyObject,
-  _multiplier: number
-) => {
-  rate["opr-min-stay"] = "";
-  rate["epr-min-stay"] = "";
-  rate["rar-min-stay"] = "";
-
-  //Observed Performance Rate for the Minimizing Length of Facility Stay
-  if (isFilled(rate["count-of-success"]) && isFilled(rate["fac-count"]))
-    rate["opr-min-stay"] = roundTo(
-      rate["count-of-success"] / rate["fac-count"],
-      2
-    ).toFixed(2);
-
-  //Expected Performance Rate for the Minimizing Length of Facility Stay
-  if (
-    isFilled(rate["expected-count-of-success"]) &&
-    isFilled(rate["fac-count"])
-  )
-    rate["epr-min-stay"] = roundTo(
-      rate["expected-count-of-success"] / rate["fac-count"],
-      2
-    ).toFixed(2);
-
-  //Risk Adjusted Rate for the Minimizing Length of Facility Stay
-  if (
-    isFilled(rate["opr-min-stay"]) &&
-    isFilled(rate["epr-min-stay"]) &&
-    isFilled(rate["multi-plan"])
-  )
-    rate["rar-min-stay"] = roundTo(
-      (rate["opr-min-stay"] / rate["epr-min-stay"]) * rate["multi-plan"],
-      2
-    ).toFixed(2);
-
-  return rate;
-};
-
-export const NDRCalc = (rate: AnyObject, multiplier: number) => {
-  const { numerator, denominator } = rate;
-
-  if (!isFilled(numerator) || !isFilled(denominator)) return "";
-
-  return roundTo((numerator * multiplier) / denominator, 2).toFixed(2);
+/**
+ * Converts a string to a floating-point number.
+ *
+ * Designed to accept user-entered values, but reject typos.
+ * For examples of how this function behaves, see the unit tests.
+ *
+ * Type coercions, partial successes, and edge cases make JS parsing hard.
+ * For more see https://stackoverflow.com/questions/175739
+ */
+export const parseNumber = (value: string) => {
+  value = value.trim();
+  if (value === "") return undefined;
+  const nonNumericChars = /[^.-\d]/;
+  if (value.match(nonNumericChars)) return undefined;
+  if (isNaN(Number(value))) return undefined;
+  const parsed = parseFloat(value);
+  if (Object.is(parsed, -0)) return 0;
+  return parsed;
 };

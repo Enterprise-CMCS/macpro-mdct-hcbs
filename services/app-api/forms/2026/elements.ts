@@ -4,18 +4,22 @@ import {
   DividerTemplate,
   ElementType,
   HeaderTemplate,
+  LengthOfStayRateTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
-  PerformanceRateTemplate,
-  PerformanceRateType,
+  NdrEnhancedTemplate,
+  NdrFieldsTemplate,
+  NdrTemplate,
+  NdrBasicTemplate,
   RadioTemplate,
-  RateCalc,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
+
+const REPORT_YEAR = 2026;
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
   type: ElementType.ButtonLink,
@@ -271,11 +275,17 @@ export const whichProgramsWaivers = [
   divider,
 ];
 
+export const statePerformanceTargetLabel = {
+  performanceTargetLabel: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for this assessment?`,
+};
+
 //Rates for LTSS-1
-export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -289,11 +299,11 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   ],
 };
 
-export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -308,10 +318,10 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
 };
 
 //Rates for LTSS-2
-export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -325,11 +335,11 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   ],
 };
 
-export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -344,95 +354,63 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
 };
 
 //Rates for POM
-export const performanceRatePOM: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatePOM: NdrTemplate = {
+  type: ElementType.Ndr,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR,
   required: true,
-  assessments: [
-    {
-      id: "same-env",
-      label: "Person uses the same environments as people without disabilities",
-    },
-  ],
+  label: "Person uses the same environments as people without disabilities",
+  ...statePerformanceTargetLabel,
 };
 
 //Rates for LTSS-7
-export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
   id: "measure-rates",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Discharges to the Community",
-    },
-    { id: "fac-count", label: "Facility Admission Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Discharges to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
-  rateType: PerformanceRateType.FIELDS,
+  labels: {
+    performanceTarget: `What is the ${
+      REPORT_YEAR + 2
+    } state performance target for this assessment?`,
+    actualCount: "Count of Successful Discharges to the Community",
+    denominator: "Facility Admission Count",
+    expectedCount: "Expected Count of Successful Discharges to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
   required: true,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
 //Rates for LTSS-8
-export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
   id: "measure-rates",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Transitions to the Community",
-    },
-    { id: "fac-count", label: "Long-Term Facility Stay Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Transitions to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
+  labels: {
+    performanceTarget: `What is the ${
+      REPORT_YEAR + 2
+    } state performance target for this assessment?`,
+    actualCount: "Count of Successful Transitions to the Community",
+    denominator: "Long-Term Facility Stay Count",
+    expectedCount: "Expected Count of Successful Transitions to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
   required: true,
-  rateType: PerformanceRateType.FIELDS,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
 // Rates for LTSS-6
-export const performanceRateTermStay: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateTermStay: NdrFieldsTemplate = {
+  type: ElementType.NdrFields,
   id: "measure-rates",
+  labelTemplate: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for {{field}} ({{assessment}})?`,
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -444,17 +422,17 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
   ],
-  rateType: PerformanceRateType.NDR_FIELDS,
   required: true,
   multiplier: 1000,
 };
 
 // Rates for HCBS-10
-export const performanceRateSelfDirection: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateSelfDirection: NdrFieldsTemplate = {
+  type: ElementType.NdrFields,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_FIELDS,
-  rateCalc: RateCalc.NDRCalc,
+  labelTemplate: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for {{field}} ({{assessment}})?`,
   required: true,
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },
@@ -481,4 +459,110 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   title: "This measure has been completed",
   text: "You can still edit the measure, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete measure’ button. {ReturnButton} or select the ‘Return to measure dashboard’ button above to return to the previous page.",
   status: "success",
+};
+
+// Rates for Homemaker
+export const homemakerRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "homemaker-rate",
+  required: true,
+  label: "Homemaker",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program. ",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received homemaker services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received homemaker services within the measurement period across all applicable HCBS programs.",
+  },
+};
+
+// Rates for Home Health Aide
+export const homeHealthAideRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "home-health-aide-rate",
+  required: true,
+  label: "Home Health Aide",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of home health aide services for all beneficiaries who received services through an applicable HCBS program.",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received home health aide services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received home health aide services within the measurement period across all applicable HCBS programs.",
+  },
+};
+
+// Rates for Personal Care
+export const personalCareRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "personal-care-rate",
+  required: true,
+  label: "Personal Care",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of personal care services for all beneficiaries who received services through an applicable HCBS program.",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received personal care services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received personal care services within the measurement period across all applicable HCBS programs.",
+  },
+};
+
+// Rates for Habilitation
+export const habilitationRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "habilitation-rate",
+  required: true,
+  label: "Habilitation",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of habilitation services for all beneficiaries who received services through an applicable HCBS program. ",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received habilitation services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received habilitation services within the measurement period across all applicable HCBS programs.",
+  },
+};
+
+// State Sampling Methodology Radio Question
+export const stateSamplingMethologyQuestion: RadioTemplate = {
+  type: ElementType.Radio,
+  id: "state-sampling-methodology-question",
+  required: true,
+  label: "What sampling methodology was used?",
+  choices: [
+    { label: "Entire population", value: "Entire population" },
+    {
+      label: "Probability sample",
+      value: "Probability sample",
+      checkedChildren: [
+        {
+          type: ElementType.TextAreaField,
+          id: "sampling-approach-used",
+          label: "Describe the sampling approach used",
+          required: true,
+        },
+        {
+          type: ElementType.Textbox,
+          id: "total-eligible-population",
+          label: "Total eligible population",
+          required: true,
+        },
+        {
+          type: ElementType.Textbox,
+          id: "sample-size",
+          label: "Sample size",
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "sampling-process-used",
+          label:
+            "Describe the process used to pull a simple random sample of the eligible population",
+          required: true,
+        },
+      ],
+    },
+  ],
 };

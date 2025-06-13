@@ -5,6 +5,15 @@ import {
   HeaderIcon,
   ReportBase,
 } from "../../../types/reports";
+import {
+  additionalNotesField,
+  divider,
+  habilitationRate,
+  homeHealthAideRate,
+  homemakerRate,
+  personalCareRate,
+  stateSamplingMethologyQuestion,
+} from "../elements";
 
 export const taReportTemplate: ReportBase = {
   type: ReportType.TA,
@@ -68,6 +77,16 @@ export const taReportTemplate: ReportBase = {
           label: "Instructions",
           value: "[Instructions to follow]",
         },
+        homemakerRate,
+        divider,
+        homeHealthAideRate,
+        divider,
+        personalCareRate,
+        divider,
+        habilitationRate,
+        divider,
+        additionalNotesField,
+        stateSamplingMethologyQuestion,
       ],
     },
     {
@@ -87,6 +106,16 @@ export const taReportTemplate: ReportBase = {
           label: "Instructions",
           value: "[Instructions to follow]",
         },
+        homemakerRate,
+        divider,
+        homeHealthAideRate,
+        divider,
+        personalCareRate,
+        divider,
+        habilitationRate,
+        divider,
+        additionalNotesField,
+        stateSamplingMethologyQuestion,
       ],
     },
     {
