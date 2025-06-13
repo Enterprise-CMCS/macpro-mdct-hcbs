@@ -48,13 +48,24 @@ export const StatusTableElement = () => {
     setSubmitting(false);
   };
 
-  const modal = SubmitReportModal(() => setModalOpen(false), onSubmit);
+  const modal = SubmitReportModal(
+    () => setModalOpen(false),
+    onSubmit,
+    reportType
+  );
 
   const displayModal = () => {
     setModalComponent(modal, "Are you sure you want to submit?");
   };
-  // Build Rows
 
+  let submitButtonText;
+  if (reportType == "TA") {
+    submitButtonText = "Submit TACM Report";
+  } else {
+    submitButtonText = `Submit ${reportType} Report`;
+  }
+
+  // Build Rows
   const rows = submittableMetrics?.sections.map((sectionDetails, index) => {
     if (!sectionDetails) return;
     const { section, displayStatus: status } = sectionDetails;
@@ -78,6 +89,7 @@ export const StatusTableElement = () => {
       </Tr>
     );
   });
+
   return (
     <>
       <Table variant="status">
@@ -116,7 +128,7 @@ export const StatusTableElement = () => {
             disabled={!submittableMetrics?.submittable || submitting}
           >
             {submitting && <Spinner size="sm" marginRight="1rem" />}
-            Submit QMS Report
+            {submitButtonText}
           </Button>
         )}
       </Stack>
