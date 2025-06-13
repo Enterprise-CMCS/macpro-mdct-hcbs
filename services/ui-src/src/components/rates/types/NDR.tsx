@@ -2,107 +2,139 @@ import React, { useEffect, useState } from "react";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
-import { PerformanceData, PerformanceRateTemplate } from "types";
-import { isNumber } from "../calculations";
+import { NdrTemplate, RateInputFieldName, RateInputFieldNames } from "types";
+import {
+  parseNumber,
+  roundRate,
+  stringifyInput,
+  stringifyResult,
+} from "../calculations";
+import { PageElementProps } from "components/report/Elements";
 
-export const NDR = (
-  props: PerformanceRateTemplate & {
-    formkey: string;
-    year: number;
-    calculation: Function;
-    disabled: boolean;
-  }
-) => {
-  const { label, assessments, answer, multiplier, calculation, disabled } =
-    props;
-  const initialValues =
-    assessments?.map((assess) => {
-      return {
-        numerator: "",
-        denominator: "",
-        rate: undefined,
-        performanceTarget: "",
-        id: assess.id,
-      };
-    }) ?? [];
+export const NDR = (props: PageElementProps<NdrTemplate>) => {
+  const { formkey, disabled, element } = props;
+  const { label, performanceTargetLabel, answer } = element;
 
-  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
-    rates: initialValues,
+  const stringifyAnswer = (newAnswer: typeof answer) => {
+    return {
+      performanceTarget: stringifyInput(newAnswer?.performanceTarget),
+      numerator: stringifyInput(newAnswer?.numerator),
+      denominator: stringifyInput(newAnswer?.denominator),
+      rate: stringifyResult(newAnswer?.rate),
+    };
   };
-  const [displayValue, setDisplayValue] =
-    useState<PerformanceData>(defaultValue);
+
+  const initialValue = stringifyAnswer(answer);
+  const [displayValue, setDisplayValue] = useState(initialValue);
 
   // get form context and register field
   const form = useFormContext();
-  const key = `${props.formkey}.answer`;
+  const key = `${formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
-    form.setValue(key, defaultValue);
   }, []);
 
+  const updatedDisplayValue = (input: HTMLInputElement) => {
+    const fieldType = input.name as RateInputFieldName;
+    const stringValue = input.value;
+
+    const newDisplayValue = structuredClone(displayValue);
+    newDisplayValue[fieldType] = stringValue;
+
+    return newDisplayValue;
+  };
+
+  const computeAnswer = (newDisplayValue: typeof displayValue) => {
+    const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
+    const numerator = parseNumber(newDisplayValue.numerator);
+    const denominator = parseNumber(newDisplayValue.denominator);
+    const canCompute =
+      numerator !== undefined && denominator !== undefined && denominator !== 0;
+    const rate = canCompute ? numerator / denominator : undefined;
+
+    return {
+      performanceTarget: roundRate(performanceTarget),
+      numerator: roundRate(numerator),
+      denominator: roundRate(denominator),
+      rate: roundRate(rate),
+    };
+  };
+
+  const updateCalculatedValues = (
+    newDisplayValue: typeof displayValue,
+    newAnswer: NonNullable<typeof answer>
+  ) => {
+    newDisplayValue.rate = stringifyResult(newAnswer.rate);
+  };
+
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
+    // displayValue corresponds to the inputs on screen. Its values are strings.
+    const newDisplayValue = updatedDisplayValue(event.target);
 
-    const { name, value } = event.target;
-    const [index, type] = name.split(".");
+    // answer corresponds to the report data. Its values are numbers.
+    const newAnswer = computeAnswer(newDisplayValue);
 
-    const newDisplayValue = displayValue.rates[Number(index)];
-    newDisplayValue[type] = value ?? undefined;
-    newDisplayValue.rate = calculation(newDisplayValue, multiplier);
-    displayValue.rates[Number(index)] = newDisplayValue;
+    // Instantly display calculation results
+    updateCalculatedValues(newDisplayValue, newAnswer);
+    setDisplayValue(newDisplayValue);
 
-    setDisplayValue({ ...displayValue });
-    form.setValue(`${key}`, displayValue, { shouldValidate: true });
-    form.setValue(`${key}.type`, props.type);
+    // Instantly save parsed and calculated values to the form, store, and API
+    form.setValue(`${key}`, newAnswer, { shouldValidate: true });
+  };
+
+  const onBlurHandler = () => {
+    // When the user is done typing, overwrite the answer with the parsed value.
+    setDisplayValue(stringifyAnswer(form.getValues(key)));
   };
 
   return (
-    <Stack gap="2rem">
-      {assessments?.map((assess, index) => {
-        const value =
-          displayValue.rates.find((item) => item.id === assess.id) ?? {};
-
-        return (
-          <Stack key={assess.id} gap="2rem">
-            <Heading variant="subHeader">
-              {label ?? "Performance Rate"}
-              {": "}
-              {assess.label}
-            </Heading>
-            <CmsdsTextField
-              label={`What is the ${
-                props.year + 2
-              } state performance target for this assessment?`}
-              name={`${index}.performanceTarget`}
-              onChange={onChangeHandler}
-              value={value.performanceTarget ?? ""}
-              disabled={disabled}
-            ></CmsdsTextField>
-            <CmsdsTextField
-              label="Numerator"
-              name={`${index}.numerator`}
-              onChange={onChangeHandler}
-              value={value.numerator ?? ""}
-              disabled={disabled}
-            ></CmsdsTextField>
-            <CmsdsTextField
-              label="Denominator"
-              name={`${index}.denominator`}
-              onChange={onChangeHandler}
-              value={value.denominator ?? ""}
-              disabled={disabled}
-            ></CmsdsTextField>
-            <CmsdsTextField
-              label="Rate"
-              name={`${index}.rate`}
-              hint="Auto-calculates"
-              value={value.rate ?? ""}
-              disabled
-            ></CmsdsTextField>
-            <Divider></Divider>
-          </Stack>
-        );
-      })}
+    <Stack gap={4} sx={sx.performance}>
+      <Heading variant="subHeader">Performance Rates</Heading>
+      <Stack gap="2rem">
+        <Stack gap="2rem">
+          <Heading variant="subHeader">Performance Rate: {label}</Heading>
+          <CmsdsTextField
+            label={performanceTargetLabel}
+            name={RateInputFieldNames.performanceTarget}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}
+            value={displayValue.performanceTarget}
+            disabled={disabled}
+          ></CmsdsTextField>
+          <CmsdsTextField
+            label="Numerator"
+            name={RateInputFieldNames.numerator}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}
+            value={displayValue.numerator}
+            disabled={disabled}
+          ></CmsdsTextField>
+          <CmsdsTextField
+            label="Denominator"
+            name={RateInputFieldNames.denominator}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}
+            value={displayValue.denominator}
+            disabled={disabled}
+          ></CmsdsTextField>
+          <CmsdsTextField
+            label="Rate"
+            name="rate"
+            hint="Auto-calculates"
+            value={displayValue.rate}
+            disabled
+          ></CmsdsTextField>
+          <Divider></Divider>
+        </Stack>
+      </Stack>
     </Stack>
   );
+};
+
+const sx = {
+  performance: {
+    input: {
+      width: "240px",
+    },
+  },
 };
