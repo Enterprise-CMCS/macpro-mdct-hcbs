@@ -62,7 +62,7 @@ export const StatusTableElement = () => {
   if (reportType == "TA") {
     submitButtonText = "Submit TACM Report";
   } else {
-    submitButtonText = `Submit ${reportType} Report`;
+    submitButtonText = `Submit ${reportType || "QMS"} Report`;
   }
 
   // Build Rows
