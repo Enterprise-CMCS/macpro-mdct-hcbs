@@ -366,9 +366,7 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
   id: "measure-rates",
   labels: {
-    performanceTarget: `What is the ${
-      REPORT_YEAR + 2
-    } state performance target for this assessment?`,
+    performanceTarget: statePerformanceTargetLabel.performanceTargetLabel,
     actualCount: "Count of Successful Discharges to the Community",
     denominator: "Facility Admission Count",
     expectedCount: "Expected Count of Successful Discharges to the Community",
@@ -387,9 +385,7 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
   id: "measure-rates",
   labels: {
-    performanceTarget: `What is the ${
-      REPORT_YEAR + 2
-    } state performance target for this assessment?`,
+    performanceTarget: statePerformanceTargetLabel.performanceTargetLabel,
     actualCount: "Count of Successful Transitions to the Community",
     denominator: "Long-Term Facility Stay Count",
     expectedCount: "Expected Count of Successful Transitions to the Community",
