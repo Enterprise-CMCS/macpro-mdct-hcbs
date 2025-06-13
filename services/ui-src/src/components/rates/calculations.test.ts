@@ -22,6 +22,7 @@ describe("Rate calculations", () => {
       { input: -0.005, expected: 0 },
       { input: 0.005, expected: 0.01 },
       { input: 0.015, expected: 0.02 },
+      { input: 0.145, expected: 0.15 },
     ])("should return $expected given $input", ({ input, expected }) => {
       expect(roundRate(input)).toBe(expected);
     });
