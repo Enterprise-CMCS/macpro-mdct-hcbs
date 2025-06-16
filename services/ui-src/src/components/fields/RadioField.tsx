@@ -32,7 +32,7 @@ const formatChoices = (
     }));
 
     const checkedChildren = [
-      <Box sx={sx.children}>
+      <Box key="radio-sub-page" sx={sx.children}>
         <Page elements={children} />
       </Box>,
     ];
