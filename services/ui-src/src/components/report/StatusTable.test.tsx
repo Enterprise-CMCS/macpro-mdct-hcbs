@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { useStore } from "utils";
 import {
   mockUseReadOnlyUserStore,
@@ -95,7 +95,7 @@ describe("StatusTable with state user", () => {
     expect(screen.getByAltText("complete icon")).toBeInTheDocument();
   });
 
-  test("when the Edit button is clicked, navigate to the correct editable page", async () => {
+  it("should navigate to the correct editable page when the Edit button is clicked", async () => {
     render(
       <MemoryRouter>
         <StatusTableElement />
@@ -107,7 +107,7 @@ describe("StatusTable with state user", () => {
 
     expect(editButton).toBeVisible();
   });
-  test("when the Review PDF button is clicked, navigate to PDF", async () => {
+  it("should navigate to PDF when the Review PDF button is clicked", async () => {
     render(
       <MemoryRouter>
         <StatusTableElement />
@@ -121,7 +121,7 @@ describe("StatusTable with state user", () => {
     expect(reviewPdfButton).toHaveAttribute("target", "_blank");
   });
 
-  test("when the Submit button is clicked, call the API", async () => {
+  it("should call the API and render QMS submit modal when the Submit button is clicked", async () => {
     render(
       <MemoryRouter>
         <StatusTableElement />
@@ -136,10 +136,67 @@ describe("StatusTable with state user", () => {
     expect(mockSetModalComponent).toBeCalled();
   });
 
-  test("if pageMap is not defined return null", () => {
-    (useStore as unknown as jest.Mock).mockReturnValue({
-      pageMap: null,
+  it("should render the correct submit button text when reportType is from the URL", async () => {
+    render(
+      <MemoryRouter initialEntries={["/report/TA/CO/mock-report-id"]}>
+        <Routes>
+          <Route
+            path="/report/:reportType/:state/:reportId"
+            element={<StatusTableElement />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const submitButton = screen.getAllByRole("button", {
+      name: /Submit TACM Report/i,
+    })[0];
+    expect(submitButton).toBeInTheDocument();
+  });
+
+  it("should disable the submit button when submittable is false", async () => {
+    mockedUseStore.mockImplementation(
+      (selector?: Parameters<typeof useStore>[0]) => {
+        if (selector) {
+          return {
+            sections: [
+              {
+                section: { title: "Section 1", id: "id-1" },
+                displayStatus: PageStatus.COMPLETE,
+                submittable: true,
+              },
+            ],
+            submittable: false,
+          };
+        }
+        return {
+          ...mockStateUserStore,
+          pageMap: mockPageMap,
+          report: report,
+          setModalComponent: mockSetModalComponent,
+        };
+      }
+    );
+
+    render(
+      <MemoryRouter>
+        <StatusTableElement />
+      </MemoryRouter>
+    );
+
+    const submitButton = screen.getByRole("button", {
+      name: /Submit QMS Report/i,
     });
+    expect(submitButton).toBeDisabled();
+  });
+
+  it("should not render anything if report is undefined", () => {
+    mockedUseStore.mockImplementation(() => ({
+      ...mockStateUserStore,
+      pageMap: mockPageMap,
+      report: undefined,
+      setModalComponent: mockSetModalComponent,
+    }));
 
     const { container } = render(
       <MemoryRouter>
