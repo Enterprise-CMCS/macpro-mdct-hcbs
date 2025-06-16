@@ -7,7 +7,7 @@ const mockClose = jest.fn();
 const mockSubmit = jest.fn();
 
 describe("Test SubmitReportModal", () => {
-  it("Test SubmitReportModal Render", async () => {
+  it("Test SubmitReportModal for QMS Render", async () => {
     const modal = SubmitReportModal(mockClose, mockSubmit);
     render(
       <Modal isOpen={true} onClose={mockClose}>
@@ -20,6 +20,23 @@ describe("Test SubmitReportModal", () => {
     expect(mockClose).toHaveBeenCalled();
 
     const submit = screen.getByRole("button", { name: "Submit QMS Report" });
+    await userEvent.click(submit);
+    expect(mockSubmit).toHaveBeenCalled();
+  });
+
+  it("Test SubmitReportModal for TACM Render", async () => {
+    const modal = SubmitReportModal(mockClose, mockSubmit, "TA");
+    render(
+      <Modal isOpen={true} onClose={mockClose}>
+        {modal}
+      </Modal>
+    );
+
+    const cancelBtn = screen.getByRole("button", { name: "Cancel" });
+    await userEvent.click(cancelBtn);
+    expect(mockClose).toHaveBeenCalled();
+
+    const submit = screen.getByRole("button", { name: "Submit TACM Report" });
     await userEvent.click(submit);
     expect(mockSubmit).toHaveBeenCalled();
   });
