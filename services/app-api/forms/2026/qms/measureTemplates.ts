@@ -1076,8 +1076,8 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
       enterMeasureResultsSubheader,
       measureResultsNavigationTable,
@@ -1263,7 +1263,7 @@ export const measureTemplates: Record<
     ],
   },
   [MeasureTemplateName["MLTSS-POM-2"]]: {
-    id: "MLTSS-POM-1",
+    id: "MLTSS-POM-2",
     title: "POM: People Participate in the Life of the Community (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,

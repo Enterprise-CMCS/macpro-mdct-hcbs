@@ -93,16 +93,14 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
       <Stack gap="2rem">
         <Stack gap="2rem">
           <Heading variant="subHeader">Performance Rate: {label}</Heading>
-          {performanceTargetLabel && (
-            <CmsdsTextField
-              label={performanceTargetLabel}
-              name={RateInputFieldNames.performanceTarget}
-              onChange={onChangeHandler}
-              onBlur={onBlurHandler}
-              value={displayValue.performanceTarget}
-              disabled={disabled}
-            ></CmsdsTextField>
-          )}
+          <CmsdsTextField
+            label={performanceTargetLabel}
+            name={RateInputFieldNames.performanceTarget}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}
+            value={displayValue.performanceTarget}
+            disabled={disabled}
+          ></CmsdsTextField>
           <CmsdsTextField
             label="Numerator"
             name={RateInputFieldNames.numerator}

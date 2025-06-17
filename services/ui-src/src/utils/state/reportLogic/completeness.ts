@@ -195,12 +195,6 @@ export const elementSatisfiesRequired = (
     if (element.answer.rate === undefined) return false;
   }
 
-  if (element.type === ElementType.NdrBasic) {
-    if (element.answer.numerator === undefined) return false;
-    if (element.answer.denominator === undefined) return false;
-    if (element.answer.rate === undefined) return false;
-  }
-
   return true;
 };
 

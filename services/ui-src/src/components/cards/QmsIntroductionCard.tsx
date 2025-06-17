@@ -16,10 +16,11 @@ export const QmsIntroductionCard = () => {
       and accountability across state systems. The federally required
       performance measures (PMs) in this set assess state performance in key
       domains such as service planning, person-centeredness, health and welfare,
-      and community integration. These PMs are reported annually and help track
-      whether states are effectively implementing quality strategies and
-      delivering services that meet participant needs. The HCBS Quality Measure
-      Set PMs include both fee-for-service and managed care delivery systems.
+      and community integration. These PMs are reported on a period of two
+      years, and help track whether states are effectively implementing quality
+      strategies and delivering services that meet participant needs. The HCBS
+      Quality Measure Set PMs include both fee-for-service and managed care
+      delivery systems.
       <ReportIntroCardActions reportType={ReportType.QMS} />
       <Accordion allowToggle={true}>
         <AccordionItem label="When is the Quality Measure Set Report due?">

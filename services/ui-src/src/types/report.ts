@@ -208,7 +208,6 @@ export type PageElement =
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
-  | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -401,18 +400,11 @@ export const RateInputFieldNames = {
 export type RateInputFieldName =
   typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
 
-export const RateInputFieldNamesBasic = {
-  numerator: "numerator",
-  denominator: "denominator",
-} as const;
-export type RateInputFieldNameBasic =
-  typeof RateInputFieldNamesBasic[keyof typeof RateInputFieldNamesBasic];
-
 export type RateType = {
   id: string;
   numerator: number | undefined;
   rate: number | undefined;
-  performanceTarget?: number | undefined;
+  performanceTarget: number | undefined;
 };
 
 export type RateSetData = {
@@ -454,7 +446,6 @@ export type NdrTemplate = {
     rate: number | undefined;
   };
   required?: boolean;
-  multiplier?: number;
 };
 
 export type NdrBasicTemplate = {

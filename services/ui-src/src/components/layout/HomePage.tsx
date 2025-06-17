@@ -1,4 +1,4 @@
-import { Box, Collapse, Heading, Text } from "@chakra-ui/react";
+import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminDashSelector,
   Banner,
@@ -48,7 +48,15 @@ export const HomePage = () => {
               </Heading>
               <Text>
                 Get started by completing the Home and Community-Based Services
-                (HCBS) for your state or territory.
+                (HCBS) reports for your state or territory. For more information
+                about measuring and improving quality in home and
+                community-based services, please visit{" "}
+                <Link
+                  isExternal
+                  href="https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
+                >
+                  this link.
+                </Link>
               </Text>
             </Box>
             <QmsIntroductionCard />
