@@ -1,6 +1,5 @@
 // Templates
 
-import { AnyObject } from "yup";
 import {
   DataSource,
   DeliverySystem,
@@ -277,7 +276,10 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
-  PerformanceRate = "performanceRate",
+  LengthOfStayRate = "lengthOfStay",
+  NdrFields = "ndrFields",
+  NdrEnhanced = "ndrEnhanced",
+  Ndr = "ndr",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -302,7 +304,10 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate
+  | LengthOfStayRateTemplate
+  | NdrFieldsTemplate
+  | NdrEnhancedTemplate
+  | NdrTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -458,50 +463,80 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
-export type PerformanceData = {
-  rates: AnyObject[];
-  denominator?: number;
+export const LengthOfStayFieldNames = {
+  performanceTarget: "performanceTarget",
+  actualCount: "actualCount",
+  denominator: "denominator",
+  expectedCount: "expectedCount",
+  populationRate: "populationRate",
+  actualRate: "actualRate",
+  expectedRate: "expectedRate",
+  adjustedRate: "adjustedRate",
+} as const;
+export type LengthOfStayField =
+  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
+
+export type LengthOfStayRateTemplate = {
+  id: string;
+  type: ElementType.LengthOfStayRate;
+  labels: Record<LengthOfStayField, string>;
+  answer?: Record<LengthOfStayField, number | undefined>;
+  required?: boolean;
 };
 
+export const RateInputFieldNames = {
+  performanceTarget: "performanceTarget",
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+export type RateInputFieldName =
+  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+
 export type RateType = {
-  label: string;
-  performanceTarget?: string;
-  numerator?: number;
-  denominator?: number;
-  rate?: number;
-  id?: string;
+  id: string;
+  numerator: number | undefined;
+  rate: number | undefined;
+  performanceTarget: number | undefined;
 };
 
 export type RateSetData = {
-  id: string;
-  label: string;
-  denominator?: number;
-  rates?: RateType[];
+  denominator: number | undefined;
+  rates: RateType[];
 };
 
-export const enum PerformanceRateType {
-  NDR = "NDR",
-  NDR_Enhanced = "NDREnhanced",
-  FIELDS = "Fields",
-  NDR_FIELDS = "NDRFields",
-}
-
-export const enum RateCalc {
-  NDRCalc = "NDRCalc",
-  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
-}
-
-export type PerformanceRateTemplate = {
+export type NdrFieldsTemplate = {
   id: string;
-  type: ElementType.PerformanceRate;
+  type: ElementType.NdrFields;
+  labelTemplate: string;
+  assessments: { label: string; id: string }[];
+  fields: { label: string; id: string; autoCalc?: boolean }[];
+  multiplier?: number;
+  answer?: RateSetData[];
+  required?: boolean;
+};
+
+export type NdrEnhancedTemplate = {
+  id: string;
+  type: ElementType.NdrEnhanced;
   label?: string;
   helperText?: string;
-  assessments?: { label: string; id: string }[];
-  fields?: { label: string; id: string; autoCalc?: boolean }[];
-  rateType: PerformanceRateType;
-  rateCalc?: RateCalc;
-  multiplier?: number;
-  answer?: PerformanceData | RateSetData[];
+  performanceTargetLabel: string;
+  assessments: { label: string; id: string }[];
+  answer?: RateSetData;
+  required?: boolean;
+};
+
+export type NdrTemplate = {
+  id: string;
+  type: ElementType.Ndr;
+  label: string;
+  performanceTargetLabel: string;
+  answer?: {
+    performanceTarget: number | undefined;
+    numerator: number | undefined;
+    denominator: number | undefined;
+    rate: number | undefined;
+  };
   required?: boolean;
 };
 

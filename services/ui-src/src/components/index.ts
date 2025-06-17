@@ -50,7 +50,10 @@ export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 // report
-export { PerformanceRateElement } from "./report/PerformanceRate";
+export { Fields } from "../components/rates/types/Fields";
+export { NDRFields } from "../components/rates/types/NDRFields";
+export { NDREnhanced } from "../components/rates/types/NDREnhanced";
+export { NDR } from "../components/rates/types/NDR";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";

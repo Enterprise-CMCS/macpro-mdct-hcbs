@@ -1,13 +1,8 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
-import { FacilityLengthOfStayCalc } from "../calculations";
 import { useStore } from "utils";
-import {
-  ElementType,
-  PerformanceRateTemplate,
-  PerformanceRateType,
-} from "types";
+import { ElementType, NdrFieldsTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { mockStateUserStore } from "utils/testing/setupJest";
 import { NDRFields } from "./NDRFields";
@@ -34,12 +29,11 @@ const mockGetValues = (returnValue: any) =>
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mockedPerformanceElement: PerformanceRateTemplate = {
+const mockedPerformanceElement: NdrFieldsTemplate = {
   id: "mock-perf-id",
-  type: ElementType.PerformanceRate,
-  rateType: PerformanceRateType.NDR_FIELDS,
-  label: "test label",
-  helperText: "helper text",
+  type: ElementType.NdrFields,
+  labelTemplate:
+    "What is the 2028 state performance target for this assessment for {{field}} ({{assessment}})?",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -57,10 +51,8 @@ const mockedPerformanceElement: PerformanceRateTemplate = {
 const ndrNDRFieldsComponent = (
   <NDRFields
     formkey={"mock-key"}
-    calculation={FacilityLengthOfStayCalc}
-    year={2026}
     disabled={false}
-    {...mockedPerformanceElement}
+    element={mockedPerformanceElement}
   />
 );
 

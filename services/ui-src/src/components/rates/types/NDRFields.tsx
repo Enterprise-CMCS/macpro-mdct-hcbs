@@ -2,157 +2,215 @@ import React, { useEffect, useState } from "react";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { PerformanceRateTemplate, RateSetData } from "types";
-import { isNumber } from "../calculations";
+import {
+  NdrFieldsTemplate,
+  RateInputFieldName,
+  RateInputFieldNames,
+} from "types";
+import {
+  parseNumber,
+  roundRate,
+  stringifyInput,
+  stringifyResult,
+} from "../calculations";
+import { PageElementProps } from "components/report/Elements";
+import { zip } from "utils/other/arrays";
 
-export const NDRFields = (
-  props: PerformanceRateTemplate & {
-    formkey: string;
-    year: number;
-    calculation: Function;
-    disabled: boolean;
-  }
-) => {
+export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
+  const { disabled, formkey, element } = props;
   const {
-    label,
+    labelTemplate,
     assessments,
     answer,
-    multiplier,
-    calculation,
+    multiplier = 1,
     fields,
-    disabled,
-  } = props;
+  } = element;
 
-  const defaultRates: RateSetData[] =
-    assessments?.map((assess) => {
-      return {
-        label: assess.label,
-        denominator: undefined,
-        id: assess.id,
-        rates: fields?.map((field) => {
-          return {
-            label: field.label,
-            numerator: undefined,
-            denominator: undefined,
-            rate: undefined,
-            performanceTarget: undefined,
-            id: `${assess.id}.${field.id}`,
-          };
-        }),
-      };
-    }) ?? [];
+  const stringifyAnswer = (newAnswer: typeof answer) => {
+    return assessments.map((assessment, i) => ({
+      id: assessment.id,
+      denominator: stringifyInput(newAnswer?.[i].denominator),
+      rates: fields.map((field, j) => ({
+        id: `${assessment.id}.${field.id}`,
+        performanceTarget: stringifyInput(
+          newAnswer?.[i].rates[j].performanceTarget
+        ),
+        numerator: stringifyInput(newAnswer?.[i].rates[j].numerator),
+        rate: stringifyResult(newAnswer?.[i].rates[j].rate),
+      })),
+    }));
+  };
 
-  const defaultValue: RateSetData[] = (answer as RateSetData[]) ?? defaultRates;
-  const [displayValue, setDisplayValue] = useState<RateSetData[]>(defaultValue);
+  const initialValue = stringifyAnswer(answer);
+  const [displayValue, setDisplayValue] = useState(initialValue);
 
   // get form context and register field
   const form = useFormContext();
-  const key = `${props?.formkey}.answer`;
+  const key = `${formkey}.answer`;
   useEffect(() => {
     form.register(key, { required: true });
-    form.setValue(key, defaultValue);
   }, []);
 
+  const updatedDisplayValue = (input: HTMLInputElement) => {
+    /*
+     * The name will look like "0.denominator" or "1.rates.0.performanceTarget"
+     * or "2.rates.1.numerator". The last part is always an InputFieldName.
+     * The first part is always an index into the answer array.
+     * If there are 4 parts, the 3rd will be an index into the
+     * answer[i].rates array.
+     */
+    const parts = input.name.split(".");
+    const fieldType = parts.at(-1) as RateInputFieldName;
+    const assessIndex = Number(parts.at(0));
+    const fieldIndex = parts.length > 2 ? Number(parts.at(2)) : undefined;
+    const stringValue = input.value;
+
+    // displayValue corresponds to the inputs on screen. Its values are strings.
+    const newDisplayValue = structuredClone(displayValue);
+    if (fieldType === RateInputFieldNames.denominator) {
+      newDisplayValue[assessIndex].denominator = stringValue;
+    } else {
+      newDisplayValue[assessIndex].rates[fieldIndex!][fieldType] = stringValue;
+    }
+
+    return newDisplayValue;
+  };
+
+  const computeAnswer = (newDisplayValue: typeof displayValue) => {
+    return newDisplayValue.map((displayObj) => {
+      const denominator = parseNumber(displayObj.denominator);
+      const canDivide = denominator !== undefined && denominator !== 0;
+
+      return {
+        id: displayObj.id,
+        denominator: roundRate(denominator),
+        rates: displayObj.rates.map((rateObj) => {
+          const performanceTarget = parseNumber(rateObj.performanceTarget);
+          const numerator = parseNumber(rateObj.numerator);
+          const canCompute = canDivide && numerator !== undefined;
+          const rate = canCompute
+            ? (multiplier * numerator) / denominator
+            : undefined;
+
+          return {
+            id: rateObj.id,
+            performanceTarget: roundRate(performanceTarget),
+            numerator: roundRate(numerator),
+            rate: roundRate(rate),
+          };
+        }),
+      };
+    });
+  };
+
+  const updateCalculatedValues = (
+    newDisplayValue: typeof displayValue,
+    newAnswer: NonNullable<typeof answer>
+  ) => {
+    for (let [displayObj, answerObj] of zip(newDisplayValue, newAnswer)) {
+      for (let pair of zip(displayObj.rates, answerObj.rates)) {
+        const [displayRate, answerRate] = pair;
+        displayRate.rate = stringifyResult(answerRate.rate);
+      }
+    }
+  };
+
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
+    // displayValue corresponds to the inputs on screen. Its values are strings.
+    const newDisplayValue = updatedDisplayValue(event.target);
 
-    const { name, value } = event.target;
-    const [setIndex, setKey, rateIndex, type] = name.split(".");
-    const newValues = [...displayValue];
-    type rateType = "numerator" | "denominator" | "rate" | "performanceTarget";
+    // answer corresponds to the report data. Its values are numbers.
+    const newAnswer = computeAnswer(newDisplayValue);
 
-    if (setKey === "denominator") {
-      newValues[Number(setIndex)].denominator = value
-        ? Number(value)
-        : undefined;
-      newValues[Number(setIndex)].rates?.forEach((rate) => {
-        rate.denominator = value ? Number(value) : undefined;
-      });
-    } else if (setKey === "rates" && newValues[Number(setIndex)].rates) {
-      newValues[Number(setIndex)].rates![Number(rateIndex)][type as rateType] =
-        value ? Number(value) : undefined;
-    }
+    // Instantly display calculation results
+    updateCalculatedValues(newDisplayValue, newAnswer);
+    setDisplayValue(newDisplayValue);
 
-    //run rate calculations if denominator or numerator was changed
-    if (setKey === "denominator" || type === "numerator") {
-      newValues[Number(setIndex)].rates?.forEach((rate) => {
-        rate.rate = calculation(rate, multiplier);
-      });
-    }
+    // Instantly save parsed and calculated values to the form, store, and API
+    form.setValue(`${key}`, newAnswer, { shouldValidate: true });
+  };
 
-    setDisplayValue([...newValues]);
-    form.setValue(`${key}`, newValues, { shouldValidate: true });
-    form.setValue(`${key}.type`, props.type);
+  const onBlurHandler = () => {
+    // When the user is done typing, overwrite the answer with the parsed value.
+    setDisplayValue(stringifyAnswer(form.getValues(key)));
   };
 
   return (
-    <Stack gap="2rem">
-      {assessments?.map((assess, assessIndex) => {
-        const rateSet = displayValue?.find((value) => value.id === assess.id);
+    <Stack gap={4} sx={sx.performance}>
+      <Heading variant="subHeader">Performance Rates</Heading>
+      <Stack gap="2rem">
+        {assessments.map((assess, assessIndex) => {
+          const rateSet = displayValue[assessIndex];
 
-        return (
-          <Stack key={assess.id} gap="2rem">
-            <Heading variant="subHeader">
-              {label ?? "Performance Rates"}
-              {": "}
-              {assess.label}
-            </Heading>
+          return (
+            <Stack key={assess.id} gap="2rem">
+              <Heading variant="subHeader">
+                {"Performance Rates: "}
+                {assess.label}
+              </Heading>
 
-            <CmsdsTextField
-              label={`Denominator (${assess.label})`}
-              name={`${assessIndex}.denominator`}
-              onChange={onChangeHandler}
-              value={rateSet?.denominator ?? ""}
-              disabled={disabled}
-            ></CmsdsTextField>
+              <CmsdsTextField
+                label={`Denominator (${assess.label})`}
+                name={`${assessIndex}.${RateInputFieldNames.denominator}`}
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+                value={rateSet.denominator}
+                disabled={disabled}
+              ></CmsdsTextField>
 
-            {fields?.map((field, fieldIndex) => {
-              const value = rateSet?.rates?.find(
-                (item) => item.id === `${assess.id}.${field.id}`
-              );
+              {fields.map((field, fieldIndex) => {
+                const rateObject = rateSet.rates[fieldIndex];
 
-              return (
-                <Stack key={`${assess.id}.${field.id}`} gap="2rem">
-                  <Heading variant="nestedHeading">{field.label}</Heading>
-                  <CmsdsTextField
-                    label={`What is the ${
-                      props.year + 2
-                    } state performance target for this assessment for ${field.label.toLowerCase()} (${
-                      assess.label
-                    })?`}
-                    name={`${assessIndex}.rates.${fieldIndex}.performanceTarget`}
-                    onChange={onChangeHandler}
-                    value={value?.performanceTarget ?? ""}
-                    disabled={disabled}
-                  ></CmsdsTextField>
-                  <CmsdsTextField
-                    label={`Numerator: ${field.label} (${assess.label})`}
-                    name={`${assessIndex}.rates.${fieldIndex}.numerator`}
-                    onChange={onChangeHandler}
-                    value={value?.numerator ?? ""}
-                    disabled={disabled}
-                  ></CmsdsTextField>
-                  <CmsdsTextField
-                    label={`Denominator (${assess.label})`}
-                    name={`${assessIndex}.rates.${fieldIndex}.denominator`}
-                    onChange={onChangeHandler}
-                    value={value?.denominator ?? ""}
-                    disabled
-                  ></CmsdsTextField>
-                  <CmsdsTextField
-                    label={`${field.label} Rate (${assess.label})`}
-                    name={`${assessIndex}.rates.${fieldIndex}.rate`}
-                    hint="Auto-calculates"
-                    value={value?.rate ?? ""}
-                    disabled
-                  ></CmsdsTextField>
-                </Stack>
-              );
-            })}
-            <Divider></Divider>
-          </Stack>
-        );
-      })}
+                return (
+                  <Stack key={`${assess.id}.${field.id}`} gap="2rem">
+                    <Heading variant="nestedHeading">{field.label}</Heading>
+                    <CmsdsTextField
+                      label={labelTemplate
+                        .replace("{{field}}", field.label.toLowerCase())
+                        .replace("{{assessment}}", assess.label)}
+                      name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.performanceTarget}`}
+                      onChange={onChangeHandler}
+                      onBlur={onBlurHandler}
+                      value={rateObject.performanceTarget}
+                      disabled={disabled}
+                    ></CmsdsTextField>
+                    <CmsdsTextField
+                      label={`Numerator: ${field.label} (${assess.label})`}
+                      name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.numerator}`}
+                      onChange={onChangeHandler}
+                      onBlur={onBlurHandler}
+                      value={rateObject.numerator}
+                      disabled={disabled}
+                    ></CmsdsTextField>
+                    <CmsdsTextField
+                      label={`Denominator (${assess.label})`}
+                      name={`${assessIndex}.rates.${fieldIndex}.denominator`}
+                      value={rateSet.denominator}
+                      disabled
+                    ></CmsdsTextField>
+                    <CmsdsTextField
+                      label={`${field.label} Rate (${assess.label})`}
+                      name={`${assessIndex}.rates.${fieldIndex}.rate`}
+                      hint="Auto-calculates"
+                      value={rateObject.rate}
+                      disabled
+                    ></CmsdsTextField>
+                  </Stack>
+                );
+              })}
+              <Divider></Divider>
+            </Stack>
+          );
+        })}
+      </Stack>
     </Stack>
   );
+};
+
+const sx = {
+  performance: {
+    input: {
+      width: "240px",
+    },
+  },
 };

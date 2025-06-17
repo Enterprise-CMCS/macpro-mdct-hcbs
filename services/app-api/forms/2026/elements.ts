@@ -4,18 +4,21 @@ import {
   DividerTemplate,
   ElementType,
   HeaderTemplate,
+  LengthOfStayRateTemplate,
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
-  PerformanceRateTemplate,
-  PerformanceRateType,
+  NdrEnhancedTemplate,
+  NdrFieldsTemplate,
+  NdrTemplate,
   RadioTemplate,
-  RateCalc,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
 } from "../../types/reports";
+
+const REPORT_YEAR = 2026;
 
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
   type: ElementType.ButtonLink,
@@ -271,11 +274,17 @@ export const whichProgramsWaivers = [
   divider,
 ];
 
+export const statePerformanceTargetLabel = {
+  performanceTargetLabel: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for this assessment?`,
+};
+
 //Rates for LTSS-1
-export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -289,11 +298,11 @@ export const performanceRatesAssessmentElements: PerformanceRateTemplate = {
   ],
 };
 
-export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -308,10 +317,10 @@ export const exclusionRatesAssessmentElements: PerformanceRateTemplate = {
 };
 
 //Rates for LTSS-2
-export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -325,11 +334,11 @@ export const performanceRatesPersonPlanElements: PerformanceRateTemplate = {
   ],
 };
 
-export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rates",
-  rateType: PerformanceRateType.NDR_Enhanced,
+  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -344,95 +353,59 @@ export const exclusionRatesPersonPlanElements: PerformanceRateTemplate = {
 };
 
 //Rates for POM
-export const performanceRatePOM: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRatePOM: NdrTemplate = {
+  type: ElementType.Ndr,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR,
   required: true,
-  assessments: [
-    {
-      id: "same-env",
-      label: "Person uses the same environments as people without disabilities",
-    },
-  ],
+  label: "Person uses the same environments as people without disabilities",
+  ...statePerformanceTargetLabel,
 };
 
 //Rates for LTSS-7
-export const performanceRateFacilityDischarges: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
   id: "measure-rates",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Discharges to the Community",
-    },
-    { id: "fac-count", label: "Facility Admission Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Discharges to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
-  rateType: PerformanceRateType.FIELDS,
+  labels: {
+    performanceTarget: statePerformanceTargetLabel.performanceTargetLabel,
+    actualCount: "Count of Successful Discharges to the Community",
+    denominator: "Facility Admission Count",
+    expectedCount: "Expected Count of Successful Discharges to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
   required: true,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
 //Rates for LTSS-8
-export const performanceRateFacilityTransitions: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
   id: "measure-rates",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Transitions to the Community",
-    },
-    { id: "fac-count", label: "Long-Term Facility Stay Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Transitions to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label: "Observed Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label: "Expected Performance Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
+  labels: {
+    performanceTarget: statePerformanceTargetLabel.performanceTargetLabel,
+    actualCount: "Count of Successful Transitions to the Community",
+    denominator: "Long-Term Facility Stay Count",
+    expectedCount: "Expected Count of Successful Transitions to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
   required: true,
-  rateType: PerformanceRateType.FIELDS,
-  rateCalc: RateCalc.FacilityLengthOfStayCalc,
 };
 
 // Rates for LTSS-6
-export const performanceRateTermStay: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateTermStay: NdrFieldsTemplate = {
+  type: ElementType.NdrFields,
   id: "measure-rates",
+  labelTemplate: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for {{field}} ({{assessment}})?`,
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -444,17 +417,17 @@ export const performanceRateTermStay: PerformanceRateTemplate = {
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
   ],
-  rateType: PerformanceRateType.NDR_FIELDS,
   required: true,
   multiplier: 1000,
 };
 
 // Rates for HCBS-10
-export const performanceRateSelfDirection: PerformanceRateTemplate = {
-  type: ElementType.PerformanceRate,
+export const performanceRateSelfDirection: NdrFieldsTemplate = {
+  type: ElementType.NdrFields,
   id: "measure-rates",
-  rateType: PerformanceRateType.NDR_FIELDS,
-  rateCalc: RateCalc.NDRCalc,
+  labelTemplate: `What is the ${
+    REPORT_YEAR + 2
+  } state performance target for {{field}} ({{assessment}})?`,
   required: true,
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },
