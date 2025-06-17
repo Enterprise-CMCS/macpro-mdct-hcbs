@@ -208,6 +208,7 @@ export type PageElement =
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
+  | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -404,7 +405,7 @@ export type RateType = {
   id: string;
   numerator: number | undefined;
   rate: number | undefined;
-  performanceTarget: number | undefined;
+  performanceTarget?: number | undefined;
 };
 
 export type RateSetData = {
