@@ -280,6 +280,12 @@ export const statePerformanceTargetLabel = {
   } state performance target for this assessment?`,
 };
 
+export const stateExclusionTargetLabel = {
+  performanceTargetLabel: `What is the ${
+    REPORT_YEAR + 2
+  } state exclusion rate target for this assessment?`,
+};
+
 //Rates for LTSS-1
 export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
@@ -301,8 +307,8 @@ export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
 export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  label: "Exclusion Rates",
-  ...statePerformanceTargetLabel,
+  label: "Exclusion Rate",
+  ...stateExclusionTargetLabel,
   required: true,
   assessments: [
     {
@@ -337,8 +343,8 @@ export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
 export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  label: "Exclusion Rates",
-  ...statePerformanceTargetLabel,
+  label: "Exclusion Rate",
+  ...stateExclusionTargetLabel,
   required: true,
   assessments: [
     {
