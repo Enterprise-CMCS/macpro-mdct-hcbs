@@ -33,6 +33,7 @@ const mockedElement: NdrBasicTemplate = {
   id: "mock-perf-id",
   type: ElementType.NdrBasic,
   label: "test label",
+  multiplier: 100,
 };
 
 const ndrBasicComponent = (
@@ -51,8 +52,10 @@ describe("<NDRBasic />", () => {
       expect(
         screen.getByRole("textbox", { name: "Denominator" })
       ).toBeInTheDocument();
-      expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
-      expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
+      expect(
+        screen.getByRole("textbox", { name: "Result" })
+      ).toBeInTheDocument();
+      expect(screen.getByRole("textbox", { name: "Result" })).toBeDisabled();
     });
 
     test("Rate should calculate", async () => {
@@ -64,8 +67,8 @@ describe("<NDRBasic />", () => {
       await act(async () => await userEvent.type(denominator, "2"));
       expect(denominator).toHaveValue("2");
 
-      const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("0.5");
+      const result = screen.getByRole("textbox", { name: "Result" });
+      expect(result).toHaveValue("50%");
     });
 
     test("Rate should not display a decimal point if it is not needed", async () => {
@@ -75,8 +78,8 @@ describe("<NDRBasic />", () => {
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
       await act(async () => await userEvent.type(denominator, "3"));
 
-      const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("9");
+      const result = screen.getByRole("textbox", { name: "Result" });
+      expect(result).toHaveValue("900%");
     });
 
     test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
@@ -86,8 +89,8 @@ describe("<NDRBasic />", () => {
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
       await act(async () => await userEvent.type(denominator, "2000"));
 
-      const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("0.00");
+      const result = screen.getByRole("textbox", { name: "Result" });
+      expect(result).toHaveValue("0.2%");
     });
   });
 
