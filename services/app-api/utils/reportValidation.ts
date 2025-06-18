@@ -393,6 +393,14 @@ const ndrRateBasicSchema = object().shape({
       rate: number().notRequired(),
     })
     .notRequired(),
+  hintText: object()
+    .shape({
+      numHint: string().notRequired(),
+      denomHint: string().notRequired(),
+      rateHint: string().notRequired(),
+    })
+    .notRequired(),
+  multiplier: number().notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({

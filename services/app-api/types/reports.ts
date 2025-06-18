@@ -552,9 +552,9 @@ export type NdrBasicTemplate = {
     rate: number | undefined;
   };
   hintText?: {
-    numHint: string;
-    denomHint: string;
-    rateHint: string;
+    numHint: string | undefined;
+    denomHint: string | undefined;
+    rateHint: string | undefined;
   };
   required?: boolean;
   multiplier?: number;

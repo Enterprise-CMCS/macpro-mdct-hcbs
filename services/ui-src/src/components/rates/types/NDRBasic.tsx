@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Divider, Heading, Stack } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { useFormContext } from "react-hook-form";
 import {
@@ -115,13 +115,12 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
             disabled={disabled}
           ></CmsdsTextField>
           <CmsdsTextField
-            label="Rate"
+            label="Result"
             hint={hintText?.rateHint}
-            name="rate"
+            name="result"
             value={displayValue.rate}
             disabled
           ></CmsdsTextField>
-          <Divider></Divider>
         </Stack>
       </Stack>
     </Stack>

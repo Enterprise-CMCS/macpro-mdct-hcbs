@@ -13,6 +13,8 @@ import {
   homemakerRate,
   personalCareRate,
   stateSamplingMethologyQuestion,
+  didYouFollowSpecifications,
+  conversionOfServiceUnitsField,
 } from "../elements";
 
 export const taReportTemplate: ReportBase = {
@@ -85,8 +87,20 @@ export const taReportTemplate: ReportBase = {
         divider,
         habilitationRate,
         divider,
-        additionalNotesField,
+        {
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
+        },
         stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        didYouFollowSpecifications,
+        additionalNotesField,
       ],
     },
     {
@@ -114,8 +128,21 @@ export const taReportTemplate: ReportBase = {
         divider,
         habilitationRate,
         divider,
-        additionalNotesField,
+        {
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
+        },
         stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        conversionOfServiceUnitsField,
+        didYouFollowSpecifications,
+        additionalNotesField,
       ],
     },
     {

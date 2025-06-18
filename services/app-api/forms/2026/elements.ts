@@ -47,7 +47,7 @@ export const divider: DividerTemplate = {
 
 export const measureType: SubHeaderMeasureTemplate = {
   type: ElementType.SubHeaderMeasure,
-  id: "sub-header-measure",
+  id: "measure-type",
 };
 
 export const measureHeader: HeaderTemplate = {
@@ -186,6 +186,15 @@ export const didYouFollowSpecifications: RadioTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: true,
+};
+
+export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "conversion-of-service-units-field",
+  helperText:
+    "Brief explanation of the state's process to convert service units into hours.",
+  label: "Conversion of service units into hours",
   required: true,
 };
 
