@@ -480,6 +480,7 @@ export const homemakerRate: NdrBasicTemplate = {
     rateHint:
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received homemaker services within the measurement period across all applicable HCBS programs.",
   },
+  multiplier: 100,
 };
 
 // Rates for Home Health Aide
@@ -496,6 +497,7 @@ export const homeHealthAideRate: NdrBasicTemplate = {
     rateHint:
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received home health aide services within the measurement period across all applicable HCBS programs.",
   },
+  multiplier: 100,
 };
 
 // Rates for Personal Care
@@ -512,6 +514,7 @@ export const personalCareRate: NdrBasicTemplate = {
     rateHint:
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received personal care services within the measurement period across all applicable HCBS programs.",
   },
+  multiplier: 100,
 };
 
 // Rates for Habilitation
@@ -528,6 +531,7 @@ export const habilitationRate: NdrBasicTemplate = {
     rateHint:
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received habilitation services within the measurement period across all applicable HCBS programs.",
   },
+  multiplier: 100,
 };
 
 // State Sampling Methodology Radio Question

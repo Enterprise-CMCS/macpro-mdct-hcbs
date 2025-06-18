@@ -68,7 +68,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     newDisplayValue: typeof displayValue,
     newAnswer: NonNullable<typeof answer>
   ) => {
-    newDisplayValue.rate = stringifyResult(newAnswer.rate);
+    newDisplayValue.rate = stringifyResult(newAnswer.rate).concat("%");
   };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
