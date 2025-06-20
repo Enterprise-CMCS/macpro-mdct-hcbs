@@ -6,8 +6,8 @@ import {
   ReportBase,
 } from "../../../types/reports";
 
-export const taReportTemplate: ReportBase = {
-  type: ReportType.TA,
+export const tacmReportTemplate: ReportBase = {
+  type: ReportType.TACM,
   year: 2026,
   pages: [
     {

@@ -25,7 +25,7 @@ describe("Test SubmitReportModal", () => {
   });
 
   it("Test SubmitReportModal for TACM Render", async () => {
-    const modal = SubmitReportModal(mockClose, mockSubmit, "TA");
+    const modal = SubmitReportModal(mockClose, mockSubmit, "TACM");
     render(
       <Modal isOpen={true} onClose={mockClose}>
         {modal}

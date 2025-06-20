@@ -12,12 +12,12 @@ export const SubmitReportModal = (
 
   let submitButtonText;
   let submitModalText;
-  if (reportType == ReportType.TA) {
+  if (reportType == ReportType.TACM) {
     submitButtonText = "Submit TACM Report";
     submitModalText = `You won’t be able to make edits after submitting unless you send a request to CMS to unlock your submission. After review, your CMS HCBS Lead will contact you if there are corrections to be made, and your report status will change to “In revision” in the TACM Report dashboard.`;
   } else {
     submitButtonText = `Submit ${reportType} Report`;
-    submitModalText = `You won’t be able to make edits after submitting unless you send a request to CMS to unlock your submission. After review, a CMS representative will contact you if there are corrections to be made and your report status will change to “In revision” in the QMS Report dashboard.`;
+    submitModalText = `You won’t be able to make edits after submitting unless you send a request to CMS to unlock your submission. After review, a CMS representative will contact you if there are corrections to be made and your report status will change to “In revision” in the ${reportType} Report dashboard.`;
   }
 
   return (

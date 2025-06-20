@@ -5,7 +5,7 @@ const topicPrefix = "aws.mdct.hcbs";
 const version = "v0";
 const tables = [
   { sourceName: reportTables.QMS, topicName: tableTopics.QMS },
-  { sourceName: reportTables.TA, topicName: tableTopics.TA },
+  { sourceName: reportTables.TACM, topicName: tableTopics.TACM },
   { sourceName: reportTables.CI, topicName: tableTopics.CI },
 ];
 

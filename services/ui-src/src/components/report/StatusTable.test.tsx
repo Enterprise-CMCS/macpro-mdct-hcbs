@@ -138,7 +138,7 @@ describe("StatusTable with state user", () => {
 
   it("should render the correct submit button text when reportType is from the URL", async () => {
     render(
-      <MemoryRouter initialEntries={["/report/TA/CO/mock-report-id"]}>
+      <MemoryRouter initialEntries={["/report/TACM/CO/mock-report-id"]}>
         <Routes>
           <Route
             path="/report/:reportType/:state/:reportId"

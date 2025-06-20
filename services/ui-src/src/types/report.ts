@@ -2,7 +2,7 @@ import { AlertTypes, AnyObject, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
-  TA = "TA",
+  TACM = "TACM",
   CI = "CI",
 }
 
