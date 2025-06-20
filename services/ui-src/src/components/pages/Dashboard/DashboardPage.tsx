@@ -39,7 +39,7 @@ export const DashboardPage = () => {
     switch (type) {
       case ReportType.QMS:
         return "Quality Measure Set Report";
-      case ReportType.TA:
+      case ReportType.TACM:
         return "Timely Access Compliance Measure Report";
       case ReportType.CI:
         return "Critical Incident Report";

@@ -20,7 +20,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         return "CI";
       case ReportType.QMS:
         return "QMS";
-      case ReportType.TA:
+      case ReportType.TACM:
         return "TACM";
     }
   };

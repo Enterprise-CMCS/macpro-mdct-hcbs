@@ -7,7 +7,7 @@ const verbiage = {
   sampleName: "HCBS TACM Report for 2026",
 };
 
-export const TaOptions = (): AddEditReportModalOptions => ({
+export const TacmOptions = (): AddEditReportModalOptions => ({
   verbiage: verbiage,
   reportOptions: {},
   optionsElements: null,

@@ -6,8 +6,8 @@ import {
   ReportBase,
 } from "../../../types/reports";
 
-export const taReportTemplate: ReportBase = {
-  type: ReportType.TA,
+export const tacmReportTemplate: ReportBase = {
+  type: ReportType.TACM,
   year: 2026,
   pages: [
     {
@@ -101,7 +101,7 @@ export const taReportTemplate: ReportBase = {
           id: "review-alert",
           status: "error",
           title: "Your form is not ready for submission",
-          text: "Some sections of the TACM Report have errors or are missing required responses. Ensure all required and in-progress measures are completed with valid responses before submitting. If an optional measure is showing as ‘in-progress’ and you do not want to complete that measure, go into the measure and clear the data to reset it.",
+          text: "Some sections of the TACM Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
@@ -112,13 +112,13 @@ export const taReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: "Double check that everything in your TACM Report is accurate. To make edits to your report after submitting, contact your CMS HCBS Lead to unlock your report.",
+          text: 'Double check that everything in your TACM Report is accurate. You will be able to make edits after submitting if you contact your CMS HCBS Lead to unlock your report while it is in "Submitted" status.',
         },
         {
           type: ElementType.Paragraph,
           id: "review-compliance",
           title: "Compliance review",
-          text: "Your CMS HCBS Lead will review your report and may unlock it for editing if corrections are needed.",
+          text: "Your CMS HCBS Lead will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
         },
         {
           type: ElementType.StatusTable,
