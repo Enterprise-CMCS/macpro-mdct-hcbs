@@ -58,13 +58,6 @@ export const StatusTableElement = () => {
     setModalComponent(modal, "Are you sure you want to submit?");
   };
 
-  let submitButtonText;
-  if (reportType == "TACM") {
-    submitButtonText = "Submit TACM Report";
-  } else {
-    submitButtonText = `Submit ${reportType || "QMS"} Report`;
-  }
-
   // Build Rows
   const rows = submittableMetrics?.sections.map((sectionDetails, index) => {
     if (!sectionDetails) return;
@@ -128,7 +121,7 @@ export const StatusTableElement = () => {
             disabled={!submittableMetrics?.submittable || submitting}
           >
             {submitting && <Spinner size="sm" marginRight="1rem" />}
-            {submitButtonText}
+            {`Submit ${reportType} Report`}
           </Button>
         )}
       </Stack>
