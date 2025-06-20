@@ -61,7 +61,7 @@ export const bannerFormValidateSchema = object()
         const endDate = parseMMDDYYYY(endDateString);
 
         if (startDate && endDate) {
-          if (endDate <= startDate) {
+          if (startDate > endDate) {
             return this.createError({
               path: "bannerEndDate.answer",
               message: error.END_DATE_BEFORE_START_DATE,
@@ -90,7 +90,7 @@ const bannerWriteValidateSchema = object().shape({
           message: error.END_DATE_BEFORE_START_DATE,
           test: function (endDateValue) {
             if (typeof endDateValue === "number") {
-              return endDateValue > startDate;
+              return endDateValue >= startDate;
             }
             return true;
           },

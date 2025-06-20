@@ -17,7 +17,7 @@ const bannerValidateSchema = object().shape({
           message: error.END_DATE_BEFORE_START_DATE,
           test: function (endDateValue) {
             if (typeof endDateValue === "number") {
-              return endDateValue > startDate;
+              return endDateValue >= startDate;
             }
             return true;
           },
