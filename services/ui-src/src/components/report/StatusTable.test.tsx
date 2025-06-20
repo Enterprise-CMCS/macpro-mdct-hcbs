@@ -123,8 +123,13 @@ describe("StatusTable with state user", () => {
 
   it("should call the API and render QMS submit modal when the Submit button is clicked", async () => {
     render(
-      <MemoryRouter>
-        <StatusTableElement />
+      <MemoryRouter initialEntries={["/report/QMS/CO/mock-report-id"]}>
+        <Routes>
+          <Route
+            path="/report/:reportType/:state/:reportId"
+            element={<StatusTableElement />}
+          />
+        </Routes>
       </MemoryRouter>
     );
 
@@ -179,8 +184,13 @@ describe("StatusTable with state user", () => {
     );
 
     render(
-      <MemoryRouter>
-        <StatusTableElement />
+      <MemoryRouter initialEntries={["/report/QMS/CO/mock-report-id"]}>
+        <Routes>
+          <Route
+            path="/report/:reportType/:state/:reportId"
+            element={<StatusTableElement />}
+          />
+        </Routes>
       </MemoryRouter>
     );
 
