@@ -280,6 +280,7 @@ export enum ElementType {
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
   Ndr = "ndr",
+  NdrBasic = "ndrBasic",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -308,6 +309,7 @@ export type PageElement =
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
+  | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -538,6 +540,24 @@ export type NdrTemplate = {
     rate: number | undefined;
   };
   required?: boolean;
+};
+
+export type NdrBasicTemplate = {
+  id: string;
+  type: ElementType.NdrBasic;
+  label: string;
+  answer?: {
+    numerator: number | undefined;
+    denominator: number | undefined;
+    rate: number | undefined;
+  };
+  hintText?: {
+    numHint: string | undefined;
+    denomHint: string | undefined;
+    rateHint: string | undefined;
+  };
+  required?: boolean;
+  multiplier?: number;
 };
 
 export type ChoiceTemplate = {

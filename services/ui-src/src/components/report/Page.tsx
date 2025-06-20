@@ -30,6 +30,7 @@ import {
   StatusAlert,
   Fields,
   NDR,
+  NDRBasic,
   NDRFields,
   NDREnhanced,
 } from "components";
@@ -100,6 +101,8 @@ export const Page = ({ elements }: Props) => {
         return <NDREnhanced {...{ formkey, disabled, element }} />;
       case ElementType.Ndr:
         return <NDR {...{ formkey, disabled, element }} />;
+      case ElementType.NdrBasic:
+        return <NDRBasic {...{ formkey, disabled, element }} />;
       case ElementType.StatusAlert:
         return <StatusAlert {...{ formkey, disabled, element }} />;
       case ElementType.Divider:
