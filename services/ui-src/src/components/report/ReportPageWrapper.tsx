@@ -21,6 +21,7 @@ import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
 import { isReviewSubmitPage, ReportStatus } from "types";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
+import { ReportFormContext } from "./ReportFormContextProvider";
 
 export const ReportPageWrapper = () => {
   const {
@@ -110,64 +111,66 @@ export const ReportPageWrapper = () => {
     : currentPage.elements;
   return (
     <FormProvider {...methods}>
-      <HStack width="100%" height="100%" position="relative" spacing="0">
-        {currentPage.sidebar && <Sidebar />}
-        <VStack
-          height="100%"
-          padding={
-            currentPage.sidebar
-              ? { base: "3.5rem 1rem", md: "3.5rem 0rem" }
-              : { base: "2rem 1rem", md: "2rem 0rem" }
-          }
-          margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
-          width="100%"
-          maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
-          gap="0rem"
-        >
-          <Box flex="auto" alignItems="flex-start" width="100%">
-            <form
-              id="aFormId"
-              autoComplete="off"
-              onChange={handleSubmit(handleChange, handleError)}
-            >
-              {currentPage.elements && (
-                <Page elements={renderedElements ?? []}></Page>
-              )}
-            </form>
-          </Box>
-          {!currentPage.hideNavButtons && parentPage && (
-            <>
-              {parentPage.index == 0 && <Divider></Divider>}
-              <Flex width="100%" margin="1.5rem 0 0 0">
-                {parentPage.index > 0 && (
-                  <Button
-                    onClick={() => SetPageIndex(parentPage.index - 1)}
-                    variant="outline"
-                    leftIcon={<Image src={prevArrowIcon} />}
-                  >
-                    Previous
-                  </Button>
+      <ReportFormContext.Provider value={methods}>
+        <HStack width="100%" height="100%" position="relative" spacing="0">
+          {currentPage.sidebar && <Sidebar />}
+          <VStack
+            height="100%"
+            padding={
+              currentPage.sidebar
+                ? { base: "3.5rem 1rem", md: "3.5rem 0rem" }
+                : { base: "2rem 1rem", md: "2rem 0rem" }
+            }
+            margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
+            width="100%"
+            maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
+            gap="0rem"
+          >
+            <Box flex="auto" alignItems="flex-start" width="100%">
+              <form
+                id="aFormId"
+                autoComplete="off"
+                onChange={handleSubmit(handleChange, handleError)}
+              >
+                {currentPage.elements && (
+                  <Page elements={renderedElements ?? []}></Page>
                 )}
-                {parentPage.index < parentPage.childPageIds.length - 1 && (
-                  <Button
-                    onClick={() => SetPageIndex(parentPage.index + 1)}
-                    marginLeft="auto"
-                    rightIcon={<Image src={nextArrowIcon} />}
-                  >
-                    Continue
-                  </Button>
+              </form>
+            </Box>
+            {!currentPage.hideNavButtons && parentPage && (
+              <>
+                {parentPage.index == 0 && <Divider></Divider>}
+                <Flex width="100%" margin="1.5rem 0 0 0">
+                  {parentPage.index > 0 && (
+                    <Button
+                      onClick={() => SetPageIndex(parentPage.index - 1)}
+                      variant="outline"
+                      leftIcon={<Image src={prevArrowIcon} />}
+                    >
+                      Previous
+                    </Button>
+                  )}
+                  {parentPage.index < parentPage.childPageIds.length - 1 && (
+                    <Button
+                      onClick={() => SetPageIndex(parentPage.index + 1)}
+                      marginLeft="auto"
+                      rightIcon={<Image src={nextArrowIcon} />}
+                    >
+                      Continue
+                    </Button>
+                  )}
+                </Flex>
+                {parentPage.index == 0 && (
+                  <Box flex="auto" marginTop="3.5rem">
+                    <PraDisclosure />
+                  </Box>
                 )}
-              </Flex>
-              {parentPage.index == 0 && (
-                <Box flex="auto" marginTop="3.5rem">
-                  <PraDisclosure />
-                </Box>
-              )}
-            </>
-          )}
-        </VStack>
-        <ReportModal />
-      </HStack>
+              </>
+            )}
+          </VStack>
+          <ReportModal />
+        </HStack>
+      </ReportFormContext.Provider>
     </FormProvider>
   );
 };
