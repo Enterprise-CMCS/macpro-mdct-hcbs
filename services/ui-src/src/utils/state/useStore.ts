@@ -122,7 +122,7 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
   },
   completePage: (measureId: string) => {
     set((state: HcbsReportState) => markPageComplete(measureId, state), false, {
-      type: "resetMeasure",
+      type: "completePage",
     });
   },
   resetMeasure: (measureId: string) =>
