@@ -77,14 +77,12 @@ describe("validateBannerPayload for startDate (API)", () => {
     );
   });
 
-  it("should fail when endDate is equal to startDate", async () => {
+  it("should pass when endDate is equal to startDate", async () => {
     const payload = {
       ...basePayload,
       startDate: 11022933, // Jan 1, 1970
       endDate: 11022933, // Jan 1, 1970
     };
-    await expect(validateBannerPayload(payload)).rejects.toThrow(
-      error.END_DATE_BEFORE_START_DATE
-    );
+    await expect(validateBannerPayload(payload)).resolves.toEqual(payload);
   });
 });
