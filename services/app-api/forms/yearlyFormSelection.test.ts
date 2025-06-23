@@ -5,12 +5,12 @@ import { ciReportTemplate as ciReportTemplate2026 } from "./2026/ci/ci";
 import { getReportTemplate } from "./yearlyFormSelection";
 
 describe("Yearly Form Selection", () => {
-  it("should throw an error if the requested year is not available (QMR report)", () => {
+  it("should throw an error if the requested year is not available (QMS report)", () => {
     const getTemplateCall = () => getReportTemplate(ReportType.QMS, 2025);
     expect(getTemplateCall).toThrow("not implemented");
   });
 
-  it("should return the template for the exact requested year, if one exists (QMR report)", () => {
+  it("should return the template for the exact requested year, if one exists (QMS report)", () => {
     expect(getReportTemplate(ReportType.QMS, 2026)).toBe(qmsReportTemplate2026);
   });
 
