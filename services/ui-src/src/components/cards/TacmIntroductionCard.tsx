@@ -5,7 +5,7 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
 
 /**
  * This card appears on the state user home page.
- * It contains text specific to the TA report.
+ * It contains text specific to the TACM report.
  */
 export const TacmIntroductionCard = () => {
   return (
@@ -21,8 +21,14 @@ export const TacmIntroductionCard = () => {
       <ReportIntroCardActions reportType={ReportType.TACM} />
       <Accordion allowToggle={true}>
         <AccordionItem label="When is the Timely Access Compliance Measure Report due?">
-          <p>The HCBS Timely Access will be created and submitted ...</p>
-          <p>The HCBS Timely Access deadlines are TBD ...</p>
+          <p>
+            The HCBS Timely Access Compliance Measure Report will be created and
+            submitted ...
+          </p>
+          <p>
+            The HCBS Timely Access Compliance Measure Report deadlines are TBD
+            ...
+          </p>
         </AccordionItem>
       </Accordion>
     </ReportIntroCard>
