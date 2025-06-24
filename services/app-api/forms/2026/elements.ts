@@ -174,7 +174,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
         {
           type: ElementType.TextAreaField,
           id: "measure-following-tech-specs-no-explain",
-          label: "Please explain the variance.",
+          label: "Explain the variance.",
           required: true,
           helperText:
             "Include the name of which technical specifications were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
@@ -481,6 +481,7 @@ export const homemakerRate: NdrBasicTemplate = {
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received homemaker services within the measurement period across all applicable HCBS programs.",
   },
   multiplier: 100,
+  displayRateAsPercent: true,
 };
 
 // Rates for Home Health Aide
@@ -498,6 +499,7 @@ export const homeHealthAideRate: NdrBasicTemplate = {
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received home health aide services within the measurement period across all applicable HCBS programs.",
   },
   multiplier: 100,
+  displayRateAsPercent: true,
 };
 
 // Rates for Personal Care
@@ -515,6 +517,7 @@ export const personalCareRate: NdrBasicTemplate = {
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received personal care services within the measurement period across all applicable HCBS programs.",
   },
   multiplier: 100,
+  displayRateAsPercent: true,
 };
 
 // Rates for Habilitation
@@ -532,6 +535,7 @@ export const habilitationRate: NdrBasicTemplate = {
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received habilitation services within the measurement period across all applicable HCBS programs.",
   },
   multiplier: 100,
+  displayRateAsPercent: true,
 };
 
 // State Sampling Methodology Radio Question

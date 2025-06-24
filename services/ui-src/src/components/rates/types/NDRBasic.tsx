@@ -17,14 +17,16 @@ import { PageElementProps } from "components/report/Elements";
 
 export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const { formkey, disabled, element } = props;
-  const { label, answer, multiplier, hintText } = element;
+  const { label, answer, multiplier, hintText, displayRateAsPercent } = element;
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
       numerator: stringifyInput(newAnswer?.numerator),
       denominator: stringifyInput(newAnswer?.denominator),
-      rate: stringifyResult(newAnswer?.rate),
+      rate: displayRateAsPercent
+        ? stringifyResult(newAnswer?.rate).concat("%")
+        : stringifyResult(newAnswer?.rate),
     };
   };
 
@@ -68,7 +70,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     newDisplayValue: typeof displayValue,
     newAnswer: NonNullable<typeof answer>
   ) => {
-    newDisplayValue.rate = stringifyResult(newAnswer.rate).concat("%");
+    newDisplayValue.rate = stringifyResult(newAnswer.rate);
   };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

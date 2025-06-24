@@ -401,6 +401,7 @@ const ndrRateBasicSchema = object().shape({
     })
     .notRequired(),
   multiplier: number().notRequired(),
+  displayRateAsPercent: boolean().notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({

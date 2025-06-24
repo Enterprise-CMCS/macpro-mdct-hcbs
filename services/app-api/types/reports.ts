@@ -558,6 +558,7 @@ export type NdrBasicTemplate = {
   };
   required?: boolean;
   multiplier?: number;
+  displayRateAsPercent?: boolean;
 };
 
 export type ChoiceTemplate = {
