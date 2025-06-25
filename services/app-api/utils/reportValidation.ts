@@ -72,6 +72,15 @@ const textboxTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const numberFieldTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.NumberField)),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().notRequired(),
+  answer: number().notRequired(),
+  required: boolean().notRequired(),
+});
+
 const textAreaTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.TextAreaField)),
   id: string().required(),
@@ -141,6 +150,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return textboxTemplateSchema;
     case ElementType.TextAreaField:
       return textAreaTemplateSchema;
+    case ElementType.NumberField:
+      return numberFieldTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
     case ElementType.Dropdown:

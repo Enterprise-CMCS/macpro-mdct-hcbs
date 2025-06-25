@@ -557,13 +557,13 @@ export const stateSamplingMethologyQuestion: RadioTemplate = {
           required: true,
         },
         {
-          type: ElementType.Textbox,
+          type: ElementType.NumberField,
           id: "total-eligible-population",
           label: "Total eligible population",
           required: true,
         },
         {
-          type: ElementType.Textbox,
+          type: ElementType.NumberField,
           id: "sample-size",
           label: "Sample size",
           required: true,

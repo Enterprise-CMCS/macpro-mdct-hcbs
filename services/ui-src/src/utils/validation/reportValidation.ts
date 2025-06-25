@@ -1,8 +1,15 @@
 import { ElementType, PageElement } from "types";
-import { array, lazy, mixed, object, string } from "yup";
+import { array, lazy, mixed, number, object, string } from "yup";
 
 export const textboxSchema = object().shape({
   answer: string().required("A response is required"),
+  type: string().notRequired(),
+  label: string().notRequired(),
+  id: string().notRequired(),
+});
+
+export const numberFieldSchema = object().shape({
+  answer: number().required("Enter a number"),
   type: string().notRequired(),
   label: string().notRequired(),
   id: string().notRequired(),
@@ -23,11 +30,7 @@ export const radioWithChildrenSchema = object().shape({
   label: string().notRequired(),
   choices: array().of(
     object().shape({
-      checkedChildren: array().of(
-        object().shape({
-          answer: string().required("A response is required"),
-        })
-      ),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
     })
   ),
   id: string().notRequired(),
@@ -49,6 +52,8 @@ const pageElementSchema = lazy((element: PageElement): any => {
         return emailSchema;
       }
       return textboxSchema;
+    case ElementType.NumberField:
+      return numberFieldSchema;
     case ElementType.TextAreaField:
       return textboxSchema;
     case ElementType.Date:

@@ -163,6 +163,7 @@ export enum ElementType {
   SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
+  NumberField = "numberField",
   TextAreaField = "textAreaField",
   Date = "date",
   Dropdown = "dropdown",
@@ -192,6 +193,7 @@ export type PageElement =
   | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
+  | NumberFieldTemplate
   | TextAreaBoxTemplate
   | DateTemplate
   | DropdownTemplate
@@ -272,6 +274,16 @@ export type TextboxTemplate = {
   answer?: string;
   required?: boolean;
   hideCondition?: HideCondition;
+};
+
+export type NumberFieldTemplate = {
+  type: ElementType.NumberField;
+  id: string;
+  label: string;
+  helperText?: string;
+  answer?: number;
+  required?: boolean;
+  hideCondition?: never;
 };
 
 export type TextAreaBoxTemplate = {

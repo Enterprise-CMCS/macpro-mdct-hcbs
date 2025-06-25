@@ -69,6 +69,8 @@ export const Page = ({ elements }: Props) => {
         return <TextField {...{ formkey, disabled, element }} />;
       case ElementType.TextAreaField:
         return <TextAreaField {...{ formkey, disabled, element }} />;
+      case ElementType.NumberField:
+        return <TextField {...{ formkey, disabled, element }} />;
       case ElementType.Date:
         return <DateField {...{ formkey, disabled, element }} />;
       case ElementType.Dropdown:

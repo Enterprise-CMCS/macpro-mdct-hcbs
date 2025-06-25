@@ -21,12 +21,14 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
+    let rate = stringifyResult(newAnswer?.rate);
+    if (rate && displayRateAsPercent) {
+      rate = rate.concat("%");
+    }
     return {
       numerator: stringifyInput(newAnswer?.numerator),
       denominator: stringifyInput(newAnswer?.denominator),
-      rate: displayRateAsPercent
-        ? stringifyResult(newAnswer?.rate).concat("%")
-        : stringifyResult(newAnswer?.rate),
+      rate,
     };
   };
 
@@ -70,7 +72,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     newDisplayValue: typeof displayValue,
     newAnswer: NonNullable<typeof answer>
   ) => {
-    newDisplayValue.rate = stringifyResult(newAnswer.rate);
+    newDisplayValue.rate = stringifyAnswer(newAnswer).rate;
   };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
