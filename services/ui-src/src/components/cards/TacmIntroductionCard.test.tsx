@@ -1,15 +1,15 @@
-import { TaIntroductionCard } from "./TaIntroductionCard";
+import { TacmIntroductionCard } from "./TacmIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11y } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const component = (
   <RouterWrappedComponent>
-    <TaIntroductionCard />
+    <TacmIntroductionCard />
   </RouterWrappedComponent>
 );
 
-describe("TaIntroductionCard", () => {
+describe("TacmIntroductionCard", () => {
   it("should render", () => {
     render(component);
     expect(

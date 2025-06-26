@@ -12,7 +12,7 @@ import {
   ReportType,
 } from "types/report";
 import { QmsOptions } from "./AddFormOptions/QmsOptions";
-import { TaOptions } from "./AddFormOptions/TaOptions";
+import { TacmOptions } from "./AddFormOptions/TacmOptions";
 import { CiOptions } from "./AddFormOptions/CiOptions";
 
 export type AddEditReportModalOptions = {
@@ -34,8 +34,8 @@ const buildModalOptions = (
   switch (reportType) {
     case ReportType.QMS:
       return QmsOptions(selectedReport);
-    case ReportType.TA:
-      return TaOptions();
+    case ReportType.TACM:
+      return TacmOptions();
     case ReportType.CI:
       return CiOptions();
     default:

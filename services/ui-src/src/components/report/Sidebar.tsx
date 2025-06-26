@@ -22,8 +22,8 @@ const getTitle = (report: Report) => {
       return "CICM Report";
     case ReportType.QMS:
       return "Quality Measure Set Report";
-    case ReportType.TA:
-      return "Timely Access Compliance Measure Report";
+    case ReportType.TACM:
+      return "Timely Access Report";
     default:
       assertExhaustive(report.type);
       return "";

@@ -5,7 +5,7 @@ import {
   CiIntroductionCard,
   PageTemplate,
   QmsIntroductionCard,
-  TaIntroductionCard,
+  TacmIntroductionCard,
 } from "components";
 import { useEffect } from "react";
 import { checkDateRangeStatus, useStore } from "utils";
@@ -15,7 +15,7 @@ export const HomePage = () => {
   const { bannerData, bannerActive, setBannerActive } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
-  const isTAReportActive = useFlags()?.isTaReportActive;
+  const isTACMReportActive = useFlags()?.isTacmReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export const HomePage = () => {
             </Box>
             <QmsIntroductionCard />
             {isCIReportActive && <CiIntroductionCard />}
-            {isTAReportActive && <TaIntroductionCard />}
+            {isTACMReportActive && <TacmIntroductionCard />}
           </>
         ) : (
           // show read-only view to non-state users

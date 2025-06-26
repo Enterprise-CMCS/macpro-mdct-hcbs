@@ -8,7 +8,7 @@ import {
 
 export enum ReportType {
   QMS = "QMS",
-  TA = "TA",
+  TACM = "TACM",
   CI = "CI",
 }
 export const isReportType = (x: string | undefined): x is ReportType => {
