@@ -39,10 +39,12 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   const errorMessage: string | undefined = get(formErrorState, key)?.message;
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
 
-  const labelText = [
-    textbox.label,
-    !textbox.required && <span className="optionalText"> (optional)</span>,
-  ];
+  const labelText = (
+    <>
+      {textbox.label}
+      {!textbox.required && <span className="optionalText"> (optional)</span>}
+    </>
+  );
 
   if (hideElement) {
     return null;
@@ -53,7 +55,7 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
       <CmsdsTextField
         id={key}
         name={key}
-        label={labelText || ""}
+        label={labelText}
         hint={parsedHint}
         onChange={onChangeHandler}
         value={displayValue}
