@@ -11,7 +11,7 @@ const getTitle = (reportType: string) => {
       return "CICM Report";
     case ReportType.QMS:
       return "QMS Report";
-    case ReportType.TA:
+    case ReportType.TACM:
       return "TACM Report";
   }
 };

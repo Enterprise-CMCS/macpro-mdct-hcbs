@@ -1,7 +1,7 @@
 # Dynamo
 BannersTable=local-banners
 QmsReportsTable=local-qms-reports
-TaReportsTable=local-ta-reports
+TacmReportsTable=local-tacm-reports
 CiReportsTable=local-ci-reports
 
 DYNAMODB_URL=http://host.docker.internal:8000

@@ -3,11 +3,11 @@ import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
 import { qmsReportTemplate } from "./qms/qms";
-import { taReportTemplate } from "./ta/ta";
+import { tacmReportTemplate } from "./tacm/tacm";
 
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
-  { template: taReportTemplate, name: "TA" },
+  { template: tacmReportTemplate, name: "TACM" },
   { template: ciReportTemplate, name: "CI" },
 ];
 describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
