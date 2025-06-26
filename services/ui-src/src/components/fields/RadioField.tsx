@@ -152,6 +152,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
         changeDeliveryMethods(currentPageId, value);
         // Update zustand state with latest form values
         setAnswers(form.getValues());
+        autosave();
         return; // after the clear, allow normal setting of this page to occur
     }
   };
