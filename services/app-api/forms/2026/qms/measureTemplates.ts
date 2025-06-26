@@ -40,6 +40,7 @@ import {
   performanceRatePOM,
   measureType,
   statePerformanceTargetLabel,
+  stateExclusionTargetLabel,
 } from "../elements";
 
 export const measureTemplates: Record<
@@ -779,10 +780,10 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        label: "Exclusion Rates",
+        label: "Exclusion Rate",
         required: true,
         helperText: "Hint Text",
-        ...statePerformanceTargetLabel,
+        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -835,10 +836,10 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        label: "Exclusion Rates",
+        label: "Exclusion Rate",
         required: true,
         helperText: "Hint Text",
-        ...statePerformanceTargetLabel,
+        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -1045,9 +1046,9 @@ export const measureTemplates: Record<
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
         required: true,
-        label: "Exclusion Rates",
+        label: "Exclusion Rate",
         helperText: "Hint Text",
-        ...statePerformanceTargetLabel,
+        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-risk-assess",
@@ -1108,7 +1109,6 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        label: "Performance Rates",
         ...statePerformanceTargetLabel,
         assessments: [
           {

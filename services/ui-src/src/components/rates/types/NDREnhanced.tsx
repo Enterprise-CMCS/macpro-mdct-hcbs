@@ -122,11 +122,13 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
 
   return (
     <Stack gap={4} sx={sx.performance}>
-      <Heading variant="subHeader">{label ?? "Performance Rates"}</Heading>
+      <Heading variant="subHeader">
+        {label ? `${label}s` : "Performance Rates"}
+      </Heading>
       <Text>{helperText}</Text>
       <Stack gap="2rem">
         <CmsdsTextField
-          label={`${label ?? "Performance Rates"} Denominator`}
+          label={`${label ? `${label}s` : "Performance Rates"} Denominator`}
           name={RateInputFieldNames.denominator}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}

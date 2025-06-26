@@ -13,7 +13,7 @@ describe("QmsIntroductionCard", () => {
   it("should render", () => {
     render(component);
     expect(
-      screen.getByText("The HCBS Quality Measure Set supports", {
+      screen.getByText("The HCBS QMS report is now available.", {
         exact: false,
       })
     ).toBeVisible();
