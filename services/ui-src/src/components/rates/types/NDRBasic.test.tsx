@@ -68,7 +68,7 @@ describe("<NDRBasic />", () => {
       expect(denominator).toHaveValue("2");
 
       const result = screen.getByRole("textbox", { name: "Result" });
-      expect(result).toHaveValue("50%");
+      expect(result).toHaveValue("50");
     });
 
     test("Rate should not display a decimal point if it is not needed", async () => {
@@ -79,7 +79,7 @@ describe("<NDRBasic />", () => {
       await act(async () => await userEvent.type(denominator, "3"));
 
       const result = screen.getByRole("textbox", { name: "Result" });
-      expect(result).toHaveValue("900%");
+      expect(result).toHaveValue("900");
     });
 
     test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
@@ -90,7 +90,7 @@ describe("<NDRBasic />", () => {
       await act(async () => await userEvent.type(denominator, "2000"));
 
       const result = screen.getByRole("textbox", { name: "Result" });
-      expect(result).toHaveValue("0.2%");
+      expect(result).toHaveValue("0.2");
     });
   });
 
