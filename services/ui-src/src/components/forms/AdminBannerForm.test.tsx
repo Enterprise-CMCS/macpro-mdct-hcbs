@@ -1,8 +1,8 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { AdminBannerForm } from "components";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 import userEvent from "@testing-library/user-event";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { AdminBannerMethods } from "types";
 
 const mockWriteAdminBanner = jest.fn();
@@ -39,26 +39,24 @@ describe("<AdminBannerForm />", () => {
   test("AdminBannerForm can be filled and submitted without error", async () => {
     render(adminBannerFormComponent(mockWriteAdminBanner));
 
-    await act(async () => {
-      const titleInput = screen.getByLabelText("Title text");
-      await userEvent.type(titleInput, "mock title");
+    const titleInput = screen.getByLabelText("Title text");
+    await userEvent.type(titleInput, "mock title");
 
-      const descriptionInput = screen.getByLabelText("Description text");
-      await userEvent.type(descriptionInput, "mock description");
+    const descriptionInput = screen.getByLabelText("Description text");
+    await userEvent.type(descriptionInput, "mock description");
 
-      const linkInput = screen.getByLabelText("Link", { exact: false });
-      await userEvent.type(linkInput, "http://example.com");
+    const linkInput = screen.getByLabelText("Link", { exact: false });
+    await userEvent.type(linkInput, "http://example.com");
 
-      const startDateInput = screen.getByLabelText("Start date");
-      await userEvent.type(startDateInput, "01/01/1970");
+    const startDateInput = screen.getByLabelText("Start date");
+    await userEvent.type(startDateInput, "01/01/1970");
 
-      const endDateInput = screen.getByLabelText("End date");
-      // Modified: End date must be after start date
-      await userEvent.type(endDateInput, "01/02/1970");
+    const endDateInput = screen.getByLabelText("End date");
+    // Modified: End date must be after start date
+    await userEvent.type(endDateInput, "01/02/1970");
 
-      const submitButton = screen.getByText("Replace Current Banner");
-      await userEvent.click(submitButton);
-    });
+    const submitButton = screen.getByText("Replace Current Banner");
+    await userEvent.click(submitButton);
 
     expect(mockWriteAdminBanner).toHaveBeenCalledWith({
       key: "admin-banner-id",
@@ -77,25 +75,23 @@ describe("<AdminBannerForm />", () => {
 
     render(adminBannerFormComponent(mockWriteAdminBanner));
 
-    await act(async () => {
-      const titleInput = screen.getByLabelText("Title text");
-      await userEvent.type(titleInput, "mock title");
+    const titleInput = screen.getByLabelText("Title text");
+    await userEvent.type(titleInput, "mock title");
 
-      const descriptionInput = screen.getByLabelText("Description text");
-      await userEvent.type(descriptionInput, "mock description");
+    const descriptionInput = screen.getByLabelText("Description text");
+    await userEvent.type(descriptionInput, "mock description");
 
-      const linkInput = screen.getByLabelText("Link", { exact: false });
-      await userEvent.type(linkInput, "http://example.com");
+    const linkInput = screen.getByLabelText("Link", { exact: false });
+    await userEvent.type(linkInput, "http://example.com");
 
-      const startDateInput = screen.getByLabelText("Start date");
-      await userEvent.type(startDateInput, "01/01/1970");
+    const startDateInput = screen.getByLabelText("Start date");
+    await userEvent.type(startDateInput, "01/01/1970");
 
-      const endDateInput = screen.getByLabelText("End date");
-      await userEvent.type(endDateInput, "01/02/1970");
+    const endDateInput = screen.getByLabelText("End date");
+    await userEvent.type(endDateInput, "01/02/1970");
 
-      const submitButton = screen.getByText("Replace Current Banner");
-      await userEvent.click(submitButton);
-    });
+    const submitButton = screen.getByText("Replace Current Banner");
+    await userEvent.click(submitButton);
 
     const errorMessage = screen.getByText(
       "Current banner could not be replaced",
@@ -106,7 +102,7 @@ describe("<AdminBannerForm />", () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
-  testA11y(adminBannerFormComponent(mockWriteAdminBanner));
+  testA11yAct(adminBannerFormComponent(mockWriteAdminBanner));
 });
 
 describe("AdminBannerForm validation", () => {
@@ -114,7 +110,7 @@ describe("AdminBannerForm validation", () => {
     render(adminBannerFormComponent(mockWriteAdminBanner));
 
     const submitButton = screen.getByText("Replace Current Banner");
-    await act(async () => await userEvent.click(submitButton));
+    await userEvent.click(submitButton);
 
     const responseIsRequiredErrorMessage = screen.getAllByText(
       "A response is required",
@@ -123,6 +119,7 @@ describe("AdminBannerForm validation", () => {
     expect(responseIsRequiredErrorMessage[0]).toBeVisible();
     expect(responseIsRequiredErrorMessage.length).toBe(4);
   });
+
   test("User has form errors but then fills out the form and errors go away", async () => {
     render(adminBannerFormComponent(mockWriteAdminBanner));
 
@@ -134,9 +131,7 @@ describe("AdminBannerForm validation", () => {
     const endDateInput = screen.getByLabelText("End date");
 
     // User clicks submit button without filling any fields in
-    await act(async () => {
-      await userEvent.click(submitButton);
-    });
+    await userEvent.click(submitButton);
     const responseIsRequiredErrorMessage = screen.getAllByText(
       "A response is required",
       { exact: false }
@@ -145,15 +140,13 @@ describe("AdminBannerForm validation", () => {
     expect(responseIsRequiredErrorMessage[0]).toBeVisible();
     expect(responseIsRequiredErrorMessage.length).toBe(4);
 
-    await act(async () => {
-      // User then fills in all the fields and is able to submit
-      await userEvent.type(titleInput, "mock title");
-      await userEvent.type(descriptionInput, "mock description");
-      await userEvent.type(linkInput, "http://example.com");
-      await userEvent.type(startDateInput, "01/01/1970");
-      await userEvent.type(endDateInput, "01/02/1970");
-      await userEvent.click(submitButton);
-    });
+    // User then fills in all the fields and is able to submit
+    await userEvent.type(titleInput, "mock title");
+    await userEvent.type(descriptionInput, "mock description");
+    await userEvent.type(linkInput, "http://example.com");
+    await userEvent.type(startDateInput, "01/01/1970");
+    await userEvent.type(endDateInput, "01/02/1970");
+    await userEvent.click(submitButton);
 
     // Errors go away when user fills out all fields
     expect(

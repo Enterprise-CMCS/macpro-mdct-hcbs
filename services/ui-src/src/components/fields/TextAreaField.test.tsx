@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 import { TextAreaField } from "components";
@@ -68,7 +68,7 @@ describe("<TextAreaField />", () => {
       render(textAreaFieldComponent);
       const textAreaField = screen.getByRole("textbox");
 
-      await act(async () => await userEvent.type(textAreaField, "h"));
+      await userEvent.type(textAreaField, "h");
 
       // hydrate + interact
       expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(2);

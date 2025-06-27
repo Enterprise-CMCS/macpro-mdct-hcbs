@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
@@ -39,9 +39,7 @@ const testComponent = (
 
 describe("<UserProvider />", () => {
   beforeEach(async () => {
-    await act(async () => {
-      render(testComponent);
-    });
+    render(testComponent);
   });
 
   test("child component renders", () => {
@@ -49,10 +47,8 @@ describe("<UserProvider />", () => {
   });
 
   test("test autosave function", async () => {
-    await act(async () => {
-      const saveButton = screen.getByRole("button", { name: "Save" });
-      await userEvent.click(saveButton);
-    });
+    const saveButton = screen.getByRole("button", { name: "Save" });
+    await userEvent.click(saveButton);
     jest.runAllTimers();
     await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
   });
