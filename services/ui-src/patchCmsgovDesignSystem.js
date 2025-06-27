@@ -81,9 +81,9 @@ const ALL_PATCHES = [
   {
     path: join(BASE_PATH, "ChoiceList", "Choice.js"),
     prePatchHash:
-      "d5402577642be31f5a02d23041da117745270bf725d6e342389b40d17ef4cc33",
+      "d5402577642be31f5a02d23041da117745270bf725d6e342389b40d17ef4cc33", // pragma: allowlist secret
     postPatchHash:
-      "90c99ddee40de6764d9232fa9459b4dd169a0b70c4b4e0c6315fc83baf5a7bd1",
+      "90c99ddee40de6764d9232fa9459b4dd169a0b70c4b4e0c6315fc83baf5a7bd1", // pragma: allowlist secret
     changes: [
       { lineNumber: 35, replacement: "    _choiceChild = false," },
       { lineNumber: 138, replacement: "" },
@@ -94,9 +94,9 @@ const ALL_PATCHES = [
   {
     path: join(BASE_PATH, "Icons", "SvgIcon.js"),
     prePatchHash:
-      "3a13f78866893c90bff80d70b33b2c943c21c675ed98d8ddb750eb95a0a082db",
+      "3a13f78866893c90bff80d70b33b2c943c21c675ed98d8ddb750eb95a0a082db", // pragma: allowlist secret
     postPatchHash:
-      "617b56f19cc8770c032195763970cf1e49d8c5a0af58cf3190113f1ea6186a11",
+      "617b56f19cc8770c032195763970cf1e49d8c5a0af58cf3190113f1ea6186a11", // pragma: allowlist secret
     changes: [
       { lineNumber: 15, replacement: "    ariaHidden = true," },
       { lineNumber: 20, replacement: "    inversed = false," },
@@ -109,9 +109,9 @@ const ALL_PATCHES = [
   {
     path: join(BASE_PATH, "Label", "Label.js"),
     prePatchHash:
-      "82edcde539eca7b2767587b4efd5fc0e449d6126bf334bce32c0e64389f372a1",
+      "82edcde539eca7b2767587b4efd5fc0e449d6126bf334bce32c0e64389f372a1", // pragma: allowlist secret
     postPatchHash:
-      "fcbff0d725722a106e9b958342e36b1168982f84041f0510845ca857a49a4c77",
+      "fcbff0d725722a106e9b958342e36b1168982f84041f0510845ca857a49a4c77", // pragma: allowlist secret
     changes: [
       { lineNumber: 25, replacement: "    component = 'label'," },
       { lineNumber: 75, replacement: "" },
@@ -122,9 +122,9 @@ const ALL_PATCHES = [
   {
     path: join(BASE_PATH, "TextField", "TextField.js"),
     prePatchHash:
-      "a4a9bfe225496d7931903d995d96254efff73c2a6502f9a20a2017f552d90319",
+      "a4a9bfe225496d7931903d995d96254efff73c2a6502f9a20a2017f552d90319", // pragma: allowlist secret
     postPatchHash:
-      "e23fe45d71290de14a2157a7026769ce325439fca8d44c11432c11d01746816c",
+      "e23fe45d71290de14a2157a7026769ce325439fca8d44c11432c11d01746816c", // pragma: allowlist secret
     changes: [
       { lineNumber: 29, replacement: "    className, type='text'," },
       { lineNumber: 64, replacement: "    type: 'text'," },
