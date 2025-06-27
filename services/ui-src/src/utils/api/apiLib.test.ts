@@ -60,11 +60,16 @@ describe("API lib", () => {
   });
 
   test("API errors should be surfaced for handling", async () => {
+    // For this test only, ignore console output. We deliberately log the error.
+    const consoleSpy = jest.spyOn(console, "log");
+    consoleSpy.mockImplementation(() => {});
+
     const apiSpy = jest.spyOn(mockAmplifyApi, "del");
     apiSpy.mockImplementationOnce(() => {
-      throw new Error("500");
+      throw new Error("Mock 500 error");
     });
 
     await expect(apiLib.del(path, mockOptions)).rejects.toThrow(Error);
+    consoleSpy.mockRestore();
   });
 });
