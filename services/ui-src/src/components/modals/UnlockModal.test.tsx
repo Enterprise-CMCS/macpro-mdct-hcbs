@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
-//components
 import { UnlockModal } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();
 
@@ -39,12 +38,6 @@ describe("Test Modal", () => {
     await userEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
-});
 
-describe("Test Modal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(modalComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(modalComponent);
 });
