@@ -5,6 +5,17 @@ import {
   HeaderIcon,
   ReportBase,
 } from "../../../types/reports";
+import {
+  additionalNotesField,
+  divider,
+  habilitationRate,
+  homeHealthAideRate,
+  homemakerRate,
+  personalCareRate,
+  stateSamplingMethologyQuestion,
+  didYouFollowSpecifications,
+  conversionOfServiceUnitsField,
+} from "../elements";
 
 export const tacmReportTemplate: ReportBase = {
   type: ReportType.TACM,
@@ -60,14 +71,44 @@ export const tacmReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "hapch-1-header",
-          text: "HCBS HAPCH-1: Time from initial approval of personal care, homemaker, home health Aide, and habilitation services to when services began",
+          text: "HCBS HAPCH-1: Time from Initial Approval of Homemaker, Home Health Aide, Personal Care, and Habilitation Services to When Services Began",
         },
         {
           type: ElementType.Accordion,
           id: "hapch-1-instructions",
           label: "Instructions",
-          value: "[Instructions to follow]",
+          value:
+            "<b>Sampling methodologies</b>" +
+            "<p>States have the choice of two sampling methodologies when reporting on HAPCH-1: Entire population or probability sample. If the probability sample is chosen, the state is required describe the:</p>" +
+            "<ul>" +
+            "  <li>Sampling approach used</li>" +
+            "  <li>Total eligible population</li>" +
+            "  <li>Sample size</li>" +
+            "  <li>Process used to pull a simple random sample of the eligible population.</li>" +
+            "</ul>",
         },
+        homemakerRate,
+        divider,
+        homeHealthAideRate,
+        divider,
+        personalCareRate,
+        divider,
+        habilitationRate,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
+        },
+        stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        didYouFollowSpecifications,
+        additionalNotesField,
       ],
     },
     {
@@ -85,8 +126,39 @@ export const tacmReportTemplate: ReportBase = {
           type: ElementType.Accordion,
           id: "hapch-2-instructions",
           label: "Instructions",
-          value: "[Instructions to follow]",
+          value:
+            "<b>Sampling methodologies</b>" +
+            "<p>States have the choice of two sampling methodologies when reporting on HAPCH-1: Entire population or probability sample. If the probability sample is chosen, the state is required describe the:</p>" +
+            "<ul>" +
+            "  <li>Sampling approach used</li>" +
+            "  <li>Total eligible population</li>" +
+            "  <li>Sample size</li>" +
+            "  <li>Process used to pull a simple random sample of the eligible population.</li>" +
+            "</ul>",
         },
+        homemakerRate,
+        divider,
+        homeHealthAideRate,
+        divider,
+        personalCareRate,
+        divider,
+        habilitationRate,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
+        },
+        stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        conversionOfServiceUnitsField,
+        didYouFollowSpecifications,
+        additionalNotesField,
       ],
     },
     {

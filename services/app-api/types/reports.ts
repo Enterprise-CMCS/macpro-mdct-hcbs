@@ -264,6 +264,7 @@ export enum ElementType {
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
   TextAreaField = "textAreaField",
+  NumberField = "numberField",
   Date = "date",
   Dropdown = "dropdown",
   Accordion = "accordion",
@@ -280,6 +281,7 @@ export enum ElementType {
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
   Ndr = "ndr",
+  NdrBasic = "ndrBasic",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -291,6 +293,7 @@ export type PageElement =
   | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
+  | NumberFieldTemplate
   | TextAreaBoxTemplate
   | DateTemplate
   | DropdownTemplate
@@ -308,6 +311,7 @@ export type PageElement =
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
+  | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -369,6 +373,16 @@ export type TextboxTemplate = {
   answer?: string;
   required?: boolean;
   hideCondition?: HideCondition;
+};
+
+export type NumberFieldTemplate = {
+  type: ElementType.NumberField;
+  id: string;
+  label: string;
+  helperText?: string;
+  answer?: number;
+  required?: boolean;
+  hideCondition?: never;
 };
 
 export type TextAreaBoxTemplate = {
@@ -538,6 +552,25 @@ export type NdrTemplate = {
     rate: number | undefined;
   };
   required?: boolean;
+};
+
+export type NdrBasicTemplate = {
+  id: string;
+  type: ElementType.NdrBasic;
+  label: string;
+  answer?: {
+    numerator: number | undefined;
+    denominator: number | undefined;
+    rate: number | undefined;
+  };
+  hintText?: {
+    numHint: string | undefined;
+    denomHint: string | undefined;
+    rateHint: string | undefined;
+  };
+  required?: boolean;
+  multiplier?: number;
+  displayRateAsPercent?: boolean;
 };
 
 export type ChoiceTemplate = {

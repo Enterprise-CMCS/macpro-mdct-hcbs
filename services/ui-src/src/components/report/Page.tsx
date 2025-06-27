@@ -30,6 +30,7 @@ import {
   StatusAlert,
   Fields,
   NDR,
+  NDRBasic,
   NDRFields,
   NDREnhanced,
 } from "components";
@@ -68,6 +69,8 @@ export const Page = ({ elements }: Props) => {
         return <TextField {...{ formkey, disabled, element }} />;
       case ElementType.TextAreaField:
         return <TextAreaField {...{ formkey, disabled, element }} />;
+      case ElementType.NumberField:
+        return <TextField {...{ formkey, disabled, element }} />;
       case ElementType.Date:
         return <DateField {...{ formkey, disabled, element }} />;
       case ElementType.Dropdown:
@@ -100,6 +103,8 @@ export const Page = ({ elements }: Props) => {
         return <NDREnhanced {...{ formkey, disabled, element }} />;
       case ElementType.Ndr:
         return <NDR {...{ formkey, disabled, element }} />;
+      case ElementType.NdrBasic:
+        return <NDRBasic {...{ formkey, disabled, element }} />;
       case ElementType.StatusAlert:
         return <StatusAlert {...{ formkey, disabled, element }} />;
       case ElementType.Divider:

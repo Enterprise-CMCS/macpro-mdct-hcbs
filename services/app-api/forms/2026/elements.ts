@@ -11,6 +11,7 @@ import {
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
+  NdrBasicTemplate,
   RadioTemplate,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
@@ -46,7 +47,7 @@ export const divider: DividerTemplate = {
 
 export const measureType: SubHeaderMeasureTemplate = {
   type: ElementType.SubHeaderMeasure,
-  id: "sub-header-measure",
+  id: "measure-type",
 };
 
 export const measureHeader: HeaderTemplate = {
@@ -173,7 +174,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
         {
           type: ElementType.TextAreaField,
           id: "measure-following-tech-specs-no-explain",
-          label: "Please explain the variance.",
+          label: "Explain the variance.",
           required: true,
           helperText:
             "Include the name of which technical specifications were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
@@ -185,6 +186,15 @@ export const didYouFollowSpecifications: RadioTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: true,
+};
+
+export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "conversion-of-service-units-field",
+  helperText:
+    "Brief explanation of the state's process to convert service units into hours.",
+  label: "Conversion of service units into hours",
   required: true,
 };
 
@@ -460,4 +470,118 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   title: "This measure has been completed",
   text: "You can still edit the measure, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete measure’ button. {ReturnButton} or select the ‘Return to measure dashboard’ button above to return to the previous page.",
   status: "success",
+};
+
+// Rates for Homemaker
+export const homemakerRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "homemaker-rate",
+  required: true,
+  label: "Homemaker",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program. ",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received homemaker services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received homemaker services within the measurement period across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Home Health Aide
+export const homeHealthAideRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "home-health-aide-rate",
+  required: true,
+  label: "Home Health Aide",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of home health aide services for all beneficiaries who received services through an applicable HCBS program.",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received home health aide services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received home health aide services within the measurement period across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Personal Care
+export const personalCareRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "personal-care-rate",
+  required: true,
+  label: "Personal Care",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of personal care services for all beneficiaries who received services through an applicable HCBS program.",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received personal care services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received personal care services within the measurement period across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Habilitation
+export const habilitationRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "habilitation-rate",
+  required: true,
+  label: "Habilitation",
+  hintText: {
+    numHint:
+      "Number of days between initial approval and receipt of habilitation services for all beneficiaries who received services through an applicable HCBS program. ",
+    denomHint:
+      "Number of beneficiaries in an applicable HCBS program who received habilitation services within the measurement period.",
+    rateHint:
+      "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received habilitation services within the measurement period across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// State Sampling Methodology Radio Question
+export const stateSamplingMethologyQuestion: RadioTemplate = {
+  type: ElementType.Radio,
+  id: "state-sampling-methodology-question",
+  required: true,
+  label: "What sampling methodology was used?",
+  choices: [
+    { label: "Entire population", value: "Entire population" },
+    {
+      label: "Probability sample",
+      value: "Probability sample",
+      checkedChildren: [
+        {
+          type: ElementType.TextAreaField,
+          id: "sampling-approach-used",
+          label: "Describe the sampling approach used",
+          required: true,
+        },
+        {
+          type: ElementType.NumberField,
+          id: "total-eligible-population",
+          label: "Total eligible population",
+          required: true,
+        },
+        {
+          type: ElementType.NumberField,
+          id: "sample-size",
+          label: "Sample size",
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "sampling-process-used",
+          label:
+            "Describe the process used to pull a simple random sample of the eligible population",
+          required: true,
+        },
+      ],
+    },
+  ],
 };

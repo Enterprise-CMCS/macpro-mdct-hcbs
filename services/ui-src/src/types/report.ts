@@ -163,6 +163,7 @@ export enum ElementType {
   SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
+  NumberField = "numberField",
   TextAreaField = "textAreaField",
   Date = "date",
   Dropdown = "dropdown",
@@ -180,6 +181,7 @@ export enum ElementType {
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
   Ndr = "ndr",
+  NdrBasic = "ndrBasic",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -191,6 +193,7 @@ export type PageElement =
   | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
+  | NumberFieldTemplate
   | TextAreaBoxTemplate
   | DateTemplate
   | DropdownTemplate
@@ -207,6 +210,7 @@ export type PageElement =
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
+  | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -270,6 +274,16 @@ export type TextboxTemplate = {
   answer?: string;
   required?: boolean;
   hideCondition?: HideCondition;
+};
+
+export type NumberFieldTemplate = {
+  type: ElementType.NumberField;
+  id: string;
+  label: string;
+  helperText?: string;
+  answer?: number;
+  required?: boolean;
+  hideCondition?: never;
 };
 
 export type TextAreaBoxTemplate = {
@@ -399,6 +413,13 @@ export const RateInputFieldNames = {
 export type RateInputFieldName =
   typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
 
+export const RateInputFieldNamesBasic = {
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+export type RateInputFieldNameBasic =
+  typeof RateInputFieldNamesBasic[keyof typeof RateInputFieldNamesBasic];
+
 export type RateType = {
   id: string;
   numerator: number | undefined;
@@ -445,6 +466,25 @@ export type NdrTemplate = {
     rate: number | undefined;
   };
   required?: boolean;
+};
+
+export type NdrBasicTemplate = {
+  id: string;
+  type: ElementType.NdrBasic;
+  label: string;
+  answer?: {
+    numerator: number | undefined;
+    denominator: number | undefined;
+    rate: number | undefined;
+  };
+  hintText?: {
+    numHint: string;
+    denomHint: string;
+    rateHint: string;
+  };
+  required?: boolean;
+  multiplier?: number;
+  displayRateAsPercent?: boolean;
 };
 
 export type ChoiceTemplate = {
