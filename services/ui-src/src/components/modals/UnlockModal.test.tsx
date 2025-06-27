@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { UnlockModal } from "components";
@@ -29,13 +30,13 @@ describe("Test Modal", () => {
     ).toBeTruthy();
   });
 
-  test("Modals action button can be clicked", () => {
-    fireEvent.click(screen.getByText("Return to dashboard"));
+  test("Modals action button can be clicked", async () => {
+    await userEvent.click(screen.getByText("Return to dashboard"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("Modals close button can be clicked", () => {
-    fireEvent.click(screen.getByText("Close"));
+  test("Modals close button can be clicked", async () => {
+    await userEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 });
