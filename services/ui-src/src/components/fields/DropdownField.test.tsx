@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 import { DropdownTemplate, ElementType } from "types";
@@ -69,7 +70,7 @@ describe("<DropdownField />", () => {
       render(dropdownFieldComponent);
       const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
 
-      fireEvent.change(dropdown, { target: { value: "2027" } });
+      await userEvent.selectOptions(dropdown, "2027");
 
       //a hydrate at the start + value change = 2 times
       expect(mockSetValue).toHaveBeenCalledTimes(2);

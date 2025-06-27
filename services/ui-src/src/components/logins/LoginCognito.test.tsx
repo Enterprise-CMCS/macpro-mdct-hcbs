@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { LoginCognito } from "components";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const loginCognitoComponent = (
   <RouterWrappedComponent>
@@ -43,5 +43,5 @@ describe("<LoginCognito />", () => {
     });
   });
 
-  testA11y(loginCognitoComponent);
+  testA11yAct(loginCognitoComponent);
 });

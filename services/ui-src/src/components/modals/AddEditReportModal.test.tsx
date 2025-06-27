@@ -1,6 +1,5 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
 import { AddEditReportModal } from "components";
 import {
   mockStateUserStore,
@@ -9,6 +8,7 @@ import {
 import { useStore } from "utils";
 import { Report, ReportType } from "../../types";
 import assert from "node:assert";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();
 const mockReportHandler = jest.fn();
@@ -100,6 +100,8 @@ describe("Test Add Report Modal", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Start new")).toBeInTheDocument();
   });
+
+  testA11y(addModalComponent);
 });
 
 describe("Test Edit Report Modal", () => {
@@ -137,7 +139,7 @@ describe("Test dropdown for year", () => {
       "Select the quality measure set reporting year."
     )[0];
     assert(dropdown instanceof HTMLSelectElement);
-    userEvent.selectOptions(dropdown, "2026");
+    await userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
   });
 });
@@ -148,17 +150,15 @@ describe("Test submit", () => {
     const nameTextbox = screen.getByRole("textbox", {
       name: "Quality Measure Set Report Name",
     });
-    await act(async () => await userEvent.type(nameTextbox, "mock-name"));
+    await userEvent.type(nameTextbox, "mock-name");
 
-    await act(async () => {
-      const radioBtns = screen.getAllByLabelText("Yes");
-      for (const radio of radioBtns) {
-        await userEvent.click(radio);
-      }
-    });
+    const radioBtns = screen.getAllByLabelText("Yes");
+    for (const radio of radioBtns) {
+      await userEvent.click(radio);
+    }
 
     const submitBtn = screen.getByText("Start new");
-    await act(async () => await userEvent.click(submitBtn));
+    await userEvent.click(submitBtn);
 
     expect(mockReportHandler).toHaveBeenCalled();
   });
@@ -169,12 +169,10 @@ describe("Test submit", () => {
     const nameTextbox = screen.getByRole("textbox", {
       name: "Quality Measure Set Report Name",
     });
-    await act(
-      async () => await userEvent.type(nameTextbox, "mock-edit-report")
-    );
+    await userEvent.type(nameTextbox, "mock-edit-report");
 
     const submitBtn = screen.getByText("Save");
-    await act(async () => await userEvent.click(submitBtn));
+    await userEvent.click(submitBtn);
   });
 });
 
@@ -198,13 +196,5 @@ describe("Test AddEditReportModal types", () => {
       </RouterWrappedComponent>
     );
     expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
-  });
-});
-
-describe("Test AddEditReportModal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(addModalComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 });

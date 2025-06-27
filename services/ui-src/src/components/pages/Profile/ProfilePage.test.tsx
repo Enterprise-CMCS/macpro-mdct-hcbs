@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProfilePage } from "components";
 import {
@@ -23,10 +23,7 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 describe("Test ProfilePage for admin users", () => {
   beforeEach(async () => {
     mockedUseStore.mockReturnValue(mockAdminUserStore);
-    // TODO: remove this act after removing hello world call
-    await act(async () => {
-      render(ProfilePageComponent);
-    });
+    render(ProfilePageComponent);
   });
 
   test("Check that Profile page renders properly", () => {
@@ -55,10 +52,7 @@ describe("Test ProfilePage for admin users", () => {
 describe("Test ProfilePage for state users", () => {
   beforeEach(async () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
-    // TODO: remove this act after removing hello world call
-    await act(async () => {
-      render(ProfilePageComponent);
-    });
+    render(ProfilePageComponent);
   });
 
   test("Check that Profile page renders properly", () => {

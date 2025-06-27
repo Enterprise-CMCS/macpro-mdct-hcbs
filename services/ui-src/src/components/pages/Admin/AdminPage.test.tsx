@@ -1,4 +1,4 @@
-import { render, screen, waitFor, act } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdminPage, AdminBannerContext } from "components";
 import { useStore } from "utils";
@@ -31,10 +31,8 @@ const adminView = (context: AdminBannerShape) => (
 describe("<AdminPage />", () => {
   describe("Test AdminPage banner manipulation functionality", () => {
     test("Deletes current banner on delete button click", async () => {
-      await act(async () => {
-        mockedUseStore.mockReturnValue(mockBannerStore);
-        await render(adminView(mockBannerMethods));
-      });
+      mockedUseStore.mockReturnValue(mockBannerStore);
+      render(adminView(mockBannerMethods));
       const deleteButton = screen.getByText("Delete Current Banner");
       await userEvent.click(deleteButton);
       await waitFor(() =>
@@ -45,13 +43,11 @@ describe("<AdminPage />", () => {
 
   describe("Test AdminPage without banner", () => {
     beforeEach(async () => {
-      await act(async () => {
-        mockedUseStore.mockReturnValue({
-          ...mockBannerStore,
-          bannerData: undefined,
-        });
-        await render(adminView(mockBannerMethods));
+      mockedUseStore.mockReturnValue({
+        ...mockBannerStore,
+        bannerData: undefined,
       });
+      render(adminView(mockBannerMethods));
     });
 
     test("Check that AdminPage renders", () => {
@@ -71,10 +67,8 @@ describe("<AdminPage />", () => {
 
   describe("Test AdminPage with banner", () => {
     beforeEach(async () => {
-      await act(async () => {
-        mockedUseStore.mockReturnValue(mockBannerStore);
-        await render(adminView(mockBannerMethods));
-      });
+      mockedUseStore.mockReturnValue(mockBannerStore);
+      render(adminView(mockBannerMethods));
     });
 
     test("Check that AdminPage renders", () => {
@@ -110,14 +104,12 @@ describe("<AdminPage />", () => {
         startDate: currentTime - oneDay,
         endDate: currentTime + oneDay,
       };
-      await act(async () => {
-        mockedUseStore.mockReturnValue({
-          ...mockBannerStore,
-          bannerData: activeBannerData,
-          bannerActive: true,
-        });
-        await render(adminView(context));
+      mockedUseStore.mockReturnValue({
+        ...mockBannerStore,
+        bannerData: activeBannerData,
+        bannerActive: true,
       });
+      render(adminView(context));
       const currentBannerStatus = screen.getByText("Status:");
       expect(currentBannerStatus.textContent).toEqual("Status: Active");
     });
@@ -128,13 +120,11 @@ describe("<AdminPage />", () => {
         startDate: currentTime + oneDay,
         endDate: currentTime + oneDay + oneDay,
       };
-      await act(async () => {
-        mockedUseStore.mockReturnValue({
-          ...mockBannerStore,
-          bannerData: inactiveBannerData,
-        });
-        await render(adminView(context));
+      mockedUseStore.mockReturnValue({
+        ...mockBannerStore,
+        bannerData: inactiveBannerData,
       });
+      render(adminView(context));
       const currentBannerStatus = screen.getByText("Status:");
       expect(currentBannerStatus.textContent).toEqual("Status: Inactive");
     });
@@ -147,9 +137,7 @@ describe("<AdminPage />", () => {
         bannerErrorMessage: bannerErrors.DELETE_BANNER_FAILED,
       });
 
-      await act(async () => {
-        await render(adminView(mockBannerMethods));
-      });
+      render(adminView(mockBannerMethods));
 
       expect(
         screen.getByText("Current banner could not be deleted")

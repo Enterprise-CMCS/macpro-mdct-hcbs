@@ -1,10 +1,11 @@
 import {
-  screen,
-  render,
-  waitFor,
   act,
   fireEvent,
+  render,
+  screen,
+  waitFor,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   ElementType,
   PageType,
@@ -13,7 +14,6 @@ import {
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
-import userEvent from "@testing-library/user-event";
 
 const testReport: Report = {
   type: ReportType.QMS,
@@ -164,14 +164,13 @@ describe("Page validation", () => {
       reportId: "QMSNJ123",
     });
   });
+
   test.skip("form should display error when text field is blurred with no input", async () => {
     global.structuredClone = (val: unknown) => {
       return JSON.parse(JSON.stringify(val));
     };
 
-    await act(async () => {
-      render(<ReportPageWrapper />);
-    });
+    render(<ReportPageWrapper />);
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
 
     const contactTitleInput = screen.getByLabelText("Another textbox");

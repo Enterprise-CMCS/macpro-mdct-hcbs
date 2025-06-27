@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ApiProvider } from "./ApiProvider";
 
 const TestComponent = () => <div>Test</div>;
@@ -11,9 +11,7 @@ const testComponent = (
 
 describe("<ApiProvider />", () => {
   beforeEach(async () => {
-    await act(async () => {
-      await render(testComponent);
-    });
+    render(testComponent);
   });
 
   test("ApiProvider renders children", () => {
