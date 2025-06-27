@@ -12,7 +12,9 @@ const component = (
 describe("CiIntroductionCard", () => {
   it("should render", () => {
     render(component);
-    expect(screen.getByText("The HCBS is", { exact: false })).toBeVisible();
+    expect(
+      screen.getByText("The Critical Incident Reporting", { exact: false })
+    ).toBeVisible();
   });
 
   testA11y(component);

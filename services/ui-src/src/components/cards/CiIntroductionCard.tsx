@@ -1,4 +1,4 @@
-import { Accordion, Link } from "@chakra-ui/react";
+import { Accordion } from "@chakra-ui/react";
 import { AccordionItem, ReportIntroCard } from "components";
 import { ReportType } from "types";
 import { ReportIntroCardActions } from "./ReportIntroCardActions";
@@ -9,19 +9,20 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
  */
 export const CiIntroductionCard = () => {
   return (
-    <ReportIntroCard title="HCBS Critical Incident Report">
-      The HCBS is ...
-      <Link
-        isExternal={true}
-        href="https://www.govinfo.gov/content/pkg/PLAW-109publ171/pdf/PLAW-109publ171.pdf"
-      >
-        6071(a)(1) of the Deficit Reduction Act (DRA)
-      </Link>
-      as "increasing the use of home and community-based, rather than
-      institutional, long-term care services."
+    <ReportIntroCard title="Critical Incident Report">
+      The Critical Incident Reporting requirements strengthen safeguards to
+      ensure health and welfare for HCBS participants and enhance state incident
+      management systems. The three federally prescribed performance measures
+      (PMs) for Critical Incident Reporting capture state efforts to ensure
+      critical incidents are appropriately reported, investigated, resolved, and
+      (if required) subjected to corrective action within state-specified
+      timeframes. These PMs are reported annually and are subject to a 90
+      percent minimum performance level. The PMs are aggregated across all
+      applicable HCBS authorities and programs and apply to both FFS and managed
+      care delivery systems.
       <ReportIntroCardActions reportType={ReportType.CI} />
       <Accordion allowToggle={true}>
-        <AccordionItem label="When is the HCBS Critical Incident Report due?">
+        <AccordionItem label="When is the Critical Incident Report Due?">
           <p>The HCBS Critical Incident will be created and submitted ...</p>
           <p>The HCBS Critical Incident deadlines are TBD ...</p>
         </AccordionItem>
