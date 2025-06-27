@@ -7,6 +7,10 @@ const verbiage = {
   yearSelect: "Select the quality measure set reporting year.",
   shortName: "QMS",
   sampleName: "HCBS QMS Report for 2026",
+  topText:
+    "Answering “Yes” or “No” to the following questions will impact which measure results must be reported.",
+  yearHelperText:
+    "This is the final year in a multi-year reporting period, used to indicate the endpoint of data collection.  For example, if a report covers the period of 2025 and 2026, the reporting year would be 2026.",
 };
 
 const parseReportOptions = (selectedReport: Report | undefined) => {
