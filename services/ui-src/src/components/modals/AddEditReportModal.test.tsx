@@ -182,7 +182,7 @@ describe("Test AddEditReportModal types", () => {
   test.each([
     { type: ReportType.QMS, text: "Quality Measure Set Report" },
     { type: ReportType.TACM, text: "TACM Report" },
-    { type: ReportType.CI, text: "CICM Report" },
+    { type: ReportType.CI, text: "Critical Incident Report" },
   ])("$type report type renders a title", ({ type, text }) => {
     render(
       <RouterWrappedComponent>
