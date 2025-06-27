@@ -36,10 +36,12 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 const mockClearMeasure = jest.fn();
 const mockChangeDeliveryMethods = jest.fn();
+const mockSetAnswers = jest.fn();
 mockedUseStore.mockReturnValue({
   currentPageId: "my-id",
   clearMeasure: mockClearMeasure,
   changeDeliveryMethods: mockChangeDeliveryMethods,
+  setAnswers: mockSetAnswers,
 });
 
 const mockRadioElement: RadioTemplate = {
@@ -172,6 +174,7 @@ describe("Radio field click action logic", () => {
       await userEvent.click(radioField!);
     });
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
+    expect(mockSetAnswers).toHaveBeenCalledTimes(0);
 
     const modalYes = screen.getByText("Yes");
     expect(modalYes).toBeVisible();
@@ -179,6 +182,7 @@ describe("Radio field click action logic", () => {
       await userEvent.click(modalYes!);
     });
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(1);
+    expect(mockSetAnswers).toHaveBeenCalledTimes(1);
   });
 
   test("Confirmation modal is shown when delivery method is changed, and clicking no does not change the radio value", async () => {
@@ -198,6 +202,7 @@ describe("Radio field click action logic", () => {
       await userEvent.click(radioField!);
     });
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
+    expect(mockSetAnswers).toHaveBeenCalledTimes(0);
 
     const modalNo = screen.getByText("No");
     expect(modalNo).toBeVisible();
@@ -205,6 +210,7 @@ describe("Radio field click action logic", () => {
       await userEvent.click(modalNo!);
     });
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
+    expect(mockSetAnswers).toHaveBeenCalledTimes(0);
   });
 
   test("Radio field triggers a clear action when not reporting.", async () => {

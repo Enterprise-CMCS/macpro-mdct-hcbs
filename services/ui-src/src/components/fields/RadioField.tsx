@@ -57,7 +57,8 @@ const hintTextColor = (clickAction: string) => {
 
 export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   const radio = props.element;
-  const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
+  const { clearMeasure, changeDeliveryMethods, currentPageId, setAnswers } =
+    useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
   // get form context and register field
@@ -149,6 +150,9 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
         return;
       case "qmDeliveryMethodChange":
         changeDeliveryMethods(currentPageId, value);
+        // Update zustand state with latest form values
+        setAnswers(form.getValues());
+        autosave();
         return; // after the clear, allow normal setting of this page to occur
     }
   };
