@@ -49,7 +49,6 @@ describe("<UserProvider />", () => {
   test("test autosave function", async () => {
     const saveButton = screen.getByRole("button", { name: "Save" });
     await userEvent.click(saveButton);
-    jest.runAllTimers();
     await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
   });
 });
