@@ -57,36 +57,3 @@ export const colors = {
     spreadsheet_dark: "#174320",
   },
 };
-
-
-//   active: {
-//       "-MDCT-primary": "#0071bc",
-//       "-MDCT-primary-darker": "#004f84",
-//       "-MDCT-primary-darkest": "#00395e",
-//       "-MDCT-primary-lightest": "#e6f1f8",
-//       "-MDCT-black": "#000000",
-//       "-MDCT-base": "#262626",
-//       "-MDCT-gray-darker": "#404040",
-//       "-MDCT-gray-dark": "#5A5A5A",
-//       "-MDCT-gray-medium": "#71767A",
-//       "-MDCT-gray-light": "#A6A6A6",
-//       "-MDCT-gray-lighter": "#D9D9D9",
-//       "-MDCT-muted-inverse": "#E9ECF1",
-//       "-MDCT-gray-lightest": "#F2F2F2",
-//       "-MDCT-gray-lightest-highlight": "#F8F8F8",
-//       "-MDCT-background": "#FFFFFF",
-//     },
-//     secondary: {
-//       "-MDCT-secondary-blue-lightest": "#EEFBFF",
-//       "-MDCT-secondary-lightest": "#E6F9FD",
-//       "-MDCT-secondary": "#02BFE7",
-//       "-MDCT-secondary-medicaid-logo-green": "#026666",
-//       "-MDCT-secondary-darkest": "#016074",
-//     },
-//     status: {
-//       "-MDCT-": "#",
-//       "-MDCT-": "#",
-//       "-MDCT-": "#",
-//       "-MDCT-": "#",
-//       "-MDCT-": "#",
-//     },
