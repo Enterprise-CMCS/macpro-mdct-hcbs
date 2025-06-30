@@ -61,6 +61,9 @@ const sx = {
     "@media print": {
       display: "none",
     },
+    ".tablet &, .mobile &": {
+      position: "static",
+    },
   },
   usaBannerContainer: {
     width: "100%",

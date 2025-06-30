@@ -5,7 +5,7 @@ import {
   CiIntroductionCard,
   PageTemplate,
   QmsIntroductionCard,
-  TaIntroductionCard,
+  TacmIntroductionCard,
 } from "components";
 import { useEffect } from "react";
 import { checkDateRangeStatus, useStore } from "utils";
@@ -15,7 +15,7 @@ export const HomePage = () => {
   const { bannerData, bannerActive, setBannerActive } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
-  const isTAReportActive = useFlags()?.isTaReportActive;
+  const isTACMReportActive = useFlags()?.isTacmReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
 
   useEffect(() => {
@@ -44,23 +44,24 @@ export const HomePage = () => {
           <>
             <Box>
               <Heading as="h1" variant="h1">
-                Home and Community Based Services (HCBS) Portal
+                Home and Community-Based Services (HCBS) Portal
               </Heading>
               <Text>
                 Get started by completing the Home and Community-Based Services
-                (HCBS) for your state or territory. Learn more about this{" "}
+                (HCBS) reports for your state or territory. For more information
+                about measuring and improving quality in home and
+                community-based services, please visit{" "}
                 <Link
-                  href="https://www.medicaid.gov/medicaid/home-community-based-services/index.html"
                   isExternal
+                  href="https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
                 >
-                  new data collection tool
-                </Link>{" "}
-                from CMS.
+                  this link.
+                </Link>
               </Text>
             </Box>
             <QmsIntroductionCard />
-            {isTAReportActive && <TaIntroductionCard />}
             {isCIReportActive && <CiIntroductionCard />}
+            {isTACMReportActive && <TacmIntroductionCard />}
           </>
         ) : (
           // show read-only view to non-state users

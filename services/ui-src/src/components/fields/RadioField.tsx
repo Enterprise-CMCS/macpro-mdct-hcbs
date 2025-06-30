@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { get, useFormContext } from "react-hook-form";
 import { ChoiceTemplate, RadioTemplate } from "types";
@@ -10,6 +10,7 @@ import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/C
 import { requiredResponse } from "../../constants";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
+import { Modal } from "components";
 
 const formatChoices = (
   parentKey: string,
@@ -31,7 +32,7 @@ const formatChoices = (
     }));
 
     const checkedChildren = [
-      <Box sx={sx.children}>
+      <Box key="radio-sub-page" sx={sx.children}>
         <Page elements={children} />
       </Box>,
     ];
@@ -56,7 +57,8 @@ const hintTextColor = (clickAction: string) => {
 
 export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   const radio = props.element;
-  const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
+  const { clearMeasure, changeDeliveryMethods, currentPageId, setAnswers } =
+    useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
   // get form context and register field
@@ -74,6 +76,8 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
 
   const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
   const hideElement = useElementIsHidden(radio.hideCondition, key);
+  const [tempEvent, setTempEvent] =
+    useState<React.ChangeEvent<HTMLInputElement> | null>(null);
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
@@ -82,11 +86,35 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
     );
   }, [radio.answer]);
 
+  const {
+    isOpen: radioModalIsOpen,
+    onOpen: radioModalOnOpenHandler,
+    onClose: radioModalOnCloseHandler,
+  } = useDisclosure();
+
+  const modalConfirmHandler = () => {
+    onChangeHandler(tempEvent as React.ChangeEvent<HTMLInputElement>);
+    modalCloseCustomHandler();
+  };
+
+  const modalCloseCustomHandler = () => {
+    setTempEvent(null);
+    radioModalOnCloseHandler();
+  };
   // OnChange handles setting the visual of the radio on click, outside the normal blur
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = event.target;
+    if (
+      radio.clickAction === "qmDeliveryMethodChange" &&
+      radio.answer &&
+      tempEvent === null
+    ) {
+      setTempEvent(event);
+      return radioModalOnOpenHandler();
+    }
+
     const newValues = displayValue.map((choice) => {
       choice.checked = choice.value === value;
       return choice;
@@ -122,6 +150,9 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
         return;
       case "qmDeliveryMethodChange":
         changeDeliveryMethods(currentPageId, value);
+        // Update zustand state with latest form values
+        setAnswers(form.getValues());
+        autosave();
         return; // after the clear, allow normal setting of this page to occur
     }
   };
@@ -131,7 +162,8 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   const errorMessage: string | undefined = get(formErrors, key)?.message;
 
   const parsedHint = (
-    <Box color={hintTextColor(radio.clickAction!)}>
+    // This is as="span" because it is inside a CMSDS Hint, which is a <p>.
+    <Box as="span" color={hintTextColor(radio.clickAction!)}>
       {radio.helperText && parseHtml(radio.helperText)}
     </Box>
   );
@@ -152,6 +184,21 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
         onChange={onChangeHandler}
         {...props}
       />
+      <Modal
+        data-testid="confirm-modal"
+        modalDisclosure={{
+          isOpen: radioModalIsOpen,
+          onClose: modalCloseCustomHandler,
+        }}
+        onConfirmHandler={modalConfirmHandler}
+        content={{
+          heading: "Are you sure?",
+          subheading:
+            "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.",
+          actionButtonText: "Yes",
+          closeButtonText: "No",
+        }}
+      ></Modal>
     </Box>
   );
 };

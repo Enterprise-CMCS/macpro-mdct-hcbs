@@ -1,18 +1,22 @@
-import { TaIntroductionCard } from "./TaIntroductionCard";
+import { TacmIntroductionCard } from "./TacmIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11y } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const component = (
   <RouterWrappedComponent>
-    <TaIntroductionCard />
+    <TacmIntroductionCard />
   </RouterWrappedComponent>
 );
 
-describe("TaIntroductionCard", () => {
+describe("TacmIntroductionCard", () => {
   it("should render", () => {
     render(component);
-    expect(screen.getByText("The HCBS is", { exact: false })).toBeVisible();
+    expect(
+      screen.getByText("The Timely Access Compliance Measures support", {
+        exact: false,
+      })
+    ).toBeVisible();
   });
 
   testA11y(component);

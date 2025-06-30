@@ -69,10 +69,10 @@ describe("<TextField />", () => {
 
       await act(async () => await userEvent.type(textField, "h"));
 
-      // hydrate + enter letter + type + label + id
-      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(5);
+      // enter letter + type + label + id
+      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(4);
       expect(mockRhfMethods.setValue).toHaveBeenNthCalledWith(
-        2,
+        1,
         expect.any(String),
         "h",
         expect.any(Object)

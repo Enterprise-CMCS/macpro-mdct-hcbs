@@ -52,7 +52,7 @@ const editModalComponent = (
           year: 2026,
           options: {
             cahps: true,
-            hciidd: true,
+            nciidd: true,
             nciad: true,
             pom: true,
           },
@@ -181,7 +181,7 @@ describe("Test submit", () => {
 describe("Test AddEditReportModal types", () => {
   test.each([
     { type: ReportType.QMS, text: "Quality Measure Set Report" },
-    { type: ReportType.TA, text: "TACM Report" },
+    { type: ReportType.TACM, text: "TACM Report" },
     { type: ReportType.CI, text: "CICM Report" },
   ])("$type report type renders a title", ({ type, text }) => {
     render(

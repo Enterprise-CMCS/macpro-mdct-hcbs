@@ -113,7 +113,7 @@ describe("Radio validation", () => {
     expect(validatedRadioData).toEqual(radioFormData);
   });
 
-  it("throws an error when validating an invalid radio", () => {
+  it("throws an error when validating an invalid radio", async () => {
     const emptyRadioFormData = {
       elements: [
         {
@@ -124,7 +124,7 @@ describe("Radio validation", () => {
         },
       ],
     };
-    expect(async () => {
+    await expect(async () => {
       await yupValidateTestHelper(emptyRadioFormData);
     }).rejects.toThrow("A response is required");
   });
@@ -138,7 +138,7 @@ describe("Radio validation", () => {
           label: "radio with children",
           choices: [
             {
-              checkedChildren: [{ answer: "" }],
+              checkedChildren: [{ answer: "", type: ElementType.Textbox }],
             },
           ],
           id: "radio1",

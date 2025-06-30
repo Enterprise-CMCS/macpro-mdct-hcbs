@@ -3,7 +3,6 @@ import {
   ElementType,
   MeasureTemplateName,
   MeasurePageTemplate,
-  PerformanceRateType,
 } from "../../../types/reports";
 import {
   additionalNotesField,
@@ -40,6 +39,8 @@ import {
   sectionCompleteBanner,
   performanceRatePOM,
   measureType,
+  statePerformanceTargetLabel,
+  stateExclusionTargetLabel,
 } from "../elements";
 
 export const measureTemplates: Record<
@@ -518,17 +519,12 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
+        label:
+          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -560,17 +556,12 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
+        label:
+          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -626,17 +617,12 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
+        label:
+          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
+        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -668,17 +654,12 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.Ndr,
         id: "measure-rates",
+        label:
+          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
+        ...statePerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR,
-        assessments: [
-          {
-            id: "total-personal-priority",
-            label:
-              "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-          },
-        ],
       },
       {
         type: ElementType.MeasureFooter,
@@ -785,10 +766,10 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       divider,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...statePerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "pc-plan",
@@ -797,12 +778,12 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        label: "Exclusion Rates",
+        label: "Exclusion Rate",
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         helperText: "Hint Text",
+        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -841,10 +822,10 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       divider,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...statePerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "pc-plan",
@@ -853,12 +834,12 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        label: "Exclusion Rates",
+        label: "Exclusion Rate",
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         helperText: "Hint Text",
+        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -1005,10 +986,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...statePerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "gait-evaulation",
@@ -1046,10 +1027,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
+        ...statePerformanceTargetLabel,
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
         assessments: [
           {
             id: "fall-risk-assess",
@@ -1062,12 +1043,12 @@ export const measureTemplates: Record<
         ],
       },
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
         required: true,
-        rateType: PerformanceRateType.NDR_Enhanced,
-        label: "Exclusion Rates",
+        label: "Exclusion Rate",
         helperText: "Hint Text",
+        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-risk-assess",
@@ -1096,8 +1077,8 @@ export const measureTemplates: Record<
       measureInstructions,
       measureDetailsSection,
       measureInformationSubheader,
-      wereTheResultsAudited,
       didYouFollowSpecifications,
+      wereTheResultsAudited,
       additionalNotesField,
       enterMeasureResultsSubheader,
       measureResultsNavigationTable,
@@ -1126,10 +1107,9 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       {
-        type: ElementType.PerformanceRate,
+        type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        label: "Performance Rates",
-        rateType: PerformanceRateType.NDR_Enhanced,
+        ...statePerformanceTargetLabel,
         assessments: [
           {
             id: "acute-readmission-plan",
@@ -1283,7 +1263,7 @@ export const measureTemplates: Record<
     ],
   },
   [MeasureTemplateName["MLTSS-POM-2"]]: {
-    id: "MLTSS-POM-1",
+    id: "MLTSS-POM-2",
     title: "POM: People Participate in the Life of the Community (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,

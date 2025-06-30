@@ -39,8 +39,8 @@ export const DashboardPage = () => {
     switch (type) {
       case ReportType.QMS:
         return "Quality Measure Set Report";
-      case ReportType.TA:
-        return "Timely Access Report";
+      case ReportType.TACM:
+        return "Timely Access Compliance Measure Report";
       case ReportType.CI:
         return "Critical Incident Report";
       default:
@@ -158,27 +158,25 @@ export const DashboardPage = () => {
                 <p>
                   <strong>Understanding Report Statuses</strong>
                 </p>
-                <p>
-                  <ul>
-                    <li>
-                      <strong>Not Started:</strong> The report has been created
-                      but no data has been entered or actions taken.
-                    </li>
-                    <li>
-                      <strong>In Progress:</strong> The report is actively being
-                      worked on, with some or all data entered.
-                    </li>
-                    <li>
-                      <strong>Submitted:</strong> The report has been completed
-                      and submitted to CMS for review.
-                    </li>
-                    <li>
-                      <strong>In-Revision:</strong> The report has been sent
-                      back to the state for revisions or additional information
-                      after submission.
-                    </li>
-                  </ul>
-                </p>
+                <ul>
+                  <li>
+                    <strong>Not started:</strong> The report has been created
+                    but no data has been entered or actions taken.
+                  </li>
+                  <li>
+                    <strong>In progress:</strong> The report is actively being
+                    worked on, with some or all data entered.
+                  </li>
+                  <li>
+                    <strong>Submitted:</strong> The report has been completed
+                    and submitted to CMS for review.
+                  </li>
+                  <li>
+                    <strong>In revision:</strong> The report has been sent back
+                    to the state for revisions or additional information after
+                    submission.
+                  </li>
+                </ul>
                 <p>
                   Use the dashboard below to check your report’s status and take
                   any necessary follow-up actions.
@@ -295,6 +293,9 @@ const sx = {
       marginBottom: "1.5rem",
     },
     p: {
+      marginBottom: "1.5rem",
+    },
+    ul: {
       marginBottom: "1.5rem",
     },
   },
