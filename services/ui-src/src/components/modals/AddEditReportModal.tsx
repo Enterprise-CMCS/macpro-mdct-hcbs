@@ -127,14 +127,14 @@ export const AddEditReportModal = ({
     >
       <FormProvider {...form}>
         <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
-          <Flex direction="column" gap="1.5rem">
-            <Text>{verbiage.topText || ""}</Text>
+          <Flex direction="column" gap="2rem">
+            {verbiage.topText && <Text>{verbiage.topText}</Text>}
             <TextField
               element={{
                 type: ElementType.Textbox,
                 id: "",
                 label: `${verbiage.reportName} Name`,
-                helperText: `Name the ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: ${activeState} ${verbiage.sampleName}`,
+                helperText: `Name the ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: "${activeState} ${verbiage.sampleName}"`,
                 answer: selectedReport?.name,
                 required: true,
               }}
