@@ -134,7 +134,7 @@ export const AddEditReportModal = ({
                 type: ElementType.Textbox,
                 id: "",
                 label: `${verbiage.reportName} Name`,
-                helperText: `Name the ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: "${activeState} ${verbiage.sampleName}"`,
+                helperText: `Name this ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: "${activeState} ${verbiage.sampleName}"`,
                 answer: selectedReport?.name,
                 required: true,
               }}
