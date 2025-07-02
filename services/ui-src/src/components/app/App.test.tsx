@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import {
   RouterWrappedComponent,
   mockNoUserStore,
@@ -6,7 +6,7 @@ import {
 } from "utils/testing/setupJest";
 import { useStore, UserProvider } from "utils";
 import { App } from "components";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -23,9 +23,7 @@ const appComponent = (
 describe("<App />", () => {
   test("App is visible", async () => {
     mockedUseStore.mockReturnValue(mockUseStore);
-    await act(async () => {
-      await render(appComponent);
-    });
+    render(appComponent);
     expect(
       screen.getByRole("region", {
         name: "Official website of the United States government",
@@ -48,9 +46,7 @@ describe("<App />", () => {
 
   test("App renders local logins if there is no user", async () => {
     mockedUseStore.mockReturnValue(mockNoUserStore);
-    await act(async () => {
-      await render(appComponent);
-    });
+    render(appComponent);
     const headings = screen.getAllByRole("heading", { level: 2 });
     expect(headings.length).toBe(2);
     expect(headings[0]).toHaveTextContent("Log In with IDM");
@@ -63,5 +59,5 @@ describe("<App />", () => {
     ).toBeVisible();
   });
 
-  testA11y(appComponent);
+  testA11yAct(appComponent);
 });

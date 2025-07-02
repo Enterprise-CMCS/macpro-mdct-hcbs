@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RadioField } from "components";
 import { useFormContext } from "react-hook-form";
@@ -138,6 +138,7 @@ describe("Radio field click action logic", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   test("Radio field triggers a report delivery methods change when toggled", async () => {
     const deliveryElement = {
       ...mockRadioElement,
@@ -149,11 +150,9 @@ describe("Radio field click action logic", () => {
       </div>
     );
     render(deliveryRadio);
-    const radioField = screen.queryByText("Choice 1");
+    const radioField = screen.getByText("Choice 1");
     expect(radioField).toBeVisible();
-    await act(async () => {
-      await userEvent.click(radioField!);
-    });
+    await userEvent.click(radioField);
     expect(mockChangeDeliveryMethods).toHaveBeenCalled();
   });
 
@@ -170,17 +169,13 @@ describe("Radio field click action logic", () => {
     );
     render(deliveryRadio);
     const radioField = screen.getByText("Choice 1");
-    await act(async () => {
-      await userEvent.click(radioField!);
-    });
+    await userEvent.click(radioField);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);
 
     const modalYes = screen.getByText("Yes");
     expect(modalYes).toBeVisible();
-    await act(async () => {
-      await userEvent.click(modalYes!);
-    });
+    await userEvent.click(modalYes);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(1);
     expect(mockSetAnswers).toHaveBeenCalledTimes(1);
   });
@@ -198,17 +193,13 @@ describe("Radio field click action logic", () => {
     );
     render(deliveryRadio);
     const radioField = screen.getByText("Choice 1");
-    await act(async () => {
-      await userEvent.click(radioField!);
-    });
+    await userEvent.click(radioField);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);
 
     const modalNo = screen.getByText("No");
     expect(modalNo).toBeVisible();
-    await act(async () => {
-      await userEvent.click(modalNo!);
-    });
+    await userEvent.click(modalNo);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);
   });
@@ -236,11 +227,9 @@ describe("Radio field click action logic", () => {
       </div>
     );
     render(deliveryRadio);
-    const radioField = screen.queryByText("Hey, no thanks");
+    const radioField = screen.getByText("Hey, no thanks");
     expect(radioField).toBeVisible();
-    await act(async () => {
-      await userEvent.click(radioField!);
-    });
+    await userEvent.click(radioField);
     expect(mockClearMeasure).toHaveBeenCalled();
   });
 });

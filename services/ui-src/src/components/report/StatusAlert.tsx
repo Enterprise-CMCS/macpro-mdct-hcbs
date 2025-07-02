@@ -41,7 +41,11 @@ export const StatusAlert = (props: PageElementProps<StatusAlertTemplate>) => {
   if (alert.text.includes("{ReturnButton}")) {
     const link = <Link onClick={() => nav()}>Click here</Link>;
     const textElements = alert.text.split("{ReturnButton}");
-    children = [textElements[0], link, textElements[1]];
+    children = (
+      <>
+        {textElements[0]} {link} {textElements[1]}
+      </>
+    );
   }
 
   return (

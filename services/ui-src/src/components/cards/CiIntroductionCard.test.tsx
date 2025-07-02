@@ -1,6 +1,6 @@
 import { CiIntroductionCard } from "./CiIntroductionCard";
 import { render, screen } from "@testing-library/react";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const component = (
@@ -17,5 +17,5 @@ describe("CiIntroductionCard", () => {
     ).toBeVisible();
   });
 
-  testA11y(component);
+  testA11yAct(component);
 });
