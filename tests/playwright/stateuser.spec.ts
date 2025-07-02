@@ -1,29 +1,35 @@
 import { test, expect, Page } from "@playwright/test";
 import { stateUserAuthPath } from "./utils/consts";
+import {
+  completeGeneralInfo,
+  enterReport,
+  notReporting,
+  submitReport,
+  testModalData,
+} from "./utils/reportUtils";
 
 test.use({ storageState: stateUserAuthPath });
 
-const testModalData = {
-  reportName: "test report name",
-  datetime: new Date().getTime(),
-  cahpsSurveyOption: "No",
-  nciiddSurveyOption: "No",
-  nciadSurveyOption: "No",
-  pomSurveyOption: "No",
-};
-test("create a report as a state user", async ({ page }) => {
-  await navigateToAddEditReportModal(page);
-  await fillAddEditReportModal(page);
-  await assertReportIsCreated(page, testModalData);
-  await fillOutReport(page, testModalData);
-});
-
-const navigateToAddEditReportModal = async (page: Page) => {
+test.beforeEach(async ({ page }) => {
   await page.goto("/");
   const qmsReportButton = page.getByRole("link", {
     name: "Enter QMS Report online",
   });
   await qmsReportButton.click();
+});
+
+test.describe("create and complete a report as a state user", () => {
+  test("create a report as a state user", async ({ page }) => {
+    await navigateToAddEditReportModal(page);
+    await fillAddEditReportModal(page);
+    await assertReportIsCreated(page, testModalData);
+  });
+  test("complete a report as a state user", async ({ page }) => {
+    await completeReport(page, testModalData);
+  });
+});
+
+const navigateToAddEditReportModal = async (page: Page) => {
   const startQmsReportButton = page.getByRole("button", {
     name: "Start Quality Measure Set Report",
   });
@@ -72,48 +78,28 @@ const assertReportIsCreated = async (
   await expect(table.getByText(data.reportName + data.datetime)).toBeVisible();
 };
 
-const fillOutReport = async (page: Page, data: typeof testModalData) => {
-  const editReportButton = page.getByLabel(
-    "Edit " + data.reportName + data.datetime + " report",
-    { exact: true }
-  );
-  await editReportButton.click();
+const completeReport = async (page: Page, data: typeof testModalData) => {
+  await enterReport(page, data);
+  await completeGeneralInfo(page);
 
-  const contactTextbox = page.getByRole("textbox", { name: "Contact name" });
-  await contactTextbox.fill("test name");
+  await page.getByRole("button", { name: "Continue" }).click();
 
-  const emailTextbox = page.getByRole("textbox", {
-    name: "Contact email address",
-  });
-  await emailTextbox.fill("mail@mail.com");
+  await completeLTSS1(page);
+  await completeLTSS2(page);
 
-  const continueButton = page.getByRole("button", { name: "Continue" });
-  await continueButton.click();
+  await notReporting("LTSS-6", page);
+  await notReporting("LTSS-7", page);
+  await notReporting("LTSS-8", page);
 
-  const measureButtons = await page.getByRole("link", { name: "Edit" }).all();
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "Continue" }).click();
 
-  // for (var i = 0; i < measureButtons.length; i++) {
-  //   console.log(await measureButtons[i].innerText);
-  //   await measureButtons[i].click();
-  //   await page.getByRole("button", { name: "Return to Required" }).click();
-  // }
-
-  await fillLTSS1(page);
-  await fillLTSS2(page);
-  await fillLTSS6(page);
-  await fillLTSS7(page);
-  await fillLTSS8(page);
-
-  await continueButton.click();
-  await continueButton.click();
-  await page.getByRole("button", { name: "Submit QMS Report" }).click();
-  await page
-    .getByRole("button", { name: "Submit QMS Report", exact: true })
-    .click();
+  await submitReport(page);
 };
 
-const fillLTSS1 = async (page: Page) => {
+const completeLTSS1 = async (page: Page) => {
   await page.getByRole("row", { name: "LTSS-1" }).getByRole("link").click();
+
   await page.getByLabel("National Committee for").check();
   await page
     .getByRole("radiogroup", { name: "Did you follow, with no" })
@@ -129,72 +115,40 @@ const fillLTSS1 = async (page: Page) => {
 
   //fill FFS LTSS page
   await page.getByLabel("Which programs and waivers").fill("optional");
+
+  //fill global denominator
   await page.getByLabel("Performance Rates Denominator").fill("4");
-
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state performance target for this assessment?/i,
-    })
-    .nth(0)
-    .fill("1");
-
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(0)
-    .fill("1");
-
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state performance target for this assessment?/i,
-    })
-    .nth(1)
-    .fill("2");
-
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(1)
-    .fill("2");
-
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
 
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(2)
-    .fill("3", { force: true });
+  //fill numerator
+  for (var i = 0; i < 4; i++) {
+    await page
+      .getByRole("textbox", { name: /Numerator/i })
+      .nth(i)
+      .fill((i + 1).toString());
+  }
 
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state exclusion rate target for this assessment?/i,
-    })
-    .nth(0)
-    .fill("3");
+  //fill performance target
+  for (var i = 0; i < 2; i++) {
+    await page
+      .getByRole("textbox", {
+        name: /What is the 2028 state performance target for this assessment?/i,
+      })
+      .nth(i)
+      .fill((i + 1).toString());
 
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(3)
-    .fill("4", { force: true });
+    await page
+      .getByRole("textbox", {
+        name: /What is the 2028 state exclusion rate target for this assessment?/i,
+      })
+      .nth(i)
+      .fill((i + 1).toString());
+  }
 
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state exclusion rate target for this assessment?/i,
-    })
-    .nth(1)
-    .fill("4");
-
-  if (
-    !(await page.getByRole("button", { name: "Complete section" }).isDisabled())
-  )
-    await page.getByRole("button", { name: "Complete section" }).click();
-  await page.getByRole("button", { name: "Return to Measure" }).click();
-
-  if (
-    !(await page.getByRole("button", { name: "Complete measure" }).isDisabled())
-  )
-    await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to Required" }).click();
+  await completeAndReturn(page);
 };
 
-const fillLTSS2 = async (page: Page) => {
+const completeLTSS2 = async (page: Page) => {
   await page.getByRole("row", { name: "LTSS-2" }).getByRole("link").click();
 
   await page.getByLabel("National Committee for").check();
@@ -212,98 +166,49 @@ const fillLTSS2 = async (page: Page) => {
 
   //fill FFS LTSS page
   await page.getByLabel("Which programs and waivers").fill("optional");
+
+  //fill global denominator
   await page.getByLabel("Performance Rates Denominator").fill("4");
-
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state performance target for this assessment?/i,
-    })
-    .nth(0)
-    .fill("1");
-
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(0)
-    .fill("1");
-
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state performance target for this assessment?/i,
-    })
-    .nth(1)
-    .fill("2");
-
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(1)
-    .fill("2");
-
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
 
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(2)
-    .fill("3", { force: true });
+  //fill numerator
+  for (var i = 0; i < 4; i++) {
+    await page
+      .getByRole("textbox", { name: /Numerator/i })
+      .nth(i)
+      .fill((i + 1).toString());
+  }
 
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state exclusion rate target for this assessment?/i,
-    })
-    .nth(0)
-    .fill("3");
+  //fill performance target
+  for (var i = 0; i < 2; i++) {
+    await page
+      .getByRole("textbox", {
+        name: /What is the 2028 state performance target for this assessment?/i,
+      })
+      .nth(i)
+      .fill((i + 1).toString());
 
-  await page
-    .getByRole("textbox", { name: /Numerator/i })
-    .nth(3)
-    .fill("4", { force: true });
+    await page
+      .getByRole("textbox", {
+        name: /What is the 2028 state exclusion rate target for this assessment?/i,
+      })
+      .nth(i)
+      .fill((i + 1).toString());
+  }
 
-  await page
-    .getByRole("textbox", {
-      name: /What is the 2028 state exclusion rate target for this assessment?/i,
-    })
-    .nth(1)
-    .fill("4");
+  await completeAndReturn(page);
+};
 
-  if (
-    !(await page.getByRole("button", { name: "Complete section" }).isDisabled())
-  )
-    await page.getByRole("button", { name: "Complete section" }).click();
+const completeAndReturn = async (page: Page) => {
+  expect(
+    await page.getByRole("button", { name: "Complete section" })
+  ).toBeEnabled();
+  await page.getByRole("button", { name: "Complete section" }).click();
   await page.getByRole("button", { name: "Return to Measure" }).click();
 
-  if (
-    !(await page.getByRole("button", { name: "Complete measure" }).isDisabled())
-  )
-    await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to Required" }).click();
-};
-
-const fillLTSS6 = async (page: Page) => {
-  await page.getByRole("row", { name: "LTSS-6" }).getByRole("link").click();
-  await page.getByLabel("No, CMS is reporting").check();
-
-  if (
-    !(await page.getByRole("button", { name: "Complete measure" }).isDisabled())
-  )
-    await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to Required" }).click();
-};
-const fillLTSS7 = async (page: Page) => {
-  await page.getByRole("row", { name: "LTSS-7" }).getByRole("link").click();
-  await page.getByLabel("No, CMS is reporting").check();
-
-  if (
-    !(await page.getByRole("button", { name: "Complete measure" }).isDisabled())
-  )
-    await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to Required" }).click();
-};
-const fillLTSS8 = async (page: Page) => {
-  await page.getByRole("row", { name: "LTSS-8" }).getByRole("link").click();
-  await page.getByLabel("No, CMS is reporting").check();
-
-  if (
-    !(await page.getByRole("button", { name: "Complete measure" }).isDisabled())
-  )
-    await page.getByRole("button", { name: "Complete measure" }).click();
+  expect(
+    await page.getByRole("button", { name: "Complete measure" })
+  ).toBeEnabled();
+  await page.getByRole("button", { name: "Complete measure" }).click();
   await page.getByRole("button", { name: "Return to Required" }).click();
 };
