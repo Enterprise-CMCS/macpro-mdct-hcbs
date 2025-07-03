@@ -102,6 +102,8 @@ export const MeasureResultsNavigationTableElement = (
         </Td>
         <Td>
           <Button
+            key={`Edit ${childLink.key}`}
+            name={`Edit ${childLink.key}`}
             variant="outline"
             disabled={!singleOption && !deliverySystemIsSelected}
             onClick={() => handleEditClick(childLink.template)}
