@@ -1,8 +1,10 @@
 import { expect, Page } from "@playwright/test";
 
 export const quickFillFields = async (page: Page, label: string) => {
+  //find all textboxes that contains the label passed in
   const fields = await page.getByRole("textbox", { name: label }).all();
 
+  //loops through them all and only fill the ones that are enabled
   for (var i = 0; i < fields.length; i++)
     if (await fields[i].isEditable()) await fields[i].fill((i + 1).toString());
 };
@@ -33,17 +35,13 @@ export const completeLTSS1 = async (page: Page) => {
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
-  //fill FFS LTSS page
   await page.getByLabel("Which programs and waivers").fill("optional");
 
-  //fill global denominator
   await page.getByLabel("Performance Rates Denominator").fill("4");
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
 
-  //fill numerator
   await quickFillFields(page, "Numerator");
 
-  //fill performance target
   await quickFillFields(page, "What is the 2028 state performance target");
   await quickFillFields(page, "What is the 2028 state exclusion rate target");
 
@@ -66,14 +64,11 @@ export const completeLTSS2 = async (page: Page) => {
   await page.getByLabel("Managed Care (MLTSS)").check();
   await page.locator('button[name="Edit MLTSS"]').click();
 
-  //fill global denominator
   await page.getByLabel("Performance Rates Denominator").fill("4");
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
 
-  //fill numerator
   await quickFillFields(page, "Numerator");
 
-  //fill performance target
   await quickFillFields(page, "What is the 2028 state performance target");
   await quickFillFields(page, "What is the 2028 state exclusion rate target");
 

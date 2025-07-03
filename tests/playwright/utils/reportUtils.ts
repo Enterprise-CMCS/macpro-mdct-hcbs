@@ -78,11 +78,15 @@ export const completeGeneralInfo = async (page: Page) => {
 
 export const submitReport = async (page: Page) => {
   await page.getByRole("button", { name: "Submit QMS Report" }).click();
+
+  //wait until the modal is visible by checking for it's header before proceeding
+  await expect(page.getByText("Are you sure you want to")).toBeVisible();
   await page
     .getByRole("button", { name: "Submit QMS Report", exact: true })
-    .click({ timeout: 30000 });
+    .click();
 
-  await page.getByRole("link", { name: "Leave form" }).click();
+  //checks that the successfully submitted page is showing
+  await expect(page.getByText("Successfully Submitted")).toBeVisible();
 };
 
 //only works with measures that allows cms reporting
