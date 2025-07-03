@@ -10,7 +10,13 @@ import {
   submitReport,
   testModalData,
 } from "./utils/reportUtils";
-import { completeLTSS1, completeLTSS2 } from "./utils/measureUtils";
+import {
+  completeFASI1,
+  completeLTSS1,
+  completeLTSS2,
+  completeLTSS6,
+  completeLTSS7,
+} from "./utils/measureUtils";
 
 test.use({ storageState: stateUserAuthPath });
 
@@ -36,14 +42,15 @@ test.describe("create and complete a report as a state user", () => {
 
     await completeLTSS1(page);
     await completeLTSS2(page);
-
-    await notReporting("LTSS-6", page);
-    await notReporting("LTSS-7", page);
+    await completeLTSS6(page);
+    await completeLTSS7(page);
     await notReporting("LTSS-8", page);
 
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Continue" }).click();
 
+    await completeFASI1(page);
+
+    await page.getByRole("button", { name: "Continue" }).click();
     await submitReport(page);
   });
 });
