@@ -9,13 +9,6 @@ export const testModalData = {
   pomSurveyOption: "No",
 };
 
-export const navigateToAddEditReportModal = async (page: Page) => {
-  const startQmsReportButton = page.getByRole("button", {
-    name: "Start Quality Measure Set Report",
-  });
-  await startQmsReportButton.click();
-};
-
 export const fillAddEditReportModal = async (page: Page) => {
   const addQMSReportHeading = page.getByRole("heading", {
     name: "Add new Quality Measure Set Report",
@@ -49,6 +42,16 @@ export const fillAddEditReportModal = async (page: Page) => {
   await addEditReportButton.click();
 };
 
+export const navigateToAddEditReportModal = async (
+  report: string,
+  page: Page
+) => {
+  const startQmsReportButton = page.getByRole("button", {
+    name: "Start " + report + " Report",
+  });
+  await startQmsReportButton.click();
+};
+
 export const assertReportIsCreated = async (
   page: Page,
   data: typeof testModalData
@@ -76,13 +79,18 @@ export const completeGeneralInfo = async (page: Page) => {
     .fill("mail@mail.com");
 };
 
-export const submitReport = async (page: Page) => {
-  await page.getByRole("button", { name: "Submit QMS Report" }).click();
+export const submitReport = async (reportType: string, page: Page) => {
+  await page
+    .getByRole("button", { name: "Submit " + reportType + " Report" })
+    .click();
 
   //wait until the modal is visible by checking for it's header before proceeding
   await expect(page.getByText("Are you sure you want to")).toBeVisible();
   await page
-    .getByRole("button", { name: "Submit QMS Report", exact: true })
+    .getByRole("button", {
+      name: "Submit " + reportType + " Report",
+      exact: true,
+    })
     .click();
 
   //checks that the successfully submitted page is showing

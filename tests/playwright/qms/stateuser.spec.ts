@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { stateUserAuthPath } from "./utils/consts";
+import { stateUserAuthPath } from "./../utils/consts";
 import {
   assertReportIsCreated,
   completeGeneralInfo,
@@ -9,14 +9,14 @@ import {
   notReporting,
   submitReport,
   testModalData,
-} from "./utils/reportUtils";
+} from "./../utils/reportUtils";
 import {
   completeFASI1,
   completeLTSS1,
   completeLTSS2,
   completeLTSS6,
   completeLTSS7,
-} from "./utils/measureUtils";
+} from "./../utils/measureUtils";
 
 test.use({ storageState: stateUserAuthPath });
 
@@ -30,7 +30,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe("create and complete a report as a state user", () => {
   test("create a report as a state user", async ({ page }) => {
-    await navigateToAddEditReportModal(page);
+    await navigateToAddEditReportModal("Quality Measure Set", page);
     await fillAddEditReportModal(page);
     await assertReportIsCreated(page, testModalData);
   });
@@ -51,6 +51,6 @@ test.describe("create and complete a report as a state user", () => {
     await completeFASI1(page);
 
     await page.getByRole("button", { name: "Continue" }).click();
-    await submitReport(page);
+    await submitReport("QMS", page);
   });
 });
