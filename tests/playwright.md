@@ -21,13 +21,13 @@ To run playwright tests locally you will go to the root of the project and you'l
 
 ### Run tests
 
-There are two options for running tests locally. You can execute these commands from project root or from the `tests/` folder.
+There are two options for running tests locally. Execute these commands from the `tests/` folder.
 
-1. `yarn test:e2e`
+1. `yarn test`
 
 - Starts the app locally and runs all tests in terminal. Terminates when tests complete.
 
-2. `yarn test:e2e-ui`
+2. `yarn test-ui`
 
 - Starts the app locally
 - Launches Playwright UI

@@ -9,47 +9,41 @@ export const testModalData = {
   pomSurveyOption: "No",
 };
 
-export const fillAddEditReportModal = async (page: Page) => {
-  const addQMSReportHeading = page.getByRole("heading", {
-    name: "Add new Quality Measure Set Report",
+export const fillAddEditReportModal = async (page: Page, reportData) => {
+  const addReportHeading = page.getByRole("heading", {
+    name: reportData.modalHeading,
   });
-  await expect(addQMSReportHeading).toBeVisible();
-  const qmsSetReportNameInput = page.getByRole("textbox", {
-    name: "Quality Measure Set Report Name",
+  await expect(addReportHeading).toBeVisible();
+  const setReportNameInput = page.getByRole("textbox", {
+    name: reportData.reportNameInputHeading,
   });
-  const cahpsRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the HCBS CAHPS Survey?",
-  });
-  const nciiddRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the NCI-IDD Survey?",
-  });
-  const nciadRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the NCI-AD Survey?",
-  });
-  const pomRadioButton = page.getByRole("radiogroup", {
-    name: "Is your state reporting on the POM Survey?",
-  });
-  await qmsSetReportNameInput.fill(
+
+  await setReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
   );
-  await cahpsRadioButton.getByLabel(testModalData.cahpsSurveyOption).check();
-  await nciiddRadioButton.getByLabel(testModalData.nciiddSurveyOption).check();
-  await nciadRadioButton.getByLabel(testModalData.nciadSurveyOption).check();
-  await pomRadioButton.getByLabel(testModalData.pomSurveyOption).check();
+
   const addEditReportButton = page.getByRole("button", {
     name: "Start new",
   });
   await addEditReportButton.click();
 };
 
-export const navigateToAddEditReportModal = async (
-  report: string,
-  page: Page
-) => {
-  const startQmsReportButton = page.getByRole("button", {
-    name: "Start " + report + " Report",
+export const navigateToReportHome = async (page: Page, name: string) => {
+  await page.goto("/");
+  const reportButton = page.getByRole("link", {
+    name,
   });
-  await startQmsReportButton.click();
+  await reportButton.click();
+};
+
+export const navigateToAddEditReportModal = async (
+  page: Page,
+  name: string
+) => {
+  const startReportButton = page.getByRole("button", {
+    name,
+  });
+  await startReportButton.click();
 };
 
 export const assertReportIsCreated = async (
