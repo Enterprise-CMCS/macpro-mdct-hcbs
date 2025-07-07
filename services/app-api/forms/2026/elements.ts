@@ -586,24 +586,6 @@ export const stateSamplingMethologyQuestion: RadioTemplate = {
   ],
 };
 
-// Rates for Critical Incidents
-export const criticalIncidentRateFields: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
-  id: "critical-incident-rate",
-  required: true,
-  hintText: {
-    numHint:
-      "Number of critical incidents for which an investigation was initiated within state-specified timeframes across all applicable HCBS programs.",
-    denomHint:
-      "Number of critical incidents reported within the measurement period across all applicable HCBS programs.",
-    rateHint:
-      "Auto-calculates. Percentage of critical incidents reported within the measurement period for which an investigation was initiated within state-specified timeframes across all applicable HCBS programs.",
-  },
-  multiplier: 100,
-  displayRateAsPercent: true,
-  minPerformanceLevel: 90,
-};
-
 export const criticalIncidentCommentsField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
   id: "critical-incident-comments-field",

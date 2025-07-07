@@ -7,7 +7,6 @@ import {
 } from "../../../types/reports";
 
 import {
-  criticalIncidentRateFields,
   criticalIncidentCommentsField,
   didYouFollowSpecifications,
 } from "../elements";
@@ -72,9 +71,24 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "incid-1-header",
-          text: "HCBS INCID-1: Critical Incidents for which an investigation was initiated within state-specified timeframes",
+          text: "HCBS INCID-1: Critical Incidents for Which an Investigation Was Initiated Within State-Specified Timeframes",
         },
-        criticalIncidentRateFields,
+        {
+          type: ElementType.NdrBasic,
+          id: "critical-incident-rate",
+          required: true,
+          hintText: {
+            numHint:
+              "Number of critical incidents for which an investigation was initiated within state-specified timeframes across all applicable HCBS programs.",
+            denomHint:
+              "Number of critical incidents reported within the measurement period across all applicable HCBS programs.",
+            rateHint:
+              "Auto-calculates. Percentage of critical incidents reported within the measurement period for which an investigation was initiated within state-specified timeframes across all applicable HCBS programs.",
+          },
+          multiplier: 100,
+          displayRateAsPercent: true,
+          minPerformanceLevel: 90,
+        },
         criticalIncidentCommentsField,
         didYouFollowSpecifications,
       ],
@@ -91,11 +105,23 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution within State-specified Timeframes",
         },
         {
-          type: ElementType.Accordion,
-          id: "incid-2-instructions",
-          label: "Instructions",
-          value: "[Instructions to follow]",
+          type: ElementType.NdrBasic,
+          id: "critical-incident-rate",
+          required: true,
+          hintText: {
+            numHint:
+              "Number of critical incidents for which the resolution was determined within state-specified timeframes across all applicable HCBS programs.",
+            denomHint:
+              "Number of critical incidents reported within the measurement period across all applicable HCBS programs.",
+            rateHint:
+              "Auto-calculates. Percentage of critical incidents reported within the measurement period for which the resolution was determined within state-specified timeframes across all applicable HCBS programs.",
+          },
+          multiplier: 100,
+          displayRateAsPercent: true,
+          minPerformanceLevel: 90,
         },
+        criticalIncidentCommentsField,
+        didYouFollowSpecifications,
       ],
     },
     {
@@ -110,11 +136,23 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-3: Critical Incidents Requiring Corrective Action for Which the Required Corrective Action Was Completed Within State-Specified Timeframes",
         },
         {
-          type: ElementType.Accordion,
-          id: "incid-3-instructions",
-          label: "Instructions",
-          value: "[Instructions to follow]",
+          type: ElementType.NdrBasic,
+          id: "critical-incident-rate",
+          required: true,
+          hintText: {
+            numHint:
+              "Number of critical incidents requiring corrective action for which the required corrective action was completed within state-specified time frames across all applicable HCBS programs.",
+            denomHint:
+              "Number of critical incidents requiring corrective action in which the corrective action was due to be completed within the measurement period across all applicable HCBS programs.",
+            rateHint:
+              "Auto-calculates. Percentage of critical incidents requiring corrective action for which the required corrective action was completed within state-specified timeframes across all applicable HCBS programs.",
+          },
+          multiplier: 100,
+          displayRateAsPercent: true,
+          minPerformanceLevel: 90,
         },
+        criticalIncidentCommentsField,
+        didYouFollowSpecifications,
       ],
     },
     {
