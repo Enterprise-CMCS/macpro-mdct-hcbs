@@ -6,6 +6,12 @@ import {
   ReportBase,
 } from "../../../types/reports";
 
+import {
+  criticalIncidentRateFields,
+  criticalIncidentCommentsField,
+  didYouFollowSpecifications,
+} from "../elements";
+
 export const ciReportTemplate: ReportBase = {
   type: ReportType.CI,
   year: 2026,
@@ -16,7 +22,7 @@ export const ciReportTemplate: ReportBase = {
         "general-info",
         "incid-1",
         "incid-2",
-        "incid-2",
+        "incid-3",
         "review-submit",
       ],
     },
@@ -66,14 +72,11 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "incid-1-header",
-          text: "HCBS HAPCH-1: Critical Incidents for which an investigation was initiated within state-specified timeframes",
+          text: "HCBS INCID-1: Critical Incidents for which an investigation was initiated within state-specified timeframes",
         },
-        {
-          type: ElementType.Accordion,
-          id: "incid-1-instructions",
-          label: "Instructions",
-          value: "[Instructions to follow]",
-        },
+        criticalIncidentRateFields,
+        criticalIncidentCommentsField,
+        didYouFollowSpecifications,
       ],
     },
     {

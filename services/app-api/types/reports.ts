@@ -557,7 +557,7 @@ export type NdrTemplate = {
 export type NdrBasicTemplate = {
   id: string;
   type: ElementType.NdrBasic;
-  label: string;
+  label?: string;
   answer?: {
     numerator: number | undefined;
     denominator: number | undefined;
@@ -571,6 +571,7 @@ export type NdrBasicTemplate = {
   required?: boolean;
   multiplier?: number;
   displayRateAsPercent?: boolean;
+  minPerformanceLevel?: number;
 };
 
 export type ChoiceTemplate = {

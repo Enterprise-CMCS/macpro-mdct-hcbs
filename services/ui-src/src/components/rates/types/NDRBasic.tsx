@@ -6,6 +6,7 @@ import {
   NdrBasicTemplate,
   RateInputFieldNameBasic,
   RateInputFieldNamesBasic,
+  AlertTypes,
 } from "types";
 import {
   parseNumber,
@@ -14,10 +15,18 @@ import {
   stringifyResult,
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
+import { Alert } from "components";
 
 export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const { formkey, disabled, element } = props;
-  const { label, answer, multiplier, hintText, displayRateAsPercent } = element;
+  const {
+    label,
+    answer,
+    multiplier,
+    hintText,
+    displayRateAsPercent,
+    minPerformanceLevel,
+  } = element;
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
@@ -95,9 +104,38 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     setDisplayValue(stringifyAnswer(form.getValues(key)));
   };
 
+  const performanceLevelStatusAlert = React.useCallback(() => {
+    if (!displayValue?.rate || !minPerformanceLevel) return null;
+
+    // Removing the % from the rate
+    const rateToParse = displayRateAsPercent
+      ? displayValue.rate.slice(0, -1)
+      : displayValue.rate;
+    const parsedRate = parseNumber(rateToParse);
+
+    if (parsedRate === undefined) return null;
+
+    const meetsMinimum = parsedRate >= minPerformanceLevel;
+
+    return meetsMinimum ? (
+      <Alert status={AlertTypes.SUCCESS} title="Success">
+        {`The data entered indicates this measure meets the ${minPerformanceLevel}% Minimum Performance Level.`}
+      </Alert>
+    ) : (
+      <Alert status={AlertTypes.WARNING} title="Warning">
+        {`The data entered indicates this measure does not meet the ${minPerformanceLevel}% Minimum Performance Level. Explain why in the additional comments field below.`}
+      </Alert>
+    );
+  }, [displayValue?.rate]);
+
   return (
     <Stack gap={4} sx={sx.performance}>
-      <Heading variant="subHeader">{label}</Heading>
+      {label && <Heading variant="subHeader">{label}</Heading>}
+      {minPerformanceLevel && (
+        <Heading as="h2" variant="nestedHeading" color="#5a5a5a">
+          Minimum Performance Level: {minPerformanceLevel}%
+        </Heading>
+      )}
       <Stack gap="2rem">
         <Stack gap="2rem">
           <CmsdsTextField
@@ -125,6 +163,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
             value={displayValue.rate}
             disabled
           ></CmsdsTextField>
+          {performanceLevelStatusAlert()}
         </Stack>
       </Stack>
     </Stack>

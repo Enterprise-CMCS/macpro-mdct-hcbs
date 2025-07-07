@@ -395,7 +395,7 @@ const ndrRateSchema = object().shape({
 const ndrRateBasicSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NdrBasic)),
   id: string().required(),
-  label: string().required(),
+  label: string().notRequired(),
   required: boolean().notRequired(),
   answer: object()
     .shape({
@@ -413,6 +413,7 @@ const ndrRateBasicSchema = object().shape({
     .notRequired(),
   multiplier: number().notRequired(),
   displayRateAsPercent: boolean().notRequired(),
+  minPerformanceLevel: number().notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({
