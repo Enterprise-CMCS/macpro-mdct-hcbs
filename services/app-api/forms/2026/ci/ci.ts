@@ -102,7 +102,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "incid-2-header",
-          text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution Within State-specified Timeframes",
+          text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution Within State-Specified Timeframes",
         },
         {
           type: ElementType.NdrBasic,
