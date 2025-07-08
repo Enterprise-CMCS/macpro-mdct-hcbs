@@ -16,6 +16,8 @@ import {
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
+import { renderElements } from "./ExportedReportElements";
+import { chunkBy } from "utils/other/arrays";
 
 const skipElements = [
   ElementType.ButtonLink,
@@ -26,6 +28,56 @@ const skipElements = [
   ElementType.MeasureFooter,
 ];
 
+type ExportedReportType = {
+  label?: string;
+  helperText?: string;
+  value?: string;
+  render?: { useTable: boolean; display: JSX.Element };
+  type?: ElementType;
+};
+
+export const renderReportTable = (
+  displayHidden: boolean | undefined,
+  elements: ExportedReportType[] | undefined
+) => {
+  const filteredElements = elements?.filter((element) => element.label);
+
+  if (filteredElements?.length == 0) return;
+
+  return (
+    <Table variant="export">
+      <Thead>
+        <Tr>
+          <Th>Indicator</Th>
+          <Th>Response</Th>
+          {displayHidden && <Th>Type</Th>}
+        </Tr>
+      </Thead>
+      <Tbody>
+        {filteredElements?.map((element: ExportedReportType, idx: number) => (
+          <Tr key={`${element.label}.${idx}`}>
+            <Td>
+              <Text>{element?.label}</Text>
+              {element?.helperText && <Text>{element?.helperText}</Text>}
+              {element?.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
+            </Td>
+            {element?.render?.display}
+            {displayHidden && <Td>{element?.type}</Td>}
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  );
+};
+
+export const renderReportDisplay = (
+  elements: ExportedReportType[] | undefined
+) => {
+  return elements?.map(
+    (element: ExportedReportType) => element.render?.display
+  );
+};
+
 export const ExportedReportWrapper = ({ section, displayHidden }: Props) => {
   const filtered = !displayHidden
     ? section.elements?.filter(
@@ -33,59 +85,33 @@ export const ExportedReportWrapper = ({ section, displayHidden }: Props) => {
       )
     : section.elements;
 
-  const elements = filtered?.map((element: any) => {
-    if (displayHidden && skipElements.includes(element.type)) {
-      return {
-        label: "DEBUG",
-        helperText: element.type ?? "",
-        value: element.value ?? "",
-        answer: element.answer ?? "",
-        type: element.type ?? "",
-      };
-    }
-    if (element.type)
+  const elements =
+    filtered?.map((element: any) => {
+      //determine the render of the component
       return {
         label: element?.label ?? "",
         helperText: element.helperText ?? "",
         value: element.value ?? "",
-        answer: element.answer ?? "No Response",
+        render: renderElements(section, element, element.type),
         type: element.type ?? "",
       };
-    return { label: "How" };
-  });
+    }) ?? [];
+
+  const chunkedElements = chunkBy(
+    elements,
+    (element) => element.render?.useTable
+  );
 
   return (
     <Stack>
-      {elements?.length! > 0 ? (
-        <Table variant="export">
-          <Thead>
-            <Tr>
-              <Th>Indicator</Th>
-              <Th>Response</Th>
-              {displayHidden && <Th>Type</Th>}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {elements?.map(
-              (element, idx) =>
-                element?.label && (
-                  <Tr key={`${element.label}.${idx}`}>
-                    <Td>
-                      <Text>{element?.label}</Text>
-                      {element?.helperText && (
-                        <Text>{element?.helperText}</Text>
-                      )}
-                      {element?.type === ElementType.Date && (
-                        <Text>MM/DD/YYYY</Text>
-                      )}
-                    </Td>
-                    <Td>{element?.answer}</Td>
-                    {displayHidden && <Td>{element?.type}</Td>}
-                  </Tr>
-                )
-            )}
-          </Tbody>
-        </Table>
+      {chunkedElements?.length! > 0 ? (
+        <>
+          {chunkedElements.map((elements) =>
+            elements[0].render.useTable
+              ? renderReportTable(displayHidden, elements)
+              : renderReportDisplay(elements)
+          )}
+        </>
       ) : (
         <Box>N/A</Box>
       )}
