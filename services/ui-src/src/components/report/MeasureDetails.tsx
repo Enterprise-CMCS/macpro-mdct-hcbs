@@ -1,6 +1,6 @@
 import { Box, Divider, Flex, HStack, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { MeasurePageTemplate, PageStatus, PageType } from "types";
+import { MeasurePageTemplate, PageType } from "types";
 import { currentPageSelector } from "utils/state/selectors";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
 

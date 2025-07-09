@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { StateNames } from "../../../constants";
-import {
-  getReportName,
-  isReportType,
-  isStateAbbr,
-  Report,
-  ReportType,
-} from "types";
+import { getReportName, isReportType, isStateAbbr, Report } from "types";
 import {
   PageTemplate,
   DashboardTable,
