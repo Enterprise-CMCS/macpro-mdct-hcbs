@@ -1,7 +1,8 @@
 import { Table, Thead, Th, Tr, Tbody, Td, Text } from "@chakra-ui/react";
 import { notAnsweredText } from "../../constants";
-import { ElementType } from "types";
+import { ElementType, Report } from "types";
 import { ReactElement } from "react";
+import { formatMonthDayYear } from "utils";
 
 export type ReportTableType = {
   indicator: string;

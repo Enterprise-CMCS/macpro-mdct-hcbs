@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { StateNames } from "../../../constants";
-import { isReportType, isStateAbbr, Report, ReportType } from "types";
+import {
+  getReportName,
+  isReportType,
+  isStateAbbr,
+  Report,
+  ReportType,
+} from "types";
 import {
   PageTemplate,
   DashboardTable,
@@ -34,19 +40,6 @@ export const DashboardPage = () => {
     undefined
   );
   const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
-
-  const getReportName = (type: string | undefined) => {
-    switch (type) {
-      case ReportType.QMS:
-        return "Quality Measure Set Report";
-      case ReportType.TACM:
-        return "Timely Access Compliance Measure Report";
-      case ReportType.CI:
-        return "Critical Incident Report";
-      default:
-        return "";
-    }
-  };
 
   const reportName = getReportName(reportType);
 

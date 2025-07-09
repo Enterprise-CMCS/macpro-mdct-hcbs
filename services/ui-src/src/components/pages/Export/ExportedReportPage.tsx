@@ -1,4 +1,4 @@
-import { ComponentClass, useState } from "react";
+import { ComponentClass } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import {
   Box,
@@ -6,17 +6,25 @@ import {
   Heading,
   Spinner,
   Flex,
-  Checkbox,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import { useStore } from "utils";
+import { formatMonthDayYear, useStore } from "utils";
 import {
   FormPageTemplate,
+  getReportName,
   MeasurePageTemplate,
   ParentPageTemplate,
   Report,
   ReviewSubmitTemplate,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
+import { StateNames } from "../../../constants";
+import { ExportedReportTable } from "components/export/ExportedReportTable";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
@@ -46,6 +54,10 @@ export const ExportedReportPage = () => {
             <Heading as="h1" variant="h1">
               {reportTitle(report)}
             </Heading>
+            {/* report details */}
+            {reportDetails(report)}
+            {/* report submission set up */}
+            {reportSubmissionSetUp(report)}
             {/* report sections */}
             {renderReportSections(reportPages)}
           </Box>
@@ -60,7 +72,63 @@ export const ExportedReportPage = () => {
 };
 
 export const reportTitle = (report: Report) => {
-  return `${report.state} ${report.name}`;
+  return `${StateNames[report.state]} ${getReportName(report.type)} for: ${
+    report.name
+  }`;
+};
+
+export const reportDetails = (report: Report) => {
+  return (
+    <Table>
+      <Thead>
+        <Tr>
+          <Th>Reporting year</Th>
+          <Th>Last edited</Th>
+          <Th>Edited by</Th>
+          <Th>Status</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        <Tr>
+          <Td>{report.year}</Td>
+          <Td>{formatMonthDayYear(report.lastEdited!)}</Td>
+          <Td>{report.lastEditedBy}</Td>
+          <Td>{report.status}</Td>
+        </Tr>
+      </Tbody>
+    </Table>
+  );
+};
+
+export const reportSubmissionSetUp = (report: Report) => {
+  const rows = [
+    {
+      indicator:
+        "Does your state administer the HCBS CAHPS beneficiary survey?",
+      response: report.options.cahps ? "Yes" : "No",
+    },
+    {
+      indicator: "Does your state administer the NCI-IDD beneficiary survey?",
+      response: report.options.nciidd ? "Yes" : "No",
+    },
+    {
+      indicator: "Does your state administer the NCI-AD beneficiary survey?",
+      response: report.options.nciad ? "Yes" : "No",
+    },
+    {
+      indicator: "Does your state administer the POM beneficiary survey?",
+      response: report.options.pom ? "Yes" : "No",
+    },
+  ];
+
+  return (
+    <Box>
+      <Heading as="h4" fontWeight="bold">
+        Submission Set Up
+      </Heading>
+      <ExportedReportTable rows={rows}></ExportedReportTable>
+    </Box>
+  );
 };
 
 export const renderReportSections = (

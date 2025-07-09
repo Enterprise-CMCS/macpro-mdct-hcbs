@@ -1,14 +1,27 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType } from "types";
-import { ExportedReportTable } from "./ExportedReportTable";
+import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
+
+//elements that are rendered as part of the table that does not need a unique renderer
+const tableElementList = [
+  ElementType.Textbox,
+  ElementType.Radio,
+  ElementType.TextAreaField,
+];
+
+const renderElementList = [
+  ...tableElementList,
+  ElementType.NdrEnhanced,
+  ElementType.NdrFields,
+  ElementType.Ndr,
+  ElementType.LengthOfStayRate,
+  ElementType.NdrBasic,
+  ElementType.MeasureDetails,
+];
 
 export const useTable = (type: ElementType) => {
-  return (
-    type === ElementType.Textbox ||
-    type === ElementType.Radio ||
-    type === ElementType.TextAreaField
-  );
+  return tableElementList.includes(type);
 };
 
 export const renderElements = (
@@ -16,6 +29,8 @@ export const renderElements = (
   element: any | Object,
   type: ElementType
 ) => {
+  if (!renderElementList.includes(type)) return;
+
   const { answer } = element;
   let render = answer ? answer.toString() : "No Response";
 
@@ -29,10 +44,14 @@ export const renderElements = (
     case ElementType.Ndr:
       render = <>NDR</>;
       break;
+    case ElementType.LengthOfStayRate:
+      render = <>Field Of Stay</>;
+      break;
+    case ElementType.NdrBasic:
+      render = <>NDR Basic</>;
+      break;
     case ElementType.MeasureDetails:
       render = MeasureDetailsExport(section);
-      break;
-    default:
       break;
   }
 
@@ -73,19 +92,29 @@ export const PerformanceMeasureReportElement = (element: any) => {
     }
   );
 
+  const label = element.label ?? "Performance Rates";
+
   return (
-    <Box>
-      {buildData.map(
-        (data: {
-          label: string;
-          rows: { indicator: string; response: string; helperText?: string }[];
-        }) => (
-          <Box>
-            <Heading as="h4">{data?.label ?? "Performance Rates"}</Heading>
-            <ExportedReportTable rows={data?.rows} />
-          </Box>
-        )
-      )}
+    <Box my="1.5rem">
+      <Heading as="h4" mb="1rem" fontWeight="bold">{`${label}`}</Heading>
+      <ExportedReportTable
+        rows={[
+          {
+            indicator: "Performance Rates Denominator",
+            response: element?.answer?.denominator ?? noResponse,
+          },
+        ]}
+      />
+      {buildData.map((data: { label: string; rows: ReportTableType[] }) => (
+        <Box mb="1.5rem">
+          <Heading
+            as="h4"
+            mb="1rem"
+            fontWeight="bold"
+          >{`${label} : ${data?.label}`}</Heading>
+          <ExportedReportTable rows={data?.rows} />
+        </Box>
+      ))}
     </Box>
   );
 };

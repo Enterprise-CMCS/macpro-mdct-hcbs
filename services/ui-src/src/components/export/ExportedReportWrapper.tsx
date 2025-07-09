@@ -1,4 +1,3 @@
-import { ReactElement } from "react";
 import { Box, Stack } from "@chakra-ui/react";
 import {
   ElementType,
