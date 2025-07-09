@@ -20,7 +20,6 @@ import { ExportedReportBanner, ExportedReportWrapper } from "components";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const [displayHidden, setDisplayHidden] = useState(false);
   const reportPages = report?.pages;
   if (!reportPages) return null;
 
@@ -34,14 +33,6 @@ export const ExportedReportPage = () => {
     <Box>
       <ExportedReportBanner />
       <Box sx={sx.container}>
-        <Checkbox
-          id="debug"
-          checked={displayHidden}
-          onChange={() => setDisplayHidden(!displayHidden)}
-        >
-          Debug
-        </Checkbox>
-
         {(report && reportPages.length > 0 && (
           <Box sx={sx.innerContainer}>
             {/* pdf metadata */}
@@ -56,7 +47,7 @@ export const ExportedReportPage = () => {
               {reportTitle(report)}
             </Heading>
             {/* report sections */}
-            {renderReportSections(reportPages, displayHidden)}
+            {renderReportSections(reportPages)}
           </Box>
         )) || (
           <Center>
@@ -78,8 +69,7 @@ export const renderReportSections = (
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate
-  )[],
-  displayHidden: boolean
+  )[]
 ) => {
   // recursively render sections
   const renderSection = (
@@ -94,10 +84,7 @@ export const renderReportSections = (
         {/* if section does not have children and has content to render, render it */}
         <Flex gap="2rem" flexDirection="column">
           <Heading variant="subHeader">{section.title}</Heading>
-          <ExportedReportWrapper
-            section={section}
-            displayHidden={displayHidden}
-          />
+          <ExportedReportWrapper section={section} />
         </Flex>
       </Box>
     );

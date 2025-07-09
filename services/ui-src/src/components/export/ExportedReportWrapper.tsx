@@ -1,14 +1,5 @@
-import {
-  Box,
-  Stack,
-  Table,
-  Thead,
-  Th,
-  Tr,
-  Td,
-  Tbody,
-  Text,
-} from "@chakra-ui/react";
+import { ReactElement } from "react";
+import { Box, Stack } from "@chakra-ui/react";
 import {
   ElementType,
   FormPageTemplate,
@@ -16,8 +7,9 @@ import {
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
-import { renderElements } from "./ExportedReportElements";
+import { renderElements, useTable } from "./ExportedReportElements";
 import { chunkBy } from "utils/other/arrays";
+import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
 const skipElements = [
   ElementType.ButtonLink,
@@ -28,78 +20,37 @@ const skipElements = [
   ElementType.MeasureFooter,
 ];
 
-type ExportedReportType = {
-  label?: string;
-  helperText?: string;
-  value?: string;
-  render?: { useTable: boolean; display: JSX.Element };
-  type?: ElementType;
-};
-
-export const renderReportTable = (
-  displayHidden: boolean | undefined,
-  elements: ExportedReportType[] | undefined
-) => {
-  const filteredElements = elements?.filter((element) => element.label);
-
+export const renderReportTable = (elements: ReportTableType[] | undefined) => {
+  const filteredElements = elements?.filter((element) => element.indicator);
   if (filteredElements?.length == 0) return;
 
-  return (
-    <Table variant="export">
-      <Thead>
-        <Tr>
-          <Th>Indicator</Th>
-          <Th>Response</Th>
-          {displayHidden && <Th>Type</Th>}
-        </Tr>
-      </Thead>
-      <Tbody>
-        {filteredElements?.map((element: ExportedReportType, idx: number) => (
-          <Tr key={`${element.label}.${idx}`}>
-            <Td>
-              <Text>{element?.label}</Text>
-              {element?.helperText && <Text>{element?.helperText}</Text>}
-              {element?.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
-            </Td>
-            {element?.render?.display}
-            {displayHidden && <Td>{element?.type}</Td>}
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
-  );
+  return <ExportedReportTable rows={filteredElements!}></ExportedReportTable>;
 };
 
 export const renderReportDisplay = (
-  elements: ExportedReportType[] | undefined
+  elements: ReportTableType[] | undefined
 ) => {
-  return elements?.map(
-    (element: ExportedReportType) => element.render?.display
-  );
+  return elements?.map((element: ReportTableType) => element.response);
 };
 
-export const ExportedReportWrapper = ({ section, displayHidden }: Props) => {
-  const filtered = !displayHidden
-    ? section.elements?.filter(
-        (element) => !skipElements.includes(element?.type)
-      )
-    : section.elements;
+export const ExportedReportWrapper = ({ section }: Props) => {
+  const filtered = section.elements?.filter(
+    (element) => !skipElements.includes(element?.type)
+  );
 
   const elements =
     filtered?.map((element: any) => {
       //determine the render of the component
       return {
-        label: element?.label ?? "",
+        indicator: element?.label ?? "",
         helperText: element.helperText ?? "",
-        value: element.value ?? "",
-        render: renderElements(section, element, element.type),
+        response: renderElements(section, element, element.type),
         type: element.type ?? "",
       };
     }) ?? [];
 
-  const chunkedElements = chunkBy(
-    elements,
-    (element) => element.render?.useTable
+  const chunkedElements = chunkBy(elements, (element) =>
+    useTable(element.type)
   );
 
   return (
@@ -107,8 +58,8 @@ export const ExportedReportWrapper = ({ section, displayHidden }: Props) => {
       {chunkedElements?.length! > 0 ? (
         <>
           {chunkedElements.map((elements) =>
-            elements[0].render.useTable
-              ? renderReportTable(displayHidden, elements)
+            useTable(elements[0].type)
+              ? renderReportTable(elements)
               : renderReportDisplay(elements)
           )}
         </>
@@ -125,5 +76,4 @@ export interface Props {
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate;
-  displayHidden?: boolean;
 }

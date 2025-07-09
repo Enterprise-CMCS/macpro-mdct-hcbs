@@ -43,8 +43,6 @@ export const chunkBy = <T, U>(array: T[], selector: (element: T) => U) => {
     }
   }
 
-  if (currentChunk.length > 0) {
-    chunks.push(currentChunk);
-  }
+  chunks.push(currentChunk);
   return chunks;
 };
