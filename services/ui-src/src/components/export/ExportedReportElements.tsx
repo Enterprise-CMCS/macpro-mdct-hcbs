@@ -6,6 +6,7 @@ import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 const noReponseText = "No Response";
 const autoPopulatedText = "Auto-populates from previous response";
 
+//for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
 
 //elements that are rendered as part of the table that does not need a unique renderer
@@ -47,7 +48,7 @@ export const renderElements = (
         </Heading>
       );
     case ElementType.NdrEnhanced:
-      return PerformanceMeasureReportElement(element);
+      return NDREnhancedReportElement(element);
     case ElementType.NdrFields:
       return <>[TO DO: ADD NDR FIELDS]</>;
     case ElementType.Ndr:
@@ -63,7 +64,7 @@ export const renderElements = (
   return answer ?? noReponseText;
 };
 
-export const PerformanceMeasureReportElement = (element: any) => {
+export const NDREnhancedReportElement = (element: any) => {
   const buildData = element.assessments?.map(
     (assess: { id: string; label: string }) => {
       const performanceRate = element.answer?.rates?.find(
