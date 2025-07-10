@@ -25,12 +25,12 @@ describe("Yearly Form Selection", () => {
     );
   });
 
-  it("should throw an error if the requested year is not available (CI report)", () => {
+  it("should throw an error if the requested year is not available (CICM report)", () => {
     const getTemplateCall = () => getReportTemplate(ReportType.CICM, 2025);
     expect(getTemplateCall).toThrow("not implemented");
   });
 
-  it("should return the template for the exact requested year, if one exists (CI report)", () => {
+  it("should return the template for the exact requested year, if one exists (CICM report)", () => {
     expect(getReportTemplate(ReportType.CICM, 2026)).toBe(
       cicmReportTemplate2026
     );

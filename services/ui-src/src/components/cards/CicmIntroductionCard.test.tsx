@@ -1,4 +1,4 @@
-import { CicmIntroductionCard } from "./CiIntroductionCard";
+import { CicmIntroductionCard } from "./CicmIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11yAct } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
