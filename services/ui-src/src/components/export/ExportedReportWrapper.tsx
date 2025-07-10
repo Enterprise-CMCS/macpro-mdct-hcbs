@@ -1,6 +1,5 @@
-import { Box, Stack } from "@chakra-ui/react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import {
-  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   ParentPageTemplate,
@@ -9,15 +8,6 @@ import {
 import { renderElements, useTable } from "./ExportedReportElements";
 import { chunkBy } from "utils/other/arrays";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
-
-const skipElements = [
-  ElementType.ButtonLink,
-  ElementType.Accordion,
-  ElementType.MeasureTable,
-  ElementType.MeasureResultsNavigationTable,
-  ElementType.Header,
-  ElementType.MeasureFooter,
-];
 
 export const renderReportTable = (elements: ReportTableType[] | undefined) => {
   const filteredElements = elements?.filter((element) => element.indicator);
@@ -33,12 +23,8 @@ export const renderReportDisplay = (
 };
 
 export const ExportedReportWrapper = ({ section }: Props) => {
-  const filtered = section.elements?.filter(
-    (element) => !skipElements.includes(element?.type)
-  );
-
   const elements =
-    filtered?.map((element: any) => {
+    section.elements?.map((element: any) => {
       //determine the render of the component
       return {
         indicator: element?.label ?? "",
@@ -53,7 +39,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   );
 
   return (
-    <Stack>
+    <Flex flexDir="column" gap="1.5rem">
       {chunkedElements?.length! > 0 ? (
         <>
           {chunkedElements.map((elements) =>
@@ -65,7 +51,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       ) : (
         <Box>N/A</Box>
       )}
-    </Stack>
+    </Flex>
   );
 };
 

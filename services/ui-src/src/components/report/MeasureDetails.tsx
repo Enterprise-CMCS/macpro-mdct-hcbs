@@ -74,7 +74,7 @@ export const MeasureDetailsExport = (section: any) => {
   );
 
   return (
-    <HStack gap={4}>
+    <HStack>
       <TableStatusIcon tableStatus={section.status}></TableStatusIcon>
       {render(title, cmit, steward, formattedCollectionMethod, true)}
     </HStack>

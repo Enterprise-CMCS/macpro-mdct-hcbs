@@ -22,7 +22,7 @@ const sx = {
     position: "sticky",
     zIndex: "sticky",
     top: "0",
-    marginBottom: "2rem",
+    marginBottom: "3rem",
     padding: "2rem 2rem",
     background: "white",
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",

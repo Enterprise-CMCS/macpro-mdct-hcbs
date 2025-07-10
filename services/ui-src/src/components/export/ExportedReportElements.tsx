@@ -18,6 +18,7 @@ const renderElementList = [
   ElementType.LengthOfStayRate,
   ElementType.NdrBasic,
   ElementType.MeasureDetails,
+  ElementType.SubHeader,
 ];
 
 export const useTable = (type: ElementType) => {
@@ -30,32 +31,30 @@ export const renderElements = (
   type: ElementType
 ) => {
   if (!renderElementList.includes(type)) return;
-
   const { answer } = element;
-  let render = answer ? answer.toString() : "No Response";
 
   switch (type) {
+    case ElementType.SubHeader:
+      return (
+        <Heading as="h4" fontWeight="bold">
+          {element.text}
+        </Heading>
+      );
     case ElementType.NdrEnhanced:
-      render = PerformanceMeasureReportElement(element);
-      break;
+      return PerformanceMeasureReportElement(element);
     case ElementType.NdrFields:
-      render = <>NDR FIELDS</>;
-      break;
+      return <>NDR FIELDS</>;
     case ElementType.Ndr:
-      render = <>NDR</>;
-      break;
+      return <>NDR</>;
     case ElementType.LengthOfStayRate:
-      render = <>Field Of Stay</>;
-      break;
+      return <>Field Of Stay</>;
     case ElementType.NdrBasic:
-      render = <>NDR Basic</>;
-      break;
+      return <>NDR Basic</>;
     case ElementType.MeasureDetails:
-      render = MeasureDetailsExport(section);
-      break;
+      return MeasureDetailsExport(section);
   }
 
-  return render;
+  return answer ?? "No Response";
 };
 
 export const PerformanceMeasureReportElement = (element: any) => {
@@ -95,26 +94,25 @@ export const PerformanceMeasureReportElement = (element: any) => {
   const label = element.label ?? "Performance Rates";
 
   return (
-    <Box my="1.5rem">
-      <Heading as="h4" mb="1rem" fontWeight="bold">{`${label}`}</Heading>
+    <>
+      <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
       <ExportedReportTable
         rows={[
           {
             indicator: "Performance Rates Denominator",
-            response: element?.answer?.denominator ?? noResponse,
+            response: element?.answer?.denominator ?? notAnswered,
           },
         ]}
       />
       {buildData.map((data: { label: string; rows: ReportTableType[] }) => (
-        <Box mb="1.5rem">
+        <>
           <Heading
             as="h4"
-            mb="1rem"
             fontWeight="bold"
           >{`${label} : ${data?.label}`}</Heading>
           <ExportedReportTable rows={data?.rows} />
-        </Box>
+        </>
       ))}
-    </Box>
+    </>
   );
 };

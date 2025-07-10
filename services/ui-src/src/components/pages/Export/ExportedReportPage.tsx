@@ -42,7 +42,7 @@ export const ExportedReportPage = () => {
       <ExportedReportBanner />
       <Box sx={sx.container}>
         {(report && reportPages.length > 0 && (
-          <Box sx={sx.innerContainer}>
+          <Flex sx={sx.innerContainer} gap="2rem">
             {/* pdf metadata */}
             <Helmet>
               <title>{reportTitle(report)}</title>
@@ -50,17 +50,19 @@ export const ExportedReportPage = () => {
               <meta name="subject" content="Quality Measure Set" />
               <meta name="language" content="English" />
             </Helmet>
-            {/* report heading */}
-            <Heading as="h1" variant="h1">
-              {reportTitle(report)}
-            </Heading>
-            {/* report details */}
-            {reportDetails(report)}
+            <Box>
+              {/* report heading */}
+              <Heading as="h1" variant="h1">
+                {reportTitle(report)}
+              </Heading>
+              {/* report details */}
+              {reportDetails(report)}
+            </Box>
             {/* report submission set up */}
             {reportSubmissionSetUp(report)}
             {/* report sections */}
             {renderReportSections(reportPages)}
-          </Box>
+          </Flex>
         )) || (
           <Center>
             <Spinner size="lg" />
@@ -123,7 +125,7 @@ export const reportSubmissionSetUp = (report: Report) => {
 
   return (
     <Box>
-      <Heading as="h4" fontWeight="bold">
+      <Heading as="h2" fontWeight="bold">
         Submission Set Up
       </Heading>
       <ExportedReportTable rows={rows}></ExportedReportTable>
@@ -150,7 +152,7 @@ export const renderReportSections = (
     return (
       <Box key={section.id}>
         {/* if section does not have children and has content to render, render it */}
-        <Flex gap="2rem" flexDirection="column">
+        <Flex flexDirection="column">
           <Heading variant="subHeader">{section.title}</Heading>
           <ExportedReportWrapper section={section} />
         </Flex>
@@ -170,11 +172,7 @@ export const renderReportSections = (
           | MeasurePageTemplate
           | ReviewSubmitTemplate,
         idx
-      ) => (
-        <Box key={`${section.id}.${idx}`} mt="3.5rem">
-          {renderSection(section)}
-        </Box>
-      )
+      ) => <Box key={`${section.id}.${idx}`}>{renderSection(section)}</Box>
     );
 };
 
@@ -184,6 +182,12 @@ export const sx = {
     maxWidth: "55.25rem",
     margin: "0 auto",
     paddingBottom: "4rem",
+    "h1, h2, h3": {
+      marginBottom: "1.5rem",
+    },
+    h4: {
+      marginBottom: "-0.5rem",
+    },
   },
   innerContainer: {
     width: "100%",
@@ -192,5 +196,6 @@ export const sx = {
     "@media print": {
       margin: "5rem 0",
     },
+    flexDir: "column",
   },
 };
