@@ -7,16 +7,14 @@ import { ElementType, HeaderIcon } from "types";
 
 export const ComponentInventory = () => {
   const methods = useForm({});
-  {
-    /**
-     * TODO:
-     * Add more elements to the inventory as needed
-     * Style the inventory page
-     * Consider adding a search or filter functionality
-     * Leave space for PDF view (upon Aileen's PDF work) with a construction cone 🏗️ emoji for in progress status
-     *  <PDFViewPlaceholder />
-     */
-  }
+  /**
+   * TODO:
+   * Add more elements to the inventory as needed
+   * Style the inventory page
+   * Consider adding a search or filter functionality
+   * Leave space for PDF view (upon Aileen's PDF work) with a construction cone 🏗️ emoji for in progress status
+   *  <PDFViewPlaceholder />
+   */
   const elementArray = [
     {
       name: "Header",
