@@ -3,7 +3,7 @@ import { AlertTypes, StateAbbr } from "./other";
 export enum ReportType {
   QMS = "QMS",
   TACM = "TACM",
-  CI = "CI",
+  CICM = "CICM",
 }
 
 export const isReportType = (

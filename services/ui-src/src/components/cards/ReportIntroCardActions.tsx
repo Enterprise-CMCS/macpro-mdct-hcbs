@@ -16,8 +16,8 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   const getAbbreviation = (reportType: string) => {
     if (!isReportType(reportType)) return "";
     switch (reportType) {
-      case ReportType.CI:
-        return "CI";
+      case ReportType.CICM:
+        return "CICM";
       case ReportType.QMS:
         return "QMS";
       case ReportType.TACM:

@@ -26,7 +26,7 @@ export { HelpCard } from "./cards/HelpCard";
 export { ReportIntroCard } from "./cards/ReportIntroCard";
 export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
 export { TacmIntroductionCard } from "./cards/TacmIntroductionCard";
-export { CiIntroductionCard } from "./cards/CiIntroductionCard";
+export { CicmIntroductionCard } from "./cards/CiIntroductionCard";
 export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";

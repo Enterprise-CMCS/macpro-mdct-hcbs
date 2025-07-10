@@ -44,7 +44,7 @@ describe("<ReportIntroCardActions />", () => {
     test.each([
       { type: ReportType.QMS, text: "QMS" },
       { type: ReportType.TACM, text: "TACM" },
-      { type: ReportType.CI, text: "CI" },
+      { type: ReportType.CICM, text: "CICM" },
       { type: "bad name" as ReportType, text: "" },
     ])("$type report card renders action button", ({ type, text }) => {
       render(reportActionsComponent(type));

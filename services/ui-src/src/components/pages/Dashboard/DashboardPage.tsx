@@ -41,8 +41,8 @@ export const DashboardPage = () => {
         return "Quality Measure Set Report";
       case ReportType.TACM:
         return "Timely Access Compliance Measure Report";
-      case ReportType.CI:
-        return "Critical Incident Report";
+      case ReportType.CICM:
+        return "Critical Incident Compliance Measure Report";
       default:
         return "";
     }

@@ -1,7 +1,7 @@
 import { ReportType } from "../types/reports";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { tacmReportTemplate as tacmReportTemplate2026 } from "./2026/tacm/tacm";
-import { ciReportTemplate as ciReportTemplate2026 } from "./2026/ci/ci";
+import { cicmReportTemplate as cicmReportTemplate2026 } from "./2026/cicm/cicm";
 import { getReportTemplate } from "./yearlyFormSelection";
 
 describe("Yearly Form Selection", () => {
@@ -26,12 +26,14 @@ describe("Yearly Form Selection", () => {
   });
 
   it("should throw an error if the requested year is not available (CI report)", () => {
-    const getTemplateCall = () => getReportTemplate(ReportType.CI, 2025);
+    const getTemplateCall = () => getReportTemplate(ReportType.CICM, 2025);
     expect(getTemplateCall).toThrow("not implemented");
   });
 
   it("should return the template for the exact requested year, if one exists (CI report)", () => {
-    expect(getReportTemplate(ReportType.CI, 2026)).toBe(ciReportTemplate2026);
+    expect(getReportTemplate(ReportType.CICM, 2026)).toBe(
+      cicmReportTemplate2026
+    );
   });
 });
 

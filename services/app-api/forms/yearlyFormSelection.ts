@@ -1,5 +1,5 @@
 import { assertExhaustive, ReportType } from "../types/reports";
-import { ciReportTemplate as ciReportTemplate2026 } from "./2026/ci/ci";
+import { cicmReportTemplate as cicmReportTemplate2026 } from "./2026/cicm/cicm";
 import { CMIT_LIST as CMIT_LIST_2026 } from "./2026/cmit";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { tacmReportTemplate as tacmReportTemplate2026 } from "./2026/tacm/tacm";
@@ -9,7 +9,7 @@ const formsByYear = {
     CMIT_LIST: CMIT_LIST_2026,
     qmsReportTemplate: qmsReportTemplate2026,
     tacmReportTemplate: tacmReportTemplate2026,
-    ciReportTemplate: ciReportTemplate2026,
+    cicmReportTemplate: cicmReportTemplate2026,
   },
 };
 
@@ -37,8 +37,8 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
       return formsByYear[year].qmsReportTemplate;
     case ReportType.TACM:
       return formsByYear[year].tacmReportTemplate;
-    case ReportType.CI:
-      return formsByYear[year].ciReportTemplate;
+    case ReportType.CICM:
+      return formsByYear[year].cicmReportTemplate;
     default:
       assertExhaustive(reportType);
       throw new Error(
