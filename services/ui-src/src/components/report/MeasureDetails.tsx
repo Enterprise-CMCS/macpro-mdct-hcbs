@@ -1,8 +1,11 @@
 import { Box, Divider, Flex, HStack, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { MeasurePageTemplate, PageType } from "types";
+import { CMIT, MeasurePageTemplate, PageType } from "types";
 import { currentPageSelector } from "utils/state/selectors";
-import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import {
+  TableStatusIcon,
+  TableStatusType,
+} from "components/tables/TableStatusIcon";
 
 //methods
 const formatCollectionMethod = (method: string | undefined) => {
@@ -61,7 +64,10 @@ export const MeasureDetailsElement = () => {
 };
 
 //export
-export const MeasureDetailsExport = (section: any) => {
+export const MeasureDetailsExport = (section: {
+  cmitInfo: CMIT;
+  status: TableStatusType;
+}) => {
   const {
     name: title,
     cmit,
