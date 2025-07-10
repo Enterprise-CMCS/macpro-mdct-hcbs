@@ -31,7 +31,9 @@ export const ExportedReportTable = ({ rows }: Props) => {
               {row?.helperText && <Text>{row?.helperText}</Text>}
               {row?.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
-            <Td>{row.response ?? notAnsweredText}</Td>
+            <Td color={row.response ? "palette.base" : "palette.error_darker"}>
+              {row.response ?? notAnsweredText}
+            </Td>
           </Tr>
         ))}
       </Tbody>

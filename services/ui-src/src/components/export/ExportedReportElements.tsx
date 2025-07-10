@@ -1,7 +1,12 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType } from "types";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
+
+const noReponseText = "No Response";
+const autoPopulatedText = "Auto-populates from previous response";
+
+const ignoreIdList = ["quality-measures-subheader"];
 
 //elements that are rendered as part of the table that does not need a unique renderer
 const tableElementList = [
@@ -30,7 +35,8 @@ export const renderElements = (
   element: any | Object,
   type: ElementType
 ) => {
-  if (!renderElementList.includes(type)) return;
+  if (!renderElementList.includes(type) || ignoreIdList.includes(element.id))
+    return;
   const { answer } = element;
 
   switch (type) {
@@ -43,24 +49,21 @@ export const renderElements = (
     case ElementType.NdrEnhanced:
       return PerformanceMeasureReportElement(element);
     case ElementType.NdrFields:
-      return <>NDR FIELDS</>;
+      return <>[TO DO: ADD NDR FIELDS]</>;
     case ElementType.Ndr:
-      return <>NDR</>;
+      return <>[TO DO: ADD NDR]</>;
     case ElementType.LengthOfStayRate:
-      return <>Field Of Stay</>;
+      return <>[TO DO: ADD Field Of Stay]</>;
     case ElementType.NdrBasic:
-      return <>NDR Basic</>;
+      return <>[TO DO: ADD NDR Basic]</>;
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
   }
 
-  return answer ?? "No Response";
+  return answer ?? noReponseText;
 };
 
 export const PerformanceMeasureReportElement = (element: any) => {
-  const notAnswered = "Not answered";
-  const noResponse = "Auto-populates from previous response";
-
   const buildData = element.assessments?.map(
     (assess: { id: string; label: string }) => {
       const performanceRate = element.answer?.rates?.find(
@@ -73,16 +76,16 @@ export const PerformanceMeasureReportElement = (element: any) => {
         },
         {
           indicator: "Numerator",
-          response: performanceRate?.numerator ?? notAnswered,
+          response: performanceRate?.numerator,
         },
         {
           indicator: "Denominator",
-          response: element?.answer?.denominator ?? noResponse,
+          response: element?.answer?.denominator ?? autoPopulatedText,
           helperText: "Auto-populates",
         },
         {
           indicator: "Rate",
-          response: performanceRate?.rate ?? noResponse,
+          response: performanceRate?.rate ?? autoPopulatedText,
           helperText: "Auto-calculates",
         },
       ];
@@ -100,7 +103,7 @@ export const PerformanceMeasureReportElement = (element: any) => {
         rows={[
           {
             indicator: "Performance Rates Denominator",
-            response: element?.answer?.denominator ?? notAnswered,
+            response: element?.answer?.denominator,
           },
         ]}
       />

@@ -81,7 +81,7 @@ export const reportTitle = (report: Report) => {
 
 export const reportDetails = (report: Report) => {
   return (
-    <Table>
+    <Table variant={"reportDetails"}>
       <Thead>
         <Tr>
           <Th>Reporting year</Th>
@@ -149,11 +149,14 @@ export const renderReportSections = (
       | MeasurePageTemplate
       | ReviewSubmitTemplate
   ) => {
+    const showHeader =
+      section.type != "measure" && section.type != "measureResults";
+
     return (
       <Box key={section.id}>
         {/* if section does not have children and has content to render, render it */}
         <Flex flexDirection="column">
-          <Heading variant="subHeader">{section.title}</Heading>
+          {showHeader && <Heading variant="subHeader">{section.title}</Heading>}
           <ExportedReportWrapper section={section} />
         </Flex>
       </Box>
@@ -162,7 +165,11 @@ export const renderReportSections = (
 
   return reportPages
     .filter(
-      (section) => section.id !== "review-submit" && section.id !== "root"
+      (section) =>
+        section.id !== "review-submit" &&
+        section.id !== "root" &&
+        section.id != "req-measure-result" &&
+        section.id != "optional-measure-result"
     )
     .map(
       (
