@@ -5,9 +5,9 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
 
 /**
  * This card appears on the state user home page.
- * It contains text specific to the CI report.
+ * It contains text specific to the CICM report.
  */
-export const CiIntroductionCard = () => {
+export const CicmIntroductionCard = () => {
   return (
     <ReportIntroCard title="Critical Incident Report">
       The Critical Incident Reporting requirements strengthen safeguards to
@@ -20,7 +20,7 @@ export const CiIntroductionCard = () => {
       percent minimum performance level. The PMs are aggregated across all
       applicable HCBS authorities and programs and apply to both FFS and managed
       care delivery systems.
-      <ReportIntroCardActions reportType={ReportType.CI} />
+      <ReportIntroCardActions reportType={ReportType.CICM} />
       <Accordion allowToggle={true}>
         <AccordionItem label="When is the Critical Incident Report Due?">
           <p>The HCBS Critical Incident will be created and submitted ...</p>

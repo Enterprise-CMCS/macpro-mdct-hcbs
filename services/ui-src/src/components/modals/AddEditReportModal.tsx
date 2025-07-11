@@ -13,7 +13,7 @@ import {
 } from "types/report";
 import { QmsOptions } from "./AddFormOptions/QmsOptions";
 import { TacmOptions } from "./AddFormOptions/TacmOptions";
-import { CiOptions } from "./AddFormOptions/CiOptions";
+import { CicmOptions } from "./AddFormOptions/CicmOptions";
 
 export type AddEditReportModalOptions = {
   verbiage: {
@@ -38,8 +38,8 @@ const buildModalOptions = (
       return QmsOptions(selectedReport);
     case ReportType.TACM:
       return TacmOptions();
-    case ReportType.CI:
-      return CiOptions();
+    case ReportType.CICM:
+      return CicmOptions();
     default:
       assertExhaustive(reportType);
       return {
