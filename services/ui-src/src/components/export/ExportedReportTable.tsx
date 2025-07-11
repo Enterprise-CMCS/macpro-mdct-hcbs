@@ -5,7 +5,7 @@ import { ReactElement } from "react";
 
 export type ReportTableType = {
   indicator: string;
-  response?: string | ReactElement;
+  response?: string | number | ReactElement | undefined;
   helperText?: string;
   type?: ElementType;
 };

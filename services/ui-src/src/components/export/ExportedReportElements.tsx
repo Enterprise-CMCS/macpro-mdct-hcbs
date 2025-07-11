@@ -1,6 +1,11 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
-import { ElementType } from "types";
+import {
+  ElementType,
+  MeasurePageTemplate,
+  NdrEnhancedTemplate,
+  RateSetData,
+} from "types";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
 const noReponseText = "No Response";
@@ -32,10 +37,15 @@ export const useTable = (type: ElementType) => {
 };
 
 export const renderElements = (
-  section: any,
-  element: any | Object,
-  type: ElementType
+  section: MeasurePageTemplate,
+  element: {
+    id: string;
+    type: ElementType;
+    answer?: string | number | RateSetData[] | RateSetData | undefined;
+    text?: string;
+  }
 ) => {
+  const { type } = element;
   if (!renderElementList.includes(type) || ignoreIdList.includes(element.id))
     return;
   const { answer } = element;
@@ -48,7 +58,7 @@ export const renderElements = (
         </Heading>
       );
     case ElementType.NdrEnhanced:
-      return NDREnhancedReportElement(element);
+      return NDREnhancedReportElement(element as NdrEnhancedTemplate);
     case ElementType.NdrFields:
       return <>[TO DO: ADD NDR FIELDS]</>;
     case ElementType.Ndr:
@@ -61,10 +71,10 @@ export const renderElements = (
       return MeasureDetailsExport(section);
   }
 
-  return answer ?? noReponseText;
+  return (answer as string) ?? noReponseText;
 };
 
-export const NDREnhancedReportElement = (element: any) => {
+export const NDREnhancedReportElement = (element: NdrEnhancedTemplate) => {
   const buildData = element.assessments?.map(
     (assess: { id: string; label: string }) => {
       const performanceRate = element.answer?.rates?.find(

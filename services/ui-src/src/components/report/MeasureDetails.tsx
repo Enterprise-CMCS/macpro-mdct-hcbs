@@ -1,11 +1,8 @@
 import { Box, Divider, Flex, HStack, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { CMIT, MeasurePageTemplate, PageType } from "types";
+import { MeasurePageTemplate, PageType } from "types";
 import { currentPageSelector } from "utils/state/selectors";
-import {
-  TableStatusIcon,
-  TableStatusType,
-} from "components/tables/TableStatusIcon";
+import { TableStatusIcon } from "components/tables/TableStatusIcon";
 
 //methods
 const formatCollectionMethod = (method: string | undefined) => {
@@ -31,11 +28,11 @@ const render = (
             </Text>
           )}
           <Text fontWeight={isPdf ? "bold" : "normal"}>
-            Measure Name: {title}
+            {`Measure Name: ${title}`}
           </Text>
-          <Text>CMIT number: #{cmit}</Text>
-          <Text>Steward: {steward}</Text>
-          <Text>Collection method: {formattedCollectionMethod}</Text>
+          <Text>{`CMIT number: #${cmit}`}</Text>
+          <Text>{`Steward: ${steward}`}</Text>
+          <Text>{`Collection method: ${formattedCollectionMethod}`}</Text>
         </>
       </Flex>
       {!isPdf && <Divider margin="2rem 0 0 0" />}
@@ -64,16 +61,13 @@ export const MeasureDetailsElement = () => {
 };
 
 //export
-export const MeasureDetailsExport = (section: {
-  cmitInfo: CMIT;
-  status: TableStatusType;
-}) => {
+export const MeasureDetailsExport = (section: MeasurePageTemplate) => {
   const {
     name: title,
     cmit,
     measureSteward: steward,
     dataSource: collectionMethod,
-  } = section.cmitInfo;
+  } = section.cmitInfo!;
 
   const formattedCollectionMethod = formatCollectionMethod(
     collectionMethod?.toString()
