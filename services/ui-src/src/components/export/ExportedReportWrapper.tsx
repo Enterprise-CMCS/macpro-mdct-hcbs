@@ -1,14 +1,4 @@
-import {
-  Box,
-  Stack,
-  Table,
-  Thead,
-  Th,
-  Tr,
-  Td,
-  Tbody,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import {
   ElementType,
   FormPageTemplate,
@@ -16,80 +6,60 @@ import {
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
+import { renderElements, useTable } from "./ExportedReportElements";
+import { chunkBy } from "utils/other/arrays";
+import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
-const skipElements = [
-  ElementType.ButtonLink,
-  ElementType.Accordion,
-  ElementType.MeasureTable,
-  ElementType.MeasureResultsNavigationTable,
-  ElementType.Header,
-  ElementType.MeasureFooter,
-];
+export const renderReportTable = (elements: ReportTableType[] | undefined) => {
+  const filteredElements = elements?.filter((element) => element.indicator);
+  if (filteredElements?.length == 0) return;
 
-export const ExportedReportWrapper = ({ section, displayHidden }: Props) => {
-  const filtered = !displayHidden
-    ? section.elements?.filter(
-        (element) => !skipElements.includes(element?.type)
-      )
-    : section.elements;
+  return <ExportedReportTable rows={filteredElements!}></ExportedReportTable>;
+};
 
-  const elements = filtered?.map((element: any) => {
-    if (displayHidden && skipElements.includes(element.type)) {
-      return {
-        label: "DEBUG",
-        helperText: element.type ?? "",
-        value: element.value ?? "",
-        answer: element.answer ?? "",
-        type: element.type ?? "",
-      };
-    }
-    if (element.type)
-      return {
-        label: element?.label ?? "",
-        helperText: element.helperText ?? "",
-        value: element.value ?? "",
-        answer: element.answer ?? "No Response",
-        type: element.type ?? "",
-      };
-    return { label: "How" };
-  });
+export const renderReportDisplay = (
+  elements: ReportTableType[] | undefined
+) => {
+  return elements?.map((element: ReportTableType) => element.response);
+};
+
+export const ExportedReportWrapper = ({ section }: Props) => {
+  const elements =
+    section.elements?.map(
+      (element: {
+        label?: string;
+        helperText?: string;
+        type: ElementType;
+        id: string;
+      }) => {
+        return {
+          indicator: element?.label ?? "",
+          helperText: element.helperText ?? "",
+          response: renderElements(section as MeasurePageTemplate, element),
+          type: element.type ?? "",
+        };
+      }
+    ) ?? [];
+
+  // this chunkBy will split and keep the orders of the elements based on whether it's part of the default table or needs a unique renderer
+  const chunkedElements = chunkBy(elements, (element) =>
+    useTable(element.type)
+  );
 
   return (
-    <Stack>
-      {elements?.length! > 0 ? (
-        <Table variant="export">
-          <Thead>
-            <Tr>
-              <Th>Indicator</Th>
-              <Th>Response</Th>
-              {displayHidden && <Th>Type</Th>}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {elements?.map(
-              (element, idx) =>
-                element?.label && (
-                  <Tr key={`${element.label}.${idx}`}>
-                    <Td>
-                      <Text>{element?.label}</Text>
-                      {element?.helperText && (
-                        <Text>{element?.helperText}</Text>
-                      )}
-                      {element?.type === ElementType.Date && (
-                        <Text>MM/DD/YYYY</Text>
-                      )}
-                    </Td>
-                    <Td>{element?.answer}</Td>
-                    {displayHidden && <Td>{element?.type}</Td>}
-                  </Tr>
-                )
-            )}
-          </Tbody>
-        </Table>
+    <Flex flexDir="column" gap="1.5rem">
+      {chunkedElements?.length! > 0 ? (
+        <>
+          {chunkedElements.map((elements) =>
+            useTable(elements[0].type)
+              ? renderReportTable(elements)
+              : renderReportDisplay(elements)
+          )}
+        </>
       ) : (
         <Box>N/A</Box>
       )}
-    </Stack>
+    </Flex>
   );
 };
 
@@ -99,5 +69,4 @@ export interface Props {
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate;
-  displayHidden?: boolean;
 }

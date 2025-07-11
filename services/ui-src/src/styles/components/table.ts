@@ -91,11 +91,24 @@ const exportVariant = {
   },
 };
 
+const reportDetailsVariant = {
+  tr: {
+    "th, td": {
+      borderColor: "transparent",
+    },
+  },
+  td: {
+    fontSize: "14px",
+    padding: "0",
+  },
+};
+
 const variants = {
   striped: stripedVariant,
   measure: measureVariant,
   status: statusVariant,
   export: exportVariant,
+  reportDetails: reportDetailsVariant,
 };
 
 const sizes = {};
