@@ -105,20 +105,19 @@ export const reportDetails = (report: Report) => {
 export const reportSubmissionSetUp = (report: Report) => {
   const rows = [
     {
-      indicator:
-        "Does your state administer the HCBS CAHPS beneficiary survey?",
+      indicator: "Is your state reporting on the HCBS CAHPS Survey?",
       response: report.options.cahps ? "Yes" : "No",
     },
     {
-      indicator: "Does your state administer the NCI-IDD beneficiary survey?",
+      indicator: "Is your state reporting on the NCI-IDD Survey?",
       response: report.options.nciidd ? "Yes" : "No",
     },
     {
-      indicator: "Does your state administer the NCI-AD beneficiary survey?",
+      indicator: "Is your state reporting on the NCI-AD Survey?",
       response: report.options.nciad ? "Yes" : "No",
     },
     {
-      indicator: "Does your state administer the POM beneficiary survey?",
+      indicator: "Is your state reporting on the POM Survey?",
       response: report.options.pom ? "Yes" : "No",
     },
   ];
