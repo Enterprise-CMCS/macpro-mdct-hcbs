@@ -104,7 +104,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     setDisplayValue(stringifyAnswer(form.getValues(key)));
   };
 
-  const performanceLevelStatusAlert = React.useCallback(() => {
+  const performanceLevelStatusAlert = () => {
     if (!displayValue?.rate || !minPerformanceLevel) return null;
 
     // Removing the % from the rate
@@ -126,7 +126,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
         {`The data entered indicates this measure does not meet the ${minPerformanceLevel}% Minimum Performance Level. Explain why in the additional comments field below.`}
       </Alert>
     );
-  }, [displayValue?.rate]);
+  };
 
   return (
     <Stack gap={4} sx={sx.performance}>
