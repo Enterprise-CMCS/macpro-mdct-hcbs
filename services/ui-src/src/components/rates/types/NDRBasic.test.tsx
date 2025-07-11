@@ -34,6 +34,7 @@ const mockedElement: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   label: "test label",
   multiplier: 100,
+  minPerformanceLevel: 90,
 };
 
 const ndrBasicComponent = (
@@ -91,6 +92,34 @@ describe("<NDRBasic />", () => {
 
       const result = screen.getByRole("textbox", { name: "Result" });
       expect(result).toHaveValue("0.2");
+    });
+
+    test("Alert should be not visible if rate is empty", async () => {
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+
+    test("Success Alert should be visible if minimum rate is met", async () => {
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "9"));
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await act(async () => await userEvent.type(denominator, "10"));
+
+      const result = screen.getByRole("alert");
+
+      expect(result).toHaveTextContent("Success");
+    });
+
+    test("Warning Alert should be visible if minimum rate is met", async () => {
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "1"));
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await act(async () => await userEvent.type(denominator, "10"));
+
+      const result = screen.getByRole("alert");
+
+      expect(result).toHaveTextContent("Warning");
     });
   });
 
