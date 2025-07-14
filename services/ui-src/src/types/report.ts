@@ -12,6 +12,19 @@ export const isReportType = (
   return Object.values(ReportType).includes(reportType as ReportType);
 };
 
+export const getReportName = (type: string | undefined) => {
+  switch (type) {
+    case ReportType.QMS:
+      return "Quality Measure Set Report";
+    case ReportType.TACM:
+      return "Timely Access Compliance Measure Report";
+    case ReportType.CI:
+      return "Critical Incident Report";
+    default:
+      return "";
+  }
+};
+
 export enum ReportStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
