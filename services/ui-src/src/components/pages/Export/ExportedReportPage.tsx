@@ -20,6 +20,7 @@ import {
   MeasurePageTemplate,
   ParentPageTemplate,
   Report,
+  ReportType,
   ReviewSubmitTemplate,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
@@ -103,6 +104,7 @@ export const reportDetails = (report: Report) => {
 };
 
 export const reportSubmissionSetUp = (report: Report) => {
+  if (report.type !== ReportType.QMS) return;
   const rows = [
     {
       indicator: "Is your state reporting on the HCBS CAHPS Survey?",
