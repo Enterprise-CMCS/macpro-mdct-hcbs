@@ -9,10 +9,15 @@ import {
   SubHeaderElement,
 } from "components/report/Elements";
 import { ElementType, HeaderIcon } from "types";
+import { ReactNode } from "react";
 
-export const elementArray = [
-  {
-    name: "Header",
+export const elementObject: {
+  [key: string]: {
+    description: string;
+    variants: ReactNode[];
+  };
+} = {
+  [ElementType.Header]: {
     description: "Big text at the top of the page",
     variants: [
       <HeaderElement
@@ -34,8 +39,7 @@ export const elementArray = [
       />,
     ],
   },
-  {
-    name: "SubHeader",
+  [ElementType.SubHeader]: {
     description: "This is a subheader",
     variants: [
       <SubHeaderElement
@@ -48,8 +52,7 @@ export const elementArray = [
       />,
     ],
   },
-  {
-    name: "Nested Heading",
+  [ElementType.NestedHeading]: {
     description: "This is a nested heading",
     variants: [
       <NestedHeadingElement
@@ -62,8 +65,7 @@ export const elementArray = [
       />,
     ],
   },
-  {
-    name: "Text Field",
+  [ElementType.Textbox]: {
     description: "A field for entering text",
     variants: [
       <TextField
@@ -76,8 +78,7 @@ export const elementArray = [
       />,
     ],
   },
-  {
-    name: "Text Area Field",
+  [ElementType.TextAreaField]: {
     description: "A field for entering text",
     variants: [
       <TextAreaField
@@ -90,8 +91,7 @@ export const elementArray = [
       />,
     ],
   },
-  {
-    name: "Paragraph",
+  [ElementType.Paragraph]: {
     description: "A paragraph of text",
     variants: [
       <ParagraphElement
@@ -104,13 +104,11 @@ export const elementArray = [
       />,
     ],
   },
-  {
-    name: "Divider",
+  [ElementType.Divider]: {
     description: "A horizontal line to separate content",
     variants: [<Divider />],
   },
-  {
-    name: "Accordion",
+  [ElementType.Accordion]: {
     description: "A collapsible section for content",
     variants: [
       <Accordion allowToggle={true}>
@@ -126,4 +124,4 @@ export const elementArray = [
       </Accordion>,
     ],
   },
-];
+};

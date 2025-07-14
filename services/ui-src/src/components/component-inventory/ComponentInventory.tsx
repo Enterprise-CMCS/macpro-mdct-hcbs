@@ -1,7 +1,8 @@
-import { Heading } from "@chakra-ui/react";
+import { Divider, Heading } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { elementArray } from "./elementArray";
+import { elementObject } from "./elementObject";
+import { ElementType } from "types";
 
 export const ComponentInventory = () => {
   const methods = useForm({});
@@ -14,35 +15,40 @@ export const ComponentInventory = () => {
    *  <PDFViewPlaceholder />
    */
 
-  const buildComponentDisplay = (componentExample: {
-    description: string;
-    name: string;
-    variants: ReactNode[];
-  }) => {
+  const buildComponentDisplay = (type: ElementType) => {
+    const componentExample = elementObject[type] as {
+      description: string;
+      variants: ReactNode[];
+    };
+
     return (
-      <>
-        <div
-          style={{
-            border: "1px solid black",
-            margin: "20px",
-          }}
-        >
-          <Heading as="h2" variant="h2">
-            {componentExample.name}
-          </Heading>
-          <p>{componentExample.description}</p>
-          {componentExample.variants.map((variant) => (
-            <div
-              style={{
-                padding: "10px",
-                margin: "20px",
-              }}
-            >
-              {variant}
-            </div>
-          ))}
-        </div>
-      </>
+      <div
+        style={{
+          margin: "20px",
+        }}
+      >
+        <Heading as="h2" variant="h2">
+          {type}
+        </Heading>
+        {!componentExample ? (
+          <p>No example available for this component.</p>
+        ) : (
+          <>
+            <p>{componentExample.description}</p>
+            {componentExample.variants.map((variant) => (
+              <div
+                style={{
+                  border: "1px solid black",
+                  padding: "10px",
+                  margin: "20px",
+                }}
+              >
+                {variant}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     );
   };
   return (
@@ -50,7 +56,16 @@ export const ComponentInventory = () => {
       <Heading as="h1" variant="h1" style={{ margin: "15px" }}>
         Component Inventory
       </Heading>
-      {elementArray.map((element) => buildComponentDisplay(element))}
+      <p style={{ margin: "15px" }}>
+        This page is a work in progress. It will eventually contain all the
+        components used in the application, along with examples of how to use
+        them.
+      </p>
+      <Divider />
+      {/* Display all ElementType enum possibilities, even if not in elementObject */}
+      {Object.values(ElementType).map((type) => {
+        return buildComponentDisplay(type);
+      })}
     </FormProvider>
   );
 };
