@@ -104,11 +104,11 @@ export const isStateAbbreviation = (x: string | undefined): x is StateAbbr => {
 export const reportTables: { [key in ReportType]: string } = {
   QMS: process.env.QmsReportsTable!,
   TACM: process.env.TacmReportsTable!,
-  CICM: process.env.CicmReportsTable!,
+  CI: process.env.CiReportsTable!,
 };
 
 export const tableTopics: { [key in ReportType]: string } = {
   QMS: "qms-reports",
   TACM: "tacm-reports",
-  CICM: "cicm-reports",
+  CI: "ci-reports",
 };

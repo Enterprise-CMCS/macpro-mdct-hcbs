@@ -2,7 +2,7 @@ import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminDashSelector,
   Banner,
-  CicmIntroductionCard,
+  CiIntroductionCard,
   PageTemplate,
   QmsIntroductionCard,
   TacmIntroductionCard,
@@ -16,7 +16,7 @@ export const HomePage = () => {
   const { userIsEndUser } = useStore().user ?? {};
 
   const isTACMReportActive = useFlags()?.isTacmReportActive;
-  const isCICMReportActive = useFlags()?.isCicmReportActive;
+  const isCIReportActive = useFlags()?.isCiReportActive;
 
   useEffect(() => {
     let bannerActivity = false;
@@ -60,7 +60,7 @@ export const HomePage = () => {
               </Text>
             </Box>
             <QmsIntroductionCard />
-            {isCICMReportActive && <CicmIntroductionCard />}
+            {isCIReportActive && <CiIntroductionCard />}
             {isTACMReportActive && <TacmIntroductionCard />}
           </>
         ) : (

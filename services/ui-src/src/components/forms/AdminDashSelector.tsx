@@ -32,8 +32,8 @@ export const AdminDashSelector = () => {
       label: "Quality Measure Set Report (QMS)",
     },
     {
-      value: "CICM",
-      label: "Critical Incident Report (CICM)",
+      value: "CI",
+      label: "Critical Incident Report (CI)",
     },
     {
       value: "TACM",

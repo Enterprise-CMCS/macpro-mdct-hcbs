@@ -6,8 +6,8 @@ import {
   ReportBase,
 } from "../../../types/reports";
 
-export const cicmReportTemplate: ReportBase = {
-  type: ReportType.CICM,
+export const ciReportTemplate: ReportBase = {
+  type: ReportType.CI,
   year: 2026,
   pages: [
     {
@@ -126,7 +126,7 @@ export const cicmReportTemplate: ReportBase = {
           id: "review-alert",
           status: "error",
           title: "Your form is not ready for submission",
-          text: "Some sections of the Critical Incident Compliance Measure Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
+          text: "Some sections of the Critical Incident Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
@@ -137,7 +137,7 @@ export const cicmReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your CICM Report is accurate. You will be able to make edits after submitting if you contact your CMS HCBS Lead to unlock your report while it is in "Submitted" status.',
+          text: 'Double check that everything in your CI Report is accurate. You will be able to make edits after submitting if you contact your CMS HCBS Lead to unlock your report while it is in "Submitted" status.',
         },
         {
           type: ElementType.Paragraph,
@@ -176,7 +176,7 @@ export const cicmReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them you submitted the CICM Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them you submitted the CI Report and it is ready for their review.",
         },
       ],
     },

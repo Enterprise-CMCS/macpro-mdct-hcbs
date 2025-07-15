@@ -3,11 +3,11 @@ import { AddEditReportModalOptions } from "../AddEditReportModal";
 const verbiage = {
   reportName: "Critical Incident Report",
   yearSelect: "Select the critical incident reporting year",
-  shortName: "CICM",
-  sampleName: "HCBS CICM Report for 2026",
+  shortName: "CI",
+  sampleName: "HCBS CI Report for 2026",
 };
 
-export const CicmOptions = (): AddEditReportModalOptions => ({
+export const CiOptions = (): AddEditReportModalOptions => ({
   verbiage: verbiage,
   reportOptions: {},
   optionsElements: null,

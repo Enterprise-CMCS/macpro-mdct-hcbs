@@ -47,10 +47,10 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }).identifiers,
-    new DynamoDBTable(scope, "CicmReports", {
+    new DynamoDBTable(scope, "CiReports", {
       stage,
       isDev,
-      name: "cicm-reports",
+      name: "ci-reports",
       partitionKey: {
         name: "state",
         type: dynamodb.AttributeType.STRING,

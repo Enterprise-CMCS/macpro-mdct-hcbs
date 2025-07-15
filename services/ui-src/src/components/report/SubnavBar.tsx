@@ -7,8 +7,8 @@ import { isReportType, ReportType } from "types";
 const getTitle = (reportType: string) => {
   if (!isReportType(reportType)) return "";
   switch (reportType) {
-    case ReportType.CICM:
-      return "CICM Report";
+    case ReportType.CI:
+      return "CI Report";
     case ReportType.QMS:
       return "QMS Report";
     case ReportType.TACM:

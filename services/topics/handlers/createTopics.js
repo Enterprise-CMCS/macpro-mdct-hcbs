@@ -15,7 +15,7 @@ const condensedTopicList = [
     version: ".v0",
     numPartitions: 1,
     replicationFactor: 3,
-    topics: [".qms-reports", ".tacm-reports", ".cicm-reports"],
+    topics: [".qms-reports", ".tacm-reports", ".ci-reports"],
   },
 ];
 

@@ -18,8 +18,8 @@ const navItem = (title: string, index: number) => {
 const getTitle = (report: Report) => {
   if (!isReportType(report.type)) return "";
   switch (report.type) {
-    case ReportType.CICM:
-      return "CICM Report";
+    case ReportType.CI:
+      return "Critical Incident Report";
     case ReportType.QMS:
       return "Quality Measure Set Report";
     case ReportType.TACM:

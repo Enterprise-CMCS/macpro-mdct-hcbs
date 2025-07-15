@@ -1,5 +1,5 @@
 import { isResultRowButton, PageType } from "../../types/reports";
-import { cicmReportTemplate } from "./cicm/cicm";
+import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
 import { qmsReportTemplate } from "./qms/qms";
@@ -8,7 +8,7 @@ import { tacmReportTemplate } from "./tacm/tacm";
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
   { template: tacmReportTemplate, name: "TACM" },
-  { template: cicmReportTemplate, name: "CICM" },
+  { template: ciReportTemplate, name: "CI" },
 ];
 describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
   it(`${name} should exist`, () => {
