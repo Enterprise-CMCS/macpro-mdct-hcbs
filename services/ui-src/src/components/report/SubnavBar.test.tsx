@@ -22,7 +22,7 @@ describe("Test SubnavBar component", () => {
   test.each([
     { type: ReportType.QMS, text: "QMS Report" },
     { type: ReportType.TACM, text: "TACM Report" },
-    { type: ReportType.CI, text: "CICM Report" },
+    { type: ReportType.CI, text: "CI Report" },
   ])("$type report type renders a title", ({ type, text }) => {
     render(
       <RouterWrappedComponent>
