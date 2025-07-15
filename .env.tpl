@@ -2,7 +2,7 @@
 BannersTable=local-banners
 QmsReportsTable=local-qms-reports
 TacmReportsTable=local-tacm-reports
-CicmReportsTable=local-cicm-reports
+CiReportsTable=local-ci-reports
 
 DYNAMODB_URL=http://host.docker.internal:8000
 DISABLE_ESLINT_PLUGIN=true
