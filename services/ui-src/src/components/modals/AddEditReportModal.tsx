@@ -21,6 +21,8 @@ export type AddEditReportModalOptions = {
     yearSelect: string;
     shortName: string;
     sampleName: string;
+    topText?: string;
+    yearHelperText?: string;
   };
   reportOptions: Record<string, any>;
   optionsElements: React.ReactNode;
@@ -46,6 +48,8 @@ const buildModalOptions = (
           yearSelect: "",
           shortName: "",
           sampleName: "",
+          topText: "",
+          yearHelperText: "",
         },
         reportOptions: {},
         optionsElements: undefined,
@@ -123,17 +127,14 @@ export const AddEditReportModal = ({
     >
       <FormProvider {...form}>
         <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
-          <Flex direction="column" gap="1.5rem">
-            <Text>
-              Answering “Yes” or “No” to the following questions will impact
-              which measure results must be reported.
-            </Text>
+          <Flex direction="column" gap="2rem">
+            {verbiage.topText && <Text>{verbiage.topText}</Text>}
             <TextField
               element={{
                 type: ElementType.Textbox,
                 id: "",
                 label: `${verbiage.reportName} Name`,
-                helperText: `Name the ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: ${activeState} ${verbiage.sampleName}`,
+                helperText: `Name this ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: "${activeState} ${verbiage.sampleName}"`,
                 answer: selectedReport?.name,
                 required: true,
               }}
@@ -148,8 +149,7 @@ export const AddEditReportModal = ({
                 options: dropdownYears,
                 answer: selectedReport?.year.toString(),
                 required: true,
-                helperText:
-                  "This is the final year in a multi-year reporting period, used to indicate the endpoint of data collection.  For example, if a report covers the period of 2025 and 2026, the reporting year would be 2026.",
+                helperText: verbiage.yearHelperText || "",
               }}
               disabled={!!selectedReport}
               formkey={"year"}

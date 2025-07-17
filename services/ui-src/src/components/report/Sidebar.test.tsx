@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mockUseStore } from "utils/testing/setupJest";
 import { BrowserRouter as Router, useParams } from "react-router-dom";
@@ -101,9 +101,7 @@ describe("Sidebar", () => {
     const expandButton = screen.getByAltText("Expand subitems");
     expect(screen.queryByText("Child 1")).not.toBeInTheDocument();
 
-    await act(async () => {
-      await userEvent.click(expandButton);
-    });
+    await userEvent.click(expandButton);
 
     expect(screen.getByText("Child 1")).toBeInTheDocument();
   });

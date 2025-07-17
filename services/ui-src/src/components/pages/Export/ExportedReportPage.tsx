@@ -1,4 +1,4 @@
-import { ComponentClass, useState } from "react";
+import { ComponentClass } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import {
   Box,
@@ -6,21 +6,29 @@ import {
   Heading,
   Spinner,
   Flex,
-  Checkbox,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import { useStore } from "utils";
+import { formatMonthDayYear, useStore } from "utils";
 import {
   FormPageTemplate,
+  getReportName,
   MeasurePageTemplate,
   ParentPageTemplate,
   Report,
+  ReportType,
   ReviewSubmitTemplate,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
+import { StateNames } from "../../../constants";
+import { ExportedReportTable } from "components/export/ExportedReportTable";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const [displayHidden, setDisplayHidden] = useState(false);
   const reportPages = report?.pages;
   if (!reportPages) return null;
 
@@ -34,16 +42,8 @@ export const ExportedReportPage = () => {
     <Box>
       <ExportedReportBanner />
       <Box sx={sx.container}>
-        <Checkbox
-          id="debug"
-          checked={displayHidden}
-          onChange={() => setDisplayHidden(!displayHidden)}
-        >
-          Debug
-        </Checkbox>
-
         {(report && reportPages.length > 0 && (
-          <Box sx={sx.innerContainer}>
+          <Flex sx={sx.innerContainer} gap="2rem">
             {/* pdf metadata */}
             <Helmet>
               <title>{reportTitle(report)}</title>
@@ -51,13 +51,19 @@ export const ExportedReportPage = () => {
               <meta name="subject" content="Quality Measure Set" />
               <meta name="language" content="English" />
             </Helmet>
-            {/* report heading */}
-            <Heading as="h1" variant="h1">
-              {reportTitle(report)}
-            </Heading>
+            <Box>
+              {/* report heading */}
+              <Heading as="h1" variant="h1">
+                {reportTitle(report)}
+              </Heading>
+              {/* report details */}
+              {reportDetails(report)}
+            </Box>
+            {/* report submission set up */}
+            {reportSubmissionSetUp(report)}
             {/* report sections */}
-            {renderReportSections(reportPages, displayHidden)}
-          </Box>
+            {renderReportSections(reportPages)}
+          </Flex>
         )) || (
           <Center>
             <Spinner size="lg" />
@@ -69,7 +75,63 @@ export const ExportedReportPage = () => {
 };
 
 export const reportTitle = (report: Report) => {
-  return `${report.state} ${report.name}`;
+  return `${StateNames[report.state]} ${getReportName(report.type)} for: ${
+    report.name
+  }`;
+};
+
+export const reportDetails = (report: Report) => {
+  return (
+    <Table variant={"reportDetails"}>
+      <Thead>
+        <Tr>
+          <Th>Reporting year</Th>
+          <Th>Last edited</Th>
+          <Th>Edited by</Th>
+          <Th>Status</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        <Tr>
+          <Td>{report.year}</Td>
+          <Td>{formatMonthDayYear(report.lastEdited!)}</Td>
+          <Td>{report.lastEditedBy}</Td>
+          <Td>{report.status}</Td>
+        </Tr>
+      </Tbody>
+    </Table>
+  );
+};
+
+export const reportSubmissionSetUp = (report: Report) => {
+  if (report.type !== ReportType.QMS) return;
+  const rows = [
+    {
+      indicator: "Is your state reporting on the HCBS CAHPS Survey?",
+      response: report.options.cahps ? "Yes" : "No",
+    },
+    {
+      indicator: "Is your state reporting on the NCI-IDD Survey?",
+      response: report.options.nciidd ? "Yes" : "No",
+    },
+    {
+      indicator: "Is your state reporting on the NCI-AD Survey?",
+      response: report.options.nciad ? "Yes" : "No",
+    },
+    {
+      indicator: "Is your state reporting on the POM Survey?",
+      response: report.options.pom ? "Yes" : "No",
+    },
+  ];
+
+  return (
+    <Box>
+      <Heading as="h2" fontWeight="bold">
+        Submission Set Up
+      </Heading>
+      <ExportedReportTable rows={rows}></ExportedReportTable>
+    </Box>
+  );
 };
 
 export const renderReportSections = (
@@ -78,8 +140,7 @@ export const renderReportSections = (
     | FormPageTemplate
     | MeasurePageTemplate
     | ReviewSubmitTemplate
-  )[],
-  displayHidden: boolean
+  )[]
 ) => {
   // recursively render sections
   const renderSection = (
@@ -89,15 +150,15 @@ export const renderReportSections = (
       | MeasurePageTemplate
       | ReviewSubmitTemplate
   ) => {
+    const showHeader =
+      section.type != "measure" && section.type != "measureResults";
+
     return (
       <Box key={section.id}>
         {/* if section does not have children and has content to render, render it */}
-        <Flex gap="2rem" flexDirection="column">
-          <Heading variant="subHeader">{section.title}</Heading>
-          <ExportedReportWrapper
-            section={section}
-            displayHidden={displayHidden}
-          />
+        <Flex flexDirection="column">
+          {showHeader && <Heading variant="subHeader">{section.title}</Heading>}
+          <ExportedReportWrapper section={section} />
         </Flex>
       </Box>
     );
@@ -105,7 +166,11 @@ export const renderReportSections = (
 
   return reportPages
     .filter(
-      (section) => section.id !== "review-submit" && section.id !== "root"
+      (section) =>
+        section.id !== "review-submit" &&
+        section.id !== "root" &&
+        section.id != "req-measure-result" &&
+        section.id != "optional-measure-result"
     )
     .map(
       (
@@ -115,11 +180,7 @@ export const renderReportSections = (
           | MeasurePageTemplate
           | ReviewSubmitTemplate,
         idx
-      ) => (
-        <Box key={`${section.id}.${idx}`} mt="3.5rem">
-          {renderSection(section)}
-        </Box>
-      )
+      ) => <Box key={`${section.id}.${idx}`}>{renderSection(section)}</Box>
     );
 };
 
@@ -129,6 +190,12 @@ export const sx = {
     maxWidth: "55.25rem",
     margin: "0 auto",
     paddingBottom: "4rem",
+    "h1, h2, h3": {
+      marginBottom: "1.5rem",
+    },
+    h4: {
+      marginBottom: "-0.5rem",
+    },
   },
   innerContainer: {
     width: "100%",
@@ -137,5 +204,6 @@ export const sx = {
     "@media print": {
       margin: "5rem 0",
     },
+    flexDir: "column",
   },
 };
