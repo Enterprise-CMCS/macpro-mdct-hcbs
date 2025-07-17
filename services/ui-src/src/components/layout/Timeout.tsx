@@ -76,10 +76,10 @@ export const Timeout = () => {
     clearTimeout(updateTextIntervalId);
   };
 
-  const refreshAuth = async () => {
-    await refreshCredentials();
+  const refreshAuth = () => {
     setShowTimeout(false);
     setTimer();
+    refreshCredentials();
   };
 
   const formatTime = (time: number) => {
