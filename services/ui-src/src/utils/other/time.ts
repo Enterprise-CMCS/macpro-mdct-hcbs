@@ -1,6 +1,6 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import { DateShape } from "types";
-import { differenceInSeconds, parseISO } from "date-fns";
+import { differenceInSeconds } from "date-fns";
 
 interface TimeShape {
   hour: number;
@@ -129,7 +129,9 @@ export const checkDateRangeStatus = (
  */
 export const calculateRemainingSeconds = (expiresAt?: any) => {
   if (!expiresAt) return 0;
-  return differenceInSeconds(parseISO(expiresAt), new Date());
+  const parsedDate = new Date(expiresAt);
+  if (isNaN(parsedDate.getTime())) return 0;
+  return differenceInSeconds(parsedDate, new Date());
 };
 
 export const calculateNextQuarter = (previousQuarter: string) => {

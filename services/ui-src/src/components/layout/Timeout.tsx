@@ -29,12 +29,6 @@ export const Timeout = () => {
   const [updateTextIntervalId, setUpdateTextIntervalId] = useState<number>();
   const location = useLocation();
 
-  /*
-   * TODO: When autosave is implemented, set up a callback function to listen to calls to update in authLifecycle
-   * subscribeToUpdateTimeout(() => {
-   *   setTimer();
-   * });
-   */
   useEffect(() => {
     setTimer();
     return () => {
@@ -76,10 +70,10 @@ export const Timeout = () => {
     clearTimeout(updateTextIntervalId);
   };
 
-  const refreshAuth = async () => {
-    await refreshCredentials();
+  const refreshAuth = () => {
     setShowTimeout(false);
     setTimer();
+    refreshCredentials();
   };
 
   const formatTime = (time: number) => {
