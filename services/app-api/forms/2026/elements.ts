@@ -163,7 +163,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
 
 export const didYouFollowSpecifications: RadioTemplate = {
   type: ElementType.Radio,
-  label: "Did you follow, with no variance, the 2026 specifications?",
+  label: `Did you follow, with no variance, the ${REPORT_YEAR} specifications?`,
   id: "measure-following-tech-specs",
   choices: [
     { label: "Yes", value: "yes" },
@@ -534,7 +534,7 @@ export const habilitationRate: NdrBasicTemplate = {
   label: "Habilitation",
   hintText: {
     numHint:
-      "Number of days between initial approval and receipt of habilitation services for all beneficiaries who received services through an applicable HCBS program. ",
+      "Number of days between initial approval and receipt of habilitation services for all beneficiaries who received services through an applicable HCBS program.",
     denomHint:
       "Number of beneficiaries in an applicable HCBS program who received habilitation services within the measurement period.",
     rateHint:
@@ -584,4 +584,13 @@ export const stateSamplingMethologyQuestion: RadioTemplate = {
       ],
     },
   ],
+};
+
+export const criticalIncidentCommentsField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "critical-incident-comments-field",
+  helperText:
+    "If applicable, add any notes or comments to provide context to the reported results. If this measure did not meet the minimum performance level, explain here.",
+  label: "Additional comments",
+  required: false,
 };
