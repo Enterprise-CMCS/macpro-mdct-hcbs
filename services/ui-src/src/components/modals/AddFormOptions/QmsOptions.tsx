@@ -28,6 +28,11 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
       nciad: "Is your state reporting on the NCI-AD Survey?",
       pom: "Is your state reporting on the POM Survey?",
     };
+    function assertIsKey(
+      key: string
+    ): asserts key is keyof typeof optionLabels {
+      if (!(key in optionLabels)) throw new Error(`Expected key, got '${key}'`);
+    }
 
     const formDataForReport = (report: Report | undefined) => ({
       cahps: report?.options.cahps?.toString(),
@@ -88,29 +93,32 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
 
     return (
       <>
-        {Object.entries(optionLabels).map(([key, label]) => (
-          <CmsdsChoiceList
-            key={key}
-            name={key}
-            type="radio"
-            label={label}
-            choices={[
-              {
-                label: "Yes",
-                value: "true",
-                checked: formData[key as keyof typeof optionLabels] === "true",
-              },
-              {
-                label: "No",
-                value: "false",
-                checked: formData[key as keyof typeof optionLabels] === "false",
-              },
-            ]}
-            errorMessage={errorData[key as keyof typeof optionLabels]}
-            onChange={onChange}
-            disabled={!!selectedReport}
-          />
-        ))}
+        {Object.entries(optionLabels).map(([key, label]) => {
+          assertIsKey(key);
+          return (
+            <CmsdsChoiceList
+              key={key}
+              name={key}
+              type="radio"
+              label={label}
+              choices={[
+                {
+                  label: "Yes",
+                  value: "true",
+                  checked: formData[key] === "true",
+                },
+                {
+                  label: "No",
+                  value: "false",
+                  checked: formData[key] === "false",
+                },
+              ]}
+              errorMessage={errorData[key]}
+              onChange={onChange}
+              disabled={!!selectedReport}
+            />
+          );
+        })}
       </>
     );
   };
