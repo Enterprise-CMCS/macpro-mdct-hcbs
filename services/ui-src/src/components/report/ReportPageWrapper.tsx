@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
 import {
   Box,
   Button,
@@ -13,19 +12,16 @@ import {
 } from "@chakra-ui/react";
 import { getReport, useStore } from "utils";
 import { ReportModal, Sidebar, Page, PraDisclosure } from "components";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { elementsValidateSchema } from "utils/validation/reportValidation";
 import { currentPageSelector } from "utils/state/selectors";
 
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
-import { isReviewSubmitPage, ReportStatus } from "types";
+import { isReviewSubmitPage, PageElement, ReportStatus } from "types";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const ReportPageWrapper = () => {
   const {
     report,
-    pageMap,
     parentPage,
     loadReport: setReport,
     setAnswers,
@@ -37,34 +33,13 @@ export const ReportPageWrapper = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { autosave } = useContext(ReportAutosaveContext);
 
-  const methods = useForm({
-    defaultValues: {},
-    shouldUnregister: true,
-    resolver: yupResolver(elementsValidateSchema),
-  });
-
   const navigate = useNavigate();
 
-  const { handleSubmit, reset } = methods;
   useEffect(() => {
-    const pageIndex = pageMap?.get(pageId ?? "")!;
-    reset(report?.pages[pageIndex]);
     if (pageId) {
       setCurrentPageId(pageId);
     }
   }, [pageId]);
-
-  const handleChange = async (data: any) => {
-    setAnswers(data);
-    autosave();
-  };
-
-  const handleError = async (errors: any) => {
-    const data = methods.getValues();
-    if (!report) return;
-    setAnswers(data, errors);
-    autosave();
-  };
 
   const fetchReport = async () => {
     if (!reportType || !state || !reportId) return;
@@ -109,7 +84,7 @@ export const ReportPageWrapper = () => {
     ? currentPage.submittedView
     : currentPage.elements;
   return (
-    <FormProvider {...methods}>
+    <>
       <HStack width="100%" height="100%" position="relative" spacing="0">
         {currentPage.sidebar && <Sidebar />}
         <VStack
@@ -125,13 +100,15 @@ export const ReportPageWrapper = () => {
           gap="0rem"
         >
           <Box flex="auto" alignItems="flex-start" width="100%">
-            <form
-              id="aFormId"
-              autoComplete="off"
-              onChange={handleSubmit(handleChange, handleError)}
-            >
+            <form id="aFormId" autoComplete="off">
               {currentPage.elements && (
-                <Page elements={renderedElements ?? []}></Page>
+                <Page
+                  setElements={(elements: PageElement[]) => {
+                    setAnswers({ ...currentPage, elements });
+                    autosave();
+                  }}
+                  elements={renderedElements ?? []}
+                ></Page>
               )}
             </form>
           </Box>
@@ -168,7 +145,7 @@ export const ReportPageWrapper = () => {
         </VStack>
         <ReportModal />
       </HStack>
-    </FormProvider>
+    </>
   );
 };
 

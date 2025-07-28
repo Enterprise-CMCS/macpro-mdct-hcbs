@@ -2,7 +2,7 @@ import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Report } from "types";
 import { AddEditReportModalOptions } from "../AddEditReportModal";
 import { useEffect, useState } from "react";
-import { requiredResponse } from "../../../constants";
+import { ErrorMessages } from "../../../constants";
 
 export const verbiage = {
   reportName: "Quality Measure Set Report",
@@ -56,10 +56,10 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
     useEffect(() => {
       if (submissionAttempted) {
         const newErrorData = {
-          cahps: formData.cahps ? "" : requiredResponse,
-          nciidd: formData.nciidd ? "" : requiredResponse,
-          nciad: formData.nciad ? "" : requiredResponse,
-          pom: formData.pom ? "" : requiredResponse,
+          cahps: formData.cahps ? "" : ErrorMessages.requiredResponse,
+          nciidd: formData.nciidd ? "" : ErrorMessages.requiredResponse,
+          nciad: formData.nciad ? "" : ErrorMessages.requiredResponse,
+          pom: formData.pom ? "" : ErrorMessages.requiredResponse,
         };
         setErrorData(newErrorData);
         setOptionsComplete(Object.values(formData).every((val) => !!val));
@@ -86,7 +86,7 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
 
       setErrorData({
         ...errorData,
-        [name]: value ? "" : requiredResponse,
+        [name]: value ? "" : ErrorMessages.requiredResponse,
       });
       setOptionsComplete(Object.values(updatedFormData).every((val) => !!val));
     };

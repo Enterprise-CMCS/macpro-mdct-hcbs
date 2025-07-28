@@ -39,80 +39,77 @@ import { SubmissionParagraph } from "./SubmissionParagraph";
 
 interface Props {
   elements: PageElement[];
+  setElements: (elements: PageElement[]) => void;
 }
 
-export const Page = ({ elements }: Props) => {
+export const Page = ({ setElements, elements }: Props) => {
   const { userIsEndUser } = useStore().user || {};
   const { report } = useStore();
 
   const buildElement = (element: PageElement, index: number) => {
-    /*
-     * This `as any` cast is currently needed to support element nesting.
-     * None of the PageElement template types include a formkey property...
-     * yet any of them _could_ be given a formkey, if they appear as a child
-     * of (for example) a radio button. See RadioField.tsx:formatChoices().
-     */
-    const formkey = (element as any).formkey ?? `elements.${index}`;
     const disabled =
       !userIsEndUser || report?.status === ReportStatus.SUBMITTED;
+    const updateElement = (updatedElement: Partial<typeof element>) => {
+      setElements([
+        ...elements.slice(0, index),
+        { ...element, ...updatedElement } as typeof element,
+        ...elements.slice(index + 1),
+      ]);
+    };
 
     switch (element.type) {
       case ElementType.Header:
-        return <HeaderElement {...{ formkey, disabled, element }} />;
+        return <HeaderElement {...{ element }} />;
       case ElementType.SubHeader:
-        return <SubHeaderElement {...{ formkey, disabled, element }} />;
+        return <SubHeaderElement {...{ element }} />;
       case ElementType.NestedHeading:
-        return <NestedHeadingElement {...{ formkey, disabled, element }} />;
+        return <NestedHeadingElement {...{ element }} />;
       case ElementType.Paragraph:
-        return <ParagraphElement {...{ formkey, disabled, element }} />;
+        return <ParagraphElement {...{ element }} />;
       case ElementType.Textbox:
-        return <TextField {...{ formkey, disabled, element }} />;
+        return <TextField {...{ updateElement, disabled, element }} />;
       case ElementType.TextAreaField:
-        return <TextAreaField {...{ formkey, disabled, element }} />;
+        return <TextAreaField {...{ updateElement, disabled, element }} />;
       case ElementType.NumberField:
-        return <TextField {...{ formkey, disabled, element }} />;
+        return <TextField {...{ updateElement, disabled, element }} />;
       case ElementType.Date:
-        return <DateField {...{ formkey, disabled, element }} />;
+        return <DateField {...{ updateElement, disabled, element }} />;
       case ElementType.Dropdown:
-        return <DropdownField {...{ formkey, disabled, element }} />;
+        return <DropdownField {...{ updateElement, disabled, element }} />;
       case ElementType.Accordion:
-        return <AccordionElement {...{ formkey, disabled, element }} />;
+        return <AccordionElement {...{ disabled, element }} />;
       case ElementType.Radio:
-        return <RadioField {...{ formkey, disabled, element }} />;
+        return <RadioField {...{ updateElement, disabled, element }} />;
       case ElementType.ButtonLink:
-        return <ButtonLinkElement {...{ formkey, disabled, element }} />;
+        return <ButtonLinkElement {...{ disabled, element }} />;
       case ElementType.MeasureTable:
-        return <MeasureTableElement {...{ formkey, disabled, element }} />;
+        return <MeasureTableElement {...{ disabled, element }} />;
       case ElementType.MeasureResultsNavigationTable:
-        return (
-          <MeasureResultsNavigationTableElement
-            {...{ formkey, disabled, element }}
-          />
-        );
+        return <MeasureResultsNavigationTableElement {...{ element }} />;
       case ElementType.StatusTable:
         return <StatusTableElement />;
       case ElementType.MeasureDetails:
         return <MeasureDetailsElement />;
       case ElementType.MeasureFooter:
-        return <MeasureFooterElement {...{ formkey, disabled, element }} />;
+        return <MeasureFooterElement {...{ disabled, element }} />;
       case ElementType.LengthOfStayRate:
-        return <Fields {...{ formkey, disabled, element }} />;
+        return <Fields {...{ updateElement, disabled, element }} />;
       case ElementType.NdrFields:
-        return <NDRFields {...{ formkey, disabled, element }} />;
+        return <NDRFields {...{ updateElement, disabled, element }} />;
       case ElementType.NdrEnhanced:
-        return <NDREnhanced {...{ formkey, disabled, element }} />;
+        return <NDREnhanced {...{ updateElement, disabled, element }} />;
       case ElementType.Ndr:
-        return <NDR {...{ formkey, disabled, element }} />;
+        return <NDR {...{ updateElement, disabled, element }} />;
       case ElementType.NdrBasic:
-        return <NDRBasic {...{ formkey, disabled, element }} />;
+        return <NDRBasic {...{ updateElement, disabled, element }} />;
       case ElementType.StatusAlert:
-        return <StatusAlert {...{ formkey, disabled, element }} />;
+        return <StatusAlert {...{ element }} />;
       case ElementType.Divider:
-        return <DividerElement {...{ formkey, disabled, element }} />;
+        return <DividerElement {...{ element }} />;
       case ElementType.SubmissionParagraph:
         return <SubmissionParagraph />;
       case ElementType.SubHeaderMeasure:
-        return <SubHeaderMeasureElement {...{ formkey, disabled, element }} />;
+        return <SubHeaderMeasureElement {...{ element }} />;
       default:
         assertExhaustive(element);
         return null;

@@ -1,37 +1,13 @@
 import { act, render, screen } from "@testing-library/react";
 import { Fields } from "./Fields";
 import userEvent from "@testing-library/user-event";
-import { useFormContext } from "react-hook-form";
-import { useStore } from "utils";
 import {
   ElementType,
   LengthOfStayField,
   LengthOfStayRateTemplate,
 } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { mockStateUserStore } from "utils/testing/setupJest";
-
-const mockTrigger = jest.fn();
-const mockRhfMethods = {
-  register: () => {},
-  setValue: jest.fn(),
-  getValues: jest.fn(),
-  trigger: mockTrigger,
-};
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
-}));
-const mockGetValues = (returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+import { useState } from "react";
 
 const mockedPerformanceElement: LengthOfStayRateTemplate = {
   id: "mock-perf-id",
@@ -49,19 +25,25 @@ const mockedPerformanceElement: LengthOfStayRateTemplate = {
     adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
   },
 };
+const updateSpy = jest.fn();
 
-const fieldsComponent = (
-  <Fields
-    formkey={"mock-key"}
-    disabled={false}
-    element={mockedPerformanceElement}
-  />
-);
+const LengthOfStayWrapper = ({
+  template,
+}: {
+  template: LengthOfStayRateTemplate;
+}) => {
+  const [element, setElement] = useState(template);
+  const onChange = (updatedElement: Partial<typeof element>) => {
+    updateSpy(updatedElement);
+    setElement({ ...element, ...updatedElement });
+  };
+  return <Fields element={element} updateElement={onChange} />;
+};
 
 describe("<Fields />", () => {
   describe("Test Fields component", () => {
     beforeEach(() => {
-      render(fieldsComponent);
+      jest.clearAllMocks();
     });
 
     const labels = mockedPerformanceElement.labels;
@@ -70,6 +52,7 @@ describe("<Fields />", () => {
     };
 
     test("Fields are visible, and disabled appropriately", () => {
+      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
       for (let fieldId of Object.keys(labels)) {
         expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
       }
@@ -98,6 +81,8 @@ describe("<Fields />", () => {
         await act(() => userEvent.type(getInput(fieldId), value));
       };
 
+      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+
       await enterValue("actualCount", "1");
       await enterValue("denominator", "2");
       await enterValue("expectedCount", "1");
@@ -109,14 +94,5 @@ describe("<Fields />", () => {
     });
   });
 
-  testA11y(
-    fieldsComponent,
-    () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues(undefined);
-    },
-    () => {
-      jest.clearAllMocks();
-    }
-  );
+  testA11y(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 });

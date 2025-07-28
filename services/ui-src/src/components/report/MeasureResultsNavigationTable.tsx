@@ -18,8 +18,7 @@ import {
   RadioTemplate,
 } from "types";
 import { useParams, useNavigate } from "react-router-dom";
-import { useLiveElement } from "utils/state/hooks/useLiveElement";
-import { currentPageSelector } from "utils/state/selectors";
+import { currentPageSelector, elementSelector } from "utils/state/selectors";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { PageElementProps } from "../report/Elements";
 
@@ -30,6 +29,9 @@ export const MeasureResultsNavigationTableElement = (
   const { reportType, state, reportId } = useParams();
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
+  const deliveryMethodRadio = useStore(
+    elementSelector("delivery-method-radio")
+  ) as RadioTemplate;
   const navigate = useNavigate();
   const hideElement = useElementIsHidden(table.hideCondition);
 
@@ -37,9 +39,6 @@ export const MeasureResultsNavigationTableElement = (
     return null;
   }
   const measurePage = currentPage as MeasurePageTemplate;
-  const deliveryMethodRadio = useLiveElement(
-    "delivery-method-radio"
-  ) as RadioTemplate;
 
   const handleEditClick = (childPageId: string) => {
     const path = `/report/${reportType}/${state}/${reportId}/${childPageId}`;

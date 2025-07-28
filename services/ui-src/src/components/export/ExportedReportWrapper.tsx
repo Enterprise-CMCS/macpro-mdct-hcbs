@@ -6,7 +6,7 @@ import {
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
-import { renderElements, useTable } from "./ExportedReportElements";
+import { renderElements, shouldUseTable } from "./ExportedReportElements";
 import { chunkBy } from "utils/other/arrays";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
@@ -41,17 +41,19 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       }
     ) ?? [];
 
-  // this chunkBy will split and keep the orders of the elements based on whether it's part of the default table or needs a unique renderer
-  const chunkedElements = chunkBy(elements, (element) =>
-    useTable(element.type)
-  );
+  /*
+   * Split the elements array into subarrays.
+   * Within each subarray, either all elements belong in a table, or none do.
+   * Order is preserved: flattening the chunked array would give the original.
+   */
+  const chunkedElements = chunkBy(elements, (el) => shouldUseTable(el.type));
 
   return (
     <Flex flexDir="column" gap="1.5rem">
-      {chunkedElements?.length! > 0 ? (
+      {chunkedElements.length > 0 ? (
         <>
           {chunkedElements.map((elements) =>
-            useTable(elements[0].type)
+            shouldUseTable(elements[0].type)
               ? renderReportTable(elements)
               : renderReportDisplay(elements)
           )}

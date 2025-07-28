@@ -85,6 +85,11 @@ const elements: PageElement[] = [
     label: "labeled",
   },
   {
+    type: ElementType.NumberField,
+    id: "",
+    label: "number label",
+  },
+  {
     type: ElementType.Date,
     id: "",
     label: "date label",
@@ -204,7 +209,9 @@ const dateFieldElement: PageElement[] = [
 
 describe("Page Component with state user", () => {
   test.each(elements)("Renders all element types: %p", (element) => {
-    const { container } = render(<Page elements={[element]} />);
+    const { container } = render(
+      <Page elements={[element]} setElements={jest.fn()} />
+    );
     expect(container).not.toBeEmptyDOMElement();
   });
 
@@ -219,6 +226,7 @@ describe("Page Component with state user", () => {
             label: "click me",
           },
         ]}
+        setElements={jest.fn()}
       />
     );
 
@@ -238,7 +246,10 @@ describe("Page Component with state user", () => {
     const badObject = { type: "unused element name" };
 
     const { container } = render(
-      <Page elements={[badObject as unknown as PageElement]} />
+      <Page
+        elements={[badObject as unknown as PageElement]}
+        setElements={jest.fn()}
+      />
     );
     expect(container).not.toBeEmptyDOMElement();
   });
@@ -249,14 +260,14 @@ describe("Page Component with read only user", () => {
     mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
   });
   test("text field and radio button should be disabled", () => {
-    render(<Page elements={textFieldElement} />);
+    render(<Page elements={textFieldElement} setElements={jest.fn()} />);
     const textField = screen.getByRole("textbox");
     const radioButton = screen.getByLabelText("radio choice 1");
     expect(textField).toBeDisabled();
     expect(radioButton).toBeDisabled();
   });
   test("date field should be disabled", () => {
-    render(<Page elements={dateFieldElement} />);
+    render(<Page elements={dateFieldElement} setElements={jest.fn()} />);
     const dateField = screen.getByRole("textbox");
     expect(dateField).toBeDisabled();
   });

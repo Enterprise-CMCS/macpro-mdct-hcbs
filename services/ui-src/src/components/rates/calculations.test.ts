@@ -1,30 +1,28 @@
 import {
   parseNumber,
-  roundRate,
+  removeNoise,
   stringifyInput,
   stringifyResult,
 } from "./calculations";
 
 describe("Rate calculations", () => {
-  describe("roundRate", () => {
+  describe("removeNoise", () => {
     it.each([
       // Reject undefined
       { input: undefined, expected: undefined },
-      // Preserve precision left of the decimal
+      // Preserve precision
       { input: 1234, expected: 1234 },
       { input: 123.4, expected: 123.4 },
       { input: 12.34, expected: 12.34 },
-      // Round at the 2nd decimal place
-      { input: 1.234, expected: 1.23 },
-      { input: 0.1234, expected: 0.12 },
-      // Round 5s towards positive infinity
-      { input: -0.015, expected: -0.01 },
-      { input: -0.005, expected: 0 },
-      { input: 0.005, expected: 0.01 },
-      { input: 0.015, expected: 0.02 },
-      { input: 0.145, expected: 0.15 },
+      { input: 1.234, expected: 1.234 },
+      { input: 0.1234, expected: 0.1234 },
+      // Round floating-point nonsense to reasonable values
+      { input: 0.1 + 0.2, expected: 0.3 },
+      { input: 2 / 3, expected: 0.66666666666667 },
+      { input: 1 / 11, expected: 0.09090909090909 },
+      { input: 10 / 11, expected: 0.90909090909091 },
     ])("should return $expected given $input", ({ input, expected }) => {
-      expect(roundRate(input)).toBe(expected);
+      expect(removeNoise(input)).toBe(expected);
     });
   });
 
@@ -44,13 +42,22 @@ describe("Rate calculations", () => {
 
   describe("stringifyResult", () => {
     it.each([
+      // Always return a string
       { input: undefined, expected: "" },
+      // Preserve trailing zeroes for zero
       { input: 0, expected: "0.00" },
+      { input: 0.004, expected: "0.00" },
+      // Remove trailing zeroes for other numbers
+      { input: 1, expected: "1" },
+      { input: 1.2, expected: "1.2" },
+      // Avoid floating point shenanigans
+      { input: 1.45, expected: "1.45" },
+      // General tests
       { input: 1234, expected: "1234" },
       { input: 123.4, expected: "123.4" },
       { input: 12.34, expected: "12.34" },
-      { input: 1.234, expected: "1.234" },
-      { input: 0.1234, expected: "0.1234" },
+      { input: 1.234, expected: "1.23" },
+      { input: 0.1234, expected: "0.12" },
       { input: -0.1, expected: "-0.1" },
     ])("should return $expected given $input", ({ input, expected }) => {
       expect(stringifyResult(input)).toBe(expected);

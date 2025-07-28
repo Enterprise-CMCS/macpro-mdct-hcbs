@@ -5,11 +5,7 @@ import {
   TextField as CmsdsTextField,
   SingleInputDateField as CmsdsDateField,
 } from "@cmsgov/design-system";
-import {
-  bannerId,
-  requiredResponse,
-  error as errorsEnum,
-} from "../../constants";
+import { bannerId, ErrorMessages } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber, parseMMDDYYYY } from "utils";
 import { AdminBannerMethods, BannerData, ErrorVerbiage } from "types";
@@ -44,7 +40,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
 
     let errorMessage = "";
     if (required && !value) {
-      errorMessage = requiredResponse;
+      errorMessage = ErrorMessages.requiredResponse;
     } else if (name === "link" && value && !isUrl(value)) {
       errorMessage = "Response must be a valid hyperlink/URL";
     }
@@ -65,16 +61,16 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     let updatedErrors = structuredClone(formErrors);
     updatedErrors.startDate = "";
     if (!rawValue) {
-      updatedErrors.startDate = requiredResponse;
+      updatedErrors.startDate = ErrorMessages.requiredResponse;
     } else if (parsedValue === undefined) {
       updatedErrors.startDate =
         "Start date is invalid. Please enter date in MM/DD/YYYY format";
     } else {
       const endDate = parseMMDDYYYY(formData.endDate);
       if (endDate && endDate < parsedValue) {
-        updatedErrors.endDate = errorsEnum.END_DATE_BEFORE_START_DATE;
+        updatedErrors.endDate = ErrorMessages.endDateBeforeStartDate;
       } else if (
-        updatedErrors.endDate === errorsEnum.END_DATE_BEFORE_START_DATE
+        updatedErrors.endDate === ErrorMessages.endDateBeforeStartDate
       ) {
         updatedErrors.endDate = "";
       }
@@ -93,14 +89,14 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     let updatedErrors = structuredClone(formErrors);
     updatedErrors.endDate = "";
     if (!rawValue) {
-      updatedErrors.endDate = requiredResponse;
+      updatedErrors.endDate = ErrorMessages.requiredResponse;
     } else if (parsedValue === undefined) {
       updatedErrors.endDate =
         "End date is invalid. Please enter date in MM/DD/YYYY format";
     } else {
       const startDate = parseMMDDYYYY(formData.startDate);
       if (startDate && parsedValue < startDate) {
-        updatedErrors.endDate = errorsEnum.END_DATE_BEFORE_START_DATE;
+        updatedErrors.endDate = ErrorMessages.endDateBeforeStartDate;
       }
     }
     setFormErrors(updatedErrors);
@@ -112,7 +108,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     if (required && !value) {
       setFormErrors({
         ...formErrors,
-        [name]: requiredResponse,
+        [name]: ErrorMessages.requiredResponse,
       });
     }
   };
@@ -123,7 +119,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     const newErrors = structuredClone(formErrors);
     for (let key of ["title", "description", "startDate", "endDate"] as const) {
       if (!formErrors[key] && !formData[key]) {
-        newErrors[key] = requiredResponse;
+        newErrors[key] = ErrorMessages.requiredResponse;
       }
     }
     setFormErrors(newErrors);
