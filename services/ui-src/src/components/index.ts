@@ -12,7 +12,6 @@ export {
   AdminBannerProvider,
 } from "./banners/AdminBannerProvider";
 export { Banner } from "./banners/Banner";
-export { PreviewBanner } from "./banners/PreviewBanner";
 // layout
 export { HomePage } from "./layout/HomePage";
 export { Header } from "./layout/Header";

@@ -20,8 +20,9 @@ const HOURS = 60 * 60 * 1000;
 
 describe("<AdminBannerForm />", () => {
   beforeEach(() => {
-    mockWriteAdminBanner.mockClear();
+    jest.clearAllMocks();
   });
+
   test("AdminBannerForm is visible", () => {
     render(adminBannerFormComponent(mockWriteAdminBanner));
     expect(screen.getByRole("textbox", { name: "Title text" })).toBeVisible();
