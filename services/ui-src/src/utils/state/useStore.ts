@@ -101,14 +101,10 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
     set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
       type: "setModalComponent",
     }),
-  setAnswers: (answers: any, errors: any) =>
-    set(
-      (state: HcbsReportState) => mergeAnswers(answers, state, errors),
-      false,
-      {
-        type: "setAnswers",
-      }
-    ),
+  setAnswers: (answers: any) =>
+    set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
+      type: "setAnswers",
+    }),
   setSubstitute: (
     report: Report,
     selectMeasure: MeasurePageTemplate | undefined
