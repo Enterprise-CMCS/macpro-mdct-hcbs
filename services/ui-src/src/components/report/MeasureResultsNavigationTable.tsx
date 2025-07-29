@@ -40,9 +40,8 @@ export const MeasureResultsNavigationTableElement = (
   }
   const measurePage = currentPage as MeasurePageTemplate;
 
-  const handleEditClick = (childPageId: string) => {
-    const path = `/report/${reportType}/${state}/${reportId}/${childPageId}`;
-    navigate(path);
+  const buildPath = (childPageId: string) => {
+    return `/report/${reportType}/${state}/${reportId}/${childPageId}`;
   };
 
   const getTableStatus = (
@@ -105,7 +104,7 @@ export const MeasureResultsNavigationTableElement = (
             name={`Edit ${childLink.key}`}
             variant="outline"
             disabled={!singleOption && !deliverySystemIsSelected}
-            onClick={() => handleEditClick(childLink.template)}
+            onClick={() => navigate(buildPath(childLink.template))}
           >
             Edit
           </Button>

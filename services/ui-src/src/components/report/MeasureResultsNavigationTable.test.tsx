@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useNavigate: () => jest.fn().mockReturnValue(jest.fn()),
+  useNavigate: jest.fn().mockReturnValue(jest.fn()),
   useParams: jest.fn(() => ({
     reportType: "QMS",
     state: "CO",
@@ -27,8 +27,6 @@ jest.mock("react-router-dom", () => ({
     // pageId: "MOCK-1",
   })),
 }));
-// TODO: test that navigate is called when you click the nav buttons
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockNavigate = useNavigate() as jest.MockedFunction<
   ReturnType<typeof useNavigate>
 >;
@@ -170,16 +168,49 @@ describe("Measure Results Navigation Table", () => {
     const mltssOption = screen.getByRole("radio", { name: /Managed Care/ });
     const bothOption = screen.getByRole("radio", { name: /Both/ });
 
+    expect(ffsNavButton).toBeDisabled();
+    expect(mltssNavButton).toBeDisabled();
+
     await userEvent.click(ffsOption);
     expect(ffsNavButton).toBeEnabled();
     expect(mltssNavButton).toBeDisabled();
 
     await userEvent.click(mltssOption);
-    expect(ffsNavButton).toBeDisabled();
+    // Dismiss the delivery method change confirmation modal
+    await userEvent.click(screen.getByRole("button", { name: "Yes" }));
     expect(mltssNavButton).toBeEnabled();
+    expect(ffsNavButton).toBeDisabled();
 
     await userEvent.click(bothOption);
+    // Dismiss the delivery method change confirmation modal
+    await userEvent.click(screen.getByRole("button", { name: "Yes" }));
     expect(ffsNavButton).toBeEnabled();
     expect(mltssNavButton).toBeEnabled();
+  });
+
+  it("should navigate to details pages when the edit buttons are clicked", async () => {
+    act(() => render(<MockReportPage />));
+    await waitFor(() => {
+      expect(screen.getByText(/Is the state reporting/)).toBeVisible();
+    });
+
+    const bothOption = screen.getByRole("radio", { name: /Both/ });
+    const buttons = screen.queryAllByRole("button", { name: "Edit" });
+    const [ffsNavButton, mltssNavButton] = buttons;
+
+    // Enable both nav buttons
+    await userEvent.click(bothOption);
+
+    expect(ffsNavButton).toBeEnabled();
+    await userEvent.click(ffsNavButton);
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/report/QMS/CO/mock-report-id/MOCK-1-FFS"
+    );
+
+    expect(mltssNavButton).toBeEnabled();
+    await userEvent.click(mltssNavButton);
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/report/QMS/CO/mock-report-id/MOCK-1-MLTSS"
+    );
   });
 });
