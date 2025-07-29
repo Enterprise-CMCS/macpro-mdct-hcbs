@@ -25,6 +25,11 @@ export const ComponentInventory = () => {
       <div
         style={{
           margin: "20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          borderBottom: "2px solid #ddd",
+          paddingBottom: "20px",
         }}
       >
         <Heading as="h2" variant="h2">
@@ -35,22 +40,36 @@ export const ComponentInventory = () => {
         ) : (
           <>
             <p>{componentExample.description}</p>
-            {componentExample.variants.map((variant) => (
-              <div
-                style={{
-                  border: "1px solid black",
-                  padding: "10px",
-                  margin: "20px",
-                }}
-              >
-                {variant}
-              </div>
-            ))}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "20px",
+                marginTop: "20px",
+              }}
+            >
+              {componentExample.variants.map((variant, index) => (
+                <div
+                  key={index}
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px #0000001a",
+                    minWidth: "300px",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  {variant}
+                </div>
+              ))}
+            </div>
           </>
         )}
       </div>
     );
   };
+
   return (
     <FormProvider {...methods}>
       <Heading as="h1" variant="h1" style={{ margin: "15px" }}>
@@ -61,11 +80,13 @@ export const ComponentInventory = () => {
         components used in the application, along with examples of how to use
         them.
       </p>
-      <Divider />
+      <Divider style={{ margin: "20px 0" }} />
       {/* Display all ElementType enum possibilities, even if not in elementObject */}
-      {Object.values(ElementType).map((type) => {
-        return buildComponentDisplay(type);
-      })}
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {Object.values(ElementType).map((type) => {
+          return buildComponentDisplay(type);
+        })}
+      </div>
     </FormProvider>
   );
 };
