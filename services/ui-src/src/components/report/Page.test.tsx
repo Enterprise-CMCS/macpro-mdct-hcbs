@@ -26,16 +26,6 @@ mockedUseStore.mockImplementation(
   }
 );
 
-jest.mock("react-hook-form", () => ({
-  useFormContext: () => ({
-    register: jest.fn(),
-    getValues: jest.fn(),
-    setValue: jest.fn(),
-  }),
-  useWatch: jest.fn(),
-  get: jest.fn(),
-}));
-
 // Mock the more complex elements, let them test themselves
 jest.mock("./StatusTable", () => {
   return { StatusTableElement: () => <div>Status Table</div> };

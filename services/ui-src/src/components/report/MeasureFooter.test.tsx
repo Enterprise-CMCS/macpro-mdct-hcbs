@@ -29,14 +29,6 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-const mockRhfMethods = {
-  reset: () => {},
-};
-
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-}));
-
 const mockedMeasureFooterElement: MeasureFooterTemplate = {
   id: "mock-footer-id",
   type: ElementType.MeasureFooter,

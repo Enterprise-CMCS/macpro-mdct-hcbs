@@ -10,7 +10,7 @@ import * as yup from "yup";
  * If we have an `answer` object with number values like `{ num: 3, denom: 4 }`,
  * we will have a `displayValue` object with the same shape but string values,
  * like `{ num: "3", denom: "4" }`. Then we will hold error messages in a third
- * object, the same shape as the `displayValue`. It might look like
+ * object, the same shape as the `displayValue`. It might eventually look like
  * `{ num: "A response is required", denom: "Response must be a number" }`.
  *
  * The error message object will be re-created on page load, with empty values.
