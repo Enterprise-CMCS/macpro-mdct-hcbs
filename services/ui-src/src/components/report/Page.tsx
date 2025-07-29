@@ -38,11 +38,12 @@ import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
 
 interface Props {
+  id: string;
   elements: PageElement[];
   setElements: (elements: PageElement[]) => void;
 }
 
-export const Page = ({ setElements, elements }: Props) => {
+export const Page = ({ id, setElements, elements }: Props) => {
   const { userIsEndUser } = useStore().user || {};
   const { report } = useStore();
 
@@ -118,7 +119,7 @@ export const Page = ({ setElements, elements }: Props) => {
 
   const composedElements = elements.map((element, index) => {
     const el = buildElement(element, index);
-    return <React.Fragment key={index}>{el}</React.Fragment>;
+    return <React.Fragment key={`${id}-${index}`}>{el}</React.Fragment>;
   });
 
   return (

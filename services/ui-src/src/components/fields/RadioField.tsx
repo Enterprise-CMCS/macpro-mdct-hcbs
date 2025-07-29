@@ -37,6 +37,7 @@ const formatChoices = (
     const checkedChildren = [
       <Box key="radio-sub-page" sx={sx.children}>
         <Page
+          id="radio-children"
           setElements={setCheckedChildren}
           elements={choice.checkedChildren}
         />

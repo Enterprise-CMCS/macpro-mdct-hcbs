@@ -103,6 +103,7 @@ export const ReportPageWrapper = () => {
             <form id="aFormId" autoComplete="off">
               {currentPage.elements && (
                 <Page
+                  id={currentPage.id}
                   setElements={(elements: PageElement[]) => {
                     setAnswers({ ...currentPage, elements });
                     autosave();
