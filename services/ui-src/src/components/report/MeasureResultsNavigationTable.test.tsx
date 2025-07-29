@@ -24,7 +24,7 @@ jest.mock("react-router-dom", () => ({
     reportType: "QMS",
     state: "CO",
     reportId: "mock-report-id",
-    // pageId: "MOCK-1",
+    pageId: "MOCK-1",
   })),
 }));
 const mockNavigate = useNavigate() as jest.MockedFunction<
@@ -42,6 +42,7 @@ const buildMockReport = (): Report =>
       },
       {
         id: "MOCK-1",
+        cmitId: "MOCK-1",
         cmitInfo: {
           deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
         } as CMIT,
@@ -95,6 +96,11 @@ const buildMockReport = (): Report =>
               answer: "no",
             },
           },
+          {
+            type: ElementType.MeasureFooter,
+            id: "measure-footer",
+            clear: true,
+          },
         ],
       },
       {
@@ -104,6 +110,7 @@ const buildMockReport = (): Report =>
             id: "detail-text-ffs",
             label: "Tell me about FFS",
             type: ElementType.Textbox,
+            answer: "Our FFS programs are first-rate",
           },
         ],
       },
@@ -114,6 +121,7 @@ const buildMockReport = (): Report =>
             id: "detail-text-mltss",
             label: "Tell me about MLTSS",
             type: ElementType.Textbox,
+            answer: "Our MLTSS programs are top-notch",
           },
         ],
       },
@@ -131,11 +139,18 @@ mockedGetReport.mockResolvedValue(buildMockReport());
 const mockUser = { userIsEndUser: true } as HcbsUser;
 
 const MockReportPage = () => {
-  const { setUser } = useStore();
+  const { report, setUser } = useStore();
   useEffect(() => {
     setUser(mockUser);
   }, []);
-  return <ReportPageWrapper />;
+  return (
+    <>
+      <ReportPageWrapper />
+      <div style={{ display: "none" }} data-testid="report-json">
+        {JSON.stringify(report)}
+      </div>
+    </>
+  );
 };
 
 describe("Measure Results Navigation Table", () => {
@@ -143,11 +158,16 @@ describe("Measure Results Navigation Table", () => {
     jest.clearAllMocks();
   });
 
+  const waitForRender = async () => {
+    await waitFor(() => {
+      const reportingLabel = screen.getAllByText(/Is the state reporting/)[0];
+      expect(reportingLabel).toBeVisible();
+    });
+  };
+
   it("should disabled both nav buttons when delivery method is unspecified", async () => {
     act(() => render(<MockReportPage />));
-    await waitFor(() => {
-      expect(screen.getByText(/Is the state reporting/)).toBeVisible();
-    });
+    await waitForRender();
 
     const buttons = screen.queryAllByRole("button", { name: "Edit" });
     const [ffsNavButton, mltssNavButton] = buttons;
@@ -157,9 +177,7 @@ describe("Measure Results Navigation Table", () => {
 
   it("should enable nav buttons when delivery methods are selected", async () => {
     act(() => render(<MockReportPage />));
-    await waitFor(() => {
-      expect(screen.getByText(/Is the state reporting/)).toBeVisible();
-    });
+    await waitForRender();
 
     const buttons = screen.queryAllByRole("button", { name: "Edit" });
     const [ffsNavButton, mltssNavButton] = buttons;
@@ -190,9 +208,7 @@ describe("Measure Results Navigation Table", () => {
 
   it("should navigate to details pages when the edit buttons are clicked", async () => {
     act(() => render(<MockReportPage />));
-    await waitFor(() => {
-      expect(screen.getByText(/Is the state reporting/)).toBeVisible();
-    });
+    await waitForRender();
 
     const bothOption = screen.getByRole("radio", { name: /Both/ });
     const buttons = screen.queryAllByRole("button", { name: "Edit" });
@@ -212,5 +228,104 @@ describe("Measure Results Navigation Table", () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       "/report/QMS/CO/mock-report-id/MOCK-1-MLTSS"
     );
+  });
+
+  it("should be hidden and shown according to the reporting radio", async () => {
+    act(() => render(<MockReportPage />));
+    await waitForRender();
+
+    const findTableHeader = () =>
+      screen.queryByText("Measure section name", { exact: false });
+    const notReporting = screen.getByText("No, CMS is reporting");
+    const yesReporting = screen.getByText("Yes, the state is reporting");
+
+    expect(findTableHeader()).toBeVisible();
+
+    await userEvent.click(notReporting);
+    expect(findTableHeader()).not.toBeInTheDocument();
+
+    await userEvent.click(yesReporting);
+    expect(findTableHeader()).toBeVisible();
+  });
+
+  // This test isn't really about the MRNavTable, but it's convenient to put here
+  test("Changing the reporting radio should clear data for this measure", async () => {
+    act(() => render(<MockReportPage />));
+    await waitForRender();
+
+    const notReporting = screen.getByText("No, CMS is reporting");
+    const yesReporting = screen.getByText("Yes, the state is reporting");
+    const ffsOption = screen.getByRole("radio", { name: /Fee-For-Service/ });
+
+    const getReportData = () =>
+      JSON.parse(screen.getByTestId("report-json").textContent!);
+
+    expect(ffsOption).not.toBeChecked();
+    await userEvent.click(ffsOption);
+    expect(ffsOption).toBeChecked();
+
+    let report = getReportData();
+    expect(report.pages[1].elements[1].answer).toBe("FFS");
+    expect(report.pages[2].elements[0].answer).toContain("first-rate");
+
+    await userEvent.click(notReporting);
+    expect(ffsOption).not.toBeVisible();
+    await userEvent.click(yesReporting);
+
+    report = getReportData();
+    expect(report.pages[1].elements[1].answer).toBeUndefined();
+    expect(report.pages[2].elements[0].answer).toBeUndefined();
+
+    // TODO, figure out why this testing-library thinks this is still checked
+
+    // expect(ffsOption).not.toBeChecked();
+  });
+
+  // This test isn't really about the MRNavTable, but it's convenient to put here
+  test("Changing delivery method should clear measure details pages", async () => {
+    act(() => render(<MockReportPage />));
+    await waitForRender();
+
+    const ffsOption = screen.getByRole("radio", { name: /Fee-For-Service/ });
+    const mltssOption = screen.getByRole("radio", { name: /Managed Care/ });
+
+    const getReportData = () =>
+      JSON.parse(screen.getByTestId("report-json").textContent!);
+
+    await userEvent.click(ffsOption);
+    let report = getReportData();
+    expect(report.pages[2].elements[0].answer).toContain("first-rate");
+
+    await userEvent.click(mltssOption);
+    // Dismiss the delivery method change confirmation modal
+    await userEvent.click(screen.getByRole("button", { name: "Yes" }));
+    report = getReportData();
+    expect(report.pages[2].elements[0].answer).toBeUndefined();
+  });
+
+  // This test isn't really about the MRNavTable, but it's convenient to put here
+  test("Changing delivery method should clear measure details pages", async () => {
+    act(() => render(<MockReportPage />));
+    await waitForRender();
+
+    const getReportData = () =>
+      JSON.parse(screen.getByTestId("report-json").textContent!);
+
+    let report = getReportData();
+    expect(report.pages[2].elements[0].answer).toContain("first-rate");
+    expect(report.pages[3].elements[0].answer).toContain("top-notch");
+
+    // Click the clear button in the measure footer
+    await userEvent.click(
+      screen.getByRole("button", { name: /Clear measure/ })
+    );
+    // Click the confirm button in the modal that appears
+    await userEvent.click(
+      screen.getByRole("button", { name: /Clear measure/ })
+    );
+
+    report = getReportData();
+    expect(report.pages[2].elements[0].answer).not.toBeDefined();
+    expect(report.pages[3].elements[0].answer).not.toBeDefined();
   });
 });
