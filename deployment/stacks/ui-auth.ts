@@ -2,8 +2,6 @@ import { Construct } from "constructs";
 import {
   aws_cognito as cognito,
   aws_iam as iam,
-  aws_lambda as lambda,
-  aws_lambda_nodejs as lambda_nodejs,
   aws_wafv2 as wafv2,
   Aws,
   Duration,
@@ -12,6 +10,7 @@ import {
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
 import { isLocalStack } from "../local/util";
+import { Lambda } from "../constructs/lambda";
 
 interface CreateUiAuthComponentsProps {
   scope: Construct;
@@ -62,9 +61,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       },
     },
     customAttributes: {
-      cms_roles: new cognito.StringAttribute({
-        mutable: true,
-      }),
+      cms_roles: new cognito.StringAttribute({ mutable: true }),
       cms_state: new cognito.StringAttribute({
         mutable: true,
         minLen: 0,
@@ -75,19 +72,9 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
 
-  const cfnUserPool = userPool.node.defaultChild as cognito.CfnUserPool;
-  cfnUserPool.adminCreateUserConfig = {
-    allowAdminCreateUserOnly: true,
-  };
-
-  let supportedIdentityProviders:
-    | cognito.UserPoolClientIdentityProvider[]
-    | undefined = undefined;
-  let oktaIdp: cognito.CfnUserPoolIdentityProvider | undefined = undefined;
-
   const providerName = "Okta";
 
-  oktaIdp = new cognito.CfnUserPoolIdentityProvider(
+  const oktaIdp = new cognito.CfnUserPoolIdentityProvider(
     scope,
     "CognitoUserPoolIdentityProvider",
     {
@@ -111,19 +98,20 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     }
   );
 
-  supportedIdentityProviders = [
+  const supportedIdentityProviders = [
     cognito.UserPoolClientIdentityProvider.custom(providerName),
   ];
 
   const appUrl =
-    secureCloudfrontDomainName ||
-    applicationEndpointUrl ||
+    secureCloudfrontDomainName ??
+    applicationEndpointUrl ??
     "https://localhost:3000/";
+
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
     userPool,
     authFlows: {
-      adminUserPassword: true,
+      userPassword: true,
     },
     oAuth: {
       flows: {
@@ -138,11 +126,11 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       defaultRedirectUri: appUrl,
       logoutUrls: [appUrl, `${appUrl}postLogout`],
     },
+    supportedIdentityProviders,
+    generateSecret: false,
     accessTokenValidity: Duration.minutes(30),
     idTokenValidity: Duration.minutes(30),
     refreshTokenValidity: Duration.hours(24),
-    supportedIdentityProviders,
-    generateSecret: false,
   });
 
   userPoolClient.node.addDependency(oktaIdp);
@@ -155,7 +143,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     userPool,
     cognitoDomain: {
       domainPrefix:
-        userPoolDomainPrefix || `${project}-${stage}-login-user-pool-client`,
+        userPoolDomainPrefix ?? `${project}-${stage}-login-user-pool-client`,
     },
   });
 
@@ -163,7 +151,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     scope,
     "CognitoIdentityPool",
     {
-      identityPoolName: `${stage}IdentityPool`,
+      identityPoolName: `${stage}-IdentityPool`,
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [
         {
@@ -219,64 +207,39 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   let bootstrapUsersFunction;
 
   if (bootstrapUsersPassword) {
-    const lambdaApiRole = new iam.Role(scope, "BootstrapUsersLambdaApiRole", {
-      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-      inlinePolicies: {
-        LambdaApiRolePolicy: new iam.PolicyDocument({
-          statements: [
-            new iam.PolicyStatement({
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
-              effect: iam.Effect.ALLOW,
-            }),
-            new iam.PolicyStatement({
-              actions: ["*"],
-              resources: [userPool.userPoolArn],
-              effect: iam.Effect.ALLOW,
-            }),
-          ],
+    const service = "ui-auth";
+    bootstrapUsersFunction = new Lambda(scope, "bootstrapUsers", {
+      stackName: `${service}-${stage}`,
+      entry: "services/ui-auth/handlers/createUsers.js",
+      handler: "handler",
+      memorySize: 1024,
+      timeout: Duration.seconds(60),
+      additionalPolicies: [
+        new iam.PolicyStatement({
+          actions: ["*"],
+          resources: [userPool.userPoolArn],
+          effect: iam.Effect.ALLOW,
         }),
+      ],
+      environment: {
+        userPoolId: userPool.userPoolId,
+        bootstrapUsersPassword,
       },
-    });
-
-    // TODO: test deploy and watch performance with scope using lambda.Function vs lambda_nodejs.NodejsFunction
-    bootstrapUsersFunction = new lambda_nodejs.NodejsFunction(
-      scope,
-      "bootstrapUsers",
-      {
-        entry: "services/ui-auth/handlers/createUsers.js",
-        handler: "handler",
-        runtime: lambda.Runtime.NODEJS_20_X,
-        timeout: Duration.seconds(60),
-        role: lambdaApiRole,
-        environment: {
-          userPoolId: userPool.userPoolId,
-          bootstrapUsersPassword,
-        },
-      }
-    );
+      isDev,
+    }).lambda;
   }
 
   if (!isLocalStack) {
-    const webAcl = new WafConstruct(
+    const waf = new WafConstruct(
       scope,
       "CognitoWafConstruct",
       { name: `${project}-${stage}-ui-auth` },
       "REGIONAL"
-    ).webAcl;
+    );
 
     new wafv2.CfnWebACLAssociation(scope, "CognitoUserPoolWAFAssociation", {
       resourceArn: userPool.userPoolArn,
-      webAclArn: webAcl.attrArn,
+      webAclArn: waf.webAcl.attrArn,
     });
   }
 
