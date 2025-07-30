@@ -1,11 +1,9 @@
 import { Divider, Heading } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import { elementObject } from "./elementObject";
 import { ElementType } from "types";
 
 export const ComponentInventory = () => {
-  const methods = useForm({});
   /**
    * TODO:
    * Add more elements to the inventory as needed
@@ -71,7 +69,7 @@ export const ComponentInventory = () => {
   };
 
   return (
-    <FormProvider {...methods}>
+    <>
       <Heading as="h1" variant="h1" style={{ margin: "15px" }}>
         Component Inventory
       </Heading>
@@ -87,6 +85,6 @@ export const ComponentInventory = () => {
           return buildComponentDisplay(type);
         })}
       </div>
-    </FormProvider>
+    </>
   );
 };
