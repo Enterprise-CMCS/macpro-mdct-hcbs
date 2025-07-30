@@ -9,6 +9,7 @@ import {
   AdminBannerProvider,
   ExportedReportPage,
   ReportPageWrapper,
+  ComponentInventory,
 } from "components";
 import { useStore } from "utils";
 import { useEffect } from "react";
@@ -56,6 +57,11 @@ export const AppRoutes = () => {
             <Route
               path="/report/:reportType/:state/:reportId/:pageId?"
               element={<ReportPageWrapper />}
+            />
+            {/* Add feature flag for component inventory */}
+            <Route
+              path="/component-inventory"
+              element={<ComponentInventory />}
             />
             {/* TO DO: Load pageId by default? */}
           </Routes>
