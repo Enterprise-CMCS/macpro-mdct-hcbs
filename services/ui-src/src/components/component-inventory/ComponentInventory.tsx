@@ -1,5 +1,5 @@
 import { Divider, Heading } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { ReactNode, Fragment } from "react";
 import { elementObject } from "./elementObject";
 import { ElementType } from "types";
 
@@ -48,7 +48,7 @@ export const ComponentInventory = () => {
             >
               {componentExample.variants.map((variant, index) => (
                 <div
-                  key={index}
+                  key={`variant-${index}`}
                   style={{
                     border: "1px solid #ccc",
                     padding: "15px",
@@ -81,8 +81,12 @@ export const ComponentInventory = () => {
       <Divider style={{ margin: "20px 0" }} />
       {/* Display all ElementType enum possibilities, even if not in elementObject */}
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {Object.values(ElementType).map((type) => {
-          return buildComponentDisplay(type);
+        {Object.values(ElementType).map((type, index) => {
+          return (
+            <Fragment key={`type-${index}`}>
+              {buildComponentDisplay(type)}
+            </Fragment>
+          );
         })}
       </div>
     </>
