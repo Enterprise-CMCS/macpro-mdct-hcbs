@@ -8,12 +8,20 @@ interface DynamoDBTableProps {
   readonly name: string;
   readonly partitionKey: { name: string; type: dynamodb.AttributeType };
   readonly sortKey?: { name: string; type: dynamodb.AttributeType };
+  readonly lsi?: {
+    indexName: string;
+    sortKey: { name: string; type: dynamodb.AttributeType };
+  }[];
+  readonly gsi?: {
+    indexName: string;
+    partitionKey: { name: string; type: dynamodb.AttributeType };
+  };
 }
 
 export interface DynamoDBTableIdentifiers {
-  /** The invariant identifier for the table. Example: "Banners" */
+  /** The invariant identifier for the table. Example: "FormAnswers" */
   id: string;
-  /** The name of the table within the environment. Example: "production-banners" */
+  /** The name of the table within the environment. Example: "production-form-answers" */
   name: string;
   /** The table's TableArn */
   arn: string;
@@ -27,18 +35,19 @@ export class DynamoDBTable extends Construct {
 
   constructor(scope: Construct, id: string, props: DynamoDBTableProps) {
     super(scope, id);
+    const { stage, isDev, name, partitionKey, sortKey, lsi, gsi } = props;
 
-    const tableName = `${props.stage}-${props.name}`;
+    const tableName = `${stage}-${name}`;
     this.table = new dynamodb.Table(this, "Table", {
       tableName,
-      partitionKey: props.partitionKey,
-      sortKey: props.sortKey,
+      partitionKey,
+      sortKey,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       pointInTimeRecoverySpecification: {
         pointInTimeRecoveryEnabled: true,
       },
-      removalPolicy: props.isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     });
 
     Tags.of(this.table).add("AWS_Backup", "d35");
@@ -49,5 +58,23 @@ export class DynamoDBTable extends Construct {
       arn: this.table.tableArn,
       streamArn: this.table.tableStreamArn,
     };
+
+    if (lsi) {
+      lsi.forEach((index) => {
+        this.table.addLocalSecondaryIndex({
+          indexName: index.indexName,
+          sortKey: index.sortKey,
+          projectionType: dynamodb.ProjectionType.ALL,
+        });
+      });
+    }
+
+    if (gsi) {
+      this.table.addGlobalSecondaryIndex({
+        indexName: gsi.indexName,
+        partitionKey: gsi.partitionKey,
+        projectionType: dynamodb.ProjectionType.ALL,
+      });
+    }
   }
 }
