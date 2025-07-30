@@ -25,7 +25,11 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   };
 
   const initialValue = stringifyAnswer(answer);
-  const initialErrors = { numerator: "", denominator: "", performanceRate: "" };
+  const initialErrors = {
+    numerator: "",
+    denominator: "",
+    performanceTarget: "",
+  };
   const [displayValue, setDisplayValue] = useState(initialValue);
   const [errors, setErrors] = useState(initialErrors);
 
@@ -112,7 +116,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.performanceTarget}
-            errorMessage={displayValue.performanceTarget}
+            errorMessage={errors.performanceTarget}
             disabled={disabled}
           ></CmsdsTextField>
           <CmsdsTextField
@@ -121,7 +125,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.numerator}
-            errorMessage={displayValue.numerator}
+            errorMessage={errors.numerator}
             disabled={disabled}
           ></CmsdsTextField>
           <CmsdsTextField
@@ -130,7 +134,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.denominator}
-            errorMessage={displayValue.denominator}
+            errorMessage={errors.denominator}
             disabled={disabled}
           ></CmsdsTextField>
           <CmsdsTextField
