@@ -26,7 +26,6 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   stackName: string;
   api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
-  requestParameters?: string[];
   requestValidator?: apigateway.IRequestValidator;
   isDev: boolean;
 }
@@ -47,7 +46,6 @@ export class Lambda extends Construct {
       method,
       additionalPolicies = [],
       stackName,
-      requestParameters,
       requestValidator,
       isDev,
       ...restProps
@@ -109,14 +107,6 @@ export class Lambda extends Construct {
           authorizationType: isLocalStack
             ? undefined
             : apigateway.AuthorizationType.IAM,
-          requestParameters: requestParameters
-            ? Object.fromEntries(
-                requestParameters.map((item) => [
-                  `method.request.path.${item}`,
-                  true,
-                ])
-              )
-            : {},
           requestValidator,
         }
       );
