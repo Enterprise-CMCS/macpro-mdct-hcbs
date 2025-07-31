@@ -49,11 +49,14 @@ const TextFieldWrapper = ({
 };
 
 describe("<TextField />", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("TextField is visible", () => {
     render(<TextFieldWrapper template={mockedTextboxElement} />);
     const textField = screen.getByRole("textbox");
     expect(textField).toBeVisible();
-    jest.clearAllMocks();
   });
 
   test("TextField should send updates to the Form", async () => {
@@ -72,6 +75,32 @@ describe("<TextField />", () => {
     await userEvent.type(textField, "24");
 
     expect(updateSpy).toHaveBeenCalledWith({ answer: 24 });
+  });
+
+  test("NumberField should render its initial value", () => {
+    render(
+      <TextFieldWrapper template={{ ...mockedNumberField, answer: 123 }} />
+    );
+
+    const textField = screen.getByRole("textbox");
+    expect(textField).toHaveValue("123");
+  });
+
+  test("NumberField should respond to measure clear", () => {
+    const props = {
+      element: {
+        ...mockedNumberField,
+        answer: 123 as number | undefined,
+      },
+      updateElement: () => {},
+    };
+
+    const { rerender } = render(<TextField {...props} />);
+    props.element.answer = undefined;
+    rerender(<TextField {...props} />);
+
+    const textField = screen.getByRole("textbox");
+    expect(textField).toHaveValue("");
   });
 
   test("Text field is hidden if its hide conditions' controlling element has a matching answer", async () => {

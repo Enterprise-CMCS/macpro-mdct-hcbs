@@ -27,12 +27,24 @@ export const TextField = (
   const defaultValue = stringifyAnswer(textbox?.answer);
   const [displayValue, setDisplayValue] = useState(defaultValue);
   const [errorMessage, setErrorMessage] = useState("");
+  const [hasFocus, setHasFocus] = useState(false);
 
   const hideElement = useElementIsHidden(textbox.hideCondition);
 
-  // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
-    setDisplayValue(stringifyAnswer(textbox.answer));
+    /*
+     * We need to listen for answer updates, in case the measure is cleared.
+     * But we don't want to overwrite input contents while the user is typing.
+     * This only comes up if a valid answer becomes invalid mid-typing.
+     * For example, typing "123abc" into a number field. The values saved up to
+     * the store will be: 1, 12, 123, undefined, undefined, undefined.
+     * Each of these will immediately be passed back down through the props.
+     * When the 1st `undefined` comes through, if we neglect to check for focus,
+     * we will wipe out the data, and the textbox will end up with just "bc".
+     */
+    if (!hasFocus) {
+      setDisplayValue(stringifyAnswer(textbox.answer));
+    }
   }, [textbox.answer]);
 
   const onChangeHandler = async (
@@ -72,6 +84,7 @@ export const TextField = (
 
   const onBlurHandler = () => {
     // When the user is done typing, overwrite the answer with the parsed value.
+    setHasFocus(false);
     setDisplayValue(stringifyAnswer(textbox.answer));
     if (!textbox.answer && textbox.required) {
       setErrorMessage(ErrorMessages.requiredResponse);
@@ -93,6 +106,7 @@ export const TextField = (
         hint={parsedHint}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
+        onFocus={() => setHasFocus(true)}
         value={displayValue}
         errorMessage={errorMessage}
         disabled={disabled}
