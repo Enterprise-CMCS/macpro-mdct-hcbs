@@ -32,7 +32,7 @@ const renderElementList = [
   ElementType.SubHeader,
 ];
 
-export const useTable = (type: ElementType) => {
+export const shouldUseTable = (type: ElementType) => {
   return tableElementList.includes(type);
 };
 

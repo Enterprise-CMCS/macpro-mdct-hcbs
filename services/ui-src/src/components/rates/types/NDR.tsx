@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { useFormContext } from "react-hook-form";
 import { NdrTemplate, RateInputFieldName, RateInputFieldNames } from "types";
 import {
   parseNumber,
-  roundRate,
+  removeNoise,
   stringifyInput,
   stringifyResult,
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
+import { ErrorMessages } from "../../../constants";
 
 export const NDR = (props: PageElementProps<NdrTemplate>) => {
-  const { formkey, disabled, element } = props;
+  const { disabled, element, updateElement } = props;
   const { label, performanceTargetLabel, answer } = element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
@@ -25,14 +25,13 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   };
 
   const initialValue = stringifyAnswer(answer);
+  const initialErrors = {
+    numerator: "",
+    denominator: "",
+    performanceTarget: "",
+  };
   const [displayValue, setDisplayValue] = useState(initialValue);
-
-  // get form context and register field
-  const form = useFormContext();
-  const key = `${formkey}.answer`;
-  useEffect(() => {
-    form.register(key, { required: true });
-  }, []);
+  const [errors, setErrors] = useState(initialErrors);
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
     const fieldType = input.name as RateInputFieldName;
@@ -44,6 +43,27 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     return newDisplayValue;
   };
 
+  const computeErrors = (input: HTMLInputElement) => {
+    const fieldType = input.name as RateInputFieldName;
+    const stringValue = input.value;
+    const parsedValue = parseNumber(stringValue);
+    let errorMessage;
+
+    if (!stringValue) {
+      errorMessage = ErrorMessages.requiredResponse;
+    } else if (parsedValue === undefined) {
+      errorMessage = ErrorMessages.mustBeANumber;
+    } else {
+      errorMessage = "";
+    }
+
+    // Overwrite only the error message for the input that was just touched.
+    return {
+      ...errors,
+      [fieldType]: errorMessage,
+    };
+  };
+
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
     const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
     const numerator = parseNumber(newDisplayValue.numerator);
@@ -53,10 +73,10 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     const rate = canCompute ? numerator / denominator : undefined;
 
     return {
-      performanceTarget: roundRate(performanceTarget),
-      numerator: roundRate(numerator),
-      denominator: roundRate(denominator),
-      rate: roundRate(rate),
+      performanceTarget: removeNoise(performanceTarget),
+      numerator: removeNoise(numerator),
+      denominator: removeNoise(denominator),
+      rate: removeNoise(rate),
     };
   };
 
@@ -70,6 +90,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
     const newDisplayValue = updatedDisplayValue(event.target);
+    const newErrors = computeErrors(event.target);
 
     // answer corresponds to the report data. Its values are numbers.
     const newAnswer = computeAnswer(newDisplayValue);
@@ -77,14 +98,10 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     // Instantly display calculation results
     updateCalculatedValues(newDisplayValue, newAnswer);
     setDisplayValue(newDisplayValue);
+    setErrors(newErrors);
 
-    // Instantly save parsed and calculated values to the form, store, and API
-    form.setValue(`${key}`, newAnswer, { shouldValidate: true });
-  };
-
-  const onBlurHandler = () => {
-    // When the user is done typing, overwrite the answer with the parsed value.
-    setDisplayValue(stringifyAnswer(form.getValues(key)));
+    // Instantly save parsed and calculated values to the store and API
+    updateElement({ answer: newAnswer });
   };
 
   return (
@@ -97,24 +114,27 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
             label={performanceTargetLabel}
             name={RateInputFieldNames.performanceTarget}
             onChange={onChangeHandler}
-            onBlur={onBlurHandler}
+            onBlur={onChangeHandler}
             value={displayValue.performanceTarget}
+            errorMessage={errors.performanceTarget}
             disabled={disabled}
           ></CmsdsTextField>
           <CmsdsTextField
             label="Numerator"
             name={RateInputFieldNames.numerator}
             onChange={onChangeHandler}
-            onBlur={onBlurHandler}
+            onBlur={onChangeHandler}
             value={displayValue.numerator}
+            errorMessage={errors.numerator}
             disabled={disabled}
           ></CmsdsTextField>
           <CmsdsTextField
             label="Denominator"
             name={RateInputFieldNames.denominator}
             onChange={onChangeHandler}
-            onBlur={onBlurHandler}
+            onBlur={onChangeHandler}
             value={displayValue.denominator}
+            errorMessage={errors.denominator}
             disabled={disabled}
           ></CmsdsTextField>
           <CmsdsTextField

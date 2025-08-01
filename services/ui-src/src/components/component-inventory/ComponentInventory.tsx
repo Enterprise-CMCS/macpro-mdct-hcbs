@@ -1,11 +1,9 @@
 import { Divider, Heading } from "@chakra-ui/react";
-import { ReactNode } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { ReactNode, Fragment } from "react";
 import { elementObject } from "./elementObject";
 import { ElementType } from "types";
 
 export const ComponentInventory = () => {
-  const methods = useForm({});
   /**
    * TODO:
    * Add more elements to the inventory as needed
@@ -50,7 +48,7 @@ export const ComponentInventory = () => {
             >
               {componentExample.variants.map((variant, index) => (
                 <div
-                  key={index}
+                  key={`variant-${index}`}
                   style={{
                     border: "1px solid #ccc",
                     padding: "15px",
@@ -71,7 +69,7 @@ export const ComponentInventory = () => {
   };
 
   return (
-    <FormProvider {...methods}>
+    <>
       <Heading as="h1" variant="h1" style={{ margin: "15px" }}>
         Component Inventory
       </Heading>
@@ -83,10 +81,14 @@ export const ComponentInventory = () => {
       <Divider style={{ margin: "20px 0" }} />
       {/* Display all ElementType enum possibilities, even if not in elementObject */}
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {Object.values(ElementType).map((type) => {
-          return buildComponentDisplay(type);
+        {Object.values(ElementType).map((type, index) => {
+          return (
+            <Fragment key={`type-${index}`}>
+              {buildComponentDisplay(type)}
+            </Fragment>
+          );
         })}
       </div>
-    </FormProvider>
+    </>
   );
 };

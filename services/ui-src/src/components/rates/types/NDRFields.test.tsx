@@ -1,35 +1,11 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useFormContext } from "react-hook-form";
-import { useStore } from "utils";
 import { ElementType, NdrFieldsTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { mockStateUserStore } from "utils/testing/setupJest";
 import { NDRFields } from "./NDRFields";
+import { useState } from "react";
 
-const mockTrigger = jest.fn();
-const mockRhfMethods = {
-  register: () => {},
-  setValue: jest.fn(),
-  getValues: jest.fn(),
-  trigger: mockTrigger,
-};
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
-}));
-const mockGetValues = (returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-
-const mockedPerformanceElement: NdrFieldsTemplate = {
+const mockElementTemplate: NdrFieldsTemplate = {
   id: "mock-perf-id",
   type: ElementType.NdrFields,
   labelTemplate:
@@ -47,22 +23,26 @@ const mockedPerformanceElement: NdrFieldsTemplate = {
   ],
   multiplier: 1000,
 };
+const updateSpy = jest.fn();
 
-const ndrNDRFieldsComponent = (
-  <NDRFields
-    formkey={"mock-key"}
-    disabled={false}
-    element={mockedPerformanceElement}
-  />
-);
+const NdrFieldsWrapper = ({ template }: { template: NdrFieldsTemplate }) => {
+  const [element, setElement] = useState(template);
+  const onChange = (updatedElement: Partial<typeof element>) => {
+    updateSpy(updatedElement);
+    setElement({ ...element, ...updatedElement });
+  };
+  return <NDRFields element={element} updateElement={onChange} />;
+};
 
 describe("<NDRFields />", () => {
   describe("Test NDRFields component", () => {
     beforeEach(() => {
-      render(ndrNDRFieldsComponent);
+      jest.clearAllMocks();
     });
+
     test("NDRFields is visible", () => {
-      const { assessments, fields } = mockedPerformanceElement;
+      render(<NdrFieldsWrapper template={mockElementTemplate} />);
+      const { assessments, fields } = mockElementTemplate;
 
       assessments?.forEach((assess) => {
         expect(
@@ -93,7 +73,8 @@ describe("<NDRFields />", () => {
     });
 
     test("Rate should calculate", async () => {
-      const { assessments, fields } = mockedPerformanceElement;
+      render(<NdrFieldsWrapper template={mockElementTemplate} />);
+      const { assessments, fields } = mockElementTemplate;
 
       if (assessments && assessments.length > 0) {
         const denom = screen.getAllByRole("textbox", {
@@ -111,14 +92,5 @@ describe("<NDRFields />", () => {
     });
   });
 
-  testA11y(
-    ndrNDRFieldsComponent,
-    () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues(undefined);
-    },
-    () => {
-      jest.clearAllMocks();
-    }
-  );
+  testA11y(<NdrFieldsWrapper template={mockElementTemplate} />);
 });

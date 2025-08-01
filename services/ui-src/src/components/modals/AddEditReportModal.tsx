@@ -16,7 +16,7 @@ import {
 import QmsOptions from "./AddFormOptions/QmsOptions";
 import TacmOptions from "./AddFormOptions/TacmOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
-import { requiredResponse } from "../../constants";
+import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
   verbiage: {
@@ -88,7 +88,7 @@ export const AddEditReportModal = ({
     };
     setErrorData({
       ...errorData,
-      [name]: value ? "" : requiredResponse,
+      [name]: value ? "" : ErrorMessages.requiredResponse,
     });
     setFormData(updatedFormData);
   };
@@ -105,8 +105,8 @@ export const AddEditReportModal = ({
     setSubmissionAttempted(true);
 
     const newErrorData = {
-      reportTitle: formData.reportTitle ? "" : requiredResponse,
-      year: formData.year ? "" : requiredResponse,
+      reportTitle: formData.reportTitle ? "" : ErrorMessages.requiredResponse,
+      year: formData.year ? "" : ErrorMessages.requiredResponse,
     };
     setErrorData(newErrorData);
 
@@ -169,7 +169,9 @@ export const AddEditReportModal = ({
             onBlur={() =>
               setErrorData({
                 ...errorData,
-                reportTitle: formData.reportTitle ? "" : requiredResponse,
+                reportTitle: formData.reportTitle
+                  ? ""
+                  : ErrorMessages.requiredResponse,
               })
             }
             value={formData.reportTitle}

@@ -26,16 +26,6 @@ mockedUseStore.mockImplementation(
   }
 );
 
-jest.mock("react-hook-form", () => ({
-  useFormContext: () => ({
-    register: jest.fn(),
-    getValues: jest.fn(),
-    setValue: jest.fn(),
-  }),
-  useWatch: jest.fn(),
-  get: jest.fn(),
-}));
-
 // Mock the more complex elements, let them test themselves
 jest.mock("./StatusTable", () => {
   return { StatusTableElement: () => <div>Status Table</div> };
@@ -83,6 +73,11 @@ const elements: PageElement[] = [
     type: ElementType.TextAreaField,
     id: "",
     label: "labeled",
+  },
+  {
+    type: ElementType.NumberField,
+    id: "",
+    label: "number label",
   },
   {
     type: ElementType.Date,
@@ -204,13 +199,16 @@ const dateFieldElement: PageElement[] = [
 
 describe("Page Component with state user", () => {
   test.each(elements)("Renders all element types: %p", (element) => {
-    const { container } = render(<Page elements={[element]} />);
+    const { container } = render(
+      <Page id="mock-page" elements={[element]} setElements={jest.fn()} />
+    );
     expect(container).not.toBeEmptyDOMElement();
   });
 
   test("should render and navigate correctly for ButtonLink element", async () => {
     render(
       <Page
+        id="mock-page"
         elements={[
           {
             type: ElementType.ButtonLink,
@@ -219,6 +217,7 @@ describe("Page Component with state user", () => {
             label: "click me",
           },
         ]}
+        setElements={jest.fn()}
       />
     );
 
@@ -238,7 +237,11 @@ describe("Page Component with state user", () => {
     const badObject = { type: "unused element name" };
 
     const { container } = render(
-      <Page elements={[badObject as unknown as PageElement]} />
+      <Page
+        id="mock-page"
+        elements={[badObject as unknown as PageElement]}
+        setElements={jest.fn()}
+      />
     );
     expect(container).not.toBeEmptyDOMElement();
   });
@@ -249,14 +252,26 @@ describe("Page Component with read only user", () => {
     mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
   });
   test("text field and radio button should be disabled", () => {
-    render(<Page elements={textFieldElement} />);
+    render(
+      <Page
+        id="mock-page"
+        elements={textFieldElement}
+        setElements={jest.fn()}
+      />
+    );
     const textField = screen.getByRole("textbox");
     const radioButton = screen.getByLabelText("radio choice 1");
     expect(textField).toBeDisabled();
     expect(radioButton).toBeDisabled();
   });
   test("date field should be disabled", () => {
-    render(<Page elements={dateFieldElement} />);
+    render(
+      <Page
+        id="mock-page"
+        elements={dateFieldElement}
+        setElements={jest.fn()}
+      />
+    );
     const dateField = screen.getByRole("textbox");
     expect(dateField).toBeDisabled();
   });

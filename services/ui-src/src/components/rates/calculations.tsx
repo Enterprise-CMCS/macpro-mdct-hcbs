@@ -1,15 +1,17 @@
 /**
- * Every calculation in the QMS report rounds its result to two decimal places.
+ * Every calculated value in the QMS report
+ * displays its result rounded to two decimal places.
  */
 const DECIMAL_PLACES = 2;
 
 /**
- * Round the given number to {@link DECIMAL_PLACES}.
- * If it is undefined, return undefined.
+ * Round the given number to 14 decimal places.
+ * This avoids (most) floating-point noise, without losing (much) precision.
+ * @example
+ * console.log(0.1 + 0.2) // 0.30000000000000004
+ * console.log(removeNoise(0.1 + 0.2)) // 0.3
  */
-export const roundRate = (value: number | undefined): number | undefined => {
-  if (value === undefined) return undefined;
-
+export const removeNoise = (value: number | undefined): number | undefined => {
   /*
    * We add epsilon (which is about 2e-16) so that 5s will be rounded up.
    * That is the default behavior of Math.round already, but many numbers which
@@ -30,7 +32,9 @@ export const roundRate = (value: number | undefined): number | undefined => {
    * we would need to implement our own numeric parsing & decimal math routines,
    * (or pull in a 3rd party library) which would definitely not be worthwhile.
    */
-  const shift = Math.pow(10, DECIMAL_PLACES);
+
+  if (value === undefined) return undefined;
+  const shift = Math.pow(10, 14);
   const result = Math.round((value + Number.EPSILON) * shift) / shift;
   if (Object.is(result, -0)) return 0;
   return result;
@@ -48,17 +52,23 @@ export const stringifyInput = (value: number | undefined) => {
 /**
  * Convert the given number to a string.
  * If it is undefined, return an empty string.
- * If it is zero, include {@link DECIMAL_PLACES} trailing zeroes.
+ * Round to {@link DECIMAL_PLACES}, omitting trailing zeroes.
+ * UNLESS it is zero. In that case, show {@link DECIMAL_PLACES} trailing zeroes.
  *
  * Note: We include trailing zeroes for calculated zeroes to assure the user
  * that a calculation took place. For example, if the calculation is `1 / 1000`,
  * and we only display `0`, it may seem that the calculation errored out.
  * Whereas displaying `0.00` gives a nicer impression.
+ *
+ * Note: We add epsilon to avoid floating-point nonsense.
+ * See the comment in `removeNoise()`.
  */
 export const stringifyResult = (value: number | undefined) => {
   if (value === undefined) return "";
-  if (value === 0) return (0).toFixed(DECIMAL_PLACES);
-  return value.toString();
+  let stringValue = (value + Number.EPSILON).toFixed(DECIMAL_PLACES);
+  if (stringValue === "0.00") return stringValue;
+  // Remove trailing zero(es, and decimal point)
+  return stringValue.replace(/\.?0+$/, "");
 };
 
 /**

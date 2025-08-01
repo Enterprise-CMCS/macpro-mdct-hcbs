@@ -83,7 +83,7 @@ const MeasureTableComponent = (
   const template = { ...mockTemplate, measureDisplay };
   return (
     <MemoryRouter>
-      <MeasureTableElement element={template} formkey={""} />
+      <MeasureTableElement element={template} />
     </MemoryRouter>
   );
 };

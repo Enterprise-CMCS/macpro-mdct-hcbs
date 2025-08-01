@@ -1,33 +1,9 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NDRBasic } from "./NDRBasic";
-import { useFormContext } from "react-hook-form";
-import { useStore } from "utils";
 import { ElementType, NdrBasicTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { mockStateUserStore } from "utils/testing/setupJest";
-
-const mockTrigger = jest.fn();
-const mockRhfMethods = {
-  register: () => {},
-  setValue: jest.fn(),
-  getValues: jest.fn(),
-  trigger: mockTrigger,
-};
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
-}));
-const mockGetValues = (returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+import { useState } from "react";
 
 const mockedElement: NdrBasicTemplate = {
   id: "mock-perf-id",
@@ -36,17 +12,25 @@ const mockedElement: NdrBasicTemplate = {
   multiplier: 100,
   minPerformanceLevel: 90,
 };
+const updateSpy = jest.fn();
 
-const ndrBasicComponent = (
-  <NDRBasic formkey={"mock-key"} disabled={false} element={mockedElement} />
-);
+const NdrBasicWrapper = ({ template }: { template: NdrBasicTemplate }) => {
+  const [element, setElement] = useState(template);
+  const onChange = (updatedElement: Partial<typeof element>) => {
+    updateSpy(updatedElement);
+    setElement({ ...element, ...updatedElement });
+  };
+  return <NDRBasic element={element} updateElement={onChange} />;
+};
 
 describe("<NDRBasic />", () => {
   describe("Test NDRBasic component", () => {
     beforeEach(() => {
-      render(ndrBasicComponent);
+      jest.clearAllMocks();
     });
+
     test("NDRBasic is visible", () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
       expect(
         screen.getByRole("textbox", { name: "Numerator" })
       ).toBeInTheDocument();
@@ -60,6 +44,8 @@ describe("<NDRBasic />", () => {
     });
 
     test("Rate should calculate", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await act(async () => await userEvent.type(numerator, "1"));
       expect(numerator).toHaveValue("1");
@@ -73,6 +59,8 @@ describe("<NDRBasic />", () => {
     });
 
     test("Rate should not display a decimal point if it is not needed", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await act(async () => await userEvent.type(numerator, "27"));
 
@@ -84,6 +72,8 @@ describe("<NDRBasic />", () => {
     });
 
     test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await act(async () => await userEvent.type(numerator, "4"));
 
@@ -93,12 +83,17 @@ describe("<NDRBasic />", () => {
       const result = screen.getByRole("textbox", { name: "Result" });
       expect(result).toHaveValue("0.2");
     });
+  });
 
+  describe("Miniminum Performance Rate Alerts", () => {
     test("Alert should be not visible if rate is empty", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
     test("Success Alert should be visible if minimum rate is met", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await act(async () => await userEvent.type(numerator, "9"));
 
@@ -111,6 +106,8 @@ describe("<NDRBasic />", () => {
     });
 
     test("Warning Alert should be visible if minimum rate is met", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await act(async () => await userEvent.type(numerator, "1"));
 
@@ -123,14 +120,5 @@ describe("<NDRBasic />", () => {
     });
   });
 
-  testA11y(
-    ndrBasicComponent,
-    () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues(undefined);
-    },
-    () => {
-      jest.clearAllMocks();
-    }
-  );
+  testA11y(<NdrBasicWrapper template={mockedElement} />);
 });

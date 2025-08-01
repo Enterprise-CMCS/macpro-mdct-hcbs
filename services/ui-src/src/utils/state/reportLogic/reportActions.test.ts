@@ -20,7 +20,6 @@ import {
   setPage,
   substitute,
   saveReport,
-  filterErrors,
   markPageComplete,
   changeDeliveryMethods,
 } from "./reportActions";
@@ -209,22 +208,6 @@ describe("state/management/reportState: saveReport", () => {
     const state = buildState(testReport, false) as HcbsReportState;
     const result = await saveReport(state);
     expect(result?.lastSavedTime).toBeTruthy();
-  });
-});
-
-describe("state/management/reportState: filterErrors", () => {
-  test("removes errored entries from answers", async () => {
-    global.structuredClone = (val: unknown) => {
-      return JSON.parse(JSON.stringify(val));
-    };
-
-    const answers = { elements: [{ answer: "dog" }, { answer: "cat" }] };
-    const errors = { elements: [{ answer: { message: "No dog allowed" } }] };
-
-    const result = filterErrors(answers, errors);
-
-    expect("answer" in result.elements).toBeFalsy();
-    expect(result.elements[1].answer).toBe("cat");
   });
 });
 

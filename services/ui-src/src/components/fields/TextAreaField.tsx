@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { parseHtml } from "utils";
 import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
+import { ErrorMessages } from "../../constants";
 
 export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   const textbox = props.element;
+  const updateElement = props.updateElement;
   const defaultValue = textbox.answer ?? "";
-  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [displayValue, setDisplayValue] = useState(defaultValue);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // get form context and register field
-  const form = useFormContext();
-  const key = `${props.formkey}.answer`;
-  const hideElement = useElementIsHidden(textbox.hideCondition, key);
-  useEffect(() => {
-    form.register(key);
-    form.setValue(key, defaultValue);
-  }, []);
+  const hideElement = useElementIsHidden(textbox.hideCondition);
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
@@ -29,14 +24,17 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value } = event.target;
+    const value = event.target.value;
     setDisplayValue(value);
-    form.setValue(name, value, { shouldValidate: true });
+    if (!value && textbox.required) {
+      setErrorMessage(ErrorMessages.requiredResponse);
+    } else {
+      setErrorMessage("");
+    }
+    const answer = value === "" ? undefined : value;
+    updateElement({ answer });
   };
 
-  // prepare error message, hint, and classes
-  const formErrorState = form?.formState?.errors;
-  const errorMessage: string | undefined = get(formErrorState, key)?.message;
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
 
   const labelText = (
@@ -53,16 +51,16 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   return (
     <Box>
       <CmsdsTextField
-        id={key}
-        name={key}
+        name={textbox.id}
         label={labelText}
         hint={parsedHint}
         onChange={onChangeHandler}
+        onBlur={onChangeHandler}
         value={displayValue}
         errorMessage={errorMessage}
         multiline
         rows={3}
-        {...props}
+        disabled={props.disabled}
       />
     </Box>
   );

@@ -16,8 +16,16 @@ import {
   SubHeaderElement,
   SubHeaderMeasureElement,
 } from "components/report/Elements";
-import { ElementType, HeaderIcon, NumberFieldTemplate } from "types";
+import {
+  ElementType,
+  HeaderIcon,
+  NumberFieldTemplate,
+  PageElement,
+} from "types";
 import { ReactNode } from "react";
+
+// eslint-disable-next-line no-console
+const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
 
 export const elementObject: {
   [key: string]: {
@@ -29,7 +37,6 @@ export const elementObject: {
     description: "Big text at the top of the page",
     variants: [
       <HeaderElement
-        formkey="5412"
         element={{
           type: ElementType.Header,
           id: "id-header",
@@ -37,7 +44,6 @@ export const elementObject: {
         }}
       />,
       <HeaderElement
-        formkey="5413"
         element={{
           type: ElementType.Header,
           id: "id-header-with-icon",
@@ -51,7 +57,6 @@ export const elementObject: {
     description: "This is a subheader",
     variants: [
       <SubHeaderElement
-        formkey="5414"
         element={{
           type: ElementType.SubHeader,
           id: "id-subheader",
@@ -64,7 +69,6 @@ export const elementObject: {
     description: "This is a nested heading",
     variants: [
       <NestedHeadingElement
-        formkey="5415"
         element={{
           type: ElementType.NestedHeading,
           id: "id-nestedheading",
@@ -77,7 +81,7 @@ export const elementObject: {
     description: "A field for entering text",
     variants: [
       <TextField
-        formkey="5416"
+        updateElement={logNewElement}
         element={{
           type: ElementType.Textbox,
           id: "id-textfield",
@@ -90,7 +94,7 @@ export const elementObject: {
     description: "A field for entering text",
     variants: [
       <TextAreaField
-        formkey="5417"
+        updateElement={logNewElement}
         element={{
           type: ElementType.TextAreaField,
           id: "id-textareafield",
@@ -103,7 +107,6 @@ export const elementObject: {
     description: "A paragraph of text for content.",
     variants: [
       <ParagraphElement
-        formkey="5418"
         element={{
           type: ElementType.Paragraph,
           id: "id-paragraph",
@@ -116,7 +119,6 @@ export const elementObject: {
     description: "A horizontal line to separate content",
     variants: [
       <DividerElement
-        formkey="5419"
         element={{
           type: ElementType.Divider,
           id: "id-divider",
@@ -144,7 +146,7 @@ export const elementObject: {
     description: "A dropdown field for selecting options",
     variants: [
       <DropdownField
-        formkey="5420"
+        updateElement={logNewElement}
         element={{
           type: ElementType.Dropdown,
           id: "id-dropdown",
@@ -162,7 +164,7 @@ export const elementObject: {
     description: "A radio button field for selecting one option",
     variants: [
       <RadioField
-        formkey="5421"
+        updateElement={logNewElement}
         element={{
           type: ElementType.Radio,
           id: "id-radio",
@@ -180,7 +182,7 @@ export const elementObject: {
     description: "A field for selecting a date",
     variants: [
       <DateField
-        formkey="5423"
+        updateElement={logNewElement}
         element={{
           type: ElementType.Date,
           id: "id-date-field",
@@ -194,7 +196,6 @@ export const elementObject: {
     description: "A subheader for measures",
     variants: [
       <SubHeaderMeasureElement
-        formkey="5424"
         element={{
           type: ElementType.SubHeader,
           id: "id-subheader",
@@ -207,7 +208,7 @@ export const elementObject: {
     description: "A field for entering numbers",
     variants: [
       <TextField
-        formkey="5425"
+        updateElement={logNewElement}
         element={
           {
             type: ElementType.NumberField,
@@ -218,7 +219,7 @@ export const elementObject: {
         }
       />,
       <TextField
-        formkey="5426"
+        updateElement={logNewElement}
         element={
           {
             type: ElementType.NumberField,
