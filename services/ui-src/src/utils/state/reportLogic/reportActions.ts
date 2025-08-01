@@ -80,6 +80,27 @@ export const deepMerge = (obj1: any, obj2: any) => {
   return clone1;
 };
 
+export const deepEquals = (obj1: any, obj2: any): boolean => {
+  if (typeof obj1 !== typeof obj2) {
+    return false;
+  } else if (Array.isArray(obj1)) {
+    return (
+      obj1.length === obj2.length &&
+      obj1.every((el, i) => deepEquals(el, obj2[i]))
+    );
+  } else if (!!obj1 && !!obj2 && typeof obj1 === "object") {
+    const entries1 = Object.entries(obj1);
+    return (
+      entries1.length === Object.entries(obj2).length &&
+      entries1.every(([key, val]) => deepEquals(val, obj2[key]))
+    );
+  } else if (typeof obj1 === "number" && isNaN(obj1) && isNaN(obj2)) {
+    return true;
+  } else {
+    return obj1 === obj2;
+  }
+};
+
 export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   if (!state.report || !state.currentPageId) {
     return {};
@@ -90,6 +111,11 @@ export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   );
 
   const result = deepMerge(report.pages[pageIndex], answers);
+
+  // If this action didn't change any values, don't dirty the status
+  if (deepEquals(report.pages[pageIndex], result)) {
+    return {};
+  }
 
   // Handle status dirtying
   if ("status" in result) {
