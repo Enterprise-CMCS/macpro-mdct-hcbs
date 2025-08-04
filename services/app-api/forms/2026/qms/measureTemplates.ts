@@ -782,7 +782,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rate",
         required: true,
-        helperText: "Hint Text",
         ...stateExclusionTargetLabel,
         assessments: [
           {
@@ -838,7 +837,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rate",
         required: true,
-        helperText: "Hint Text",
         ...stateExclusionTargetLabel,
         assessments: [
           {
@@ -1047,7 +1045,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         label: "Exclusion Rate",
-        helperText: "Hint Text",
         ...stateExclusionTargetLabel,
         assessments: [
           {
