@@ -24,8 +24,20 @@ export const renderReportDisplay = (
 };
 
 export const ExportedReportWrapper = ({ section }: Props) => {
+  // Remove empty elements which are optional
+  const filteredElements = section.elements?.filter((element: any) => {
+    const hasAnswer =
+      Object.prototype.hasOwnProperty.call(element, "answer") &&
+      element.answer !== undefined &&
+      element.answer !== "";
+    if (!hasAnswer && element.required === false) {
+      return false;
+    }
+    return true;
+  });
+
   const elements =
-    section.elements?.map(
+    filteredElements?.map(
       (element: {
         label?: string;
         helperText?: string;
