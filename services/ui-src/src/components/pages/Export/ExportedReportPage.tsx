@@ -167,7 +167,6 @@ export const renderReportSections = (
 
   return reportPages
     .filter((section) => {
-      // filter sections not part of the report
       if (
         section.id === "review-submit" ||
         section.id === "root" ||
@@ -176,7 +175,7 @@ export const renderReportSections = (
       ) {
         return false;
       }
-      // filter optional measures which are not started
+
       if (
         section.type === PageType.Measure &&
         (section as MeasurePageTemplate).required === false &&
@@ -184,6 +183,14 @@ export const renderReportSections = (
       ) {
         return false;
       }
+
+      if (
+        section.type === PageType.MeasureResults &&
+        (section as FormPageTemplate).status === PageStatus.NOT_STARTED
+      ) {
+        return false;
+      }
+
       return true;
     })
     .map(
