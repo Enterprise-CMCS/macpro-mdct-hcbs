@@ -208,6 +208,7 @@ export const additionalNotesField: TextAreaBoxTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: false,
 };
 
 export const measureDeliveryMethodsSubheader = [
