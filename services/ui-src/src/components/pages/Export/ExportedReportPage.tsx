@@ -18,10 +18,12 @@ import {
   FormPageTemplate,
   getReportName,
   MeasurePageTemplate,
+  PageType,
   ParentPageTemplate,
   Report,
   ReportType,
   ReviewSubmitTemplate,
+  PageStatus,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 import { StateNames } from "../../../constants";
@@ -152,7 +154,6 @@ export const renderReportSections = (
   ) => {
     const showHeader =
       section.type != "measure" && section.type != "measureResults";
-
     return (
       <Box key={section.id}>
         {/* if section does not have children and has content to render, render it */}
@@ -165,13 +166,26 @@ export const renderReportSections = (
   };
 
   return reportPages
-    .filter(
-      (section) =>
-        section.id !== "review-submit" &&
-        section.id !== "root" &&
-        section.id != "req-measure-result" &&
-        section.id != "optional-measure-result"
-    )
+    .filter((section) => {
+      // filter sections not part of the report
+      if (
+        section.id === "review-submit" ||
+        section.id === "root" ||
+        section.id === "req-measure-result" ||
+        section.id === "optional-measure-result"
+      ) {
+        return false;
+      }
+      // filter optional measures which are not started
+      if (
+        section.type === PageType.Measure &&
+        (section as MeasurePageTemplate).required === false &&
+        (section as MeasurePageTemplate).status === PageStatus.NOT_STARTED
+      ) {
+        return false;
+      }
+      return true;
+    })
     .map(
       (
         section:
