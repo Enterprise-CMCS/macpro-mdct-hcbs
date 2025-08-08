@@ -2,14 +2,18 @@ import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import {
   ElementType,
+  LengthOfStayRateTemplate,
   MeasurePageTemplate,
   NdrEnhancedTemplate,
+  NdrFieldsTemplate,
+  NdrTemplate,
   RateSetData,
 } from "types";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
 const noReponseText = "No Response";
 const autoPopulatedText = "Auto-populates from previous response";
+const autoCalculatesText = "Auto-calculates from previous response";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -60,9 +64,9 @@ export const renderElements = (
     case ElementType.NdrEnhanced:
       return NDREnhancedReportElement(element as NdrEnhancedTemplate);
     case ElementType.NdrFields:
-      return <>[TO DO: ADD NDR FIELDS]</>;
+      return <>[TO DO: ADD NDR Fields]</>;
     case ElementType.Ndr:
-      return <>[TO DO: ADD NDR]</>;
+      return NDRReportElement(element as NdrTemplate);
     case ElementType.LengthOfStayRate:
       return <>[TO DO: ADD Field Of Stay]</>;
     case ElementType.NdrBasic:
@@ -73,6 +77,60 @@ export const renderElements = (
 
   return (answer as string) ?? noReponseText;
 };
+
+export const NDRReportElement = (element: NdrTemplate) => {
+  const label = element.label;
+  const rows = [
+    {
+      indicator: element.performanceTargetLabel,
+      response: element.answer?.performanceTarget,
+    },
+    {
+      indicator: "Numerator",
+      response: element.answer?.numerator,
+    },
+    {
+      indicator: "Denominator",
+      response: element.answer?.denominator,
+      helperText: "Auto-populates",
+    },
+    {
+      indicator: "Rate",
+      response: element.answer?.rate ?? autoCalculatesText,
+      helperText: "Auto-calculates",
+    },
+  ];
+
+  const buildData = [
+    {
+      label: element.label,
+      rows,
+    },
+  ];
+
+  return (
+    <>
+      <Heading as="h4" fontWeight="bold">
+        Performance Rates
+      </Heading>
+      {buildData.map((data: { label: string; rows: ReportTableType[] }) => (
+        <>
+          <Heading
+            as="h4"
+            fontWeight="bold"
+          >{`Performance Rate : ${data?.label}`}</Heading>
+          <ExportedReportTable rows={data?.rows} />
+        </>
+      ))}
+    </>
+  );
+};
+
+export const NDRFieldReportElemet = (element: NdrFieldsTemplate) => {};
+
+export const LengthOfStayReportElement = (
+  element: LengthOfStayRateTemplate
+) => {};
 
 export const NDREnhancedReportElement = (element: NdrEnhancedTemplate) => {
   const buildData = element.assessments?.map(
@@ -110,14 +168,16 @@ export const NDREnhancedReportElement = (element: NdrEnhancedTemplate) => {
   return (
     <>
       <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
-      <ExportedReportTable
-        rows={[
-          {
-            indicator: "Performance Rates Denominator",
-            response: element?.answer?.denominator,
-          },
-        ]}
-      />
+      {element?.answer?.denominator && (
+        <ExportedReportTable
+          rows={[
+            {
+              indicator: "Performance Rates Denominator",
+              response: element?.answer?.denominator,
+            },
+          ]}
+        />
+      )}
       {buildData.map((data: { label: string; rows: ReportTableType[] }) => (
         <>
           <Heading
