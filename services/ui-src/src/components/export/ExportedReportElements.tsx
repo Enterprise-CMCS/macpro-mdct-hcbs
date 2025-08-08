@@ -10,11 +10,15 @@ import {
   NdrTemplate,
   RateSetData,
 } from "types";
-import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
-
-const noReponseText = "No Response";
-const autoPopulatedText = "Auto-populates from previous response";
-const autoCalculatesText = "Auto-calculates from previous response";
+import {
+  ExportedReportTable,
+  ExportRateTable,
+  ReportTableType,
+} from "./ExportedReportTable";
+import { FieldsExport } from "components/rates/types/Fields";
+import { NDRExport } from "components/rates/types/NDR";
+import { noReponseText } from "../../constants";
+import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -63,13 +67,16 @@ export const renderElements = (
         </Heading>
       );
     case ElementType.NdrEnhanced:
-      return NDREnhancedReportElement(element as NdrEnhancedTemplate);
+      return <></>;
+    // return NDREnhancedExport(element as NdrEnhancedTemplate);
     case ElementType.NdrFields:
-      return <>[TO DO: ADD NDR Fields]</>;
+      return NDRFieldExport(element as NdrFieldsTemplate);
     case ElementType.Ndr:
-      return NDRReportElement(element as NdrTemplate);
+      return <></>;
+    // return NDRExport(element as NdrTemplate);
     case ElementType.LengthOfStayRate:
-      return LengthOfStayReportElement(element as LengthOfStayRateTemplate);
+      return <></>;
+    // return FieldsExport(element as LengthOfStayRateTemplate);
     case ElementType.NdrBasic:
       return <>[TO DO: ADD NDR Basic]</>;
     case ElementType.MeasureDetails:
@@ -79,157 +86,61 @@ export const renderElements = (
   return (answer as string) ?? noReponseText;
 };
 
-export const NDRReportElement = (element: NdrTemplate) => {
-  const rows = [
-    {
-      indicator: element.performanceTargetLabel,
-      response: element.answer?.performanceTarget,
-    },
-    {
-      indicator: "Numerator",
-      response: element.answer?.numerator,
-    },
-    {
-      indicator: "Denominator",
-      response: element.answer?.denominator,
-      helperText: "Auto-populates",
-    },
-    {
-      indicator: "Rate",
-      response: element.answer?.rate ?? autoCalculatesText,
-      helperText: "Auto-calculates",
-    },
-  ];
-  const buildData = [
-    {
-      label: `Performance Rate : ${element.label}`,
-      rows,
-    },
-  ];
-
-  return (
-    <>
-      <Heading as="h4" fontWeight="bold">
-        Performance Rates
-      </Heading>
-      {rateTable(buildData)}
-    </>
-  );
+export const NDRBasicExport = (element: NdrBasicTemplate) => {
+  return <>[TO DO: ADD NDR Basic]</>;
 };
 
-export const NDRBasic = (element: NdrBasicTemplate) => {};
-
-export const NDRFieldReportElemet = (element: NdrFieldsTemplate) => {};
-
-export const LengthOfStayReportElement = (
-  element: LengthOfStayRateTemplate
-) => {
-  const rows = [
-    {
-      indicator: element.labels.performanceTarget,
-      response: element.answer?.performanceTarget,
-    },
-    {
-      indicator: element.labels.actualCount,
-      response: element.answer?.actualCount,
-    },
-    {
-      indicator: element.labels.denominator,
-      response: element.answer?.denominator,
-    },
-    {
-      indicator: element.labels.expectedCount,
-      response: element.answer?.expectedCount,
-    },
-    {
-      indicator: element.labels.populationRate,
-      response: element.answer?.populationRate,
-    },
-    {
-      indicator: element.labels.actualRate,
-      response: element.answer?.actualRate,
-      helperText: "Auto-calculates",
-    },
-    {
-      indicator: element.labels.expectedRate,
-      response: element.answer?.expectedRate,
-      helperText: "Auto-calculates",
-    },
-    {
-      indicator: element.labels.adjustedRate,
-      response: element.answer?.adjustedRate,
-      helperText: "Auto-calculates",
-    },
-  ];
-  return (
-    <>
-      {rateTable([
-        {
-          rows,
-          label: "Performance Rates",
-        },
-      ])}
-    </>
-  );
-};
-
-export const NDREnhancedReportElement = (element: NdrEnhancedTemplate) => {
-  const label = element.label ?? "Performance Rates";
-
-  const buildData = element.assessments?.map(
-    (assess: { id: string; label: string }) => {
-      const performanceRate = element.answer?.rates?.find(
-        (rate: { id: string }) => rate.id === assess.id
-      );
-      const row = [
-        {
-          indicator: element.performanceTargetLabel,
-          response: performanceRate?.performanceTarget,
-        },
-        {
-          indicator: "Numerator",
-          response: performanceRate?.numerator,
-        },
-        {
-          indicator: "Denominator",
-          response: element?.answer?.denominator ?? autoPopulatedText,
-          helperText: "Auto-populates",
-        },
-        {
-          indicator: "Rate",
-          response: performanceRate?.rate ?? autoPopulatedText,
-          helperText: "Auto-calculates",
-        },
-      ];
-      return { label: `${label} : ${assess.label}`, rows: row };
-    }
-  );
-
-  return (
-    <>
-      <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
-      <ExportedReportTable
-        rows={[
+export const NDRFieldExport = (element: NdrFieldsTemplate) => {
+  const buildData = element.assessments.map((assess) => {
+    const data = element.answer?.find((item) =>
+      item.rates[0].id.includes(assess.id)
+    );
+    const rates = data?.rates.map((rate) => {
+      const performanceTargetLabel = "Performance Target";
+      return {
+        label: element.fields.find(
+          (field) => field.id === rate.id.split(".")[1]
+        )?.label,
+        rate: [
           {
-            indicator: "Performance Rates Denominator",
-            response: element?.answer?.denominator,
+            indicator: performanceTargetLabel,
+            response: rate.performanceTarget,
           },
-        ]}
-      />
-      {rateTable(buildData)}
+          { indicator: "Numerator", response: rate.numerator },
+          {
+            indicator: "Denominator",
+            response: data.denominator,
+            helperText: "Auto-calculates",
+          },
+          {
+            indicator: "Rate",
+            response: rate.rate,
+            helperText: "Auto-calculates",
+          },
+        ],
+      };
+    });
+    return {
+      label: assess.label,
+      denominator: data?.denominator,
+      rates,
+    };
+  });
+
+  console.log(buildData);
+
+  return (
+    <>
+      {buildData.map((build) => (
+        <>
+          <Heading as="h4" fontWeight="bold">
+            {build.label}
+          </Heading>
+          {build.rates?.map((rate) =>
+            ExportRateTable([{ label: rate.label, rows: rate.rate }])
+          )}
+        </>
+      ))}
     </>
   );
-};
-
-export const rateTable = (
-  tableData: { label: string; rows: ReportTableType[] }[]
-) => {
-  return tableData.map((data: { label: string; rows: ReportTableType[] }) => (
-    <>
-      <Heading as="h4" fontWeight="bold">
-        {data?.label}
-      </Heading>
-      <ExportedReportTable rows={data?.rows} />
-    </>
-  ));
 };

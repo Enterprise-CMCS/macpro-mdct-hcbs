@@ -13,6 +13,7 @@ import {
   makeEmptyStringCopyOf,
   validateNumber,
 } from "utils/validation/inputValidation";
+import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const { disabled, updateElement } = props;
@@ -192,6 +193,56 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
         <Divider></Divider>
       </Stack>
     </Stack>
+  );
+};
+
+export const FieldsExport = (element: LengthOfStayRateTemplate) => {
+  const rows = [
+    {
+      indicator: element.labels.performanceTarget,
+      response: element.answer?.performanceTarget,
+    },
+    {
+      indicator: element.labels.actualCount,
+      response: element.answer?.actualCount,
+    },
+    {
+      indicator: element.labels.denominator,
+      response: element.answer?.denominator,
+    },
+    {
+      indicator: element.labels.expectedCount,
+      response: element.answer?.expectedCount,
+    },
+    {
+      indicator: element.labels.populationRate,
+      response: element.answer?.populationRate,
+    },
+    {
+      indicator: element.labels.actualRate,
+      response: element.answer?.actualRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels.expectedRate,
+      response: element.answer?.expectedRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels.adjustedRate,
+      response: element.answer?.adjustedRate,
+      helperText: "Auto-calculates",
+    },
+  ];
+  return (
+    <>
+      {ExportRateTable([
+        {
+          rows,
+          label: "Performance Rates",
+        },
+      ])}
+    </>
   );
 };
 
