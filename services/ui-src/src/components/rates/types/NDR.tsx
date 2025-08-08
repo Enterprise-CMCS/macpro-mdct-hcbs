@@ -9,7 +9,8 @@ import {
   stringifyResult,
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
-import { ErrorMessages } from "../../../constants";
+import { autoCalculatesText, ErrorMessages } from "../../../constants";
+import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const { disabled, element, updateElement } = props;
@@ -148,6 +149,43 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
         </Stack>
       </Stack>
     </Stack>
+  );
+};
+
+export const NDRExport = (element: NdrTemplate) => {
+  const rows = [
+    {
+      indicator: element.performanceTargetLabel,
+      response: element.answer?.performanceTarget,
+    },
+    {
+      indicator: "Numerator",
+      response: element.answer?.numerator,
+    },
+    {
+      indicator: "Denominator",
+      response: element.answer?.denominator,
+    },
+    {
+      indicator: "Rate",
+      response: element.answer?.rate ?? autoCalculatesText,
+      helperText: "Auto-calculates",
+    },
+  ];
+  const buildData = [
+    {
+      label: `Performance Rate : ${element.label}`,
+      rows,
+    },
+  ];
+
+  return (
+    <>
+      <Heading as="h4" fontWeight="bold">
+        Performance Rates
+      </Heading>
+      {ExportRateTable(buildData)}
+    </>
   );
 };
 

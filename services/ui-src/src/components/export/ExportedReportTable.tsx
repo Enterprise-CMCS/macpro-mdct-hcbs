@@ -1,4 +1,13 @@
-import { Table, Thead, Th, Tr, Tbody, Td, Text } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Th,
+  Tr,
+  Tbody,
+  Td,
+  Text,
+  Heading,
+} from "@chakra-ui/react";
 import { notAnsweredText } from "../../constants";
 import { ElementType } from "types";
 import { ReactElement } from "react";
@@ -39,4 +48,17 @@ export const ExportedReportTable = ({ rows }: Props) => {
       </Tbody>
     </Table>
   );
+};
+
+export const ExportRateTable = (
+  tableData: { label: string; rows: ReportTableType[] }[]
+) => {
+  return tableData.map((data: { label: string; rows: ReportTableType[] }) => (
+    <>
+      <Heading as="h4" fontWeight="bold">
+        {data?.label}
+      </Heading>
+      <ExportedReportTable rows={data?.rows} />
+    </>
+  ));
 };

@@ -18,6 +18,11 @@ import {
   makeEmptyStringCopyOf,
   validateNumber,
 } from "utils/validation/inputValidation";
+import {
+  ExportedReportTable,
+  ExportRateTable,
+} from "components/export/ExportedReportTable";
+import { autoPopulatedText } from "../../../constants";
 
 export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
   const { disabled, element, updateElement } = props;
@@ -183,6 +188,54 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
         <Divider></Divider>
       </Stack>
     </Stack>
+  );
+};
+
+export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
+  const label = element.label ?? "Performance Rates";
+
+  const buildData = element.assessments?.map(
+    (assess: { id: string; label: string }) => {
+      const performanceRate = element.answer?.rates?.find(
+        (rate: { id: string }) => rate.id === assess.id
+      );
+      const row = [
+        {
+          indicator: element.performanceTargetLabel,
+          response: performanceRate?.performanceTarget,
+        },
+        {
+          indicator: "Numerator",
+          response: performanceRate?.numerator,
+        },
+        {
+          indicator: "Denominator",
+          response: element?.answer?.denominator ?? autoPopulatedText,
+          helperText: "Auto-populates",
+        },
+        {
+          indicator: "Rate",
+          response: performanceRate?.rate ?? autoPopulatedText,
+          helperText: "Auto-calculates",
+        },
+      ];
+      return { label: `${label} : ${assess.label}`, rows: row };
+    }
+  );
+
+  return (
+    <>
+      <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
+      <ExportedReportTable
+        rows={[
+          {
+            indicator: "Performance Rates Denominator",
+            response: element?.answer?.denominator,
+          },
+        ]}
+      />
+      {ExportRateTable(buildData)}
+    </>
   );
 };
 
