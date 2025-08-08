@@ -24,8 +24,17 @@ export const renderReportDisplay = (
 };
 
 export const ExportedReportWrapper = ({ section }: Props) => {
+  const filteredElements = section.elements?.filter((element) => {
+    const hasAnswer =
+      "answer" in element &&
+      element.answer !== undefined &&
+      element.answer !== "";
+    const isRequired = !("required" in element) || element.required !== false;
+    return hasAnswer || isRequired;
+  });
+
   const elements =
-    section.elements?.map(
+    filteredElements?.map(
       (element: {
         label?: string;
         helperText?: string;

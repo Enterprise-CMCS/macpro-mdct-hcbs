@@ -18,10 +18,12 @@ import {
   FormPageTemplate,
   getReportName,
   MeasurePageTemplate,
+  PageType,
   ParentPageTemplate,
   Report,
   ReportType,
   ReviewSubmitTemplate,
+  PageStatus,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 import { StateNames } from "../../../constants";
@@ -142,46 +144,46 @@ export const renderReportSections = (
     | ReviewSubmitTemplate
   )[]
 ) => {
-  // recursively render sections
-  const renderSection = (
-    section:
-      | ParentPageTemplate
-      | FormPageTemplate
-      | MeasurePageTemplate
-      | ReviewSubmitTemplate
-  ) => {
+  const shouldRender = (section: typeof reportPages[number]) => {
+    if (
+      section.id === "review-submit" ||
+      section.id === "root" ||
+      section.id === "req-measure-result" ||
+      section.id === "optional-measure-result"
+    ) {
+      return false;
+    }
+
+    if (
+      section.type === PageType.Measure &&
+      (section as MeasurePageTemplate).required === false &&
+      (section as MeasurePageTemplate).status === PageStatus.NOT_STARTED
+    ) {
+      return false;
+    }
+
+    if (
+      section.type === PageType.MeasureResults &&
+      (section as FormPageTemplate).status === PageStatus.NOT_STARTED
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
+  return reportPages.filter(shouldRender).map((section, idx) => {
     const showHeader =
       section.type != "measure" && section.type != "measureResults";
-
     return (
-      <Box key={section.id}>
-        {/* if section does not have children and has content to render, render it */}
+      <Box key={`${section.id}.${idx}`}>
         <Flex flexDirection="column">
           {showHeader && <Heading variant="subHeader">{section.title}</Heading>}
           <ExportedReportWrapper section={section} />
         </Flex>
       </Box>
     );
-  };
-
-  return reportPages
-    .filter(
-      (section) =>
-        section.id !== "review-submit" &&
-        section.id !== "root" &&
-        section.id != "req-measure-result" &&
-        section.id != "optional-measure-result"
-    )
-    .map(
-      (
-        section:
-          | ParentPageTemplate
-          | FormPageTemplate
-          | MeasurePageTemplate
-          | ReviewSubmitTemplate,
-        idx
-      ) => <Box key={`${section.id}.${idx}`}>{renderSection(section)}</Box>
-    );
+  });
 };
 
 export const sx = {
