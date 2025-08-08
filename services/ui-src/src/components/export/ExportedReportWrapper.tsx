@@ -24,14 +24,12 @@ export const renderReportDisplay = (
 };
 
 export const ExportedReportWrapper = ({ section }: Props) => {
-  // Remove empty elements which are optional
   const filteredElements = section.elements?.filter((element) => {
     const hasAnswer =
       "answer" in element &&
       element.answer !== undefined &&
       element.answer !== "";
-    const isRequired = !("required" in element) || element.required === false;
-
+    const isRequired = !("required" in element) || element.required !== false;
     return hasAnswer || isRequired;
   });
 
