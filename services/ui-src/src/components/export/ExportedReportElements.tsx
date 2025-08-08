@@ -4,6 +4,7 @@ import {
   ElementType,
   LengthOfStayRateTemplate,
   MeasurePageTemplate,
+  NdrBasicTemplate,
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
@@ -68,7 +69,7 @@ export const renderElements = (
     case ElementType.Ndr:
       return NDRReportElement(element as NdrTemplate);
     case ElementType.LengthOfStayRate:
-      return <>[TO DO: ADD Field Of Stay]</>;
+      return LengthOfStayReportElement(element as LengthOfStayRateTemplate);
     case ElementType.NdrBasic:
       return <>[TO DO: ADD NDR Basic]</>;
     case ElementType.MeasureDetails:
@@ -79,7 +80,6 @@ export const renderElements = (
 };
 
 export const NDRReportElement = (element: NdrTemplate) => {
-  const label = element.label;
   const rows = [
     {
       indicator: element.performanceTargetLabel,
@@ -100,10 +100,9 @@ export const NDRReportElement = (element: NdrTemplate) => {
       helperText: "Auto-calculates",
     },
   ];
-
   const buildData = [
     {
-      label: element.label,
+      label: `Performance Rate : ${element.label}`,
       rows,
     },
   ];
@@ -113,26 +112,70 @@ export const NDRReportElement = (element: NdrTemplate) => {
       <Heading as="h4" fontWeight="bold">
         Performance Rates
       </Heading>
-      {buildData.map((data: { label: string; rows: ReportTableType[] }) => (
-        <>
-          <Heading
-            as="h4"
-            fontWeight="bold"
-          >{`Performance Rate : ${data?.label}`}</Heading>
-          <ExportedReportTable rows={data?.rows} />
-        </>
-      ))}
+      {rateTable(buildData)}
     </>
   );
 };
+
+export const NDRBasic = (element: NdrBasicTemplate) => {};
 
 export const NDRFieldReportElemet = (element: NdrFieldsTemplate) => {};
 
 export const LengthOfStayReportElement = (
   element: LengthOfStayRateTemplate
-) => {};
+) => {
+  const rows = [
+    {
+      indicator: element.labels.performanceTarget,
+      response: element.answer?.performanceTarget,
+    },
+    {
+      indicator: element.labels.actualCount,
+      response: element.answer?.actualCount,
+    },
+    {
+      indicator: element.labels.denominator,
+      response: element.answer?.denominator,
+    },
+    {
+      indicator: element.labels.expectedCount,
+      response: element.answer?.expectedCount,
+    },
+    {
+      indicator: element.labels.populationRate,
+      response: element.answer?.populationRate,
+    },
+    {
+      indicator: element.labels.actualRate,
+      response: element.answer?.actualRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels.expectedRate,
+      response: element.answer?.expectedRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels.adjustedRate,
+      response: element.answer?.adjustedRate,
+      helperText: "Auto-calculates",
+    },
+  ];
+  return (
+    <>
+      {rateTable([
+        {
+          rows,
+          label: "Performance Rates",
+        },
+      ])}
+    </>
+  );
+};
 
 export const NDREnhancedReportElement = (element: NdrEnhancedTemplate) => {
+  const label = element.label ?? "Performance Rates";
+
   const buildData = element.assessments?.map(
     (assess: { id: string; label: string }) => {
       const performanceRate = element.answer?.rates?.find(
@@ -158,35 +201,35 @@ export const NDREnhancedReportElement = (element: NdrEnhancedTemplate) => {
           helperText: "Auto-calculates",
         },
       ];
-
-      return { label: assess.label, rows: row };
+      return { label: `${label} : ${assess.label}`, rows: row };
     }
   );
-
-  const label = element.label ?? "Performance Rates";
 
   return (
     <>
       <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
-      {element?.answer?.denominator && (
-        <ExportedReportTable
-          rows={[
-            {
-              indicator: "Performance Rates Denominator",
-              response: element?.answer?.denominator,
-            },
-          ]}
-        />
-      )}
-      {buildData.map((data: { label: string; rows: ReportTableType[] }) => (
-        <>
-          <Heading
-            as="h4"
-            fontWeight="bold"
-          >{`${label} : ${data?.label}`}</Heading>
-          <ExportedReportTable rows={data?.rows} />
-        </>
-      ))}
+      <ExportedReportTable
+        rows={[
+          {
+            indicator: "Performance Rates Denominator",
+            response: element?.answer?.denominator,
+          },
+        ]}
+      />
+      {rateTable(buildData)}
     </>
   );
+};
+
+export const rateTable = (
+  tableData: { label: string; rows: ReportTableType[] }[]
+) => {
+  return tableData.map((data: { label: string; rows: ReportTableType[] }) => (
+    <>
+      <Heading as="h4" fontWeight="bold">
+        {data?.label}
+      </Heading>
+      <ExportedReportTable rows={data?.rows} />
+    </>
+  ));
 };
