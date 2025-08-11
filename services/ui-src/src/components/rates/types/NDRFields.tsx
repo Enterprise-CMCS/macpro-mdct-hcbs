@@ -216,36 +216,34 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
 //The pdf rendering of NDRField component
 export const NDRFieldExport = (element: NdrFieldsTemplate) => {
-  const buildData = element.assessments.map((assess) => {
+  const buildData = element.assessments?.map((assess) => {
     const data = element.answer?.find((item) =>
       item.rates[0].id.includes(assess.id)
     );
-    const rates = data?.rates.map((rate) => {
-      const fieldLabel =
-        element.fields.find((field) => field.id === rate.id.split(".")[1])
-          ?.label ?? "";
+    const rates = element.fields.map((field) => {
+      const rate = data?.rates.find((rate) => rate.id.includes(field.id));
       const performanceTargetLabel = element.labelTemplate
-        .replace("{{field}}", fieldLabel.toLowerCase())
+        .replace("{{field}}", field.label.toLowerCase())
         .replace("{{assessment}}", assess.label);
       return {
-        fieldLabel,
+        fieldLabel: field.label,
         rate: [
           {
             indicator: performanceTargetLabel,
-            response: rate.performanceTarget,
+            response: rate?.performanceTarget,
           },
           {
-            indicator: `Numerator: ${fieldLabel} (${assess.label})`,
-            response: rate.numerator,
+            indicator: `Numerator: ${field.label} (${assess.label})`,
+            response: rate?.numerator,
           },
           {
             indicator: `Denominator (${assess.label})`,
-            response: data.denominator,
+            response: data?.denominator,
             helperText: "Auto-calculates",
           },
           {
-            indicator: `${fieldLabel} Rate (${assess.label})`,
-            response: rate.rate,
+            indicator: `${field.label} Rate (${assess.label})`,
+            response: rate?.rate,
             helperText: "Auto-calculates",
           },
         ],

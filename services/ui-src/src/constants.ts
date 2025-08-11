@@ -19,7 +19,6 @@ export const noReponseText = "No Response";
 export const autoPopulatedText = "Auto-populates from previous response";
 export const autoCalculatesText = "Auto-calculates from previous response";
 
-
 export const HELP_DESK_EMAIL_ADDRESS = "mdct_help@cms.hhs.gov" as const;
 
 // STATES
