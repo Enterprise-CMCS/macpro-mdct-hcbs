@@ -16,6 +16,8 @@ import {
 import { PageElementProps } from "components/report/Elements";
 import { ErrorMessages } from "../../../constants";
 import { Alert } from "components";
+import { autoCalculatesText } from "../../../constants";
+import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const { updateElement, disabled, element } = props;
@@ -180,6 +182,31 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
       </Stack>
     </Stack>
   );
+};
+
+export const NDRBasicExport = (element: NdrBasicTemplate) => {
+  const rows = [
+    {
+      indicator: "Numerator",
+      response: element.answer?.numerator,
+    },
+    {
+      indicator: "Denominator",
+      response: element.answer?.denominator,
+    },
+    {
+      indicator: "Result",
+      response: element.answer?.rate ?? autoCalculatesText,
+      helperText: "Auto-calculates",
+    },
+  ];
+  const buildData = [
+    {
+      label: element.label!,
+      rows,
+    },
+  ];
+  return <>{ExportRateTable(buildData)}</>;
 };
 
 const sx = {

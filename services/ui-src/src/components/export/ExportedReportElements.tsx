@@ -15,6 +15,7 @@ import { NDRExport } from "components/rates/types/NDR";
 import { noReponseText } from "../../constants";
 import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
 import { NDRFieldExport } from "components/rates/types/NDRFields";
+import { NDRBasicExport } from "components/rates/types/NDRBasic";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -71,14 +72,10 @@ export const renderElements = (
     case ElementType.LengthOfStayRate:
       return FieldsExport(element as LengthOfStayRateTemplate);
     case ElementType.NdrBasic:
-      return <>[TO DO: ADD NDR Basic]</>;
+      return NDRBasicExport(element as NdrBasicTemplate);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
   }
 
   return (answer as string) ?? noReponseText;
-};
-
-export const NDRBasicExport = (element: NdrBasicTemplate) => {
-  return <>[TO DO: ADD NDR Basic]</>;
 };
