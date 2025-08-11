@@ -258,7 +258,7 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
 
   return (
     <>
-      {buildData.map((build) => (
+      {buildData?.map((build) => (
         <>
           <Heading as="h4" fontWeight="bold">
             Performance Rates: {build.label}
