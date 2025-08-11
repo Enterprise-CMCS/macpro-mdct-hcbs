@@ -214,6 +214,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
   );
 };
 
+//The pdf rendering of NDRField component
 export const NDRFieldExport = (element: NdrFieldsTemplate) => {
   const buildData = element.assessments.map((assess) => {
     const data = element.answer?.find((item) =>

@@ -191,6 +191,7 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
   );
 };
 
+//The pdf rendering of NDREnchanced component
 export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
   const label = element.label ?? "Performance Rates";
 

@@ -196,7 +196,9 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   );
 };
 
+//The pdf rendering of Fields component
 export const FieldsExport = (element: LengthOfStayRateTemplate) => {
+  const label = "Performance Rates";
   const rows = [
     {
       indicator: element.labels.performanceTarget,
@@ -234,16 +236,7 @@ export const FieldsExport = (element: LengthOfStayRateTemplate) => {
       helperText: "Auto-calculates",
     },
   ];
-  return (
-    <>
-      {ExportRateTable([
-        {
-          rows,
-          label: "Performance Rates",
-        },
-      ])}
-    </>
-  );
+  return <>{ExportRateTable([{ label, rows }])}</>;
 };
 
 const sx = {

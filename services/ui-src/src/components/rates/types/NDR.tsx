@@ -152,7 +152,9 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   );
 };
 
+//The pdf rendering of NDR component
 export const NDRExport = (element: NdrTemplate) => {
+  const label = `Performance Rate : ${element.label}`;
   const rows = [
     {
       indicator: element.performanceTargetLabel,
@@ -172,19 +174,13 @@ export const NDRExport = (element: NdrTemplate) => {
       helperText: "Auto-calculates",
     },
   ];
-  const buildData = [
-    {
-      label: `Performance Rate : ${element.label}`,
-      rows,
-    },
-  ];
 
   return (
     <>
       <Heading as="h4" fontWeight="bold">
         Performance Rates
       </Heading>
-      {ExportRateTable(buildData)}
+      {ExportRateTable([{ label, rows }])}
     </>
   );
 };
