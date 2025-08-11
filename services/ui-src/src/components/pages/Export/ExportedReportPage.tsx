@@ -172,6 +172,63 @@ export const renderReportSections = (
     return true;
   };
 
+  const filteredReportPages = reportPages.filter(shouldRender);
+  const measures = filteredReportPages.filter(
+    (section): section is MeasurePageTemplate => section.type === "measure"
+  );
+
+  const reorderedReportPages: typeof reportPages[number][] = [];
+  const generalInfoSection = filteredReportPages.find(
+    (section) => section.id === "general-info"
+  );
+  if (generalInfoSection) reorderedReportPages.push(generalInfoSection);
+
+  // Requred Measures Section - start section with heading
+  reorderedReportPages.push({
+    title: "Required Measures",
+    id: "required-measures-heading",
+    type: PageType.Standard,
+    elements: [],
+  });
+
+  let filteredRequiredMeasures = measures.filter(
+    (section) => section.required === true
+  );
+
+  filteredRequiredMeasures.forEach((section) => {
+    reorderedReportPages.push(section);
+    const depPages = section.dependentPages;
+    depPages?.forEach((page) => {
+      const measureResult = filteredReportPages.find(
+        (section) => section.id === page.template
+      );
+      if (measureResult) reorderedReportPages.push(measureResult);
+    });
+  });
+
+  // Optional Measures Section - start section with heading
+  reorderedReportPages.push({
+    title: "Optional Measures",
+    id: "optional-measures-heading",
+    type: PageType.Standard,
+    elements: [],
+  });
+
+  let filteredOptionalMeasures = measures.filter(
+    (section) => section.required === false
+  );
+
+  filteredOptionalMeasures.forEach((section) => {
+    reorderedReportPages.push(section);
+    const depPages = section.dependentPages;
+    depPages?.forEach((page) => {
+      const measureResult = filteredReportPages.find(
+        (section) => section.id === page.template
+      );
+      if (measureResult) reorderedReportPages.push(measureResult);
+    });
+  });
+
   return reportPages.filter(shouldRender).map((section, idx) => {
     const showHeader =
       section.type != "measure" && section.type != "measureResults";
