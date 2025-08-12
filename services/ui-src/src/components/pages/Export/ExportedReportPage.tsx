@@ -172,39 +172,56 @@ export const renderReportSections = (
     return true;
   };
 
-  const filteredReportPages = reportPages.filter(shouldRender);
-  const measures = filteredReportPages.filter(
-    (section): section is MeasurePageTemplate => section.type === "measure"
-  );
-
   const reorderedReportPages: typeof reportPages[number][] = [];
-  const generalInfoSection = filteredReportPages.find(
+  const generalInfoSection = reportPages.find(
     (section) => section.id === "general-info"
   );
   if (generalInfoSection) reorderedReportPages.push(generalInfoSection);
 
-  // Requred Measures Section - start section with heading
-  reorderedReportPages.push({
-    title: "Required Measures",
-    id: "required-measures-heading",
-    type: PageType.Standard,
-    elements: [],
-  });
+  const reportPagesCopy = structuredClone(reportPages);
 
-  let filteredRequiredMeasures = measures.filter(
-    (section) => section.required === true
-  );
+  let filteredRequiredMeasures = reportPages.filter(
+    (section) =>
+      section.type === "measure" &&
+      (section as MeasurePageTemplate).required === true
+  ) as MeasurePageTemplate[];
 
-  filteredRequiredMeasures.forEach((section) => {
-    reorderedReportPages.push(section);
-    const depPages = section.dependentPages;
-    depPages?.forEach((page) => {
-      const measureResult = filteredReportPages.find(
-        (section) => section.id === page.template
-      );
-      if (measureResult) reorderedReportPages.push(measureResult);
+  const tempRequiredMeasuresSection: typeof reportPages[number][] = [];
+  if (filteredRequiredMeasures.length > 0) {
+    // Add heading to beginning of section
+    tempRequiredMeasuresSection.push({
+      title: "Required Measures",
+      id: "required-measures-heading",
+      type: PageType.Standard,
+      elements: [],
     });
-  });
+
+    // For every measure, add to section + add its dependent pages
+    for (const measureIdx in filteredRequiredMeasures) {
+      const section = filteredRequiredMeasures[measureIdx];
+      tempRequiredMeasuresSection.push(section);
+      reportPagesCopy.splice(Number(measureIdx), 1);
+
+      const depPages = section.dependentPages;
+      depPages?.forEach((page) => {
+        const measureResultIdx = reportPagesCopy.findIndex(
+          (section) => section.id === page.template
+        );
+        if (measureResultIdx != -1)
+          tempRequiredMeasuresSection.push(reportPagesCopy[measureResultIdx]);
+        reportPagesCopy.splice(measureResultIdx, 1);
+      });
+    }
+  }
+
+  const indexToInsertReqMeasures = reportPagesCopy.findIndex(
+    (section) => section.id === "req-measure-result"
+  );
+  reportPagesCopy.splice(
+    indexToInsertReqMeasures,
+    1,
+    ...tempRequiredMeasuresSection
+  );
 
   // Optional Measures Section - start section with heading
   reorderedReportPages.push({
@@ -214,22 +231,50 @@ export const renderReportSections = (
     elements: [],
   });
 
-  let filteredOptionalMeasures = measures.filter(
-    (section) => section.required === false
+  let filteredOptionalMeasures = reportPages.filter(
+    (section) =>
+      section.type === "measure" &&
+      (section as MeasurePageTemplate).required === false
+  ) as MeasurePageTemplate[];
+
+  const tempOptionalMeasuresSection: typeof reportPages[number][] = [];
+  if (filteredOptionalMeasures.length > 0) {
+    // Add heading to beginning of section
+    tempOptionalMeasuresSection.push({
+      title: "Optional Measures",
+      id: "optional-measures-heading",
+      type: PageType.Standard,
+      elements: [],
+    });
+
+    // For every measure, add to section + add its dependent pages
+    for (const measureIdx in filteredOptionalMeasures) {
+      const section = filteredOptionalMeasures[measureIdx];
+      tempOptionalMeasuresSection.push(section);
+      reportPagesCopy.splice(Number(measureIdx), 1);
+
+      const depPages = section.dependentPages;
+      depPages?.forEach((page) => {
+        const measureResultIdx = reportPagesCopy.findIndex(
+          (section) => section.id === page.template
+        );
+        if (measureResultIdx != -1)
+          tempOptionalMeasuresSection.push(reportPagesCopy[measureResultIdx]);
+        reportPagesCopy.splice(measureResultIdx, 1);
+      });
+    }
+  }
+
+  const indexToInsertOptionalMeasures = reportPagesCopy.findIndex(
+    (section) => section.id === "optional-measure-result"
+  );
+  reportPagesCopy.splice(
+    indexToInsertOptionalMeasures,
+    1,
+    ...tempOptionalMeasuresSection
   );
 
-  filteredOptionalMeasures.forEach((section) => {
-    reorderedReportPages.push(section);
-    const depPages = section.dependentPages;
-    depPages?.forEach((page) => {
-      const measureResult = filteredReportPages.find(
-        (section) => section.id === page.template
-      );
-      if (measureResult) reorderedReportPages.push(measureResult);
-    });
-  });
-
-  return reportPages.filter(shouldRender).map((section, idx) => {
+  return reorderedReportPages.filter(shouldRender).map((section, idx) => {
     const showHeader =
       section.type != "measure" && section.type != "measureResults";
     return (
