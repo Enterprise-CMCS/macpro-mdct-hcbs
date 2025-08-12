@@ -79,6 +79,7 @@ const elements: PageElement[] = [
     type: ElementType.NumberField,
     id: "",
     label: "number label",
+    required: true,
   },
   {
     type: ElementType.Date,

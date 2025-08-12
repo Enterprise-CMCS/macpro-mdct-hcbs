@@ -216,6 +216,7 @@ export const elementObject: {
             id: "id-number-field",
             label: "Enter a number",
             helperText: "Helper text is optional",
+            required: false,
           } as NumberFieldTemplate
         }
       />,

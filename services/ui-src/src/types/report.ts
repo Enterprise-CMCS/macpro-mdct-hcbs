@@ -295,7 +295,7 @@ export type NumberFieldTemplate = {
   label: string;
   helperText?: string;
   answer?: number;
-  required?: boolean;
+  required: boolean;
   hideCondition?: never;
 };
 

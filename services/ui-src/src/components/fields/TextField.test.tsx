@@ -32,6 +32,7 @@ const mockedNumberField: NumberFieldTemplate = {
   type: ElementType.NumberField,
   label: "test label",
   helperText: "helper text",
+  required: true,
 };
 
 const updateSpy = jest.fn();

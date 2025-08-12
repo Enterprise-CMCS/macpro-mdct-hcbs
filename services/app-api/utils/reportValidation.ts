@@ -78,7 +78,7 @@ const numberFieldTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: number().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
 });
 
 const textAreaTemplateSchema = object().shape({
