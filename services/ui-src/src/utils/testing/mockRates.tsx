@@ -48,12 +48,29 @@ export const mockNDRFields: NdrFieldsTemplate = {
   type: ElementType.NdrFields,
   labelTemplate:
     "What is the 2028 state performance target for this {{assessment}} {{field}}?",
-  assessments: [],
-  fields: [],
+  assessments: [
+    {
+      label: "Assessment 1",
+      id: "mock-assess-1",
+    },
+  ],
+  fields: [
+    {
+      label: "Field 1",
+      id: "mock-field-1",
+    },
+  ],
   answer: [
     {
       denominator: undefined,
-      rates: [],
+      rates: [
+        {
+          id: "mock-assess-1.mock-field-1",
+          numerator: undefined,
+          rate: undefined,
+          performanceTarget: undefined,
+        },
+      ],
     },
   ],
 };
