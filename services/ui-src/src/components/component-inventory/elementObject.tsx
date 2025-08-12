@@ -86,6 +86,7 @@ export const elementObject: {
           type: ElementType.Textbox,
           id: "id-textfield",
           label: "TextField",
+          required: false,
         }}
       />,
     ],

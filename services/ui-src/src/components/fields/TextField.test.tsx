@@ -24,6 +24,7 @@ const mockedTextboxElement: TextboxTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: true,
 };
 
 const mockedNumberField: NumberFieldTemplate = {

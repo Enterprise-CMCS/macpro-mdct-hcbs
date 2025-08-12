@@ -285,7 +285,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
 };
 

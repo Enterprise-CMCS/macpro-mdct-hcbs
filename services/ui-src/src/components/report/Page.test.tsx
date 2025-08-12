@@ -68,6 +68,7 @@ const elements: PageElement[] = [
     type: ElementType.Textbox,
     id: "",
     label: "labeled",
+    required: true,
   },
   {
     type: ElementType.TextAreaField,
@@ -176,6 +177,7 @@ const textFieldElement: PageElement[] = [
     type: ElementType.Textbox,
     id: "",
     label: "labeled",
+    required: true,
   },
   {
     type: ElementType.Radio,
