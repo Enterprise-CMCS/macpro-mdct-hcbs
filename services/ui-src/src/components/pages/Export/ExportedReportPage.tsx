@@ -1,4 +1,4 @@
-import { ComponentClass } from "react";
+import React, { ComponentClass, useEffect, useState } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import {
   Box,
@@ -31,7 +31,14 @@ import { ExportedReportTable } from "components/export/ExportedReportTable";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const reportPages = report?.pages;
+  const [renderedReport, setRenderedReport] = useState<React.JSX.Element[]>([]);
+  const reportPages = structuredClone(report?.pages);
+
+  useEffect(() => {
+    if (!reportPages) return;
+    setRenderedReport(renderReportSections(reportPages));
+  }, [report]);
+
   if (!reportPages) return null;
 
   /*
@@ -64,7 +71,7 @@ export const ExportedReportPage = () => {
             {/* report submission set up */}
             {reportSubmissionSetUp(report)}
             {/* report sections */}
-            {renderReportSections(reportPages)}
+            {renderedReport}
           </Flex>
         )) || (
           <Center>
@@ -145,12 +152,7 @@ export const renderReportSections = (
   )[]
 ) => {
   const shouldRender = (section: typeof reportPages[number]) => {
-    if (
-      section.id === "review-submit" ||
-      section.id === "root" ||
-      section.id === "req-measure-result" ||
-      section.id === "optional-measure-result"
-    ) {
+    if (section.id === "review-submit" || section.id === "root") {
       return false;
     }
 
@@ -172,13 +174,9 @@ export const renderReportSections = (
     return true;
   };
 
-  const reorderedReportPages: typeof reportPages[number][] = [];
-  const generalInfoSection = reportPages.find(
-    (section) => section.id === "general-info"
-  );
-  if (generalInfoSection) reorderedReportPages.push(generalInfoSection);
+  reportPages = reportPages.filter(shouldRender);
 
-  const reportPagesCopy = structuredClone(reportPages);
+  // REQUIRED MEASURES - START
 
   let filteredRequiredMeasures = reportPages.filter(
     (section) =>
@@ -197,39 +195,36 @@ export const renderReportSections = (
     });
 
     // For every measure, add to section + add its dependent pages
-    for (const measureIdx in filteredRequiredMeasures) {
-      const section = filteredRequiredMeasures[measureIdx];
+    filteredRequiredMeasures.forEach((section) => {
       tempRequiredMeasuresSection.push(section);
-      reportPagesCopy.splice(Number(measureIdx), 1);
+      const measureIdx = reportPages.findIndex(
+        (measure) => measure.id === section.id
+      );
+      reportPages.splice(Number(measureIdx), 1);
 
       const depPages = section.dependentPages;
       depPages?.forEach((page) => {
-        const measureResultIdx = reportPagesCopy.findIndex(
+        const measureResultIdx = reportPages.findIndex(
           (section) => section.id === page.template
         );
-        if (measureResultIdx != -1)
-          tempRequiredMeasuresSection.push(reportPagesCopy[measureResultIdx]);
-        reportPagesCopy.splice(measureResultIdx, 1);
+        if (measureResultIdx != -1) {
+          tempRequiredMeasuresSection.push(reportPages[measureResultIdx]);
+          reportPages.splice(measureResultIdx, 1);
+        }
       });
-    }
+    });
   }
 
-  const indexToInsertReqMeasures = reportPagesCopy.findIndex(
+  const indexToInsertReqMeasures = reportPages.findIndex(
     (section) => section.id === "req-measure-result"
   );
-  reportPagesCopy.splice(
+  reportPages.splice(
     indexToInsertReqMeasures,
     1,
     ...tempRequiredMeasuresSection
   );
 
-  // Optional Measures Section - start section with heading
-  reorderedReportPages.push({
-    title: "Optional Measures",
-    id: "optional-measures-heading",
-    type: PageType.Standard,
-    elements: [],
-  });
+  // OPTIONAL MEASURES - START
 
   let filteredOptionalMeasures = reportPages.filter(
     (section) =>
@@ -248,33 +243,36 @@ export const renderReportSections = (
     });
 
     // For every measure, add to section + add its dependent pages
-    for (const measureIdx in filteredOptionalMeasures) {
-      const section = filteredOptionalMeasures[measureIdx];
+    filteredOptionalMeasures.forEach((section) => {
       tempOptionalMeasuresSection.push(section);
-      reportPagesCopy.splice(Number(measureIdx), 1);
+      const measureIdx = reportPages.findIndex(
+        (measure) => measure.id === section.id
+      );
+      reportPages.splice(Number(measureIdx), 1);
 
       const depPages = section.dependentPages;
       depPages?.forEach((page) => {
-        const measureResultIdx = reportPagesCopy.findIndex(
+        const measureResultIdx = reportPages.findIndex(
           (section) => section.id === page.template
         );
-        if (measureResultIdx != -1)
-          tempOptionalMeasuresSection.push(reportPagesCopy[measureResultIdx]);
-        reportPagesCopy.splice(measureResultIdx, 1);
+        if (measureResultIdx != -1) {
+          tempOptionalMeasuresSection.push(reportPages[measureResultIdx]);
+          reportPages.splice(measureResultIdx, 1);
+        }
       });
-    }
+    });
   }
 
-  const indexToInsertOptionalMeasures = reportPagesCopy.findIndex(
+  const indexToInsertOptionalMeasures = reportPages.findIndex(
     (section) => section.id === "optional-measure-result"
   );
-  reportPagesCopy.splice(
+  reportPages.splice(
     indexToInsertOptionalMeasures,
     1,
     ...tempOptionalMeasuresSection
   );
 
-  return reorderedReportPages.filter(shouldRender).map((section, idx) => {
+  return reportPages.map((section, idx) => {
     const showHeader =
       section.type != "measure" && section.type != "measureResults";
     return (
