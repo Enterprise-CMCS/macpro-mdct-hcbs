@@ -306,7 +306,7 @@ export type TextAreaBoxTemplate = {
   helperText?: string;
   answer?: string;
   hideCondition?: HideCondition;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DateTemplate = {

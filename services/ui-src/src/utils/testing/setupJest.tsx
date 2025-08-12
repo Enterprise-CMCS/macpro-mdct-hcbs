@@ -306,6 +306,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
         "If applicable, add any notes or comments to provide context to the reported measure result",
       label: "Additional notes/comments",
       answer: "yes",
+      required: false,
     },
   ],
   dependentPages: [

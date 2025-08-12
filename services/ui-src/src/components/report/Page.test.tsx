@@ -74,6 +74,7 @@ const elements: PageElement[] = [
     type: ElementType.TextAreaField,
     id: "",
     label: "labeled",
+    required: true,
   },
   {
     type: ElementType.NumberField,

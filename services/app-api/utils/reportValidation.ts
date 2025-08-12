@@ -88,7 +88,7 @@ const textAreaTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   hideCondition: hideConditionSchema,
-  required: boolean().notRequired(),
+  required: boolean().required(),
 });
 
 const dateTemplateSchema = object().shape({

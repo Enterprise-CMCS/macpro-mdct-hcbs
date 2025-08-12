@@ -100,6 +100,7 @@ export const elementObject: {
           type: ElementType.TextAreaField,
           id: "id-textareafield",
           label: "TextAreaField",
+          required: true,
         }}
       />,
     ],
