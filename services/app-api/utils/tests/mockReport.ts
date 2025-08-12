@@ -60,6 +60,7 @@ export const invalidFormPageReport = {
         },
         {
           type: ElementType.Textbox,
+          required: true,
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
@@ -67,6 +68,7 @@ export const invalidFormPageReport = {
         {
           type: ElementType.Textbox,
           label: "Contact email address",
+          required: true,
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",
         },
@@ -110,11 +112,13 @@ export const invalidMeasurePageReport = {
         {
           type: ElementType.Textbox,
           label: "Contact title",
+          required: true,
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
         },
         {
           type: ElementType.Textbox,
+          required: true,
           label: "Contact email address",
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",

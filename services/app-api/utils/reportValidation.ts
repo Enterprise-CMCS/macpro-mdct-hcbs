@@ -68,7 +68,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   hideCondition: hideConditionSchema,
 });
 
