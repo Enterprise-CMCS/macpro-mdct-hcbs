@@ -315,7 +315,7 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DropdownTemplate = {

@@ -20,6 +20,7 @@ const elements: PageElement[] = [
     type: ElementType.Date,
     id: "",
     label: "Reporting period start date",
+    required: true,
     helperText:
       "What is the reporting period Start Date applicable to the measure results?",
   },

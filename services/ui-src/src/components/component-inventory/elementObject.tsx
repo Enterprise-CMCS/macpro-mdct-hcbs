@@ -190,6 +190,7 @@ export const elementObject: {
           id: "id-date-field",
           label: "DateField",
           helperText: "DateFieldElement is used to select a date.",
+          required: true,
         }}
       />,
     ],

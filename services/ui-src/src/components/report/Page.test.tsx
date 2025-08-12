@@ -86,6 +86,7 @@ const elements: PageElement[] = [
     type: ElementType.Date,
     id: "",
     label: "date label",
+    required: true,
     helperText: "can you read this?",
   },
   {
@@ -198,6 +199,7 @@ const dateFieldElement: PageElement[] = [
     id: "",
     label: "date label",
     helperText: "can you read this?",
+    required: true,
   },
 ];
 

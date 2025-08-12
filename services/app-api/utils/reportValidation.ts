@@ -97,6 +97,7 @@ const dateTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().required(),
   answer: string().notRequired(),
+  required: boolean().required(),
 });
 
 const dropdownTemplateSchema = object().shape({

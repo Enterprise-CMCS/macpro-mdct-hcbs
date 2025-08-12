@@ -75,12 +75,14 @@ export const invalidFormPageReport = {
         {
           type: ElementType.Date,
           label: "Reporting period start date",
+          required: true,
           helperText:
             "What is the reporting period Start Date applicable to the measure results?",
         },
         {
           type: ElementType.Date,
           label: "Reporting period end date",
+          required: true,
           helperText:
             "What is the reporting period End Date applicable to the measure results?",
         },
@@ -126,12 +128,14 @@ export const invalidMeasurePageReport = {
         {
           type: ElementType.Date,
           label: "Reporting period start date",
+          required: true,
           helperText:
             "What is the reporting period Start Date applicable to the measure results?",
         },
         {
           type: ElementType.Date,
           label: "Reporting period end date",
+          required: true,
           helperText:
             "What is the reporting period End Date applicable to the measure results?",
         },
