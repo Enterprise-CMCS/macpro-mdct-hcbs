@@ -409,7 +409,7 @@ export const LengthOfStayFieldNames = {
   adjustedRate: "adjustedRate",
 } as const;
 export type LengthOfStayField =
-  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
+  (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
 export type LengthOfStayRateTemplate = {
   id: string;
@@ -425,20 +425,27 @@ export const RateInputFieldNames = {
   denominator: "denominator",
 } as const;
 export type RateInputFieldName =
-  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+  (typeof RateInputFieldNames)[keyof typeof RateInputFieldNames];
 
 export const RateInputFieldNamesBasic = {
   numerator: "numerator",
   denominator: "denominator",
 } as const;
 export type RateInputFieldNameBasic =
-  typeof RateInputFieldNamesBasic[keyof typeof RateInputFieldNamesBasic];
+  (typeof RateInputFieldNamesBasic)[keyof typeof RateInputFieldNamesBasic];
 
 export type RateType = {
   id: string;
   numerator: number | undefined;
   rate: number | undefined;
   performanceTarget: number | undefined;
+};
+
+export type RateData = {
+  performanceTarget?: number | undefined;
+  numerator: number | undefined;
+  denominator: number | undefined;
+  rate: number | undefined;
 };
 
 export type RateSetData = {
@@ -473,12 +480,7 @@ export type NdrTemplate = {
   type: ElementType.Ndr;
   label: string;
   performanceTargetLabel: string;
-  answer?: {
-    performanceTarget: number | undefined;
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   required?: boolean;
 };
 
@@ -486,11 +488,7 @@ export type NdrBasicTemplate = {
   id: string;
   type: ElementType.NdrBasic;
   label?: string;
-  answer?: {
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   hintText?: {
     numHint: string;
     denomHint: string;

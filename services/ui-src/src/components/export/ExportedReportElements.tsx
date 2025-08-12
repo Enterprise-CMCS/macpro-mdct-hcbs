@@ -2,12 +2,14 @@ import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import {
   ElementType,
+  LengthOfStayField,
   LengthOfStayRateTemplate,
   MeasurePageTemplate,
   NdrBasicTemplate,
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
+  RateData,
   RateSetData,
 } from "types";
 import { FieldsExport } from "components/rates/types/Fields";
@@ -47,7 +49,14 @@ export const renderElements = (
   element: {
     id: string;
     type: ElementType;
-    answer?: string | number | RateSetData[] | RateSetData | undefined;
+    answer?:
+      | string
+      | number
+      | RateSetData[]
+      | RateSetData
+      | RateData
+      | Record<LengthOfStayField, number | undefined>
+      | undefined;
     text?: string;
   }
 ) => {

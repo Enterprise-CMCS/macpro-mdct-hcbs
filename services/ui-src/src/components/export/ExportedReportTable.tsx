@@ -7,6 +7,7 @@ import {
   Td,
   Text,
   Heading,
+  Box,
 } from "@chakra-ui/react";
 import { notAnsweredText } from "../../constants";
 import { ElementType } from "types";
@@ -33,8 +34,8 @@ export const ExportedReportTable = ({ rows }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        {rows?.map((row: ReportTableType) => (
-          <Tr>
+        {rows?.map((row: ReportTableType, idx) => (
+          <Tr key={`${row.indicator}.${idx}`}>
             <Td>
               <Text>{row.indicator} </Text>
               {row?.helperText && <Text>{row?.helperText}</Text>}
@@ -53,12 +54,14 @@ export const ExportedReportTable = ({ rows }: Props) => {
 export const ExportRateTable = (
   tableData: { label: string; rows: ReportTableType[] }[]
 ) => {
-  return tableData.map((data: { label: string; rows: ReportTableType[] }) => (
-    <>
-      <Heading as="h4" fontWeight="bold">
-        {data?.label}
-      </Heading>
-      <ExportedReportTable rows={data?.rows} />
-    </>
-  ));
+  return tableData.map(
+    (data: { label: string; rows: ReportTableType[] }, idx) => (
+      <Box key={`${data.label}.${idx}`}>
+        <Heading as="h4" fontWeight="bold">
+          {data?.label}
+        </Heading>
+        <ExportedReportTable rows={data?.rows} />
+      </Box>
+    )
+  );
 };
