@@ -62,7 +62,7 @@ export const mockNDRFields: NdrFieldsTemplate = {
   ],
   answer: [
     {
-      denominator: undefined,
+      denominator: 2,
       rates: [
         {
           id: "mock-assess-1.mock-field-1",
@@ -84,14 +84,14 @@ export const mockLengthOfStayFields: LengthOfStayRateTemplate = {
   id: "",
   type: ElementType.LengthOfStayRate,
   labels: {
-    actualCount: "1",
-    performanceTarget: "2",
-    denominator: "3",
-    expectedCount: "4",
-    populationRate: "5",
-    actualRate: "6",
-    expectedRate: "7",
-    adjustedRate: "8",
+    actualCount: "Actual Count",
+    performanceTarget: "Performance Target",
+    denominator: "Denominator",
+    expectedCount: "Expected Count",
+    populationRate: "Population Rate",
+    actualRate: "Actual Rate",
+    expectedRate: "Expected Rate",
+    adjustedRate: "Adjusted Rate",
   },
   answer: undefined,
 };

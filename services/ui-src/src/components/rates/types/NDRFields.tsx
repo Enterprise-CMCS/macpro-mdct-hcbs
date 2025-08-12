@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Divider, Heading, Stack } from "@chakra-ui/react";
+import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import {
   NdrFieldsTemplate,
@@ -258,8 +258,8 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
 
   return (
     <>
-      {buildData?.map((build) => (
-        <>
+      {buildData?.map((build, idx) => (
+        <Box key={`${build.label}.${idx}`}>
           <Heading as="h4" fontWeight="bold">
             Performance Rates: {build.label}
           </Heading>
@@ -274,7 +274,7 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
           {build.rates?.map((rate) =>
             ExportRateTable([{ label: rate.fieldLabel, rows: rate.rate }])
           )}
-        </>
+        </Box>
       ))}
     </>
   );
