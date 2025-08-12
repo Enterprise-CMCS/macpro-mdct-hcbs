@@ -201,37 +201,37 @@ export const FieldsExport = (element: LengthOfStayRateTemplate) => {
   const label = "Performance Rates";
   const rows = [
     {
-      indicator: element.labels.performanceTarget,
+      indicator: element.labels?.performanceTarget,
       response: element.answer?.performanceTarget,
     },
     {
-      indicator: element.labels.actualCount,
+      indicator: element.labels?.actualCount,
       response: element.answer?.actualCount,
     },
     {
-      indicator: element.labels.denominator,
+      indicator: element.labels?.denominator,
       response: element.answer?.denominator,
     },
     {
-      indicator: element.labels.expectedCount,
+      indicator: element.labels?.expectedCount,
       response: element.answer?.expectedCount,
     },
     {
-      indicator: element.labels.populationRate,
+      indicator: element.labels?.populationRate,
       response: element.answer?.populationRate,
     },
     {
-      indicator: element.labels.actualRate,
+      indicator: element.labels?.actualRate,
       response: element.answer?.actualRate,
       helperText: "Auto-calculates",
     },
     {
-      indicator: element.labels.expectedRate,
+      indicator: element.labels?.expectedRate,
       response: element.answer?.expectedRate,
       helperText: "Auto-calculates",
     },
     {
-      indicator: element.labels.adjustedRate,
+      indicator: element.labels?.adjustedRate,
       response: element.answer?.adjustedRate,
       helperText: "Auto-calculates",
     },
