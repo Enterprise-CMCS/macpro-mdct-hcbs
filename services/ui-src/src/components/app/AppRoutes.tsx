@@ -59,7 +59,6 @@ export const AppRoutes = () => {
               path="/report/:reportType/:state/:reportId/:pageId?"
               element={<ReportPageWrapper />}
             />
-            {/* Add feature flag for component inventory */}
             {componentInventoryPageEnabled && (
               <Route
                 path="/component-inventory"
