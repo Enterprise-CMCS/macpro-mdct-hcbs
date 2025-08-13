@@ -527,7 +527,7 @@ export type NdrFieldsTemplate = {
   fields: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrEnhancedTemplate = {

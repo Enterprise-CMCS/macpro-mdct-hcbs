@@ -328,7 +328,7 @@ const ndrFieldsRateSchema = object().shape({
       })
     )
     .required(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   multiplier: number().notRequired(),
   answer: array()
     .of(
