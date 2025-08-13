@@ -478,7 +478,7 @@ export type NdrTemplate = {
     denominator: number | undefined;
     rate: number | undefined;
   };
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrBasicTemplate = {
@@ -495,7 +495,7 @@ export type NdrBasicTemplate = {
     denomHint: string;
     rateHint: string;
   };
-  required?: boolean;
+  required: boolean;
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;

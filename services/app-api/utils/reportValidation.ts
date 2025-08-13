@@ -382,7 +382,7 @@ const ndrRateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   performanceTargetLabel: string().required(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       performanceTarget: number().notRequired(),
@@ -397,7 +397,7 @@ const ndrRateBasicSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NdrBasic)),
   id: string().required(),
   label: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       numerator: number().notRequired(),

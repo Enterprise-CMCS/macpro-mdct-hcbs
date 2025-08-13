@@ -9,6 +9,7 @@ const mockedPerformanceElement: NdrTemplate = {
   id: "mock-perf-id",
   type: ElementType.Ndr,
   label: "test label",
+  required: true,
   performanceTargetLabel:
     "What is the 2028 state performance target for this assessment?",
 };

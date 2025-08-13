@@ -50,7 +50,6 @@ const elements = [
     element: {
       id: "mock-length-of-stay-rate",
       type: ElementType.LengthOfStayRate,
-      required: true,
     },
   },
   { element: { id: "mock-ndr-basic", type: ElementType.NdrBasic } },
