@@ -361,7 +361,7 @@ const ndrEnhancedRateSchema = object().shape({
       })
     )
     .required(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       denominator: number().notRequired(),

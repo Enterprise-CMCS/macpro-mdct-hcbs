@@ -538,7 +538,7 @@ export type NdrEnhancedTemplate = {
   performanceTargetLabel: string;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrTemplate = {

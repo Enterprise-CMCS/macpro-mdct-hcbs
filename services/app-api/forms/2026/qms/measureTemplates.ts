@@ -1107,6 +1107,7 @@ export const measureTemplates: Record<
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
         ...statePerformanceTargetLabel,
+        required: true,
         assessments: [
           {
             id: "acute-readmission-plan",
