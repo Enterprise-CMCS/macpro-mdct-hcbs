@@ -356,7 +356,6 @@ export type MeasureResultsNavigationTableTemplate = {
   id: string;
   measureDisplay: "quality";
   hideCondition?: HideCondition;
-  required?: boolean;
 };
 
 export type StatusTableTemplate = {
@@ -416,7 +415,7 @@ export type LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
   answer?: Record<LengthOfStayField, number | undefined>;
-  required?: boolean;
+  required: boolean;
 };
 
 export const RateInputFieldNames = {

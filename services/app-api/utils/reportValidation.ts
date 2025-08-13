@@ -292,7 +292,7 @@ const lengthOfStayRateSchema = object().shape({
     expectedRate: string().required(),
     adjustedRate: string().required(),
   }),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       performanceTarget: number().notRequired(),
