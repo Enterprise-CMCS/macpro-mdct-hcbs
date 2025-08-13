@@ -114,7 +114,7 @@ const dropdownTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
 });
 
 const accordionTemplateSchema = object().shape({

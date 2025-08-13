@@ -325,7 +325,7 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DividerTemplate = {

@@ -94,6 +94,7 @@ const elements: PageElement[] = [
     id: "",
     label: "date label",
     helperText: "can you read this?",
+    required: true,
     options: [{ label: "mock label", value: " mock value" }],
   },
   {
