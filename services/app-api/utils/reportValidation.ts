@@ -211,7 +211,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   clickAction: string().notRequired(),
   hideCondition: hideConditionSchema,
 });

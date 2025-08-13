@@ -149,6 +149,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
   type: ElementType.Radio,
   label: "What technical specifications are being used to report this measure?",
   id: "measure-tech-specs-radio",
+  required: true,
   choices: [
     {
       label:

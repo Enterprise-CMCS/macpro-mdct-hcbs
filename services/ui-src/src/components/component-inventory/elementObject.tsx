@@ -172,6 +172,7 @@ export const elementObject: {
           type: ElementType.Radio,
           id: "id-radio",
           label: "RadioField",
+          required: true,
           choices: [
             { value: "radio option 1", label: "radio option 1" },
             { value: "radio option 2", label: "radio option 2" },

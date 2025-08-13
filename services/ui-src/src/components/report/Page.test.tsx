@@ -107,6 +107,7 @@ const elements: PageElement[] = [
     type: ElementType.Radio,
     id: "",
     label: "date label",
+    required: true,
     choices: [
       { label: "a", value: "1", checkedChildren: [] },
       { label: "b", value: "2" },
@@ -116,6 +117,7 @@ const elements: PageElement[] = [
     type: ElementType.Radio,
     id: "",
     label: "label",
+    required: true,
     choices: [
       { label: "a", value: "1", checkedChildren: [] },
       { label: "b", value: "2" },
@@ -187,6 +189,7 @@ const textFieldElement: PageElement[] = [
     type: ElementType.Radio,
     id: "",
     label: "radio button",
+    required: true,
     choices: [
       { label: "radio choice 1", value: "1", checkedChildren: [] },
       { label: "radio choice 2", value: "2" },

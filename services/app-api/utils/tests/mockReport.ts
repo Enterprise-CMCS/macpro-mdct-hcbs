@@ -173,6 +173,7 @@ export const invalidRadioCheckedChildrenReport = {
         {
           type: ElementType.Radio,
           label: "Were the reported measure results audited or validated?",
+          required: true,
           choices: [
             { label: "No, I am reporting on this measure", value: "no" },
             {

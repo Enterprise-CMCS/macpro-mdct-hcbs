@@ -371,7 +371,7 @@ export type RadioTemplate = {
   choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
 };

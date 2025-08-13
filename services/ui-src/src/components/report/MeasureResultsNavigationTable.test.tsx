@@ -74,6 +74,7 @@ const buildMockReport = (): Report =>
           {
             type: ElementType.Radio,
             id: "delivery-method-radio",
+            required: true,
             label:
               "Which delivery methods will be reported on for this measure?",
             choices: [

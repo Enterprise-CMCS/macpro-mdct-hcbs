@@ -26,6 +26,7 @@ const mockRadioElement: RadioTemplate = {
   id: "mock-radio-id",
   type: ElementType.Radio,
   label: "mock label",
+  required: true,
   choices: [
     {
       label: "Choice 1",
