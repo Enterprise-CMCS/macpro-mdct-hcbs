@@ -1,17 +1,6 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
-import {
-  ElementType,
-  LengthOfStayField,
-  LengthOfStayRateTemplate,
-  MeasurePageTemplate,
-  NdrBasicTemplate,
-  NdrEnhancedTemplate,
-  NdrFieldsTemplate,
-  NdrTemplate,
-  RateData,
-  RateSetData,
-} from "types";
+import { ElementType, MeasurePageTemplate, PageElement } from "types";
 import { FieldsExport } from "components/rates/types/Fields";
 import { NDRExport } from "components/rates/types/NDR";
 import { noReponseText } from "../../constants";
@@ -46,24 +35,11 @@ export const shouldUseTable = (type: ElementType) => {
 
 export const renderElements = (
   section: MeasurePageTemplate,
-  element: {
-    id: string;
-    type: ElementType;
-    answer?:
-      | string
-      | number
-      | RateSetData[]
-      | RateSetData
-      | RateData
-      | Record<LengthOfStayField, number | undefined>
-      | undefined;
-    text?: string;
-  }
+  element: PageElement
 ) => {
   const { type } = element;
   if (!renderElementList.includes(type) || ignoreIdList.includes(element.id))
     return;
-  const { answer } = element;
 
   switch (type) {
     case ElementType.SubHeader:
@@ -73,18 +49,22 @@ export const renderElements = (
         </Heading>
       );
     case ElementType.NdrEnhanced:
-      return NDREnhancedExport(element as NdrEnhancedTemplate);
+      return NDREnhancedExport(element);
     case ElementType.NdrFields:
-      return NDRFieldExport(element as NdrFieldsTemplate);
+      return NDRFieldExport(element);
     case ElementType.Ndr:
-      return NDRExport(element as NdrTemplate);
+      return NDRExport(element);
     case ElementType.LengthOfStayRate:
-      return FieldsExport(element as LengthOfStayRateTemplate);
+      return FieldsExport(element);
     case ElementType.NdrBasic:
-      return NDRBasicExport(element as NdrBasicTemplate);
+      return NDRBasicExport(element);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
   }
 
-  return (answer as string) ?? noReponseText;
+  if (!("answer" in element)) {
+    return noReponseText;
+  }
+
+  return element.answer ?? noReponseText;
 };

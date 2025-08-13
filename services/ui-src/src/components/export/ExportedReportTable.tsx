@@ -34,12 +34,12 @@ export const ExportedReportTable = ({ rows }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        {rows?.map((row: ReportTableType, idx) => (
+        {rows.map((row: ReportTableType, idx) => (
           <Tr key={`${row.indicator}.${idx}`}>
             <Td>
               <Text>{row.indicator} </Text>
-              {row?.helperText && <Text>{row?.helperText}</Text>}
-              {row?.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
+              {row.helperText && <Text>{row.helperText}</Text>}
+              {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
             <Td color={row.response ? "palette.base" : "palette.error_darker"}>
               {row.response ?? notAnsweredText}
