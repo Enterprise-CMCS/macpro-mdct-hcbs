@@ -38,6 +38,19 @@ const report = {
       type: PageType.Measure,
       status: PageStatus.NOT_STARTED,
       required: true,
+      dependentPages: [
+        {
+          template: "id-7-1",
+          key: "7-dep",
+          linkText: "Section 7 Dependent Page",
+        },
+      ],
+    },
+    {
+      title: "Section 7 Dependent Page",
+      id: "id-7-1",
+      type: PageType.MeasureResults,
+      status: PageStatus.NOT_STARTED,
     },
   ],
   lastEdited: 1751987780396,
