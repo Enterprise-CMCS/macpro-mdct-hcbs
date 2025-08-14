@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Divider, Heading, Stack } from "@chakra-ui/react";
+import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import {
   NdrFieldsTemplate,
@@ -18,6 +18,10 @@ import {
   makeEmptyStringCopyOf,
   validateNumber,
 } from "utils/validation/inputValidation";
+import {
+  ExportedReportTable,
+  ExportRateTable,
+} from "components/export/ExportedReportTable";
 
 export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
   const { disabled, element, updateElement } = props;
@@ -207,6 +211,72 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
         })}
       </Stack>
     </Stack>
+  );
+};
+
+//The pdf rendering of NDRField component
+export const NDRFieldExport = (element: NdrFieldsTemplate) => {
+  const buildData = element.assessments?.map((assess) => {
+    const data = element.answer?.find((item) =>
+      item.rates[0].id.includes(assess.id)
+    );
+    const rates = element.fields.map((field) => {
+      const rate = data?.rates.find((rate) => rate.id.includes(field.id));
+      const performanceTargetLabel = element.labelTemplate
+        .replace("{{field}}", field.label.toLowerCase())
+        .replace("{{assessment}}", assess.label);
+      return {
+        fieldLabel: field.label,
+        rate: [
+          {
+            indicator: performanceTargetLabel,
+            response: rate?.performanceTarget,
+          },
+          {
+            indicator: `Numerator: ${field.label} (${assess.label})`,
+            response: rate?.numerator,
+          },
+          {
+            indicator: `Denominator (${assess.label})`,
+            response: data?.denominator,
+            helperText: "Auto-calculates",
+          },
+          {
+            indicator: `${field.label} Rate (${assess.label})`,
+            response: rate?.rate,
+            helperText: "Auto-calculates",
+          },
+        ],
+      };
+    });
+    return {
+      label: assess.label,
+      denominator: data?.denominator,
+      rates,
+    };
+  });
+
+  return (
+    <>
+      {buildData?.map((build, idx) => (
+        <Box key={`${build.label}.${idx}`}>
+          <Heading as="h4" fontWeight="bold">
+            Performance Rates: {build.label}
+          </Heading>
+          <ExportedReportTable
+            rows={[
+              {
+                indicator: `Denominator (${build.label})`,
+                response: build.denominator,
+              },
+            ]}
+          />
+          {build.rates?.map((rate) =>
+            ExportRateTable([{ label: rate.fieldLabel, rows: rate.rate }])
+          )}
+        </Box>
+      ))}
+    </>
   );
 };
 

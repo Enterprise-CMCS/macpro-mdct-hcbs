@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import {
-  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   ParentPageTemplate,
@@ -34,21 +33,14 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   });
 
   const elements =
-    filteredElements?.map(
-      (element: {
-        label?: string;
-        helperText?: string;
-        type: ElementType;
-        id: string;
-      }) => {
-        return {
-          indicator: element?.label ?? "",
-          helperText: element.helperText ?? "",
-          response: renderElements(section as MeasurePageTemplate, element),
-          type: element.type ?? "",
-        };
-      }
-    ) ?? [];
+    filteredElements?.map((element) => {
+      return {
+        indicator: "label" in element ? element.label ?? "" : "",
+        helperText: "helperText" in element ? element.helperText : "",
+        response: renderElements(section as MeasurePageTemplate, element),
+        type: element.type ?? "",
+      };
+    }) ?? [];
 
   /*
    * Split the elements array into subarrays.
