@@ -130,7 +130,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmitId: string;
   required?: boolean;
   stratified?: boolean;
-  optional?: boolean;
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
@@ -139,7 +138,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
 export interface StatusPageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
-  optional?: boolean;
 }
 
 export const isMeasureTemplate = (
