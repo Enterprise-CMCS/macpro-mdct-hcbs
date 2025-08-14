@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { get, useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { parseHtml } from "utils";
@@ -10,61 +9,88 @@ import {
 } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
-import { requiredResponse } from "../../constants";
+import { ErrorMessages } from "../../constants";
 import { parseNumber, stringifyInput } from "../rates/calculations";
+import { isEmail } from "utils/validation/inputValidation";
 
 export const TextField = (
   props: PageElementProps<TextboxTemplate | NumberFieldTemplate>
 ) => {
-  const textbox = props.element;
-
+  const { element: textbox, disabled } = props;
   const stringifyAnswer = (newAnswer: typeof textbox.answer) => {
-    if (typeof newAnswer === "number") return stringifyInput(newAnswer);
+    if (textbox.type === ElementType.NumberField) {
+      return stringifyInput(newAnswer as number);
+    }
     return newAnswer ?? "";
   };
 
   const defaultValue = stringifyAnswer(textbox?.answer);
-  const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [displayValue, setDisplayValue] = useState(defaultValue);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [hasFocus, setHasFocus] = useState(false);
 
-  // get form context and register field
-  const form = useFormContext();
-  const key = `${props.formkey}.answer`;
-  const hideElement = useElementIsHidden(textbox.hideCondition, key);
+  const hideElement = useElementIsHidden(textbox.hideCondition);
 
   useEffect(() => {
-    const options = { required: textbox.required ? requiredResponse : false };
-    form.register(key, options);
-  }, []);
-
-  // Need to listen to prop updates from the parent for events like a measure clear
-  useEffect(() => {
-    setDisplayValue(stringifyAnswer(textbox.answer));
+    /*
+     * We need to listen for answer updates, in case the measure is cleared.
+     * But we don't want to overwrite input contents while the user is typing.
+     * This only comes up if a valid answer becomes invalid mid-typing.
+     * For example, typing "123abc" into a number field. The values saved up to
+     * the store will be: 1, 12, 123, undefined, undefined, undefined.
+     * Each of these will immediately be passed back down through the props.
+     * When the 1st `undefined` comes through, if we neglect to check for focus,
+     * we will wipe out the data, and the textbox will end up with just "bc".
+     */
+    if (!hasFocus) {
+      setDisplayValue(stringifyAnswer(textbox.answer));
+    }
   }, [textbox.answer]);
 
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value } = event.target;
-    setDisplayValue(value);
+    const rawValue = event.target.value;
+    setDisplayValue(rawValue);
 
-    const updatedValue =
-      textbox.type === ElementType.NumberField ? parseNumber(value) : value;
-    form.setValue(name, updatedValue, {
-      shouldValidate: true,
-    });
-    form.setValue(`${props.formkey}.type`, textbox.type);
-    form.setValue(`${props.formkey}.label`, textbox.label);
-    form.setValue(`${props.formkey}.id`, textbox.id);
+    if (textbox.type === ElementType.NumberField) {
+      const updateElement = (props as PageElementProps<NumberFieldTemplate>)
+        .updateElement;
+      const parsedValue = parseNumber(rawValue);
+      updateElement({ answer: parsedValue });
+      const valueIsNonNumeric = rawValue && parsedValue === undefined;
+      if (!rawValue && textbox.required) {
+        setErrorMessage(ErrorMessages.requiredResponse);
+      } else if (valueIsNonNumeric && textbox.required) {
+        setErrorMessage(ErrorMessages.mustBeANumber);
+      } else if (valueIsNonNumeric && !textbox.required) {
+        setErrorMessage(ErrorMessages.mustBeANumberOptional);
+      } else {
+        setErrorMessage("");
+      }
+    } else {
+      const updateElement = (props as PageElementProps<TextboxTemplate>)
+        .updateElement;
+      updateElement({ answer: rawValue });
+      if (!rawValue && textbox.required) {
+        setErrorMessage(ErrorMessages.requiredResponse);
+      } else if (textbox.label.includes("email") && !isEmail(rawValue)) {
+        setErrorMessage(ErrorMessages.mustBeAnEmail);
+      } else {
+        setErrorMessage("");
+      }
+    }
   };
 
   const onBlurHandler = () => {
     // When the user is done typing, overwrite the answer with the parsed value.
-    setDisplayValue(stringifyAnswer(form.getValues(key)));
+    setHasFocus(false);
+    setDisplayValue(stringifyAnswer(textbox.answer));
+    if (!textbox.answer && textbox.required) {
+      setErrorMessage(ErrorMessages.requiredResponse);
+    }
   };
 
-  // prepare error message, hint, and classes
-  const formErrors = form?.formState?.errors;
-  const errorMessage: string | undefined = get(formErrors, key)?.message;
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
   const labelText = textbox.label;
 
@@ -75,15 +101,15 @@ export const TextField = (
   return (
     <Box>
       <CmsdsTextField
-        id={key}
-        name={key}
+        name={textbox.id}
         label={labelText || ""}
         hint={parsedHint}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
+        onFocus={() => setHasFocus(true)}
         value={displayValue}
         errorMessage={errorMessage}
-        {...props}
+        disabled={disabled}
       />
     </Box>
   );

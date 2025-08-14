@@ -52,7 +52,7 @@ const mockStatusLink: StatusAlertTemplate = {
 };
 
 const statusAlertComponent = (
-  <StatusAlert element={mockStatusAlert} formkey="elements.0"></StatusAlert>
+  <StatusAlert element={mockStatusAlert}></StatusAlert>
 );
 
 describe("<StatusAlert />", () => {
@@ -64,12 +64,7 @@ describe("<StatusAlert />", () => {
     });
 
     test("StatusAlert with link is clickable", async () => {
-      render(
-        <StatusAlert
-          element={mockStatusLink}
-          formkey="elements.0"
-        ></StatusAlert>
-      );
+      render(<StatusAlert element={mockStatusLink}></StatusAlert>);
 
       expect(screen.getByText("mock alert")).toBeVisible();
       const link = screen.getByText("Click here");

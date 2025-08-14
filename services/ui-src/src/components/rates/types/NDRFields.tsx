@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Divider, Heading, Stack } from "@chakra-ui/react";
-import { useFormContext } from "react-hook-form";
+import React, { useState } from "react";
+import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import {
   NdrFieldsTemplate,
@@ -9,15 +8,23 @@ import {
 } from "types";
 import {
   parseNumber,
-  roundRate,
+  removeNoise,
   stringifyInput,
   stringifyResult,
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
 import { zip } from "utils/other/arrays";
+import {
+  makeEmptyStringCopyOf,
+  validateNumber,
+} from "utils/validation/inputValidation";
+import {
+  ExportedReportTable,
+  ExportRateTable,
+} from "components/export/ExportedReportTable";
 
 export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
-  const { disabled, formkey, element } = props;
+  const { disabled, element, updateElement } = props;
   const {
     labelTemplate,
     assessments,
@@ -43,13 +50,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
   const initialValue = stringifyAnswer(answer);
   const [displayValue, setDisplayValue] = useState(initialValue);
-
-  // get form context and register field
-  const form = useFormContext();
-  const key = `${formkey}.answer`;
-  useEffect(() => {
-    form.register(key, { required: true });
-  }, []);
+  const [errors, setErrors] = useState(makeEmptyStringCopyOf(initialValue));
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
     /*
@@ -64,16 +65,20 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     const assessIndex = Number(parts.at(0));
     const fieldIndex = parts.length > 2 ? Number(parts.at(2)) : undefined;
     const stringValue = input.value;
+    const { errorMessage } = validateNumber(stringValue, true);
 
     // displayValue corresponds to the inputs on screen. Its values are strings.
     const newDisplayValue = structuredClone(displayValue);
+    const newErrors = structuredClone(errors);
     if (fieldType === RateInputFieldNames.denominator) {
       newDisplayValue[assessIndex].denominator = stringValue;
+      newErrors[assessIndex].denominator = errorMessage;
     } else {
       newDisplayValue[assessIndex].rates[fieldIndex!][fieldType] = stringValue;
+      newErrors[assessIndex].rates[fieldIndex!][fieldType] = errorMessage;
     }
 
-    return newDisplayValue;
+    return { displayValue: newDisplayValue, errors: newErrors };
   };
 
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
@@ -83,7 +88,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
       return {
         id: displayObj.id,
-        denominator: roundRate(denominator),
+        denominator: removeNoise(denominator),
         rates: displayObj.rates.map((rateObj) => {
           const performanceTarget = parseNumber(rateObj.performanceTarget);
           const numerator = parseNumber(rateObj.numerator);
@@ -94,9 +99,9 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
           return {
             id: rateObj.id,
-            performanceTarget: roundRate(performanceTarget),
-            numerator: roundRate(numerator),
-            rate: roundRate(rate),
+            performanceTarget: removeNoise(performanceTarget),
+            numerator: removeNoise(numerator),
+            rate: removeNoise(rate),
           };
         }),
       };
@@ -117,7 +122,8 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
-    const newDisplayValue = updatedDisplayValue(event.target);
+    const { displayValue: newDisplayValue, errors: newErrors } =
+      updatedDisplayValue(event.target);
 
     // answer corresponds to the report data. Its values are numbers.
     const newAnswer = computeAnswer(newDisplayValue);
@@ -125,14 +131,10 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     // Instantly display calculation results
     updateCalculatedValues(newDisplayValue, newAnswer);
     setDisplayValue(newDisplayValue);
+    setErrors(newErrors);
 
-    // Instantly save parsed and calculated values to the form, store, and API
-    form.setValue(`${key}`, newAnswer, { shouldValidate: true });
-  };
-
-  const onBlurHandler = () => {
-    // When the user is done typing, overwrite the answer with the parsed value.
-    setDisplayValue(stringifyAnswer(form.getValues(key)));
+    // Instantly save parsed and calculated values to the store and API
+    updateElement({ answer: newAnswer });
   };
 
   return (
@@ -141,6 +143,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
       <Stack gap="2rem">
         {assessments.map((assess, assessIndex) => {
           const rateSet = displayValue[assessIndex];
+          const errorSet = errors[assessIndex];
 
           return (
             <Stack key={assess.id} gap="2rem">
@@ -153,13 +156,15 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
                 label={`Denominator (${assess.label})`}
                 name={`${assessIndex}.${RateInputFieldNames.denominator}`}
                 onChange={onChangeHandler}
-                onBlur={onBlurHandler}
+                onBlur={onChangeHandler}
                 value={rateSet.denominator}
+                errorMessage={errorSet.denominator}
                 disabled={disabled}
               ></CmsdsTextField>
 
               {fields.map((field, fieldIndex) => {
                 const rateObject = rateSet.rates[fieldIndex];
+                const errorObject = errorSet.rates[fieldIndex];
 
                 return (
                   <Stack key={`${assess.id}.${field.id}`} gap="2rem">
@@ -170,16 +175,18 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
                         .replace("{{assessment}}", assess.label)}
                       name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.performanceTarget}`}
                       onChange={onChangeHandler}
-                      onBlur={onBlurHandler}
+                      onBlur={onChangeHandler}
                       value={rateObject.performanceTarget}
+                      errorMessage={errorObject.performanceTarget}
                       disabled={disabled}
                     ></CmsdsTextField>
                     <CmsdsTextField
                       label={`Numerator: ${field.label} (${assess.label})`}
                       name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.numerator}`}
                       onChange={onChangeHandler}
-                      onBlur={onBlurHandler}
+                      onBlur={onChangeHandler}
                       value={rateObject.numerator}
+                      errorMessage={errorObject.numerator}
                       disabled={disabled}
                     ></CmsdsTextField>
                     <CmsdsTextField
@@ -204,6 +211,72 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
         })}
       </Stack>
     </Stack>
+  );
+};
+
+//The pdf rendering of NDRField component
+export const NDRFieldExport = (element: NdrFieldsTemplate) => {
+  const buildData = element.assessments?.map((assess) => {
+    const data = element.answer?.find((item) =>
+      item.rates[0].id.includes(assess.id)
+    );
+    const rates = element.fields.map((field) => {
+      const rate = data?.rates.find((rate) => rate.id.includes(field.id));
+      const performanceTargetLabel = element.labelTemplate
+        .replace("{{field}}", field.label.toLowerCase())
+        .replace("{{assessment}}", assess.label);
+      return {
+        fieldLabel: field.label,
+        rate: [
+          {
+            indicator: performanceTargetLabel,
+            response: rate?.performanceTarget,
+          },
+          {
+            indicator: `Numerator: ${field.label} (${assess.label})`,
+            response: rate?.numerator,
+          },
+          {
+            indicator: `Denominator (${assess.label})`,
+            response: data?.denominator,
+            helperText: "Auto-calculates",
+          },
+          {
+            indicator: `${field.label} Rate (${assess.label})`,
+            response: rate?.rate,
+            helperText: "Auto-calculates",
+          },
+        ],
+      };
+    });
+    return {
+      label: assess.label,
+      denominator: data?.denominator,
+      rates,
+    };
+  });
+
+  return (
+    <>
+      {buildData?.map((build, idx) => (
+        <Box key={`${build.label}.${idx}`}>
+          <Heading as="h4" fontWeight="bold">
+            Performance Rates: {build.label}
+          </Heading>
+          <ExportedReportTable
+            rows={[
+              {
+                indicator: `Denominator (${build.label})`,
+                response: build.denominator,
+              },
+            ]}
+          />
+          {build.rates?.map((rate) =>
+            ExportRateTable([{ label: rate.fieldLabel, rows: rate.rate }])
+          )}
+        </Box>
+      ))}
+    </>
   );
 };
 

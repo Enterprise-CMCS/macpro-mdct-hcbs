@@ -12,7 +12,6 @@ export {
   AdminBannerProvider,
 } from "./banners/AdminBannerProvider";
 export { Banner } from "./banners/Banner";
-export { PreviewBanner } from "./banners/PreviewBanner";
 // layout
 export { HomePage } from "./layout/HomePage";
 export { Header } from "./layout/Header";
@@ -28,6 +27,8 @@ export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
 export { TacmIntroductionCard } from "./cards/TacmIntroductionCard";
 export { CiIntroductionCard } from "./cards/CiIntroductionCard";
 export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
+// component inventory
+export { ComponentInventory } from "./component-inventory/ComponentInventory";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";

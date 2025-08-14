@@ -6,7 +6,7 @@ import {
   fillAddEditReportModal,
   assertReportIsCreated,
   testModalData,
-} from "./../utils/reportUtils";
+} from "../utils/reportUtils";
 
 test.use({ storageState: stateUserAuthPath });
 

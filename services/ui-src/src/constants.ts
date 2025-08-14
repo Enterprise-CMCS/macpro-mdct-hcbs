@@ -1,17 +1,23 @@
 // BANNERS
 export const bannerId = "admin-banner-id";
 
-// ERRORS
-export const error = {
-  END_DATE_BEFORE_START_DATE: "End date can't be before start date",
-};
+export const ErrorMessages = {
+  endDateBeforeStartDate: "End date can't be before start date",
+  mustBeADate: "Response must be a date in MMDDYYYY format",
+  mustBeADateOptional:
+    "If provided, response must be a date in MMDDYYYY format",
+  mustBeANumber: "Response must be a number",
+  mustBeANumberOptional: "If provided, response must be a number",
+  requiredResponse: "A response is required",
+  mustBeAnEmail: "Response must be a valid email address",
+} as const;
 
-// HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
 
 export const notAnsweredText = "Not answered";
-
-export const requiredResponse = "A response is required";
+export const noReponseText = "No Response";
+export const autoPopulatedText = "Auto-populates from previous response";
+export const autoCalculatesText = "Auto-calculates from previous response";
 
 export const HELP_DESK_EMAIL_ADDRESS = "mdct_help@cms.hhs.gov" as const;
 

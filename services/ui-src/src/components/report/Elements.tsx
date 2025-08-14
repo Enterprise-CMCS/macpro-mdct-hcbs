@@ -28,11 +28,17 @@ import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
 
-export interface PageElementProps<T extends PageElement = PageElement> {
-  element: T;
-  formkey: string;
-  disabled?: boolean;
+export type PageElementProps<T extends PageElement = PageElement> = T extends {
+  answer?: any;
 }
+  ? {
+      element: T;
+      updateElement: (updatedElement: Partial<T>) => void;
+      disabled?: boolean;
+    }
+  : {
+      element: T;
+    };
 
 export const HeaderElement = ({
   element,

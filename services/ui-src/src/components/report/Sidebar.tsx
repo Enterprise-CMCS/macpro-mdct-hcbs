@@ -19,7 +19,7 @@ const getTitle = (report: Report) => {
   if (!isReportType(report.type)) return "";
   switch (report.type) {
     case ReportType.CI:
-      return "CICM Report";
+      return "Critical Incident Report";
     case ReportType.QMS:
       return "Quality Measure Set Report";
     case ReportType.TACM:

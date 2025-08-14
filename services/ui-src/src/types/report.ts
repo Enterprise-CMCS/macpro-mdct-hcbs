@@ -315,6 +315,7 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
+  required?: boolean;
 };
 
 export type DropdownTemplate = {
@@ -440,6 +441,13 @@ export type RateType = {
   performanceTarget: number | undefined;
 };
 
+export type RateData = {
+  performanceTarget?: number | undefined;
+  numerator: number | undefined;
+  denominator: number | undefined;
+  rate: number | undefined;
+};
+
 export type RateSetData = {
   denominator: number | undefined;
   rates: RateType[];
@@ -472,12 +480,7 @@ export type NdrTemplate = {
   type: ElementType.Ndr;
   label: string;
   performanceTargetLabel: string;
-  answer?: {
-    performanceTarget: number | undefined;
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   required?: boolean;
 };
 
@@ -485,11 +488,7 @@ export type NdrBasicTemplate = {
   id: string;
   type: ElementType.NdrBasic;
   label?: string;
-  answer?: {
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   hintText?: {
     numHint: string;
     denomHint: string;

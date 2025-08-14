@@ -1,12 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import {
-  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
-import { renderElements, useTable } from "./ExportedReportElements";
+import { renderElements, shouldUseTable } from "./ExportedReportElements";
 import { chunkBy } from "utils/other/arrays";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
@@ -24,34 +23,38 @@ export const renderReportDisplay = (
 };
 
 export const ExportedReportWrapper = ({ section }: Props) => {
-  const elements =
-    section.elements?.map(
-      (element: {
-        label?: string;
-        helperText?: string;
-        type: ElementType;
-        id: string;
-      }) => {
-        return {
-          indicator: element?.label ?? "",
-          helperText: element.helperText ?? "",
-          response: renderElements(section as MeasurePageTemplate, element),
-          type: element.type ?? "",
-        };
-      }
-    ) ?? [];
+  const filteredElements = section.elements?.filter((element) => {
+    const hasAnswer =
+      "answer" in element &&
+      element.answer !== undefined &&
+      element.answer !== "";
+    const isRequired = !("required" in element) || element.required !== false;
+    return hasAnswer || isRequired;
+  });
 
-  // this chunkBy will split and keep the orders of the elements based on whether it's part of the default table or needs a unique renderer
-  const chunkedElements = chunkBy(elements, (element) =>
-    useTable(element.type)
-  );
+  const elements =
+    filteredElements?.map((element) => {
+      return {
+        indicator: "label" in element ? element.label ?? "" : "",
+        helperText: "helperText" in element ? element.helperText : "",
+        response: renderElements(section as MeasurePageTemplate, element),
+        type: element.type ?? "",
+      };
+    }) ?? [];
+
+  /*
+   * Split the elements array into subarrays.
+   * Within each subarray, either all elements belong in a table, or none do.
+   * Order is preserved: flattening the chunked array would give the original.
+   */
+  const chunkedElements = chunkBy(elements, (el) => shouldUseTable(el.type));
 
   return (
     <Flex flexDir="column" gap="1.5rem">
-      {chunkedElements?.length! > 0 ? (
+      {chunkedElements.length > 0 ? (
         <>
           {chunkedElements.map((elements) =>
-            useTable(elements[0].type)
+            shouldUseTable(elements[0].type)
               ? renderReportTable(elements)
               : renderReportDisplay(elements)
           )}

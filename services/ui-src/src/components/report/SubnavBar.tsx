@@ -8,7 +8,7 @@ const getTitle = (reportType: string) => {
   if (!isReportType(reportType)) return "";
   switch (reportType) {
     case ReportType.CI:
-      return "CICM Report";
+      return "CI Report";
     case ReportType.QMS:
       return "QMS Report";
     case ReportType.TACM:

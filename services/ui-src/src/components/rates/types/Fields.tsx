@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { LengthOfStayField, LengthOfStayRateTemplate } from "types";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { useFormContext } from "react-hook-form";
 import {
   parseNumber,
-  roundRate,
+  removeNoise,
   stringifyInput,
   stringifyResult,
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
+import {
+  makeEmptyStringCopyOf,
+  validateNumber,
+} from "utils/validation/inputValidation";
+import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
-  const { formkey, disabled } = props;
+  const { disabled, updateElement } = props;
   const { labels, answer } = props.element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
@@ -30,22 +34,19 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 
   const initialValue = stringifyAnswer(answer);
   const [displayValue, setDisplayValue] = useState(initialValue);
-
-  // Get form context and register field
-  const form = useFormContext();
-  const key = `${formkey}.answer`;
-  useEffect(() => {
-    form.register(key, { required: true });
-  }, []);
+  const [errors, setErrors] = useState(makeEmptyStringCopyOf(initialValue));
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
     const fieldType = input.name as LengthOfStayField;
     const stringValue = input.value;
+    const { errorMessage } = validateNumber(stringValue, true);
 
     const newDisplayValue = structuredClone(displayValue);
+    const newErrors = structuredClone(errors);
     newDisplayValue[fieldType] = stringValue;
+    newErrors[fieldType] = errorMessage;
 
-    return newDisplayValue;
+    return { displayValue: newDisplayValue, errors: newErrors };
   };
 
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
@@ -85,14 +86,14 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     }
 
     return {
-      performanceTarget: roundRate(performanceTarget),
-      actualCount: roundRate(actualCount),
-      denominator: roundRate(denominator),
-      expectedCount: roundRate(expectedCount),
-      populationRate: roundRate(populationRate),
-      actualRate: roundRate(actualRate),
-      expectedRate: roundRate(expectedRate),
-      adjustedRate: roundRate(adjustedRate),
+      performanceTarget: removeNoise(performanceTarget),
+      actualCount: removeNoise(actualCount),
+      denominator: removeNoise(denominator),
+      expectedCount: removeNoise(expectedCount),
+      populationRate: removeNoise(populationRate),
+      actualRate: removeNoise(actualRate),
+      expectedRate: removeNoise(expectedRate),
+      adjustedRate: removeNoise(adjustedRate),
     };
   };
 
@@ -107,7 +108,8 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
-    const newDisplayValue = updatedDisplayValue(event.target);
+    const { displayValue: newDisplayValue, errors: newErrors } =
+      updatedDisplayValue(event.target);
 
     // answer corresponds to the report data. Its values are numbers.
     const newAnswer = computeAnswer(newDisplayValue);
@@ -115,14 +117,10 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     // Instantly display calculation results
     updateCalculatedValues(newDisplayValue, newAnswer);
     setDisplayValue(newDisplayValue);
+    setErrors(newErrors);
 
-    // Instantly save parsed and calculated values to the form, store, and API
-    form.setValue(`${key}`, newAnswer, { shouldValidate: true });
-  };
-
-  const onBlurHandler = () => {
-    // When the user is done typing, overwrite the answer with the parsed value.
-    setDisplayValue(stringifyAnswer(form.getValues(key)));
+    // Instantly save parsed and calculated values to the store and API
+    updateElement({ answer: newAnswer });
   };
 
   return (
@@ -133,40 +131,45 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           label={labels.performanceTarget}
           name="performanceTarget"
           onChange={onChangeHandler}
-          onBlur={onBlurHandler}
+          onBlur={onChangeHandler}
           value={displayValue.performanceTarget}
+          errorMessage={errors.performanceTarget}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualCount}
           name="actualCount"
           onChange={onChangeHandler}
-          onBlur={onBlurHandler}
+          onBlur={onChangeHandler}
           value={displayValue.actualCount}
+          errorMessage={errors.actualCount}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.denominator}
           name="denominator"
           onChange={onChangeHandler}
-          onBlur={onBlurHandler}
+          onBlur={onChangeHandler}
           value={displayValue.denominator}
+          errorMessage={errors.denominator}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.expectedCount}
           name="expectedCount"
           onChange={onChangeHandler}
-          onBlur={onBlurHandler}
+          onBlur={onChangeHandler}
           value={displayValue.expectedCount}
+          errorMessage={errors.expectedCount}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.populationRate}
           name="populationRate"
           onChange={onChangeHandler}
-          onBlur={onBlurHandler}
+          onBlur={onChangeHandler}
           value={displayValue.populationRate}
+          errorMessage={errors.populationRate}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
@@ -191,6 +194,49 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
       </Stack>
     </Stack>
   );
+};
+
+//The pdf rendering of Fields component
+export const FieldsExport = (element: LengthOfStayRateTemplate) => {
+  const label = "Performance Rates";
+  const rows = [
+    {
+      indicator: element.labels?.performanceTarget,
+      response: element.answer?.performanceTarget,
+    },
+    {
+      indicator: element.labels?.actualCount,
+      response: element.answer?.actualCount,
+    },
+    {
+      indicator: element.labels?.denominator,
+      response: element.answer?.denominator,
+    },
+    {
+      indicator: element.labels?.expectedCount,
+      response: element.answer?.expectedCount,
+    },
+    {
+      indicator: element.labels?.populationRate,
+      response: element.answer?.populationRate,
+    },
+    {
+      indicator: element.labels?.actualRate,
+      response: element.answer?.actualRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels?.expectedRate,
+      response: element.answer?.expectedRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels?.adjustedRate,
+      response: element.answer?.adjustedRate,
+      helperText: "Auto-calculates",
+    },
+  ];
+  return <>{ExportRateTable([{ label, rows }])}</>;
 };
 
 const sx = {

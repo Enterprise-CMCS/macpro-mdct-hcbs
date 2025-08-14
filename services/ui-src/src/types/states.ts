@@ -54,7 +54,7 @@ export interface HcbsReportState {
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
   setModalComponent: (modalComponent: ReactNode, modalHeader: string) => void;
-  setAnswers: (answers: any, errors?: any) => void;
+  setAnswers: (answers: any) => void;
   clearMeasure: (
     measureId: string,
     ignoreList: { [key: string]: string }

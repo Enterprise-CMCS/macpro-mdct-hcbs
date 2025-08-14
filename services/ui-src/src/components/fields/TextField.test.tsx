@@ -1,35 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useFormContext } from "react-hook-form";
 import { TextField } from "components";
-import { mockStateUserStore } from "utils/testing/setupJest";
-import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { ElementType, TextboxTemplate } from "types/report";
+import {
+  ElementType,
+  NumberFieldTemplate,
+  TextboxTemplate,
+} from "types/report";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
+import { useState } from "react";
 
-const mockTrigger = jest.fn();
-const mockRhfMethods = {
-  register: () => {},
-  setValue: jest.fn(),
-  getValues: jest.fn(),
-  trigger: mockTrigger,
-};
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
-}));
-const mockGetValues = (returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 jest.mock("utils/state/hooks/useElementIsHidden");
 const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
   typeof useElementIsHidden
@@ -46,74 +26,89 @@ const mockedTextboxElement: TextboxTemplate = {
   },
 };
 
-const textFieldComponent = (
-  <TextField element={mockedTextboxElement} formkey="elements.0" />
-);
+const mockedNumberField: NumberFieldTemplate = {
+  id: "mock-textbox-id",
+  type: ElementType.NumberField,
+  label: "test label",
+  helperText: "helper text",
+};
+
+const updateSpy = jest.fn();
+
+const TextFieldWrapper = ({
+  template,
+}: {
+  template: TextboxTemplate | NumberFieldTemplate;
+}) => {
+  const [element, setElement] = useState(template);
+  const onChange = (updatedElement: Partial<typeof element>) => {
+    updateSpy(updatedElement);
+    setElement({ ...element, ...updatedElement } as typeof element);
+  };
+  return <TextField element={template as any} updateElement={onChange} />;
+};
 
 describe("<TextField />", () => {
-  describe("Test TextField component", () => {
-    test("TextField is visible", () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues("");
-      render(textFieldComponent);
-      const textField = screen.getByRole("textbox");
-      expect(textField).toBeVisible();
-      jest.clearAllMocks();
-    });
-
-    test("TextField should send updates to the Form", async () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues("");
-      render(textFieldComponent);
-      const textField = screen.getByRole("textbox");
-
-      await userEvent.type(textField, "h");
-
-      // enter letter + type + label + id
-      expect(mockRhfMethods.setValue).toHaveBeenCalledTimes(4);
-      expect(mockRhfMethods.setValue).toHaveBeenNthCalledWith(
-        1,
-        expect.any(String),
-        "h",
-        expect.any(Object)
-      );
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe("Text field hide condition logic", () => {
-    test("Text field is hidden if its hide conditions' controlling element has a matching answer", async () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockedUseElementIsHidden.mockReturnValueOnce(true);
-      render(textFieldComponent);
-      const textField = screen.queryByLabelText("test label");
-      expect(textField).not.toBeInTheDocument();
-    });
-
-    test("Text field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {
-      mockGetValues({
-        elements: [
-          {
-            answer: "idk",
-            type: "radio",
-            label: "Should we hide the other radios on this page?",
-            id: "reporting-radio",
-          },
-        ],
-      });
-      render(textFieldComponent);
-      const textField = screen.queryByLabelText("test label");
-      expect(textField).toBeVisible();
-    });
+  test("TextField is visible", () => {
+    render(<TextFieldWrapper template={mockedTextboxElement} />);
+    const textField = screen.getByRole("textbox");
+    expect(textField).toBeVisible();
   });
 
-  testA11y(
-    textFieldComponent,
-    () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues(undefined);
-    },
-    () => {
-      jest.clearAllMocks();
-    }
-  );
+  test("TextField should send updates to the Form", async () => {
+    render(<TextFieldWrapper template={mockedTextboxElement} />);
+    const textField = screen.getByRole("textbox");
+
+    await userEvent.type(textField, "hello");
+
+    expect(updateSpy).toHaveBeenCalledWith({ answer: "hello" });
+  });
+
+  test("TextField should parse numeric values depending on its type", async () => {
+    render(<TextFieldWrapper template={mockedNumberField} />);
+    const textField = screen.getByRole("textbox");
+
+    await userEvent.type(textField, "24");
+
+    expect(updateSpy).toHaveBeenCalledWith({ answer: 24 });
+  });
+
+  test("NumberField should render its initial value", () => {
+    render(
+      <TextFieldWrapper template={{ ...mockedNumberField, answer: 123 }} />
+    );
+
+    const textField = screen.getByRole("textbox");
+    expect(textField).toHaveValue("123");
+  });
+
+  test("NumberField should respond to measure clear", () => {
+    const props = {
+      element: {
+        ...mockedNumberField,
+        answer: 123 as number | undefined,
+      },
+      updateElement: () => {},
+    };
+
+    const { rerender } = render(<TextField {...props} />);
+    props.element.answer = undefined;
+    rerender(<TextField {...props} />);
+
+    const textField = screen.getByRole("textbox");
+    expect(textField).toHaveValue("");
+  });
+
+  test("Text field is hidden if its hide conditions' controlling element has a matching answer", async () => {
+    mockedUseElementIsHidden.mockReturnValueOnce(true);
+    render(<TextFieldWrapper template={mockedTextboxElement} />);
+    const textField = screen.queryByLabelText("test label");
+    expect(textField).not.toBeInTheDocument();
+  });
+
+  testA11y(<TextFieldWrapper template={mockedTextboxElement} />);
 });

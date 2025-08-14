@@ -15,7 +15,6 @@ import {
 } from "utils/state/selectors";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
-import { useFormContext } from "react-hook-form";
 
 export const MeasureFooterElement = (
   props: PageElementProps<MeasureFooterTemplate>
@@ -30,7 +29,6 @@ export const MeasureFooterElement = (
     completePage,
   } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
-  const { reset } = useFormContext();
   const { userIsEndUser } = useStore().user ?? {};
   const readOnlyView =
     !userIsEndUser || report?.status === ReportStatus.SUBMITTED;
@@ -46,8 +44,6 @@ export const MeasureFooterElement = (
   const submitClear = () => {
     // Reset zustand state
     resetMeasure(currentPage.id);
-    // Reset react-hook-form state
-    reset();
     autosave();
   };
 

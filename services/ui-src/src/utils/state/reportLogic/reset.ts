@@ -28,15 +28,15 @@ export const performClearMeasure = (
     page.status = PageStatus.IN_PROGRESS;
   }
   // Clean measure
-  page.elements?.forEach((element) => {
+  for (let element of page.elements ?? []) {
     if (element.id in ignoreList) {
       // Ignore typeguards for now; the answer may not be set yet.
       const elementWithAnswer = element as { answer: any };
       elementWithAnswer.answer = ignoreList[element.id];
-      return;
+      continue;
     }
     performResetPageElement(element);
-  });
+  }
 
   // Clear children of measures - hard reset
   if (page.type === PageType.Measure) {
