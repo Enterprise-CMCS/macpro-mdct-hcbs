@@ -1,5 +1,3 @@
-/* eslint-disable multiline-comment-style */
-
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";

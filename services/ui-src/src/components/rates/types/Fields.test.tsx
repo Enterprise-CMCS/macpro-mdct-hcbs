@@ -1,161 +1,98 @@
 import { act, render, screen } from "@testing-library/react";
 import { Fields } from "./Fields";
 import userEvent from "@testing-library/user-event";
-import { useFormContext } from "react-hook-form";
-import { FacilityLengthOfStayCalc } from "../calculations";
-import { useStore } from "utils";
 import {
   ElementType,
-  PerformanceRateTemplate,
-  PerformanceRateType,
+  LengthOfStayField,
+  LengthOfStayRateTemplate,
 } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { mockStateUserStore } from "utils/testing/setupJest";
+import { useState } from "react";
 
-const mockTrigger = jest.fn();
-const mockRhfMethods = {
-  register: () => {},
-  setValue: jest.fn(),
-  getValues: jest.fn(),
-  trigger: mockTrigger,
-};
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
-}));
-const mockGetValues = (returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-
-const mockedPerformanceElement: PerformanceRateTemplate = {
+const mockedPerformanceElement: LengthOfStayRateTemplate = {
   id: "mock-perf-id",
-  type: ElementType.PerformanceRate,
-  rateType: PerformanceRateType.FIELDS,
-  label: "test label",
-  helperText: "helper text",
-  fields: [
-    {
-      id: "count-of-success",
-      label: "Count of Successful Discharges to the Community",
-    },
-    { id: "fac-count", label: "Facility Admission Count" },
-    {
-      id: "expected-count-of-success",
-      label: "Expected Count of Successful Discharges to the Community",
-    },
-    { id: "multi-plan", label: "Multi-Plan Population Rate" },
-    {
-      id: "opr-min-stay",
-      label:
-        "Observed Performance Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "epr-min-stay",
-      label:
-        "Expected Performance Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-    {
-      id: "rar-min-stay",
-      label: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
-      autoCalc: true,
-    },
-  ],
-  multiplier: 1,
+  type: ElementType.LengthOfStayRate,
+  labels: {
+    performanceTarget: `What is the 2028 state performance target for this assessment?`,
+    actualCount: "Count of Successful Discharges to the Community",
+    denominator: "Facility Admission Count",
+    expectedCount: "Expected Count of Successful Discharges to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
 };
+const updateSpy = jest.fn();
 
-const fieldsComponent = (
-  <Fields
-    formkey={"mock-key"}
-    calculation={FacilityLengthOfStayCalc}
-    year={2026}
-    disabled={false}
-    {...mockedPerformanceElement}
-  />
-);
+const LengthOfStayWrapper = ({
+  template,
+}: {
+  template: LengthOfStayRateTemplate;
+}) => {
+  const [element, setElement] = useState(template);
+  const onChange = (updatedElement: Partial<typeof element>) => {
+    updateSpy(updatedElement);
+    setElement({ ...element, ...updatedElement });
+  };
+  return <Fields element={element} updateElement={onChange} />;
+};
 
 describe("<Fields />", () => {
   describe("Test Fields component", () => {
     beforeEach(() => {
-      render(fieldsComponent);
+      jest.clearAllMocks();
     });
-    test("Fields is visible", () => {
-      expect(
-        screen.getByRole("textbox", {
-          name: "What is the 2028 state performance target for this assessment?",
-        })
-      ).toBeInTheDocument();
 
-      mockedPerformanceElement.fields?.forEach((field) => {
-        expect(
-          screen.getByRole("textbox", {
-            name: field.label,
-          })
-        ).toBeInTheDocument();
+    const labels = mockedPerformanceElement.labels;
+    const getInput = (fieldId: LengthOfStayField) => {
+      return screen.getByRole("textbox", { name: labels[fieldId] });
+    };
 
-        if (field.autoCalc)
-          expect(
-            screen.getByRole("textbox", { name: field.label })
-          ).toBeDisabled();
-      });
+    test("Fields are visible, and disabled appropriately", () => {
+      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+      for (let fieldId of Object.keys(labels)) {
+        expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
+      }
+
+      for (let editableFieldId of [
+        "performanceTarget",
+        "actualCount",
+        "denominator",
+        "expectedCount",
+        "populationRate",
+      ] as const) {
+        expect(getInput(editableFieldId)).not.toBeDisabled();
+      }
+
+      for (let autoCalcFieldId of [
+        "actualRate",
+        "expectedRate",
+        "adjustedRate",
+      ] as const) {
+        expect(getInput(autoCalcFieldId)).toBeDisabled();
+      }
     });
+
     test("Fields should auto-calculate", async () => {
-      const countOfSuccessDis = screen.getByRole("textbox", {
-        name: "Count of Successful Discharges to the Community",
-      });
-      await act(async () => await userEvent.type(countOfSuccessDis, "1"));
+      const enterValue = async (fieldId: LengthOfStayField, value: string) => {
+        await act(() => userEvent.type(getInput(fieldId), value));
+      };
 
-      const facAdminCount = screen.getByRole("textbox", {
-        name: "Facility Admission Count",
-      });
-      await act(async () => await userEvent.type(facAdminCount, "2"));
+      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 
-      const expectedCountOfSuccessDis = screen.getByRole("textbox", {
-        name: "Expected Count of Successful Discharges to the Community",
-      });
-      await act(
-        async () => await userEvent.type(expectedCountOfSuccessDis, "1")
-      );
+      await enterValue("actualCount", "1");
+      await enterValue("denominator", "2");
+      await enterValue("expectedCount", "1");
+      await enterValue("populationRate", "2");
 
-      const multiPlan = screen.getByRole("textbox", {
-        name: "Multi-Plan Population Rate",
-      });
-      await act(async () => await userEvent.type(multiPlan, "2"));
-
-      //rates
-      const oprMinStay = screen.getByRole("textbox", {
-        name: "Observed Performance Rate for the Minimizing Length of Facility Stay",
-      });
-      expect(oprMinStay).toHaveValue("0.5");
-
-      const eprMinStay = screen.getByRole("textbox", {
-        name: "Expected Performance Rate for the Minimizing Length of Facility Stay",
-      });
-      expect(eprMinStay).toHaveValue("0.5");
-
-      const rarMinStay = screen.getByRole("textbox", {
-        name: "Risk Adjusted Rate for the Minimizing Length of Facility Stay",
-      });
-      expect(rarMinStay).toHaveValue("2");
+      expect(getInput("actualRate")).toHaveValue("0.5");
+      expect(getInput("expectedRate")).toHaveValue("0.5");
+      expect(getInput("adjustedRate")).toHaveValue("2");
     });
   });
 
-  testA11y(
-    fieldsComponent,
-    () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues(undefined);
-    },
-    () => {
-      jest.clearAllMocks();
-    }
-  );
+  testA11y(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 });

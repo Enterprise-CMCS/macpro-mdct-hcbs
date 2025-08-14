@@ -1,65 +1,37 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NDR } from "./NDR";
-import { useFormContext } from "react-hook-form";
-import { NDRCalc } from "../calculations";
-import { useStore } from "utils";
-import {
-  ElementType,
-  PerformanceRateTemplate,
-  PerformanceRateType,
-} from "types";
+import { ElementType, NdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { mockStateUserStore } from "utils/testing/setupJest";
+import { useState } from "react";
 
-const mockTrigger = jest.fn();
-const mockRhfMethods = {
-  register: () => {},
-  setValue: jest.fn(),
-  getValues: jest.fn(),
-  trigger: mockTrigger,
-};
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
-}));
-const mockGetValues = (returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-
-const mockedPerformanceElement: PerformanceRateTemplate = {
+const mockedPerformanceElement: NdrTemplate = {
   id: "mock-perf-id",
-  type: ElementType.PerformanceRate,
-  rateType: PerformanceRateType.NDR,
+  type: ElementType.Ndr,
   label: "test label",
-  helperText: "helper text",
-  assessments: [{ id: "test-1", label: "assessment 1" }],
-  multiplier: 1,
+  performanceTargetLabel:
+    "What is the 2028 state performance target for this assessment?",
 };
+const updateSpy = jest.fn();
 
-const ndrComponent = (
-  <NDR
-    formkey={"mock-key"}
-    calculation={NDRCalc}
-    year={2026}
-    disabled={false}
-    {...mockedPerformanceElement}
-  />
-);
+const NdrWrapper = ({ template }: { template: NdrTemplate }) => {
+  const [element, setElement] = useState(template);
+  const onChange = (updatedElement: Partial<typeof element>) => {
+    updateSpy(updatedElement);
+    setElement({ ...element, ...updatedElement });
+  };
+  return <NDR element={element} updateElement={onChange} />;
+};
 
 describe("<NDR />", () => {
   describe("Test NDR component", () => {
     beforeEach(() => {
-      render(ndrComponent);
+      jest.clearAllMocks();
     });
+
     test("NDR is visible", () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
       expect(
         screen.getByRole("textbox", {
           name: "What is the 2028 state performance target for this assessment?",
@@ -74,7 +46,10 @@ describe("<NDR />", () => {
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
     });
+
     test("Rate should calculate", async () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await act(async () => await userEvent.type(numerator, "1"));
       expect(numerator).toHaveValue("1");
@@ -86,16 +61,33 @@ describe("<NDR />", () => {
       const rate = screen.getByRole("textbox", { name: "Rate" });
       expect(rate).toHaveValue("0.5");
     });
+
+    test("Rate should not display a decimal point if it is not needed", async () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "27"));
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await act(async () => await userEvent.type(denominator, "3"));
+
+      const rate = screen.getByRole("textbox", { name: "Rate" });
+      expect(rate).toHaveValue("9");
+    });
+
+    test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "4"));
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await act(async () => await userEvent.type(denominator, "2000"));
+
+      const rate = screen.getByRole("textbox", { name: "Rate" });
+      expect(rate).toHaveValue("0.00");
+    });
   });
 
-  testA11y(
-    ndrComponent,
-    () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues(undefined);
-    },
-    () => {
-      jest.clearAllMocks();
-    }
-  );
+  testA11y(<NdrWrapper template={mockedPerformanceElement} />);
 });

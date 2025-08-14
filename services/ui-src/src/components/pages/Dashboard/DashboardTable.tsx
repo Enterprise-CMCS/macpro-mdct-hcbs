@@ -23,7 +23,7 @@ import {
 } from "utils";
 
 import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 
 interface DashboardTableProps {
   reports: Report[];
@@ -52,7 +52,7 @@ export const getStatus = (report: Report) => {
     report.status === ReportStatus.IN_PROGRESS &&
     report.submissionCount >= 1
   ) {
-    return "In Revision";
+    return "In revision";
   }
   return report.status;
 };
@@ -149,7 +149,7 @@ export const VerticalTable = (props: TableProps) => {
   return (
     <VStack alignItems="start" gap={4}>
       {props.reports.map((report, idx) => (
-        <>
+        <Fragment key={idx}>
           <div>
             <Text variant="grey">Submission name</Text>
             <HStack>
@@ -236,7 +236,7 @@ export const VerticalTable = (props: TableProps) => {
             )}
           </HStack>
           <Divider></Divider>
-        </>
+        </Fragment>
       ))}
     </VStack>
   );

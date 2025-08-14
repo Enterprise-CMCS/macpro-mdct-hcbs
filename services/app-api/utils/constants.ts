@@ -8,6 +8,7 @@ export const error = {
   SERVER_ERROR: "An unspecified server error occured.",
   CREATION_ERROR: "Could not be created due to a database error.",
   ALREADY_ARCHIVED: "Cannot update archived report.",
+  END_DATE_BEFORE_START_DATE: "End date can't be before start date",
 };
 
 export enum DeliverySystem {
@@ -102,12 +103,12 @@ export const isStateAbbreviation = (x: string | undefined): x is StateAbbr => {
 
 export const reportTables: { [key in ReportType]: string } = {
   QMS: process.env.QmsReportsTable!,
-  TA: process.env.TaReportsTable!,
+  TACM: process.env.TacmReportsTable!,
   CI: process.env.CiReportsTable!,
 };
 
 export const tableTopics: { [key in ReportType]: string } = {
   QMS: "qms-reports",
-  TA: "ta-reports",
+  TACM: "tacm-reports",
   CI: "ci-reports",
 };

@@ -1,5 +1,3 @@
-// ALERTS
-
 import { ReactNode } from "react";
 import { StateNames } from "../constants";
 
@@ -9,8 +7,6 @@ export enum AlertTypes {
   SUCCESS = "success",
   WARNING = "warning",
 }
-
-// TIME
 
 export interface DateShape {
   year: number;
@@ -23,11 +19,6 @@ export interface TableContentShape {
   headRow?: string[];
   bodyRows?: string[][];
   footRow?: string[][];
-}
-
-// OTHER
-export interface AnyObject {
-  [key: string]: any;
 }
 
 export interface ErrorVerbiage {

@@ -9,6 +9,7 @@ import {
   AdminBannerProvider,
   ExportedReportPage,
   ReportPageWrapper,
+  ComponentInventory,
 } from "components";
 import { useStore } from "utils";
 import { useEffect } from "react";
@@ -20,6 +21,7 @@ export const AppRoutes = () => {
 
   const { pathname } = useLocation();
   const isPdfActive = useFlags()?.viewPdf;
+  const componentInventoryPageEnabled = useFlags()?.componentInventory;
 
   useEffect(() => {
     const appWrapper = document.getElementById("app-wrapper")!;
@@ -57,6 +59,12 @@ export const AppRoutes = () => {
               path="/report/:reportType/:state/:reportId/:pageId?"
               element={<ReportPageWrapper />}
             />
+            {componentInventoryPageEnabled && (
+              <Route
+                path="/component-inventory"
+                element={<ComponentInventory />}
+              />
+            )}
             {/* TO DO: Load pageId by default? */}
           </Routes>
         </ReportAutosaveProvider>

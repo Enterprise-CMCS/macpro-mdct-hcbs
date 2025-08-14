@@ -16,6 +16,7 @@ import {
   ElementType,
   PageElement,
   ReportOptions,
+  assertExhaustive,
 } from "../types/reports";
 import { error } from "./constants";
 
@@ -28,14 +29,14 @@ const hideConditionSchema = object()
   .default(undefined);
 
 const headerTemplateSchema = object().shape({
-  type: string().required(ElementType.Header),
+  type: string().required().matches(new RegExp(ElementType.Header)),
   id: string().required(),
   text: string().required(),
   icon: string().notRequired(),
 });
 
 const subHeaderTemplateSchema = object().shape({
-  type: string().required(ElementType.SubHeader),
+  type: string().required().matches(new RegExp(ElementType.SubHeader)),
   id: string().required(),
   text: string().required(),
   helperText: string().notRequired(),
@@ -43,18 +44,18 @@ const subHeaderTemplateSchema = object().shape({
 });
 
 const subHeaderMeasureSchema = object().shape({
-  type: string().required(ElementType.SubHeaderMeasure),
+  type: string().required().matches(new RegExp(ElementType.SubHeaderMeasure)),
   id: string().required(),
 });
 
 const nestedHeadingTemplateSchema = object().shape({
-  type: string().required(ElementType.NestedHeading),
+  type: string().required().matches(new RegExp(ElementType.NestedHeading)),
   id: string().required(),
   text: string().required(),
 });
 
 const paragraphTemplateSchema = object().shape({
-  type: string().required(ElementType.Paragraph),
+  type: string().required().matches(new RegExp(ElementType.Paragraph)),
   id: string().required(),
   text: string().required(),
   title: string().notRequired(),
@@ -62,7 +63,7 @@ const paragraphTemplateSchema = object().shape({
 });
 
 const textboxTemplateSchema = object().shape({
-  type: string().required(ElementType.Textbox),
+  type: string().required().matches(new RegExp(ElementType.Textbox)),
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
@@ -71,8 +72,17 @@ const textboxTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const numberFieldTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.NumberField)),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().notRequired(),
+  answer: number().notRequired(),
+  required: boolean().notRequired(),
+});
+
 const textAreaTemplateSchema = object().shape({
-  type: string().required(ElementType.Textbox),
+  type: string().required().matches(new RegExp(ElementType.TextAreaField)),
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
@@ -82,7 +92,7 @@ const textAreaTemplateSchema = object().shape({
 });
 
 const dateTemplateSchema = object().shape({
-  type: string().required(ElementType.Date),
+  type: string().required().matches(new RegExp(ElementType.Date)),
   id: string().required(),
   label: string().required(),
   helperText: string().required(),
@@ -90,7 +100,7 @@ const dateTemplateSchema = object().shape({
 });
 
 const dropdownTemplateSchema = object().shape({
-  type: string().required(ElementType.Dropdown),
+  type: string().required().matches(new RegExp(ElementType.Dropdown)),
   id: string().required(),
   label: string().required(),
   helperText: string().required(),
@@ -107,14 +117,14 @@ const dropdownTemplateSchema = object().shape({
 });
 
 const accordionTemplateSchema = object().shape({
-  type: string().required(ElementType.Accordion),
+  type: string().required().matches(new RegExp(ElementType.Accordion)),
   id: string().required(),
   label: string().required(),
   value: string().required(),
 });
 
 const resultRowButtonTemplateSchema = object().shape({
-  type: string().required(ElementType.ResultRowButton),
+  type: string().required().matches(new RegExp(ElementType.ResultRowButton)),
   id: string().required(),
   value: string().required(),
   modalId: string().required(),
@@ -140,6 +150,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return textboxTemplateSchema;
     case ElementType.TextAreaField:
       return textAreaTemplateSchema;
+    case ElementType.NumberField:
+      return numberFieldTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
     case ElementType.Dropdown:
@@ -162,8 +174,16 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureDetailsTemplateSchema;
     case ElementType.MeasureFooter:
       return measureFooterSchema;
-    case ElementType.PerformanceRate:
-      return performanceRateSchema;
+    case ElementType.LengthOfStayRate:
+      return lengthOfStayRateSchema;
+    case ElementType.NdrFields:
+      return ndrFieldsRateSchema;
+    case ElementType.NdrEnhanced:
+      return ndrEnhancedRateSchema;
+    case ElementType.Ndr:
+      return ndrRateSchema;
+    case ElementType.NdrBasic:
+      return ndrRateBasicSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
     case ElementType.Divider:
@@ -171,12 +191,13 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
     case ElementType.SubmissionParagraph:
       return submissionParagraphSchema;
     default:
+      assertExhaustive(value);
       throw new Error("Page Element type is not valid");
   }
 });
 
 const radioTemplateSchema = object().shape({
-  type: string().required(ElementType.Radio),
+  type: string().required().matches(new RegExp(ElementType.Radio)),
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
@@ -195,24 +216,26 @@ const radioTemplateSchema = object().shape({
 });
 
 const buttonLinkTemplateSchema = object().shape({
-  type: string().required(ElementType.ButtonLink),
+  type: string().required().matches(new RegExp(ElementType.ButtonLink)),
   id: string().required(),
   label: string().optional(),
   to: string().optional(),
 });
 
 const dividerSchema = object().shape({
-  type: string().required(ElementType.Divider),
+  type: string().required().matches(new RegExp(ElementType.Divider)),
   id: string().required(),
 });
 
 const submissionParagraphSchema = object().shape({
-  type: string().required(ElementType.SubmissionParagraph),
+  type: string()
+    .required()
+    .matches(new RegExp(ElementType.SubmissionParagraph)),
   id: string().required(),
 });
 
 const measureTableTemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureTable),
+  type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string()
     .oneOf(["required", "stratified", "optional"])
@@ -220,7 +243,9 @@ const measureTableTemplateSchema = object().shape({
 });
 
 const measureResultsNavigationTableTemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureResultsNavigationTable),
+  type: string()
+    .required()
+    .matches(new RegExp(ElementType.MeasureResultsNavigationTable)),
   id: string().required(),
   measureDisplay: string().required("quality"),
   hideCondition: object()
@@ -233,18 +258,18 @@ const measureResultsNavigationTableTemplateSchema = object().shape({
 });
 
 const statusTableTemplateSchema = object().shape({
-  type: string().required(ElementType.StatusTable),
+  type: string().required().matches(new RegExp(ElementType.StatusTable)),
   id: string().required(),
   to: string().required(),
 });
 
 const measureDetailsTemplateSchema = object().shape({
-  type: string().required(ElementType.MeasureDetails),
+  type: string().required().matches(new RegExp(ElementType.MeasureDetails)),
   id: string().required(),
 });
 
 const measureFooterSchema = object().shape({
-  type: string().required(ElementType.MeasureFooter),
+  type: string().required().matches(new RegExp(ElementType.MeasureFooter)),
   id: string().required(),
   prevTo: string().notRequired(),
   nextTo: string().notRequired(),
@@ -253,11 +278,38 @@ const measureFooterSchema = object().shape({
   clear: boolean().notRequired(),
 });
 
-const performanceRateSchema = object().shape({
-  type: string().required(ElementType.PerformanceRate),
+const lengthOfStayRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.LengthOfStayRate)),
   id: string().required(),
-  label: string().notRequired(),
-  helperText: string().notRequired(),
+  labels: object().shape({
+    performanceTarget: string().required(),
+    actualCount: string().required(),
+    denominator: string().required(),
+    expectedCount: string().required(),
+    populationRate: string().required(),
+    actualRate: string().required(),
+    expectedRate: string().required(),
+    adjustedRate: string().required(),
+  }),
+  required: boolean().notRequired(),
+  answer: object()
+    .shape({
+      performanceTarget: number().notRequired(),
+      actualCount: number().notRequired(),
+      denominator: number().notRequired(),
+      expectedCount: number().notRequired(),
+      populationRate: number().notRequired(),
+      actualRate: number().notRequired(),
+      expectedRate: number().notRequired(),
+      adjustedRate: number().notRequired(),
+    })
+    .notRequired(),
+});
+
+const ndrFieldsRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.NdrFields)),
+  id: string().required(),
+  labelTemplate: string().required(),
   assessments: array()
     .of(
       object().shape({
@@ -265,7 +317,7 @@ const performanceRateSchema = object().shape({
         label: string().required(),
       })
     )
-    .notRequired(),
+    .required(),
   fields: array()
     .of(
       object().shape({
@@ -274,12 +326,94 @@ const performanceRateSchema = object().shape({
         autoCalc: boolean().notRequired(),
       })
     )
-    .notRequired(),
+    .required(),
   required: boolean().notRequired(),
-  rateType: string().required(),
-  rateCalc: string().notRequired(),
   multiplier: number().notRequired(),
-  answer: mixed().notRequired(),
+  answer: array()
+    .of(
+      object().shape({
+        denominator: number().notRequired(),
+        rates: array().of(
+          object().shape({
+            id: string().required(),
+            numerator: number().notRequired(),
+            rate: number().notRequired(),
+            performanceTarget: number().notRequired(),
+          })
+        ),
+      })
+    )
+    .notRequired(),
+});
+
+const ndrEnhancedRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.NdrEnhanced)),
+  id: string().required(),
+  label: string().notRequired(),
+  helperText: string().notRequired(),
+  performanceTargetLabel: string().required(),
+  assessments: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+      })
+    )
+    .required(),
+  required: boolean().notRequired(),
+  answer: object()
+    .shape({
+      denominator: number().notRequired(),
+      rates: array().of(
+        object().shape({
+          id: string().required(),
+          numerator: number().notRequired(),
+          rate: number().notRequired(),
+          performanceTarget: number().notRequired(),
+        })
+      ),
+    })
+    .notRequired(),
+});
+
+const ndrRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.Ndr)),
+  id: string().required(),
+  label: string().required(),
+  performanceTargetLabel: string().required(),
+  required: boolean().notRequired(),
+  answer: object()
+    .shape({
+      performanceTarget: number().notRequired(),
+      numerator: number().notRequired(),
+      denominator: number().notRequired(),
+      rate: number().notRequired(),
+    })
+    .notRequired(),
+});
+
+const ndrRateBasicSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.NdrBasic)),
+  id: string().required(),
+  label: string().notRequired(),
+  required: boolean().notRequired(),
+  answer: object()
+    .shape({
+      numerator: number().notRequired(),
+      denominator: number().notRequired(),
+      rate: number().notRequired(),
+    })
+    .notRequired(),
+  hintText: object()
+    .shape({
+      numHint: string().notRequired(),
+      denomHint: string().notRequired(),
+      rateHint: string().notRequired(),
+    })
+    .notRequired(),
+  multiplier: number().notRequired(),
+  displayRateAsPercent: boolean().notRequired(),
+  minPerformanceLevel: number().notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({
@@ -288,7 +422,7 @@ const parentPageTemplateSchema = object().shape({
 });
 
 const statusAlertSchema = object().shape({
-  type: string().required(ElementType.StatusAlert),
+  type: string().required().matches(new RegExp(ElementType.StatusAlert)),
   id: string().required(),
   title: string().notRequired(),
   text: string().required(),
@@ -343,7 +477,7 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
 
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
-  hciidd: boolean().notRequired(),
+  nciidd: boolean().notRequired(),
   nciad: boolean().notRequired(),
   pom: boolean().notRequired(),
 });

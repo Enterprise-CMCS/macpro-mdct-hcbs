@@ -1,7 +1,7 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
-import { ReportType } from "types";
+import { ReportType, isReportType } from "types";
 import { useStore } from "utils";
 
 /**
@@ -12,6 +12,18 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   const navigate = useNavigate();
   const state = useStore().user?.state;
   const dashboardRoute = `/report/${reportType}/${state}`;
+
+  const getAbbreviation = (reportType: string) => {
+    if (!isReportType(reportType)) return "";
+    switch (reportType) {
+      case ReportType.CI:
+        return "CI";
+      case ReportType.QMS:
+        return "QMS";
+      case ReportType.TACM:
+        return "TACM";
+    }
+  };
 
   return (
     <Flex sx={sx.actionsFlex}>
@@ -26,7 +38,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
         sx={sx.link}
       >
-        Enter {reportType} Report online
+        Enter {getAbbreviation(reportType)} Report online
       </Button>
     </Flex>
   );

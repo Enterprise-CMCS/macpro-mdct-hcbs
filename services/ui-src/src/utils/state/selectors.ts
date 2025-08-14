@@ -19,6 +19,14 @@ export const currentPageSelector = (state: HcbsReportState) => {
   return currentPage;
 };
 
+export const elementSelector = (elementId: string) => {
+  return (state: HcbsReportState) => {
+    const currentPage = currentPageSelector(state);
+    const element = currentPage?.elements?.find((el) => el.id === elementId);
+    return element;
+  };
+};
+
 export const currentPageCompletableSelector = (state: HcbsReportState) => {
   if (!state.report || !state.currentPageId) return false;
   return pageIsCompletable(state.report, state.currentPageId);

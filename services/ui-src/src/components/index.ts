@@ -12,7 +12,6 @@ export {
   AdminBannerProvider,
 } from "./banners/AdminBannerProvider";
 export { Banner } from "./banners/Banner";
-export { PreviewBanner } from "./banners/PreviewBanner";
 // layout
 export { HomePage } from "./layout/HomePage";
 export { Header } from "./layout/Header";
@@ -25,9 +24,11 @@ export { Card } from "./cards/Card";
 export { HelpCard } from "./cards/HelpCard";
 export { ReportIntroCard } from "./cards/ReportIntroCard";
 export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
-export { TaIntroductionCard } from "./cards/TaIntroductionCard";
+export { TacmIntroductionCard } from "./cards/TacmIntroductionCard";
 export { CiIntroductionCard } from "./cards/CiIntroductionCard";
 export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
+// component inventory
+export { ComponentInventory } from "./component-inventory/ComponentInventory";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
@@ -50,7 +51,11 @@ export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 // report
-export { PerformanceRateElement } from "./report/PerformanceRate";
+export { Fields } from "../components/rates/types/Fields";
+export { NDRFields } from "../components/rates/types/NDRFields";
+export { NDREnhanced } from "../components/rates/types/NDREnhanced";
+export { NDR } from "../components/rates/types/NDR";
+export { NDRBasic } from "../components/rates/types/NDRBasic";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";

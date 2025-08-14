@@ -1,8 +1,10 @@
 import { screen, render } from "@testing-library/react";
 import { useStore } from "utils";
 import { ExportedReportPage } from "./ExportedReportPage";
+import { PageType, PageStatus } from "types";
 
 jest.mock("utils", () => ({
+  ...jest.requireActual("utils"),
   useStore: jest.fn(),
 }));
 
@@ -15,7 +17,30 @@ const report = {
     { childPageIds: ["1", "2"] },
     { title: "Section 1", id: "id-1" },
     { title: "Section 2", id: "id-2" },
+    { title: "Section 3", id: "review-submit" },
+    {
+      title: "Section 4",
+      id: "id-4",
+      type: PageType.Measure,
+      required: false,
+      status: PageStatus.NOT_STARTED,
+    },
+    {
+      title: "Section 5",
+      id: "id-5",
+      type: PageType.MeasureResults,
+      status: PageStatus.NOT_STARTED,
+    },
   ],
+  lastEdited: 1751987780396,
+  lastEditedBy: "last edited",
+  status: "In progress",
+  options: {
+    cahps: true,
+    nciidd: false,
+    nciad: true,
+    pom: false,
+  },
 };
 
 describe("ExportedReportPage", () => {
@@ -27,6 +52,23 @@ describe("ExportedReportPage", () => {
   });
   it("ExportReportPage is visible", () => {
     render(<ExportedReportPage></ExportedReportPage>);
-    expect(screen.getByText("CO mock-title")).toBeInTheDocument();
+    expect(
+      screen.getByText("Colorado Quality Measure Set Report for: mock-title")
+    ).toBeInTheDocument();
+  });
+
+  it("Should not render filtered sections", () => {
+    render(<ExportedReportPage></ExportedReportPage>);
+    expect(screen.queryByText("Section 3")).not.toBeInTheDocument();
+  });
+
+  it("Should not render optional measures which are not started", () => {
+    render(<ExportedReportPage></ExportedReportPage>);
+    expect(screen.queryByText("Section 4")).not.toBeInTheDocument();
+  });
+
+  it("Should not render measure results which are not started", () => {
+    render(<ExportedReportPage></ExportedReportPage>);
+    expect(screen.queryByText("Section 5")).not.toBeInTheDocument();
   });
 });

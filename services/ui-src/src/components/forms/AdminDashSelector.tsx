@@ -36,8 +36,8 @@ export const AdminDashSelector = () => {
       label: "Critical Incident Report (CI)",
     },
     {
-      value: "TA",
-      label: "Timely Access Report (TA)",
+      value: "TACM",
+      label: "Timely Access Compliance Measure Report (TACM)",
     },
   ];
 

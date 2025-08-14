@@ -52,12 +52,7 @@ const mockedMeasureSectionFooterElement: MeasureFooterTemplate = {
 
 describe("Measure Footer", () => {
   it("Test Measure Footer component", async () => {
-    render(
-      <MeasureFooterElement
-        element={mockedMeasureFooterElement}
-        formkey="elements.0"
-      />
-    );
+    render(<MeasureFooterElement element={mockedMeasureFooterElement} />);
 
     //click previous
     const previousLink = screen.getByRole("button", {
@@ -90,10 +85,7 @@ describe("Measure Footer", () => {
 
   it("Test Measure Footer component as a measure section", async () => {
     render(
-      <MeasureFooterElement
-        element={mockedMeasureSectionFooterElement}
-        formkey="elements.0"
-      />
+      <MeasureFooterElement element={mockedMeasureSectionFooterElement} />
     );
 
     //click previous
@@ -112,12 +104,7 @@ describe("Measure Footer", () => {
   });
 
   it("Test Measure Footer component without optional fields", () => {
-    render(
-      <MeasureFooterElement
-        element={mockedMeasureFooterEmpty}
-        formkey="elements.0"
-      />
-    );
+    render(<MeasureFooterElement element={mockedMeasureFooterEmpty} />);
 
     expect(screen.getByText("Previous")).toBeInTheDocument();
 

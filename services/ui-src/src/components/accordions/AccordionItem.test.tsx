@@ -1,9 +1,9 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const accordionItemComponent = (
   <RouterWrappedComponent>
@@ -26,12 +26,10 @@ describe("Test AccordionItem", () => {
   });
 
   test("When Expand button clicked it switches to Collapse", async () => {
-    await act(async () => {
-      const button = screen.getByRole("button", { name: "Expand" });
-      await userEvent.click(button);
-    });
+    const button = screen.getByRole("button", { name: "Expand" });
+    await userEvent.click(button);
     expect(screen.getByRole("button", { name: "Collapse" })).toBeVisible();
   });
 
-  testA11y(accordionItemComponent);
+  testA11yAct(accordionItemComponent);
 });

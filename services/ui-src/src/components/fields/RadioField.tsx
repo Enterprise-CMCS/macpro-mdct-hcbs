@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { get, useFormContext } from "react-hook-form";
-import { ChoiceTemplate, RadioTemplate } from "types";
+import { ChoiceTemplate, PageElement, RadioTemplate } from "types";
 import { parseHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
-import { requiredResponse } from "../../constants";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
+import { Modal } from "components";
 
 const formatChoices = (
-  parentKey: string,
   choices: ChoiceTemplate[],
-  answer?: string
+  answer: string | undefined,
+  updateElement: (element: Partial<RadioTemplate>) => void
 ): ChoiceProps[] => {
   return choices.map((choice, choiceIndex) => {
-    if (!choice?.checkedChildren) {
+    if (!choice.checkedChildren) {
       return {
         ...choice,
         checked: choice.value === answer,
@@ -25,14 +24,23 @@ const formatChoices = (
       };
     }
 
-    const children = choice.checkedChildren.map((child, childIndex) => ({
-      ...child,
-      formkey: `${parentKey}.choices.${choiceIndex}.checkedChildren.${childIndex}`,
-    }));
+    const setCheckedChildren = (checkedChildren: PageElement[]) => {
+      updateElement({
+        choices: [
+          ...choices.slice(0, choiceIndex),
+          { ...choice, checkedChildren },
+          ...choices.slice(choiceIndex + 1),
+        ],
+      });
+    };
 
     const checkedChildren = [
-      <Box sx={sx.children}>
-        <Page elements={children} />
+      <Box key="radio-sub-page" sx={sx.children}>
+        <Page
+          id="radio-children"
+          setElements={setCheckedChildren}
+          elements={choice.checkedChildren}
+        />
       </Box>,
     ];
 
@@ -59,79 +67,84 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
-  // get form context and register field
-  const form = useFormContext();
-  const key = `${props.formkey}.answer`;
-
-  useEffect(() => {
-    const options = { required: radio.required ? requiredResponse : false };
-    form.setValue(key, radio.answer);
-    form.register(key, options);
-    if (radio.answer) {
-      form.setValue(`${props.formkey}.type`, radio.type);
-    }
-  }, []);
-
-  const [displayValue, setDisplayValue] = useState<ChoiceProps[]>([]);
-  const hideElement = useElementIsHidden(radio.hideCondition, key);
+  const initialDisplayValue = formatChoices(
+    radio.choices,
+    radio.answer,
+    props.updateElement
+  );
+  const [displayValue, setDisplayValue] = useState(initialDisplayValue);
+  const hideElement = useElementIsHidden(radio.hideCondition);
+  const [eventToBeConfirmed, setEventToBeConfirmed] = useState<
+    React.ChangeEvent<HTMLInputElement> | undefined
+  >();
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
     setDisplayValue(
-      formatChoices(`${props.formkey}`, radio.choices, radio.answer) ?? []
+      formatChoices(radio.choices, radio.answer, props.updateElement)
     );
-  }, [radio.answer]);
+  }, [radio.choices, radio.answer]);
+
+  const {
+    isOpen: radioModalIsOpen,
+    onOpen: radioModalOnOpenHandler,
+    onClose: radioModalOnCloseHandler,
+  } = useDisclosure();
+
+  const modalConfirmHandler = () => {
+    onChangeHandler(eventToBeConfirmed as React.ChangeEvent<HTMLInputElement>);
+    modalCloseCustomHandler();
+  };
+
+  const modalCloseCustomHandler = () => {
+    setEventToBeConfirmed(undefined);
+    radioModalOnCloseHandler();
+  };
 
   // OnChange handles setting the visual of the radio on click, outside the normal blur
   const onChangeHandler = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value } = event.target;
-    const newValues = displayValue.map((choice) => {
-      choice.checked = choice.value === value;
-      return choice;
-    });
-    setDisplayValue(newValues);
-    /**
-     * This is not ideal but we need to unregister the current radio
-     * element before setting the again values.
-     * There is (seemingly) a bug in react hook form with yup validation:
-     *
-     * If a child of a radio choice has errors and then
-     * the child element gets cleared from the page by switching to
-     * radio option that doesn't have children, the children errors do
-     * not get cleared from the form and it breaks so we have to clear here
-     * manually by doing unregister.
-     *
-     * If there's a bug with saving radio values, it's probably this line.
-     */
-    form.unregister(props.formkey);
-    form.setValue(name, value, { shouldValidate: true });
-    form.setValue(`${props.formkey}.type`, radio.type);
-    form.setValue(`${props.formkey}.label`, radio.label);
-    form.setValue(`${props.formkey}.id`, radio.id);
+    const value = event.target.value;
+    if (
+      radio.clickAction === "qmDeliveryMethodChange" &&
+      radio.answer &&
+      eventToBeConfirmed === undefined
+    ) {
+      setEventToBeConfirmed(event);
+      return radioModalOnOpenHandler();
+    }
 
-    if (!radio.clickAction || !currentPageId) return;
+    const newDisplayValue = formatChoices(
+      radio.choices,
+      value,
+      props.updateElement
+    );
+    setDisplayValue(newDisplayValue);
+
+    props.updateElement({ answer: value });
+
+    if (!radio.clickAction || !currentPageId) {
+      return;
+    }
+
     switch (radio.clickAction) {
       case "qmReportingChange":
         if (value === "no") {
           clearMeasure(currentPageId, { [radio.id]: value });
           autosave();
-          event.stopPropagation(); // This action is doing its own effect outside of normal change.
         }
         return;
       case "qmDeliveryMethodChange":
         changeDeliveryMethods(currentPageId, value);
-        return; // after the clear, allow normal setting of this page to occur
+        autosave();
+        return;
     }
   };
 
-  // prepare error message, hint, and classes
-  const formErrors = form?.formState?.errors;
-  const errorMessage: string | undefined = get(formErrors, key)?.message;
-
   const parsedHint = (
-    <Box color={hintTextColor(radio.clickAction!)}>
+    // This is as="span" because it is inside a CMSDS Hint, which is a <p>.
+    <Box as="span" color={hintTextColor(radio.clickAction!)}>
       {radio.helperText && parseHtml(radio.helperText)}
     </Box>
   );
@@ -143,15 +156,29 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   return (
     <Box>
       <CmsdsChoiceList
-        name={key}
+        name={radio.id}
         type={"radio"}
         label={labelText || ""}
         choices={displayValue}
         hint={parsedHint}
-        errorMessage={errorMessage}
         onChange={onChangeHandler}
         {...props}
       />
+      <Modal
+        data-testid="confirm-modal"
+        modalDisclosure={{
+          isOpen: radioModalIsOpen,
+          onClose: modalCloseCustomHandler,
+        }}
+        onConfirmHandler={modalConfirmHandler}
+        content={{
+          heading: "Are you sure?",
+          subheading:
+            "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.",
+          actionButtonText: "Yes",
+          closeButtonText: "No",
+        }}
+      ></Modal>
     </Box>
   );
 };

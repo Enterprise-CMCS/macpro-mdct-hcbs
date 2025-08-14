@@ -80,43 +80,28 @@ export const deepMerge = (obj1: any, obj2: any) => {
   return clone1;
 };
 
-/**
- * Remove any answers with errors on them recursively, using the structure of answers and errors from react-hook-form.
- *
- * @param answers Object from react-hook-form. Nested structure mirrors a report page at the top level. Answer properties can appear at any depth
- * @param errors Errors object from react hook form. Same structure as above, but when an key has a nested .message ("answer"), it needs to be removed
- * @returns A filtered answers object
- */
-export const filterErrors = (answers: any, errors: any) => {
-  const filteredAnswers = structuredClone(answers); // set all items at this level from answers
-
-  // This level has an error message, omit the answer attached
-  if (
-    errors.answer &&
-    errors.answer.message &&
-    (filteredAnswers.answer || filteredAnswers.answer === "")
-  ) {
-    // By convention, all of our answers are in an answer field
-    delete filteredAnswers.answer;
+export const deepEquals = (obj1: any, obj2: any): boolean => {
+  if (typeof obj1 !== typeof obj2) {
+    return false;
+  } else if (Array.isArray(obj1)) {
+    return (
+      obj1.length === obj2.length &&
+      obj1.every((el, i) => deepEquals(el, obj2[i]))
+    );
+  } else if (!!obj1 && !!obj2 && typeof obj1 === "object") {
+    const entries1 = Object.entries(obj1);
+    return (
+      entries1.length === Object.entries(obj2).length &&
+      entries1.every(([key, val]) => deepEquals(val, obj2[key]))
+    );
+  } else if (typeof obj1 === "number" && isNaN(obj1) && isNaN(obj2)) {
+    return true;
+  } else {
+    return obj1 === obj2;
   }
-
-  // Check for nested errors
-  for (let key in errors) {
-    if (
-      errors[key] instanceof Object &&
-      filteredAnswers[key] instanceof Object
-    ) {
-      filteredAnswers[key] = filterErrors(filteredAnswers[key], errors[key]);
-    }
-  }
-  return filteredAnswers;
 };
 
-export const mergeAnswers = (
-  answers: any,
-  state: HcbsReportState,
-  errors?: any
-) => {
+export const mergeAnswers = (answers: any, state: HcbsReportState) => {
   if (!state.report || !state.currentPageId) {
     return {};
   }
@@ -125,8 +110,12 @@ export const mergeAnswers = (
     (page) => page.id === state.currentPageId
   );
 
-  const filteredAnswers = errors ? filterErrors(answers, errors) : answers;
-  const result = deepMerge(report.pages[pageIndex], filteredAnswers);
+  const result = deepMerge(report.pages[pageIndex], answers);
+
+  // If this action didn't change any values, don't dirty the status
+  if (deepEquals(report.pages[pageIndex], result)) {
+    return {};
+  }
 
   // Handle status dirtying
   if ("status" in result) {
@@ -202,7 +191,7 @@ export const clearMeasure = (
 };
 
 /**
- * Hard reset a measure back to the Not Started state
+ * Hard reset a measure back to the Not started state
  */
 export const resetMeasure = (measureId: string, state: HcbsReportState) => {
   if (!state.report) {

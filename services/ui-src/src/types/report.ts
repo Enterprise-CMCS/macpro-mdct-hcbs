@@ -1,8 +1,8 @@
-import { AlertTypes, AnyObject, StateAbbr } from "./other";
+import { AlertTypes, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
-  TA = "TA",
+  TACM = "TACM",
   CI = "CI",
 }
 
@@ -10,6 +10,19 @@ export const isReportType = (
   reportType: string | undefined
 ): reportType is ReportType => {
   return Object.values(ReportType).includes(reportType as ReportType);
+};
+
+export const getReportName = (type: string | undefined) => {
+  switch (type) {
+    case ReportType.QMS:
+      return "Quality Measure Set Report";
+    case ReportType.TACM:
+      return "Timely Access Compliance Measure Report";
+    case ReportType.CI:
+      return "Critical Incident Report";
+    default:
+      return "";
+  }
 };
 
 export enum ReportStatus {
@@ -163,6 +176,7 @@ export enum ElementType {
   SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
+  NumberField = "numberField",
   TextAreaField = "textAreaField",
   Date = "date",
   Dropdown = "dropdown",
@@ -176,7 +190,11 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
-  PerformanceRate = "performanceRate",
+  LengthOfStayRate = "lengthOfStay",
+  NdrFields = "ndrFields",
+  NdrEnhanced = "ndrEnhanced",
+  Ndr = "ndr",
+  NdrBasic = "ndrBasic",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -188,6 +206,7 @@ export type PageElement =
   | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
+  | NumberFieldTemplate
   | TextAreaBoxTemplate
   | DateTemplate
   | DropdownTemplate
@@ -200,7 +219,11 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | PerformanceRateTemplate
+  | LengthOfStayRateTemplate
+  | NdrFieldsTemplate
+  | NdrEnhancedTemplate
+  | NdrTemplate
+  | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate;
@@ -266,6 +289,16 @@ export type TextboxTemplate = {
   hideCondition?: HideCondition;
 };
 
+export type NumberFieldTemplate = {
+  type: ElementType.NumberField;
+  id: string;
+  label: string;
+  helperText?: string;
+  answer?: number;
+  required?: boolean;
+  hideCondition?: never;
+};
+
 export type TextAreaBoxTemplate = {
   type: ElementType.TextAreaField;
   id: string;
@@ -282,6 +315,7 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
+  required?: boolean;
 };
 
 export type DropdownTemplate = {
@@ -364,51 +398,106 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
-export type PerformanceData = {
-  rates: AnyObject[];
-  denominator?: number;
+export const LengthOfStayFieldNames = {
+  performanceTarget: "performanceTarget",
+  actualCount: "actualCount",
+  denominator: "denominator",
+  expectedCount: "expectedCount",
+  populationRate: "populationRate",
+  actualRate: "actualRate",
+  expectedRate: "expectedRate",
+  adjustedRate: "adjustedRate",
+} as const;
+export type LengthOfStayField =
+  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
+
+export type LengthOfStayRateTemplate = {
+  id: string;
+  type: ElementType.LengthOfStayRate;
+  labels: Record<LengthOfStayField, string>;
+  answer?: Record<LengthOfStayField, number | undefined>;
+  required?: boolean;
 };
 
+export const RateInputFieldNames = {
+  performanceTarget: "performanceTarget",
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+export type RateInputFieldName =
+  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+
+export const RateInputFieldNamesBasic = {
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+export type RateInputFieldNameBasic =
+  typeof RateInputFieldNamesBasic[keyof typeof RateInputFieldNamesBasic];
+
 export type RateType = {
-  label: string;
-  performanceTarget?: number;
-  numerator?: number;
-  denominator?: number;
-  rate?: number;
-  id?: string;
+  id: string;
+  numerator: number | undefined;
+  rate: number | undefined;
+  performanceTarget: number | undefined;
+};
+
+export type RateData = {
+  performanceTarget?: number | undefined;
+  numerator: number | undefined;
+  denominator: number | undefined;
+  rate: number | undefined;
 };
 
 export type RateSetData = {
-  id: string;
-  label: string;
-  denominator?: number;
-  rates?: RateType[];
+  denominator: number | undefined;
+  rates: RateType[];
 };
 
-export const enum PerformanceRateType {
-  NDR = "NDR",
-  NDR_Enhanced = "NDREnhanced",
-  FIELDS = "Fields",
-  NDR_FIELDS = "NDRFields",
-}
-
-export const enum RateCalc {
-  NDRCalc = "NDRCalc",
-  FacilityLengthOfStayCalc = "FacilityLengthOfStayCalc",
-}
-
-export type PerformanceRateTemplate = {
+export type NdrFieldsTemplate = {
   id: string;
-  type: ElementType.PerformanceRate;
+  type: ElementType.NdrFields;
+  labelTemplate: string;
+  assessments: { label: string; id: string }[];
+  fields: { label: string; id: string; autoCalc?: boolean }[];
+  multiplier?: number;
+  answer?: RateSetData[];
+  required?: boolean;
+};
+
+export type NdrEnhancedTemplate = {
+  id: string;
+  type: ElementType.NdrEnhanced;
   label?: string;
   helperText?: string;
-  assessments?: { label: string; id: string }[];
-  fields?: { label: string; id: string; autoCalc?: boolean }[];
-  rateType: PerformanceRateType;
-  rateCalc?: RateCalc;
-  multiplier?: number;
-  answer?: PerformanceData | RateSetData[];
+  performanceTargetLabel: string;
+  assessments: { label: string; id: string }[];
+  answer?: RateSetData;
   required?: boolean;
+};
+
+export type NdrTemplate = {
+  id: string;
+  type: ElementType.Ndr;
+  label: string;
+  performanceTargetLabel: string;
+  answer?: RateData;
+  required?: boolean;
+};
+
+export type NdrBasicTemplate = {
+  id: string;
+  type: ElementType.NdrBasic;
+  label?: string;
+  answer?: RateData;
+  hintText?: {
+    numHint: string;
+    denomHint: string;
+    rateHint: string;
+  };
+  required?: boolean;
+  multiplier?: number;
+  displayRateAsPercent?: boolean;
+  minPerformanceLevel?: number;
 };
 
 export type ChoiceTemplate = {
@@ -447,7 +536,7 @@ export interface ReportOptions {
   year: number;
   options: {
     cahps?: boolean;
-    hciidd?: boolean;
+    nciidd?: boolean;
     nciad?: boolean;
     pom?: boolean;
   };

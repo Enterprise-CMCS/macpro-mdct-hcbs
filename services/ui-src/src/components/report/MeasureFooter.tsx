@@ -42,6 +42,7 @@ export const MeasureFooterElement = (
   if (!currentPage) return null;
   const navigate = useNavigate();
   const submitClear = () => {
+    // Reset zustand state
     resetMeasure(currentPage.id);
     autosave();
   };

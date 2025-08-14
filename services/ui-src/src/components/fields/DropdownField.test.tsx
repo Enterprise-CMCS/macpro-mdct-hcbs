@@ -1,36 +1,10 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { useStore } from "utils";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { testA11y } from "utils/testing/commonTests";
 import { DropdownTemplate, ElementType } from "types";
 import { DropdownField } from "./DropdownField";
-import { useFormContext } from "react-hook-form";
-import { mockStateUserStore } from "utils/testing/setupJest";
 import assert from "node:assert";
-
-const mockTrigger = jest.fn();
-const mockSetValue = jest.fn();
-const mockRhfMethods = {
-  register: () => {},
-  setValue: mockSetValue,
-  getValues: jest.fn(),
-  trigger: mockTrigger,
-};
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
-  typeof useFormContext
->;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
-  get: jest.fn(),
-}));
-
-const mockGetValues = (returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+import { useState } from "react";
 
 const mockedDropdownElement: DropdownTemplate = {
   id: "mock-dropdown-id",
@@ -42,12 +16,16 @@ const mockedDropdownElement: DropdownTemplate = {
     { label: "2027", value: "2027" },
   ],
 };
+const updateSpy = jest.fn();
 
-const testKey = "unique.form.key";
-
-const dropdownFieldComponent = (
-  <DropdownField element={mockedDropdownElement} formkey={testKey} />
-);
+const DropdownWrapper = ({ template }: { template: DropdownTemplate }) => {
+  const [element, setElement] = useState(template);
+  const onChange = (updatedElement: Partial<typeof element>) => {
+    updateSpy(updatedElement);
+    setElement({ ...element, ...updatedElement });
+  };
+  return <DropdownField element={element} updateElement={onChange} />;
+};
 
 describe("<DropdownField />", () => {
   beforeEach(() => {
@@ -56,7 +34,7 @@ describe("<DropdownField />", () => {
 
   describe("Test DropdownField basic functionality", () => {
     test("DropdownField is visible", () => {
-      render(dropdownFieldComponent);
+      render(<DropdownWrapper template={mockedDropdownElement} />);
       const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
       expect(dropdown).toBeInTheDocument();
       assert(dropdown instanceof HTMLSelectElement);
@@ -64,33 +42,14 @@ describe("<DropdownField />", () => {
     });
 
     test("DropdownField should send updates to the Form", async () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues("");
-      render(dropdownFieldComponent);
+      render(<DropdownWrapper template={mockedDropdownElement} />);
       const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
 
-      fireEvent.change(dropdown, { target: { value: "2027" } });
+      await userEvent.selectOptions(dropdown, "2027");
 
-      //a hydrate at the start + value change = 2 times
-      expect(mockSetValue).toHaveBeenCalledTimes(2);
-      expect(mockSetValue).toHaveBeenCalledWith(
-        "unique.form.key.answer",
-        "2027",
-        {
-          shouldValidate: true,
-        }
-      );
+      expect(updateSpy).toHaveBeenCalledWith({ answer: "2027" });
     });
   });
 
-  testA11y(
-    dropdownFieldComponent,
-    () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockGetValues(undefined);
-    },
-    () => {
-      jest.clearAllMocks();
-    }
-  );
+  testA11y(<DropdownWrapper template={mockedDropdownElement} />);
 });

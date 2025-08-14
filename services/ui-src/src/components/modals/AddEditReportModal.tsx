@@ -1,19 +1,22 @@
-import React, { useState } from "react";
-import { Modal, TextField, DropdownField } from "components";
-import { Spinner, Flex, Text } from "@chakra-ui/react";
-import { ElementType, Report } from "types";
-import { createReport, putReport } from "utils/api/requestMethods/report";
-import { FormProvider, useForm } from "react-hook-form";
+import React, { FormEvent, useEffect, useState, ReactElement } from "react";
+import { Modal } from "components";
 import {
-  assertExhaustive,
+  TextField as CmsdsTextField,
+  Dropdown as CmsdsDropdownField,
+} from "@cmsgov/design-system";
+import { Spinner, Flex, Text } from "@chakra-ui/react";
+import { Report } from "types";
+import { createReport, putReport } from "utils/api/requestMethods/report";
+import {
   isReportType,
   ReportOptions,
   ReportStatus,
   ReportType,
 } from "types/report";
-import { QmsOptions } from "./AddFormOptions/QmsOptions";
-import { TaOptions } from "./AddFormOptions/TaOptions";
-import { CiOptions } from "./AddFormOptions/CiOptions";
+import QmsOptions from "./AddFormOptions/QmsOptions";
+import TacmOptions from "./AddFormOptions/TacmOptions";
+import CiOptions from "./AddFormOptions/CiOptions";
+import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
   verbiage: {
@@ -21,37 +24,31 @@ export type AddEditReportModalOptions = {
     yearSelect: string;
     shortName: string;
     sampleName: string;
+    topText?: string;
+    yearHelperText?: string;
   };
-  reportOptions: Record<string, any>;
-  optionsElements: React.ReactNode;
-  parseFormDataOptions: (formData: any) => Record<string, any>;
+  /**
+   * If a report type has inputs to specify its creation options,
+   * those inputs will be included in this component.
+   * If not (as for TACM and CI), this will be undefined.
+   */
+  OptionsComponent?: (props: {
+    selectedReport: Report | undefined;
+    onOptionsChange: (options: Record<string, any>) => void;
+    submissionAttempted: boolean;
+    setOptionsComplete: (isComplete: boolean) => void;
+  }) => ReactElement;
 };
 
 const buildModalOptions = (
-  reportType: ReportType,
-  selectedReport: Report | undefined
+  reportType: ReportType
 ): AddEditReportModalOptions => {
-  switch (reportType) {
-    case ReportType.QMS:
-      return QmsOptions(selectedReport);
-    case ReportType.TA:
-      return TaOptions();
-    case ReportType.CI:
-      return CiOptions();
-    default:
-      assertExhaustive(reportType);
-      return {
-        verbiage: {
-          reportName: "",
-          yearSelect: "",
-          shortName: "",
-          sampleName: "",
-        },
-        reportOptions: {},
-        optionsElements: undefined,
-        parseFormDataOptions: () => ({}),
-      };
-  }
+  const optionsByReportType: Record<ReportType, AddEditReportModalOptions> = {
+    [ReportType.QMS]: QmsOptions,
+    [ReportType.TACM]: TacmOptions,
+    [ReportType.CI]: CiOptions,
+  };
+  return optionsByReportType[reportType];
 };
 
 export const AddEditReportModal = ({
@@ -61,27 +58,67 @@ export const AddEditReportModal = ({
   selectedReport,
   reportHandler,
 }: Props) => {
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const readOnly = selectedReport?.status === ReportStatus.SUBMITTED;
-  const dropdownYears = [{ label: "2026", value: "2026" }];
-
-  // add validation to formJson
   if (!isReportType(reportType)) return null;
-  const { verbiage, reportOptions, optionsElements, parseFormDataOptions } =
-    buildModalOptions(reportType, selectedReport);
 
-  const form = useForm({
-    defaultValues: {
-      name: selectedReport?.name,
-      year: selectedReport?.year,
-      ...reportOptions,
-    },
-    shouldUnregister: true,
+  const dropdownYears = [{ label: "2026", value: "2026" }];
+  const { verbiage, OptionsComponent } = buildModalOptions(reportType);
+
+  const formDataForReport = (report: Report | undefined) => ({
+    reportTitle: report?.name ?? "",
+    year: report?.year?.toString() ?? dropdownYears[0].value,
+    options: selectedReport?.options ?? {},
   });
-  const onSubmit = async (formData: any) => {
+  const initialFormData = formDataForReport(selectedReport);
+  const [formData, setFormData] = useState(initialFormData);
+  const [errorData, setErrorData] = useState({ reportTitle: "", year: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionAttempted, setSubmissionAttempted] = useState(false);
+  const [optionsComplete, setOptionsComplete] = useState(!OptionsComponent);
+  const readOnly = selectedReport?.status === ReportStatus.SUBMITTED;
+
+  useEffect(() => {
+    setFormData(formDataForReport(selectedReport));
+  }, [selectedReport, modalDisclosure.isOpen]);
+
+  const onChange = (evt: { target: { name: string; value: string } }) => {
+    const { name, value } = evt.target;
+    const updatedFormData = {
+      ...formData,
+      [name]: value,
+    };
+    setErrorData({
+      ...errorData,
+      [name]: value ? "" : ErrorMessages.requiredResponse,
+    });
+    setFormData(updatedFormData);
+  };
+
+  const onOptionsChange = (optionsData: Record<string, any>) => {
+    setFormData({
+      ...formData,
+      options: optionsData,
+    });
+  };
+
+  const onSubmit = async (evt: FormEvent) => {
+    evt.preventDefault();
+    setSubmissionAttempted(true);
+
+    const newErrorData = {
+      reportTitle: formData.reportTitle ? "" : ErrorMessages.requiredResponse,
+      year: formData.year ? "" : ErrorMessages.requiredResponse,
+    };
+    setErrorData(newErrorData);
+
+    const canSubmit =
+      optionsComplete && !!formData.reportTitle && !!formData.year;
+    if (!canSubmit) {
+      return;
+    }
+
     setSubmitting(true);
 
-    const userEnteredReportName = formData.reportTitle.answer;
+    const userEnteredReportName = formData.reportTitle!;
 
     if (selectedReport) {
       if (userEnteredReportName) {
@@ -91,8 +128,8 @@ export const AddEditReportModal = ({
     } else {
       const reportOptions: ReportOptions = {
         name: userEnteredReportName,
-        year: Number(formData.year.answer),
-        options: parseFormDataOptions(formData),
+        year: Number(formData.year),
+        options: formData.options,
       };
       await createReport(reportType, activeState, reportOptions);
       await reportHandler(reportType, activeState);
@@ -121,43 +158,46 @@ export const AddEditReportModal = ({
       }}
       disableConfirm={readOnly}
     >
-      <FormProvider {...form}>
-        <form id="addEditReportModal" onSubmit={form.handleSubmit(onSubmit)}>
-          <Flex direction="column" gap="1.5rem">
-            <Text>
-              Answering “Yes” or “No” to the following questions will impact
-              which measure results must be reported.
-            </Text>
-            <TextField
-              element={{
-                type: ElementType.Textbox,
-                id: "",
-                label: `${verbiage.reportName} Name`,
-                helperText: `Name the ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: ${activeState} ${verbiage.sampleName}`,
-                answer: selectedReport?.name,
-                required: true,
-              }}
-              disabled={readOnly}
-              formkey={"reportTitle"}
+      <form id="addEditReportModal" onSubmit={onSubmit}>
+        <Flex direction="column" gap="2rem">
+          {verbiage.topText && <Text>{verbiage.topText}</Text>}
+          <CmsdsTextField
+            name="reportTitle"
+            label={`${verbiage.reportName} Name`}
+            hint={`Name this ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: "${activeState} ${verbiage.sampleName}"`}
+            onChange={onChange}
+            onBlur={() =>
+              setErrorData({
+                ...errorData,
+                reportTitle: formData.reportTitle
+                  ? ""
+                  : ErrorMessages.requiredResponse,
+              })
+            }
+            value={formData.reportTitle}
+            errorMessage={errorData.reportTitle}
+            disabled={readOnly}
+          />
+          <CmsdsDropdownField
+            name="year"
+            label={verbiage.yearSelect}
+            hint={verbiage.yearHelperText ?? ""}
+            onChange={onChange}
+            value={formData.year}
+            errorMessage={errorData.year}
+            options={dropdownYears}
+            disabled={!!selectedReport}
+          />
+          {OptionsComponent ? (
+            <OptionsComponent
+              selectedReport={selectedReport}
+              onOptionsChange={onOptionsChange}
+              submissionAttempted={submissionAttempted}
+              setOptionsComplete={setOptionsComplete}
             />
-            <DropdownField
-              element={{
-                type: ElementType.Dropdown,
-                id: "",
-                label: verbiage.yearSelect,
-                options: dropdownYears,
-                answer: selectedReport?.year.toString(),
-                required: true,
-                helperText:
-                  "This is the final year in a multi-year reporting period, used to indicate the endpoint of data collection.  For example, if a report covers the period of 2025 and 2026, the reporting year would be 2026.",
-              }}
-              disabled={!!selectedReport}
-              formkey={"year"}
-            />
-            {optionsElements}
-          </Flex>
-        </form>
-      </FormProvider>
+          ) : null}
+        </Flex>
+      </form>
     </Modal>
   );
 };

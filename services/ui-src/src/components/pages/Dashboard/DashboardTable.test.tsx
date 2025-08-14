@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
 import { ReportStatus, Report } from "types";
@@ -96,25 +96,21 @@ describe("Dashboard table with admin user", () => {
 
   it("should unlock a report on click", async () => {
     render(adminDashboardTableComponent);
-    await act(async () => {
-      const releaseBtn = screen.getAllByRole("button", { name: "Unlock" })[1];
-      await userEvent.click(releaseBtn);
-    });
+    const releaseBtn = screen.getAllByRole("button", { name: "Unlock" })[1];
+    await userEvent.click(releaseBtn);
     expect(mockRelease).toHaveBeenCalled();
   });
 
   it("should archive a report on click", async () => {
     render(adminDashboardTableComponent);
-    await act(async () => {
-      const button = screen.getAllByRole("button", { name: "Archive" })[0];
-      await userEvent.click(button);
-    });
+    const button = screen.getAllByRole("button", { name: "Archive" })[0];
+    await userEvent.click(button);
     expect(mockArchive).toHaveBeenCalled();
   });
 
-  it("should render In Revision text for a returned report", async () => {
+  it("should render In revision text for a returned report", async () => {
     render(adminDashboardTableComponent);
     // Setup data includes In Progress with Submission Count >= 1
-    expect(screen.getByText("In Revision")).toBeInTheDocument();
+    expect(screen.getByText("In revision")).toBeInTheDocument();
   });
 });

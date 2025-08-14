@@ -1,3 +1,4 @@
+import React from "react";
 import { VStack } from "@chakra-ui/react";
 import {
   HeaderElement,
@@ -21,86 +22,104 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
-  PerformanceRateElement,
   MeasureResultsNavigationTableElement,
   RadioField,
   StatusTableElement,
   TextAreaField,
   TextField,
   StatusAlert,
+  Fields,
+  NDR,
+  NDRBasic,
+  NDRFields,
+  NDREnhanced,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
 
 interface Props {
+  id: string;
   elements: PageElement[];
+  setElements: (elements: PageElement[]) => void;
 }
 
-export const Page = ({ elements }: Props) => {
+export const Page = ({ id, setElements, elements }: Props) => {
   const { userIsEndUser } = useStore().user || {};
   const { report } = useStore();
 
-  const composedElements = elements.map((element, index) => {
-    const props = {
-      key: index,
-      /*
-       * This `any` is currently needed to support element nesting.
-       * None of the PageElement template types include a formkey property...
-       * yet any of them _could_ be given a formkey, if they appear as children
-       * of (for example) a radio button. See RadioField.tsx:formatChoices().
-       */
-      formkey: (element as any).formkey ?? `elements.${index}`,
-      disabled: !userIsEndUser || report?.status === ReportStatus.SUBMITTED,
+  const buildElement = (element: PageElement, index: number) => {
+    const disabled =
+      !userIsEndUser || report?.status === ReportStatus.SUBMITTED;
+    const updateElement = (updatedElement: Partial<typeof element>) => {
+      setElements([
+        ...elements.slice(0, index),
+        { ...element, ...updatedElement } as typeof element,
+        ...elements.slice(index + 1),
+      ]);
     };
+
     switch (element.type) {
       case ElementType.Header:
-        return <HeaderElement {...{ ...props, element }} />;
+        return <HeaderElement {...{ element }} />;
       case ElementType.SubHeader:
-        return <SubHeaderElement {...{ ...props, element }} />;
+        return <SubHeaderElement {...{ element }} />;
       case ElementType.NestedHeading:
-        return <NestedHeadingElement {...{ ...props, element }} />;
+        return <NestedHeadingElement {...{ element }} />;
       case ElementType.Paragraph:
-        return <ParagraphElement {...{ ...props, element }} />;
+        return <ParagraphElement {...{ element }} />;
       case ElementType.Textbox:
-        return <TextField {...{ ...props, element }} />;
+        return <TextField {...{ updateElement, disabled, element }} />;
       case ElementType.TextAreaField:
-        return <TextAreaField {...{ ...props, element }} />;
+        return <TextAreaField {...{ updateElement, disabled, element }} />;
+      case ElementType.NumberField:
+        return <TextField {...{ updateElement, disabled, element }} />;
       case ElementType.Date:
-        return <DateField {...{ ...props, element }} />;
+        return <DateField {...{ updateElement, disabled, element }} />;
       case ElementType.Dropdown:
-        return <DropdownField {...{ ...props, element }} />;
+        return <DropdownField {...{ updateElement, disabled, element }} />;
       case ElementType.Accordion:
-        return <AccordionElement {...{ ...props, element }} />;
+        return <AccordionElement {...{ disabled, element }} />;
       case ElementType.Radio:
-        return <RadioField {...{ ...props, element }} />;
+        return <RadioField {...{ updateElement, disabled, element }} />;
       case ElementType.ButtonLink:
-        return <ButtonLinkElement {...{ ...props, element }} />;
+        return <ButtonLinkElement {...{ disabled, element }} />;
       case ElementType.MeasureTable:
-        return <MeasureTableElement {...{ ...props, element }} />;
+        return <MeasureTableElement {...{ disabled, element }} />;
       case ElementType.MeasureResultsNavigationTable:
-        return (
-          <MeasureResultsNavigationTableElement {...{ ...props, element }} />
-        );
+        return <MeasureResultsNavigationTableElement {...{ element }} />;
       case ElementType.StatusTable:
-        return <StatusTableElement {...{ ...props, element }} />;
+        return <StatusTableElement />;
       case ElementType.MeasureDetails:
-        return <MeasureDetailsElement {...{ ...props, element }} />;
+        return <MeasureDetailsElement />;
       case ElementType.MeasureFooter:
-        return <MeasureFooterElement {...{ ...props, element }} />;
-      case ElementType.PerformanceRate:
-        return <PerformanceRateElement {...{ ...props, element }} />;
+        return <MeasureFooterElement {...{ disabled, element }} />;
+      case ElementType.LengthOfStayRate:
+        return <Fields {...{ updateElement, disabled, element }} />;
+      case ElementType.NdrFields:
+        return <NDRFields {...{ updateElement, disabled, element }} />;
+      case ElementType.NdrEnhanced:
+        return <NDREnhanced {...{ updateElement, disabled, element }} />;
+      case ElementType.Ndr:
+        return <NDR {...{ updateElement, disabled, element }} />;
+      case ElementType.NdrBasic:
+        return <NDRBasic {...{ updateElement, disabled, element }} />;
       case ElementType.StatusAlert:
-        return <StatusAlert {...{ ...props, element }} />;
+        return <StatusAlert {...{ element }} />;
       case ElementType.Divider:
-        return <DividerElement {...{ ...props, element }} />;
+        return <DividerElement {...{ element }} />;
       case ElementType.SubmissionParagraph:
-        return <SubmissionParagraph {...{ ...props, element }} />;
+        return <SubmissionParagraph />;
       case ElementType.SubHeaderMeasure:
-        return <SubHeaderMeasureElement {...{ ...props, element }} />;
+        return <SubHeaderMeasureElement {...{ element }} />;
       default:
         assertExhaustive(element);
         return null;
     }
+  };
+
+  const composedElements = elements.map((element, index) => {
+    const el = buildElement(element, index);
+    return <React.Fragment key={`${id}-${index}`}>{el}</React.Fragment>;
   });
 
   return (

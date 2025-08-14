@@ -22,6 +22,14 @@ const elements: PageElement[] = [
     helperText:
       "What is the reporting period Start Date applicable to the measure results?",
   },
+  {
+    type: ElementType.Textbox,
+    id: "",
+    label: "Additional comments",
+    answer: "",
+    required: false,
+    helperText: "Enter any additional comments",
+  },
 ];
 
 const section: FormPageTemplate = {
@@ -36,5 +44,10 @@ describe("ExportedReportWrapper", () => {
   it("ExportedReportWrapper is visible", () => {
     render(<ExportedReportWrapper section={section}></ExportedReportWrapper>);
     expect(screen.getByText("Contact title")).toBeInTheDocument();
+  });
+
+  it("Unanswered optional fields are not rendered", () => {
+    render(<ExportedReportWrapper section={section}></ExportedReportWrapper>);
+    expect(screen.queryByText("Additional comments")).not.toBeInTheDocument();
   });
 });

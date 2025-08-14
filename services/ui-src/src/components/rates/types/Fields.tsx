@@ -1,77 +1,248 @@
-import React, { useEffect, useState } from "react";
-import { PerformanceData, PerformanceRateTemplate } from "types";
-import { Divider, Stack } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { LengthOfStayField, LengthOfStayRateTemplate } from "types";
+import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { useFormContext } from "react-hook-form";
-import { isNumber } from "../calculations";
+import {
+  parseNumber,
+  removeNoise,
+  stringifyInput,
+  stringifyResult,
+} from "../calculations";
+import { PageElementProps } from "components/report/Elements";
+import {
+  makeEmptyStringCopyOf,
+  validateNumber,
+} from "utils/validation/inputValidation";
+import { ExportRateTable } from "components/export/ExportedReportTable";
 
-export const Fields = (
-  props: PerformanceRateTemplate & {
-    formkey: string;
-    year: number;
-    calculation: Function;
-    disabled: boolean;
-  }
-) => {
-  const { answer, fields, calculation, multiplier, disabled } = props;
-  const arr =
-    fields?.map((field) => {
-      return { [field.id]: "" };
-    }) ?? [];
-  const initialValues = Object.assign({}, ...arr);
-  const defaultValue: PerformanceData = (answer as PerformanceData) ?? {
-    rates: [{ performanceTarget: "", ...initialValues }],
+export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
+  const { disabled, updateElement } = props;
+  const { labels, answer } = props.element;
+
+  const stringifyAnswer = (newAnswer: typeof answer) => {
+    return {
+      performanceTarget: stringifyInput(newAnswer?.performanceTarget),
+      actualCount: stringifyInput(newAnswer?.actualCount),
+      denominator: stringifyInput(newAnswer?.denominator),
+      expectedCount: stringifyInput(newAnswer?.expectedCount),
+      populationRate: stringifyInput(newAnswer?.populationRate),
+      actualRate: stringifyResult(newAnswer?.actualRate),
+      expectedRate: stringifyResult(newAnswer?.expectedRate),
+      adjustedRate: stringifyResult(newAnswer?.adjustedRate),
+    };
   };
-  const [displayValue, setDisplayValue] =
-    useState<PerformanceData>(defaultValue);
 
-  // get form context and register field
-  const form = useFormContext();
-  const key = `${props.formkey}.answer`;
-  useEffect(() => {
-    form.register(key, { required: true });
-    form.setValue(key, defaultValue);
-  }, []);
+  const initialValue = stringifyAnswer(answer);
+  const [displayValue, setDisplayValue] = useState(initialValue);
+  const [errors, setErrors] = useState(makeEmptyStringCopyOf(initialValue));
+
+  const updatedDisplayValue = (input: HTMLInputElement) => {
+    const fieldType = input.name as LengthOfStayField;
+    const stringValue = input.value;
+    const { errorMessage } = validateNumber(stringValue, true);
+
+    const newDisplayValue = structuredClone(displayValue);
+    const newErrors = structuredClone(errors);
+    newDisplayValue[fieldType] = stringValue;
+    newErrors[fieldType] = errorMessage;
+
+    return { displayValue: newDisplayValue, errors: newErrors };
+  };
+
+  const computeAnswer = (newDisplayValue: typeof displayValue) => {
+    const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
+    const actualCount = parseNumber(newDisplayValue.actualCount);
+    const denominator = parseNumber(newDisplayValue.denominator);
+    const expectedCount = parseNumber(newDisplayValue.expectedCount);
+    const populationRate = parseNumber(newDisplayValue.populationRate);
+    let actualRate: number | undefined = undefined;
+    let expectedRate: number | undefined = undefined;
+    let adjustedRate: number | undefined = undefined;
+
+    const canDivide = denominator !== undefined && denominator !== 0;
+
+    if (canDivide && actualCount !== undefined) {
+      actualRate = actualCount / denominator;
+    }
+
+    if (canDivide && expectedCount !== undefined) {
+      expectedRate = expectedCount / denominator;
+    }
+
+    if (
+      actualCount !== undefined &&
+      expectedCount !== undefined &&
+      populationRate !== undefined
+    ) {
+      /*
+       * Note that this is algebraically equivalent to the prescribed formula:
+       *     (actualRate / expectedRate) * populationRate
+       * since the factor of `1/denominator` in both actualRate and expectedRate
+       * cancels out. So we can compute it before the user gives a denominator.
+       * Additionally, we may get a more precise answer from this more direct
+       * computation - although roundRate() discards most/all of that precision.
+       */
+      adjustedRate = (populationRate * actualCount) / expectedCount;
+    }
+
+    return {
+      performanceTarget: removeNoise(performanceTarget),
+      actualCount: removeNoise(actualCount),
+      denominator: removeNoise(denominator),
+      expectedCount: removeNoise(expectedCount),
+      populationRate: removeNoise(populationRate),
+      actualRate: removeNoise(actualRate),
+      expectedRate: removeNoise(expectedRate),
+      adjustedRate: removeNoise(adjustedRate),
+    };
+  };
+
+  const updateCalculatedValues = (
+    newDisplayValue: typeof displayValue,
+    newAnswer: NonNullable<typeof answer>
+  ) => {
+    newDisplayValue.actualRate = stringifyResult(newAnswer.actualRate);
+    newDisplayValue.expectedRate = stringifyResult(newAnswer.expectedRate);
+    newDisplayValue.adjustedRate = stringifyResult(newAnswer.adjustedRate);
+  };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isNumber(event.target.value)) return;
+    // displayValue corresponds to the inputs on screen. Its values are strings.
+    const { displayValue: newDisplayValue, errors: newErrors } =
+      updatedDisplayValue(event.target);
 
-    const { name, value } = event.target;
-    const [index, type] = name.split(".");
-    const newDisplayValue = displayValue.rates[Number(index)];
-    newDisplayValue[type] = value ?? undefined;
+    // answer corresponds to the report data. Its values are numbers.
+    const newAnswer = computeAnswer(newDisplayValue);
 
-    const calculatedRate = calculation(newDisplayValue, multiplier);
+    // Instantly display calculation results
+    updateCalculatedValues(newDisplayValue, newAnswer);
+    setDisplayValue(newDisplayValue);
+    setErrors(newErrors);
 
-    displayValue.rates[Number(index)] = calculatedRate;
-    setDisplayValue({ ...displayValue });
-    form.setValue(`${key}`, displayValue, { shouldValidate: true });
-    form.setValue(`${key}.type`, props.type);
+    // Instantly save parsed and calculated values to the store and API
+    updateElement({ answer: newAnswer });
   };
 
   return (
-    <Stack gap="2rem">
-      <CmsdsTextField
-        label={`What is the ${
-          props.year + 2
-        } state performance target for this assessment?`}
-        name={`0.performanceTarget`}
-        onChange={onChangeHandler}
-        value={displayValue.rates[0].performanceTarget ?? ""}
-        disabled={disabled}
-      ></CmsdsTextField>
-      {fields?.map((field) => {
-        return (
-          <CmsdsTextField
-            label={field.label}
-            name={`0.${field.id}`}
-            onChange={onChangeHandler}
-            value={displayValue.rates[0][field.id] ?? ""}
-            disabled={field.autoCalc || disabled}
-          ></CmsdsTextField>
-        );
-      })}
-      <Divider></Divider>
+    <Stack gap={4} sx={sx.performance}>
+      <Heading variant="subHeader">Performance Rates</Heading>
+      <Stack gap="2rem">
+        <CmsdsTextField
+          label={labels.performanceTarget}
+          name="performanceTarget"
+          onChange={onChangeHandler}
+          onBlur={onChangeHandler}
+          value={displayValue.performanceTarget}
+          errorMessage={errors.performanceTarget}
+          disabled={disabled}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label={labels.actualCount}
+          name="actualCount"
+          onChange={onChangeHandler}
+          onBlur={onChangeHandler}
+          value={displayValue.actualCount}
+          errorMessage={errors.actualCount}
+          disabled={disabled}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label={labels.denominator}
+          name="denominator"
+          onChange={onChangeHandler}
+          onBlur={onChangeHandler}
+          value={displayValue.denominator}
+          errorMessage={errors.denominator}
+          disabled={disabled}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label={labels.expectedCount}
+          name="expectedCount"
+          onChange={onChangeHandler}
+          onBlur={onChangeHandler}
+          value={displayValue.expectedCount}
+          errorMessage={errors.expectedCount}
+          disabled={disabled}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label={labels.populationRate}
+          name="populationRate"
+          onChange={onChangeHandler}
+          onBlur={onChangeHandler}
+          value={displayValue.populationRate}
+          errorMessage={errors.populationRate}
+          disabled={disabled}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label={labels.actualRate}
+          name="actualRate"
+          value={displayValue.actualRate}
+          disabled={true}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label={labels.expectedRate}
+          name="expectedRate"
+          value={displayValue.expectedRate}
+          disabled={true}
+        ></CmsdsTextField>
+        <CmsdsTextField
+          label={labels.adjustedRate}
+          name="adjustedRate"
+          value={displayValue.adjustedRate}
+          disabled={true}
+        ></CmsdsTextField>
+        <Divider></Divider>
+      </Stack>
     </Stack>
   );
+};
+
+//The pdf rendering of Fields component
+export const FieldsExport = (element: LengthOfStayRateTemplate) => {
+  const label = "Performance Rates";
+  const rows = [
+    {
+      indicator: element.labels?.performanceTarget,
+      response: element.answer?.performanceTarget,
+    },
+    {
+      indicator: element.labels?.actualCount,
+      response: element.answer?.actualCount,
+    },
+    {
+      indicator: element.labels?.denominator,
+      response: element.answer?.denominator,
+    },
+    {
+      indicator: element.labels?.expectedCount,
+      response: element.answer?.expectedCount,
+    },
+    {
+      indicator: element.labels?.populationRate,
+      response: element.answer?.populationRate,
+    },
+    {
+      indicator: element.labels?.actualRate,
+      response: element.answer?.actualRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels?.expectedRate,
+      response: element.answer?.expectedRate,
+      helperText: "Auto-calculates",
+    },
+    {
+      indicator: element.labels?.adjustedRate,
+      response: element.answer?.adjustedRate,
+      helperText: "Auto-calculates",
+    },
+  ];
+  return <>{ExportRateTable([{ label, rows }])}</>;
+};
+
+const sx = {
+  performance: {
+    input: {
+      width: "240px",
+    },
+  },
 };

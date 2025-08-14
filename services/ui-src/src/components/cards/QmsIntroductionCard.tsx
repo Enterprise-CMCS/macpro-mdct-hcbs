@@ -11,19 +11,25 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
 export const QmsIntroductionCard = () => {
   return (
     <ReportIntroCard title="Quality Measure Set Report">
-      The HCBS Quality Measure Set supports ongoing efforts to safeguard the
-      health and welfare of HCBS participants by promoting quality monitoring
-      and accountability across state systems. The federally required
-      performance measures (PMs) in this set assess state performance in key
-      domains such as service planning, person-centeredness, health and welfare,
-      and community integration. These PMs are reported annually and help track
-      whether states are effectively implementing quality strategies and
-      delivering services that meet participant needs. The HCBS Quality Measure
-      Set PMs include both fee-for-service and managed care delivery systems.
+      The HCBS QMS report is now available. The HCBS QMS report is intended for
+      use by states and reporting entities to submit data on the quality of
+      services provided through Medicaid HCBS programs which support individuals
+      who need long-term services and supports (LTSS) in their homes and
+      communities rather than institutional settings. The purpose is to collect
+      standardized data on the quality of HCBS programs and to support
+      monitoring, improvement and accountability in Medicaid-funded HCBS. Each
+      state or territory is required to submit one report for all
+      Medicaid-funded HCBS under section 1915(c), (i), (j), and (k) authorities,
+      as well as section 1115 demonstrations that include HCBS. Reporting must
+      include all eligible individuals (or a representative sample of eligible
+      individuals) receiving HCBS under these authorities.
       <ReportIntroCardActions reportType={ReportType.QMS} />
       <Accordion allowToggle={true}>
         <AccordionItem label="When is the Quality Measure Set Report due?">
-          [CMS to provide]
+          The HCBS QMS report will be created and submitted biannually. CMS will
+          review and approve all HCBS QMS reports. The reporting period will
+          open on September 1 and close on December 31 during each year that
+          states and territories are required to report.
         </AccordionItem>
       </Accordion>
     </ReportIntroCard>

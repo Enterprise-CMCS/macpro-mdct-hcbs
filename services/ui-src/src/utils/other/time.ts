@@ -1,6 +1,6 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import { DateShape } from "types";
-import { differenceInSeconds, parseISO } from "date-fns";
+import { differenceInSeconds } from "date-fns";
 
 interface TimeShape {
   hour: number;
@@ -99,22 +99,19 @@ export const formatMonthDayYear = (date: number) => {
   return [getPart("month"), getPart("day"), getPart("year")].join("/");
 };
 
-export const checkDateCompleteness = (date: string) => {
-  const month = parseInt(date.split("/")?.[0]);
-  const day = parseInt(date.split("/")?.[1]);
-  const year = parseInt(date.split("/")?.[2]);
-  const dateIsComplete = month && day && year.toString().length === 4;
-  return dateIsComplete ? { year, month, day } : null;
-};
-
 export const convertDatetimeStringToNumber = (
   date: string,
   time: TimeShape
 ): number | undefined => {
-  const completeDate = checkDateCompleteness(date);
+  const completeDate = parseMMDDYYYY(date);
   let convertedTime;
   if (completeDate) {
-    convertedTime = convertDateTimeEtToUtc(completeDate, time);
+    let dateShape = {
+      year: completeDate.getFullYear(),
+      month: completeDate.getMonth() + 1,
+      day: completeDate.getDate(),
+    };
+    convertedTime = convertDateTimeEtToUtc(dateShape, time);
   }
   return convertedTime || undefined;
 };
@@ -132,7 +129,9 @@ export const checkDateRangeStatus = (
  */
 export const calculateRemainingSeconds = (expiresAt?: any) => {
   if (!expiresAt) return 0;
-  return differenceInSeconds(parseISO(expiresAt), new Date());
+  const parsedDate = new Date(expiresAt);
+  if (isNaN(parsedDate.getTime())) return 0;
+  return differenceInSeconds(parsedDate, new Date());
 };
 
 export const calculateNextQuarter = (previousQuarter: string) => {
@@ -147,4 +146,36 @@ export const calculateNextQuarter = (previousQuarter: string) => {
     return `${nextYear} Q${nextPeriod}`;
   }
   return "";
+};
+
+/**
+ * Parse a date string in the format "MM/DD/YYYY"
+ * @returns a Date, or `undefined` if the input is invalid
+ * @example
+ * parseMMDDYYYY("") === undefined
+ * parseMMDDYYYY("not a date") === undefined
+ * parseMMDDYYYY("99/99/9999") === undefined
+ * parseMMDDYYYY("12/31/2025") // December 31st, 2025
+ */
+export const parseMMDDYYYY = (dateString: string): Date | undefined => {
+  if (!dateString || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+    return undefined;
+  }
+  const parts = dateString.split("/");
+  // Month is 0 indexed in JavaScript Date constructor
+  const month = parseInt(parts[0]) - 1;
+  const day = parseInt(parts[1]);
+  const year = parseInt(parts[2]);
+
+  const dateObj = new Date(year, month, day);
+
+  // Check if the date is valid
+  if (
+    dateObj.getFullYear() === year &&
+    dateObj.getMonth() === month &&
+    dateObj.getDate() === day
+  ) {
+    return dateObj;
+  }
+  return undefined;
 };

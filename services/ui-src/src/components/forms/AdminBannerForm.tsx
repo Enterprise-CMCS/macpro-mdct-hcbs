@@ -1,111 +1,222 @@
-import { FormProvider, useForm } from "react-hook-form";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Flex, Spinner } from "@chakra-ui/react";
-import { ErrorAlert, PreviewBanner, TextField, DateField } from "components";
-import { bannerId } from "../../constants";
-import { bannerErrors } from "verbiage/errors";
-import { convertDatetimeStringToNumber } from "utils";
-import { AdminBannerMethods, ElementType, ErrorVerbiage } from "types";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Banner, ErrorAlert } from "components";
 import {
-  bannerFormValidateSchema,
-  validateBannerPayload,
-} from "utils/validation/bannerValidation";
+  TextField as CmsdsTextField,
+  SingleInputDateField as CmsdsDateField,
+} from "@cmsgov/design-system";
+import { bannerId, ErrorMessages } from "../../constants";
+import { bannerErrors } from "verbiage/errors";
+import { convertDatetimeStringToNumber, parseMMDDYYYY } from "utils";
+import { AdminBannerMethods, BannerData, ErrorVerbiage } from "types";
+import { isUrl } from "utils/validation/inputValidation";
 
-export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
-  const [error, setError] = useState<ErrorVerbiage>();
+export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    link: "",
+    startDate: "",
+    endDate: "",
+  });
+  const [formErrors, setFormErrors] = useState({
+    title: "",
+    description: "",
+    link: "",
+    startDate: "",
+    endDate: "",
+  });
+  const [errorAlertContents, setErrorAlertContents] = useState<ErrorVerbiage>();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const form = useForm({
-    resolver: yupResolver(bannerFormValidateSchema),
-  });
+  const onTextChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = evt.target;
+    const required = evt.target.dataset.required === "true";
+    const updatedFormData = {
+      ...formData,
+      [name]: value,
+    };
+    setFormData(updatedFormData);
 
-  const onSubmit = async (formData: Record<string, { answer: string }>) => {
+    let errorMessage = "";
+    if (required && !value) {
+      errorMessage = ErrorMessages.requiredResponse;
+    } else if (name === "link" && value && !isUrl(value)) {
+      errorMessage = "Response must be a valid hyperlink/URL";
+    }
+    setFormErrors({
+      ...formErrors,
+      [name]: errorMessage,
+    });
+  };
+
+  const onStartDateChange = (rawValue: string, maskedValue: string) => {
+    const updatedFormData = {
+      ...formData,
+      startDate: rawValue,
+    };
+    setFormData(updatedFormData);
+
+    const parsedValue = parseMMDDYYYY(maskedValue);
+    let updatedErrors = structuredClone(formErrors);
+    updatedErrors.startDate = "";
+    if (!rawValue) {
+      updatedErrors.startDate = ErrorMessages.requiredResponse;
+    } else if (parsedValue === undefined) {
+      updatedErrors.startDate =
+        "Start date is invalid. Please enter date in MM/DD/YYYY format";
+    } else {
+      const endDate = parseMMDDYYYY(formData.endDate);
+      if (endDate && endDate < parsedValue) {
+        updatedErrors.endDate = ErrorMessages.endDateBeforeStartDate;
+      } else if (
+        updatedErrors.endDate === ErrorMessages.endDateBeforeStartDate
+      ) {
+        updatedErrors.endDate = "";
+      }
+    }
+    setFormErrors(updatedErrors);
+  };
+
+  const onEndDateChange = (rawValue: string, maskedValue: string) => {
+    const updatedFormData = {
+      ...formData,
+      endDate: rawValue,
+    };
+    setFormData(updatedFormData);
+
+    const parsedValue = parseMMDDYYYY(maskedValue);
+    let updatedErrors = structuredClone(formErrors);
+    updatedErrors.endDate = "";
+    if (!rawValue) {
+      updatedErrors.endDate = ErrorMessages.requiredResponse;
+    } else if (parsedValue === undefined) {
+      updatedErrors.endDate =
+        "End date is invalid. Please enter date in MM/DD/YYYY format";
+    } else {
+      const startDate = parseMMDDYYYY(formData.startDate);
+      if (startDate && parsedValue < startDate) {
+        updatedErrors.endDate = ErrorMessages.endDateBeforeStartDate;
+      }
+    }
+    setFormErrors(updatedErrors);
+  };
+
+  const onBlur = (evt: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = evt.target;
+    const required = evt.target.dataset.required === "true";
+    if (required && !value) {
+      setFormErrors({
+        ...formErrors,
+        [name]: ErrorMessages.requiredResponse,
+      });
+    }
+  };
+
+  const onSubmit = async (evt: FormEvent) => {
+    evt.preventDefault();
+
+    const newErrors = structuredClone(formErrors);
+    for (let key of ["title", "description", "startDate", "endDate"] as const) {
+      if (!formErrors[key] && !formData[key]) {
+        newErrors[key] = ErrorMessages.requiredResponse;
+      }
+    }
+    setFormErrors(newErrors);
+
+    const hasErrors = Object.values(newErrors).some((message) => !!message);
+    if (hasErrors) {
+      return;
+    }
+
     setSubmitting(true);
 
-    const newBannerData = {
+    const newBannerData: BannerData = {
       key: bannerId,
-      title: formData["bannerTitle"]?.answer,
-      description: formData["bannerDescription"]?.answer,
-      link: formData["bannerLink"]?.answer || undefined,
-      startDate: convertDatetimeStringToNumber(
-        formData["bannerStartDate"]?.answer,
-        { hour: 0, minute: 0, second: 0 }
-      ),
-      endDate: convertDatetimeStringToNumber(
-        formData["bannerEndDate"]?.answer,
-        { hour: 23, minute: 59, second: 59 }
-      ),
+      title: formData.title,
+      description: formData.description,
+      link: formData.link,
+      startDate: convertDatetimeStringToNumber(formData.startDate, {
+        hour: 0,
+        minute: 0,
+        second: 0,
+      }),
+      endDate: convertDatetimeStringToNumber(formData.endDate, {
+        hour: 23,
+        minute: 59,
+        second: 59,
+      }),
     };
 
     try {
-      // validate banner data before making api call
-      await validateBannerPayload(newBannerData);
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
     } catch {
-      setError(bannerErrors.REPLACE_BANNER_FAILED);
+      setErrorAlertContents(bannerErrors.REPLACE_BANNER_FAILED);
     }
     setSubmitting(false);
   };
 
   return (
     <>
-      <ErrorAlert error={error} sxOverride={sx.errorAlert} />
-      <FormProvider {...form}>
-        <form
-          id="addAdminBanner"
-          onSubmit={form.handleSubmit(onSubmit)}
-          {...props}
-        >
-          <Flex flexDirection="column" gap="1.5rem">
-            <TextField
-              element={{
-                type: ElementType.Textbox,
-                id: "",
-                label: "Title text",
-              }}
-              formkey={"bannerTitle"}
-            ></TextField>
-            <TextField
-              element={{
-                type: ElementType.Textbox,
-                id: "",
-                label: "Description text",
-              }}
-              formkey={"bannerDescription"}
-            ></TextField>
-            <TextField
-              element={{
-                type: ElementType.Textbox,
-                id: "",
-                label: "Link",
-                helperText: "Optional",
-              }}
-              formkey={"bannerLink"}
-            ></TextField>
-            <DateField
-              element={{
-                type: ElementType.Date,
-                id: "",
-                label: "Start date",
-                helperText: "",
-              }}
-              formkey={"bannerStartDate"}
-            ></DateField>
-            <DateField
-              element={{
-                type: ElementType.Date,
-                id: "",
-                label: "End date",
-                helperText: "",
-              }}
-              formkey={"bannerEndDate"}
-            ></DateField>
-          </Flex>
-        </form>
-        <PreviewBanner />
-      </FormProvider>
+      <ErrorAlert error={errorAlertContents} sxOverride={sx.errorAlert} />
+      <form id="addAdminBanner" onSubmit={onSubmit}>
+        <Flex flexDirection="column" gap="1.5rem">
+          <CmsdsTextField
+            name="title"
+            label="Title text"
+            onChange={onTextChange}
+            onBlur={onBlur}
+            value={formData.title}
+            errorMessage={formErrors.title}
+            data-required="true"
+          />
+          <CmsdsTextField
+            name="description"
+            label="Description text"
+            onChange={onTextChange}
+            onBlur={onBlur}
+            value={formData.description}
+            errorMessage={formErrors.description}
+            data-required="true"
+          />
+          <CmsdsTextField
+            name="link"
+            label="Link"
+            hint="Optional"
+            onChange={onTextChange}
+            onBlur={onBlur}
+            value={formData.link}
+            errorMessage={formErrors.link}
+            data-required="false"
+          />
+          <CmsdsDateField
+            name="startDate"
+            label="Start date"
+            onChange={onStartDateChange}
+            onBlur={onBlur}
+            value={formData.startDate}
+            errorMessage={formErrors.startDate}
+            data-required="true"
+          />
+          <CmsdsDateField
+            name="endDate"
+            label="End date"
+            onChange={onEndDateChange}
+            onBlur={onBlur}
+            value={formData.endDate}
+            errorMessage={formErrors.endDate}
+            data-required="true"
+          />
+        </Flex>
+      </form>
+      <Banner
+        bannerData={{
+          title: formData.title || "New banner title",
+          description: formData.description || "New banner description",
+          link: formData.link,
+        }}
+      />
       <Flex sx={sx.previewFlex}>
         <Button form="addAdminBanner" type="submit" sx={sx.replaceBannerButton}>
           {submitting ? <Spinner size="md" /> : "Replace Current Banner"}
