@@ -1,15 +1,12 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
-import {
-  ElementType,
-  MeasurePageTemplate,
-  NdrEnhancedTemplate,
-  RateSetData,
-} from "types";
-import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
-
-const noReponseText = "No Response";
-const autoPopulatedText = "Auto-populates from previous response";
+import { ElementType, MeasurePageTemplate, PageElement } from "types";
+import { FieldsExport } from "components/rates/types/Fields";
+import { NDRExport } from "components/rates/types/NDR";
+import { noReponseText } from "../../constants";
+import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
+import { NDRFieldExport } from "components/rates/types/NDRFields";
+import { NDRBasicExport } from "components/rates/types/NDRBasic";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -38,17 +35,11 @@ export const shouldUseTable = (type: ElementType) => {
 
 export const renderElements = (
   section: MeasurePageTemplate,
-  element: {
-    id: string;
-    type: ElementType;
-    answer?: string | number | RateSetData[] | RateSetData | undefined;
-    text?: string;
-  }
+  element: PageElement
 ) => {
   const { type } = element;
   if (!renderElementList.includes(type) || ignoreIdList.includes(element.id))
     return;
-  const { answer } = element;
 
   switch (type) {
     case ElementType.SubHeader:
@@ -58,75 +49,22 @@ export const renderElements = (
         </Heading>
       );
     case ElementType.NdrEnhanced:
-      return NDREnhancedReportElement(element as NdrEnhancedTemplate);
+      return NDREnhancedExport(element);
     case ElementType.NdrFields:
-      return <>[TO DO: ADD NDR FIELDS]</>;
+      return NDRFieldExport(element);
     case ElementType.Ndr:
-      return <>[TO DO: ADD NDR]</>;
+      return NDRExport(element);
     case ElementType.LengthOfStayRate:
-      return <>[TO DO: ADD Field Of Stay]</>;
+      return FieldsExport(element);
     case ElementType.NdrBasic:
-      return <>[TO DO: ADD NDR Basic]</>;
+      return NDRBasicExport(element);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
   }
 
-  return (answer as string) ?? noReponseText;
-};
+  if (!("answer" in element)) {
+    return noReponseText;
+  }
 
-export const NDREnhancedReportElement = (element: NdrEnhancedTemplate) => {
-  const buildData = element.assessments?.map(
-    (assess: { id: string; label: string }) => {
-      const performanceRate = element.answer?.rates?.find(
-        (rate: { id: string }) => rate.id === assess.id
-      );
-      const row = [
-        {
-          indicator: element.performanceTargetLabel,
-          response: performanceRate?.performanceTarget,
-        },
-        {
-          indicator: "Numerator",
-          response: performanceRate?.numerator,
-        },
-        {
-          indicator: "Denominator",
-          response: element?.answer?.denominator ?? autoPopulatedText,
-          helperText: "Auto-populates",
-        },
-        {
-          indicator: "Rate",
-          response: performanceRate?.rate ?? autoPopulatedText,
-          helperText: "Auto-calculates",
-        },
-      ];
-
-      return { label: assess.label, rows: row };
-    }
-  );
-
-  const label = element.label ?? "Performance Rates";
-
-  return (
-    <>
-      <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
-      <ExportedReportTable
-        rows={[
-          {
-            indicator: "Performance Rates Denominator",
-            response: element?.answer?.denominator,
-          },
-        ]}
-      />
-      {buildData.map((data: { label: string; rows: ReportTableType[] }) => (
-        <>
-          <Heading
-            as="h4"
-            fontWeight="bold"
-          >{`${label} : ${data?.label}`}</Heading>
-          <ExportedReportTable rows={data?.rows} />
-        </>
-      ))}
-    </>
-  );
+  return element.answer ?? noReponseText;
 };

@@ -1,4 +1,14 @@
-import { Table, Thead, Th, Tr, Tbody, Td, Text } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Th,
+  Tr,
+  Tbody,
+  Td,
+  Text,
+  Heading,
+  Box,
+} from "@chakra-ui/react";
 import { notAnsweredText } from "../../constants";
 import { ElementType } from "types";
 import { ReactElement } from "react";
@@ -24,12 +34,12 @@ export const ExportedReportTable = ({ rows }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        {rows?.map((row: ReportTableType) => (
-          <Tr>
+        {rows.map((row: ReportTableType, idx) => (
+          <Tr key={`${row.indicator}.${idx}`}>
             <Td>
               <Text>{row.indicator} </Text>
-              {row?.helperText && <Text>{row?.helperText}</Text>}
-              {row?.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
+              {row.helperText && <Text>{row.helperText}</Text>}
+              {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
             <Td color={row.response ? "palette.base" : "palette.error_darker"}>
               {row.response ?? notAnsweredText}
@@ -38,5 +48,20 @@ export const ExportedReportTable = ({ rows }: Props) => {
         ))}
       </Tbody>
     </Table>
+  );
+};
+
+export const ExportRateTable = (
+  tableData: { label: string; rows: ReportTableType[] }[]
+) => {
+  return tableData.map(
+    (data: { label: string; rows: ReportTableType[] }, idx) => (
+      <Box key={`${data.label}.${idx}`}>
+        <Heading as="h4" fontWeight="bold">
+          {data?.label}
+        </Heading>
+        <ExportedReportTable rows={data?.rows} />
+      </Box>
+    )
   );
 };
