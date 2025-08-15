@@ -60,6 +60,7 @@ export const invalidFormPageReport = {
         },
         {
           type: ElementType.Textbox,
+          required: true,
           label: "Contact title",
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
@@ -67,18 +68,21 @@ export const invalidFormPageReport = {
         {
           type: ElementType.Textbox,
           label: "Contact email address",
+          required: true,
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",
         },
         {
           type: ElementType.Date,
           label: "Reporting period start date",
+          required: true,
           helperText:
             "What is the reporting period Start Date applicable to the measure results?",
         },
         {
           type: ElementType.Date,
           label: "Reporting period end date",
+          required: true,
           helperText:
             "What is the reporting period End Date applicable to the measure results?",
         },
@@ -110,11 +114,13 @@ export const invalidMeasurePageReport = {
         {
           type: ElementType.Textbox,
           label: "Contact title",
+          required: true,
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
         },
         {
           type: ElementType.Textbox,
+          required: true,
           label: "Contact email address",
           helperText:
             "Enter email address. Department or program-wide email addresses ok.",
@@ -122,12 +128,14 @@ export const invalidMeasurePageReport = {
         {
           type: ElementType.Date,
           label: "Reporting period start date",
+          required: true,
           helperText:
             "What is the reporting period Start Date applicable to the measure results?",
         },
         {
           type: ElementType.Date,
           label: "Reporting period end date",
+          required: true,
           helperText:
             "What is the reporting period End Date applicable to the measure results?",
         },
@@ -165,6 +173,7 @@ export const invalidRadioCheckedChildrenReport = {
         {
           type: ElementType.Radio,
           label: "Were the reported measure results audited or validated?",
+          required: true,
           choices: [
             { label: "No, I am reporting on this measure", value: "no" },
             {

@@ -86,6 +86,7 @@ export const elementObject: {
           type: ElementType.Textbox,
           id: "id-textfield",
           label: "TextField",
+          required: false,
         }}
       />,
     ],
@@ -99,6 +100,7 @@ export const elementObject: {
           type: ElementType.TextAreaField,
           id: "id-textareafield",
           label: "TextAreaField",
+          required: true,
         }}
       />,
     ],
@@ -151,6 +153,7 @@ export const elementObject: {
           type: ElementType.Dropdown,
           id: "id-dropdown",
           label: "DropdownField",
+          required: true,
           options: [
             { value: "dropdown option 1", label: "dropdown option 1" },
             { value: "dropdown option 2", label: "dropdown option 2" },
@@ -169,6 +172,7 @@ export const elementObject: {
           type: ElementType.Radio,
           id: "id-radio",
           label: "RadioField",
+          required: true,
           choices: [
             { value: "radio option 1", label: "radio option 1" },
             { value: "radio option 2", label: "radio option 2" },
@@ -188,6 +192,7 @@ export const elementObject: {
           id: "id-date-field",
           label: "DateField",
           helperText: "DateFieldElement is used to select a date.",
+          required: true,
         }}
       />,
     ],
@@ -215,6 +220,7 @@ export const elementObject: {
             id: "id-number-field",
             label: "Enter a number",
             helperText: "Helper text is optional",
+            required: false,
           } as NumberFieldTemplate
         }
       />,

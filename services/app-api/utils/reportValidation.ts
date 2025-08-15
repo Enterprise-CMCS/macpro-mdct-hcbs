@@ -68,7 +68,7 @@ const textboxTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   hideCondition: hideConditionSchema,
 });
 
@@ -78,7 +78,7 @@ const numberFieldTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().notRequired(),
   answer: number().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
 });
 
 const textAreaTemplateSchema = object().shape({
@@ -88,7 +88,7 @@ const textAreaTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   hideCondition: hideConditionSchema,
-  required: boolean().notRequired(),
+  required: boolean().required(),
 });
 
 const dateTemplateSchema = object().shape({
@@ -97,6 +97,7 @@ const dateTemplateSchema = object().shape({
   label: string().required(),
   helperText: string().required(),
   answer: string().notRequired(),
+  required: boolean().required(),
 });
 
 const dropdownTemplateSchema = object().shape({
@@ -113,7 +114,7 @@ const dropdownTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
 });
 
 const accordionTemplateSchema = object().shape({
@@ -210,7 +211,7 @@ const radioTemplateSchema = object().shape({
     })
   ),
   answer: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   clickAction: string().notRequired(),
   hideCondition: hideConditionSchema,
 });
@@ -291,7 +292,7 @@ const lengthOfStayRateSchema = object().shape({
     expectedRate: string().required(),
     adjustedRate: string().required(),
   }),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       performanceTarget: number().notRequired(),
@@ -327,7 +328,7 @@ const ndrFieldsRateSchema = object().shape({
       })
     )
     .required(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   multiplier: number().notRequired(),
   answer: array()
     .of(
@@ -360,7 +361,7 @@ const ndrEnhancedRateSchema = object().shape({
       })
     )
     .required(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       denominator: number().notRequired(),
@@ -381,7 +382,7 @@ const ndrRateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   performanceTargetLabel: string().required(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       performanceTarget: number().notRequired(),
@@ -396,7 +397,7 @@ const ndrRateBasicSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NdrBasic)),
   id: string().required(),
   label: string().notRequired(),
-  required: boolean().notRequired(),
+  required: boolean().required(),
   answer: object()
     .shape({
       numerator: number().notRequired(),
@@ -462,7 +463,6 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmitId: string().notRequired(),
   required: boolean().notRequired(),
   stratified: boolean().notRequired(),
-  optional: boolean().notRequired(),
   substitutable: string().notRequired(),
   dependentPages: array()
     .of(dependentPageInfoSchema)

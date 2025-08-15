@@ -12,6 +12,7 @@ import { useState } from "react";
 const mockedPerformanceElement: LengthOfStayRateTemplate = {
   id: "mock-perf-id",
   type: ElementType.LengthOfStayRate,
+  required: true,
   labels: {
     performanceTarget: `What is the 2028 state performance target for this assessment?`,
     actualCount: "Count of Successful Discharges to the Community",

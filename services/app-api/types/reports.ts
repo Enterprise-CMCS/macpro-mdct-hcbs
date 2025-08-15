@@ -150,7 +150,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmitId: string;
   required?: boolean;
   stratified?: boolean;
-  optional?: boolean;
   substitutable?: string;
   dependentPages?: dependentPageInfo[];
   cmitInfo?: CMIT;
@@ -371,7 +370,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
 };
 
@@ -381,7 +380,7 @@ export type NumberFieldTemplate = {
   label: string;
   helperText?: string;
   answer?: number;
-  required?: boolean;
+  required: boolean;
   hideCondition?: never;
 };
 
@@ -392,7 +391,7 @@ export type TextAreaBoxTemplate = {
   helperText?: string;
   answer?: string;
   hideCondition?: HideCondition;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DateTemplate = {
@@ -401,6 +400,7 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
+  required: boolean;
 };
 
 export type DropdownTemplate = {
@@ -410,7 +410,7 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DividerTemplate = {
@@ -450,7 +450,7 @@ export type RadioTemplate = {
   helperText?: string;
   choices: ChoiceTemplate[];
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
 };
@@ -495,7 +495,7 @@ export type LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
   answer?: Record<LengthOfStayField, number | undefined>;
-  required?: boolean;
+  required: boolean;
 };
 
 export const RateInputFieldNames = {
@@ -526,7 +526,7 @@ export type NdrFieldsTemplate = {
   fields: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrEnhancedTemplate = {
@@ -537,7 +537,7 @@ export type NdrEnhancedTemplate = {
   performanceTargetLabel: string;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrTemplate = {
@@ -551,7 +551,7 @@ export type NdrTemplate = {
     denominator: number | undefined;
     rate: number | undefined;
   };
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrBasicTemplate = {
@@ -568,7 +568,7 @@ export type NdrBasicTemplate = {
     denomHint: string | undefined;
     rateHint: string | undefined;
   };
-  required?: boolean;
+  required: boolean;
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
