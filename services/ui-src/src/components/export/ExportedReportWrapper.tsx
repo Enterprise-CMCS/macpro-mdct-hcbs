@@ -33,6 +33,8 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     return hasAnswer || isRequired;
   });
 
+  if (filteredElements == undefined) return null;
+
   const elements =
     filteredElements?.map(
       (element: {
