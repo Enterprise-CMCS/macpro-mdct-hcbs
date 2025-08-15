@@ -17,17 +17,38 @@ const report = {
     { childPageIds: ["1", "2"] },
     { title: "Section 1", id: "id-1" },
     { title: "Section 2", id: "id-2" },
-    { title: "Section 3", id: "review-submit" },
+    { title: "Section 3", id: "req-measure-result" },
+    { title: "Section 4", id: "review-submit" },
     {
-      title: "Section 4",
-      id: "id-4",
+      title: "Section 5",
+      id: "id-5",
       type: PageType.Measure,
       required: false,
       status: PageStatus.NOT_STARTED,
     },
     {
-      title: "Section 5",
-      id: "id-5",
+      title: "Section 6",
+      id: "id-6",
+      type: PageType.MeasureResults,
+      status: PageStatus.NOT_STARTED,
+    },
+    {
+      title: "Section 7",
+      id: "id-7",
+      type: PageType.Measure,
+      status: PageStatus.NOT_STARTED,
+      required: true,
+      dependentPages: [
+        {
+          template: "id-7-1",
+          key: "7-dep",
+          linkText: "Section 7 Dependent Page",
+        },
+      ],
+    },
+    {
+      title: "Section 7 Dependent Page",
+      id: "id-7-1",
       type: PageType.MeasureResults,
       status: PageStatus.NOT_STARTED,
     },
@@ -59,16 +80,20 @@ describe("ExportedReportPage", () => {
 
   it("Should not render filtered sections", () => {
     render(<ExportedReportPage></ExportedReportPage>);
-    expect(screen.queryByText("Section 3")).not.toBeInTheDocument();
+    expect(screen.queryByText("Section 4")).not.toBeInTheDocument();
   });
 
   it("Should not render optional measures which are not started", () => {
     render(<ExportedReportPage></ExportedReportPage>);
-    expect(screen.queryByText("Section 4")).not.toBeInTheDocument();
+    expect(screen.queryByText("Section 5")).not.toBeInTheDocument();
   });
 
   it("Should not render measure results which are not started", () => {
     render(<ExportedReportPage></ExportedReportPage>);
-    expect(screen.queryByText("Section 5")).not.toBeInTheDocument();
+    expect(screen.queryByText("Section 6")).not.toBeInTheDocument();
+  });
+  it("Should render Required Measures Heading", () => {
+    render(<ExportedReportPage></ExportedReportPage>);
+    expect(screen.queryByText("Required Measures")).toBeInTheDocument();
   });
 });

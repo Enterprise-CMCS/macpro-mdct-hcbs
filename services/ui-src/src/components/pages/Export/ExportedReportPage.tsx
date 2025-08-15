@@ -1,4 +1,4 @@
-import { ComponentClass } from "react";
+import React, { ComponentClass, useEffect, useState } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import {
   Box,
@@ -18,20 +18,29 @@ import {
   FormPageTemplate,
   getReportName,
   MeasurePageTemplate,
-  PageType,
   ParentPageTemplate,
   Report,
   ReportType,
   ReviewSubmitTemplate,
-  PageStatus,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 import { StateNames } from "../../../constants";
 import { ExportedReportTable } from "components/export/ExportedReportTable";
+import {
+  shouldRender,
+  createMeasuresSection,
+} from "./ExportedReportPageHelpers";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const reportPages = report?.pages;
+  const [renderedReport, setRenderedReport] = useState<React.JSX.Element[]>([]);
+  const reportPages = structuredClone(report?.pages);
+
+  useEffect(() => {
+    if (!reportPages) return;
+    setRenderedReport(renderReportSections(reportPages));
+  }, [report]);
+
   if (!reportPages) return null;
 
   /*
@@ -64,7 +73,7 @@ export const ExportedReportPage = () => {
             {/* report submission set up */}
             {reportSubmissionSetUp(report)}
             {/* report sections */}
-            {renderReportSections(reportPages)}
+            {renderedReport}
           </Flex>
         )) || (
           <Center>
@@ -144,35 +153,29 @@ export const renderReportSections = (
     | ReviewSubmitTemplate
   )[]
 ) => {
-  const shouldRender = (section: typeof reportPages[number]) => {
-    if (
-      section.id === "review-submit" ||
-      section.id === "root" ||
-      section.id === "req-measure-result" ||
-      section.id === "optional-measure-result"
-    ) {
-      return false;
-    }
+  reportPages = reportPages.filter(shouldRender);
 
-    if (
-      section.type === PageType.Measure &&
-      (section as MeasurePageTemplate).required === false &&
-      (section as MeasurePageTemplate).status === PageStatus.NOT_STARTED
-    ) {
-      return false;
-    }
+  // REQUIRED MEASURES
+  const requiredMeasuresStartIdx = reportPages.findIndex(
+    (section) => section.id === "req-measure-result"
+  );
+  reportPages.splice(
+    requiredMeasuresStartIdx,
+    1,
+    ...createMeasuresSection(true, reportPages)
+  );
 
-    if (
-      section.type === PageType.MeasureResults &&
-      (section as FormPageTemplate).status === PageStatus.NOT_STARTED
-    ) {
-      return false;
-    }
+  // OPTIONAL MEASURES
+  const optionalMeasuresStartIdx = reportPages.findIndex(
+    (section) => section.id === "req-measure-result"
+  );
+  reportPages.splice(
+    optionalMeasuresStartIdx,
+    1,
+    ...createMeasuresSection(false, reportPages)
+  );
 
-    return true;
-  };
-
-  return reportPages.filter(shouldRender).map((section, idx) => {
+  return reportPages.map((section, idx) => {
     const showHeader =
       section.type != "measure" && section.type != "measureResults";
     return (
