@@ -178,6 +178,24 @@ export const renderReportSections = (
     );
 
   return reportPages.map((section, idx) => {
+    const isHeaderOnlySection =
+      section.id === "required-measures-heading" ||
+      section.id === "optional-measures-heading";
+
+    /*
+     * There are some sections that were manually added into the PDF
+     * and only contain a header. These sections don't contain a page's
+     * information, rather title a section. They don't need an additional
+     * section margin (standard of 2rem, hence the -2rem value)
+     */
+    if (isHeaderOnlySection) {
+      return (
+        <Box key={`${section.id}.${idx}`} marginBottom="-2rem">
+          <Heading variant="subHeader">{section.title}</Heading>
+        </Box>
+      );
+    }
+
     const showHeader =
       section.type != "measure" && section.type != "measureResults";
     return (
