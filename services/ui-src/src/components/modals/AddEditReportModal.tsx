@@ -16,6 +16,7 @@ import {
 import QmsOptions from "./AddFormOptions/QmsOptions";
 import TacmOptions from "./AddFormOptions/TacmOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
+import PcpOptions from "./AddFormOptions/PcpOptions";
 import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
@@ -47,6 +48,7 @@ const buildModalOptions = (
     [ReportType.QMS]: QmsOptions,
     [ReportType.TACM]: TacmOptions,
     [ReportType.CI]: CiOptions,
+    [ReportType.PCP]: PcpOptions,
   };
   return optionsByReportType[reportType];
 };

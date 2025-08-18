@@ -24,6 +24,8 @@ const getTitle = (report: Report) => {
       return "Quality Measure Set Report";
     case ReportType.TACM:
       return "Timely Access Report";
+    case ReportType.PCP:
+      return "Person Centered Planning"
     default:
       assertExhaustive(report.type);
       return "";

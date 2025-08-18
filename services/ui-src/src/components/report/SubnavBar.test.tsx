@@ -23,6 +23,7 @@ describe("Test SubnavBar component", () => {
     { type: ReportType.QMS, text: "QMS Report" },
     { type: ReportType.TACM, text: "TACM Report" },
     { type: ReportType.CI, text: "CI Report" },
+    { type: ReportType.PCP, text: "PCP Report" },
   ])("$type report type renders a title", ({ type, text }) => {
     render(
       <RouterWrappedComponent>

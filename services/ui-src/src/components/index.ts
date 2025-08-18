@@ -26,6 +26,7 @@ export { ReportIntroCard } from "./cards/ReportIntroCard";
 export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
 export { TacmIntroductionCard } from "./cards/TacmIntroductionCard";
 export { CiIntroductionCard } from "./cards/CiIntroductionCard";
+export { PCPIntroductionCard } from "./cards/PCPIntroductionCard";
 export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
 // component inventory
 export { ComponentInventory } from "./component-inventory/ComponentInventory";

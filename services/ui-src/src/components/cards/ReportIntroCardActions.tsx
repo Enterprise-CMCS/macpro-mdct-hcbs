@@ -22,6 +22,8 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         return "QMS";
       case ReportType.TACM:
         return "TACM";
+      case ReportType.PCP:
+        return "PCP";
     }
   };
 

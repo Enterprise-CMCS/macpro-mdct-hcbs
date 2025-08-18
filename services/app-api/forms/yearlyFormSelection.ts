@@ -3,6 +3,7 @@ import { ciReportTemplate as ciReportTemplate2026 } from "./2026/ci/ci";
 import { CMIT_LIST as CMIT_LIST_2026 } from "./2026/cmit";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { tacmReportTemplate as tacmReportTemplate2026 } from "./2026/tacm/tacm";
+import { pcpReportTemplate as pcpReportTemplate2026 } from "./2026/pcp/pcp";
 
 const formsByYear = {
   2026: {
@@ -10,6 +11,7 @@ const formsByYear = {
     qmsReportTemplate: qmsReportTemplate2026,
     tacmReportTemplate: tacmReportTemplate2026,
     ciReportTemplate: ciReportTemplate2026,
+    pcpReportTemplate: pcpReportTemplate2026,
   },
 };
 
@@ -39,6 +41,8 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
       return formsByYear[year].tacmReportTemplate;
     case ReportType.CI:
       return formsByYear[year].ciReportTemplate;
+    case ReportType.PCP:
+      return formsByYear[year].pcpReportTemplate;
     default:
       assertExhaustive(reportType);
       throw new Error(
