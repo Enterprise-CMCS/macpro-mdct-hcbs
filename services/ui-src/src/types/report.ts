@@ -22,7 +22,7 @@ export const getReportName = (type: string | undefined) => {
     case ReportType.CI:
       return "Critical Incident Report";
     case ReportType.PCP:
-      return "Person Centered Planning";
+      return "Person-Centered Planning Report";
     default:
       return "";
   }

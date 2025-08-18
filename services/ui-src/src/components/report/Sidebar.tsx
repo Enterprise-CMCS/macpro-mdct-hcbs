@@ -25,7 +25,7 @@ const getTitle = (report: Report) => {
     case ReportType.TACM:
       return "Timely Access Report";
     case ReportType.PCP:
-      return "Person Centered Planning"
+      return "Person-Centered Planning";
     default:
       assertExhaustive(report.type);
       return "";

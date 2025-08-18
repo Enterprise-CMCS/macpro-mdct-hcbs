@@ -8,7 +8,7 @@ import { ReportIntroCardActions } from "./ReportIntroCardActions";
  * It contains text specific to the PCP report.
  */
 export const PCPIntroductionCard = () => {
-  const name = "Person Centered Planning";
+  const name = "Person-Centered Planning";
 
   return (
     <ReportIntroCard title={name}>
