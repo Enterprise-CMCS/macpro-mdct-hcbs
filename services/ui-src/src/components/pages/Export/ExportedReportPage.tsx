@@ -159,21 +159,23 @@ export const renderReportSections = (
   const requiredMeasuresStartIdx = reportPages.findIndex(
     (section) => section.id === "req-measure-result"
   );
-  reportPages.splice(
-    requiredMeasuresStartIdx,
-    1,
-    ...createMeasuresSection(true, reportPages)
-  );
+  requiredMeasuresStartIdx >= 0 &&
+    reportPages.splice(
+      requiredMeasuresStartIdx,
+      1,
+      ...createMeasuresSection(true, reportPages)
+    );
 
   // OPTIONAL MEASURES
   const optionalMeasuresStartIdx = reportPages.findIndex(
     (section) => section.id === "optional-measure-result"
   );
-  reportPages.splice(
-    optionalMeasuresStartIdx,
-    1,
-    ...createMeasuresSection(false, reportPages)
-  );
+  optionalMeasuresStartIdx >= 0 &&
+    reportPages.splice(
+      optionalMeasuresStartIdx,
+      1,
+      ...createMeasuresSection(false, reportPages)
+    );
 
   return reportPages.map((section, idx) => {
     const showHeader =
