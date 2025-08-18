@@ -167,7 +167,7 @@ export const renderReportSections = (
 
   // OPTIONAL MEASURES
   const optionalMeasuresStartIdx = reportPages.findIndex(
-    (section) => section.id === "req-measure-result"
+    (section) => section.id === "optional-measure-result"
   );
   reportPages.splice(
     optionalMeasuresStartIdx,
