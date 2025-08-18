@@ -18,7 +18,7 @@ export const HomePage = () => {
 
   const isTACMReportActive = useFlags()?.isTacmReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
-  const isPCPReportActive = useFlags()?.isPCPReportActive;
+  const isPCPReportActive = useFlags()?.isPcpReportActive;
 
   useEffect(() => {
     let bannerActivity = false;
