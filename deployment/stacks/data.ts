@@ -60,6 +60,19 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }).identifiers,
+    new DynamoDBTable(scope, "PcpReports", {
+      stage,
+      isDev,
+      name: "pcp-reports",
+      partitionKey: {
+        name: "state",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    }).identifiers,
   ];
 
   return { tables };

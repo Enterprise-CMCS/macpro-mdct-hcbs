@@ -7,6 +7,7 @@ const tables = [
   { sourceName: reportTables.QMS, topicName: tableTopics.QMS },
   { sourceName: reportTables.TACM, topicName: tableTopics.TACM },
   { sourceName: reportTables.CI, topicName: tableTopics.CI },
+  { sourceName: reportTables.PCP, topicName: tableTopics.PCP },
 ];
 
 const postKafkaData = new KafkaSourceLib(topicPrefix, version, tables);
