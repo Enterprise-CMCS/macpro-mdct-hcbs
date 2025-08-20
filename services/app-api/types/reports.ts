@@ -10,6 +10,7 @@ export enum ReportType {
   QMS = "QMS",
   TACM = "TACM",
   CI = "CI",
+  PCP = "PCP",
 }
 export const isReportType = (x: string | undefined): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);

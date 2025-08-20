@@ -3,6 +3,7 @@ BannersTable=local-banners
 QmsReportsTable=local-qms-reports
 TacmReportsTable=local-tacm-reports
 CiReportsTable=local-ci-reports
+PcpReportsTable=local-pcp-reports
 
 DISABLE_ESLINT_PLUGIN=true
 
