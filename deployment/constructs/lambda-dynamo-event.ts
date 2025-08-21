@@ -28,7 +28,6 @@ export class LambdaDynamoEventSource extends Construct {
     const {
       additionalPolicies = [],
       environment = {},
-      handler,
       memorySize = 1024,
       tables,
       stackName,
