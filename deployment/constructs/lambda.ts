@@ -14,19 +14,16 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { isLocalStack } from "../local/util";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
+import { createHash } from "crypto";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
-  handler: string;
-  timeout?: Duration;
-  memorySize?: number;
   path?: string;
   method?: string;
   stackName: string;
   api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
-  requestValidator?: apigateway.IRequestValidator;
   isDev: boolean;
 }
 
@@ -37,7 +34,6 @@ export class Lambda extends Construct {
     super(scope, id);
 
     const {
-      handler,
       timeout = Duration.seconds(6),
       memorySize = 1024,
       environment = {},
@@ -46,7 +42,6 @@ export class Lambda extends Construct {
       method,
       additionalPolicies = [],
       stackName,
-      requestValidator,
       isDev,
       ...restProps
     } = props;
@@ -78,12 +73,14 @@ export class Lambda extends Construct {
 
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
-      handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
       role,
       bundling: {
+        assetHash: createHash("sha256")
+          .update(`${Date.now()}-${id}`)
+          .digest("hex"),
         minify: true,
         sourceMap: true,
         nodeModules: ["jsdom"],
@@ -107,7 +104,6 @@ export class Lambda extends Construct {
           authorizationType: isLocalStack
             ? undefined
             : apigateway.AuthorizationType.IAM,
-          requestValidator,
         }
       );
     }
