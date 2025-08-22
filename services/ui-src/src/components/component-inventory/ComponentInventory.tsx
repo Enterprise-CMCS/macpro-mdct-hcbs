@@ -62,6 +62,8 @@ export const ComponentInventory = () => {
   useEffect(() => {
     loadReport(mockReport);
     setIsLoading(false);
+    // Cleanup function runs on unmount
+    return () => loadReport(undefined);
   }, []);
 
   const buildComponentDisplay = (type: ElementType) => {
