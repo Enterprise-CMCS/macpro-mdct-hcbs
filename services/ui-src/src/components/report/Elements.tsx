@@ -100,6 +100,7 @@ export const SubHeaderElement = ({
 export const SubHeaderMeasureElement = (_props: PageElementProps) => {
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
+
   if (!currentPage) return null;
 
   let required = false;

@@ -182,7 +182,6 @@ export enum ElementType {
   Date = "date",
   Dropdown = "dropdown",
   Accordion = "accordion",
-  ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
   ButtonLink = "buttonLink",

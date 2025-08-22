@@ -30,6 +30,7 @@ export const MeasureTableElement = (
   const table = props.element;
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
+
   const measures = report?.pages.filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];

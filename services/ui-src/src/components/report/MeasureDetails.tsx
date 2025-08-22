@@ -43,7 +43,6 @@ const render = (
 //component
 export const MeasureDetailsElement = () => {
   const currentPage = useStore(currentPageSelector);
-
   if (!currentPage || currentPage.type !== PageType.Measure) return null;
   const measurePage = currentPage as MeasurePageTemplate;
 
