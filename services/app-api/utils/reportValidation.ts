@@ -124,14 +124,6 @@ const accordionTemplateSchema = object().shape({
   value: string().required(),
 });
 
-const resultRowButtonTemplateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.ResultRowButton)),
-  id: string().required(),
-  value: string().required(),
-  modalId: string().required(),
-  to: string().required(),
-});
-
 const pageElementSchema = lazy((value: PageElement): Schema => {
   if (!value.type) {
     throw new Error();
@@ -159,8 +151,6 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return dropdownTemplateSchema;
     case ElementType.Accordion:
       return accordionTemplateSchema;
-    case ElementType.ResultRowButton:
-      return resultRowButtonTemplateSchema;
     case ElementType.Radio:
       return radioTemplateSchema;
     case ElementType.ButtonLink:

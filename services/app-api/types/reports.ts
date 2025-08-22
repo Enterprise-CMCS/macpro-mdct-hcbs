@@ -268,7 +268,6 @@ export enum ElementType {
   Date = "date",
   Dropdown = "dropdown",
   Accordion = "accordion",
-  ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
   ButtonLink = "buttonLink",
@@ -298,7 +297,6 @@ export type PageElement =
   | DateTemplate
   | DropdownTemplate
   | AccordionTemplate
-  | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
   | ButtonLinkTemplate
@@ -429,19 +427,6 @@ export type AccordionTemplate = {
   id: string;
   label: string;
   value: string;
-};
-
-export type ResultRowButtonTemplate = {
-  type: ElementType.ResultRowButton;
-  id: string;
-  value: string;
-  modalId: PageId;
-  to: PageId;
-};
-export const isResultRowButton = (
-  element: PageElement
-): element is ResultRowButtonTemplate => {
-  return element.type === ElementType.ResultRowButton;
 };
 
 export type RadioTemplate = {

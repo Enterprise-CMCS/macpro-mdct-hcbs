@@ -1,22 +1,73 @@
-import { Divider, Heading } from "@chakra-ui/react";
-import { ReactNode, Fragment } from "react";
+import { Divider, Heading, Spinner } from "@chakra-ui/react";
+import { ReactNode, Fragment, useEffect, useState } from "react";
 import { elementObject } from "./elementObject";
-import { ElementType } from "types";
+import { ElementType, Report, ReportStatus } from "types";
+import { useStore } from "utils";
 
 export const ComponentInventory = () => {
+  const { loadReport } = useStore();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   /**
    * TODO:
-   * Add more elements to the inventory as needed
    * Style the inventory page
+   * Verify that we are not missing any unique variants of components
    * Consider adding a search or filter functionality
    * Leave space for PDF view with a construction cone 🏗️ emoji for in progress status
    *  <PDFViewPlaceholder />
    */
 
+  const mockReport = {
+    name: "Mock Report",
+    state: "PR",
+    status: ReportStatus.IN_PROGRESS,
+    submissionCount: 0,
+    archived: false,
+    submitted: 1,
+    submittedBy: "User Name",
+    pages: [
+      {
+        id: "root",
+        childPageIds: ["first-measure", "second-measure"],
+      },
+      {
+        id: "first-measure",
+        required: true,
+        cmitId: "cmitId",
+        cmit: "123",
+        cmitInfo: {
+          name: "CMIT Name",
+          cmit: "123",
+          measureSteward: "Steward Name",
+          dataSource: "Data Source",
+          deliverySystem: ["Delivery System 1", "Delivery System 2"],
+        },
+        childPageIds: [],
+        type: "measure",
+        title: "Measure Title",
+        dependentPages: [
+          {
+            key: "FFS",
+            linkText: "Delivery Method",
+            template: "FFS",
+          },
+        ],
+      },
+      {
+        id: "second-measure",
+        required: false,
+      },
+    ],
+  } as Report;
+
+  useEffect(() => {
+    loadReport(mockReport);
+    setIsLoading(false);
+  }, []);
+
   const buildComponentDisplay = (type: ElementType) => {
     const componentExample = elementObject[type] as {
       description: string;
-      variants: ReactNode[];
+      variants: (ReactNode | (() => ReactNode))[];
     };
 
     return (
@@ -46,27 +97,35 @@ export const ComponentInventory = () => {
                 marginTop: "20px",
               }}
             >
-              {componentExample.variants.map((variant, index) => (
-                <div
-                  key={`variant-${index}`}
-                  style={{
-                    border: "1px solid #ccc",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 8px #0000001a",
-                    minWidth: "300px",
-                    backgroundColor: "#fff",
-                  }}
-                >
-                  {variant}
-                </div>
-              ))}
+              {componentExample.variants.map((variant, index) => {
+                const content =
+                  typeof variant === "function" ? variant() : variant;
+                return (
+                  <div
+                    key={`variant-${index}`}
+                    style={{
+                      border: "1px solid #ccc",
+                      padding: "15px",
+                      borderRadius: "8px",
+                      boxShadow: "0 4px 8px #0000001a",
+                      minWidth: "300px",
+                      backgroundColor: "#fff",
+                    }}
+                  >
+                    {content}
+                  </div>
+                );
+              })}
             </div>
           </>
         )}
       </div>
     );
   };
+
+  if (isLoading) {
+    return <Spinner size="md" />;
+  }
 
   return (
     <>
