@@ -69,7 +69,7 @@ export const ComponentInventory = () => {
   const buildComponentDisplay = (type: ElementType) => {
     const componentExample = elementObject[type] as {
       description: string;
-      variants: (ReactNode | (() => ReactNode))[];
+      variants: ReactNode[];
     };
 
     return (
@@ -100,8 +100,6 @@ export const ComponentInventory = () => {
               }}
             >
               {componentExample.variants.map((variant, index) => {
-                const content =
-                  typeof variant === "function" ? variant() : variant;
                 return (
                   <div
                     key={`variant-${index}`}
@@ -114,7 +112,7 @@ export const ComponentInventory = () => {
                       backgroundColor: "#fff",
                     }}
                   >
-                    {content}
+                    {variant}
                   </div>
                 );
               })}
