@@ -99,23 +99,21 @@ export const ComponentInventory = () => {
                 marginTop: "20px",
               }}
             >
-              {componentExample.variants.map((variant, index) => {
-                return (
-                  <div
-                    key={`variant-${index}`}
-                    style={{
-                      border: "1px solid #ccc",
-                      padding: "15px",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 8px #0000001a",
-                      minWidth: "300px",
-                      backgroundColor: "#fff",
-                    }}
-                  >
-                    {variant}
-                  </div>
-                );
-              })}
+              {componentExample.variants.map((variant, index) => (
+                <div
+                  key={`variant-${index}`}
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 8px #0000001a",
+                    minWidth: "300px",
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  {variant}
+                </div>
+              ))}
             </div>
           </>
         )}
