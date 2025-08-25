@@ -139,6 +139,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
+    isDev,
   };
 
   new Lambda(scope, "createBanner", {
