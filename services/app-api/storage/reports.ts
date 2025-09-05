@@ -54,5 +54,6 @@ export const queryReportsForState = async (
   };
   const response = paginateQuery({ client: dynamoClient }, params);
   const reports = await collectPageItems(response);
+
   return reports as Report[];
 };
