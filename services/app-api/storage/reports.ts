@@ -9,9 +9,25 @@ import {
   createClient as createDynamoClient,
 } from "./dynamo/dynamodb-lib";
 import { reportTables, StateAbbr } from "../utils/constants";
-import { Report, ReportType } from "../types/reports";
+import { Report, ReportType, LiteReport } from "../types/reports";
 
 const dynamoClient = createDynamoClient();
+
+const projectionFields = [
+  "id",
+  "name",
+  "state",
+  "created",
+  "status",
+  "submissionCount",
+  "archived",
+  "lastEdited",
+  "lastEditedBy",
+  "type",
+  "year",
+  "lastEditedByEmail",
+  "pages",
+];
 
 export const putReport = async (report: Report) => {
   await dynamoClient.send(
@@ -42,18 +58,26 @@ export const queryReportsForState = async (
   state: StateAbbr
 ) => {
   const table = reportTables[reportType];
+
+  const ExpressionAttributeNames = Object.fromEntries(
+    projectionFields.map((field) => [`#${field}`, field])
+  );
+
+  const ProjectionExpression = projectionFields
+    .map((field) => `#${field}`)
+    .join(", ");
+
   const params: QueryCommandInput = {
     TableName: table,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
       ":state": state,
     },
-    ExpressionAttributeNames: {
-      "#state": "state",
-    },
+    ExpressionAttributeNames,
+    ProjectionExpression,
   };
   const response = paginateQuery({ client: dynamoClient }, params);
   const reports = await collectPageItems(response);
 
-  return reports as Report[];
+  return reports as LiteReport[];
 };
