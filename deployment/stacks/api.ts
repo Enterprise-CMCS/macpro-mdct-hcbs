@@ -182,6 +182,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "partialUpdateReport", {
+    entry: "services/app-api/handlers/reports/partialUpdate.ts",
+    handler: "partialUpdateReport",
+    path: "reports/update/{reportType}/{state}/{id}",
+    method: "PUT",
+    ...commonProps,
+  });
+
   new Lambda(scope, "submitReport", {
     entry: "services/app-api/handlers/reports/submit.ts",
     handler: "submitReport",

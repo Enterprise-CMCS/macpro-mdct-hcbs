@@ -41,6 +41,19 @@ export async function putReport(report: Report | LiteReport) {
   );
 }
 
+export async function updateReport(report: Partial<Report>) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    body: { ...report },
+  };
+
+  return await apiLib.put(
+    `/reports/update/${report.type}/${report.state}/${report.id}`,
+    options
+  );
+}
+
 export async function postSubmitReport(report: Report) {
   const requestHeaders = await getRequestHeaders();
   const options = {

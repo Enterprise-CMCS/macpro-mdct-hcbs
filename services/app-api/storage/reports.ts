@@ -3,6 +3,7 @@ import {
   PutCommand,
   paginateQuery,
   QueryCommandInput,
+  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import {
   collectPageItems,
@@ -13,7 +14,7 @@ import { Report, ReportType, LiteReport } from "../types/reports";
 
 const dynamoClient = createDynamoClient();
 
-const projectionFields = [
+const queryProjectionFields = [
   "id",
   "name",
   "state",
@@ -38,6 +39,39 @@ export const putReport = async (report: Report) => {
   );
 };
 
+export const updateField = async (
+  updateField: string,
+  updateValue: string,
+  reportType: ReportType,
+  state: StateAbbr,
+  id: string
+) => {
+  await dynamoClient.send(
+    new UpdateCommand({
+      TableName: reportTables[reportType],
+      Key: { state, id },
+      UpdateExpression: `set #updateField = :updateValue`,
+      ExpressionAttributeNames: {
+        "#updateField": updateField,
+      },
+      ExpressionAttributeValues: {
+        ":updateValue": updateValue,
+      },
+    })
+  );
+};
+
+export const updateFields = async (
+  updateFields: Partial<LiteReport>,
+  reportType: ReportType,
+  state: StateAbbr,
+  id: string
+) => {
+  for (const [key, value] of Object.entries(updateFields)) {
+    await updateField(key, value as string, reportType, state, id);
+  }
+};
+
 export const getReport = async (
   reportType: ReportType,
   state: StateAbbr,
@@ -60,10 +94,10 @@ export const queryReportsForState = async (
   const table = reportTables[reportType];
 
   const ExpressionAttributeNames = Object.fromEntries(
-    projectionFields.map((field) => [`#${field}`, field])
+    queryProjectionFields.map((field) => [`#${field}`, field])
   );
 
-  const ProjectionExpression = projectionFields
+  const ProjectionExpression = queryProjectionFields
     .map((field) => `#${field}`)
     .join(", ");
 

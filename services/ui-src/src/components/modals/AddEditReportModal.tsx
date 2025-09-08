@@ -5,7 +5,7 @@ import {
   Dropdown as CmsdsDropdownField,
 } from "@cmsgov/design-system";
 import { Spinner, Flex, Text } from "@chakra-ui/react";
-import { createReport, putReport } from "utils/api/requestMethods/report";
+import { createReport, updateReport } from "utils/api/requestMethods/report";
 import {
   isReportType,
   LiteReport,
@@ -126,7 +126,7 @@ export const AddEditReportModal = ({
       if (userEnteredReportName) {
         selectedReport.name = userEnteredReportName;
       }
-      await putReport(selectedReport);
+      await updateReport(selectedReport);
     } else {
       const reportOptions: ReportOptions = {
         name: userEnteredReportName,
