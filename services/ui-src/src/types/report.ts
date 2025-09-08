@@ -80,6 +80,8 @@ export interface Report extends ReportBase, ReportOptions {
   archived: boolean;
 }
 
+export type LiteReport = Omit<Report, "pages">;
+
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate

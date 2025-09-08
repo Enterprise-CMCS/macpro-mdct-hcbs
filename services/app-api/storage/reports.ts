@@ -26,7 +26,7 @@ const projectionFields = [
   "type",
   "year",
   "lastEditedByEmail",
-  "pages",
+  "options",
 ];
 
 export const putReport = async (report: Report) => {
