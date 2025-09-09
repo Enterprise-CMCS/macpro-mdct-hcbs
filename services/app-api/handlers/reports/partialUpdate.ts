@@ -43,6 +43,6 @@ export const partialUpdateReport = handler(
 
     await updateFields(fieldsToUpdate, reportType, state, id);
 
-    return ok(fieldsToUpdate);
+    return ok();
   }
 );
