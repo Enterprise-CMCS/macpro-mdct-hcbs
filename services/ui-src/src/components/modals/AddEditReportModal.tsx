@@ -105,13 +105,11 @@ export const AddEditReportModal = ({
   const onSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
     setSubmissionAttempted(true);
-
     const newErrorData = {
       reportTitle: formData.reportTitle ? "" : ErrorMessages.requiredResponse,
       year: formData.year ? "" : ErrorMessages.requiredResponse,
     };
     setErrorData(newErrorData);
-
     const canSubmit =
       optionsComplete && !!formData.reportTitle && !!formData.year;
     if (!canSubmit) {
@@ -121,7 +119,6 @@ export const AddEditReportModal = ({
     setSubmitting(true);
 
     const userEnteredReportName = formData.reportTitle!;
-
     if (selectedReport) {
       if (userEnteredReportName) {
         selectedReport.name = userEnteredReportName;

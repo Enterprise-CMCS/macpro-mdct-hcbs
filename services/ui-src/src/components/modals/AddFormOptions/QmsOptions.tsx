@@ -1,5 +1,5 @@
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
-import { Report } from "types";
+import { LiteReport } from "types";
 import { AddEditReportModalOptions } from "../AddEditReportModal";
 import { useEffect, useState } from "react";
 import { ErrorMessages } from "../../../constants";
@@ -34,7 +34,7 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
       if (!(key in optionLabels)) throw new Error(`Expected key, got '${key}'`);
     }
 
-    const formDataForReport = (report: Report | undefined) => ({
+    const formDataForReport = (report: LiteReport | undefined) => ({
       cahps: report?.options.cahps?.toString(),
       nciidd: report?.options.nciidd?.toString(),
       nciad: report?.options.nciad?.toString(),
