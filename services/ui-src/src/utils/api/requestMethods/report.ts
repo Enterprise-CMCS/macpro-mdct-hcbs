@@ -28,7 +28,7 @@ export async function getReport(reportType: string, state: string, id: string) {
   )!;
 }
 
-export async function putReport(report: Report | LiteReport) {
+export async function putReport(report: Report) {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
