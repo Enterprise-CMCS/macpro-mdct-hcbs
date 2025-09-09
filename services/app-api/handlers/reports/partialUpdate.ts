@@ -19,7 +19,7 @@ export const partialUpdateReport = handler(
     }
 
     if (!request?.body) {
-      return badRequest("Invalid request 1");
+      return badRequest("Invalid request");
     }
 
     const report = await getReport(reportType, state, id);
@@ -38,7 +38,7 @@ export const partialUpdateReport = handler(
       fieldsToUpdate = await validateReportEditPayload(request.body);
     } catch (err) {
       logger.error(err);
-      return badRequest(`Invalid request ${err}`);
+      return badRequest("Invalid request");
     }
 
     await updateFields(fieldsToUpdate, reportType, state, id);

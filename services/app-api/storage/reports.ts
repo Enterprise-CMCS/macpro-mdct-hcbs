@@ -100,7 +100,6 @@ export const queryReportsForState = async (
   const ProjectionExpression = queryProjectionFields
     .map((field) => `#${field}`)
     .join(", ");
-
   const params: QueryCommandInput = {
     TableName: table,
     KeyConditionExpression: "#state = :state",

@@ -80,7 +80,23 @@ describe("Report storage helpers", () => {
           TableName: "local-qms-reports",
           KeyConditionExpression: "#state = :state",
           ExpressionAttributeValues: { ":state": "CO" },
-          ExpressionAttributeNames: { "#state": "state" },
+          ExpressionAttributeNames: {
+            "#id": "id",
+            "#name": "name",
+            "#state": "state",
+            "#created": "created",
+            "#status": "status",
+            "#submissionCount": "submissionCount",
+            "#archived": "archived",
+            "#lastEdited": "lastEdited",
+            "#lastEditedBy": "lastEditedBy",
+            "#type": "type",
+            "#year": "year",
+            "#lastEditedByEmail": "lastEditedByEmail",
+            "#options": "options",
+          },
+          ProjectionExpression:
+            "#id, #name, #state, #created, #status, #submissionCount, #archived, #lastEdited, #lastEditedBy, #type, #year, #lastEditedByEmail, #options",
         },
         expect.any(Function)
       );
