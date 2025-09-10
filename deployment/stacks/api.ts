@@ -117,6 +117,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:GetItem",
         "dynamodb:PutItem",
         "dynamodb:Query",
+        "dynamodb:UpdateItem",
       ],
       resources: tables.map((table) => table.arn),
     }),
