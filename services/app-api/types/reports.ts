@@ -142,6 +142,8 @@ export interface Report extends ReportBase, ReportOptions {
   archived: boolean;
 }
 
+export type LiteReport = Omit<Report, "pages">;
+
 export interface ReviewSubmitTemplate extends FormPageTemplate {
   submittedView: PageElement[];
 }

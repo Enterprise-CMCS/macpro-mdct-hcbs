@@ -6,20 +6,22 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { Report, ReportType } from "../../types";
+import { LiteReport, ReportType } from "../../types";
 import assert from "node:assert";
 import { testA11y } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();
 const mockReportHandler = jest.fn();
+const mockCreateReport = jest.fn();
+const mockUpdateReport = jest.fn();
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockStateUserStore);
 
 jest.mock("utils/api/requestMethods/report", () => ({
-  putReport: jest.fn(),
-  createReport: jest.fn(),
+  updateReport: () => mockUpdateReport(),
+  createReport: () => mockCreateReport(),
 }));
 
 const addModalComponent = (
@@ -40,7 +42,7 @@ const editModalComponent = (
   <RouterWrappedComponent>
     <AddEditReportModal
       activeState="AB"
-      reportType={"QMS"}
+      reportType={"CI"}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -50,13 +52,7 @@ const editModalComponent = (
         {
           name: "report name thing",
           year: 2026,
-          options: {
-            cahps: true,
-            nciidd: true,
-            nciad: true,
-            pom: true,
-          },
-        } as Report
+        } as LiteReport
       }
     />
   </RouterWrappedComponent>
@@ -115,7 +111,7 @@ describe("Test Edit Report Modal", () => {
 
   test("Edit report modal shows the proper edit contents with editable name", () => {
     expect(
-      screen.getByText("Edit Quality Measure Set Report")
+      screen.getByText("Edit Critical Incident Report")
     ).toBeInTheDocument();
     expect(screen.getByText("Save")).toBeInTheDocument();
     expect(screen.getByDisplayValue("report name thing")).toBeInTheDocument();
@@ -145,6 +141,9 @@ describe("Test dropdown for year", () => {
 });
 
 describe("Test submit", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it("Simulate submitting modal", async () => {
     render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
@@ -161,18 +160,23 @@ describe("Test submit", () => {
     await userEvent.click(submitBtn);
 
     expect(mockReportHandler).toHaveBeenCalled();
+    expect(mockCreateReport).toHaveBeenCalled();
   });
 
   it("Simulate submitting an edited report", async () => {
     render(editModalComponent);
 
     const nameTextbox = screen.getByRole("textbox", {
-      name: "Quality Measure Set Report Name",
+      name: "Critical Incident Report Name",
     });
+    expect(nameTextbox).toBeInTheDocument();
     await userEvent.type(nameTextbox, "mock-edit-report");
 
     const submitBtn = screen.getByText("Save");
+    expect(submitBtn).toBeInTheDocument();
+
     await userEvent.click(submitBtn);
+    expect(mockUpdateReport).toHaveBeenCalled();
   });
 });
 
