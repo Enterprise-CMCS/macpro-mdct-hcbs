@@ -27,6 +27,7 @@ export const mockedNDREnhanced: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   label: "test label",
   helperText: "helper text",
+  required: true,
   performanceTargetLabel:
     "What is the 2028 state performance target for this assessment?",
   assessments: [{ id: "test-1", label: "assessment 1" }],
@@ -46,6 +47,7 @@ export const mockedNDREnhanced: NdrEnhancedTemplate = {
 export const mockNDRFields: NdrFieldsTemplate = {
   id: "mock-ndr-fields",
   type: ElementType.NdrFields,
+  required: true,
   labelTemplate:
     "What is the 2028 state performance target for this {{assessment}} {{field}}?",
   assessments: [
@@ -78,6 +80,7 @@ export const mockNDRFields: NdrFieldsTemplate = {
 export const mockNDRBasics: NdrBasicTemplate = {
   id: "mock-ndr-basic",
   type: ElementType.NdrBasic,
+  required: true,
 };
 
 export const mockLengthOfStayFields: LengthOfStayRateTemplate = {
@@ -94,4 +97,5 @@ export const mockLengthOfStayFields: LengthOfStayRateTemplate = {
     adjustedRate: "Adjusted Rate",
   },
   answer: undefined,
+  required: true,
 };

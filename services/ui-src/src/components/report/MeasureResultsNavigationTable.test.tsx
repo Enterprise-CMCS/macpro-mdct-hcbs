@@ -74,6 +74,7 @@ const buildMockReport = (): Report =>
           {
             type: ElementType.Radio,
             id: "delivery-method-radio",
+            required: true,
             label:
               "Which delivery methods will be reported on for this measure?",
             choices: [
@@ -111,6 +112,7 @@ const buildMockReport = (): Report =>
             label: "Tell me about FFS",
             type: ElementType.Textbox,
             answer: "Our FFS programs are first-rate",
+            required: true,
           },
         ],
       },
@@ -122,6 +124,7 @@ const buildMockReport = (): Report =>
             label: "Tell me about MLTSS",
             type: ElementType.Textbox,
             answer: "Our MLTSS programs are top-notch",
+            required: true,
           },
         ],
       },

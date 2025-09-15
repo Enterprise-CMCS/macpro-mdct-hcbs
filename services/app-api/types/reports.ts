@@ -10,6 +10,7 @@ export enum ReportType {
   QMS = "QMS",
   TACM = "TACM",
   CI = "CI",
+  PCP = "PCP",
 }
 export const isReportType = (x: string | undefined): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);
@@ -141,6 +142,8 @@ export interface Report extends ReportBase, ReportOptions {
   archived: boolean;
 }
 
+export type LiteReport = Omit<Report, "pages">;
+
 export interface ReviewSubmitTemplate extends FormPageTemplate {
   submittedView: PageElement[];
 }
@@ -150,7 +153,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmitId: string;
   required?: boolean;
   stratified?: boolean;
-  optional?: boolean;
   substitutable?: string;
   dependentPages?: dependentPageInfo[];
   cmitInfo?: CMIT;
@@ -268,7 +270,6 @@ export enum ElementType {
   Date = "date",
   Dropdown = "dropdown",
   Accordion = "accordion",
-  ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
   ButtonLink = "buttonLink",
@@ -298,7 +299,6 @@ export type PageElement =
   | DateTemplate
   | DropdownTemplate
   | AccordionTemplate
-  | ResultRowButtonTemplate
   | ParagraphTemplate
   | RadioTemplate
   | ButtonLinkTemplate
@@ -371,7 +371,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
 };
 
@@ -381,7 +381,7 @@ export type NumberFieldTemplate = {
   label: string;
   helperText?: string;
   answer?: number;
-  required?: boolean;
+  required: boolean;
   hideCondition?: never;
 };
 
@@ -392,7 +392,7 @@ export type TextAreaBoxTemplate = {
   helperText?: string;
   answer?: string;
   hideCondition?: HideCondition;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DateTemplate = {
@@ -401,6 +401,7 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
+  required: boolean;
 };
 
 export type DropdownTemplate = {
@@ -410,7 +411,7 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DividerTemplate = {
@@ -430,19 +431,6 @@ export type AccordionTemplate = {
   value: string;
 };
 
-export type ResultRowButtonTemplate = {
-  type: ElementType.ResultRowButton;
-  id: string;
-  value: string;
-  modalId: PageId;
-  to: PageId;
-};
-export const isResultRowButton = (
-  element: PageElement
-): element is ResultRowButtonTemplate => {
-  return element.type === ElementType.ResultRowButton;
-};
-
 export type RadioTemplate = {
   type: ElementType.Radio;
   id: string;
@@ -450,7 +438,7 @@ export type RadioTemplate = {
   helperText?: string;
   choices: ChoiceTemplate[];
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
 };
@@ -495,7 +483,7 @@ export type LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
   answer?: Record<LengthOfStayField, number | undefined>;
-  required?: boolean;
+  required: boolean;
 };
 
 export const RateInputFieldNames = {
@@ -526,7 +514,7 @@ export type NdrFieldsTemplate = {
   fields: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrEnhancedTemplate = {
@@ -537,7 +525,7 @@ export type NdrEnhancedTemplate = {
   performanceTargetLabel: string;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrTemplate = {
@@ -551,7 +539,7 @@ export type NdrTemplate = {
     denominator: number | undefined;
     rate: number | undefined;
   };
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrBasicTemplate = {
@@ -568,7 +556,7 @@ export type NdrBasicTemplate = {
     denomHint: string | undefined;
     rateHint: string | undefined;
   };
-  required?: boolean;
+  required: boolean;
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;

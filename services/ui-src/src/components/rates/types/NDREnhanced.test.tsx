@@ -10,6 +10,7 @@ const mockedElement: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   label: "test label",
   helperText: "helper text",
+  required: true,
   performanceTargetLabel:
     "What is the 2028 state performance target for this assessment?",
   assessments: [{ id: "test-1", label: "assessment 1" }],

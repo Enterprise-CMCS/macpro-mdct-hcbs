@@ -6,9 +6,23 @@ import {
   TextAreaField,
   TextField,
 } from "components/fields";
-import { AccordionItem } from "components";
+import {
+  MeasureTableElement,
+  AccordionItem,
+  MeasureResultsNavigationTableElement,
+  StatusTableElement,
+  MeasureDetailsElement,
+  MeasureFooterElement,
+  Fields,
+  NDRFields,
+  NDREnhanced,
+  NDR,
+  NDRBasic,
+  StatusAlert,
+} from "components";
 
 import {
+  ButtonLinkElement,
   DividerElement,
   HeaderElement,
   NestedHeadingElement,
@@ -17,12 +31,14 @@ import {
   SubHeaderMeasureElement,
 } from "components/report/Elements";
 import {
+  AlertTypes,
   ElementType,
   HeaderIcon,
   NumberFieldTemplate,
   PageElement,
 } from "types";
 import { ReactNode } from "react";
+import { SubmissionParagraph } from "components/report/SubmissionParagraph";
 
 // eslint-disable-next-line no-console
 const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
@@ -86,6 +102,7 @@ export const elementObject: {
           type: ElementType.Textbox,
           id: "id-textfield",
           label: "TextField",
+          required: false,
         }}
       />,
     ],
@@ -99,6 +116,7 @@ export const elementObject: {
           type: ElementType.TextAreaField,
           id: "id-textareafield",
           label: "TextAreaField",
+          required: true,
         }}
       />,
     ],
@@ -151,6 +169,7 @@ export const elementObject: {
           type: ElementType.Dropdown,
           id: "id-dropdown",
           label: "DropdownField",
+          required: true,
           options: [
             { value: "dropdown option 1", label: "dropdown option 1" },
             { value: "dropdown option 2", label: "dropdown option 2" },
@@ -169,6 +188,7 @@ export const elementObject: {
           type: ElementType.Radio,
           id: "id-radio",
           label: "RadioField",
+          required: true,
           choices: [
             { value: "radio option 1", label: "radio option 1" },
             { value: "radio option 2", label: "radio option 2" },
@@ -188,18 +208,7 @@ export const elementObject: {
           id: "id-date-field",
           label: "DateField",
           helperText: "DateFieldElement is used to select a date.",
-        }}
-      />,
-    ],
-  },
-  ["SubHeaderMeasure"]: {
-    description: "A subheader for measures",
-    variants: [
-      <SubHeaderMeasureElement
-        element={{
-          type: ElementType.SubHeader,
-          id: "id-subheader",
-          text: "SubHeaderElement",
+          required: true,
         }}
       />,
     ],
@@ -215,6 +224,7 @@ export const elementObject: {
             id: "id-number-field",
             label: "Enter a number",
             helperText: "Helper text is optional",
+            required: false,
           } as NumberFieldTemplate
         }
       />,
@@ -232,5 +242,248 @@ export const elementObject: {
       />,
     ],
   },
-  // ButtonLinkElement needs ReportType, state, and reportId
+  // Elements that need a state
+  [ElementType.SubHeaderMeasure]: {
+    description: "A subheader for measures",
+    variants: [
+      <SubHeaderMeasureElement
+        element={{
+          type: ElementType.SubHeaderMeasure,
+          id: "id-subheader-measure",
+        }}
+      />,
+    ],
+  },
+  [ElementType.ButtonLink]: {
+    description: "A link styled as a button",
+    variants: [
+      <ButtonLinkElement
+        element={{
+          type: ElementType.ButtonLink,
+          id: "id-button-link",
+          label: "Button Link Label",
+        }}
+      />,
+    ],
+  },
+  [ElementType.MeasureTable]: {
+    description: "A table for displaying measure status with navigation",
+    variants: [
+      <MeasureTableElement
+        element={{
+          type: ElementType.MeasureTable,
+          id: "id-measure-table",
+          measureDisplay: "required",
+        }}
+      />,
+    ],
+  },
+  [ElementType.MeasureResultsNavigationTable]: {
+    description: "A table for displaying measure results with navigation",
+    variants: [
+      <MeasureResultsNavigationTableElement
+        element={{
+          type: ElementType.MeasureResultsNavigationTable,
+          measureDisplay: "quality",
+          id: "id-measure-results-navigation-table",
+        }}
+      />,
+    ],
+  },
+  [ElementType.StatusTable]: {
+    description: "A table for displaying measure status",
+    variants: [<StatusTableElement />],
+  },
+  [ElementType.MeasureDetails]: {
+    description: "Displaying measure details",
+    variants: [<MeasureDetailsElement />],
+  },
+  [ElementType.MeasureFooter]: {
+    description: "Measure footer for navigation and submission",
+    variants: [
+      <MeasureFooterElement
+        element={{
+          type: ElementType.MeasureFooter,
+          id: "measure-footer",
+          completeMeasure: true,
+          clear: true,
+        }}
+      />,
+      <MeasureFooterElement
+        element={{
+          type: ElementType.MeasureFooter,
+          id: "measure-footer",
+          prevTo: "LTSS-1",
+          nextTo: "LTSS-2",
+          completeSection: true,
+        }}
+      />,
+    ],
+  },
+  [ElementType.LengthOfStayRate]: {
+    description:
+      "Numerator/Denominator Fields to gather LengthOfStayRate performance rates",
+    variants: [
+      <Fields
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.LengthOfStayRate,
+          id: "measure-rates",
+          labels: {
+            performanceTarget: "performanceTarget",
+            actualCount: "actualCount",
+            denominator: "denominator",
+            expectedCount: "expectedCount",
+            populationRate: "populationRate",
+            actualRate: "actualRate",
+            expectedRate: "expectedRate",
+            adjustedRate: "adjustedRate",
+          },
+          required: true,
+        }}
+      />,
+    ],
+  },
+  [ElementType.NdrFields]: {
+    description: "Numerator/Denominator Fields to gather performance rates",
+    variants: [
+      <NDRFields
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.NdrFields,
+          id: "measure-rates",
+          labelTemplate: "Label",
+          assessments: [
+            { id: "assessment-1", label: "First Assessment" },
+            { id: "assessment-2", label: "Second Assessment" },
+          ],
+          fields: [
+            { id: "field-1", label: "First Field" },
+            { id: "field-2", label: "Second Field" },
+          ],
+          required: true,
+          multiplier: 1000,
+        }}
+      />,
+    ],
+  },
+  [ElementType.NdrEnhanced]: {
+    description:
+      "Enhanced Numerator/Denominator Fields to gather performance rates",
+    variants: [
+      <NDREnhanced
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.NdrEnhanced,
+          id: "measure-rates",
+          performanceTargetLabel: "Label",
+          assessments: [
+            { id: "assessment-1", label: "First Assessment" },
+            { id: "assessment-2", label: "Second Assessment" },
+          ],
+          required: true,
+          helperText: "Helper text",
+        }}
+      />,
+    ],
+  },
+  [ElementType.Ndr]: {
+    description: "Numerator/Denominator Fields to gather performance rates",
+    variants: [
+      <NDR
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.Ndr,
+          id: "measure-rates",
+          performanceTargetLabel: "performanceTargetLabel",
+          label: "Label",
+          required: true,
+        }}
+      />,
+    ],
+  },
+  [ElementType.NdrBasic]: {
+    description:
+      "Basic and minimum target Numerator/Denominator Fields to gather performance rates",
+    variants: [
+      <NDRBasic
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.NdrBasic,
+          id: "measure-rates",
+          label: "Label",
+          required: true,
+          hintText: {
+            numHint: "numHint",
+            denomHint: "denomHint",
+            rateHint: "rateHint",
+          },
+          multiplier: 100,
+          displayRateAsPercent: true,
+        }}
+      />,
+      <NDRBasic
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.NdrBasic,
+          id: "measure-rates",
+          label: "Label",
+          required: true,
+          hintText: {
+            numHint: "numHint",
+            denomHint: "denomHint",
+            rateHint: "rateHint",
+          },
+          multiplier: 100,
+          displayRateAsPercent: true,
+          minPerformanceLevel: 90,
+        }}
+      />,
+    ],
+  },
+  [ElementType.StatusAlert]: {
+    description: "Different Alert Types",
+    variants: [
+      <StatusAlert
+        element={{
+          type: ElementType.StatusAlert,
+          id: "measure-rates",
+          title: "Status Title",
+          text: "AlertTypes.SUCCESS",
+          status: AlertTypes.SUCCESS,
+        }}
+      />,
+      <StatusAlert
+        element={{
+          type: ElementType.StatusAlert,
+          id: "measure-rates",
+          title: "Status Title",
+          text: "AlertTypes.ERROR",
+          status: AlertTypes.ERROR,
+        }}
+      />,
+      <StatusAlert
+        element={{
+          type: ElementType.StatusAlert,
+          id: "measure-rates",
+          title: "Status Title",
+          text: "AlertTypes.INFO",
+          status: AlertTypes.INFO,
+        }}
+      />,
+      <StatusAlert
+        element={{
+          type: ElementType.StatusAlert,
+          id: "measure-rates",
+          title: "Status Title",
+          text: "AlertTypes.WARNING",
+          status: AlertTypes.WARNING,
+        }}
+      />,
+    ],
+  },
+  [ElementType.SubmissionParagraph]: {
+    description: "Submission Paragraph",
+    variants: [<SubmissionParagraph />],
+  },
 };

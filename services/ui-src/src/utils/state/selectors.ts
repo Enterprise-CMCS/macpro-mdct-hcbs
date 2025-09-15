@@ -11,6 +11,7 @@ import {
 
 export const currentPageSelector = (state: HcbsReportState) => {
   const { report, pageMap, currentPageId } = state;
+
   if (!report || !pageMap || !currentPageId) {
     return null;
   }

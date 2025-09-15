@@ -22,6 +22,7 @@ const mockElementTemplate: NdrFieldsTemplate = {
     { id: "long-term", label: "Long Term Stay" },
   ],
   multiplier: 1000,
+  required: true,
 };
 const updateSpy = jest.fn();
 

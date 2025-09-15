@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Table } from "components";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { Report, ReportStatus } from "types";
+import { LiteReport, ReportStatus } from "types";
 import {
   formatMonthDayYear,
   releaseReport,
@@ -26,8 +26,8 @@ import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 import { useState, Fragment } from "react";
 
 interface DashboardTableProps {
-  reports: Report[];
-  openAddEditReportModal: (report: Report) => void;
+  reports: LiteReport[];
+  openAddEditReportModal: (report: LiteReport) => void;
   unlockModalOnOpenHandler: () => void;
 }
 
@@ -47,7 +47,7 @@ interface TableProps
   unlocking: number | undefined;
 }
 
-export const getStatus = (report: Report) => {
+export const getStatus = (report: LiteReport) => {
   if (
     report.status === ReportStatus.IN_PROGRESS &&
     report.submissionCount >= 1
@@ -249,7 +249,7 @@ export const DashboardTable = ({
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
-  const [reportsInView, setReportsInView] = useState<Report[]>(reports);
+  const [reportsInView, setReportsInView] = useState<LiteReport[]>(reports);
 
   const [archiving, setArchiving] = useState<number>();
   const [unlocking, setUnlocking] = useState<number>();

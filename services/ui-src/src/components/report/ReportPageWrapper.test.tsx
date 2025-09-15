@@ -40,12 +40,14 @@ const testReport: Report = {
           type: ElementType.Textbox,
           id: "mock-textbox",
           label: "Contact title",
+          required: true,
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
         },
         {
           type: ElementType.Textbox,
           id: "another-textbox",
+          required: true,
           label: "Another textbox",
         },
       ],

@@ -11,6 +11,7 @@ const mockedDropdownElement: DropdownTemplate = {
   type: ElementType.Dropdown,
   label: "test-dropdown-field",
   helperText: "helper text",
+  required: true,
   options: [
     { label: "2026", value: "2026" },
     { label: "2027", value: "2027" },

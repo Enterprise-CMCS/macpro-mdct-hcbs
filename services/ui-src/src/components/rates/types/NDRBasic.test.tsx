@@ -11,6 +11,7 @@ const mockedElement: NdrBasicTemplate = {
   label: "test label",
   multiplier: 100,
   minPerformanceLevel: 90,
+  required: true,
 };
 const updateSpy = jest.fn();
 
