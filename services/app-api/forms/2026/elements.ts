@@ -290,7 +290,7 @@ export const whichProgramsWaivers = [
 export const statePerformanceTargetLabel = {
   performanceTargetLabel: `What is the ${
     REPORT_YEAR + 2
-  } state performance target for this assessment?`,
+  } state performance target?`,
 };
 
 export const stateExclusionTargetLabel = {
