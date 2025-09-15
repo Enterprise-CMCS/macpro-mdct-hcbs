@@ -35,7 +35,7 @@ export const completeLTSS1 = async (page: Page) => {
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
-  await page.getByLabel("Which programs and waivers").fill("optional");
+  await page.getByLabel("Which programs and waivers").fill("all of them");
 
   await page.getByLabel("Performance Rates Denominator").fill("4");
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
