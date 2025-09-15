@@ -24,6 +24,7 @@ const mockedTextboxElement: TextboxTemplate = {
     controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
+  required: true,
 };
 
 const mockedNumberField: NumberFieldTemplate = {
@@ -31,6 +32,7 @@ const mockedNumberField: NumberFieldTemplate = {
   type: ElementType.NumberField,
   label: "test label",
   helperText: "helper text",
+  required: true,
 };
 
 const updateSpy = jest.fn();

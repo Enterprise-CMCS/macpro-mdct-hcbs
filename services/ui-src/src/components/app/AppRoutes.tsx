@@ -21,6 +21,7 @@ export const AppRoutes = () => {
 
   const { pathname } = useLocation();
   const isPdfActive = useFlags()?.viewPdf;
+  const componentInventoryPageEnabled = useFlags()?.componentInventory;
 
   useEffect(() => {
     const appWrapper = document.getElementById("app-wrapper")!;
@@ -58,11 +59,12 @@ export const AppRoutes = () => {
               path="/report/:reportType/:state/:reportId/:pageId?"
               element={<ReportPageWrapper />}
             />
-            {/* Add feature flag for component inventory */}
-            <Route
-              path="/component-inventory"
-              element={<ComponentInventory />}
-            />
+            {componentInventoryPageEnabled && (
+              <Route
+                path="/component-inventory"
+                element={<ComponentInventory />}
+              />
+            )}
             {/* TO DO: Load pageId by default? */}
           </Routes>
         </ReportAutosaveProvider>

@@ -117,6 +117,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:GetItem",
         "dynamodb:PutItem",
         "dynamodb:Query",
+        "dynamodb:UpdateItem",
       ],
       resources: tables.map((table) => table.arn),
     }),
@@ -139,6 +140,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
+    isDev,
   };
 
   new Lambda(scope, "createBanner", {
@@ -177,6 +179,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry: "services/app-api/handlers/reports/update.ts",
     handler: "updateReport",
     path: "reports/{reportType}/{state}/{id}",
+    method: "PUT",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "partialUpdateReport", {
+    entry: "services/app-api/handlers/reports/partialUpdate.ts",
+    handler: "partialUpdateReport",
+    path: "reports/update/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
   });

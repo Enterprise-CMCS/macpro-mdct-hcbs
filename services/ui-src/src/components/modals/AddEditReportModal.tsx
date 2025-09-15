@@ -5,10 +5,10 @@ import {
   Dropdown as CmsdsDropdownField,
 } from "@cmsgov/design-system";
 import { Spinner, Flex, Text } from "@chakra-ui/react";
-import { Report } from "types";
-import { createReport, putReport } from "utils/api/requestMethods/report";
+import { createReport, updateReport } from "utils/api/requestMethods/report";
 import {
   isReportType,
+  LiteReport,
   ReportOptions,
   ReportStatus,
   ReportType,
@@ -16,6 +16,7 @@ import {
 import QmsOptions from "./AddFormOptions/QmsOptions";
 import TacmOptions from "./AddFormOptions/TacmOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
+import PcpOptions from "./AddFormOptions/PcpOptions";
 import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
@@ -33,7 +34,7 @@ export type AddEditReportModalOptions = {
    * If not (as for TACM and CI), this will be undefined.
    */
   OptionsComponent?: (props: {
-    selectedReport: Report | undefined;
+    selectedReport: LiteReport | undefined;
     onOptionsChange: (options: Record<string, any>) => void;
     submissionAttempted: boolean;
     setOptionsComplete: (isComplete: boolean) => void;
@@ -47,6 +48,7 @@ const buildModalOptions = (
     [ReportType.QMS]: QmsOptions,
     [ReportType.TACM]: TacmOptions,
     [ReportType.CI]: CiOptions,
+    [ReportType.PCP]: PcpOptions,
   };
   return optionsByReportType[reportType];
 };
@@ -63,7 +65,7 @@ export const AddEditReportModal = ({
   const dropdownYears = [{ label: "2026", value: "2026" }];
   const { verbiage, OptionsComponent } = buildModalOptions(reportType);
 
-  const formDataForReport = (report: Report | undefined) => ({
+  const formDataForReport = (report: LiteReport | undefined) => ({
     reportTitle: report?.name ?? "",
     year: report?.year?.toString() ?? dropdownYears[0].value,
     options: selectedReport?.options ?? {},
@@ -103,13 +105,11 @@ export const AddEditReportModal = ({
   const onSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
     setSubmissionAttempted(true);
-
     const newErrorData = {
       reportTitle: formData.reportTitle ? "" : ErrorMessages.requiredResponse,
       year: formData.year ? "" : ErrorMessages.requiredResponse,
     };
     setErrorData(newErrorData);
-
     const canSubmit =
       optionsComplete && !!formData.reportTitle && !!formData.year;
     if (!canSubmit) {
@@ -119,12 +119,11 @@ export const AddEditReportModal = ({
     setSubmitting(true);
 
     const userEnteredReportName = formData.reportTitle!;
-
     if (selectedReport) {
       if (userEnteredReportName) {
         selectedReport.name = userEnteredReportName;
       }
-      await putReport(selectedReport);
+      await updateReport(selectedReport);
     } else {
       const reportOptions: ReportOptions = {
         name: userEnteredReportName,
@@ -205,7 +204,7 @@ export const AddEditReportModal = ({
 interface Props {
   activeState: string;
   reportType: string;
-  selectedReport?: Report;
+  selectedReport?: LiteReport;
   modalDisclosure: {
     isOpen: boolean;
     onClose: () => void;

@@ -215,12 +215,14 @@ describe("elementSatisfiesRequired", () => {
       label: "optional textbox",
       answer: "foo",
       type: ElementType.Textbox,
+      required: false,
     };
     const otherElement: TextboxTemplate = {
       id: "other-element",
       label: "irrelevant other textbox",
       answer: "foo",
       type: ElementType.Textbox,
+      required: false,
     };
     const elements = [otherElement, hiddenElement, notRequired];
     expect(elementSatisfiesRequired(hiddenElement, elements)).toBeTruthy();

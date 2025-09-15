@@ -1,10 +1,16 @@
-import { getReport, putReport, queryReportsForState } from "./reports";
+import {
+  getReport,
+  putReport,
+  queryReportsForState,
+  updateFields,
+} from "./reports";
 import { Report, ReportType } from "../types/reports";
 import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
   QueryCommand,
+  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 
@@ -80,7 +86,52 @@ describe("Report storage helpers", () => {
           TableName: "local-qms-reports",
           KeyConditionExpression: "#state = :state",
           ExpressionAttributeValues: { ":state": "CO" },
-          ExpressionAttributeNames: { "#state": "state" },
+          ExpressionAttributeNames: {
+            "#id": "id",
+            "#name": "name",
+            "#state": "state",
+            "#created": "created",
+            "#status": "status",
+            "#submissionCount": "submissionCount",
+            "#archived": "archived",
+            "#lastEdited": "lastEdited",
+            "#lastEditedBy": "lastEditedBy",
+            "#type": "type",
+            "#year": "year",
+            "#lastEditedByEmail": "lastEditedByEmail",
+            "#options": "options",
+          },
+          ProjectionExpression:
+            "#id, #name, #state, #created, #status, #submissionCount, #archived, #lastEdited, #lastEditedBy, #type, #year, #lastEditedByEmail, #options",
+        },
+        expect.any(Function)
+      );
+    });
+  });
+
+  describe("updateFields", () => {
+    it("should call DynamoDB to update report data", async () => {
+      const mockUpdate = jest.fn();
+      mockDynamo.on(UpdateCommand).callsFake(mockUpdate);
+
+      await updateFields(
+        { name: "Updated Name" },
+        ReportType.QMS,
+        "CO",
+        "mock-report-id"
+      );
+
+      expect(mockUpdate).toHaveBeenCalledWith(
+        {
+          TableName: "local-qms-reports",
+          Key: { state: "CO", id: "mock-report-id" },
+          UpdateExpression: "set #updateField = :updateValue",
+          ExpressionAttributeNames: {
+            "#updateField": "name",
+          },
+          ExpressionAttributeValues: {
+            ":updateValue": "Updated Name",
+          },
         },
         expect.any(Function)
       );

@@ -1,4 +1,8 @@
-import { isReportOptions, validateReportPayload } from "../reportValidation";
+import {
+  isReportOptions,
+  validateReportPayload,
+  validateReportEditPayload,
+} from "../reportValidation";
 import {
   validReport,
   missingStateReport,
@@ -15,6 +19,13 @@ describe("Test validateReportPayload function with valid report", () => {
   it("successfully validates a valid report object", async () => {
     const validatedData = await validateReportPayload(validReport);
     expect(validatedData).toEqual(validReport);
+  });
+});
+
+describe("Test validateReportEditPayload function with valid report", () => {
+  it("successfully strips out any non-editable fields", async () => {
+    const validatedData = await validateReportEditPayload(validReport);
+    expect(validatedData).toEqual({ name: validReport.name });
   });
 });
 

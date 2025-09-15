@@ -2,18 +2,11 @@ import { Link as RouterLink } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
-import { isReportType, ReportType } from "types";
+import { isReportType } from "types";
 
 const getTitle = (reportType: string) => {
   if (!isReportType(reportType)) return "";
-  switch (reportType) {
-    case ReportType.CI:
-      return "CI Report";
-    case ReportType.QMS:
-      return "QMS Report";
-    case ReportType.TACM:
-      return "TACM Report";
-  }
+  return `${reportType} Report`;
 };
 
 export const SubnavBar = ({ stateName, reportType }: Props) => {

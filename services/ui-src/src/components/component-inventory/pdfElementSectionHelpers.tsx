@@ -11,6 +11,7 @@ export const textboxSection: FormPageTemplate = {
       label: "Textbox",
       helperText: "Information to help user fill out textbox",
       answer: "sample text",
+      required: true,
     },
   ],
 };
@@ -26,6 +27,7 @@ export const textAreaSection: FormPageTemplate = {
       label: "TextArea",
       helperText: "Information to help user fill out textbox",
       answer: "sample text",
+      required: true,
     },
   ],
 };
@@ -41,6 +43,7 @@ export const numberFieldSection: FormPageTemplate = {
       label: "NumberField",
       helperText: "Information to help user fill out number field",
       answer: "5",
+      required: true,
     },
   ],
 };
@@ -56,6 +59,7 @@ export const dateFieldSection: FormPageTemplate = {
       label: "Reporting period start date",
       helperText:
         "What is the reporting period Start Date applicable to the measure results?",
+      required: true,
     },
   ],
 };
@@ -75,6 +79,7 @@ export const radioFieldSection: FormPageTemplate = {
         { value: "radio option 3", label: "radio option 3" },
       ],
       answer: "radio option 1",
+      required: true,
     },
   ],
 };
@@ -94,6 +99,7 @@ export const dropdownFieldSection: FormPageTemplate = {
         { value: "dropdown option 3", label: "dropdown option 3" },
       ],
       answer: "dropdown option 2",
+      required: true,
     },
   ],
 };

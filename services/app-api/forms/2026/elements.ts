@@ -149,6 +149,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
   type: ElementType.Radio,
   label: "What technical specifications are being used to report this measure?",
   id: "measure-tech-specs-radio",
+  required: true,
   choices: [
     {
       label:
@@ -409,10 +410,11 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
     expectedCount: "Expected Count of Successful Transitions to the Community",
     populationRate: "Multi-Plan Population Rate",
     actualRate:
-      "Observed Performance Rate for Minimizing Length of Facility Stay",
+      "Observed Performance Rate for Successful Transition after Long-Term Facility Stay",
     expectedRate:
-      "Expected Performance Rate for Minimizing Length of Facility Stay",
-    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      "Expected Performance Rate for Successful Transition after Long-Term Facility Stay",
+    adjustedRate:
+      "Risk Adjusted Rate for Successful Transition after Long-Term Facility Stay",
   },
   required: true,
 };

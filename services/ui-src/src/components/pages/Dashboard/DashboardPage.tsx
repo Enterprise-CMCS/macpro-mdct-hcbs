@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { StateNames } from "../../../constants";
-import { getReportName, isReportType, isStateAbbr, Report } from "types";
+import { getReportName, isReportType, isStateAbbr, LiteReport } from "types";
 import {
   PageTemplate,
   DashboardTable,
@@ -29,8 +29,8 @@ export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [reports, setReports] = useState<Report[]>([]);
-  const [selectedReport, setSelectedReport] = useState<Report | undefined>(
+  const [reports, setReports] = useState<LiteReport[]>([]);
+  const [selectedReport, setSelectedReport] = useState<LiteReport | undefined>(
     undefined
   );
   const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
@@ -50,7 +50,7 @@ export const DashboardPage = () => {
       setIsLoading(true);
       let result = await getReportsForState(reportType, state);
       if (!userIsAdmin) {
-        result = result.filter((report: Report) => !report.archived);
+        result = result.filter((report: LiteReport) => !report.archived);
       }
 
       setReports(result);
@@ -58,7 +58,7 @@ export const DashboardPage = () => {
     })();
   };
 
-  const openAddEditReportModal = (report?: Report) => {
+  const openAddEditReportModal = (report?: LiteReport) => {
     setSelectedReport(report);
     // use disclosure to open modal
     addEditReportModalOnOpenHandler();
