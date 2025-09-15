@@ -1,4 +1,3 @@
-import { Accordion } from "@chakra-ui/react";
 import {
   DateField,
   DropdownField,
@@ -7,7 +6,7 @@ import {
   TextField,
 } from "components/fields";
 import { AccordionItem } from "components";
-
+import { Accordion, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
   DividerElement,
   HeaderElement,
@@ -23,6 +22,15 @@ import {
   PageElement,
 } from "types";
 import { ReactNode } from "react";
+import { ExportedReportWrapper } from "components/export/ExportedReportWrapper";
+import {
+  textboxSection,
+  textAreaSection,
+  numberFieldSection,
+  radioFieldSection,
+  dropdownFieldSection,
+} from "./pdfElementSectionHelpers";
+import { formatMonthDayYear } from "utils";
 
 // eslint-disable-next-line no-console
 const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
@@ -31,6 +39,7 @@ export const elementObject: {
   [key: string]: {
     description: string;
     variants: ReactNode[];
+    pdfVariants: ReactNode[];
   };
 } = {
   [ElementType.Header]: {
@@ -52,6 +61,15 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [
+      <HeaderElement
+        element={{
+          type: ElementType.Header,
+          id: "id-header",
+          text: "HeaderElement",
+        }}
+      />,
+    ],
   },
   [ElementType.SubHeader]: {
     description: "This is a subheader",
@@ -64,10 +82,28 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [
+      <SubHeaderElement
+        element={{
+          type: ElementType.SubHeader,
+          id: "id-subheader",
+          text: "SubHeaderElement",
+        }}
+      />,
+    ],
   },
   [ElementType.NestedHeading]: {
     description: "This is a nested heading",
     variants: [
+      <NestedHeadingElement
+        element={{
+          type: ElementType.NestedHeading,
+          id: "id-nestedheading",
+          text: "NestedHeadingElement",
+        }}
+      />,
+    ],
+    pdfVariants: [
       <NestedHeadingElement
         element={{
           type: ElementType.NestedHeading,
@@ -89,6 +125,7 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [<ExportedReportWrapper section={textboxSection} />],
   },
   [ElementType.TextAreaField]: {
     description: "A field for entering text",
@@ -102,6 +139,7 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [<ExportedReportWrapper section={textAreaSection} />],
   },
   [ElementType.Paragraph]: {
     description: "A paragraph of text for content.",
@@ -114,6 +152,7 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: ["Paragraph currently not used in PDFs"],
   },
   [ElementType.Divider]: {
     description: "A horizontal line to separate content",
@@ -125,6 +164,7 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: ["Divider currently not used in PDFs"],
   },
   [ElementType.Accordion]: {
     description: "A collapsible section for content",
@@ -141,6 +181,7 @@ export const elementObject: {
         </AccordionItem>
       </Accordion>,
     ],
+    pdfVariants: ["Accordion currently not used in PDFs"],
   },
   [ElementType.Dropdown]: {
     description: "A dropdown field for selecting options",
@@ -159,6 +200,7 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [<ExportedReportWrapper section={dropdownFieldSection} />],
   },
   [ElementType.Radio]: {
     description: "A radio button field for selecting one option",
@@ -177,6 +219,7 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [<ExportedReportWrapper section={radioFieldSection} />],
   },
   [ElementType.Date]: {
     description: "A field for selecting a date",
@@ -191,6 +234,26 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [
+      <Table variant={"reportDetails"}>
+        <Thead>
+          <Tr>
+            <Th>Reporting year</Th>
+            <Th>Last edited</Th>
+            <Th>Edited by</Th>
+            <Th>Status</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>{2025}</Td>
+            <Td>{formatMonthDayYear(1757897305331)}</Td>
+            <Td>{"test user"}</Td>
+            <Td>{"In progress"}</Td>
+          </Tr>
+        </Tbody>
+      </Table>,
+    ],
   },
   ["SubHeaderMeasure"]: {
     description: "A subheader for measures",
@@ -203,6 +266,7 @@ export const elementObject: {
         }}
       />,
     ],
+    pdfVariants: [],
   },
   [ElementType.NumberField]: {
     description: "A field for entering numbers",
@@ -231,6 +295,8 @@ export const elementObject: {
         }
       />,
     ],
+    pdfVariants: [<ExportedReportWrapper section={numberFieldSection} />],
   },
+
   // ButtonLinkElement needs ReportType, state, and reportId
 };
