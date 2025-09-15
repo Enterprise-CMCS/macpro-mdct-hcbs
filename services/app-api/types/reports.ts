@@ -73,7 +73,7 @@ export enum MeasureTemplateName {
   "MLTSS" = "MLTSS",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
-  "LTSS-5" = "LTSS-5",
+  "MLTSS-5" = "MLTSS-5",
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
   "HCBS-10" = "HCBS-10",
@@ -87,8 +87,8 @@ export enum MeasureTemplateName {
   "MLTSS-FASI-2" = "MLTSS-FASI-2",
   // unique
   "MLTSS-DM" = "MLTSS-DM",
-  "LTSS-5-PT1" = "LTSS-5-PT1",
-  "LTSS-5-PT2" = "LTSS-5-PT2",
+  "MLTSS-5-PT1" = "MLTSS-5-PT1",
+  "MLTSS-5-PT2" = "MLTSS-5-PT2",
   "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
   // pom measures
   "POM-1" = "POM-1",
