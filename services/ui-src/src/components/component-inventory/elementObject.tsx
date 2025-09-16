@@ -44,7 +44,6 @@ import {
   textAreaSection,
   numberFieldSection,
   radioFieldSection,
-  dropdownFieldSection,
   ndrFieldsSection,
   ndrEnhancedSection,
   ndrSection,
@@ -226,7 +225,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [<ExportedReportWrapper section={dropdownFieldSection} />],
+    pdfVariants: ["Dropdown currently not used in PDFs"],
   },
   [ElementType.Radio]: {
     description: "A radio button field for selecting one option",
@@ -294,7 +293,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: ["SubHeaderMeasure currently not used in PDFs"],
   },
   [ElementType.NumberField]: {
     description: "A field for entering numbers",
@@ -337,7 +336,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: ["SubheaderMeasure currently not used in PDFs"],
   },
   [ElementType.ButtonLink]: {
     description: "A link styled as a button",
@@ -350,7 +349,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: ["Buttonlink currently not used in PDFs"],
   },
   [ElementType.MeasureTable]: {
     description: "A table for displaying measure status with navigation",
@@ -363,7 +362,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: ["MeasureTable currently not used in PDFs"],
   },
   [ElementType.MeasureResultsNavigationTable]: {
     description: "A table for displaying measure results with navigation",
@@ -376,12 +375,12 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: ["MeasureResultsNavigationTable currently not used in PDFs"],
   },
   [ElementType.StatusTable]: {
     description: "A table for displaying measure status",
     variants: [<StatusTableElement />],
-    pdfVariants: [],
+    pdfVariants: ["StatusTable currently not used in PDFs"],
   },
   [ElementType.MeasureDetails]: {
     description: "Displaying measure details",
@@ -409,7 +408,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: ["MeasureFooter currently not used in PDFs"],
   },
   [ElementType.LengthOfStayRate]: {
     description:
@@ -577,11 +576,11 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: ["StatusAlert currently not used in PDFs"],
   },
   [ElementType.SubmissionParagraph]: {
     description: "Submission Paragraph",
     variants: [<SubmissionParagraph />],
-    pdfVariants: [],
+    pdfVariants: ["SubmissionParagraph currently not used in PDFs"],
   },
 };

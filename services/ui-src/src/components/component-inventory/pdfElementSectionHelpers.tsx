@@ -91,26 +91,6 @@ export const radioFieldSection: FormPageTemplate = {
   ],
 };
 
-export const dropdownFieldSection: FormPageTemplate = {
-  id: "mock-dropdown-id",
-  title: "mock-dropdown-title",
-  type: PageType.Standard,
-  elements: [
-    {
-      type: ElementType.Dropdown,
-      id: "id-dropdown",
-      label: "DropdownField",
-      options: [
-        { value: "dropdown option 1", label: "dropdown option 1" },
-        { value: "dropdown option 2", label: "dropdown option 2" },
-        { value: "dropdown option 3", label: "dropdown option 3" },
-      ],
-      answer: "dropdown option 2",
-      required: true,
-    },
-  ],
-};
-
 export const ndrFieldsSection: FormPageTemplate = {
   id: "mock-ndrFields-id",
   title: "mock-ndrFields-title",
