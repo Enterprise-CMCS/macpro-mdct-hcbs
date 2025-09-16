@@ -45,6 +45,12 @@ import {
   numberFieldSection,
   radioFieldSection,
   dropdownFieldSection,
+  ndrFieldsSection,
+  ndrEnhancedSection,
+  ndrSection,
+  ndrBasicSection,
+  lengthOfStayRateSection,
+  measureDetailsSection,
 } from "./pdfElementSectionHelpers";
 import { formatMonthDayYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
@@ -380,7 +386,7 @@ export const elementObject: {
   [ElementType.MeasureDetails]: {
     description: "Displaying measure details",
     variants: [<MeasureDetailsElement />],
-    pdfVariants: [],
+    pdfVariants: [<ExportedReportWrapper section={measureDetailsSection} />],
   },
   [ElementType.MeasureFooter]: {
     description: "Measure footer for navigation and submission",
@@ -428,7 +434,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: [<ExportedReportWrapper section={lengthOfStayRateSection} />],
   },
   [ElementType.NdrFields]: {
     description: "Numerator/Denominator Fields to gather performance rates",
@@ -452,7 +458,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: [<ExportedReportWrapper section={ndrFieldsSection} />],
   },
   [ElementType.NdrEnhanced]: {
     description:
@@ -473,7 +479,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: [<ExportedReportWrapper section={ndrEnhancedSection} />],
   },
   [ElementType.Ndr]: {
     description: "Numerator/Denominator Fields to gather performance rates",
@@ -489,7 +495,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: [<ExportedReportWrapper section={ndrSection} />],
   },
   [ElementType.NdrBasic]: {
     description:
@@ -529,7 +535,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [],
+    pdfVariants: [<ExportedReportWrapper section={ndrBasicSection} />],
   },
   [ElementType.StatusAlert]: {
     description: "Different Alert Types",
