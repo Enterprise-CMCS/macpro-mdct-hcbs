@@ -35,7 +35,7 @@ export const completeLTSS1 = async (page: Page) => {
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
-  await page.getByLabel("Which programs and waivers").fill("all of them");
+  await page.getByLabel("Which programs and waivers").fill("All of them");
 
   await page.getByLabel("Performance Rates Denominator").fill("4");
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
@@ -64,6 +64,8 @@ export const completeLTSS2 = async (page: Page) => {
   await page.getByLabel("Managed Care (MLTSS)").check();
   await page.locator('button[name="Edit MLTSS"]').click();
 
+  await page.getByLabel("Which programs and waivers").fill("All of them");
+
   await page.getByLabel("Performance Rates Denominator").fill("4");
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
 
@@ -91,6 +93,8 @@ export const completeLTSS6 = async (page: Page) => {
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
+  await page.getByLabel("Which programs and waivers").fill("All of them");
+
   await quickFillFields(page, "Denominator");
   await quickFillFields(page, "Numerator");
   await quickFillFields(page, "What is the 2028 state performance target");
@@ -113,6 +117,8 @@ export const completeLTSS7 = async (page: Page) => {
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
+
+  await page.getByLabel("Which programs and waivers").fill("All of them");
 
   await page.getByLabel("What is the 2028 state").fill("1");
   await page
@@ -141,6 +147,8 @@ export const completeFASI1 = async (page: Page) => {
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
+
+  await page.getByLabel("Which programs and waivers").fill("All of them");
 
   await page.getByLabel("What is the 2028 state").fill("1");
   await page.getByLabel("Numerator").fill("2");
