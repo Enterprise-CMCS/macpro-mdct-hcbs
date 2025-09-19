@@ -66,7 +66,7 @@ export const MeasureResultsNavigationTableElement = (
     return null;
   }
 
-  // Note pages like LTSS-5 have 2 child pages, but 1 delivery system.
+  // Note pages like MLTSS-5 have 2 child pages, but 1 delivery system.
   const singleOption = measurePage.cmitInfo?.deliverySystem.length == 1;
   // Build Rows
   const rows = measurePage.dependentPages?.map((childLink, index) => {
