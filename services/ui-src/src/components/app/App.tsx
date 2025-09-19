@@ -24,14 +24,14 @@ export const App = () => {
   const context = useContext(UserContext);
   const { logout } = context;
   const { user, showLocalLogins } = useStore();
-  const { pathname, key } = useLocation();
+  const { pathname } = useLocation();
 
   const isExportPage = pathname.includes("/export");
 
   // fire tealium page view on route change
   useEffect(() => {
     fireTealiumPageView(user, window.location.href, pathname);
-  }, [key]);
+  }, [pathname, user]);
 
   const authenticatedRoutes = (
     <>
