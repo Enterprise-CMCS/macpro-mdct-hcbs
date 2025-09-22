@@ -44,7 +44,7 @@ const buildUiEnvObject = (
       COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
       COGNITO_IDP_NAME: "Okta",
       POST_SIGNOUT_REDIRECT: "http://localhost:3000/",
-      REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT,
+      REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT!,
     };
   }
 
