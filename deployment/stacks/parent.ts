@@ -15,8 +15,6 @@ import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
 import { deployFrontend } from "./deployFrontend";
 import { isLocalStack } from "../local/util";
-import { createUploadsComponents } from "./uploads";
-import { createBigmacStreamsComponents } from "./bigmac-streams";
 import { createTopicsComponents } from "./topics";
 import { getSubnets } from "../utils/vpc";
 
@@ -47,7 +45,6 @@ export class ParentStack extends Stack {
 
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const kafkaAuthorizedSubnets = getSubnets(this, kafkaAuthorizedSubnetIds);
-    const attachmentsBucketName = `uploads-${stage}-attachments-${Aws.ACCOUNT_ID}`;
 
     const loggingBucket = s3.Bucket.fromBucketName(
       this,
@@ -55,27 +52,17 @@ export class ParentStack extends Stack {
       `cms-cloud-${Aws.ACCOUNT_ID}-${Aws.REGION}`
     );
 
-    const { tables, mcparFormBucket, mlrFormBucket, naaarFormBucket } =
+    const { tables } =
       createDataComponents({
         ...commonProps,
         loggingBucket,
       });
 
-    const { attachmentsBucket } = createUploadsComponents({
-      ...commonProps,
-      loggingBucket,
-      attachmentsBucketName: attachmentsBucketName!,
-    });
-
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
       tables,
-      attachmentsBucket,
       vpc,
       kafkaAuthorizedSubnets,
-      mcparFormBucket,
-      mlrFormBucket,
-      naaarFormBucket,
     });
 
     if (isLocalStack) {
@@ -112,18 +99,7 @@ export class ParentStack extends Stack {
       userPoolId,
       userPoolClientId,
       userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-      attachmentsBucketName: attachmentsBucketName!,
     });
-
-    if (!isDev) {
-      createBigmacStreamsComponents({
-        ...commonProps,
-        stageEnrollmentCountsTableName: "main-stg-enrollment-counts",
-        tables: tables.filter((table) =>
-          ["StateStatus", "Section"].includes(table.id)
-        ),
-      });
-    }
 
     new CfnOutput(this, "CloudFrontUrl", {
       value: applicationEndpointUrl,
