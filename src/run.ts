@@ -28,7 +28,7 @@ const deployedServices = [
 const project = process.env.PROJECT;
 const region = process.env.REGION_A;
 
-async function confirmDestroyCommand(stack: string) {
+const confirmDestroyCommand = async (stack: string) => {
   const orange = "\x1b[38;5;208m";
   const reset = "\x1b[0m";
 
@@ -36,16 +36,9 @@ async function confirmDestroyCommand(stack: string) {
     input: process.stdin,
     output: process.stdout,
   });
-  const question = async (message: string) => {
-    return new Promise((resolve) => {
-      rl.question(message, (answer) => {
-        resolve(answer);
-        rl.close();
-      });
-    });
-  };
 
-  const confirmation = await question(`
+  const confirmation = await readline.question(`
+
 ${orange}********************************* STOP *******************************
 You've requested a destroy for:
 
@@ -66,10 +59,10 @@ The destroy operation has been aborted.
 **********************************************************************${reset}
 `);
   }
-}
+};
 
 // Function to update .env files using 1Password CLI
-function updateEnvFiles() {
+const updateEnvFiles = () => {
   try {
     execSync("op inject --in-file .env.tpl --out-file .env --force", {
       stdio: "inherit",
@@ -80,13 +73,13 @@ function updateEnvFiles() {
     console.error("Failed to update .env files using 1Password CLI.");
     process.exit(1);
   }
-}
+};
 
 /*
  * run_fe_locally runs the frontend and its dependencies locally
  * @ts-ignore
  */
-async function run_fe_locally(runner: LabeledProcessRunner) {
+const run_fe_locally = async (runner: LabeledProcessRunner) => {
   const apiUrl = await getCloudFormationStackOutputValue(
     "hcbs-localstack",
     "ApiUrl"
@@ -95,12 +88,12 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
   await writeLocalUiEnvFile(apiUrl!);
 
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
-}
+};
 
-async function run_cdk_watch(
+const run_cdk_watch = async (
   runner: LabeledProcessRunner,
   options: { stage: string }
-) {
+) => {
   const stage = options.stage;
   const watchCmd = [
     "yarn",
@@ -111,9 +104,9 @@ async function run_cdk_watch(
     "--no-rollback",
   ];
   await runner.run_command_and_output("CDK watch", watchCmd, ".");
-}
+};
 
-function isColimaRunning() {
+const isColimaRunning = () => {
   try {
     const output = execSync("colima status 2>&1", {
       encoding: "utf-8",
@@ -123,9 +116,9 @@ function isColimaRunning() {
   } catch {
     return false;
   }
-}
+};
 
-function isLocalStackRunning() {
+const isLocalStackRunning = () => {
   try {
     const output = execSync("localstack status", {
       encoding: "utf-8",
@@ -135,20 +128,20 @@ function isLocalStackRunning() {
   } catch {
     return false;
   }
-}
+};
 
-async function run_watch(options: { stage: string }) {
+const run_watch = async (options: { stage: string }) => {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
   run_cdk_watch(runner, options);
   run_fe_locally(runner);
-}
+};
 
-async function getCloudFormationStackOutputValue(
+const getCloudFormationStackOutputValue = async (
   stackName: string,
   outputName: string
-) {
+) => {
   const cloudFormationClient = new CloudFormationClient({
     region: "us-east-1",
   });
@@ -158,9 +151,9 @@ async function getCloudFormationStackOutputValue(
   return (await response).Stacks?.[0]?.Outputs?.find(
     (output) => output.OutputKey === outputName
   )?.OutputValue;
-}
+};
 
-async function run_local() {
+const run_local = async () => {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
@@ -181,7 +174,8 @@ async function run_local() {
     "yarn",
     "cdklocal",
     "bootstrap",
-    "aws://000000000000/us-east-1",
+    `aws://000000000000/${region}`, // LocalStack uses the default dummy account ID 000000000000
+
     "--context",
     "stage=bootstrap",
   ];
@@ -239,23 +233,23 @@ async function run_local() {
 
   runner.run_command_and_output("CDK watch", watchCmd, ".");
   run_fe_locally(runner);
-}
+};
 
-async function install_deps(runner: LabeledProcessRunner, service: string) {
+const install_deps = async (runner: LabeledProcessRunner, service: string) => {
   await runner.run_command_and_output(
     "Installing dependencies",
     ["yarn", "install", "--frozen-lockfile"],
     `services/${service}`
   );
-}
+};
 
-async function prepare_services(runner: LabeledProcessRunner) {
+const prepare_services = async (runner: LabeledProcessRunner) => {
   for (const service of deployedServices) {
     await install_deps(runner, service);
   }
-}
+};
 
-async function deploy_prerequisites() {
+const deploy_prerequisites = async () => {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   const deployPrequisitesCmd = [
@@ -270,7 +264,7 @@ async function deploy_prerequisites() {
     deployPrequisitesCmd,
     "."
   );
-}
+};
 
 const stackExists = async (stackName: string): Promise<boolean> => {
   const client = new CloudFormationClient({ region });
@@ -282,7 +276,7 @@ const stackExists = async (stackName: string): Promise<boolean> => {
   }
 };
 
-async function deploy(options: { stage: string }) {
+const deploy = async (options: { stage: string }) => {
   const stage = options.stage;
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
@@ -302,7 +296,7 @@ async function deploy(options: { stage: string }) {
       "MISSING PREREQUISITE STACK! Must deploy it before attempting to deploy the application."
     );
   }
-}
+};
 
 const waitForStackDeleteComplete = async (
   client: CloudFormationClient,
@@ -314,7 +308,7 @@ const waitForStackDeleteComplete = async (
   );
 };
 
-async function destroy({
+const destroy = async ({
   stage,
   wait,
   verify,
@@ -322,7 +316,7 @@ async function destroy({
   stage: string;
   wait: boolean;
   verify: boolean;
-}) {
+}) => {
   const stackName = `${project}-${stage}`;
 
   if (/prod/i.test(stage)) {
@@ -351,9 +345,9 @@ async function destroy({
       `Stack ${stackName} delete initiated. Not waiting for completion as --wait is set to false.`
     );
   }
-}
+};
 
-async function delete_topics(options: { stage: string }) {
+const delete_topics = async (options: { stage: string }) => {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
@@ -373,9 +367,9 @@ async function delete_topics(options: { stage: string }) {
   const response = await lambdaClient.send(command);
   const result = Buffer.from(response.Payload || []).toString();
   console.log("deleteTopics response:", result);
-}
+};
 
-async function list_topics(options: { stage: string | undefined }) {
+const list_topics = async (options: { stage: string | undefined }) => {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
@@ -395,7 +389,7 @@ async function list_topics(options: { stage: string | undefined }) {
   const response = await lambdaClient.send(command);
   const result = Buffer.from(response.Payload || []).toString();
   console.log("listTopics response:", result);
-}
+};
 
 /*
  * The command definitons in yargs

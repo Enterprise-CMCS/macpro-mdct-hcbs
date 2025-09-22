@@ -10,7 +10,7 @@ const configFilePath = path.resolve(outputPath, "env-config.js");
 
 const region = "us-east-1";
 
-export async function writeLocalUiEnvFile(apiUrl: string) {
+export const writeLocalUiEnvFile = async (apiUrl: string) => {
   const envVariables = {
     SKIP_PREFLIGHT_CHECK: "true",
     API_REGION: region,
@@ -39,4 +39,4 @@ export async function writeLocalUiEnvFile(apiUrl: string) {
   ].join("\n");
 
   await fs.writeFile(configFilePath, envConfigContent);
-}
+};

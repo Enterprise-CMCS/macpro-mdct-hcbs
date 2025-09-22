@@ -2,38 +2,49 @@ import { Construct } from "constructs";
 import {
   aws_iam as iam,
   aws_lambda as lambda,
-  aws_lambda_nodejs as lambda_nodejs,
   aws_logs as logs,
   aws_s3 as s3,
+  aws_lambda_nodejs as lambda_nodejs,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { createHash } from "crypto";
 import { DynamoDBTable } from "./dynamodb-table";
 
-interface LambdaDynamoEventProps
+interface LambdaKafkaEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
+  kafkaBootstrapServers: string[];
+  securityGroupId: string;
+  subnets: string[];
+  topics: string[];
+  consumerGroupId: string;
   stackName: string;
-  tables: DynamoDBTable[];
-  buckets?: s3.IBucket[];
   isDev: boolean;
+  tables?: DynamoDBTable[];
+  buckets?: s3.IBucket[];
 }
 
-export class LambdaDynamoEventSource extends Construct {
+export class LambdaKafkaEventSource extends Construct {
   public readonly lambda: lambda_nodejs.NodejsFunction;
 
-  constructor(scope: Construct, id: string, props: LambdaDynamoEventProps) {
+  constructor(scope: Construct, id: string, props: LambdaKafkaEventProps) {
     super(scope, id);
 
     const {
       additionalPolicies = [],
+      handler,
       memorySize = 1024,
-      tables,
-      buckets = [],
-      stackName,
       timeout = Duration.seconds(6),
+      kafkaBootstrapServers,
+      securityGroupId,
+      subnets,
+      topics,
+      consumerGroupId,
+      stackName,
       isDev,
+      tables = [],
+      buckets = [],
       ...restProps
     } = props;
 
@@ -45,6 +56,7 @@ export class LambdaDynamoEventSource extends Construct {
 
     this.lambda = new lambda_nodejs.NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
+      handler,
       runtime: lambda.Runtime.NODEJS_20_X,
       timeout,
       memorySize,
@@ -60,24 +72,29 @@ export class LambdaDynamoEventSource extends Construct {
       ...restProps,
     });
 
-    for (const ddbTable of tables) {
-      new lambda.CfnEventSourceMapping(
-        scope,
-        `${id}${ddbTable.node.id}DynamoDBStreamEventSourceMapping`,
-        {
-          eventSourceArn: ddbTable.table.tableStreamArn,
-          functionName: this.lambda.functionArn,
-          startingPosition: "TRIM_HORIZON",
-          maximumRetryAttempts: 2,
-          batchSize: 10,
-          enabled: true,
-        }
-      );
-    }
-
     for (const stmt of additionalPolicies) {
       this.lambda.addToRolePolicy(stmt);
     }
+
+    new lambda.CfnEventSourceMapping(scope, `${id}KafkaEventSourceMapping`, {
+      functionName: this.lambda.functionArn,
+      selfManagedEventSource: {
+        endpoints: { kafkaBootstrapServers },
+      },
+      selfManagedKafkaEventSourceConfig: { consumerGroupId },
+      topics,
+      sourceAccessConfigurations: [
+        ...subnets.map((subnetId) => ({
+          type: "VPC_SUBNET",
+          uri: `subnet:${subnetId}`,
+        })),
+        {
+          type: "VPC_SECURITY_GROUP",
+          uri: `security_group:${securityGroupId}`,
+        },
+      ],
+      maximumBatchingWindowInSeconds: 30,
+    });
 
     for (const ddbTable of tables) {
       ddbTable.table.grantReadWriteData(this.lambda);
