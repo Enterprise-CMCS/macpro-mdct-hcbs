@@ -6,7 +6,7 @@ const directories = [
   "./services/ui",
   "./services/ui-auth",
   "./services/ui-src",
-  "./services/hcbs-bigmac-streams",
+  "./services/topics",
 ];
 
 export const installDeps = async () => {
