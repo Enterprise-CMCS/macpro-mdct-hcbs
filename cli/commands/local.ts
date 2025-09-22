@@ -5,8 +5,6 @@ import {
   runFrontendLocally,
   getCloudFormationStackOutputValues,
 } from "../lib/utils.js";
-import downloadClamAvLayer from "../lib/clam.js";
-import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 
 const isColimaRunning = () => {
   try {
@@ -90,7 +88,6 @@ export const local = {
       "."
     );
 
-    await downloadClamAvLayer();
     await runCommand(
       "CDK local deploy",
       [
