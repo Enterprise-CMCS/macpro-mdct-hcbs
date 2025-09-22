@@ -31,8 +31,7 @@ const buildUiEnvObject = (
 ): Record<string, string> => {
   if (stage === "localstack") {
     return {
-      S3_ATTACHMENTS_BUCKET_REGION: "us-east-1",
-      S3_ATTACHMENTS_BUCKET_NAME: process.env.S3_ATTACHMENTS_BUCKET_NAME!,
+      SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
       API_URL: cfnOutputs.ApiUrl.replace("https", "http"),
       COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID!,
@@ -49,8 +48,7 @@ const buildUiEnvObject = (
   }
 
   return {
-    S3_ATTACHMENTS_BUCKET_REGION: region,
-    S3_ATTACHMENTS_BUCKET_NAME: cfnOutputs.AttachmentsBucketName,
+    SKIP_PREFLIGHT_CHECK: "true",
     API_REGION: region,
     API_URL: cfnOutputs.ApiUrl,
     COGNITO_IDENTITY_POOL_ID: cfnOutputs.CognitoIdentityPoolId,
