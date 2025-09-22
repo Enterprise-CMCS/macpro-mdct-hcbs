@@ -3,10 +3,7 @@ import { checkIfAuthenticated } from "../lib/sts.js";
 import { runCommand } from "../lib/runner.js";
 import {
   runFrontendLocally,
-  getCloudFormationStackOutputValues,
 } from "../lib/utils.js";
-import downloadClamAvLayer from "../lib/clam.js";
-import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 
 export const watch = {
   command: "watch",
@@ -17,7 +14,6 @@ export const watch = {
   handler: async (options: { stage: string }) => {
     checkIfAuthenticated();
 
-    await downloadClamAvLayer();
     await Promise.all([
       await runCommand(
         "CDK watch",
