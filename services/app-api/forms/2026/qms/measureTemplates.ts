@@ -940,10 +940,10 @@ export const measureTemplates: Record<
       },
     ],
   },
-  [MeasureTemplateName["LTSS-5"]]: {
-    id: "LTSS-5",
+  [MeasureTemplateName["MLTSS-5"]]: {
+    id: "MLTSS-5",
     title:
-      "LTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
+      "MLTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -962,9 +962,9 @@ export const measureTemplates: Record<
       measureFooter,
     ],
   },
-  [MeasureTemplateName["LTSS-5-PT1"]]: {
-    id: "LTSS-5-PT1",
-    title: "LTSS-5 Part 1: Screening (MLTSS)",
+  [MeasureTemplateName["MLTSS-5-PT1"]]: {
+    id: "MLTSS-5-PT1",
+    title: "MLTSS-5 Part 1: Screening (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -972,13 +972,13 @@ export const measureTemplates: Record<
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Measure Information",
-        to: "LTSS-5",
+        to: "MLTSS-5",
       },
       sectionCompleteBanner,
       measureType,
       {
         ...measureHeader,
-        text: "LTSS-5 Part 1: Screening (MLTSS)",
+        text: "MLTSS-5 Part 1: Screening (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
@@ -998,14 +998,14 @@ export const measureTemplates: Record<
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
-        prevTo: "LTSS-5",
+        prevTo: "MLTSS-5",
         completeSection: true,
       },
     ],
   },
-  [MeasureTemplateName["LTSS-5-PT2"]]: {
-    id: "LTSS-5-PT2",
-    title: "LTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
+  [MeasureTemplateName["MLTSS-5-PT2"]]: {
+    id: "MLTSS-5-PT2",
+    title: "MLTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1013,13 +1013,13 @@ export const measureTemplates: Record<
         type: ElementType.ButtonLink,
         id: "return-button",
         label: "Return to Measure Information",
-        to: "LTSS-5",
+        to: "MLTSS-5",
       },
       sectionCompleteBanner,
       measureType,
       {
         ...measureHeader,
-        text: "LTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
+        text: "MLTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
       },
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
@@ -1056,7 +1056,7 @@ export const measureTemplates: Record<
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
-        prevTo: "LTSS-5",
+        prevTo: "MLTSS-5",
         completeSection: true,
       },
     ],
