@@ -5,7 +5,6 @@ import {
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
 import { region } from "../lib/consts.js";
-import downloadClamAvLayer from "../lib/clam.js";
 import { runCommand } from "../lib/runner.js";
 
 const stackExists = async (stackName: string): Promise<boolean> => {
@@ -28,8 +27,6 @@ export const deploy = {
     await checkIfAuthenticated();
 
     if (await stackExists("hcbs-prerequisites")) {
-      await downloadClamAvLayer();
-
       await runCommand(
         "CDK deploy",
         [
