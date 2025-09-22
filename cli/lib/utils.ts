@@ -42,6 +42,7 @@ const buildUiEnvObject = (
       COGNITO_USER_POOL_CLIENT_DOMAIN:
         process.env.COGNITO_USER_POOL_CLIENT_DOMAIN!,
       COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
+      COGNITO_IDP_NAME: "Okta",
       POST_SIGNOUT_REDIRECT: "http://localhost:3000/",
       REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT,
     };
@@ -58,6 +59,7 @@ const buildUiEnvObject = (
     COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId,
     COGNITO_USER_POOL_CLIENT_DOMAIN: `${cfnOutputs.CognitoUserPoolClientDomain}.auth.${region}.amazoncognito.com`,
     COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId,
+    COGNITO_IDP_NAME: "Okta",
     POST_SIGNOUT_REDIRECT: "https://test.home.idm.cms.gov/",
     REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT!,
   };
