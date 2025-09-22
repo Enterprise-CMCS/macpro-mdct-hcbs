@@ -31,8 +31,6 @@ const buildUiEnvObject = (
 ): Record<string, string> => {
   if (stage === "localstack") {
     return {
-      PROD_URL: "mdctqmr.cms.gov",
-      BRANCH_NAME: "local-branch",
       S3_ATTACHMENTS_BUCKET_REGION: "us-east-1",
       S3_ATTACHMENTS_BUCKET_NAME: process.env.S3_ATTACHMENTS_BUCKET_NAME!,
       API_REGION: region,
@@ -51,8 +49,6 @@ const buildUiEnvObject = (
   }
 
   return {
-    PROD_URL: "mdctqmr.cms.gov",
-    BRANCH_NAME: "local-branch",
     S3_ATTACHMENTS_BUCKET_REGION: region,
     S3_ATTACHMENTS_BUCKET_NAME: cfnOutputs.AttachmentsBucketName,
     API_REGION: region,
