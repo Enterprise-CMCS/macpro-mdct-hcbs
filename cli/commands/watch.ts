@@ -1,9 +1,7 @@
 import { Argv } from "yargs";
 import { checkIfAuthenticated } from "../lib/sts.js";
 import { runCommand } from "../lib/runner.js";
-import {
-  runFrontendLocally,
-} from "../lib/utils.js";
+import { runFrontendLocally } from "../lib/utils.js";
 
 export const watch = {
   command: "watch",
@@ -15,7 +13,7 @@ export const watch = {
     checkIfAuthenticated();
 
     await Promise.all([
-      await runCommand(
+      runCommand(
         "CDK watch",
         [
           "yarn",
@@ -27,7 +25,7 @@ export const watch = {
         ],
         "."
       ),
-      await runFrontendLocally(options.stage),
+      runFrontendLocally(options.stage),
     ]);
   },
 };
