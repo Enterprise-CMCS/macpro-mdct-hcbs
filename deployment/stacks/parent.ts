@@ -52,11 +52,10 @@ export class ParentStack extends Stack {
       `cms-cloud-${Aws.ACCOUNT_ID}-${Aws.REGION}`
     );
 
-    const { tables } =
-      createDataComponents({
-        ...commonProps,
-        loggingBucket,
-      });
+    const { tables } = createDataComponents({
+      ...commonProps,
+      loggingBucket,
+    });
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
