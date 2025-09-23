@@ -29,7 +29,6 @@ export class ParentStack extends Stack {
       secureCloudfrontDomainName,
       vpcName,
       kafkaAuthorizedSubnetIds,
-      stage,
     } = props;
 
     super(scope, id, {

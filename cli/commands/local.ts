@@ -1,10 +1,7 @@
 import { runCommand } from "../lib/runner.js";
 import { execSync } from "child_process";
 import { region } from "../lib/consts.js";
-import {
-  runFrontendLocally,
-  getCloudFormationStackOutputValues,
-} from "../lib/utils.js";
+import { runFrontendLocally } from "../lib/utils.js";
 
 const isColimaRunning = () => {
   try {
