@@ -14,7 +14,6 @@ import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
 import {
   fireTealiumPageView,
-  isApparentReportPage,
   makeMediaQueryClasses,
   UserContext,
   useStore,
@@ -31,12 +30,7 @@ export const App = () => {
 
   // fire tealium page view on route change
   useEffect(() => {
-    fireTealiumPageView(
-      user,
-      window.location.href,
-      pathname,
-      isApparentReportPage(pathname)
-    );
+    fireTealiumPageView(user, window.location.href, pathname);
   }, [key]);
 
   const authenticatedRoutes = (
