@@ -10,7 +10,6 @@ import { Lambda } from "../constructs/lambda";
 
 interface CreateTopicsComponentsProps {
   brokerString: string;
-  customResourceRole: iam.Role;
   isDev: boolean;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   project: string;
@@ -24,7 +23,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     brokerString,
     isDev,
     kafkaAuthorizedSubnets,
-    customResourceRole,
     project,
     scope,
     stage,
@@ -130,7 +128,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
           resources: [createTopicsLambda.lambda.functionArn],
         }),
       ]),
-      role: customResourceRole,
       resourceType: "Custom::InvokeCreateTopicsFunction",
     }
   );
