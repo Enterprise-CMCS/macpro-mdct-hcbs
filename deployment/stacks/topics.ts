@@ -131,6 +131,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
       resourceType: "Custom::InvokeCreateTopicsFunction",
     }
   );
+  createTopicsLambda.lambda.grantInvoke(createTopicsInvoke.grantPrincipal);
 
   createTopicsInvoke.node.addDependency(createTopicsLambda);
 }
