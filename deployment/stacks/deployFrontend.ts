@@ -21,7 +21,6 @@ interface DeployFrontendProps {
   userPoolId: string;
   userPoolClientId: string;
   userPoolClientDomain: string;
-  customResourceRole: iam.Role;
   launchDarklyClient: string;
   redirectSignout: string;
 }
@@ -53,29 +52,6 @@ export function deployFrontend(props: DeployFrontendProps) {
 
   const deploymentRole = new iam.Role(scope, "BucketDeploymentRole", {
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    inlinePolicies: {
-      InlinePolicy: new iam.PolicyDocument({
-        statements: [
-          new iam.PolicyStatement({
-            actions: [
-              "s3:PutObject",
-              "s3:PutObjectAcl",
-              "s3:DeleteObject",
-              "s3:DeleteObjectVersion",
-              "s3:GetBucketLocation",
-              "s3:GetObject",
-              "s3:ListBucket",
-              "s3:ListBucketVersions",
-            ],
-            resources: [uiBucket.bucketArn, `${uiBucket.bucketArn}/*`],
-          }),
-          new iam.PolicyStatement({
-            actions: ["cloudfront:CreateInvalidation"],
-            resources: ["*"],
-          }),
-        ],
-      }),
-    },
   });
 
   const deployWebsite = new s3_deployment.BucketDeployment(
@@ -124,8 +100,6 @@ export function deployFrontend(props: DeployFrontendProps) {
     scope,
     "InvalidateCloudfront",
     {
-      onCreate: undefined,
-      onDelete: undefined,
       onUpdate: {
         service: "CloudFront",
         action: "createInvalidation",
@@ -146,6 +120,8 @@ export function deployFrontend(props: DeployFrontendProps) {
       role: deploymentRole,
     }
   );
+
+  distribution.grantCreateInvalidation(invalidateCloudfront.grantPrincipal);
 
   invalidateCloudfront.node.addDependency(deployTimeConfig);
 }

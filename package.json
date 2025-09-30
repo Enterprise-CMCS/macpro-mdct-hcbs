@@ -32,6 +32,8 @@
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
+    "@octokit/auth-action": "^6.0.1",
+    "@octokit/rest": "^22.0.0",
     "@playwright/test": "^1.44.0",
     "@types/dotenv": "^8.2.0",
     "@types/flat": "^5.0.2",
@@ -52,6 +54,7 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.4.1",
+    "tsx": "^4.20.5",
     "typescript": "^5.8.2",
     "util": "^0.12.4",
     "yargs": "^16.1.1"

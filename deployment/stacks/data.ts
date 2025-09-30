@@ -20,7 +20,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "key",
         type: dynamodb.AttributeType.STRING,
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "QmsReports", {
       stage,
       isDev,
@@ -33,7 +33,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "id",
         type: dynamodb.AttributeType.STRING,
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "TacmReports", {
       stage,
       isDev,
@@ -46,7 +46,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "id",
         type: dynamodb.AttributeType.STRING,
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "CiReports", {
       stage,
       isDev,
@@ -59,7 +59,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "id",
         type: dynamodb.AttributeType.STRING,
       },
-    }).identifiers,
+    }),
     new DynamoDBTable(scope, "PcpReports", {
       stage,
       isDev,
@@ -72,7 +72,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "id",
         type: dynamodb.AttributeType.STRING,
       },
-    }).identifiers,
+    }),
   ];
 
   return { tables };
