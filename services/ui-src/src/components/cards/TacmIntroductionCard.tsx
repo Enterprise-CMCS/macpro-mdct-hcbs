@@ -20,7 +20,7 @@ export const TacmIntroductionCard = () => {
       services that meet participant needs.
       <ReportIntroCardActions reportType={ReportType.TACM} />
       <Accordion allowToggle={true}>
-        <AccordionItem label="When is the Timely Access Compliance Measure Report due?">
+        <AccordionItem label="When is the Timely Access Compliance Measure Report Due?">
           <p>
             The HCBS Timely Access Compliance Measure Report will be created and
             submitted ...
