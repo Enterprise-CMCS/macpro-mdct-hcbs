@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
   AppRoutes,
@@ -12,28 +12,26 @@ import {
 } from "components";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
-import { makeMediaQueryClasses, UserContext, useStore } from "utils";
+import {
+  fireTealiumPageView,
+  makeMediaQueryClasses,
+  UserContext,
+  useStore,
+} from "utils";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   const context = useContext(UserContext);
   const { logout } = context;
   const { user, showLocalLogins } = useStore();
-  const { pathname } = useLocation();
+  const { pathname, key } = useLocation();
 
   const isExportPage = pathname.includes("/export");
 
-  // TODO: fire tealium page view on route change
-  /*
-   * useEffect(() => {
-   * fireTealiumPageView(
-   *   user,
-   *   window.location.href,
-   *   pathname,
-   *   isApparentReportPage(pathname)
-   * );
-   * }, [key]);
-   */
+  // fire tealium page view on route change
+  useEffect(() => {
+    fireTealiumPageView(user, window.location.href, pathname);
+  }, [key]);
 
   const authenticatedRoutes = (
     <>

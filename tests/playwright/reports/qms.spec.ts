@@ -73,6 +73,7 @@ test.describe("create and complete a QMS report as a state user", () => {
     await fillAddEditReportModal(page);
     await assertReportIsCreated(page, testModalData);
   });
+
   test("complete a QMS report as a state user", async ({ page }) => {
     await enterReport(page, testModalData);
     await completeGeneralInfo(page);

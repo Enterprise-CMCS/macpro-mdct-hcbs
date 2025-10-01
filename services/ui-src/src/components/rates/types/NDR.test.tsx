@@ -9,8 +9,8 @@ const mockedPerformanceElement: NdrTemplate = {
   id: "mock-perf-id",
   type: ElementType.Ndr,
   label: "test label",
-  performanceTargetLabel:
-    "What is the 2028 state performance target for this assessment?",
+  required: true,
+  performanceTargetLabel: "What is the 2028 state performance target?",
 };
 const updateSpy = jest.fn();
 
@@ -34,7 +34,7 @@ describe("<NDR />", () => {
 
       expect(
         screen.getByRole("textbox", {
-          name: "What is the 2028 state performance target for this assessment?",
+          name: "What is the 2028 state performance target?",
         })
       ).toBeInTheDocument();
       expect(

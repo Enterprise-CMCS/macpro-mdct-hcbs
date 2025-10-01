@@ -4,6 +4,7 @@ export enum ReportType {
   QMS = "QMS",
   TACM = "TACM",
   CI = "CI",
+  PCP = "PCP",
 }
 
 export const isReportType = (
@@ -20,6 +21,8 @@ export const getReportName = (type: string | undefined) => {
       return "Timely Access Compliance Measure Report";
     case ReportType.CI:
       return "Critical Incident Report";
+    case ReportType.PCP:
+      return "Person-Centered Planning Report";
     default:
       return "";
   }
@@ -77,6 +80,8 @@ export interface Report extends ReportBase, ReportOptions {
   archived: boolean;
 }
 
+export type LiteReport = Omit<Report, "pages">;
+
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate
@@ -130,7 +135,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmitId: string;
   required?: boolean;
   stratified?: boolean;
-  optional?: boolean;
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
@@ -139,7 +143,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
 export interface StatusPageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
-  optional?: boolean;
 }
 
 export const isMeasureTemplate = (
@@ -181,7 +184,6 @@ export enum ElementType {
   Date = "date",
   Dropdown = "dropdown",
   Accordion = "accordion",
-  ResultRowButton = "resultRowButton",
   Paragraph = "paragraph",
   Radio = "radio",
   ButtonLink = "buttonLink",
@@ -285,7 +287,7 @@ export type TextboxTemplate = {
   label: string;
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
 };
 
@@ -295,7 +297,7 @@ export type NumberFieldTemplate = {
   label: string;
   helperText?: string;
   answer?: number;
-  required?: boolean;
+  required: boolean;
   hideCondition?: never;
 };
 
@@ -306,7 +308,7 @@ export type TextAreaBoxTemplate = {
   helperText?: string;
   answer?: string;
   hideCondition?: HideCondition;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DateTemplate = {
@@ -315,7 +317,7 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DropdownTemplate = {
@@ -325,7 +327,7 @@ export type DropdownTemplate = {
   options: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
 };
 
 export type DividerTemplate = {
@@ -356,7 +358,6 @@ export type MeasureResultsNavigationTableTemplate = {
   id: string;
   measureDisplay: "quality";
   hideCondition?: HideCondition;
-  required?: boolean;
 };
 
 export type StatusTableTemplate = {
@@ -371,7 +372,7 @@ export type RadioTemplate = {
   choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string;
-  required?: boolean;
+  required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
 };
@@ -416,7 +417,7 @@ export type LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
   answer?: Record<LengthOfStayField, number | undefined>;
-  required?: boolean;
+  required: boolean;
 };
 
 export const RateInputFieldNames = {
@@ -461,7 +462,7 @@ export type NdrFieldsTemplate = {
   fields: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrEnhancedTemplate = {
@@ -472,7 +473,7 @@ export type NdrEnhancedTemplate = {
   performanceTargetLabel: string;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrTemplate = {
@@ -481,7 +482,7 @@ export type NdrTemplate = {
   label: string;
   performanceTargetLabel: string;
   answer?: RateData;
-  required?: boolean;
+  required: boolean;
 };
 
 export type NdrBasicTemplate = {
@@ -494,7 +495,7 @@ export type NdrBasicTemplate = {
     denomHint: string;
     rateHint: string;
   };
-  required?: boolean;
+  required: boolean;
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
@@ -586,7 +587,7 @@ export enum MeasureTemplateName {
   "MLTSS" = "MLTSS",
   "LTSS-3" = "LTSS-3",
   "LTSS-4" = "LTSS-4",
-  "LTSS-5" = "LTSS-5",
+  "MLTSS-5" = "MLTSS-5",
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
   "HCBS-10" = "HCBS-10",
@@ -600,8 +601,8 @@ export enum MeasureTemplateName {
   "MLTSS-FASI-2" = "MLTSS-FASI-2",
   // unique
   "MLTSS-DM" = "MLTSS-DM",
-  "LTSS-5-PT1" = "LTSS-5-PT1",
-  "LTSS-5-PT2" = "LTSS-5-PT2",
+  "MLTSS-5-PT1" = "MLTSS-5-PT1",
+  "MLTSS-5-PT2" = "MLTSS-5-PT2",
   "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
   // pom measures
   "POM-1" = "POM-1",

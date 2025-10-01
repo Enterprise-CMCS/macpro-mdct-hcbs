@@ -64,6 +64,7 @@ const testReport: Report = {
           type: ElementType.Textbox,
           id: "",
           label: "Contact title",
+          required: true,
           helperText:
             "Enter person's title or a position title for CMS to contact with questions about this request.",
         },

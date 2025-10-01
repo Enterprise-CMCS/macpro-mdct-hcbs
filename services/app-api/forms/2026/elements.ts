@@ -149,6 +149,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
   type: ElementType.Radio,
   label: "What technical specifications are being used to report this measure?",
   id: "measure-tech-specs-radio",
+  required: true,
   choices: [
     {
       label:
@@ -163,7 +164,7 @@ export const whatSpecificationsAreYouUsing: RadioTemplate = {
 
 export const didYouFollowSpecifications: RadioTemplate = {
   type: ElementType.Radio,
-  label: `Did you follow, with no variance, the ${REPORT_YEAR} specifications?`,
+  label: `Did you follow, with no variance, the most current technical specifications?`,
   id: "measure-following-tech-specs",
   choices: [
     { label: "Yes", value: "yes" },
@@ -279,7 +280,7 @@ export const whichProgramsWaivers = [
     type: ElementType.TextAreaField,
     id: "measure-programs-text",
     label: "Which programs and waivers are included?",
-    required: false,
+    required: true,
     helperText:
       "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
   } as TextAreaBoxTemplate,
@@ -289,7 +290,7 @@ export const whichProgramsWaivers = [
 export const statePerformanceTargetLabel = {
   performanceTargetLabel: `What is the ${
     REPORT_YEAR + 2
-  } state performance target for this assessment?`,
+  } state performance target?`,
 };
 
 export const stateExclusionTargetLabel = {
@@ -409,10 +410,11 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
     expectedCount: "Expected Count of Successful Transitions to the Community",
     populationRate: "Multi-Plan Population Rate",
     actualRate:
-      "Observed Performance Rate for Minimizing Length of Facility Stay",
+      "Observed Performance Rate for Successful Transition after Long-Term Facility Stay",
     expectedRate:
-      "Expected Performance Rate for Minimizing Length of Facility Stay",
-    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+      "Expected Performance Rate for Successful Transition after Long-Term Facility Stay",
+    adjustedRate:
+      "Risk Adjusted Rate for Successful Transition after Long-Term Facility Stay",
   },
   required: true,
 };

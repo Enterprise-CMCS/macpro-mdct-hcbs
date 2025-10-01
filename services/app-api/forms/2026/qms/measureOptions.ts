@@ -192,17 +192,17 @@ export const defaultMeasures: MeasureOptions[] = [
     uid: "1255",
     required: false,
     stratified: false,
-    measureTemplate: MeasureTemplateName["LTSS-5"],
+    measureTemplate: MeasureTemplateName["MLTSS-5"],
     dependentPages: [
       {
         key: "Part1",
         linkText: "Part 1: Screening (MLTSS)",
-        template: MeasureTemplateName["LTSS-5-PT1"],
+        template: MeasureTemplateName["MLTSS-5-PT1"],
       },
       {
         key: "Part2",
         linkText: "Part 2: Risk Assessment and Plan of Care (MLTSS)",
-        template: MeasureTemplateName["LTSS-5-PT2"],
+        template: MeasureTemplateName["MLTSS-5-PT2"],
       },
     ],
   },

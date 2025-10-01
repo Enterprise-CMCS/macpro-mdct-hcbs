@@ -1,72 +1,179 @@
-import { Divider, Heading } from "@chakra-ui/react";
-import { ReactNode, Fragment } from "react";
+import { Divider, Heading, Spinner, Flex } from "@chakra-ui/react";
+import { ReactNode, Fragment, useEffect, useState } from "react";
 import { elementObject } from "./elementObject";
-import { ElementType } from "types";
+import { ElementType, Report, ReportStatus } from "types";
+import { useStore } from "utils";
 
 export const ComponentInventory = () => {
+  const { loadReport } = useStore();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   /**
    * TODO:
-   * Add more elements to the inventory as needed
    * Style the inventory page
+   * Verify that we are not missing any unique variants of components
    * Consider adding a search or filter functionality
    * Leave space for PDF view with a construction cone 🏗️ emoji for in progress status
    *  <PDFViewPlaceholder />
    */
 
+  const mockReport = {
+    name: "Mock Report",
+    state: "PR",
+    status: ReportStatus.IN_PROGRESS,
+    submissionCount: 0,
+    archived: false,
+    submitted: 1,
+    submittedBy: "User Name",
+    pages: [
+      {
+        id: "root",
+        childPageIds: ["first-measure", "second-measure"],
+      },
+      {
+        id: "first-measure",
+        required: true,
+        cmitId: "cmitId",
+        cmit: "123",
+        cmitInfo: {
+          name: "CMIT Name",
+          cmit: "123",
+          measureSteward: "Steward Name",
+          dataSource: "Data Source",
+          deliverySystem: ["Delivery System 1", "Delivery System 2"],
+        },
+        childPageIds: [],
+        type: "measure",
+        title: "Measure Title",
+        dependentPages: [
+          {
+            key: "FFS",
+            linkText: "Delivery Method",
+            template: "FFS",
+          },
+        ],
+      },
+      {
+        id: "second-measure",
+        required: false,
+      },
+    ],
+  } as Report;
+
+  useEffect(() => {
+    loadReport(mockReport);
+    setIsLoading(false);
+    // Cleanup function runs on unmount
+    return () => loadReport(undefined);
+  }, []);
+
   const buildComponentDisplay = (type: ElementType) => {
     const componentExample = elementObject[type] as {
       description: string;
       variants: ReactNode[];
+      pdfVariants: ReactNode[];
     };
 
     return (
-      <div
-        style={{
-          margin: "20px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          borderBottom: "2px solid #ddd",
-          paddingBottom: "20px",
-        }}
-      >
-        <Heading as="h2" variant="h2">
-          {type}
-        </Heading>
-        {!componentExample ? (
-          <p>No example available for this component.</p>
-        ) : (
-          <>
-            <p>{componentExample.description}</p>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "20px",
-                marginTop: "20px",
-              }}
-            >
-              {componentExample.variants.map((variant, index) => (
+      <div>
+        <Flex sx={sx.row}>
+          <Flex
+            sx={sx.column}
+            style={{
+              margin: "20px",
+              alignItems: "flex-start",
+              borderBottom: "2px solid #ddd",
+              paddingBottom: "20px",
+            }}
+          >
+            <Heading as="h2" variant="h2">
+              {type + " (form)"}
+            </Heading>
+            {!componentExample ? (
+              <p>No example available for this component.</p>
+            ) : (
+              <>
+                <p>{componentExample.description}</p>
                 <div
-                  key={`variant-${index}`}
                   style={{
-                    border: "1px solid #ccc",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 8px #0000001a",
-                    minWidth: "300px",
-                    backgroundColor: "#fff",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "20px",
+                    marginTop: "20px",
                   }}
                 >
-                  {variant}
+                  {componentExample.variants.map((variant, index) => (
+                    <div
+                      key={`variant-${index}`}
+                      style={{
+                        border: "1px solid #ccc",
+                        padding: "15px",
+                        borderRadius: "8px",
+                        boxShadow: "0 4px 8px #0000001a",
+                        minWidth: "300px",
+                        backgroundColor: "#fff",
+                      }}
+                    >
+                      {variant}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </>
-        )}
+              </>
+            )}
+          </Flex>
+          <Flex
+            sx={sx.column}
+            style={{
+              margin: "20px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              borderBottom: "2px solid #ddd",
+              paddingBottom: "20px",
+            }}
+          >
+            <Heading as="h2" variant="h2">
+              {type + " (PDF)"}
+            </Heading>
+            {!componentExample ? (
+              <p>No example available for this component.</p>
+            ) : (
+              <>
+                <p>{componentExample.description}</p>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "20px",
+                    marginTop: "20px",
+                  }}
+                >
+                  {componentExample.pdfVariants.map((pdfVariant, index) => (
+                    <div
+                      key={`variant-${index}`}
+                      style={{
+                        border: "1px solid #ccc",
+                        padding: "15px",
+                        borderRadius: "8px",
+                        boxShadow: "0 4px 8px #0000001a",
+                        minWidth: "300px",
+                        backgroundColor: "#fff",
+                      }}
+                    >
+                      {pdfVariant}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </Flex>
+        </Flex>
       </div>
     );
   };
+
+  if (isLoading) {
+    return <Spinner size="md" />;
+  }
 
   return (
     <>
@@ -91,4 +198,19 @@ export const ComponentInventory = () => {
       </div>
     </>
   );
+};
+
+const sx = {
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+  },
+  column: {
+    display: "flex",
+    flexDirection: "column",
+    flexBasis: "100%",
+    flex: "1",
+  },
 };

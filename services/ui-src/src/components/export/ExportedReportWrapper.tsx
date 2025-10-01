@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import {
   FormPageTemplate,
   MeasurePageTemplate,
@@ -32,6 +32,8 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     return hasAnswer || isRequired;
   });
 
+  if (filteredElements == undefined) return null;
+
   const elements =
     filteredElements?.map((element) => {
       return {
@@ -51,7 +53,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   return (
     <Flex flexDir="column" gap="1.5rem">
-      {chunkedElements.length > 0 ? (
+      {chunkedElements.length > 0 && (
         <>
           {chunkedElements.map((elements) =>
             shouldUseTable(elements[0].type)
@@ -59,8 +61,6 @@ export const ExportedReportWrapper = ({ section }: Props) => {
               : renderReportDisplay(elements)
           )}
         </>
-      ) : (
-        <Box>N/A</Box>
       )}
     </Flex>
   );

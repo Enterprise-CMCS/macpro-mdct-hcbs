@@ -6,6 +6,7 @@ import {
   releaseReport,
   postSubmitReport,
   updateArchivedStatus,
+  updateReport,
 } from "./report";
 // types
 import {
@@ -75,6 +76,11 @@ describe("utils/report", () => {
 
   test("releaseReport", async () => {
     await releaseReport(report);
+    expect(mockPut).toHaveBeenCalledTimes(1);
+  });
+
+  test("updateReport", async () => {
+    await updateReport(report);
     expect(mockPut).toHaveBeenCalledTimes(1);
   });
 });

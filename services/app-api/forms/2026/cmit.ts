@@ -112,7 +112,7 @@ export const CMIT_LIST: CMIT[] = [
   },
   {
     cmit: 1255,
-    name: "LTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
+    name: "MLTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
     uid: "1255",
     measureSteward: "CMS",
     measureSpecification: [MeasureSpecification.CMS],

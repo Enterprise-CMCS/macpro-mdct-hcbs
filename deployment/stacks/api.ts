@@ -11,7 +11,7 @@ import {
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 import { isLocalStack } from "../local/util";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { isDefined } from "../utils/misc";
@@ -21,7 +21,7 @@ interface CreateApiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   brokerString: string;
@@ -104,7 +104,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const environment: any = {
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}Table`, table.name])
+      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
   };
@@ -117,8 +117,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:GetItem",
         "dynamodb:PutItem",
         "dynamodb:Query",
+        "dynamodb:UpdateItem",
       ],
-      resources: tables.map((table) => table.arn),
+      resources: tables.map((table) => table.table.tableArn),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -129,7 +130,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:ListShards",
         "dynamodb:ListStreams",
       ],
-      resources: tables.map((table) => table.streamArn).filter(isDefined),
+      resources: tables
+        .map((table) => table.table.tableStreamArn)
+        .filter(isDefined),
     }),
   ];
 
@@ -139,6 +142,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     additionalPolicies,
+    isDev,
   };
 
   new Lambda(scope, "createBanner", {
@@ -177,6 +181,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry: "services/app-api/handlers/reports/update.ts",
     handler: "updateReport",
     path: "reports/{reportType}/{state}/{id}",
+    method: "PUT",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "partialUpdateReport", {
+    entry: "services/app-api/handlers/reports/partialUpdate.ts",
+    handler: "partialUpdateReport",
+    path: "reports/update/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
   });
@@ -235,7 +247,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       topicNamespace: isDev ? `--${project}--${stage}--` : "",
       ...commonProps.environment,
     },
-    tables: tables.filter((table) => table.id === "QmsReports"),
+    tables: tables.filter((table) => table.node.id === "QmsReports"),
   });
 
   if (!isLocalStack) {

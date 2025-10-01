@@ -10,7 +10,6 @@ import { Lambda } from "../constructs/lambda";
 
 interface CreateTopicsComponentsProps {
   brokerString: string;
-  customResourceRole: iam.Role;
   isDev: boolean;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   project: string;
@@ -24,7 +23,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     brokerString,
     isDev,
     kafkaAuthorizedSubnets,
-    customResourceRole,
     project,
     scope,
     stage,
@@ -55,6 +53,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     vpc,
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [lambdaSecurityGroup],
+    isDev,
   };
 
   const createTopicsLambda = new Lambda(scope, "CreateTopics", {
@@ -129,10 +128,10 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
           resources: [createTopicsLambda.lambda.functionArn],
         }),
       ]),
-      role: customResourceRole,
       resourceType: "Custom::InvokeCreateTopicsFunction",
     }
   );
+  createTopicsLambda.lambda.grantInvoke(createTopicsInvoke.grantPrincipal);
 
   createTopicsInvoke.node.addDependency(createTopicsLambda);
 }

@@ -213,6 +213,7 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
       type: ElementType.Radio,
       label: "Is the state reporting on this measure?",
       id: "measure-reporting-radio",
+      required: true,
       choices: [
         {
           label: "Yes, the state is reporting on this measure.",
@@ -287,6 +288,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
       type: ElementType.Radio,
       label: "Is the state reporting on this measure?",
       id: "measure-reporting-radio",
+      required: true,
       choices: [
         {
           label: "Yes, the state is reporting on this measure.",
@@ -306,6 +308,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
         "If applicable, add any notes or comments to provide context to the reported measure result",
       label: "Additional notes/comments",
       answer: "yes",
+      required: false,
     },
   ],
   dependentPages: [

@@ -105,10 +105,12 @@ export const reportTables: { [key in ReportType]: string } = {
   QMS: process.env.QmsReportsTable!,
   TACM: process.env.TacmReportsTable!,
   CI: process.env.CiReportsTable!,
+  PCP: process.env.PcpReportsTable!,
 };
 
 export const tableTopics: { [key in ReportType]: string } = {
   QMS: "qms-reports",
   TACM: "tacm-reports",
   CI: "ci-reports",
+  PCP: "pcp-reports",
 };

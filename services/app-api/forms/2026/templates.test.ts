@@ -1,4 +1,4 @@
-import { isResultRowButton, PageType } from "../../types/reports";
+import { PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
@@ -39,19 +39,6 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
     );
     for (let childPageId of referencedChildren) {
       expect(allPageIds).toContain(childPageId);
-    }
-  });
-
-  it(`${name} should have a modal for every ID referenced by a page`, () => {
-    const modalPageIds = template.pages
-      .filter((page) => page.type === PageType.Modal)
-      .map((page) => page.id);
-    const referencedModals = template.pages
-      .flatMap((page) => page.elements ?? [])
-      .filter(isResultRowButton)
-      .map((button) => button.modalId);
-    for (let modalId of referencedModals) {
-      expect(modalPageIds).toContain(modalId);
     }
   });
 
