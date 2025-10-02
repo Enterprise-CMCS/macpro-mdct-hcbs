@@ -42,12 +42,28 @@ export const pcpReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         {
-          type: ElementType.TextAreaField,
-          id: "included-waivers-programs",
-          label: "Which programs and waivers are included?",
-          required: false,
-          helperText:
-            "Please specify all the 1915(c) waivers, 1915(i),(j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
+          type: ElementType.Radio,
+          id: "programs-radio",
+          label:
+            "Does this report cover all the programs that are required under the relevant authorities?",
+          choices: [
+            { label: "Yes", value: "yes" },
+            {
+              label: "No",
+              value: "no",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "included-waivers-programs",
+                  label: "Which programs and waivers are included?",
+                  required: true,
+                  helperText:
+                    "Please specify all the 1915(c) waivers, 1915(i), 1915(j), and 1915(k) State plan benefits, as well as any 1115 demonstrations that include HCBS, that you are including in this report. Include the program name and control numbers in your response.",
+                },
+              ],
+            },
+          ],
+          required: true,
         },
       ],
     },
