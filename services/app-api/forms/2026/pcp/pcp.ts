@@ -79,7 +79,7 @@ export const pcpReportTemplate: ReportBase = {
           id: "review-alert",
           status: "error",
           title: "Your form is not ready for submission",
-          text: "Some sections of the PCP Report have errors or are missing required responses.  Ensure all required fields are completed with valid responses before submitting.",
+          text: "Some sections of the PCP Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
