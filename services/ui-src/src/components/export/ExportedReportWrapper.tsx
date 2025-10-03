@@ -53,7 +53,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         ...element.choices.flatMap((choice) => choice?.checkedChildren ?? [])
       );
     }
-    
+
     expandElements.push(...child);
   });
 
