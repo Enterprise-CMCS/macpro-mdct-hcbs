@@ -1,4 +1,4 @@
-import { Box, HStack, Image, Text } from "@chakra-ui/react";
+import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import notStartedIcon from "assets/icons/status/icon_status_alert.svg";
 import inProgressIcon from "assets/icons/status/icon_status_inprogress.svg";
@@ -11,7 +11,7 @@ export enum TableStatuses {
 
 export type TableStatusType = PageStatus | TableStatuses | undefined;
 
-export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
+export const TableStatusIcon = ({ tableStatus, showLabel, isPdf }: Props) => {
   const statusIcon = (status: TableStatusType) => {
     switch (status) {
       case PageStatus.COMPLETE:
@@ -19,18 +19,21 @@ export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
           src: successIcon,
           alt: "complete icon",
           text: "Complete",
+          textColor: "palette.success",
         };
       case PageStatus.IN_PROGRESS:
         return {
           src: inProgressIcon,
           alt: "in progress icon",
           text: "In progress",
+          textColor: "palette.error_darker",
         };
       case PageStatus.NOT_STARTED:
         return {
           src: notStartedIcon,
           alt: "not started icon",
           text: "Not started",
+          textColor: "palette.error_darker",
         };
       default:
         return undefined;
@@ -41,10 +44,17 @@ export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
   return (
     <Box>
       {status && (
-        <HStack>
-          <Image src={status.src} alt={status.alt} boxSize="xl" />
-          {isPdf && <Text>{status.text}</Text>}
-        </HStack>
+        <VStack>
+          <HStack>
+            <Image src={status.src} alt={status.alt} boxSize="xl" />
+            {showLabel && <Text>{status.text}</Text>}
+          </HStack>
+          {isPdf && (
+            <Text color={status.textColor} fontWeight={"bold"} fontSize="10px">
+              {status.text != "Complete" ? "Error" : status.text}
+            </Text>
+          )}
+        </VStack>
       )}
     </Box>
   );
@@ -52,5 +62,6 @@ export const TableStatusIcon = ({ tableStatus, isPdf }: Props) => {
 
 interface Props {
   tableStatus: TableStatusType;
+  showLabel?: boolean;
   isPdf?: boolean;
 }

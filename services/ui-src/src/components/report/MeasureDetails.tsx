@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { MeasurePageTemplate, PageType } from "types";
 import { currentPageSelector } from "utils/state/selectors";
@@ -74,7 +74,7 @@ export const MeasureDetailsExport = (section: MeasurePageTemplate) => {
 
   return (
     <HStack gap="2rem" marginLeft="2rem">
-      <TableStatusIcon tableStatus={section.status}></TableStatusIcon>
+      <TableStatusIcon tableStatus={section.status} isPdf></TableStatusIcon>
       {render(title, cmit, steward, formattedCollectionMethod, true)}
     </HStack>
   );
