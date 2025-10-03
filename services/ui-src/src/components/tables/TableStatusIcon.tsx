@@ -26,7 +26,7 @@ export const TableStatusIcon = ({ tableStatus, showLabel, isPdf }: Props) => {
           src: inProgressIcon,
           alt: "in progress icon",
           text: "In progress",
-          textColor: "palette.error_darker",
+          textColor: "palette.primary",
         };
       case PageStatus.NOT_STARTED:
         return {
@@ -51,7 +51,7 @@ export const TableStatusIcon = ({ tableStatus, showLabel, isPdf }: Props) => {
           </HStack>
           {isPdf && (
             <Text color={status.textColor} fontWeight={"bold"} fontSize="10px">
-              {status.text != "Complete" ? "Error" : status.text}
+              {status.text}
             </Text>
           )}
         </VStack>

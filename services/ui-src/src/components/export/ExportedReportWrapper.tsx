@@ -23,6 +23,7 @@ export const renderReportDisplay = (
   return elements?.map((element: ReportTableType) => element.response);
 };
 
+//not all hint text should be render so this function is used as a filter
 const isValidHelperText = (helperText: string) => {
   return !helperText.includes("Warning:") ? helperText : "";
 };

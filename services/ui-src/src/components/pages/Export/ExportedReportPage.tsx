@@ -221,6 +221,9 @@ export const sx = {
     h4: {
       marginBottom: "-0.5rem",
     },
+    ".performance-rate-header":{
+      marginBottom: "1rem",
+    }
   },
   innerContainer: {
     width: "100%",
