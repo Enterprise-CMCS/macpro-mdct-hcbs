@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import {
   FormPageTemplate,
   MeasurePageTemplate,
+  PageElement,
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
@@ -22,6 +23,11 @@ export const renderReportDisplay = (
   return elements?.map((element: ReportTableType) => element.response);
 };
 
+//not all hint text should be render so this function is used as a filter
+const isValidHelperText = (helperText: string) => {
+  return !helperText.includes("Warning:") ? helperText : "";
+};
+
 export const ExportedReportWrapper = ({ section }: Props) => {
   const filteredElements = section.elements?.filter((element) => {
     const hasAnswer =
@@ -34,13 +40,34 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   if (filteredElements == undefined) return null;
 
+  //if the element is a radio, replace the answer with a the label text and get the children elements
+  const expandElements: PageElement[] = [];
+  filteredElements.forEach((element) => {
+    const child = [element];
+    if (element.type === "radio") {
+      //Note: answer is be modified from key value to label value from this point onward, if that becomes a problem in the future expand it
+      element.answer = element.choices.find(
+        (choice) => choice.value === element.answer
+      )?.label;
+      child.push(
+        ...element.choices.flatMap((choice) => choice?.checkedChildren ?? [])
+      );
+    }
+
+    expandElements.push(...child);
+  });
+
   const elements =
-    filteredElements?.map((element) => {
+    expandElements?.map((element) => {
       return {
         indicator: "label" in element ? element.label ?? "" : "",
-        helperText: "helperText" in element ? element.helperText : "",
+        helperText:
+          "helperText" in element && element.helperText
+            ? isValidHelperText(element.helperText)
+            : "",
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
+        required: "required" in element ? element.required : false,
       };
     }) ?? [];
 

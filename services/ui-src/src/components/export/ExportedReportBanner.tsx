@@ -1,14 +1,18 @@
 import { Box, Text, Button, Image } from "@chakra-ui/react";
 import pdfIcon from "assets/icons/pdf/icon_pdf_white.svg";
 
-export const ExportedReportBanner = () => {
+interface Props {
+  reportName: string;
+}
+
+export const ExportedReportBanner = ({ reportName }: Props) => {
   const onClickHandler = () => {
     window?.print();
   };
 
   return (
     <Box sx={sx.container}>
-      <Text>Click below to export or print Quality Measure Set shown here</Text>
+      <Text>Click below to export or print {reportName} shown here</Text>
       <Button sx={sx.pdfButton} onClick={onClickHandler}>
         <Image src={pdfIcon} w={5} alt="PDF Icon" />
         Download PDF
