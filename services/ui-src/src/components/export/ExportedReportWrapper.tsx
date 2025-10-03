@@ -22,6 +22,10 @@ export const renderReportDisplay = (
   return elements?.map((element: ReportTableType) => element.response);
 };
 
+const isValidHelperText = (helperText: string) => {
+  return !helperText.includes("Warning:") ? helperText : "";
+};
+
 export const ExportedReportWrapper = ({ section }: Props) => {
   const filteredElements = section.elements?.filter((element) => {
     const hasAnswer =
@@ -38,7 +42,10 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     filteredElements?.map((element) => {
       return {
         indicator: "label" in element ? element.label ?? "" : "",
-        helperText: "helperText" in element ? element.helperText : "",
+        helperText:
+          "helperText" in element && element.helperText
+            ? isValidHelperText(element.helperText)
+            : "",
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
         required: "required" in element ? element.required : false,
