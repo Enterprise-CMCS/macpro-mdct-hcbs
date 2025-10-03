@@ -106,7 +106,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
-    brokerString: brokerString,
+    brokerString,
   };
 
   const additionalPolicies = [
