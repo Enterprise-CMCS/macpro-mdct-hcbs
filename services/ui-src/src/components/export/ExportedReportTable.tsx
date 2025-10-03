@@ -18,6 +18,7 @@ export type ReportTableType = {
   response?: string | number | ReactElement | undefined;
   helperText?: string;
   type?: ElementType;
+  required?: boolean;
 };
 
 interface Props {
@@ -25,6 +26,12 @@ interface Props {
 }
 
 export const ExportedReportTable = ({ rows }: Props) => {
+  const setTextColor = (element: ReportTableType) => {
+    return element.response === notAnsweredText && element.required
+      ? "palette.error_darker"
+      : "palette.base";
+  };
+
   return (
     <Table variant="export">
       <Thead>
@@ -41,9 +48,7 @@ export const ExportedReportTable = ({ rows }: Props) => {
               {row.helperText && <Text>{row.helperText}</Text>}
               {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
-            <Td color={row.response ? "palette.base" : "palette.error_darker"}>
-              {row.response ?? notAnsweredText}
-            </Td>
+            <Td color={setTextColor(row)}>{row.response ?? notAnsweredText}</Td>
           </Tr>
         ))}
       </Tbody>

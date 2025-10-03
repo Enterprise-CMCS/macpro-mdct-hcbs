@@ -15,7 +15,6 @@ export const ErrorMessages = {
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
 
 export const notAnsweredText = "Not answered";
-export const noReponseText = "No Response";
 export const autoPopulatedText = "Auto-populates from previous response";
 export const autoCalculatesText = "Auto-calculates from previous response";
 

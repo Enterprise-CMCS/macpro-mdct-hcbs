@@ -41,6 +41,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         helperText: "helperText" in element ? element.helperText : "",
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
+        required: "required" in element ? element.required : false,
       };
     }) ?? [];
 
