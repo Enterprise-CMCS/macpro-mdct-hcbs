@@ -51,7 +51,7 @@ export const ExportedReportPage = () => {
 
   return (
     <Box>
-      <ExportedReportBanner />
+      <ExportedReportBanner reportName={getReportName(report?.type)}/>
       <Box sx={sx.container}>
         {(report && reportPages.length > 0 && (
           <Flex sx={sx.innerContainer} gap="2rem">
