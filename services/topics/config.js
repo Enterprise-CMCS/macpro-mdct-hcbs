@@ -1,4 +1,4 @@
-module.export = [
+module.exports = [
   {
     topicPrefix: "aws.mdct.hcbs",
     version: ".v0",
