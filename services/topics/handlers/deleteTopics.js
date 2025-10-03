@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
-import * as topics from "../libs/topics-lib.js";
-
-const brokers = process.env.brokerString?.split(",") ?? [];
+import { deleteTopics } from "../libs/topics-lib.js";
 
 /**
  * Handler to be triggered in temporary branches by the destroy workflow, cleans up topics with the known namespace format
@@ -10,11 +8,14 @@ const brokers = process.env.brokerString?.split(",") ?? [];
  * @param {*} _context
  * @param {*} _callback
  */
-exports.handler = async function (event, _context, _callback) {
+export const handler = async (event, _context, _callback) => {
   console.log("Received event:", JSON.stringify(event, null, 2));
   if (!event.project || !event.stage) {
     throw "ERROR:  project and stage keys must be sent in the event.";
   }
-  const namespace = `--${event.project}--${event.stage}--`;
-  await topics.deleteTopics(brokers, namespace);
+
+  return await deleteTopics(
+    process.env.brokerString.split(","),
+    process.env.topicNamespace
+  );
 };
