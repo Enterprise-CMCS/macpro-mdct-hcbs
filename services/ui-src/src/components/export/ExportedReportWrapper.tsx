@@ -49,13 +49,11 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       element.answer = element.choices.find(
         (choice) => choice.value === element.answer
       )?.label;
-
       child.push(
-        ...element.choices
-          .flatMap((choice) => choice?.checkedChildren)
-          .filter((choice) => choice != undefined)
+        ...element.choices.flatMap((choice) => choice?.checkedChildren ?? [])
       );
     }
+    
     expandElements.push(...child);
   });
 
