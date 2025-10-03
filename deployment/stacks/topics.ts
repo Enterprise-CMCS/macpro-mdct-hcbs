@@ -49,6 +49,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     environment: {
       brokerString,
       project,
+      topicNamespace: isDev ? `--${project}--${stage}--` : "",
     },
     vpc,
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
@@ -61,10 +62,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     handler: "handler",
     timeout: Duration.seconds(60),
     ...commonProps,
-    environment: {
-      topicNamespace: isDev ? `--${project}--${stage}--` : "",
-      ...commonProps.environment,
-    },
   });
 
   if (!deleteTopicsEnabled) {
