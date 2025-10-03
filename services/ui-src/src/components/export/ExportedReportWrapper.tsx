@@ -40,13 +40,24 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   const elements =
     filteredElements?.map((element) => {
+      //if the element is a radio, replace the answer with a the label text
+      const modifiedElement = { ...element };
+      if (modifiedElement.type === "radio") {
+        modifiedElement.answer = modifiedElement.choices.find(
+          (choice) => choice.value === modifiedElement.answer
+        )?.label;
+      }
+
       return {
         indicator: "label" in element ? element.label ?? "" : "",
         helperText:
           "helperText" in element && element.helperText
             ? isValidHelperText(element.helperText)
             : "",
-        response: renderElements(section as MeasurePageTemplate, element),
+        response: renderElements(
+          section as MeasurePageTemplate,
+          modifiedElement
+        ),
         type: element.type ?? "",
         required: "required" in element ? element.required : false,
       };

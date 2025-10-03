@@ -65,7 +65,7 @@ export const ExportRateTable = (
         <Heading as="h4" fontWeight="bold">
           {data?.label}
         </Heading>
-        <ExportedReportTable rows={data?.rows} />
+        <ExportedReportTable rows={data?.rows}/>
       </Box>
     )
   );
