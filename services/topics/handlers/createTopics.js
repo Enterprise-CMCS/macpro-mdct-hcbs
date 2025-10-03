@@ -1,4 +1,5 @@
-import * as topics from "../libs/topics-lib.js";
+const topics = require("../libs/topics-lib.js");
+const condensedTopicList = require("../config.js");
 
 /**
  * String in the format of `--${event.project}--${event.stage}--`
@@ -7,17 +8,6 @@ import * as topics from "../libs/topics-lib.js";
  */
 const namespace = process.env.topicNamespace;
 const brokers = process.env.brokerString?.split(",") ?? [];
-
-const condensedTopicList = [
-  {
-    // topics for the hcbs service's connector
-    topicPrefix: "aws.mdct.hcbs",
-    version: ".v0",
-    numPartitions: 1,
-    replicationFactor: 3,
-    topics: [".qms-reports", ".tacm-reports", ".ci-reports", ".pcp-reports"],
-  },
-];
 
 /**
  * Handler triggered on deploy to create known topics in bigmac
