@@ -44,7 +44,7 @@ export const TableStatusIcon = ({ tableStatus, showLabel, isPdf }: Props) => {
   return (
     <Box>
       {status && (
-        <VStack>
+        <VStack paddingTop={isPdf ? ".5rem" : "0"}>
           <HStack>
             <Image src={status.src} alt={status.alt} boxSize="xl" />
             {showLabel && <Text>{status.text}</Text>}

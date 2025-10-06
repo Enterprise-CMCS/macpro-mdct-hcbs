@@ -73,7 +73,12 @@ export const MeasureDetailsExport = (section: MeasurePageTemplate) => {
   );
 
   return (
-    <HStack gap="2rem" marginLeft="2rem">
+    <HStack
+      gap="2rem"
+      marginLeft="2rem"
+      position="relative"
+      alignItems="flex-start"
+    >
       <TableStatusIcon tableStatus={section.status} isPdf></TableStatusIcon>
       {render(title, cmit, steward, formattedCollectionMethod, true)}
     </HStack>
