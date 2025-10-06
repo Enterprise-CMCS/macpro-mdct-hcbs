@@ -85,7 +85,7 @@ const exportVariant = {
   table: {
     "th, td": {
       borderColor: "palette.gray_lighter",
-      padding: ".5rem"
+      padding: ".5rem 0",
     },
     td: {
       fontSize: "14px",
