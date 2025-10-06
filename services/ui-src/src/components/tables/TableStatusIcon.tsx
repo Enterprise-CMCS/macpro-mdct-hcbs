@@ -1,6 +1,7 @@
 import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import notStartedIcon from "assets/icons/status/icon_status_alert.svg";
+import notStartedPDFIcon from "assets/icons/status/icon_status_alert_pdf.svg";
 import inProgressIcon from "assets/icons/status/icon_status_inprogress.svg";
 import { PageStatus } from "types";
 
@@ -30,7 +31,7 @@ export const TableStatusIcon = ({ tableStatus, showLabel, isPdf }: Props) => {
         };
       case PageStatus.NOT_STARTED:
         return {
-          src: notStartedIcon,
+          src: isPdf ? notStartedPDFIcon : notStartedIcon,
           alt: "not started icon",
           text: "Not started",
           textColor: "palette.error_darker",
