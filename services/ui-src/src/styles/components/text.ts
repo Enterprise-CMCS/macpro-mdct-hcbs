@@ -22,7 +22,7 @@ const errorVariant = {
   marginTop: "4px",
 };
 const greyVariant = {
-  color: "palette.gray_medium",
+  color: "palette.gray",
   fontWeight: "bold",
   textTransform: "none",
   letterSpacing: "normal",

@@ -6,7 +6,7 @@ const baseStyles = {
       padding: "0.5rem 0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
-      color: "palette.gray_medium",
+      color: "palette.gray",
       fontWeight: "bold",
       textTransform: "none",
       letterSpacing: "normal",
