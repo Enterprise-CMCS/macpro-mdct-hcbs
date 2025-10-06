@@ -217,9 +217,11 @@ export const sx = {
     paddingBottom: "4rem",
     "h1, h2, h3": {
       marginBottom: "1.5rem",
+      color: "black",
     },
     h4: {
       marginBottom: "-0.5rem",
+      color: "black",
     },
     ".performance-rate-header": {
       marginBottom: "1rem",

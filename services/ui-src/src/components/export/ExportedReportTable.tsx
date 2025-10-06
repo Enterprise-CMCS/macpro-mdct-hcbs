@@ -29,7 +29,7 @@ export const ExportedReportTable = ({ rows }: Props) => {
   const setTextColor = (element: ReportTableType) => {
     return element.response === notAnsweredText && element.required
       ? "palette.error_darker"
-      : "palette.base";
+      : "palette.black";
   };
 
   return (

@@ -82,11 +82,22 @@ const statusVariant = {
 };
 
 const exportVariant = {
-  td: {
-    fontSize: "14px",
-    width: "50%",
-    "p:first-of-type": {
-      fontWeight: "bold",
+  table: {
+    "th, td": {
+      borderColor: "palette.gray_lighter",
+    },
+    td: {
+      fontSize: "14px",
+      width: "50%",
+      "p:first-of-type": {
+        fontWeight: "bold",
+        color: "palette.black",
+      },
+      "&:first-child": {
+        "p:nth-child(2)": {
+          color: "palette.gray_medium",
+        },
+      },
     },
   },
 };
@@ -100,6 +111,7 @@ const reportDetailsVariant = {
   td: {
     fontSize: "14px",
     padding: "0",
+    color: "black",
   },
 };
 
