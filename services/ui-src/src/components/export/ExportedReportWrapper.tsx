@@ -43,15 +43,19 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   //if the element is a radio, replace the answer with a the label text and get the children elements
   const expandElements: PageElement[] = [];
   filteredElements.forEach((element) => {
-    const child = [element];
-    if (element.type === "radio") {
-      //Note: answer is be modified from key value to label value from this point onward, if that becomes a problem in the future expand it
-      element.answer = element.choices.find(
-        (choice) => choice.value === element.answer
-      )?.label;
+    const modifiedElemet = { ...element };
+
+    const child = [modifiedElemet];
+    if (modifiedElemet.type === "radio") {
       child.push(
-        ...element.choices.flatMap((choice) => choice?.checkedChildren ?? [])
+        ...modifiedElemet.choices
+          .filter((choice) => choice.value == modifiedElemet.answer)
+          .flatMap((choice) => choice?.checkedChildren ?? [])
       );
+      //Note: answer is be modified from key value to label value from this point onward
+      modifiedElemet.answer = modifiedElemet.choices.find(
+        (choice) => choice.value === modifiedElemet.answer
+      )?.label;
     }
 
     expandElements.push(...child);
