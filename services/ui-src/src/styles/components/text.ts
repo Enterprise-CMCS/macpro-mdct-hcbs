@@ -14,7 +14,7 @@ const tableEmptyVariant = {
   textAlign: "center",
 };
 const helperTextVariant = {
-  color: "palette.gray_medium_dark",
+  color: "palette.gray_dark",
 };
 const errorVariant = {
   color: "palette.error",

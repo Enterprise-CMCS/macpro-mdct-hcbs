@@ -121,7 +121,7 @@ export const SubHeaderMeasureElement = (_props: PageElementProps) => {
     <Heading
       as="h2"
       variant="nestedHeading"
-      color="#5a5a5a"
+      color="palette.gray_dark"
       marginBottom="-1.5rem"
     >
       {required ? "Required" : "Optional"} Measure
