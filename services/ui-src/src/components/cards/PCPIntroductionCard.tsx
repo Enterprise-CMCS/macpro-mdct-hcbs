@@ -21,7 +21,7 @@ export const PCPIntroductionCard = () => {
       are effectively implementing quality strategies and delivering services
       that meet participant needs.
       <ReportIntroCardActions reportType={ReportType.PCP} />
-      <Accordion allowToggle={true}>
+      <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label={`When is the ${name} Due?`}>
           The HCBS PCP report will be created and submitted annually. CMS will
           review and approve all HCBS PCP reports. The reporting period will
