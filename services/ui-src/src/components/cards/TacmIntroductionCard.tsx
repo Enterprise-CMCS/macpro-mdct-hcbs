@@ -19,7 +19,7 @@ export const TacmIntroductionCard = () => {
       states are effectively implementing quality strategies and delivering
       services that meet participant needs.
       <ReportIntroCardActions reportType={ReportType.TACM} />
-      <Accordion allowToggle={true}>
+      <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label="When is the Timely Access Compliance Measure Report Due?">
           <p>
             The HCBS Timely Access Compliance Measure Report will be created and

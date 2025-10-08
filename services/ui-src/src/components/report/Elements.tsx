@@ -160,7 +160,7 @@ export const AccordionElement = ({
   element: accordion,
 }: PageElementProps<AccordionTemplate>) => {
   return (
-    <Accordion allowToggle={true}>
+    <Accordion allowToggle={true} defaultIndex={[-1]}>
       <AccordionItem label={accordion.label}>
         {parseHtml(accordion.value)}
       </AccordionItem>

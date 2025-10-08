@@ -24,7 +24,7 @@ export const QmsIntroductionCard = () => {
       include all eligible individuals (or a representative sample of eligible
       individuals) receiving HCBS under these authorities.
       <ReportIntroCardActions reportType={ReportType.QMS} />
-      <Accordion allowToggle={true}>
+      <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label="When is the Quality Measure Set Report Due?">
           The HCBS QMS report will be created and submitted biannually. CMS will
           review and approve all HCBS QMS reports. The reporting period will
