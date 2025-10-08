@@ -91,7 +91,7 @@ export const DashboardPage = () => {
         <Accordion
           allowToggle={true}
           sx={sx.accordion}
-          defaultIndex={[-1]} // sets the accordion to open by default
+          defaultIndex={[-1]} // sets the accordion to closed by default
         >
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
             {userIsAdmin ? (
