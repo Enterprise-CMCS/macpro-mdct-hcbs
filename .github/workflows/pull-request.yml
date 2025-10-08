@@ -1,6 +1,11 @@
 name: Pull Request
 
-on: [pull_request]
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   prchecks:
@@ -19,18 +24,22 @@ jobs:
           node-version-file: ".nvmrc"
       - name: run unit tests
         run: ./scripts/test-unit.sh
+      - name: publish test coverage to qlty
+        uses: qltysh/qlty-action/coverage@v1
+        with:
+          oidc: true
+          files: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+        env:
+          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
   assignAuthor:
+    if: github.event.pull_request.user.type != 'Bot' && github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Assign PR to Creator
-        run: |
-          if [ "$PR_AUTHOR_TYPE" != "Bot" ]
-            then
-              gh pr edit $PRNUM --add-assignee $PR_AUTHOR
-            fi
+        run: gh pr edit $PR_URL --add-assignee $PR_AUTHOR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PRNUM: ${{ github.event.pull_request.number }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
-          PR_AUTHOR_TYPE: ${{ github.event.pull_request.user.type }}
+          PR_URL: ${{github.event.pull_request.html_url}}
