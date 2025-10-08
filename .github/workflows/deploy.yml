@@ -15,20 +15,14 @@ permissions:
   id-token: write
   contents: write
   actions: read
-  pages: write
 
 jobs:
-  unit-tests:
-    name: Unit Tests
+  deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'production' && 'production' ||
+      github.ref_name == 'val' && 'val' || 'dev' }}
     steps:
       - uses: actions/checkout@v4
-      - name: set variable values
-        run: |
-          echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)"
-          ./.github/buildVars.sh set_values
-        env:
-          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
@@ -37,67 +31,20 @@ jobs:
           path: |
             **/node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-      - name: set path
+      - name: path + branch settings + install packages
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: run unit tests
-        run: ./scripts/test-unit.sh
-      - name: publish test coverage to qlty
-        uses: qltysh/qlty-action/coverage@v1
-        with:
-          oidc: true
-          files: |
-            ${{github.workspace}}/services/app-api/coverage/lcov.info
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info
-      - name: Store unit test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-results
-          path: |
-            ${{github.workspace}}/services/app-api/coverage/lcov.info
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info
-          retention-days: 14
-
-  deploy:
-    needs: unit-tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
-        run: |
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-      - name: Validate branch name
-        run: ./.github/branchNameValidation.sh $branch_name
-      - name: set branch specific variable names
-        run: ./.github/buildVars.sh set_names
-      - name: set variable values
-        run: ./.github/buildVars.sh set_values
-        env:
-          AWS_DEFAULT_REGION: us-east-1
-          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+          ./.github/branchNameValidation.sh $branch_name
+          ./run install
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-      - uses: actions/cache@v4
-        with:
-          path: |
-            **/node_modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-      - name: set path
-        run: |
-          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
       - name: deploy
         run: |
-          # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
-          # This can optionally be set as an GitHub Actions Secret
           ./run deploy --stage $branch_name
       - id: endpoint
         run: |
@@ -105,223 +52,15 @@ jobs:
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
-    outputs:
-      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
-      BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME }}
-
-  # register-runner:
-  #   name: Register GitHub Runner
-  #   if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
-  #   runs-on: ubuntu-latest
-  #   needs: deploy
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-
-  #     - name: set branch_name
-  #       run: |
-  #         BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
-  #         echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-
-  #     - name: set branch specific variable names
-  #       id: set_names
-  #       run: ./.github/buildVars.sh set_names
-
-  #     - name: set variable values
-  #       id: set_values
-  #       run: ./.github/buildVars.sh set_values
-  #       env:
-  #         AWS_DEFAULT_REGION: us-east-1
-  #         AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-
-  #     - name: Configure AWS credentials for GitHub Actions
-  #       uses: aws-actions/configure-aws-credentials@v4
-  #       with:
-  #         role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-  #         aws-region: us-east-1
-
-  #     - name: output account id
-  #       id: output_account_id
-  #       run: |
-  #         #!/bin/bash
-  #         AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-  #         echo "Current Account ID: ${AWS_ACCOUNT_ID}"
-
-  #     - name: Get Github Actions CIDR Blocks
-  #       id: get-gha-cidrs
-  #       shell: bash
-  #       run: |
-  #         #! /bin/bash
-  #         GHA_RESP=$(curl --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/meta)
-  #         echo "Response for GHA runner CIDR blocks:  $GHA_RESP"
-  #         IPV4_CIDR_ARR=($(echo $GHA_RESP | jq -r '.actions | .[]' | grep -v ':'))
-  #         GHA_CIDRS_IPV4=$(echo $(IFS=" "; echo ${IPV4_CIDR_ARR[*]}))
-  #         echo "GHA_CIDRS_IPV4=$GHA_CIDRS_IPV4" >> $GITHUB_OUTPUT
-
-  #     - name: Generate IP Set Name
-  #       id: gen-ip-set-name
-  #       run: |
-  #         #!/bin/bash
-  #         STAGE_GH_IPSET_NAME=$branch_name-gh-ipset
-  #         echo "Github IP Set name:  $STAGE_GH_IPSET_NAME"
-  #         echo "STAGE_GH_IPSET_NAME=$STAGE_GH_IPSET_NAME" >> $GITHUB_OUTPUT
-
-  #     - name: Fetch AWS IP Set Metadata
-  #       id: fetch-ip-set-info
-  #       run: |
-  #         #!/bin/bash
-  #         # Fetch AWS IP set ARNs using AWS CLI and store them in a variable
-  #         AWS_IP_SET_INFO=$(aws wafv2 list-ip-sets --scope=CLOUDFRONT)
-  #         echo "Outputting AWS IP Set Info:  ${AWS_IP_SET_INFO}"
-  #         # Store the IP set ARNs in an output variable using GITHUB_OUTPUT
-  #         IPSET_NAME=${{ steps.gen-ip-set-name.outputs.STAGE_GH_IPSET_NAME }}
-  #         IPSET=$(jq '.IPSets | map(select(.Name == "'${IPSET_NAME}'")) | .[]' <<< ${AWS_IP_SET_INFO})
-  #         [ -z "$IPSET" ] && echo "IP Set with name ${IPSET_NAME} was not located.  Exiting..." && exit 1
-  #         echo "IP Set metadata:  ${IPSET}"
-  #         #Get Values from the IP SET
-  #         IPSET_ID=$(jq -r '.Id' <<< ${IPSET})
-  #         echo "IPSET_ARN=$IPSET_ARN" >> $GITHUB_OUTPUT
-  #         echo "IPSET_NAME=$IPSET_NAME" >> $GITHUB_OUTPUT
-  #         echo "IPSET_ID=$IPSET_ID" >> $GITHUB_OUTPUT
-
-  #     - name: Update IP Set
-  #       id: update-ip-set
-  #       run: ./.github/wafController.sh set ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }} ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} ${{ steps.get-gha-cidrs.outputs.GHA_CIDRS_IPV4 }}
-  #       env:
-  #         AWS_RETRY_MODE: adaptive
-  #         AWS_MAX_ATTEMPTS: 10
-
-  #   outputs:
-  #     ipset_name: ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }}
-  #     ipset_id: ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }}
-
-  test:
-    name: Playwright Tests
-    needs:
-      - deploy
-      # - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Configure AWS credentials for GitHub Actions
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-      - name: yarn install
-        run: yarn install
-      - name: yarn install tests
-        run: yarn install
-        working-directory: tests
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
-        working-directory: tests
       - name: Run Playwright tests
-        run: yarn playwright test
-        id: run_playwright_tests
+        if: ${{ github.ref_name != 'production' }}
+        run: |
+          yarn playwright install
+          yarn playwright test --reporter=github
         working-directory: tests
-        continue-on-error: true
         env:
-          BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
+          BASE_URL: ${{ steps.endpoint.outputs.application_endpoint}}
           TEST_STATE_USER_EMAIL: ${{ secrets.TEST_STATE_USER_EMAIL }}
           TEST_STATE_USER_PASSWORD: ${{ secrets.TEST_STATE_USER_PASSWORD }}
           TEST_ADMIN_USER_EMAIL: ${{ secrets.TEST_ADMIN_USER_EMAIL }}
           TEST_ADMIN_USER_PASSWORD: ${{ secrets.TEST_ADMIN_USER_PASSWORD }}
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-html-report # upload artifact as this name
-          # path: playwright-report/index.html # path on runner
-          path: tests/playwright-report # path on runner
-          retention-days: 30
-    outputs:
-      test_outcome: ${{ steps.run_playwright_tests.outcome }}
-
-  upload-reports:
-    name: Upload Reports
-    needs:
-      - test
-    if: ${{ always() && github.ref_name != 'production' }}
-    runs-on: ubuntu-latest
-    outputs:
-      timestamp: ${{ steps.timestampid.outputs.timestamp }}
-    steps:
-      # create a unique folder name to put playwright reports in
-      - name: Set a Timestamp
-        id: timestampid
-        run: |
-          echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)"
-          echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-      - name: Install dependencies
-        run: yarn install
-      # downloads artifact created from the test job
-      - name: Download reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-html-report # download from previous job
-          path: downloaded-html-report # save as this when downloaded
-      - name: Push files to github pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./downloaded-html-report # publish downloaded dir to github pages
-          destination_dir: ${{ steps.timestampid.outputs.timestamp }}
-      # need to extract just org name for reassembling the github pages URL
-      - name: Extract Organization Name
-        id: extract-org
-        run: |
-          echo "ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)" >> $GITHUB_ENV
-          echo "org name: ${ORG_NAME}"
-      # need to extract just the repo name for reassembling the github pages URL
-      - name: Extract Repository Name
-        id: extract-repo
-        run: |
-          echo "REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)" >> $GITHUB_ENV
-          echo "repo name: ${REPO_NAME}"
-      # assembles org name, repo name, and unique timestamp to link to github pages url that was published
-      - name: Write URL in Summary
-        run: |
-          echo "## Playwright Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "https://${ORG_NAME}.github.io/${REPO_NAME}/${{ steps.timestampid.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
-
-  cleanup:
-    name: Clean Up
-    if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
-    runs-on: ubuntu-latest
-    needs:
-      # - register-runner
-      - test
-    steps:
-      - uses: actions/checkout@v4
-      - name: Configure AWS credentials for GitHub Actions
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
-      #     - name: output account id
-      #       id: output_account_id
-      #       run: |
-      #         #!/bin/bash
-      #         AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-      #         echo "Current Account ID: ${AWS_ACCOUNT_ID}"
-      #     - name: cleanup-ip-list
-      #       id: reset-ip-set
-      #       run: ./.github/wafController.sh set ${{ needs.register-runner.outputs.ipset_name }} ${{ needs.register-runner.outputs.ipset_id }} '[]'
-      #       env:
-      #         AWS_RETRY_MODE: adaptive
-      #         AWS_MAX_ATTEMPTS: 10
-      - name: Fail if tests did not pass
-        if: ${{ needs.test.outputs.test_outcome != 'success' }}
-        run: |
-          echo "End-to-end tests in the deployed environment were not successful."
-          echo "See the Playwright Report for details."
-          exit 1
