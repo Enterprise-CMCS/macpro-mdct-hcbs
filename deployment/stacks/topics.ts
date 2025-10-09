@@ -1,7 +1,7 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
 import {
   aws_ec2 as ec2,
-  aws_iam as iam,
   custom_resources as cr,
   CfnOutput,
   Duration,
@@ -31,7 +31,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
 
   const service = "topics";
 
-  const deleteTopicsEnabled = !isDev;
+  const deleteTopicsEnabled = isDev;
 
   const lambdaSecurityGroup = new ec2.SecurityGroup(
     scope,
@@ -61,18 +61,19 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     entry: "services/topics/handlers/createTopics.js",
     handler: "handler",
     timeout: Duration.seconds(60),
+    retryAttempts: 0,
     ...commonProps,
   });
 
-  if (!deleteTopicsEnabled) {
+  if (deleteTopicsEnabled) {
     const deleteTopicsLambda = new Lambda(scope, "DeleteTopics", {
       entry: "services/topics/handlers/deleteTopics.js",
       handler: "handler",
-      timeout: Duration.seconds(300),
+      timeout: Duration.minutes(5),
       ...commonProps,
     });
 
-    deleteTopicsLambda.node.addDependency(createTopicsLambda);
+    deleteTopicsLambda.lambda.node.addDependency(createTopicsLambda);
 
     new CfnOutput(scope, "DeleteTopicsFunctionName", {
       value: deleteTopicsLambda.lambda.functionName,
@@ -82,7 +83,8 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
   const listTopicsLambda = new Lambda(scope, "ListTopics", {
     entry: "services/topics/handlers/listTopics.js",
     handler: "handler",
-    timeout: Duration.seconds(300),
+    timeout: Duration.minutes(5),
+    retryAttempts: 0,
     ...commonProps,
   });
 
@@ -118,16 +120,13 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
           `InvokeCreateTopicsFunction-${stage}`
         ),
       },
-      onDelete: undefined,
-      policy: cr.AwsCustomResourcePolicy.fromStatements([
-        new iam.PolicyStatement({
-          actions: ["lambda:InvokeFunction"],
-          resources: [createTopicsLambda.lambda.functionArn],
-        }),
-      ]),
+      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [createTopicsLambda.lambda.functionArn],
+      }),
       resourceType: "Custom::InvokeCreateTopicsFunction",
     }
   );
+
   createTopicsLambda.lambda.grantInvoke(createTopicsInvoke.grantPrincipal);
 
   createTopicsInvoke.node.addDependency(createTopicsLambda);
