@@ -42,12 +42,28 @@ export const pcpReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         {
-          type: ElementType.TextAreaField,
-          id: "included-waivers-programs",
-          label: "Which programs and waivers are included?",
-          required: false,
-          helperText:
-            "Please specify all the 1915(c) waivers, 1915(i),(j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
+          type: ElementType.Radio,
+          id: "programs-radio",
+          label:
+            "Does this report cover all the programs that are required under the relevant authorities?",
+          choices: [
+            { label: "Yes", value: "yes" },
+            {
+              label: "No",
+              value: "no",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "included-waivers-programs",
+                  label: "Which programs and waivers are included?",
+                  required: true,
+                  helperText:
+                    "Please specify all the 1915(c) waivers, 1915(i), 1915(j), and 1915(k) State plan benefits, as well as any 1115 demonstrations that include HCBS, that you are including in this report. Include the program name and control numbers in your response.",
+                },
+              ],
+            },
+          ],
+          required: true,
         },
       ],
     },
@@ -63,7 +79,7 @@ export const pcpReportTemplate: ReportBase = {
           id: "review-alert",
           status: "error",
           title: "Your form is not ready for submission",
-          text: "Some sections of the Critical Incident Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
+          text: "Some sections of the PCP Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
@@ -74,7 +90,7 @@ export const pcpReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your CI Report is accurate. You will be able to make edits after submitting if you contact your CMS HCBS Lead to unlock your report while it is in "Submitted" status.',
+          text: 'Double check that everything in your PCP Report is accurate.  While it is in the "Submitted" status, you will only be able to make edits if you contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -113,7 +129,7 @@ export const pcpReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them you submitted the CI Report and it is ready for their review.",
+          text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
         },
       ],
     },

@@ -3,7 +3,7 @@ import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType, MeasurePageTemplate, PageElement } from "types";
 import { FieldsExport } from "components/rates/types/Fields";
 import { NDRExport } from "components/rates/types/NDR";
-import { noReponseText } from "../../constants";
+import { notAnsweredText } from "../../constants";
 import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
 import { NDRFieldExport } from "components/rates/types/NDRFields";
 import { NDRBasicExport } from "components/rates/types/NDRBasic";
@@ -63,8 +63,8 @@ export const renderElements = (
   }
 
   if (!("answer" in element)) {
-    return noReponseText;
+    return notAnsweredText;
   }
 
-  return element.answer ?? noReponseText;
+  return element.answer ?? notAnsweredText;
 };

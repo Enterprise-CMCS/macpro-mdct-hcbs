@@ -58,7 +58,7 @@ const hintTextColor = (clickAction: string) => {
     case "qmDeliveryMethodChange":
       return "palette.warn_darkest";
     default:
-      return "palette.gray";
+      return "palette.gray_dark";
   }
 };
 

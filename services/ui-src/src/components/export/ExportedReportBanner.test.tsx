@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 describe("ExportedReportBanner", () => {
   beforeEach(() => {
-    render(<ExportedReportBanner></ExportedReportBanner>);
+    render(<ExportedReportBanner reportName=""></ExportedReportBanner>);
     jest.spyOn(window, "print").mockImplementation(() => {});
   });
   it("ExportedReportBanner is visible", () => {

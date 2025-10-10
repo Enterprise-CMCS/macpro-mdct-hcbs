@@ -106,7 +106,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
-    BOOTSTRAP_BROKER_STRING_TLS: brokerString,
+    brokerString,
   };
 
   const additionalPolicies = [

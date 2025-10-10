@@ -1,16 +1,12 @@
-// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Octokit } from "@octokit/rest";
 import { createActionAuth } from "@octokit/auth-action";
 
 const [owner, repo] = process.env.GITHUB_REPO!.split("/");
 const targetBranch = process.env.TARGET_BRANCH!;
-const sourceBranch = targetBranch === "production" ? "val" : "main";
-const prLabel = targetBranch === "production" ? "prod release" : "val release";
+const sourceBranch = process.env.SOURCE_BRANCH!;
+let prLabel: string;
 const appName = process.env.APP_NAME_UPPER!;
-const prTitle =
-  targetBranch === "production"
-    ? `${appName} production release`
-    : `${appName} val release`;
+const prNumber = Number(process.env.PR_NUMBER!);
 const dateString = new Date().toLocaleDateString("en-GB", {
   day: "numeric",
   month: "long",
@@ -19,28 +15,28 @@ const dateString = new Date().toLocaleDateString("en-GB", {
 });
 
 async function run() {
+  if (sourceBranch === "main" && targetBranch === "val") {
+    prLabel = "val release";
+  } else if (sourceBranch === "val" && targetBranch === "production") {
+    prLabel = "prod release";
+  }
+  // Ignore PRs that aren't main to val or val to production
+  if (!prLabel) return;
+
   const authentication = await createActionAuth()();
   const octokit = new Octokit({ auth: authentication.token });
-  const { data: pr } = await octokit.pulls.create({
-    owner,
-    repo,
-    title: `${prTitle} (${dateString})`,
-    head: sourceBranch,
-    base: targetBranch,
-    body: "This PR was created automatically via Octokit",
-  });
-  console.log(`✅ Pull request created: ${pr.html_url}`);
+
   await octokit.issues.addLabels({
     owner,
     repo,
-    issue_number: pr.number,
+    issue_number: prNumber,
     labels: [prLabel],
   });
 
   const { data: commits } = await octokit.pulls.listCommits({
     owner,
     repo,
-    pull_number: pr.number,
+    pull_number: prNumber,
     per_page: 100,
   });
   const workDone = commits.map((c) => {
@@ -62,7 +58,8 @@ async function run() {
   octokit.rest.pulls.update({
     owner,
     repo,
-    pull_number: pr.number,
+    title: `${appName} ${prLabel} (${dateString})`,
+    pull_number: prNumber,
     body,
   });
 }

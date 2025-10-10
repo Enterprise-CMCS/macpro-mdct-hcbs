@@ -51,7 +51,7 @@ export const ExportedReportPage = () => {
 
   return (
     <Box>
-      <ExportedReportBanner />
+      <ExportedReportBanner reportName={getReportName(report?.type)} />
       <Box sx={sx.container}>
         {(report && reportPages.length > 0 && (
           <Flex sx={sx.innerContainer} gap="2rem">
@@ -217,9 +217,14 @@ export const sx = {
     paddingBottom: "4rem",
     "h1, h2, h3": {
       marginBottom: "1.5rem",
+      color: "black",
     },
     h4: {
       marginBottom: "-0.5rem",
+      color: "black",
+    },
+    ".performance-rate-header": {
+      marginBottom: "1rem",
     },
   },
   innerContainer: {

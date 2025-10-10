@@ -193,7 +193,7 @@ export const elementObject: {
   [ElementType.Accordion]: {
     description: "A collapsible section for content",
     variants: [
-      <Accordion allowToggle={true}>
+      <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label="Accordion Item 1">
           I am the content of the first accordion item.
         </AccordionItem>
