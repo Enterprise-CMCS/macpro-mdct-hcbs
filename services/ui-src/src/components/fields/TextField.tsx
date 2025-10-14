@@ -92,7 +92,14 @@ export const TextField = (
   };
 
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
-  const labelText = textbox.label;
+  //const labelText = textbox.label;
+
+  const labelText = (
+    <>
+      {textbox.label}
+      {!textbox.required && <span className="optionalText"> (optional)</span>}
+    </>
+  );
 
   if (hideElement) {
     return null;
@@ -110,6 +117,7 @@ export const TextField = (
         value={displayValue}
         errorMessage={errorMessage}
         disabled={disabled}
+        required={textbox.required}
       />
     </Box>
   );
