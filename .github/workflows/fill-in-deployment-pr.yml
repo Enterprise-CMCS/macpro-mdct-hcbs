@@ -29,7 +29,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Fill in Deployment PR
         run: |
-          node .github/fill-in-pr.ts
+          node .github/fill-in-deployment-pr.ts
         env:
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
