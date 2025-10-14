@@ -121,7 +121,7 @@ export const SubHeaderMeasureElement = (_props: PageElementProps) => {
     <Heading
       as="h2"
       variant="nestedHeading"
-      color="#5a5a5a"
+      color="palette.gray_dark"
       marginBottom="-1.5rem"
     >
       {required ? "Required" : "Optional"} Measure
@@ -160,7 +160,7 @@ export const AccordionElement = ({
   element: accordion,
 }: PageElementProps<AccordionTemplate>) => {
   return (
-    <Accordion allowToggle={true}>
+    <Accordion allowToggle={true} defaultIndex={[-1]}>
       <AccordionItem label={accordion.label}>
         {parseHtml(accordion.value)}
       </AccordionItem>

@@ -68,7 +68,7 @@ export const StatusTableElement = () => {
           <Text>{section.title}</Text>
         </Td>
         <Td>
-          <TableStatusIcon tableStatus={status} isPdf={true} />
+          <TableStatusIcon tableStatus={status} showLabel={true} />
         </Td>
         <Td>
           <Button
