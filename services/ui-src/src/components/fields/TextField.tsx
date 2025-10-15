@@ -92,14 +92,7 @@ export const TextField = (
   };
 
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
-  //const labelText = textbox.label;
-
-  const labelText = (
-    <>
-      {textbox.label}
-      {!textbox.required && <span className="optionalText"> (optional)</span>}
-    </>
-  );
+  const labelText = textbox.label;
 
   if (hideElement) {
     return null;

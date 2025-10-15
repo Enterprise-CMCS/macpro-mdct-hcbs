@@ -6,7 +6,7 @@ import {
   PageElement,
 } from "types";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+import { TextField as CmsdsTextField, TextField } from "@cmsgov/design-system";
 import { TextAreaField } from "components/fields";
 import {
   parseNumber,
@@ -67,7 +67,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     const adjustedRate = parseNumber(newDisplayValue.adjustedRate);
     let actualRate: number | undefined = undefined;
     let expectedRate: number | undefined = undefined;
-    //let adjustedRate: number | undefined = undefined;
 
     const canDivide = denominator !== undefined && denominator !== 0;
 
@@ -97,7 +96,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   ) => {
     newDisplayValue.actualRate = stringifyResult(newAnswer.actualRate);
     newDisplayValue.expectedRate = stringifyResult(newAnswer.expectedRate);
-    //newDisplayValue.adjustedRate = stringifyResult(newAnswer.adjustedRate);
   };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,17 +155,22 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           errorMessage={errors.expectedCount}
           disabled={disabled}
         ></CmsdsTextField>
-        <CmsdsTextField
-          label={labels.populationRate}
+        <TextField
           name="populationRate"
+          label={
+            <>
+              {labels.populationRate}
+              {<span className="optionalText"> (optional)</span>}
+            </>
+          }
+          disabled={disabled}
+          required={false}
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.populationRate}
-          errorMessage={errors.populationRate}
-          disabled={disabled}
-          required={false}
           hint="If Multi-plan Population Rate is left empty, provide a brief explanation in the Additional Comments field below."
-        ></CmsdsTextField>
+          errorMessage={errors.populationRate}
+        ></TextField>
         <CmsdsTextField
           label={labels.actualRate}
           name="actualRate"
@@ -242,7 +245,6 @@ export const FieldsExport = (element: LengthOfStayRateTemplate) => {
     {
       indicator: element.labels?.adjustedRate,
       response: element.answer?.adjustedRate,
-      //helperText: "Auto-calculates",
     },
   ];
   return <>{ExportRateTable([{ label, rows }])}</>;
