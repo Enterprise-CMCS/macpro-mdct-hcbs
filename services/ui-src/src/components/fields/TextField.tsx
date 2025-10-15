@@ -110,7 +110,6 @@ export const TextField = (
         value={displayValue}
         errorMessage={errorMessage}
         disabled={disabled}
-        required={textbox.required}
       />
     </Box>
   );
