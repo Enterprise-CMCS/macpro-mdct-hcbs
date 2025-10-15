@@ -55,7 +55,7 @@ jobs:
         if: ${{ github.ref_name != 'production' }}
         run: |
           yarn playwright install
-          yarn playwright test --reporter=github
+          yarn playwright test --reporter=github,html
         working-directory: tests
         env:
           BASE_URL: ${{ steps.endpoint.outputs.application_endpoint}}
@@ -63,3 +63,10 @@ jobs:
           TEST_STATE_USER_PASSWORD: ${{ secrets.TEST_STATE_USER_PASSWORD }}
           TEST_ADMIN_USER_EMAIL: ${{ secrets.TEST_ADMIN_USER_EMAIL }}
           TEST_ADMIN_USER_PASSWORD: ${{ secrets.TEST_ADMIN_USER_PASSWORD }}
+      - name: Upload playwright results
+        uses: actions/upload-artifact@v4
+        if: ${{ github.ref_name != 'production' }}
+        with:
+          name: playwright-html-report-${{ github.run_number }}
+          path: tests/playwright-report
+          retention-days: 30
