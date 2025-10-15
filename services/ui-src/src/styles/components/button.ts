@@ -20,7 +20,7 @@ const primaryVariant = {
     backgroundColor: "palette.primary_darker",
   },
   "&:disabled, &:disabled:hover": {
-    color: "palette.gray",
+    color: "palette.gray_dark",
     backgroundColor: "palette.gray_lighter",
     opacity: 1,
   },
@@ -55,8 +55,8 @@ const outlineVariant = () => ({
   textDecoration: "none",
   fontWeight: "bold",
   "&:disabled, &:disabled:hover": {
-    color: "palette.gray",
-    borderColor: "palette.gray",
+    color: "palette.gray_dark",
+    borderColor: "palette.gray_dark",
   },
   _hover: {
     ...theme.components.Button.variants.transparent._hover,

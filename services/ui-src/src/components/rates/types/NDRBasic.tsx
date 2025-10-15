@@ -143,7 +143,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     <Stack gap={4} sx={sx.performance}>
       {label && <Heading variant="subHeader">{label}</Heading>}
       {minPerformanceLevel && (
-        <Heading as="h2" variant="nestedHeading" color="#5a5a5a">
+        <Heading as="h2" variant="nestedHeading" color="palette.gray_dark">
           Minimum Performance Level: {minPerformanceLevel}%
         </Heading>
       )}

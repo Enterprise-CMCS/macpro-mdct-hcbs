@@ -21,7 +21,7 @@ export const CiIntroductionCard = () => {
       applicable HCBS authorities and programs and apply to both FFS and managed
       care delivery systems.
       <ReportIntroCardActions reportType={ReportType.CI} />
-      <Accordion allowToggle={true}>
+      <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label="When is the Critical Incident Report Due?">
           <p>The HCBS Critical Incident will be created and submitted ...</p>
           <p>The HCBS Critical Incident deadlines are TBD ...</p>
