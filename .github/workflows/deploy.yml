@@ -37,6 +37,8 @@ jobs:
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
           ./.github/branchNameValidation.sh $branch_name
           ./run install
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -45,6 +47,8 @@ jobs:
       - name: deploy
         run: |
           ./run deploy --stage $branch_name
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
       - id: endpoint
         run: |
           APPLICATION_ENDPOINT=$(./scripts/output.sh hcbs-$branch_name CloudFrontUrl)
