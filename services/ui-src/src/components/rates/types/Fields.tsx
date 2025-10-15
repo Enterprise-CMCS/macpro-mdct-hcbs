@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { LengthOfStayField, LengthOfStayRateTemplate } from "types";
+import {
+  ElementType,
+  LengthOfStayField,
+  LengthOfStayRateTemplate,
+  PageElement,
+} from "types";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { TextAreaField } from "components/fields";
@@ -15,6 +20,9 @@ import {
   validateNumber,
 } from "utils/validation/inputValidation";
 import { ExportRateTable } from "components/export/ExportedReportTable";
+
+// eslint-disable-next-line no-console
+const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
 
 export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const { disabled, updateElement } = props;
@@ -181,10 +189,15 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           disabled={disabled}
         ></CmsdsTextField>
         <TextAreaField
-          name="measureAdditionComments"
-          label="Additional Comments"
-          onChange={onChangeHandler}
-          onBlur={onChangeHandler}
+          updateElement={logNewElement}
+          element={{
+            id: "",
+            type: ElementType.TextAreaField,
+            required: false,
+            label: "Additional notes/comments",
+            helperText:
+              "If applicable, add any notes or comments to provide context to the reported measure result",
+          }}
         ></TextAreaField>
         <Divider></Divider>
       </Stack>
