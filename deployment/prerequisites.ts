@@ -1,8 +1,8 @@
 #!/usr/bin/env node
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import "source-map-support/register";
 import {
   App,
-  Aws,
   aws_apigateway as apigateway,
   aws_iam as iam,
   DefaultStackSynthesizer,
@@ -13,11 +13,10 @@ import {
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
 import { Construct } from "constructs";
-import { isLocalStack } from "./local/util";
 
 interface PrerequisiteConfigProps {
   project: string;
-  vpcName: string;
+  branchFilter: string;
 }
 
 export class PrerequisiteStack extends Stack {
@@ -28,20 +27,7 @@ export class PrerequisiteStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const { project, vpcName } = props;
-
-    let githubEnvironmentName: string;
-    if (vpcName.endsWith("dev")) {
-      githubEnvironmentName = "dev";
-    } else if (vpcName.endsWith("impl")) {
-      githubEnvironmentName = "val";
-    } else if (vpcName.endsWith("prod")) {
-      githubEnvironmentName = "production";
-    } else {
-      throw new Error(
-        `Could not determine GitHub environment name from VPC name: ${vpcName}`
-      );
-    }
+    const { project, branchFilter } = props;
 
     new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
 
@@ -50,14 +36,6 @@ export class PrerequisiteStack extends Stack {
       "ApiGatewayRestApiCloudWatchRole",
       {
         assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
-        permissionsBoundary: isLocalStack
-          ? undefined
-          : iam.ManagedPolicy.fromManagedPolicyArn(
-              this,
-              "iamPermissionsBoundary",
-              `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`
-            ),
-        path: "/delegatedadmin/developer/",
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
             "service-role/AmazonAPIGatewayPushToCloudWatchLogs" // pragma: allowlist secret
@@ -89,7 +67,7 @@ export class PrerequisiteStack extends Stack {
             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
           StringLike: {
-            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-hcbs:environment:${githubEnvironmentName}`,
+            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:${branchFilter}`,
           },
         },
         "sts:AssumeRoleWithWebIdentity"
@@ -128,15 +106,20 @@ async function main() {
     }),
   });
 
-  Tags.of(app).add("PROJECT", "HCBS");
+  if (!process.env.PROJECT) {
+    throw new Error("PROJECT enironment variable is required but not set");
+  }
 
   const project = process.env.PROJECT!;
-  new PrerequisiteStack(app, "hcbs-prerequisites", {
+
+  Tags.of(app).add("PROJECT", project.toUpperCase());
+
+  new PrerequisiteStack(app, `${project}-prerequisites`, {
     project,
     ...(await loadDefaultSecret(project)),
     env: {
       account: process.env.CDK_DEFAULT_ACCOUNT,
-      region: process.env.CDK_DEFAULT_REGION,
+      region: "us-east-1",
     },
   });
 }
