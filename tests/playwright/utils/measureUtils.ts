@@ -130,7 +130,7 @@ export const completeLTSS7 = async (page: Page) => {
   await page.getByLabel("Expected Count of Successful").fill("4");
   await page.getByLabel("Multi-Plan Population Rate").fill("5");
   await page
-    .getByLabel("Rate Adjusted Rate for Minimizing Length of Facility Stay")
+    .getByLabel("Risk Adjusted Rate for Minimizing Length of Facility Stay")
     .fill("6");
   await completeAndReturn(page);
 };
