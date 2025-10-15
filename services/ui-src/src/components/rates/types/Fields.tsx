@@ -1,13 +1,7 @@
 import React, { useState } from "react";
-import {
-  ElementType,
-  LengthOfStayField,
-  LengthOfStayRateTemplate,
-  PageElement,
-} from "types";
+import { LengthOfStayField, LengthOfStayRateTemplate } from "types";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
-import { TextField as CmsdsTextField, TextField } from "@cmsgov/design-system";
-import { TextAreaField } from "components/fields";
+import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import {
   parseNumber,
   removeNoise,
@@ -20,9 +14,6 @@ import {
   validateNumber,
 } from "utils/validation/inputValidation";
 import { ExportRateTable } from "components/export/ExportedReportTable";
-
-// eslint-disable-next-line no-console
-const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
 
 export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const { disabled, updateElement } = props;
@@ -48,7 +39,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const updatedDisplayValue = (input: HTMLInputElement) => {
     const fieldType = input.name as LengthOfStayField;
     const stringValue = input.value;
-    const { errorMessage } = validateNumber(stringValue, true);
+    const { errorMessage } = validateNumber(stringValue, input.required);
 
     const newDisplayValue = structuredClone(displayValue);
     const newErrors = structuredClone(errors);
@@ -155,7 +146,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           errorMessage={errors.expectedCount}
           disabled={disabled}
         ></CmsdsTextField>
-        <TextField
+        <CmsdsTextField
           name="populationRate"
           label={
             <>
@@ -170,7 +161,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           value={displayValue.populationRate}
           hint="If Multi-plan Population Rate is left empty, provide a brief explanation in the Additional Comments field below."
           errorMessage={errors.populationRate}
-        ></TextField>
+        ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualRate}
           name="actualRate"
@@ -191,17 +182,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           value={displayValue.adjustedRate}
           disabled={disabled}
         ></CmsdsTextField>
-        <TextAreaField
-          updateElement={logNewElement}
-          element={{
-            id: "",
-            type: ElementType.TextAreaField,
-            required: false,
-            label: "Additional notes/comments",
-            helperText:
-              "If applicable, add any notes or comments to provide context to the reported measure result",
-          }}
-        ></TextAreaField>
         <Divider></Divider>
       </Stack>
     </Stack>
