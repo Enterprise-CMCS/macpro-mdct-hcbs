@@ -150,15 +150,17 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
                 {": "}
                 {assess.label}
               </Heading>
-              <CmsdsTextField
-                label={performanceTargetLabel}
-                name={`${index}.${RateInputFieldNames.performanceTarget}`}
-                onChange={onChangeHandler}
-                onBlur={onChangeHandler}
-                value={value.performanceTarget}
-                errorMessage={valueErrors.performanceTarget}
-                disabled={disabled}
-              ></CmsdsTextField>
+              {performanceTargetLabel && (
+                <CmsdsTextField
+                  label={performanceTargetLabel}
+                  name={`${index}.${RateInputFieldNames.performanceTarget}`}
+                  onChange={onChangeHandler}
+                  onBlur={onChangeHandler}
+                  value={value.performanceTarget}
+                  errorMessage={valueErrors.performanceTarget}
+                  disabled={disabled}
+                ></CmsdsTextField>
+              )}
               <CmsdsTextField
                 label="Numerator"
                 name={`${index}.${RateInputFieldNames.numerator}`}
@@ -201,10 +203,6 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
         (rate: { id: string }) => rate.id === assess.id
       );
       const row = [
-        {
-          indicator: element.performanceTargetLabel,
-          response: performanceRate?.performanceTarget,
-        },
         {
           indicator: "Numerator",
           response: performanceRate?.numerator,
