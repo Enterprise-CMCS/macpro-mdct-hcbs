@@ -22,7 +22,6 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
-  MeasureGroupElement,
   MeasureResultsNavigationTableElement,
   RadioField,
   StatusTableElement,
@@ -112,8 +111,6 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <SubmissionParagraph />;
       case ElementType.SubHeaderMeasure:
         return <SubHeaderMeasureElement {...{ element }} />;
-      case ElementType.MeasureGroup:
-        return <MeasureGroupElement {...{ updateElement, disabled, element }} />;
       default:
         assertExhaustive(element);
         return null;

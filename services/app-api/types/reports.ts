@@ -286,7 +286,6 @@ export enum ElementType {
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
-  MeasureGroup = "measureGroup",
 }
 
 export type PageElement =
@@ -315,8 +314,7 @@ export type PageElement =
   | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
-  | SubmissionParagraphTemplate
-  | MeasureGroupTemplate;
+  | SubmissionParagraphTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -596,13 +594,6 @@ export type StatusAlertTemplate = {
   title?: string;
   text: string;
   status: string;
-};
-
-export type MeasureGroupTemplate = {
-  type: ElementType.MeasureGroup;
-  id: string;
-  parent: { id: string; type: ElementType };
-  elements: PageElement[];
 };
 
 /**

@@ -192,7 +192,6 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
-  MeasureGroup = "measureGroup",
   LengthOfStayRate = "lengthOfStay",
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
@@ -222,7 +221,6 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
-  | MeasureGroupTemplate
   | LengthOfStayRateTemplate
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
@@ -501,14 +499,6 @@ export type NdrBasicTemplate = {
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
-};
-
-export type MeasureGroupTemplate = {
-  type: ElementType.MeasureGroup;
-  id: string;
-  parent: { id: string; type: ElementType };
-  elements: PageElement[];
-  answer?: {}
 };
 
 export type ChoiceTemplate = {
