@@ -7,6 +7,7 @@ import {
   RateInputFieldNamesBasic,
   AlertTypes,
   PageElement,
+  ElementType,
 } from "types";
 import {
   parseNumber,
@@ -221,6 +222,26 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
 //The pdf rendering of NDRBasic component
 export const NDRBasicExport = (element: NdrBasicTemplate) => {
   const label = element.label ?? "";
+
+  const minimum =
+    element.answer?.rate && element.minPerformanceLevel
+      ? element.answer?.rate >= element.minPerformanceLevel
+      : false;
+
+  const children = !minimum
+    ? element.conditionalChildren
+        ?.filter((child) => child.type === ElementType.TextAreaField)
+        .map((child) => {
+          {
+            return {
+              indicator: child.label,
+              response: child.answer ?? "Not answered",
+              helperText: child.helperText ?? "",
+            };
+          }
+        }) ?? []
+    : [];
+
   const rows = [
     {
       indicator: "Numerator",
@@ -239,6 +260,7 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
         : autoCalculatesText,
       helperText: element.hintText?.rateHint,
     },
+    ...children,
   ];
   return <>{ExportRateTable([{ label, rows }])}</>;
 };
