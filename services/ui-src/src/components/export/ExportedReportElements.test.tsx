@@ -77,7 +77,7 @@ describe("Test ExportedReportElements", () => {
       screen.getByText("Performance Rates Denominator")
     ).toBeInTheDocument();
     expect(screen.getAllByText("2")).toHaveLength(2);
-    expect(screen.getAllByText("Not answered")).toHaveLength(2);
+    expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });
   test("Test render NDR Fields element", () => {
     section.elements.push(mockNDRFields);
@@ -104,6 +104,6 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockNDRBasics);
     render(<>{element}</>);
     expect(screen.getByText("Result")).toBeInTheDocument();
-    expect(screen.getAllByText("Not answered")).toHaveLength(1);
+    expect(screen.getAllByText("Not answered")).toHaveLength(2);
   });
 });
