@@ -405,7 +405,7 @@ const ndrRateBasicSchema = object().shape({
   multiplier: number().notRequired(),
   displayRateAsPercent: boolean().notRequired(),
   minPerformanceLevel: number().notRequired(),
-  explanation: lazy(() => array().of(pageElementSchema).notRequired()),
+  conditionalChildren: lazy(() => array().of(pageElementSchema).notRequired()),
 });
 
 const parentPageTemplateSchema = object().shape({

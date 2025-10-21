@@ -100,7 +100,7 @@ export const pcpReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
-          explanation: [
+          conditionalChildren: [
             {
               type: ElementType.TextAreaField,
               id: "pcp-2-explain-field",

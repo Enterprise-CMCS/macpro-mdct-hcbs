@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import {
@@ -28,7 +28,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     hintText,
     displayRateAsPercent,
     minPerformanceLevel,
-    explanation,
+    conditionalChildren,
   } = element;
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
@@ -120,7 +120,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     updateElement({ answer: newAnswer });
   };
 
-  const meetsMinimum = () => {
+  const minimumStatus = () => {
     if (!displayValue.rate || !minPerformanceLevel) return null;
 
     const rateToParse = displayValue.rate.replace("%", "");
@@ -131,8 +131,24 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     return parsedRate >= minPerformanceLevel;
   };
 
+  const meetsMinimum = minimumStatus();
+
+  //if the minimum isn't met, we want to clear any previous saved answers
+  useEffect(() => {
+    if (!meetsMinimum) {
+      const clearElements =
+        conditionalChildren?.map((element) => {
+          if ("answer" in element) {
+            element.answer = undefined;
+          }
+          return element;
+        }) ?? [];
+      updateElement({ conditionalChildren: [...clearElements] });
+    }
+  }, [meetsMinimum]);
+
   const performanceLevelStatusAlert = () => {
-    return meetsMinimum() ? (
+    return meetsMinimum ? (
       <Alert status={AlertTypes.SUCCESS} title="Success">
         {`The data entered indicates this measure meets the ${minPerformanceLevel}% Minimum Performance Level.`}
       </Alert>
@@ -143,18 +159,16 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     );
   };
 
-  const explanations = () => {
-    if (!explanation) return;
-
-    const setExplanations = (checkedChildren: PageElement[]) => {
-      updateElement({ explanation: [...checkedChildren] });
+  const children = () => {
+    if (!conditionalChildren) return;
+    const setChildren = (checkedChildren: PageElement[]) => {
+      updateElement({ conditionalChildren: [...checkedChildren] });
     };
-
     return (
       <Page
         id="radio-children"
-        setElements={setExplanations}
-        elements={explanation}
+        setElements={setChildren}
+        elements={conditionalChildren}
       />
     );
   };
@@ -197,7 +211,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
             disabled
           ></CmsdsTextField>
           {performanceLevelStatusAlert()}
-          {!meetsMinimum() && explanations()}
+          {!meetsMinimum && children()}
         </Stack>
       </Stack>
     </Stack>
