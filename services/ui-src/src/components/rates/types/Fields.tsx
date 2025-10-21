@@ -181,6 +181,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           onBlur={onChangeHandler}
           value={displayValue.adjustedRate}
           disabled={disabled}
+          errorMessage={errors.adjustedRate}
         ></CmsdsTextField>
         <Divider></Divider>
       </Stack>
