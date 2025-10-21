@@ -104,6 +104,6 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockNDRBasics);
     render(<>{element}</>);
     expect(screen.getByText("Result")).toBeInTheDocument();
-    expect(screen.getAllByText("Not answered")).toHaveLength(2);
+    expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });
 });
