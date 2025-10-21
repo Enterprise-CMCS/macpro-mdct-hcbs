@@ -59,6 +59,7 @@ export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
 export { MeasureTableElement } from "./report/MeasureTable";
+export { MeasureGroupElement } from "./report/MeasureGroup";
 export { StatusAlert } from "./report/StatusAlert";
 export { Page } from "./report/Page";
 export { PraDisclosure } from "./report/PraDisclosure";

@@ -56,6 +56,8 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       modifiedElemet.answer = modifiedElemet.choices.find(
         (choice) => choice.value === modifiedElemet.answer
       )?.label;
+    } else if (modifiedElemet.type === "measureGroup") {
+      child.push(...modifiedElemet.elements);
     }
 
     expandElements.push(...child);
