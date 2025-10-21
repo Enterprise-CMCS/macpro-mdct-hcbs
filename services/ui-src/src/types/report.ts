@@ -499,6 +499,7 @@ export type NdrBasicTemplate = {
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
+  explanation?: PageElement[];
 };
 
 export type ChoiceTemplate = {

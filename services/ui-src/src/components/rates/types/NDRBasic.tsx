@@ -6,6 +6,7 @@ import {
   RateInputFieldNameBasic,
   RateInputFieldNamesBasic,
   AlertTypes,
+  PageElement,
 } from "types";
 import {
   parseNumber,
@@ -15,7 +16,7 @@ import {
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
 import { ErrorMessages, autoCalculatesText } from "../../../constants";
-import { Alert } from "components";
+import { Alert, Page } from "components";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
@@ -27,6 +28,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     hintText,
     displayRateAsPercent,
     minPerformanceLevel,
+    explanation,
   } = element;
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
@@ -118,7 +120,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     updateElement({ answer: newAnswer });
   };
 
-  const performanceLevelStatusAlert = () => {
+  const meetsMinimum = () => {
     if (!displayValue.rate || !minPerformanceLevel) return null;
 
     const rateToParse = displayValue.rate.replace("%", "");
@@ -126,9 +128,11 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
 
     if (parsedRate === undefined) return null;
 
-    const meetsMinimum = parsedRate >= minPerformanceLevel;
+    return parsedRate >= minPerformanceLevel;
+  };
 
-    return meetsMinimum ? (
+  const performanceLevelStatusAlert = () => {
+    return meetsMinimum() ? (
       <Alert status={AlertTypes.SUCCESS} title="Success">
         {`The data entered indicates this measure meets the ${minPerformanceLevel}% Minimum Performance Level.`}
       </Alert>
@@ -136,6 +140,22 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
       <Alert status={AlertTypes.WARNING} title="Warning">
         {`The data entered indicates this measure does not meet the ${minPerformanceLevel}% Minimum Performance Level. Explain why in the additional comments field below.`}
       </Alert>
+    );
+  };
+
+  const explanations = () => {
+    if (!explanation) return;
+
+    const setExplanations = (checkedChildren: PageElement[]) => {
+      updateElement({ explanation: [...checkedChildren] });
+    };
+
+    return (
+      <Page
+        id="radio-children"
+        setElements={setExplanations}
+        elements={explanation}
+      />
     );
   };
 
@@ -177,6 +197,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
             disabled
           ></CmsdsTextField>
           {performanceLevelStatusAlert()}
+          {!meetsMinimum() && explanations()}
         </Stack>
       </Stack>
     </Stack>

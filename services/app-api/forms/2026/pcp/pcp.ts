@@ -100,14 +100,17 @@ export const pcpReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
-        },
-        {
-          type: ElementType.TextAreaField,
-          id: "pcp-2-explain-field",
-          helperText:
-            "Briefly explain why the minimum performance level was not achieved. If you believe this message was received in error, or if you plan to provide remediation plans outside of the system, note that here as well.",
-          label: "Explain reason for not meeting Minimum Performance Level.",
-          required: true,
+          explanation: [
+            {
+              type: ElementType.TextAreaField,
+              id: "pcp-2-explain-field",
+              helperText:
+                "Briefly explain why the minimum performance level was not achieved. If you believe this message was received in error, or if you plan to provide remediation plans outside of the system, note that here as well.",
+              label:
+                "Explain reason for not meeting Minimum Performance Level.",
+              required: true,
+            },
+          ],
         },
         divider,
         {
