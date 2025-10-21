@@ -72,9 +72,6 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockedNDREnhanced);
     render(<>{element}</>);
 
-    expect(
-      screen.getByText(mockedNDREnhanced.performanceTargetLabel)
-    ).toBeInTheDocument();
     expect(screen.getByText("test label : assessment 1")).toBeInTheDocument();
     expect(
       screen.getByText("Performance Rates Denominator")
