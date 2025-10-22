@@ -35,7 +35,7 @@ jobs:
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-          ./.github/branchNameValidation.sh $branch_name
+          ./.github/branchNameValidation.sh "$BRANCH_NAME"
           ./run install
         env:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
