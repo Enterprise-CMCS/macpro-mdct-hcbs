@@ -598,3 +598,12 @@ export const criticalIncidentCommentsField: TextAreaBoxTemplate = {
   label: "Additional comments",
   required: false,
 };
+
+export const minPerformanceExplanationField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "why-not-minimum",
+  helperText:
+    "Briefly explain why the minimum performance level was not achieved. If you believe this message was received in error, or if you plan to provide remediation plans outside of the system, note that here as well.",
+  label: "Explain reason for not meeting Minimum Performance Level.",
+  required: true,
+};

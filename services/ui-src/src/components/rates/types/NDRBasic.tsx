@@ -149,6 +149,8 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   }, [meetsMinimum]);
 
   const performanceLevelStatusAlert = () => {
+    if (meetsMinimum === null) return null;
+
     return meetsMinimum ? (
       <Alert status={AlertTypes.SUCCESS} title="Success">
         {`The data entered indicates this measure meets the ${minPerformanceLevel}% Minimum Performance Level.`}
@@ -160,8 +162,8 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     );
   };
 
-  const children = () => {
-    if (!conditionalChildren) return;
+  const conditonalChildren = () => {
+    if (!conditionalChildren || meetsMinimum || meetsMinimum === null) return;
     const setChildren = (checkedChildren: PageElement[]) => {
       updateElement({ conditionalChildren: [...checkedChildren] });
     };
@@ -212,7 +214,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
             disabled
           ></CmsdsTextField>
           {performanceLevelStatusAlert()}
-          {!meetsMinimum && children()}
+          {conditonalChildren()}
         </Stack>
       </Stack>
     </Stack>
@@ -228,6 +230,7 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
       ? element.answer?.rate >= element.minPerformanceLevel
       : false;
 
+  //currently only rendering textarea components but can be modified to render more
   const children = !minimum
     ? element.conditionalChildren
         ?.filter((child) => child.type === ElementType.TextAreaField)
