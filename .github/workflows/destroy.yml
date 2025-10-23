@@ -22,7 +22,7 @@ jobs:
   destroy:
     name: Destroy
     if: github.event.ref_type == 'branch' && !contains('skipci,code-json-', github.event.ref)
-    environment: ${{ (github.ref_name == 'production' && 'production') || (github.ref_name == 'val' && 'val') || 'dev' }}
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -55,6 +55,8 @@ jobs:
 
       - name: Destroy
         run: ./run destroy --stage $branch_name --verify false
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
 
   notify_on_destroy_failure:
     name: Destroy failure notification

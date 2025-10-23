@@ -356,5 +356,150 @@
         "Value": "DC"
       }
     ]
+  },
+  {
+    "username": "statedemo@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statedemo@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Demo2"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "WY"
+      }
+    ]
+  },
+  {
+    "username": "statedemo2@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statedemo2@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Demo2"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "WI"
+      }
+    ]
+  },
+  {
+    "username": "statedemo3@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statedemo3@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Demo3"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "TX"
+      }
+    ]
+  },
+  {
+    "username": "statedemo4@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statedemo4@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Demo4"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "AZ"
+      }
+    ]
+  },
+  {
+    "username": "statedemo5@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statedemo5@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Demo5"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "NM"
+      }
+    ]
   }
 ]
