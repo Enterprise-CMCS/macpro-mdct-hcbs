@@ -1,3 +1,5 @@
+PROJECT=hcbs
+
 # Dynamo
 BannersTable=local-banners
 QmsReportsTable=local-qms-reports
