@@ -9,7 +9,6 @@ import {
   additionalNotesField,
   didYouFollowSpecifications,
   divider,
-  minPerformanceExplanationField,
   stateSamplingMethologyQuestion,
   beneficiariesRate,
   beneficiariesReviewedRate,
