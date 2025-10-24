@@ -133,9 +133,9 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
 
   const meetsMinimum = minimumStatus();
 
-  //if the minimum isn't met, we want to clear any previous saved answers
+  //if the minimum is met, we want to clear any previous saved answers
   useEffect(() => {
-    if (!meetsMinimum) {
+    if (meetsMinimum) {
       const clearElements =
         conditionalChildren?.map((element) => {
           if ("answer" in element) {
