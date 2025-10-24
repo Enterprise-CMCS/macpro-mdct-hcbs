@@ -501,5 +501,34 @@
         "Value": "NM"
       }
     ]
+  },
+  {
+    "username": "statedemo6@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statedemo6@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Demo6"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "UT"
+      }
+    ]
   }
 ]
