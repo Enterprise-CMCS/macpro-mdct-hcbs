@@ -61,10 +61,8 @@ export const TextField = (
       const valueIsNonNumeric = rawValue && parsedValue === undefined;
       if (!rawValue && textbox.required) {
         setErrorMessage(ErrorMessages.requiredResponse);
-      } else if (valueIsNonNumeric && textbox.required) {
+      } else if (valueIsNonNumeric) {
         setErrorMessage(ErrorMessages.mustBeANumber);
-      } else if (valueIsNonNumeric && !textbox.required) {
-        setErrorMessage(ErrorMessages.mustBeANumberOptional);
       } else {
         setErrorMessage("");
       }

@@ -148,9 +148,7 @@ describe("Input validation utilities", () => {
       const result = validateNumber("texas", false);
       expect(result.parsedValue).toBeUndefined();
       expect(result.isValid).toBe(false);
-      expect(result.errorMessage).toBe(
-        "If provided, response must be a number"
-      );
+      expect(result.errorMessage).toBe("Response must be a number");
     });
 
     it("should allow valid numbers", () => {

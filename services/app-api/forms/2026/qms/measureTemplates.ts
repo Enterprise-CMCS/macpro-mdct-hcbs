@@ -351,6 +351,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityDischarges,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -381,6 +382,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityDischarges,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -435,6 +437,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityTransitions,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -465,6 +468,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityTransitions,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",

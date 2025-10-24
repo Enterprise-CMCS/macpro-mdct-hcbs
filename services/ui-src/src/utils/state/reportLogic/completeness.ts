@@ -164,9 +164,9 @@ export const elementSatisfiesRequired = (
   }
 
   if (element.type === ElementType.LengthOfStayRate) {
-    return Object.values(LengthOfStayFieldNames).every(
-      (fieldId) => element.answer?.[fieldId] !== undefined
-    );
+    return Object.values(LengthOfStayFieldNames)
+      .filter((fieldId) => fieldId !== "populationRate") // populationRate is not required
+      .every((fieldId) => element.answer?.[fieldId] !== undefined);
   }
   if (element.type === ElementType.NdrFields) {
     return element.answer.every((assessObj) => {
