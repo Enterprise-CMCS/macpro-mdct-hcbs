@@ -206,7 +206,7 @@ export const elementSatisfiesRequired = (
         if (
           !element.conditionalChildren
             .filter((child) => "required" in child)
-            .every((child) => child.answer != undefined)
+            .every((child) => "answer" in child && child.answer != undefined)
         )
           return false;
       }
