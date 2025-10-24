@@ -552,7 +552,7 @@ export const minPerformanceExplanationField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
   id: "why-not-minimum",
   helperText:
-    "Briefly explain why the minimum performance level was not achieved. If you believe this message was received in error, or if you plan to provide remediation plans outside of the system, note that here as well.",
+    "The data entered indicates this measure does not meet the 90% Minimum Performance Level.  Explain why in the additional comments field below.",
   label: "Explain reason for not meeting Minimum Performance Level.",
   required: true,
 };
@@ -563,11 +563,11 @@ export const beneficiariesRate: NdrBasicTemplate = {
   required: true,
   hintText: {
     numHint:
-      "Number of beneficiaries who had their person-centered service plan reviewed, and updated as appropriate, based upon a reassessment of functional need, within the measurement period, across all applicable HCBS programs.",
+      "Number of beneficiaries who had a reassessment of functional need completed at least once within the measurement period across all applicable HCBS programs.",
     denomHint:
-      "Number of beneficiaries who were due for an annual reassessment within the measurement period, across all applicable HCBS programs. ",
+      "Number of beneficiaries who were due for an annual reassessment within the measurement period across all applicable HCBS programs.",
     rateHint:
-      "Auto-calculates. Percentage of beneficiaries continuously enrolled for at least 365 days in an applicable HCBS program who had their person-centered service plan reviewed, and updated as appropriate, based on a reassessment of functional need at least once within the measurement period, across all applicable HCBS programs. ",
+      "Auto-calculates. Percentage of beneficiaries continuously enrolled in an applicable HCBS program for at least 365 days for whom a reassessment of functional need was completed at least once within the measurement period, across all applicable HCBS programs.",
   },
   multiplier: 100,
   displayRateAsPercent: true,
