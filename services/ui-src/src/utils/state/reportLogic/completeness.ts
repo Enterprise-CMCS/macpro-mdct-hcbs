@@ -199,6 +199,18 @@ export const elementSatisfiesRequired = (
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
+
+    //For forms like PCP-1 & PCP-2, they have conditional children rendered based on if performance level has been reached.
+    if (element.minPerformanceLevel && element.conditionalChildren) {
+      if (element.answer.rate < element.minPerformanceLevel) {
+        if (
+          !element.conditionalChildren
+            .filter((child) => "required" in child)
+            .every((child) => child.answer != undefined)
+        )
+          return false;
+      }
+    }
   }
 
   return true;
