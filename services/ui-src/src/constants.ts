@@ -7,7 +7,6 @@ export const ErrorMessages = {
   mustBeADateOptional:
     "If provided, response must be a date in MMDDYYYY format",
   mustBeANumber: "Response must be a number",
-  mustBeANumberOptional: "If provided, response must be a number",
   requiredResponse: "A response is required",
   mustBeAnEmail: "Response must be a valid email address",
 } as const;

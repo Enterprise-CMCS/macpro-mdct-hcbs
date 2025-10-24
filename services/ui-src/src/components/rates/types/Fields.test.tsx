@@ -52,10 +52,17 @@ describe("<Fields />", () => {
       return screen.getByRole("textbox", { name: labels[fieldId] });
     };
 
-    test("Fields are visible, and disabled appropriately", () => {
+    const getInputWithOptionalField = (fieldId: LengthOfStayField) => {
+      return screen.getByText((content) => content.startsWith(labels[fieldId]));
+    };
+    test("Fields are visible, and disabled appropriately", async () => {
       render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
       for (let fieldId of Object.keys(labels)) {
-        expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
+        if (fieldId === "populationRate")
+          expect(
+            getInputWithOptionalField(fieldId as LengthOfStayField)
+          ).toBeInTheDocument();
+        else expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
       }
 
       for (let editableFieldId of [
@@ -63,16 +70,16 @@ describe("<Fields />", () => {
         "actualCount",
         "denominator",
         "expectedCount",
-        "populationRate",
+        "adjustedRate",
       ] as const) {
         expect(getInput(editableFieldId)).not.toBeDisabled();
       }
 
-      for (let autoCalcFieldId of [
-        "actualRate",
-        "expectedRate",
-        "adjustedRate",
-      ] as const) {
+      expect(
+        getInputWithOptionalField("populationRate" as LengthOfStayField)
+      ).not.toBeDisabled();
+
+      for (let autoCalcFieldId of ["actualRate", "expectedRate"] as const) {
         expect(getInput(autoCalcFieldId)).toBeDisabled();
       }
     });
@@ -87,11 +94,10 @@ describe("<Fields />", () => {
       await enterValue("actualCount", "1");
       await enterValue("denominator", "2");
       await enterValue("expectedCount", "1");
-      await enterValue("populationRate", "2");
+      await enterValue("adjustedRate", "2");
 
       expect(getInput("actualRate")).toHaveValue("0.5");
       expect(getInput("expectedRate")).toHaveValue("0.5");
-      expect(getInput("adjustedRate")).toHaveValue("2");
     });
   });
 
