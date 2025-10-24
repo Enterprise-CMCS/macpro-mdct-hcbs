@@ -66,10 +66,8 @@ export const validateNumber = (rawValue: string, isRequired: boolean) => {
   if (!isValid) {
     if (!rawValue && isRequired) {
       errorMessage = ErrorMessages.requiredResponse;
-    } else if (isRequired) {
+    } else if (rawValue) {
       errorMessage = ErrorMessages.mustBeANumber;
-    } else if (rawValue && !isRequired) {
-      errorMessage = ErrorMessages.mustBeANumberOptional;
     }
   }
   return { parsedValue, isValid, errorMessage };

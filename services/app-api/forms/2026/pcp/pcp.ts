@@ -11,6 +11,7 @@ import {
   divider,
   minPerformanceExplanationField,
   stateSamplingMethologyQuestion,
+  beneficiariesRate,
 } from "../elements";
 
 export const pcpReportTemplate: ReportBase = {
@@ -19,7 +20,7 @@ export const pcpReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "pcp-2", "review-submit"],
+      childPageIds: ["general-info", "pcp-1", "pcp-2", "review-submit"],
     },
     {
       id: "general-info",
@@ -75,6 +76,35 @@ export const pcpReportTemplate: ReportBase = {
       ],
     },
     {
+      id: "pcp-1",
+      title: "HCBS PCP-1",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "pcp-1-header",
+          text: "HCBS PCP-1: Beneficiaries for Whom a Reassessment of Functional Need Was Completed",
+        },
+        beneficiariesRate,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
+        },
+        stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        didYouFollowSpecifications,
+        additionalNotesField,
+      ],
+    },
+    {
       id: "pcp-2",
       title: "HCBS PCP-2",
       type: PageType.Standard,
@@ -103,21 +133,6 @@ export const pcpReportTemplate: ReportBase = {
           minPerformanceLevel: 90,
           conditionalChildren: [minPerformanceExplanationField],
         },
-        divider,
-        {
-          type: ElementType.SubHeader,
-          id: "state-sampling-methodology-subheader",
-          text: "State sampling methodology",
-        },
-        stateSamplingMethologyQuestion,
-        divider,
-        {
-          type: ElementType.SubHeader,
-          id: "additional-details-subheader",
-          text: "Additional Details",
-        },
-        didYouFollowSpecifications,
-        additionalNotesField,
       ],
     },
     {
