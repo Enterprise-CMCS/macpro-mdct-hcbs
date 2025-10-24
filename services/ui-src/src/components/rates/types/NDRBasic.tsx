@@ -230,18 +230,19 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
       : false;
 
   //currently only rendering textarea components but can be modified to render more
-  const children = !minimum && element.conditionalChildren
-    ? element.conditionalChildren.map((child) => {
-        {
-          return {
-            indicator: "label" in child && child.label ? child.label : "",
-            response:
-              "answer" in child ? (child.answer as string) : "Not answered",
-            helperText: "helperText" in child ? child.helperText : "",
-          };
-        }
-      })
-    : [];
+  const children =
+    !minimum && element.conditionalChildren
+      ? element.conditionalChildren.map((child) => {
+          {
+            return {
+              indicator: "label" in child && child.label ? child.label : "",
+              response:
+                "answer" in child ? (child.answer as string) : "Not answered",
+              helperText: "helperText" in child ? child.helperText : "",
+            };
+          }
+        })
+      : [];
 
   const rows = [
     {

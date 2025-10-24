@@ -548,6 +548,15 @@ export const habilitationRate: NdrBasicTemplate = {
   displayRateAsPercent: true,
 };
 
+export const minPerformanceExplanationField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "why-not-minimum",
+  helperText:
+    "Briefly explain why the minimum performance level was not achieved. If you believe this message was received in error, or if you plan to provide remediation plans outside of the system, note that here as well.",
+  label: "Explain reason for not meeting Minimum Performance Level.",
+  required: true,
+};
+
 export const beneficiariesRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "beneficiaries-rate",
@@ -563,6 +572,25 @@ export const beneficiariesRate: NdrBasicTemplate = {
   multiplier: 100,
   displayRateAsPercent: true,
   minPerformanceLevel: 90,
+  conditionalChildren: [minPerformanceExplanationField],
+};
+
+export const beneficiariesReviewedRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "pcp-2-rate",
+  required: true,
+  hintText: {
+    numHint:
+      "Number of beneficiaries who had their person-centered service plan reviewed, and updated as appropriate, based upon a reassessment of functional need, within the measurement period, across all applicable HCBS programs.",
+    denomHint:
+      "Number of beneficiaries who were due for an annual reassessment within the measurement period, across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of beneficiaries continuously enrolled for at least 365 days in an applicable HCBS program who had their person-centered service plan reviewed, and updated as appropriate, based on a reassessment of functional need at least once within the measurement period, across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+  minPerformanceLevel: 90,
+  conditionalChildren: [minPerformanceExplanationField],
 };
 
 // State Sampling Methodology Radio Question
@@ -614,13 +642,4 @@ export const criticalIncidentCommentsField: TextAreaBoxTemplate = {
     "If applicable, add any notes or comments to provide context to the reported results. If this measure did not meet the minimum performance level, explain here.",
   label: "Additional comments",
   required: false,
-};
-
-export const minPerformanceExplanationField: TextAreaBoxTemplate = {
-  type: ElementType.TextAreaField,
-  id: "why-not-minimum",
-  helperText:
-    "Briefly explain why the minimum performance level was not achieved. If you believe this message was received in error, or if you plan to provide remediation plans outside of the system, note that here as well.",
-  label: "Explain reason for not meeting Minimum Performance Level.",
-  required: true,
 };

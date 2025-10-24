@@ -12,6 +12,7 @@ import {
   minPerformanceExplanationField,
   stateSamplingMethologyQuestion,
   beneficiariesRate,
+  beneficiariesReviewedRate,
 } from "../elements";
 
 export const pcpReportTemplate: ReportBase = {
@@ -116,23 +117,22 @@ export const pcpReportTemplate: ReportBase = {
           id: "pcp-2-header",
           text: "HCBS PCP-2: Beneficiaries for Whom the Person-Centered Service Plan Was Reviewed, and Updated as Appropriate, as a Result of a Reassessment of Functional Need",
         },
+        beneficiariesReviewedRate,
+        divider,
         {
-          type: ElementType.NdrBasic,
-          id: "pcp-2-rate",
-          required: true,
-          hintText: {
-            numHint:
-              "Number of beneficiaries who had their person-centered service plan reviewed, and updated as appropriate, based upon a reassessment of functional need, within the measurement period, across all applicable HCBS programs.",
-            denomHint:
-              "Number of beneficiaries who were due for an annual reassessment within the measurement period, across all applicable HCBS programs.",
-            rateHint:
-              "Auto-calculates. Percentage of beneficiaries continuously enrolled for at least 365 days in an applicable HCBS program who had their person-centered service plan reviewed, and updated as appropriate, based on a reassessment of functional need at least once within the measurement period, across all applicable HCBS programs.",
-          },
-          multiplier: 100,
-          displayRateAsPercent: true,
-          minPerformanceLevel: 90,
-          conditionalChildren: [minPerformanceExplanationField],
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
         },
+        stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        didYouFollowSpecifications,
+        additionalNotesField,
       ],
     },
     {
