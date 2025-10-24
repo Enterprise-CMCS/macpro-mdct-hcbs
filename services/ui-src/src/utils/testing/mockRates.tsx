@@ -27,7 +27,9 @@ export const mockedNDREnhanced: NdrEnhancedTemplate = {
   label: "test label",
   helperText: "helper text",
   required: true,
-  performanceTargetLabel: "What is the 2028 state performance target?",
+  performanceTargetLabel: "What is the 2028 state performance target?" as
+    | string
+    | undefined,
   assessments: [{ id: "test-1", label: "assessment 1" }],
   answer: {
     denominator: 2,

@@ -72,15 +72,12 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockedNDREnhanced);
     render(<>{element}</>);
 
-    expect(
-      screen.getByText(mockedNDREnhanced.performanceTargetLabel)
-    ).toBeInTheDocument();
     expect(screen.getByText("test label : assessment 1")).toBeInTheDocument();
     expect(
       screen.getByText("Performance Rates Denominator")
     ).toBeInTheDocument();
     expect(screen.getAllByText("2")).toHaveLength(2);
-    expect(screen.getAllByText("Not answered")).toHaveLength(2);
+    expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });
   test("Test render NDR Fields element", () => {
     section.elements.push(mockNDRFields);

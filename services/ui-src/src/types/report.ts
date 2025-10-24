@@ -470,7 +470,7 @@ export type NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced;
   label?: string;
   helperText?: string;
-  performanceTargetLabel: string;
+  performanceTargetLabel?: string | undefined;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
   required: boolean;
