@@ -7,7 +7,6 @@ import {
   RateInputFieldNamesBasic,
   AlertTypes,
   PageElement,
-  ElementType,
 } from "types";
 import {
   parseNumber,
@@ -231,7 +230,7 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
       : false;
 
   //currently only rendering textarea components but can be modified to render more
-  const children = element.conditionalChildren
+  const children = !minimum && element.conditionalChildren
     ? element.conditionalChildren.map((child) => {
         {
           return {
