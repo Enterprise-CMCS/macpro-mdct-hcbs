@@ -203,6 +203,14 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
         (rate: { id: string }) => rate.id === assess.id
       );
       const row = [
+        ...(element.performanceTargetLabel
+          ? [
+              {
+                indicator: element.performanceTargetLabel,
+                response: performanceRate?.performanceTarget,
+              },
+            ]
+          : []),
         {
           indicator: "Numerator",
           response: performanceRate?.numerator,
