@@ -150,13 +150,17 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const performanceLevelStatusAlert = () => {
     if (meetsMinimum === null) return null;
 
+    const explainLabel = !conditionalChildren
+      ? "Explain why in the additional comments field below."
+      : "";
+
     return meetsMinimum ? (
       <Alert status={AlertTypes.SUCCESS} title="Success">
         {`The data entered indicates this measure meets the ${minPerformanceLevel}% Minimum Performance Level.`}
       </Alert>
     ) : (
       <Alert status={AlertTypes.WARNING} title="Warning">
-        {`The data entered indicates this measure does not meet the ${minPerformanceLevel}% Minimum Performance Level. Explain why in the additional comments field below.`}
+        {`The data entered indicates this measure does not meet the ${minPerformanceLevel}% Minimum Performance Level. ${explainLabel}`}
       </Alert>
     );
   };

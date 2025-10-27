@@ -552,7 +552,7 @@ export const minPerformanceExplanationField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
   id: "why-not-minimum",
   helperText:
-    "The data entered indicates this measure does not meet the 90% Minimum Performance Level.  Explain why in the additional comments field below.",
+    "The data entered indicates this measure does not meet the 90% Minimum Performance Level.",
   label: "Explain reason for not meeting Minimum Performance Level.",
   required: true,
 };
