@@ -471,9 +471,9 @@ export const measureCompleteBanner: StatusAlertTemplate = {
 // Rates for Homemaker for HAPC-1 measure
 export const homemakerRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "homemaker-rate",
+  id: "homemaker-1-rate",
   required: true,
-  label: "Homemaker",
+  label: "Homemaker 1",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program.",
@@ -489,9 +489,9 @@ export const homemakerRate: NdrBasicTemplate = {
 // Rates for Homemaker for HAPC-2 measure
 export const homemakerHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "homemaker-rate",
+  id: "homemaker-2-rate",
   required: true,
-  label: "Homemaker",
+  label: "Homemaker 2",
   hintText: {
     numHint:
       "Total number of hours for homemaker services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
@@ -507,9 +507,9 @@ export const homemakerHAPCH2Rate: NdrBasicTemplate = {
 // Rates for Home Health Aide or HAPCH-1 measure
 export const homeHealthAideRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "home-health-aide-rate",
+  id: "home-health-aide-1-rate",
   required: true,
-  label: "Home Health Aide",
+  label: "Home Health Aide 1",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of home health aide services for all beneficiaries who received services through an applicable HCBS program.",
@@ -525,9 +525,9 @@ export const homeHealthAideRate: NdrBasicTemplate = {
 // Rates for Home Health Aide for HAPCH-2 measure
 export const homeHealthAideHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "home-health-aide-rate",
+  id: "home-health-aide-2-rate",
   required: true,
-  label: "Home Health Aide",
+  label: "Home Health Aide 2",
   hintText: {
     numHint:
       "Total number of hours for home health aide services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
@@ -543,9 +543,9 @@ export const homeHealthAideHAPCH2Rate: NdrBasicTemplate = {
 // Rates for Personal Care for HAPCH-1 measure
 export const personalCareRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "personal-care-rate",
+  id: "personal-care-1-rate",
   required: true,
-  label: "Personal Care",
+  label: "Personal Care 1",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of personal care services for all beneficiaries who received services through an applicable HCBS program.",
@@ -561,9 +561,9 @@ export const personalCareRate: NdrBasicTemplate = {
 // Rates for Personal Care for HAPCH-2 measure
 export const personalCareHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "personal-care-rate",
+  id: "personal-care-2-rate",
   required: true,
-  label: "Personal Care",
+  label: "Personal Care 2",
   hintText: {
     numHint:
       "Total number of hours for personal care services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
@@ -579,9 +579,9 @@ export const personalCareHAPCH2Rate: NdrBasicTemplate = {
 // Rates for Habilitation for HAPCH-1 measure
 export const habilitationRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "habilitation-rate",
+  id: "habilitation-1-rate",
   required: true,
-  label: "Habilitation",
+  label: "Habilitation 1",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of habilitation services for all beneficiaries who received services through an applicable HCBS program.",
@@ -597,9 +597,9 @@ export const habilitationRate: NdrBasicTemplate = {
 // Rates for Habilitation for HAPCH-2 measure
 export const habilitationHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "habilitation-rate",
+  id: "habilitation-2-rate",
   required: true,
-  label: "Habilitation",
+  label: "Habilitation 2",
   hintText: {
     numHint:
       "Total number of hours for habilitation services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
