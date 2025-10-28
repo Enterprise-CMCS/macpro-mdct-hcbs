@@ -43,7 +43,6 @@ export const completeLTSS1 = async (page: Page) => {
   await quickFillFields(page, "Numerator");
 
   await quickFillFields(page, "What is the 2028 state performance target");
-  await quickFillFields(page, "What is the 2028 state exclusion rate target");
 
   await completeAndReturn(page);
 };
@@ -72,7 +71,6 @@ export const completeLTSS2 = async (page: Page) => {
   await quickFillFields(page, "Numerator");
 
   await quickFillFields(page, "What is the 2028 state performance target");
-  await quickFillFields(page, "What is the 2028 state exclusion rate target");
 
   await completeAndReturn(page);
 };
@@ -129,7 +127,9 @@ export const completeLTSS7 = async (page: Page) => {
   await page.getByLabel("Facility Admission Count").fill("3");
   await page.getByLabel("Expected Count of Successful").fill("4");
   await page.getByLabel("Multi-Plan Population Rate").fill("5");
-
+  await page
+    .getByLabel("Risk Adjusted Rate for Minimizing Length of Facility Stay")
+    .fill("6");
   await completeAndReturn(page);
 };
 

@@ -40,7 +40,6 @@ import {
   performanceRatePOM,
   measureType,
   statePerformanceTargetLabel,
-  stateExclusionTargetLabel,
 } from "../elements";
 
 export const measureTemplates: Record<
@@ -351,6 +350,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityDischarges,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -381,6 +381,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityDischarges,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -435,6 +436,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityTransitions,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -465,6 +467,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       performanceRateFacilityTransitions,
+      additionalNotesField,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -782,7 +785,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rate",
         required: true,
-        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -837,7 +839,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label: "Exclusion Rate",
         required: true,
-        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-pc-plan",
@@ -1045,7 +1046,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         required: true,
         label: "Exclusion Rate",
-        ...stateExclusionTargetLabel,
         assessments: [
           {
             id: "refused-risk-assess",
