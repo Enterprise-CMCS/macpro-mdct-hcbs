@@ -529,6 +529,7 @@ const reportValidateSchema = object().shape({
   lastEditedBy: string().required(),
   lastEditedByEmail: string().notRequired(),
   submitted: number().notRequired(),
+  firstSubmitted: number().notRequired(),
   submittedBy: string().notRequired(),
   submittedByEmail: string().notRequired(),
   status: mixed<ReportStatus>().oneOf(Object.values(ReportStatus)).required(),

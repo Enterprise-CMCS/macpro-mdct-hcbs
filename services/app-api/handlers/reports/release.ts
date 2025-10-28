@@ -32,6 +32,7 @@ export const releaseReport = handler(parseReportParameters, async (request) => {
 
   report.status = ReportStatus.IN_PROGRESS;
   report.submitted = undefined;
+  report.firstSubmitted = undefined;
   report.submittedBy = undefined;
   report.submittedByEmail = undefined;
 

@@ -11,6 +11,7 @@ mockedUseStore.mockReturnValue(mockUseStore);
 const report = {
   submittedBy: "Tall Person",
   submitted: new Date("January 1, 2025").getTime(),
+  firstSubmitted: new Date("January 1, 2025").getTime(),
   state: "NJ",
   type: "QMS",
 };
