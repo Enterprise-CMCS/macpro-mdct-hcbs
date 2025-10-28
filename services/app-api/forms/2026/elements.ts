@@ -468,7 +468,7 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   status: "success",
 };
 
-// Rates for Homemaker
+// Rates for Homemaker for HAPC-1 measure
 export const homemakerRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "homemaker-rate",
@@ -476,7 +476,7 @@ export const homemakerRate: NdrBasicTemplate = {
   label: "Homemaker",
   hintText: {
     numHint:
-      "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program. ",
+      "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program.",
     denomHint:
       "Number of beneficiaries in an applicable HCBS program who received homemaker services within the measurement period.",
     rateHint:
@@ -486,7 +486,25 @@ export const homemakerRate: NdrBasicTemplate = {
   displayRateAsPercent: true,
 };
 
-// Rates for Home Health Aide
+// Rates for Homemaker for HAPC-2 measure
+export const homemakerHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "homemaker-rate",
+  required: true,
+  label: "Homemaker",
+  hintText: {
+    numHint:
+      "Total number of hours for homemaker services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for homemaker services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for homemaker services provided to individuals in an applicable HCBS program within the measurement period.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Home Health Aide or HAPCH-1 measure
 export const homeHealthAideRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "home-health-aide-rate",
@@ -504,7 +522,25 @@ export const homeHealthAideRate: NdrBasicTemplate = {
   displayRateAsPercent: true,
 };
 
-// Rates for Personal Care
+// Rates for Home Health Aide for HAPCH-2 measure
+export const homeHealthAideHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "home-health-aide-rate",
+  required: true,
+  label: "Home Health Aide",
+  hintText: {
+    numHint:
+      "Total number of hours for home health aide services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for home health aide services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for home health aide services provided to individuals in an applicable HCBS program within the measurement period.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Personal Care for HAPCH-1 measure
 export const personalCareRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "personal-care-rate",
@@ -522,7 +558,25 @@ export const personalCareRate: NdrBasicTemplate = {
   displayRateAsPercent: true,
 };
 
-// Rates for Habilitation
+// Rates for Personal Care for HAPCH-2 measure
+export const personalCareHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "personal-care-rate",
+  required: true,
+  label: "Personal Care",
+  hintText: {
+    numHint:
+      "Total number of hours for personal care services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for personal care services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for personal care services provided to individuals in an applicable HCBS program within the measurement period.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Habilitation for HAPCH-1 measure
 export const habilitationRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "habilitation-rate",
@@ -535,6 +589,24 @@ export const habilitationRate: NdrBasicTemplate = {
       "Number of beneficiaries in an applicable HCBS program who received habilitation services within the measurement period.",
     rateHint:
       "Auto-calculates. Average amount of time from when services were initially approved to when services began for individuals who received habilitation services within the measurement period across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Habilitation for HAPCH-2 measure
+export const habilitationHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "habilitation-rate",
+  required: true,
+  label: "Habilitation",
+  hintText: {
+    numHint:
+      "Total number of hours for habilitation services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for habilitation services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for habilitation services provided to individuals in an applicable HCBS program within the measurement period.",
   },
   multiplier: 100,
   displayRateAsPercent: true,
