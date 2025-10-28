@@ -12,6 +12,15 @@ const mockedElement: NdrBasicTemplate = {
   multiplier: 100,
   minPerformanceLevel: 90,
   required: true,
+  conditionalChildren: [
+    {
+      type: ElementType.TextAreaField,
+      id: "mock-text-id",
+      label: "test text area",
+      helperText: "helper text",
+      required: true,
+    },
+  ],
 };
 const updateSpy = jest.fn();
 
@@ -118,6 +127,18 @@ describe("<NDRBasic />", () => {
       const result = screen.getByRole("alert");
 
       expect(result).toHaveTextContent("Warning");
+    });
+
+    test("Conditional children should be visible if minimum rate is met", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "1"));
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await act(async () => await userEvent.type(denominator, "10"));
+
+      expect(screen.getByText("test text area")).toBeVisible();
     });
   });
 

@@ -560,6 +560,7 @@ export type NdrBasicTemplate = {
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
+  conditionalChildren?: PageElement[];
 };
 
 export type ChoiceTemplate = {
