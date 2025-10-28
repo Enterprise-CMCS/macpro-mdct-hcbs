@@ -473,7 +473,7 @@ export const homemakerRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "homemaker-1-rate",
   required: true,
-  label: "Homemaker 1",
+  label: "Homemaker",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program.",
@@ -491,7 +491,7 @@ export const homemakerHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "homemaker-2-rate",
   required: true,
-  label: "Homemaker 2",
+  label: "Homemaker",
   hintText: {
     numHint:
       "Total number of hours for homemaker services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
@@ -509,7 +509,7 @@ export const homeHealthAideRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "home-health-aide-1-rate",
   required: true,
-  label: "Home Health Aide 1",
+  label: "Home Health Aide",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of home health aide services for all beneficiaries who received services through an applicable HCBS program.",
@@ -527,7 +527,7 @@ export const homeHealthAideHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "home-health-aide-2-rate",
   required: true,
-  label: "Home Health Aide 2",
+  label: "Home Health Aide",
   hintText: {
     numHint:
       "Total number of hours for home health aide services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
@@ -545,7 +545,7 @@ export const personalCareRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "personal-care-1-rate",
   required: true,
-  label: "Personal Care 1",
+  label: "Personal Care",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of personal care services for all beneficiaries who received services through an applicable HCBS program.",
@@ -563,7 +563,7 @@ export const personalCareHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "personal-care-2-rate",
   required: true,
-  label: "Personal Care 2",
+  label: "Personal Care",
   hintText: {
     numHint:
       "Total number of hours for personal care services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
@@ -581,7 +581,7 @@ export const habilitationRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "habilitation-1-rate",
   required: true,
-  label: "Habilitation 1",
+  label: "Habilitation",
   hintText: {
     numHint:
       "Number of days between initial approval and receipt of habilitation services for all beneficiaries who received services through an applicable HCBS program.",
@@ -599,7 +599,7 @@ export const habilitationHAPCH2Rate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
   id: "habilitation-2-rate",
   required: true,
-  label: "Habilitation 2",
+  label: "Habilitation",
   hintText: {
     numHint:
       "Total number of hours for habilitation services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
