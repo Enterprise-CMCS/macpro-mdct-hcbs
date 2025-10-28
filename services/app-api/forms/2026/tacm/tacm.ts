@@ -57,7 +57,7 @@ export const tacmReportTemplate: ReportBase = {
           id: "report-coverage-waivers-programs",
           label:
             "Does this report cover all the programs that are required under the relevant authorities?",
-          required: false,
+          required: true,
           choices: [
             { label: "Yes", value: "yes" },
             {
