@@ -182,7 +182,8 @@ export const elementSatisfiesRequired = (
   if (element.type === ElementType.NdrEnhanced) {
     if (element.answer.denominator === undefined) return false;
     return element.answer.rates.every((rateObj) => {
-      if (rateObj.performanceTarget === undefined) return false;
+      if (!element.required && rateObj.performanceTarget === undefined)
+        return false;
       if (rateObj.numerator === undefined) return false;
       if (rateObj.rate === undefined) return false;
       return true;

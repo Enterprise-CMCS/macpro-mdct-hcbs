@@ -9,7 +9,7 @@ export const testModalData = {
   pomSurveyOption: "No",
 };
 
-export const fillAddEditReportModal = async (page: Page, reportData) => {
+export const fillAddEditReportModal = async (page: Page, reportData: any) => {
   const addReportHeading = page.getByRole("heading", {
     name: reportData.modalHeading,
   });
