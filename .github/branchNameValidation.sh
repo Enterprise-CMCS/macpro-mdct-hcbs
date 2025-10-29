@@ -4,7 +4,10 @@
 set -e
 
 local_branch=${1}
-[ -z "${1}" ] && local_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ -z "${1}" ]; then
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    local_branch=$(./setBranchName.sh "$current_branch")
+fi
 
 valid_branch='^[a-z][a-z0-9-]*$'
 
@@ -16,9 +19,6 @@ join_by() { local IFS='|'; echo "$*"; }
 
 #creates glob match to check for reserved words used in branch names which would trigger failures
 glob=$(join_by $(for i in ${reserved_words[@]}; do echo "^$i-|-$i$|-$i-|^$i$"; done;))
-
-echo "testing the branch name:"
-echo $local_branch
 
 if [[ ! $local_branch =~ $valid_branch ]] || [[ $local_branch =~ $glob ]] || [[ ${#local_branch} -gt 64 ]]; then
     echo """
