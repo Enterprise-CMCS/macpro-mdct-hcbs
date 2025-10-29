@@ -293,12 +293,6 @@ export const statePerformanceTargetLabel = {
   } state performance target?`,
 };
 
-export const stateExclusionTargetLabel = {
-  performanceTargetLabel: `What is the ${
-    REPORT_YEAR + 2
-  } state exclusion rate target for this assessment?`,
-};
-
 //Rates for LTSS-1
 export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
@@ -321,7 +315,6 @@ export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rate",
-  ...stateExclusionTargetLabel,
   required: true,
   assessments: [
     {
@@ -357,7 +350,6 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rate",
-  ...stateExclusionTargetLabel,
   required: true,
   assessments: [
     {
@@ -546,6 +538,51 @@ export const habilitationRate: NdrBasicTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
+};
+
+export const minPerformanceExplanationField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "why-not-minimum",
+  helperText:
+    "The data entered indicates this measure does not meet the 90% Minimum Performance Level.",
+  label: "Explain reason for not meeting Minimum Performance Level.",
+  required: true,
+};
+
+export const beneficiariesRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "beneficiaries-rate",
+  required: true,
+  hintText: {
+    numHint:
+      "Number of beneficiaries who had a reassessment of functional need completed at least once within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Number of beneficiaries who were due for an annual reassessment within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of beneficiaries continuously enrolled in an applicable HCBS program for at least 365 days for whom a reassessment of functional need was completed at least once within the measurement period, across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+  minPerformanceLevel: 90,
+  conditionalChildren: [minPerformanceExplanationField],
+};
+
+export const beneficiariesReviewedRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "pcp-2-rate",
+  required: true,
+  hintText: {
+    numHint:
+      "Number of beneficiaries who had their person-centered service plan reviewed, and updated as appropriate, based upon a reassessment of functional need, within the measurement period, across all applicable HCBS programs.",
+    denomHint:
+      "Number of beneficiaries who were due for an annual reassessment within the measurement period, across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of beneficiaries continuously enrolled for at least 365 days in an applicable HCBS program who had their person-centered service plan reviewed, and updated as appropriate, based on a reassessment of functional need at least once within the measurement period, across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+  minPerformanceLevel: 90,
+  conditionalChildren: [minPerformanceExplanationField],
 };
 
 // State Sampling Methodology Radio Question

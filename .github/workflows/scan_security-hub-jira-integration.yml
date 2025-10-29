@@ -28,6 +28,7 @@ jobs:
 
   sync:
     if: github.ref == 'refs/heads/production'
+    environment: production
     name: Run sync
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +36,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: ${{ secrets.PRODUCTION_AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.0.9
         with:

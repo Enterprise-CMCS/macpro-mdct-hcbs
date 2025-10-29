@@ -5,6 +5,14 @@ import {
   HeaderIcon,
   ReportBase,
 } from "../../../types/reports";
+import {
+  additionalNotesField,
+  didYouFollowSpecifications,
+  divider,
+  stateSamplingMethologyQuestion,
+  beneficiariesRate,
+  beneficiariesReviewedRate,
+} from "../elements";
 
 export const pcpReportTemplate: ReportBase = {
   type: ReportType.PCP,
@@ -12,7 +20,7 @@ export const pcpReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "review-submit"],
+      childPageIds: ["general-info", "pcp-1", "pcp-2", "review-submit"],
     },
     {
       id: "general-info",
@@ -65,6 +73,65 @@ export const pcpReportTemplate: ReportBase = {
           ],
           required: true,
         },
+      ],
+    },
+    {
+      id: "pcp-1",
+      title: "HCBS PCP-1",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "pcp-1-header",
+          text: "HCBS PCP-1: Beneficiaries for Whom a Reassessment of Functional Need Was Completed",
+        },
+        beneficiariesRate,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
+        },
+        stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        didYouFollowSpecifications,
+        additionalNotesField,
+      ],
+    },
+    {
+      id: "pcp-2",
+      title: "HCBS PCP-2",
+      type: PageType.Standard,
+      sidebar: true,
+      hideNavButtons: false,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "pcp-2-header",
+          text: "HCBS PCP-2: Beneficiaries for Whom the Person-Centered Service Plan Was Reviewed, and Updated as Appropriate, as a Result of a Reassessment of Functional Need",
+        },
+        beneficiariesReviewedRate,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "state-sampling-methodology-subheader",
+          text: "State sampling methodology",
+        },
+        stateSamplingMethologyQuestion,
+        divider,
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+        },
+        didYouFollowSpecifications,
+        additionalNotesField,
       ],
     },
     {
