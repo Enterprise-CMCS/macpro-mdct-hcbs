@@ -1,8 +1,14 @@
+exclude: "seed-section-base-*"
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
       - id: check-added-large-files
+        exclude: |
+          (?x)(
+              ^services/ui-src/public/templates/mlr-reporting-template\.xlsx$|
+              ^services/ui-src/public/templates/mcpar-reporting-template\.xlsx$
+          )
       - id: no-commit-to-branch
         args:
           # We include branch names in various AWS resource names, including S3 buckets, so:
@@ -25,8 +31,10 @@ repos:
           - "@typescript-eslint/parser"
           - "@typescript-eslint/eslint-plugin"
           - "eslint-plugin-jest"
+          - "eslint-plugin-cypress@2.15.2"
+          - "eslint-plugin-playwright"
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.3.1
+    rev: v2.4.1
     hooks:
       - id: prettier
         files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
@@ -36,8 +44,11 @@ repos:
       - id: detect-secrets
         args:
           - --exclude-files
-          - .*test\.json
+          - .*test\.json|^tests/seeds/fixtures/|^services/app-api/utils/constants/copyover.ts
           - --exclude-files
+          - services/uploads/src/test.json
+          - --exclude-files
+          - tests/cypress/cypress.json
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.0.272
@@ -49,10 +60,37 @@ repos:
       - id: gitleaks
   - repo: local
     hooks:
+      - id: install-dependencies
+        name: install-dependencies
+        entry: bash -c "source ~/.nvm/nvm.sh && nvm use && ./run install"
+        language: system
+        pass_filenames: false
+        always_run: true
       - id: branch-name-validation
         name: branch-name-validation
         entry: .github/branchNameValidation.sh
         language: script
+        pass_filenames: false
+      - id: track-flags
+        name: track-flags
+        entry: yarn track-flags
+        language: system
+        files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
+        pass_filenames: false
+      - id: typescript-check-cli
+        name: typescript-check-cli
+        entry: bash -c "cd cli && yarn tsc --noEmit"
+        language: system
+        pass_filenames: false
+      - id: typescript-check-api
+        name: typescript-check-api
+        entry: bash -c "cd services/app-api && yarn tsc --noEmit"
+        language: system
+        pass_filenames: false
+      - id: typescript-check-ui
+        name: typescript-check-ui
+        entry: bash -c "cd services/ui-src && yarn tsc --noEmit"
+        language: system
         pass_filenames: false
       - id: validate-commit-msg
         name: validate-commit-msg
