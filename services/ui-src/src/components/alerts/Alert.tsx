@@ -34,13 +34,13 @@ export const Alert = ({
         {showIcon && (
           <Image src={icon ? icon : alertIcon} sx={sx.icon} alt="Alert" />
         )}
-        <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
+        <Box sx={sx.content}>
           {title && <AlertTitle>{title}</AlertTitle>}
           {children && (
             <AlertDescription>
               <Box sx={sx.descriptionText}>{children}</Box>
               {link && (
-                <Text sx={sx.linkText}>
+                <Text>
                   <Link href={link} isExternal>
                     {link}
                   </Link>
@@ -67,12 +67,10 @@ interface Props {
 
 const sx = {
   root: {
-    alignItems: "start",
-    minHeight: "5.25rem",
+    paddingX: "0",
+    paddingY: "spacer2",
     borderInlineStartWidth: "0.5rem",
-    marginTop: "1.25rem",
-    marginBottom: "1.25rem",
-    padding: "1rem",
+    alignItems: "start",
     "&.info": {
       backgroundColor: "palette.secondary_lightest",
       borderInlineStartColor: "palette.secondary",
@@ -90,29 +88,23 @@ const sx = {
       borderInlineStartColor: "palette.error",
     },
   },
+  content: {
+    paddingX: "spacer2",
+  },
   descriptionText: {
-    marginTop: ".25rem",
+    marginTop: "spacer1",
+    marginBottom: "spacer1",
     p: {
-      marginY: ".5rem",
+      marginY: "spacer1",
     },
     ul: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
-  },
-  linkText: {
-    marginTop: ".25rem",
-    marginBottom: ".25rem",
   },
   icon: {
-    position: "absolute",
     color: "palette.base",
-    marginBottom: "1.75rem",
-    width: "1.375rem",
-  },
-  contentBox: {
-    marginLeft: "2rem",
-    "&.no-icon": {
-      marginLeft: 0,
-    },
+    minWidth: "1.5rem",
+    height: "1.5rem",
+    marginLeft: "spacer3",
   },
 };
