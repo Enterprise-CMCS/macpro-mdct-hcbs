@@ -76,15 +76,15 @@ const sx = {
       borderInlineStartColor: "palette.secondary",
     },
     "&.success": {
-      bgColor: "palette.success_lightest",
+      backgroundColor: "palette.success_lightest",
       borderInlineStartColor: "palette.success",
     },
     "&.warning": {
-      bgColor: "palette.warn_lightest",
+      backgroundColor: "palette.warn_lightest",
       borderInlineStartColor: "palette.warn",
     },
     "&.error": {
-      bgColor: "palette.error_lightest",
+      backgroundColor: "palette.error_lightest",
       borderInlineStartColor: "palette.error",
     },
   },
@@ -92,8 +92,7 @@ const sx = {
     paddingX: "spacer2",
   },
   descriptionText: {
-    marginTop: "spacer1",
-    marginBottom: "spacer1",
+    marginY: "spacer1",
     p: {
       marginY: "spacer1",
     },
