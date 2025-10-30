@@ -16,6 +16,21 @@ const reportChoices = Object.values(ReportType).map((type) => {
   };
 });
 
+const buildStates = (): DropdownOptions[] => {
+  const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
+    ([abbr, name]) => ({ label: name, value: abbr })
+  );
+  return [
+    {
+      label: "- Select an option -",
+      value: "",
+    },
+    ...dropdownStates,
+  ];
+};
+
+const dropdownStates = buildStates();
+
 export const AdminDashSelector = () => {
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedReport, setSelectedReport] = useState<string>("");
@@ -32,21 +47,6 @@ export const AdminDashSelector = () => {
   const handleSubmit = () => {
     navigate(`report/${selectedReport}/${selectedState}`);
   };
-
-  const buildStates = (): DropdownOptions[] => {
-    const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
-      ([abbr, name]) => ({ label: name, value: abbr })
-    );
-    return [
-      {
-        label: "- Select an option -",
-        value: "",
-      },
-      ...dropdownStates,
-    ];
-  };
-
-  const dropdownStates = buildStates();
 
   return (
     <Box sx={sx.root}>
