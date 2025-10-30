@@ -9,8 +9,7 @@
   },
   "scripts": {
     "test:e2e": "pushd tests && yarn test ; popd",
-    "test:e2e-ui": "pushd tests && yarn test-ui ; popd",
-    "track-flags": "./scripts/track-flags.sh"
+    "test:e2e-ui": "pushd tests && yarn test-ui ; popd"
   },
   "repository": {
     "type": "git",
