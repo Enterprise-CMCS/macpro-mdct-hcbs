@@ -36,7 +36,7 @@ export const HomePage = () => {
   return (
     <>
       <Collapse in={showBanner}>
-        <Box margin="1.25rem 2rem">
+        <Box marginX="spacer3" marginTop="spacer3">
           <Banner bannerData={bannerData} />
         </Box>
       </Collapse>
@@ -45,7 +45,7 @@ export const HomePage = () => {
         {userIsEndUser ? (
           <>
             <Box>
-              <Heading as="h1" variant="h1">
+              <Heading as="h1" variant="h1" paddingBottom="spacer3">
                 Home and Community-Based Services (HCBS) Portal
               </Heading>
               <Text>
