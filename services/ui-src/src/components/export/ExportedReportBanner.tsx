@@ -26,8 +26,8 @@ const sx = {
     position: "sticky",
     zIndex: "sticky",
     top: "0",
-    marginBottom: "3rem",
-    padding: "2rem 2rem",
+    marginBottom: "spacer6",
+    paddingY: "spacer4",
     background: "white",
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     textAlign: "center",
@@ -41,7 +41,7 @@ const sx = {
       display: "none",
     },
     p: {
-      marginBottom: "1rem",
+      marginBottom: "spacer2",
       fontSize: "xl",
       fontWeight: "bold",
       ".mobile &": {
@@ -52,7 +52,7 @@ const sx = {
   pdfButton: {
     img: {
       width: "1rem",
-      marginRight: "0.5rem",
+      marginRight: "spacer1",
     },
   },
 };
