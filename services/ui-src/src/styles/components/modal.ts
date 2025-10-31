@@ -3,28 +3,30 @@ import { ComponentStyleConfig } from "@chakra-ui/react";
 const baseStyles = {
   dialog: {
     minWidth: "500px",
-    padding: "2rem",
     ".close": {
       position: "absolute",
-      right: "2rem",
+      right: "spacer4",
     },
     borderRadius: "none",
+    padding: "spacer4",
   },
   header: {
-    padding: "0 0 1.50rem 0",
+    paddingX: "0",
+    paddingTop: "0",
+    paddingBottom: "spacer2",
+    fontWeight: "bold"
   },
   body: {
-    padding: "0 0 2rem 0",
+    paddingX: "0",
+    paddingTop: "0",
+    paddingBottom: "spacer3",
   },
   footer: {
     display: "block",
     padding: "0",
     "button:first-of-type": {
-      marginRight: "2.5rem",
+      marginRight: "spacer3",
     },
-  },
-  closeButton: {
-    padding: "2rem",
   },
 };
 
