@@ -1,8 +1,12 @@
 import {
-  PageType,
+  ButtonLinkTemplate,
   ElementType,
-  MeasureTemplateName,
+  MeasureFooterTemplate,
   MeasurePageTemplate,
+  MeasureTemplateName,
+  NdrEnhancedTemplate,
+  NdrTemplate,
+  PageType,
 } from "../../../types/reports";
 import {
   additionalNotesField,
@@ -82,7 +86,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-1",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -99,7 +103,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-1",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-1"]]: {
@@ -113,7 +117,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-1",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -130,7 +134,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-1",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["LTSS-2"]]: {
@@ -169,7 +173,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-2",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -186,7 +190,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-2",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-2"]]: {
@@ -200,7 +204,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-2",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -217,7 +221,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-2",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["LTSS-6"]]: {
@@ -255,7 +259,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-6",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -271,7 +275,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-6",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-6"]]: {
@@ -285,7 +289,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-6",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -301,7 +305,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-6",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["LTSS-7"]]: {
@@ -339,7 +343,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-7",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -356,7 +360,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-7",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-7"]]: {
@@ -370,7 +374,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-7",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -387,7 +391,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-7",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["LTSS-8"]]: {
@@ -425,7 +429,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-8",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -442,7 +446,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-8",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-8"]]: {
@@ -456,7 +460,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-8",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -473,7 +477,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-8",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["FASI-1"]]: {
@@ -511,7 +515,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "FASI-1",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -528,13 +532,13 @@ export const measureTemplates: Record<
         label:
           "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
         ...statePerformanceTargetLabel,
-      },
+      } as NdrTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "FASI-1",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-FASI-1"]]: {
@@ -548,7 +552,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "FASI-1",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -565,13 +569,13 @@ export const measureTemplates: Record<
         label:
           "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
         ...statePerformanceTargetLabel,
-      },
+      } as NdrTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "FASI-1",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["FASI-2"]]: {
@@ -609,7 +613,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "FASI-2",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -626,13 +630,13 @@ export const measureTemplates: Record<
         label:
           "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
         ...statePerformanceTargetLabel,
-      },
+      } as NdrTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "FASI-2",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-FASI-2"]]: {
@@ -646,7 +650,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "FASI-2",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -663,13 +667,13 @@ export const measureTemplates: Record<
           "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
         ...statePerformanceTargetLabel,
         required: true,
-      },
+      } as NdrTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "FASI-2",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["HCBS-10"]]: {
@@ -705,7 +709,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "HCBS-10",
-      },
+      } as ButtonLinkTemplate,
       {
         ...measureHeader,
         text: "HCBS-10: Managed Care (MLTSS)",
@@ -719,7 +723,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "HCBS-10",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["LTSS-3"]]: {
@@ -757,7 +761,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-3",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -779,7 +783,7 @@ export const measureTemplates: Record<
             label: "Participant with Person-Centered Plan Transmitted to PCP",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
@@ -791,13 +795,13 @@ export const measureTemplates: Record<
             label: "Participant Refused to Share Person-Centered Plan",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "LTSS-3",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-3"]]: {
@@ -811,7 +815,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-3",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -833,7 +837,7 @@ export const measureTemplates: Record<
             label: "Participant with Person-Centered Plan Transmitted to PCP",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
@@ -845,13 +849,13 @@ export const measureTemplates: Record<
             label: "Participant Refused to Share Person-Centered Plan",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "LTSS-3",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["LTSS-4"]]: {
@@ -890,7 +894,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-4",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -907,7 +911,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-4",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-4"]]: {
@@ -921,7 +925,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "LTSS-4",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -938,7 +942,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "LTSS-4",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-5"]]: {
@@ -974,7 +978,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "MLTSS-5",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -995,13 +999,13 @@ export const measureTemplates: Record<
             label: "Fall or Problems with Balance or Gait Evaluation",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "MLTSS-5",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-5-PT2"]]: {
@@ -1015,7 +1019,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "MLTSS-5",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1040,7 +1044,7 @@ export const measureTemplates: Record<
             label: "Plan of Care for Falls",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
@@ -1052,13 +1056,13 @@ export const measureTemplates: Record<
             label: "Participant Refused Risk Assessment",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "MLTSS-5",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS"]]: {
@@ -1093,7 +1097,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "MLTSS",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       deliveryMethodMeasureInstructions,
@@ -1115,13 +1119,13 @@ export const measureTemplates: Record<
               "Acute inpatient and observation stays during the measurement year that were followed by an unplanned acute readmission for any diagnosis within 30 days, for participants 65 years of age",
           },
         ],
-      },
+      } as NdrEnhancedTemplate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
         prevTo: "MLTSS",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["POM-1"]]: {
@@ -1158,7 +1162,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-1",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1174,7 +1178,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-1",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-POM-1"]]: {
@@ -1188,7 +1192,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-1",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1204,7 +1208,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-1",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["POM-2"]]: {
@@ -1241,7 +1245,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-2",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1257,7 +1261,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-2",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-POM-2"]]: {
@@ -1271,7 +1275,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-2",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1287,7 +1291,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-2",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["POM-3"]]: {
@@ -1324,7 +1328,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-3",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1340,7 +1344,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-3",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-POM-3"]]: {
@@ -1354,7 +1358,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-3",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1370,7 +1374,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-3",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["POM-4"]]: {
@@ -1407,7 +1411,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-4",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1423,7 +1427,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-4",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-POM-4"]]: {
@@ -1437,7 +1441,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-4",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1453,7 +1457,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-4",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["POM-5"]]: {
@@ -1490,7 +1494,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-5",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1506,7 +1510,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-5",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-POM-5"]]: {
@@ -1520,7 +1524,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-5",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1536,7 +1540,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-5",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["POM-6"]]: {
@@ -1573,7 +1577,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-6",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1589,7 +1593,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-6",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-POM-6"]]: {
@@ -1603,7 +1607,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-6",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1619,7 +1623,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-6",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["POM-7"]]: {
@@ -1656,7 +1660,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-7",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1672,7 +1676,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-7",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
   [MeasureTemplateName["MLTSS-POM-7"]]: {
@@ -1686,7 +1690,7 @@ export const measureTemplates: Record<
         id: "return-button",
         label: "Return to Measure Information",
         to: "POM-7",
-      },
+      } as ButtonLinkTemplate,
       sectionCompleteBanner,
       measureType,
       {
@@ -1702,7 +1706,7 @@ export const measureTemplates: Record<
         id: "measure-footer",
         prevTo: "POM-7",
         completeSection: true,
-      },
+      } as MeasureFooterTemplate,
     ],
   },
 };

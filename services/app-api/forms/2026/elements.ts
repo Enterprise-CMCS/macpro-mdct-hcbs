@@ -12,6 +12,7 @@ import {
   NdrFieldsTemplate,
   NdrTemplate,
   NdrBasicTemplate,
+  PageElement,
   RadioTemplate,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
@@ -212,7 +213,7 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   required: false,
 };
 
-export const measureDeliveryMethodsSubheader = [
+export const measureDeliveryMethodsSubheader: PageElement[] = [
   divider,
   {
     type: ElementType.SubHeader,
@@ -275,7 +276,7 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-export const whichProgramsWaivers = [
+export const whichProgramsWaivers: PageElement[] = [
   {
     type: ElementType.TextAreaField,
     id: "measure-programs-text",
