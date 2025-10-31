@@ -73,7 +73,6 @@ export interface Report extends ReportBase, ReportOptions {
   lastEditedBy?: string;
   lastEditedByEmail?: string;
   lastSubmitted?: number;
-  //submittedOnDate?: number;
   submissionDates?: { lastSubmitted: number }[];
   submittedBy?: string;
   submittedByEmail?: string;
