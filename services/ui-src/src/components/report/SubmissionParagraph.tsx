@@ -4,9 +4,9 @@ import { getReportName } from "types";
 
 export const SubmissionParagraph = () => {
   const { report } = useStore();
-  if (!report || !report.submitted) return null;
+  if (!report || !report.lastSubmitted) return null;
 
-  const submitted = new Date(report.submitted);
+  const submitted = new Date(report.lastSubmitted);
 
   const readableDate = new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",
