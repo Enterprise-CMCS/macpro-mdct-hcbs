@@ -22,7 +22,7 @@ export const ComponentInventory = () => {
     status: ReportStatus.IN_PROGRESS,
     submissionCount: 0,
     archived: false,
-    submitted: 1,
+    lastSubmitted: 1,
     submittedBy: "User Name",
     pages: [
       {
