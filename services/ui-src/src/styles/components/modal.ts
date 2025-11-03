@@ -9,12 +9,13 @@ const baseStyles = {
     },
     borderRadius: "none",
     padding: "spacer4",
+    boxShadow: ".125rem .125rem .25rem",
   },
   header: {
     paddingX: "0",
     paddingTop: "0",
     paddingBottom: "spacer2",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   body: {
     paddingX: "0",
