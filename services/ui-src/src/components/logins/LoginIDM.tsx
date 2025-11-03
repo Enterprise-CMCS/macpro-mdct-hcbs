@@ -23,7 +23,7 @@ const sx = {
     textAlign: "center",
   },
   heading: {
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
     alignSelf: "center",
   },
   button: {
