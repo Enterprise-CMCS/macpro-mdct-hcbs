@@ -33,14 +33,10 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
-    let rate = stringifyResult(newAnswer?.rate);
-    if (rate && displayRateAsPercent) {
-      rate = rate.concat("%");
-    }
     return {
       numerator: stringifyInput(newAnswer?.numerator),
       denominator: stringifyInput(newAnswer?.denominator),
-      rate,
+      rate: stringifyResult(newAnswer?.rate),
     };
   };
 
@@ -209,13 +205,16 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
             errorMessage={errors.denominator}
             disabled={disabled}
           ></CmsdsTextField>
-          <CmsdsTextField
-            label="Result"
-            hint={hintText?.rateHint}
-            name="result"
-            value={displayValue.rate}
-            disabled
-          ></CmsdsTextField>
+          <div className="rate-wrapper">
+            <CmsdsTextField
+              label="Result"
+              hint={hintText?.rateHint}
+              name="result"
+              value={displayValue.rate}
+              disabled
+            ></CmsdsTextField>
+            {displayRateAsPercent && <span className="percent-sign">%</span>}
+          </div>
           {performanceLevelStatusAlert()}
           {conditonalChildren()}
         </Stack>
@@ -232,6 +231,16 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
     element.answer?.rate && element.minPerformanceLevel
       ? element.answer?.rate >= element.minPerformanceLevel
       : false;
+
+  const formatRate = (rate: number | undefined) => {
+    if (rate !== undefined && element.displayRateAsPercent) {
+      return `${rate}%`;
+    } else if (rate !== undefined) {
+      return `${rate}`;
+    } else {
+      return autoCalculatesText;
+    }
+  };
 
   //currently only rendering textarea components but can be modified to render more
   const children =
@@ -261,9 +270,7 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
     },
     {
       indicator: "Result",
-      response: element.answer?.rate
-        ? `${element.answer.rate}%`
-        : autoCalculatesText,
+      response: formatRate(element.answer?.rate),
       helperText: element.hintText?.rateHint,
     },
     ...children,
@@ -275,6 +282,16 @@ const sx = {
   performance: {
     input: {
       width: "240px",
+    },
+    ".rate-wrapper:has(.percent-sign)": {
+      position: "relative",
+      ".percent-sign": {
+        position: "absolute",
+        bottom: "7px",
+        left: "213px",
+        fontSize: "lg",
+        fontWeight: "bold",
+      },
     },
   },
 };
