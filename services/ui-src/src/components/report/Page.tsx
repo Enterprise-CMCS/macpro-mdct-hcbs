@@ -123,7 +123,7 @@ export const Page = ({ id, setElements, elements }: Props) => {
   });
 
   return (
-    <VStack alignItems="flex-start" gap="2rem" marginBottom="2rem">
+    <VStack alignItems="flex-start" gap="spacer4" marginBottom="spacer4">
       {composedElements}
     </VStack>
   );
