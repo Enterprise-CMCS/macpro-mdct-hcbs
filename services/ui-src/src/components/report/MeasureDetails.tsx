@@ -23,7 +23,7 @@ const render = (
       <Flex flexDirection="column" alignItems="space-between">
         <>
           {!isPdf && (
-            <Text fontWeight="bold" paddingBottom="1rem">
+            <Text fontWeight="bold" paddingBottom="spacer2">
               Quality Measure Details:
             </Text>
           )}
@@ -35,7 +35,7 @@ const render = (
           <Text>{`Collection method: ${formattedCollectionMethod}`}</Text>
         </>
       </Flex>
-      {!isPdf && <Divider margin="2rem 0 0 0" />}
+      {!isPdf && <Divider marginTop="spacer4" />}
     </Box>
   );
 };
@@ -74,8 +74,8 @@ export const MeasureDetailsExport = (section: MeasurePageTemplate) => {
 
   return (
     <HStack
-      gap="2rem"
-      marginLeft="2rem"
+      gap="spacer4"
+      marginLeft="spacer4"
       position="relative"
       alignItems="flex-start"
     >
