@@ -232,16 +232,6 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
       ? element.answer?.rate >= element.minPerformanceLevel
       : false;
 
-  const formatRate = (rate: number | undefined) => {
-    if (rate !== undefined && element.displayRateAsPercent) {
-      return `${rate}%`;
-    } else if (rate !== undefined) {
-      return `${rate}`;
-    } else {
-      return autoCalculatesText;
-    }
-  };
-
   //currently only rendering textarea components but can be modified to render more
   const children =
     !minimum && element.conditionalChildren
@@ -270,12 +260,28 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
     },
     {
       indicator: "Result",
-      response: formatRate(element.answer?.rate),
+      response: formatRateForExport(
+        element.answer?.rate,
+        element.displayRateAsPercent
+      ),
       helperText: element.hintText?.rateHint,
     },
     ...children,
   ];
   return <>{ExportRateTable([{ label, rows }])}</>;
+};
+
+const formatRateForExport = (
+  rate: number | undefined,
+  displayRateAsPercent: boolean | undefined
+) => {
+  if (rate !== undefined && displayRateAsPercent) {
+    return `${rate}%`;
+  } else if (rate !== undefined) {
+    return `${rate}`;
+  } else {
+    return autoCalculatesText;
+  }
 };
 
 const sx = {
