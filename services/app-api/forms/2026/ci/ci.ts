@@ -9,6 +9,7 @@ import {
 import {
   criticalIncidentCommentsField,
   didYouFollowSpecifications,
+  minPerformanceExplanationField,
 } from "../elements";
 
 export const ciReportTemplate: ReportBase = {
@@ -104,9 +105,10 @@ export const ciReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
+          conditionalChildren: [minPerformanceExplanationField],
         },
-        criticalIncidentCommentsField,
         didYouFollowSpecifications,
+        criticalIncidentCommentsField,
       ],
     },
     {
@@ -135,9 +137,10 @@ export const ciReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
+          conditionalChildren: [minPerformanceExplanationField],
         },
-        criticalIncidentCommentsField,
         didYouFollowSpecifications,
+        criticalIncidentCommentsField,
       ],
     },
     {
@@ -166,9 +169,10 @@ export const ciReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
+          conditionalChildren: [minPerformanceExplanationField],
         },
-        criticalIncidentCommentsField,
         didYouFollowSpecifications,
+        criticalIncidentCommentsField,
       ],
     },
     {
