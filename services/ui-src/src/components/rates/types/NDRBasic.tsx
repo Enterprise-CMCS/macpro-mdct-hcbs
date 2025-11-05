@@ -275,10 +275,12 @@ const formatRateForExport = (
   rate: number | undefined,
   displayRateAsPercent: boolean | undefined
 ) => {
-  if (rate !== undefined && displayRateAsPercent) {
-    return `${rate}%`;
-  } else if (rate !== undefined) {
-    return `${rate}`;
+  if (rate !== undefined) {
+    let rateString = stringifyResult(rate);
+    if (displayRateAsPercent) {
+      rateString += "%";
+    }
+    return rateString;
   } else {
     return autoCalculatesText;
   }
