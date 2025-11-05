@@ -182,7 +182,8 @@ export const elementSatisfiesRequired = (
   if (element.type === ElementType.NdrEnhanced) {
     if (element.answer.denominator === undefined) return false;
     return element.answer.rates.every((rateObj) => {
-      if (rateObj.performanceTarget === undefined) return false;
+      if (!element.required && rateObj.performanceTarget === undefined)
+        return false;
       if (rateObj.numerator === undefined) return false;
       if (rateObj.rate === undefined) return false;
       return true;
@@ -199,6 +200,20 @@ export const elementSatisfiesRequired = (
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
+
+    //For forms like PCP-1 & PCP-2, they have conditional children rendered based on if performance level has been reached.
+    if (
+      element.minPerformanceLevel &&
+      element.answer.rate < element.minPerformanceLevel
+    ) {
+      if (
+        element.conditionalChildren &&
+        !element.conditionalChildren
+          .filter((child) => "required" in child)
+          .every((child) => "answer" in child && child.answer != undefined)
+      )
+        return false;
+    }
   }
 
   return true;

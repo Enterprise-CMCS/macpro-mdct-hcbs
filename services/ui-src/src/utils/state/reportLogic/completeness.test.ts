@@ -5,6 +5,7 @@ import {
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
+  NdrBasicTemplate,
   PageStatus,
   PageType,
   RadioTemplate,
@@ -358,13 +359,13 @@ describe("elementSatisfiesRequired", () => {
     { denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] },
     { denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] },
     { denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] },
-  ])("rejects incomplete NDREnhanced rates", (answer) => {
+  ])("accepts incomplete NDREnhanced rates", (answer) => {
     const element = {
       type: ElementType.NdrEnhanced,
       answer,
-      required: true,
+      required: false,
     } as NdrEnhancedTemplate;
-    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
   test("accepts complete NDREnhanced rates", () => {
@@ -386,6 +387,47 @@ describe("elementSatisfiesRequired", () => {
     } as NdrFieldsTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
+  test("rejects incomplete  NDRBasic rates", () => {
+    const element = {
+      id: "mock-id",
+      type: ElementType.NdrBasic,
+      answer: {
+        numerator: 1,
+        denominator: 2,
+        rate: 50,
+      },
+      minPerformanceLevel: 90,
+      conditionalChildren: [
+        {
+          type: ElementType.TextAreaField,
+          required: true,
+        },
+      ],
+      required: true,
+    } as NdrBasicTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+  test("accepts complete NDRBasic rates", () => {
+    const element = {
+      id: "mock-id",
+      type: ElementType.NdrBasic,
+      answer: {
+        numerator: 2,
+        denominator: 2,
+        rate: 100,
+      },
+      minPerformanceLevel: 90,
+      conditionalChildren: [
+        {
+          type: ElementType.TextAreaField,
+          answer: "mock text",
+          required: true,
+        },
+      ],
+      required: true,
+    } as NdrBasicTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
 
   test.each([
     undefined,
@@ -394,12 +436,12 @@ describe("elementSatisfiesRequired", () => {
     [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] }],
-  ])("rejects incomplete NDREnhanced rates", (answer) => {
+  ])("accepts incomplete NDREnhanced rates", (answer) => {
     const element = {
       type: ElementType.NdrFields,
       answer,
-      required: true,
+      required: false,
     } as unknown as NdrFieldsTemplate;
-    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 });

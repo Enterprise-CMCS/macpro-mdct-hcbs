@@ -342,7 +342,7 @@ const ndrEnhancedRateSchema = object().shape({
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
-  performanceTargetLabel: string().required(),
+  performanceTargetLabel: string().notRequired(),
   assessments: array()
     .of(
       object().shape({
@@ -405,6 +405,7 @@ const ndrRateBasicSchema = object().shape({
   multiplier: number().notRequired(),
   displayRateAsPercent: boolean().notRequired(),
   minPerformanceLevel: number().notRequired(),
+  conditionalChildren: lazy(() => array().of(pageElementSchema).notRequired()),
 });
 
 const parentPageTemplateSchema = object().shape({

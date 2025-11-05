@@ -1,6 +1,5 @@
 import KafkaSourceLib from "./kafka-source-lib";
 
-let tempStage: string | undefined;
 let tempNamespace: string | undefined;
 let tempBrokers: string | undefined;
 
@@ -71,17 +70,14 @@ let consoleSpy: {
 
 describe("Test Kafka Lib", () => {
   beforeAll(() => {
-    tempStage = process.env.stage;
     tempNamespace = process.env.topicNamespace;
     tempBrokers = process.env.brokerString;
 
-    process.env.stage = stage;
     process.env.topicNamespace = namespace;
     process.env.brokerString = brokerString;
   });
 
   afterAll(() => {
-    process.env.stage = tempStage;
     process.env.topicNamespace = tempNamespace;
     process.env.brokerString = tempBrokers;
   });

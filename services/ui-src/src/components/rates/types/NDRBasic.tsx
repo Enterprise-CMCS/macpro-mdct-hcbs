@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import {
@@ -6,6 +6,7 @@ import {
   RateInputFieldNameBasic,
   RateInputFieldNamesBasic,
   AlertTypes,
+  PageElement,
 } from "types";
 import {
   parseNumber,
@@ -15,7 +16,7 @@ import {
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
 import { ErrorMessages, autoCalculatesText } from "../../../constants";
-import { Alert } from "components";
+import { Alert, Page } from "components";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
@@ -27,6 +28,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     hintText,
     displayRateAsPercent,
     minPerformanceLevel,
+    conditionalChildren,
   } = element;
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
@@ -118,7 +120,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     updateElement({ answer: newAnswer });
   };
 
-  const performanceLevelStatusAlert = () => {
+  const minimumStatus = () => {
     if (!displayValue.rate || !minPerformanceLevel) return null;
 
     const rateToParse = displayValue.rate.replace("%", "");
@@ -126,7 +128,31 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
 
     if (parsedRate === undefined) return null;
 
-    const meetsMinimum = parsedRate >= minPerformanceLevel;
+    return parsedRate >= minPerformanceLevel;
+  };
+
+  const meetsMinimum = minimumStatus();
+
+  //if the minimum is met, we want to clear any previous saved answers
+  useEffect(() => {
+    if (meetsMinimum) {
+      const clearElements =
+        conditionalChildren?.map((element) => {
+          if ("answer" in element) {
+            element.answer = undefined;
+          }
+          return element;
+        }) ?? [];
+      updateElement({ conditionalChildren: [...clearElements] });
+    }
+  }, [meetsMinimum]);
+
+  const performanceLevelStatusAlert = () => {
+    if (meetsMinimum === null) return null;
+
+    const explainLabel = !conditionalChildren
+      ? "Explain why in the additional comments field below."
+      : "";
 
     return meetsMinimum ? (
       <Alert status={AlertTypes.SUCCESS} title="Success">
@@ -134,8 +160,22 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
       </Alert>
     ) : (
       <Alert status={AlertTypes.WARNING} title="Warning">
-        {`The data entered indicates this measure does not meet the ${minPerformanceLevel}% Minimum Performance Level. Explain why in the additional comments field below.`}
+        {`The data entered indicates this measure does not meet the ${minPerformanceLevel}% Minimum Performance Level. ${explainLabel}`}
       </Alert>
+    );
+  };
+
+  const conditonalChildren = () => {
+    if (!conditionalChildren || meetsMinimum || meetsMinimum === null) return;
+    const setChildren = (checkedChildren: PageElement[]) => {
+      updateElement({ conditionalChildren: [...checkedChildren] });
+    };
+    return (
+      <Page
+        id="radio-children"
+        setElements={setChildren}
+        elements={conditionalChildren}
+      />
     );
   };
 
@@ -177,6 +217,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
             disabled
           ></CmsdsTextField>
           {performanceLevelStatusAlert()}
+          {conditonalChildren()}
         </Stack>
       </Stack>
     </Stack>
@@ -186,6 +227,27 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
 //The pdf rendering of NDRBasic component
 export const NDRBasicExport = (element: NdrBasicTemplate) => {
   const label = element.label ?? "";
+
+  const minimum =
+    element.answer?.rate && element.minPerformanceLevel
+      ? element.answer?.rate >= element.minPerformanceLevel
+      : false;
+
+  //currently only rendering textarea components but can be modified to render more
+  const children =
+    !minimum && element.conditionalChildren
+      ? element.conditionalChildren.map((child) => {
+          {
+            return {
+              indicator: "label" in child && child.label ? child.label : "",
+              response:
+                "answer" in child ? (child.answer as string) : "Not answered",
+              helperText: "helperText" in child ? child.helperText : "",
+            };
+          }
+        })
+      : [];
+
   const rows = [
     {
       indicator: "Numerator",
@@ -204,6 +266,7 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
         : autoCalculatesText,
       helperText: element.hintText?.rateHint,
     },
+    ...children,
   ];
   return <>{ExportRateTable([{ label, rows }])}</>;
 };
