@@ -116,7 +116,7 @@ export const ReportPageWrapper = () => {
           {!currentPage.hideNavButtons && parentPage && (
             <>
               {parentPage.index == 0 && <Divider></Divider>}
-              <Flex width="100%" margin="1.5rem 0 0 0">
+              <Flex width="100%" marginTop="spacer3">
                 {parentPage.index > 0 && (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index - 1)}
@@ -137,7 +137,7 @@ export const ReportPageWrapper = () => {
                 )}
               </Flex>
               {parentPage.index == 0 && (
-                <Box flex="auto" marginTop="3.5rem">
+                <Box flex="auto" marginTop="spacer7">
                   <PraDisclosure />
                 </Box>
               )}

@@ -69,7 +69,7 @@ const sx = {
     alignItems: "center",
   },
   leaveFormLink: {
-    marginLeft: "1rem",
+    marginLeft: "spacer2",
   },
   checkIcon: {
     marginRight: "spacer1",
