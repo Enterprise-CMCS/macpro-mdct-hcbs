@@ -528,11 +528,11 @@ const reportValidateSchema = object().shape({
   lastEdited: number().notRequired(),
   lastEditedBy: string().required(),
   lastEditedByEmail: string().notRequired(),
-  lastSubmitted: number().notRequired(),
+  submitted: number().notRequired(),
   submissionDates: array()
     .of(
       object().shape({
-        lastSubmitted: number().notRequired(),
+        submitted: number().notRequired(),
       })
     )
     .notRequired(),

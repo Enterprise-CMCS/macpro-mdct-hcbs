@@ -10,7 +10,7 @@ mockedUseStore.mockReturnValue(mockUseStore);
 
 const report = {
   submittedBy: "Tall Person",
-  lastSubmitted: new Date("January 1, 2025").getTime(),
+  submitted: new Date("January 1, 2025").getTime(),
   state: "NJ",
   type: "QMS",
 };
