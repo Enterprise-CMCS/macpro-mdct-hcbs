@@ -99,7 +99,12 @@ export const ReportPageWrapper = () => {
           maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
           gap="0rem"
         >
-          <Box flex="auto" alignItems="flex-start" width="100%">
+          <Box
+            flex="auto"
+            alignItems="flex-start"
+            width="100%"
+            marginBottom="spacer4"
+          >
             <form id="aFormId" autoComplete="off">
               {currentPage.elements && (
                 <Page

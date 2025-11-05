@@ -172,7 +172,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     };
     return (
       <Page
-        id="radio-children"
+        id="conditional-children"
         setElements={setChildren}
         elements={conditionalChildren}
       />
