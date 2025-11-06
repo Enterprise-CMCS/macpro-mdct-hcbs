@@ -74,7 +74,7 @@ jobs:
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: yarn playwright install --with-deps
+        run: yarn playwright install --with-deps chromium
         working-directory: tests
 
       - name: Run Playwright tests
