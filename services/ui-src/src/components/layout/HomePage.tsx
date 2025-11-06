@@ -36,7 +36,7 @@ export const HomePage = () => {
   return (
     <>
       <Collapse in={showBanner}>
-        <Box margin="0 2rem">
+        <Box marginX={{ base: "spacer2", md: "spacer3" }} marginTop="spacer3">
           <Banner bannerData={bannerData} />
         </Box>
       </Collapse>

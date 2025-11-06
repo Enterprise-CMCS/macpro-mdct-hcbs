@@ -28,8 +28,17 @@ const baseStyles = {
   },
 };
 
+const sizes = {
+  sm: {
+    dialog: {
+      minWidth: "400px",
+    },
+  },
+};
+
 const modalTheme: ComponentStyleConfig = {
   baseStyle: baseStyles,
+  sizes: sizes,
 };
 
 export default modalTheme;

@@ -52,7 +52,8 @@ const sx = {
   accordionPanel: {
     padding: "1.5rem 1rem 0.5rem",
     ".mobile &": {
-      padding: "0.5rem 0",
+      paddingX: "spacer1",
+      paddingY: "spacer1",
     },
   },
   accordionIcon: {

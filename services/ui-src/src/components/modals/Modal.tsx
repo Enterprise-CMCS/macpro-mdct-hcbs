@@ -14,6 +14,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
+import { useBreakpoint } from "utils";
 
 export const Modal = ({
   modalDisclosure,
@@ -24,11 +25,14 @@ export const Modal = ({
   children,
   disableConfirm,
 }: Props) => {
+  const { isMobile } = useBreakpoint();
+
   return (
     <ChakraModal
       isOpen={modalDisclosure.isOpen}
       onClose={modalDisclosure.onClose}
       preserveScrollBarGap={true}
+      size={isMobile ? "sm" : "md"}
     >
       <ModalOverlay />
       <ModalContent sx={sx.modalContent}>
