@@ -22,7 +22,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <PageTemplate sxOverride={sx.layout}>
+    <PageTemplate>
       <Heading as="h1" variant="h1">
         My Account
       </Heading>
@@ -40,13 +40,4 @@ export const ProfilePage = () => {
       )}
     </PageTemplate>
   );
-};
-
-const sx = {
-  layout: {
-    ".contentFlex": {
-      marginTop: "3.5rem",
-      marginBottom: "5rem !important",
-    },
-  },
 };

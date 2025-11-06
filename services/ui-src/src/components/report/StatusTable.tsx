@@ -120,7 +120,7 @@ export const StatusTableElement = () => {
             onClick={async () => displayModal()}
             disabled={!submittableMetrics?.submittable || submitting}
           >
-            {submitting && <Spinner size="sm" marginRight="1rem" />}
+            {submitting && <Spinner size="sm" marginRight="spacer2" />}
             {`Submit ${reportType} Report`}
           </Button>
         )}

@@ -30,7 +30,7 @@ const returnVariant = {
     width: "1.25rem",
     height: "1.25rem",
     marginTop: "0.15rem",
-    marginRight: "0.5rem",
+    marginRight: "spacer1",
   },
 };
 const sidebarVariant = {
@@ -95,7 +95,8 @@ const unstyledVariant = {
 const outlineButtonVariant = {
   color: "palette.primary",
   border: "1px solid",
-  padding: ".5rem 1rem",
+  paddingY: "spacer1",
+  paddingX: "spacer2",
   borderRadius: "5px",
   fontWeight: "bold",
   textDecoration: "none",

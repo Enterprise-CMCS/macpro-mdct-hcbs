@@ -9,7 +9,7 @@ import { assertExhaustive, isReportType, Report, ReportType } from "types";
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
   return (
-    <Box paddingLeft="1rem" key={`${title}.${index}`}>
+    <Box paddingLeft="spacer2" key={`${title}.${index}`}>
       {navItem(title, index - 1)}
     </Box>
   );

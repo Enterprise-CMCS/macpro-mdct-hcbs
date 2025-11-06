@@ -60,7 +60,7 @@ const sx = {
   subnavContainer: {
     maxW: "appMax",
     ".desktop &": {
-      padding: "0 2rem",
+      paddingX: "spacer4",
     },
   },
   subnavFlex: {
@@ -69,10 +69,10 @@ const sx = {
     alignItems: "center",
   },
   leaveFormLink: {
-    marginLeft: "1rem",
+    marginLeft: "spacer2",
   },
   checkIcon: {
-    marginRight: "0.5rem",
+    marginRight: "spacer1",
     boxSize: "1rem",
     ".mobile &": {
       display: "none",
@@ -90,6 +90,5 @@ const sx = {
   },
   subnavFlexRight: {
     alignItems: "center",
-    paddingRight: ".5rem",
   },
 };
