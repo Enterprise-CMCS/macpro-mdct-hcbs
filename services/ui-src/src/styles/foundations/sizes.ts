@@ -3,7 +3,7 @@ export const sizes = {
   basicPageWidth: "48rem",
   reportPageWidth: "46rem",
   fullPageWidth: "48rem",
-  // font sizes: https://design.cms.gov/utilities/font-size/
+  // TODO: replace with typography values if not being used for other purposes
   xs: "0.75rem", // 12px
   sm: "0.875rem", // 14px
   md: "1rem", // 16px

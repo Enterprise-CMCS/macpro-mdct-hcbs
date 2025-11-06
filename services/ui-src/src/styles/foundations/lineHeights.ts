@@ -1,5 +1,5 @@
 export const lineHeights = {
-  // https://design.cms.gov/utilities/line-height/
+  // TODO: remove if not being used elsewhere
   normal: "normal",
   reset: 1,
   heading: 1.3,
