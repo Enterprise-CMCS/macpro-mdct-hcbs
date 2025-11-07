@@ -46,6 +46,11 @@ const stripedVariant = () => ({
   },
 });
 const measureVariant = {
+  th: {
+    ".mobile &": {
+      display: "none",
+    },
+  },
   td: {
     "&:first-of-type": {
       minWidth: "3rem",
@@ -60,10 +65,23 @@ const measureVariant = {
         whiteSpace: "wrap",
       },
     },
+    ".mobile &": {
+      border: "none",
+      paddingY: "0.5rem",
+      "&:first-of-type": {
+        display: "flex",
+        paddingX: "0",
+      },
+    },
   },
   tr: {
     "th, td": {
       borderColor: "palette.gray_lighter",
+    },
+    ".mobile &": {
+      display: "flex",
+      flexFlow: "column",
+      paddingY: "0.5rem",
     },
   },
 };

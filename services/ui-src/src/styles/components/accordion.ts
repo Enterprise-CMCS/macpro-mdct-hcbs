@@ -4,9 +4,6 @@ const baseStyles = {
   borderStyle: "none",
   root: {
     width: "100%",
-    ".mobile %":{
-      background:"red"
-    }
   },
   button: {
     background: "palette.gray_lightest",
