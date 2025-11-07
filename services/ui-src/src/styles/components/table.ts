@@ -95,6 +95,32 @@ const statusVariant = {
     },
     "&:nth-of-type(2)": {
       width: "25%",
+      div: {
+        display: "flex",
+      },
+    },
+    ".mobile &": {
+      border: "none",
+      width: "100%",
+      paddingY: "0.5rem",
+    },
+  },
+  tr: {
+    ".mobile &": {
+      display: "grid",
+      gridTemplateColumns: "50% 50%",
+      paddingY: "0.5rem",
+    },
+  },
+  th: {
+    ".mobile &": {
+      "&:last-of-type": {
+        display: "none",
+      },
+      padding: "0",
+    },
+    "tr &": {
+      border: "none",
     },
   },
 };
