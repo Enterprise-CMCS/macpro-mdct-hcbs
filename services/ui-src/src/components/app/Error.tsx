@@ -28,11 +28,11 @@ export const Error = () => {
 
 const sx = {
   layout: {
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
   },
   heading: {
     gap: "12px",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     alignItems: "center",
   },
   warningIcon: {
@@ -51,9 +51,9 @@ const sx = {
   subHeadingText: {
     fontSize: "heading_lg",
     fontWeight: "heading_lg",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     ".mobile &": {
-      marginBottom: "1.5rem",
+      marginBottom: "spacer3",
     },
   },
   descriptionText: {

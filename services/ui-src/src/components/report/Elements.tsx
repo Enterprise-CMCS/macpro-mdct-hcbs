@@ -65,7 +65,7 @@ export const HeaderElement = ({
             <Image
               src={icon.src}
               alt={icon.alt}
-              marginRight="1rem"
+              marginRight="spacer2"
               boxSize="xl"
               height="27px"
               display="inline-block"
@@ -122,7 +122,7 @@ export const SubHeaderMeasureElement = (_props: PageElementProps) => {
       as="h2"
       variant="nestedHeading"
       color="palette.gray_dark"
-      marginBottom="-1.5rem"
+      marginBottom="-spacer3"
     >
       {required ? "Required" : "Optional"} Measure
     </Heading>

@@ -19,7 +19,7 @@ const helperTextVariant = {
 const errorVariant = {
   color: "palette.error",
   fontSize: "body_xs",
-  marginTop: "4px",
+  marginTop: "spacer_half",
 };
 const greyVariant = {
   color: "palette.gray",

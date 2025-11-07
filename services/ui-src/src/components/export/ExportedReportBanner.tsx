@@ -14,7 +14,7 @@ export const ExportedReportBanner = ({ reportName }: Props) => {
     <Box sx={sx.container}>
       <Text>Click below to export or print {reportName} shown here</Text>
       <Button sx={sx.pdfButton} onClick={onClickHandler}>
-        <Image src={pdfIcon} w={5} alt="PDF Icon" />
+        <Image src={pdfIcon} alt="PDF Icon" />
         Download PDF
       </Button>
     </Box>
@@ -26,13 +26,13 @@ const sx = {
     position: "sticky",
     zIndex: "sticky",
     top: "0",
-    marginBottom: "3rem",
-    padding: "2rem 2rem",
+    paddingY: "spacer4",
     background: "white",
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     textAlign: "center",
     ".mobile &": {
-      padding: "2rem 1rem",
+      paddingY: "spacer4",
+      paddingX: "spacer2",
     },
     ".tablet &, .mobile &": {
       position: "static",
@@ -41,7 +41,7 @@ const sx = {
       display: "none",
     },
     p: {
-      marginBottom: "1rem",
+      marginBottom: "spacer2",
       fontSize: "heading_xl",
       fontWeight: "heading_xl",
       ".mobile &": {
@@ -52,7 +52,7 @@ const sx = {
   pdfButton: {
     img: {
       width: "1rem",
-      marginRight: "0.5rem",
+      marginRight: "spacer1",
     },
   },
 };

@@ -178,7 +178,7 @@ export const NDRExport = (element: NdrTemplate) => {
   return (
     <>
       <Heading as="h4" fontWeight="bold">
-        Performance Rates
+        Performance Rates ARE HERE
       </Heading>
       {ExportRateTable([{ label, rows }])}
     </>

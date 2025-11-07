@@ -53,9 +53,8 @@ interface Props {
 const sx = {
   actionsFlex: {
     flexFlow: "no-wrap",
-    gridGap: "1rem",
     justifyContent: "end",
-    margin: "1rem 0 0 1rem",
+    marginY: "spacer3",
     ".mobile &": {
       flexDirection: "column",
     },

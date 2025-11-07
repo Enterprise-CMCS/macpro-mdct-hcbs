@@ -24,7 +24,7 @@ export const ReportIntroCard = ({ title, children }: Props) => {
             sx={sx.spreadsheetIcon}
           />
         )}
-        <Flex sx={sx.cardContentFlex} gap="1rem">
+        <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{title}</Heading>
           {children}
         </Flex>
@@ -43,15 +43,15 @@ const sx = {
     flexDirection: "row",
   },
   spreadsheetIcon: {
-    marginRight: "2rem",
-    boxSize: "5.5rem",
+    marginRight: "spacer4",
+    boxSize: "86px",
   },
   cardContentFlex: {
     width: "100%",
     flexDirection: "column",
   },
   cardTitleText: {
-    marginBottom: "0.5rem",
+    marginBottom: "spacer1",
     fontSize: "heading_lg",
     fontWeight: "heading_lg",
     lineHeight: "heading_lg",

@@ -36,6 +36,12 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   report.lastEditedBy = user.fullName;
   report.lastEditedByEmail = user.email;
   report.submitted = Date.now();
+  report.submissionDates = [
+    ...(report.submissionDates || []),
+    {
+      submitted: report.submitted,
+    },
+  ];
   report.submittedBy = user.fullName;
   report.submittedByEmail = user.email;
   report.submissionCount += 1;

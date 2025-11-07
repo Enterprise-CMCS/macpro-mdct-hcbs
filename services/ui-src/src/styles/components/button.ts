@@ -9,6 +9,7 @@ const baseStyles = {
   },
   borderRadius: "0.25rem",
   fontWeight: "normal",
+  paddingX: "spacer3",
 };
 
 const primaryVariant = {

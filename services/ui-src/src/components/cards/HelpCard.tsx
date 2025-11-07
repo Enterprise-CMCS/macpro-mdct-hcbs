@@ -19,7 +19,7 @@ export const HelpCard = ({ icon, children }: Props) => {
   return (
     <Card
       boxShadow="0px 3px 9px rgba(0, 0, 0, 0.2)"
-      paddingBottom="1.5rem !important"
+      paddingBottom="spacer3 !important"
     >
       <Flex sx={sx.root}>
         <Image src={iconMap[icon].image} alt={iconMap[icon].alt} sx={sx.icon} />
@@ -43,20 +43,17 @@ const sx = {
     },
   },
   icon: {
-    marginRight: "2rem",
+    marginRight: "spacer4",
     boxSize: "78px",
     ".mobile &": {
       alignSelf: "center",
       marginRight: "0",
-      marginBottom: "1rem",
+      marginBottom: "spacer2",
     },
   },
   cardContentFlex: {
     width: "100%",
     flexDirection: "column",
     justifyContent: "center",
-  },
-  bodyText: {
-    marginBottom: "1rem",
   },
 };

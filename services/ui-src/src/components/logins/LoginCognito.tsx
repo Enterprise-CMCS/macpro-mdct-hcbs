@@ -32,7 +32,7 @@ export const LoginCognito = () => {
       </Heading>
       <ErrorAlert error={error} alertSxOverride={sx.error} />
       <form onSubmit={handleLogin}>
-        <Box sx={sx.label}>
+        <Box>
           <label>
             <Text sx={sx.labelDescription}>Email</Text>
             <Input
@@ -45,7 +45,7 @@ export const LoginCognito = () => {
             />
           </label>
         </Box>
-        <Box sx={sx.label}>
+        <Box>
           <label>
             <Text sx={sx.labelDescription}>Password</Text>
             <Input
@@ -71,16 +71,13 @@ const sx = {
     alignSelf: "center",
   },
   error: {
-    marginY: "1rem",
-  },
-  label: {
-    marginBottom: "1rem",
+    marginY: "spacer2",
   },
   labelDescription: {
-    marginBottom: "0.5rem",
+    marginBottom: "spacer1",
   },
   button: {
-    marginTop: "1rem",
+    marginTop: "spacer4",
     width: "100%",
   },
 };

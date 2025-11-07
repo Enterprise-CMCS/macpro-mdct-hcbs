@@ -83,78 +83,24 @@ export const Timeout = () => {
   return (
     <Modal isOpen={showTimeout} onClose={refreshAuth}>
       <ModalOverlay />
-      <ModalContent sx={sx.modalContent}>
-        <ModalHeader sx={sx.modalHeader}>Session timeout</ModalHeader>
-        <ModalBody sx={sx.modalBody}>
+      <ModalContent>
+        <ModalHeader>Session timeout</ModalHeader>
+        <ModalBody>
           <Text>
             Due to inactivity, you will be logged out in {formatTime(timeLeft)}.
             Choose to stay logged in or log out. Otherwise, you will be logged
             out automatically.
           </Text>
         </ModalBody>
-        <ModalFooter sx={sx.modalFooter}>
-          <Button sx={sx.stayActive} onClick={refreshAuth} type="submit">
+        <ModalFooter>
+          <Button onClick={refreshAuth} type="submit">
             Stay logged in
           </Button>
-          <Button
-            sx={sx.close}
-            onClick={logout}
-            type="submit"
-            variant="outline"
-          >
+          <Button onClick={logout} type="submit" variant="outline">
             Log out
           </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
   );
-};
-
-const sx = {
-  modalContent: {
-    boxShadow: ".125rem .125rem .25rem",
-    borderRadius: "0",
-    maxWidth: "30rem",
-    marginX: "4rem",
-    padding: "0",
-  },
-  modalHeader: {
-    padding: "2rem 2rem 0 2rem",
-  },
-  modalBody: {
-    padding: "1rem 2rem 0 2rem",
-  },
-  modalFooter: {
-    justifyContent: "flex-start",
-    padding: "0 2rem 2rem 2rem",
-  },
-  stayActive: {
-    justifyContent: "center",
-    marginTop: "1rem",
-    marginRight: "1rem",
-    minWidth: "7.5rem",
-    span: {
-      marginLeft: "1rem",
-      marginRight: "-0.25rem",
-      "&.ds-c-spinner": {
-        marginLeft: 0,
-      },
-    },
-    ".mobile &": {
-      fontSize: "body_sm",
-    },
-  },
-  close: {
-    justifyContent: "start",
-    padding: ".5rem 1rem",
-    marginTop: "1rem",
-    span: {
-      marginLeft: "0rem",
-      marginRight: "0.5rem",
-    },
-    ".mobile &": {
-      fontSize: "body_sm",
-      marginRight: "0",
-    },
-  },
 };
