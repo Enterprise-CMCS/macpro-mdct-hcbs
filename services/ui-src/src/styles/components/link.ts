@@ -47,7 +47,7 @@ const sidebarVariant = {
   borderColor: "palette.gray_lighter",
   borderWidth: "0 0 1px 0",
   fontSize: "body_sm_link",
-  lineHeight: "1.2",
+  lineHeight: "body_sm_link",
   paddingLeft: "1rem",
   height: "var(--chakra-sizes-10)",
   _visited: {
