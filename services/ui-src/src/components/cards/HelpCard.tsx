@@ -59,7 +59,4 @@ const sx = {
   bodyText: {
     marginBottom: "1rem",
   },
-  emailText: {
-    fontWeight: "bold",
-  },
 };

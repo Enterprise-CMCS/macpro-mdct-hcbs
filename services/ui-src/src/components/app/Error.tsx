@@ -43,7 +43,7 @@ const sx = {
   },
   headerText: {
     fontSize: "heading_3xl",
-    fontWeight: "normal",
+    fontWeight: "heading_3xl",
     ".mobile &": {
       fontSize: "heading_2xl",
     },
