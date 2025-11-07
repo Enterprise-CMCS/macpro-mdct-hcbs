@@ -95,7 +95,7 @@ const exportVariant = {
       width: "50%",
       "p:first-of-type": {
         fontWeight: "heading_sm_bold",
-        color: "red",
+        color: "palette.black",
       },
       "&:first-child": {
         "p:nth-child(2)": {
