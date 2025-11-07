@@ -115,16 +115,16 @@ const sx = {
   },
   headerText: {
     marginBottom: "1rem",
-    fontSize: "2rem",
-    fontWeight: "normal",
+    fontSize: "heading_3xl",
+    fontWeight: "heading_3xl",
   },
   currentBannerSectionBox: {
     width: "100%",
     marginBottom: "2.25rem",
   },
   sectionHeader: {
-    fontSize: "1.5rem",
-    fontWeight: "bold",
+    fontSize: "heading_2xl",
+    fontWeight: "heading_2xl",
   },
   currentBannerInfo: {
     flexDirection: "column",

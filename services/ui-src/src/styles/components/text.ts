@@ -4,7 +4,7 @@ const baseStyles = {
   color: "palette.base",
   transition: "all 0.3s ease",
   ".mobile &": {
-    fontSize: ".95rem",
+    fontSize: "body_md",
   },
 };
 
@@ -18,7 +18,7 @@ const helperTextVariant = {
 };
 const errorVariant = {
   color: "palette.error",
-  fontSize: "12px",
+  fontSize: "body_xs",
   marginTop: "4px",
 };
 const greyVariant = {
@@ -26,7 +26,7 @@ const greyVariant = {
   fontWeight: "bold",
   textTransform: "none",
   letterSpacing: "normal",
-  fontSize: "sm",
+  fontSize: "body_sm",
 };
 
 const variants = {

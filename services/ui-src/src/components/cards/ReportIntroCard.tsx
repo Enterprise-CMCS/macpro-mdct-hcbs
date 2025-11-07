@@ -52,8 +52,8 @@ const sx = {
   },
   cardTitleText: {
     marginBottom: "0.5rem",
-    fontSize: "lg",
-    fontWeight: "bold",
-    lineHeight: "1.5",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
+    lineHeight: "heading_lg",
   },
 };

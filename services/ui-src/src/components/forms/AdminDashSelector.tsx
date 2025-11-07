@@ -49,7 +49,7 @@ export const AdminDashSelector = () => {
   };
 
   return (
-    <Box sx={sx.root}>
+    <Box>
       <Heading as="h1" sx={sx.headerText}>
         View State/Territory Reports
       </Heading>
@@ -88,15 +88,9 @@ export const AdminDashSelector = () => {
 };
 
 const sx = {
-  root: {
-    ".ds-c-field__hint": {
-      fontSize: "md",
-      color: "palette.base",
-    },
-  },
   headerText: {
-    fontSize: "2rem",
-    fontWeight: "normal",
+    fontSize: "heading_3xl",
+    fontWeight: "heading_3xl",
     paddingBottom: "1.5rem",
   },
   navigationButton: {

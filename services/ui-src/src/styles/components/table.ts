@@ -7,10 +7,10 @@ const baseStyles = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       color: "palette.gray",
-      fontWeight: "bold",
+      fontWeight: "heading_sm_bold",
       textTransform: "none",
       letterSpacing: "normal",
-      fontSize: "sm",
+      fontSize: "heading_sm",
     },
     tr: {
       borderBottom: "1px solid",
@@ -69,11 +69,11 @@ const measureVariant = {
 };
 const statusVariant = {
   td: {
-    fontSize: "14px",
+    fontSize: "heading_sm",
     padding: "0.75rem 0.75rem 0.75rem 0",
     "&:first-of-type": {
       width: "65%",
-      fontWeight: "bold",
+      fontWeight: "heading_sm_bold",
     },
     "&:nth-of-type(2)": {
       width: "25%",
@@ -91,11 +91,11 @@ const exportVariant = {
       },
     },
     td: {
-      fontSize: "14px",
+      fontSize: "heading_sm",
       width: "50%",
       "p:first-of-type": {
-        fontWeight: "bold",
-        color: "palette.black",
+        fontWeight: "heading_sm_bold",
+        color: "red",
       },
       "&:first-child": {
         "p:nth-child(2)": {
@@ -113,7 +113,7 @@ const reportDetailsVariant = {
     },
   },
   td: {
-    fontSize: "14px",
+    fontSize: "body_sm",
     padding: "0",
     color: "black",
   },

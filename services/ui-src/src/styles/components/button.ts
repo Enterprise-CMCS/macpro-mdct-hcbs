@@ -5,7 +5,7 @@ import theme from "styles/theme";
 const baseStyles = {
   transition: "all 0.3s ease",
   ".mobile &": {
-    fontSize: "sm",
+    fontSize: "body_sm",
   },
   borderRadius: "0.25rem",
   fontWeight: "normal",

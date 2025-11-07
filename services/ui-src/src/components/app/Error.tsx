@@ -42,21 +42,21 @@ const sx = {
     },
   },
   headerText: {
-    fontSize: "4xl",
+    fontSize: "heading_3xl",
     fontWeight: "normal",
     ".mobile &": {
-      fontSize: "2xl",
+      fontSize: "heading_2xl",
     },
   },
   subHeadingText: {
-    fontSize: "lg",
-    fontWeight: "bold",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
     marginBottom: "1rem",
     ".mobile &": {
       marginBottom: "1.5rem",
     },
   },
   descriptionText: {
-    fontSize: "md",
+    fontSize: "body_md",
   },
 };

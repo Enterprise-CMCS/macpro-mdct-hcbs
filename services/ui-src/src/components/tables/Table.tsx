@@ -97,7 +97,7 @@ const sx = {
     padding: "0.75rem 0.5rem",
     borderColor: "palette.gray_lighter",
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "heading_xs",
     },
   },
   tableCell: {
@@ -105,7 +105,7 @@ const sx = {
     borderStyle: "none",
     fontWeight: "normal",
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "body_xs",
     },
   },
   ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed

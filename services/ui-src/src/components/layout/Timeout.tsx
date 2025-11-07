@@ -141,7 +141,7 @@ const sx = {
       },
     },
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
     },
   },
   close: {
@@ -153,7 +153,7 @@ const sx = {
       marginRight: "0.5rem",
     },
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
       marginRight: "0",
     },
   },
