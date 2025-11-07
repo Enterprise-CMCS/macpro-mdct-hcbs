@@ -47,7 +47,7 @@ const sx = {
     marginBottom: "1rem",
   },
   emailText: {
-    fontWeight: "bold",
+    fontWeight: "body_md_link_bold",
   },
   accordionItem: {
     marginBottom: "1.5rem",
