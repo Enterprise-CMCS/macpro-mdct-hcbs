@@ -27,7 +27,7 @@ export const LoginCognito = () => {
 
   return (
     <Stack>
-      <Heading size="md" as="h2" sx={sx.heading}>
+      <Heading fontSize="md" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
       <ErrorAlert error={error} alertSxOverride={sx.error} />
