@@ -119,7 +119,7 @@ export const HorizontalTable = (props: TableProps) => {
                   }
                 >
                   {props.unlocking === idx && (
-                    <Spinner size="sm" marginRight="0.25rem" />
+                    <Spinner size="sm" marginRight="spacer_half" />
                   )}
                   Unlock
                 </Button>
@@ -132,7 +132,7 @@ export const HorizontalTable = (props: TableProps) => {
                   disabled={props.archiving === idx}
                 >
                   {props.archiving === idx && (
-                    <Spinner size="sm" marginRight="0.25rem" />
+                    <Spinner size="sm" marginRight="spacer_half" />
                   )}
                   {report.archived ? "Unarchive" : "Archive"}
                 </Button>
@@ -215,7 +215,7 @@ export const VerticalTable = (props: TableProps) => {
                     }
                   >
                     {props.unlocking === idx && (
-                      <Spinner size="sm" marginRight="0.25rem" />
+                      <Spinner size="sm" marginRight="spacer_half" />
                     )}
                     Unlock
                   </Button>
@@ -227,7 +227,7 @@ export const VerticalTable = (props: TableProps) => {
                     disabled={props.archiving === idx}
                   >
                     {props.archiving === idx && (
-                      <Spinner size="sm" marginRight="0.25rem" />
+                      <Spinner size="sm" marginRight="spacer_half" />
                     )}
                     {report.archived ? "Unarchive" : "Archive"}
                   </Button>

@@ -16,9 +16,22 @@ const baseStyles = {
         fontWeight: "semibold",
       },
     },
-    p: {
-      marginBottom: "1rem",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
     },
+    header: {
+      marginBottom: "spacer3",
+    },
+    p: {
+      marginBottom: "spacer3",
+    },
+    ul: {
+      marginBottom: "spacer3",
+    },
+  },
+  container: {
+    borderStyle: "none",
   },
 };
 

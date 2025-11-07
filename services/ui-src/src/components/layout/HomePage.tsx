@@ -45,7 +45,7 @@ export const HomePage = () => {
         {userIsEndUser ? (
           <>
             <Box>
-              <Heading as="h1" variant="h1">
+              <Heading as="h1" variant="h1" paddingBottom="spacer3">
                 Home and Community-Based Services (HCBS) Portal
               </Heading>
               <Text>

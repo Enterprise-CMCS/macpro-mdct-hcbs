@@ -78,7 +78,7 @@ export const MeasureFooterElement = (
   };
 
   return (
-    <Box width="100%" marginTop="4">
+    <Box width="100%" marginTop="spacer3">
       <Flex justifyContent="space-between">
         <Button
           variant="outline"
@@ -106,7 +106,7 @@ export const MeasureFooterElement = (
           {footer.clear && !readOnlyView && (
             <Button
               variant="link"
-              marginRight="2rem"
+              marginRight="spacer4"
               onClick={() => onClearButton()}
             >
               Clear measure data

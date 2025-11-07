@@ -50,7 +50,7 @@ const sx = {
     textAlign: "left",
   },
   accordionPanel: {
-    padding: "1.5rem 1rem 0.5rem",
+    padding: "spacer3",
     ".mobile &": {
       paddingX: "spacer1",
       paddingY: "spacer1",
