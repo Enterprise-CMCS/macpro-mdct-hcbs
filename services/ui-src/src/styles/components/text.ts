@@ -23,7 +23,7 @@ const errorVariant = {
 };
 const greyVariant = {
   color: "palette.gray",
-  fontWeight: "bold",
+  fontWeight: "body_sm",
   textTransform: "none",
   letterSpacing: "normal",
   fontSize: "body_sm",

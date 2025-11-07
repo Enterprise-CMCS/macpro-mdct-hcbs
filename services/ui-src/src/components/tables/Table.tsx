@@ -103,7 +103,7 @@ const sx = {
   tableCell: {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
-    fontWeight: "normal",
+    fontWeight: "body_xs",
     ".mobile &": {
       fontSize: "body_xs",
     },

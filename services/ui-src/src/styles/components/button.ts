@@ -8,7 +8,7 @@ const baseStyles = {
     fontSize: "body_sm",
   },
   borderRadius: "0.25rem",
-  fontWeight: "normal",
+  fontWeight: "body_sm",
   paddingX: "spacer3",
 };
 

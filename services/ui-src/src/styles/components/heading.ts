@@ -63,7 +63,7 @@ const headingTheme: ComponentStyleConfig = {
   variants: variants,
   defaultProps: {
     variant: "primary",
-    fontSize: "heading_md",
+    size: "md",
   },
 };
 
