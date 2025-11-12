@@ -40,10 +40,6 @@ export enum PageStatus {
   COMPLETE = "Complete",
 }
 
-export const isReportStatus = (status: string): status is ReportStatus => {
-  return Object.values(ReportStatus).includes(status as ReportStatus);
-};
-
 export type ReportMeasureConfig = {
   measureLookup: {
     defaultMeasures: MeasureOptions[];
@@ -97,11 +93,6 @@ export type ParentPageTemplate = {
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
-};
-export const isParentPage = (
-  page: PageTemplate
-): page is ParentPageTemplate => {
-  return "childPageIds" in page;
 };
 
 export interface PageData {
@@ -625,28 +616,6 @@ export enum MeasureTemplateName {
   "MLTSS-POM-5" = "MLTSS-POM-5",
   "MLTSS-POM-6" = "MLTSS-POM-6",
   "MLTSS-POM-7" = "MLTSS-POM-7",
-}
-
-export interface FormComponent {
-  id: string;
-  type: string;
-}
-
-export interface Input extends FormComponent {
-  type: "input";
-  inputType: string;
-  questionText: string;
-  answer: string | number | undefined;
-}
-
-export interface Text extends FormComponent {
-  type: "text";
-  text: string;
-}
-export interface Form {
-  name: string;
-  createdBy: string;
-  sections: [];
 }
 
 /**

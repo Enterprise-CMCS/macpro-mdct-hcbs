@@ -162,37 +162,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmitInfo?: CMIT;
 }
 
-export interface SectionTemplate {
-  title: string;
-  id: string;
-  pageElements: PageElements[];
-}
-
-export interface FormComponent {
-  id: string;
-  type: string;
-}
-
-export interface Input extends FormComponent {
-  type: "input";
-  inputType: string;
-  questionText: string;
-  answer?: string | number;
-}
-
-export interface Text extends FormComponent {
-  type: "text";
-  text: string;
-}
-
-export type PageElements = Input | Text;
-
-export interface Form {
-  name: string;
-  createdBy: string;
-  sections: [];
-}
-
 export type ReportMeasureConfig = {
   measureLookup: {
     defaultMeasures: MeasureOptions[];
@@ -232,11 +201,7 @@ export type ParentPageTemplate = {
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
-};
-export const isParentPage = (
-  page: PageTemplate
-): page is ParentPageTemplate => {
-  return "childPageIds" in page;
+  hideNavButtons?: undefined;
 };
 
 export type FormPageTemplate = {
@@ -248,9 +213,6 @@ export type FormPageTemplate = {
   sidebar?: boolean;
   hideNavButtons?: boolean;
   childPageIds?: PageId[];
-};
-export const isChildPage = (page: PageTemplate): page is FormPageTemplate => {
-  return "elements" in page;
 };
 
 export type PageId = string;
@@ -552,11 +514,7 @@ export type NdrBasicTemplate = {
   id: string;
   type: ElementType.NdrBasic;
   label?: string;
-  answer?: {
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   hintText?: {
     numHint: string | undefined;
     denomHint: string | undefined;
