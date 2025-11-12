@@ -17,8 +17,8 @@ import {
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
+  AlertTypes,
 } from "../../types/reports";
-import { AlertTypes } from "../../utils/constants";
 
 const REPORT_YEAR = 2026;
 

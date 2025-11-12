@@ -4,8 +4,8 @@ import {
   ReportType,
   HeaderIcon,
   ReportBase,
+  AlertTypes,
 } from "../../../types/reports";
-import { AlertTypes } from "../../../utils/constants";
 import {
   additionalNotesField,
   divider,

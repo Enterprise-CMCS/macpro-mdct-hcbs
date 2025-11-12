@@ -6,8 +6,8 @@ import {
   MeasureTemplateName,
   MeasurePageTemplate,
   HeaderIcon,
+  AlertTypes,
 } from "../../../types/reports";
-import { AlertTypes } from "../../../utils/constants";
 import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { measureTemplates } from "./measureTemplates";
 

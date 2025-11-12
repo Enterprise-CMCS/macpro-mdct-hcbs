@@ -5,7 +5,6 @@ import {
   DeliverySystem,
   MeasureSpecification,
   StateAbbr,
-  AlertTypes,
 } from "../utils/constants";
 
 export enum ReportType {
@@ -126,6 +125,13 @@ export enum PageStatus {
   NOT_STARTED = "Not started",
   IN_PROGRESS = "In progress",
   COMPLETE = "Complete",
+}
+
+export enum AlertTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
 }
 
 export interface Report extends ReportBase, ReportOptions {
