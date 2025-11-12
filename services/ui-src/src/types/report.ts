@@ -62,7 +62,7 @@ export type ReportBase = {
     | ReviewSubmitTemplate
   )[];
 };
-export type ReportTemplate = ReportBase & ReportMeasureConfig;
+export type ReportWithMeasuresTemplate = ReportBase & ReportMeasureConfig;
 
 export interface Report extends ReportBase, ReportOptions {
   id?: string;
@@ -139,11 +139,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
-}
-
-export interface StatusPageTemplate extends FormPageTemplate {
-  required?: boolean;
-  stratified?: boolean;
 }
 
 export const isMeasureTemplate = (
@@ -364,6 +359,7 @@ export type MeasureResultsNavigationTableTemplate = {
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
   id: string;
+  to: PageId;
 };
 
 export type RadioTemplate = {
@@ -492,9 +488,9 @@ export type NdrBasicTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint: string;
-    denomHint: string;
-    rateHint: string;
+    numHint: string | undefined;
+    denomHint: string | undefined;
+    rateHint: string | undefined;
   };
   required: boolean;
   multiplier?: number;
@@ -564,6 +560,7 @@ export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
+  stratified: boolean;
   measureTemplate: MeasureTemplateName;
   dependentPages: DependentPageInfo[];
 }

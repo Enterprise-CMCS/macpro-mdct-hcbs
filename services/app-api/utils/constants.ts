@@ -16,6 +16,13 @@ export enum DeliverySystem {
   MLTSS = "MLTSS",
 }
 
+export enum AlertTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
 export enum DataSource {
   CaseRecordManagement = "CaseRecordManagement",
   Administrative = "Administrative",

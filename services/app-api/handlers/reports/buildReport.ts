@@ -18,10 +18,11 @@ import {
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { logger } from "../../libs/debug-lib";
+import { StateAbbr } from "../../utils/constants";
 
 export const buildReport = async (
   reportType: ReportType,
-  state: string,
+  state: StateAbbr,
   reportOptions: ReportOptions,
   user: User
 ) => {

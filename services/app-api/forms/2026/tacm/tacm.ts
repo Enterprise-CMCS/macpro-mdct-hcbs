@@ -5,6 +5,7 @@ import {
   HeaderIcon,
   ReportBase,
 } from "../../../types/reports";
+import { AlertTypes } from "../../../utils/constants";
 import {
   additionalNotesField,
   divider,
@@ -191,7 +192,7 @@ export const tacmReportTemplate: ReportBase = {
         {
           type: ElementType.StatusAlert,
           id: "review-alert",
-          status: "error",
+          status: AlertTypes.ERROR,
           title: "Your form is not ready for submission",
           text: "Some sections of the TACM Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },

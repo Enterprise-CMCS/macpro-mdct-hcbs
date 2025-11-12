@@ -4,6 +4,8 @@ import {
   DataSource,
   DeliverySystem,
   MeasureSpecification,
+  StateAbbr,
+  AlertTypes,
 } from "../utils/constants";
 
 export enum ReportType {
@@ -37,7 +39,7 @@ export interface CMIT {
   dataSource: DataSource;
 }
 
-export interface dependentPageInfo {
+export interface DependentPageInfo {
   key: string;
   linkText: string;
   template: MeasureTemplateName;
@@ -49,7 +51,7 @@ export interface MeasureOptions {
   required: boolean;
   stratified: boolean;
   measureTemplate: MeasureTemplateName;
-  dependentPages: dependentPageInfo[];
+  dependentPages: DependentPageInfo[];
 }
 
 export enum MeasureTemplateName {
@@ -129,7 +131,7 @@ export enum PageStatus {
 export interface Report extends ReportBase, ReportOptions {
   id?: string;
   name: string;
-  state: string;
+  state: StateAbbr;
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
@@ -155,7 +157,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   required?: boolean;
   stratified?: boolean;
   substitutable?: string;
-  dependentPages?: dependentPageInfo[];
+  dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
 }
 
@@ -502,6 +504,13 @@ export type RateType = {
   performanceTarget: number | undefined;
 };
 
+export type RateData = {
+  performanceTarget?: number | undefined;
+  numerator: number | undefined;
+  denominator: number | undefined;
+  rate: number | undefined;
+};
+
 export type RateSetData = {
   denominator: number | undefined;
   rates: RateType[];
@@ -534,12 +543,7 @@ export type NdrTemplate = {
   type: ElementType.Ndr;
   label: string;
   performanceTargetLabel: string;
-  answer?: {
-    performanceTarget: number | undefined;
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   required: boolean;
 };
 
@@ -595,7 +599,7 @@ export type StatusAlertTemplate = {
   id: string;
   title?: string;
   text: string;
-  status: string;
+  status: AlertTypes;
 };
 
 /**
