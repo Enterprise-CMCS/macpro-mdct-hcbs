@@ -23,7 +23,7 @@ interface Props {
 
 const sx = {
   text: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     color: "palette.white",
     _groupHover: { color: "palette.gray_lighter" },
   },

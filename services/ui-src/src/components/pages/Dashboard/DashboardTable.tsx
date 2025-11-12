@@ -76,7 +76,7 @@ export const HorizontalTable = (props: TableProps) => {
           <Td
             fontWeight={"bold"}
             maxWidth={"14.25rem"}
-            fontSize="16px"
+            fontSize="body_md"
             padding="16px 16px 16px 0"
           >
             {report.name ? report.name : "{Name of form}"}
@@ -110,7 +110,7 @@ export const HorizontalTable = (props: TableProps) => {
               <td>
                 <Button
                   variant="link"
-                  fontSize="sm"
+                  fontSize="body_sm"
                   onClick={async () => await props.toggleRelease(idx)}
                   disabled={
                     report.status !== ReportStatus.SUBMITTED ||
@@ -127,7 +127,7 @@ export const HorizontalTable = (props: TableProps) => {
               <td>
                 <Button
                   variant="link"
-                  fontSize="sm"
+                  fontSize="body_sm"
                   onClick={async () => await props.toggleArchived(idx)}
                   disabled={props.archiving === idx}
                 >
@@ -162,7 +162,7 @@ export const VerticalTable = (props: TableProps) => {
                   />
                 </button>
               )}
-              <Text fontWeight="bold" fontSize="16px">
+              <Text fontWeight="heading_md" fontSize="heading_md">
                 {report.name}
               </Text>
             </HStack>
@@ -190,7 +190,7 @@ export const VerticalTable = (props: TableProps) => {
               variant="outline"
               width="100px"
               height="30px"
-              fontSize="sm"
+              fontSize="body_sm"
               disabled={report.archived}
               aria-label={
                 report.status !== ReportStatus.SUBMITTED

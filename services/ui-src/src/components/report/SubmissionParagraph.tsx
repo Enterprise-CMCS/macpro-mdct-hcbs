@@ -16,10 +16,10 @@ export const SubmissionParagraph = () => {
   } was submitted on ${readableDate} by ${report.submittedBy}.`;
   return (
     <Stack>
-      <Text fontSize="16px" fontWeight="bold">
+      <Text fontSize="heading_md" fontWeight="heading_md">
         Thank You
       </Text>
-      <Text fontSize="16px">{submissionText}</Text>
+      <Text fontSize="body_md">{submissionText}</Text>
     </Stack>
   );
 };

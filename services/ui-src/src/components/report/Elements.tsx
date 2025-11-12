@@ -145,11 +145,11 @@ export const ParagraphElement = ({
   return (
     <Stack>
       {element.title && (
-        <Text fontSize="16px" fontWeight="bold">
+        <Text fontSize="heading_md" fontWeight="heading_md">
           {element.title}
         </Text>
       )}
-      <Text fontSize="16px" fontWeight={element.weight}>
+      <Text fontSize="body_md" fontWeight={element.weight}>
         {element.text}
       </Text>
     </Stack>

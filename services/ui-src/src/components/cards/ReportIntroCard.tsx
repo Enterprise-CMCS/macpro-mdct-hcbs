@@ -51,9 +51,9 @@ const sx = {
     flexDirection: "column",
   },
   cardTitleText: {
-    fontSize: "lg",
-    fontWeight: "bold",
-    lineHeight: "1.5",
     marginBottom: "spacer1",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
+    lineHeight: "heading_lg",
   },
 };

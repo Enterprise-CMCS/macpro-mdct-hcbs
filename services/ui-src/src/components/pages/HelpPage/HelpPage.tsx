@@ -47,6 +47,6 @@ const sx = {
     marginBottom: "spacer1",
   },
   emailText: {
-    fontWeight: "bold",
+    fontWeight: "body_md_link_bold",
   },
 };

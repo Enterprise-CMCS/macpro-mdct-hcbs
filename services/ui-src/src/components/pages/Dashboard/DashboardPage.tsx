@@ -96,7 +96,7 @@ export const DashboardPage = () => {
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
             {userIsAdmin ? (
               <Box sx={sx.accordionPanel}>
-                <Heading size="sm" fontWeight="bold">
+                <Heading fontSize="heading_md" fontWeight="heading_md">
                   Admin Instructions
                 </Heading>
                 <ul>

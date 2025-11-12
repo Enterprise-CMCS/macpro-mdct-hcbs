@@ -51,7 +51,11 @@ export const TableStatusIcon = ({ tableStatus, showLabel, isPdf }: Props) => {
             {showLabel && <Text>{status.text}</Text>}
           </HStack>
           {isPdf && (
-            <Text color={status.textColor} fontWeight={"bold"} fontSize="10px">
+            <Text
+              color={status.textColor}
+              fontWeight={"heading_xs"}
+              fontSize="heading_xs"
+            >
               {status.text}
             </Text>
           )}

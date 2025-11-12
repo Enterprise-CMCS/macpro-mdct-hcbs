@@ -107,8 +107,8 @@ interface Props {
 
 const sx = {
   modalHeaderText: {
-    fontSize: "2xl",
-    fontWeight: "bold",
+    fontSize: "heading_2xl",
+    fontWeight: "heading_2xl",
   },
   modalCloseContainer: {
     position: "absolute",
@@ -122,13 +122,13 @@ const sx = {
       },
     },
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
     },
   },
   close: {
     padding: "0 spacer2",
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
       marginRight: "0",
     },
   },

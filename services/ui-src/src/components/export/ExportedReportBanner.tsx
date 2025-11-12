@@ -42,10 +42,10 @@ const sx = {
     },
     p: {
       marginBottom: "spacer2",
-      fontSize: "xl",
-      fontWeight: "bold",
+      fontSize: "heading_xl",
+      fontWeight: "heading_xl",
       ".mobile &": {
-        fontSize: "lg",
+        fontSize: "heading_lg",
       },
     },
   },
