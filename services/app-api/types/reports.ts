@@ -1,11 +1,6 @@
 // Templates
 
-import {
-  DataSource,
-  DeliverySystem,
-  MeasureSpecification,
-  StateAbbr,
-} from "../utils/constants";
+import { StateAbbr } from "../utils/constants";
 
 export enum ReportType {
   QMS = "QMS",
@@ -580,6 +575,30 @@ export type ChoiceTemplate = {
   checked?: boolean;
   checkedChildren?: PageElement[];
 };
+
+export enum DeliverySystem {
+  FFS = "FFS",
+  MLTSS = "MLTSS",
+}
+
+export enum DataSource {
+  CaseRecordManagement = "CaseRecordManagement",
+  Administrative = "Administrative",
+  Hybrid = "Hybrid",
+  RecordReview = "RecordReview",
+  Survey = "Survey",
+}
+
+export enum MeasureSteward {
+  CMS,
+  CQL,
+}
+
+export enum MeasureSpecification {
+  CMS = "CMS",
+  HEDIS = "HEDIS",
+  CQL = "CQL",
+}
 
 export type MeasureTableTemplate = {
   id: string;

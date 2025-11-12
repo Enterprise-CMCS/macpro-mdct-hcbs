@@ -11,37 +11,6 @@ export const error = {
   END_DATE_BEFORE_START_DATE: "End date can't be before start date",
 };
 
-export enum DeliverySystem {
-  FFS = "FFS",
-  MLTSS = "MLTSS",
-}
-
-export enum AlertTypes {
-  ERROR = "error",
-  INFO = "info",
-  SUCCESS = "success",
-  WARNING = "warning",
-}
-
-export enum DataSource {
-  CaseRecordManagement = "CaseRecordManagement",
-  Administrative = "Administrative",
-  Hybrid = "Hybrid",
-  RecordReview = "RecordReview",
-  Survey = "Survey",
-}
-
-export enum MeasureSteward {
-  CMS = "CMS",
-  CQL = "CQL",
-}
-
-export enum MeasureSpecification {
-  CMS = "CMS",
-  HEDIS = "HEDIS",
-  CQL = "CQL",
-}
-
 export enum StateNames {
   AL = "Alabama",
   AK = "Alaska",
