@@ -126,7 +126,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
   cmitId: string;
   required?: boolean;
-  stratified?: boolean;
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
@@ -337,7 +336,7 @@ export type AccordionTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   id: string;
-  measureDisplay: "required" | "stratified" | "optional";
+  measureDisplay: "required" | "optional";
 };
 
 export type MeasureResultsNavigationTableTemplate = {
@@ -551,7 +550,6 @@ export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
-  stratified: boolean;
   measureTemplate: MeasureTemplateName;
   dependentPages: DependentPageInfo[];
 }

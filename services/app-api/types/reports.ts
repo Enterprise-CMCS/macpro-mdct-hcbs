@@ -43,7 +43,6 @@ export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
-  stratified: boolean;
   measureTemplate: MeasureTemplateName;
   dependentPages: DependentPageInfo[];
 }
@@ -156,7 +155,6 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
   cmitId: string;
   required?: boolean;
-  stratified?: boolean;
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
@@ -561,7 +559,7 @@ export enum MeasureSpecification {
 export type MeasureTableTemplate = {
   id: string;
   type: ElementType.MeasureTable;
-  measureDisplay: "required" | "stratified" | "optional";
+  measureDisplay: "required" | "optional";
 };
 
 export type MeasureResultsNavigationTableTemplate = {

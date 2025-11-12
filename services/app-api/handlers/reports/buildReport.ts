@@ -106,7 +106,6 @@ const initializeMeasurePage = (
   const page = structuredClone(template);
   page.cmit = measure.cmit;
   page.cmitId = measure.uid;
-  page.stratified = measure.stratified;
   page.required = measure.required;
   page.status = PageStatus.NOT_STARTED;
 

@@ -228,9 +228,7 @@ const submissionParagraphSchema = object().shape({
 const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
-  measureDisplay: string()
-    .oneOf(["required", "stratified", "optional"])
-    .required(),
+  measureDisplay: string().oneOf(["required", "optional"]).required(),
 });
 
 const measureResultsNavigationTableTemplateSchema = object().shape({
@@ -453,7 +451,6 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmit: number().notRequired(),
   cmitId: string().notRequired(),
   required: boolean().notRequired(),
-  stratified: boolean().notRequired(),
   substitutable: string().notRequired(),
   dependentPages: array()
     .of(dependentPageInfoSchema)

@@ -131,7 +131,6 @@ const elements: PageElement[] = [
   },
   {
     type: ElementType.MeasureTable,
-    measureDisplay: "stratified",
     id: "",
   },
   {
