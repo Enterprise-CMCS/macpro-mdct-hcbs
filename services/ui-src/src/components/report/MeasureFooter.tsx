@@ -78,7 +78,7 @@ export const MeasureFooterElement = (
   };
 
   return (
-    <Box width="100%" marginTop="spacer3" sx={sx.container}>
+    <Box width="100%" marginTop="spacer3">
       <Flex justifyContent="space-between">
         <Button
           variant="outline"
@@ -132,18 +132,4 @@ export const MeasureFooterElement = (
       </Flex>
     </Box>
   );
-};
-
-const sx = {
-  container: {
-    ".mobile &": {
-      "div:nth-child(2)": {
-        display: "flex",
-        flexDir: "column-reverse",
-        "& :nth-child(2)": {
-          marginBottom: "spacer2",
-        },
-      },
-    },
-  },
 };
