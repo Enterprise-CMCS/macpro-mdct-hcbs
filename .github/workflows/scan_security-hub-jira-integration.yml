@@ -28,8 +28,8 @@ jobs:
 
   sync:
     if: github.ref == 'refs/heads/production'
-    environment: production
     name: Run sync
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
