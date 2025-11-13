@@ -6,6 +6,7 @@ QmsReportsTable=local-qms-reports
 TacmReportsTable=local-tacm-reports
 CiReportsTable=local-ci-reports
 PcpReportsTable=local-pcp-reports
+WwlReportsTable=local-wwl-reports
 
 DISABLE_ESLINT_PLUGIN=true
 

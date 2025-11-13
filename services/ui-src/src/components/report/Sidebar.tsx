@@ -26,6 +26,8 @@ const getTitle = (report: Report) => {
       return "Timely Access Report";
     case ReportType.PCP:
       return "Person-Centered Planning";
+    case ReportType.WWL:
+      return "Waiver Waiting List Report";
     default:
       assertExhaustive(report.type);
       return "";

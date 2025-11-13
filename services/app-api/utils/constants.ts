@@ -106,6 +106,7 @@ export const reportTables: { [key in ReportType]: string } = {
   TACM: process.env.TacmReportsTable!,
   CI: process.env.CiReportsTable!,
   PCP: process.env.PcpReportsTable!,
+  WWL: process.env.WwlReportsTable!,
 };
 
 export const tableTopics: { [key in ReportType]: string } = {
@@ -113,4 +114,5 @@ export const tableTopics: { [key in ReportType]: string } = {
   TACM: "tacm-reports",
   CI: "ci-reports",
   PCP: "pcp-reports",
+  WWL: "wwl-reports",
 };
