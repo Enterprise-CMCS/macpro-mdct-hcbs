@@ -46,6 +46,11 @@ const stripedVariant = () => ({
   },
 });
 const measureVariant = {
+  th: {
+    ".mobile &": {
+      display: "none",
+    },
+  },
   td: {
     "&:first-of-type": {
       minWidth: "3rem",
@@ -60,10 +65,23 @@ const measureVariant = {
         whiteSpace: "wrap",
       },
     },
+    ".mobile &": {
+      border: "none",
+      paddingY: "0.5rem",
+      "&:first-of-type": {
+        display: "flex",
+        paddingX: "0",
+      },
+    },
   },
   tr: {
     "th, td": {
       borderColor: "palette.gray_lighter",
+    },
+    ".mobile &": {
+      display: "flex",
+      flexFlow: "column",
+      paddingY: "0.5rem",
     },
   },
 };
@@ -77,6 +95,32 @@ const statusVariant = {
     },
     "&:nth-of-type(2)": {
       width: "25%",
+      div: {
+        display: "flex",
+      },
+    },
+    ".mobile &": {
+      border: "none",
+      width: "100%",
+      paddingY: "0.5rem",
+    },
+  },
+  tr: {
+    ".mobile &": {
+      display: "grid",
+      gridTemplateColumns: "50% 50%",
+      paddingY: "0.5rem",
+    },
+  },
+  th: {
+    ".mobile &": {
+      "&:last-of-type": {
+        display: "none",
+      },
+      padding: "0",
+    },
+    "tr &": {
+      border: "none",
     },
   },
 };

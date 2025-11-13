@@ -53,7 +53,7 @@ const sx = {
     padding: "spacer3",
     ".mobile &": {
       paddingX: "spacer1",
-      paddingY: "0",
+      paddingY: "spacer1",
     },
   },
   accordionIcon: {

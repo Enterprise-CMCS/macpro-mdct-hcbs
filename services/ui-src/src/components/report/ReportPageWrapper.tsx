@@ -85,8 +85,8 @@ export const ReportPageWrapper = () => {
     : currentPage.elements;
   return (
     <>
-      <HStack width="100%" height="100%" position="relative" spacing="0">
-        {currentPage.sidebar && <Sidebar />}
+      <HStack position="relative" spacing="0">
+        <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
         <VStack
           height="100%"
           padding={
@@ -161,5 +161,11 @@ const sx = {
     width: "100%",
     justifyContent: "center",
     padding: "10",
+  },
+  sidebarContainer: {
+    ".tablet &, .mobile &": {
+      position: "absolute",
+    },
+    height: "100%",
   },
 };
