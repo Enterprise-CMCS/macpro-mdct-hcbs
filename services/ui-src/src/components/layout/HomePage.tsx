@@ -7,6 +7,7 @@ import {
   QmsIntroductionCard,
   TacmIntroductionCard,
   PCPIntroductionCard,
+  WWLIntroductionCard,
 } from "components";
 import { useEffect } from "react";
 import { checkDateRangeStatus, useStore } from "utils";
@@ -19,6 +20,7 @@ export const HomePage = () => {
   const isTACMReportActive = useFlags()?.isTacmReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
   const isPCPReportActive = useFlags()?.isPcpReportActive;
+  const isWWLReportActive = true; //useFlags()?.isWwlReportActive;
 
   useEffect(() => {
     let bannerActivity = false;
@@ -65,6 +67,7 @@ export const HomePage = () => {
             {isCIReportActive && <CiIntroductionCard />}
             {isTACMReportActive && <TacmIntroductionCard />}
             {isPCPReportActive && <PCPIntroductionCard />}
+            {isWWLReportActive && <WWLIntroductionCard />}
           </>
         ) : (
           // show read-only view to non-state users
