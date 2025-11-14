@@ -73,6 +73,19 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }),
+    new DynamoDBTable(scope, "WwlReports", {
+      stage,
+      isDev,
+      name: "wwl-reports",
+      partitionKey: {
+        name: "state",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    }),
   ];
 
   return { tables };

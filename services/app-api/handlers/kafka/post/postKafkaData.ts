@@ -8,6 +8,7 @@ const tables = [
   { sourceName: reportTables.TACM, topicName: tableTopics.TACM },
   { sourceName: reportTables.CI, topicName: tableTopics.CI },
   { sourceName: reportTables.PCP, topicName: tableTopics.PCP },
+  { sourceName: reportTables.WWL, topicName: tableTopics.WWL },
 ];
 
 const postKafkaData = new KafkaSourceLib(topicPrefix, version, tables);

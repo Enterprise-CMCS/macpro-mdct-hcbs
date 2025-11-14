@@ -46,6 +46,7 @@ describe("<ReportIntroCardActions />", () => {
       { type: ReportType.TACM, text: "TACM" },
       { type: ReportType.CI, text: "CI" },
       { type: ReportType.PCP, text: "PCP" },
+      { type: ReportType.WWL, text: "WWL" },
       { type: "bad name" as ReportType, text: "" },
     ])("$type report card renders action button", ({ type, text }) => {
       render(reportActionsComponent(type));

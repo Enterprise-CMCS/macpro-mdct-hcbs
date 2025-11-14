@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { StateNames } from "../../../constants";
-import { getReportName, isReportType, isStateAbbr, LiteReport } from "types";
+import {
+  getReportName,
+  isReportType,
+  isStateAbbr,
+  LiteReport,
+  ReportType,
+} from "types";
 import {
   PageTemplate,
   DashboardTable,
@@ -137,11 +143,20 @@ export const DashboardPage = () => {
                   Once the report is generated, you can edit the name of the
                   report and monitor its status in the dashboard below.
                 </p>
-                <p>
-                  Please note, while you can generate multiple reports for the
-                  same reporting period, you should only submit a single report
-                  for the state.
-                </p>
+                {reportType === ReportType.WWL ? (
+                  <p>
+                    A separate report should be generated for each waiver
+                    waiting list your state intends to include during the
+                    current reporting year.
+                  </p>
+                ) : (
+                  <p>
+                    Please note, while you can generate multiple reports for the
+                    same reporting period, you should only submit a single
+                    report for the state.
+                  </p>
+                )}
+
                 <p>
                   <strong>Understanding Report Statuses</strong>
                 </p>
