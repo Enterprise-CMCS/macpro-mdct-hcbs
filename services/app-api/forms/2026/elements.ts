@@ -18,6 +18,7 @@ import {
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
+  AlertTypes,
 } from "../../types/reports";
 
 const REPORT_YEAR = 2026;
@@ -458,7 +459,7 @@ export const sectionCompleteBanner: StatusAlertTemplate = {
   id: "status-alert",
   title: "This section has been completed",
   text: "You can still edit this section, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete section’ button. {ReturnButton} or select the ‘Return to measure information’ button above to return to the previous page.",
-  status: "success",
+  status: AlertTypes.SUCCESS,
 };
 
 export const measureCompleteBanner: StatusAlertTemplate = {
@@ -466,7 +467,7 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   id: "status-alert",
   title: "This measure has been completed",
   text: "You can still edit the measure, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete measure’ button. {ReturnButton} or select the ‘Return to measure dashboard’ button above to return to the previous page.",
-  status: "success",
+  status: AlertTypes.SUCCESS,
 };
 
 // Rates for Homemaker for HAPC-1 measure

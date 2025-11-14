@@ -131,7 +131,7 @@ const elements: PageElement[] = [
   },
   {
     type: ElementType.MeasureTable,
-    measureDisplay: "stratified",
+    measureDisplay: "required",
     id: "",
   },
   {
@@ -147,6 +147,7 @@ const elements: PageElement[] = [
   {
     type: ElementType.StatusTable,
     id: "",
+    to: "mock-id",
   },
   {
     type: ElementType.MeasureResultsNavigationTable,

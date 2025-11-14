@@ -1,10 +1,6 @@
 // Templates
 
-import {
-  DataSource,
-  DeliverySystem,
-  MeasureSpecification,
-} from "../utils/constants";
+import { StateAbbr } from "../utils/constants";
 
 export enum ReportType {
   QMS = "QMS",
@@ -37,7 +33,7 @@ export interface CMIT {
   dataSource: DataSource;
 }
 
-export interface dependentPageInfo {
+export interface DependentPageInfo {
   key: string;
   linkText: string;
   template: MeasureTemplateName;
@@ -47,9 +43,8 @@ export interface MeasureOptions {
   cmit: number;
   uid: string;
   required: boolean;
-  stratified: boolean;
   measureTemplate: MeasureTemplateName;
-  dependentPages: dependentPageInfo[];
+  dependentPages: DependentPageInfo[];
 }
 
 export enum MeasureTemplateName {
@@ -126,10 +121,17 @@ export enum PageStatus {
   COMPLETE = "Complete",
 }
 
+export enum AlertTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
 export interface Report extends ReportBase, ReportOptions {
   id?: string;
   name: string;
-  state: string;
+  state: StateAbbr;
   created?: number;
   lastEdited?: number;
   lastEditedBy?: string;
@@ -153,41 +155,9 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
   cmitId: string;
   required?: boolean;
-  stratified?: boolean;
   substitutable?: string;
-  dependentPages?: dependentPageInfo[];
+  dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
-}
-
-export interface SectionTemplate {
-  title: string;
-  id: string;
-  pageElements: PageElements[];
-}
-
-export interface FormComponent {
-  id: string;
-  type: string;
-}
-
-export interface Input extends FormComponent {
-  type: "input";
-  inputType: string;
-  questionText: string;
-  answer?: string | number;
-}
-
-export interface Text extends FormComponent {
-  type: "text";
-  text: string;
-}
-
-export type PageElements = Input | Text;
-
-export interface Form {
-  name: string;
-  createdBy: string;
-  sections: [];
 }
 
 export type ReportMeasureConfig = {
@@ -229,11 +199,7 @@ export type ParentPageTemplate = {
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
-};
-export const isParentPage = (
-  page: PageTemplate
-): page is ParentPageTemplate => {
-  return "childPageIds" in page;
+  hideNavButtons?: undefined;
 };
 
 export type FormPageTemplate = {
@@ -245,9 +211,6 @@ export type FormPageTemplate = {
   sidebar?: boolean;
   hideNavButtons?: boolean;
   childPageIds?: PageId[];
-};
-export const isChildPage = (page: PageTemplate): page is FormPageTemplate => {
-  return "elements" in page;
 };
 
 export type PageId = string;
@@ -502,6 +465,13 @@ export type RateType = {
   performanceTarget: number | undefined;
 };
 
+export type RateData = {
+  performanceTarget?: number | undefined;
+  numerator: number | undefined;
+  denominator: number | undefined;
+  rate: number | undefined;
+};
+
 export type RateSetData = {
   denominator: number | undefined;
   rates: RateType[];
@@ -534,12 +504,7 @@ export type NdrTemplate = {
   type: ElementType.Ndr;
   label: string;
   performanceTargetLabel: string;
-  answer?: {
-    performanceTarget: number | undefined;
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   required: boolean;
 };
 
@@ -547,11 +512,7 @@ export type NdrBasicTemplate = {
   id: string;
   type: ElementType.NdrBasic;
   label?: string;
-  answer?: {
-    numerator: number | undefined;
-    denominator: number | undefined;
-    rate: number | undefined;
-  };
+  answer?: RateData;
   hintText?: {
     numHint: string | undefined;
     denomHint: string | undefined;
@@ -571,10 +532,34 @@ export type ChoiceTemplate = {
   checkedChildren?: PageElement[];
 };
 
+export enum DeliverySystem {
+  FFS = "FFS",
+  MLTSS = "MLTSS",
+}
+
+export enum DataSource {
+  CaseRecordManagement = "CaseRecordManagement",
+  Administrative = "Administrative",
+  Hybrid = "Hybrid",
+  RecordReview = "RecordReview",
+  Survey = "Survey",
+}
+
+export enum MeasureSteward {
+  CMS,
+  CQL,
+}
+
+export enum MeasureSpecification {
+  CMS = "CMS",
+  HEDIS = "HEDIS",
+  CQL = "CQL",
+}
+
 export type MeasureTableTemplate = {
   id: string;
   type: ElementType.MeasureTable;
-  measureDisplay: "required" | "stratified" | "optional";
+  measureDisplay: "required" | "optional";
 };
 
 export type MeasureResultsNavigationTableTemplate = {
@@ -595,7 +580,7 @@ export type StatusAlertTemplate = {
   id: string;
   title?: string;
   text: string;
-  status: string;
+  status: AlertTypes;
 };
 
 /**
