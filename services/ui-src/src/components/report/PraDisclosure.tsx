@@ -7,10 +7,10 @@ const praStatement =
 export const PraDisclosure = () => {
   return (
     <>
-      <Text fontSize="16px" fontWeight="bold">
+      <Text fontSize="heading_md" fontWeight="heading_md">
         PRA Disclosure Statement
       </Text>
-      <Text fontSize="16px">{praStatement}</Text>
+      <Text fontSize="body_md">{praStatement}</Text>
     </>
   );
 };

@@ -7,10 +7,10 @@ const baseStyles = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
       color: "palette.gray",
-      fontWeight: "bold",
+      fontWeight: "heading_sm_bold",
       textTransform: "none",
       letterSpacing: "normal",
-      fontSize: "sm",
+      fontSize: "heading_sm",
     },
     tr: {
       borderBottom: "1px solid",
@@ -46,6 +46,11 @@ const stripedVariant = () => ({
   },
 });
 const measureVariant = {
+  th: {
+    ".mobile &": {
+      display: "none",
+    },
+  },
   td: {
     "&:first-of-type": {
       minWidth: "3rem",
@@ -60,23 +65,62 @@ const measureVariant = {
         whiteSpace: "wrap",
       },
     },
+    ".mobile &": {
+      border: "none",
+      paddingY: "0.5rem",
+      "&:first-of-type": {
+        display: "flex",
+        paddingX: "0",
+      },
+    },
   },
   tr: {
     "th, td": {
       borderColor: "palette.gray_lighter",
     },
+    ".mobile &": {
+      display: "flex",
+      flexFlow: "column",
+      paddingY: "0.5rem",
+    },
   },
 };
 const statusVariant = {
   td: {
-    fontSize: "14px",
+    fontSize: "heading_sm",
     padding: "0.75rem 0.75rem 0.75rem 0",
     "&:first-of-type": {
       width: "65%",
-      fontWeight: "bold",
+      fontWeight: "heading_sm_bold",
     },
     "&:nth-of-type(2)": {
       width: "25%",
+      div: {
+        display: "flex",
+      },
+    },
+    ".mobile &": {
+      border: "none",
+      width: "100%",
+      paddingY: "0.5rem",
+    },
+  },
+  tr: {
+    ".mobile &": {
+      display: "grid",
+      gridTemplateColumns: "50% 50%",
+      paddingY: "0.5rem",
+    },
+  },
+  th: {
+    ".mobile &": {
+      "&:last-of-type": {
+        display: "none",
+      },
+      padding: "0",
+    },
+    "tr &": {
+      border: "none",
     },
   },
 };
@@ -91,10 +135,10 @@ const exportVariant = {
       },
     },
     td: {
-      fontSize: "14px",
+      fontSize: "heading_sm",
       width: "50%",
       "p:first-of-type": {
-        fontWeight: "bold",
+        fontWeight: "heading_sm_bold",
         color: "palette.black",
       },
       "&:first-child": {
@@ -113,7 +157,7 @@ const reportDetailsVariant = {
     },
   },
   td: {
-    fontSize: "14px",
+    fontSize: "body_sm",
     padding: "0",
     color: "black",
   },

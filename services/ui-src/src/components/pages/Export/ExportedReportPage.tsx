@@ -54,7 +54,7 @@ export const ExportedReportPage = () => {
       <ExportedReportBanner reportName={getReportName(report?.type)} />
       <Box sx={sx.container}>
         {(report && reportPages.length > 0 && (
-          <Flex sx={sx.innerContainer} gap="2rem">
+          <Flex sx={sx.innerContainer} gap="spacer4">
             {/* pdf metadata */}
             <Helmet>
               <title>{reportTitle(report)}</title>
@@ -190,7 +190,7 @@ export const renderReportSections = (
      */
     if (isHeaderOnlySection) {
       return (
-        <Box key={`${section.id}.${idx}`} marginBottom="-2rem">
+        <Box key={`${section.id}.${idx}`} marginBottom="-spacer4">
           <Heading variant="subHeader">{section.title}</Heading>
         </Box>
       );
@@ -214,17 +214,18 @@ export const sx = {
     width: "100%",
     maxWidth: "55.25rem",
     margin: "0 auto",
-    paddingBottom: "4rem",
+    paddingY: "spacer6",
+    paddingX: "spacer2",
     "h1, h2, h3": {
-      marginBottom: "1.5rem",
+      marginBottom: "spacer3",
       color: "black",
     },
     h4: {
-      marginBottom: "-0.5rem",
+      marginBottom: "-spacer1",
       color: "black",
     },
     ".performance-rate-header": {
-      marginBottom: "1rem",
+      marginBottom: "spacer2",
     },
   },
   innerContainer: {

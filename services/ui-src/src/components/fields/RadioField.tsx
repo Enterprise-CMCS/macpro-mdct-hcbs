@@ -193,7 +193,7 @@ const sx = {
       width: "240px",
     },
     textarea: {
-      width: "440px",
+      maxWidth: "440px",
     },
   },
 };

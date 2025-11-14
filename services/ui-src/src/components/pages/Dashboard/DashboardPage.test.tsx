@@ -45,6 +45,12 @@ jest.mock("utils/api/requestMethods/report", () => ({
   ]),
 }));
 
+jest.mock("utils/other/useBreakpoint", () => ({
+  useBreakpoint: jest.fn(() => ({
+    isDesktop: true,
+  })),
+}));
+
 const dashboardComponent = (
   <RouterWrappedComponent>
     <DashboardPage />

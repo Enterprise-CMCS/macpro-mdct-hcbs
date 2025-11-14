@@ -5,7 +5,7 @@ export const MenuOption = ({ text, icon, altText, role, hideText }: Props) => {
     <Flex
       align="center"
       role={role}
-      sx={!hideText ? { paddingRight: ".5rem" } : {}}
+      sx={!hideText ? { paddingRight: "spacer1" } : {}}
     >
       <Image src={icon} alt={altText} sx={sx.menuIcon} />
       {!hideText && <Text sx={sx.text}>{text}</Text>}
@@ -23,12 +23,12 @@ interface Props {
 
 const sx = {
   text: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     color: "palette.white",
     _groupHover: { color: "palette.gray_lighter" },
   },
   menuIcon: {
     width: "1.5rem",
-    margin: "0.5rem",
+    margin: "spacer1",
   },
 };

@@ -96,7 +96,7 @@ export const DashboardPage = () => {
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
             {userIsAdmin ? (
               <Box sx={sx.accordionPanel}>
-                <Heading size="sm" fontWeight="bold">
+                <Heading fontSize="heading_md" fontWeight="heading_md">
                   Admin Instructions
                 </Heading>
                 <ul>
@@ -230,17 +230,15 @@ const sx = {
   layout: {
     ".contentFlex": {
       maxWidth: "appMax",
-      marginTop: "2rem",
-      marginBottom: "3.5rem",
+      marginTop: "spacer4",
+      marginBottom: "spacer7",
     },
   },
   leadTextBox: {
     width: "100%",
     maxWidth: "55.25rem",
-    margin: "2.5rem auto 0rem",
-    ".tablet &, .mobile &": {
-      margin: "2.5rem 0 1rem",
-    },
+    marginTop: "spacer5",
+    marginX: "auto",
   },
   bodyBox: {
     maxWidth: "55.25rem",
@@ -261,29 +259,15 @@ const sx = {
     },
   },
   accordion: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     color: "palette.base",
   },
   accordionItem: {
-    marginBottom: "1.5rem",
-    borderStyle: "none",
+    marginBottom: "spacer3",
   },
   accordionPanel: {
     ".mobile &": {
-      paddingLeft: "1rem",
-    },
-    a: {
-      color: "palette.primary",
-      textDecoration: "underline",
-    },
-    header: {
-      marginBottom: "1.5rem",
-    },
-    p: {
-      marginBottom: "1.5rem",
-    },
-    ul: {
-      marginBottom: "1.5rem",
+      paddingTop: "spacer2",
     },
   },
 };

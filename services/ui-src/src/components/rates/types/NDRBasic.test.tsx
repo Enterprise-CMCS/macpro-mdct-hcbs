@@ -1,6 +1,6 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { NDRBasic } from "./NDRBasic";
+import { NDRBasic, NDRBasicExport } from "./NDRBasic";
 import { ElementType, NdrBasicTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
@@ -12,6 +12,15 @@ const mockedElement: NdrBasicTemplate = {
   multiplier: 100,
   minPerformanceLevel: 90,
   required: true,
+  conditionalChildren: [
+    {
+      type: ElementType.TextAreaField,
+      id: "mock-text-id",
+      label: "test text area",
+      helperText: "helper text",
+      required: true,
+    },
+  ],
 };
 const updateSpy = jest.fn();
 
@@ -48,11 +57,11 @@ describe("<NDRBasic />", () => {
       render(<NdrBasicWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "1"));
+      await userEvent.type(numerator, "1");
       expect(numerator).toHaveValue("1");
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "2"));
+      await userEvent.type(denominator, "2");
       expect(denominator).toHaveValue("2");
 
       const result = screen.getByRole("textbox", { name: "Result" });
@@ -63,23 +72,57 @@ describe("<NDRBasic />", () => {
       render(<NdrBasicWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "27"));
+      await userEvent.type(numerator, "27");
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "3"));
+      await userEvent.type(denominator, "3");
 
       const result = screen.getByRole("textbox", { name: "Result" });
       expect(result).toHaveValue("900");
+    });
+
+    test("Rate should not display as a percent normally", async () => {
+      render(
+        <NdrBasicWrapper
+          template={{ ...mockedElement, displayRateAsPercent: false }}
+        />
+      );
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "1");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "2");
+
+      expect(screen.getByRole("textbox", { name: "Result" })).toHaveValue("50");
+      expect(screen.queryByText("%")).not.toBeInTheDocument();
+    });
+
+    test("Rate should display as a percent when appropriate", async () => {
+      render(
+        <NdrBasicWrapper
+          template={{ ...mockedElement, displayRateAsPercent: true }}
+        />
+      );
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "1");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "2");
+
+      expect(screen.getByRole("textbox", { name: "Result" })).toHaveValue("50");
+      expect(screen.getByText("%")).toBeVisible();
     });
 
     test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
       render(<NdrBasicWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "4"));
+      await userEvent.type(numerator, "4");
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "2000"));
+      await userEvent.type(denominator, "2000");
 
       const result = screen.getByRole("textbox", { name: "Result" });
       expect(result).toHaveValue("0.2");
@@ -96,10 +139,10 @@ describe("<NDRBasic />", () => {
       render(<NdrBasicWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "9"));
+      await userEvent.type(numerator, "9");
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "10"));
+      await userEvent.type(denominator, "10");
 
       const result = screen.getByRole("alert");
 
@@ -110,14 +153,63 @@ describe("<NDRBasic />", () => {
       render(<NdrBasicWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "1"));
+      await userEvent.type(numerator, "1");
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "10"));
+      await userEvent.type(denominator, "10");
 
       const result = screen.getByRole("alert");
 
       expect(result).toHaveTextContent("Warning");
+    });
+
+    test("Conditional children should be visible if minimum rate is met", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "1");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "10");
+
+      expect(screen.getByText("test text area")).toBeVisible();
+    });
+  });
+
+  describe("NDRBasicExport", () => {
+    it("should render a normal rate", () => {
+      render(
+        NDRBasicExport({
+          ...mockedElement,
+          displayRateAsPercent: false,
+          answer: {
+            numerator: 1,
+            denominator: 2,
+            rate: 50,
+          },
+        })
+      );
+      expect(screen.getByRole("row", { name: "Numerator 1" })).toBeVisible();
+      expect(screen.getByRole("row", { name: "Denominator 2" })).toBeVisible();
+      expect(screen.getByRole("row", { name: "Result 50" })).toBeVisible();
+      expect(screen.queryByText("%", { exact: false })).not.toBeInTheDocument();
+    });
+
+    it("should render a percentage", () => {
+      render(
+        NDRBasicExport({
+          ...mockedElement,
+          displayRateAsPercent: true,
+          answer: {
+            numerator: 1,
+            denominator: 2,
+            rate: 50,
+          },
+        })
+      );
+      expect(screen.getByRole("row", { name: "Numerator 1" })).toBeVisible();
+      expect(screen.getByRole("row", { name: "Denominator 2" })).toBeVisible();
+      expect(screen.getByRole("row", { name: "Result 50%" })).toBeVisible();
     });
   });
 

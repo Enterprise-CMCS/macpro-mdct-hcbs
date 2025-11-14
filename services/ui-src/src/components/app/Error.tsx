@@ -28,11 +28,11 @@ export const Error = () => {
 
 const sx = {
   layout: {
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
   },
   heading: {
     gap: "12px",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     alignItems: "center",
   },
   warningIcon: {
@@ -42,21 +42,21 @@ const sx = {
     },
   },
   headerText: {
-    fontSize: "4xl",
-    fontWeight: "normal",
+    fontSize: "heading_3xl",
+    fontWeight: "heading_3xl",
     ".mobile &": {
-      fontSize: "2xl",
+      fontSize: "heading_2xl",
     },
   },
   subHeadingText: {
-    fontSize: "lg",
-    fontWeight: "bold",
-    marginBottom: "1rem",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
+    marginBottom: "spacer2",
     ".mobile &": {
-      marginBottom: "1.5rem",
+      marginBottom: "spacer3",
     },
   },
   descriptionText: {
-    fontSize: "md",
+    fontSize: "body_md",
   },
 };

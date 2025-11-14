@@ -30,8 +30,8 @@ export const AdminPage = () => {
   } = useStore();
 
   return (
-    <PageTemplate sxOverride={sx.layout} data-testid="admin-view">
-      <ErrorAlert error={bannerErrorMessage} sxOverride={sx.errorAlert} />
+    <PageTemplate data-testid="admin-view">
+      <ErrorAlert error={bannerErrorMessage} />
       <Box sx={sx.introTextBox}>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           Banner Admin
@@ -50,19 +50,19 @@ export const AdminPage = () => {
               {bannerData && (
                 <>
                   <Flex sx={sx.currentBannerInfo}>
-                    <Text sx={sx.currentBannerStatus}>
+                    <Text>
                       Status:{" "}
                       <span className={bannerActive ? "active" : "inactive"}>
                         {bannerActive ? "Active" : "Inactive"}
                       </span>
                     </Text>
-                    <Text sx={sx.currentBannerDate}>
+                    <Text>
                       Start Date:{" "}
                       {bannerData.startDate && (
                         <span>{convertDateUtcToEt(bannerData.startDate)}</span>
                       )}
                     </Text>
-                    <Text sx={sx.currentBannerDate}>
+                    <Text>
                       End Date:{" "}
                       {bannerData.endDate && (
                         <span>{convertDateUtcToEt(bannerData.endDate)}</span>
@@ -99,40 +99,27 @@ export const AdminPage = () => {
 };
 
 const sx = {
-  layout: {
-    ".contentFlex": {
-      marginTop: "3.5rem",
-    },
-  },
-  errorAlert: {
-    width: "100% !important",
-    marginTop: "-4rem",
-    marginBottom: "2rem",
-  },
   introTextBox: {
     width: "100%",
-    marginBottom: "2.25rem",
   },
   headerText: {
-    marginBottom: "1rem",
-    fontSize: "2rem",
-    fontWeight: "normal",
+    marginBottom: "spacer2",
+    fontSize: "heading_3xl",
+    fontWeight: "heading_3xl",
   },
   currentBannerSectionBox: {
     width: "100%",
-    marginBottom: "2.25rem",
+    marginBottom: "spacer4",
   },
   sectionHeader: {
-    fontSize: "1.5rem",
-    fontWeight: "bold",
+    fontSize: "heading_2xl",
+    fontWeight: "heading_2xl",
   },
   currentBannerInfo: {
     flexDirection: "column",
-    marginBottom: "0.5rem !important",
-  },
-  currentBannerStatus: {
+    marginBottom: "spacer1 !important",
     span: {
-      marginLeft: "0.5rem",
+      marginLeft: "spacer1",
       "&.active": {
         color: "palette.success",
       },
@@ -141,16 +128,11 @@ const sx = {
       },
     },
   },
-  currentBannerDate: {
-    span: {
-      marginLeft: "0.5rem",
-    },
-  },
   currentBannerFlex: {
     flexDirection: "column",
   },
   spinnerContainer: {
-    marginTop: "0.5rem",
+    marginTop: "spacer1",
     ".ds-c-spinner": {
       "&:before": {
         borderColor: "palette.black",
@@ -163,11 +145,10 @@ const sx = {
   deleteBannerButton: {
     width: "13.3rem",
     alignSelf: "end",
-    marginTop: "1rem !important",
+    marginTop: "spacer2 !important",
   },
   newBannerBox: {
     width: "100%",
     flexDirection: "column",
-    marginBottom: "2.25rem",
   },
 };

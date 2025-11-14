@@ -114,7 +114,7 @@ export const MeasureTableElement = (
           report?.status !== ReportStatus.SUBMITTED ? (
             <Button
               variant="link"
-              sx={{ fontSize: "14px" }}
+              sx={{ fontSize: "body_sm" }}
               onClick={() => {
                 buildModal(measure);
               }}

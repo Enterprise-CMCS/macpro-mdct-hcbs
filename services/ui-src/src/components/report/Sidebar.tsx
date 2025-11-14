@@ -9,7 +9,7 @@ import { assertExhaustive, isReportType, Report, ReportType } from "types";
 const navItem = (title: string, index: number) => {
   if (index <= 0) return title;
   return (
-    <Box paddingLeft="1rem" key={`${title}.${index}`}>
+    <Box paddingLeft="spacer2" key={`${title}.${index}`}>
       {navItem(title, index - 1)}
     </Box>
   );
@@ -136,23 +136,15 @@ const sx = {
     "&.closed": {
       marginLeft: "-20.5rem",
     },
-    ".tablet &": {
-      position: "absolute",
-    },
-    ".mobile &": {
-      position: "absolute",
+    ".tablet &, .mobile &": {
+      position: "sticky",
+      top: "0",
+      display: "block",
+      height: "100vh",
     },
   },
   sidebarNav: {
     height: "100%",
-    ".tablet &": {
-      position: "fixed",
-      display: "flex",
-    },
-    ".mobile &": {
-      position: "fixed",
-      display: "flex",
-    },
   },
   sidebarList: {
     background: "palette.gray_lightest",

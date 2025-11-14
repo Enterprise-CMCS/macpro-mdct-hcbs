@@ -9,9 +9,13 @@ import {
   additionalNotesField,
   divider,
   habilitationRate,
+  habilitationHAPCH2Rate,
   homeHealthAideRate,
+  homeHealthAideHAPCH2Rate,
   homemakerRate,
+  homemakerHAPCH2Rate,
   personalCareRate,
+  personalCareHAPCH2Rate,
   stateSamplingMethologyQuestion,
   didYouFollowSpecifications,
   conversionOfServiceUnitsField,
@@ -57,7 +61,7 @@ export const tacmReportTemplate: ReportBase = {
           id: "report-coverage-waivers-programs",
           label:
             "Does this report cover all the programs that are required under the relevant authorities?",
-          required: false,
+          required: true,
           choices: [
             { label: "Yes", value: "yes" },
             {
@@ -152,13 +156,13 @@ export const tacmReportTemplate: ReportBase = {
             "  <li>Process used to pull a simple random sample of the eligible population.</li>" +
             "</ul>",
         },
-        homemakerRate,
+        homemakerHAPCH2Rate,
         divider,
-        homeHealthAideRate,
+        homeHealthAideHAPCH2Rate,
         divider,
-        personalCareRate,
+        personalCareHAPCH2Rate,
         divider,
-        habilitationRate,
+        habilitationHAPCH2Rate,
         divider,
         {
           type: ElementType.SubHeader,

@@ -7,39 +7,39 @@ const baseStyles = {
 };
 
 const h1Variant = {
-  fontSize: "4xl",
-  fontWeight: "normal",
+  fontSize: "heading_3xl",
+  fontWeight: "heading_3xl",
   ".mobile &": {
-    fontSize: "2xl",
+    fontSize: "heading_2xl",
   },
   display: "inline-block",
 };
 
 const subHeaderVariant = {
-  fontSize: "21px",
-  fontWeight: "700",
+  fontSize: "heading_xl",
+  fontWeight: "heading_xl",
   p: {
     margin: "0",
   },
   ".mobile &": {
-    fontSize: "lg",
+    fontSize: "heading_lg",
   },
 };
 
 const nestedHeadingVariant = {
-  fontSize: "18px",
-  fontWeight: "700",
+  fontSize: "heading_lg",
+  fontWeight: "heading_lg",
   p: {
     margin: "0",
   },
   ".mobile &": {
-    fontSize: "lg",
+    fontSize: "heading_lg",
   },
 };
 
 const sidebarVariant = {
-  fontSize: "21px",
-  fontWeight: "700",
+  fontSize: "heading_xl",
+  fontWeight: "heading_xl",
   padding: "2rem",
   margin: "0",
 };
