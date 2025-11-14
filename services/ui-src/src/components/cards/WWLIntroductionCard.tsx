@@ -8,12 +8,19 @@ export const WWLIntroductionCard = () => {
 
   return (
     <ReportIntroCard title={name}>
-      [Placeholder Summary]
+      The Waiver Waiting List (WWL) report promotes the transparency of HCBS
+      waiver waiting lists by giving the public information on access to these
+      essential services. Reports, submitted by waiting list, should include
+      information about the number of people on the waiting list, as well as
+      certain eligibility assessments, and length of time on the waiting list.
       <ReportIntroCardActions reportType={ReportType.WWL} />
       <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label={`When is the ${name} Due?`}>
-          <p>The HCBS {name} will be created and submitted ...</p>
-          <p>The HCBS {name} deadlines are TBD ...</p>
+          The HCBS WWL report will be created and submitted annually for each
+          applicable waiting list. CMS will then review and approve all HCBS WWL
+          reports. The reporting period will open on September 1 and close on
+          December 31 during each year that states and territories are required
+          to report.
         </AccordionItem>
       </Accordion>
     </ReportIntroCard>

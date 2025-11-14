@@ -13,6 +13,9 @@ export const verbiage = {
     "Answering “Yes” or “No” to the following questions will impact which measure results must be reported.",
   yearHelperText:
     "This is the final year in a multi-year reporting period, used to indicate the endpoint of data collection.  For example, if a report covers the period of 2025 and 2026, the reporting year would be 2026.",
+  nameLabel: "Quality Measure Set Report Name",
+  nameHelperText: (state?: string) =>
+    `Name this QMS report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: "${state} HCBS QMS Report for 2026"`,
 };
 
 export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] =

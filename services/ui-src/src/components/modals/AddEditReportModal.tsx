@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState, ReactElement } from "react";
+import { FormEvent, useEffect, useState, ReactElement } from "react";
 import { Modal } from "components";
 import {
   TextField as CmsdsTextField,
@@ -24,8 +24,8 @@ export type AddEditReportModalOptions = {
   verbiage: {
     reportName: string;
     yearSelect: string;
-    shortName: string;
-    sampleName: string;
+    nameHelperText: (state: string) => string;
+    nameLabel: string;
     topText?: string;
     yearHelperText?: string;
   };
@@ -164,8 +164,8 @@ export const AddEditReportModal = ({
           {verbiage.topText && <Text>{verbiage.topText}</Text>}
           <CmsdsTextField
             name="reportTitle"
-            label={`${verbiage.reportName} Name`}
-            hint={`Name this ${verbiage.shortName} report so you can easily refer to it. Consider using timeframe(s). Sample Report Name: "${activeState} ${verbiage.sampleName}"`}
+            label={verbiage.nameLabel}
+            hint={verbiage.nameHelperText(activeState)}
             onChange={onChange}
             onBlur={() =>
               setErrorData({
