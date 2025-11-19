@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import {
+  Link as RouterLink,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { StateNames } from "../../../constants";
 import { getReportName, isReportType, isStateAbbr, LiteReport } from "types";
 import {
@@ -24,6 +28,7 @@ import {
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
+import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
 
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
@@ -33,17 +38,36 @@ export const DashboardPage = () => {
   const [selectedReport, setSelectedReport] = useState<LiteReport | undefined>(
     undefined
   );
-  const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
+  const [filteredReports, setFilteredReports] = useState<LiteReport[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [dropdownValue, setDropdownValue] = useState(
+    searchParams.get("year") || "All"
+  );
 
+  const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
   const reportName = getReportName(reportType);
+  const filterYear = searchParams.get("year") || "All";
+  const filterDropdownOptions = [
+    { label: "All", value: "All" },
+    { label: "2026", value: "2026" },
+  ];
 
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {
       return;
     }
-
     reloadReports(reportType, state);
   }, [reportType, state]);
+
+  useEffect(() => {
+    if (filterYear === "All") {
+      setFilteredReports(reports);
+    } else {
+      setFilteredReports(
+        reports.filter((report) => String(report.year) === filterYear)
+      );
+    }
+  }, [reports, filterYear]);
 
   const reloadReports = (reportType: string, state: string) => {
     (async () => {
@@ -52,7 +76,6 @@ export const DashboardPage = () => {
       if (!userIsAdmin) {
         result = result.filter((report: LiteReport) => !report.archived);
       }
-
       setReports(result);
       setIsLoading(false);
     })();
@@ -76,6 +99,19 @@ export const DashboardPage = () => {
     onOpen: unlockModalOnOpenHandler,
     onClose: unlockModalOnCloseHandler,
   } = useDisclosure();
+
+  const handleYearChange = (evt: {
+    target: { name: string; value: string };
+  }) => {
+    setDropdownValue(evt.target.value);
+  };
+
+  const handleFilter = () => {
+    setSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      year: dropdownValue,
+    });
+  };
 
   return (
     <PageTemplate type="report" sxOverride={sx.layout}>
@@ -174,9 +210,20 @@ export const DashboardPage = () => {
         </Accordion>
       </Box>
       <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
+        <Flex alignItems="flex-end" gap="spacer3">
+          <CmsdsDropdownField
+            name="yearFilter"
+            label="Filter by Year"
+            value={dropdownValue}
+            onChange={handleYearChange}
+            data-testid="year-filter-dropdown"
+            options={filterDropdownOptions}
+          />
+          <Button onClick={handleFilter}>Filter</Button>
+        </Flex>
         {!isLoading && (
           <DashboardTable
-            reports={reports}
+            reports={filteredReports}
             openAddEditReportModal={openAddEditReportModal}
             unlockModalOnOpenHandler={unlockModalOnOpenHandler}
           />
