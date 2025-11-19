@@ -9,7 +9,7 @@ import {
 import { useStore } from "utils";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Report } from "types";
-// TODO: Add tests for report filtering when we get more than year as options
+// TODO: Add tests for report filtering when we get more than one year as an option
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 jest.mock("utils/other/useBreakpoint", () => ({
@@ -59,7 +59,7 @@ const dashboardComponent = (
 );
 
 describe("DashboardPage with state user", () => {
-  beforeEach(() => jest.restoreAllMocks());
+  beforeEach(() => jest.clearAllMocks());
 
   it("should render an empty state when there are no reports", async () => {
     (getReportsForState as jest.Mock).mockResolvedValueOnce([]);

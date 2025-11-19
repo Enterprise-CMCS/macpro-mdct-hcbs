@@ -100,15 +100,12 @@ export const DashboardPage = () => {
     onClose: unlockModalOnCloseHandler,
   } = useDisclosure();
 
-  const handleYearChange = (evt: {
-    target: { name: string; value: string };
-  }) => {
+  const handleYearChange = (evt: { target: { value: string } }) => {
     setDropdownValue(evt.target.value);
   };
 
   const handleFilter = () => {
     setSearchParams({
-      ...Object.fromEntries(searchParams.entries()),
       year: dropdownValue,
     });
   };
@@ -219,7 +216,9 @@ export const DashboardPage = () => {
             data-testid="year-filter-dropdown"
             options={filterDropdownOptions}
           />
-          <Button onClick={handleFilter}>Filter</Button>
+          <Button onClick={handleFilter} variant="outline">
+            Filter
+          </Button>
         </Flex>
         {!isLoading && (
           <DashboardTable
