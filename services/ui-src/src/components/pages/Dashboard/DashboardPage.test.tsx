@@ -9,7 +9,7 @@ import {
 import { useStore } from "utils";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Report } from "types";
-
+// TODO: Add tests for report filtering when we get more than year as options
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 jest.mock("utils/other/useBreakpoint", () => ({
@@ -41,6 +41,7 @@ jest.mock("utils/api/requestMethods/report", () => ({
       lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
       lastEditedBy: "Mock User",
       status: "Not started",
+      name: "Mock Report Name",
     } as Report,
   ]),
 }));
@@ -58,7 +59,7 @@ const dashboardComponent = (
 );
 
 describe("DashboardPage with state user", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => jest.restoreAllMocks());
 
   it("should render an empty state when there are no reports", async () => {
     (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
@@ -84,6 +85,7 @@ describe("DashboardPage with state user", () => {
     const { container } = render(dashboardComponent);
     await waitFor(() => {
       expect(getReportsForState).toHaveBeenCalled();
+      expect(screen.getByText("Mock Report Name")).toBeInTheDocument();
     });
 
     const table = container.querySelector("table")!;
@@ -103,7 +105,7 @@ describe("DashboardPage with state user", () => {
       const cell = rows[0][columnIndex];
       return cell.textContent;
     };
-    expect(cellContent("Submission name")).toBe("{Name of form}"); // TODO placeholder
+    expect(cellContent("Submission name")).toBe("Mock Report Name");
     expect(cellContent("Last edited")).toBe("10/24/2024");
     expect(cellContent("Edited by")).toBe("Mock User");
   });
@@ -114,11 +116,10 @@ describe("DashboardPage with Read only user", () => {
     mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
   });
   it("should not render the Start Report button when user is read only", async () => {
-    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
-
     render(dashboardComponent);
     await waitFor(() => {
       expect(getReportsForState).toHaveBeenCalled();
+      expect(screen.getByText("Mock Report Name")).toBeInTheDocument();
     });
 
     const startReportButton = screen.queryByRole("button", {
@@ -133,11 +134,10 @@ describe("DashboardPage with Admin user", () => {
     mockedUseStore.mockReturnValue(mockUseAdminStore);
   });
   it("should not render the Start Report button when user is read only", async () => {
-    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
-
     render(dashboardComponent);
     await waitFor(() => {
       expect(getReportsForState).toHaveBeenCalled();
+      expect(screen.getByText("Mock Report Name")).toBeInTheDocument();
     });
 
     const startReportButton = screen.queryByRole("button", {
