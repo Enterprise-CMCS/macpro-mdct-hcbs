@@ -4,24 +4,15 @@ import {
   ReportType,
   HeaderIcon,
   ReportBase,
-  AlertTypes,
 } from "../../../types/reports";
-import {
-  additionalNotesField,
-  didYouFollowSpecifications,
-  divider,
-  stateSamplingMethologyQuestion,
-  beneficiariesRate,
-  beneficiariesReviewedRate,
-} from "../elements";
 
-export const pcpReportTemplate: ReportBase = {
-  type: ReportType.PCP,
+export const wwlReportTemplate: ReportBase = {
+  type: ReportType.WWL,
   year: 2026,
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "pcp-1", "pcp-2", "review-submit"],
+      childPageIds: ["general-info", "review-submit"],
     },
     {
       id: "general-info",
@@ -77,65 +68,6 @@ export const pcpReportTemplate: ReportBase = {
       ],
     },
     {
-      id: "pcp-1",
-      title: "HCBS PCP-1",
-      type: PageType.Standard,
-      sidebar: true,
-      elements: [
-        {
-          type: ElementType.Header,
-          id: "pcp-1-header",
-          text: "HCBS PCP-1: Beneficiaries for Whom a Reassessment of Functional Need Was Completed",
-        },
-        beneficiariesRate,
-        divider,
-        {
-          type: ElementType.SubHeader,
-          id: "state-sampling-methodology-subheader",
-          text: "State sampling methodology",
-        },
-        stateSamplingMethologyQuestion,
-        divider,
-        {
-          type: ElementType.SubHeader,
-          id: "additional-details-subheader",
-          text: "Additional Details",
-        },
-        didYouFollowSpecifications,
-        additionalNotesField,
-      ],
-    },
-    {
-      id: "pcp-2",
-      title: "HCBS PCP-2",
-      type: PageType.Standard,
-      sidebar: true,
-      hideNavButtons: false,
-      elements: [
-        {
-          type: ElementType.Header,
-          id: "pcp-2-header",
-          text: "HCBS PCP-2: Beneficiaries for Whom the Person-Centered Service Plan Was Reviewed, and Updated as Appropriate, as a Result of a Reassessment of Functional Need",
-        },
-        beneficiariesReviewedRate,
-        divider,
-        {
-          type: ElementType.SubHeader,
-          id: "state-sampling-methodology-subheader",
-          text: "State sampling methodology",
-        },
-        stateSamplingMethologyQuestion,
-        divider,
-        {
-          type: ElementType.SubHeader,
-          id: "additional-details-subheader",
-          text: "Additional Details",
-        },
-        didYouFollowSpecifications,
-        additionalNotesField,
-      ],
-    },
-    {
       id: "review-submit",
       title: "Review & Submit",
       type: PageType.ReviewSubmit,
@@ -145,9 +77,9 @@ export const pcpReportTemplate: ReportBase = {
         {
           type: ElementType.StatusAlert,
           id: "review-alert",
-          status: AlertTypes.ERROR,
+          status: "error",
           title: "Your form is not ready for submission",
-          text: "Some sections of the PCP Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
+          text: "Some sections of the WWL Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
@@ -158,7 +90,7 @@ export const pcpReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your PCP Report is accurate.  While it is in the "Submitted" status, you will only be able to make edits if you contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your WWL Report is accurate.  While it is in the "Submitted" status, you will only be able to make edits if you contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
