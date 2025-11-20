@@ -103,7 +103,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     setErrors(newErrors);
 
     // Instantly save parsed and calculated values to the store and API
-    updateElement({ answer: newAnswer });
+    updateElement({ answer: newAnswer, errors: newErrors });
   };
 
   return (
