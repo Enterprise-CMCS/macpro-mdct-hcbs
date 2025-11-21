@@ -408,6 +408,7 @@ export type LengthOfStayRateTemplate = {
   labels: Record<LengthOfStayField, string>;
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
+  errors?: Record<LengthOfStayField, string>;
 };
 
 export const RateInputFieldNames = {
