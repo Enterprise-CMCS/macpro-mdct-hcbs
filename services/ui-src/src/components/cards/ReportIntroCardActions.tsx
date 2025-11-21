@@ -1,8 +1,9 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
+import downloadIcon from "assets/icons/download/icon_download_primary.svg";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType, isReportType } from "types";
-import { useStore } from "utils";
+import { getSignedTemplateUrl, useStore } from "utils";
 
 /**
  * This component is contained within each card on the state user home page.
@@ -32,6 +33,18 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   return (
     <Flex sx={sx.actionsFlex}>
       <Button
+        variant="link"
+        sx={sx.userGuideDownloadButton}
+        leftIcon={
+          <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
+        }
+        onClick={async () => {
+          await downloadUserGuide(reportType);
+        }}
+      >
+        User Guide and Help File
+      </Button>
+      <Button
         as={Link}
         variant={"primary"}
         href={`/report/${reportType}/${state}`}
@@ -46,6 +59,15 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
       </Button>
     </Flex>
   );
+};
+
+export const downloadUserGuide = async (reportType: ReportType) => {
+  const signedUrl = await getSignedTemplateUrl(reportType);
+  const link = document.createElement("a");
+  link.setAttribute("target", "_blank");
+  link.setAttribute("href", String(signedUrl));
+  link.click();
+  link.remove();
 };
 
 interface Props {
@@ -71,6 +93,18 @@ const sx = {
       color: "white",
       textDecoration: "none",
       backgroundColor: "palette.primary_darker",
+    },
+  },
+  userGuideDownloadButton: {
+    justifyContent: "start",
+    marginRight: "1rem",
+    padding: "0",
+    span: {
+      marginLeft: "0rem",
+      marginRight: "0.5rem",
+    },
+    ".mobile &": {
+      marginRight: "0",
     },
   },
 };
