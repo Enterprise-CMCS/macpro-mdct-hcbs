@@ -120,7 +120,10 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              {parentPage.index == 0 && <Divider></Divider>}
+              {(parentPage.index == 0 ||
+                currentPage.title === "Financial Eligibility") && (
+                <Divider></Divider>
+              )}
               <Flex width="100%" marginTop="spacer3">
                 {parentPage.index > 0 && (
                   <Button
