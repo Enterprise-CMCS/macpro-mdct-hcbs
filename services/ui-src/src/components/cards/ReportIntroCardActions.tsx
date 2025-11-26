@@ -41,7 +41,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           as={Link}
           variant="link"
           sx={sx.userGuideDownloadButton}
-          href={`${process.env.PUBLIC_URL}/${helpFiles[reportType]}.pdf`}
+          href={`/${helpFiles[reportType]}.pdf`}
           target="_blank"
           rel="noopener noreferrer"
         >
