@@ -118,7 +118,4 @@ const sx = {
     marginLeft: "0.5rem",
     height: "1rem",
   },
-  downloadIcon: {
-    marginRight: "0.5rem",
-  },
 };
