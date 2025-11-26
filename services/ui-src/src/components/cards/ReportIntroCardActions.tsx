@@ -44,6 +44,14 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           href={`/${helpFiles[reportType]}.pdf`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            // eslint-disable-next-line no-console
+            console.log("PDF href:", `/${helpFiles[reportType]}.pdf`);
+            // eslint-disable-next-line no-console
+            console.log("reportType:", reportType);
+            // eslint-disable-next-line no-console
+            console.log("helpFiles[reportType]:", helpFiles[reportType]);
+          }}
         >
           User Guide and Help File
           <Image
