@@ -18,7 +18,12 @@ export const wwlReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "financial-eligibility", "review-submit"],
+      childPageIds: [
+        "general-info",
+        "waiting-list-identifiers",
+        "financial-eligibility",
+        "review-submit",
+      ],
     },
     {
       id: "general-info",
@@ -70,6 +75,19 @@ export const wwlReportTemplate: ReportBase = {
             },
           ],
           required: true,
+        },
+      ],
+    },
+    {
+      id: "waiting-list-identifiers",
+      title: "Waiting List Identifiers",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "waiting-list-identifiers-header",
+          text: "Waiting List Identifiers",
         },
       ],
     },
