@@ -1,9 +1,9 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
-import downloadIcon from "assets/icons/download/icon_download_primary.svg";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
+import externalLinkIcon from "assets/icons/externalLink/icon_external_link_main.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType, isReportType } from "types";
-import { getSignedTemplateUrl, useStore } from "utils";
+import { useStore } from "utils";
 
 /**
  * This component is contained within each card on the state user home page.
@@ -30,20 +30,28 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
     }
   };
 
+  const helpFiles: { [key: string]: string } = {
+    QMS: "CMS_QMS_User_Guide_and_Help_File",
+  };
+
   return (
-    <Flex sx={sx.actionsFlex}>
-      <Button
-        variant="link"
-        sx={sx.userGuideDownloadButton}
-        leftIcon={
-          <Image src={downloadIcon} alt="Download Icon" height="1.5rem" />
-        }
-        onClick={async () => {
-          await downloadUserGuide(reportType);
-        }}
-      >
-        User Guide and Help File
-      </Button>
+    <Flex sx={reportType in helpFiles ? sx.actionsFlex : sx.actionsFlexEnd}>
+      {reportType in helpFiles && (
+        <Button
+          as={Link}
+          variant="link"
+          sx={sx.userGuideDownloadButton}
+          href={`/public/${helpFiles[reportType]}.pdf`}
+          target="_blank"
+        >
+          User Guide and Help File
+          <Image
+            src={externalLinkIcon}
+            sx={sx.externalLinkIcon}
+            alt="External Link Icon"
+          />
+        </Button>
+      )}
       <Button
         as={Link}
         variant={"primary"}
@@ -61,21 +69,20 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   );
 };
 
-export const downloadUserGuide = async (reportType: ReportType) => {
-  const signedUrl = await getSignedTemplateUrl(reportType);
-  const link = document.createElement("a");
-  link.setAttribute("target", "_blank");
-  link.setAttribute("href", String(signedUrl));
-  link.click();
-  link.remove();
-};
-
 interface Props {
   reportType: ReportType;
 }
 
 const sx = {
   actionsFlex: {
+    flexFlow: "no-wrap",
+    justifyContent: "space-between",
+    marginY: "spacer3",
+    ".mobile &": {
+      flexDirection: "column",
+    },
+  },
+  actionsFlexEnd: {
     flexFlow: "no-wrap",
     justifyContent: "end",
     marginY: "spacer3",
@@ -106,5 +113,12 @@ const sx = {
     ".mobile &": {
       marginRight: "0",
     },
+  },
+  externalLinkIcon: {
+    marginLeft: "0.5rem",
+    height: "1rem",
+  },
+  downloadIcon: {
+    marginRight: "0.5rem",
   },
 };
