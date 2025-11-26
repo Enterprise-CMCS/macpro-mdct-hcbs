@@ -34,6 +34,10 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
     QMS: "CMS_QMS_User_Guide_and_Help_File",
   };
 
+  const onClickHandler = () => {
+    window?.print();
+  };
+
   return (
     <Flex sx={reportType in helpFiles ? sx.actionsFlex : sx.actionsFlexEnd}>
       {reportType in helpFiles && (
@@ -42,7 +46,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           variant="link"
           sx={sx.userGuideDownloadButton}
           href={`/public/${helpFiles[reportType]}.pdf`}
-          target="_blank"
+          onClick={onClickHandler}
         >
           User Guide and Help File
           <Image
