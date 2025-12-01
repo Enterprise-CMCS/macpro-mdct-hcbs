@@ -23,7 +23,7 @@
   "disclaimerURL": "",
   "disclaimerText": "",
   "vcs": "git",
-  "laborHours": 10323,
+  "laborHours": 10434,
   "reuseFrequency": {
     "forks": 0,
     "clones": 0
@@ -44,15 +44,17 @@
     "Smarty"
   ],
   "maintenance": "contract",
-  "contractNumber": "75FCMC24F0027",
+  "contractNumber": [
+    "75FCMC24F0027"
+  ],
   "SBOM": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/network/dependencies",
   "relatedCode": [],
   "reusedCode": [],
   "partners": [],
   "date": {
     "created": "2024-05-02T18:31:28Z",
-    "lastModified": "2025-10-02T14:58:20Z",
-    "metaDataLastUpdated": "2025-10-02T17:37:08.820Z"
+    "lastModified": "2025-11-26T17:32:54Z",
+    "metadataLastUpdated": "2025-12-01T00:29:29.488Z"
   },
   "tags": [
     "mdct"
@@ -78,10 +80,5 @@
   "userType": [
     "Government"
   ],
-  "maturityModelTier": 3,
-  "projectURL": "https://mdcthcbs.cms.gov",
-  "feedbackMechanisms": [
-    "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/issues"
-  ],
-  "upstream": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/network/dependencies"
+  "maturityModelTier": 3
 }
