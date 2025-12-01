@@ -10,7 +10,7 @@ import {
   wwlFinancialEligiblityExplanationField,
   wwlRescreenForFinancialEligibilityField,
   wwlUpdateInfoForFinancialEligibilityField,
-} from "../elements";
+} from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
   type: ReportType.WWL,
