@@ -30,8 +30,8 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
     }
   };
 
-  const helpFiles: { [key: string]: string } = {
-    QMS: "CMS_QMS_User_Guide_and_Help_File",
+  const helpFiles: { [key in ReportType]?: string } = {
+    QMS: "CMS_QMS_User_Guide_and_Help_File.pdf",
   };
 
   return (
@@ -41,7 +41,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           as={Link}
           variant="link"
           sx={sx.userGuideDownloadButton}
-          href={`${window.location.origin}/${helpFiles[reportType]}.pdf`}
+          href={`${window.location.origin}/${helpFiles[reportType]}`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -49,7 +49,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           <Image
             src={externalLinkIcon}
             sx={sx.externalLinkIcon}
-            alt="External Link Icon"
+            alt="External Link Opens in New Tab"
           />
         </Button>
       )}
