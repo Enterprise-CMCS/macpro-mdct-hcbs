@@ -16,6 +16,7 @@
     "@typescript-eslint/parser": "^8.48.1",
     "aws-cdk": "^2.1033.0",
     "aws-cdk-local": "^3.0.1",
+    "eslint": "^9.39.1",
     "eslint-plugin-jest": "^29.2.1",
     "eslint-plugin-playwright": "^2.4.0",
     "jsdom": "^26.1.0",
