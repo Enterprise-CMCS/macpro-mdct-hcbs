@@ -1,16 +1,18 @@
-import path, { dirname } from "path";
 import { promises as fs } from "fs";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const configFilePath = path.resolve(
-  path.join(__dirname, "../../services/ui-src/public/env-config.js")
+const publicDirPath = path.resolve(
+  path.join(__dirname, "../../services/ui-src/public/")
 );
+const configFilePath = path.resolve(path.join(publicDirPath, "env-config.js"));
 
 export const writeLocalUiEnvFile = async (
   envVariables: Record<string, string>
 ) => {
+  await fs.mkdir(publicDirPath, { recursive: true });
   await fs.rm(configFilePath, { force: true });
 
   const envConfigContent = [
