@@ -7,10 +7,10 @@ import {
   CfnOutput,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { Lambda } from "../constructs/lambda";
-import { WafConstruct } from "../constructs/waf";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
-import { isLocalStack } from "../local/util";
+import { Lambda } from "../constructs/lambda.js";
+import { WafConstruct } from "../constructs/waf.js";
+import { DynamoDBTable } from "../constructs/dynamodb-table.js";
+import { isLocalStack } from "../local/util.js";
 
 interface CreateApiComponentsProps {
   scope: Construct;
