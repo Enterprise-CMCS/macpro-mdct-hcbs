@@ -24,12 +24,12 @@ export const completeLTSS1 = async (page: Page) => {
 
   await page.getByLabel("National Committee for").check();
   await page
-    .getByRole("radiogroup", { name: "Did you follow, with no" })
-    .getByLabel("Yes")
+    .getByLabel(
+      "Did you follow, with no variance, the most current technical specifications? Yes"
+    )
     .check();
   await page
-    .getByRole("radiogroup", { name: "Were the reported measure" })
-    .getByLabel("No")
+    .getByLabel("Were the reported measure results audited or validated? No")
     .check();
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
@@ -52,12 +52,12 @@ export const completeLTSS2 = async (page: Page) => {
 
   await page.getByLabel("Centers for Medicare").check();
   await page
-    .getByRole("radiogroup", { name: "Did you follow, with no" })
-    .getByLabel("Yes")
+    .getByLabel(
+      "Did you follow, with no variance, the most current technical specifications? Yes"
+    )
     .check();
   await page
-    .getByRole("radiogroup", { name: "Were the reported measure" })
-    .getByLabel("No")
+    .getByLabel("Were the reported measure results audited or validated? No")
     .check();
 
   await page.getByLabel("Managed Care (MLTSS)").check();
@@ -78,16 +78,14 @@ export const completeLTSS2 = async (page: Page) => {
 export const completeLTSS6 = async (page: Page) => {
   await page.getByRole("row", { name: "LTSS-6" }).getByRole("link").click();
   await page.getByLabel("Yes, the state is reporting").check();
-
   await page
-    .getByRole("radiogroup", { name: "Did you follow, with no" })
-    .getByLabel("Yes")
+    .getByLabel(
+      "Did you follow, with no variance, the most current technical specifications? Yes"
+    )
     .check();
   await page
-    .getByRole("radiogroup", { name: "Were the reported measure" })
-    .getByLabel("No")
+    .getByLabel("Were the reported measure results audited or validated? No")
     .check();
-
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
@@ -105,12 +103,12 @@ export const completeLTSS7 = async (page: Page) => {
   await page.getByLabel("Yes, the state is reporting").check();
 
   await page
-    .getByRole("radiogroup", { name: "Did you follow, with no" })
-    .getByLabel("Yes")
+    .getByLabel(
+      "Did you follow, with no variance, the most current technical specifications? Yes"
+    )
     .check();
   await page
-    .getByRole("radiogroup", { name: "Were the reported measure" })
-    .getByLabel("No")
+    .getByLabel("Were the reported measure results audited or validated? No")
     .check();
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
@@ -137,12 +135,12 @@ export const completeFASI1 = async (page: Page) => {
   await page.getByRole("row", { name: "FASI-1" }).getByRole("link").click();
 
   await page
-    .getByRole("radiogroup", { name: "Did you follow, with no" })
-    .getByLabel("Yes")
+    .getByLabel(
+      "Did you follow, with no variance, the most current technical specifications? Yes"
+    )
     .check();
   await page
-    .getByRole("radiogroup", { name: "Were the reported measure" })
-    .getByLabel("No")
+    .getByLabel("Were the reported measure results audited or validated? No")
     .check();
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
