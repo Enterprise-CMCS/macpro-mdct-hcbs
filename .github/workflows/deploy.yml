@@ -44,10 +44,12 @@ jobs:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
       - id: endpoint
         run: |
-          APPLICATION_ENDPOINT=$(./scripts/output.sh hcbs-$branch_name CloudFrontUrl)
+          APPLICATION_ENDPOINT=$(./scripts/output.sh ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
     outputs:
       application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
 
