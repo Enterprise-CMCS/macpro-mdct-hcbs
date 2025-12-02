@@ -14,6 +14,7 @@ export interface DeploymentConfigProperties {
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
   userPoolDomainPrefix?: string;
+  bootstrapUsersPassword?: string;
   vpcName: string;
   kafkaAuthorizedSubnetIds: string;
   brokerString: string;
@@ -57,7 +58,6 @@ const loadStageSecret = async (project: string, stage: string) => {
   try {
     return JSON.parse((await getSecret(secretName))!);
   } catch (error: any) {
-    // eslint-disable-next-line no-console
     console.warn(
       `Optional stage secret "${secretName}" not found: ${error.message}`
     );

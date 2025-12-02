@@ -27,17 +27,18 @@ async function main() {
   Tags.of(app).add("STAGE", stage);
   Tags.of(app).add("PROJECT", config.project);
 
-  if (stage == "bootstrap") {
+  if (stage === "bootstrap") {
     new Stack(app, `${config.project}-${stage}`, {});
-  } else {
-    new ParentStack(app, `${config.project}-${stage}`, {
-      ...config,
-      env: {
-        account: process.env.CDK_DEFAULT_ACCOUNT,
-        region: process.env.CDK_DEFAULT_REGION,
-      },
-    });
+    return;
   }
+
+  new ParentStack(app, `${config.project}-${stage}`, {
+    ...config,
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: "us-east-1",
+    },
+  });
 }
 
 main();

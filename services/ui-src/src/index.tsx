@@ -11,8 +11,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "styles/theme";
 import "./styles/index.scss";
 
-let apiRestConfig = {
-  hcbs: {
+const apiRestConfig = {
+  labs: {
     endpoint: config.apiGateway.URL,
     region: config.apiGateway.REGION,
   },

@@ -1,11 +1,7 @@
 import { AlertTypes, StateAbbr } from "./other";
 
 export enum ReportType {
-  QMS = "QMS",
-  TACM = "TACM",
-  CI = "CI",
-  PCP = "PCP",
-  WWL = "WWL",
+  XYZ = "XYZ",
 }
 
 export const isReportType = (
@@ -16,18 +12,8 @@ export const isReportType = (
 
 export const getReportName = (type: string | undefined) => {
   switch (type) {
-    case ReportType.QMS:
-      return "Quality Measure Set Report";
-    case ReportType.TACM:
-      return "Timely Access Compliance Measure Report";
-    case ReportType.CI:
-      return "Critical Incident Report";
-    case ReportType.PCP:
-      return "Person-Centered Planning Report";
-    case ReportType.WWL:
-      return "Waiver Waiting List Report";
     default:
-      return "";
+      return "XYZ";
   }
 };
 
@@ -400,7 +386,7 @@ export const LengthOfStayFieldNames = {
   adjustedRate: "adjustedRate",
 } as const;
 export type LengthOfStayField =
-  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
+  (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
 export type LengthOfStayRateTemplate = {
   id: string;
@@ -417,14 +403,14 @@ export const RateInputFieldNames = {
   denominator: "denominator",
 } as const;
 export type RateInputFieldName =
-  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+  (typeof RateInputFieldNames)[keyof typeof RateInputFieldNames];
 
 export const RateInputFieldNamesBasic = {
   numerator: "numerator",
   denominator: "denominator",
 } as const;
 export type RateInputFieldNameBasic =
-  typeof RateInputFieldNamesBasic[keyof typeof RateInputFieldNamesBasic];
+  (typeof RateInputFieldNamesBasic)[keyof typeof RateInputFieldNamesBasic];
 
 export type RateType = {
   id: string;
@@ -527,12 +513,6 @@ export enum MeasureSpecification {
 export interface ReportOptions {
   name: string;
   year: number;
-  options: {
-    cahps?: boolean;
-    nciidd?: boolean;
-    nciad?: boolean;
-    pom?: boolean;
-  };
 }
 
 export interface CMIT {
@@ -582,7 +562,7 @@ export enum MeasureTemplateName {
   "MLTSS-5" = "MLTSS-5",
   "FASI-1" = "FASI-1",
   "FASI-2" = "FASI-2",
-  "HCBS-10" = "HCBS-10",
+  "LABS-10" = "LABS-10",
   "FFS-3" = "FFS-3",
   "FFS-4" = "FFS-4",
   "MLTSS-3" = "MLTSS-3",
@@ -595,7 +575,7 @@ export enum MeasureTemplateName {
   "MLTSS-DM" = "MLTSS-DM",
   "MLTSS-5-PT1" = "MLTSS-5-PT1",
   "MLTSS-5-PT2" = "MLTSS-5-PT2",
-  "MLTSS-HCBS-10" = "MLTSS-HCBS-10",
+  "MLTSS-LABS-10" = "MLTSS-LABS-10",
   // pom measures
   "POM-1" = "POM-1",
   "POM-2" = "POM-2",

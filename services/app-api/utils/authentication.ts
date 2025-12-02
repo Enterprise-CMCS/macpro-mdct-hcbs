@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, isUserRole, User } from "../types/types";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { isStateAbbreviation } from "./constants";
 
 export interface DecodedToken {
@@ -20,7 +20,7 @@ export const authenticatedUser = (
 ): User | undefined => {
   const apiKey = event.headers?.["x-api-key"];
   if (apiKey) {
-    const token = jwt_decode(apiKey) as DecodedToken;
+    const token = jwtDecode(apiKey) as DecodedToken;
     return token ? parseUserFromToken(token) : undefined;
   }
   return undefined;
@@ -46,7 +46,7 @@ const parseRoleFromToken = (token: DecodedToken) => {
   const rolesString = token["custom:cms_roles"] as string;
   const role = rolesString.split(",").find(isUserRole);
   if (!role) {
-    throw new Error(`No HCBS role defined: ${rolesString}`);
+    throw new Error(`No LABS role defined: ${rolesString}`);
   }
   return role;
 };

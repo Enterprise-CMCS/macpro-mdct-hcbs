@@ -39,7 +39,7 @@ describe("Test createBanner API method", () => {
     jest.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  test("missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -48,21 +48,21 @@ describe("Test createBanner API method", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test unauthorized banner creation throws 403 error", async () => {
+  test("unauthorized banner creation throws 403 error", async () => {
     (canWriteBanner as jest.Mock).mockReturnValueOnce(false);
     const res = await createBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
-  test("Test Successful Run of Banner Creation", async () => {
+  test("Successful Run of Banner Creation", async () => {
     const res = await createBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");
   });
 
-  test("Test bannerKey not provided throws 500 error", async () => {
+  test("bannerKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: {},
@@ -72,7 +72,7 @@ describe("Test createBanner API method", () => {
     expect(res.body).toContain(error.MISSING_DATA);
   });
 
-  test("Test bannerKey empty throws 500 error", async () => {
+  test("bannerKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: { bannerId: "" },
@@ -82,7 +82,7 @@ describe("Test createBanner API method", () => {
     expect(res.body).toContain(error.MISSING_DATA);
   });
 
-  test("Test invalid data causes internal server error", async () => {
+  test("invalid data causes internal server error", async () => {
     const res = await createBanner(testEventWithInvalidData);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });

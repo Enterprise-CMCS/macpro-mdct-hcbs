@@ -51,7 +51,7 @@ export const StatusTableElement = () => {
   const modal = SubmitReportModal(
     () => setModalOpen(false),
     onSubmit,
-    reportType
+    reportType!
   );
 
   const displayModal = () => {

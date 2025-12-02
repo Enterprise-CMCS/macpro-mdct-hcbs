@@ -26,9 +26,7 @@ test.describe("Banner functionality", () => {
     await assertBannerIsPopulated(alertPreview, testBannerData);
   });
 
-  test.skip("The banner should be visible from other pages", async ({
-    page,
-  }) => {
+  test("The banner should be visible from other pages", async ({ page }) => {
     await navigateToBannerEditor(page);
     await fillBannerForm(page, testBannerData);
     await saveBanner(page);

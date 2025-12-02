@@ -1,7 +1,6 @@
 //  @ts-nocheck
 
 const config = {
-  MAX_ATTACHMENT_SIZE: 5000000,
   REACT_APP_LD_SDK_CLIENT: window._env_.REACT_APP_LD_SDK_CLIENT,
   POST_SIGNOUT_REDIRECT: window._env_.POST_SIGNOUT_REDIRECT,
   apiGateway: {

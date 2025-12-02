@@ -1,6 +1,6 @@
 import { ReactNode, useMemo, createContext } from "react";
 
-export const ApiContext = createContext(null);
+export const ApiContext = createContext({});
 
 interface Props {
   children?: ReactNode;
@@ -8,6 +8,5 @@ interface Props {
 
 export const ApiProvider = ({ children }: Props) => {
   const values = useMemo(() => ({}), []);
-  // @ts-ignore
   return <ApiContext.Provider value={values}>{children}</ApiContext.Provider>;
 };

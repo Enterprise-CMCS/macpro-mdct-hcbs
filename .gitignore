@@ -4,15 +4,22 @@ node_modules
 .DS_Store
 build_dev
 tsconfig.tsbuildinfo
+# Explicitly ignore any TypeScript incremental build info anywhere
+**/*.tsbuildinfo
 /.env
-tests_output
 *.log
-package-lock.json
 .vscode/
-*._S3rver_cors.xml
+/.cdk
+cdk.context.json
+.qlty/*
+!.qlty/qlty.toml
+/services/ui-src/build
+services/ui-src/public/env-config.js
+
+/services/app-api/coverage
+
+# Playwright
 tests/test-results/
 tests/playwright-report/
 tests/playwright/.cache/
 tests/playwright/.auth
-/.cdk
-cdk.context.json

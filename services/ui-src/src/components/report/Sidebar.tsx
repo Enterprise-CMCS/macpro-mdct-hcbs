@@ -18,16 +18,8 @@ const navItem = (title: string, index: number) => {
 const getTitle = (report: Report) => {
   if (!isReportType(report.type)) return "";
   switch (report.type) {
-    case ReportType.CI:
-      return "Critical Incident Report";
-    case ReportType.QMS:
-      return "Quality Measure Set Report";
-    case ReportType.TACM:
-      return "Timely Access Report";
-    case ReportType.PCP:
-      return "Person-Centered Planning";
-    case ReportType.WWL:
-      return "Waiver Waiting List Report";
+    case ReportType.XYZ:
+      return "XYZ";
     default:
       assertExhaustive(report.type);
       return "";

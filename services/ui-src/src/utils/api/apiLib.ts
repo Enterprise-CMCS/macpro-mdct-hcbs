@@ -2,7 +2,7 @@
 import { get, put, post, del } from "aws-amplify/api";
 import { updateTimeout } from "utils";
 
-const apiName = "hcbs";
+const apiName = "labs";
 
 type ResponsePayload = Awaited<ReturnType<typeof get>["response"]>["body"];
 

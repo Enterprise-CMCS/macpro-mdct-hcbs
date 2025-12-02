@@ -24,9 +24,9 @@ describe("Test HelpPage", () => {
     const email1 = screen.getByRole("link", { name: "mdct_help@cms.hhs.gov" });
     expect(email1).toHaveAttribute("href", "mailto:mdct_help@cms.hhs.gov");
     const email2 = screen.getByRole("link", {
-      name: "HCBSQuality@cms.hhs.gov",
+      name: "LABSQuality@cms.hhs.gov",
     });
-    expect(email2).toHaveAttribute("href", "mailto:HCBSQuality@cms.hhs.gov");
+    expect(email2).toHaveAttribute("href", "mailto:LABSQuality@cms.hhs.gov");
   });
 });
 

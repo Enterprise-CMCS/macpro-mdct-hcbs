@@ -64,7 +64,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   const elements =
     expandElements?.map((element) => {
       return {
-        indicator: "label" in element ? element.label ?? "" : "",
+        indicator: "label" in element ? (element.label ?? "") : "",
         helperText:
           "helperText" in element && element.helperText
             ? isValidHelperText(element.helperText)

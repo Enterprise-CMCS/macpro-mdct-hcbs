@@ -1,5 +1,5 @@
 import {
-  HcbsReportState,
+  ReportState,
   PageStatus,
   ParentPageTemplate,
   ReportStatus,
@@ -9,7 +9,7 @@ import {
   pageIsCompletable,
 } from "./reportLogic/completeness";
 
-export const currentPageSelector = (state: HcbsReportState) => {
+export const currentPageSelector = (state: ReportState) => {
   const { report, pageMap, currentPageId } = state;
 
   if (!report || !pageMap || !currentPageId) {
@@ -21,19 +21,19 @@ export const currentPageSelector = (state: HcbsReportState) => {
 };
 
 export const elementSelector = (elementId: string) => {
-  return (state: HcbsReportState) => {
+  return (state: ReportState) => {
     const currentPage = currentPageSelector(state);
     const element = currentPage?.elements?.find((el) => el.id === elementId);
     return element;
   };
 };
 
-export const currentPageCompletableSelector = (state: HcbsReportState) => {
+export const currentPageCompletableSelector = (state: ReportState) => {
   if (!state.report || !state.currentPageId) return false;
   return pageIsCompletable(state.report, state.currentPageId);
 };
 
-export const submittableMetricsSelector = (state: HcbsReportState) => {
+export const submittableMetricsSelector = (state: ReportState) => {
   const { report, pageMap } = state;
   if (!report || !pageMap) {
     return null;

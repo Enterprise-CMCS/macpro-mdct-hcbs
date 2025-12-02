@@ -1,3 +1,4 @@
+// eslint-disable-file jest/no-export
 import { act, render } from "@testing-library/react";
 import { ReactElement } from "react";
 import { axe } from "jest-axe";
@@ -42,7 +43,7 @@ export const testA11yAct = (
   beforeCallback?: any,
   afterCallback?: any
 ) => {
-  describe("Accessibility", () => {
+  describe("AccessibilityAct", () => {
     beforeEach(() => {
       if (beforeCallback) {
         beforeCallback();

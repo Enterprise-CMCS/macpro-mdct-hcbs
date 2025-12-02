@@ -13,11 +13,7 @@ import {
   ReportStatus,
   ReportType,
 } from "types/report";
-import QmsOptions from "./AddFormOptions/QmsOptions";
-import TacmOptions from "./AddFormOptions/TacmOptions";
-import CiOptions from "./AddFormOptions/CiOptions";
-import PcpOptions from "./AddFormOptions/PcpOptions";
-import WwlOptions from "./AddFormOptions/WwlOptions";
+import XyzOptions from "./AddFormOptions/XyzOptions";
 import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
@@ -32,11 +28,10 @@ export type AddEditReportModalOptions = {
   /**
    * If a report type has inputs to specify its creation options,
    * those inputs will be included in this component.
-   * If not (as for TACM and CI), this will be undefined.
+   * If not (as for XYZ), this will be undefined.
    */
   OptionsComponent?: (props: {
     selectedReport: LiteReport | undefined;
-    onOptionsChange: (options: Record<string, any>) => void;
     submissionAttempted: boolean;
     setOptionsComplete: (isComplete: boolean) => void;
   }) => ReactElement;
@@ -46,11 +41,7 @@ const buildModalOptions = (
   reportType: ReportType
 ): AddEditReportModalOptions => {
   const optionsByReportType: Record<ReportType, AddEditReportModalOptions> = {
-    [ReportType.QMS]: QmsOptions,
-    [ReportType.TACM]: TacmOptions,
-    [ReportType.CI]: CiOptions,
-    [ReportType.PCP]: PcpOptions,
-    [ReportType.WWL]: WwlOptions,
+    [ReportType.XYZ]: XyzOptions,
   };
   return optionsByReportType[reportType];
 };
@@ -70,7 +61,6 @@ export const AddEditReportModal = ({
   const formDataForReport = (report: LiteReport | undefined) => ({
     reportTitle: report?.name ?? "",
     year: report?.year?.toString() ?? dropdownYears[0].value,
-    options: selectedReport?.options ?? {},
   });
   const initialFormData = formDataForReport(selectedReport);
   const [formData, setFormData] = useState(initialFormData);
@@ -95,13 +85,6 @@ export const AddEditReportModal = ({
       [name]: value ? "" : ErrorMessages.requiredResponse,
     });
     setFormData(updatedFormData);
-  };
-
-  const onOptionsChange = (optionsData: Record<string, any>) => {
-    setFormData({
-      ...formData,
-      options: optionsData,
-    });
   };
 
   const onSubmit = async (evt: FormEvent) => {
@@ -130,7 +113,6 @@ export const AddEditReportModal = ({
       const reportOptions: ReportOptions = {
         name: userEnteredReportName,
         year: Number(formData.year),
-        options: formData.options,
       };
       await createReport(reportType, activeState, reportOptions);
       await reportHandler(reportType, activeState);
@@ -192,7 +174,6 @@ export const AddEditReportModal = ({
           {OptionsComponent ? (
             <OptionsComponent
               selectedReport={selectedReport}
-              onOptionsChange={onOptionsChange}
               submissionAttempted={submissionAttempted}
               setOptionsComplete={setOptionsComplete}
             />

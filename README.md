@@ -1,20 +1,18 @@
-# MDCT-HCBS
+# MDCT-LABS
 
-[![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://qlty.sh/badges/5213e13f-d38a-4a72-aa4c-87979bb19c6b/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-hcbs)
-[![Code Coverage](https://qlty.sh/badges/5213e13f-d38a-4a72-aa4c-87979bb19c6b/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-hcbs)
+[![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-labs/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-labs/actions/workflows/codeql-analysis.yml)
+[![Maintainability](https://qlty.sh/badges/PLACEHOLDER/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-labs)
+[![Code Coverage](https://qlty.sh/badges/PLACEHOLDER/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-labs)
 
 ### Integration Environment Deploy Status:
 
 | Branch     | Build Status                                                                                                            |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------- |
-| main       | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg)                   |
-| val        | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg?branch=val)        |
-| production | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/deploy.yml/badge.svg?branch=production) |
+| main       | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-labs/actions/workflows/deploy.yml/badge.svg)                   |
+| val        | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-labs/actions/workflows/deploy.yml/badge.svg?branch=val)        |
+| production | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-labs/actions/workflows/deploy.yml/badge.svg?branch=production) |
 
-HCBS is the CMCS MDCT application for collecting state data related to Home- and Community-Based Services (HCBS) programs and performance. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
-
-HCBS are types of person-centered care delivered in the home and community which address the needs of people with functional limitations who need assistance with everyday activities. They are often designed to enable people to stay in their homes, rather than moving to a facility for care. The programs generally fall into two categories: health services (which meet medical needs) and human services (which support activities of daily living).
+LABS is the CMCS MDCT application for demonstrating and testing modern development patterns and best practices across the MDCT suite of applications.
 
 ## Table of Contents
 
@@ -47,7 +45,7 @@ Before starting the project we're going to install some tools. We recommend havi
 
 **If you have run the MDCT Setup Script this section can be skipped**
 
-1. Clone the repo: `git clone https://github.com/Enterprise-CMCS/macpro-mdct-hcbs.git`
+1. Clone the repo: `git clone <REPO_URL_TBD>`
 2. Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files
 3. In the root directory run `pre-commit install`
 
@@ -152,7 +150,7 @@ ESLint works in a similar manner for all code linting.
 
 ### Github Action Script Checks
 
-On a push to the repository or opening a pull request the [deploy.yml](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
+On a push to the repository or opening a pull request the [deploy.yml](https://github.com/Enterprise-CMCS/macpro-mdct-labs/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
 
 Upon opening a pull request into the main branch the scripts will also trigger a Playwright E2E and an A11y step to ensure that the code quality is still passing the End-to-End and accessibility tests.
 
@@ -166,32 +164,23 @@ This application is built and deployed via GitHub Actions.
 
 We have 3 main branches that we work out of:
 
-- Main (Pointed to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/)) is our development branch
-- Val (Pointed to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/)) is our beta branch
-- Production (Pointed to [http://mdcthcbs.cms.gov/](http://mdcthcbs.cms.gov/)) is our release branch
+- Main (Pointed to <DEV_URL_TBD>) is our development branch
+- Val (Pointed to <VAL_URL_TBD>) is our beta branch
+- Production (Pointed to <PROD_URL_TBD>) is our release branch
 
-When a pull request is approved and merged into main the deploy script will spin up and upon completion will deploy to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/). If a user wants to deploy to val they simply need to create a pull request where Main is being merged into Val. Once that pull request is approved, the deploy script will run again and upon completion will deploy to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/). So to quickly break it down:
+When a pull request is approved and merged into main the deploy script will spin up and upon completion will deploy to <DEV_URL_TBD>. If a user wants to deploy to val they simply need to create a pull request where Main is being merged into Val. Once that pull request is approved, the deploy script will run again and upon completion will deploy to <VAL_URL_TBD>. So to quickly break it down:
 
 - Submit pull request of your code to Main.
 - Approve pull request and merge into main.
-- Deploy script runs and will deploy to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/).
+- Deploy script runs and will deploy to <DEV_URL_TBD>.
 - Submit pull request pointing Main into Val.
 - Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Val
-- Deploy script runs and will deploy to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/).
+- Deploy script runs and will deploy to <VAL_URL_TBD>.
 - Submit pull request pointing Val into Production.
 - Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Production
-- Deploy script runs and will deploy to [http://mdcthcbs.cms.gov/](http://mdcthcbs.cms.gov/).
+- Deploy script runs and will deploy to <PROD_URL_TBD>.
 
 If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. click on `deploy`, then click to exapnd the `deploy` section on the right. Search for `Application endpoint` and click on the generated site.
-
-## BigMac Kafka Integration
-
-HCBS pipes updates from fieldData and the report object tables to BigMac for downstream consumption. To add a topic for a new report type, update the following locations:
-
-- `deployment/topics.ts`
-  - Any new table with come with streaming (tables are defined here: `deployment/data.ts`)
-- `services/app-api/handlers/kafka/post/postKafkaData.ts` - Add the bucket and table names into the appropriate arrays. They will be parsed with their event types accordingly.
-- `services/topics/createTopics.js` - Declare the new topic names. Both the stream name for the bucket and table should be added here.
 
 ## Architecture
 
