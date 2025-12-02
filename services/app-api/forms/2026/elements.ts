@@ -75,7 +75,7 @@ export const measureInstructionsWithTechSpecs: AccordionTemplate = {
     "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).</p>" +
     "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
     "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections). All data previously entered will be cleared and not submitted upon report completion.</p>" +
-    "<a href='https://www.medicaid.gov/license/form/8586/3396' target='_blank'>View Current Technical Specifications (opens in new tab)<a>",
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" target="_blank">View Current Technical Specifications (opens in new tab)</a>',
 };
 
 export const measureInstructions: AccordionTemplate = {
