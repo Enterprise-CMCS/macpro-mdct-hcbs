@@ -54,7 +54,6 @@ export class LambdaDynamoEventSource extends Construct {
           .update(`${Date.now()}-${id}`)
           .digest("hex"),
         minify: true,
-        target: "node22",
         sourceMap: true,
         nodeModules: ["kafkajs"],
       },

@@ -60,7 +60,6 @@ export class Lambda extends Construct {
           .update(`${Date.now()}-${id}`)
           .digest("hex"),
         minify: true,
-        target: "node22",
         sourceMap: true,
         nodeModules: ["jsdom"],
       },
