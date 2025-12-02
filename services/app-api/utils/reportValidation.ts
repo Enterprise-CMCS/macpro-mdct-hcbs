@@ -557,6 +557,7 @@ export const validateReportPayload = async (payload: object | undefined) => {
   }
 
   const validatedPayload = await reportValidateSchema.validate(payload, {
+    strict: true,
     stripUnknown: true,
   });
 
@@ -571,6 +572,7 @@ export const validateReportEditPayload = async (
   }
 
   const validatedPayload = await reportEditValidateSchema.validate(payload, {
+    strict: true,
     stripUnknown: true,
   });
 

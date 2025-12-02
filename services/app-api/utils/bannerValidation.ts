@@ -34,6 +34,7 @@ export const validateBannerPayload = async (payload: object | undefined) => {
   }
 
   const validatedPayload = await bannerValidateSchema.validate(payload, {
+    strict: true,
     stripUnknown: true,
   });
 
