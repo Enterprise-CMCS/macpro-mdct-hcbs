@@ -3,9 +3,9 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "incremental": true,
-    "lib": ["ES2023"],
-    "module": "nodenext",
     "target": "ES2023",
+    "module": "nodenext",
+    "lib": ["ES2023"],
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
