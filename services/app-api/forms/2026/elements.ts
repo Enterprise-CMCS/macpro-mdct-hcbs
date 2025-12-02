@@ -212,6 +212,36 @@ export const didYouFollowSpecifications: RadioTemplate = {
   required: true,
 };
 
+export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
+  type: ElementType.Radio,
+  label: `Did you follow, with no variance, the most current technical specifications?`,
+  id: "measure-following-tech-specs",
+  choices: [
+    { label: "Yes", value: "yes" },
+    {
+      label: "No",
+      value: "no",
+      checkedChildren: [
+        {
+          type: ElementType.TextAreaField,
+          id: "measure-following-tech-specs-no-explain",
+          label: "Explain the variance.",
+          required: true,
+          helperText:
+            "Include the name of which technical specifications were used in the reporting of this measure, or any data elements that were collected outside of the most current guidance (e.g. sampling size, population, denomination calculation etc.)",
+        },
+      ],
+    },
+  ],
+  hideCondition: {
+    controllerElementId: "measure-reporting-radio",
+    answer: "no",
+  },
+  required: true,
+  helperText:
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" style="color: #0071bc; text-decoration: underline;" target="_blank">View Current Technical Specifications (opens in new tab)</a>',
+};
+
 export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
   id: "conversion-of-service-units-field",
