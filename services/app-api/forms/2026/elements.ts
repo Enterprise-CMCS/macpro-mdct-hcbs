@@ -68,8 +68,8 @@ export const measureHeader: HeaderTemplate = {
 
 export const measureInstructionsWithTechSpecs: AccordionTemplate = {
   type: ElementType.Accordion,
-  id: "measure-instructions",
-  label: "Instructions",
+  id: "measure-instructions-with-tech-spec-link",
+  label: "Instructions with link",
   value:
     "<strong>Instructions for Completing this Measure</strong>" +
     "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).</p>" +
@@ -215,7 +215,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
 export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
   type: ElementType.Radio,
   label: `Did you follow, with no variance, the most current technical specifications?`,
-  id: "measure-following-tech-specs",
+  id: "measure-following-tech-specs-with-link",
   choices: [
     { label: "Yes", value: "yes" },
     {
@@ -224,7 +224,7 @@ export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
       checkedChildren: [
         {
           type: ElementType.TextAreaField,
-          id: "measure-following-tech-specs-no-explain",
+          id: "measure-following-tech-specs-no-explain-with-link",
           label: "Explain the variance.",
           required: true,
           helperText:
@@ -234,7 +234,7 @@ export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
     },
   ],
   hideCondition: {
-    controllerElementId: "measure-reporting-radio",
+    controllerElementId: "measure-reporting-with-tech-spec-link-radio",
     answer: "no",
   },
   required: true,
