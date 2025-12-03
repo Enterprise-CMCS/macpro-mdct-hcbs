@@ -111,19 +111,11 @@ describe("ReportPageWrapper", () => {
           index: 0,
           childPageIds: ["general-info", "req-measure-result"],
         },
-        showLocalLogins: true,
-        setUser: jest.fn(),
-        setShowLocalLogins: jest.fn(),
-      };
-      if (selector) {
-        return selector(mockState);
-      }
-      return {
-        ...mockState,
-        loadReport: jest.fn(),
-        setAnswers: jest.fn(),
         saveReport: mockSaveReport,
-      };
+        setAnswers: jest.fn(),
+        loadReport: jest.fn(),
+      } as any;
+      return selector ? selector(mockState) : mockState;
     });
   });
   test("should not render if missing params", async () => {
