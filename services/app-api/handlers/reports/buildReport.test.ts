@@ -62,8 +62,8 @@ describe("Test validation error", () => {
       options: {},
     } as ReportOptions;
 
-    expect(async () => {
-      await buildReport(ReportType.XYZ, state, reportOptions, user);
-    }).rejects.toThrow("Invalid request");
+    await expect(
+      buildReport(ReportType.XYZ, state, reportOptions, user)
+    ).rejects.toThrow("Invalid request");
   });
 });
