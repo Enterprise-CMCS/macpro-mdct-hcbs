@@ -45,7 +45,7 @@ describe("Test submit report handler", () => {
     jest.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  test("missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -60,7 +60,7 @@ describe("Test submit report handler", () => {
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  test("missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
       pathParameters: validPath,
@@ -70,7 +70,7 @@ describe("Test submit report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test invalid report", async () => {
+  test("invalid report", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
       pathParameters: validPath,
@@ -80,7 +80,7 @@ describe("Test submit report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test body + param mismatch", async () => {
+  test("body + param mismatch", async () => {
     const badType = {
       ...proxyEvent,
       pathParameters: { ...validPath, reportType: "ZZ" },
@@ -105,7 +105,7 @@ describe("Test submit report handler", () => {
     expect(resId.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test Successful submit", async () => {
+  test("Successful submit", async () => {
     const res = await submitReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);

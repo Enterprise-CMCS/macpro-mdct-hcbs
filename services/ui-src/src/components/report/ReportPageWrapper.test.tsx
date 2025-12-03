@@ -165,28 +165,4 @@ describe("Page validation", () => {
       reportId: "QMSNJ123",
     });
   });
-
-  test.skip("form should display error when text field is blurred with no input", async () => {
-    global.structuredClone = (val: unknown) => {
-      return JSON.parse(JSON.stringify(val));
-    };
-
-    render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
-
-    const contactTitleInput = screen.getByLabelText("Another textbox");
-
-    // blur the textbox without entering anything
-    await act(async () => {
-      fireEvent.blur(contactTitleInput);
-    });
-
-    // validation error will appear since textbox is empty
-    const responseIsRequiredErrorMessage = screen.getAllByText(
-      "A response is required",
-      { exact: false }
-    );
-    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
-    expect(responseIsRequiredErrorMessage.length).toBe(2);
-  });
 });
