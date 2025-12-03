@@ -14,6 +14,8 @@ import {
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
+import { useStore } from "utils";
+import { ReportAutosaveProvider } from "./ReportAutosaveProvider";
 
 const testReport: Report = {
   type: ReportType.QMS,
@@ -83,9 +85,10 @@ jest.mock("../../utils/api/requestMethods/report", () => ({
 }));
 
 jest.mock("utils/state/useStore", () => ({
-  ...jest.requireActual("utils/state/useStore"),
-  saveReport: () => mockSaveReport,
+  useStore: jest.fn(),
 }));
+
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
@@ -95,6 +98,30 @@ describe("ReportPageWrapper", () => {
       state: "NJ",
       reportId: "QMSNJ123",
     });
+    mockedUseStore.mockImplementation((selector?) => {
+      const mockState = {
+        report: testReport,
+        pageMap: new Map([
+          ["root", 0],
+          ["general-info", 1],
+          ["req-measure-result", 2],
+        ]),
+        currentPageId: "general-info",
+        parentPage: {
+          index: 0,
+          childPageIds: ["general-info", "req-measure-result"],
+        },
+      };
+      if (selector) {
+        return selector(mockState);
+      }
+      return {
+        ...mockState,
+        loadReport: jest.fn(),
+        setAnswers: jest.fn(),
+        saveReport: mockSaveReport,
+      };
+    });
   });
   test("should not render if missing params", async () => {
     mockUseParams.mockReturnValue({
@@ -103,7 +130,8 @@ describe("ReportPageWrapper", () => {
       reportId: undefined,
     });
     render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    expect(mockGetReport).not.toHaveBeenCalled();
     expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
   test("should render Loading if report not loaded", async () => {
@@ -144,7 +172,11 @@ describe("ReportPageWrapper", () => {
     };
 
     await act(async () => {
-      render(<ReportPageWrapper />);
+      render(
+        <ReportAutosaveProvider>
+          <ReportPageWrapper />
+        </ReportAutosaveProvider>
+      );
     });
 
     const textbox = screen.getByLabelText("Contact title");
