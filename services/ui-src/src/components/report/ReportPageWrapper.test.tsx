@@ -111,7 +111,7 @@ describe("ReportPageWrapper", () => {
           index: 0,
           childPageIds: ["general-info", "req-measure-result"],
         },
-        showLocalLogins: jest.fn(),
+        showLocalLogins: true,
         setUser: jest.fn(),
         setShowLocalLogins: jest.fn(),
       };
