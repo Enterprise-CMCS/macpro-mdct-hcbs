@@ -101,6 +101,9 @@
     "globals": {
       "_env_": {}
     },
-    "testEnvironment": "jest-environment-jsdom"
+    "testEnvironment": "jest-environment-jsdom",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-error-boundary)/)"
+    ]
   }
 }
