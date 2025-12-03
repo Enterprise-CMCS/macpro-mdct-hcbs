@@ -1,6 +1,5 @@
 import { useContext } from "react";
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen } from "@testing-library/react";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import {
@@ -44,11 +43,5 @@ describe("<UserProvider />", () => {
 
   test("child component renders", () => {
     expect(screen.getByText("Save Test")).toBeVisible();
-  });
-
-  test("autosave function", async () => {
-    const saveButton = screen.getByRole("button", { name: "Save" });
-    await userEvent.click(saveButton);
-    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
   });
 });

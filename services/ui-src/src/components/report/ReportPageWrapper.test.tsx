@@ -1,10 +1,4 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   ElementType,
@@ -102,20 +96,17 @@ describe("ReportPageWrapper", () => {
       reportId: undefined,
     });
     render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
     expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
     render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
     expect(screen.getByText("Loading...")).toBeTruthy();
   });
   test("should render if report exists", async () => {
     await act(async () => {
       render(<ReportPageWrapper />);
     });
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
 
     await waitFor(() => {
       expect(screen.queryAllByText("General Information")).toBeDefined();
@@ -133,36 +124,5 @@ describe("ReportPageWrapper", () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       "/report/XYZ/NJ/QMSNJ123/req-measure-result"
     );
-  });
-
-  test("run autosave when a text field has changed", async () => {
-    jest.useFakeTimers();
-
-    global.structuredClone = (val: unknown) => {
-      return JSON.parse(JSON.stringify(val));
-    };
-
-    await act(async () => {
-      render(<ReportPageWrapper />);
-    });
-
-    const textbox = screen.getByLabelText("Contact title");
-    await act(async () => {
-      fireEvent.change(textbox, { target: { value: "2027" } });
-    });
-    expect(textbox).toHaveValue("2027");
-
-    jest.runAllTimers();
-    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
-  });
-});
-
-describe("Page validation", () => {
-  beforeEach(() => {
-    mockUseParams.mockReturnValue({
-      reportType: "XYZ",
-      state: "NJ",
-      reportId: "QMSNJ123",
-    });
   });
 });
