@@ -94,5 +94,5 @@ export const isEmail = (value: string | undefined) => {
   const emailPattern =
     // eslint-disable-next-line no-useless-escape
     /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  return value && emailPattern.test(value);
+  return !!value && emailPattern.test(value);
 };
