@@ -103,20 +103,20 @@ describe("ReportPageWrapper", () => {
       reportId: undefined,
     });
     render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
     expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
     render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
     expect(screen.getByText("Loading...")).toBeTruthy();
   });
   test("should render if report exists", async () => {
     await act(async () => {
       render(<ReportPageWrapper />);
     });
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
 
     await waitFor(() => {
       expect(screen.queryAllByText("General Information")).toBeDefined();
@@ -154,7 +154,7 @@ describe("ReportPageWrapper", () => {
     expect(textbox).toHaveValue("2027");
 
     jest.runAllTimers();
-    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled);
+    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled());
   });
 });
 
@@ -173,7 +173,7 @@ describe("Page validation", () => {
     };
 
     render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
 
     const contactTitleInput = screen.getByLabelText("Another textbox");
 
