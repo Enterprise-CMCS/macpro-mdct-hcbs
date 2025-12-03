@@ -111,6 +111,9 @@ describe("ReportPageWrapper", () => {
           index: 0,
           childPageIds: ["general-info", "req-measure-result"],
         },
+        showLocalLogins: jest.fn(),
+        setUser: jest.fn(),
+        setShowLocalLogins: jest.fn(),
       };
       if (selector) {
         return selector(mockState);
