@@ -181,7 +181,7 @@ type Set<TState> = <A extends string | { type: string }>(
     | TState
     | Partial<TState>
     | ((state: TState) => TState | Partial<TState>),
-  replace?: false | undefined,
+  replace?: boolean,
   action?: A
 ) => void;
 
