@@ -307,7 +307,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
-  test("Changing delivery method should clear measure details pages", async () => {
+  test("Clear measure button should clear all measure data", async () => {
     act(() => render(<MockReportPage />));
     await waitForRender();
 
