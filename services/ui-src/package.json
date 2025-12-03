@@ -90,6 +90,10 @@
       "src"
     ],
     "verbose": true,
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts"
+    },
     "setupFiles": [],
     "setupFilesAfterEnv": [
       "<rootDir>/src/utils/testing/setupJest.tsx"
