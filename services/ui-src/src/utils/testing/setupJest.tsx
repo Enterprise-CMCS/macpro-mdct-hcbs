@@ -24,6 +24,8 @@ window.scrollBy = jest.fn();
 window.scrollTo = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 
+HTMLCanvasElement.prototype.getContext = jest.fn(() => null);
+
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
 jest.mock("@chakra-ui/transition", () => ({
   ...jest.requireActual("@chakra-ui/transition"),
