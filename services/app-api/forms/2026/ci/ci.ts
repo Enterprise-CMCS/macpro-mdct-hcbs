@@ -10,6 +10,7 @@ import {
 import {
   criticalIncidentCommentsField,
   didYouFollowSpecifications,
+  exportToPDF,
   minPerformanceExplanationField,
 } from "../elements";
 
@@ -240,6 +241,7 @@ export const ciReportTemplate: ReportBase = {
           id: "submitted-what-happens",
           text: "Email your CMS representative to inform them you submitted the CI Report and it is ready for their review.",
         },
+        exportToPDF,
       ],
     },
   ],

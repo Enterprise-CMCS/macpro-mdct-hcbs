@@ -6,6 +6,7 @@ import {
   ReportBase,
   AlertTypes,
 } from "../../../types/reports";
+import { exportToPDF } from "../elements";
 
 export const wwlReportTemplate: ReportBase = {
   type: ReportType.WWL,
@@ -149,6 +150,7 @@ export const wwlReportTemplate: ReportBase = {
           id: "submitted-what-happens",
           text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
         },
+        exportToPDF,
       ],
     },
   ],
