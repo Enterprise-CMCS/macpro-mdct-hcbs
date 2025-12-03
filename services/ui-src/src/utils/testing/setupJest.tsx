@@ -1,7 +1,9 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
-import { UserRoles, UserState, AdminBannerState, ReportState } from "types";
+import { UserRoles, UserState, AdminBannerState } from "types";
+import { mockBannerData } from "./mockBanner";
+
 // GLOBALS
 
 global.React = React;
@@ -80,6 +82,7 @@ jest.mock("aws-amplify/auth", () => ({
 //  BANNER STATES / STORE
 
 export const mockBannerStore: AdminBannerState = {
+  bannerData: mockBannerData,
   bannerActive: false,
   bannerLoading: false,
   bannerErrorMessage: { title: "", children: undefined },
@@ -94,14 +97,14 @@ export const mockBannerStore: AdminBannerState = {
 
 // USER STATES / STORE
 
-export const mockNoUserStore: HcbsUserState = {
+export const mockNoUserStore: UserState = {
   user: undefined,
   showLocalLogins: true,
   setUser: () => {},
   setShowLocalLogins: () => {},
 };
 
-export const mockStateUserStore: HcbsUserState = {
+export const mockStateUserStore: UserState = {
   user: {
     userRole: UserRoles.STATE_USER,
     email: "stateuser@test.com",
@@ -116,7 +119,7 @@ export const mockStateUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockStateApproverStore: HcbsUserState = {
+export const mockStateApproverStore: UserState = {
   user: {
     userRole: UserRoles.APPROVER,
     email: "stateapprover@test.com",
@@ -131,7 +134,7 @@ export const mockStateApproverStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockHelpDeskUserStore: HcbsUserState = {
+export const mockHelpDeskUserStore: UserState = {
   user: {
     userRole: UserRoles.HELP_DESK,
     email: "helpdeskuser@test.com",
@@ -146,7 +149,7 @@ export const mockHelpDeskUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockAdminUserStore: HcbsUserState = {
+export const mockAdminUserStore: UserState = {
   user: {
     userRole: UserRoles.ADMIN,
     email: "adminuser@test.com",
@@ -163,7 +166,7 @@ export const mockAdminUserStore: HcbsUserState = {
 
 // BOUND STORE
 
-export const mockUseStore: UserState & AdminBannerState & ReportState = {
+export const mockUseStore: UserState & AdminBannerState = {
   ...mockStateUserStore,
   ...mockBannerStore,
 };
