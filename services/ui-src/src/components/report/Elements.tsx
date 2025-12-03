@@ -27,7 +27,7 @@ import { measurePrevPage, parseHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
-import lookupIconPrimary from "assets/icons/search/icon_search_primary.svg";
+import whitePDFPrimary from "assets/icons/pdf/icon_pdf_white.svg";
 
 export type PageElementProps<T extends PageElement = PageElement> = T extends {
   answer?: any;
@@ -199,11 +199,11 @@ export const ButtonLinkElement = ({
           prop: {
             as: Link,
             target: "_blank",
-            variant: "outline",
+            variant: "primary",
             to: link,
           },
           style: {
-            src: lookupIconPrimary,
+            src: whitePDFPrimary,
             alt: "pdf icon",
           },
         };

@@ -25,6 +25,12 @@ const primaryVariant = {
     backgroundColor: "palette.gray_lighter",
     opacity: 1,
   },
+  _visited: {
+    color: "palette.white",
+  },
+  ".icon": {
+    marginRight: "spacer1",
+  },
 };
 const transparentVariant = {
     color: "palette.primary",

@@ -45,7 +45,7 @@ export const returnToDashboard: ButtonLinkTemplate = {
 export const exportToPDF: ButtonLinkTemplate = {
   type: ElementType.ButtonLink,
   id: "pdf-btn",
-  label: "Review PDF",
+  label: "Download PDF",
   to: "export",
   style: "pdf",
 };
