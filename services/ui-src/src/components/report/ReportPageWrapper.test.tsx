@@ -1,4 +1,10 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   ElementType,
@@ -123,9 +129,21 @@ describe("ReportPageWrapper", () => {
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
+    mockedUseStore.mockImplementation((selector?) => {
+      const mockState = {
+        report: undefined,
+        pageMap: new Map(),
+        currentPageId: undefined,
+        parentPage: undefined,
+        saveReport: mockSaveReport,
+        setAnswers: jest.fn(),
+        loadReport: jest.fn(),
+      } as any;
+      return selector ? selector(mockState) : mockState;
+    });
     await act(async () => {
       render(<ReportPageWrapper />);
-    }());
+    });
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
     expect(screen.getByText("Loading...")).toBeTruthy();
   });
@@ -176,39 +194,5 @@ describe("ReportPageWrapper", () => {
 
     jest.runAllTimers();
     await waitFor(() => expect(mockSaveReport).toHaveBeenCalled());
-  });
-});
-
-describe("Page validation", () => {
-  beforeEach(() => {
-    mockUseParams.mockReturnValue({
-      reportType: "QMS",
-      state: "NJ",
-      reportId: "QMSNJ123",
-    });
-  });
-
-  test.skip("form should display error when text field is blurred with no input", async () => {
-    global.structuredClone = (val: unknown) => {
-      return JSON.parse(JSON.stringify(val));
-    };
-
-    render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
-
-    const contactTitleInput = screen.getByLabelText("Another textbox");
-
-    // blur the textbox without entering anything
-    await act(async () => {
-      fireEvent.blur(contactTitleInput);
-    });
-
-    // validation error will appear since textbox is empty
-    const responseIsRequiredErrorMessage = screen.getAllByText(
-      "A response is required",
-      { exact: false }
-    );
-    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
-    expect(responseIsRequiredErrorMessage.length).toBe(2);
   });
 });
