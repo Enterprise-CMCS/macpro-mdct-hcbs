@@ -1,7 +1,6 @@
 import { parseNumber } from "components/rates/calculations";
 import { ErrorMessages } from "../../constants";
 import { parseMMDDYYYY } from "utils";
-import * as yup from "yup";
 
 /**
  * Copy the given object, with the same shape but all string values wiped out.
@@ -87,5 +86,13 @@ export const isUrl = (value: string | undefined) => {
 
 /** Determine whether the given value is a valid email address */
 export const isEmail = (value: string | undefined) => {
-  return yup.string().email().required().isValidSync(value);
+  /*
+   * We are using the regex recommended by the HTML specification itself.
+   * ESLint doesn't love it, but we're not going to change a single character.
+   * https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
+   */
+  const emailPattern =
+    // eslint-disable-next-line no-useless-escape
+    /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return !!value && emailPattern.test(value);
 };
