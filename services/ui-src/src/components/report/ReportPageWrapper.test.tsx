@@ -8,6 +8,8 @@ import {
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
+import { useStore } from "utils";
+import { ReportAutosaveProvider } from "./ReportAutosaveProvider";
 
 const testReport: Report = {
   type: ReportType.XYZ,
@@ -76,9 +78,10 @@ jest.mock("../../utils/api/requestMethods/report", () => ({
 }));
 
 jest.mock("utils/state/useStore", () => ({
-  ...jest.requireActual("utils/state/useStore"),
-  saveReport: () => mockSaveReport,
+  useStore: jest.fn(),
 }));
+
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
@@ -88,6 +91,25 @@ describe("ReportPageWrapper", () => {
       state: "NJ",
       reportId: "QMSNJ123",
     });
+    mockedUseStore.mockImplementation((selector?) => {
+      const mockState = {
+        report: testReport,
+        pageMap: new Map([
+          ["root", 0],
+          ["general-info", 1],
+          ["req-measure-result", 2],
+        ]),
+        currentPageId: "general-info",
+        parentPage: {
+          index: 0,
+          childPageIds: ["general-info", "req-measure-result"],
+        },
+        saveReport: mockSaveReport,
+        setAnswers: jest.fn(),
+        loadReport: jest.fn(),
+      } as any;
+      return selector ? selector(mockState) : mockState;
+    });
   });
   test("should not render if missing params", async () => {
     mockUseParams.mockReturnValue({
@@ -96,19 +118,22 @@ describe("ReportPageWrapper", () => {
       reportId: undefined,
     });
     render(<ReportPageWrapper />);
+    expect(mockGetReport).not.toHaveBeenCalled();
     expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
     await act(async () => {
       render(<ReportPageWrapper />);
-    });
+    }());
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
     expect(screen.getByText("Loading...")).toBeTruthy();
   });
   test("should render if report exists", async () => {
     await act(async () => {
       render(<ReportPageWrapper />);
     });
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
 
     await waitFor(() => {
       expect(screen.queryAllByText("General Information")).toBeDefined();
@@ -126,5 +151,64 @@ describe("ReportPageWrapper", () => {
     expect(mockNavigate).toHaveBeenCalledWith(
       "/report/XYZ/NJ/QMSNJ123/req-measure-result"
     );
+  });
+
+  test("run autosave when a text field has changed", async () => {
+    jest.useFakeTimers();
+
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    await act(async () => {
+      render(
+        <ReportAutosaveProvider>
+          <ReportPageWrapper />
+        </ReportAutosaveProvider>
+      );
+    });
+
+    const textbox = screen.getByLabelText("Contact title");
+    await act(async () => {
+      fireEvent.change(textbox, { target: { value: "2027" } });
+    });
+    expect(textbox).toHaveValue("2027");
+
+    jest.runAllTimers();
+    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled());
+  });
+});
+
+describe("Page validation", () => {
+  beforeEach(() => {
+    mockUseParams.mockReturnValue({
+      reportType: "QMS",
+      state: "NJ",
+      reportId: "QMSNJ123",
+    });
+  });
+
+  test.skip("form should display error when text field is blurred with no input", async () => {
+    global.structuredClone = (val: unknown) => {
+      return JSON.parse(JSON.stringify(val));
+    };
+
+    render(<ReportPageWrapper />);
+    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
+
+    const contactTitleInput = screen.getByLabelText("Another textbox");
+
+    // blur the textbox without entering anything
+    await act(async () => {
+      fireEvent.blur(contactTitleInput);
+    });
+
+    // validation error will appear since textbox is empty
+    const responseIsRequiredErrorMessage = screen.getAllByText(
+      "A response is required",
+      { exact: false }
+    );
+    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
+    expect(responseIsRequiredErrorMessage.length).toBe(2);
   });
 });

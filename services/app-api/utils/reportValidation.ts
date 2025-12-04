@@ -211,6 +211,7 @@ const buttonLinkTemplateSchema = object().shape({
   id: string().required(),
   label: string().optional(),
   to: string().optional(),
+  style: string().optional(),
 });
 
 const dividerSchema = object().shape({

@@ -10,8 +10,10 @@ import {
 const mockSaveReport = jest.fn();
 
 jest.mock("utils/state/useStore", () => ({
-  ...jest.requireActual("utils/state/useStore"),
-  saveReport: () => mockSaveReport,
+  useStore: () => ({
+    report: { id: "test-report" },
+    saveReport: mockSaveReport,
+  }),
 }));
 
 // COMPONENTS
@@ -43,5 +45,13 @@ describe("<UserProvider />", () => {
 
   test("child component renders", () => {
     expect(screen.getByText("Save Test")).toBeVisible();
+  });
+
+  test("test autosave function", async () => {
+    const saveButton = screen.getByRole("button", { name: "Save" });
+    await userEvent.click(saveButton);
+    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled(), {
+      timeout: 3000,
+    });
   });
 });
