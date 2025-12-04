@@ -19,14 +19,15 @@ describe("Test SubnavBar component", () => {
     expect(screen.getByRole("link", { name: "Leave form" })).toBeVisible();
   });
 
-  test.each([
-    { type: ReportType.XYZ, text: "XYZ Report" },
-  ])("$type report type renders a title", ({ type, text }) => {
-    render(
-      <RouterWrappedComponent>
-        <SubnavBar reportType={type} stateName={"PR"} />
-      </RouterWrappedComponent>
-    );
-    expect(screen.getByText("PR " + text)).toBeVisible();
-  });
+  test.each([{ type: ReportType.XYZ, text: "XYZ Report" }])(
+    "$type report type renders a title",
+    ({ type, text }) => {
+      render(
+        <RouterWrappedComponent>
+          <SubnavBar reportType={type} stateName={"PR"} />
+        </RouterWrappedComponent>
+      );
+      expect(screen.getByText("PR " + text)).toBeVisible();
+    }
+  );
 });
