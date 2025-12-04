@@ -5,7 +5,7 @@ import {
   aws_s3_deployment as s3_deployment,
   Duration,
 } from "aws-cdk-lib";
-import path from "node:path";
+import path from "path";
 import { execSync } from "node:child_process";
 
 interface DeployFrontendProps {
