@@ -16,14 +16,9 @@ import { currentPageSelector } from "utils/state/selectors";
 
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
-import {
-  FormPageTemplate,
-  isReviewSubmitPage,
-  PageElement,
-  ParentPageTemplate,
-  ReportStatus,
-} from "types";
+import { isReviewSubmitPage, PageElement, ReportStatus } from "types";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
+import { displayDivider } from "utils/state/reportLogic/reportActions";
 
 export const ReportPageWrapper = () => {
   const {
@@ -81,14 +76,6 @@ export const ReportPageWrapper = () => {
     if (!parentPage) return; // Pages can exist outside of the direct parentage structure
     const sectionId = parentPage.childPageIds[newPageIndex];
     navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
-  };
-
-  const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
-    //we want to hide the divider if the last element on the page is a table as tables already have borders
-    return !(
-      page.elements &&
-      page.elements[page.elements?.length - 1].type == "measureTable"
-    );
   };
 
   const submittedView =

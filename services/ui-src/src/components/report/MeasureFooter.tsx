@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "../report/Elements";
 import {
   isFormPageTemplate,
@@ -15,6 +15,7 @@ import {
 } from "utils/state/selectors";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
+import { displayDivider } from "utils/state/reportLogic/reportActions";
 
 export const MeasureFooterElement = (
   props: PageElementProps<MeasureFooterTemplate>
@@ -79,6 +80,9 @@ export const MeasureFooterElement = (
 
   return (
     <Box width="100%" marginTop="spacer3">
+      {displayDivider(currentPage) && (
+        <Divider marginBottom="spacer3"></Divider>
+      )}
       <Flex justifyContent="space-between">
         <Button
           variant="outline"
