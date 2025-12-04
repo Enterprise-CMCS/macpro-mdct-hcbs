@@ -513,6 +513,8 @@ export enum MeasureSpecification {
 export interface ReportOptions {
   name: string;
   year: number;
+  options: {
+  };
 }
 
 export interface CMIT {
