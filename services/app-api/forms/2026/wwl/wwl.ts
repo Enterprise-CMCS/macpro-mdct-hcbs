@@ -10,6 +10,9 @@ import {
   wwlFinancialEligiblityExplanationField,
   wwlRescreenForFinancialEligibilityField,
   wwlUpdateInfoForFinancialEligibilityField,
+  wwlFunctionalEligiblityExplanationField,
+  wwlRescreenForFunctionalEligibilityField,
+  wwlUpdateInfoForFunctionalEligibilityField,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -22,6 +25,7 @@ export const wwlReportTemplate: ReportBase = {
         "general-info",
         "waiting-list-identifiers",
         "financial-eligibility",
+        "functional-eligibility",
         "review-submit",
       ],
     },
@@ -122,6 +126,39 @@ export const wwlReportTemplate: ReportBase = {
         wwlFinancialEligiblityExplanationField,
         wwlRescreenForFinancialEligibilityField,
         wwlUpdateInfoForFinancialEligibilityField,
+      ],
+    },
+    {
+      id: "functional-eligibility",
+      title: "Functional Eligibility",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "functional-eligibility-header",
+          text: "Functional Eligibility",
+        },
+        {
+          id: "functional-eligibility-confirmation",
+          type: ElementType.Radio,
+          label:
+            "Does the state confirm whether someone meets functional eligibility before they’re added to the waiting list?",
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        wwlFunctionalEligiblityExplanationField,
+        wwlRescreenForFunctionalEligibilityField,
+        wwlUpdateInfoForFunctionalEligibilityField,
       ],
     },
     {
