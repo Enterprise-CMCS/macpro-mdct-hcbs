@@ -1,7 +1,22 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
-import { UserRoles, UserState, AdminBannerState } from "types";
+import {
+  UserRoles,
+  UserState,
+  AdminBannerState,
+  ReportState,
+  ReportType,
+  ReportStatus,
+  PageType,
+  MeasureTemplateName,
+  MeasurePageTemplate,
+  PageStatus,
+  DataSource,
+  DeliverySystem,
+  MeasureSpecification,
+  ElementType,
+} from "types";
 import { mockBannerData } from "./mockBanner";
 
 // GLOBALS
@@ -26,8 +41,6 @@ Object.defineProperty(window, "matchMedia", {
 window.scrollBy = jest.fn();
 window.scrollTo = jest.fn();
 Element.prototype.scrollTo = jest.fn();
-
-HTMLCanvasElement.prototype.getContext = jest.fn(() => null);
 
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
 jest.mock("@chakra-ui/transition", () => ({
@@ -164,11 +177,196 @@ export const mockAdminUserStore: UserState = {
   setShowLocalLogins: () => {},
 };
 
+export const mockMeasureTemplate: MeasurePageTemplate = {
+  id: "LTSS-1",
+  cmitId: "960",
+  cmitInfo: {
+    cmit: 960,
+    name: "LTSS-1: Comprehensive Assessment and Update",
+    uid: "960",
+    measureSteward: "CMS",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+  },
+  status: PageStatus.IN_PROGRESS,
+  title: "mock-title",
+  type: PageType.Measure,
+  required: true,
+  substitutable: "FASI-1",
+  elements: [
+    {
+      type: ElementType.Radio,
+      label: "Is the state reporting on this measure?",
+      id: "measure-reporting-radio",
+      required: true,
+      choices: [
+        {
+          label: "Yes, the state is reporting on this measure.",
+          value: "yes",
+        },
+        {
+          label: "No, CMS is reporting this measure on the state's behalf.",
+          value: "no",
+        },
+      ],
+      answer: "yes",
+    },
+  ],
+  dependentPages: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
+      template: MeasureTemplateName["FFS-1"],
+    },
+    {
+      key: "MLTSS",
+      linkText: "Delivery Method: Managed Care (MLTSS)",
+      template: MeasureTemplateName["MLTSS-1"],
+    },
+  ],
+};
+
+export const mock2MeasureTemplate: MeasurePageTemplate = {
+  id: "FASI-1",
+  cmitId: "961",
+  cmitInfo: {
+    cmit: 961,
+    name: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+    uid: "961",
+    measureSteward: "CMS",
+    measureSpecification: [
+      MeasureSpecification.CMS,
+      MeasureSpecification.HEDIS,
+    ],
+    deliverySystem: [DeliverySystem.FFS, DeliverySystem.MLTSS],
+    dataSource: DataSource.Hybrid,
+  },
+  status: PageStatus.IN_PROGRESS,
+  title: "mock-title-2",
+  type: PageType.Measure,
+  required: true,
+  elements: [],
+  dependentPages: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
+      template: MeasureTemplateName["FFS-2"],
+    },
+    {
+      key: "MLTSS",
+      linkText: "Delivery Method: Managed Care (MLTSS)",
+      template: MeasureTemplateName["MLTSS-2"],
+    },
+  ],
+};
+
+export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
+  id: "LTSS-1",
+  cmitId: "960",
+  status: PageStatus.IN_PROGRESS,
+  title: "mock-title-2",
+  type: PageType.Measure,
+  required: true,
+  substitutable: "FASI-1",
+  elements: [
+    {
+      type: ElementType.Radio,
+      label: "Is the state reporting on this measure?",
+      id: "measure-reporting-radio",
+      required: true,
+      choices: [
+        {
+          label: "Yes, the state is reporting on this measure.",
+          value: "yes",
+        },
+        {
+          label: "No, CMS is reporting this measure on the state's behalf.",
+          value: "no",
+        },
+      ],
+      answer: "no",
+    },
+    {
+      type: ElementType.TextAreaField,
+      id: "additional-notes-field",
+      helperText:
+        "If applicable, add any notes or comments to provide context to the reported measure result",
+      label: "Additional notes/comments",
+      answer: "yes",
+      required: false,
+    },
+  ],
+  dependentPages: [
+    {
+      key: "FFS",
+      linkText: "Delivery Method: Fee-for-Service (FFS LTSS)",
+      template: MeasureTemplateName["FFS-1"],
+    },
+  ],
+};
+
+export const mockReportStore: ReportState = {
+  modalOpen: false,
+  sidebarOpen: true,
+  currentPageId: "LTSS-1",
+  pageMap: new Map([
+    ["root", 0],
+    [mockMeasureTemplate.id, 1],
+  ]),
+  report: {
+    id: "mock-id",
+    type: ReportType.XYZ,
+    status: ReportStatus.IN_PROGRESS,
+    name: "mock-report-title",
+    year: 2026,
+    state: "PR",
+    archived: false,
+    submissionCount: 0,
+    pages: [
+      {
+        id: "root",
+        childPageIds: [mockMeasureTemplate.id, mock2MeasureTemplate.id],
+      },
+      { ...mockMeasureTemplate, cmit: 960 },
+      { ...mock2MeasureTemplate, cmit: 961 },
+    ],
+  },
+  loadReport: () => {},
+  updateReport: () => {},
+  setCurrentPageId: () => {},
+  setModalOpen: () => {},
+  setModalComponent: () => {},
+  setAnswers: () => {},
+  resetMeasure: () => {},
+  clearMeasure: () => {},
+  changeDeliveryMethods: () => {},
+  setSubstitute: () => {},
+  setSidebar: () => {},
+  completePage: () => {},
+  saveReport: async () => {},
+};
+
 // BOUND STORE
 
-export const mockUseStore: UserState & AdminBannerState = {
+export const mockUseStore: UserState & AdminBannerState & ReportState = {
   ...mockStateUserStore,
   ...mockBannerStore,
+  ...mockReportStore,
+};
+
+export const mockUseAdminStore: UserState & AdminBannerState = {
+  ...mockAdminUserStore,
+  ...mockBannerStore,
+};
+
+export const mockUseReadOnlyUserStore: UserState & AdminBannerState = {
+  ...mockHelpDeskUserStore,
+  ...mockBannerStore,
+  ...mockReportStore,
 };
 
 // BANNER

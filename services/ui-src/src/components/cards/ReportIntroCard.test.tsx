@@ -20,9 +20,9 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-const qmsReportTypeCardComponent = (
+const xyzReportTypeCardComponent = (
   <RouterWrappedComponent>
-    <ReportIntroCard title="Quality Measure Set">
+    <ReportIntroCard title="XYZ">
       This is the body of the report intro card. Normally it would contain a
       description of the report, as well as an instance of
       <code>&lt;IntroCardActions&gt;</code>
@@ -33,18 +33,18 @@ const qmsReportTypeCardComponent = (
 describe("<ReportTypeCard />", () => {
   describe("Renders", () => {
     beforeEach(() => {
-      render(qmsReportTypeCardComponent);
+      render(xyzReportTypeCardComponent);
     });
 
-    test("QMS ReportTypeCard is visible", () => {
-      expect(screen.getByText("Quality Measure Set")).toBeVisible();
+    test("XYZ ReportTypeCard is visible", () => {
+      expect(screen.getByText("XYZ")).toBeVisible();
     });
 
-    test("QMS ReportTypeCard image is visible on desktop", () => {
+    test("XYZ ReportTypeCard image is visible on desktop", () => {
       const imageAltText = "Spreadsheet icon";
       expect(screen.getByAltText(imageAltText)).toBeVisible();
     });
   });
 
-  testA11y(qmsReportTypeCardComponent);
+  testA11y(xyzReportTypeCardComponent);
 });

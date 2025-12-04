@@ -21,7 +21,7 @@ describe("Test Modal", () => {
   });
 
   test("Modal shows the contents", () => {
-    expect(screen.getByText("You unlocked this QMS Report")).toBeTruthy();
+    expect(screen.getByText("You unlocked this XYZ Report")).toBeTruthy();
     expect(
       screen.getByText(
         "Email the state or territory contact and let them know it requires edits."

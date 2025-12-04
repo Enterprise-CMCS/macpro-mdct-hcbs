@@ -235,7 +235,7 @@ export const DashboardPage = () => {
         {!reports?.length &&
           (userIsAdmin ? (
             <Text variant="tableEmpty">
-              Once a state or territory begins a QMS Report, you will be able to
+              Once a state or territory begins a XYZ Report, you will be able to
               view it here.
             </Text>
           ) : (

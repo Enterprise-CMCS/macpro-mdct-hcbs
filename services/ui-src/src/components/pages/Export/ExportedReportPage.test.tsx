@@ -1,0 +1,120 @@
+import { screen, render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { useStore } from "utils";
+import { ExportedReportPage } from "./ExportedReportPage";
+import { PageType, PageStatus } from "types";
+
+jest.mock("utils", () => ({
+  ...jest.requireActual("utils"),
+  useStore: jest.fn(),
+}));
+
+const report = {
+  type: "XYZ",
+  id: "mock-report-id",
+  state: "CO",
+  name: "mock-title",
+  pages: [
+    { childPageIds: ["1", "2"] },
+    { title: "Section 1", id: "id-1" },
+    { title: "Section 2", id: "id-2" },
+    { title: "Section 3", id: "req-measure-result" },
+    { title: "Section 4", id: "review-submit" },
+    {
+      title: "Section 5",
+      id: "id-5",
+      type: PageType.Measure,
+      required: false,
+      status: PageStatus.NOT_STARTED,
+    },
+    {
+      title: "Section 6",
+      id: "id-6",
+      type: PageType.MeasureResults,
+      status: PageStatus.NOT_STARTED,
+    },
+    {
+      title: "Section 7",
+      id: "id-7",
+      type: PageType.Measure,
+      status: PageStatus.NOT_STARTED,
+      required: true,
+      dependentPages: [
+        {
+          template: "id-7-1",
+          key: "7-dep",
+          linkText: "Section 7 Dependent Page",
+        },
+      ],
+    },
+    {
+      title: "Section 7 Dependent Page",
+      id: "id-7-1",
+      type: PageType.MeasureResults,
+      status: PageStatus.NOT_STARTED,
+    },
+  ],
+  lastEdited: 1751987780396,
+  lastEditedBy: "last edited",
+  status: "In progress",
+  options: {
+    cahps: true,
+    nciidd: false,
+    nciad: true,
+    pom: false,
+  },
+};
+
+describe("ExportedReportPage", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useStore as unknown as jest.Mock).mockReturnValue({
+      report: report,
+    });
+  });
+  it("ExportReportPage is visible", () => {
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
+    expect(
+      screen.getByText("Colorado XYZ for: mock-title")
+    ).toBeInTheDocument();
+  });
+
+  it("Should not render filtered sections", () => {
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
+    expect(screen.queryByText("Section 4")).not.toBeInTheDocument();
+  });
+
+  it("Should not render optional measures which are not started", () => {
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
+    expect(screen.queryByText("Section 5")).not.toBeInTheDocument();
+  });
+
+  it("Should not render measure results which are not started", () => {
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
+    expect(screen.queryByText("Section 6")).not.toBeInTheDocument();
+  });
+  it("Should render Required Measures Heading", () => {
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
+    expect(screen.queryByText("Required Measures")).toBeInTheDocument();
+  });
+});

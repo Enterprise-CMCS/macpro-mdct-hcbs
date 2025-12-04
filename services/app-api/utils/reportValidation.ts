@@ -501,6 +501,7 @@ export const isReportOptions = (
     .shape({
       name: string().required(),
       year: number().required(),
+      options: object().notRequired().noUnknown(),
     })
     .required()
     .noUnknown();
