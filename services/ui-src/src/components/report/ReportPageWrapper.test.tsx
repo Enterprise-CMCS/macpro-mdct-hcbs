@@ -89,6 +89,29 @@ jest.mock("utils/state/useStore", () => ({
 
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
+const setupMockStore = (customState?: Partial<any>) => {
+  mockedUseStore.mockImplementation((selector?) => {
+    const mockState = {
+      report: testReport,
+      pageMap: new Map([
+        ["root", 0],
+        ["general-info", 1],
+        ["req-measure-result", 2],
+      ]),
+      currentPageId: "general-info",
+      parentPage: {
+        index: 0,
+        childPageIds: ["general-info", "req-measure-result"],
+      },
+      saveReport: mockSaveReport,
+      setAnswers: jest.fn(),
+      loadReport: jest.fn(),
+      ...customState,
+    } as any;
+    return selector ? selector(mockState) : mockState;
+  });
+};
+
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -97,25 +120,7 @@ describe("ReportPageWrapper", () => {
       state: "NJ",
       reportId: "QMSNJ123",
     });
-    mockedUseStore.mockImplementation((selector?) => {
-      const mockState = {
-        report: testReport,
-        pageMap: new Map([
-          ["root", 0],
-          ["general-info", 1],
-          ["req-measure-result", 2],
-        ]),
-        currentPageId: "general-info",
-        parentPage: {
-          index: 0,
-          childPageIds: ["general-info", "req-measure-result"],
-        },
-        saveReport: mockSaveReport,
-        setAnswers: jest.fn(),
-        loadReport: jest.fn(),
-      } as any;
-      return selector ? selector(mockState) : mockState;
-    });
+    setupMockStore();
   });
   test("should not render if missing params", async () => {
     mockUseParams.mockReturnValue({
@@ -129,17 +134,8 @@ describe("ReportPageWrapper", () => {
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
-    mockedUseStore.mockImplementation((selector?) => {
-      const mockState = {
-        report: undefined,
-        pageMap: new Map(),
-        currentPageId: undefined,
-        parentPage: undefined,
-        saveReport: mockSaveReport,
-        setAnswers: jest.fn(),
-        loadReport: jest.fn(),
-      } as any;
-      return selector ? selector(mockState) : mockState;
+    setupMockStore({
+      report: undefined,
     });
     await act(async () => {
       render(<ReportPageWrapper />);
