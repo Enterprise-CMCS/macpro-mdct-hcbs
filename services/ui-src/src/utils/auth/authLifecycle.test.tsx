@@ -26,7 +26,7 @@ describe("utils/auth", () => {
       jest.runAllTimers();
     });
 
-    test("Test updateTimeout", () => {
+    test("updateTimeout", () => {
       const currentTime = Date.now();
       updateTimeout();
       jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
@@ -37,7 +37,7 @@ describe("utils/auth", () => {
       );
     });
 
-    test("Test getExpiration and refreshCredentials", async () => {
+    test("getExpiration and refreshCredentials", async () => {
       // Set an initial time, because jest runs too fast to have different timestamps
       const initialExpiration = sub(Date.now(), { seconds: 5 }).toString();
       localStorage.setItem("mdctlabs_session_exp", initialExpiration);
@@ -51,7 +51,7 @@ describe("utils/auth", () => {
         new Date(initialExpiration).valueOf()
       );
     });
-    test("Test getExpiration returns an empty string if nothing is set", async () => {
+    test("getExpiration returns an empty string if nothing is set", async () => {
       localStorage.removeItem("mdctlabs_session_exp");
 
       const storedExpiration = getExpiration();

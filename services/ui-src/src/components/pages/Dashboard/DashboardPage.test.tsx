@@ -177,9 +177,7 @@ describe("DashboardPage with state user", () => {
 
     await userEvent.click(screen.getByText("Start XYZ"));
 
-    expect(
-      screen.getByText("Add new XYZ Report")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Add new XYZ Report")).toBeInTheDocument();
   });
 });
 

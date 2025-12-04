@@ -8,7 +8,10 @@ describe("PostLogoutRedirect", () => {
 
     // Mock window.location.href using Object.defineProperty
     let capturedHref = "";
-    const originalDescriptor = Object.getOwnPropertyDescriptor(window, "location");
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      "location"
+    );
 
     delete (window as any).location;
     Object.defineProperty(window, "location", {

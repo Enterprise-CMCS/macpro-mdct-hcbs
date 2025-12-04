@@ -84,9 +84,7 @@ describe("AdminDashSelector Component", () => {
     await userEvent.selectOptions(dropdown, "CA");
 
     // Select a report
-    const radioButton = screen.getByLabelText(
-      "XYZ (XYZ)"
-    );
+    const radioButton = screen.getByLabelText("XYZ (XYZ)");
     await userEvent.click(radioButton);
     expect(dropdown.value).toBe("CA");
     expect(radioButton).toBeChecked();
@@ -98,9 +96,7 @@ describe("AdminDashSelector Component", () => {
     // Select a state and report
     const dropdown = screen.getByLabelText("Select state or territory:");
     await userEvent.selectOptions(dropdown, "CA");
-    const radioButton = screen.getByLabelText(
-      "XYZ (XYZ)"
-    );
+    const radioButton = screen.getByLabelText("XYZ (XYZ)");
     await userEvent.click(radioButton);
 
     // Submit the form
@@ -127,9 +123,7 @@ describe("AdminDashSelector Component", () => {
     expect(submitButton).toBeDisabled();
 
     // Now select a report
-    const radioButton = screen.getByLabelText(
-      "XYZ (XYZ)"
-    );
+    const radioButton = screen.getByLabelText("XYZ (XYZ)");
     await userEvent.click(radioButton);
     // Now it should be enabled
     expect(submitButton).toBeEnabled();

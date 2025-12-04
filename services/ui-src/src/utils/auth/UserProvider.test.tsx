@@ -86,7 +86,7 @@ describe("<UserProvider />", () => {
       expect(screen.getByText("User Test")).toBeVisible();
     });
 
-    test("test logout function", async () => {
+    test("logout function", async () => {
       await act(async () => {
         const logoutButton = screen.getByRole("button", { name: "Logout" });
         await userEvent.click(logoutButton);
@@ -94,7 +94,7 @@ describe("<UserProvider />", () => {
       expect(window.location.pathname).toEqual("/");
     });
 
-    test("test login with IDM function", async () => {
+    test("login with IDM function", async () => {
       await act(async () => {
         const loginButton = screen.getByRole("button", {
           name: "Log In with IDM",
@@ -106,7 +106,7 @@ describe("<UserProvider />", () => {
   });
 
   describe("Test UserProvider with production path", () => {
-    test("test production authenticates with idm when current authenticated user throws an error", async () => {
+    test("production authenticates with idm when current authenticated user throws an error", async () => {
       setWindowOrigin("mdctlabs.cms.gov");
       await breakCheckAuthState();
       await act(async () => {
@@ -152,7 +152,7 @@ describe("<UserProvider />", () => {
     });
   });
 
-  test("test check auth function", async () => {
+  test("check auth function", async () => {
     const mockAmplify = require("aws-amplify/auth");
     mockAmplify.fetchAuthSession = jest.fn().mockResolvedValue({
       tokens: {
