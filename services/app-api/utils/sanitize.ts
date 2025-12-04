@@ -15,7 +15,7 @@ DOMPurify.setConfig({
   // Only these tags will be allowed through
   ALLOWED_TAGS: ["b", "strong", "i", "em", "p", "ul", "ol", "li", "a", "#text"],
   // On those tags, only these attributes are allowed
-  ALLOWED_ATTR: ["href", "alt", "target", "style"],
+  ALLOWED_ATTR: ["href", "alt", "target", "style", "src"],
   // If a tag is removed, so will all its child elements & text
   KEEP_CONTENT: false,
 });
