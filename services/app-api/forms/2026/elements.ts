@@ -239,7 +239,7 @@ export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
   },
   required: true,
   helperText:
-    '<a href="https://www.medicaid.gov/license/form/8586/3396" style="color: #0071bc; text-decoration: underline;" :visited={color: #004f84} target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" style="display: inline-block; margin-left: 0.5rem; height: 1rem;"/></a>',
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" style="color: #0071bc; text-decoration: underline;" :visited={color: #004f84} target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" style="display: inline-block; margin-left: 0.5rem; height: .8rem;"/></a>',
 };
 
 export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
