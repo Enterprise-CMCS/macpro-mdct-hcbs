@@ -16,7 +16,13 @@ import { currentPageSelector } from "utils/state/selectors";
 
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
-import { isReviewSubmitPage, PageElement, ReportStatus } from "types";
+import {
+  FormPageTemplate,
+  isReviewSubmitPage,
+  PageElement,
+  ParentPageTemplate,
+  ReportStatus,
+} from "types";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const ReportPageWrapper = () => {
@@ -77,6 +83,14 @@ export const ReportPageWrapper = () => {
     navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
   };
 
+  const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
+    //we want to hide the divider if the last element on the page is a table as tables already have borders
+    return !(
+      page.elements &&
+      page.elements[page.elements?.length - 1].type == "measureTable"
+    );
+  };
+
   const submittedView =
     isReviewSubmitPage(currentPage) &&
     report?.status === ReportStatus.SUBMITTED;
@@ -120,10 +134,7 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              {(parentPage.index == 0 ||
-                currentPage.title === "Financial Eligibility") && (
-                <Divider></Divider>
-              )}
+              {displayDivider(currentPage) && <Divider></Divider>}
               <Flex width="100%" marginTop="spacer3">
                 {parentPage.index > 0 && (
                   <Button
