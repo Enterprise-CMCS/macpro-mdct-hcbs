@@ -17,7 +17,7 @@ const primaryVariant = {
   fontWeight: "bold",
   backgroundColor: "palette.primary",
   color: "palette.white",
-  "&:hover, &:focus": {
+  "&:hover, &:focus, &:focus:visited": {
     backgroundColor: "palette.primary_darker",
     color: "palette.white",
   },
