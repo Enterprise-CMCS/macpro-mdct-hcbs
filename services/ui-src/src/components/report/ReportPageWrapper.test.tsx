@@ -100,7 +100,9 @@ describe("ReportPageWrapper", () => {
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
-    render(<ReportPageWrapper />);
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
     expect(screen.getByText("Loading...")).toBeTruthy();
   });
   test("should render if report exists", async () => {
