@@ -271,6 +271,6 @@ export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
 
   return !(
     footerIndex &&
-    hideFromElements.includes(page.elements[footerIndex - 1].type)
+    hideFromElements.includes(page.elements[footerIndex - 1]?.type)
   );
 };
