@@ -125,7 +125,6 @@ describe("ReportPageWrapper", () => {
       reportId: undefined,
     });
     render(<ReportPageWrapper />);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
     expect(mockGetReport).not.toHaveBeenCalled();
     expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
