@@ -6,6 +6,11 @@ import {
   ReportBase,
   AlertTypes,
 } from "../../../types/reports";
+import {
+  wwlFinancialEligiblityExplanationField,
+  wwlRescreenForFinancialEligibilityField,
+  wwlUpdateInfoForFinancialEligibilityField,
+} from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
   type: ReportType.WWL,
@@ -16,6 +21,7 @@ export const wwlReportTemplate: ReportBase = {
       childPageIds: [
         "general-info",
         "waiting-list-identifiers",
+        "financial-eligibility",
         "review-submit",
       ],
     },
@@ -83,6 +89,39 @@ export const wwlReportTemplate: ReportBase = {
           id: "waiting-list-identifiers-header",
           text: "Waiting List Identifiers",
         },
+      ],
+    },
+    {
+      id: "financial-eligibility",
+      title: "Financial Eligibility",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "financial-eligibility-header",
+          text: "Financial Eligibility",
+        },
+        {
+          id: "financial-eligibility-confirmation",
+          type: ElementType.Radio,
+          label:
+            "Does the state confirm whether someone meets financial eligibility before they’re added to the waiting list?",
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        wwlFinancialEligiblityExplanationField,
+        wwlRescreenForFinancialEligibilityField,
+        wwlUpdateInfoForFinancialEligibilityField,
       ],
     },
     {
