@@ -373,6 +373,41 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
   ],
 };
 
+//Rates for LTSS-4
+export const performanceRatesReassessmentPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
+  id: "measure-rates",
+  ...statePerformanceTargetLabel,
+  required: true,
+  assessments: [
+    {
+      id: "reassessment-plan-core",
+      label: "Reassessment after Inpatient Discharge",
+    },
+    {
+      id: "reassessment-plan-supplemental",
+      label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+    },
+  ],
+};
+
+export const exclusionRatesPatientPlanElements: NdrEnhancedTemplate = {
+  type: ElementType.NdrEnhanced,
+  id: "measure-rates",
+  label: "Exclusion Rate",
+  required: true,
+  assessments: [
+    {
+      id: "patient-not-contact",
+      label: "Patient Could Not be Contacted",
+    },
+    {
+      id: "patient-refuse-planning",
+      label: "Patient Refused Person-Centered Planning",
+    },
+  ],
+};
+
 //Rates for POM
 export const performanceRatePOM: NdrTemplate = {
   type: ElementType.Ndr,

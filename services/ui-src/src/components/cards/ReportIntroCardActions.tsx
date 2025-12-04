@@ -49,7 +49,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           <Image
             src={externalLinkIcon}
             sx={sx.externalLinkIcon}
-            alt="External Link Opens in New Tab"
+            alt="(Opens in New Tab)"
           />
         </Button>
       )}
