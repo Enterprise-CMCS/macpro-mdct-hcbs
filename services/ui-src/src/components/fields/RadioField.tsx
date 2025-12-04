@@ -189,11 +189,11 @@ const sx = {
     border: "4px #0071BC solid",
     borderWidth: "0 0 0 4px",
     margin: "0 14px",
-    input: {
+    "input:not(.ds-c-choice)": {
       width: "240px",
     },
     textarea: {
-      width: "440px",
+      maxWidth: "440px",
     },
   },
 };

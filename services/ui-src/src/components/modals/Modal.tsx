@@ -14,6 +14,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
+import { useBreakpoint } from "utils";
 
 export const Modal = ({
   modalDisclosure,
@@ -24,26 +25,26 @@ export const Modal = ({
   children,
   disableConfirm,
 }: Props) => {
+  const { isMobile } = useBreakpoint();
+
   return (
     <ChakraModal
       isOpen={modalDisclosure.isOpen}
       onClose={modalDisclosure.onClose}
       preserveScrollBarGap={true}
+      size={isMobile ? "sm" : "md"}
     >
       <ModalOverlay />
-      <ModalContent sx={sx.modalContent}>
-        <ModalHeader sx={sx.modalHeader}>
+      <ModalContent>
+        <ModalHeader>
           <Heading as="h1" sx={sx.modalHeaderText}>
             {content.heading}
           </Heading>
         </ModalHeader>
-        {content.subheading && (
-          <Box sx={sx.modalSubheader}>{content.subheading}</Box>
-        )}
+        {content.subheading && <Box>{content.subheading}</Box>}
         <Flex sx={sx.modalCloseContainer}>
           <Button
-            sx={sx.modalClose}
-            leftIcon={<Image src={closeIcon} alt="Close" sx={sx.closeIcon} />}
+            leftIcon={<Image src={closeIcon} alt="Close" />}
             variant="link"
             onClick={modalDisclosure.onClose}
             fontWeight="bold"
@@ -51,8 +52,8 @@ export const Modal = ({
             Close
           </Button>
         </Flex>
-        <ModalBody sx={sx.modalBody}>{children}</ModalBody>
-        <ModalFooter sx={sx.modalFooter}>
+        <ModalBody>{children}</ModalBody>
+        <ModalFooter>
           {formId && (
             <Button
               sx={sx.action}
@@ -109,81 +110,30 @@ interface Props {
 }
 
 const sx = {
-  modalContent: {
-    boxShadow: ".125rem .125rem .25rem",
-    borderRadius: "0",
-    maxWidth: "30rem",
-    marginX: "4rem",
-    padding: "2rem",
-  },
-  modalHeader: {
-    padding: "0",
-    margin: "0 0 2rem 0",
-  },
   modalHeaderText: {
-    padding: "0 2rem 0 0",
-    fontSize: "2xl",
-    fontWeight: "bold",
-  },
-  modalSubheader: {
-    margin: "0.5rem auto -1rem auto",
+    fontSize: "heading_2xl",
+    fontWeight: "heading_2xl",
   },
   modalCloseContainer: {
-    alignItems: "center",
-    justifycontent: "center",
-    flexShrink: "0",
     position: "absolute",
-    top: "2rem",
-    right: "2rem",
-  },
-  modalClose: {
-    span: {
-      margin: "0.25rem",
-      paddingTop: "0.06rem",
-      svg: {
-        fontSize: "xs",
-        width: "xs",
-        height: "xs",
-      },
-    },
-  },
-  modalBody: {
-    paddingX: "0",
-    paddingY: "1rem",
-  },
-  modalFooter: {
-    justifyContent: "flex-start",
-    padding: "0",
-    paddingTop: "2rem",
+    right: "spacer4",
   },
   action: {
-    justifyContent: "center",
-    marginRight: "2rem",
     minWidth: "10rem",
     span: {
-      marginLeft: "0.5rem",
-      marginRight: "-0.25rem",
       "&.ds-c-spinner": {
         marginLeft: 0,
       },
     },
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
     },
   },
   close: {
-    justifyContent: "start",
-    padding: ".5rem 1rem",
-    span: {
-      marginLeft: "0rem",
-      marginRight: "0.5rem",
-    },
+    padding: "0 spacer2",
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
       marginRight: "0",
     },
-  },
-  closeIcon: {
-    width: "0.75rem",
   },
 };

@@ -1,5 +1,6 @@
 import { ReportOptions, ReportType } from "../../types/reports";
 import { User } from "../../types/types";
+import { StateAbbr } from "../../utils/constants";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { buildReport } from "./buildReport";
 
@@ -13,7 +14,7 @@ describe("Test create report handler", () => {
   });
 
   test("Test Successful create", async () => {
-    const state = "PA";
+    const state = "PA" as StateAbbr;
     const user = {
       fullName: "James Holden",
       email: "james.holden@test.com",
@@ -50,7 +51,7 @@ describe("Test validation error", () => {
       throw new Error("you be havin some validatin errors");
     });
 
-    const state = "PA";
+    const state = "PA" as StateAbbr;
     const user = {
       fullName: "James Holden",
       email: "james.holden@test.com",

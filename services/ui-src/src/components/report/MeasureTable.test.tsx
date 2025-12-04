@@ -30,7 +30,6 @@ const mockReport = {
       title: "Mock Measure Strat",
       cmit: 43,
       required: true,
-      stratified: true,
     },
     {
       type: PageType.Measure,
@@ -97,16 +96,6 @@ describe("Test MeasureTable", () => {
     render(MeasureTableComponent("required"));
 
     expect(screen.getByText("Mock Measure Req")).toBeInTheDocument();
-    // Note that our mock Stratified measure is required, so it will show here.
-    expect(screen.getByText("Mock Measure Strat")).toBeInTheDocument();
-    expect(screen.queryByText("Mock Measure Opt")).not.toBeInTheDocument();
-  });
-
-  it("should display stratified measures when in stratified mode", () => {
-    render(MeasureTableComponent("stratified"));
-
-    expect(screen.queryByText("Mock Measure Req")).not.toBeInTheDocument();
-    expect(screen.getByText("Mock Measure Strat")).toBeInTheDocument();
     expect(screen.queryByText("Mock Measure Opt")).not.toBeInTheDocument();
   });
 

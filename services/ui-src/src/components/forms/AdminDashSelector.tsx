@@ -6,8 +6,30 @@ import {
   ChoiceList,
   DropdownChangeObject,
 } from "@cmsgov/design-system";
-import { DropdownOptions } from "types";
+import { DropdownOptions, ReportType, getReportName } from "types";
 import { StateNames } from "../../constants";
+
+const reportChoices = Object.values(ReportType).map((type) => {
+  return {
+    value: type,
+    label: `${getReportName(type)} (${type})`,
+  };
+});
+
+const buildStates = (): DropdownOptions[] => {
+  const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
+    ([abbr, name]) => ({ label: name, value: abbr })
+  );
+  return [
+    {
+      label: "- Select an option -",
+      value: "",
+    },
+    ...dropdownStates,
+  ];
+};
+
+const dropdownStates = buildStates();
 
 export const AdminDashSelector = () => {
   const [selectedState, setSelectedState] = useState<string>("");
@@ -26,38 +48,8 @@ export const AdminDashSelector = () => {
     navigate(`report/${selectedReport}/${selectedState}`);
   };
 
-  const reportChoices = [
-    {
-      value: "QMS",
-      label: "Quality Measure Set Report (QMS)",
-    },
-    {
-      value: "CI",
-      label: "Critical Incident Report (CI)",
-    },
-    {
-      value: "TACM",
-      label: "Timely Access Compliance Measure Report (TACM)",
-    },
-  ];
-
-  const buildStates = (): DropdownOptions[] => {
-    const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
-      ([abbr, name]) => ({ label: name, value: abbr })
-    );
-    return [
-      {
-        label: "- Select an option -",
-        value: "",
-      },
-      ...dropdownStates,
-    ];
-  };
-
-  const dropdownStates = buildStates();
-
   return (
-    <Box sx={sx.root}>
+    <Box>
       <Heading as="h1" sx={sx.headerText}>
         View State/Territory Reports
       </Heading>
@@ -96,15 +88,9 @@ export const AdminDashSelector = () => {
 };
 
 const sx = {
-  root: {
-    ".ds-c-field__hint": {
-      fontSize: "md",
-      color: "palette.base",
-    },
-  },
   headerText: {
-    fontSize: "2rem",
-    fontWeight: "normal",
+    fontSize: "heading_3xl",
+    fontWeight: "heading_3xl",
     paddingBottom: "1.5rem",
   },
   navigationButton: {

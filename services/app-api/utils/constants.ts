@@ -11,30 +11,6 @@ export const error = {
   END_DATE_BEFORE_START_DATE: "End date can't be before start date",
 };
 
-export enum DeliverySystem {
-  FFS = "FFS",
-  MLTSS = "MLTSS",
-}
-
-export enum DataSource {
-  CaseRecordManagement = "CaseRecordManagement",
-  Administrative = "Administrative",
-  Hybrid = "Hybrid",
-  RecordReview = "RecordReview",
-  Survey = "Survey",
-}
-
-export enum MeasureSteward {
-  CMS = "CMS",
-  CQL = "CQL",
-}
-
-export enum MeasureSpecification {
-  CMS = "CMS",
-  HEDIS = "HEDIS",
-  CQL = "CQL",
-}
-
 export enum StateNames {
   AL = "Alabama",
   AK = "Alaska",
@@ -106,6 +82,7 @@ export const reportTables: { [key in ReportType]: string } = {
   TACM: process.env.TacmReportsTable!,
   CI: process.env.CiReportsTable!,
   PCP: process.env.PcpReportsTable!,
+  WWL: process.env.WwlReportsTable!,
 };
 
 export const tableTopics: { [key in ReportType]: string } = {
@@ -113,4 +90,5 @@ export const tableTopics: { [key in ReportType]: string } = {
   TACM: "tacm-reports",
   CI: "ci-reports",
   PCP: "pcp-reports",
+  WWL: "wwl-reports",
 };

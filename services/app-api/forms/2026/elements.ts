@@ -12,11 +12,13 @@ import {
   NdrFieldsTemplate,
   NdrTemplate,
   NdrBasicTemplate,
+  PageElement,
   RadioTemplate,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
   TextAreaBoxTemplate,
+  AlertTypes,
 } from "../../types/reports";
 
 const REPORT_YEAR = 2026;
@@ -212,7 +214,7 @@ export const additionalNotesField: TextAreaBoxTemplate = {
   required: false,
 };
 
-export const measureDeliveryMethodsSubheader = [
+export const measureDeliveryMethodsSubheader: PageElement[] = [
   divider,
   {
     type: ElementType.SubHeader,
@@ -275,7 +277,7 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-export const whichProgramsWaivers = [
+export const whichProgramsWaivers: PageElement[] = [
   {
     type: ElementType.TextAreaField,
     id: "measure-programs-text",
@@ -291,12 +293,6 @@ export const statePerformanceTargetLabel = {
   performanceTargetLabel: `What is the ${
     REPORT_YEAR + 2
   } state performance target?`,
-};
-
-export const stateExclusionTargetLabel = {
-  performanceTargetLabel: `What is the ${
-    REPORT_YEAR + 2
-  } state exclusion rate target for this assessment?`,
 };
 
 //Rates for LTSS-1
@@ -321,7 +317,6 @@ export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rate",
-  ...stateExclusionTargetLabel,
   required: true,
   assessments: [
     {
@@ -357,7 +352,6 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
   label: "Exclusion Rate",
-  ...stateExclusionTargetLabel,
   required: true,
   assessments: [
     {
@@ -465,7 +459,7 @@ export const sectionCompleteBanner: StatusAlertTemplate = {
   id: "status-alert",
   title: "This section has been completed",
   text: "You can still edit this section, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete section’ button. {ReturnButton} or select the ‘Return to measure information’ button above to return to the previous page.",
-  status: "success",
+  status: AlertTypes.SUCCESS,
 };
 
 export const measureCompleteBanner: StatusAlertTemplate = {
@@ -473,18 +467,18 @@ export const measureCompleteBanner: StatusAlertTemplate = {
   id: "status-alert",
   title: "This measure has been completed",
   text: "You can still edit the measure, but the measure status will change to ‘In progress,’ and you will need to re-select the ‘Complete measure’ button. {ReturnButton} or select the ‘Return to measure dashboard’ button above to return to the previous page.",
-  status: "success",
+  status: AlertTypes.SUCCESS,
 };
 
-// Rates for Homemaker
+// Rates for Homemaker for HAPC-1 measure
 export const homemakerRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "homemaker-rate",
+  id: "homemaker-1-rate",
   required: true,
   label: "Homemaker",
   hintText: {
     numHint:
-      "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program. ",
+      "Number of days between initial approval and receipt of homemaker services for all beneficiaries who received services through an applicable HCBS program.",
     denomHint:
       "Number of beneficiaries in an applicable HCBS program who received homemaker services within the measurement period.",
     rateHint:
@@ -494,10 +488,28 @@ export const homemakerRate: NdrBasicTemplate = {
   displayRateAsPercent: true,
 };
 
-// Rates for Home Health Aide
+// Rates for Homemaker for HAPC-2 measure
+export const homemakerHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "homemaker-2-rate",
+  required: true,
+  label: "Homemaker",
+  hintText: {
+    numHint:
+      "Total number of hours for homemaker services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for homemaker services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for homemaker services provided to individuals in an applicable HCBS program within the measurement period.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Home Health Aide or HAPCH-1 measure
 export const homeHealthAideRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "home-health-aide-rate",
+  id: "home-health-aide-1-rate",
   required: true,
   label: "Home Health Aide",
   hintText: {
@@ -512,10 +524,28 @@ export const homeHealthAideRate: NdrBasicTemplate = {
   displayRateAsPercent: true,
 };
 
-// Rates for Personal Care
+// Rates for Home Health Aide for HAPCH-2 measure
+export const homeHealthAideHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "home-health-aide-2-rate",
+  required: true,
+  label: "Home Health Aide",
+  hintText: {
+    numHint:
+      "Total number of hours for home health aide services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for home health aide services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for home health aide services provided to individuals in an applicable HCBS program within the measurement period.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Personal Care for HAPCH-1 measure
 export const personalCareRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "personal-care-rate",
+  id: "personal-care-1-rate",
   required: true,
   label: "Personal Care",
   hintText: {
@@ -530,10 +560,28 @@ export const personalCareRate: NdrBasicTemplate = {
   displayRateAsPercent: true,
 };
 
-// Rates for Habilitation
+// Rates for Personal Care for HAPCH-2 measure
+export const personalCareHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "personal-care-2-rate",
+  required: true,
+  label: "Personal Care",
+  hintText: {
+    numHint:
+      "Total number of hours for personal care services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for personal care services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for personal care services provided to individuals in an applicable HCBS program within the measurement period.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+// Rates for Habilitation for HAPCH-1 measure
 export const habilitationRate: NdrBasicTemplate = {
   type: ElementType.NdrBasic,
-  id: "habilitation-rate",
+  id: "habilitation-1-rate",
   required: true,
   label: "Habilitation",
   hintText: {
@@ -546,6 +594,69 @@ export const habilitationRate: NdrBasicTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
+};
+
+// Rates for Habilitation for HAPCH-2 measure
+export const habilitationHAPCH2Rate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "habilitation-2-rate",
+  required: true,
+  label: "Habilitation",
+  hintText: {
+    numHint:
+      "Total number of hours for habilitation services that were provided to beneficiaries within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Total number of hours for habilitation services that were authorized within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of authorized hours for habilitation services provided to individuals in an applicable HCBS program within the measurement period.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+};
+
+export const minPerformanceExplanationField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "why-not-minimum",
+  helperText:
+    "The data entered indicates this measure does not meet the 90% Minimum Performance Level.",
+  label: "Explain reason for not meeting Minimum Performance Level.",
+  required: true,
+};
+
+export const beneficiariesRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "beneficiaries-rate",
+  required: true,
+  hintText: {
+    numHint:
+      "Number of beneficiaries who had a reassessment of functional need completed at least once within the measurement period across all applicable HCBS programs.",
+    denomHint:
+      "Number of beneficiaries who were due for an annual reassessment within the measurement period across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of beneficiaries continuously enrolled in an applicable HCBS program for at least 365 days for whom a reassessment of functional need was completed at least once within the measurement period, across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+  minPerformanceLevel: 90,
+  conditionalChildren: [minPerformanceExplanationField],
+};
+
+export const beneficiariesReviewedRate: NdrBasicTemplate = {
+  type: ElementType.NdrBasic,
+  id: "pcp-2-rate",
+  required: true,
+  hintText: {
+    numHint:
+      "Number of beneficiaries who had their person-centered service plan reviewed, and updated as appropriate, based upon a reassessment of functional need, within the measurement period, across all applicable HCBS programs.",
+    denomHint:
+      "Number of beneficiaries who were due for an annual reassessment within the measurement period, across all applicable HCBS programs.",
+    rateHint:
+      "Auto-calculates. Percentage of beneficiaries continuously enrolled for at least 365 days in an applicable HCBS program who had their person-centered service plan reviewed, and updated as appropriate, based on a reassessment of functional need at least once within the measurement period, across all applicable HCBS programs.",
+  },
+  multiplier: 100,
+  displayRateAsPercent: true,
+  minPerformanceLevel: 90,
+  conditionalChildren: [minPerformanceExplanationField],
 };
 
 // State Sampling Methodology Radio Question

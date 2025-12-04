@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import {
+  Link as RouterLink,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { StateNames } from "../../../constants";
-import { getReportName, isReportType, isStateAbbr, LiteReport } from "types";
+import {
+  getReportName,
+  isReportType,
+  isStateAbbr,
+  LiteReport,
+  ReportType,
+} from "types";
 import {
   PageTemplate,
   DashboardTable,
@@ -24,6 +34,7 @@ import {
 import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
+import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
 
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
@@ -33,17 +44,36 @@ export const DashboardPage = () => {
   const [selectedReport, setSelectedReport] = useState<LiteReport | undefined>(
     undefined
   );
-  const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
+  const [filteredReports, setFilteredReports] = useState<LiteReport[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [dropdownValue, setDropdownValue] = useState(
+    searchParams.get("year") || "All"
+  );
 
+  const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
   const reportName = getReportName(reportType);
+  const filterYear = searchParams.get("year") || "All";
+  const filterDropdownOptions = [
+    { label: "All", value: "All" },
+    { label: "2026", value: "2026" },
+  ];
 
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {
       return;
     }
-
     reloadReports(reportType, state);
   }, [reportType, state]);
+
+  useEffect(() => {
+    if (filterYear === "All") {
+      setFilteredReports(reports);
+    } else {
+      setFilteredReports(
+        reports.filter((report) => String(report.year) === filterYear)
+      );
+    }
+  }, [reports, filterYear]);
 
   const reloadReports = (reportType: string, state: string) => {
     (async () => {
@@ -52,7 +82,6 @@ export const DashboardPage = () => {
       if (!userIsAdmin) {
         result = result.filter((report: LiteReport) => !report.archived);
       }
-
       setReports(result);
       setIsLoading(false);
     })();
@@ -77,6 +106,16 @@ export const DashboardPage = () => {
     onClose: unlockModalOnCloseHandler,
   } = useDisclosure();
 
+  const handleYearChange = (evt: { target: { value: string } }) => {
+    setDropdownValue(evt.target.value);
+  };
+
+  const handleFilter = () => {
+    setSearchParams({
+      year: dropdownValue,
+    });
+  };
+
   return (
     <PageTemplate type="report" sxOverride={sx.layout}>
       <Link as={RouterLink} to="/" variant="return">
@@ -96,7 +135,7 @@ export const DashboardPage = () => {
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
             {userIsAdmin ? (
               <Box sx={sx.accordionPanel}>
-                <Heading size="sm" fontWeight="bold">
+                <Heading fontSize="heading_md" fontWeight="heading_md">
                   Admin Instructions
                 </Heading>
                 <ul>
@@ -137,11 +176,20 @@ export const DashboardPage = () => {
                   Once the report is generated, you can edit the name of the
                   report and monitor its status in the dashboard below.
                 </p>
-                <p>
-                  Please note, while you can generate multiple reports for the
-                  same reporting period, you should only submit a single report
-                  for the state.
-                </p>
+                {reportType === ReportType.WWL ? (
+                  <p>
+                    A separate report should be generated for each waiver
+                    waiting list your state intends to include during the
+                    current reporting year.
+                  </p>
+                ) : (
+                  <p>
+                    Please note, while you can generate multiple reports for the
+                    same reporting period, you should only submit a single
+                    report for the state.
+                  </p>
+                )}
+
                 <p>
                   <strong>Understanding Report Statuses</strong>
                 </p>
@@ -174,9 +222,22 @@ export const DashboardPage = () => {
         </Accordion>
       </Box>
       <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
+        <Flex alignItems="flex-end" gap="spacer3">
+          <CmsdsDropdownField
+            name="yearFilter"
+            label="Filter by Year"
+            value={dropdownValue}
+            onChange={handleYearChange}
+            data-testid="year-filter-dropdown"
+            options={filterDropdownOptions}
+          />
+          <Button onClick={handleFilter} variant="outline">
+            Filter
+          </Button>
+        </Flex>
         {!isLoading && (
           <DashboardTable
-            reports={reports}
+            reports={filteredReports}
             openAddEditReportModal={openAddEditReportModal}
             unlockModalOnOpenHandler={unlockModalOnOpenHandler}
           />
@@ -230,17 +291,15 @@ const sx = {
   layout: {
     ".contentFlex": {
       maxWidth: "appMax",
-      marginTop: "2rem",
-      marginBottom: "3.5rem",
+      marginTop: "spacer4",
+      marginBottom: "spacer7",
     },
   },
   leadTextBox: {
     width: "100%",
     maxWidth: "55.25rem",
-    margin: "2.5rem auto 0rem",
-    ".tablet &, .mobile &": {
-      margin: "2.5rem 0 1rem",
-    },
+    marginTop: "spacer5",
+    marginX: "auto",
   },
   bodyBox: {
     maxWidth: "55.25rem",
@@ -261,29 +320,15 @@ const sx = {
     },
   },
   accordion: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     color: "palette.base",
   },
   accordionItem: {
-    marginBottom: "1.5rem",
-    borderStyle: "none",
+    marginBottom: "spacer3",
   },
   accordionPanel: {
     ".mobile &": {
-      paddingLeft: "1rem",
-    },
-    a: {
-      color: "palette.primary",
-      textDecoration: "underline",
-    },
-    header: {
-      marginBottom: "1.5rem",
-    },
-    p: {
-      marginBottom: "1.5rem",
-    },
-    ul: {
-      marginBottom: "1.5rem",
+      paddingTop: "spacer2",
     },
   },
 };

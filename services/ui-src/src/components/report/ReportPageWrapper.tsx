@@ -85,8 +85,8 @@ export const ReportPageWrapper = () => {
     : currentPage.elements;
   return (
     <>
-      <HStack width="100%" height="100%" position="relative" spacing="0">
-        {currentPage.sidebar && <Sidebar />}
+      <HStack position="relative" spacing="0">
+        <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
         <VStack
           height="100%"
           padding={
@@ -99,7 +99,12 @@ export const ReportPageWrapper = () => {
           maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
           gap="0rem"
         >
-          <Box flex="auto" alignItems="flex-start" width="100%">
+          <Box
+            flex="auto"
+            alignItems="flex-start"
+            width="100%"
+            marginBottom="spacer4"
+          >
             <form id="aFormId" autoComplete="off">
               {currentPage.elements && (
                 <Page
@@ -115,8 +120,11 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              {parentPage.index == 0 && <Divider></Divider>}
-              <Flex width="100%" margin="1.5rem 0 0 0">
+              {(parentPage.index == 0 ||
+                currentPage.title === "Financial Eligibility") && (
+                <Divider></Divider>
+              )}
+              <Flex width="100%" marginTop="spacer3">
                 {parentPage.index > 0 && (
                   <Button
                     onClick={() => SetPageIndex(parentPage.index - 1)}
@@ -137,7 +145,7 @@ export const ReportPageWrapper = () => {
                 )}
               </Flex>
               {parentPage.index == 0 && (
-                <Box flex="auto" marginTop="3.5rem">
+                <Box flex="auto" marginTop="spacer7">
                   <PraDisclosure />
                 </Box>
               )}
@@ -156,5 +164,11 @@ const sx = {
     width: "100%",
     justifyContent: "center",
     padding: "10",
+  },
+  sidebarContainer: {
+    ".tablet &, .mobile &": {
+      position: "absolute",
+    },
+    height: "100%",
   },
 };

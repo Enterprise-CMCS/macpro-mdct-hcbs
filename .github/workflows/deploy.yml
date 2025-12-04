@@ -1,12 +1,6 @@
 name: Deploy
 
-on:
-  push:
-    branches:
-      - "*"
-      - "dependabot/**"
-      - "!skipci*"
-      - "!code-json-*"
+on: [push]
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -18,6 +12,7 @@ permissions:
 
 jobs:
   deploy:
+    if: ${{ !startsWith(github.ref_name, 'skipci') }}
     runs-on: ubuntu-latest
     environment: ${{ (github.ref_name == 'production' && 'production') || (github.ref_name == 'val' && 'val') || 'dev' }}
     steps:
@@ -27,45 +22,77 @@ jobs:
           node-version-file: ".nvmrc"
       - uses: actions/cache@v4
         with:
-          path: |
-            **/node_modules
+          path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: path + branch settings + install packages
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-          ./.github/branchNameValidation.sh $branch_name
+          ./.github/branchNameValidation.sh "$BRANCH_NAME"
           ./run install
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
       - name: deploy
-        run: |
-          ./run deploy --stage $branch_name
+        run: ./run deploy --stage $branch_name
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
       - id: endpoint
         run: |
-          APPLICATION_ENDPOINT=$(./scripts/output.sh hcbs-$branch_name CloudFrontUrl)
+          APPLICATION_ENDPOINT=$(./scripts/output.sh ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
+    outputs:
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: tests
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: yarn playwright install --with-deps chromium
+        working-directory: tests
+
       - name: Run Playwright tests
         if: ${{ github.ref_name != 'production' }}
         run: |
-          yarn playwright install
           yarn playwright test --reporter=github,html
         working-directory: tests
         env:
-          BASE_URL: ${{ steps.endpoint.outputs.application_endpoint}}
+          BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
           TEST_STATE_USER_EMAIL: ${{ secrets.TEST_STATE_USER_EMAIL }}
           TEST_STATE_USER_PASSWORD: ${{ secrets.TEST_STATE_USER_PASSWORD }}
           TEST_ADMIN_USER_EMAIL: ${{ secrets.TEST_ADMIN_USER_EMAIL }}
           TEST_ADMIN_USER_PASSWORD: ${{ secrets.TEST_ADMIN_USER_PASSWORD }}
       - name: Upload playwright results
         uses: actions/upload-artifact@v4
-        if: ${{ github.ref_name != 'production' }}
+        if: ${{ github.ref_name != 'production' && failure() }}
         with:
           name: playwright-html-report-${{ github.run_number }}
           path: tests/playwright-report

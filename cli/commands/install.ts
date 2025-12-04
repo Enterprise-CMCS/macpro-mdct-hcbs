@@ -1,27 +1,28 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { runCommand } from "../lib/runner.js";
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
 
-const directories = [
-  "./services/database",
-  "./services/app-api",
-  "./services/ui",
-  "./services/ui-auth",
-  "./services/ui-src",
-  "./services/topics",
-  "./tests",
-];
+async function* findPackageJsonDirectories(
+  directory: string
+): AsyncGenerator<string> {
+  const SKIP_DIRECTORIES = [".git", ".cdk", "node_modules"];
+  for (let entry of await readdir(directory, { withFileTypes: true })) {
+    if (entry.isDirectory() && !SKIP_DIRECTORIES.includes(entry.name)) {
+      yield* findPackageJsonDirectories(join(directory, entry.name));
+    } else if (entry.isFile() && entry.name === "package.json") {
+      yield directory;
+    }
+  }
+}
 
 export const installDeps = async () => {
-  await runCommand(
-    "yarn install root",
-    ["yarn", "install", "--frozen-lockfile"],
-    "."
-  );
-
-  for (const dir of directories) {
+  for await (const dir of findPackageJsonDirectories(".")) {
     await runCommand(
       `yarn install ${dir}`,
-      ["yarn", "install", "--frozen-lockfile"],
-      dir
+      ["yarn", "--silent", "install", "--frozen-lockfile"],
+      dir,
+      { quiet: true }
     );
   }
 };

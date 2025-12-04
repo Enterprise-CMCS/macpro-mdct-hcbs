@@ -7,6 +7,7 @@ import {
   QmsIntroductionCard,
   TacmIntroductionCard,
   PCPIntroductionCard,
+  WWLIntroductionCard,
 } from "components";
 import { useEffect } from "react";
 import { checkDateRangeStatus, useStore } from "utils";
@@ -19,6 +20,7 @@ export const HomePage = () => {
   const isTACMReportActive = useFlags()?.isTacmReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
   const isPCPReportActive = useFlags()?.isPcpReportActive;
+  const isWWLReportActive = useFlags()?.isWwlReportActive;
 
   useEffect(() => {
     let bannerActivity = false;
@@ -36,7 +38,7 @@ export const HomePage = () => {
   return (
     <>
       <Collapse in={showBanner}>
-        <Box margin="0 2rem">
+        <Box marginX={{ base: "spacer2", md: "spacer3" }} marginTop="spacer3">
           <Banner bannerData={bannerData} />
         </Box>
       </Collapse>
@@ -45,7 +47,7 @@ export const HomePage = () => {
         {userIsEndUser ? (
           <>
             <Box>
-              <Heading as="h1" variant="h1">
+              <Heading as="h1" variant="h1" paddingBottom="spacer3">
                 Home and Community-Based Services (HCBS) Portal
               </Heading>
               <Text>
@@ -65,6 +67,7 @@ export const HomePage = () => {
             {isCIReportActive && <CiIntroductionCard />}
             {isTACMReportActive && <TacmIntroductionCard />}
             {isPCPReportActive && <PCPIntroductionCard />}
+            {isWWLReportActive && <WWLIntroductionCard />}
           </>
         ) : (
           // show read-only view to non-state users

@@ -5,6 +5,7 @@ export enum ReportType {
   TACM = "TACM",
   CI = "CI",
   PCP = "PCP",
+  WWL = "WWL",
 }
 
 export const isReportType = (
@@ -23,6 +24,8 @@ export const getReportName = (type: string | undefined) => {
       return "Critical Incident Report";
     case ReportType.PCP:
       return "Person-Centered Planning Report";
+    case ReportType.WWL:
+      return "Waiver Waiting List Report";
     default:
       return "";
   }
@@ -39,10 +42,6 @@ export enum PageStatus {
   IN_PROGRESS = "In progress",
   COMPLETE = "Complete",
 }
-
-export const isReportStatus = (status: string): status is ReportStatus => {
-  return Object.values(ReportStatus).includes(status as ReportStatus);
-};
 
 export type ReportMeasureConfig = {
   measureLookup: {
@@ -62,7 +61,7 @@ export type ReportBase = {
     | ReviewSubmitTemplate
   )[];
 };
-export type ReportTemplate = ReportBase & ReportMeasureConfig;
+export type ReportWithMeasuresTemplate = ReportBase & ReportMeasureConfig;
 
 export interface Report extends ReportBase, ReportOptions {
   id?: string;
@@ -73,6 +72,7 @@ export interface Report extends ReportBase, ReportOptions {
   lastEditedBy?: string;
   lastEditedByEmail?: string;
   submitted?: number;
+  submissionDates?: { submitted: number }[];
   submittedBy?: string;
   submittedByEmail?: string;
   status: ReportStatus;
@@ -96,11 +96,6 @@ export type ParentPageTemplate = {
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
-};
-export const isParentPage = (
-  page: PageTemplate
-): page is ParentPageTemplate => {
-  return "childPageIds" in page;
 };
 
 export interface PageData {
@@ -134,15 +129,9 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
   cmitId: string;
   required?: boolean;
-  stratified?: boolean;
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
-}
-
-export interface StatusPageTemplate extends FormPageTemplate {
-  required?: boolean;
-  stratified?: boolean;
 }
 
 export const isMeasureTemplate = (
@@ -350,7 +339,7 @@ export type AccordionTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   id: string;
-  measureDisplay: "required" | "stratified" | "optional";
+  measureDisplay: "required" | "optional";
 };
 
 export type MeasureResultsNavigationTableTemplate = {
@@ -363,6 +352,7 @@ export type MeasureResultsNavigationTableTemplate = {
 export type StatusTableTemplate = {
   type: ElementType.StatusTable;
   id: string;
+  to: PageId;
 };
 
 export type RadioTemplate = {
@@ -418,6 +408,7 @@ export type LengthOfStayRateTemplate = {
   labels: Record<LengthOfStayField, string>;
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
+  errors?: Record<LengthOfStayField, string>;
 };
 
 export const RateInputFieldNames = {
@@ -470,7 +461,7 @@ export type NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced;
   label?: string;
   helperText?: string;
-  performanceTargetLabel: string;
+  performanceTargetLabel?: string | undefined;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
   required: boolean;
@@ -491,14 +482,15 @@ export type NdrBasicTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint: string;
-    denomHint: string;
-    rateHint: string;
+    numHint: string | undefined;
+    denomHint: string | undefined;
+    rateHint: string | undefined;
   };
   required: boolean;
   multiplier?: number;
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
+  conditionalChildren?: PageElement[];
 };
 
 export type ChoiceTemplate = {
@@ -626,28 +618,6 @@ export enum MeasureTemplateName {
   "MLTSS-POM-5" = "MLTSS-POM-5",
   "MLTSS-POM-6" = "MLTSS-POM-6",
   "MLTSS-POM-7" = "MLTSS-POM-7",
-}
-
-export interface FormComponent {
-  id: string;
-  type: string;
-}
-
-export interface Input extends FormComponent {
-  type: "input";
-  inputType: string;
-  questionText: string;
-  answer: string | number | undefined;
-}
-
-export interface Text extends FormComponent {
-  type: "text";
-  text: string;
-}
-export interface Form {
-  name: string;
-  createdBy: string;
-  sections: [];
 }
 
 /**

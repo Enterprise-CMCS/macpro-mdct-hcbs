@@ -50,7 +50,7 @@ export const App = () => {
       {!user && showLocalLogins && (
         <main>
           <Container sx={sx.appContainer}>
-            <Heading as="h1" size="xl" variant="login">
+            <Heading as="h1" fontSize="heading_3xl" variant="login">
               Home &amp; Community Based Services
             </Heading>
           </Container>

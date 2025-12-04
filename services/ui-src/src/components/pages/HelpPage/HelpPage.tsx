@@ -18,7 +18,7 @@ export const HelpPage = () => {
           possible. You can also review our frequently asked questions below.
         </Text>
       </Box>
-      <Flex flexDirection="column" gap="1.5rem">
+      <Flex flexDirection="column" gap="spacer4">
         <HelpCard icon="settings">
           <Text sx={sx.bodyText}>For technical support and login issues:</Text>
           <Text sx={sx.emailText}>
@@ -44,18 +44,9 @@ export const HelpPage = () => {
 
 const sx = {
   bodyText: {
-    marginBottom: "1rem",
+    marginBottom: "spacer1",
   },
   emailText: {
-    fontWeight: "bold",
-  },
-  accordionItem: {
-    marginBottom: "1.5rem",
-    borderStyle: "none",
-  },
-  accordionPanel: {
-    ".mobile &": {
-      paddingLeft: "1rem",
-    },
+    fontWeight: "body_md_link_bold",
   },
 };

@@ -39,7 +39,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const updatedDisplayValue = (input: HTMLInputElement) => {
     const fieldType = input.name as LengthOfStayField;
     const stringValue = input.value;
-    const { errorMessage } = validateNumber(stringValue, true);
+    const { errorMessage } = validateNumber(stringValue, input.required);
 
     const newDisplayValue = structuredClone(displayValue);
     const newErrors = structuredClone(errors);
@@ -55,9 +55,9 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     const denominator = parseNumber(newDisplayValue.denominator);
     const expectedCount = parseNumber(newDisplayValue.expectedCount);
     const populationRate = parseNumber(newDisplayValue.populationRate);
+    const adjustedRate = parseNumber(newDisplayValue.adjustedRate);
     let actualRate: number | undefined = undefined;
     let expectedRate: number | undefined = undefined;
-    let adjustedRate: number | undefined = undefined;
 
     const canDivide = denominator !== undefined && denominator !== 0;
 
@@ -67,22 +67,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 
     if (canDivide && expectedCount !== undefined) {
       expectedRate = expectedCount / denominator;
-    }
-
-    if (
-      actualCount !== undefined &&
-      expectedCount !== undefined &&
-      populationRate !== undefined
-    ) {
-      /*
-       * Note that this is algebraically equivalent to the prescribed formula:
-       *     (actualRate / expectedRate) * populationRate
-       * since the factor of `1/denominator` in both actualRate and expectedRate
-       * cancels out. So we can compute it before the user gives a denominator.
-       * Additionally, we may get a more precise answer from this more direct
-       * computation - although roundRate() discards most/all of that precision.
-       */
-      adjustedRate = (populationRate * actualCount) / expectedCount;
     }
 
     return {
@@ -103,7 +87,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   ) => {
     newDisplayValue.actualRate = stringifyResult(newAnswer.actualRate);
     newDisplayValue.expectedRate = stringifyResult(newAnswer.expectedRate);
-    newDisplayValue.adjustedRate = stringifyResult(newAnswer.adjustedRate);
   };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +103,7 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     setErrors(newErrors);
 
     // Instantly save parsed and calculated values to the store and API
-    updateElement({ answer: newAnswer });
+    updateElement({ answer: newAnswer, errors: newErrors });
   };
 
   return (
@@ -164,13 +147,20 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.populationRate}
           name="populationRate"
+          label={
+            <>
+              {labels.populationRate}
+              {<span className="optionalText"> (optional)</span>}
+            </>
+          }
+          disabled={disabled}
+          required={false}
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.populationRate}
+          hint="If Multi-plan Population Rate is left empty, provide a brief explanation in the Additional Comments field below."
           errorMessage={errors.populationRate}
-          disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualRate}
@@ -187,8 +177,11 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
         <CmsdsTextField
           label={labels.adjustedRate}
           name="adjustedRate"
+          onChange={onChangeHandler}
+          onBlur={onChangeHandler}
           value={displayValue.adjustedRate}
-          disabled={true}
+          disabled={disabled}
+          errorMessage={errors.adjustedRate}
         ></CmsdsTextField>
         <Divider></Divider>
       </Stack>
@@ -233,7 +226,6 @@ export const FieldsExport = (element: LengthOfStayRateTemplate) => {
     {
       indicator: element.labels?.adjustedRate,
       response: element.answer?.adjustedRate,
-      helperText: "Auto-calculates",
     },
   ];
   return <>{ExportRateTable([{ label, rows }])}</>;

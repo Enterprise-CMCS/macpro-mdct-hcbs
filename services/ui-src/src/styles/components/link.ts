@@ -30,7 +30,7 @@ const returnVariant = {
     width: "1.25rem",
     height: "1.25rem",
     marginTop: "0.15rem",
-    marginRight: "0.5rem",
+    marginRight: "spacer1",
   },
 };
 const sidebarVariant = {
@@ -41,13 +41,13 @@ const sidebarVariant = {
   textDecoration: "none",
   background: "transparent",
   color: "palette.base",
-  fontWeight: "normal",
+  fontWeight: "body_sm_link",
   border: "1px solid",
   borderRadius: "0",
   borderColor: "palette.gray_lighter",
   borderWidth: "0 0 1px 0",
-  fontSize: "14px",
-  lineHeight: "1.2",
+  fontSize: "body_sm_link",
+  lineHeight: "body_sm_link",
   paddingLeft: "1rem",
   height: "var(--chakra-sizes-10)",
   _visited: {
@@ -95,7 +95,8 @@ const unstyledVariant = {
 const outlineButtonVariant = {
   color: "palette.primary",
   border: "1px solid",
-  padding: ".5rem 1rem",
+  paddingY: "spacer1",
+  paddingX: "spacer2",
   borderRadius: "5px",
   fontWeight: "bold",
   textDecoration: "none",

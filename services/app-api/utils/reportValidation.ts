@@ -228,9 +228,7 @@ const submissionParagraphSchema = object().shape({
 const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
-  measureDisplay: string()
-    .oneOf(["required", "stratified", "optional"])
-    .required(),
+  measureDisplay: string().oneOf(["required", "optional"]).required(),
 });
 
 const measureResultsNavigationTableTemplateSchema = object().shape({
@@ -342,7 +340,7 @@ const ndrEnhancedRateSchema = object().shape({
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
-  performanceTargetLabel: string().required(),
+  performanceTargetLabel: string().notRequired(),
   assessments: array()
     .of(
       object().shape({
@@ -405,6 +403,7 @@ const ndrRateBasicSchema = object().shape({
   multiplier: number().notRequired(),
   displayRateAsPercent: boolean().notRequired(),
   minPerformanceLevel: number().notRequired(),
+  conditionalChildren: lazy(() => array().of(pageElementSchema).notRequired()),
 });
 
 const parentPageTemplateSchema = object().shape({
@@ -452,7 +451,6 @@ const measurePageTemplateSchema = formPageTemplateSchema.shape({
   cmit: number().notRequired(),
   cmitId: string().notRequired(),
   required: boolean().notRequired(),
-  stratified: boolean().notRequired(),
   substitutable: string().notRequired(),
   dependentPages: array()
     .of(dependentPageInfoSchema)
@@ -529,6 +527,13 @@ const reportValidateSchema = object().shape({
   lastEditedBy: string().required(),
   lastEditedByEmail: string().notRequired(),
   submitted: number().notRequired(),
+  submissionDates: array()
+    .of(
+      object().shape({
+        submitted: number().notRequired(),
+      })
+    )
+    .notRequired(),
   submittedBy: string().notRequired(),
   submittedByEmail: string().notRequired(),
   status: mixed<ReportStatus>().oneOf(Object.values(ReportStatus)).required(),

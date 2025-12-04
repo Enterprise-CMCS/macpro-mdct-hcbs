@@ -3,18 +3,21 @@ env:
   es6: true
   node: true
   jest/globals: true
+  cypress/globals: true
 parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
   - "jest"
+  - "cypress"
+  - "playwright"
 parserOptions:
-  ecmaVersion: 6
+  ecmaVersion: latest
   sourceType: module
   ecmaFeatures:
     modules: true
+  project: true
 extends:
   - "eslint:recommended"
-
 rules:
   no-const-assign: error
   no-duplicate-imports: error
@@ -32,6 +35,7 @@ rules:
 
 overrides:
   - files:
+      - "tests/**/*"
       - "cli/**"
       - "deployment/**"
     rules:

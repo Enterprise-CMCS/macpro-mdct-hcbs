@@ -4,11 +4,13 @@ import {
   ReportType,
   HeaderIcon,
   ReportBase,
+  AlertTypes,
 } from "../../../types/reports";
 
 import {
   criticalIncidentCommentsField,
   didYouFollowSpecifications,
+  minPerformanceExplanationField,
 } from "../elements";
 
 export const ciReportTemplate: ReportBase = {
@@ -53,12 +55,28 @@ export const ciReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         {
-          type: ElementType.TextAreaField,
-          id: "included-waivers-programs",
-          label: "Which programs and waivers are included?",
-          required: false,
-          helperText:
-            "Please specify all the 1915(c) waivers, 1915(i),(j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
+          type: ElementType.Radio,
+          id: "report-coverage-waivers-programs",
+          label:
+            "Does this report cover all the programs that are required under the relevant authorities?",
+          required: true,
+          choices: [
+            { label: "Yes", value: "yes" },
+            {
+              label: "No",
+              value: "no",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "included-waivers-programs",
+                  label: "Which programs and waivers are included?",
+                  required: true,
+                  helperText:
+                    "Please specify all the 1915(c) waivers, 1915(i), 1915(j), and 1915(k) State plan benefits, as well as any 1115 demonstrations that include HCBS, that you are including in this report. Include the program name and control numbers in your response.",
+                },
+              ],
+            },
+          ],
         },
       ],
     },
@@ -88,9 +106,10 @@ export const ciReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
+          conditionalChildren: [minPerformanceExplanationField],
         },
-        criticalIncidentCommentsField,
         didYouFollowSpecifications,
+        criticalIncidentCommentsField,
       ],
     },
     {
@@ -119,9 +138,10 @@ export const ciReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
+          conditionalChildren: [minPerformanceExplanationField],
         },
-        criticalIncidentCommentsField,
         didYouFollowSpecifications,
+        criticalIncidentCommentsField,
       ],
     },
     {
@@ -150,9 +170,10 @@ export const ciReportTemplate: ReportBase = {
           multiplier: 100,
           displayRateAsPercent: true,
           minPerformanceLevel: 90,
+          conditionalChildren: [minPerformanceExplanationField],
         },
-        criticalIncidentCommentsField,
         didYouFollowSpecifications,
+        criticalIncidentCommentsField,
       ],
     },
     {
@@ -165,7 +186,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.StatusAlert,
           id: "review-alert",
-          status: "error",
+          status: AlertTypes.ERROR,
           title: "Your form is not ready for submission",
           text: "Some sections of the Critical Incident Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },

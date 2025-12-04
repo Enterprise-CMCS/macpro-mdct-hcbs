@@ -38,8 +38,7 @@ export const MeasureTableElement = (
   const selectedMeasures = measures.filter(
     (page) =>
       ((table.measureDisplay == "optional" && !page.required) ||
-        (table.measureDisplay == "required" && page.required) ||
-        (table.measureDisplay == "stratified" && page.stratified)) &&
+        (table.measureDisplay == "required" && page.required)) &&
       page.type === PageType.Measure
   );
 
@@ -114,7 +113,7 @@ export const MeasureTableElement = (
           report?.status !== ReportStatus.SUBMITTED ? (
             <Button
               variant="link"
-              sx={{ fontSize: "14px" }}
+              sx={{ fontSize: "body_sm" }}
               onClick={() => {
                 buildModal(measure);
               }}
