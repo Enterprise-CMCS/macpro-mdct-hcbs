@@ -4,6 +4,7 @@ import {
   ReportType,
   HeaderIcon,
   ReportBase,
+  AlertTypes,
 } from "../../../types/reports";
 
 import {
@@ -185,7 +186,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.StatusAlert,
           id: "review-alert",
-          status: "error",
+          status: AlertTypes.ERROR,
           title: "Your form is not ready for submission",
           text: "Some sections of the Critical Incident Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },

@@ -1,6 +1,6 @@
 import * as cognitolib from "../libs/cognito-lib.js";
-const userPoolId = process.env.userPoolId;
 import users from "../libs/users.json" assert { type: "json" };
+const userPoolId = process.env.userPoolId;
 
 export const handler = async (_event, _context, _callback) => {
   for (var i = 0; i < users.length; i++) {
@@ -30,7 +30,7 @@ export const handler = async (_event, _context, _callback) => {
     }
 
     try {
-      //userCreate must set a temp password first, calling setPassword to set the password configured in SSM for consistent dev login
+      //userCreate must set a temp password first, calling setPassword to set the password for consistent dev login
       await cognitolib.setPassword(passwordData);
     } catch {
       /* swallow this exception and continue */

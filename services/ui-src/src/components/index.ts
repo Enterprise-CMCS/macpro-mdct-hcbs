@@ -27,6 +27,7 @@ export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
 export { TacmIntroductionCard } from "./cards/TacmIntroductionCard";
 export { CiIntroductionCard } from "./cards/CiIntroductionCard";
 export { PCPIntroductionCard } from "./cards/PCPIntroductionCard";
+export { WWLIntroductionCard } from "./cards/WWLIntroductionCard";
 export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";

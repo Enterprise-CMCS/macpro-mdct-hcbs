@@ -164,6 +164,7 @@ export const elementSatisfiesRequired = (
   }
 
   if (element.type === ElementType.LengthOfStayRate) {
+    if (element.errors && element.errors.populationRate) return false;
     return Object.values(LengthOfStayFieldNames)
       .filter((fieldId) => fieldId !== "populationRate") // populationRate is not required
       .every((fieldId) => element.answer?.[fieldId] !== undefined);

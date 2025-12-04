@@ -6,6 +6,7 @@ import {
   MeasureTemplateName,
   ReportStatus,
 } from "../../types/reports";
+import { StateAbbr } from "../constants";
 
 const qmsReportTemplate = qmsReportTemplate2026;
 
@@ -13,7 +14,7 @@ export const validReport: Report = {
   type: qmsReportTemplate.type,
   year: qmsReportTemplate.year,
   pages: qmsReportTemplate.pages,
-  state: "NJ",
+  state: "NJ" as StateAbbr,
   id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
   created: 1736524513631,
   lastEdited: 1736524513631,
