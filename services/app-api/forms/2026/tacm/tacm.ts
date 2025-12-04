@@ -20,6 +20,7 @@ import {
   stateSamplingMethologyQuestion,
   didYouFollowSpecifications,
   conversionOfServiceUnitsField,
+  exportToPDF,
 } from "../elements";
 
 export const tacmReportTemplate: ReportBase = {
@@ -246,6 +247,7 @@ export const tacmReportTemplate: ReportBase = {
           id: "submitted-what-happens",
           text: "Email your CMS representative to inform them you submitted the TACM Report and it is ready for their review.",
         },
+        exportToPDF,
       ],
     },
   ],
