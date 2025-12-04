@@ -72,7 +72,7 @@ describe("<StatusAlert />", () => {
       await userEvent.click(link);
     });
 
-    test("Test Review & Submit banner", () => {
+    test("Review & Submit banner", () => {
       (useStore as unknown as jest.Mock).mockImplementation((selector) => {
         if (selector) {
           return { submittable: true };

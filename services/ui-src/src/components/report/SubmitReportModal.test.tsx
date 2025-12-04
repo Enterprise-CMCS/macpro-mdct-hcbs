@@ -24,7 +24,7 @@ describe("Test SubmitReportModal", () => {
     expect(mockSubmit).toHaveBeenCalled();
   });
 
-  it("Test SubmitReportModal for XYZ Render", async () => {
+  it("Test SubmitReportModal cancel and submit interactions", async () => {
     const modal = SubmitReportModal(mockClose, mockSubmit, "XYZ");
     render(
       <Modal isOpen={true} onClose={mockClose}>
