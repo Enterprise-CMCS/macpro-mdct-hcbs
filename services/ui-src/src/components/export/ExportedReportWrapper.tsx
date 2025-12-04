@@ -23,6 +23,20 @@ export const renderReportDisplay = (
   return elements?.map((element: ReportTableType) => element.response);
 };
 
+const isStateReporting = (elements: PageElement[]) => {
+  const stateReportIndex = elements.findIndex((item) => {
+    return (
+      item.type === "radio" &&
+      item.clickAction === "qmReportingChange" &&
+      item.answer === "no"
+    );
+  });
+
+  return stateReportIndex > -1
+    ? elements.splice(0, stateReportIndex + 1)
+    : elements;
+};
+
 //not all hint text should be render so this function is used as a filter
 const isValidHelperText = (helperText: string) => {
   return !helperText.includes("Warning:") ? helperText : "";
@@ -40,9 +54,12 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   if (filteredElements == undefined) return null;
 
+  //removes follow up content for "is the state reporting on this measure?" question if the user selects no
+  const stateReportingFiltered = isStateReporting(filteredElements);
+
   //if the element is a radio, replace the answer with a the label text and get the children elements
   const expandElements: PageElement[] = [];
-  filteredElements.forEach((element) => {
+  stateReportingFiltered.forEach((element) => {
     const modifiedElemet = { ...element };
 
     const child = [modifiedElemet];
