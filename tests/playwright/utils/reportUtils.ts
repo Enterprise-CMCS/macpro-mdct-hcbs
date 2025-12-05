@@ -52,7 +52,9 @@ export const assertReportIsCreated = async (
 ) => {
   const table = page.getByRole("table");
   await expect(table).toBeVisible({ timeout: 30000 });
-  await expect(table.getByText(data.reportName + data.datetime)).toBeVisible();
+  await expect(table.getByText(data.reportName + data.datetime)).toBeVisible({
+    timeout: 10000,
+  });
 };
 
 export const enterReport = async (page: Page, data: typeof testModalData) => {
@@ -60,6 +62,7 @@ export const enterReport = async (page: Page, data: typeof testModalData) => {
     "Edit " + data.reportName + data.datetime + " report",
     { exact: true }
   );
+  await editReportButton.waitFor({ state: "visible", timeout: 10000 });
   await editReportButton.click();
 };
 
