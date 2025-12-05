@@ -65,7 +65,6 @@ export const AppRoutes = () => {
                 element={<ComponentInventory />}
               />
             )}
-            {/* TO DO: Load pageId by default? */}
           </Routes>
         </ReportAutosaveProvider>
       </AdminBannerProvider>

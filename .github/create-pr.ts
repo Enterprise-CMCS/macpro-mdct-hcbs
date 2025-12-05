@@ -30,7 +30,7 @@ async function run() {
     body: "This PR was created automatically via Octokit",
     draft: true,
   });
-  console.log(`✅ Pull request created: ${pr.html_url}`);
+  console.log(`✅ Pull request created: ${pr.html_url}`); // eslint-disable-line no-console
   await octokit.issues.addLabels({
     owner,
     repo,

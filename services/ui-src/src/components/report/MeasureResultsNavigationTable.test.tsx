@@ -13,7 +13,7 @@ import {
 import { getReport } from "../../utils/api/requestMethods/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
 import { useStore } from "utils";
-import { HcbsUser } from "types";
+import { User } from "types";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,7 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: jest.fn().mockReturnValue(jest.fn()),
   useParams: jest.fn(() => ({
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "CO",
     reportId: "mock-report-id",
     pageId: "MOCK-1",
@@ -34,7 +34,7 @@ const mockNavigate = useNavigate() as jest.MockedFunction<
 const buildMockReport = (): Report =>
   ({
     id: "mock-report-id",
-    type: ReportType.QMS,
+    type: ReportType.XYZ,
     pages: [
       {
         id: "root",
@@ -129,7 +129,7 @@ const buildMockReport = (): Report =>
         ],
       },
     ],
-  } as Report);
+  }) as Report;
 
 jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: jest.fn(),
@@ -139,7 +139,7 @@ const mockedGetReport = getReport as unknown as jest.MockedFunction<
 >;
 mockedGetReport.mockResolvedValue(buildMockReport());
 
-const mockUser = { userIsEndUser: true } as HcbsUser;
+const mockUser = { userIsEndUser: true } as User;
 
 const MockReportPage = () => {
   const { report, setUser } = useStore();
@@ -223,13 +223,13 @@ describe("Measure Results Navigation Table", () => {
     expect(ffsNavButton).toBeEnabled();
     await userEvent.click(ffsNavButton);
     expect(mockNavigate).toHaveBeenCalledWith(
-      "/report/QMS/CO/mock-report-id/MOCK-1-FFS"
+      "/report/XYZ/CO/mock-report-id/MOCK-1-FFS"
     );
 
     expect(mltssNavButton).toBeEnabled();
     await userEvent.click(mltssNavButton);
     expect(mockNavigate).toHaveBeenCalledWith(
-      "/report/QMS/CO/mock-report-id/MOCK-1-MLTSS"
+      "/report/XYZ/CO/mock-report-id/MOCK-1-MLTSS"
     );
   });
 
@@ -307,7 +307,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
-  test("Changing delivery method should clear measure details pages", async () => {
+  test("Clear measure button should clear all measure data", async () => {
     act(() => render(<MockReportPage />));
     await waitForRender();
 

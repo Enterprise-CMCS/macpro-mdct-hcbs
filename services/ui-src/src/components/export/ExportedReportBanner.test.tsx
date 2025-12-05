@@ -15,6 +15,6 @@ describe("ExportedReportBanner", () => {
   it("Test click of print button", async () => {
     const pdfButton = screen.getByText("Download PDF");
     await userEvent.click(pdfButton);
-    expect(window.print).toBeCalled();
+    expect(window.print).toHaveBeenCalled();
   });
 });

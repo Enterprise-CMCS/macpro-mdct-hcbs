@@ -149,8 +149,7 @@ describe("Radio field click action logic", () => {
     expect(mockChangeDeliveryMethods).not.toHaveBeenCalled();
     expect(updateSpy).not.toHaveBeenCalled();
 
-    const modalYes = screen.getByText("Yes");
-    expect(modalYes).toBeVisible();
+    const modalYes = await screen.findByText("Yes");
     await userEvent.click(modalYes);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(1);
     expect(updateSpy).toHaveBeenCalledTimes(1);
@@ -174,8 +173,7 @@ describe("Radio field click action logic", () => {
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);
 
-    const modalNo = screen.getByText("No");
-    expect(modalNo).toBeVisible();
+    const modalNo = await screen.findByText("No");
     await userEvent.click(modalNo);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);

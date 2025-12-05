@@ -11,7 +11,7 @@ export const ErrorMessages = {
   mustBeAnEmail: "Response must be a valid email address",
 } as const;
 
-export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
+export const PRODUCTION_HOST_DOMAIN = "mdctlabs.cms.gov";
 
 export const notAnsweredText = "Not answered";
 export const autoPopulatedText = "Auto-populates from previous response";

@@ -12,7 +12,7 @@ const report = {
   submittedBy: "Tall Person",
   submitted: new Date("January 1, 2025").getTime(),
   state: "NJ",
-  type: "QMS",
+  type: "XYZ",
 };
 
 describe("SubmissionParagraph", () => {
@@ -40,7 +40,7 @@ describe("SubmissionParagraph", () => {
     );
     expect(
       screen.getByText(
-        "Quality Measure Set Report submission for NJ was submitted on January 1, 2025 by Tall Person."
+        "XYZ submission for NJ was submitted on January 1, 2025 by Tall Person."
       )
     ).toBeInTheDocument();
   });

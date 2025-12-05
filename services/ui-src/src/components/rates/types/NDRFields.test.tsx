@@ -77,19 +77,20 @@ describe("<NDRFields />", () => {
       render(<NdrFieldsWrapper template={mockElementTemplate} />);
       const { assessments, fields } = mockElementTemplate;
 
-      if (assessments && assessments.length > 0) {
-        const denom = screen.getAllByRole("textbox", {
-          name: `Denominator (${assessments[0].label})`,
-        })[0];
-        await act(async () => await userEvent.type(denom, "1"));
-        expect(denom).toHaveValue("1");
+      expect(assessments).toBeDefined();
+      expect(assessments?.length).toBeGreaterThan(0);
 
-        const num = screen.getByRole("textbox", {
-          name: `Numerator: ${fields?.[0].label} (${assessments[0].label})`,
-        });
-        await act(async () => await userEvent.type(num, "1"));
-        expect(num).toHaveValue("1");
-      }
+      const denom = screen.getAllByRole("textbox", {
+        name: `Denominator (${assessments![0].label})`,
+      })[0];
+      await act(async () => await userEvent.type(denom, "1"));
+      expect(denom).toHaveValue("1");
+
+      const num = screen.getByRole("textbox", {
+        name: `Numerator: ${fields?.[0].label} (${assessments![0].label})`,
+      });
+      await act(async () => await userEvent.type(num, "1"));
+      expect(num).toHaveValue("1");
     });
   });
 

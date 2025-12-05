@@ -25,12 +25,11 @@ jest.mock("../../storage/reports", () => ({
 
 const testEvent = {
   queryStringParameters: {},
-  pathParameters: { reportType: "QMS", state: "PA" },
+  pathParameters: { reportType: "XYZ", state: "PA" },
   headers: { "cognito-identity-id": "test" },
   body: JSON.stringify({
     year: 2026,
     name: "test report",
-    options: {},
   }),
 };
 
@@ -39,7 +38,7 @@ describe("Test create report handler", () => {
     jest.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  test("missing path params", async () => {
     const badTestEvent = {
       ...testEvent,
       pathParameters: {},
@@ -54,17 +53,17 @@ describe("Test create report handler", () => {
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  test("missing body", async () => {
     const emptyBodyEvent = {
       ...testEvent,
-      pathParameters: { reportType: "QMS", state: "PA" },
+      pathParameters: { reportType: "XYZ", state: "PA" },
       body: null,
     };
     const res = await createReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test Successful create", async () => {
+  test("Successful create", async () => {
     const res = await createReport(testEvent);
 
     expect(putReport).toHaveBeenCalled();
@@ -72,7 +71,7 @@ describe("Test create report handler", () => {
   });
 });
 
-test("Test invalid report type", async () => {
+test("invalid report type", async () => {
   const invalidDataEvent = {
     ...testEvent,
     pathParameters: { reportType: "BM", state: "NM" },

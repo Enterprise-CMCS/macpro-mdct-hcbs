@@ -1,19 +1,12 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ESNext",
-    "types": [
-      "vite/client"
-    ],
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "ES2021.String"
-    ],
+    "target": "ES2023",
+    "types": ["vite/client"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "sourceMap": true,
-    "module": "esnext",
+    "module": "nodenext",
     "baseUrl": "src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -25,13 +18,10 @@
     "skipLibCheck": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src",
-    "tests"
-, "../app-api/forms/constants.ts"  ]
+  "include": ["src", "tests"]
 }

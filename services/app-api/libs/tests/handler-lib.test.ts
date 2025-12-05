@@ -18,7 +18,7 @@ jest.mock("../../utils/authentication", () => ({
 const parser = () => ({});
 
 describe("Test Lambda Handler Lib", () => {
-  test("Test successful authorized lambda workflow", async () => {
+  test("successful authorized lambda workflow", async () => {
     const testFunc = jest.fn().mockReturnValue(ok("test"));
     const handler = handlerLib(parser, testFunc);
 
@@ -46,7 +46,7 @@ describe("Test Lambda Handler Lib", () => {
     );
   });
 
-  test("Test unsuccessful authorization lambda workflow", async () => {
+  test("unsuccessful authorization lambda workflow", async () => {
     const testFunc = jest.fn();
     const handler = handlerLib(parser, testFunc);
 
@@ -57,7 +57,7 @@ describe("Test Lambda Handler Lib", () => {
     expect(res.body).toBe(`"User is not authorized to access this resource."`);
   });
 
-  test("Test Errored lambda workflow", async () => {
+  test("Errored lambda workflow", async () => {
     const err = new Error("Test Error");
     const testFunc = jest.fn().mockImplementation(() => {
       throw err;

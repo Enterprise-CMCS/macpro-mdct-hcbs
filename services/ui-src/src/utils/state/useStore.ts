@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import {
-  HcbsUserState,
-  HcbsUser,
-  HcbsReportState,
+  UserState,
+  User,
+  ReportState,
   BannerData,
   ErrorVerbiage,
   AdminBannerState,
@@ -23,13 +23,13 @@ import {
 } from "./reportLogic/reportActions";
 
 // USER STORE
-const userStore = (set: Set<HcbsUserState>) => ({
+const userStore = (set: Set<UserState>) => ({
   // initial state
   user: undefined,
   // show local logins
   showLocalLogins: undefined,
   // actions
-  setUser: (newUser?: HcbsUser) =>
+  setUser: (newUser?: User) =>
     set(() => ({ user: newUser }), false, { type: "setUser" }),
   // toggle show local logins (dev only)
   setShowLocalLogins: () =>
@@ -68,7 +68,7 @@ const bannerStore = (set: Set<AdminBannerState>) => ({
 });
 
 // REPORT STORE
-const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
+const reportStore = (set: Set<ReportState>, get: Get<ReportState>) => ({
   // initial state
   report: undefined, // raw report
   pageMap: undefined, // all page indexes mapped by Id
@@ -92,7 +92,7 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
       type: "updateReport",
     }),
   setCurrentPageId: (currentPageId: string) =>
-    set((state: HcbsReportState) => setPage(currentPageId, state), false, {
+    set((state: ReportState) => setPage(currentPageId, state), false, {
       type: "setCurrentPageId",
     }),
   setModalOpen: (modalOpen: boolean) =>
@@ -102,7 +102,7 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
       type: "setModalComponent",
     }),
   setAnswers: (answers: any) =>
-    set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
+    set((state: ReportState) => mergeAnswers(answers, state), false, {
       type: "setAnswers",
     }),
   setSubstitute: (
@@ -117,17 +117,17 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
     set(() => ({ sidebarOpen }), false, { type: "setSidebarOpen" });
   },
   completePage: (measureId: string) => {
-    set((state: HcbsReportState) => markPageComplete(measureId, state), false, {
+    set((state: ReportState) => markPageComplete(measureId, state), false, {
       type: "completePage",
     });
   },
   resetMeasure: (measureId: string) =>
-    set((state: HcbsReportState) => resetMeasure(measureId, state), false, {
+    set((state: ReportState) => resetMeasure(measureId, state), false, {
       type: "resetMeasure",
     }),
   clearMeasure: (measureId: string, ignoreList: { [key: string]: string }) =>
     set(
-      (state: HcbsReportState) => clearMeasure(measureId, state, ignoreList),
+      (state: ReportState) => clearMeasure(measureId, state, ignoreList),
       false,
       {
         type: "clearMeasure",
@@ -135,7 +135,7 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
     ),
   changeDeliveryMethods: (measureId: string, selection: string) =>
     set(
-      (state: HcbsReportState) =>
+      (state: ReportState) =>
         changeDeliveryMethods(measureId, selection, state),
       false,
       {
@@ -152,15 +152,13 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState & HcbsReportState & AdminBannerState>(
-      (set, get) => ({
-        ...userStore(set),
-        ...bannerStore(set),
-        ...reportStore(set, get),
-      })
-    ),
+    devtools<UserState & ReportState & AdminBannerState>((set, get) => ({
+      ...userStore(set),
+      ...bannerStore(set),
+      ...reportStore(set, get),
+    })),
     {
-      name: "hcbs-store",
+      name: "labs-store",
       partialize: (state) => ({ report: state.report }),
     }
   )

@@ -24,7 +24,7 @@ jest.mock("../../storage/reports", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   pathParameters: {
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "PA",
     id: "myVeryFavoriteReport",
   },
@@ -38,7 +38,7 @@ describe("Test archive report handler", () => {
   });
 
   describe("updateArchiveStatus", () => {
-    test("Test missing path params", async () => {
+    test("missing path params", async () => {
       const badTestEvent: APIGatewayProxyEvent = {
         ...proxyEvent,
         headers: { "cognito-identity-id": "test" },
@@ -57,7 +57,7 @@ describe("Test archive report handler", () => {
       const noBodyEvent: APIGatewayProxyEvent = {
         ...proxyEvent,
         pathParameters: {
-          reportType: "QMS",
+          reportType: "XYZ",
           state: "PA",
           id: "myVeryFavoriteReport",
         },
@@ -68,7 +68,7 @@ describe("Test archive report handler", () => {
       expect(response.statusCode).toBe(StatusCodes.BadRequest);
     });
 
-    test("Test Successful archival", async () => {
+    test("Successful archival", async () => {
       const res = await updateArchiveStatus(testEvent);
 
       expect(res.statusCode).toBe(StatusCodes.Ok);

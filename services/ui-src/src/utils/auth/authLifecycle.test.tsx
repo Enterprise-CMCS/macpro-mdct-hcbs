@@ -10,10 +10,10 @@ describe("utils/auth", () => {
       const expired = sub(Date.now(), {
         days: 5,
       }).toDateString();
-      localStorage.setItem("mdcthcbs_session_exp", expired);
+      localStorage.setItem("mdctlabs_session_exp", expired);
 
       initAuthManager();
-      const clearedTime = localStorage.getItem("mdcthcbs_session_exp");
+      const clearedTime = localStorage.getItem("mdctlabs_session_exp");
       expect(clearedTime).toEqual(null);
     });
   });
@@ -26,21 +26,21 @@ describe("utils/auth", () => {
       jest.runAllTimers();
     });
 
-    test("Test updateTimeout", () => {
+    test("updateTimeout", () => {
       const currentTime = Date.now();
       updateTimeout();
       jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
 
-      const savedTime = localStorage.getItem("mdcthcbs_session_exp");
+      const savedTime = localStorage.getItem("mdctlabs_session_exp");
       expect(new Date(savedTime!).valueOf()).toBeGreaterThanOrEqual(
         new Date(currentTime).valueOf()
       );
     });
 
-    test("Test getExpiration and refreshCredentials", async () => {
+    test("getExpiration and refreshCredentials", async () => {
       // Set an initial time, because jest runs too fast to have different timestamps
       const initialExpiration = sub(Date.now(), { seconds: 5 }).toString();
-      localStorage.setItem("mdcthcbs_session_exp", initialExpiration);
+      localStorage.setItem("mdctlabs_session_exp", initialExpiration);
       await refreshCredentials();
       jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
 
@@ -51,8 +51,8 @@ describe("utils/auth", () => {
         new Date(initialExpiration).valueOf()
       );
     });
-    test("Test getExpiration returns an empty string if nothing is set", async () => {
-      localStorage.removeItem("mdcthcbs_session_exp");
+    test("getExpiration returns an empty string if nothing is set", async () => {
+      localStorage.removeItem("mdctlabs_session_exp");
 
       const storedExpiration = getExpiration();
       expect(storedExpiration).toEqual("");
@@ -83,7 +83,7 @@ describe("utils/auth", () => {
           callback({ payload: { event: "nonExistantEvent" } });
         });
       initAuthManager();
-      const savedTime = localStorage.getItem("mdcthcbs_session_exp");
+      const savedTime = localStorage.getItem("mdctlabs_session_exp");
       expect(new Date(savedTime!).valueOf()).toBeGreaterThanOrEqual(
         new Date(currentTime).valueOf()
       );

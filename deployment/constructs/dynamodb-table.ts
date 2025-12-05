@@ -4,6 +4,7 @@ import { RemovalPolicy, Tags } from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface DynamoDBTableProps {
+  readonly project: string;
   readonly stage: string;
   readonly isDev: boolean;
   readonly name: string;
@@ -26,6 +27,7 @@ export class DynamoDBTable extends Construct {
   constructor(scope: Construct, id: string, props: DynamoDBTableProps) {
     super(scope, id);
     const {
+      project,
       stage,
       isDev,
       name,
@@ -36,7 +38,7 @@ export class DynamoDBTable extends Construct {
       streamable = true,
     } = props;
 
-    const tableName = `${stage}-${name}`;
+    const tableName = `${project}-${stage}-${name}`;
     this.table = new dynamodb.Table(this, "Table", {
       tableName,
       partitionKey,

@@ -9,7 +9,6 @@ import { logger } from "../../libs/debug-lib";
 const awsConfig = {
   region: "us-east-1",
   logger,
-  endpoint: process.env.AWS_ENDPOINT_URL,
 };
 
 export const createClient = () => {
@@ -17,7 +16,7 @@ export const createClient = () => {
 };
 
 export const collectPageItems = async <
-  T extends QueryCommandOutput | ScanCommandOutput
+  T extends QueryCommandOutput | ScanCommandOutput,
 >(
   paginator: Paginator<T>
 ) => {

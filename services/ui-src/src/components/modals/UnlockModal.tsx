@@ -8,7 +8,7 @@ export const UnlockModal = ({ modalDisclosure }: Props) => {
       modalDisclosure={modalDisclosure}
       onConfirmHandler={() => modalDisclosure.onClose()}
       content={{
-        heading: "You unlocked this QMS Report",
+        heading: "You unlocked this XYZ Report",
         subheading: undefined,
         actionButtonText: "Return to dashboard",
         closeButtonText: undefined,

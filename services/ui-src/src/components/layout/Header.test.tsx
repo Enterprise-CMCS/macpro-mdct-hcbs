@@ -22,7 +22,7 @@ describe("<Header />", () => {
       const header = screen.getByRole("navigation");
       expect(header).toBeVisible();
       // find img elements
-      expect(screen.getByRole("img", { name: "HCBS logo" })).toBeVisible();
+      expect(screen.getByRole("img", { name: "LABS logo" })).toBeVisible();
       expect(screen.getByRole("img", { name: "Help" })).toBeVisible();
       expect(screen.getByRole("img", { name: "Account" })).toBeVisible();
       expect(screen.getByAltText("Arrow down")).toBeVisible();
@@ -49,7 +49,7 @@ describe("<Header />", () => {
       await userEvent.click(menuButton);
 
       // Click and expand
-      const logoutButton = screen.getByRole("img", { name: "Logout" });
+      const logoutButton = screen.getByAltText("Logout");
       expect(logoutButton).toBeInTheDocument();
       await userEvent.click(logoutButton);
 

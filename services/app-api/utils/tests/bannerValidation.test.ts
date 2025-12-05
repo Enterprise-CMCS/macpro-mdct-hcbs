@@ -25,20 +25,8 @@ describe("Test validateBannerPayload function", () => {
     const validatedData = await validateBannerPayload(validObject);
     expect(validatedData).toEqual(validObject);
   });
-  it("throws an error when validating an invalid object", () => {
-    expect(async () => {
-      await validateBannerPayload(invalidObject);
-    }).rejects.toThrow();
-  });
-});
-
-describe("Test validateBannerPayload function", () => {
-  it("successfully validates a valid object", async () => {
-    const validatedData = await validateBannerPayload(validObject);
-    expect(validatedData).toEqual(validObject);
-  });
-  it("throws an error when validating an invalid object", () => {
-    expect(async () => {
+  it("throws an error when validating an invalid object", async () => {
+    await expect(async () => {
       await validateBannerPayload(invalidObject);
     }).rejects.toThrow();
   });

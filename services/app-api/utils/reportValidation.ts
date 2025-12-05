@@ -464,13 +464,6 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
   submittedView: array().of(pageElementSchema).required(),
 });
 
-const optionsSchema = object().shape({
-  cahps: boolean().notRequired(),
-  nciidd: boolean().notRequired(),
-  nciad: boolean().notRequired(),
-  pom: boolean().notRequired(),
-});
-
 /**
  * This schema is meant to represent the pages field in the ReportTemplate type.
  * The following yup `lazy` function is building up the union type:
@@ -509,7 +502,7 @@ export const isReportOptions = (
     .shape({
       name: string().required(),
       year: number().required(),
-      options: optionsSchema.required().noUnknown(),
+      options: object().notRequired().noUnknown(),
     })
     .required()
     .noUnknown();
@@ -543,7 +536,6 @@ const reportValidateSchema = object().shape({
   year: number().required(),
   submissionCount: number().required(),
   archived: boolean().required(),
-  options: optionsSchema,
   pages: pagesSchema,
 });
 

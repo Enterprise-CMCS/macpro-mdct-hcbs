@@ -7,8 +7,8 @@ const mockClose = jest.fn();
 const mockSubmit = jest.fn();
 
 describe("Test SubmitReportModal", () => {
-  it("Test SubmitReportModal for QMS Render", async () => {
-    const modal = SubmitReportModal(mockClose, mockSubmit);
+  it("Test SubmitReportModal for XYZ Render", async () => {
+    const modal = SubmitReportModal(mockClose, mockSubmit, "XYZ");
     render(
       <Modal isOpen={true} onClose={mockClose}>
         {modal}
@@ -19,13 +19,13 @@ describe("Test SubmitReportModal", () => {
     await userEvent.click(cancelBtn);
     expect(mockClose).toHaveBeenCalled();
 
-    const submit = screen.getByRole("button", { name: "Submit QMS Report" });
+    const submit = screen.getByRole("button", { name: "Submit XYZ Report" });
     await userEvent.click(submit);
     expect(mockSubmit).toHaveBeenCalled();
   });
 
-  it("Test SubmitReportModal for TACM Render", async () => {
-    const modal = SubmitReportModal(mockClose, mockSubmit, "TACM");
+  it("Test SubmitReportModal cancel and submit interactions", async () => {
+    const modal = SubmitReportModal(mockClose, mockSubmit, "XYZ");
     render(
       <Modal isOpen={true} onClose={mockClose}>
         {modal}
@@ -36,7 +36,7 @@ describe("Test SubmitReportModal", () => {
     await userEvent.click(cancelBtn);
     expect(mockClose).toHaveBeenCalled();
 
-    const submit = screen.getByRole("button", { name: "Submit TACM Report" });
+    const submit = screen.getByRole("button", { name: "Submit XYZ Report" });
     await userEvent.click(submit);
     expect(mockSubmit).toHaveBeenCalled();
   });

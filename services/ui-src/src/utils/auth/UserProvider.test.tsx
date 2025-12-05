@@ -40,21 +40,19 @@ const testComponent = (
 );
 
 // HELPERS
-const originalLocationDescriptor = Object.getOwnPropertyDescriptor(
-  global,
-  "location"
-)!;
+let originalLocation: any;
 
 const setWindowOrigin = (windowOrigin: string) => {
-  global.window = Object.create(window);
-  Object.defineProperty(window, "location", {
-    value: {
-      assign: jest.fn(),
-      origin: windowOrigin,
-      pathname: "/",
-    },
-    writable: true,
-  });
+  if (!originalLocation) {
+    originalLocation = window.location;
+  }
+  delete (window as any).location;
+  (window as any).location = {
+    assign: jest.fn(),
+    pathname: "/",
+    href: `${windowOrigin}/`,
+    origin: windowOrigin,
+  };
 };
 
 const breakCheckAuthState = async () => {
@@ -72,7 +70,9 @@ describe("<UserProvider />", () => {
   });
 
   afterAll(() => {
-    Object.defineProperty(global, "location", originalLocationDescriptor);
+    if (originalLocation) {
+      (window as any).location = originalLocation;
+    }
   });
 
   describe("Test UserProvider", () => {
@@ -86,7 +86,7 @@ describe("<UserProvider />", () => {
       expect(screen.getByText("User Test")).toBeVisible();
     });
 
-    test("test logout function", async () => {
+    test("logout function", async () => {
       await act(async () => {
         const logoutButton = screen.getByRole("button", { name: "Logout" });
         await userEvent.click(logoutButton);
@@ -94,7 +94,7 @@ describe("<UserProvider />", () => {
       expect(window.location.pathname).toEqual("/");
     });
 
-    test("test login with IDM function", async () => {
+    test("login with IDM function", async () => {
       await act(async () => {
         const loginButton = screen.getByRole("button", {
           name: "Log In with IDM",
@@ -106,13 +106,13 @@ describe("<UserProvider />", () => {
   });
 
   describe("Test UserProvider with production path", () => {
-    test("test production authenticates with idm when current authenticated user throws an error", async () => {
-      setWindowOrigin("mdcthcbs.cms.gov");
+    test("production authenticates with idm when current authenticated user throws an error", async () => {
+      setWindowOrigin("mdctlabs.cms.gov");
       await breakCheckAuthState();
       await act(async () => {
         render(testComponent);
       });
-      expect(window.location.origin).toContain("mdcthcbs.cms.gov");
+      expect(window.location.origin).toContain("mdctlabs.cms.gov");
       expect(screen.getByText("User Test")).toBeVisible();
     });
   });
@@ -152,7 +152,7 @@ describe("<UserProvider />", () => {
     });
   });
 
-  test("test check auth function", async () => {
+  test("check auth function", async () => {
     const mockAmplify = require("aws-amplify/auth");
     mockAmplify.fetchAuthSession = jest.fn().mockResolvedValue({
       tokens: {

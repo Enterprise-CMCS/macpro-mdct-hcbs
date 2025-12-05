@@ -57,15 +57,19 @@ describe("<Fields />", () => {
     };
     test("Fields are visible, and disabled appropriately", async () => {
       render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
-      for (let fieldId of Object.keys(labels)) {
-        if (fieldId === "populationRate")
-          expect(
-            getInputWithOptionalField(fieldId as LengthOfStayField)
-          ).toBeInTheDocument();
-        else expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
+
+      expect(
+        getInputWithOptionalField("populationRate" as LengthOfStayField)
+      ).toBeInTheDocument();
+
+      const otherFieldIds = Object.keys(labels).filter(
+        (fieldId) => fieldId !== "populationRate"
+      );
+      for (const fieldId of otherFieldIds) {
+        expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
       }
 
-      for (let editableFieldId of [
+      for (const editableFieldId of [
         "performanceTarget",
         "actualCount",
         "denominator",
@@ -79,7 +83,7 @@ describe("<Fields />", () => {
         getInputWithOptionalField("populationRate" as LengthOfStayField)
       ).not.toBeDisabled();
 
-      for (let autoCalcFieldId of ["actualRate", "expectedRate"] as const) {
+      for (const autoCalcFieldId of ["actualRate", "expectedRate"] as const) {
         expect(getInput(autoCalcFieldId)).toBeDisabled();
       }
     });

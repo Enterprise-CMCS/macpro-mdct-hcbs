@@ -1,4 +1,5 @@
 import { screen, render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { useStore } from "utils";
 import { ExportedReportPage } from "./ExportedReportPage";
 import { PageType, PageStatus } from "types";
@@ -9,7 +10,7 @@ jest.mock("utils", () => ({
 }));
 
 const report = {
-  type: "QMS",
+  type: "XYZ",
   id: "mock-report-id",
   state: "CO",
   name: "mock-title",
@@ -72,28 +73,48 @@ describe("ExportedReportPage", () => {
     });
   });
   it("ExportReportPage is visible", () => {
-    render(<ExportedReportPage></ExportedReportPage>);
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
     expect(
-      screen.getByText("Colorado Quality Measure Set Report for: mock-title")
+      screen.getByText("Colorado XYZ for: mock-title")
     ).toBeInTheDocument();
   });
 
   it("Should not render filtered sections", () => {
-    render(<ExportedReportPage></ExportedReportPage>);
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
     expect(screen.queryByText("Section 4")).not.toBeInTheDocument();
   });
 
   it("Should not render optional measures which are not started", () => {
-    render(<ExportedReportPage></ExportedReportPage>);
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
     expect(screen.queryByText("Section 5")).not.toBeInTheDocument();
   });
 
   it("Should not render measure results which are not started", () => {
-    render(<ExportedReportPage></ExportedReportPage>);
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
     expect(screen.queryByText("Section 6")).not.toBeInTheDocument();
   });
   it("Should render Required Measures Heading", () => {
-    render(<ExportedReportPage></ExportedReportPage>);
+    render(
+      <MemoryRouter>
+        <ExportedReportPage></ExportedReportPage>
+      </MemoryRouter>
+    );
     expect(screen.queryByText("Required Measures")).toBeInTheDocument();
   });
 });

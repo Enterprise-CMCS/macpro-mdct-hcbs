@@ -3,7 +3,7 @@ import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
 import { Menu, MenuOption, SubnavBar } from "components";
 import { useBreakpoint } from "utils";
-import appLogo from "assets/logos/logo_mdct_hcbs.svg";
+import appLogo from "assets/logos/logo_mdct_labs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 
 export const Header = ({ handleLogout }: Props) => {
@@ -19,7 +19,7 @@ export const Header = ({ handleLogout }: Props) => {
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
             <Link as={RouterLink} to="/" variant="unstyled">
-              <Image src={appLogo} alt="HCBS logo" sx={sx.appLogo} />
+              <Image src={appLogo} alt="LABS logo" sx={sx.appLogo} />
             </Link>
             <Flex sx={sx.menuFlex}>
               <Link

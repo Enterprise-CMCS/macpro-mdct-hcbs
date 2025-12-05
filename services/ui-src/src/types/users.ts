@@ -1,15 +1,14 @@
 // USERS
 
-// TODO: Finalize with IDM
 export enum UserRoles {
-  ADMIN = "mdcthcbs-bor", // "MDCT HCBS Business Owner Representative"
-  APPROVER = "mdcthcbs-appr", // "MDCT HCBS Approver"
-  HELP_DESK = "mdcthcbs-hd", // "MDCT HCBS Help Desk"
-  INTERNAL = "mdcthcbs-internal-user", // "MDCT HCBS Internal User"
-  STATE_USER = "mdcthcbs-state-user", // "MDCT HCBS State User"
+  ADMIN = "mdctlabs-bor", // "MDCT LABS Business Owner Representative"
+  APPROVER = "mdctlabs-appr", // "MDCT LABS Approver"
+  HELP_DESK = "mdctlabs-hd", // "MDCT LABS Help Desk"
+  INTERNAL = "mdctlabs-internal-user", // "MDCT LABS Internal User"
+  STATE_USER = "mdctlabs-state-user", // "MDCT LABS State User"
 }
 
-export interface HcbsUser {
+export interface User {
   email: string;
   given_name: string;
   family_name: string;
@@ -22,7 +21,7 @@ export interface HcbsUser {
 }
 
 export interface UserContextShape {
-  user?: HcbsUser;
+  user?: User;
   getExpiration: () => string;
   logout: () => Promise<void>;
   loginWithIDM: () => Promise<void>;

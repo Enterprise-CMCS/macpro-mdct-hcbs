@@ -5,12 +5,12 @@ const testEmailSubject = "TestSubject";
 
 describe("utils/email", () => {
   describe("createEmailLink()", () => {
-    test("Test only address passed", () => {
+    test("only address passed", () => {
       const mailTo = createEmailLink({ address: testEmailAddress });
       expect(mailTo).toEqual("mailto:test@testme.com");
     });
 
-    test("test all fields passed", () => {
+    test("all fields passed", () => {
       const mailTo = createEmailLink({
         address: testEmailAddress,
         subject: testEmailSubject,

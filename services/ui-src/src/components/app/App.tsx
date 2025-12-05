@@ -51,7 +51,7 @@ export const App = () => {
         <main>
           <Container sx={sx.appContainer}>
             <Heading as="h1" fontSize="heading_3xl" variant="login">
-              Home &amp; Community Based Services
+              Learning &amp; Building Sandbox
             </Heading>
           </Container>
           <Container sx={sx.loginContainer}>

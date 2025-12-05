@@ -20,7 +20,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-bor"
+        "Value": "mdctlabs-bor"
       }
     ]
   },
@@ -46,7 +46,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-bor"
+        "Value": "mdctlabs-bor"
       }
     ]
   },
@@ -71,7 +71,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-hd"
+        "Value": "mdctlabs-hd"
       }
     ]
   },
@@ -96,7 +96,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-internal-user"
+        "Value": "mdctlabs-internal-user"
       }
     ]
   },
@@ -121,7 +121,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -150,7 +150,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-rep"
+        "Value": "mdctlabs-state-rep"
       },
       {
         "Name": "custom:cms_state",
@@ -179,7 +179,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-appr"
+        "Value": "mdctlabs-appr"
       },
       {
         "Name": "custom:cms_state",
@@ -208,7 +208,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -237,7 +237,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -266,7 +266,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -295,7 +295,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -324,7 +324,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-bor"
+        "Value": "mdctlabs-bor"
       }
     ]
   },
@@ -349,7 +349,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -378,7 +378,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -407,7 +407,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -436,7 +436,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -465,7 +465,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -494,7 +494,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",
@@ -523,7 +523,7 @@
       },
       {
         "Name": "custom:cms_roles",
-        "Value": "mdcthcbs-state-user"
+        "Value": "mdctlabs-state-user"
       },
       {
         "Name": "custom:cms_state",

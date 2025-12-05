@@ -1,4 +1,4 @@
-import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { toZonedTime, fromZonedTime } from "date-fns-tz";
 import { DateShape } from "types";
 import { differenceInSeconds } from "date-fns";
 
@@ -35,7 +35,7 @@ export const convertDateTimeEtToUtc = (
   const { hour, minute, second } = etTime;
 
   // month - 1 because Date object months are zero-indexed
-  const utcDatetime = zonedTimeToUtc(
+  const utcDatetime = fromZonedTime(
     new Date(year, month - 1, day, hour, minute, second),
     "America/New_York"
   );
@@ -50,7 +50,7 @@ export const convertDateEtToUtc = (date: string): number => {
   const [month, day, year] = date.split("/");
 
   // month - 1 because Date object months are zero-indexed
-  const utcDatetime = zonedTimeToUtc(
+  const utcDatetime = fromZonedTime(
     new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
     "America/New_York"
   );
@@ -63,7 +63,7 @@ export const convertDateEtToUtc = (date: string): number => {
  */
 export const convertDateUtcToEt = (date: number): string => {
   const convertedDate = date;
-  const easternDatetime = utcToZonedTime(
+  const easternDatetime = toZonedTime(
     new Date(convertedDate),
     "America/New_York"
   );

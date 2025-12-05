@@ -33,14 +33,16 @@ describe("<App />", () => {
       screen.getByRole("button", { name: "Here's how you know" })
     ).toBeVisible();
     // Unable to run assertions on collections
-    expect(screen.getAllByAltText("HCBS logo"));
-    expect(screen.getAllByAltText("Help"));
-    expect(screen.getAllByAltText("Account"));
-    expect(screen.getAllByAltText("Expand"));
+    expect(screen.getAllByAltText("LABS logo")).toBeTruthy();
+    expect(screen.getAllByAltText("Help")).toBeTruthy();
+    expect(screen.getAllByAltText("Account")).toBeTruthy();
+    expect(screen.getAllByAltText("Expand")).toBeTruthy();
     expect(
       screen.getAllByAltText("Department of Health and Human Services, USA")
-    );
-    expect(screen.getAllByAltText("Medicaid.gov: Keeping America Healthy"));
+    ).toBeTruthy();
+    expect(
+      screen.getAllByAltText("Medicaid.gov: Keeping America Healthy")
+    ).toBeTruthy();
     expect(screen.getAllByRole("button").length).toBe(3);
   });
 

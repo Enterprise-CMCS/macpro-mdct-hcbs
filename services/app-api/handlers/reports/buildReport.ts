@@ -1,19 +1,10 @@
 import KSUID from "ksuid";
-import {
-  getReportTemplate,
-  getCmitInfo,
-} from "../../forms/yearlyFormSelection";
+import { getReportTemplate } from "../../forms/yearlyFormSelection";
 import {
   Report,
   ReportStatus,
   ReportOptions,
   ReportType,
-  isHeaderTemplate,
-  MeasureOptions,
-  MeasurePageTemplate,
-  CMIT,
-  PageStatus,
-  isReportWithMeasuresTemplate,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -28,7 +19,6 @@ export const buildReport = async (
 ) => {
   const year = reportOptions.year;
   const template = getReportTemplate(reportType, year);
-  const cmitList = getCmitInfo(year);
 
   const report: Report = {
     state: state,
@@ -41,43 +31,10 @@ export const buildReport = async (
     status: ReportStatus.NOT_STARTED,
     name: reportOptions.name,
     year: reportOptions.year,
-    options: reportOptions.options,
     archived: false,
     submissionCount: 0,
     pages: structuredClone(template.pages),
   };
-
-  /**
-   * QMS uses MeasureConfig to define additional pages to add to the report and the relationships between them.
-   * Reports using ReportBase alone skip this step and just proceed with what is included.
-   */
-  if (isReportWithMeasuresTemplate(template)) {
-    // Collect all measures, based on selected rules.
-    let measures = template.measureLookup.defaultMeasures;
-    if (report.options.pom) {
-      measures.push(...template.measureLookup.pomMeasures);
-    }
-
-    for (let measure of measures) {
-      const cmitInfo = cmitList.find((cmit) => cmit.uid === measure.uid)!;
-      const parentPage = initializeMeasurePage(
-        measure,
-        template.measureTemplates[measure.measureTemplate],
-        cmitInfo,
-        true
-      );
-
-      const childPages = measure.dependentPages.map((pageInfo) =>
-        initializeMeasurePage(
-          measure,
-          template.measureTemplates[pageInfo.template],
-          cmitInfo,
-          false
-        )
-      );
-      report.pages.push(parentPage, ...childPages);
-    }
-  }
 
   /**
    * Report should always be valid in this function, but we're going
@@ -92,39 +49,4 @@ export const buildReport = async (
   }
 
   return validatedReport;
-};
-
-/**
- * Clone the given template, and fill it in with the necessary data.
- */
-const initializeMeasurePage = (
-  measure: MeasureOptions,
-  template: MeasurePageTemplate,
-  cmitInfo: CMIT,
-  isMeasurePage: boolean
-) => {
-  const page = structuredClone(template);
-  page.cmit = measure.cmit;
-  page.cmitId = measure.uid;
-  page.required = measure.required;
-  page.status = PageStatus.NOT_STARTED;
-
-  if (isMeasurePage) {
-    page.dependentPages = measure.dependentPages;
-    page.cmitInfo = cmitInfo;
-  }
-
-  for (let i = 0; i < page.elements.length; i += 1) {
-    let element = page.elements[i];
-    if (isHeaderTemplate(element)) {
-      /*
-       * Many pages share the same `measureHeader` object, from elements.ts
-       * The extra clone ensures we only alter this page's header.
-       */
-      const clone = structuredClone(element);
-      clone.text = clone.text.replace("{measureName}", cmitInfo.name);
-      page.elements[i] = clone;
-    }
-  }
-  return page;
 };

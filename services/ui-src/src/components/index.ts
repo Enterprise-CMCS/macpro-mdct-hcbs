@@ -23,12 +23,8 @@ export { Timeout } from "./layout/Timeout";
 export { Card } from "./cards/Card";
 export { HelpCard } from "./cards/HelpCard";
 export { ReportIntroCard } from "./cards/ReportIntroCard";
-export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
-export { TacmIntroductionCard } from "./cards/TacmIntroductionCard";
-export { CiIntroductionCard } from "./cards/CiIntroductionCard";
-export { PCPIntroductionCard } from "./cards/PCPIntroductionCard";
-export { WWLIntroductionCard } from "./cards/WWLIntroductionCard";
 export { ReportIntroCardActions } from "./cards/ReportIntroCardActions";
+export { XyzIntroductionCard } from "./cards/XyzIntroductionCard";
 // export
 export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
