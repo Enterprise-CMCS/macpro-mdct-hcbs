@@ -413,6 +413,7 @@ export type ButtonLinkTemplate = {
   id: string;
   label?: string;
   to?: PageId;
+  style?: string;
 };
 
 export type MeasureDetailsTemplate = {

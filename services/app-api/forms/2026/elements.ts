@@ -42,6 +42,14 @@ export const returnToDashboard: ButtonLinkTemplate = {
   id: "return-button",
 };
 
+export const exportToPDF: ButtonLinkTemplate = {
+  type: ElementType.ButtonLink,
+  id: "pdf-btn",
+  label: "Download PDF",
+  to: "export",
+  style: "pdf",
+};
+
 export const divider: DividerTemplate = {
   type: ElementType.Divider,
   id: "divider",

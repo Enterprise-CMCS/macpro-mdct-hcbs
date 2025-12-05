@@ -12,6 +12,7 @@ import {
   isFormPageTemplate,
   isMeasurePageTemplate,
   LengthOfStayFieldNames,
+  assertExhaustive,
 } from "types";
 
 /**
@@ -41,14 +42,38 @@ export const inferredReportStatus = (report: Report, pageId: string) => {
     : PageStatus.NOT_STARTED;
 };
 
-// Simple check to see if a page has been dirtied if it is not keeping a signoff status
+// Check to see if a page has been dirtied if it is not keeping a signoff status
 export const pageInProgress = (report: Report, pageId: string) => {
   const targetPage = report.pages.find((page) => page.id === pageId);
   if (!targetPage) return false;
   if (!targetPage.elements) return true;
 
+  const hasData = (answerPart: string | number | object | undefined) => {
+    if (answerPart === undefined || answerPart === null) {
+      // null and undefined are not data
+      return false;
+    } else if (typeof answerPart === "number") {
+      // Zero would be considered data, as would any other number
+      return true;
+    } else if (typeof answerPart === "string") {
+      // An empty string would not be data, but any other string would be.
+      return answerPart !== "";
+    } else if (Array.isArray(answerPart)) {
+      // An array only has data if some element of the array is data.
+      return answerPart.some(hasData);
+    } else if (typeof answerPart === "object") {
+      // An object only has data if one of its properties is data.
+      return Object.values(answerPart).some(hasData);
+    } else {
+      // It shouldn't be possible to reach this code branch.
+      assertExhaustive(answerPart);
+      // But if some value somehow does make it here, let's call it data.
+      return true;
+    }
+  };
+
   const anyEdited = targetPage.elements.find(
-    (element) => "answer" in element && element.answer
+    (element) => "answer" in element && hasData(element.answer)
   );
   return !!anyEdited;
 };
