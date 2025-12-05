@@ -11,6 +11,7 @@ repos:
       - id: eslint
         files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
         types: [file]
+        args: [--config, eslint.config.mjs]
         additional_dependencies:
           - "eslint@9.39.1"
           - "@typescript-eslint/parser@8.48.1"

@@ -104,6 +104,7 @@ export default [
     files: ["tests/playwright/**"],
     plugins: {
       playwright: playwrightPlugin,
+      jest: jestPlugin,
     },
     rules: {
       ...playwrightPlugin.configs.recommended.rules,
