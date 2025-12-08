@@ -5,7 +5,11 @@ import {
   Dropdown as CmsdsDropdownField,
 } from "@cmsgov/design-system";
 import { Spinner, Flex, Text } from "@chakra-ui/react";
-import { createReport, updateReport } from "utils/api/requestMethods/report";
+import {
+  createReport,
+  updateReport,
+  getReportsForState,
+} from "utils/api/requestMethods/report";
 import {
   isReportType,
   LiteReport,
@@ -123,7 +127,16 @@ export const AddEditReportModal = ({
     const userEnteredReportName = formData.reportTitle!;
     if (selectedReport) {
       if (userEnteredReportName) {
-        selectedReport.name = userEnteredReportName;
+        // do the check here? compare against where we store userenteredreportnames
+        let existingReports = await getReportsForState(reportType, activeState);
+        const filterByCommonName = existingReports.filter(
+          (report) => report.name === userEnteredReportName
+        );
+        if (filterByCommonName) {
+          // throw error
+        } else {
+          selectedReport.name = userEnteredReportName;
+        }
       }
       await updateReport(selectedReport);
     } else {
