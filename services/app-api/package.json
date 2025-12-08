@@ -21,8 +21,8 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.637.0",
-    "@aws-sdk/lib-dynamodb": "^3.637.0",
+    "@aws-sdk/client-dynamodb": "^3.946.0",
+    "@aws-sdk/lib-dynamodb": "^3.946.0",
     "dompurify": "^3.2.4",
     "jsdom": "^26.0.0",
     "jwt-decode": "3.1.2",
