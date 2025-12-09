@@ -234,7 +234,7 @@ export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
     },
   ],
   hideCondition: {
-    controllerElementId: "measure-reporting-with-tech-spec-link-radio",
+    controllerElementId: "measure-reporting-radio",
     answer: "no",
   },
   required: true,
