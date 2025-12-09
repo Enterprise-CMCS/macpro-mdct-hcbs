@@ -97,20 +97,12 @@ export const submitReport = async (reportType: string, page: Page) => {
 //only works with measures that allows cms reporting
 export const notReporting = async (measure: string, page: Page) => {
   await page.getByRole("row", { name: measure }).getByRole("link").click();
-
-  // Wait for page to load
-  await page.waitForLoadState("networkidle");
-
   await page.getByLabel("No, CMS is reporting").check();
 
-  // Wait for the form to process the selection and enable the button
-  await page.waitForTimeout(2000);
+  expect(
+    await page.getByRole("button", { name: "Complete measure" })
+  ).toBeEnabled();
 
-  const completeButton = page.getByRole("button", { name: "Complete measure" });
-  await completeButton.waitFor({ state: "visible", timeout: 10000 });
-
-  // Wait for button to be enabled
-  await expect(completeButton).toBeEnabled({ timeout: 15000 });
-
-  await completeButton.click();
+  await page.getByRole("button", { name: "Complete measure" }).click();
+  await page.getByRole("button", { name: "Return to Required" }).click();
 };
