@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { Page, test } from "@playwright/test";
 import { stateUserAuthPath } from "../utils/consts";
 import {
   navigateToReportHome,
@@ -19,6 +19,21 @@ const reportSpecificData = {
   reportNameInputHeading: "Person-Centered Planning Report Name",
 };
 
+const fillPCPForm = async (page: Page) => {
+  await page.getByRole("textbox", { name: "Numerator" }).fill("1");
+  await page.getByRole("textbox", { name: "Denominator" }).fill("1");
+  await page
+    .getByRole("radiogroup", { name: "What sampling methodology was used?" })
+    .getByLabel("Entire population")
+    .check();
+  await page
+    .getByRole("radiogroup", {
+      name: "Did you follow, with no variance, the most current technical specifications?",
+    })
+    .getByLabel("Yes")
+    .check();
+};
+
 test.beforeEach(async ({ page }) => {
   await navigateToReportHome(page, reportSpecificData.reportButtonName);
 });
@@ -33,6 +48,7 @@ test.describe("create and complete a QMS report as a state user", () => {
     await assertReportIsCreated(page, testModalData);
   });
   test("complete a PCP report as a state user", async ({ page }) => {
+    //get the last element in the table
     const reportBtn = page.getByRole("cell", { name: "test" }).last();
     await reportBtn.click();
 
@@ -44,20 +60,9 @@ test.describe("create and complete a QMS report as a state user", () => {
       .getByLabel("Yes")
       .check();
     await page.getByRole("button", { name: "Continue" }).click();
-
-    await page.getByRole('textbox', { name: 'Numerator' }).fill("1");
-    await page.getByRole('textbox', { name: 'Denominator' }).fill("1");
-    await page.getByRole('radio', { name: 'Entire population' }).check();
-    await page.getByRole('radio', { name: 'Yes' }).check();
-
+    await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
-
-
-    await page.getByRole('textbox', { name: 'Numerator' }).fill("1");
-    await page.getByRole('textbox', { name: 'Denominator' }).fill("1");
-    await page.getByRole('radio', { name: 'Entire population' }).check();
-    await page.getByRole('radio', { name: 'Yes' }).check();
-    
+    await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
     await submitReport("PCP", page);
   });
