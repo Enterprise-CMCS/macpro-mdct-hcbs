@@ -143,9 +143,8 @@ export const completeFASI1 = async (page: Page) => {
   await page.getByRole("row", { name: "FASI-1" }).getByRole("link").click();
 
   await page
-    .locator(
-      'input[name="measure-following-tech-specs-with-link"][value="yes"]'
-    )
+    .getByRole("radiogroup", { name: "Did you follow, with no" })
+    .getByLabel("Yes")
     .check();
   await page
     .getByRole("radiogroup", { name: "Were the reported measure" })
