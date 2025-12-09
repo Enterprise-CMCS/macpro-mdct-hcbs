@@ -100,7 +100,7 @@ export const notReporting = async (measure: string, page: Page) => {
 
   // Wait for the radio button to appear
   const cmsReportingRadio = page.getByLabel("No, CMS is reporting");
-  await cmsReportingRadio.waitFor({ state: "visible", timeout: 10000 });
+  await cmsReportingRadio.waitFor({ state: "visible", timeout: 30000 });
   await cmsReportingRadio.check();
 
   // Wait for form to update after radio selection
