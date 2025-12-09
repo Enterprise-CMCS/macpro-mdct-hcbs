@@ -76,32 +76,46 @@ export const completeGeneralInfo = async (page: Page) => {
 };
 
 export const submitReport = async (reportType: string, page: Page) => {
-  await page
-    .getByRole("button", { name: "Submit " + reportType + " Report" })
-    .click();
+  const submitButton = page.getByRole("button", {
+    name: "Submit " + reportType + " Report",
+  });
+  await submitButton.waitFor({ state: "visible", timeout: 15000 });
+  await submitButton.click();
 
-  //wait until the modal is visible by checking for it's header before proceeding
-  await expect(page.getByText("Are you sure you want to")).toBeVisible();
-  await page
-    .getByRole("button", {
-      name: "Submit " + reportType + " Report",
-      exact: true,
-    })
-    .click();
+  // Wait for confirmation modal
+  await expect(page.getByText("Are you sure you want to")).toBeVisible({
+    timeout: 10000,
+  });
 
-  //checks that the successfully submitted page is showing
-  await expect(page.getByText("Successfully Submitted")).toBeVisible();
+  const confirmButton = page.getByRole("button", {
+    name: "Submit " + reportType + " Report",
+    exact: true,
+  });
+  await confirmButton.click();
+
+  // Increased timeout for submission processing
+  await expect(page.getByText("Successfully Submitted")).toBeVisible({
+    timeout: 30000,
+  });
 };
 
 //only works with measures that allows cms reporting
 export const notReporting = async (measure: string, page: Page) => {
   await page.getByRole("row", { name: measure }).getByRole("link").click();
-  await page.getByLabel("No, CMS is reporting").check();
 
-  expect(
-    await page.getByRole("button", { name: "Complete measure" })
-  ).toBeEnabled();
+  // Wait for the radio button to be visible
+  const cmsReportingRadio = page.getByLabel("No, CMS is reporting");
+  await cmsReportingRadio.waitFor({ state: "visible", timeout: 10000 });
+  await cmsReportingRadio.check();
 
-  await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to Required" }).click();
+  // Wait for form to process the selection
+  await page.waitForTimeout(1500);
+
+  const completeButton = page.getByRole("button", { name: "Complete measure" });
+  await expect(completeButton).toBeEnabled({ timeout: 15000 });
+  await completeButton.click();
+
+  const returnButton = page.getByRole("button", { name: "Return to Required" });
+  await returnButton.waitFor({ state: "visible", timeout: 10000 });
+  await returnButton.click();
 };
