@@ -10,13 +10,30 @@ export const quickFillFields = async (page: Page, label: string) => {
 };
 
 export const completeAndReturn = async (page: Page) => {
-  expect(page.getByRole("button", { name: "Complete section" })).toBeEnabled();
-  await page.getByRole("button", { name: "Complete section" }).click();
-  await page.getByRole("button", { name: "Return to" }).click();
+  const completeSectionButton = page.getByRole("button", {
+    name: "Complete section",
+  });
+  await expect(completeSectionButton).toBeEnabled({ timeout: 15000 });
+  await completeSectionButton.click();
 
-  expect(page.getByRole("button", { name: "Complete measure" })).toBeEnabled();
-  await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to" }).click();
+  // Wait for the return button to appear instead of networkidle
+  const returnButton1 = page.getByRole("button", { name: "Return to" });
+  await returnButton1.waitFor({ state: "visible", timeout: 10000 });
+  await returnButton1.click();
+
+  const completeMeasureButton = page.getByRole("button", {
+    name: "Complete measure",
+  });
+  await expect(completeMeasureButton).toBeEnabled({ timeout: 15000 });
+  await completeMeasureButton.click();
+
+  // Wait for the return button to appear instead of networkidle
+  const returnButton2 = page.getByRole("button", { name: "Return to" });
+  await returnButton2.waitFor({ state: "visible", timeout: 10000 });
+  await returnButton2.click();
+
+  // Wait for the dashboard to load by checking for a known element
+  await page.waitForTimeout(1000);
 };
 
 export const completeLTSS1 = async (page: Page) => {

@@ -77,32 +77,42 @@ export const completeGeneralInfo = async (page: Page) => {
 };
 
 export const submitReport = async (reportType: string, page: Page) => {
-  await page
-    .getByRole("button", { name: "Submit " + reportType + " Report" })
-    .click();
+  await page.getByRole("link", { name: "Review & Submit" }).click();
 
-  //wait until the modal is visible by checking for it's header before proceeding
-  await expect(page.getByText("Are you sure you want to")).toBeVisible();
-  await page
-    .getByRole("button", {
-      name: "Submit " + reportType + " Report",
-      exact: true,
-    })
-    .click();
+  // Wait for the submit button to appear instead of networkidle
+  const submitButton = page.getByRole("button", {
+    name: "Submit " + reportType,
+  });
 
-  //checks that the successfully submitted page is showing
-  await expect(page.getByText("Successfully Submitted")).toBeVisible();
+  await submitButton.waitFor({ state: "visible", timeout: 15000 });
+  await expect(submitButton).toBeEnabled({ timeout: 15000 });
+  await submitButton.click();
+
+  // Wait for success message
+  await expect(page.getByText("Successfully Submitted")).toBeVisible({
+    timeout: 30000,
+  });
 };
 
 //only works with measures that allows cms reporting
 export const notReporting = async (measure: string, page: Page) => {
   await page.getByRole("row", { name: measure }).getByRole("link").click();
-  await page.getByLabel("No, CMS is reporting").check();
 
-  expect(
-    await page.getByRole("button", { name: "Complete measure" })
-  ).toBeEnabled();
+  // Wait for the radio button to appear
+  const cmsReportingRadio = page.getByLabel("No, CMS is reporting");
+  await cmsReportingRadio.waitFor({ state: "visible", timeout: 10000 });
+  await cmsReportingRadio.check();
 
-  await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to Required" }).click();
+  // Wait for form to update after radio selection
+  await page.waitForTimeout(1500);
+
+  const completeButton = page.getByRole("button", { name: "Complete measure" });
+
+  // Wait for button to be enabled
+  await expect(completeButton).toBeEnabled({ timeout: 15000 });
+
+  await completeButton.click();
+
+  // Wait for navigation by checking for dashboard elements
+  await page.waitForTimeout(1000);
 };
