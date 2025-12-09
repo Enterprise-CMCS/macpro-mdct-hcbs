@@ -23,13 +23,15 @@ export const completeLTSS1 = async (page: Page) => {
   await page.getByRole("row", { name: "LTSS-1" }).getByRole("link").click();
 
   await page.getByLabel("National Committee for").check();
+
   await page
-    .getByLabel(
-      "Did you follow, with no variance, the most current technical specifications? Yes"
+    .locator(
+      'input[name="measure-following-tech-specs-with-link"][value="yes"]'
     )
     .check();
   await page
-    .getByLabel("Were the reported measure results audited or validated? No")
+    .getByRole("radiogroup", { name: "Were the reported measure" })
+    .getByLabel("No")
     .check();
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
@@ -51,13 +53,15 @@ export const completeLTSS2 = async (page: Page) => {
   await page.getByRole("row", { name: "LTSS-2" }).getByRole("link").click();
 
   await page.getByLabel("Centers for Medicare").check();
+
   await page
-    .getByLabel(
-      "Did you follow, with no variance, the most current technical specifications? Yes"
+    .locator(
+      'input[name="measure-following-tech-specs-with-link"][value="yes"]'
     )
     .check();
   await page
-    .getByLabel("Were the reported measure results audited or validated? No")
+    .getByRole("radiogroup", { name: "Were the reported measure" })
+    .getByLabel("No")
     .check();
 
   await page.getByLabel("Managed Care (MLTSS)").check();
@@ -78,14 +82,17 @@ export const completeLTSS2 = async (page: Page) => {
 export const completeLTSS6 = async (page: Page) => {
   await page.getByRole("row", { name: "LTSS-6" }).getByRole("link").click();
   await page.getByLabel("Yes, the state is reporting").check();
+
   await page
-    .getByLabel(
-      "Did you follow, with no variance, the most current technical specifications? Yes"
+    .locator(
+      'input[name="measure-following-tech-specs-with-link"][value="yes"]'
     )
     .check();
   await page
-    .getByLabel("Were the reported measure results audited or validated? No")
+    .getByRole("radiogroup", { name: "Were the reported measure" })
+    .getByLabel("No")
     .check();
+
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
@@ -103,12 +110,13 @@ export const completeLTSS7 = async (page: Page) => {
   await page.getByLabel("Yes, the state is reporting").check();
 
   await page
-    .getByLabel(
-      "Did you follow, with no variance, the most current technical specifications? Yes"
+    .locator(
+      'input[name="measure-following-tech-specs-with-link"][value="yes"]'
     )
     .check();
   await page
-    .getByLabel("Were the reported measure results audited or validated? No")
+    .getByRole("radiogroup", { name: "Were the reported measure" })
+    .getByLabel("No")
     .check();
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
@@ -135,12 +143,13 @@ export const completeFASI1 = async (page: Page) => {
   await page.getByRole("row", { name: "FASI-1" }).getByRole("link").click();
 
   await page
-    .getByLabel(
-      "Did you follow, with no variance, the most current technical specifications? Yes"
+    .locator(
+      'input[name="measure-following-tech-specs-with-link"][value="yes"]'
     )
     .check();
   await page
-    .getByLabel("Were the reported measure results audited or validated? No")
+    .getByRole("radiogroup", { name: "Were the reported measure" })
+    .getByLabel("No")
     .check();
 
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
