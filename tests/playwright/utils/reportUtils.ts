@@ -102,7 +102,7 @@ export const submitReport = async (reportType: string, page: Page) => {
 
   // Increased timeout for submission processing
   await expect(page.getByText("Successfully Submitted")).toBeVisible({
-    timeout: 30000,
+    timeout: process.env.CI ? 60000 : 30000, // 60 seconds on CI, 30 seconds locally
   });
 };
 

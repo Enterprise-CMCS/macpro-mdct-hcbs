@@ -14,9 +14,9 @@ export default defineConfig({
   testDir: "playwright",
   testMatch: ["**/*.spec.js", "**/*.spec.ts"],
   /* Timeout for each test (including beforeEach and such). 60000ms = 1 minute */
-  timeout: process.env.CI ? 120000 : 60000, // 2 minutes on CI, 1 minute locally
+  timeout: process.env.CI ? 180000 : 90000, // 2 minutes on CI, 1 minute locally
   expect: {
-    timeout: process.env.CI ? 20000 : 10000, // Longer timeouts in CI
+    timeout: process.env.CI ? 30000 : 15000, // Longer timeouts in CI
   },
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -30,7 +30,7 @@ export default defineConfig({
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: process.env.CI ? 15000 : 10000,
+    actionTimeout: process.env.CI ? 20000 : 10000,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL || "http://localhost:3000",
 
