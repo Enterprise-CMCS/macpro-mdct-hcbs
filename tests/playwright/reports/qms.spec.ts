@@ -75,7 +75,8 @@ test.describe("create and complete a QMS report as a state user", () => {
   });
 
   test("complete a QMS report as a state user", async ({ page }) => {
-    await enterReport(page, testModalData);
+    const reportBtn = page.getByRole("cell", { name: "test" }).last();
+    await reportBtn.click();
     await completeGeneralInfo(page);
 
     await page.getByRole("button", { name: "Continue" }).click();
