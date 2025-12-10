@@ -119,3 +119,29 @@ export const notReporting = async (measure: string, page: Page) => {
   await returnButton.waitFor({ state: "visible", timeout: 10000 });
   await returnButton.click();
 };
+
+export const checkTechSpecsRadio = async (page: Page, value: "yes" | "no") => {
+  // Use the input name selector which is reliable regardless of helperText
+  const radio = page.locator(
+    `input[name="measure-following-tech-specs-with-link"][value="${value}"]`
+  );
+  await radio.waitFor({ state: "visible", timeout: 10000 });
+  await radio.check();
+
+  // Wait for form state to update
+  await page.waitForTimeout(1000);
+};
+
+export const checkAuditedValidatedRadio = async (
+  page: Page,
+  value: "yes" | "no"
+) => {
+  const radio = page
+    .getByRole("radiogroup", { name: "Were the reported measure" })
+    .getByLabel(value === "yes" ? "Yes" : "No");
+  await radio.waitFor({ state: "visible", timeout: 10000 });
+  await radio.check();
+
+  // Wait for form state to update
+  await page.waitForTimeout(1000);
+};
