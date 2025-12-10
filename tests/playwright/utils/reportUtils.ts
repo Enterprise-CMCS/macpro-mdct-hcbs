@@ -76,9 +76,14 @@ export const completeGeneralInfo = async (page: Page) => {
 };
 
 export const submitReport = async (reportType: string, page: Page) => {
+  await page.getByRole("link", { name: "Review & Submit" }).click();
+
+  await page.waitForTimeout(2000);
+
   const submitButton = page.getByRole("button", {
     name: "Submit " + reportType + " Report",
   });
+
   await submitButton.waitFor({ state: "visible", timeout: 15000 });
   await submitButton.click();
 
@@ -91,6 +96,8 @@ export const submitReport = async (reportType: string, page: Page) => {
     name: "Submit " + reportType + " Report",
     exact: true,
   });
+
+  await confirmButton.waitFor({ state: "visible", timeout: 10000 });
   await confirmButton.click();
 
   // Increased timeout for submission processing
