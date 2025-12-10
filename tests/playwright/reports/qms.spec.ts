@@ -3,7 +3,6 @@ import { stateUserAuthPath } from "./../utils/consts";
 import {
   assertReportIsCreated,
   completeGeneralInfo,
-  enterReport,
   navigateToAddEditReportModal,
   notReporting,
   submitReport,
