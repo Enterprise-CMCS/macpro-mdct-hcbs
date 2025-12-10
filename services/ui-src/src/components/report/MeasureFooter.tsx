@@ -59,9 +59,9 @@ export const MeasureFooterElement = (
     completePage(currentPage.id);
     autosave();
 
-    //there's some interference with the scroll so we need a delay before it will work
+    // //there's some interference with the scroll so we need a delay before it will work
     setTimeout(function () {
-      window.scrollTo(0, 0);
+      navigate(`/report/${reportType}/${state}/${reportId}/${getPrevPageId()}`);
     }, 5);
   };
 
