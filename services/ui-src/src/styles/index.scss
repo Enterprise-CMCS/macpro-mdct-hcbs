@@ -177,15 +177,16 @@ button {
 
 // Tech Specs Link Styles
 .tech-spec-link {
-  color: #0071bc;
+  color: #0071BC;
   text-decoration: underline;
   
   &:visited {
-    color: #004f84;
+    color: #4C2C92;
   }
   
   &:hover {
     text-decoration: none;
+    color: #004F84;
   }
 }
 
