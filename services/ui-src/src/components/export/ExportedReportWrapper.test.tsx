@@ -84,7 +84,7 @@ describe("ExportedReportWrapper", () => {
                         id: "banana-count",
                         label: "Describe your ideal banana",
                         required: true,
-                        answer: "Oblong, yellow, not too soft"
+                        answer: "Oblong, yellow, not too soft",
                       },
                     ],
                   },
