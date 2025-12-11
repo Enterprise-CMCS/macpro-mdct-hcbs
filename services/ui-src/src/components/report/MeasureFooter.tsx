@@ -61,7 +61,7 @@ export const MeasureFooterElement = (
 
     //there's some interference with the scroll so we need a delay before it will work
     setTimeout(function () {
-      window.scrollTo(0, 0);
+      navigate(`/report/${reportType}/${state}/${reportId}/${getPrevPageId()}`);
     }, 5);
   };
 

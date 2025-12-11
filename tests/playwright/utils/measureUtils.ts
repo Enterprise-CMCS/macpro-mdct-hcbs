@@ -12,11 +12,9 @@ export const quickFillFields = async (page: Page, label: string) => {
 export const completeAndReturn = async (page: Page) => {
   expect(page.getByRole("button", { name: "Complete section" })).toBeEnabled();
   await page.getByRole("button", { name: "Complete section" }).click();
-  await page.getByRole("button", { name: "Return to" }).click();
 
   expect(page.getByRole("button", { name: "Complete measure" })).toBeEnabled();
   await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to" }).click();
 };
 
 export const completeLTSS1 = async (page: Page) => {
