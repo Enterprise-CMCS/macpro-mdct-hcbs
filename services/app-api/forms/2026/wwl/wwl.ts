@@ -63,7 +63,7 @@ export const wwlReportTemplate: ReportBase = {
           label: "Number of individuals included on the waiting list",
           required: true,
           helperText:
-            "Enter the total number of individuals on the waiting list.  Use whole numbers only.  Include all individuals who were enrolled at any point during the measurement period.",
+            "Enter the total number of individuals on the waiting list. Use whole numbers only. Include all individuals who were enrolled at any point during the measurement period.",
         },
       ],
     },
