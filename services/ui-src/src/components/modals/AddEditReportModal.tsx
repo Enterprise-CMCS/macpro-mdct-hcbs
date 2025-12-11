@@ -92,10 +92,11 @@ export const AddEditReportModal = ({
     const userEnteredReportName = formData.reportTitle!;
     if (!userEnteredReportName) return false;
 
-    // do the check here? compare against where we store userenteredreportnames
     let existingReports = await getReportsForState(reportType, activeState);
     const doesReportNameAlreadyExist = existingReports.filter(
-      (report) => report.name === userEnteredReportName
+      (report) =>
+        report.name === userEnteredReportName &&
+        report.year.toString() === verbiage.yearSelect
     );
 
     return doesReportNameAlreadyExist.length > 0;
