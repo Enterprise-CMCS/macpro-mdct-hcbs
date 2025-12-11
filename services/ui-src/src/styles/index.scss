@@ -174,3 +174,33 @@ button {
 .optionalText {
   font-weight: normal;
 }
+
+// Tech Specs Link Styles
+.tech-spec-link {
+  color: #0071bc;
+  text-decoration: underline;
+  
+  &:visited {
+    color: #004f84;
+  }
+  
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.tech-spec-icon {
+  display: inline-block;
+  margin-left: 0.5rem;
+  height: 0.9rem;
+  top: 2px;
+  position: relative;
+}
+
+.tech-spec-icon-hint-size {
+  display: inline-block;
+  margin-left: 0.5rem;
+  height: 1rem;
+  top: 2px;
+  position: relative;
+}

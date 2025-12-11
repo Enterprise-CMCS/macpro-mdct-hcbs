@@ -66,16 +66,16 @@ export const measureHeader: HeaderTemplate = {
   text: "{measureName}",
 };
 
-export const measureInstructionsWithTechSpecs: AccordionTemplate = {
+export const measureInstructionsWithLink: AccordionTemplate = {
   type: ElementType.Accordion,
   id: "measure-instructions-with-tech-spec-link",
   label: "Instructions",
   value:
     "<strong>Instructions for Completing this Measure</strong>" +
-    "<p>Before you can click the <b>“Complete measure”</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).</p>" +
+    "<p>Before you can click the <b>“Complete measure“</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).</p>" +
     "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
     "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections). All data previously entered will be cleared and not submitted upon report completion.</p>" +
-    '<a href="https://www.medicaid.gov/license/form/8586/3396" style="color: #0071bc; text-decoration: underline;" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" style="display: inline-block; margin-left: 0.5rem; height: 1rem; top: 2px; position: relative;"></a>',
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="tech-spec-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon"></a>',
 };
 
 export const measureInstructions: AccordionTemplate = {
@@ -212,7 +212,7 @@ export const didYouFollowSpecifications: RadioTemplate = {
   required: true,
 };
 
-export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
+export const didYouFollowSpecificationsHintTextLink: RadioTemplate = {
   type: ElementType.Radio,
   label: `Did you follow, with no variance, the most current technical specifications?`,
   id: "measure-following-tech-specs-with-link",
@@ -239,7 +239,7 @@ export const didYouFollowSpecificationsWithTechSpecs: RadioTemplate = {
   },
   required: true,
   helperText:
-    '<a href="https://www.medicaid.gov/license/form/8586/3396" style="color: #0071bc; text-decoration: underline;" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" style="display: inline-block; margin-left: 0.5rem; height: .9rem; top: 2px; position: relative;"></a>',
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="tech-spec-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon-hint-size"></a>',
 };
 
 export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {

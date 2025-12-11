@@ -14,9 +14,10 @@ export default defineConfig({
   testDir: "playwright",
   testMatch: ["**/*.spec.js", "**/*.spec.ts"],
   /* Timeout for each test (including beforeEach and such). 60000ms = 1 minute */
-  timeout: process.env.CI ? 180000 : 90000, // 2 minutes on CI, 1 minute locally
+  timeout: 60000,
   expect: {
-    timeout: process.env.CI ? 30000 : 15000, // Longer timeouts in CI
+    /* Timeout for each `expect()` call. 15000ms = 15 seconds */
+    timeout: 15000,
   },
   /* Run tests in files in parallel */
   fullyParallel: false,

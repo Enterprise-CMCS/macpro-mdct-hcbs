@@ -52,9 +52,7 @@ export const assertReportIsCreated = async (
 ) => {
   const table = page.getByRole("table");
   await expect(table).toBeVisible({ timeout: 30000 });
-  await expect(table.getByText(data.reportName + data.datetime)).toBeVisible({
-    timeout: 10000,
-  });
+  await expect(table.getByText(data.reportName + data.datetime)).toBeVisible();
 };
 
 export const enterReport = async (page: Page, data: typeof testModalData) => {
@@ -76,79 +74,31 @@ export const completeGeneralInfo = async (page: Page) => {
 };
 
 export const submitReport = async (reportType: string, page: Page) => {
-  await page.getByRole("link", { name: "Review & Submit" }).click();
+  await page
+    .getByRole("button", { name: "Submit " + reportType + " Report" })
+    .click();
 
-  await page.waitForTimeout(2000);
+  //wait until the modal is visible by checking for it's header before proceeding
+  await expect(page.getByText("Are you sure you want to")).toBeVisible();
+  await page
+    .getByRole("button", {
+      name: "Submit " + reportType + " Report",
+      exact: true,
+    })
+    .click();
 
-  const submitButton = page.getByRole("button", {
-    name: "Submit " + reportType + " Report",
-  });
-
-  await submitButton.waitFor({ state: "visible", timeout: 15000 });
-  await submitButton.click();
-
-  // Wait for confirmation modal
-  await expect(page.getByText("Are you sure you want to")).toBeVisible({
-    timeout: 10000,
-  });
-
-  const confirmButton = page.getByRole("button", {
-    name: "Submit " + reportType + " Report",
-    exact: true,
-  });
-
-  await confirmButton.waitFor({ state: "visible", timeout: 10000 });
-  await confirmButton.click();
-
-  // Increased timeout for submission processing
-  await expect(page.getByText("Successfully Submitted")).toBeVisible({
-    timeout: process.env.CI ? 60000 : 30000, // 60 seconds on CI, 30 seconds locally
-  });
+  //checks that the successfully submitted page is showing
+  await expect(page.getByText("Successfully Submitted")).toBeVisible();
 };
 
 //only works with measures that allows cms reporting
 export const notReporting = async (measure: string, page: Page) => {
   await page.getByRole("row", { name: measure }).getByRole("link").click();
+  await page.getByLabel("No, CMS is reporting").check();
+  expect(
+    await page.getByRole("button", { name: "Complete measure" })
+  ).toBeEnabled();
 
-  // Wait for the radio button to be visible
-  const cmsReportingRadio = page.getByLabel("No, CMS is reporting");
-  await cmsReportingRadio.waitFor({ state: "visible", timeout: 10000 });
-  await cmsReportingRadio.check();
-
-  // Wait for form to process the selection
-  await page.waitForTimeout(1500);
-
-  const completeButton = page.getByRole("button", { name: "Complete measure" });
-  await expect(completeButton).toBeEnabled({ timeout: 15000 });
-  await completeButton.click();
-
-  const returnButton = page.getByRole("button", { name: "Return to Required" });
-  await returnButton.waitFor({ state: "visible", timeout: 10000 });
-  await returnButton.click();
-};
-
-export const checkTechSpecsRadio = async (page: Page, value: "yes" | "no") => {
-  // Use the input name selector which is reliable regardless of helperText
-  const radio = page.locator(
-    `input[name="measure-following-tech-specs-with-link"][value="${value}"]`
-  );
-  await radio.waitFor({ state: "visible", timeout: 10000 });
-  await radio.check();
-
-  // Wait for form state to update
-  await page.waitForTimeout(1000);
-};
-
-export const checkAuditedValidatedRadio = async (
-  page: Page,
-  value: "yes" | "no"
-) => {
-  const radio = page
-    .getByRole("radiogroup", { name: "Were the reported measure" })
-    .getByLabel(value === "yes" ? "Yes" : "No");
-  await radio.waitFor({ state: "visible", timeout: 10000 });
-  await radio.check();
-
-  // Wait for form state to update
-  await page.waitForTimeout(1000);
+  await page.getByRole("button", { name: "Complete measure" }).click();
+  await page.getByRole("button", { name: "Return to Required" }).click();
 };

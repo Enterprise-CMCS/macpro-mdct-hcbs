@@ -27,7 +27,7 @@ DOMPurify.setConfig({
     "img",
   ],
   // On those tags, only these attributes are allowed
-  ALLOWED_ATTR: ["href", "alt", "target", "style", "src"],
+  ALLOWED_ATTR: ["href", "alt", "target", "class", "src"],
   // If a tag is removed, so will all its child elements & text
   KEEP_CONTENT: false,
 });
