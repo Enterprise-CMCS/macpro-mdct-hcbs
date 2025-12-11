@@ -9,6 +9,7 @@ export const ErrorMessages = {
   mustBeANumber: "Response must be a number",
   requiredResponse: "A response is required",
   mustBeAnEmail: "Response must be a valid email address",
+  denomenatorZero: "Numerator must be 0 when the denominator is 0",
 } as const;
 
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";

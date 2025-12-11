@@ -60,11 +60,20 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     const stringValue = input.value;
     const parsedValue = parseNumber(stringValue);
     let errorMessage;
-
     if (!stringValue) {
       errorMessage = ErrorMessages.requiredResponse;
     } else if (parsedValue === undefined) {
       errorMessage = ErrorMessages.mustBeANumber;
+    } else if (
+      parseNumber(displayValue.denominator) === 0 &&
+      parseNumber(displayValue.numerator) !== 0
+    ) {
+      errorMessage = ErrorMessages.denomenatorZero;
+      return {
+        ...errors,
+        [RateInputFieldNamesBasic.numerator]: errorMessage,
+        [RateInputFieldNamesBasic.denominator]: "",
+      };
     } else {
       errorMessage = "";
     }
@@ -79,6 +88,13 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
     const numerator = parseNumber(newDisplayValue.numerator);
     const denominator = parseNumber(newDisplayValue.denominator);
+    if (denominator === 0 && numerator === 0) {
+      return {
+        numerator: removeNoise(numerator),
+        denominator: removeNoise(denominator),
+        rate: 0,
+      };
+    }
     const canCompute =
       numerator !== undefined && denominator !== undefined && denominator !== 0;
     const rate = canCompute
@@ -103,7 +119,6 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
     const newDisplayValue = updatedDisplayValue(event.target);
     const newErrors = computeErrors(event.target);
-
     // answer corresponds to the report data. Its values are numbers.
     const newAnswer = computeAnswer(newDisplayValue);
 
