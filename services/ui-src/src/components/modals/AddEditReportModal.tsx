@@ -5,7 +5,11 @@ import {
   Dropdown as CmsdsDropdownField,
 } from "@cmsgov/design-system";
 import { Spinner, Flex, Text } from "@chakra-ui/react";
-import { createReport, updateReport } from "utils/api/requestMethods/report";
+import {
+  createReport,
+  updateReport,
+  getReportsForState,
+} from "utils/api/requestMethods/report";
 import {
   isReportType,
   LiteReport,
@@ -84,16 +88,44 @@ export const AddEditReportModal = ({
     setFormData(formDataForReport(selectedReport));
   }, [selectedReport, modalDisclosure.isOpen]);
 
-  const onChange = (evt: { target: { name: string; value: string } }) => {
+  const doesReportNameExist = async () => {
+    const userEnteredReportName = formData.reportTitle!;
+    if (!userEnteredReportName) return false;
+
+    let existingReports = await getReportsForState(reportType, activeState);
+    const doesReportNameAlreadyExist = existingReports.filter(
+      (report) =>
+        report.name === userEnteredReportName &&
+        report.year.toString() === verbiage.yearSelect
+    );
+
+    return doesReportNameAlreadyExist.length > 0;
+  };
+
+  const setErrorMessage = async (value: string): Promise<string> => {
+    let errorMessage = "";
+    if (value === "") {
+      errorMessage = ErrorMessages.requiredResponse;
+    }
+
+    const duplicateReportName = await doesReportNameExist();
+    if (duplicateReportName)
+      errorMessage = ErrorMessages.mustBeUniqueReportName;
+
+    return errorMessage;
+  };
+
+  const onChange = async (evt: { target: { name: string; value: string } }) => {
     const { name, value } = evt.target;
     const updatedFormData = {
       ...formData,
       [name]: value,
     };
-    setErrorData({
-      ...errorData,
-      [name]: value ? "" : ErrorMessages.requiredResponse,
-    });
+    const reportTitleError = await setErrorMessage(value);
+    setErrorData((prev) => ({
+      ...prev,
+      [name]: reportTitleError,
+    }));
     setFormData(updatedFormData);
   };
 
@@ -103,17 +135,20 @@ export const AddEditReportModal = ({
       options: optionsData,
     });
   };
-
   const onSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
     setSubmissionAttempted(true);
+    const reportTitleError = await setErrorMessage(formData.reportTitle);
     const newErrorData = {
-      reportTitle: formData.reportTitle ? "" : ErrorMessages.requiredResponse,
+      reportTitle: reportTitleError,
       year: formData.year ? "" : ErrorMessages.requiredResponse,
     };
     setErrorData(newErrorData);
     const canSubmit =
-      optionsComplete && !!formData.reportTitle && !!formData.year;
+      optionsComplete &&
+      !newErrorData.reportTitle &&
+      !!formData.reportTitle &&
+      !!formData.year;
     if (!canSubmit) {
       return;
     }
