@@ -88,16 +88,43 @@ export const AddEditReportModal = ({
     setFormData(formDataForReport(selectedReport));
   }, [selectedReport, modalDisclosure.isOpen]);
 
-  const onChange = (evt: { target: { name: string; value: string } }) => {
+  const doesReportNameExist = async () => {
+    const userEnteredReportName = formData.reportTitle!;
+    if (!userEnteredReportName) return false;
+
+    // do the check here? compare against where we store userenteredreportnames
+    let existingReports = await getReportsForState(reportType, activeState);
+    const doesReportNameAlreadyExist = existingReports.filter(
+      (report) => report.name === userEnteredReportName
+    );
+
+    return doesReportNameAlreadyExist.length > 0;
+  };
+
+  const setErrorMessage = async (value: string): Promise<string> => {
+    let errorMessage = "";
+    if (value === "") {
+      errorMessage = ErrorMessages.requiredResponse;
+    }
+
+    const duplicateReportName = await doesReportNameExist();
+    if (duplicateReportName)
+      errorMessage = ErrorMessages.mustBeUniqueReportName;
+
+    return errorMessage;
+  };
+
+  const onChange = async (evt: { target: { name: string; value: string } }) => {
     const { name, value } = evt.target;
     const updatedFormData = {
       ...formData,
       [name]: value,
     };
-    setErrorData({
-      ...errorData,
-      [name]: value ? "" : ErrorMessages.requiredResponse,
-    });
+    const reportTitleError = await setErrorMessage(value);
+    setErrorData((prev) => ({
+      ...prev,
+      [name]: reportTitleError,
+    }));
     setFormData(updatedFormData);
   };
 
@@ -107,17 +134,20 @@ export const AddEditReportModal = ({
       options: optionsData,
     });
   };
-
   const onSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
     setSubmissionAttempted(true);
+    const reportTitleError = await setErrorMessage(formData.reportTitle);
     const newErrorData = {
-      reportTitle: formData.reportTitle ? "" : ErrorMessages.requiredResponse,
+      reportTitle: reportTitleError,
       year: formData.year ? "" : ErrorMessages.requiredResponse,
     };
     setErrorData(newErrorData);
     const canSubmit =
-      optionsComplete && !!formData.reportTitle && !!formData.year;
+      optionsComplete &&
+      !newErrorData.reportTitle &&
+      !!formData.reportTitle &&
+      !!formData.year;
     if (!canSubmit) {
       return;
     }
@@ -127,16 +157,7 @@ export const AddEditReportModal = ({
     const userEnteredReportName = formData.reportTitle!;
     if (selectedReport) {
       if (userEnteredReportName) {
-        // do the check here? compare against where we store userenteredreportnames
-        let existingReports = await getReportsForState(reportType, activeState);
-        const filterByCommonName = existingReports.filter(
-          (report) => report.name === userEnteredReportName
-        );
-        if (filterByCommonName) {
-          // throw error
-        } else {
-          selectedReport.name = userEnteredReportName;
-        }
+        selectedReport.name = userEnteredReportName;
       }
       await updateReport(selectedReport);
     } else {

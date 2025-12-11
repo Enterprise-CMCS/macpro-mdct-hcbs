@@ -9,6 +9,8 @@ export const ErrorMessages = {
   mustBeANumber: "Response must be a number",
   requiredResponse: "A response is required",
   mustBeAnEmail: "Response must be a valid email address",
+  mustBeUniqueReportName:
+    "A report with this name already exists during this reporting period.",
 } as const;
 
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
