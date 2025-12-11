@@ -31,7 +31,6 @@ export default defineConfig({
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: process.env.CI ? 20000 : 10000,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL || "http://localhost:3000",
 

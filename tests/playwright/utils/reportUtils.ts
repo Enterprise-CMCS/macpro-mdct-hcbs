@@ -95,6 +95,7 @@ export const submitReport = async (reportType: string, page: Page) => {
 export const notReporting = async (measure: string, page: Page) => {
   await page.getByRole("row", { name: measure }).getByRole("link").click();
   await page.getByLabel("No, CMS is reporting").check();
+
   expect(
     await page.getByRole("button", { name: "Complete measure" })
   ).toBeEnabled();
