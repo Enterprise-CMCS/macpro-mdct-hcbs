@@ -195,12 +195,10 @@ button {
   height: 1rem;
   top: 2px;
   position: relative;
+  stroke: currentColor;
 }
 
 .tech-spec-icon-hint-size {
-  display: inline-block;
-  margin-left: 0.5rem;
-  height: .9rem;
-  top: 2px;
-  position: relative;
+  @extend .tech-spec-icon;
+  height: 0.9rem;
 }
