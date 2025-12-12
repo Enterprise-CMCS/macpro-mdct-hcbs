@@ -222,7 +222,9 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
         },
         {
           indicator: "Rate",
-          response: performanceRate?.rate ?? autoPopulatedText,
+          response: performanceRate?.rate
+            ? stringifyResult(performanceRate?.rate)
+            : autoPopulatedText,
           helperText: "Auto-calculates",
         },
       ];

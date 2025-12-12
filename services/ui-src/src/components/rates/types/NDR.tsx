@@ -170,7 +170,9 @@ export const NDRExport = (element: NdrTemplate) => {
     },
     {
       indicator: "Rate",
-      response: element.answer?.rate ?? autoCalculatesText,
+      response: element.answer?.rate
+        ? stringifyResult(element.answer?.rate)
+        : autoCalculatesText,
       helperText: "Auto-calculates",
     },
   ];
