@@ -83,12 +83,15 @@ export const AddEditReportModal = ({
   const [submissionAttempted, setSubmissionAttempted] = useState(false);
   const [optionsComplete, setOptionsComplete] = useState(!OptionsComponent);
   const readOnly = selectedReport?.status === ReportStatus.SUBMITTED;
+  const [reportTitleFieldDirtied, setReportTitleFieldDirtied] = useState(false);
 
   useEffect(() => {
     setFormData(formDataForReport(selectedReport));
+    setReportTitleFieldDirtied(false);
   }, [selectedReport, modalDisclosure.isOpen]);
 
   useEffect(() => {
+    if (!reportTitleFieldDirtied) return;
     setErrorMessage(formData.reportTitle).then((errorMessage) => {
       setErrorData((prevErrorData) => ({
         ...prevErrorData,
@@ -127,6 +130,7 @@ export const AddEditReportModal = ({
       [name]: value,
     };
     setFormData(updatedFormData);
+    setReportTitleFieldDirtied(true);
   };
 
   const onOptionsChange = (optionsData: Record<string, any>) => {
