@@ -13,6 +13,9 @@ export default [
       "**/cdk.out/**",
       "**/.cdk/**",
       "**/coverage/**",
+      "cypress/plugins/**/*",
+      "tests/cypress/plugins/**/*",
+      "tests/playwright-report/**/*",
     ],
   },
   // Base configuration for all files
