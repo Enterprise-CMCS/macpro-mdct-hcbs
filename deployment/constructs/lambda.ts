@@ -10,8 +10,8 @@ import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { isLocalStack } from "../local/util.js";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { createHash } from "crypto";
-import { DynamoDBTable } from "./dynamodb-table";
+import { createHash } from "node:crypto";
+import { DynamoDBTable } from "./dynamodb-table.js";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
