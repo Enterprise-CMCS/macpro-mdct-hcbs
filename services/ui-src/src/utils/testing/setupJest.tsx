@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
+import * as framerMotion from "framer-motion";
 import {
   UserRoles,
   HcbsUserState,
@@ -26,6 +27,8 @@ global.React = React;
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
+framerMotion.MotionGlobalConfig.skipAnimations = true;
+
 /* Mocks window.matchMedia (https://bit.ly/3Qs4ZrV) */
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -33,6 +36,7 @@ Object.defineProperty(window, "matchMedia", {
     matches: false,
     media: query,
     onchange: null,
+    addListener: jest.fn(),
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
