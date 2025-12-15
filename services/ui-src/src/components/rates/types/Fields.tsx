@@ -215,12 +215,12 @@ export const FieldsExport = (element: LengthOfStayRateTemplate) => {
     },
     {
       indicator: element.labels?.actualRate,
-      response: element.answer?.actualRate,
+      response: stringifyResult(element.answer?.actualRate),
       helperText: "Auto-calculates",
     },
     {
       indicator: element.labels?.expectedRate,
-      response: element.answer?.expectedRate,
+      response: stringifyResult(element.answer?.expectedRate),
       helperText: "Auto-calculates",
     },
     {
