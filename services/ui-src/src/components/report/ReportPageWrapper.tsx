@@ -18,6 +18,7 @@ import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
 import { isReviewSubmitPage, PageElement, ReportStatus } from "types";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
+import { displayDivider } from "utils/state/reportLogic/reportActions";
 
 export const ReportPageWrapper = () => {
   const {
@@ -85,7 +86,7 @@ export const ReportPageWrapper = () => {
     : currentPage.elements;
   return (
     <>
-      <HStack position="relative" spacing="0">
+      <HStack position="relative" spacing="0" height="100%">
         <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
         <VStack
           height="100%"
@@ -120,10 +121,7 @@ export const ReportPageWrapper = () => {
           </Box>
           {!currentPage.hideNavButtons && parentPage && (
             <>
-              {(parentPage.index == 0 ||
-                currentPage.title === "Financial Eligibility") && (
-                <Divider></Divider>
-              )}
+              {displayDivider(currentPage) && <Divider></Divider>}
               <Flex width="100%" marginTop="spacer3">
                 {parentPage.index > 0 && (
                   <Button

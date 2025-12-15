@@ -11,7 +11,7 @@ import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { isLocalStack } from "../local/util.js";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { createHash } from "crypto";
-import { DynamoDBTable } from "./dynamodb-table.js";
+import { DynamoDBTable } from "./dynamodb-table";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;

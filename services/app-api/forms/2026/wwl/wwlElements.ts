@@ -73,3 +73,73 @@ export const wwlUpdateInfoForFinancialEligibilityField: RadioTemplate = {
     answer: "no",
   },
 };
+
+export const wwlFunctionalEligiblityExplanationField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "functional-eligibility-explanation",
+  label:
+    "Describe how the state checks for functional eligibility before adding someone to the waiting list.",
+  required: true,
+  hideCondition: {
+    controllerElementId: "functional-eligibility-confirmation",
+    answer: "no",
+  },
+};
+
+export const wwlRescreenForFunctionalEligibilityField: RadioTemplate = {
+  type: ElementType.Radio,
+  id: "rescreen-functional-eligibility-field",
+  label:
+    "Does the state periodically recheck individuals on the waiting list for functional eligibility?",
+  choices: [
+    {
+      label: "Yes",
+      value: "yes",
+      checkedChildren: [
+        {
+          type: ElementType.Radio,
+          id: "rescreen-functional-eligibility-child",
+          label:
+            "How often does the state recheck individuals on the waiting list for functional eligibility?	",
+          choices: [
+            { label: "Less than annually", value: "Less than annually" },
+            { label: "Annually", value: "Annually" },
+            { label: "More than annually", value: "More than annually" },
+          ],
+          required: true,
+        },
+      ],
+    },
+    {
+      label: "No",
+      value: "no",
+    },
+  ],
+  required: true,
+  hideCondition: {
+    controllerElementId: "functional-eligibility-confirmation",
+    answer: "no",
+  },
+};
+
+export const wwlUpdateInfoForFunctionalEligibilityField: RadioTemplate = {
+  type: ElementType.Radio,
+  id: "update-info-functional-eligibility-field",
+  label:
+    "Can individuals update or resubmit their information if their functional eligibility needs to be reviewed?",
+  choices: [
+    {
+      label: "Yes",
+      value: "yes",
+    },
+    {
+      label: "No",
+      value: "no",
+    },
+  ],
+  required: true,
+  hideCondition: {
+    controllerElementId: "functional-eligibility-confirmation",
+    answer: "no",
+  },
+};

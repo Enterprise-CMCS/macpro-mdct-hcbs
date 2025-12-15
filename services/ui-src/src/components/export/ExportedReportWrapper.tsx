@@ -37,9 +37,12 @@ const isStateReporting = (elements: PageElement[]) => {
     : elements;
 };
 
-//not all hint text should be render so this function is used as a filter
-const isValidHelperText = (helperText: string) => {
-  return !helperText.includes("Warning:") ? helperText : "";
+// Render helper text only if it exists and is not a warning.
+const getHelperText = (element: PageElement) => {
+  if (!("helperText" in element)) return "";
+  if (!element.helperText) return "";
+  if (element.helperText.includes("Warning:")) return "";
+  return element.helperText;
 };
 
 export const ExportedReportWrapper = ({ section }: Props) => {
@@ -57,35 +60,35 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   //removes follow up content for "is the state reporting on this measure?" question if the user selects no
   const stateReportingFiltered = isStateReporting(filteredElements);
 
-  //if the element is a radio, replace the answer with a the label text and get the children elements
-  const expandElements: PageElement[] = [];
-  stateReportingFiltered.forEach((element) => {
-    const modifiedElemet = { ...element };
+  const expandCheckedChildren = (elements: PageElement[]): PageElement[] => {
+    return elements.flatMap((element) => {
+      if ("choices" in element) {
+        const checkedChoice = element.choices.find(
+          (choice) => choice.value === element.answer
+        );
 
-    const child = [modifiedElemet];
-    if (modifiedElemet.type === "radio") {
-      child.push(
-        ...modifiedElemet.choices
-          .filter((choice) => choice.value == modifiedElemet.answer)
-          .flatMap((choice) => choice?.checkedChildren ?? [])
-      );
-      //Note: answer is be modified from key value to label value from this point onward
-      modifiedElemet.answer = modifiedElemet.choices.find(
-        (choice) => choice.value === modifiedElemet.answer
-      )?.label;
-    }
+        // Note that from this point on, the answer is a label and not a key.
+        element.answer = checkedChoice?.label;
 
-    expandElements.push(...child);
-  });
+        // A radio element is immediately followed by all of its child elements.
+        return [
+          element,
+          ...expandCheckedChildren(checkedChoice?.checkedChildren ?? []),
+        ];
+      } else {
+        // All other element types stand on their own.
+        return [element];
+      }
+    });
+  };
+
+  const expandedElements = expandCheckedChildren(stateReportingFiltered);
 
   const elements =
-    expandElements?.map((element) => {
+    expandedElements?.map((element) => {
       return {
-        indicator: "label" in element ? (element.label ?? "") : "",
-        helperText:
-          "helperText" in element && element.helperText
-            ? isValidHelperText(element.helperText)
-            : "",
+        indicator: "label" in element ? element.label ?? "" : "",
+        helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
         required: "required" in element ? element.required : false,

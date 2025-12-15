@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ReportState } from "types";
 import {
+  FormPageTemplate,
   isMeasurePageTemplate,
   isMeasureTemplate,
   MeasurePageTemplate,
@@ -244,4 +245,29 @@ export const saveReport = async (state: ReportState) => {
     return { errorMessage: "Something went wrong, try again." };
   }
   return { lastSavedTime: getLocalHourMinuteTime() };
+};
+
+export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
+  if (!page.elements) return false;
+
+  //add elements that already have bottom borders to prevent double diviers on the page
+  const hideFromElements = [
+    "measureTable",
+    "measureResultsNavigationTable",
+    "ndrEnhanced",
+    "ndr",
+    "ndrFields",
+    "ndrBasic",
+    "lengthOfStay",
+  ];
+  //find the measureFooter index if the page type is measure & measureResults page, else use the last element's index
+  const footerIndex =
+    page.type == "measure" || page.type == "measureResults"
+      ? page.elements.findIndex((ele) => ele.type == "measureFooter")
+      : page.elements?.length;
+
+  return !(
+    footerIndex &&
+    hideFromElements.includes(page.elements[footerIndex - 1]?.type)
+  );
 };

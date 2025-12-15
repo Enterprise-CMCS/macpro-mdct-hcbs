@@ -134,7 +134,7 @@ const sx = {
       position: "sticky",
       top: "0",
       display: "block",
-      height: "100vh",
+      maxHeight: "100vh",
     },
   },
   sidebarNav: {
