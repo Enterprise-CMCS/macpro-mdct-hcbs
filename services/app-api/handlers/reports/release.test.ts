@@ -32,7 +32,7 @@ const report = JSON.stringify(validReport);
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   pathParameters: {
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "NJ",
     id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
   },
@@ -45,7 +45,7 @@ describe("Test releaseReport handler", () => {
     jest.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  test("missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -60,17 +60,17 @@ describe("Test releaseReport handler", () => {
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  test("missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
+      pathParameters: { reportType: "XYZ", state: "PA", id: "XYZPA123" },
       body: null,
     } as APIGatewayProxyEvent;
     const res = await releaseReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test archived report", async () => {
+  test("archived report", async () => {
     mockGet.mockReturnValueOnce({
       id: "A report",
       archived: true,
@@ -81,7 +81,7 @@ describe("Test releaseReport handler", () => {
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test unlocked report", async () => {
+  test("unlocked report", async () => {
     mockGet.mockReturnValueOnce({
       id: "A report",
       status: ReportStatus.SUBMITTED,
@@ -90,7 +90,7 @@ describe("Test releaseReport handler", () => {
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
-  test("Test successful lock of report", async () => {
+  test("successful lock of report", async () => {
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);

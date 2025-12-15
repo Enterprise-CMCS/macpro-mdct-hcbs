@@ -1,5 +1,5 @@
-import React, { ComponentClass, useEffect, useState } from "react";
-import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import {
   Box,
   Center,
@@ -20,12 +20,10 @@ import {
   MeasurePageTemplate,
   ParentPageTemplate,
   Report,
-  ReportType,
   ReviewSubmitTemplate,
 } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 import { StateNames } from "../../../constants";
-import { ExportedReportTable } from "components/export/ExportedReportTable";
 import {
   shouldRender,
   createMeasuresSection,
@@ -42,12 +40,6 @@ export const ExportedReportPage = () => {
   }, [report]);
 
   if (!reportPages) return null;
-
-  /*
-   * This rename & cast is due to a package import issue.
-   * It can be removed once we get to react >= 18.3.0 and @types/react >= 18.3.0
-   */
-  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   return (
     <Box>
@@ -114,35 +106,9 @@ export const reportDetails = (report: Report) => {
   );
 };
 
-export const reportSubmissionSetUp = (report: Report) => {
-  if (report.type !== ReportType.QMS) return;
-  const rows = [
-    {
-      indicator: "Is your state reporting on the HCBS CAHPS Survey?",
-      response: report.options.cahps ? "Yes" : "No",
-    },
-    {
-      indicator: "Is your state reporting on the NCI-IDD Survey?",
-      response: report.options.nciidd ? "Yes" : "No",
-    },
-    {
-      indicator: "Is your state reporting on the NCI-AD Survey?",
-      response: report.options.nciad ? "Yes" : "No",
-    },
-    {
-      indicator: "Is your state reporting on the POM Survey?",
-      response: report.options.pom ? "Yes" : "No",
-    },
-  ];
-
-  return (
-    <Box>
-      <Heading as="h2" fontWeight="bold">
-        Submission Set Up
-      </Heading>
-      <ExportedReportTable rows={rows}></ExportedReportTable>
-    </Box>
-  );
+export const reportSubmissionSetUp = (_report: Report) => {
+  // For XYZ reports, no submission setup is needed
+  return null;
 };
 
 export const renderReportSections = (

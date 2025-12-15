@@ -52,7 +52,7 @@ mockedUseStore.mockReturnValue({
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: jest.fn().mockReturnValue({
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "CO",
     reportId: "123",
   }),
@@ -144,7 +144,7 @@ describe("Test MeasureTable", () => {
     const editButton = screen.getAllByText("Edit")[0];
     await userEvent.click(editButton);
     expect(mockedNavigate).toHaveBeenCalledWith(
-      "/report/QMS/CO/123/mock-measure-1"
+      "/report/XYZ/CO/123/mock-measure-1"
     );
   });
 });

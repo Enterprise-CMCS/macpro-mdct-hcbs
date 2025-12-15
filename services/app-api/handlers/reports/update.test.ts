@@ -33,7 +33,7 @@ const report = JSON.stringify(validReport);
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   pathParameters: {
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "NJ",
     id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
   },
@@ -46,7 +46,7 @@ describe("Test update report handler", () => {
     jest.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  test("missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -61,30 +61,30 @@ describe("Test update report handler", () => {
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  test("missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
+      pathParameters: { reportType: "XYZ", state: "PA", id: "XYZPA123" },
       body: null,
     } as APIGatewayProxyEvent;
     const res = await updateReport(emptyBodyEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test body + param mismatch", async () => {
+  test("body + param mismatch", async () => {
     const badType = {
       ...proxyEvent,
-      pathParameters: { reportType: "ZZ", state: "PA", id: "QMSPA123" },
+      pathParameters: { reportType: "ZZ", state: "PA", id: "XYZPA123" },
       body: report,
     } as APIGatewayProxyEvent;
     const badState = {
       ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
+      pathParameters: { reportType: "XYZ", state: "PA", id: "XYZPA123" },
       body: JSON.stringify({ ...validReport, state: "OR" }),
     } as APIGatewayProxyEvent;
     const badId = {
       ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "ZZOR1234" },
+      pathParameters: { reportType: "XYZ", state: "PA", id: "ZZOR1234" },
       body: report,
     } as APIGatewayProxyEvent;
 
@@ -96,7 +96,7 @@ describe("Test update report handler", () => {
     expect(resId.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test Successful update", async () => {
+  test("Successful update", async () => {
     const res = await updateReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);

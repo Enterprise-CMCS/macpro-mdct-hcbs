@@ -87,7 +87,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   const elements =
     expandedElements?.map((element) => {
       return {
-        indicator: "label" in element ? element.label ?? "" : "",
+        indicator: "label" in element ? (element.label ?? "") : "",
         helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",

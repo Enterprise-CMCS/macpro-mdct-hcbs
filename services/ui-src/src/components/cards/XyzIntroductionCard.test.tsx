@@ -1,19 +1,19 @@
-import { QmsIntroductionCard } from "./QmsIntroductionCard";
+import { XyzIntroductionCard } from "./XyzIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11yAct } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const component = (
   <RouterWrappedComponent>
-    <QmsIntroductionCard />
+    <XyzIntroductionCard />
   </RouterWrappedComponent>
 );
 
-describe("QmsIntroductionCard", () => {
+describe("XyzIntroductionCard", () => {
   it("should render", () => {
     render(component);
     expect(
-      screen.getByText("The HCBS QMS report is now available.", {
+      screen.getByText("When is the XYZ Report Due?", {
         exact: false,
       })
     ).toBeVisible();

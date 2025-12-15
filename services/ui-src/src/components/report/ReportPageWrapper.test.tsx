@@ -18,12 +18,11 @@ import { useStore } from "utils";
 import { ReportAutosaveProvider } from "./ReportAutosaveProvider";
 
 const testReport: Report = {
-  type: ReportType.QMS,
+  type: ReportType.XYZ,
   name: "plan id",
   state: "NJ",
   id: "NJQMS123",
   year: 2026,
-  options: {},
   status: ReportStatus.NOT_STARTED,
   archived: false,
   submissionCount: 0,
@@ -90,33 +89,38 @@ jest.mock("utils/state/useStore", () => ({
 
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
+const setupMockStore = (customState?: Partial<any>) => {
+  mockedUseStore.mockImplementation((selector?) => {
+    const mockState = {
+      report: testReport,
+      pageMap: new Map([
+        ["root", 0],
+        ["general-info", 1],
+        ["req-measure-result", 2],
+      ]),
+      currentPageId: "general-info",
+      parentPage: {
+        index: 0,
+        childPageIds: ["general-info", "req-measure-result"],
+      },
+      saveReport: mockSaveReport,
+      setAnswers: jest.fn(),
+      loadReport: jest.fn(),
+      ...customState,
+    } as any;
+    return selector ? selector(mockState) : mockState;
+  });
+};
+
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseParams.mockReturnValue({
-      reportType: "QMS",
+      reportType: "XYZ",
       state: "NJ",
       reportId: "QMSNJ123",
     });
-    mockedUseStore.mockImplementation((selector?) => {
-      const mockState = {
-        report: testReport,
-        pageMap: new Map([
-          ["root", 0],
-          ["general-info", 1],
-          ["req-measure-result", 2],
-        ]),
-        currentPageId: "general-info",
-        parentPage: {
-          index: 0,
-          childPageIds: ["general-info", "req-measure-result"],
-        },
-        saveReport: mockSaveReport,
-        setAnswers: jest.fn(),
-        loadReport: jest.fn(),
-      } as any;
-      return selector ? selector(mockState) : mockState;
-    });
+    setupMockStore();
   });
   test("should not render if missing params", async () => {
     mockUseParams.mockReturnValue({
@@ -130,7 +134,12 @@ describe("ReportPageWrapper", () => {
   });
   test("should render Loading if report not loaded", async () => {
     mockGetReport.mockResolvedValueOnce(undefined);
-    render(<ReportPageWrapper />);
+    setupMockStore({
+      report: undefined,
+    });
+    await act(async () => {
+      render(<ReportPageWrapper />);
+    });
     await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
     expect(screen.getByText("Loading...")).toBeTruthy();
   });
@@ -154,7 +163,7 @@ describe("ReportPageWrapper", () => {
     const continueBtn = screen.getByRole("button", { name: "Continue" });
     await userEvent.click(continueBtn);
     expect(mockNavigate).toHaveBeenCalledWith(
-      "/report/QMS/NJ/QMSNJ123/req-measure-result"
+      "/report/XYZ/NJ/QMSNJ123/req-measure-result"
     );
   });
 
@@ -181,39 +190,5 @@ describe("ReportPageWrapper", () => {
 
     jest.runAllTimers();
     await waitFor(() => expect(mockSaveReport).toHaveBeenCalled());
-  });
-});
-
-describe("Page validation", () => {
-  beforeEach(() => {
-    mockUseParams.mockReturnValue({
-      reportType: "QMS",
-      state: "NJ",
-      reportId: "QMSNJ123",
-    });
-  });
-
-  test.skip("form should display error when text field is blurred with no input", async () => {
-    global.structuredClone = (val: unknown) => {
-      return JSON.parse(JSON.stringify(val));
-    };
-
-    render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
-
-    const contactTitleInput = screen.getByLabelText("Another textbox");
-
-    // blur the textbox without entering anything
-    await act(async () => {
-      fireEvent.blur(contactTitleInput);
-    });
-
-    // validation error will appear since textbox is empty
-    const responseIsRequiredErrorMessage = screen.getAllByText(
-      "A response is required",
-      { exact: false }
-    );
-    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
-    expect(responseIsRequiredErrorMessage.length).toBe(2);
   });
 });

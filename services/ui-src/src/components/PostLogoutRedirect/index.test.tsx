@@ -5,20 +5,35 @@ import config from "config";
 describe("PostLogoutRedirect", () => {
   test("should redirect to POST_SIGNOUT_REDIRECT", () => {
     config.POST_SIGNOUT_REDIRECT = "https://example.com/logout";
-    const originalHref = window.location.href;
 
+    // Mock window.location.href using Object.defineProperty
+    let capturedHref = "";
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      "location"
+    );
+
+    delete (window as any).location;
     Object.defineProperty(window, "location", {
+      value: {
+        get href() {
+          return capturedHref;
+        },
+        set href(value: string) {
+          capturedHref = value;
+        },
+      },
       writable: true,
-      value: { href: "" },
+      configurable: true,
     });
 
     render(<PostLogoutRedirect />);
 
-    expect(window.location.href).toBe("https://example.com/logout");
+    expect(capturedHref).toBe("https://example.com/logout");
 
-    Object.defineProperty(window, "location", {
-      writable: true,
-      value: { href: originalHref },
-    });
+    // Restore original location
+    if (originalDescriptor) {
+      Object.defineProperty(window, "location", originalDescriptor);
+    }
   });
 });

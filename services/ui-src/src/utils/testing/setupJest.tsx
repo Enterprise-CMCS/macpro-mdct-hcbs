@@ -1,14 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
 import * as framerMotion from "framer-motion";
 import {
   UserRoles,
-  HcbsUserState,
-  UserContextShape,
+  UserState,
   AdminBannerState,
-  HcbsReportState,
+  ReportState,
   ReportType,
   ReportStatus,
   PageType,
@@ -21,6 +19,7 @@ import {
   ElementType,
 } from "types";
 import { mockBannerData } from "./mockBanner";
+
 // GLOBALS
 
 global.React = React;
@@ -113,26 +112,16 @@ export const mockBannerStore: AdminBannerState = {
   setBannerDeleting: () => {},
 };
 
-// USER CONTEXT
-
-export const mockUserContext: UserContextShape = {
-  user: undefined,
-  logout: async () => {},
-  loginWithIDM: async () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => "",
-};
-
 // USER STATES / STORE
 
-export const mockNoUserStore: HcbsUserState = {
+export const mockNoUserStore: UserState = {
   user: undefined,
   showLocalLogins: true,
   setUser: () => {},
   setShowLocalLogins: () => {},
 };
 
-export const mockStateUserStore: HcbsUserState = {
+export const mockStateUserStore: UserState = {
   user: {
     userRole: UserRoles.STATE_USER,
     email: "stateuser@test.com",
@@ -147,7 +136,7 @@ export const mockStateUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockStateApproverStore: HcbsUserState = {
+export const mockStateApproverStore: UserState = {
   user: {
     userRole: UserRoles.APPROVER,
     email: "stateapprover@test.com",
@@ -162,7 +151,7 @@ export const mockStateApproverStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockHelpDeskUserStore: HcbsUserState = {
+export const mockHelpDeskUserStore: UserState = {
   user: {
     userRole: UserRoles.HELP_DESK,
     email: "helpdeskuser@test.com",
@@ -177,7 +166,7 @@ export const mockHelpDeskUserStore: HcbsUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockAdminUserStore: HcbsUserState = {
+export const mockAdminUserStore: UserState = {
   user: {
     userRole: UserRoles.ADMIN,
     email: "adminuser@test.com",
@@ -324,7 +313,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   ],
 };
 
-export const mockReportStore: HcbsReportState = {
+export const mockReportStore: ReportState = {
   modalOpen: false,
   sidebarOpen: true,
   currentPageId: "LTSS-1",
@@ -334,11 +323,10 @@ export const mockReportStore: HcbsReportState = {
   ]),
   report: {
     id: "mock-id",
-    type: ReportType.QMS,
+    type: ReportType.XYZ,
     status: ReportStatus.IN_PROGRESS,
     name: "mock-report-title",
     year: 2026,
-    options: {},
     state: "PR",
     archived: false,
     submissionCount: 0,
@@ -368,41 +356,24 @@ export const mockReportStore: HcbsReportState = {
 
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState & AdminBannerState & HcbsReportState =
-  {
-    ...mockStateUserStore,
-    ...mockBannerStore,
-    ...mockReportStore,
-  };
+export const mockUseStore: UserState & AdminBannerState & ReportState = {
+  ...mockStateUserStore,
+  ...mockBannerStore,
+  ...mockReportStore,
+};
 
-export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
+export const mockUseAdminStore: UserState & AdminBannerState = {
   ...mockAdminUserStore,
   ...mockBannerStore,
 };
 
-export const mockUseReadOnlyUserStore: HcbsUserState & AdminBannerState = {
+export const mockUseReadOnlyUserStore: UserState & AdminBannerState = {
   ...mockHelpDeskUserStore,
   ...mockBannerStore,
   ...mockReportStore,
 };
 
-// ROUTER
-
-export const RouterWrappedComponent: React.FC<{ children: any }> = ({
-  children,
-}) => <Router>{children}</Router>;
-
-// LAUNCHDARKLY
-
-export const mockLDClient = {
-  variation: jest.fn(() => true),
-};
-
-// ASSET
-export * from "./mockAsset";
 // BANNER
 export * from "./mockBanner";
-// FORM
-export * from "./mockForm";
 // ROUTER
 export * from "./mockRouter";

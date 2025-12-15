@@ -415,7 +415,7 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test("accepts complete NDREnhanced rates", () => {
+  test("accepts complete NDRFields rates", () => {
     const element = {
       type: ElementType.NdrFields,
       answer: [

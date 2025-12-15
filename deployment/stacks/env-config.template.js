@@ -1,5 +1,4 @@
 window._env_ = {
-  SKIP_PREFLIGHT_CHECK: "true",
   STAGE: "{{stage}}",
   API_REGION: "us-east-1",
   API_URL: "{{apiGatewayRestApiUrl}}",

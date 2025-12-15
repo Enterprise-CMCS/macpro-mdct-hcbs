@@ -14,7 +14,7 @@ import {
 import config from "config";
 import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
 import { PRODUCTION_HOST_DOMAIN } from "../../constants";
-import { HcbsUser, UserContextShape, UserRoles } from "types/users";
+import { User, UserContextShape, UserRoles } from "types/users";
 
 type ExpectedTokenShape = {
   email: string;
@@ -76,8 +76,8 @@ export const UserProvider = ({ children }: Props) => {
         "custom:cms_state": state,
       } = payload as ExpectedTokenShape;
 
-      // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to HCBS
-      const userRole = cms_role.split(",").find((r) => r.includes("mdcthcbs"));
+      // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to LABS
+      const userRole = cms_role.split(",").find((r) => r.includes("mdctlabs"));
       const full_name = [given_name, " ", family_name].join("");
       const userCheck = {
         userIsAdmin:
@@ -86,7 +86,7 @@ export const UserProvider = ({ children }: Props) => {
           userRole === UserRoles.HELP_DESK || userRole === UserRoles.INTERNAL,
         userIsEndUser: userRole === UserRoles.STATE_USER,
       };
-      const currentUser: HcbsUser = {
+      const currentUser: User = {
         email,
         given_name,
         family_name,

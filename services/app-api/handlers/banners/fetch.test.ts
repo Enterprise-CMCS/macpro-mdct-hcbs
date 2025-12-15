@@ -32,7 +32,7 @@ describe("Test fetchBanner API method", () => {
     jest.clearAllMocks();
   });
 
-  test("Test Successful Banner Fetch", async () => {
+  test("Successful Banner Fetch", async () => {
     (getBanner as jest.Mock).mockResolvedValueOnce(mockBannerResponse);
     const res = await fetchBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Ok);
@@ -40,14 +40,14 @@ describe("Test fetchBanner API method", () => {
     expect(res.body).toContain("testTitle");
   });
 
-  test("Test successful empty banner found fetch", async () => {
+  test("successful empty banner found fetch", async () => {
     (getBanner as jest.Mock).mockResolvedValueOnce(undefined);
     const res = await fetchBanner(testEvent);
     expect(res.body).not.toBeDefined();
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 
-  test("Test bannerKey not provided throws 500 error", async () => {
+  test("bannerKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: {},
@@ -58,7 +58,7 @@ describe("Test fetchBanner API method", () => {
     expect(res.body).toContain(error.MISSING_DATA);
   });
 
-  test("Test bannerKey empty throws 500 error", async () => {
+  test("bannerKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: { bannerId: "" },

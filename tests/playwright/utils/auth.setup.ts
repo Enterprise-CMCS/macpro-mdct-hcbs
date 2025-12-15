@@ -20,7 +20,6 @@ test("authenticate as admin", async ({ page }) => {
     name: "View State/Territory Reports",
   });
   await expect(landingPageHeading).toBeVisible();
-  await page.waitForTimeout(1000);
   await page.context().storageState({ path: adminAuthPath });
 });
 
@@ -33,9 +32,8 @@ test("authenticate as user", async ({ page }) => {
   await passwordInput.fill(statePassword);
   await loginButton.click();
   const landingPageHeading = page.getByRole("heading", {
-    name: "Home and Community-Based Services (HCBS) Portal",
+    name: "Learning and Building Sandbox (LABS) Portal",
   });
   await expect(landingPageHeading).toBeVisible();
-  await page.waitForTimeout(1000);
   await page.context().storageState({ path: stateUserAuthPath });
 });

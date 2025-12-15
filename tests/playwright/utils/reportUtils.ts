@@ -3,10 +3,6 @@ import { expect, Page } from "@playwright/test";
 export const testModalData = {
   reportName: "test report name",
   datetime: new Date().getTime(),
-  cahpsSurveyOption: "No",
-  nciiddSurveyOption: "No",
-  nciadSurveyOption: "No",
-  pomSurveyOption: "No",
 };
 
 export const fillAddEditReportModal = async (page: Page, reportData: any) => {
@@ -96,9 +92,10 @@ export const notReporting = async (measure: string, page: Page) => {
   await page.getByRole("row", { name: measure }).getByRole("link").click();
   await page.getByLabel("No, CMS is reporting").check();
 
-  expect(
-    await page.getByRole("button", { name: "Complete measure" })
+  await expect(
+    page.getByRole("button", { name: "Complete measure" })
   ).toBeEnabled();
 
   await page.getByRole("button", { name: "Complete measure" }).click();
+  await page.getByRole("button", { name: "Return to Required" }).click();
 };

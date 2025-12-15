@@ -29,7 +29,7 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => jest.fn(),
   useParams: jest.fn(() => ({
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "CO",
   })),
 }));
@@ -37,8 +37,8 @@ jest.mock("react-router-dom", () => ({
 jest.mock("utils/api/requestMethods/report", () => ({
   getReportsForState: jest.fn().mockResolvedValue([
     {
-      id: "QMSCO123",
-      type: "QMS",
+      id: "XYZCO123",
+      type: "XYZ",
       state: "CO",
       lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
       lastEditedBy: "Mock User",
@@ -47,8 +47,8 @@ jest.mock("utils/api/requestMethods/report", () => ({
       year: 2026,
     } as Report,
     {
-      id: "QMSCO123",
-      type: "QMS",
+      id: "XYZCO123",
+      type: "XYZ",
       state: "CO",
       lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
       lastEditedBy: "Mock User",
@@ -84,7 +84,7 @@ describe("DashboardPage with state user", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Colorado Quality Measure Set Report",
+        name: "Colorado XYZ",
       })
     ).toBeVisible();
     expect(
@@ -175,11 +175,9 @@ describe("DashboardPage with state user", () => {
       expect(screen.getByText("Mock Report Name")).toBeInTheDocument();
     });
 
-    await userEvent.click(screen.getByText("Start Quality Measure Set Report"));
+    await userEvent.click(screen.getByText("Start XYZ"));
 
-    expect(
-      screen.getByText("Add new Quality Measure Set Report")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Add new XYZ Report")).toBeInTheDocument();
   });
 });
 
@@ -195,7 +193,7 @@ describe("DashboardPage with Read only user", () => {
     });
 
     const startReportButton = screen.queryByRole("button", {
-      name: "Start Quality Measure Set Report",
+      name: "Start XYZ",
     });
     expect(startReportButton).not.toBeInTheDocument();
   });
@@ -213,7 +211,7 @@ describe("DashboardPage with Admin user", () => {
     });
 
     const startReportButton = screen.queryByRole("button", {
-      name: "Start Quality Measure Set Report",
+      name: "Start XYZ",
     });
     expect(startReportButton).not.toBeInTheDocument();
   });
@@ -228,12 +226,12 @@ describe("DashboardPage with Admin user", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Colorado Quality Measure Set Report",
+        name: "Colorado XYZ",
       })
     ).toBeVisible();
     expect(
       screen.getByText(
-        "Once a state or territory begins a QMS Report, you will be able to view it here.",
+        "Once a state or territory begins a XYZ Report, you will be able to view it here.",
         {
           exact: false,
         }

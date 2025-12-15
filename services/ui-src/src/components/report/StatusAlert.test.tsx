@@ -29,7 +29,7 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockUseNavigate,
   useParams: jest.fn(() => ({
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "CO",
     reportId: "mock-id",
   })),
@@ -72,7 +72,7 @@ describe("<StatusAlert />", () => {
       await userEvent.click(link);
     });
 
-    test("Test Review & Submit banner", () => {
+    test("Review & Submit banner", () => {
       (useStore as unknown as jest.Mock).mockImplementation((selector) => {
         if (selector) {
           return { submittable: true };

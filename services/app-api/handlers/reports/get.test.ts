@@ -23,7 +23,7 @@ jest.mock("../../storage/reports", () => ({
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   pathParameters: {
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "PA",
     id: "myVeryFavoriteReport",
   },
@@ -36,7 +36,7 @@ describe("Test get report handler", () => {
   });
 
   describe("getReport", () => {
-    test("Test missing path params", async () => {
+    test("missing path params", async () => {
       const badTestEvent: APIGatewayProxyEvent = {
         ...proxyEvent,
         headers: { "cognito-identity-id": "test" },
@@ -51,7 +51,7 @@ describe("Test get report handler", () => {
       expect(response.statusCode).toBe(StatusCodes.Forbidden);
     });
 
-    test("Test Successful get", async () => {
+    test("Successful get", async () => {
       const res = await getReport(testEvent);
 
       expect(res.statusCode).toBe(StatusCodes.Ok);
@@ -59,7 +59,7 @@ describe("Test get report handler", () => {
   });
 
   describe("getReportsForState", () => {
-    test("Test missing path params", async () => {
+    test("missing path params", async () => {
       const badTestEvent: APIGatewayProxyEvent = {
         ...proxyEvent,
         headers: { "cognito-identity-id": "test" },
@@ -74,7 +74,7 @@ describe("Test get report handler", () => {
       expect(response.statusCode).toBe(StatusCodes.Forbidden);
     });
 
-    test("Test Successful get", async () => {
+    test("Successful get", async () => {
       const res = await getReportsForState(testEvent);
 
       expect(res.statusCode).toBe(StatusCodes.Ok);

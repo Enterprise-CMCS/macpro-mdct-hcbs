@@ -35,7 +35,7 @@ const section = {
 };
 
 describe("Test ExportedReportElements", () => {
-  test("Test render SubHeader element", () => {
+  test("render SubHeader element", () => {
     const element = renderElements(section, {
       id: "mock-sub-header",
       text: "mock sub header",
@@ -44,7 +44,7 @@ describe("Test ExportedReportElements", () => {
     render(element);
     expect(screen.getByText("mock sub header")).toBeInTheDocument();
   });
-  test("Test render Measure Details element", () => {
+  test("render Measure Details element", () => {
     const element = renderElements(section, {
       id: "mock-measure-details",
       type: ElementType.MeasureDetails,
@@ -56,7 +56,7 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByText("Steward: measure steward")).toBeInTheDocument();
     expect(screen.getByText("Collection method: Hybrid")).toBeInTheDocument();
   });
-  test("Test render NDR element", () => {
+  test("render NDR element", () => {
     section.elements.push(mockNDR);
     const element = renderElements(section, mockNDR);
     render(<>{element}</>);
@@ -67,7 +67,7 @@ describe("Test ExportedReportElements", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText(4)).toHaveLength(1);
   });
-  test("Test render NDR Enhanced element", () => {
+  test("render NDR Enhanced element", () => {
     section.elements.push(mockedNDREnhanced);
     const element = renderElements(section, mockedNDREnhanced);
     render(<>{element}</>);
@@ -79,7 +79,7 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getAllByText("Not answered")).toHaveLength(2);
   });
-  test("Test render NDR Fields element", () => {
+  test("render NDR Fields element", () => {
     section.elements.push(mockNDRFields);
     const element = renderElements(section, mockNDRFields);
     render(<>{element}</>);
@@ -92,14 +92,14 @@ describe("Test ExportedReportElements", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText("2")).toHaveLength(2);
   });
-  test("Test render FieldsExport element", () => {
+  test("render FieldsExport element", () => {
     section.elements.push(mockLengthOfStayFields);
     const element = renderElements(section, mockLengthOfStayFields);
     render(<>{element}</>);
     expect(screen.getByText("Actual Count")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(8);
   });
-  test("Test render NDR Basic element", () => {
+  test("render NDR Basic element", () => {
     section.elements.push(mockNDRBasics);
     const element = renderElements(section, mockNDRBasics);
     render(<>{element}</>);

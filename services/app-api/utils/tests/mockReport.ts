@@ -1,4 +1,4 @@
-import { qmsReportTemplate as qmsReportTemplate2026 } from "../../forms/2026/qms/qms";
+import { xyzReportTemplate as xyzReportTemplate2026 } from "../../forms/2026/xyz/xyz";
 import {
   Report,
   PageType,
@@ -8,12 +8,12 @@ import {
 } from "../../types/reports";
 import { StateAbbr } from "../constants";
 
-const qmsReportTemplate = qmsReportTemplate2026;
+const xyzReportTemplate = xyzReportTemplate2026;
 
 export const validReport: Report = {
-  type: qmsReportTemplate.type,
-  year: qmsReportTemplate.year,
-  pages: qmsReportTemplate.pages,
+  type: xyzReportTemplate.type,
+  year: xyzReportTemplate.year,
+  pages: xyzReportTemplate.pages,
   state: "NJ" as StateAbbr,
   id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
   created: 1736524513631,
@@ -24,7 +24,6 @@ export const validReport: Report = {
   name: "yeehaw",
   archived: false,
   submissionCount: 0,
-  options: {},
 };
 
 export const missingStateReport = {
@@ -163,8 +162,8 @@ export const invalidParentPageReport = {
 export const invalidRadioCheckedChildrenReport = {
   ...validReport,
   pages: {
-    ...qmsReportTemplate.measureTemplates,
-    [MeasureTemplateName["LTSS-1"]]: {
+    ...xyzReportTemplate.pages,
+    "test-measure": {
       id: "LTSS-1",
       title: "LTSS-1: Comprehensive Assessment and Update",
       type: PageType.Measure,

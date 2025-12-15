@@ -41,7 +41,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   } = props;
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
-    userPoolName: `${stage}-user-pool`,
+    userPoolName: `${project}-${stage}`,
     signInAliases: {
       email: true,
     },
@@ -107,7 +107,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     "http://localhost:3000/";
 
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
-    userPoolClientName: `${stage}-user-pool-client`,
+    userPoolClientName: `${project}-${stage}`,
     userPool,
     authFlows: {
       userPassword: true,
@@ -150,7 +150,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     scope,
     "CognitoIdentityPool",
     {
-      identityPoolName: `${stage}-IdentityPool`,
+      identityPoolName: `${project}-${stage}`,
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [
         {
@@ -177,15 +177,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     inlinePolicies: {
       CognitoAuthorizedPolicy: new iam.PolicyDocument({
         statements: [
-          new iam.PolicyStatement({
-            actions: [
-              "mobileanalytics:PutEvents",
-              "cognito-sync:*",
-              "cognito-identity:*",
-            ],
-            resources: ["*"],
-            effect: iam.Effect.ALLOW,
-          }),
           new iam.PolicyStatement({
             actions: ["execute-api:Invoke"],
             resources: [

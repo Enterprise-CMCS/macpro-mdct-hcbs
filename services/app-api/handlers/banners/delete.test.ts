@@ -31,14 +31,14 @@ describe("Test deleteBanner API method", () => {
     jest.clearAllMocks();
   });
 
-  test("Test not authorized to delete banner throws 403 error", async () => {
+  test("not authorized to delete banner throws 403 error", async () => {
     (canWriteBanner as jest.Mock).mockReturnValueOnce(false);
     const res = await deleteBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
-  test("Test Successful Banner Deletion", async () => {
+  test("Successful Banner Deletion", async () => {
     const mockDelete = jest.fn();
     dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
     const res = await deleteBanner(testEvent);
@@ -46,7 +46,7 @@ describe("Test deleteBanner API method", () => {
     expect(mockDelete).toHaveBeenCalled();
   });
 
-  test("Test bannerKey not provided throws 500 error", async () => {
+  test("bannerKey not provided throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: {},
@@ -57,7 +57,7 @@ describe("Test deleteBanner API method", () => {
     expect(res.body).toContain(error.MISSING_DATA);
   });
 
-  test("Test bannerKey empty throws 500 error", async () => {
+  test("bannerKey empty throws 500 error", async () => {
     const noKeyEvent: APIGatewayProxyEvent = {
       ...testEvent,
       pathParameters: { bannerId: "" },

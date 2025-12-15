@@ -64,6 +64,7 @@ async function fetchPrBody({ octokit, owner, prNumber, repo }: any) {
 
     return data.body || "";
   } catch (err: any) {
+    // eslint-disable-next-line no-console
     console.error(`Error fetching PR ${prNumber}:`, err.message);
     return "";
   }

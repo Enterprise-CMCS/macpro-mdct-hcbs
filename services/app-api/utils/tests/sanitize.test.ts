@@ -62,18 +62,18 @@ const cleanComplexObject = {
 };
 
 describe("Test sanitizeString", () => {
-  test("Test sanitizeString passes through empty strings and clean strings", () => {
+  test("passes through empty strings and clean strings", () => {
     expect(sanitizeString("")).toEqual("");
     expect(sanitizeString(cleanString)).toEqual(cleanString);
   });
 
-  test("Test sanitizeString cleans dirty strings", () => {
+  test("cleans dirty strings", () => {
     expect(sanitizeString(dirtyLinkString)).toEqual(cleanLinkString);
   });
 });
 
 describe("Test sanitizeArray", () => {
-  test("Test sanitizeArray passes through empty arrays and clean arrays", () => {
+  test("passes through empty arrays and clean arrays", () => {
     expect(sanitizeArray([])).toEqual([]);
     expect(sanitizeArray(cleanStringArray)).toEqual(cleanStringArray);
     expect(sanitizeArray(cleanNestedStringArray)).toEqual(
@@ -82,7 +82,7 @@ describe("Test sanitizeArray", () => {
     expect(sanitizeArray(cleanObjectArray)).toEqual(cleanObjectArray);
   });
 
-  test("Test sanitizeArray cleans dirty arrays", () => {
+  test("cleans dirty arrays", () => {
     expect(sanitizeArray(dirtyStringArray)).toEqual(cleanStringArray);
     expect(sanitizeArray(dirtyNestedStringArray)).toEqual(
       cleanNestedStringArray
@@ -92,7 +92,7 @@ describe("Test sanitizeArray", () => {
 });
 
 describe("Test sanitizeObject", () => {
-  test("Test sanitizeObject passes through safe types", () => {
+  test("passes through safe types", () => {
     expect(sanitizeObject({ safeBoolean })).toEqual({ safeBoolean });
     expect(sanitizeObject({ safeNaN })).toEqual({ safeNaN });
     expect(sanitizeObject({ safeNumber })).toEqual({ safeNumber });
@@ -100,20 +100,20 @@ describe("Test sanitizeObject", () => {
     expect(sanitizeObject({ safeUndefined })).toEqual({ safeUndefined });
   });
 
-  test("Test sanitizeObject passes through empty object, clean object", () => {
+  test("passes through empty object, clean object", () => {
     expect(sanitizeObject({})).toEqual({});
     expect(sanitizeObject(cleanObject)).toEqual(cleanObject);
     expect(sanitizeObject(cleanComplexObject)).toEqual(cleanComplexObject);
   });
 
-  test("Test sanitizeObject cleans dirty objects", () => {
+  test("cleans dirty objects", () => {
     expect(sanitizeObject(dirtyObject)).toEqual(cleanObject);
     expect(sanitizeObject(dirtyComplexObject)).toEqual(cleanComplexObject);
   });
 });
 
 describe("Test sanitizeObject is friendly to the markup embedded in our report templates", () => {
-  test("Test that a freshly created 2026 QMS report will not be affected by sanitization", async () => {
+  test("a freshly created 2026 XYZ report will not be affected by sanitization", async () => {
     for (let optionValues of booleanCombinations(4)) {
       const [cahps, nciidd, nciad, pom] = optionValues;
       const options = {
@@ -125,7 +125,7 @@ describe("Test sanitizeObject is friendly to the markup embedded in our report t
         fullName: "Mock User",
         email: "mock.user@test.com",
       } as User;
-      const original = await buildReport(ReportType.QMS, "CO", options, user);
+      const original = await buildReport(ReportType.XYZ, "CO", options, user);
       const sanitized = sanitizeObject(original as any);
       expect(sanitized).toEqual(original);
     }

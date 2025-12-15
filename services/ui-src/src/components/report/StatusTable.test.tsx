@@ -27,7 +27,7 @@ jest.mock("launchdarkly-react-client-sdk", () => ({
 }));
 
 const report = {
-  type: "QMS",
+  type: "XYZ",
   id: "mock-report-id",
   state: "CO",
   pages: [
@@ -121,9 +121,9 @@ describe("StatusTable with state user", () => {
     expect(reviewPdfButton).toHaveAttribute("target", "_blank");
   });
 
-  it("should call the API and render QMS submit modal when the Submit button is clicked", async () => {
+  it("should call the API and render XYZ submit modal when the Submit button is clicked", async () => {
     render(
-      <MemoryRouter initialEntries={["/report/QMS/CO/mock-report-id"]}>
+      <MemoryRouter initialEntries={["/report/XYZ/CO/mock-report-id"]}>
         <Routes>
           <Route
             path="/report/:reportType/:state/:reportId"
@@ -134,16 +134,16 @@ describe("StatusTable with state user", () => {
     );
 
     const submitButton = screen.getAllByRole("button", {
-      name: /Submit QMS Report/i,
+      name: /Submit XYZ Report/i,
     })[0];
     await userEvent.click(submitButton);
 
-    expect(mockSetModalComponent).toBeCalled();
+    expect(mockSetModalComponent).toHaveBeenCalled();
   });
 
   it("should render the correct submit button text when reportType is from the URL", async () => {
     render(
-      <MemoryRouter initialEntries={["/report/TACM/CO/mock-report-id"]}>
+      <MemoryRouter initialEntries={["/report/XYZ/CO/mock-report-id"]}>
         <Routes>
           <Route
             path="/report/:reportType/:state/:reportId"
@@ -154,7 +154,7 @@ describe("StatusTable with state user", () => {
     );
 
     const submitButton = screen.getAllByRole("button", {
-      name: /Submit TACM Report/i,
+      name: /Submit XYZ Report/i,
     })[0];
     expect(submitButton).toBeInTheDocument();
   });
@@ -184,7 +184,7 @@ describe("StatusTable with state user", () => {
     );
 
     render(
-      <MemoryRouter initialEntries={["/report/QMS/CO/mock-report-id"]}>
+      <MemoryRouter initialEntries={["/report/XYZ/CO/mock-report-id"]}>
         <Routes>
           <Route
             path="/report/:reportType/:state/:reportId"
@@ -195,7 +195,7 @@ describe("StatusTable with state user", () => {
     );
 
     const submitButton = screen.getByRole("button", {
-      name: /Submit QMS Report/i,
+      name: /Submit XYZ Report/i,
     });
     expect(submitButton).toBeDisabled();
   });
@@ -247,14 +247,14 @@ describe("StatusPage with Read only user", () => {
       }
     );
   });
-  it("should not render the Submit QMS Report button when user is read only", async () => {
+  it("should not render the Submit XYZ Report button when user is read only", async () => {
     render(
       <MemoryRouter>
         <StatusTableElement />
       </MemoryRouter>
     );
 
-    const submitButton = screen.queryByText("Submit QMS Report");
+    const submitButton = screen.queryByText("Submit XYZ Report");
     expect(submitButton).not.toBeInTheDocument();
   });
 });

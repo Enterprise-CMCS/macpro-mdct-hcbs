@@ -12,25 +12,22 @@ describe("Test SubnavBar component", () => {
   test("SubnavBar is visible", () => {
     render(
       <RouterWrappedComponent>
-        <SubnavBar reportType="QMS" stateName={"PR"} />
+        <SubnavBar reportType="XYZ" stateName={"PR"} />
       </RouterWrappedComponent>
     );
-    expect(screen.getByText("PR QMS Report")).toBeVisible();
+    expect(screen.getByText("PR XYZ Report")).toBeVisible();
     expect(screen.getByRole("link", { name: "Leave form" })).toBeVisible();
   });
 
-  test.each([
-    { type: ReportType.QMS, text: "QMS Report" },
-    { type: ReportType.TACM, text: "TACM Report" },
-    { type: ReportType.CI, text: "CI Report" },
-    { type: ReportType.PCP, text: "PCP Report" },
-    { type: ReportType.WWL, text: "WWL Report" },
-  ])("$type report type renders a title", ({ type, text }) => {
-    render(
-      <RouterWrappedComponent>
-        <SubnavBar reportType={type} stateName={"PR"} />
-      </RouterWrappedComponent>
-    );
-    expect(screen.getByText("PR " + text)).toBeVisible();
-  });
+  test.each([{ type: ReportType.XYZ, text: "XYZ Report" }])(
+    "$type report type renders a title",
+    ({ type, text }) => {
+      render(
+        <RouterWrappedComponent>
+          <SubnavBar reportType={type} stateName={"PR"} />
+        </RouterWrappedComponent>
+      );
+      expect(screen.getByText("PR " + text)).toBeVisible();
+    }
+  );
 });

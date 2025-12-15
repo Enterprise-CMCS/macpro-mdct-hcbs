@@ -25,7 +25,7 @@ describe("<Footer />", () => {
           name: "Department of Health and Human Services, USA",
         })
       ).toBeVisible();
-      expect(screen.getByRole("img", { name: "HCBS logo" })).toBeVisible();
+      expect(screen.getByRole("img", { name: "LABS logo" })).toBeVisible();
       expect(
         screen.getByRole("img", {
           name: "Medicaid.gov: Keeping America Healthy",

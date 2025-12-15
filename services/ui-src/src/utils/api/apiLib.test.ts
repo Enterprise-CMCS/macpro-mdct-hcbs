@@ -17,7 +17,7 @@ const mockOptions = {
   },
 };
 const requestObj = {
-  apiName: "hcbs",
+  apiName: "labs",
   path,
   options: mockOptions,
 };
@@ -31,32 +31,32 @@ describe("API lib", () => {
     const apiSpy = jest.spyOn(mockAmplifyApi, "post");
     await apiLib.post(path, mockOptions);
 
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
+    expect(apiSpy).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
   });
 
   test("Calling put should update the session timeout", async () => {
     const apiSpy = jest.spyOn(mockAmplifyApi, "put");
     await apiLib.put(path, mockOptions);
 
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
+    expect(apiSpy).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
   });
 
   test("Calling get should update the session timeout", async () => {
     const apiSpy = jest.spyOn(mockAmplifyApi, "get");
     await apiLib.get(path, mockOptions);
 
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
+    expect(apiSpy).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
   });
 
   test("Calling del should update the session timeout", async () => {
     const apiSpy = jest.spyOn(mockAmplifyApi, "del");
     await apiLib.del(path, mockOptions);
 
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
+    expect(apiSpy).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
   });
 
   test("API errors should be surfaced for handling", async () => {

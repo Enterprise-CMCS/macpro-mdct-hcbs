@@ -1,4 +1,4 @@
-import { HcbsReportState } from "types";
+import { ReportState } from "types";
 import {
   ElementType,
   MeasurePageTemplate,
@@ -34,12 +34,12 @@ jest.mock("../../api/requestMethods/report", () => ({
   putReport: jest.fn(),
 }));
 const testReport: Report = {
-  type: ReportType.QMS,
+  type: ReportType.XYZ,
   name: "plan id",
   year: 2026,
   options: {},
   state: "NJ",
-  id: "NJQMS123",
+  id: "NJXYZ123",
   status: ReportStatus.NOT_STARTED,
   archived: false,
   submissionCount: 0,
@@ -121,7 +121,7 @@ describe("reportActions", () => {
 
   describe("state/management/reportState: setPage", () => {
     test("updates the page info", () => {
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
       const result = setPage("req-measure-result", state);
       expect(result.currentPageId).toEqual("req-measure-result");
     });
@@ -229,7 +229,7 @@ describe("reportActions", () => {
         return JSON.parse(JSON.stringify(val));
       };
 
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
 
       const answers = { elements: [null, { answer: "ANSWERED" }] };
       const result = mergeAnswers(answers, state);
@@ -256,7 +256,7 @@ describe("reportActions", () => {
         return JSON.parse(JSON.stringify(val));
       };
 
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
       const response = resetMeasure("LTSS-1", state);
       const measure = response!.report!.pages[4] as MeasurePageTemplate;
       const reportingRadio = measure.elements[0] as RadioTemplate;
@@ -274,7 +274,7 @@ describe("reportActions", () => {
         return JSON.parse(JSON.stringify(val));
       };
 
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
       const response = clearMeasure("LTSS-1", state, {
         ["measure-reporting-radio"]: "no",
       });
@@ -294,7 +294,7 @@ describe("reportActions", () => {
         return JSON.parse(JSON.stringify(val));
       };
 
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
       const response = markPageComplete("LTSS-1", state);
       const measure = response!.report!.pages[4] as MeasurePageTemplate;
 
@@ -304,7 +304,7 @@ describe("reportActions", () => {
 
   describe("state/management/reportState: saveReport", () => {
     test("updates store on success", async () => {
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
       const result = await saveReport(state);
       expect(result?.lastSavedTime).toBeTruthy();
     });
@@ -316,7 +316,7 @@ describe("reportActions", () => {
         return JSON.parse(JSON.stringify(val));
       };
 
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
       const response = changeDeliveryMethods("LTSS-1", "MLTSS", state);
       const ffs = response.report?.pages.find(
         (page) => page.id === MeasureTemplateName["FFS-1"]
@@ -329,7 +329,7 @@ describe("reportActions", () => {
         return JSON.parse(JSON.stringify(val));
       };
 
-      const state = buildState(testReport, false) as HcbsReportState;
+      const state = buildState(testReport, false) as ReportState;
       const response = changeDeliveryMethods("LTSS-1", "FFS", state);
       const ffs = response.report?.pages.find(
         (page) => page.id === MeasureTemplateName["FFS-1"]

@@ -17,7 +17,7 @@ import {
 } from "types/report";
 
 const report = {
-  type: ReportType.QMS,
+  type: ReportType.XYZ,
   state: "NJ",
   name: "A Title",
   pages: [] as MeasurePageTemplate[],
@@ -37,7 +37,6 @@ jest.mock("../apiLib", () => ({
 const mockReport: ReportOptions = {
   name: "report name",
   year: 2026,
-  options: {} as ReportOptions["options"],
 };
 
 describe("utils/report", () => {

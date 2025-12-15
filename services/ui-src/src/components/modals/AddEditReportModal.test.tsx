@@ -28,7 +28,7 @@ const addModalComponent = (
   <RouterWrappedComponent>
     <AddEditReportModal
       activeState="AB"
-      reportType={"QMS"}
+      reportType={ReportType.XYZ}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -42,7 +42,7 @@ const editModalComponent = (
   <RouterWrappedComponent>
     <AddEditReportModal
       activeState="AB"
-      reportType={"CI"}
+      reportType={ReportType.XYZ}
       modalDisclosure={{
         isOpen: true,
         onClose: mockCloseHandler,
@@ -88,12 +88,8 @@ describe("Test Add Report Modal", () => {
   });
 
   test("Add Report Modal shows proper add contents", () => {
-    expect(
-      screen.getByText("Add new Quality Measure Set Report")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Quality Measure Set Report Name")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Add new XYZ Report")).toBeInTheDocument();
+    expect(screen.getByText("XYZ Report Name")).toBeInTheDocument();
     expect(screen.getByText("Start new")).toBeInTheDocument();
   });
 
@@ -110,9 +106,7 @@ describe("Test Edit Report Modal", () => {
   });
 
   test("Edit report modal shows the proper edit contents with editable name", () => {
-    expect(
-      screen.getByText("Edit Critical Incident Report")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Edit XYZ Report")).toBeInTheDocument();
     expect(screen.getByText("Save")).toBeInTheDocument();
     expect(screen.getByDisplayValue("report name thing")).toBeInTheDocument();
   });
@@ -125,15 +119,13 @@ describe("Test dropdown for year", () => {
 
   test("Assert dropdown options are rendered", () => {
     const dropdown = screen.getByRole("button", {
-      name: "2026 Select the quality measure set reporting year.",
+      name: "2026 Reporting Year",
     });
     expect(dropdown).toBeInTheDocument();
   });
 
   test("Simulate selecting a year", async () => {
-    const dropdown = screen.getAllByLabelText(
-      "Select the quality measure set reporting year."
-    )[0];
+    const dropdown = screen.getAllByLabelText("Reporting Year")[0];
     assert(dropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
@@ -147,14 +139,9 @@ describe("Test submit", () => {
   it("Simulate submitting modal", async () => {
     render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
-      name: "Quality Measure Set Report Name",
+      name: "XYZ Report Name",
     });
     await userEvent.type(nameTextbox, "mock-name");
-
-    const radioBtns = screen.getAllByLabelText("Yes");
-    for (const radio of radioBtns) {
-      await userEvent.click(radio);
-    }
 
     const submitBtn = screen.getByText("Start new");
     await userEvent.click(submitBtn);
@@ -167,7 +154,7 @@ describe("Test submit", () => {
     render(editModalComponent);
 
     const nameTextbox = screen.getByRole("textbox", {
-      name: "Critical Incident Report Name",
+      name: "XYZ Report Name",
     });
     expect(nameTextbox).toBeInTheDocument();
     await userEvent.type(nameTextbox, "mock-edit-report");
@@ -181,26 +168,23 @@ describe("Test submit", () => {
 });
 
 describe("Test AddEditReportModal types", () => {
-  test.each([
-    { type: ReportType.QMS, text: "Quality Measure Set Report" },
-    { type: ReportType.TACM, text: "TACM Report" },
-    { type: ReportType.CI, text: "Critical Incident Report" },
-    { type: ReportType.PCP, text: "Person-Centered Planning Report" },
-    { type: ReportType.WWL, text: "Waiver Waiting List Report" },
-  ])("$type report type renders a title", ({ type, text }) => {
-    render(
-      <RouterWrappedComponent>
-        <AddEditReportModal
-          activeState="AB"
-          reportType={type}
-          modalDisclosure={{
-            isOpen: true,
-            onClose: mockCloseHandler,
-          }}
-          reportHandler={mockReportHandler}
-        />
-      </RouterWrappedComponent>
-    );
-    expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
-  });
+  test.each([{ type: ReportType.XYZ, text: "XYZ Report" }])(
+    "$type report type renders a title",
+    ({ type, text }) => {
+      render(
+        <RouterWrappedComponent>
+          <AddEditReportModal
+            activeState="AB"
+            reportType={type}
+            modalDisclosure={{
+              isOpen: true,
+              onClose: mockCloseHandler,
+            }}
+            reportHandler={mockReportHandler}
+          />
+        </RouterWrappedComponent>
+      );
+      expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
+    }
+  );
 });

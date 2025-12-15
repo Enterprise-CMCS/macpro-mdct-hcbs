@@ -70,10 +70,10 @@ export const AdminBannerProvider = ({ children }: Props) => {
 
   useEffect(() => {
     let bannerActivity = false;
-    if (bannerData) {
+    if (bannerData && bannerData.startDate && bannerData.endDate) {
       bannerActivity = checkDateRangeStatus(
-        bannerData.startDate!,
-        bannerData.endDate!
+        bannerData.startDate,
+        bannerData.endDate
       );
     }
     setBannerActive(bannerActivity);

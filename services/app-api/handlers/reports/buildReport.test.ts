@@ -13,7 +13,7 @@ describe("Test create report handler", () => {
     jest.clearAllMocks();
   });
 
-  test("Test Successful create", async () => {
+  test("Successful create", async () => {
     const state = "PA" as StateAbbr;
     const user = {
       fullName: "James Holden",
@@ -27,14 +27,14 @@ describe("Test create report handler", () => {
       },
     } as ReportOptions;
     const report = await buildReport(
-      ReportType.QMS,
+      ReportType.XYZ,
       state,
       reportOptions,
       user
     );
 
     expect(report.state).toBe("PA");
-    expect(report.type).toBe(ReportType.QMS);
+    expect(report.type).toBe(ReportType.XYZ);
     expect(report.lastEditedBy).toBe("James Holden");
     expect(report.lastEditedByEmail).toBe("james.holden@test.com");
   });
@@ -45,7 +45,7 @@ describe("Test validation error", () => {
     jest.clearAllMocks();
   });
 
-  test("Test that a validation failure throws invalid request error", async () => {
+  test("that a validation failure throws invalid request error", async () => {
     // Manually throw validation error
     (validateReportPayload as jest.Mock).mockImplementationOnce(() => {
       throw new Error("you be havin some validatin errors");
@@ -62,8 +62,8 @@ describe("Test validation error", () => {
       options: {},
     } as ReportOptions;
 
-    expect(async () => {
-      await buildReport(ReportType.QMS, state, reportOptions, user);
-    }).rejects.toThrow("Invalid request");
+    await expect(
+      buildReport(ReportType.XYZ, state, reportOptions, user)
+    ).rejects.toThrow("Invalid request");
   });
 });

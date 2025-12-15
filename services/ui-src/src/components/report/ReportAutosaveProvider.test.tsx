@@ -48,7 +48,7 @@ describe("<UserProvider />", () => {
     expect(screen.getByText("Save Test")).toBeVisible();
   });
 
-  test("test autosave function", async () => {
+  test("autosave function", async () => {
     const saveButton = screen.getByRole("button", { name: "Save" });
     await userEvent.click(saveButton);
     await waitFor(() => expect(mockSaveReport).toHaveBeenCalled(), {

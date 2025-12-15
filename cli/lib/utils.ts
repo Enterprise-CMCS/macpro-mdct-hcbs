@@ -31,7 +31,6 @@ const buildUiEnvObject = (
 ): Record<string, string> => {
   if (stage === "localstack") {
     return {
-      SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
       API_URL: cfnOutputs.ApiUrl.replace("https", "http"),
       COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID!,
@@ -44,12 +43,12 @@ const buildUiEnvObject = (
       COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
       COGNITO_IDP_NAME: "Okta",
       POST_SIGNOUT_REDIRECT: "http://localhost:3000/",
+      STAGE: "local",
       REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT!,
     };
   }
 
   return {
-    SKIP_PREFLIGHT_CHECK: "true",
     API_REGION: region,
     API_URL: cfnOutputs.ApiUrl,
     COGNITO_IDENTITY_POOL_ID: cfnOutputs.CognitoIdentityPoolId,
@@ -61,12 +60,13 @@ const buildUiEnvObject = (
     COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId,
     COGNITO_IDP_NAME: "Okta",
     POST_SIGNOUT_REDIRECT: "https://test.home.idm.cms.gov/",
+    STAGE: stage,
     REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT!,
   };
 };
 
 export const runFrontendLocally = async (stage: string) => {
-  const outputs = await getCloudFormationStackOutputValues(`hcbs-${stage}`);
+  const outputs = await getCloudFormationStackOutputValues(`labs-${stage}`);
   const envVars = buildUiEnvObject(stage, outputs);
   await writeLocalUiEnvFile(envVars);
 

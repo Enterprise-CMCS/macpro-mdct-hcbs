@@ -3,7 +3,7 @@
  * This contains the root for logic for actions such as updating an answer, handling resetting, saving, etc.
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HcbsReportState } from "types";
+import { ReportState } from "types";
 import {
   FormPageTemplate,
   isMeasurePageTemplate,
@@ -34,7 +34,7 @@ export const buildState = (
   };
 
   const currentPageId = parentPage.childPageIds[parentPage.index];
-  const state: Partial<HcbsReportState> = {
+  const state: Partial<ReportState> = {
     report,
     pageMap,
     rootPage,
@@ -45,10 +45,7 @@ export const buildState = (
   return state;
 };
 
-export const setPage = (
-  targetPageId: string,
-  currentState: HcbsReportState
-) => {
+export const setPage = (targetPageId: string, currentState: ReportState) => {
   const parent = currentState.report?.pages.find((parentPage) =>
     parentPage?.childPageIds?.includes(targetPageId)
   );
@@ -102,7 +99,7 @@ export const deepEquals = (obj1: any, obj2: any): boolean => {
   }
 };
 
-export const mergeAnswers = (answers: any, state: HcbsReportState) => {
+export const mergeAnswers = (answers: any, state: ReportState) => {
   if (!state.report || !state.currentPageId) {
     return {};
   }
@@ -160,7 +157,7 @@ export const substitute = (
   return { report };
 };
 
-export const markPageComplete = (pageId: string, state: HcbsReportState) => {
+export const markPageComplete = (pageId: string, state: ReportState) => {
   if (!state.report) {
     return {};
   }
@@ -180,7 +177,7 @@ export const markPageComplete = (pageId: string, state: HcbsReportState) => {
  */
 export const clearMeasure = (
   measureId: string,
-  state: HcbsReportState,
+  state: ReportState,
   ignoreList: { [key: string]: string }
 ) => {
   if (!state.report) {
@@ -194,7 +191,7 @@ export const clearMeasure = (
 /**
  * Hard reset a measure back to the Not started state
  */
-export const resetMeasure = (measureId: string, state: HcbsReportState) => {
+export const resetMeasure = (measureId: string, state: ReportState) => {
   if (!state.report) {
     return {};
   }
@@ -214,7 +211,7 @@ export const resetMeasure = (measureId: string, state: HcbsReportState) => {
 export const changeDeliveryMethods = (
   measureId: string,
   selections: string,
-  state: HcbsReportState
+  state: ReportState
 ) => {
   if (!state.report || !state.currentPageId || selections === "both") {
     return {};
@@ -240,7 +237,7 @@ export const changeDeliveryMethods = (
 /**
  * Action saving a report to the api, updates errors or saved status
  */
-export const saveReport = async (state: HcbsReportState) => {
+export const saveReport = async (state: ReportState) => {
   if (!state.report) return {};
   try {
     await putReport(state.report); // Submit to API

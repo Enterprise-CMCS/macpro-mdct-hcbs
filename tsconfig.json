@@ -1,17 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "include": ["src"],
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "incremental": true,
-    "target": "es2023",
+    "target": "ES2023",
     "module": "nodenext",
-    "lib": [
-      "ES2023",
-      "dom"
-    ],
-    "jsx": "preserve",
-    "outDir": "build_dev",
-    "rootDir": "./",
+    "lib": ["ES2023"],
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -26,14 +20,11 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "node_modules",
-    ".cdk",
-    "./services/ui-src/*",
-    "./services/database/*",
-    "./tests/**/**.ts"
-  ]
+  "exclude": ["node_modules", ".cdk", "./services/ui-src/*", "./tests/**/**.ts"]
 }

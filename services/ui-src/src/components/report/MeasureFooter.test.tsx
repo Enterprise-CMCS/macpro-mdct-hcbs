@@ -23,7 +23,7 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockUseNavigate,
   useParams: jest.fn(() => ({
-    reportType: "QMS",
+    reportType: "XYZ",
     state: "CO",
     reportId: "mock-id",
   })),
@@ -59,7 +59,7 @@ describe("Measure Footer", () => {
       name: "Previous",
     });
     await userEvent.click(previousLink);
-    const prevRoute = "/report/QMS/CO/mock-id/req-measure-result";
+    const prevRoute = "/report/XYZ/CO/mock-id/req-measure-result";
     expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
     //click next
@@ -67,7 +67,7 @@ describe("Measure Footer", () => {
       name: "Next",
     });
     await userEvent.click(nextLink);
-    const nextRoute = "/report/QMS/CO/mock-id/mock-next-link";
+    const nextRoute = "/report/XYZ/CO/mock-id/mock-next-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(nextRoute);
 
     //click clear
@@ -93,7 +93,7 @@ describe("Measure Footer", () => {
       name: "Previous",
     });
     await userEvent.click(previousLink);
-    const prevRoute = "/report/QMS/CO/mock-id/mock-prev-link";
+    const prevRoute = "/report/XYZ/CO/mock-id/mock-prev-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
     //click complete section

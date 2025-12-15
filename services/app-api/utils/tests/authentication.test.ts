@@ -12,13 +12,13 @@ jest.mock("jwt-decode", () => {
   mockDecode = jest.fn();
   return {
     __esModule: true,
-    default: mockDecode,
+    jwtDecode: mockDecode,
   };
 });
 
 const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
 const mockToken = {
-  "custom:cms_roles": "other-role,mdcthcbs-state-user,another-role",
+  "custom:cms_roles": "other-role,mdctlabs-state-user,another-role",
   "custom:cms_state": "CO",
   email_verified: true,
   email: "stateuser@test.com",

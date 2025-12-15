@@ -5,7 +5,7 @@ import {
   MeasurePageTemplate,
 } from "types/report";
 import { ReactNode } from "react";
-import { BannerData, ErrorVerbiage, HcbsUser } from "types";
+import { BannerData, ErrorVerbiage, User } from "types";
 
 export interface AdminBannerState {
   bannerData: BannerData | undefined;
@@ -25,16 +25,16 @@ export interface AdminBannerState {
 }
 
 // initial user state
-export interface HcbsUserState {
+export interface UserState {
   // INITIAL STATE
-  user?: HcbsUser;
+  user?: User;
   showLocalLogins: boolean | undefined;
   // ACTIONS
-  setUser: (newUser?: HcbsUser) => void;
+  setUser: (newUser?: User) => void;
   setShowLocalLogins: (showLocalLogins: boolean) => void;
 }
 
-export interface HcbsReportState {
+export interface ReportState {
   // INITIAL STATE
   report?: Report;
   pageMap?: Map<string, number>;

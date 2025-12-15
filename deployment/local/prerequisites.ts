@@ -29,8 +29,8 @@ export class LocalPrerequisiteStack extends Stack {
       cidrBlock: "10.0.1.0/24",
     });
 
-    new secretsmanager.Secret(this, "HcbsDefaultSecret", {
-      secretName: "hcbs-default", // pragma: allowlist secret
+    new secretsmanager.Secret(this, "DefaultSecret", {
+      secretName: "labs-default", // pragma: allowlist secret
       secretObjectValue: {
         vpcName: SecretValue.unsafePlainText("localstack-dev"),
         brokerString: SecretValue.unsafePlainText("localstack"),
@@ -65,7 +65,7 @@ export class LocalPrerequisiteStack extends Stack {
 async function main() {
   const app = new App();
 
-  new LocalPrerequisiteStack(app, "hcbs-local-prerequisites");
+  new LocalPrerequisiteStack(app, "labs-local-prerequisites");
 }
 
 main();

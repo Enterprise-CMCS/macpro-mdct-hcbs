@@ -1,20 +1,16 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
-  aws_iam as iam,
   aws_logs as logs,
   aws_wafv2 as wafv2,
   aws_ec2 as ec2,
   CfnOutput,
-  Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda.js";
 import { WafConstruct } from "../constructs/waf.js";
 import { DynamoDBTable } from "../constructs/dynamodb-table.js";
 import { isLocalStack } from "../local/util.js";
-import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.js";
-import { isDefined } from "../utils/misc.js";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -33,24 +29,22 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     stage,
     project,
     isDev,
-    vpc,
-    kafkaAuthorizedSubnets,
+    // vpc,
+    // kafkaAuthorizedSubnets,
     brokerString,
     tables,
   } = props;
 
-  const service = "app-api";
-
-  const kafkaSecurityGroup = new ec2.SecurityGroup(
-    scope,
-    "KafkaSecurityGroup",
-    {
-      vpc,
-      description:
-        "Security Group for streaming functions. Egress all is set by default.",
-      allowAllOutbound: true,
-    }
-  );
+  // const kafkaSecurityGroup = new ec2.SecurityGroup(
+  //   scope,
+  //   "KafkaSecurityGroup",
+  //   {
+  //     vpc,
+  //     description:
+  //       "Security Group for streaming functions. Egress all is set by default.",
+  //     allowAllOutbound: true,
+  //   }
+  // );
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
@@ -58,7 +52,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
-    restApiName: `${stage}-app-api`,
+    restApiName: `${project}-${stage}`,
     deploy: true,
     cloudWatchRole: false,
     deployOptions: {
@@ -66,20 +60,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tracingEnabled: true,
       loggingLevel: apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
-      metricsEnabled: false,
-      throttlingBurstLimit: 5000,
-      throttlingRateLimit: 10000.0,
-      cachingEnabled: false,
-      cacheTtl: Duration.seconds(300),
-      cacheDataEncrypted: false,
       accessLogDestination: new apigateway.LogGroupLogDestination(logGroup),
-      accessLogFormat: apigateway.AccessLogFormat.custom(
-        "requestId: $context.requestId, ip: $context.identity.sourceIp, " +
-          "caller: $context.identity.caller, user: $context.identity.user, " +
-          "requestTime: $context.requestTime, httpMethod: $context.httpMethod, " +
-          "resourcePath: $context.resourcePath, status: $context.status, " +
-          "protocol: $context.protocol, responseLength: $context.responseLength"
-      ),
     },
     defaultCorsPreflightOptions: {
       allowOrigins: apigateway.Cors.ALL_ORIGINS,
@@ -103,49 +84,25 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     },
   });
 
-  const environment: any = {
+  const environment = {
+    NODE_OPTIONS: "--enable-source-maps",
+    STAGE: stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
   };
 
-  const additionalPolicies = [
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        "dynamodb:DeleteItem",
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:Query",
-        "dynamodb:UpdateItem",
-      ],
-      resources: tables.map((table) => table.table.tableArn),
-    }),
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        "dynamodb:DescribeStream",
-        "dynamodb:GetRecords",
-        "dynamodb:GetShardIterator",
-        "dynamodb:ListShards",
-        "dynamodb:ListStreams",
-      ],
-      resources: tables
-        .map((table) => table.table.tableStreamArn)
-        .filter(isDefined),
-    }),
-  ];
-
   const commonProps = {
     brokerString,
-    stackName: `${service}-${stage}`,
+    stackName: `${project}-${stage}`,
     api,
     environment,
-    additionalPolicies,
     isDev,
+    tables,
   };
 
+  // Banner handlers
   new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
     handler: "createBanner",
@@ -170,6 +127,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  // Report handlers
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
     handler: "createReport",
@@ -234,29 +192,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new LambdaDynamoEventSource(scope, "postKafkaData", {
-    entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
-    handler: "handler",
-    timeout: Duration.seconds(120),
-    memorySize: 2048,
-    retryAttempts: 2,
-    vpc,
-    vpcSubnets: { subnets: kafkaAuthorizedSubnets },
-    securityGroups: [kafkaSecurityGroup],
-    ...commonProps,
-    environment: {
-      topicNamespace: isDev ? `--${project}--${stage}--` : "",
-      ...commonProps.environment,
-    },
-    tables: tables.filter((table) => table.node.id === "QmsReports"),
-  });
-
   if (!isLocalStack) {
     const waf = new WafConstruct(
       scope,
       "ApiWafConstruct",
       {
-        name: `${project}-${stage}-${service}`,
+        name: `${project}-${stage}-api`,
         blockRequestBodyOver8KB: false,
       },
       "REGIONAL"

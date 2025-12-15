@@ -2,11 +2,11 @@ import { HttpResponse } from "../libs/response-lib";
 import { StateAbbr } from "../utils/constants";
 
 export enum UserRoles {
-  ADMIN = "mdcthcbs-bor", // "MDCT HCBS Business Owner Representative"
-  APPROVER = "mdcthcbs-appr", // "MDCT HCBS Approver"
-  HELP_DESK = "mdcthcbs-hd", // "MDCT HCBS Help Desk"
-  INTERNAL = "mdcthcbs-internal-user", // "MDCT HCBS Internal User"
-  STATE_USER = "mdcthcbs-state-user", // "MDCT HCBS State User"
+  ADMIN = "mdctlabs-bor", // "MDCT LABS Business Owner Representative"
+  APPROVER = "mdctlabs-appr", // "MDCT LABS Approver"
+  HELP_DESK = "mdctlabs-hd", // "MDCT LABS Help Desk"
+  INTERNAL = "mdctlabs-internal-user", // "MDCT LABS Internal User"
+  STATE_USER = "mdctlabs-state-user", // "MDCT LABS State User"
 }
 export const isUserRole = (role: string): role is UserRoles => {
   return Object.values(UserRoles).includes(role as UserRoles);

@@ -29,28 +29,28 @@ describe("utils/useBreakpoint", () => {
   });
 
   describe("makeMediaQueryClasses()", () => {
-    test("Mobile media query class calculated correctly ", () => {
+    test("Mobile media query class calculated correctly", () => {
       // return value if window.innerWidth <=35em|560px
       mockedUseMQ.mockImplementation((): any => [true, false, false, false]);
       const mqClasses = makeMediaQueryClasses();
       expect(mqClasses).toEqual("mobile");
     });
 
-    test("Tablet media query class calculated correctly ", () => {
+    test("Tablet media query class calculated correctly", () => {
       // return value if window.innerWidth >35em|560px && <=55em|880px
       mockedUseMQ.mockImplementation((): any => [false, true, false, false]);
       const mqClasses = makeMediaQueryClasses();
       expect(mqClasses).toEqual("tablet");
     });
 
-    test("Desktop media query class calculated correctly ", () => {
+    test("Desktop media query class calculated correctly", () => {
       // return value if window.innerWidth >55em|880px
       mockedUseMQ.mockImplementation((): any => [false, false, true, false]);
       const mqClasses = makeMediaQueryClasses();
       expect(mqClasses).toEqual("desktop");
     });
 
-    test("Ultrawide media query class calculated correctly ", () => {
+    test("Ultrawide media query class calculated correctly", () => {
       // return value if window.innerWidth >100em|1600px
       mockedUseMQ.mockImplementation((): any => [false, false, true, true]);
       const mqClasses = makeMediaQueryClasses();

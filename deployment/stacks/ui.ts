@@ -36,7 +36,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
      */
   } = props;
 
-  // S3 Bucket for UI hosting
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
     encryption: s3.BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY,
@@ -48,10 +47,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     | { enableLogging: boolean; logBucket: s3.Bucket }
     | undefined;
   if (!isDev) {
-    /*
-     * this bucket is not created for ephemeral environments because the delete of the bucket often fails because it doesn't decouple from the distribution gracefully
-     * should you need to test these parts of the infrastructure out the easiest method is to add your branch's name to the isDev definition in deployment-config.ts
-     */
+    // this bucket is not created for ephemeral environments because the delete of the bucket often fails because it doesn't decouple from the distribution gracefully
+    // should you need to test these parts of the infrastructure out the easiest method is to add your branch's name to the isDev definition in deployment-config.ts
     const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
       encryption: s3.BucketEncryption.S3_MANAGED,
       publicReadAccess: false,
@@ -113,6 +110,11 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     }
   );
 
+  const cachePolicy = new cloudfront.CachePolicy(scope, "CustomCachePolicy", {
+    queryStringBehavior: cloudfront.CacheQueryStringBehavior.all(),
+    cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+  });
+
   const distribution = new cloudfront.Distribution(
     scope,
     "CloudFrontDistribution",
@@ -130,7 +132,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
           cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(uiBucket),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        cachePolicy,
         compress: true,
         responseHeadersPolicy: securityHeadersPolicy,
       },
@@ -147,9 +149,11 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       priceClass: cloudfront.PriceClass.PRICE_CLASS_ALL,
     }
   );
+
   distribution.applyRemovalPolicy(
     isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN
   );
+
   if (!isLocalStack) {
     const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
     distribution.attachWebAclId(waf.webAcl.attrArn);
@@ -158,10 +162,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
   return {
-    cloudfrontDistributionId: distribution.distributionId,
     distribution,
     applicationEndpointUrl,
-    s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
 }

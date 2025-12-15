@@ -3,7 +3,7 @@ import { isReportType } from "./reports";
 describe("Report type utilities", () => {
   describe("isReportType", () => {
     it("should accept valid report types", () => {
-      expect(isReportType("QMS")).toBe(true);
+      expect(isReportType("XYZ")).toBe(true);
     });
 
     it("should reject unknown report types", () => {
