@@ -88,6 +88,15 @@ export const AddEditReportModal = ({
     setFormData(formDataForReport(selectedReport));
   }, [selectedReport, modalDisclosure.isOpen]);
 
+  useEffect(() => {
+    setErrorMessage(formData.reportTitle).then((errorMessage) => {
+      setErrorData((prevErrorData) => ({
+        ...prevErrorData,
+        reportTitle: errorMessage,
+      }));
+    });
+  }, [formData.reportTitle]);
+
   const doesReportNameExist = async (value: string) => {
     let existingReports = await getReportsForState(reportType, activeState);
     const doesReportNameAlreadyExist = existingReports.filter(
@@ -101,6 +110,9 @@ export const AddEditReportModal = ({
   };
 
   const setErrorMessage = async (value: string): Promise<string> => {
+    if (!value) {
+      return ErrorMessages.requiredResponse;
+    }
     const duplicateReportName = await doesReportNameExist(value);
     if (duplicateReportName) {
       return ErrorMessages.mustBeUniqueReportName;
@@ -108,18 +120,12 @@ export const AddEditReportModal = ({
     return "";
   };
 
-  const onChange = async (evt: { target: { name: string; value: string } }) => {
+  const onChange = (evt: { target: { name: string; value: string } }) => {
     const { name, value } = evt.target;
     const updatedFormData = {
       ...formData,
       [name]: value,
     };
-    setErrorData({
-      ...errorData,
-      [name]: value
-        ? await setErrorMessage(value)
-        : ErrorMessages.requiredResponse,
-    });
     setFormData(updatedFormData);
   };
 
