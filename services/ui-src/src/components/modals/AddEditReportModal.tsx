@@ -88,31 +88,24 @@ export const AddEditReportModal = ({
     setFormData(formDataForReport(selectedReport));
   }, [selectedReport, modalDisclosure.isOpen]);
 
-  const doesReportNameExist = async () => {
-    const userEnteredReportName = formData.reportTitle!;
-    if (!userEnteredReportName) return false;
-
+  const doesReportNameExist = async (value: string) => {
     let existingReports = await getReportsForState(reportType, activeState);
     const doesReportNameAlreadyExist = existingReports.filter(
       (report) =>
-        report.name === userEnteredReportName &&
-        report.year.toString() === verbiage.yearSelect
+        report.name === value &&
+        report.year === Number(formData.year) &&
+        report.id !== selectedReport?.id
     );
 
     return doesReportNameAlreadyExist.length > 0;
   };
 
   const setErrorMessage = async (value: string): Promise<string> => {
-    let errorMessage = "";
-    if (value === "") {
-      errorMessage = ErrorMessages.requiredResponse;
+    const duplicateReportName = await doesReportNameExist(value);
+    if (duplicateReportName) {
+      return ErrorMessages.mustBeUniqueReportName;
     }
-
-    const duplicateReportName = await doesReportNameExist();
-    if (duplicateReportName)
-      errorMessage = ErrorMessages.mustBeUniqueReportName;
-
-    return errorMessage;
+    return "";
   };
 
   const onChange = async (evt: { target: { name: string; value: string } }) => {
@@ -121,11 +114,12 @@ export const AddEditReportModal = ({
       ...formData,
       [name]: value,
     };
-    const reportTitleError = await setErrorMessage(value);
-    setErrorData((prev) => ({
-      ...prev,
-      [name]: reportTitleError,
-    }));
+    setErrorData({
+      ...errorData,
+      [name]: value
+        ? await setErrorMessage(value)
+        : ErrorMessages.requiredResponse,
+    });
     setFormData(updatedFormData);
   };
 

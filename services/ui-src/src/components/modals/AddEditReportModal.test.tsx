@@ -14,6 +14,13 @@ const mockCloseHandler = jest.fn();
 const mockReportHandler = jest.fn();
 const mockCreateReport = jest.fn();
 const mockUpdateReport = jest.fn();
+const mockGetReportsForState = jest.fn().mockResolvedValue([
+  {
+    id: "1",
+    name: "mock-name-a",
+    year: 2026,
+  } as LiteReport,
+]);
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -22,6 +29,7 @@ mockedUseStore.mockReturnValue(mockStateUserStore);
 jest.mock("utils/api/requestMethods/report", () => ({
   updateReport: () => mockUpdateReport(),
   createReport: () => mockCreateReport(),
+  getReportsForState: () => mockGetReportsForState(),
 }));
 
 const addModalComponent = (
@@ -177,6 +185,41 @@ describe("Test submit", () => {
 
     await userEvent.click(submitBtn);
     expect(mockUpdateReport).toHaveBeenCalled();
+  });
+});
+
+describe("Test in line validation", () => {
+  it("Simulate submitting modal with duplicate report name", async () => {
+    const user = userEvent.setup();
+    render(addModalComponent);
+    const nameTextbox = screen.getByRole("textbox", {
+      name: "Quality Measure Set Report Name",
+    }) as HTMLInputElement;
+
+    await user.click(nameTextbox);
+    await user.paste("mock-name-a");
+    await screen.findByText(
+      "A report with this name already exists during this reporting period."
+    );
+
+    expect(nameTextbox.value).toBe("mock-name-a");
+    expect(
+      screen.getByText(
+        "A report with this name already exists during this reporting period."
+      )
+    ).toBeInTheDocument();
+
+    const radioBtns = screen.getAllByLabelText("Yes");
+    for (const radio of radioBtns) {
+      await user.click(radio);
+    }
+
+    const submitBtn = screen.getByText("Start new");
+    await user.click(submitBtn);
+
+    // Form should not submit when there's a validation error
+    expect(mockReportHandler).not.toHaveBeenCalled();
+    expect(mockCreateReport).not.toHaveBeenCalled();
   });
 });
 
