@@ -178,6 +178,7 @@ button {
 // Tech Specs Link Styles
 .tech-spec-link {
   color: var(--chakra-colors-palette-primary);
+  text-decoration: underline;
   
   &:visited {
     color: var(--chakra-colors-palette-visited);
