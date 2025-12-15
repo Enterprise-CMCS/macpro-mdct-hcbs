@@ -177,16 +177,14 @@ button {
 
 // Tech Specs Link Styles
 .tech-spec-link {
-  color: #0071bc;
-  text-decoration: underline;
+  color: var(--chakra-colors-palette-primary);
   
   &:visited {
-    color: #4c2c92;
+    color: var(--chakra-colors-palette-visited);
   }
   
   &:hover {
-    text-decoration: none;
-    color: #004f84;
+    color: var(--chakra-colors-palette-primary_darker);
   }
 }
 
