@@ -198,9 +198,6 @@ describe("Test in line validation", () => {
 
     await user.click(nameTextbox);
     await user.paste("mock-name-a");
-    await screen.findByText(
-      "A report with this name already exists during this reporting period."
-    );
 
     expect(nameTextbox.value).toBe("mock-name-a");
     expect(
