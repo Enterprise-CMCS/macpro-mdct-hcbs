@@ -30,7 +30,6 @@
     "forceConsistentCasingInFileNames": true
   },
   "exclude": [
-    "node_modules",
     ".cdk",
     "./services/ui-src/*",
     "./services/database/*",
