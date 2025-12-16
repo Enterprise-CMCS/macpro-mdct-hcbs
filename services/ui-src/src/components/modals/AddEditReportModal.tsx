@@ -102,14 +102,14 @@ export const AddEditReportModal = ({
 
   const doesReportNameExist = async (value: string) => {
     let existingReports = await getReportsForState(reportType, activeState);
-    const doesReportNameAlreadyExist = existingReports.filter(
+    const doesReportNameAlreadyExist = existingReports.some(
       (report) =>
         report.name === value &&
         report.year === Number(formData.year) &&
         report.id !== selectedReport?.id
     );
 
-    return doesReportNameAlreadyExist.length > 0;
+    return doesReportNameAlreadyExist;
   };
 
   const setErrorMessage = async (value: string): Promise<string> => {
