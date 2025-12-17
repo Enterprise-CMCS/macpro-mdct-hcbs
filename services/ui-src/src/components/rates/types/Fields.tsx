@@ -14,6 +14,7 @@ import {
   validateNumber,
 } from "utils/validation/inputValidation";
 import { ExportRateTable } from "components/export/ExportedReportTable";
+import { ErrorMessages } from "../../../constants";
 
 export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const { disabled, updateElement } = props;
@@ -45,6 +46,14 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     const newErrors = structuredClone(errors);
     newDisplayValue[fieldType] = stringValue;
     newErrors[fieldType] = errorMessage;
+    if (parseNumber(newDisplayValue.denominator) === 0) {
+      if (parseNumber(newDisplayValue.actualCount) !== 0) {
+        newErrors.actualCount = ErrorMessages.denomenatorZero;
+      }
+      if (parseNumber(newDisplayValue.expectedCount) !== 0) {
+        newErrors.expectedCount = ErrorMessages.denomenatorZero;
+      }
+    }
 
     return { displayValue: newDisplayValue, errors: newErrors };
   };
@@ -67,6 +76,15 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 
     if (canDivide && expectedCount !== undefined) {
       expectedRate = expectedCount / denominator;
+    }
+
+    if (denominator === 0) {
+      if (actualCount === 0) {
+        actualRate = 0;
+      }
+      if (expectedCount === 0) {
+        expectedRate = 0;
+      }
     }
 
     return {
