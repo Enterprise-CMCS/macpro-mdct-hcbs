@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import "source-map-support/register";
 import { App, DefaultStackSynthesizer, Stack, Tags } from "aws-cdk-lib";
-import { ParentStack } from "./stacks/parent";
-import { determineDeploymentConfig } from "./deployment-config";
+import { ParentStack } from "./stacks/parent.js";
+import { determineDeploymentConfig } from "./deployment-config.js";
 
 async function main() {
   const app = new App({
@@ -29,15 +30,16 @@ async function main() {
 
   if (stage == "bootstrap") {
     new Stack(app, `${config.project}-${stage}`, {});
-  } else {
-    new ParentStack(app, `${config.project}-${stage}`, {
-      ...config,
-      env: {
-        account: process.env.CDK_DEFAULT_ACCOUNT,
-        region: process.env.CDK_DEFAULT_REGION,
-      },
-    });
+    return;
   }
+
+  new ParentStack(app, `${config.project}-${stage}`, {
+    ...config,
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: "us-east-1",
+    },
+  });
 }
 
 main();

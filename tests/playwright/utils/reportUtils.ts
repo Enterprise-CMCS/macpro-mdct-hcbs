@@ -101,5 +101,4 @@ export const notReporting = async (measure: string, page: Page) => {
   ).toBeEnabled();
 
   await page.getByRole("button", { name: "Complete measure" }).click();
-  await page.getByRole("button", { name: "Return to Required" }).click();
 };

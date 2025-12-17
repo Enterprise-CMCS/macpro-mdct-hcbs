@@ -243,7 +243,7 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
           },
           {
             indicator: `${field.label} Rate (${assess.label})`,
-            response: rate?.rate,
+            response: stringifyResult(rate?.rate),
             helperText: "Auto-calculates",
           },
         ],
