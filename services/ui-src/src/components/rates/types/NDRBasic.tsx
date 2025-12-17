@@ -91,8 +91,8 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     const denominator = parseNumber(newDisplayValue.denominator);
     if (denominator === 0 && numerator === 0) {
       return {
-        numerator: removeNoise(numerator),
-        denominator: removeNoise(denominator),
+        numerator: 0,
+        denominator: 0,
         rate: 0,
       };
     }
