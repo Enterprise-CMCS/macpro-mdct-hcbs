@@ -76,7 +76,7 @@ if [ "$LOCAL" = true ]; then
 fi
 
 FROZEN_FLAG=""
-if [ "$CI" = "true" ]; then
+if [ "${CI:-}" = "true" ]; then
     FROZEN_FLAG="--frozen-lockfile"
 fi
 

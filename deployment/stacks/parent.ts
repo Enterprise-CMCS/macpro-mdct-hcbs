@@ -53,13 +53,15 @@ export class ParentStack extends Stack {
       kafkaAuthorizedSubnets,
     });
 
-    /*
-     * For local dev, the LocalStack container will host the database and API.
-     * The UI will self-host, so we don't need to tell CDK anything about it.
-     * Also, we skip authorization locally. So we don't set up Cognito,
-     * or configure the API to interact with it. Therefore, we're done.
-     */
-    if (isLocalStack) return;
+    if (isLocalStack) {
+      /*
+       * For local dev, the LocalStack container will host the database and API.
+       * The UI will self-host, so we don't need to tell CDK anything about it.
+       * Also, we skip authorization locally. So we don't set up Cognito,
+       * or configure the API to interact with it. Therefore, we're done.
+       */
+      return;
+    }
 
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents(commonProps);
@@ -115,28 +117,42 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
     },
   };
 
-  const cdkArtifactPatterns = [
-    "Custom::S3AutoDeleteObjectsCustomResourceProvider",
-    "Custom::CDKBucketDeployment",
-    "AWSCDKTriggerCustomResourceProvider",
-    "AWS679f53fac002430cb0da5b7982bd2287",
-  ];
+  const adddenyCreateLogGroupPolicy = (
+    role: iam.CfnRole,
+    policyIndex?: number
+  ) => {
+    const path =
+      policyIndex !== undefined ? `Policies.${policyIndex}` : "Policies";
+    role.addPropertyOverride(
+      path,
+      policyIndex !== undefined
+        ? denyCreateLogGroupPolicy
+        : [denyCreateLogGroupPolicy]
+    );
+  };
 
-  for (const pattern of cdkArtifactPatterns) {
-    const provider = stack.node.tryFindChild(pattern);
-    const role = provider?.node.tryFindChild("Role") as iam.CfnRole;
-    if (role) {
-      role.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
-    }
+  const findRole = (parent: Construct | undefined, childId = "Role") =>
+    parent?.node.tryFindChild(childId) as iam.CfnRole | undefined;
+
+  // S3 auto-delete objects provider
+  const s3Provider = stack.node.tryFindChild(
+    "Custom::S3AutoDeleteObjectsCustomResourceProvider"
+  );
+  const s3Role = findRole(s3Provider);
+  if (s3Role) {
+    adddenyCreateLogGroupPolicy(s3Role);
   }
 
-  stack.node.findAll().forEach((c) => {
-    if (!c.node.id.startsWith("BucketNotificationsHandler")) return;
-
-    const role = c.node.tryFindChild("Role");
-    const cfnRole = role?.node.tryFindChild("Resource") as iam.CfnRole;
-    if (cfnRole) {
-      cfnRole.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+  // AWSCDK Trigger provider (used by DeployTimeSubstitutedFile)
+  // Has existing inline policy at index 0, so we add at index 1
+  const triggerProviderIds = [
+    "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider",
+  ];
+  for (const id of triggerProviderIds) {
+    const triggerRole = findRole(stack.node.tryFindChild(id));
+    if (triggerRole) {
+      adddenyCreateLogGroupPolicy(triggerRole, 1);
+      break;
     }
-  });
+  }
 }
