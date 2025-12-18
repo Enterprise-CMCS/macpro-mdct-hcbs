@@ -29,9 +29,7 @@ rules:
   no-console: error
   no-empty: error
   no-extra-semi: error
-  multiline-comment-style:
-    - error
-    - starred-block
+  multiline-comment-style: off
 
 overrides:
   - files:
