@@ -50,7 +50,7 @@ repos:
         pass_filenames: true
       - id: branch-name-validation
         name: branch-name-validation
-        entry: .github/branchNameValidation.sh
+        entry: .github/branchNameValidation.ts
         language: script
         pass_filenames: false
       - id: typescript-check-cdk
@@ -80,6 +80,6 @@ repos:
         pass_filenames: false
       - id: validate-commit-msg
         name: validate-commit-msg
-        entry: .github/validateCommitMessage.sh
+        entry: .github/validateCommitMessage.ts
         language: script
         stages: [commit-msg]

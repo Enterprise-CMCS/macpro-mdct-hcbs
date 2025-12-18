@@ -44,7 +44,7 @@ async function run() {
     })
   );
   if (response.$metadata.httpStatusCode === 200) {
-    console.log("WAF IP Set updated"); // eslint-disable-line no-console
+    console.log("WAF IP Set updated");
   }
 }
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Octokit } from "@octokit/rest";
 import { createActionAuth } from "@octokit/auth-action";
@@ -31,7 +32,7 @@ async function run() {
     body: "This PR was created automatically via Octokit",
     draft: true,
   });
-  console.log(`✅ Pull request created: ${pr.html_url}`); // eslint-disable-line no-console
+  console.log(`✅ Pull request created: ${pr.html_url}`);
   await octokit.issues.addLabels({
     owner,
     repo,

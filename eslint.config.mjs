@@ -70,7 +70,7 @@ export default [
   },
   // Allow console in CLI, deployment, and tests
   {
-    files: ["tests/**/*", "cli/**", "deployment/**"],
+    files: ["tests/**/*", "cli/**", "deployment/**", ".github/**"],
     rules: {
       "no-console": "off",
     },
