@@ -46,12 +46,19 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     const newErrors = structuredClone(errors);
     newDisplayValue[fieldType] = stringValue;
     newErrors[fieldType] = errorMessage;
+
     if (parseNumber(newDisplayValue.denominator) === 0) {
       if (parseNumber(newDisplayValue.actualCount) !== 0) {
-        newErrors.actualCount = ErrorMessages.denomenatorZero;
+        newErrors.actualCount = ErrorMessages.denomenatorZero(
+          labels.actualCount,
+          labels.denominator
+        );
       }
       if (parseNumber(newDisplayValue.expectedCount) !== 0) {
-        newErrors.expectedCount = ErrorMessages.denomenatorZero;
+        newErrors.expectedCount = ErrorMessages.denomenatorZero(
+          labels.expectedCount,
+          labels.denominator
+        );
       }
     }
 

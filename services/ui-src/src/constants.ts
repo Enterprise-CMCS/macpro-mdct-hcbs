@@ -9,7 +9,8 @@ export const ErrorMessages = {
   mustBeANumber: "Response must be a number",
   requiredResponse: "A response is required",
   mustBeAnEmail: "Response must be a valid email address",
-  denomenatorZero: "Numerator must be 0 when the denominator is 0",
+  denomenatorZero: (numerator: string, denominator: string) =>
+    `${numerator} must be 0 when the ${denominator} is 0`,
   mustBeUniqueReportName:
     "A report with this name already exists during this reporting period.",
 } as const;

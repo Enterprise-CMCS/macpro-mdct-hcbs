@@ -22,7 +22,7 @@ import {
   ExportedReportTable,
   ExportRateTable,
 } from "components/export/ExportedReportTable";
-import { autoPopulatedText } from "../../../constants";
+import { autoPopulatedText, ErrorMessages } from "../../../constants";
 
 export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
   const { disabled, element, updateElement } = props;
@@ -71,6 +71,17 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
       newErrorObject.rates[assessIndex!][fieldType] = errorMessage;
     }
 
+    if (parseNumber(newDisplayValue.denominator) === 0) {
+      for (const [index, rate] of newDisplayValue.rates.entries()) {
+        if (parseNumber(rate.numerator) !== 0) {
+          newErrorObject.rates[index].numerator = ErrorMessages.denomenatorZero(
+            "Numerator",
+            "denominator"
+          );
+        }
+      }
+    }
+
     return { displayValue: newDisplayValue, errors: newErrorObject };
   };
 
@@ -83,6 +94,16 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
       rates: newDisplayValue.rates.map((rateObj) => {
         const performanceTarget = parseNumber(rateObj.performanceTarget);
         const numerator = parseNumber(rateObj.numerator);
+
+        if (denominator === 0 && numerator === 0) {
+          return {
+            id: rateObj.id,
+            performanceTarget: removeNoise(performanceTarget),
+            numerator: 0,
+            rate: 0,
+          };
+        }
+
         const canCompute = canDivide && numerator !== undefined;
         const rate = canCompute ? numerator / denominator : undefined;
 

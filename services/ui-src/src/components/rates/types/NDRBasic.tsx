@@ -72,7 +72,10 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
       parseNumber(newDisplayValue.numerator) !== 0
     ) {
       return {
-        [RateInputFieldNamesBasic.numerator]: ErrorMessages.denomenatorZero,
+        [RateInputFieldNamesBasic.numerator]: ErrorMessages.denomenatorZero(
+          "Numerator",
+          "denominator"
+        ),
         [RateInputFieldNamesBasic.denominator]: "",
       };
     } else {
