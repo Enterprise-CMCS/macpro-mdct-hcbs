@@ -20,6 +20,8 @@ jobs:
 
       - name: Install and update lockfile
         run: ./run install
+        env:
+          CI: "" # empty string to intentionally run yarn install without frozen lockfile
 
       - name: Commit changes
         run: |
