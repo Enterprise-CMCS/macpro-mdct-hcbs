@@ -127,6 +127,33 @@ describe("<NDRBasic />", () => {
       const result = screen.getByRole("textbox", { name: "Result" });
       expect(result).toHaveValue("0.2");
     });
+
+    test("Error should show if the denominator is 0 and the numerator is not 0", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "4");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "0");
+
+      expect(
+        screen.getByText("Numerator must be 0 when the denominator is 0")
+      ).toBeVisible();
+    });
+
+    test("Rate should be 0 if both numerator and denominator are 0", async () => {
+      render(<NdrBasicWrapper template={mockedElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "0");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "0");
+
+      const result = screen.getByRole("textbox", { name: "Result" });
+      expect(result).toHaveValue("0.00");
+    });
   });
 
   describe("Miniminum Performance Rate Alerts", () => {
