@@ -25,13 +25,16 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    if (checkbox.answer?.includes(value))
-      checkbox.answer = checkbox.answer.filter((id) => id != value);
-    else checkbox.answer?.push(value);
+    let newValue = [...(checkbox.answer ?? [])];
+    if (newValue.includes(value))
+      newValue = newValue.filter((id) => id != value);
+    else {
+      newValue = [...newValue, value];
+    }
 
-    const newDisplayValue = formatChoices(checkbox.choices, checkbox.answer);
+    const newDisplayValue = formatChoices(checkbox.choices, newValue);
     setDisplayValue(newDisplayValue);
-    props.updateElement({ answer: checkbox.answer });
+    props.updateElement({ answer: newValue });
   };
 
   const labelText = checkbox.label;
