@@ -87,6 +87,33 @@ describe("<NDR />", () => {
       const rate = screen.getByRole("textbox", { name: "Rate" });
       expect(rate).toHaveValue("0.00");
     });
+
+    test("Error should show if the denominator is 0 and the numerator is not 0", async () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "4");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "0");
+
+      expect(
+        screen.getByText("Numerator must be 0 when the denominator is 0")
+      ).toBeVisible();
+    });
+
+    test("Rate should be 0 if both numerator and denominator are 0", async () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "0");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "0");
+
+      const result = screen.getByRole("textbox", { name: "Rate" });
+      expect(result).toHaveValue("0.00");
+    });
   });
 
   testA11y(<NdrWrapper template={mockedPerformanceElement} />);
