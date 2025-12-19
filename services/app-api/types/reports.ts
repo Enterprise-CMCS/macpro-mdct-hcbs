@@ -34,6 +34,13 @@ export interface CMIT {
   dataSource: DataSource;
 }
 
+export interface WAIVER {
+  state: StateAbbr;
+  controlNumber?: string;
+  programTitle: string;
+  waiverType: WaiverType;
+}
+
 export interface DependentPageInfo {
   key: string;
   linkText: string;
@@ -546,6 +553,14 @@ export enum DataSource {
   Hybrid = "Hybrid",
   RecordReview = "RecordReview",
   Survey = "Survey",
+}
+
+export enum WaiverType{
+  WAVIER1915C = "1915(c) waiver",
+  SPA1915J = "1915(j) SPA",
+  SPA1915I = "1915(i) SPA",
+  SPA1015K = "1915(k) SPA",
+  DEMO1115 = "1115 Demonstration"
 }
 
 export enum MeasureSteward {
