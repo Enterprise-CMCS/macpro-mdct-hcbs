@@ -1,6 +1,6 @@
+import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { useState } from "react";
 import { CheckboxTemplate, ChoiceTemplate } from "types";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
