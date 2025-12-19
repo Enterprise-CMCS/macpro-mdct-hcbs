@@ -35,6 +35,7 @@ export interface CMIT {
 }
 
 export interface WAIVER {
+  id: string;
   state: StateAbbr;
   controlNumber?: string;
   programTitle: string;
@@ -166,6 +167,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
+  waiverInfo?: WAIVER[];
 }
 
 export type ReportMeasureConfig = {
@@ -244,6 +246,7 @@ export enum ElementType {
   Accordion = "accordion",
   Paragraph = "paragraph",
   Radio = "radio",
+  Checkbox = "checkbox",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -273,6 +276,7 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | CheckboxTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
@@ -415,6 +419,16 @@ export type RadioTemplate = {
   clickAction?: string;
 };
 
+export type CheckboxTemplate = {
+  type: ElementType.Checkbox;
+  id:string;
+  label:string;
+  choices: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string[];
+  required: boolean;
+}
+
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
@@ -556,7 +570,7 @@ export enum DataSource {
 }
 
 export enum WaiverType{
-  WAVIER1915C = "1915(c) waiver",
+  WAIVER1915C = "1915(c) waiver",
   SPA1915J = "1915(j) SPA",
   SPA1915I = "1915(i) SPA",
   SPA1015K = "1915(k) SPA",

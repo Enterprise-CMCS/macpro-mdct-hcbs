@@ -79,6 +79,15 @@ export const ciReportTemplate: ReportBase = {
             },
           ],
         },
+        {
+          type: ElementType.Checkbox,
+          id: "waivers-not-included",
+          label:
+            "Deselect all programs and waivers are not included in this reporting period?",
+          choices: [],
+          helperText: "Deselect all that do not apply.",
+          required: true,
+        },
       ],
     },
     {

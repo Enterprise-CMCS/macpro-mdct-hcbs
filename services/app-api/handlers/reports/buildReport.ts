@@ -2,6 +2,7 @@ import KSUID from "ksuid";
 import {
   getReportTemplate,
   getCmitInfo,
+  getWaiverInfo,
 } from "../../forms/yearlyFormSelection";
 import {
   Report,
@@ -14,6 +15,8 @@ import {
   CMIT,
   PageStatus,
   isReportWithMeasuresTemplate,
+  WAIVER,
+  ElementType,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -29,6 +32,7 @@ export const buildReport = async (
   const year = reportOptions.year;
   const template = getReportTemplate(reportType, year);
   const cmitList = getCmitInfo(year);
+  const waiverList = getWaiverInfo(year, state);
 
   const report: Report = {
     state: state,
@@ -77,6 +81,35 @@ export const buildReport = async (
       );
       report.pages.push(parentPage, ...childPages);
     }
+  }
+
+  //certain checkbox forms that utilize waivers need to have their checkboxes generate during form generation
+  if (report.type === ReportType.CI) {
+    const newPages = [...report.pages].map((page) => {
+      if (!page.elements) return page;
+
+      const waiverIndex = page.elements.findIndex(
+        (element) => element.id == "waivers-not-included"
+      );
+      if (
+        waiverIndex > -1 &&
+        page.elements[waiverIndex].type === ElementType.Checkbox
+      ) {
+        page.elements[waiverIndex].choices = waiverList.map((waiver) => {
+          return {
+            label: waiver.programTitle,
+            value: waiver.id,
+            checked: true,
+          };
+        });
+        page.elements[waiverIndex].answer = waiverList.map(
+          (waiver) => waiver.id
+        );
+      }
+
+      return page;
+    });
+    report.pages = newPages;
   }
 
   /**
