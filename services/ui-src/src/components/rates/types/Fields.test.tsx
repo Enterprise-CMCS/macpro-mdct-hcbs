@@ -55,6 +55,10 @@ describe("<Fields />", () => {
     const getInputWithOptionalField = (fieldId: LengthOfStayField) => {
       return screen.getByText((content) => content.startsWith(labels[fieldId]));
     };
+
+    const enterValue = async (fieldId: LengthOfStayField, value: string) => {
+      await act(() => userEvent.type(getInput(fieldId), value));
+    };
     test("Fields are visible, and disabled appropriately", async () => {
       render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
       for (let fieldId of Object.keys(labels)) {
@@ -85,10 +89,6 @@ describe("<Fields />", () => {
     });
 
     test("Fields should auto-calculate", async () => {
-      const enterValue = async (fieldId: LengthOfStayField, value: string) => {
-        await act(() => userEvent.type(getInput(fieldId), value));
-      };
-
       render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 
       await enterValue("actualCount", "1");
@@ -98,6 +98,29 @@ describe("<Fields />", () => {
 
       expect(getInput("actualRate")).toHaveValue("0.5");
       expect(getInput("expectedRate")).toHaveValue("0.5");
+    });
+
+    test("Error should show if the denominator is 0", async () => {
+      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+
+      await enterValue("denominator", "0");
+
+      expect(
+        screen.getByText(
+          `${mockedPerformanceElement.labels.actualCount} must be 0 when the ${mockedPerformanceElement.labels.denominator} is 0`
+        )
+      ).toBeVisible();
+    });
+
+    test("Rate should be 0 if both numerator and denominator are 0", async () => {
+      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+
+      await enterValue("actualCount", "0");
+      await enterValue("denominator", "0");
+      await enterValue("expectedCount", "0");
+
+      expect(getInput("actualRate")).toHaveValue("0.00");
+      expect(getInput("expectedRate")).toHaveValue("0.00");
     });
   });
 
