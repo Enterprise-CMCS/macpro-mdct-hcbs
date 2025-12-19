@@ -15,7 +15,6 @@ import {
   CMIT,
   PageStatus,
   isReportWithMeasuresTemplate,
-  WAIVER,
   ElementType,
 } from "../../types/reports";
 import { User } from "../../types/types";

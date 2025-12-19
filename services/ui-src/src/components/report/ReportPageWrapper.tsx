@@ -16,7 +16,7 @@ import { currentPageSelector } from "utils/state/selectors";
 
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
-import { ElementType, isReviewSubmitPage, PageElement, Report, ReportStatus, ReportType } from "types";
+import { isReviewSubmitPage, PageElement, ReportStatus } from "types";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 import { displayDivider } from "utils/state/reportLogic/reportActions";
 

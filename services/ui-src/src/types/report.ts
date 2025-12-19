@@ -371,13 +371,13 @@ export type RadioTemplate = {
 
 export type CheckboxTemplate = {
   type: ElementType.Checkbox;
-  id:string;
-  label:string;
+  id: string;
+  label: string;
   choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string[];
   required: boolean;
-}
+};
 
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;

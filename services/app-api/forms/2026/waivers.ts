@@ -1,7 +1,9 @@
 import { WAIVER, WaiverType } from "../../types/reports";
 
-//The ids are generate from https://shortunique.id/. For future updates, it would probably be a good idea to 
-// write a script to compare changes between the names to determine what stays and what is new
+//The ids are generate from https://shortunique.id/. For future updates, it would probably be a good idea to
+/* write a script to compare changes between the names to determine what stays and what is new
+ */
+
 export const WAIVER_LIST: WAIVER[] = [
   {
     id: "ayL8O0",

@@ -421,13 +421,13 @@ export type RadioTemplate = {
 
 export type CheckboxTemplate = {
   type: ElementType.Checkbox;
-  id:string;
-  label:string;
+  id: string;
+  label: string;
   choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string[];
   required: boolean;
-}
+};
 
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
@@ -569,12 +569,12 @@ export enum DataSource {
   Survey = "Survey",
 }
 
-export enum WaiverType{
+export enum WaiverType {
   WAIVER1915C = "1915(c) waiver",
   SPA1915J = "1915(j) SPA",
   SPA1915I = "1915(i) SPA",
   SPA1015K = "1915(k) SPA",
-  DEMO1115 = "1115 Demonstration"
+  DEMO1115 = "1115 Demonstration",
 }
 
 export enum MeasureSteward {
