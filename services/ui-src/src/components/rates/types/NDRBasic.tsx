@@ -55,16 +55,29 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     return newDisplayValue;
   };
 
-  const computeErrors = (input: HTMLInputElement) => {
+  const computeErrors = (
+    input: HTMLInputElement,
+    newDisplayValue: typeof displayValue
+  ) => {
     const fieldType = input.name as RateInputFieldNameBasic;
     const stringValue = input.value;
     const parsedValue = parseNumber(stringValue);
     let errorMessage;
-
     if (!stringValue) {
       errorMessage = ErrorMessages.requiredResponse;
     } else if (parsedValue === undefined) {
       errorMessage = ErrorMessages.mustBeANumber;
+    } else if (
+      parseNumber(newDisplayValue.denominator) === 0 &&
+      parseNumber(newDisplayValue.numerator) !== 0
+    ) {
+      return {
+        [RateInputFieldNamesBasic.numerator]: ErrorMessages.denomenatorZero(
+          "Numerator",
+          "denominator"
+        ),
+        [RateInputFieldNamesBasic.denominator]: "",
+      };
     } else {
       errorMessage = "";
     }
@@ -79,6 +92,13 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
     const numerator = parseNumber(newDisplayValue.numerator);
     const denominator = parseNumber(newDisplayValue.denominator);
+    if (denominator === 0 && numerator === 0) {
+      return {
+        numerator: 0,
+        denominator: 0,
+        rate: 0,
+      };
+    }
     const canCompute =
       numerator !== undefined && denominator !== undefined && denominator !== 0;
     const rate = canCompute
@@ -102,8 +122,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
     const newDisplayValue = updatedDisplayValue(event.target);
-    const newErrors = computeErrors(event.target);
-
+    const newErrors = computeErrors(event.target, newDisplayValue);
     // answer corresponds to the report data. Its values are numbers.
     const newAnswer = computeAnswer(newDisplayValue);
 
