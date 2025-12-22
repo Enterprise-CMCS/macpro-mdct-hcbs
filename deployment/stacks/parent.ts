@@ -14,7 +14,7 @@ import { createUiComponents } from "./ui.js";
 import { createApiComponents } from "./api.js";
 import { deployFrontend } from "./deployFrontend.js";
 import { isLocalStack } from "../local/util.js";
-import { createTopicsComponents } from "./topics.js";
+// import { createTopicsComponents } from "./topics.js";
 import { getSubnets } from "../utils/vpc.js";
 
 export class ParentStack extends Stack {
@@ -90,11 +90,11 @@ export class ParentStack extends Stack {
       value: applicationEndpointUrl,
     });
 
-    createTopicsComponents({
-      ...commonProps,
-      vpc,
-      kafkaAuthorizedSubnets,
-    });
+    // createTopicsComponents({
+    //   ...commonProps,
+    //   vpc,
+    //   kafkaAuthorizedSubnets,
+    // });
 
     if (isDev) {
       applyDenyCreateLogGroupPolicy(this);
@@ -117,41 +117,27 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
     },
   };
 
-  const adddenyCreateLogGroupPolicy = (
-    role: iam.CfnRole,
-    policyIndex?: number
-  ) => {
-    const path =
-      policyIndex !== undefined ? `Policies.${policyIndex}` : "Policies";
-    role.addPropertyOverride(
-      path,
-      policyIndex !== undefined
-        ? denyCreateLogGroupPolicy
-        : [denyCreateLogGroupPolicy]
-    );
-  };
+  const cdkArtifactPatterns = [
+    "Custom::S3AutoDeleteObjectsCustomResourceProvider",
+  ];
 
-  const findRole = (parent: Construct | undefined, childId = "Role") =>
-    parent?.node.tryFindChild(childId) as iam.CfnRole | undefined;
-
-  // S3 auto-delete objects provider
-  const s3Provider = stack.node.tryFindChild(
-    "Custom::S3AutoDeleteObjectsCustomResourceProvider"
-  );
-  const s3Role = findRole(s3Provider);
-  if (s3Role) {
-    adddenyCreateLogGroupPolicy(s3Role);
-  }
-
-  // AWSCDK Trigger provider (used by DeployTimeSubstitutedFile)
-  // Has existing inline policy at index 0, so we add at index 1
-  const triggerProviderIds = [
+  const cdkArtifactPatternsWithExistingPolicy = [
     "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider",
   ];
-  for (const id of triggerProviderIds) {
-    const triggerRole = findRole(stack.node.tryFindChild(id));
-    if (triggerRole) {
-      adddenyCreateLogGroupPolicy(triggerRole, 1);
+
+  for (const pattern of cdkArtifactPatterns) {
+    const provider = stack.node.tryFindChild(pattern);
+    const role = provider?.node.tryFindChild("Role") as iam.CfnRole;
+    if (role) {
+      role.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+    }
+  }
+
+  for (const pattern of cdkArtifactPatternsWithExistingPolicy) {
+    const provider = stack.node.tryFindChild(pattern);
+    const role = provider?.node.tryFindChild("Role") as iam.CfnRole;
+    if (role) {
+      role.addPropertyOverride("Policies.1", denyCreateLogGroupPolicy);
       break;
     }
   }
