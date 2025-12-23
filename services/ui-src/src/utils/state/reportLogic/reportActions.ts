@@ -71,6 +71,16 @@ export const setPage = (
 export const deepMerge = (obj1: any, obj2: any) => {
   const clone1 = structuredClone(obj1);
   const clone2 = structuredClone(obj2);
+
+  //check that if it's an array of strings, we want to not merge but replace completely
+  if (
+    Array.isArray(clone1) &&
+    Array.isArray(clone2) &&
+    typeof clone1[0] == "string"
+  ) {
+    return clone2;
+  }
+
   for (let key in clone2) {
     if (clone2[key] instanceof Object && clone1[key] instanceof Object) {
       clone1[key] = deepMerge(clone1[key], clone2[key]);
