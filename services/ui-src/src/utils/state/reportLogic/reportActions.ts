@@ -72,11 +72,11 @@ export const deepMerge = (obj1: any, obj2: any) => {
   const clone1 = structuredClone(obj1);
   const clone2 = structuredClone(obj2);
 
-  //check that if it's an array of strings, we want to not merge but replace completely
+  //check that if it's an array of numbers or strings, this is for checkbox values which are an array of strings
   if (
     Array.isArray(clone1) &&
     Array.isArray(clone2) &&
-    typeof clone1[0] == "string"
+    ["number", "string"].includes(typeof clone1[0])
   ) {
     return clone2;
   }
