@@ -33,6 +33,7 @@ import {
   NDRBasic,
   NDRFields,
   NDREnhanced,
+  CheckboxField,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -81,6 +82,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <AccordionElement {...{ disabled, element }} />;
       case ElementType.Radio:
         return <RadioField {...{ updateElement, disabled, element }} />;
+      case ElementType.Checkbox:
+        return <CheckboxField {...{ updateElement, disabled, element }} />;
       case ElementType.ButtonLink:
         return <ButtonLinkElement {...{ disabled, element }} />;
       case ElementType.MeasureTable:

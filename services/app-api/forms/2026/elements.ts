@@ -19,6 +19,7 @@ import {
   SubHeaderTemplate,
   TextAreaBoxTemplate,
   AlertTypes,
+  CheckboxTemplate,
 } from "../../types/reports";
 
 const REPORT_YEAR = 2026;
@@ -327,15 +328,18 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
+export const waiverListCheckboxField: CheckboxTemplate = {
+  type: ElementType.Checkbox,
+  id: "waivers-list-checkboxes",
+  label:
+    "Deselect all programs and waivers are not included in this reporting period?",
+  choices: [],
+  helperText: "Deselect all that do not apply.",
+  required: true,
+};
+
 export const whichProgramsWaivers: PageElement[] = [
-  {
-    type: ElementType.TextAreaField,
-    id: "measure-programs-text",
-    label: "Which programs and waivers are included?",
-    required: true,
-    helperText:
-      "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
-  } as TextAreaBoxTemplate,
+  waiverListCheckboxField,
   divider,
 ];
 

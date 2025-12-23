@@ -175,6 +175,7 @@ export enum ElementType {
   Accordion = "accordion",
   Paragraph = "paragraph",
   Radio = "radio",
+  Checkbox = "checkbox",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -204,6 +205,7 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | CheckboxTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
@@ -365,6 +367,16 @@ export type RadioTemplate = {
   required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
+};
+
+export type CheckboxTemplate = {
+  type: ElementType.Checkbox;
+  id: string;
+  label: string;
+  choices: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string[];
+  required: boolean;
 };
 
 export type ButtonLinkTemplate = {

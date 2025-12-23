@@ -14,6 +14,7 @@ import {
   beneficiariesRate,
   beneficiariesReviewedRate,
   exportToPDF,
+  waiverListCheckboxField,
 } from "../elements";
 
 export const pcpReportTemplate: ReportBase = {
@@ -51,30 +52,7 @@ export const pcpReportTemplate: ReportBase = {
           helperText:
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
-        {
-          type: ElementType.Radio,
-          id: "report-coverage-waivers-programs",
-          label:
-            "Does this report cover all the programs that are required under the relevant authorities?",
-          choices: [
-            { label: "Yes", value: "yes" },
-            {
-              label: "No",
-              value: "no",
-              checkedChildren: [
-                {
-                  type: ElementType.TextAreaField,
-                  id: "included-waivers-programs",
-                  label: "Which programs and waivers are included?",
-                  required: true,
-                  helperText:
-                    "Please specify all the 1915(c) waivers, 1915(i), 1915(j), and 1915(k) State plan benefits, as well as any 1115 demonstrations that include HCBS, that you are including in this report. Include the program name and control numbers in your response.",
-                },
-              ],
-            },
-          ],
-          required: true,
-        },
+        waiverListCheckboxField,
       ],
     },
     {

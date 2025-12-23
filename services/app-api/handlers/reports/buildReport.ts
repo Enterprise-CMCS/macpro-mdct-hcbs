@@ -2,6 +2,7 @@ import KSUID from "ksuid";
 import {
   getReportTemplate,
   getCmitInfo,
+  getWaiverInfo,
 } from "../../forms/yearlyFormSelection";
 import {
   Report,
@@ -14,11 +15,34 @@ import {
   CMIT,
   PageStatus,
   isReportWithMeasuresTemplate,
+  ElementType,
+  WAIVER,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { logger } from "../../libs/debug-lib";
 import { StateAbbr } from "../../utils/constants";
+
+const generateWaiverCheckboxes = (report: Report, waiverList: WAIVER[]) => {
+  return [...report.pages].map((page) => {
+    if (page.elements) {
+      const waiver = page.elements.find(
+        (element) => element.id == "waivers-list-checkboxes"
+      );
+      if (waiver && waiver.type === ElementType.Checkbox) {
+        waiver.choices = waiverList.map((waiver) => {
+          return {
+            label: `${waiver.waiverType}: ${waiver.controlNumber} ${waiver.programTitle}`,
+            value: waiver.id,
+            checked: true,
+          };
+        });
+        waiver.answer = waiverList.map((waiver) => waiver.id);
+      }
+    }
+    return page;
+  });
+};
 
 export const buildReport = async (
   reportType: ReportType,
@@ -29,6 +53,7 @@ export const buildReport = async (
   const year = reportOptions.year;
   const template = getReportTemplate(reportType, year);
   const cmitList = getCmitInfo(year);
+  const waiverList = getWaiverInfo(year, state);
 
   const report: Report = {
     state: state,
@@ -77,6 +102,15 @@ export const buildReport = async (
       );
       report.pages.push(parentPage, ...childPages);
     }
+  }
+
+  //certain checkbox forms that utilize waivers need to have their checkboxes generate during form generation
+  if (
+    [ReportType.CI, ReportType.PCP, ReportType.TACM, ReportType.QMS].includes(
+      report.type
+    )
+  ) {
+    report.pages = generateWaiverCheckboxes(report, waiverList);
   }
 
   /**
