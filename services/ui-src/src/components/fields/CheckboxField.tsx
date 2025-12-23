@@ -7,7 +7,7 @@ import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/C
 
 const formatChoices = (
   choices: ChoiceTemplate[],
-  answer: string[] | undefined
+  answer: string[]
 ): ChoiceProps[] => {
   return choices.map((choice) => {
     return {
@@ -20,18 +20,21 @@ const formatChoices = (
 
 export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   const checkbox = props.element;
-  const initialDisplayValue = formatChoices(checkbox.choices, checkbox.answer);
+  const initialDisplayValue = formatChoices(
+    checkbox.choices,
+    checkbox.answer ?? []
+  );
   const [displayValue, setDisplayValue] = useState(initialDisplayValue);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    let newValue = [...(checkbox.answer ?? [])];
-    if (newValue.includes(value))
-      newValue = newValue.filter((id) => id != value);
-    else {
-      newValue = [...newValue, value];
-    }
 
+    let set = new Set(checkbox.answer ?? []);
+
+    if (set.has(value)) set.delete(value);
+    else set.add(value);
+
+    const newValue = [...set];
     const newDisplayValue = formatChoices(checkbox.choices, newValue);
     setDisplayValue(newDisplayValue);
     props.updateElement({ answer: newValue });
