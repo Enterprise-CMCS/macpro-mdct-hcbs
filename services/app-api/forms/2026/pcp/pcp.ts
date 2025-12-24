@@ -11,10 +11,9 @@ import {
   didYouFollowSpecifications,
   divider,
   stateSamplingMethologyQuestion,
-  beneficiariesRate,
-  beneficiariesReviewedRate,
   exportToPDF,
 } from "../elements";
+import { beneficiariesRate, beneficiariesReviewedRate } from "./pcpElements";
 
 export const pcpReportTemplate: ReportBase = {
   type: ReportType.PCP,
