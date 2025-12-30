@@ -4,6 +4,7 @@ import { ElementType, NdrFieldsTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { NDRFields } from "./NDRFields";
 import { useState } from "react";
+import { ErrorMessages } from "../../../constants";
 
 const mockElementTemplate: NdrFieldsTemplate = {
   id: "mock-perf-id",
@@ -108,11 +109,14 @@ describe("<NDRFields />", () => {
         await act(async () => await userEvent.type(denom, "0"));
         expect(denom).toHaveValue("0");
 
-        const errors = screen.queryAllByText(
-          "Numerator must be 0 when the denominator is 0"
-        );
+        const errors = screen.queryAllByText(ErrorMessages.denominatorZero());
         expect(errors[0]).toBeVisible();
         expect(errors.length).toBe(3);
+
+        await act(async () => await userEvent.type(denom, "4"));
+        expect(
+          screen.queryByText(ErrorMessages.denominatorZero())
+        ).not.toBeInTheDocument();
       }
     });
   });

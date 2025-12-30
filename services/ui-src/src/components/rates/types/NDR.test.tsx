@@ -4,6 +4,7 @@ import { NDR } from "./NDR";
 import { ElementType, NdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
+import { ErrorMessages } from "../../../constants";
 
 const mockedPerformanceElement: NdrTemplate = {
   id: "mock-perf-id",
@@ -88,7 +89,26 @@ describe("<NDR />", () => {
       expect(rate).toHaveValue("0.00");
     });
 
-    test("Error should show if the denominator is 0 and the numerator is not 0", async () => {
+    test("Proper error should show if a required field is empty", async () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "4");
+      await userEvent.type(denominator, "{backspace}");
+
+      expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
+    });
+
+    test("Proper error should show if a field has invalid input", async () => {
+      render(<NdrWrapper template={mockedPerformanceElement} />);
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "string");
+
+      expect(screen.getByText(ErrorMessages.mustBeANumber)).toBeVisible();
+    });
+
+    test("Error should show if the denominator is 0 and the numerator is not 0, and also clear", async () => {
       render(<NdrWrapper template={mockedPerformanceElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -97,9 +117,13 @@ describe("<NDR />", () => {
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
       await userEvent.type(denominator, "0");
 
+      expect(screen.getByText(ErrorMessages.denominatorZero())).toBeVisible();
+
+      await userEvent.type(denominator, "4");
+
       expect(
-        screen.getByText("Numerator must be 0 when the denominator is 0")
-      ).toBeVisible();
+        screen.queryByText(ErrorMessages.denominatorZero())
+      ).not.toBeInTheDocument();
     });
 
     test("Rate should be 0 if both numerator and denominator are 0", async () => {

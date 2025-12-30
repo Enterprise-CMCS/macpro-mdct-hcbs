@@ -8,6 +8,7 @@ import {
 } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
+import { ErrorMessages } from "../../../constants";
 
 const mockedPerformanceElement: LengthOfStayRateTemplate = {
   id: "mock-perf-id",
@@ -100,16 +101,29 @@ describe("<Fields />", () => {
       expect(getInput("expectedRate")).toHaveValue("0.5");
     });
 
-    test("Error should show if the denominator is 0", async () => {
+    test("Error should show if the denominator is 0, and should also clear", async () => {
       render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 
       await enterValue("denominator", "0");
 
       expect(
         screen.getByText(
-          `${mockedPerformanceElement.labels.actualCount} must be 0 when the ${mockedPerformanceElement.labels.denominator} is 0`
+          ErrorMessages.denominatorZero(
+            mockedPerformanceElement.labels.actualCount,
+            mockedPerformanceElement.labels.denominator
+          )
         )
       ).toBeVisible();
+
+      await enterValue("denominator", "4");
+      expect(
+        screen.queryByText(
+          ErrorMessages.denominatorZero(
+            mockedPerformanceElement.labels.actualCount,
+            mockedPerformanceElement.labels.denominator
+          )
+        )
+      ).not.toBeInTheDocument();
     });
 
     test("Rate should be 0 if both numerator and denominator are 0", async () => {

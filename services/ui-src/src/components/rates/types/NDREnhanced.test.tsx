@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { ElementType, NdrEnhancedTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
+import { ErrorMessages } from "../../../constants";
 
 const mockedElement: NdrEnhancedTemplate = {
   id: "mock-perf-id",
@@ -75,16 +76,19 @@ describe("<NDREnhanced />", () => {
       expect(rate).toHaveValue("0.5");
     });
 
-    test("Error should show if the denominator is 0", async () => {
+    test("Error should show if the denominator is 0, and also clear", async () => {
       render(<NdrEnhancedWrapper template={mockedElement} />);
       const performDenominator = screen.getByRole("textbox", {
         name: "test labels Denominator",
       });
       await act(async () => await userEvent.type(performDenominator, "0"));
 
+      expect(screen.getByText(ErrorMessages.denominatorZero())).toBeVisible();
+
+      await act(async () => await userEvent.type(performDenominator, "4"));
       expect(
-        screen.getByText("Numerator must be 0 when the denominator is 0")
-      ).toBeVisible();
+        screen.queryByText(ErrorMessages.denominatorZero())
+      ).not.toBeInTheDocument();
     });
 
     test("Rate should be 0 if both numerator and denominator are 0", async () => {
