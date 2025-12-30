@@ -75,8 +75,7 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
     for (const [index, rate] of newDisplayValue.rates.entries()) {
       if (parsedDenominator === 0 && parseNumber(rate.numerator) !== 0) {
         newErrorObject.rates[index].numerator = ErrorMessages.denominatorZero();
-      }
-      if (
+      } else if (
         parsedDenominator !== 0 &&
         newErrorObject.rates[index].numerator ===
           ErrorMessages.denominatorZero()

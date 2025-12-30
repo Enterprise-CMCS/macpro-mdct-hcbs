@@ -80,12 +80,17 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     }
 
     for (const [assessmentIndex, assessmentData] of newDisplayValue.entries()) {
-      if (parseNumber(assessmentData.denominator) === 0) {
-        for (const [rateIndex, rateData] of assessmentData.rates.entries()) {
-          if (parseNumber(rateData.numerator) !== 0) {
-            newErrors[assessmentIndex].rates[rateIndex].numerator =
-              ErrorMessages.denominatorZero("Numerator", "denominator");
-          }
+      const parsedDenominator = parseNumber(assessmentData.denominator);
+      for (const [rateIndex, rateData] of assessmentData.rates.entries()) {
+        if (parsedDenominator === 0 && parseNumber(rateData.numerator) !== 0) {
+          newErrors[assessmentIndex].rates[rateIndex].numerator =
+            ErrorMessages.denominatorZero();
+        } else if (
+          parsedDenominator !== 0 &&
+          newErrors[assessmentIndex].rates[rateIndex].numerator ===
+            ErrorMessages.denominatorZero()
+        ) {
+          newErrors[assessmentIndex].rates[rateIndex].numerator = "";
         }
       }
     }
