@@ -12,7 +12,6 @@ const configFilePath = path.resolve(path.join(publicDirPath, "env-config.js"));
 export const writeLocalUiEnvFile = async (
   envVariables: Record<string, string>
 ) => {
-  await fs.mkdir(publicDirPath, { recursive: true });
   await fs.rm(configFilePath, { force: true });
 
   const envConfigContent = [
