@@ -63,6 +63,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     const stringValue = input.value;
     const parsedValue = parseNumber(stringValue);
     let errorMessage;
+
     if (!stringValue) {
       errorMessage = ErrorMessages.requiredResponse;
     } else if (parsedValue === undefined) {
@@ -72,16 +73,24 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
       parseNumber(newDisplayValue.numerator) !== 0
     ) {
       return {
-        [RateInputFieldNamesBasic.numerator]: ErrorMessages.denomenatorZero(
-          "Numerator",
-          "denominator"
-        ),
+        ...errors,
+        [RateInputFieldNamesBasic.numerator]: ErrorMessages.denominatorZero(),
+        [RateInputFieldNamesBasic.denominator]: "",
+      };
+    } else if (
+      fieldType === RateInputFieldNamesBasic.denominator &&
+      parsedValue !== 0 &&
+      errors[RateInputFieldNamesBasic.numerator] ===
+        ErrorMessages.denominatorZero()
+    ) {
+      return {
+        ...errors,
+        [RateInputFieldNamesBasic.numerator]: "",
         [RateInputFieldNamesBasic.denominator]: "",
       };
     } else {
       errorMessage = "";
     }
-
     // Overwrite only the error message for the input that was just touched.
     return {
       ...errors,

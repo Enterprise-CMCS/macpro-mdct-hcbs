@@ -63,10 +63,17 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     ) {
       return {
         ...errors,
-        [RateInputFieldNames.numerator]: ErrorMessages.denomenatorZero(
-          "Numerator",
-          "denominator"
-        ),
+        [RateInputFieldNames.numerator]: ErrorMessages.denominatorZero(),
+        [RateInputFieldNames.denominator]: "",
+      };
+    } else if (
+      fieldType === RateInputFieldNames.denominator &&
+      parsedValue !== 0 &&
+      errors[RateInputFieldNames.numerator] === ErrorMessages.denominatorZero()
+    ) {
+      return {
+        ...errors,
+        [RateInputFieldNames.numerator]: "",
         [RateInputFieldNames.denominator]: "",
       };
     } else {

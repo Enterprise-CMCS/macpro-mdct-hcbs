@@ -84,7 +84,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
         for (const [rateIndex, rateData] of assessmentData.rates.entries()) {
           if (parseNumber(rateData.numerator) !== 0) {
             newErrors[assessmentIndex].rates[rateIndex].numerator =
-              ErrorMessages.denomenatorZero("Numerator", "denominator");
+              ErrorMessages.denominatorZero("Numerator", "denominator");
           }
         }
       }

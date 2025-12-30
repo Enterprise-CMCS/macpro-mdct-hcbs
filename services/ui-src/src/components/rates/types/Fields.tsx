@@ -49,13 +49,13 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 
     if (parseNumber(newDisplayValue.denominator) === 0) {
       if (parseNumber(newDisplayValue.actualCount) !== 0) {
-        newErrors.actualCount = ErrorMessages.denomenatorZero(
+        newErrors.actualCount = ErrorMessages.denominatorZero(
           labels.actualCount,
           labels.denominator
         );
       }
       if (parseNumber(newDisplayValue.expectedCount) !== 0) {
-        newErrors.expectedCount = ErrorMessages.denomenatorZero(
+        newErrors.expectedCount = ErrorMessages.denominatorZero(
           labels.expectedCount,
           labels.denominator
         );
