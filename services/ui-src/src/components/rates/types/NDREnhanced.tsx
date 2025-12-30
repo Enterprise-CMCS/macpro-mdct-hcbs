@@ -71,14 +71,17 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
       newErrorObject.rates[assessIndex!][fieldType] = errorMessage;
     }
 
-    if (parseNumber(newDisplayValue.denominator) === 0) {
-      for (const [index, rate] of newDisplayValue.rates.entries()) {
-        if (parseNumber(rate.numerator) !== 0) {
-          newErrorObject.rates[index].numerator = ErrorMessages.denominatorZero(
-            "Numerator",
-            "denominator"
-          );
-        }
+    const parsedDenominator = parseNumber(newDisplayValue.denominator);
+    for (const [index, rate] of newDisplayValue.rates.entries()) {
+      if (parsedDenominator === 0 && parseNumber(rate.numerator) !== 0) {
+        newErrorObject.rates[index].numerator = ErrorMessages.denominatorZero();
+      }
+      if (
+        parsedDenominator !== 0 &&
+        newErrorObject.rates[index].numerator ===
+          ErrorMessages.denominatorZero()
+      ) {
+        newErrorObject.rates[index].numerator = "";
       }
     }
 
