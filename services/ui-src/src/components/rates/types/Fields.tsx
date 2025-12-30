@@ -60,6 +60,19 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
           labels.denominator
         );
       }
+    } else if (parseNumber(newDisplayValue.denominator) !== 0) {
+      if (
+        newErrors.actualCount ===
+        ErrorMessages.denominatorZero(labels.actualCount, labels.denominator)
+      ) {
+        newErrors.actualCount = "";
+      }
+      if (
+        newErrors.expectedCount ===
+        ErrorMessages.denominatorZero(labels.expectedCount, labels.denominator)
+      ) {
+        newErrors.expectedCount = "";
+      }
     }
 
     return { displayValue: newDisplayValue, errors: newErrors };
