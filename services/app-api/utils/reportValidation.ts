@@ -72,6 +72,16 @@ const textboxTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const listInputTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ListInput)),
+  id: string().required(),
+  label: string().required(),
+  fieldLabel: string().notRequired(),
+  helperText: string().notRequired(),
+  buttonText: string().notRequired(),
+  answers: array().of(string()).notRequired(),
+});
+
 const numberFieldTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NumberField)),
   id: string().required(),
@@ -183,6 +193,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return dividerSchema;
     case ElementType.SubmissionParagraph:
       return submissionParagraphSchema;
+    case ElementType.ListInput:
+      return listInputTemplateSchema;
     default:
       assertExhaustive(value);
       throw new Error("Page Element type is not valid");

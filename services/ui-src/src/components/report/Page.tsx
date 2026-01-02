@@ -34,6 +34,7 @@ import {
   NDRFields,
   NDREnhanced,
   CheckboxField,
+  ListInput,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -114,6 +115,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <SubmissionParagraph />;
       case ElementType.SubHeaderMeasure:
         return <SubHeaderMeasureElement {...{ element }} />;
+      case ElementType.ListInput:
+        return <ListInput {...{ updateElement, disabled, element }} />;
       default:
         assertExhaustive(element);
         return null;

@@ -20,6 +20,7 @@ import {
   TextAreaBoxTemplate,
   AlertTypes,
   CheckboxTemplate,
+  ListInputTemplate,
 } from "../../types/reports";
 
 const REPORT_YEAR = 2026;
@@ -338,8 +339,19 @@ export const waiverListCheckboxField: CheckboxTemplate = {
   required: true,
 };
 
+export const waiverListInputField: ListInputTemplate = {
+  type: ElementType.ListInput,
+  id: "waivers-list-inputs",
+  label: "If a waiver or demonstration is not included above, add below:",
+  helperText:
+    "Include the waiver/demonstration name and control numbers in your response.",
+  fieldLabel: "Waiver/demonstration and/or control numbers",
+  buttonText: "Add waiver/demonstation name",
+};
+
 export const whichProgramsWaivers: PageElement[] = [
   waiverListCheckboxField,
+  waiverListInputField,
   divider,
 ];
 
