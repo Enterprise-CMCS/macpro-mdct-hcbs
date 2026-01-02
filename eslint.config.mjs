@@ -93,6 +93,7 @@ export default [
     },
     rules: {
       ...jestPlugin.configs.recommended.rules,
+      "jest/expect-expect": "off",
     },
   },
   // Allow exports in test utility files

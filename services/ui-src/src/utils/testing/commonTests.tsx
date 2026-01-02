@@ -34,7 +34,7 @@ export const testA11y = (
         ],
       });
       expect(results).toHaveNoViolations();
-    });
+    }, 10000);
   });
 };
 

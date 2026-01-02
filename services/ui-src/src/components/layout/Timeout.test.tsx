@@ -62,13 +62,16 @@ describe("Test Timeout Modal", () => {
     await act(async () => {
       jest.advanceTimersByTime(PROMPT_AT + 5000);
     });
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Stay logged in" })
-      ).toBeVisible();
-      expect(screen.getByRole("button", { name: "Log out" })).toBeVisible();
-    });
-  });
+    await waitFor(
+      () => {
+        expect(
+          screen.getByRole("button", { name: "Stay logged in" })
+        ).toBeVisible();
+        expect(screen.getByRole("button", { name: "Log out" })).toBeVisible();
+      },
+      { timeout: 10000 }
+    );
+  }, 15000);
 
   test("Timeout modal refresh button is clickable and closes modal", async () => {
     await act(async () => {

@@ -24,3 +24,5 @@ tests/playwright-report/
 tests/playwright/.cache/
 tests/playwright/.auth
 /services/ui-src/coverage
+
+**/.yarn/*
