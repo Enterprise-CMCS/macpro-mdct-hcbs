@@ -75,11 +75,24 @@ export const performResetMeasure = (measureId: string, report: Report) => {
 };
 
 /**
+ * This function handles edge cases where the answer is not undefined in the default form report
+ */
+const resetAnswerBySpecificId = (element: PageElement) => {
+  if (
+    element.type == ElementType.Checkbox &&
+    element.id === "waivers-list-checkboxes"
+  ) {
+    return element.choices.map((choice) => choice.value);
+  }
+
+  return undefined;
+};
+/**
  * Resets an element back to a pristine state, useful for more complex types
  */
 const performResetPageElement = (element: PageElement) => {
   if ("answer" in element) {
-    element.answer = undefined;
+    element.answer = resetAnswerBySpecificId(element);
   }
   if (element.type == ElementType.Radio) {
     for (const choice of element.choices) {

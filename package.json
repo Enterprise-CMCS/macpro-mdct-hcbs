@@ -2,6 +2,7 @@
   "name": "mdct-labs",
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "yarn@4.12.0",
   "description": "LABS (Learning and Building Sandbox) - A modern demo application showcasing best practices across MDCT applications",
   "scripts": {
     "test:e2e": "pushd tests && yarn test ; popd",
@@ -18,7 +19,7 @@
     "aws-cdk": "^2.1033.0",
     "aws-cdk-local": "^3.0.1",
     "eslint": "^9.39.1",
-    "eslint-plugin-jest": "^29.2.1",
+    "eslint-plugin-jest": "^29.12.0",
     "eslint-plugin-playwright": "^2.4.0",
     "jsdom": "^26.1.0",
     "prettier": "3.7.4",

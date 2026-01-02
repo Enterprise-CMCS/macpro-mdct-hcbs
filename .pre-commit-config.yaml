@@ -55,27 +55,27 @@ repos:
         pass_filenames: false
       - id: typescript-check-cdk
         name: typescript-check-cdk
-        entry: bash -c "cd deployment && yarn tsc --noEmit"
+        entry: bash -c "cd deployment && npx tsc --noEmit"
         language: system
         pass_filenames: false
       - id: typescript-check-cli
         name: typescript-check-cli
-        entry: bash -c "cd cli && yarn tsc --noEmit"
+        entry: bash -c "cd cli && npx tsc --noEmit"
         language: system
         pass_filenames: false
       - id: typescript-check-api
         name: typescript-check-api
-        entry: bash -c "cd services/app-api && yarn tsc --noEmit"
+        entry: bash -c "cd services/app-api && npx tsc --noEmit"
         language: system
         pass_filenames: false
       - id: typescript-check-ui
         name: typescript-check-ui
-        entry: bash -c "cd services/ui-src && yarn tsc --noEmit"
+        entry: bash -c "cd services/ui-src && npx tsc --noEmit"
         language: system
         pass_filenames: false
       - id: typescript-check-cdk
         name: typescript-check-cdk
-        entry: bash -c "cd deployment && yarn tsc --noEmit"
+        entry: bash -c "cd deployment && npx tsc --noEmit"
         language: system
         pass_filenames: false
       - id: validate-commit-msg

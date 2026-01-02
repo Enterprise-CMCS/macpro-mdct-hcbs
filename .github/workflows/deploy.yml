@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
+      - run: corepack enable
       - uses: actions/cache@v4
         with:
           path: "**/node_modules"
@@ -29,7 +30,7 @@ jobs:
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
           BRANCH_NAME=$(./.github/setBranchName.ts ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-          ./.github/branchNameValidation.ts "$BRANCH_NAME"
+          ./.github/branchNameValidation.ts $BRANCH_NAME
           ./run install
         env:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
@@ -62,9 +63,10 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
+      - run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
         working-directory: tests
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -76,7 +78,7 @@ jobs:
             ${{ runner.os }}-playwright-
 
       - name: Install Playwright Browsers
-        # if: steps.playwright-cache.outputs.cache-hit != 'true'
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: yarn playwright install --with-deps chromium
         working-directory: tests
 

@@ -68,6 +68,16 @@ export const setPage = (targetPageId: string, currentState: ReportState) => {
 export const deepMerge = (obj1: any, obj2: any) => {
   const clone1 = structuredClone(obj1);
   const clone2 = structuredClone(obj2);
+
+  //check that if it's an array of numbers or strings, this is for checkbox values which are an array of strings
+  if (
+    Array.isArray(clone1) &&
+    Array.isArray(clone2) &&
+    ["number", "string"].includes(typeof clone1[0])
+  ) {
+    return clone2;
+  }
+
   for (let key in clone2) {
     if (clone2[key] instanceof Object && clone1[key] instanceof Object) {
       clone1[key] = deepMerge(clone1[key], clone2[key]);
