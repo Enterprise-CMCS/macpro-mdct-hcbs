@@ -17,3 +17,4 @@ tests/playwright/.auth
 /.cdk
 cdk.context.json
 **/.yarn/*
+services/ui-src/public/env-config.ts
