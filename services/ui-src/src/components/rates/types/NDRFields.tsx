@@ -22,6 +22,7 @@ import {
   ExportedReportTable,
   ExportRateTable,
 } from "components/export/ExportedReportTable";
+import { ErrorMessages } from "../../../constants";
 
 export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
   const { disabled, element, updateElement } = props;
@@ -78,6 +79,22 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
       newErrors[assessIndex].rates[fieldIndex!][fieldType] = errorMessage;
     }
 
+    for (const [assessmentIndex, assessmentData] of newDisplayValue.entries()) {
+      const parsedDenominator = parseNumber(assessmentData.denominator);
+      for (const [rateIndex, rateData] of assessmentData.rates.entries()) {
+        if (parsedDenominator === 0 && parseNumber(rateData.numerator) !== 0) {
+          newErrors[assessmentIndex].rates[rateIndex].numerator =
+            ErrorMessages.denominatorZero();
+        } else if (
+          parsedDenominator !== 0 &&
+          newErrors[assessmentIndex].rates[rateIndex].numerator ===
+            ErrorMessages.denominatorZero()
+        ) {
+          newErrors[assessmentIndex].rates[rateIndex].numerator = "";
+        }
+      }
+    }
+
     return { displayValue: newDisplayValue, errors: newErrors };
   };
 
@@ -92,6 +109,16 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
         rates: displayObj.rates.map((rateObj) => {
           const performanceTarget = parseNumber(rateObj.performanceTarget);
           const numerator = parseNumber(rateObj.numerator);
+
+          if (denominator === 0 && numerator === 0) {
+            return {
+              id: rateObj.id,
+              performanceTarget: removeNoise(performanceTarget),
+              numerator: 0,
+              rate: 0,
+            };
+          }
+
           const canCompute = canDivide && numerator !== undefined;
           const rate = canCompute
             ? (multiplier * numerator) / denominator
