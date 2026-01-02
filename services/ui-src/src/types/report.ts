@@ -396,7 +396,7 @@ export type ListInputTemplate = {
   fieldLabel?: string;
   helperText?: string;
   buttonText?: string;
-  answers?: string[];
+  answer?: string[];
 };
 
 export type MeasureDetailsTemplate = {

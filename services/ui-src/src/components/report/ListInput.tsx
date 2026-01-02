@@ -1,14 +1,14 @@
+import React, { useState } from "react";
 import { ListInputTemplate } from "types";
-import { PageElementProps } from "../report/Elements";
+import { PageElementProps } from "components/report/Elements";
 import { Button, HStack, Image } from "@chakra-ui/react";
 import { TextField } from "@cmsgov/design-system";
-import { useState } from "react";
 import cancelPrimary from "assets/icons/cancel/icon_cancel_primary.svg";
 import addPrimary from "assets/icons/add/icon_add_blue.svg";
 
 export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
-  const { label, fieldLabel, helperText, buttonText, answers } = props.element;
-  const [displayValue, setDisplayValue] = useState(answers ?? []);
+  const { label, fieldLabel, helperText, buttonText, answer } = props.element;
+  const [displayValue, setDisplayValue] = useState(answer ?? []);
 
   const onChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -18,6 +18,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     const newDisplay = [...displayValue];
     newDisplay[index] = rawValue;
     setDisplayValue(newDisplay);
+    props.updateElement({ answer: newDisplay });
   };
 
   const onAddHandler = () => {
