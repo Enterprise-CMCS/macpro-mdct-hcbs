@@ -38,7 +38,7 @@ test.beforeEach(async ({ page }) => {
   await navigateToReportHome(page, reportSpecificData.reportButtonName);
 });
 
-test.describe("create and complete a QMS report as a state user", () => {
+test.describe("create and complete a PCP report as a state user", () => {
   test("create a PCP report as a state user", async ({ page }) => {
     await navigateToAddEditReportModal(
       page,
@@ -53,12 +53,6 @@ test.describe("create and complete a QMS report as a state user", () => {
     await reportBtn.click();
 
     await completeGeneralInfo(page);
-    await page
-      .getByRole("radiogroup", {
-        name: "Does this report cover all the programs that are required under the relevant authorities?",
-      })
-      .getByLabel("Yes")
-      .check();
     await page.getByRole("button", { name: "Continue" }).click();
     await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();

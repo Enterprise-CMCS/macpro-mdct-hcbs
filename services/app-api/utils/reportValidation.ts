@@ -153,6 +153,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return accordionTemplateSchema;
     case ElementType.Radio:
       return radioTemplateSchema;
+    case ElementType.Checkbox:
+      return checkboxTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
@@ -204,6 +206,23 @@ const radioTemplateSchema = object().shape({
   required: boolean().required(),
   clickAction: string().notRequired(),
   hideCondition: hideConditionSchema,
+});
+
+const checkboxTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.Checkbox)),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().notRequired(),
+  choices: array().of(
+    object().shape({
+      label: string().required(),
+      value: string().required(),
+      checked: boolean().notRequired(),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+    })
+  ),
+  answer: array().of(string()).notRequired(),
+  required: boolean().required(),
 });
 
 const buttonLinkTemplateSchema = object().shape({

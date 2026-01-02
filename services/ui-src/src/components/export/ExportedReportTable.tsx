@@ -15,7 +15,7 @@ import { ReactElement } from "react";
 
 export type ReportTableType = {
   indicator: string;
-  response?: string | number | ReactElement | undefined;
+  response?: string | number | ReactElement | undefined | string[];
   helperText?: string;
   type?: ElementType;
   required?: boolean;
