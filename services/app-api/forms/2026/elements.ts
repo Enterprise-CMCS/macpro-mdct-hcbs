@@ -4,6 +4,8 @@ import {
   ElementType,
   RadioTemplate,
   TextAreaBoxTemplate,
+  CheckboxTemplate,
+  PageElement,
 } from "../../types/reports";
 
 // Any elements that are reused across multiple reports are added here
@@ -112,3 +114,18 @@ export const stateSamplingMethologyQuestion: RadioTemplate = {
     },
   ],
 };
+
+export const waiverListCheckboxField: CheckboxTemplate = {
+  type: ElementType.Checkbox,
+  id: "waivers-list-checkboxes",
+  label:
+    "Deselect all programs and waivers are not included in this reporting period?",
+  choices: [],
+  helperText: "Deselect all that do not apply.",
+  required: true,
+};
+
+export const whichProgramsWaivers: PageElement[] = [
+  waiverListCheckboxField,
+  divider,
+];

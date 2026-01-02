@@ -15,7 +15,6 @@ import {
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
-  TextAreaBoxTemplate,
   AlertTypes,
 } from "../../../types/reports";
 import { divider } from "../elements";
@@ -262,18 +261,6 @@ export const measureFooter: MeasureFooterTemplate = {
   completeMeasure: true,
   clear: true,
 };
-
-export const whichProgramsWaivers: PageElement[] = [
-  {
-    type: ElementType.TextAreaField,
-    id: "measure-programs-text",
-    label: "Which programs and waivers are included?",
-    required: true,
-    helperText:
-      "Please specify all the 1915(c) waivers, 1915(i), (j) and (k) State plan benefits and/or 1115 demonstrations that include HCBS that you are including in this report (or measure). Include the program name and control numbers in your response.",
-  } as TextAreaBoxTemplate,
-  divider,
-];
 
 export const statePerformanceTargetLabel = {
   performanceTargetLabel: `What is the ${

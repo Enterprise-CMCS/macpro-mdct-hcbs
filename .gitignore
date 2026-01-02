@@ -16,3 +16,4 @@ tests/playwright/.cache/
 tests/playwright/.auth
 /.cdk
 cdk.context.json
+**/.yarn/*

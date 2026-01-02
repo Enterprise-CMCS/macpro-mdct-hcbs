@@ -8,6 +8,7 @@ import {
   additionalNotesField,
   didYouFollowSpecifications,
   divider,
+  whichProgramsWaivers,
 } from "../elements";
 
 import {
@@ -32,7 +33,6 @@ import {
   enterMeasureResultsSubheader,
   measureResultsNavigationTable,
   measureFooter,
-  whichProgramsWaivers,
   statePerformanceTargetLabel,
   performanceRatesAssessmentElements,
   exclusionRatesAssessmentElements,
