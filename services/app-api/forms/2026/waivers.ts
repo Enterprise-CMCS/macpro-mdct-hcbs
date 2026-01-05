@@ -1,6 +1,6 @@
 import { WAIVER, WaiverType } from "../../types/reports";
 
-/** The ids are generate from https://shortunique.id/. 
+/** The ids are generate from https://shortunique.id/.
  * Waivers don't change completely from year to year so this file is meant to be copied over to the next year and only the ones that changed get modified
  */
 
