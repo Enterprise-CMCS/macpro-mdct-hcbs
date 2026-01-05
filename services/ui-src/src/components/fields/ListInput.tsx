@@ -10,6 +10,9 @@ import { ErrorMessages } from "../../constants";
 export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
   const { label, fieldLabel, helperText, buttonText, answer } = props.element;
   const [displayValue, setDisplayValue] = useState(answer ?? []);
+  const [errorMessages, setErrorMessages] = useState(
+    answer?.map(() => "") ?? []
+  );
 
   const onChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -19,6 +22,13 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     const newDisplay = [...displayValue];
     newDisplay[index] = rawValue;
     setDisplayValue(newDisplay);
+
+    if (displayValue[index] === "" || !displayValue[index]) {
+      const newErrorMessages = [...errorMessages];
+      errorMessages[index] = ErrorMessages.requiredResponse;
+      setErrorMessages(newErrorMessages);
+    }
+
     props.updateElement({ answer: newDisplay });
   };
 
@@ -34,13 +44,6 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     newDisplay.splice(index, 1);
     setDisplayValue(newDisplay);
     props.updateElement({ answer: newDisplay });
-  };
-
-  const onError = (index: number) => {
-    if (displayValue[index] === "" || !displayValue[index]) {
-      return ErrorMessages.requiredResponse;
-    }
-    return "";
   };
 
   return (
@@ -59,7 +62,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             label={fieldLabel}
             value={field}
             onChange={(evt) => onChangeHandler(evt, index)}
-            errorMessage={onError(index)}
+            errorMessage={errorMessages?.[index] ?? ""}
           ></TextField>
           <Button variant="unstyled" onClick={() => onRemoveHandler(index)}>
             <Image src={cancelPrimary} alt="Remove" />
