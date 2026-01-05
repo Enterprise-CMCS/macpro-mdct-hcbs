@@ -108,7 +108,6 @@ const sx = {
       fontSize: "body_xs",
     },
   },
-  ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed
   notAnswered: {
     color: "palette.error_darker",
   },

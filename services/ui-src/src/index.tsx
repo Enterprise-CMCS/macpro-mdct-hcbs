@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Amplify } from "aws-amplify";
 import config from "config";
 import "aws-amplify/auth/enable-oauth-listener";
-import { ApiProvider, UserProvider } from "utils";
+import { UserProvider } from "utils";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import { App, Error } from "components";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -59,13 +59,11 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
     <ErrorBoundary FallbackComponent={Error}>
       <Router>
         <UserProvider>
-          <ApiProvider>
-            <ChakraProvider theme={theme}>
-              <LDProvider>
-                <App />
-              </LDProvider>
-            </ChakraProvider>
-          </ApiProvider>
+          <ChakraProvider theme={theme}>
+            <LDProvider>
+              <App />
+            </LDProvider>
+          </ChakraProvider>
         </UserProvider>
       </Router>
     </ErrorBoundary>
