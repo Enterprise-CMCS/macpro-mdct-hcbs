@@ -5,6 +5,7 @@ import { Button, HStack, Image } from "@chakra-ui/react";
 import { TextField } from "@cmsgov/design-system";
 import cancelPrimary from "assets/icons/cancel/icon_cancel_primary.svg";
 import addPrimary from "assets/icons/add/icon_add_blue.svg";
+import { ErrorMessages } from "../../constants";
 
 export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
   const { label, fieldLabel, helperText, buttonText, answer } = props.element;
@@ -35,6 +36,13 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     props.updateElement({ answer: newDisplay });
   };
 
+  const onError = (index: number) => {
+    if (displayValue[index] === "" || !displayValue[index]) {
+      return ErrorMessages.requiredResponse;
+    }
+    return "";
+  };
+
   return (
     <fieldset className="ds-c-fieldset" key="list-input-field">
       <legend className="ds-c-label">{label}</legend>
@@ -51,6 +59,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             label={fieldLabel}
             value={field}
             onChange={(evt) => onChangeHandler(evt, index)}
+            errorMessage={onError(index)}
           ></TextField>
           <Button variant="unstyled" onClick={() => onRemoveHandler(index)}>
             <Image src={cancelPrimary} alt="Remove" />
