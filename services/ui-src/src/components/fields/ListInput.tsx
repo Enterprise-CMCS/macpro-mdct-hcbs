@@ -23,7 +23,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     newDisplay[index] = rawValue;
     setDisplayValue(newDisplay);
 
-    if (displayValue[index] === "" || !displayValue[index]) {
+    if (!rawValue) {
       const newErrorMessages = [...errorMessages];
       errorMessages[index] = ErrorMessages.requiredResponse;
       setErrorMessages(newErrorMessages);
