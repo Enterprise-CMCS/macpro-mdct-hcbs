@@ -397,6 +397,7 @@ export type ListInputTemplate = {
   helperText?: string;
   buttonText?: string;
   answer?: string[];
+  required: boolean;
 };
 
 export type MeasureDetailsTemplate = {

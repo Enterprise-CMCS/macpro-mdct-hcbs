@@ -347,6 +347,7 @@ export const waiverListInputField: ListInputTemplate = {
     "Include the waiver/demonstration name and control numbers in your response.",
   fieldLabel: "Waiver/demonstration and/or control numbers",
   buttonText: "Add waiver/demonstation name",
+  required: false,
 };
 
 export const whichProgramsWaivers: PageElement[] = [

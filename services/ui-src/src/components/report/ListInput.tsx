@@ -25,12 +25,14 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     const newDisplay = [...displayValue];
     newDisplay.push("");
     setDisplayValue(newDisplay);
+    props.updateElement({ answer: newDisplay });
   };
 
   const onRemoveHandler = (index: number) => {
     const newDisplay = [...displayValue];
     newDisplay.splice(index, 1);
     setDisplayValue(newDisplay);
+    props.updateElement({ answer: newDisplay });
   };
 
   return (

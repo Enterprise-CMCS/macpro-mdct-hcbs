@@ -76,6 +76,8 @@ export const performResetMeasure = (measureId: string, report: Report) => {
 
 /**
  * This function handles edge cases where the answer is not undefined in the default form report
+ * For waivers-list-checkboxes, we mark all checkboxes as checked in buildReport.ts by default per request from the BOs for all states.
+ * Therefore when we reset, we have to reset it to being checked which means the answer cannot be undefined.
  */
 const resetAnswerBySpecificId = (element: PageElement) => {
   if (

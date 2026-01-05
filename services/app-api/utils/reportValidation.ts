@@ -80,6 +80,7 @@ const listInputTemplateSchema = object().shape({
   helperText: string().notRequired(),
   buttonText: string().notRequired(),
   answer: array().of(string()).notRequired(),
+  required: boolean().required(),
 });
 
 const numberFieldTemplateSchema = object().shape({
