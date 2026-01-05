@@ -9,21 +9,23 @@ import {
 import {
   additionalNotesField,
   divider,
-  habilitationRate,
-  habilitationHAPCH2Rate,
-  homeHealthAideRate,
-  homeHealthAideHAPCH2Rate,
-  homemakerRate,
-  homemakerHAPCH2Rate,
-  personalCareRate,
-  personalCareHAPCH2Rate,
   stateSamplingMethologyQuestion,
   didYouFollowSpecifications,
-  conversionOfServiceUnitsField,
   exportToPDF,
   waiverListCheckboxField,
   waiverListInputField,
 } from "../elements";
+import {
+  conversionOfServiceUnitsField,
+  homemakerRate,
+  homemakerHAPCH2Rate,
+  homeHealthAideRate,
+  homeHealthAideHAPCH2Rate,
+  personalCareRate,
+  personalCareHAPCH2Rate,
+  habilitationRate,
+  habilitationHAPCH2Rate,
+} from "./tacmElements";
 
 export const tacmReportTemplate: ReportBase = {
   type: ReportType.TACM,

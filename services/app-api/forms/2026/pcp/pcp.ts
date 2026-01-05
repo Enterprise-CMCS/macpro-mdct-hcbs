@@ -11,12 +11,11 @@ import {
   didYouFollowSpecifications,
   divider,
   stateSamplingMethologyQuestion,
-  beneficiariesRate,
-  beneficiariesReviewedRate,
   exportToPDF,
   waiverListCheckboxField,
   waiverListInputField,
 } from "../elements";
+import { beneficiariesRate, beneficiariesReviewedRate } from "./pcpElements";
 
 export const pcpReportTemplate: ReportBase = {
   type: ReportType.PCP,

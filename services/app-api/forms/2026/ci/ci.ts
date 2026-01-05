@@ -8,13 +8,13 @@ import {
 } from "../../../types/reports";
 
 import {
-  criticalIncidentCommentsField,
   didYouFollowSpecifications,
   exportToPDF,
   minPerformanceExplanationField,
   waiverListCheckboxField,
   waiverListInputField,
 } from "../elements";
+import { criticalIncidentCommentsField } from "./ciElements";
 
 export const ciReportTemplate: ReportBase = {
   type: ReportType.CI,
