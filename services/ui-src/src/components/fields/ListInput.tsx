@@ -25,7 +25,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
 
     if (!rawValue) {
       const newErrorMessages = [...errorMessages];
-      errorMessages[index] = ErrorMessages.requiredResponse;
+      newErrorMessages[index] = ErrorMessages.requiredResponse;
       setErrorMessages(newErrorMessages);
     }
 
