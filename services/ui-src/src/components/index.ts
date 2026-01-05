@@ -39,6 +39,7 @@ export { RadioField } from "./fields/RadioField";
 export { CheckboxField } from "./fields/CheckboxField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
+export { ListInput } from "./fields/ListInput";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";
@@ -61,7 +62,6 @@ export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
 export { MeasureTableElement } from "./report/MeasureTable";
-export { ListInput } from "./report/ListInput";
 export { StatusAlert } from "./report/StatusAlert";
 export { Page } from "./report/Page";
 export { PraDisclosure } from "./report/PraDisclosure";

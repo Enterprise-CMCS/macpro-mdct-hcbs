@@ -53,7 +53,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             onChange={(evt) => onChangeHandler(evt, index)}
           ></TextField>
           <Button variant="unstyled" onClick={() => onRemoveHandler(index)}>
-            <Image src={cancelPrimary} alt="Cancel" />
+            <Image src={cancelPrimary} alt="Remove" />
           </Button>
         </HStack>
       ))}
