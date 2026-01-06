@@ -57,4 +57,19 @@ describe("<ListInput />", () => {
     ).not.toBeInTheDocument();
     expect(updateSpy).toHaveBeenCalledTimes(2);
   });
+
+  it("ListInput shows error when user does not fillout the field", async () => {
+    const addBtn = screen.getByRole("button", { name: "mock button text" });
+    await userEvent.click(addBtn);
+    const textbox = screen.getByRole("textbox", { name: "mock field" });
+    //trigger the error message through a focus
+    await userEvent.click(textbox);
+    //remove focus by adding another textbox
+    await userEvent.click(addBtn);
+    expect(screen.getByText("A response is required")).toBeVisible();
+    await userEvent.type(textbox, "text");
+    expect(
+      screen.queryByText("A response is required")
+    ).not.toBeInTheDocument();
+  });
 });
