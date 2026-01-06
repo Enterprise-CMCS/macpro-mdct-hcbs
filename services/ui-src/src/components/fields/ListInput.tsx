@@ -10,9 +10,7 @@ import { ErrorMessages } from "../../constants";
 export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
   const { label, fieldLabel, helperText, buttonText, answer } = props.element;
   const [displayValue, setDisplayValue] = useState(answer ?? []);
-  const [errorMessages, setErrorMessages] = useState(
-    answer?.map(() => "") ?? []
-  );
+  const [errorMessages, setErrorMessages] = useState([""]);
 
   const onChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>,

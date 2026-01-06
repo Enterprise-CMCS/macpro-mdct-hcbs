@@ -1,6 +1,7 @@
 import {
   ElementType,
   LengthOfStayRateTemplate,
+  ListInputTemplate,
   MeasurePageTemplate,
   NdrBasicTemplate,
   NdrEnhancedTemplate,
@@ -490,5 +491,13 @@ describe("elementSatisfiesRequired", () => {
       required: false,
     } as unknown as NdrFieldsTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+  test("reject incomplete ListInput", () => {
+    const element = {
+      type: ElementType.ListInput,
+      required: false,
+      answer: [""],
+    } as ListInputTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
 });
