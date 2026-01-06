@@ -23,11 +23,13 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     newDisplay[index] = rawValue;
     setDisplayValue(newDisplay);
 
+    const newErrorMessages = [...errorMessages];
     if (!rawValue) {
-      const newErrorMessages = [...errorMessages];
       newErrorMessages[index] = ErrorMessages.requiredResponse;
-      setErrorMessages(newErrorMessages);
+    } else {
+      newErrorMessages[index] = "";
     }
+    setErrorMessages(newErrorMessages);
 
     props.updateElement({ answer: newDisplay });
   };
@@ -62,6 +64,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             label={fieldLabel}
             value={field}
             onChange={(evt) => onChangeHandler(evt, index)}
+            onBlur={(evt) => onChangeHandler(evt, index)}
             errorMessage={errorMessages?.[index] ?? ""}
           ></TextField>
           <Button variant="unstyled" onClick={() => onRemoveHandler(index)}>
