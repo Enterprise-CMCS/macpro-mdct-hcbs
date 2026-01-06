@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import "source-map-support/register";
+import "source-map-support/register.js";
+import type { StackProps } from "aws-cdk-lib";
 import {
   App,
   SecretValue,
   Stack,
-  StackProps,
   aws_ec2 as ec2,
   aws_iam as iam,
   aws_secretsmanager as secretsmanager,
@@ -65,7 +65,10 @@ export class LocalPrerequisiteStack extends Stack {
 async function main() {
   const app = new App();
 
-  new LocalPrerequisiteStack(app, `${process.env.PROJECT}-local-prerequisites`);
+  new LocalPrerequisiteStack(
+    app,
+    `${process.env.PROJECT!}-local-prerequisites`
+  );
 }
 
 main();
