@@ -17,9 +17,10 @@ jobs:
     environment: ${{ (github.ref_name == 'production' && 'production') || (github.ref_name == 'val' && 'val') || 'dev' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
+      - run: corepack enable
       - uses: actions/cache@v4
         with:
           path: "**/node_modules"
@@ -27,9 +28,9 @@ jobs:
       - name: path + branch settings + install packages
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          BRANCH_NAME=$(./.github/setBranchName.ts ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-          ./.github/branchNameValidation.sh "$BRANCH_NAME"
+          ./.github/branchNameValidation.ts $BRANCH_NAME
           ./run install
         env:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
@@ -44,7 +45,7 @@ jobs:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
       - id: endpoint
         run: |
-          APPLICATION_ENDPOINT=$(./scripts/output.sh ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
+          APPLICATION_ENDPOINT=$(./scripts/output.ts ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
@@ -62,9 +63,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
+      - run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
         working-directory: tests
       - name: Cache Playwright browsers
         uses: actions/cache@v4

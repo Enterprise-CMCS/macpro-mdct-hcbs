@@ -44,7 +44,10 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     return newDisplayValue;
   };
 
-  const computeErrors = (input: HTMLInputElement) => {
+  const computeErrors = (
+    input: HTMLInputElement,
+    newDisplayValue: typeof displayValue
+  ) => {
     const fieldType = input.name as RateInputFieldName;
     const stringValue = input.value;
     const parsedValue = parseNumber(stringValue);
@@ -54,6 +57,25 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
       errorMessage = ErrorMessages.requiredResponse;
     } else if (parsedValue === undefined) {
       errorMessage = ErrorMessages.mustBeANumber;
+    } else if (
+      parseNumber(newDisplayValue.denominator) === 0 &&
+      parseNumber(newDisplayValue.numerator) !== 0
+    ) {
+      return {
+        ...errors,
+        [RateInputFieldNames.numerator]: ErrorMessages.denominatorZero(),
+        [RateInputFieldNames.denominator]: "",
+      };
+    } else if (
+      fieldType === RateInputFieldNames.denominator &&
+      parsedValue !== 0 &&
+      errors[RateInputFieldNames.numerator] === ErrorMessages.denominatorZero()
+    ) {
+      return {
+        ...errors,
+        [RateInputFieldNames.numerator]: "",
+        [RateInputFieldNames.denominator]: "",
+      };
     } else {
       errorMessage = "";
     }
@@ -69,6 +91,13 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
     const numerator = parseNumber(newDisplayValue.numerator);
     const denominator = parseNumber(newDisplayValue.denominator);
+    if (denominator === 0 && numerator === 0) {
+      return {
+        numerator: 0,
+        denominator: 0,
+        rate: 0,
+      };
+    }
     const canCompute =
       numerator !== undefined && denominator !== undefined && denominator !== 0;
     const rate = canCompute ? numerator / denominator : undefined;
@@ -91,7 +120,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
     const newDisplayValue = updatedDisplayValue(event.target);
-    const newErrors = computeErrors(event.target);
+    const newErrors = computeErrors(event.target, newDisplayValue);
 
     // answer corresponds to the report data. Its values are numbers.
     const newAnswer = computeAnswer(newDisplayValue);
