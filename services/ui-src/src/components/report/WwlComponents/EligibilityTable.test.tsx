@@ -1,9 +1,13 @@
 import { render, screen } from "@testing-library/react";
-// import userEvent from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 import { ElementType, EligibilityTableTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
-import { EligibilityTableElement } from "components/report/WwlComponents/EligibilityTable";
+import {
+  EligibilityTableElement,
+  fieldLabels,
+  EligibilityTableElementExport,
+} from "./EligibilityTable";
 
 const mockedElement: EligibilityTableTemplate = {
   id: "mock-id",
@@ -41,121 +45,103 @@ describe("<EligibilityTableElement />", () => {
 
     test("EligibilityTableElement is visible", () => {
       render(<EligibilityTableWrapper template={mockedElement} />);
-      expect(screen.getByText("Other Eligibility")).toBeInTheDocument();
+      expect(screen.getByText("Other Eligibility")).toBeVisible();
+      expect(screen.getByText("mockTitle1")).toBeVisible();
     });
 
-    // test("Rate should calculate", async () => {
-    //   render(<NdrBasicWrapper template={mockedElement} />);
+    test("Modal should open and close", async () => {
+      render(<EligibilityTableWrapper template={mockedElement} />);
 
-    //   const numerator = screen.getByRole("textbox", { name: "Numerator" });
-    //   await userEvent.type(numerator, "1");
-    //   expect(numerator).toHaveValue("1");
+      const addButton = screen.getByText("Add eligibility");
+      await userEvent.click(addButton);
+      const modalTitle = screen.getByText("Add other eligibility");
+      expect(modalTitle).toBeVisible();
 
-    //   const denominator = screen.getByRole("textbox", { name: "Denominator" });
-    //   await userEvent.type(denominator, "2");
-    //   expect(denominator).toHaveValue("2");
+      const closeButton = screen.getByText("Close");
+      await userEvent.click(closeButton);
+      expect(modalTitle).not.toBeVisible();
+    });
 
-    //   const result = screen.getByRole("textbox", { name: "Result" });
-    //   expect(result).toHaveValue("50");
-    // });
+    test("Able to add new eligibility", async () => {
+      render(<EligibilityTableWrapper template={mockedElement} />);
+      const addButton = screen.getByText("Add eligibility");
+      await userEvent.click(addButton);
 
-    // test("Rate should not display a decimal point if it is not needed", async () => {
-    //   render(<NdrBasicWrapper template={mockedElement} />);
+      const title = screen.getByRole("textbox", { name: fieldLabels.title });
+      await userEvent.type(title, "mockTitle2");
 
-    //   const numerator = screen.getByRole("textbox", { name: "Numerator" });
-    //   await userEvent.type(numerator, "27");
+      const description = screen.getByRole("textbox", {
+        name: fieldLabels.description,
+      });
+      await userEvent.type(description, "mockDescription2");
 
-    //   const denominator = screen.getByRole("textbox", { name: "Denominator" });
-    //   await userEvent.type(denominator, "3");
+      const radios = screen.getAllByText("No");
+      await userEvent.click(radios[0]); // recheck
+      await userEvent.click(radios[1]); // eligibility update
 
-    //   const result = screen.getByRole("textbox", { name: "Result" });
-    //   expect(result).toHaveValue("900");
-    // });
+      const saveButton = screen.getByText("Save");
+      await userEvent.click(saveButton);
+      expect(screen.getByText("mockTitle2")).toBeVisible();
+      expect(updateSpy).toHaveBeenCalled();
+    });
 
-    // test("Rate should not display as a percent normally", async () => {
-    //   render(
-    //     <NdrBasicWrapper
-    //       template={{ ...mockedElement, displayRateAsPercent: false }}
-    //     />
-    //   );
+    test("Field validations showing proper errors", async () => {
+      render(<EligibilityTableWrapper template={mockedElement} />);
+      const addButton = screen.getByText("Add eligibility");
+      await userEvent.click(addButton);
 
-    //   const numerator = screen.getByRole("textbox", { name: "Numerator" });
-    //   await userEvent.type(numerator, "1");
+      const title = screen.getByRole("textbox", { name: fieldLabels.title });
+      await userEvent.type(title, "mockTitle1");
 
-    //   const denominator = screen.getByRole("textbox", { name: "Denominator" });
-    //   await userEvent.type(denominator, "2");
+      const saveButton = screen.getByText("Save");
+      await userEvent.click(saveButton);
+      expect(screen.getAllByText("A response is required")[0]).toBeVisible();
+      expect(screen.getByText("Title must be unique")).toBeVisible();
+    });
 
-    //   expect(screen.getByRole("textbox", { name: "Result" })).toHaveValue("50");
-    //   expect(screen.queryByText("%")).not.toBeInTheDocument();
-    // });
+    test("Able to delete eligibility", async () => {
+      render(<EligibilityTableWrapper template={mockedElement} />);
+      const deleteButton = screen.getByAltText("Delete Item");
+      await userEvent.click(deleteButton);
 
-    // test("Rate should display as a percent when appropriate", async () => {
-    //   render(
-    //     <NdrBasicWrapper
-    //       template={{ ...mockedElement, displayRateAsPercent: true }}
-    //     />
-    //   );
+      expect(screen.queryByText("mockTitle1")).not.toBeInTheDocument();
+      expect(updateSpy).toHaveBeenCalled();
+    });
 
-    //   const numerator = screen.getByRole("textbox", { name: "Numerator" });
-    //   await userEvent.type(numerator, "1");
+    test("Able to edit eligibility", async () => {
+      render(<EligibilityTableWrapper template={mockedElement} />);
+      const editButton = screen.getByText("Edit");
+      await userEvent.click(editButton);
 
-    //   const denominator = screen.getByRole("textbox", { name: "Denominator" });
-    //   await userEvent.type(denominator, "2");
+      const title = screen.getByRole("textbox", { name: fieldLabels.title });
+      await userEvent.type(title, "addonTitle");
 
-    //   expect(screen.getByRole("textbox", { name: "Result" })).toHaveValue("50");
-    //   expect(screen.getByText("%")).toBeVisible();
-    // });
-
-    // test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
-    //   render(<NdrBasicWrapper template={mockedElement} />);
-
-    //   const numerator = screen.getByRole("textbox", { name: "Numerator" });
-    //   await userEvent.type(numerator, "4");
-
-    //   const denominator = screen.getByRole("textbox", { name: "Denominator" });
-    //   await userEvent.type(denominator, "2000");
-
-    //   const result = screen.getByRole("textbox", { name: "Result" });
-    //   expect(result).toHaveValue("0.2");
-    // });
+      const saveButton = screen.getByText("Save");
+      await userEvent.click(saveButton);
+      expect(updateSpy).toHaveBeenCalled();
+      expect(screen.getByText("mockTitle1addonTitle")).toBeVisible();
+      expect(updateSpy).toHaveBeenCalled();
+    });
   });
 
-  //   describe("NDRBasicExport", () => {
-  //     it("should render a normal rate", () => {
-  //       render(
-  //         NDRBasicExport({
-  //           ...mockedElement,
-  //           displayRateAsPercent: false,
-  //           answer: {
-  //             numerator: 1,
-  //             denominator: 2,
-  //             rate: 50,
-  //           },
-  //         })
-  //       );
-  //       expect(screen.getByRole("row", { name: "Numerator 1" })).toBeVisible();
-  //       expect(screen.getByRole("row", { name: "Denominator 2" })).toBeVisible();
-  //       expect(screen.getByRole("row", { name: "Result 50" })).toBeVisible();
-  //       expect(screen.queryByText("%", { exact: false })).not.toBeInTheDocument();
-  //     });
-
-  //     it("should render a percentage", () => {
-  //       render(
-  //         NDRBasicExport({
-  //           ...mockedElement,
-  //           displayRateAsPercent: true,
-  //           answer: {
-  //             numerator: 1,
-  //             denominator: 2,
-  //             rate: 50,
-  //           },
-  //         })
-  //       );
-  //       expect(screen.getByRole("row", { name: "Numerator 1" })).toBeVisible();
-  //       expect(screen.getByRole("row", { name: "Denominator 2" })).toBeVisible();
-  //       expect(screen.getByRole("row", { name: "Result 50%" })).toBeVisible();
-  //     });
-  //   });
+  describe("EligibilityTableElementExport", () => {
+    it("should render export table", () => {
+      render(EligibilityTableElementExport(mockedElement));
+      expect(screen.getByText("mockTitle1")).toBeVisible();
+      expect(
+        screen.getByRole("cell", { name: fieldLabels.description })
+      ).toBeVisible();
+      expect(
+        screen.getByRole("cell", { name: fieldLabels.recheck })
+      ).toBeVisible();
+      expect(
+        screen.getByRole("cell", { name: fieldLabels.frequency })
+      ).toBeVisible();
+      expect(
+        screen.getByRole("cell", { name: fieldLabels.eligibilityUpdate })
+      ).toBeVisible();
+    });
+  });
 
   testA11y(<EligibilityTableWrapper template={mockedElement} />);
 });

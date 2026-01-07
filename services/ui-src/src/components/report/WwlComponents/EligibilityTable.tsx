@@ -28,7 +28,7 @@ import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
-const fieldLabels = {
+export const fieldLabels = {
   title:
     "What other eligibility requirement does your state use for this waiting list?",
   description:
