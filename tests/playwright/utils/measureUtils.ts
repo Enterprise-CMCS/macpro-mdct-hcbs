@@ -39,7 +39,6 @@ export const completeLTSS1 = async (page: Page) => {
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
 
   await quickFillFields(page, "Numerator");
-  await quickFillFields(page, "What is the 2028 state performance target");
 
   await completeAndReturn(page);
 };
@@ -66,7 +65,6 @@ export const completeLTSS2 = async (page: Page) => {
   await page.getByLabel("Exclusion Rates Denominator").fill("4");
 
   await quickFillFields(page, "Numerator");
-  await quickFillFields(page, "What is the 2028 state performance target");
 
   await completeAndReturn(page);
 };
@@ -90,7 +88,6 @@ export const completeLTSS6 = async (page: Page) => {
 
   await quickFillFields(page, "Denominator");
   await quickFillFields(page, "Numerator");
-  await quickFillFields(page, "What is the 2028 state performance target");
 
   await completeAndReturn(page);
 };

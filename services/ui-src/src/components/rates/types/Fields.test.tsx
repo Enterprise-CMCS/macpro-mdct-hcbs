@@ -14,7 +14,6 @@ const mockedPerformanceElement: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
   required: true,
   labels: {
-    performanceTarget: `What is the 2028 state performance target?`,
     actualCount: "Count of Successful Discharges to the Community",
     denominator: "Facility Admission Count",
     expectedCount: "Expected Count of Successful Discharges to the Community",
@@ -66,7 +65,6 @@ describe("<Fields />", () => {
       }
 
       for (let editableFieldId of [
-        "performanceTarget",
         "actualCount",
         "denominator",
         "expectedCount",

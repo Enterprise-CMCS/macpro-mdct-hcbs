@@ -21,7 +21,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
-      performanceTarget: stringifyInput(newAnswer?.performanceTarget),
       actualCount: stringifyInput(newAnswer?.actualCount),
       denominator: stringifyInput(newAnswer?.denominator),
       expectedCount: stringifyInput(newAnswer?.expectedCount),
@@ -50,7 +49,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   };
 
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
-    const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
     const actualCount = parseNumber(newDisplayValue.actualCount);
     const denominator = parseNumber(newDisplayValue.denominator);
     const expectedCount = parseNumber(newDisplayValue.expectedCount);
@@ -70,7 +68,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     }
 
     return {
-      performanceTarget: removeNoise(performanceTarget),
       actualCount: removeNoise(actualCount),
       denominator: removeNoise(denominator),
       expectedCount: removeNoise(expectedCount),
@@ -110,15 +107,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     <Stack gap={4} sx={sx.performance}>
       <Heading variant="subHeader">Performance Rates</Heading>
       <Stack gap="2rem">
-        <CmsdsTextField
-          label={labels.performanceTarget}
-          name="performanceTarget"
-          onChange={onChangeHandler}
-          onBlur={onChangeHandler}
-          value={displayValue.performanceTarget}
-          errorMessage={errors.performanceTarget}
-          disabled={disabled}
-        ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualCount}
           name="actualCount"
@@ -193,10 +181,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 export const FieldsExport = (element: LengthOfStayRateTemplate) => {
   const label = "Performance Rates";
   const rows = [
-    {
-      indicator: element.labels?.performanceTarget,
-      response: element.answer?.performanceTarget,
-    },
     {
       indicator: element.labels?.actualCount,
       response: element.answer?.actualCount,

@@ -85,11 +85,6 @@ describe("Test ExportedReportElements", () => {
     render(<>{element}</>);
 
     expect(screen.getAllByText("Denominator (Assessment 1)")).toHaveLength(2);
-    expect(
-      screen.getByText(
-        "What is the 2028 state performance target for this Assessment 1 field 1?"
-      )
-    ).toBeInTheDocument();
     expect(screen.getAllByText("2")).toHaveLength(2);
   });
   test("Test render FieldsExport element", () => {

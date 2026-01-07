@@ -22,8 +22,6 @@ import {
   CheckboxTemplate,
 } from "../../types/reports";
 
-const REPORT_YEAR = 2026;
-
 export const returnToRequiredDashboard: ButtonLinkTemplate = {
   type: ElementType.ButtonLink,
   id: "return-button",
@@ -343,17 +341,10 @@ export const whichProgramsWaivers: PageElement[] = [
   divider,
 ];
 
-export const statePerformanceTargetLabel = {
-  performanceTargetLabel: `What is the ${
-    REPORT_YEAR + 2
-  } state performance target?`,
-};
-
 //Rates for LTSS-1
 export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -388,7 +379,6 @@ export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
 export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -423,7 +413,6 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
 export const performanceRatesReassessmentPlanElements: NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced,
   id: "measure-rates",
-  ...statePerformanceTargetLabel,
   required: true,
   assessments: [
     {
@@ -460,7 +449,6 @@ export const performanceRatePOM: NdrTemplate = {
   id: "measure-rates",
   required: true,
   label: "Person uses the same environments as people without disabilities",
-  ...statePerformanceTargetLabel,
 };
 
 //Rates for LTSS-7
@@ -468,7 +456,6 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
   id: "measure-rates",
   labels: {
-    performanceTarget: statePerformanceTargetLabel.performanceTargetLabel,
     actualCount: "Count of Successful Discharges to the Community",
     denominator: "Facility Admission Count",
     expectedCount: "Expected Count of Successful Discharges to the Community",
@@ -487,7 +474,6 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
   id: "measure-rates",
   labels: {
-    performanceTarget: statePerformanceTargetLabel.performanceTargetLabel,
     actualCount: "Count of Successful Transitions to the Community",
     denominator: "Long-Term Facility Stay Count",
     expectedCount: "Expected Count of Successful Transitions to the Community",
@@ -506,9 +492,6 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
 export const performanceRateTermStay: NdrFieldsTemplate = {
   type: ElementType.NdrFields,
   id: "measure-rates",
-  labelTemplate: `What is the ${
-    REPORT_YEAR + 2
-  } state performance target for {{field}} ({{assessment}})?`,
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -528,9 +511,6 @@ export const performanceRateTermStay: NdrFieldsTemplate = {
 export const performanceRateSelfDirection: NdrFieldsTemplate = {
   type: ElementType.NdrFields,
   id: "measure-rates",
-  labelTemplate: `What is the ${
-    REPORT_YEAR + 2
-  } state performance target for {{field}} ({{assessment}})?`,
   required: true,
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },

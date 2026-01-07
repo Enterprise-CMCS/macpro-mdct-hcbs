@@ -25,13 +25,7 @@ import {
 
 export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
   const { disabled, element, updateElement } = props;
-  const {
-    labelTemplate,
-    assessments,
-    answer,
-    multiplier = 1,
-    fields,
-  } = element;
+  const { assessments, answer, multiplier = 1, fields } = element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return assessments.map((assessment, i) => ({
@@ -39,9 +33,6 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
       denominator: stringifyInput(newAnswer?.[i].denominator),
       rates: fields.map((field, j) => ({
         id: `${assessment.id}.${field.id}`,
-        performanceTarget: stringifyInput(
-          newAnswer?.[i].rates[j].performanceTarget
-        ),
         numerator: stringifyInput(newAnswer?.[i].rates[j].numerator),
         rate: stringifyResult(newAnswer?.[i].rates[j].rate),
       })),
@@ -54,7 +45,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
     /*
-     * The name will look like "0.denominator" or "1.rates.0.performanceTarget"
+     * The name will look like "0.denominator" or
      * or "2.rates.1.numerator". The last part is always an InputFieldName.
      * The first part is always an index into the answer array.
      * If there are 4 parts, the 3rd will be an index into the
@@ -90,7 +81,6 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
         id: displayObj.id,
         denominator: removeNoise(denominator),
         rates: displayObj.rates.map((rateObj) => {
-          const performanceTarget = parseNumber(rateObj.performanceTarget);
           const numerator = parseNumber(rateObj.numerator);
           const canCompute = canDivide && numerator !== undefined;
           const rate = canCompute
@@ -99,7 +89,6 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
           return {
             id: rateObj.id,
-            performanceTarget: removeNoise(performanceTarget),
             numerator: removeNoise(numerator),
             rate: removeNoise(rate),
           };
@@ -170,17 +159,6 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
                   <Stack key={`${assess.id}.${field.id}`} gap="2rem">
                     <Heading variant="nestedHeading">{field.label}</Heading>
                     <CmsdsTextField
-                      label={labelTemplate
-                        .replace("{{field}}", field.label.toLowerCase())
-                        .replace("{{assessment}}", assess.label)}
-                      name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.performanceTarget}`}
-                      onChange={onChangeHandler}
-                      onBlur={onChangeHandler}
-                      value={rateObject.performanceTarget}
-                      errorMessage={errorObject.performanceTarget}
-                      disabled={disabled}
-                    ></CmsdsTextField>
-                    <CmsdsTextField
                       label={`Numerator: ${field.label} (${assess.label})`}
                       name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.numerator}`}
                       onChange={onChangeHandler}
@@ -222,16 +200,9 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
     );
     const rates = element.fields.map((field) => {
       const rate = data?.rates.find((rate) => rate.id.includes(field.id));
-      const performanceTargetLabel = element.labelTemplate
-        .replace("{{field}}", field.label.toLowerCase())
-        .replace("{{assessment}}", assess.label);
       return {
         fieldLabel: field.label,
         rate: [
-          {
-            indicator: performanceTargetLabel,
-            response: rate?.performanceTarget,
-          },
           {
             indicator: `Numerator: ${field.label} (${assess.label})`,
             response: rate?.numerator,
