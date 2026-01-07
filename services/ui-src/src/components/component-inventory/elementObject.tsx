@@ -52,6 +52,7 @@ import {
   ndrBasicSection,
   lengthOfStayRateSection,
   measureDetailsSection,
+  EligibilityTableSection,
 } from "./pdfElementSectionHelpers";
 import { formatMonthDayYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
@@ -655,6 +656,6 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: ["Checkbox currently not used in PDFs"],
+    pdfVariants: [<ExportedReportWrapper section={EligibilityTableSection} />],
   },
 };
