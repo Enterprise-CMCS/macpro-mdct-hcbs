@@ -163,6 +163,10 @@ export const wwlReportTemplate: ReportBase = {
           id: "add-other-eligibility-instructions",
           text: "If the state screens individuals for other eligibility requirements before placing them on the waiting list, add those eligibility requirements here.",
         },
+        {
+          type: ElementType.EligibilityTable,
+          id: "add-other-eligibility-table",
+        },
       ],
     },
     {

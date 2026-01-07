@@ -20,6 +20,7 @@ import {
   NDRBasic,
   StatusAlert,
   CheckboxField,
+  // EligibilityTableElement,
 } from "components";
 
 import {
@@ -633,4 +634,18 @@ export const elementObject: {
     ],
     pdfVariants: ["Checkbox currently not used in PDFs"],
   },
+  // [ElementType.EligibilityTable]: {
+  //   description: "Eligibility Table for WWL report",
+  //   id: "id-eligibility-table",
+  //   variants: [
+  //     <EligibilityTableElement
+  //       updateElement={logNewElement}
+  //       element={{
+  //         type: ElementType.EligibilityTable,
+  //         id: "id-eligibility-table",
+  //       }}
+  //     />,
+  //   ],
+  //   pdfVariants: ["Checkbox currently not used in PDFs"],
+  // },
 };

@@ -261,6 +261,7 @@ export enum ElementType {
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
+  EligibilityTable = "eligibilityTable",
 }
 
 export type PageElement =
@@ -290,7 +291,8 @@ export type PageElement =
   | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
-  | SubmissionParagraphTemplate;
+  | SubmissionParagraphTemplate
+  | EligibilityTableTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -592,6 +594,20 @@ export type MeasureTableTemplate = {
   id: string;
   type: ElementType.MeasureTable;
   measureDisplay: "required" | "optional";
+};
+
+export type EligibilityTableItem = {
+  title: string;
+  description: string;
+  recheck: string;
+  frequency: string;
+  eligibilityUpdate: string;
+};
+
+export type EligibilityTableTemplate = {
+  type: ElementType.EligibilityTable;
+  id: string;
+  answer?: EligibilityTableItem[];
 };
 
 export type MeasureResultsNavigationTableTemplate = {

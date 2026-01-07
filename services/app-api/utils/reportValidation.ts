@@ -183,6 +183,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return dividerSchema;
     case ElementType.SubmissionParagraph:
       return submissionParagraphSchema;
+    case ElementType.EligibilityTable:
+      return eligibilityTableSchema;
     default:
       assertExhaustive(value);
       throw new Error("Page Element type is not valid");
@@ -249,6 +251,22 @@ const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
+});
+
+const eligibilityTableSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.EligibilityTable)),
+  id: string().required(),
+  answer: array()
+    .of(
+      object().shape({
+        title: string().required(),
+        description: string().required(),
+        recheck: string().required(),
+        frequency: string().notRequired(),
+        eligibilityUpdate: string().required(),
+      })
+    )
+    .notRequired(),
 });
 
 const measureResultsNavigationTableTemplateSchema = object().shape({
