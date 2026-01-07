@@ -11,8 +11,7 @@
     "coverage": "jest --coverage",
     "test": "jest --setupFiles dotenv/config --",
     "watchTest": "jest --setupFiles dotenv/config --watch",
-    "a11y": "pa11y --runner axe --runner htmlcs",
-    "patch": "node patchCmsgovDesignSystem.js"
+    "a11y": "pa11y --runner axe --runner htmlcs"
   },
   "dependencies": {
     "@chakra-ui/react": "2.10.6",
