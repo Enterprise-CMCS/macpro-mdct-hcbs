@@ -23,6 +23,10 @@ export const buildState = (
   preserveCurrentPage: boolean
 ) => {
   if (!report) return { report: undefined };
+  console.assert(
+    report.pages.every((pg, i, a) => i === a.findIndex((p) => p.id === pg.id)),
+    "Report pages have unique IDs"
+  );
   const pageMap = new Map<string, number>(
     report.pages.map((page, index) => [page.id, index])
   );
