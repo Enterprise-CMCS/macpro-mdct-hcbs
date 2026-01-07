@@ -356,6 +356,7 @@ export const EligibilityTableElementExport = (
   if (!exportElements) return <></>;
   return <>{ExportRateTable(exportElements)}</>;
 };
+
 const sx = {
   addIcon: {
     padding: "3px",
