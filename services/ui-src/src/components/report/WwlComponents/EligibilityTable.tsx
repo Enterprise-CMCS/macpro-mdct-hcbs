@@ -26,6 +26,20 @@ import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
+import { ExportRateTable } from "components/export/ExportedReportTable";
+
+const fieldLabels = {
+  title:
+    "What other eligibility requirement does your state use for this waiting list?",
+  description:
+    "Describe how the state checks for this eligibility before adding someone to the waiting list.",
+  recheck:
+    "Does the state periodically recheck individuals on the waiting list for this eligibility?",
+  frequency:
+    "How often does the state recheck individuals on the waiting list for this eligibility?",
+  eligibilityUpdate:
+    "Can individuals update or resubmit their information if their eligibility needs to be reviewed?",
+};
 
 export const EligibilityTableElement = (
   props: PageElementProps<EligibilityTableTemplate>
@@ -213,7 +227,7 @@ export const EligibilityTableElement = (
                 eligibility requirements here.
               </Text>
               <TextField
-                label="What other eligibility requirement does your state use for this waiting list?"
+                label={fieldLabels.title}
                 name="title"
                 onBlur={handleChange}
                 onChange={handleChange}
@@ -221,7 +235,7 @@ export const EligibilityTableElement = (
                 value={formValues.title}
               />
               <TextField
-                label="Describe how the state checks for this eligibility before adding someone to the waiting list."
+                label={fieldLabels.description}
                 name="description"
                 onBlur={handleChange}
                 onChange={handleChange}
@@ -233,9 +247,7 @@ export const EligibilityTableElement = (
                 name={"recheck"}
                 type={"radio"}
                 errorMessage={errorMessages.recheck}
-                label={
-                  "Does the state periodically recheck individuals on the waiting list for this eligibility?"
-                }
+                label={fieldLabels.recheck}
                 choices={[
                   {
                     label: "No",
@@ -251,9 +263,7 @@ export const EligibilityTableElement = (
                         <ChoiceList
                           name={"frequency"}
                           type={"radio"}
-                          label={
-                            "How often does the state recheck individuals on the waiting list for this eligibility?"
-                          }
+                          label={fieldLabels.frequency}
                           errorMessage={errorMessages.frequency}
                           choices={[
                             {
@@ -286,9 +296,7 @@ export const EligibilityTableElement = (
                 name={"eligibilityUpdate"}
                 type={"radio"}
                 errorMessage={errorMessages.eligibilityUpdate}
-                label={
-                  "Can individuals update or resubmit their information if their eligibility needs to be reviewed?"
-                }
+                label={fieldLabels.eligibilityUpdate}
                 choices={[
                   {
                     label: "No",
@@ -323,11 +331,30 @@ export const EligibilityTableElement = (
 export const EligibilityTableElementExport = (
   element: EligibilityTableTemplate
 ) => {
-  if (element) {
-    return <Text>Sup</Text>;
-  } else {
-    return <Text>Sup</Text>;
-  }
+  const exportElements = element.answer?.map((eligibility) => {
+    const label = eligibility.title;
+    const rows = [
+      {
+        indicator: fieldLabels.description,
+        response: eligibility.description,
+      },
+      {
+        indicator: fieldLabels.recheck,
+        response: eligibility.recheck,
+      },
+      {
+        indicator: fieldLabels.frequency,
+        response: eligibility.frequency,
+      },
+      {
+        indicator: fieldLabels.eligibilityUpdate,
+        response: eligibility.eligibilityUpdate,
+      },
+    ];
+    return { label, rows };
+  });
+  if (!exportElements) return <></>;
+  return <>{ExportRateTable(exportElements)}</>;
 };
 const sx = {
   addIcon: {
