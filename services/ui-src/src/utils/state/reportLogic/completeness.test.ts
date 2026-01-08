@@ -362,7 +362,7 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test.each([undefined, {}, { numerator: 1, denominator: 3, rate: 0.33 }])(
+  test.each([undefined, {}, { numerator: 1, rate: 0.33 }])(
     "rejects incomplete NDR rates",
     (answer) => {
       const element = {
