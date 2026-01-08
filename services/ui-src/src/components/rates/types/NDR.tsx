@@ -14,11 +14,10 @@ import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const { disabled, element, updateElement } = props;
-  const { label, performanceTargetLabel, answer } = element;
+  const { label, answer } = element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
-      performanceTarget: stringifyInput(newAnswer?.performanceTarget),
       numerator: stringifyInput(newAnswer?.numerator),
       denominator: stringifyInput(newAnswer?.denominator),
       rate: stringifyResult(newAnswer?.rate),
@@ -29,7 +28,6 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const initialErrors = {
     numerator: "",
     denominator: "",
-    performanceTarget: "",
   };
   const [displayValue, setDisplayValue] = useState(initialValue);
   const [errors, setErrors] = useState(initialErrors);
@@ -88,7 +86,6 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   };
 
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
-    const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
     const numerator = parseNumber(newDisplayValue.numerator);
     const denominator = parseNumber(newDisplayValue.denominator);
     if (denominator === 0 && numerator === 0) {
@@ -103,7 +100,6 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     const rate = canCompute ? numerator / denominator : undefined;
 
     return {
-      performanceTarget: removeNoise(performanceTarget),
       numerator: removeNoise(numerator),
       denominator: removeNoise(denominator),
       rate: removeNoise(rate),
@@ -141,15 +137,6 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
         <Stack gap="2rem">
           <Heading variant="subHeader">Performance Rate: {label}</Heading>
           <CmsdsTextField
-            label={performanceTargetLabel}
-            name={RateInputFieldNames.performanceTarget}
-            onChange={onChangeHandler}
-            onBlur={onChangeHandler}
-            value={displayValue.performanceTarget}
-            errorMessage={errors.performanceTarget}
-            disabled={disabled}
-          ></CmsdsTextField>
-          <CmsdsTextField
             label="Numerator"
             name={RateInputFieldNames.numerator}
             onChange={onChangeHandler}
@@ -185,10 +172,6 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
 export const NDRExport = (element: NdrTemplate) => {
   const label = `Performance Rate : ${element.label}`;
   const rows = [
-    {
-      indicator: element.performanceTargetLabel,
-      response: element.answer?.performanceTarget,
-    },
     {
       indicator: "Numerator",
       response: element.answer?.numerator,

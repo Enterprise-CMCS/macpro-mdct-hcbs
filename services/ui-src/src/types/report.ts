@@ -403,7 +403,6 @@ export type MeasureFooterTemplate = {
 };
 
 export const LengthOfStayFieldNames = {
-  performanceTarget: "performanceTarget",
   actualCount: "actualCount",
   denominator: "denominator",
   expectedCount: "expectedCount",
@@ -425,7 +424,6 @@ export type LengthOfStayRateTemplate = {
 };
 
 export const RateInputFieldNames = {
-  performanceTarget: "performanceTarget",
   numerator: "numerator",
   denominator: "denominator",
 } as const;
@@ -443,11 +441,9 @@ export type RateType = {
   id: string;
   numerator: number | undefined;
   rate: number | undefined;
-  performanceTarget: number | undefined;
 };
 
 export type RateData = {
-  performanceTarget?: number | undefined;
   numerator: number | undefined;
   denominator: number | undefined;
   rate: number | undefined;
@@ -461,7 +457,6 @@ export type RateSetData = {
 export type NdrFieldsTemplate = {
   id: string;
   type: ElementType.NdrFields;
-  labelTemplate: string;
   assessments: { label: string; id: string }[];
   fields: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
@@ -474,7 +469,6 @@ export type NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced;
   label?: string;
   helperText?: string;
-  performanceTargetLabel?: string | undefined;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
   required: boolean;
@@ -484,7 +478,6 @@ export type NdrTemplate = {
   id: string;
   type: ElementType.Ndr;
   label: string;
-  performanceTargetLabel: string;
   answer?: RateData;
   required: boolean;
 };

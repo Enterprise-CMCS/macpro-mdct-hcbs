@@ -99,7 +99,6 @@ export const ndrFieldsSection: FormPageTemplate = {
     {
       type: ElementType.NdrFields,
       id: "measure-rates",
-      labelTemplate: "Label",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
         { id: "assessment-2", label: "Second Assessment" },
@@ -122,7 +121,6 @@ export const ndrEnhancedSection: FormPageTemplate = {
     {
       type: ElementType.NdrEnhanced,
       id: "measure-rates",
-      performanceTargetLabel: "Label",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
         { id: "assessment-2", label: "Second Assessment" },
@@ -141,7 +139,6 @@ export const ndrSection: FormPageTemplate = {
     {
       type: ElementType.Ndr,
       id: "measure-rates",
-      performanceTargetLabel: "performanceTargetLabel",
       label: "Label",
       required: true,
     },
@@ -178,7 +175,6 @@ export const lengthOfStayRateSection: FormPageTemplate = {
       type: ElementType.LengthOfStayRate,
       id: "measure-rates",
       labels: {
-        performanceTarget: "performanceTarget",
         actualCount: "actualCount",
         denominator: "denominator",
         expectedCount: "expectedCount",

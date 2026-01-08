@@ -33,7 +33,6 @@ import {
   enterMeasureResultsSubheader,
   measureResultsNavigationTable,
   measureFooter,
-  statePerformanceTargetLabel,
   performanceRatesAssessmentElements,
   exclusionRatesAssessmentElements,
   performanceRatesPersonPlanElements,
@@ -534,7 +533,6 @@ export const measureTemplates: Record<
         required: true,
         label:
           "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -571,7 +569,6 @@ export const measureTemplates: Record<
         required: true,
         label:
           "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -632,7 +629,6 @@ export const measureTemplates: Record<
         required: true,
         label:
           "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
-        ...statePerformanceTargetLabel,
       },
       {
         type: ElementType.MeasureFooter,
@@ -668,7 +664,6 @@ export const measureTemplates: Record<
         id: "measure-rates",
         label:
           "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
-        ...statePerformanceTargetLabel,
         required: true,
       },
       {
@@ -778,7 +773,6 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -832,7 +826,6 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -994,7 +987,6 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -1035,7 +1027,6 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {
@@ -1113,7 +1104,6 @@ export const measureTemplates: Record<
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
-        ...statePerformanceTargetLabel,
         required: true,
         assessments: [
           {

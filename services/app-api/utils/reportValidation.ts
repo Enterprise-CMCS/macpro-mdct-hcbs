@@ -291,7 +291,6 @@ const lengthOfStayRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.LengthOfStayRate)),
   id: string().required(),
   labels: object().shape({
-    performanceTarget: string().required(),
     actualCount: string().required(),
     denominator: string().required(),
     expectedCount: string().required(),
@@ -303,7 +302,6 @@ const lengthOfStayRateSchema = object().shape({
   required: boolean().required(),
   answer: object()
     .shape({
-      performanceTarget: number().notRequired(),
       actualCount: number().notRequired(),
       denominator: number().notRequired(),
       expectedCount: number().notRequired(),
@@ -318,7 +316,6 @@ const lengthOfStayRateSchema = object().shape({
 const ndrFieldsRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NdrFields)),
   id: string().required(),
-  labelTemplate: string().required(),
   assessments: array()
     .of(
       object().shape({
@@ -347,7 +344,6 @@ const ndrFieldsRateSchema = object().shape({
             id: string().required(),
             numerator: number().notRequired(),
             rate: number().notRequired(),
-            performanceTarget: number().notRequired(),
           })
         ),
       })
@@ -360,7 +356,6 @@ const ndrEnhancedRateSchema = object().shape({
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
-  performanceTargetLabel: string().notRequired(),
   assessments: array()
     .of(
       object().shape({
@@ -378,7 +373,6 @@ const ndrEnhancedRateSchema = object().shape({
           id: string().required(),
           numerator: number().notRequired(),
           rate: number().notRequired(),
-          performanceTarget: number().notRequired(),
         })
       ),
     })
@@ -389,11 +383,9 @@ const ndrRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Ndr)),
   id: string().required(),
   label: string().required(),
-  performanceTargetLabel: string().required(),
   required: boolean().required(),
   answer: object()
     .shape({
-      performanceTarget: number().notRequired(),
       numerator: number().notRequired(),
       denominator: number().notRequired(),
       rate: number().notRequired(),

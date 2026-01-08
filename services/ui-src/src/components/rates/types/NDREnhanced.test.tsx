@@ -12,7 +12,6 @@ const mockedElement: NdrEnhancedTemplate = {
   label: "test label",
   helperText: "helper text",
   required: true,
-  performanceTargetLabel: "What is the 2028 state performance target?",
   assessments: [{ id: "test-1", label: "assessment 1" }],
 };
 const updateSpy = jest.fn();
@@ -38,9 +37,6 @@ describe("<NDREnhanced />", () => {
 
     test("NDREnhanced is visible", () => {
       render(<NdrEnhancedWrapper template={mockedElement} />);
-      expect(
-        screen.getByLabelText("What is the 2028 state performance target?")
-      ).toBeInTheDocument();
 
       expect(
         screen.getByRole("textbox", { name: "test labels Denominator" })

@@ -65,7 +65,9 @@ describe("Test ExportedReportElements", () => {
         "Performance Rate : Person uses the same environments as people without disabilities"
       )
     ).toBeInTheDocument();
-    expect(screen.getAllByText(4)).toHaveLength(1);
+    expect(screen.getByRole("row", { name: "Numerator 5" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "Denominator 3" })).toBeVisible();
+    expect(screen.getByRole("row", { name: /Rate .* 1\.67/ })).toBeVisible();
   });
   test("Test render NDR Enhanced element", () => {
     section.elements.push(mockedNDREnhanced);
@@ -77,7 +79,7 @@ describe("Test ExportedReportElements", () => {
       screen.getByText("Performance Rates Denominator")
     ).toBeInTheDocument();
     expect(screen.getAllByText("2")).toHaveLength(2);
-    expect(screen.getAllByText("Not answered")).toHaveLength(2);
+    expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });
   test("Test render NDR Fields element", () => {
     section.elements.push(mockNDRFields);
@@ -85,11 +87,6 @@ describe("Test ExportedReportElements", () => {
     render(<>{element}</>);
 
     expect(screen.getAllByText("Denominator (Assessment 1)")).toHaveLength(2);
-    expect(
-      screen.getByText(
-        "What is the 2028 state performance target for this Assessment 1 field 1?"
-      )
-    ).toBeInTheDocument();
     expect(screen.getAllByText("2")).toHaveLength(2);
   });
   test("Test render FieldsExport element", () => {
@@ -97,7 +94,7 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockLengthOfStayFields);
     render(<>{element}</>);
     expect(screen.getByText("Actual Count")).toBeInTheDocument();
-    expect(screen.getAllByText("Not answered")).toHaveLength(8);
+    expect(screen.getAllByText("Not answered")).toHaveLength(7);
   });
   test("Test render NDR Basic element", () => {
     section.elements.push(mockNDRBasics);
