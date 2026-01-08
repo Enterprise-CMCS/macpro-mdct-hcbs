@@ -76,9 +76,9 @@ const listInputTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.ListInput)),
   id: string().required(),
   label: string().required(),
-  fieldLabel: string().notRequired(),
-  helperText: string().notRequired(),
-  buttonText: string().notRequired(),
+  fieldLabel: string().required(),
+  helperText: string().required(),
+  buttonText: string().required(),
   answer: array().of(string()).notRequired(),
   required: boolean().required(),
 });

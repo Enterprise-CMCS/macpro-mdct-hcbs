@@ -393,9 +393,9 @@ export type ListInputTemplate = {
   type: ElementType.ListInput;
   id: string;
   label: string;
-  fieldLabel?: string;
-  helperText?: string;
-  buttonText?: string;
+  fieldLabel: string;
+  helperText: string;
+  buttonText: string;
   answer?: string[];
   required: boolean;
 };

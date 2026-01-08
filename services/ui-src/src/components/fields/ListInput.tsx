@@ -8,7 +8,8 @@ import addPrimary from "assets/icons/add/icon_add_blue.svg";
 import { ErrorMessages } from "../../constants";
 
 export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
-  const { label, fieldLabel, helperText, buttonText, answer } = props.element;
+  const { updateElement, disabled, element } = props;
+  const { label, fieldLabel, helperText, buttonText, answer } = element;
   const [displayValue, setDisplayValue] = useState(answer ?? []);
   const [errorMessages, setErrorMessages] = useState([""]);
 
@@ -29,21 +30,21 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
     }
     setErrorMessages(newErrorMessages);
 
-    props.updateElement({ answer: newDisplay });
+    updateElement({ answer: newDisplay });
   };
 
   const onAddHandler = () => {
     const newDisplay = [...displayValue];
     newDisplay.push("");
     setDisplayValue(newDisplay);
-    props.updateElement({ answer: newDisplay });
+    updateElement({ answer: newDisplay });
   };
 
   const onRemoveHandler = (index: number) => {
     const newDisplay = [...displayValue];
     newDisplay.splice(index, 1);
     setDisplayValue(newDisplay);
-    props.updateElement({ answer: newDisplay });
+    updateElement({ answer: newDisplay });
   };
 
   return (
@@ -64,8 +65,13 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             onChange={(evt) => onChangeHandler(evt, index)}
             onBlur={(evt) => onChangeHandler(evt, index)}
             errorMessage={errorMessages?.[index] ?? ""}
+            disabled={disabled}
           ></TextField>
-          <Button variant="unstyled" onClick={() => onRemoveHandler(index)}>
+          <Button
+            variant="unstyled"
+            onClick={() => onRemoveHandler(index)}
+            disabled={disabled}
+          >
             <Image src={cancelPrimary} alt="Remove" />
           </Button>
         </HStack>
@@ -75,6 +81,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
         variant="outline"
         leftIcon={<Image src={addPrimary} alt="Add" />}
         onClick={onAddHandler}
+        disabled={disabled}
       >
         {buttonText}
       </Button>
