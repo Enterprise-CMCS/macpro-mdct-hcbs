@@ -5,13 +5,21 @@ import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
 import {
   EligibilityTableElement,
-  fieldLabels,
   EligibilityTableElementExport,
 } from "./EligibilityTable";
 
 const mockedElement: EligibilityTableTemplate = {
   id: "mock-id",
   type: ElementType.EligibilityTable,
+  fieldLabels: {
+    title: "title",
+    description: "description",
+    recheck: "recheck",
+    frequency: "frequency",
+    eligibilityUpdate: "eligibilityUpdate",
+  },
+  modalInstructions: "modalInstructions",
+  frequencyOptions: [{ label: "Annually", value: "Annually" }],
   answer: [
     {
       title: "mockTitle1",
@@ -67,11 +75,13 @@ describe("<EligibilityTableElement />", () => {
       const addButton = screen.getByText("Add eligibility");
       await userEvent.click(addButton);
 
-      const title = screen.getByRole("textbox", { name: fieldLabels.title });
+      const title = screen.getByRole("textbox", {
+        name: mockedElement.fieldLabels.title,
+      });
       await userEvent.type(title, "mockTitle2");
 
       const description = screen.getByRole("textbox", {
-        name: fieldLabels.description,
+        name: mockedElement.fieldLabels.description,
       });
       await userEvent.type(description, "mockDescription2");
 
@@ -90,7 +100,9 @@ describe("<EligibilityTableElement />", () => {
       const addButton = screen.getByText("Add eligibility");
       await userEvent.click(addButton);
 
-      const title = screen.getByRole("textbox", { name: fieldLabels.title });
+      const title = screen.getByRole("textbox", {
+        name: mockedElement.fieldLabels.title,
+      });
       await userEvent.type(title, "mockTitle1");
 
       const saveButton = screen.getByText("Save");
@@ -113,7 +125,9 @@ describe("<EligibilityTableElement />", () => {
       const editButton = screen.getByText("Edit");
       await userEvent.click(editButton);
 
-      const title = screen.getByRole("textbox", { name: fieldLabels.title });
+      const title = screen.getByRole("textbox", {
+        name: mockedElement.fieldLabels.title,
+      });
       await userEvent.type(title, "addonTitle");
 
       const saveButton = screen.getByText("Save");
@@ -129,16 +143,20 @@ describe("<EligibilityTableElement />", () => {
       render(EligibilityTableElementExport(mockedElement));
       expect(screen.getByText("mockTitle1")).toBeVisible();
       expect(
-        screen.getByRole("cell", { name: fieldLabels.description })
+        screen.getByRole("cell", {
+          name: mockedElement.fieldLabels.description,
+        })
       ).toBeVisible();
       expect(
-        screen.getByRole("cell", { name: fieldLabels.recheck })
+        screen.getByRole("cell", { name: mockedElement.fieldLabels.recheck })
       ).toBeVisible();
       expect(
-        screen.getByRole("cell", { name: fieldLabels.frequency })
+        screen.getByRole("cell", { name: mockedElement.fieldLabels.frequency })
       ).toBeVisible();
       expect(
-        screen.getByRole("cell", { name: fieldLabels.eligibilityUpdate })
+        screen.getByRole("cell", {
+          name: mockedElement.fieldLabels.eligibilityUpdate,
+        })
       ).toBeVisible();
     });
   });

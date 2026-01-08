@@ -1,8 +1,37 @@
 import {
   ElementType,
+  EligibilityTableTemplate,
   RadioTemplate,
   TextAreaBoxTemplate,
 } from "../../../types/reports";
+
+export const addOtherEligibilityTableVerbiage = {
+  fieldLabels: {
+    title:
+      "What other eligibility requirement does your state use for this waiting list?",
+    description:
+      "Describe how the state checks for this eligibility before adding someone to the waiting list.",
+    recheck:
+      "Does the state periodically recheck individuals on the waiting list for this eligibility?",
+    frequency:
+      "How often does the state recheck individuals on the waiting list for this eligibility?",
+    eligibilityUpdate:
+      "Can individuals update or resubmit their information if their eligibility needs to be reviewed?",
+  },
+  modalInstructions:
+    "If the state screens individuals for other eligibility requirements before placing them on the waiting list, add those eligibility requirements here.",
+  frequencyOptions: [
+    { label: "Less than annually", value: "Less than annually" },
+    { label: "Annually", value: "Annually" },
+    { label: "More than annually", value: "More than annually" },
+  ],
+};
+
+export const wwlAddOtherEligibilityTableElement: EligibilityTableTemplate = {
+  type: ElementType.EligibilityTable,
+  id: "add-other-eligibility-table",
+  ...addOtherEligibilityTableVerbiage,
+};
 
 export const wwlFinancialEligiblityExplanationField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,

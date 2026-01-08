@@ -256,6 +256,22 @@ const measureTableTemplateSchema = object().shape({
 const eligibilityTableSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.EligibilityTable)),
   id: string().required(),
+  fieldLabels: object().shape({
+    title: string().required(),
+    description: string().required(),
+    recheck: string().required(),
+    frequency: string().required(),
+    eligibilityUpdate: string().required(),
+  }),
+  modalInstructions: string().required(),
+  frequencyOptions: array()
+    .of(
+      object().shape({
+        label: string().required(),
+        value: string().required(),
+      })
+    )
+    .required(),
   answer: array()
     .of(
       object().shape({

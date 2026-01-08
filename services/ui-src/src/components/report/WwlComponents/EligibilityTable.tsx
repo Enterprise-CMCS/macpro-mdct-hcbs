@@ -28,23 +28,11 @@ import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
-export const fieldLabels = {
-  title:
-    "What other eligibility requirement does your state use for this waiting list?",
-  description:
-    "Describe how the state checks for this eligibility before adding someone to the waiting list.",
-  recheck:
-    "Does the state periodically recheck individuals on the waiting list for this eligibility?",
-  frequency:
-    "How often does the state recheck individuals on the waiting list for this eligibility?",
-  eligibilityUpdate:
-    "Can individuals update or resubmit their information if their eligibility needs to be reviewed?",
-};
-
 export const EligibilityTableElement = (
   props: PageElementProps<EligibilityTableTemplate>
 ) => {
   const { element, updateElement } = props;
+  const { fieldLabels, modalInstructions, frequencyOptions } = element;
 
   const initialValues = {
     title: "",
@@ -156,7 +144,7 @@ export const EligibilityTableElement = (
     return (
       <Tr key={index}>
         <Td width="100%" padding="spacer2 !important">
-          <Text fontWeight="heading_xl" fontSize="heading_xl">
+          <Text fontWeight="heading_md" fontSize="heading_md">
             {eligibility.title}
           </Text>
           <Text>Recheck: {eligibility.recheck}</Text>
@@ -167,6 +155,7 @@ export const EligibilityTableElement = (
           <Button
             as={Link}
             variant={"outline"}
+            aria-label={`Edit ${eligibility.title}`}
             onClick={() => {
               onEditClick(eligibility);
             }}
@@ -177,6 +166,7 @@ export const EligibilityTableElement = (
         <Td>
           <Button
             variant="plain"
+            aria-label={`Delete ${eligibility.title}`}
             onClick={() => {
               handleDeleteClick(eligibility.title);
             }}
@@ -223,11 +213,7 @@ export const EligibilityTableElement = (
           </Button>
           <ModalBody>
             <Flex direction="column" gap="2rem">
-              <Text>
-                If the state screens individuals for other eligibility
-                requirements before placing them on the waiting list, add those
-                eligibility requirements here.
-              </Text>
+              <Text>{modalInstructions}</Text>
               <TextField
                 label={fieldLabels.title}
                 name="title"
@@ -267,25 +253,13 @@ export const EligibilityTableElement = (
                           type={"radio"}
                           label={fieldLabels.frequency}
                           errorMessage={errorMessages.frequency}
-                          choices={[
-                            {
-                              label: "Less than annually",
-                              value: "Less than annually",
-                              checked:
-                                formValues.frequency === "Less than annually",
-                            },
-                            {
-                              label: "Annually",
-                              value: "Annually",
-                              checked: formValues.frequency === "Annually",
-                            },
-                            {
-                              label: "More than annually",
-                              value: "More than annually",
-                              checked:
-                                formValues.frequency === "More than annually",
-                            },
-                          ]}
+                          choices={frequencyOptions.map((option) => {
+                            return {
+                              label: option.label,
+                              value: option.value,
+                              checked: formValues.frequency === option.value,
+                            };
+                          })}
                           onChange={handleChange}
                         />
                       </Box>,
@@ -333,6 +307,7 @@ export const EligibilityTableElement = (
 export const EligibilityTableElementExport = (
   element: EligibilityTableTemplate
 ) => {
+  const { fieldLabels } = element;
   const exportElements = element.answer?.map((eligibility) => {
     const label = eligibility.title;
     const rows = [
@@ -355,6 +330,7 @@ export const EligibilityTableElementExport = (
     ];
     return { label, rows };
   });
+
   if (!exportElements) return <></>;
   return <>{ExportRateTable(exportElements)}</>;
 };

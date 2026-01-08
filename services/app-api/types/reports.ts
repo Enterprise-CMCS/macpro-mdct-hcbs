@@ -607,6 +607,15 @@ export type EligibilityTableItem = {
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;
+  fieldLabels: {
+    title: string;
+    description: string;
+    recheck: string;
+    frequency: string;
+    eligibilityUpdate: string;
+  };
+  modalInstructions: string;
+  frequencyOptions: { label: string; value: string }[];
   answer?: EligibilityTableItem[];
 };
 

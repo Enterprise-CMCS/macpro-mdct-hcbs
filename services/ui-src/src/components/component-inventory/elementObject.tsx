@@ -644,6 +644,15 @@ export const elementObject: {
         element={{
           type: ElementType.EligibilityTable,
           id: "id-eligibility-table",
+          fieldLabels: {
+            title: "title",
+            description: "description",
+            recheck: "recheck",
+            frequency: "frequency",
+            eligibilityUpdate: "eligibilityUpdate",
+          },
+          modalInstructions: "modalInstructions",
+          frequencyOptions: [{ label: "Annually", value: "Annually" }],
           answer: [
             {
               title: "string",

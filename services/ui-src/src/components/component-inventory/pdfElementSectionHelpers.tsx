@@ -176,7 +176,16 @@ export const EligibilityTableSection: FormPageTemplate = {
   elements: [
     {
       type: ElementType.EligibilityTable,
-      id: "measure-rates",
+      id: "add-other-eligibility-table",
+      fieldLabels: {
+        title: "title",
+        description: "description",
+        recheck: "recheck",
+        frequency: "frequency",
+        eligibilityUpdate: "eligibilityUpdate",
+      },
+      modalInstructions: "modalInstructions",
+      frequencyOptions: [{ label: "Annually", value: "Annually" }],
       answer: [
         {
           title: "string",
