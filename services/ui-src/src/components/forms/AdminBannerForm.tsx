@@ -1,14 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Flex, Spinner } from "@chakra-ui/react";
-import { Banner, ErrorAlert } from "components";
+import { Banner } from "components";
 import {
   TextField as CmsdsTextField,
   SingleInputDateField as CmsdsDateField,
 } from "@cmsgov/design-system";
 import { bannerId, ErrorMessages } from "../../constants";
-import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber, parseMMDDYYYY } from "utils";
-import { AdminBannerMethods, BannerData, ErrorVerbiage } from "types";
+import { AdminBannerMethods, BannerData } from "types";
 import { isUrl } from "utils/validation/inputValidation";
 
 export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
@@ -26,7 +25,6 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     startDate: "",
     endDate: "",
   });
-  const [errorAlertContents, setErrorAlertContents] = useState<ErrorVerbiage>();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const onTextChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -151,15 +149,13 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     try {
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
-    } catch {
-      setErrorAlertContents(bannerErrors.REPLACE_BANNER_FAILED);
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   return (
     <>
-      <ErrorAlert error={errorAlertContents} sxOverride={sx.errorAlert} />
       <form id="addAdminBanner" onSubmit={onSubmit}>
         <Flex flexDirection="column" gap="1.5rem">
           <CmsdsTextField
@@ -231,9 +227,6 @@ interface Props {
 }
 
 const sx = {
-  errorAlert: {
-    maxWidth: "40rem",
-  },
   previewFlex: {
     flexDirection: "column",
   },

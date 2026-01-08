@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
 import alertIcon from "assets/icons/alert/icon_alert.svg";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 
 export const Alert = ({
   status = AlertTypes.INFO,
@@ -23,8 +23,16 @@ export const Alert = ({
   children,
   link,
 }: Props) => {
+  // Focus the alert whenever an error is rendered (or re-rendered)
+  const ref = useRef<HTMLDivElement>(null);
+  if (ref.current && status === AlertTypes.ERROR) {
+    ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    ref.current.focus({ preventScroll: true });
+  }
+
   return (
     <AlertRoot
+      ref={ref}
       status={status}
       variant="left-accent"
       sx={sxOverride ?? sx.root}

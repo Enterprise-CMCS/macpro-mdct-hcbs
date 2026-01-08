@@ -2,7 +2,6 @@
 export { AccordionItem } from "./accordions/AccordionItem";
 // alerts
 export { Alert } from "./alerts/Alert";
-export { ErrorAlert } from "./alerts/ErrorAlert";
 // app
 export { App } from "./app/App";
 export { Error } from "./app/Error";
