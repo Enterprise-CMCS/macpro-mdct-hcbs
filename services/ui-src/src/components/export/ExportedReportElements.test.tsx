@@ -65,7 +65,9 @@ describe("Test ExportedReportElements", () => {
         "Performance Rate : Person uses the same environments as people without disabilities"
       )
     ).toBeInTheDocument();
-    expect(screen.getAllByText(4)).toHaveLength(1);
+    expect(screen.getByRole("row", { name: "Numerator 5" })).toBeVisible();
+    expect(screen.getByRole("row", { name: "Denominator 3" })).toBeVisible();
+    expect(screen.getByRole("row", { name: /Rate .* 1\.67/ })).toBeVisible();
   });
   test("Test render NDR Enhanced element", () => {
     section.elements.push(mockedNDREnhanced);
