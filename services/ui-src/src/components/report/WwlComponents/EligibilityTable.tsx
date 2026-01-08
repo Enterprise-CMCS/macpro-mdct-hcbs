@@ -155,10 +155,12 @@ export const EligibilityTableElement = (
   const rows = eligibilityItems.map((eligibility, index) => {
     return (
       <Tr key={index}>
-        <Td width="100%">
-          <Text fontWeight="bold">{eligibility.title}</Text>
+        <Td width="100%" padding="spacer2 !important">
+          <Text fontWeight="heading_xl" fontSize="heading_xl">
+            {eligibility.title}
+          </Text>
           <Text>Recheck: {eligibility.recheck}</Text>
-          <Text>Frequency: {eligibility.frequency}</Text>
+          <Text>Frequency: {eligibility.frequency || "N/A"}</Text>
           <Text>Eligibility Update: {eligibility.eligibilityUpdate}</Text>
         </Td>
         <Td>
