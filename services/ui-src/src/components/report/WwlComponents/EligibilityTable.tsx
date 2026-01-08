@@ -55,6 +55,13 @@ export const EligibilityTableElement = (
     setErrorMessages(initialValues);
   }, [modalOpen]);
 
+  useEffect(() => {
+    // Clear the child radio if the parent radio is not "Yes"
+    if (formValues.recheck !== "Yes") {
+      setFormValues((prev) => ({ ...prev, frequency: "" }));
+    }
+  }, [formValues.recheck]);
+
   const validateField = (name: string, value: string) => {
     if (name === "frequency" && formValues.recheck !== "Yes") {
       return "";

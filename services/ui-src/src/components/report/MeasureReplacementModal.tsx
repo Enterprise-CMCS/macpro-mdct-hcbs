@@ -25,7 +25,7 @@ export const MeasureReplacementModal = (
           original will now appear on the Optional Measure Results page.
         </p>
         <ChoiceList
-          name={"substitue"}
+          name={"substitute"}
           type={"radio"}
           label={label}
           choices={[
