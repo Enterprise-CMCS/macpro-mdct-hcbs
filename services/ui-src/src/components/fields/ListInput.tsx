@@ -71,6 +71,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             variant="unstyled"
             onClick={() => onRemoveHandler(index)}
             disabled={disabled}
+            aria-label={`Remove ${field}`}
           >
             <Image src={cancelPrimary} alt="Remove" />
           </Button>
