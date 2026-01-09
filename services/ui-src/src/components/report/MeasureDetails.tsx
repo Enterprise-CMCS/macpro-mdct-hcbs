@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, HStack, Text, Heading } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { MeasurePageTemplate, PageType } from "types";
 import { currentPageSelector } from "utils/state/selectors";
@@ -23,13 +23,23 @@ const render = (
       <Flex flexDirection="column" alignItems="space-between">
         <>
           {!isPdf && (
-            <Text fontWeight="bold" paddingBottom="spacer2">
+            <Heading
+              fontWeight="heading_md"
+              fontSize="heading_md"
+              paddingBottom="spacer2"
+            >
               Quality Measure Details:
-            </Text>
+            </Heading>
           )}
-          <Text fontWeight={isPdf ? "bold" : "normal"}>
+          <Heading
+            fontWeight="heading_xl"
+            fontSize="heading_xl"
+            lineHeight="heading_xl"
+            marginBottom="0 !important"
+            as="h3"
+          >
             {`Measure Name: ${title}`}
-          </Text>
+          </Heading>
           <Text>{`CMIT number: #${cmit}`}</Text>
           <Text>{`Steward: ${steward}`}</Text>
           <Text>{`Collection method: ${formattedCollectionMethod}`}</Text>
