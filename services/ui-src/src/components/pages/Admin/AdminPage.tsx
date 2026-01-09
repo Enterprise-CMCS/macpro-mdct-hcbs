@@ -32,17 +32,15 @@ export const AdminPage = () => {
 
   return (
     <PageTemplate data-testid="admin-view">
-      {
-        bannerErrorMessage ? (
-          <Alert
-            status={AlertTypes.ERROR}
-            title={bannerErrorMessage.title}
-            showIcon={false}
-          >
-            {bannerErrorMessage.children}
-          </Alert>
-        ) : null
-      }
+      {bannerErrorMessage ? (
+        <Alert
+          status={AlertTypes.ERROR}
+          title={bannerErrorMessage.title}
+          showIcon={false}
+        >
+          {bannerErrorMessage.children}
+        </Alert>
+      ) : null}
       <Box sx={sx.introTextBox}>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           Banner Admin

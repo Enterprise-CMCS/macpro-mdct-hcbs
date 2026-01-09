@@ -26,13 +26,11 @@ export const LoginCognito = () => {
       <Heading fontSize="heading_xl" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      {error !== undefined
-        ? (
-          <Alert status={AlertTypes.ERROR} title="Unable to log in">
-            {error}
-          </Alert>
-        ) : null
-      };
+      {error !== undefined ? (
+        <Alert status={AlertTypes.ERROR} title="Unable to log in">
+          {error}
+        </Alert>
+      ) : null}
       <form onSubmit={handleLogin}>
         <Box>
           <label>
