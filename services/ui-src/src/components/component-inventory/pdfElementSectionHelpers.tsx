@@ -99,7 +99,6 @@ export const ndrFieldsSection: FormPageTemplate = {
     {
       type: ElementType.NdrFields,
       id: "measure-rates",
-      labelTemplate: "Label",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
         { id: "assessment-2", label: "Second Assessment" },
@@ -122,7 +121,6 @@ export const ndrEnhancedSection: FormPageTemplate = {
     {
       type: ElementType.NdrEnhanced,
       id: "measure-rates",
-      performanceTargetLabel: "Label",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
         { id: "assessment-2", label: "Second Assessment" },
@@ -141,7 +139,6 @@ export const ndrSection: FormPageTemplate = {
     {
       type: ElementType.Ndr,
       id: "measure-rates",
-      performanceTargetLabel: "performanceTargetLabel",
       label: "Label",
       required: true,
     },
@@ -169,6 +166,36 @@ export const ndrBasicSection: FormPageTemplate = {
   ],
 };
 
+export const EligibilityTableSection: FormPageTemplate = {
+  id: "mock-eligibilityTable-id",
+  title: "mock-eligibilityTable-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.EligibilityTable,
+      id: "add-other-eligibility-table",
+      fieldLabels: {
+        title: "title",
+        description: "description",
+        recheck: "recheck",
+        frequency: "frequency",
+        eligibilityUpdate: "eligibilityUpdate",
+      },
+      modalInstructions: "modalInstructions",
+      frequencyOptions: [{ label: "Annually", value: "Annually" }],
+      answer: [
+        {
+          title: "string",
+          description: "string",
+          recheck: "Yes",
+          frequency: "Annually",
+          eligibilityUpdate: "No",
+        },
+      ],
+    },
+  ],
+};
+
 export const lengthOfStayRateSection: FormPageTemplate = {
   id: "mock-lengthOfStayRate-id",
   title: "mock-lengthOfStayRate-title",
@@ -178,7 +205,6 @@ export const lengthOfStayRateSection: FormPageTemplate = {
       type: ElementType.LengthOfStayRate,
       id: "measure-rates",
       labels: {
-        performanceTarget: "performanceTarget",
         actualCount: "actualCount",
         denominator: "denominator",
         expectedCount: "expectedCount",

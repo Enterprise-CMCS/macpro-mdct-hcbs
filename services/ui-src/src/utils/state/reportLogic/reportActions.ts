@@ -71,13 +71,9 @@ export const setPage = (
 export const deepMerge = (obj1: any, obj2: any) => {
   const clone1 = structuredClone(obj1);
   const clone2 = structuredClone(obj2);
-
-  //check that if it's an array of numbers or strings, this is for checkbox values which are an array of strings
-  if (
-    Array.isArray(clone1) &&
-    Array.isArray(clone2) &&
-    ["number", "string"].includes(typeof clone1[0])
-  ) {
+  // If comparing arrays, always use the updated array
+  // This is for checkbox values which are an array of strings, and eligibility table which is an array of objects
+  if (Array.isArray(clone1) && Array.isArray(clone2)) {
     return clone2;
   }
 

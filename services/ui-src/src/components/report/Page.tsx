@@ -35,6 +35,7 @@ import {
   NDREnhanced,
   CheckboxField,
   ListInput,
+  EligibilityTableElement,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -117,6 +118,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <SubHeaderMeasureElement {...{ element }} />;
       case ElementType.ListInput:
         return <ListInput {...{ updateElement, disabled, element }} />;
+      case ElementType.EligibilityTable:
+        return <EligibilityTableElement {...{ updateElement, element }} />;
       default:
         assertExhaustive(element);
         return null;

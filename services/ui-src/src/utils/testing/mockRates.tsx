@@ -12,12 +12,10 @@ export const mockNDR: NdrTemplate = {
   type: ElementType.Ndr,
   label: "Person uses the same environments as people without disabilities",
   answer: {
-    performanceTarget: 4,
     rate: 1.66666666666667,
     numerator: 5,
     denominator: 3,
   },
-  performanceTargetLabel: "What is the 2028 state performance target?",
   required: true,
 };
 
@@ -27,9 +25,6 @@ export const mockedNDREnhanced: NdrEnhancedTemplate = {
   label: "test label",
   helperText: "helper text",
   required: true,
-  performanceTargetLabel: "What is the 2028 state performance target?" as
-    | string
-    | undefined,
   assessments: [{ id: "test-1", label: "assessment 1" }],
   answer: {
     denominator: 2,
@@ -38,7 +33,6 @@ export const mockedNDREnhanced: NdrEnhancedTemplate = {
         id: "test-1",
         numerator: undefined,
         rate: undefined,
-        performanceTarget: undefined,
       },
     ],
   },
@@ -48,8 +42,6 @@ export const mockNDRFields: NdrFieldsTemplate = {
   id: "mock-ndr-fields",
   type: ElementType.NdrFields,
   required: true,
-  labelTemplate:
-    "What is the 2028 state performance target for this {{assessment}} {{field}}?",
   assessments: [
     {
       label: "Assessment 1",
@@ -70,7 +62,6 @@ export const mockNDRFields: NdrFieldsTemplate = {
           id: "mock-assess-1.mock-field-1",
           numerator: undefined,
           rate: undefined,
-          performanceTarget: undefined,
         },
       ],
     },
@@ -88,7 +79,6 @@ export const mockLengthOfStayFields: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
   labels: {
     actualCount: "Actual Count",
-    performanceTarget: "Performance Target",
     denominator: "Denominator",
     expectedCount: "Expected Count",
     populationRate: "Population Rate",

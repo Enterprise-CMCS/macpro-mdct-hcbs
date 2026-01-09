@@ -14,6 +14,7 @@ import {
   wwlFunctionalEligiblityExplanationField,
   wwlRescreenForFunctionalEligibilityField,
   wwlUpdateInfoForFunctionalEligibilityField,
+  wwlAddOtherEligibilityTableElement,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -27,6 +28,8 @@ export const wwlReportTemplate: ReportBase = {
         "waiting-list-identifiers",
         "financial-eligibility",
         "functional-eligibility",
+        "add-other-eligibility",
+        "waiting-list-limits",
         "review-submit",
       ],
     },
@@ -144,6 +147,64 @@ export const wwlReportTemplate: ReportBase = {
         wwlFunctionalEligiblityExplanationField,
         wwlRescreenForFunctionalEligibilityField,
         wwlUpdateInfoForFunctionalEligibilityField,
+      ],
+    },
+    {
+      id: "add-other-eligibility",
+      title: "Other Eligibility",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "add-other-eligibility-header",
+          text: "Other Eligibility",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "add-other-eligibility-instructions",
+          text: "If the state screens individuals for other eligibility requirements before placing them on the waiting list, add those eligibility requirements here.",
+        },
+        wwlAddOtherEligibilityTableElement,
+      ],
+    },
+    {
+      id: "waiting-list-limits",
+      title: "Waiting List Limits",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "waiting-list-limits-header",
+          text: "Waiting List Limits",
+        },
+        {
+          id: "waiting-list-limits-confirmation",
+          type: ElementType.Radio,
+          label:
+            "Does the state limit the number of individuals who can be on the waiting list or limit the waiting list to individuals who meet certain criteria?",
+          required: true,
+          choices: [
+            {
+              label: "No",
+              value: "no",
+            },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "waiting-list-limits-explanation",
+                  label:
+                    "Describe how the state limits the number of individuals on the waiting list (including the amount of the limit) or limits the waiting list to individuals who meet certain criteria (including the specific criteria used for the limit).",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
     {
