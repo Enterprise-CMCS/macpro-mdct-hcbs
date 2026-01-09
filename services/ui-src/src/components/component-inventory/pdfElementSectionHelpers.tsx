@@ -166,6 +166,36 @@ export const ndrBasicSection: FormPageTemplate = {
   ],
 };
 
+export const EligibilityTableSection: FormPageTemplate = {
+  id: "mock-eligibilityTable-id",
+  title: "mock-eligibilityTable-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.EligibilityTable,
+      id: "add-other-eligibility-table",
+      fieldLabels: {
+        title: "title",
+        description: "description",
+        recheck: "recheck",
+        frequency: "frequency",
+        eligibilityUpdate: "eligibilityUpdate",
+      },
+      modalInstructions: "modalInstructions",
+      frequencyOptions: [{ label: "Annually", value: "Annually" }],
+      answer: [
+        {
+          title: "string",
+          description: "string",
+          recheck: "Yes",
+          frequency: "Annually",
+          eligibilityUpdate: "No",
+        },
+      ],
+    },
+  ],
+};
+
 export const lengthOfStayRateSection: FormPageTemplate = {
   id: "mock-lengthOfStayRate-id",
   title: "mock-lengthOfStayRate-title",

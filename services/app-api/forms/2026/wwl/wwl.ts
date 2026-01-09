@@ -14,6 +14,7 @@ import {
   wwlFunctionalEligiblityExplanationField,
   wwlRescreenForFunctionalEligibilityField,
   wwlUpdateInfoForFunctionalEligibilityField,
+  wwlAddOtherEligibilityTableElement,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -27,6 +28,7 @@ export const wwlReportTemplate: ReportBase = {
         "waiting-list-identifiers",
         "financial-eligibility",
         "functional-eligibility",
+        "add-other-eligibility",
         "waiting-list-limits",
         "review-submit",
       ],
@@ -145,6 +147,25 @@ export const wwlReportTemplate: ReportBase = {
         wwlFunctionalEligiblityExplanationField,
         wwlRescreenForFunctionalEligibilityField,
         wwlUpdateInfoForFunctionalEligibilityField,
+      ],
+    },
+    {
+      id: "add-other-eligibility",
+      title: "Other Eligibility",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "add-other-eligibility-header",
+          text: "Other Eligibility",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "add-other-eligibility-instructions",
+          text: "If the state screens individuals for other eligibility requirements before placing them on the waiting list, add those eligibility requirements here.",
+        },
+        wwlAddOtherEligibilityTableElement,
       ],
     },
     {

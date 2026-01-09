@@ -7,6 +7,7 @@ import { notAnsweredText } from "../../constants";
 import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
 import { NDRFieldExport } from "components/rates/types/NDRFields";
 import { NDRBasicExport } from "components/rates/types/NDRBasic";
+import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -27,6 +28,7 @@ const renderElementList = [
   ElementType.NdrBasic,
   ElementType.MeasureDetails,
   ElementType.SubHeader,
+  ElementType.EligibilityTable,
 ];
 
 export const shouldUseTable = (type: ElementType) => {
@@ -60,6 +62,8 @@ export const renderElements = (
       return NDRBasicExport(element);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
+    case ElementType.EligibilityTable:
+      return EligibilityTableElementExport(element);
   }
 
   if (!("answer" in element)) {
