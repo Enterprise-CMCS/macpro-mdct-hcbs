@@ -13,6 +13,7 @@ import {
   stateSamplingMethologyQuestion,
   exportToPDF,
   waiverListCheckboxField,
+  waiverListInputField,
 } from "../elements";
 import { beneficiariesRate, beneficiariesReviewedRate } from "./pcpElements";
 
@@ -52,6 +53,7 @@ export const pcpReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         waiverListCheckboxField,
+        waiverListInputField,
       ],
     },
     {

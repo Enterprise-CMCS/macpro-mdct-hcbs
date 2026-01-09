@@ -39,6 +39,7 @@ export { RadioField } from "./fields/RadioField";
 export { CheckboxField } from "./fields/CheckboxField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
+export { ListInput } from "./fields/ListInput";
 // forms
 export { AdminBannerForm } from "./forms/AdminBannerForm";
 export { AdminDashSelector } from "./forms/AdminDashSelector";

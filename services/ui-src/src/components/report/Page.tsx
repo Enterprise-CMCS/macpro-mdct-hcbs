@@ -34,6 +34,7 @@ import {
   NDRFields,
   NDREnhanced,
   CheckboxField,
+  ListInput,
   EligibilityTableElement,
 } from "components";
 import { useStore } from "utils";
@@ -115,6 +116,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <SubmissionParagraph />;
       case ElementType.SubHeaderMeasure:
         return <SubHeaderMeasureElement {...{ element }} />;
+      case ElementType.ListInput:
+        return <ListInput {...{ updateElement, disabled, element }} />;
       case ElementType.EligibilityTable:
         return <EligibilityTableElement {...{ updateElement, element }} />;
       default:

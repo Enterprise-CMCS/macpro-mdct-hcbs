@@ -12,6 +12,7 @@ import {
   exportToPDF,
   minPerformanceExplanationField,
   waiverListCheckboxField,
+  waiverListInputField,
 } from "../elements";
 import { criticalIncidentCommentsField } from "./ciElements";
 
@@ -57,6 +58,7 @@ export const ciReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         waiverListCheckboxField,
+        waiverListInputField,
       ],
     },
     {

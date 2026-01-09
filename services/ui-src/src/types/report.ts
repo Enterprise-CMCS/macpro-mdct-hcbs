@@ -190,6 +190,7 @@ export enum ElementType {
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
+  ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
 }
 
@@ -220,6 +221,7 @@ export type PageElement =
   | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
+  | ListInputTemplate
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate;
 
@@ -410,6 +412,17 @@ export type ButtonLinkTemplate = {
   label?: string;
   to?: PageId;
   style?: string;
+};
+
+export type ListInputTemplate = {
+  type: ElementType.ListInput;
+  id: string;
+  label: string;
+  fieldLabel: string;
+  helperText: string;
+  buttonText: string;
+  answer?: string[];
+  required: boolean;
 };
 
 export type MeasureDetailsTemplate = {

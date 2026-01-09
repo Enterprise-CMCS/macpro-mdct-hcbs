@@ -6,6 +6,7 @@ import {
   TextAreaBoxTemplate,
   CheckboxTemplate,
   PageElement,
+  ListInputTemplate,
 } from "../../types/reports";
 
 // Any elements that are reused across multiple reports are added here
@@ -129,3 +130,14 @@ export const whichProgramsWaivers: PageElement[] = [
   waiverListCheckboxField,
   divider,
 ];
+
+export const waiverListInputField: ListInputTemplate = {
+  type: ElementType.ListInput,
+  id: "waivers-list-inputs",
+  label: "If a waiver or demonstration is not included above, add below:",
+  helperText:
+    "Include the waiver/demonstration name and control numbers in your response.",
+  fieldLabel: "Waiver/demonstration and/or control numbers",
+  buttonText: "Add waiver/demonstation name",
+  required: false,
+};
