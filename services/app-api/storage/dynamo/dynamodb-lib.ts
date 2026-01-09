@@ -17,7 +17,7 @@ export const createClient = () => {
 };
 
 export const collectPageItems = async <
-  T extends QueryCommandOutput | ScanCommandOutput
+  T extends QueryCommandOutput | ScanCommandOutput,
 >(
   paginator: Paginator<T>
 ) => {
