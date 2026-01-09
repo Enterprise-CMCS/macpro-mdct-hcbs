@@ -196,7 +196,14 @@ export const renderReportSections = (
     if (isHeaderOnlySection) {
       return (
         <Box key={`${section.id}.${idx}`} marginBottom="-spacer4">
-          <Heading variant="subHeader">{section.title} TTT</Heading>
+          <Heading
+            variant="subHeader"
+            fontWeight="heading_2xl"
+            fontSize="heading_2xl"
+            lineHeight="heading_2xl"
+          >
+            {section.title}
+          </Heading>
         </Box>
       );
     }

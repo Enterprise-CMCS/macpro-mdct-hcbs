@@ -64,7 +64,13 @@ export const ExportRateTable = (
   return tableData.map(
     (data: { label: string; rows: ReportTableType[] }, idx) => (
       <Box key={`${data.label}.${idx}`}>
-        <Heading as="h4" fontWeight="bold" className="performance-rate-header">
+        <Heading
+          as="h4"
+          fontSize="heading_lg"
+          fontWeight="heading_lg"
+          lineHeight="heading_lg"
+          className="performance-rate-header"
+        >
           {data?.label}
         </Heading>
         <ExportedReportTable rows={data?.rows} />
