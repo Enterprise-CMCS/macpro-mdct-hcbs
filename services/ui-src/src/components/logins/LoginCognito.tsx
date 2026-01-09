@@ -2,14 +2,14 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "aws-amplify/auth";
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
-import { ErrorAlert } from "components";
-import { ErrorVerbiage } from "types";
+import { Alert } from "components";
+import { AlertTypes } from "types";
 
 export const LoginCognito = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<ErrorVerbiage>();
+  const [error, setError] = useState<string | undefined>();
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
@@ -17,11 +17,7 @@ export const LoginCognito = () => {
       await signIn({ username, password });
       navigate(`/`);
     } catch (err) {
-      const message = err instanceof Error ? err.message : undefined;
-      setError({
-        title: "Unable to login",
-        children: message,
-      });
+      setError(err instanceof Error ? err.message : "");
     }
   };
 
@@ -30,7 +26,11 @@ export const LoginCognito = () => {
       <Heading fontSize="heading_xl" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      <ErrorAlert error={error} alertSxOverride={sx.error} />
+      {error !== undefined ? (
+        <Alert status={AlertTypes.ERROR} title="Unable to log in">
+          {error}
+        </Alert>
+      ) : null}
       <form onSubmit={handleLogin}>
         <Box>
           <label>
@@ -69,9 +69,6 @@ export const LoginCognito = () => {
 const sx = {
   heading: {
     alignSelf: "center",
-  },
-  error: {
-    marginY: "spacer2",
   },
   labelDescription: {
     marginBottom: "spacer1",
