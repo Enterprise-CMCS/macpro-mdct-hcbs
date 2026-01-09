@@ -462,7 +462,7 @@ export const LengthOfStayFieldNames = {
   adjustedRate: "adjustedRate",
 } as const;
 export type LengthOfStayField =
-  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
+  (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
 export type LengthOfStayRateTemplate = {
   id: string;
@@ -478,7 +478,7 @@ export const RateInputFieldNames = {
   denominator: "denominator",
 } as const;
 export type RateInputFieldName =
-  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+  (typeof RateInputFieldNames)[keyof typeof RateInputFieldNames];
 
 export type RateType = {
   id: string;
