@@ -51,7 +51,7 @@ export const buildReport = async (
   user: User
 ) => {
   const year = reportOptions.year;
-  const template = getReportTemplate(reportType, year);
+  const template = structuredClone(getReportTemplate(reportType, year));
   const cmitList = getCmitInfo(year);
   const waiverList = getWaiverInfo(year, state);
 
@@ -69,7 +69,7 @@ export const buildReport = async (
     options: reportOptions.options,
     archived: false,
     submissionCount: 0,
-    pages: structuredClone(template.pages),
+    pages: template.pages,
   };
 
   /**
