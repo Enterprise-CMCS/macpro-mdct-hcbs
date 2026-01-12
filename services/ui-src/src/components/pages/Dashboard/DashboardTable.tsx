@@ -31,8 +31,10 @@ interface DashboardTableProps {
   unlockModalOnOpenHandler: () => void;
 }
 
-interface TableProps
-  extends Omit<DashboardTableProps, "unlockModalOnOpenHandler"> {
+interface TableProps extends Omit<
+  DashboardTableProps,
+  "unlockModalOnOpenHandler"
+> {
   tableContent: { caption: string; headRow: string[] };
   showEditNameColumn: boolean | undefined;
   showReportSubmissionsColumn: boolean;
