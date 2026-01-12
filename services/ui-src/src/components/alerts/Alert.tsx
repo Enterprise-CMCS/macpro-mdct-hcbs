@@ -10,7 +10,7 @@ import {
   SystemStyleObject,
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
-import alertIcon from "assets/icons/alert/icon_alert.svg";
+import defaultAlertIcon from "assets/icons/alert/icon_info.svg";
 import { ReactNode, useRef } from "react";
 
 export const Alert = ({
@@ -40,7 +40,11 @@ export const Alert = ({
     >
       <Flex>
         {showIcon && (
-          <Image src={icon ? icon : alertIcon} sx={sx.icon} alt="Alert" />
+          <Image
+            src={icon ? icon : defaultAlertIcon}
+            sx={sx.icon}
+            alt="Alert"
+          />
         )}
         <Box sx={sx.content}>
           {title && <AlertTitle>{title}</AlertTitle>}
