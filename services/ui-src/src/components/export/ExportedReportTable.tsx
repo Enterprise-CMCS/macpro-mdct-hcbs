@@ -44,14 +44,14 @@ export const ExportedReportTable = ({ rows }: Props) => {
       <Tbody>
         {rows.map((row: ReportTableType, idx) => (
           <Tr key={`${row.indicator}.${idx}`}>
-            <Td sx={sx.table}>
+            <Td>
               <Text>{row.indicator}</Text>
               {row.helperText && (
                 <Text color="palette.gray">{parseHtml(row.helperText)}</Text>
               )}
               {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
-            <Td color={getTextColor(row)} sx={sx.table}>
+            <Td color={getTextColor(row)}>
               {row.response ? row.response : notAnsweredText}
             </Td>
           </Tr>
@@ -81,10 +81,4 @@ export const ExportRateTable = (
       </Box>
     )
   );
-};
-
-const sx = {
-  table: {
-    "vertical-align": "top",
-  },
 };

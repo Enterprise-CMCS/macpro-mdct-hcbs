@@ -142,6 +142,7 @@ const exportVariant = {
           color: "palette.gray_medium",
         },
       },
+      "vertical-align": "top",
     },
   },
 };
