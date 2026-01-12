@@ -38,7 +38,7 @@ const render = (
             marginBottom="0 !important"
             as="h3"
           >
-            {`Measure Name: ${title}`}
+            {`${!isPdf ? "Measure Name: " : ""}${title}`}
           </Heading>
           <Text>{`CMIT number: #${cmit}`}</Text>
           <Text>{`Steward: ${steward}`}</Text>

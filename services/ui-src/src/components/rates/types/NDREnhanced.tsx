@@ -225,7 +225,7 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
           helperText: "Auto-calculates",
         },
       ];
-      return { label: `${label} : ${assess.label}`, rows: row };
+      return { label: `${label}: ${assess.label}`, rows: row };
     }
   );
 

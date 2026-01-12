@@ -46,7 +46,9 @@ export const ExportedReportTable = ({ rows }: Props) => {
           <Tr key={`${row.indicator}.${idx}`}>
             <Td sx={sx.table}>
               <Text>{row.indicator}</Text>
-              {row.helperText && <Text>{parseHtml(row.helperText)}</Text>}
+              {row.helperText && (
+                <Text color="palette.gray">{parseHtml(row.helperText)}</Text>
+              )}
               {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
             <Td color={getTextColor(row)} sx={sx.table}>
@@ -66,10 +68,11 @@ export const ExportRateTable = (
     (data: { label: string; rows: ReportTableType[] }, idx) => (
       <Box key={`${data.label}.${idx}`}>
         <Heading
-          as="h4"
-          fontSize="heading_lg"
-          fontWeight="heading_lg"
-          lineHeight="heading_lg"
+          as="h5"
+          fontSize="heading_md"
+          fontWeight="heading_md"
+          lineHeight="heading_md"
+          color="palette.black"
           className="performance-rate-header"
         >
           {data?.label}
