@@ -87,8 +87,7 @@ interface Props {
 
 const sx = {
   root: {
-    paddingX: "0",
-    paddingY: "spacer2",
+    padding: "spacer2",
     borderInlineStartWidth: "0.5rem",
     alignItems: "start",
     "&.info": {
@@ -128,6 +127,6 @@ const sx = {
     color: "palette.base",
     minWidth: "1.5rem",
     height: "1.5rem",
-    marginLeft: "spacer3",
+    marginLeft: "spacer1",
   },
 };
