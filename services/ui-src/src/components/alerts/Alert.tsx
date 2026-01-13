@@ -11,12 +11,16 @@ import {
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
 import { ReactNode, useRef } from "react";
+import infoIcon from "assets/icons/alert/icon_info.svg";
+import errorIcon from "assets/icons/alert/icon_error.svg";
+import warningIcon from "assets/icons/alert/icon_warning.svg";
+import successIcon from "assets/icons/alert/icon_success.svg";
 
 const ALERT_ICONS: Record<AlertTypes, string> = {
-  [AlertTypes.ERROR]: "/assets/icons/alert/icon_error.svg",
-  [AlertTypes.SUCCESS]: "/assets/icons/alert/icon_success.svg",
-  [AlertTypes.WARNING]: "/assets/icons/alert/icon_warning.svg",
-  [AlertTypes.INFO]: "/assets/icons/alert/icon_info.svg",
+  [AlertTypes.ERROR]: errorIcon,
+  [AlertTypes.SUCCESS]: successIcon,
+  [AlertTypes.WARNING]: warningIcon,
+  [AlertTypes.INFO]: infoIcon,
 };
 
 export const Alert = ({
