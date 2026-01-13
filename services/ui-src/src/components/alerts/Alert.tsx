@@ -55,7 +55,7 @@ export const Alert = ({
           <Image src={icon ?? defaultIcon} sx={sx.icon} alt="Alert" />
         )}
         <Box sx={sx.content}>
-          {title && <AlertTitle>{title}</AlertTitle>}
+          {title && <AlertTitle sx={sx.title}>{title}</AlertTitle>}
           {children && (
             <AlertDescription>
               <Box sx={sx.descriptionText}>{children}</Box>
@@ -111,7 +111,11 @@ const sx = {
   content: {
     paddingX: "spacer2",
   },
+  title: {
+    fontSize: "lg",
+  },
   descriptionText: {
+    fontSize: "md",
     marginY: "spacer1",
     p: {
       marginY: "spacer1",
