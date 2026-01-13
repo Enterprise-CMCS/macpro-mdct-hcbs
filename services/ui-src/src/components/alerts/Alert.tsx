@@ -10,25 +10,13 @@ import {
   SystemStyleObject,
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
-import infoIcon from "assets/icons/alert/icon_info.svg";
-import errorIcon from "assets/icons/alert/icon_error.svg";
-import warningIcon from "assets/icons/alert/icon_warning.svg";
-import successIcon from "assets/icons/alert/icon_success.svg";
 import { ReactNode, useRef } from "react";
 
-// Map alert status to corresponding icon
-const getAlertIcon = (status: AlertTypes): string => {
-  switch (status) {
-    case AlertTypes.ERROR:
-      return errorIcon;
-    case AlertTypes.SUCCESS:
-      return successIcon;
-    case AlertTypes.WARNING:
-      return warningIcon;
-    case AlertTypes.INFO:
-    default:
-      return infoIcon;
-  }
+const ALERT_ICONS: Record<AlertTypes, string> = {
+  [AlertTypes.ERROR]: "/assets/icons/alert/icon_error.svg",
+  [AlertTypes.SUCCESS]: "/assets/icons/alert/icon_success.svg",
+  [AlertTypes.WARNING]: "/assets/icons/alert/icon_warning.svg",
+  [AlertTypes.INFO]: "/assets/icons/alert/icon_info.svg",
 };
 
 export const Alert = ({
@@ -48,7 +36,7 @@ export const Alert = ({
     ref.current.focus({ preventScroll: true });
   }
 
-  const defaultIcon = getAlertIcon(status);
+  const defaultIcon = ALERT_ICONS[status];
 
   return (
     <AlertRoot
