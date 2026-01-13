@@ -231,12 +231,7 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
 
   return (
     <>
-      <Heading
-        as="h4"
-        fontSize="heading_lg"
-        fontWeight="heading_lg"
-        lineHeight="heading_lg"
-      >
+      <Heading as="h4" variant="nestedHeading">
         {`${label}`}
       </Heading>
       <ExportedReportTable

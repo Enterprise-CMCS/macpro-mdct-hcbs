@@ -257,12 +257,7 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
     <>
       {buildData?.map((build, idx) => (
         <Box key={`${build.label}.${idx}`}>
-          <Heading
-            as="h4"
-            fontSize="heading_lg"
-            fontWeight="heading_lg"
-            lineHeight="heading_lg"
-          >
+          <Heading as="h4" variant="nestedHeading">
             Performance Rates: {build.label}
           </Heading>
           <ExportedReportTable

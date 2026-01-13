@@ -31,13 +31,7 @@ const render = (
               Quality Measure Details:
             </Heading>
           )}
-          <Heading
-            fontWeight="heading_xl"
-            fontSize="heading_xl"
-            lineHeight="heading_xl"
-            marginBottom="0 !important"
-            as="h3"
-          >
+          <Heading variant="subHeader" marginBottom="0 !important" as="h3">
             {`${!isPdf ? "Measure Name: " : ""}${title}`}
           </Heading>
           <Text>{`CMIT number: #${cmit}`}</Text>
