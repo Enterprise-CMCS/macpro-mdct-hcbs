@@ -7,7 +7,6 @@ import {
   Image,
   Link,
   Text,
-  SystemStyleObject,
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
 import { ReactNode, useRef } from "react";
@@ -25,10 +24,7 @@ const ALERT_ICONS: Record<AlertTypes, string> = {
 
 export const Alert = ({
   status = AlertTypes.INFO,
-  sx: sxOverride,
-  className,
   showIcon = true,
-  icon,
   title,
   children,
   link,
@@ -40,19 +36,17 @@ export const Alert = ({
     ref.current.focus({ preventScroll: true });
   }
 
-  const defaultIcon = ALERT_ICONS[status];
-
   return (
     <AlertRoot
       ref={ref}
       status={status}
       variant="left-accent"
-      sx={sxOverride ?? sx.root}
-      className={className ?? status}
+      sx={sx.root}
+      className={status}
     >
       <Flex>
         {showIcon && (
-          <Image src={icon ?? defaultIcon} sx={sx.icon} alt="Alert" />
+          <Image src={ALERT_ICONS[status]} sx={sx.icon} alt="Alert" />
         )}
         <Box sx={sx.content}>
           {title && <AlertTitle sx={sx.title}>{title}</AlertTitle>}
@@ -76,11 +70,8 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  sx?: SystemStyleObject;
   showIcon?: boolean;
-  icon?: string;
-  title?: string;
-  className?: string;
+  title: string;
   children?: ReactNode;
   link?: string;
 }
