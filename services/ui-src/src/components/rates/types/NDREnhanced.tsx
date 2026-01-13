@@ -225,13 +225,15 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
           helperText: "Auto-calculates",
         },
       ];
-      return { label: `${label} : ${assess.label}`, rows: row };
+      return { label: `${label}: ${assess.label}`, rows: row };
     }
   );
 
   return (
     <>
-      <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
+      <Heading as="h4" variant="nestedHeading">
+        {`${label}`}
+      </Heading>
       <ExportedReportTable
         rows={[
           {

@@ -12,6 +12,7 @@ import {
 import { notAnsweredText } from "../../constants";
 import { ElementType } from "types";
 import { ReactElement } from "react";
+import { parseHtml } from "utils";
 
 export type ReportTableType = {
   indicator: string;
@@ -44,8 +45,10 @@ export const ExportedReportTable = ({ rows }: Props) => {
         {rows.map((row: ReportTableType, idx) => (
           <Tr key={`${row.indicator}.${idx}`}>
             <Td>
-              <Text>{row.indicator} </Text>
-              {row.helperText && <Text>{row.helperText}</Text>}
+              <Text>{row.indicator}</Text>
+              {row.helperText && (
+                <Text color="palette.gray">{parseHtml(row.helperText)}</Text>
+              )}
               {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
             <Td color={getTextColor(row)}>
@@ -64,7 +67,7 @@ export const ExportRateTable = (
   return tableData.map(
     (data: { label: string; rows: ReportTableType[] }, idx) => (
       <Box key={`${data.label}.${idx}`}>
-        <Heading as="h4" fontWeight="bold" className="performance-rate-header">
+        <Heading as="h5" variant="h5" className="performance-rate-header">
           {data?.label}
         </Heading>
         <ExportedReportTable rows={data?.rows} />

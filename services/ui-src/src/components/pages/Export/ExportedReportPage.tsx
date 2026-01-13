@@ -137,7 +137,7 @@ export const reportSubmissionSetUp = (report: Report) => {
 
   return (
     <Box>
-      <Heading as="h2" fontWeight="bold">
+      <Heading as="h2" variant="h2">
         Submission Set Up
       </Heading>
       <ExportedReportTable rows={rows}></ExportedReportTable>
@@ -191,7 +191,9 @@ export const renderReportSections = (
     if (isHeaderOnlySection) {
       return (
         <Box key={`${section.id}.${idx}`} marginBottom="-spacer4">
-          <Heading variant="subHeader">{section.title}</Heading>
+          <Heading as="h2" variant="h2">
+            {section.title}
+          </Heading>
         </Box>
       );
     }
@@ -201,7 +203,11 @@ export const renderReportSections = (
     return (
       <Box key={`${section.id}.${idx}`}>
         <Flex flexDirection="column">
-          {showHeader && <Heading variant="subHeader">{section.title}</Heading>}
+          {showHeader && (
+            <Heading as="h2" variant="h2">
+              {section.title}
+            </Heading>
+          )}
           <ExportedReportWrapper section={section} />
         </Flex>
       </Box>
@@ -226,6 +232,7 @@ export const sx = {
     },
     ".performance-rate-header": {
       marginBottom: "spacer2",
+      color: "palette.black",
     },
   },
   innerContainer: {

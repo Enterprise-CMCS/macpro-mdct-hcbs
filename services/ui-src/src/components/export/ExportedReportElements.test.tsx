@@ -51,7 +51,7 @@ describe("Test ExportedReportElements", () => {
     });
     render(element);
 
-    expect(screen.getByText("Measure Name: mock measure")).toBeInTheDocument();
+    expect(screen.getByText("mock measure")).toBeInTheDocument();
     expect(screen.getByText("CMIT number: #1")).toBeInTheDocument();
     expect(screen.getByText("Steward: measure steward")).toBeInTheDocument();
     expect(screen.getByText("Collection method: Hybrid")).toBeInTheDocument();
@@ -74,7 +74,7 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockedNDREnhanced);
     render(<>{element}</>);
 
-    expect(screen.getByText("test label : assessment 1")).toBeInTheDocument();
+    expect(screen.getByText("test label: assessment 1")).toBeInTheDocument();
     expect(
       screen.getByText("Performance Rates Denominator")
     ).toBeInTheDocument();
