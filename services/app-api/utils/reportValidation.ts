@@ -473,7 +473,7 @@ const parentPageTemplateSchema = object().shape({
 const statusAlertSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.StatusAlert)),
   id: string().required(),
-  title: string().notRequired(),
+  title: string().required(),
   text: string().required(),
   status: string().required(),
 });

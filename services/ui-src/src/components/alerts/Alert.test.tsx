@@ -6,54 +6,27 @@ import { testA11y } from "utils/testing/commonTests";
 const alertIcon = "test-file-stub";
 
 const alertComponent = (
-  <Alert
-    title="Test alert!"
-    link="https://example.com"
-    icon={alertIcon}
-    showIcon={true}
-  >
+  <Alert title="Test alert!" link="https://example.com">
     This is for testing.
   </Alert>
 );
 
 describe("<Alert />", () => {
-  beforeEach(() => {
+  it("should render correctly", () => {
     render(alertComponent);
-  });
-  test("Alert is visible", () => {
     expect(screen.getByRole("alert")).toBeVisible();
-  });
-  test("Alert link is visible", () => {
     expect(
       screen.getByRole("link", { name: "https://example.com" })
     ).toHaveAttribute("href", "https://example.com");
-  });
-  test("Alert text exists", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("This is for testing.");
-  });
-  test("Alert image exists", () => {
     expect(screen.getByRole("img", { name: "Alert" })).toBeVisible();
-  });
-  test("renders fallback alertIcon when icon prop is not provided", () => {
     expect(screen.getByAltText("Alert")).toHaveAttribute("src", alertIcon);
   });
 
+  it("should hide the icon when appropriate", () => {
+    render(<Alert title="mock title" showIcon={false} />);
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+  });
+
   testA11y(alertComponent);
-});
-
-describe("Test Alert icon if custom or if showIcon is false", () => {
-  test("renders custom icon when icon prop is provided", () => {
-    render(<Alert icon="customIcon.png" />);
-
-    expect(screen.getByAltText("Alert")).toHaveAttribute(
-      "src",
-      "customIcon.png"
-    );
-  });
-
-  test("does not render the icon when showIcon is false", () => {
-    render(<Alert showIcon={false} />);
-
-    expect(screen.queryByAltText("Alert")).not.toBeInTheDocument();
-  });
 });

@@ -641,7 +641,7 @@ export type StatusTableTemplate = {
 export type StatusAlertTemplate = {
   type: ElementType.StatusAlert;
   id: string;
-  title?: string;
+  title: string;
   text: string;
   status: AlertTypes;
 };
