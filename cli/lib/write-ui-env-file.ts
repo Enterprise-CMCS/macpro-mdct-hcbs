@@ -1,6 +1,7 @@
-import path, { dirname } from "path";
-import { promises as fs } from "fs";
-import { fileURLToPath } from "url";
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
+import path, { dirname } from "node:path";
+import { promises as fs } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,7 +13,6 @@ const configFilePath = path.resolve(path.join(publicDirPath, "env-config.js"));
 export const writeLocalUiEnvFile = async (
   envVariables: Record<string, string>
 ) => {
-  await fs.mkdir(publicDirPath, { recursive: true });
   await fs.rm(configFilePath, { force: true });
 
   const envConfigContent = [

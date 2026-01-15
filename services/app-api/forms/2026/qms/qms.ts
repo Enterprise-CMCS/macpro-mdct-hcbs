@@ -8,6 +8,7 @@ import {
   HeaderIcon,
   AlertTypes,
 } from "../../../types/reports";
+import { exportToPDF } from "../elements";
 import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { measureTemplates } from "./measureTemplates";
 
@@ -184,6 +185,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           id: "submitted-what-happens",
           text: "Email your CMS representative to inform them you submitted the QMS Report and it is ready for their review.",
         },
+        exportToPDF,
       ],
     },
   ],

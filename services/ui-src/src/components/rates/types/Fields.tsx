@@ -14,6 +14,7 @@ import {
   validateNumber,
 } from "utils/validation/inputValidation";
 import { ExportRateTable } from "components/export/ExportedReportTable";
+import { ErrorMessages } from "../../../constants";
 
 export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   const { disabled, updateElement } = props;
@@ -21,7 +22,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
-      performanceTarget: stringifyInput(newAnswer?.performanceTarget),
       actualCount: stringifyInput(newAnswer?.actualCount),
       denominator: stringifyInput(newAnswer?.denominator),
       expectedCount: stringifyInput(newAnswer?.expectedCount),
@@ -46,11 +46,38 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     newDisplayValue[fieldType] = stringValue;
     newErrors[fieldType] = errorMessage;
 
+    if (parseNumber(newDisplayValue.denominator) === 0) {
+      if (parseNumber(newDisplayValue.actualCount) !== 0) {
+        newErrors.actualCount = ErrorMessages.denominatorZero(
+          labels.actualCount,
+          labels.denominator
+        );
+      }
+      if (parseNumber(newDisplayValue.expectedCount) !== 0) {
+        newErrors.expectedCount = ErrorMessages.denominatorZero(
+          labels.expectedCount,
+          labels.denominator
+        );
+      }
+    } else if (parseNumber(newDisplayValue.denominator) !== 0) {
+      if (
+        newErrors.actualCount ===
+        ErrorMessages.denominatorZero(labels.actualCount, labels.denominator)
+      ) {
+        newErrors.actualCount = "";
+      }
+      if (
+        newErrors.expectedCount ===
+        ErrorMessages.denominatorZero(labels.expectedCount, labels.denominator)
+      ) {
+        newErrors.expectedCount = "";
+      }
+    }
+
     return { displayValue: newDisplayValue, errors: newErrors };
   };
 
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
-    const performanceTarget = parseNumber(newDisplayValue.performanceTarget);
     const actualCount = parseNumber(newDisplayValue.actualCount);
     const denominator = parseNumber(newDisplayValue.denominator);
     const expectedCount = parseNumber(newDisplayValue.expectedCount);
@@ -69,8 +96,16 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
       expectedRate = expectedCount / denominator;
     }
 
+    if (denominator === 0) {
+      if (actualCount === 0) {
+        actualRate = 0;
+      }
+      if (expectedCount === 0) {
+        expectedRate = 0;
+      }
+    }
+
     return {
-      performanceTarget: removeNoise(performanceTarget),
       actualCount: removeNoise(actualCount),
       denominator: removeNoise(denominator),
       expectedCount: removeNoise(expectedCount),
@@ -110,15 +145,6 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
     <Stack gap={4} sx={sx.performance}>
       <Heading variant="subHeader">Performance Rates</Heading>
       <Stack gap="2rem">
-        <CmsdsTextField
-          label={labels.performanceTarget}
-          name="performanceTarget"
-          onChange={onChangeHandler}
-          onBlur={onChangeHandler}
-          value={displayValue.performanceTarget}
-          errorMessage={errors.performanceTarget}
-          disabled={disabled}
-        ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualCount}
           name="actualCount"
@@ -194,10 +220,6 @@ export const FieldsExport = (element: LengthOfStayRateTemplate) => {
   const label = "Performance Rates";
   const rows = [
     {
-      indicator: element.labels?.performanceTarget,
-      response: element.answer?.performanceTarget,
-    },
-    {
       indicator: element.labels?.actualCount,
       response: element.answer?.actualCount,
     },
@@ -215,12 +237,12 @@ export const FieldsExport = (element: LengthOfStayRateTemplate) => {
     },
     {
       indicator: element.labels?.actualRate,
-      response: element.answer?.actualRate,
+      response: stringifyResult(element.answer?.actualRate),
       helperText: "Auto-calculates",
     },
     {
       indicator: element.labels?.expectedRate,
-      response: element.answer?.expectedRate,
+      response: stringifyResult(element.answer?.expectedRate),
       helperText: "Auto-calculates",
     },
     {

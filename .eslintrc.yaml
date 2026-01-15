@@ -20,7 +20,8 @@ extends:
   - "eslint:recommended"
 rules:
   no-const-assign: error
-  no-duplicate-imports: error
+  no-duplicate-imports: off
+  "@typescript-eslint/no-duplicate-imports": error
   no-unreachable: error
   no-unused-vars: off
   "@typescript-eslint/no-unused-vars":
@@ -29,9 +30,7 @@ rules:
   no-console: error
   no-empty: error
   no-extra-semi: error
-  multiline-comment-style:
-    - error
-    - starred-block
+  multiline-comment-style: off
 
 overrides:
   - files:

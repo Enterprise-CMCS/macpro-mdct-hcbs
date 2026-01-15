@@ -11,11 +11,12 @@ import {
 import {
   AdminBannerContext,
   AdminBannerForm,
+  Alert,
   Banner,
-  ErrorAlert,
   PageTemplate,
 } from "components";
 import { convertDateUtcToEt, useStore } from "utils";
+import { AlertTypes } from "types";
 
 export const AdminPage = () => {
   const { deleteAdminBanner, writeAdminBanner } =
@@ -31,7 +32,15 @@ export const AdminPage = () => {
 
   return (
     <PageTemplate data-testid="admin-view">
-      <ErrorAlert error={bannerErrorMessage} />
+      {bannerErrorMessage ? (
+        <Alert
+          status={AlertTypes.ERROR}
+          title={bannerErrorMessage.title}
+          showIcon={false}
+        >
+          {bannerErrorMessage.children}
+        </Alert>
+      ) : null}
       <Box sx={sx.introTextBox}>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           Banner Admin

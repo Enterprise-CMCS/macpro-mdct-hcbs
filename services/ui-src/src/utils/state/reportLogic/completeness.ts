@@ -12,6 +12,7 @@ import {
   isFormPageTemplate,
   isMeasurePageTemplate,
   LengthOfStayFieldNames,
+  assertExhaustive,
 } from "types";
 
 /**
@@ -41,14 +42,38 @@ export const inferredReportStatus = (report: Report, pageId: string) => {
     : PageStatus.NOT_STARTED;
 };
 
-// Simple check to see if a page has been dirtied if it is not keeping a signoff status
+// Check to see if a page has been dirtied if it is not keeping a signoff status
 export const pageInProgress = (report: Report, pageId: string) => {
   const targetPage = report.pages.find((page) => page.id === pageId);
   if (!targetPage) return false;
   if (!targetPage.elements) return true;
 
+  const hasData = (answerPart: string | number | object | undefined) => {
+    if (answerPart === undefined || answerPart === null) {
+      // null and undefined are not data
+      return false;
+    } else if (typeof answerPart === "number") {
+      // Zero would be considered data, as would any other number
+      return true;
+    } else if (typeof answerPart === "string") {
+      // An empty string would not be data, but any other string would be.
+      return answerPart !== "";
+    } else if (Array.isArray(answerPart)) {
+      // An array only has data if some element of the array is data.
+      return answerPart.some(hasData);
+    } else if (typeof answerPart === "object") {
+      // An object only has data if one of its properties is data.
+      return Object.values(answerPart).some(hasData);
+    } else {
+      // It shouldn't be possible to reach this code branch.
+      assertExhaustive(answerPart);
+      // But if some value somehow does make it here, let's call it data.
+      return true;
+    }
+  };
+
   const anyEdited = targetPage.elements.find(
-    (element) => "answer" in element && element.answer
+    (element) => "answer" in element && hasData(element.answer)
   );
   return !!anyEdited;
 };
@@ -139,6 +164,13 @@ export const elementSatisfiesRequired = (
   element: PageElement,
   pageElements: PageElement[]
 ) => {
+  //while list input is not required, if the user adds a field and leaves it blank, that would make it incomplete and prevent form submission
+  if (element.type === ElementType.ListInput) {
+    if (element.answer?.some((item) => item === "" || item === undefined)) {
+      return false;
+    }
+  }
+
   // TODO: make less ugly
   if (
     !("required" in element) ||
@@ -173,7 +205,6 @@ export const elementSatisfiesRequired = (
     return element.answer.every((assessObj) => {
       if (assessObj.denominator === undefined) return false;
       return assessObj.rates.every((rateObj) => {
-        if (rateObj.performanceTarget === undefined) return false;
         if (rateObj.numerator === undefined) return false;
         if (rateObj.rate === undefined) return false;
         return true;
@@ -183,15 +214,12 @@ export const elementSatisfiesRequired = (
   if (element.type === ElementType.NdrEnhanced) {
     if (element.answer.denominator === undefined) return false;
     return element.answer.rates.every((rateObj) => {
-      if (!element.required && rateObj.performanceTarget === undefined)
-        return false;
       if (rateObj.numerator === undefined) return false;
       if (rateObj.rate === undefined) return false;
       return true;
     });
   }
   if (element.type === ElementType.Ndr) {
-    if (element.answer.performanceTarget === undefined) return false;
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;

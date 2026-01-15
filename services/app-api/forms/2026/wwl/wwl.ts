@@ -6,10 +6,15 @@ import {
   ReportBase,
   AlertTypes,
 } from "../../../types/reports";
+import { exportToPDF } from "../elements";
 import {
   wwlFinancialEligiblityExplanationField,
   wwlRescreenForFinancialEligibilityField,
   wwlUpdateInfoForFinancialEligibilityField,
+  wwlFunctionalEligiblityExplanationField,
+  wwlRescreenForFunctionalEligibilityField,
+  wwlUpdateInfoForFunctionalEligibilityField,
+  wwlAddOtherEligibilityTableElement,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -22,6 +27,9 @@ export const wwlReportTemplate: ReportBase = {
         "general-info",
         "waiting-list-identifiers",
         "financial-eligibility",
+        "functional-eligibility",
+        "add-other-eligibility",
+        "waiting-list-limits",
         "review-submit",
       ],
     },
@@ -53,28 +61,12 @@ export const wwlReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         {
-          type: ElementType.Radio,
-          id: "report-coverage-waivers-programs",
-          label:
-            "Does this report cover all the programs that are required under the relevant authorities?",
-          choices: [
-            { label: "Yes", value: "yes" },
-            {
-              label: "No",
-              value: "no",
-              checkedChildren: [
-                {
-                  type: ElementType.TextAreaField,
-                  id: "included-waivers-programs",
-                  label: "Which programs and waivers are included?",
-                  required: true,
-                  helperText:
-                    "Please specify all the 1915(c) waivers, 1915(i), 1915(j), and 1915(k) State plan benefits, as well as any 1115 demonstrations that include HCBS, that you are including in this report. Include the program name and control numbers in your response.",
-                },
-              ],
-            },
-          ],
+          type: ElementType.NumberField,
+          id: "number-of-individuals",
+          label: "Number of individuals included on the waiting list",
           required: true,
+          helperText:
+            "Enter the total number of individuals on the waiting list. Use whole numbers only. Include all individuals who were enrolled at any point during the measurement period.",
         },
       ],
     },
@@ -122,6 +114,97 @@ export const wwlReportTemplate: ReportBase = {
         wwlFinancialEligiblityExplanationField,
         wwlRescreenForFinancialEligibilityField,
         wwlUpdateInfoForFinancialEligibilityField,
+      ],
+    },
+    {
+      id: "functional-eligibility",
+      title: "Functional Eligibility",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "functional-eligibility-header",
+          text: "Functional Eligibility",
+        },
+        {
+          id: "functional-eligibility-confirmation",
+          type: ElementType.Radio,
+          label:
+            "Does the state confirm whether someone meets functional eligibility before they’re added to the waiting list?",
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        wwlFunctionalEligiblityExplanationField,
+        wwlRescreenForFunctionalEligibilityField,
+        wwlUpdateInfoForFunctionalEligibilityField,
+      ],
+    },
+    {
+      id: "add-other-eligibility",
+      title: "Other Eligibility",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "add-other-eligibility-header",
+          text: "Other Eligibility",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "add-other-eligibility-instructions",
+          text: "If the state screens individuals for other eligibility requirements before placing them on the waiting list, add those eligibility requirements here.",
+        },
+        wwlAddOtherEligibilityTableElement,
+      ],
+    },
+    {
+      id: "waiting-list-limits",
+      title: "Waiting List Limits",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "waiting-list-limits-header",
+          text: "Waiting List Limits",
+        },
+        {
+          id: "waiting-list-limits-confirmation",
+          type: ElementType.Radio,
+          label:
+            "Does the state limit the number of individuals who can be on the waiting list or limit the waiting list to individuals who meet certain criteria?",
+          required: true,
+          choices: [
+            {
+              label: "No",
+              value: "no",
+            },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "waiting-list-limits-explanation",
+                  label:
+                    "Describe how the state limits the number of individuals on the waiting list (including the amount of the limit) or limits the waiting list to individuals who meet certain criteria (including the specific criteria used for the limit).",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
     {
@@ -188,6 +271,7 @@ export const wwlReportTemplate: ReportBase = {
           id: "submitted-what-happens",
           text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
         },
+        exportToPDF,
       ],
     },
   ],

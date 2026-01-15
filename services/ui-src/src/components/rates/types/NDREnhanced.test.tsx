@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { ElementType, NdrEnhancedTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
+import { ErrorMessages } from "../../../constants";
 
 const mockedElement: NdrEnhancedTemplate = {
   id: "mock-perf-id",
@@ -11,7 +12,6 @@ const mockedElement: NdrEnhancedTemplate = {
   label: "test label",
   helperText: "helper text",
   required: true,
-  performanceTargetLabel: "What is the 2028 state performance target?",
   assessments: [{ id: "test-1", label: "assessment 1" }],
 };
 const updateSpy = jest.fn();
@@ -37,9 +37,6 @@ describe("<NDREnhanced />", () => {
 
     test("NDREnhanced is visible", () => {
       render(<NdrEnhancedWrapper template={mockedElement} />);
-      expect(
-        screen.getByLabelText("What is the 2028 state performance target?")
-      ).toBeInTheDocument();
 
       expect(
         screen.getByRole("textbox", { name: "test labels Denominator" })
@@ -73,6 +70,38 @@ describe("<NDREnhanced />", () => {
 
       const rate = screen.getByRole("textbox", { name: "Rate" });
       expect(rate).toHaveValue("0.5");
+    });
+
+    test("Error should show if the denominator is 0, and also clear", async () => {
+      render(<NdrEnhancedWrapper template={mockedElement} />);
+      const performDenominator = screen.getByRole("textbox", {
+        name: "test labels Denominator",
+      });
+      await act(async () => await userEvent.type(performDenominator, "0"));
+
+      expect(screen.getByText(ErrorMessages.denominatorZero())).toBeVisible();
+
+      await act(async () => await userEvent.type(performDenominator, "4"));
+      expect(
+        screen.queryByText(ErrorMessages.denominatorZero())
+      ).not.toBeInTheDocument();
+    });
+
+    test("Rate should be 0 if both numerator and denominator are 0", async () => {
+      render(<NdrEnhancedWrapper template={mockedElement} />);
+      const performDenominator = screen.getByRole("textbox", {
+        name: "test labels Denominator",
+      });
+      await act(async () => await userEvent.type(performDenominator, "0"));
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await act(async () => await userEvent.type(numerator, "0"));
+      expect(numerator).toHaveValue("0");
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      expect(denominator).toHaveValue("0");
+
+      const rate = screen.getByRole("textbox", { name: "Rate" });
+      expect(rate).toHaveValue("0.00");
     });
   });
 

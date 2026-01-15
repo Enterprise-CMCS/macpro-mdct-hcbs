@@ -129,10 +129,6 @@ const exportVariant = {
   table: {
     "th, td": {
       borderColor: "palette.gray_lighter",
-      padding: ".5rem",
-      "&:first-child": {
-        padding: ".5rem .5rem .5rem 0",
-      },
     },
     td: {
       fontSize: "heading_sm",
@@ -146,6 +142,7 @@ const exportVariant = {
           color: "palette.gray_medium",
         },
       },
+      "vertical-align": "top",
     },
   },
 };
@@ -160,6 +157,7 @@ const reportDetailsVariant = {
     fontSize: "body_sm",
     padding: "0",
     color: "black",
+    width: "25%",
   },
 };
 

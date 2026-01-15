@@ -19,6 +19,8 @@ import {
   NDR,
   NDRBasic,
   StatusAlert,
+  CheckboxField,
+  EligibilityTableElement,
 } from "components";
 
 import {
@@ -50,6 +52,7 @@ import {
   ndrBasicSection,
   lengthOfStayRateSection,
   measureDetailsSection,
+  EligibilityTableSection,
 } from "./pdfElementSectionHelpers";
 import { formatMonthDayYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
@@ -62,10 +65,12 @@ export const elementObject: {
     description: string;
     variants: ReactNode[];
     pdfVariants: ReactNode[];
+    id?: string;
   };
 } = {
   [ElementType.Header]: {
     description: "Big text at the top of the page",
+    id: "id-header",
     variants: [
       <HeaderElement
         element={{
@@ -95,6 +100,7 @@ export const elementObject: {
   },
   [ElementType.SubHeader]: {
     description: "This is a subheader",
+    id: "id-subheader",
     variants: [
       <SubHeaderElement
         element={{
@@ -116,6 +122,7 @@ export const elementObject: {
   },
   [ElementType.NestedHeading]: {
     description: "This is a nested heading",
+    id: "id-nested-heading",
     variants: [
       <NestedHeadingElement
         element={{
@@ -137,6 +144,7 @@ export const elementObject: {
   },
   [ElementType.Textbox]: {
     description: "A field for entering text",
+    id: "id-textfield",
     variants: [
       <TextField
         updateElement={logNewElement}
@@ -152,6 +160,7 @@ export const elementObject: {
   },
   [ElementType.TextAreaField]: {
     description: "A field for entering text",
+    id: "id-textareafield",
     variants: [
       <TextAreaField
         updateElement={logNewElement}
@@ -167,6 +176,7 @@ export const elementObject: {
   },
   [ElementType.Paragraph]: {
     description: "A paragraph of text for content.",
+    id: "id-paragraph",
     variants: [
       <ParagraphElement
         element={{
@@ -180,6 +190,7 @@ export const elementObject: {
   },
   [ElementType.Divider]: {
     description: "A horizontal line to separate content",
+    id: "id-divider",
     variants: [
       <DividerElement
         element={{
@@ -192,6 +203,7 @@ export const elementObject: {
   },
   [ElementType.Accordion]: {
     description: "A collapsible section for content",
+    id: "id-accordion",
     variants: [
       <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label="Accordion Item 1">
@@ -209,6 +221,7 @@ export const elementObject: {
   },
   [ElementType.Dropdown]: {
     description: "A dropdown field for selecting options",
+    id: "id-dropdown-field",
     variants: [
       <DropdownField
         updateElement={logNewElement}
@@ -229,6 +242,7 @@ export const elementObject: {
   },
   [ElementType.Radio]: {
     description: "A radio button field for selecting one option",
+    id: "id-radio-field",
     variants: [
       <RadioField
         updateElement={logNewElement}
@@ -249,6 +263,7 @@ export const elementObject: {
   },
   [ElementType.Date]: {
     description: "A field for selecting a date",
+    id: "id-date-field",
     variants: [
       <DateField
         updateElement={logNewElement}
@@ -284,6 +299,7 @@ export const elementObject: {
   },
   ["SubHeaderMeasure"]: {
     description: "A subheader for measures",
+    id: "id-subheader-measure",
     variants: [
       <SubHeaderMeasureElement
         element={{
@@ -297,6 +313,7 @@ export const elementObject: {
   },
   [ElementType.NumberField]: {
     description: "A field for entering numbers",
+    id: "id-number-field",
     variants: [
       <TextField
         updateElement={logNewElement}
@@ -328,6 +345,7 @@ export const elementObject: {
   // Elements that need a state
   [ElementType.SubHeaderMeasure]: {
     description: "A subheader for measures",
+    id: "id-subheader-measure",
     variants: [
       <SubHeaderMeasureElement
         element={{
@@ -340,6 +358,7 @@ export const elementObject: {
   },
   [ElementType.ButtonLink]: {
     description: "A link styled as a button",
+    id: "id-button-link",
     variants: [
       <ButtonLinkElement
         element={{
@@ -353,6 +372,7 @@ export const elementObject: {
   },
   [ElementType.MeasureTable]: {
     description: "A table for displaying measure status with navigation",
+    id: "id-measure-table",
     variants: [
       <MeasureTableElement
         element={{
@@ -366,6 +386,7 @@ export const elementObject: {
   },
   [ElementType.MeasureResultsNavigationTable]: {
     description: "A table for displaying measure results with navigation",
+    id: "id-measure-results-navigation-table",
     variants: [
       <MeasureResultsNavigationTableElement
         element={{
@@ -379,16 +400,19 @@ export const elementObject: {
   },
   [ElementType.StatusTable]: {
     description: "A table for displaying measure status",
+    id: "id-status-table",
     variants: [<StatusTableElement />],
     pdfVariants: ["StatusTable currently not used in PDFs"],
   },
   [ElementType.MeasureDetails]: {
     description: "Displaying measure details",
+    id: "id-measure-details",
     variants: [<MeasureDetailsElement />],
     pdfVariants: [<ExportedReportWrapper section={measureDetailsSection} />],
   },
   [ElementType.MeasureFooter]: {
     description: "Measure footer for navigation and submission",
+    id: "id-measure-footer",
     variants: [
       <MeasureFooterElement
         element={{
@@ -413,6 +437,7 @@ export const elementObject: {
   [ElementType.LengthOfStayRate]: {
     description:
       "Numerator/Denominator Fields to gather LengthOfStayRate performance rates",
+    id: "id-length-of-stay-rate",
     variants: [
       <Fields
         updateElement={logNewElement}
@@ -420,7 +445,6 @@ export const elementObject: {
           type: ElementType.LengthOfStayRate,
           id: "measure-rates",
           labels: {
-            performanceTarget: "performanceTarget",
             actualCount: "actualCount",
             denominator: "denominator",
             expectedCount: "expectedCount",
@@ -437,13 +461,13 @@ export const elementObject: {
   },
   [ElementType.NdrFields]: {
     description: "Numerator/Denominator Fields to gather performance rates",
+    id: "id-ndr-fields",
     variants: [
       <NDRFields
         updateElement={logNewElement}
         element={{
           type: ElementType.NdrFields,
           id: "measure-rates",
-          labelTemplate: "Label",
           assessments: [
             { id: "assessment-1", label: "First Assessment" },
             { id: "assessment-2", label: "Second Assessment" },
@@ -462,13 +486,13 @@ export const elementObject: {
   [ElementType.NdrEnhanced]: {
     description:
       "Enhanced Numerator/Denominator Fields to gather performance rates",
+    id: "id-ndr-enhanced",
     variants: [
       <NDREnhanced
         updateElement={logNewElement}
         element={{
           type: ElementType.NdrEnhanced,
           id: "measure-rates",
-          performanceTargetLabel: "Label",
           assessments: [
             { id: "assessment-1", label: "First Assessment" },
             { id: "assessment-2", label: "Second Assessment" },
@@ -482,13 +506,13 @@ export const elementObject: {
   },
   [ElementType.Ndr]: {
     description: "Numerator/Denominator Fields to gather performance rates",
+    id: "id-ndr",
     variants: [
       <NDR
         updateElement={logNewElement}
         element={{
           type: ElementType.Ndr,
           id: "measure-rates",
-          performanceTargetLabel: "performanceTargetLabel",
           label: "Label",
           required: true,
         }}
@@ -499,6 +523,7 @@ export const elementObject: {
   [ElementType.NdrBasic]: {
     description:
       "Basic and minimum target Numerator/Denominator Fields to gather performance rates",
+    id: "id-ndr-basic",
     variants: [
       <NDRBasic
         updateElement={logNewElement}
@@ -538,6 +563,7 @@ export const elementObject: {
   },
   [ElementType.StatusAlert]: {
     description: "Different Alert Types",
+    id: "id-status-alert",
     variants: [
       <StatusAlert
         element={{
@@ -580,7 +606,61 @@ export const elementObject: {
   },
   [ElementType.SubmissionParagraph]: {
     description: "Submission Paragraph",
+    id: "id-submission-paragraph",
     variants: [<SubmissionParagraph />],
     pdfVariants: ["SubmissionParagraph currently not used in PDFs"],
+  },
+  [ElementType.Checkbox]: {
+    description: "A checkbox field for selecting options",
+    id: "id-checkbox",
+    variants: [
+      <CheckboxField
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.Checkbox,
+          id: "id-checkbox",
+          label: "CheckboxField",
+          required: true,
+          choices: [
+            { value: "checkbox option 1", label: "checkbox option 1" },
+            { value: "checkbox option 2", label: "checkbox option 2" },
+            { value: "checkbox option 3", label: "checkbox option 3" },
+          ],
+        }}
+      />,
+    ],
+    pdfVariants: ["Checkbox currently not used in PDFs"],
+  },
+  [ElementType.EligibilityTable]: {
+    description: "Eligibility Table for WWL report",
+    id: "id-eligibility-table",
+    variants: [
+      <EligibilityTableElement
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.EligibilityTable,
+          id: "id-eligibility-table",
+          fieldLabels: {
+            title: "title",
+            description: "description",
+            recheck: "recheck",
+            frequency: "frequency",
+            eligibilityUpdate: "eligibilityUpdate",
+          },
+          modalInstructions: "modalInstructions",
+          frequencyOptions: [{ label: "Annually", value: "Annually" }],
+          answer: [
+            {
+              title: "string",
+              description: "string",
+              recheck: "Yes",
+              frequency: "Annually",
+              eligibilityUpdate: "No",
+            },
+          ],
+        }}
+      />,
+    ],
+    pdfVariants: [<ExportedReportWrapper section={EligibilityTableSection} />],
   },
 };

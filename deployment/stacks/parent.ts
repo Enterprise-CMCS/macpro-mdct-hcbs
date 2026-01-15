@@ -1,22 +1,21 @@
 import { Construct } from "constructs";
+import type { StackProps } from "aws-cdk-lib";
 import {
   Aws,
   aws_ec2 as ec2,
-  aws_s3 as s3,
   aws_iam as iam,
   CfnOutput,
   Stack,
-  StackProps,
 } from "aws-cdk-lib";
-import { DeploymentConfigProperties } from "../deployment-config";
-import { createDataComponents } from "./data";
-import { createUiAuthComponents } from "./ui-auth";
-import { createUiComponents } from "./ui";
-import { createApiComponents } from "./api";
-import { deployFrontend } from "./deployFrontend";
-import { isLocalStack } from "../local/util";
-import { createTopicsComponents } from "./topics";
-import { getSubnets } from "../utils/vpc";
+import type { DeploymentConfigProperties } from "../deployment-config.ts";
+import { createDataComponents } from "./data.ts";
+import { createUiAuthComponents } from "./ui-auth.ts";
+import { createUiComponents } from "./ui.ts";
+import { createApiComponents } from "./api.ts";
+import { deployFrontend } from "./deployFrontend.ts";
+import { isLocalStack } from "../local/util.ts";
+import { createTopicsComponents } from "./topics.ts";
+import { getSubnets } from "../utils/vpc.ts";
 
 export class ParentStack extends Stack {
   constructor(
@@ -45,16 +44,7 @@ export class ParentStack extends Stack {
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const kafkaAuthorizedSubnets = getSubnets(this, kafkaAuthorizedSubnetIds);
 
-    const loggingBucket = s3.Bucket.fromBucketName(
-      this,
-      "LoggingBucket",
-      `cms-cloud-${Aws.ACCOUNT_ID}-${Aws.REGION}`
-    );
-
-    const { tables } = createDataComponents({
-      ...commonProps,
-      loggingBucket,
-    });
+    const { tables } = createDataComponents(commonProps);
 
     const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
       ...commonProps,
@@ -74,10 +64,7 @@ export class ParentStack extends Stack {
     }
 
     const { applicationEndpointUrl, distribution, uiBucket } =
-      createUiComponents({
-        ...commonProps,
-        loggingBucket,
-      });
+      createUiComponents(commonProps);
 
     const { userPoolDomainName, identityPoolId, userPoolId, userPoolClientId } =
       createUiAuthComponents({
@@ -130,21 +117,25 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
     },
   };
 
-  const provider = stack.node.tryFindChild(
+  const findRole = (id: string) =>
+    stack.node.tryFindChild(id)?.node.tryFindChild("Role") as iam.CfnRole;
+
+  findRole(
     "Custom::S3AutoDeleteObjectsCustomResourceProvider"
-  );
-  const role = provider?.node.tryFindChild("Role") as iam.CfnRole;
-  if (role) {
-    role.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
-  }
+  )?.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
 
-  stack.node.findAll().forEach((c) => {
-    if (!c.node.id.startsWith("BucketNotificationsHandler")) return;
+  findRole(
+    "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider"
+  )?.addPropertyOverride("Policies.1", denyCreateLogGroupPolicy);
 
-    const role = c.node.tryFindChild("Role");
-    const cfnRole = role?.node.tryFindChild("Resource") as iam.CfnRole;
-    if (cfnRole) {
-      cfnRole.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
-    }
-  });
+  stack.node
+    .findAll()
+    .filter((c) => c.node.id.startsWith("BucketNotificationsHandler"))
+    .forEach((c) => {
+      (
+        c.node
+          .tryFindChild("Role")
+          ?.node.tryFindChild("Resource") as iam.CfnRole
+      )?.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+    });
 }

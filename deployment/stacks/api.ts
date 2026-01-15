@@ -9,12 +9,12 @@ import {
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { Lambda } from "../constructs/lambda";
-import { WafConstruct } from "../constructs/waf";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
-import { isLocalStack } from "../local/util";
-import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { isDefined } from "../utils/misc";
+import { Lambda } from "../constructs/lambda.ts";
+import { WafConstruct } from "../constructs/waf.ts";
+import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
+import { isLocalStack } from "../local/util.ts";
+import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
+import { isDefined } from "../utils/misc.ts";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -64,7 +64,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     deployOptions: {
       stageName: stage,
       tracingEnabled: true,
-      loggingLevel: apigateway.MethodLoggingLevel.INFO,
+      loggingLevel: isDev
+        ? apigateway.MethodLoggingLevel.OFF
+        : apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
       metricsEnabled: false,
       throttlingBurstLimit: 5000,

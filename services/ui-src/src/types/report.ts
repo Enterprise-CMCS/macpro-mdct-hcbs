@@ -175,6 +175,7 @@ export enum ElementType {
   Accordion = "accordion",
   Paragraph = "paragraph",
   Radio = "radio",
+  Checkbox = "checkbox",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -189,6 +190,8 @@ export enum ElementType {
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
+  ListInput = "listInput",
+  EligibilityTable = "eligibilityTable",
 }
 
 export type PageElement =
@@ -204,6 +207,7 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | CheckboxTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
@@ -217,7 +221,9 @@ export type PageElement =
   | NdrBasicTemplate
   | StatusAlertTemplate
   | DividerTemplate
-  | SubmissionParagraphTemplate;
+  | ListInputTemplate
+  | SubmissionParagraphTemplate
+  | EligibilityTableTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -265,7 +271,7 @@ export type ParagraphTemplate = {
 export type StatusAlertTemplate = {
   type: ElementType.StatusAlert;
   id: string;
-  title?: string;
+  title: string;
   text: string;
   status: AlertTypes;
 };
@@ -342,6 +348,29 @@ export type MeasureTableTemplate = {
   measureDisplay: "required" | "optional";
 };
 
+export type EligibilityTableItem = {
+  title: string;
+  description: string;
+  recheck: string;
+  frequency: string;
+  eligibilityUpdate: string;
+};
+
+export type EligibilityTableTemplate = {
+  type: ElementType.EligibilityTable;
+  id: string;
+  fieldLabels: {
+    title: string;
+    description: string;
+    recheck: string;
+    frequency: string;
+    eligibilityUpdate: string;
+  };
+  modalInstructions: string;
+  frequencyOptions: { label: string; value: string }[];
+  answer?: EligibilityTableItem[];
+};
+
 export type MeasureResultsNavigationTableTemplate = {
   type: ElementType.MeasureResultsNavigationTable;
   id: string;
@@ -367,11 +396,33 @@ export type RadioTemplate = {
   clickAction?: string;
 };
 
+export type CheckboxTemplate = {
+  type: ElementType.Checkbox;
+  id: string;
+  label: string;
+  choices: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string[];
+  required: boolean;
+};
+
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
   label?: string;
   to?: PageId;
+  style?: string;
+};
+
+export type ListInputTemplate = {
+  type: ElementType.ListInput;
+  id: string;
+  label: string;
+  fieldLabel: string;
+  helperText: string;
+  buttonText: string;
+  answer?: string[];
+  required: boolean;
 };
 
 export type MeasureDetailsTemplate = {
@@ -390,7 +441,6 @@ export type MeasureFooterTemplate = {
 };
 
 export const LengthOfStayFieldNames = {
-  performanceTarget: "performanceTarget",
   actualCount: "actualCount",
   denominator: "denominator",
   expectedCount: "expectedCount",
@@ -412,7 +462,6 @@ export type LengthOfStayRateTemplate = {
 };
 
 export const RateInputFieldNames = {
-  performanceTarget: "performanceTarget",
   numerator: "numerator",
   denominator: "denominator",
 } as const;
@@ -430,11 +479,9 @@ export type RateType = {
   id: string;
   numerator: number | undefined;
   rate: number | undefined;
-  performanceTarget: number | undefined;
 };
 
 export type RateData = {
-  performanceTarget?: number | undefined;
   numerator: number | undefined;
   denominator: number | undefined;
   rate: number | undefined;
@@ -448,7 +495,6 @@ export type RateSetData = {
 export type NdrFieldsTemplate = {
   id: string;
   type: ElementType.NdrFields;
-  labelTemplate: string;
   assessments: { label: string; id: string }[];
   fields: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
@@ -461,7 +507,6 @@ export type NdrEnhancedTemplate = {
   type: ElementType.NdrEnhanced;
   label?: string;
   helperText?: string;
-  performanceTargetLabel?: string | undefined;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
   required: boolean;
@@ -471,7 +516,6 @@ export type NdrTemplate = {
   id: string;
   type: ElementType.Ndr;
   label: string;
-  performanceTargetLabel: string;
   answer?: RateData;
   required: boolean;
 };

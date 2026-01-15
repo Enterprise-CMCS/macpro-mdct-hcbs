@@ -166,7 +166,8 @@ const elements: PageElement[] = [
   {
     type: ElementType.StatusAlert,
     id: "",
-    text: "mock status",
+    title: "mock alert title",
+    text: "mock alert text",
     status: AlertTypes.ERROR,
   },
   {

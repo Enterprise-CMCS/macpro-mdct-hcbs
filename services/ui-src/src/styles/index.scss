@@ -29,6 +29,7 @@ body,
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 300px;
 }
 
 li::marker {
@@ -172,4 +173,32 @@ button {
 
 .optionalText {
   font-weight: normal;
+}
+
+// Tech Specs Link Styles
+.tech-spec-link {
+  color: var(--chakra-colors-palette-primary);
+  text-decoration: underline;
+  
+  &:visited {
+    color: var(--chakra-colors-palette-visited);
+  }
+  
+  &:hover {
+    color: var(--chakra-colors-palette-primary_darker);
+  }
+}
+
+.tech-spec-icon {
+  display: inline-block;
+  margin-left: 0.5rem;
+  height: 1rem;
+  top: 2px;
+  position: relative;
+  stroke: currentColor;
+}
+
+.tech-spec-icon-hint-size {
+  @extend .tech-spec-icon;
+  height: 0.9rem;
 }

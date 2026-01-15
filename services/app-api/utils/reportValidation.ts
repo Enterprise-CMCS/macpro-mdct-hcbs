@@ -72,6 +72,17 @@ const textboxTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const listInputTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ListInput)),
+  id: string().required(),
+  label: string().required(),
+  fieldLabel: string().required(),
+  helperText: string().required(),
+  buttonText: string().required(),
+  answer: array().of(string()).notRequired(),
+  required: boolean().required(),
+});
+
 const numberFieldTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NumberField)),
   id: string().required(),
@@ -153,6 +164,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return accordionTemplateSchema;
     case ElementType.Radio:
       return radioTemplateSchema;
+    case ElementType.Checkbox:
+      return checkboxTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
@@ -181,6 +194,10 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return dividerSchema;
     case ElementType.SubmissionParagraph:
       return submissionParagraphSchema;
+    case ElementType.EligibilityTable:
+      return eligibilityTableSchema;
+    case ElementType.ListInput:
+      return listInputTemplateSchema;
     default:
       assertExhaustive(value);
       throw new Error("Page Element type is not valid");
@@ -206,11 +223,29 @@ const radioTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const checkboxTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.Checkbox)),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().notRequired(),
+  choices: array().of(
+    object().shape({
+      label: string().required(),
+      value: string().required(),
+      checked: boolean().notRequired(),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+    })
+  ),
+  answer: array().of(string()).notRequired(),
+  required: boolean().required(),
+});
+
 const buttonLinkTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.ButtonLink)),
   id: string().required(),
   label: string().optional(),
   to: string().optional(),
+  style: string().optional(),
 });
 
 const dividerSchema = object().shape({
@@ -229,6 +264,38 @@ const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
+});
+
+const eligibilityTableSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.EligibilityTable)),
+  id: string().required(),
+  fieldLabels: object().shape({
+    title: string().required(),
+    description: string().required(),
+    recheck: string().required(),
+    frequency: string().required(),
+    eligibilityUpdate: string().required(),
+  }),
+  modalInstructions: string().required(),
+  frequencyOptions: array()
+    .of(
+      object().shape({
+        label: string().required(),
+        value: string().required(),
+      })
+    )
+    .required(),
+  answer: array()
+    .of(
+      object().shape({
+        title: string().required(),
+        description: string().required(),
+        recheck: string().required(),
+        frequency: string().notRequired(),
+        eligibilityUpdate: string().required(),
+      })
+    )
+    .notRequired(),
 });
 
 const measureResultsNavigationTableTemplateSchema = object().shape({
@@ -271,7 +338,6 @@ const lengthOfStayRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.LengthOfStayRate)),
   id: string().required(),
   labels: object().shape({
-    performanceTarget: string().required(),
     actualCount: string().required(),
     denominator: string().required(),
     expectedCount: string().required(),
@@ -283,7 +349,6 @@ const lengthOfStayRateSchema = object().shape({
   required: boolean().required(),
   answer: object()
     .shape({
-      performanceTarget: number().notRequired(),
       actualCount: number().notRequired(),
       denominator: number().notRequired(),
       expectedCount: number().notRequired(),
@@ -298,7 +363,6 @@ const lengthOfStayRateSchema = object().shape({
 const ndrFieldsRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NdrFields)),
   id: string().required(),
-  labelTemplate: string().required(),
   assessments: array()
     .of(
       object().shape({
@@ -327,7 +391,6 @@ const ndrFieldsRateSchema = object().shape({
             id: string().required(),
             numerator: number().notRequired(),
             rate: number().notRequired(),
-            performanceTarget: number().notRequired(),
           })
         ),
       })
@@ -340,7 +403,6 @@ const ndrEnhancedRateSchema = object().shape({
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
-  performanceTargetLabel: string().notRequired(),
   assessments: array()
     .of(
       object().shape({
@@ -358,7 +420,6 @@ const ndrEnhancedRateSchema = object().shape({
           id: string().required(),
           numerator: number().notRequired(),
           rate: number().notRequired(),
-          performanceTarget: number().notRequired(),
         })
       ),
     })
@@ -369,11 +430,9 @@ const ndrRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Ndr)),
   id: string().required(),
   label: string().required(),
-  performanceTargetLabel: string().required(),
   required: boolean().required(),
   answer: object()
     .shape({
-      performanceTarget: number().notRequired(),
       numerator: number().notRequired(),
       denominator: number().notRequired(),
       rate: number().notRequired(),
@@ -414,7 +473,7 @@ const parentPageTemplateSchema = object().shape({
 const statusAlertSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.StatusAlert)),
   id: string().required(),
-  title: string().notRequired(),
+  title: string().required(),
   text: string().required(),
   status: string().required(),
 });

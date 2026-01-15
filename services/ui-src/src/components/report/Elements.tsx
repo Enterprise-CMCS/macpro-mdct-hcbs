@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Heading,
@@ -27,6 +27,7 @@ import { measurePrevPage, parseHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
+import whitePDFPrimary from "assets/icons/pdf/icon_pdf_white.svg";
 
 export type PageElementProps<T extends PageElement = PageElement> = T extends {
   answer?: any;
@@ -187,12 +188,46 @@ export const ButtonLinkElement = ({
     `Return to ${
       page === "req-measure-result" ? "Required" : "Optional"
     } Measure Dashboard`;
-  const nav = () =>
-    navigate(`/report/${reportType}/${state}/${reportId}/${page}`);
+  const link = `/report/${reportType}/${state}/${reportId}/${page}`;
+  const nav = () => navigate(link);
+
+  //swapping between props based on style
+  const getPropObj = (style: string) => {
+    switch (style) {
+      case "pdf": {
+        return {
+          prop: {
+            as: Link,
+            target: "_blank",
+            variant: "primary",
+            to: link,
+          },
+          style: {
+            src: whitePDFPrimary,
+            alt: "pdf icon",
+          },
+        };
+      }
+      default: {
+        return {
+          prop: {
+            variant: "return",
+            onClick: () => nav(),
+          },
+          style: {
+            src: arrowLeftIcon,
+            alt: "Arrow left",
+          },
+        };
+      }
+    }
+  };
+
+  const propObj = getPropObj(button.style ?? "");
 
   return (
-    <Button variant="return" onClick={() => nav()}>
-      <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
+    <Button {...propObj.prop}>
+      <Image {...propObj.style} className="icon" />
       {setLabel}
     </Button>
   );
