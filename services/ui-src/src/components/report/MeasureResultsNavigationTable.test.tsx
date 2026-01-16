@@ -129,7 +129,7 @@ const buildMockReport = (): Report =>
         ],
       },
     ],
-  } as Report);
+  }) as Report;
 
 jest.mock("../../utils/api/requestMethods/report", () => ({
   getReport: jest.fn(),

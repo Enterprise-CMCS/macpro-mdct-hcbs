@@ -26,7 +26,7 @@ export const createClient = () => {
 
 /** Given a paginator, eagerly collect all of its items in an array */
 export const collectPageItems = async <
-  T extends QueryCommandOutput | ScanCommandOutput
+  T extends QueryCommandOutput | ScanCommandOutput,
 >(
   paginator: Paginator<T>
 ) => {
@@ -39,7 +39,7 @@ export const collectPageItems = async <
 
 /** Given a paginator, lazily visit all of its items */
 export async function* iteratePageItems<
-  T extends QueryCommandOutput | ScanCommandOutput
+  T extends QueryCommandOutput | ScanCommandOutput,
 >(paginator: Paginator<T>) {
   for await (let page of paginator) {
     yield* page.Items ?? [];
