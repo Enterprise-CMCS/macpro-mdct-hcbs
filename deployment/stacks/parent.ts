@@ -1,13 +1,13 @@
 import { Construct } from "constructs";
-import type { StackProps } from "aws-cdk-lib";
 import {
   Aws,
   aws_ec2 as ec2,
   aws_iam as iam,
   CfnOutput,
   Stack,
+  type StackProps,
 } from "aws-cdk-lib";
-import type { DeploymentConfigProperties } from "../deployment-config.ts";
+import { type DeploymentConfigProperties } from "../deployment-config.ts";
 import { createDataComponents } from "./data.ts";
 import { createUiAuthComponents } from "./ui-auth.ts";
 import { createUiComponents } from "./ui.ts";
