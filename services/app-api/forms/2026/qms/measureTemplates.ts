@@ -39,6 +39,7 @@ import {
   exclusionRatesPersonPlanElements,
   performanceRatesReassessmentPlanElements,
   exclusionRatesPatientPlanElements,
+  readmissionRates,
   performanceRatePOM,
   performanceRateTermStay,
   performanceRateFacilityDischarges,
@@ -1101,18 +1102,7 @@ export const measureTemplates: Record<
       },
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
-      {
-        type: ElementType.NdrEnhanced,
-        id: "measure-rates",
-        required: true,
-        assessments: [
-          {
-            id: "acute-readmission-plan",
-            label:
-              "Acute inpatient and observation stays during the measurement year that were followed by an unplanned acute readmission for any diagnosis within 30 days, for participants 65 years of age",
-          },
-        ],
-      },
+      readmissionRates,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",

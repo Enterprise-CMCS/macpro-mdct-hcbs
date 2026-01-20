@@ -1,5 +1,6 @@
 import {
   AccordionTemplate,
+  AlertTypes,
   ButtonLinkTemplate,
   ElementType,
   HeaderTemplate,
@@ -12,10 +13,10 @@ import {
   NdrTemplate,
   PageElement,
   RadioTemplate,
+  ReadmissionRateTemplate,
   StatusAlertTemplate,
   SubHeaderMeasureTemplate,
   SubHeaderTemplate,
-  AlertTypes,
 } from "../../../types/reports";
 import { divider } from "../elements";
 
@@ -403,6 +404,24 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
     expectedRate:
       "Expected Performance Rate for Minimizing Length of Facility Stay",
     adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
+  required: true,
+};
+
+// Rates for MLTSS: Plan All-Cause Readmission
+export const readmissionRates: ReadmissionRateTemplate = {
+  type: ElementType.ReadmissionRate,
+  id: "measure-rates",
+  labels: {
+    denominatorCol1: "Count of Index Hospital Stays",
+    numeratorCol2: "Count of Observed 30-Day Readmissions",
+    expectedRateCol3: "Observed Readmission Rate",
+    numeratorDenominatorCol4: "Count of Expected 30-Day readmissions",
+    expectedRateCol5: "Expected Readmission Rate",
+    expectedRateCol6: "Observed-to-Expected Ratio",
+    denominatorCol7: "Count of Beneficiaries in Medicaid Population",
+    numeratorCol8: "Number of Outliers",
+    expectedRateCol9: "Outlier Rate",
   },
   required: true,
 };

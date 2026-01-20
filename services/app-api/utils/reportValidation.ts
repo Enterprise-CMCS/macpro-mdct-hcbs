@@ -180,6 +180,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureFooterSchema;
     case ElementType.LengthOfStayRate:
       return lengthOfStayRateSchema;
+    case ElementType.ReadmissionRate:
+      return ReadmissionRateSchema;
     case ElementType.NdrFields:
       return ndrFieldsRateSchema;
     case ElementType.NdrEnhanced:
@@ -356,6 +358,36 @@ const lengthOfStayRateSchema = object().shape({
       actualRate: number().notRequired(),
       expectedRate: number().notRequired(),
       adjustedRate: number().notRequired(),
+    })
+    .notRequired(),
+});
+
+const ReadmissionRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ReadmissionRate)),
+  id: string().required(),
+  labels: object().shape({
+    denominatorCol1: string().required(),
+    numeratorCol2: string().required(),
+    expectedRateCol3: string().required(),
+    numeratorDenominatorCol4: string().required(),
+    expectedRateCol5: string().required(),
+    expectedRateCol6: string().required(),
+    denominatorCol7: string().required(),
+    numeratorCol8: string().required(),
+    expectedRateCol9: string().required(),
+  }),
+  required: boolean().required(),
+  answer: object()
+    .shape({
+      denominatorCol1: number().notRequired(),
+      numeratorCol2: number().notRequired(),
+      expectedRateCol3: number().notRequired(),
+      numeratorDenominatorCol4: number().notRequired(),
+      expectedRateCol5: number().notRequired(),
+      expectedRateCol6: number().notRequired(),
+      denominatorCol7: number().notRequired(),
+      numeratorCol8: number().notRequired(),
+      expectedRateCol9: number().notRequired(),
     })
     .notRequired(),
 });
