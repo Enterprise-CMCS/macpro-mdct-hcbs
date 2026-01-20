@@ -5,6 +5,7 @@ import {
   NdrFieldsTemplate,
   NdrBasicTemplate,
   LengthOfStayRateTemplate,
+  ReadmissionRateTemplate,
 } from "types";
 
 export const mockNDR: NdrTemplate = {
@@ -85,6 +86,24 @@ export const mockLengthOfStayFields: LengthOfStayRateTemplate = {
     actualRate: "Actual Rate",
     expectedRate: "Expected Rate",
     adjustedRate: "Adjusted Rate",
+  },
+  answer: undefined,
+  required: true,
+};
+
+export const mockReadmissionRateFields: ReadmissionRateTemplate = {
+  id: "",
+  type: ElementType.ReadmissionRate,
+  labels: {
+    denominatorCol1: "Denominator Column 1",
+    numeratorCol2: "Numerator Column 2",
+    expectedRateCol3: "Expected Rate Column 3",
+    numeratorDenominatorCol4: "Numerator Denominator Column 4",
+    expectedRateCol5: "Expected Rate Column 5",
+    expectedRateCol6: "Expected Rate Column 6",
+    denominatorCol7: "Denominator Column 7",
+    numeratorCol8: "Numerator Column 8",
+    expectedRateCol9: "Expected Rate Column 9",
   },
   answer: undefined,
   required: true,

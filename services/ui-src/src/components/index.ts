@@ -53,6 +53,7 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 // report
 export { Fields } from "../components/rates/types/Fields";
+export { ReadmissionRate } from "../components/rates/types/ReadmissionRate";
 export { NDRFields } from "../components/rates/types/NDRFields";
 export { NDREnhanced } from "../components/rates/types/NDREnhanced";
 export { NDR } from "../components/rates/types/NDR";

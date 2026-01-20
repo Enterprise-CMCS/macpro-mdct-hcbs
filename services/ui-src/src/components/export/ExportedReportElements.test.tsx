@@ -11,6 +11,7 @@ import {
 import {
   mockedNDREnhanced,
   mockLengthOfStayFields,
+  mockReadmissionRateFields,
   mockNDR,
   mockNDRBasics,
   mockNDRFields,
@@ -41,7 +42,8 @@ describe("Test ExportedReportElements", () => {
       text: "mock sub header",
       type: ElementType.SubHeader,
     });
-    render(element);
+    render(<>{element}</>);
+
     expect(screen.getByText("mock sub header")).toBeInTheDocument();
   });
   test("Test render Measure Details element", () => {
@@ -49,7 +51,7 @@ describe("Test ExportedReportElements", () => {
       id: "mock-measure-details",
       type: ElementType.MeasureDetails,
     });
-    render(element);
+    render(<>{element}</>);
 
     expect(screen.getByText("mock measure")).toBeInTheDocument();
     expect(screen.getByText("CMIT number: #1")).toBeInTheDocument();
@@ -95,6 +97,13 @@ describe("Test ExportedReportElements", () => {
     render(<>{element}</>);
     expect(screen.getByText("Actual Count")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(7);
+  });
+  test("Test render Readmission Rate element", () => {
+    section.elements.push(mockReadmissionRateFields);
+    const element = renderElements(section, mockReadmissionRateFields);
+    render(<>{element}</>);
+    expect(screen.getByText("30-Day Readmission Rate")).toBeInTheDocument();
+    expect(screen.getAllByText("Not answered")).toHaveLength(4);
   });
   test("Test render NDR Basic element", () => {
     section.elements.push(mockNDRBasics);

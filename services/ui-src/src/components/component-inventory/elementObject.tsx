@@ -14,6 +14,7 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   Fields,
+  ReadmissionRate,
   NDRFields,
   NDREnhanced,
   NDR,
@@ -51,6 +52,7 @@ import {
   ndrSection,
   ndrBasicSection,
   lengthOfStayRateSection,
+  readmissionRateSection,
   measureDetailsSection,
   EligibilityTableSection,
 } from "./pdfElementSectionHelpers";
@@ -458,6 +460,33 @@ export const elementObject: {
       />,
     ],
     pdfVariants: [<ExportedReportWrapper section={lengthOfStayRateSection} />],
+  },
+  [ElementType.ReadmissionRate]: {
+    description:
+      "Numerator/Denominator Fields to gather ReadmissionRate performance rates",
+    id: "id-readmission-rate",
+    variants: [
+      <ReadmissionRate
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.ReadmissionRate,
+          id: "measure-rates",
+          labels: {
+            denominatorCol1: "denominatorCol1",
+            numeratorCol2: "numeratorCol2",
+            expectedRateCol3: "expectedRateCol3",
+            numeratorDenominatorCol4: "numeratorDenominatorCol4",
+            expectedRateCol5: "expectedRateCol5",
+            expectedRateCol6: "expectedRateCol6",
+            denominatorCol7: "denominatorCol7",
+            numeratorCol8: "numeratorCol8",
+            expectedRateCol9: "expectedRateCol9",
+          },
+          required: true,
+        }}
+      />,
+    ],
+    pdfVariants: [<ExportedReportWrapper section={readmissionRateSection} />],
   },
   [ElementType.NdrFields]: {
     description: "Numerator/Denominator Fields to gather performance rates",
