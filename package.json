@@ -2,27 +2,26 @@
   "name": "mdct-hcbs",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "yarn@4.12.0",
-  "type": "module",
   "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
+  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs#readme",
+  "bugs": {
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/issues"
   },
-  "scripts": {
-    "test:e2e": "pushd tests && yarn test ; popd",
-    "test:e2e-ui": "pushd tests && yarn test-ui ; popd"
-  },
+  "license": "CC0-1.0",
+  "author": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs.git"
   },
-  "author": "",
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/issues"
+  "directories": {
+    "test": "tests"
   },
-  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs#readme",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e": "pushd tests && yarn test ; popd",
+    "test:e2e-ui": "pushd tests && yarn test-ui ; popd"
+  },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "^3.946.0",
     "@aws-sdk/client-cloudfront": "^3.946.0",
@@ -61,5 +60,6 @@
     "typescript": "^5.9.3",
     "util": "^0.12.5",
     "yargs": "^17.7.2"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }
