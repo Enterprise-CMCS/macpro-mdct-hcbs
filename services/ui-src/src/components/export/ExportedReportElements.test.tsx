@@ -102,8 +102,8 @@ describe("Test ExportedReportElements", () => {
     section.elements.push(mockReadmissionRateFields);
     const element = renderElements(section, mockReadmissionRateFields);
     render(<>{element}</>);
-    expect(screen.getByText("30-Day Readmission Rate")).toBeInTheDocument();
-    expect(screen.getAllByText("Not answered")).toHaveLength(4);
+    expect(screen.getByText("Expected Rate Column 5")).toBeInTheDocument();
+    expect(screen.getAllByText("Not answered")).toHaveLength(9);
   });
   test("Test render NDR Basic element", () => {
     section.elements.push(mockNDRBasics);
