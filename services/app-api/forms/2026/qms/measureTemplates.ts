@@ -39,7 +39,7 @@ import {
   exclusionRatesPersonPlanElements,
   performanceRatesReassessmentPlanElements,
   exclusionRatesPatientPlanElements,
-  readmissionRates,
+  readmissionRate,
   performanceRatePOM,
   performanceRateTermStay,
   performanceRateFacilityDischarges,
@@ -1102,7 +1102,7 @@ export const measureTemplates: Record<
       },
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
-      readmissionRates,
+      readmissionRate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",

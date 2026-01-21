@@ -409,7 +409,7 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
 };
 
 // Rates for MLTSS: Plan All-Cause Readmission
-export const readmissionRates: ReadmissionRateTemplate = {
+export const readmissionRate: ReadmissionRateTemplate = {
   type: ElementType.ReadmissionRate,
   id: "measure-rates",
   labels: {
