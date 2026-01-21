@@ -26,14 +26,14 @@ export const ReadmissionRate = (
     return {
       denominatorCol1: stringifyInput(newAnswer?.denominatorCol1),
       numeratorCol2: stringifyInput(newAnswer?.numeratorCol2),
-      expectedRateCol3: stringifyInput(newAnswer?.expectedRateCol3),
+      expectedRateCol3: stringifyResult(newAnswer?.expectedRateCol3),
       numeratorDenominatorCol4: stringifyInput(
         newAnswer?.numeratorDenominatorCol4
       ),
       expectedRateCol5: stringifyResult(newAnswer?.expectedRateCol5),
       expectedRateCol6: stringifyResult(newAnswer?.expectedRateCol6),
-      denominatorCol7: stringifyResult(newAnswer?.denominatorCol7),
-      numeratorCol8: stringifyResult(newAnswer?.numeratorCol8),
+      denominatorCol7: stringifyInput(newAnswer?.denominatorCol7),
+      numeratorCol8: stringifyInput(newAnswer?.numeratorCol8),
       expectedRateCol9: stringifyResult(newAnswer?.expectedRateCol9),
     };
   };
@@ -102,33 +102,44 @@ export const ReadmissionRate = (
     let expectedRateCol6: number | undefined = undefined;
     let expectedRateCol9: number | undefined = undefined;
 
-    const canDivide =
-      denominatorCol1 !== undefined &&
-      denominatorCol7 !== undefined &&
-      denominatorCol1 !== 0 &&
-      denominatorCol7 !== 0;
-
-    if (canDivide && numeratorCol2 && numeratorDenominatorCol4 !== undefined) {
+    // non-zero before doing ANY divisions
+    // col 1 is denominator for both col 3 and col 5
+    const canDivideCol1 =
+      denominatorCol1 !== undefined && denominatorCol1 !== 0;
+    if (canDivideCol1 && numeratorCol2 !== undefined) {
       expectedRateCol3 = numeratorCol2 / denominatorCol1;
+    }
+    // when col4 is numerator for col5
+    if (canDivideCol1 && numeratorDenominatorCol4 !== undefined) {
       expectedRateCol5 = numeratorDenominatorCol4 / denominatorCol1;
+    }
+
+    // when col4 is denominator for col 6
+    const canDivideCol4 =
+      numeratorDenominatorCol4 !== undefined && numeratorDenominatorCol4 !== 0;
+    if (numeratorCol2 !== undefined && canDivideCol4) {
       expectedRateCol6 = numeratorCol2 / numeratorDenominatorCol4;
     }
 
-    if (canDivide && numeratorCol8 !== undefined) {
+    // this one is normal
+    const canDivideCol7 =
+      denominatorCol7 !== undefined && denominatorCol7 !== 0;
+    if (canDivideCol7 && numeratorCol8 !== undefined) {
       expectedRateCol9 = numeratorCol8 / denominatorCol7;
     }
 
-    if (denominatorCol1 && numeratorDenominatorCol4 && denominatorCol7 === 0) {
-      if (numeratorCol2) {
-        expectedRateCol3 = 0;
-        expectedRateCol5 = 0;
-      }
-      if (numeratorDenominatorCol4) {
-        expectedRateCol6 = 0;
-      }
-      if (numeratorCol8 === 0) {
-        expectedRateCol9 = 0;
-      }
+    // 0/0 = 0 rate
+    if (denominatorCol1 === 0 && numeratorCol2 === 0) {
+      expectedRateCol3 = 0;
+    }
+    if (denominatorCol1 === 0 && numeratorDenominatorCol4 === 0) {
+      expectedRateCol5 = 0;
+    }
+    if (numeratorDenominatorCol4 === 0 && numeratorCol2 === 0) {
+      expectedRateCol6 = 0;
+    }
+    if (denominatorCol7 === 0 && numeratorCol8 === 0) {
+      expectedRateCol9 = 0;
     }
 
     return {
@@ -204,11 +215,8 @@ export const ReadmissionRate = (
         <CmsdsTextField
           label={labels.expectedRateCol3}
           name="expectedRateCol3"
-          onChange={onChangeHandler}
-          onBlur={onChangeHandler}
           value={displayValue.expectedRateCol3}
-          errorMessage={errors.expectedRateCol3}
-          disabled={disabled}
+          disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
           name="numeratorDenominatorCol4"
@@ -252,11 +260,8 @@ export const ReadmissionRate = (
         <CmsdsTextField
           label={labels.expectedRateCol9}
           name="expectedRateCol9"
-          onChange={onChangeHandler}
-          onBlur={onChangeHandler}
           value={displayValue.expectedRateCol9}
-          disabled={disabled}
-          errorMessage={errors.expectedRateCol9}
+          disabled={true}
         ></CmsdsTextField>
         <Divider></Divider>
       </Stack>
