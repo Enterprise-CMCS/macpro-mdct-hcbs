@@ -52,80 +52,44 @@ export const ReadmissionRate = (
     newDisplayValue[fieldType] = stringValue;
     newErrors[fieldType] = errorMessage;
 
-    // Validate denominatorCol1 = 0 cases
-    if (parseNumber(newDisplayValue.denominatorCol1) === 0) {
-      if (parseNumber(newDisplayValue.numeratorCol2) !== 0) {
-        newErrors.numeratorCol2 = ErrorMessages.denominatorZero(
-          labels.numeratorCol2,
-          labels.denominatorCol1
-        );
-      }
-      if (parseNumber(newDisplayValue.numeratorDenominatorCol4) !== 0) {
-        newErrors.numeratorDenominatorCol4 = ErrorMessages.denominatorZero(
-          labels.numeratorDenominatorCol4,
-          labels.denominatorCol1
-        );
-      }
-    } else if (parseNumber(newDisplayValue.denominatorCol1) !== 0) {
-      if (
-        newErrors.numeratorCol2 ===
-        ErrorMessages.denominatorZero(
-          labels.numeratorCol2,
-          labels.denominatorCol1
-        )
-      ) {
-        newErrors.numeratorCol2 = "";
-      }
-      if (
-        newErrors.numeratorDenominatorCol4 ===
-        ErrorMessages.denominatorZero(
-          labels.numeratorDenominatorCol4,
-          labels.denominatorCol1
-        )
-      ) {
-        newErrors.numeratorDenominatorCol4 = "";
-      }
-    }
+    // Helper function to validate denominator-zero cases
+    const validateDenominatorZero = (
+      denominatorField: ReadmissionRateField,
+      numeratorFields: ReadmissionRateField[]
+    ) => {
+      const denominatorValue = parseNumber(newDisplayValue[denominatorField]);
 
-    // Validate numeratorDenominatorCol4 = 0 cases (when used as denominator for col6)
-    if (parseNumber(newDisplayValue.numeratorDenominatorCol4) === 0) {
-      if (parseNumber(newDisplayValue.numeratorCol2) !== 0) {
-        newErrors.numeratorCol2 = ErrorMessages.denominatorZero(
-          labels.numeratorCol2,
-          labels.numeratorDenominatorCol4
-        );
+      if (denominatorValue === 0) {
+        // Set errors for non-zero numerators
+        numeratorFields.forEach((numField) => {
+          if (parseNumber(newDisplayValue[numField]) !== 0) {
+            newErrors[numField] = ErrorMessages.denominatorZero(
+              labels[numField],
+              labels[denominatorField]
+            );
+          }
+        });
+      } else if (denominatorValue !== 0) {
+        // Clear denominator-zero errors
+        numeratorFields.forEach((numField) => {
+          const expectedError = ErrorMessages.denominatorZero(
+            labels[numField],
+            labels[denominatorField]
+          );
+          if (newErrors[numField] === expectedError) {
+            newErrors[numField] = "";
+          }
+        });
       }
-    } else if (parseNumber(newDisplayValue.numeratorDenominatorCol4) !== 0) {
-      if (
-        newErrors.numeratorCol2 ===
-        ErrorMessages.denominatorZero(
-          labels.numeratorCol2,
-          labels.numeratorDenominatorCol4
-        )
-      ) {
-        newErrors.numeratorCol2 = "";
-      }
-    }
+    };
 
-    // Validate denominatorCol7 = 0 cases
-    if (parseNumber(newDisplayValue.denominatorCol7) === 0) {
-      if (parseNumber(newDisplayValue.numeratorCol8) !== 0) {
-        newErrors.numeratorCol8 = ErrorMessages.denominatorZero(
-          labels.numeratorCol8,
-          labels.denominatorCol7
-        );
-      }
-    } else if (parseNumber(newDisplayValue.denominatorCol7) !== 0) {
-      if (
-        newErrors.numeratorCol8 ===
-        ErrorMessages.denominatorZero(
-          labels.numeratorCol8,
-          labels.denominatorCol7
-        )
-      ) {
-        newErrors.numeratorCol8 = "";
-      }
-    }
+    // Validate all denominator-zero cases
+    validateDenominatorZero("denominatorCol1", [
+      "numeratorCol2",
+      "numeratorDenominatorCol4",
+    ]);
+    validateDenominatorZero("numeratorDenominatorCol4", ["numeratorCol2"]);
+    validateDenominatorZero("denominatorCol7", ["numeratorCol8"]);
 
     return { displayValue: newDisplayValue, errors: newErrors };
   };
@@ -138,61 +102,36 @@ export const ReadmissionRate = (
     );
     const denominatorCol7 = parseNumber(newDisplayValue.denominatorCol7);
     const numeratorCol8 = parseNumber(newDisplayValue.numeratorCol8);
-    let expectedRateCol3: number | undefined = undefined;
-    let expectedRateCol5: number | undefined = undefined;
-    let expectedRateCol6: number | undefined = undefined;
-    let expectedRateCol9: number | undefined = undefined;
 
-    // non-zero before doing ANY divisions
-    // col 1 is denominator for both col 3 and col 5
-    const canDivideCol1 =
-      denominatorCol1 !== undefined && denominatorCol1 !== 0;
-    if (canDivideCol1 && numeratorCol2 !== undefined) {
-      expectedRateCol3 = numeratorCol2 / denominatorCol1;
-    }
-    // when col4 is numerator for col5
-    if (canDivideCol1 && numeratorDenominatorCol4 !== undefined) {
-      expectedRateCol5 = numeratorDenominatorCol4 / denominatorCol1;
-    }
-
-    // when col4 is denominator for col 6
-    const canDivideCol4 =
-      numeratorDenominatorCol4 !== undefined && numeratorDenominatorCol4 !== 0;
-    if (numeratorCol2 !== undefined && canDivideCol4) {
-      expectedRateCol6 = numeratorCol2 / numeratorDenominatorCol4;
-    }
-
-    // this one is normal
-    const canDivideCol7 =
-      denominatorCol7 !== undefined && denominatorCol7 !== 0;
-    if (canDivideCol7 && numeratorCol8 !== undefined) {
-      expectedRateCol9 = numeratorCol8 / denominatorCol7;
-    }
-
-    // 0/0 = 0 rate
-    if (denominatorCol1 === 0 && numeratorCol2 === 0) {
-      expectedRateCol3 = 0;
-    }
-    if (denominatorCol1 === 0 && numeratorDenominatorCol4 === 0) {
-      expectedRateCol5 = 0;
-    }
-    if (numeratorDenominatorCol4 === 0 && numeratorCol2 === 0) {
-      expectedRateCol6 = 0;
-    }
-    if (denominatorCol7 === 0 && numeratorCol8 === 0) {
-      expectedRateCol9 = 0;
-    }
+    // Helper to calculate rate or return 0 for 0/0
+    const calculateRate = (
+      numerator: number | undefined,
+      denominator: number | undefined
+    ): number | undefined => {
+      if (numerator === undefined || denominator === undefined)
+        return undefined;
+      if (denominator === 0) return numerator === 0 ? 0 : undefined;
+      return numerator / denominator;
+    };
 
     return {
       denominatorCol1: removeNoise(denominatorCol1),
       numeratorCol2: removeNoise(numeratorCol2),
-      expectedRateCol3: removeNoise(expectedRateCol3),
+      expectedRateCol3: removeNoise(
+        calculateRate(numeratorCol2, denominatorCol1)
+      ),
       numeratorDenominatorCol4: removeNoise(numeratorDenominatorCol4),
-      expectedRateCol5: removeNoise(expectedRateCol5),
-      expectedRateCol6: removeNoise(expectedRateCol6),
+      expectedRateCol5: removeNoise(
+        calculateRate(numeratorDenominatorCol4, denominatorCol1)
+      ),
+      expectedRateCol6: removeNoise(
+        calculateRate(numeratorCol2, numeratorDenominatorCol4)
+      ),
       denominatorCol7: removeNoise(denominatorCol7),
       numeratorCol8: removeNoise(numeratorCol8),
-      expectedRateCol9: removeNoise(expectedRateCol9),
+      expectedRateCol9: removeNoise(
+        calculateRate(numeratorCol8, denominatorCol7)
+      ),
     };
   };
 
