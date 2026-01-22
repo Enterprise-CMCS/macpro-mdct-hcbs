@@ -52,16 +52,66 @@ export const ReadmissionRate = (
     newDisplayValue[fieldType] = stringValue;
     newErrors[fieldType] = errorMessage;
 
+    // Validate denominatorCol1 = 0 cases
+    if (parseNumber(newDisplayValue.denominatorCol1) === 0) {
+      if (parseNumber(newDisplayValue.numeratorCol2) !== 0) {
+        newErrors.numeratorCol2 = ErrorMessages.denominatorZero(
+          labels.numeratorCol2,
+          labels.denominatorCol1
+        );
+      }
+      if (parseNumber(newDisplayValue.numeratorDenominatorCol4) !== 0) {
+        newErrors.numeratorDenominatorCol4 = ErrorMessages.denominatorZero(
+          labels.numeratorDenominatorCol4,
+          labels.denominatorCol1
+        );
+      }
+    } else if (parseNumber(newDisplayValue.denominatorCol1) !== 0) {
+      if (
+        newErrors.numeratorCol2 ===
+        ErrorMessages.denominatorZero(
+          labels.numeratorCol2,
+          labels.denominatorCol1
+        )
+      ) {
+        newErrors.numeratorCol2 = "";
+      }
+      if (
+        newErrors.numeratorDenominatorCol4 ===
+        ErrorMessages.denominatorZero(
+          labels.numeratorDenominatorCol4,
+          labels.denominatorCol1
+        )
+      ) {
+        newErrors.numeratorDenominatorCol4 = "";
+      }
+    }
+
+    // Validate numeratorDenominatorCol4 = 0 cases (when used as denominator for col6)
+    if (parseNumber(newDisplayValue.numeratorDenominatorCol4) === 0) {
+      if (parseNumber(newDisplayValue.numeratorCol2) !== 0) {
+        newErrors.numeratorCol2 = ErrorMessages.denominatorZero(
+          labels.numeratorCol2,
+          labels.numeratorDenominatorCol4
+        );
+      }
+    } else if (parseNumber(newDisplayValue.numeratorDenominatorCol4) !== 0) {
+      if (
+        newErrors.numeratorCol2 ===
+        ErrorMessages.denominatorZero(
+          labels.numeratorCol2,
+          labels.numeratorDenominatorCol4
+        )
+      ) {
+        newErrors.numeratorCol2 = "";
+      }
+    }
+
+    // Validate denominatorCol7 = 0 cases
     if (parseNumber(newDisplayValue.denominatorCol7) === 0) {
       if (parseNumber(newDisplayValue.numeratorCol8) !== 0) {
         newErrors.numeratorCol8 = ErrorMessages.denominatorZero(
           labels.numeratorCol8,
-          labels.denominatorCol7
-        );
-      }
-      if (parseNumber(newDisplayValue.expectedRateCol9) !== 0) {
-        newErrors.expectedRateCol9 = ErrorMessages.denominatorZero(
-          labels.expectedRateCol9,
           labels.denominatorCol7
         );
       }
@@ -74,15 +124,6 @@ export const ReadmissionRate = (
         )
       ) {
         newErrors.numeratorCol8 = "";
-      }
-      if (
-        newErrors.expectedRateCol9 ===
-        ErrorMessages.denominatorZero(
-          labels.expectedRateCol9,
-          labels.denominatorCol7
-        )
-      ) {
-        newErrors.expectedRateCol9 = "";
       }
     }
 
