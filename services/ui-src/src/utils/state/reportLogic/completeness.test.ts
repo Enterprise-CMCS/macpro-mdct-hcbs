@@ -409,7 +409,7 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test("accepts complete NDREnhanced rates", () => {
+  test("accepts complete NDRFields rates", () => {
     const element = {
       type: ElementType.NdrFields,
       answer: [
@@ -476,18 +476,18 @@ describe("elementSatisfiesRequired", () => {
     [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ numerator: 7 }] }],
-  ])("accepts incomplete NDREnhanced rates", (answer) => {
+  ])("accepts incomplete NDRFields when not required", (answer) => {
     const element = {
       type: ElementType.NdrFields,
       answer,
-      required: false,
+      required: false, // ← It's not required
     } as unknown as NdrFieldsTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
   test("reject incomplete ListInput", () => {
     const element = {
       type: ElementType.ListInput,
-      required: false,
+      required: true,
       answer: [""],
     } as ListInputTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
