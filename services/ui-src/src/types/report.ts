@@ -477,7 +477,7 @@ export const ReadmissionRateFieldNames = {
 } as const;
 
 export type ReadmissionRateField =
-  typeof ReadmissionRateFieldNames[keyof typeof ReadmissionRateFieldNames];
+  (typeof ReadmissionRateFieldNames)[keyof typeof ReadmissionRateFieldNames];
 
 export type ReadmissionRateTemplate = {
   id: string;
@@ -499,6 +499,7 @@ export const RateInputFieldNamesBasic = {
   numerator: "numerator",
   denominator: "denominator",
 } as const;
+
 export type RateInputFieldNameBasic =
   (typeof RateInputFieldNamesBasic)[keyof typeof RateInputFieldNamesBasic];
 

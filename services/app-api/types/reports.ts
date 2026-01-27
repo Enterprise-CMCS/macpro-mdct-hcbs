@@ -504,7 +504,7 @@ export const ReadmissionRateFieldNames = {
 } as const;
 
 export type ReadmissionRateField =
-  typeof ReadmissionRateFieldNames[keyof typeof ReadmissionRateFieldNames];
+  (typeof ReadmissionRateFieldNames)[keyof typeof ReadmissionRateFieldNames];
 
 export type ReadmissionRateTemplate = {
   id: string;
