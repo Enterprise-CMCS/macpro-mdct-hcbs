@@ -492,141 +492,141 @@ describe("elementSatisfiesRequired", () => {
     } as ListInputTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
+});
 
-  describe("elementSatisfiesRequired - ReadmissionRate", () => {
-    const baseReadmissionRateElement: ReadmissionRateTemplate = {
-      id: "test-readmission-rate",
-      type: ElementType.ReadmissionRate,
-      required: true,
-      labels: {
-        denominatorCol1: "Count of Index Hospital Stays",
-        numeratorCol2: "Count of Observed 30-Day Readmissions",
-        expectedRateCol3: "Observed Readmission Rate",
-        numeratorDenominatorCol4: "Count of Expected 30-Day readmissions",
-        expectedRateCol5: "Expected Readmission Rate",
-        expectedRateCol6: "Observed-to-Expected Ratio",
-        denominatorCol7: "Count of Beneficiaries in Medicaid Population",
-        numeratorCol8: "Number of Outliers",
-        expectedRateCol9: "Outlier Rate",
+describe("elementSatisfiesRequired - ReadmissionRate", () => {
+  const baseReadmissionRateElement: ReadmissionRateTemplate = {
+    id: "test-readmission-rate",
+    type: ElementType.ReadmissionRate,
+    required: true,
+    labels: {
+      denominatorCol1: "Count of Index Hospital Stays",
+      numeratorCol2: "Count of Observed 30-Day Readmissions",
+      expectedRateCol3: "Observed Readmission Rate",
+      numeratorDenominatorCol4: "Count of Expected 30-Day readmissions",
+      expectedRateCol5: "Expected Readmission Rate",
+      expectedRateCol6: "Observed-to-Expected Ratio",
+      denominatorCol7: "Count of Beneficiaries in Medicaid Population",
+      numeratorCol8: "Number of Outliers",
+      expectedRateCol9: "Outlier Rate",
+    },
+  };
+
+  test("returns true when all fields are defined and no errors", () => {
+    const element: ReadmissionRateTemplate = {
+      ...baseReadmissionRateElement,
+      answer: {
+        denominatorCol1: 100,
+        numeratorCol2: 25,
+        expectedRateCol3: 25,
+        numeratorDenominatorCol4: 20,
+        expectedRateCol5: 20,
+        expectedRateCol6: 1.25,
+        denominatorCol7: 1000,
+        numeratorCol8: 5,
+        expectedRateCol9: 5,
       },
     };
 
-    test("returns true when all fields are defined and no errors", () => {
-      const element: ReadmissionRateTemplate = {
-        ...baseReadmissionRateElement,
-        answer: {
-          denominatorCol1: 100,
-          numeratorCol2: 25,
-          expectedRateCol3: 25,
-          numeratorDenominatorCol4: 20,
-          expectedRateCol5: 20,
-          expectedRateCol6: 1.25,
-          denominatorCol7: 1000,
-          numeratorCol8: 5,
-          expectedRateCol9: 5,
-        },
-      };
+    expect(elementSatisfiesRequired(element, [])).toBe(true);
+  });
 
-      expect(elementSatisfiesRequired(element, [])).toBe(true);
-    });
+  test("returns false when any field is undefined", () => {
+    const element: ReadmissionRateTemplate = {
+      ...baseReadmissionRateElement,
+      answer: {
+        denominatorCol1: 100,
+        numeratorCol2: 25,
+        expectedRateCol3: undefined,
+        numeratorDenominatorCol4: 20,
+        expectedRateCol5: 20,
+        expectedRateCol6: 1.25,
+        denominatorCol7: 1000,
+        numeratorCol8: 5,
+        expectedRateCol9: 5,
+      },
+    };
 
-    test("returns false when any field is undefined", () => {
-      const element: ReadmissionRateTemplate = {
-        ...baseReadmissionRateElement,
-        answer: {
-          denominatorCol1: 100,
-          numeratorCol2: 25,
-          expectedRateCol3: undefined,
-          numeratorDenominatorCol4: 20,
-          expectedRateCol5: 20,
-          expectedRateCol6: 1.25,
-          denominatorCol7: 1000,
-          numeratorCol8: 5,
-          expectedRateCol9: 5,
-        },
-      };
+    expect(elementSatisfiesRequired(element, [])).toBe(false);
+  });
 
-      expect(elementSatisfiesRequired(element, [])).toBe(false);
-    });
+  test("returns false when errors exist", () => {
+    const element: ReadmissionRateTemplate = {
+      ...baseReadmissionRateElement,
+      answer: {
+        denominatorCol1: 0,
+        numeratorCol2: 1,
+        expectedRateCol3: undefined,
+        numeratorDenominatorCol4: 0,
+        expectedRateCol5: 0,
+        expectedRateCol6: 0,
+        denominatorCol7: 0,
+        numeratorCol8: 0,
+        expectedRateCol9: 0,
+      },
+      errors: {
+        numeratorCol2:
+          "Error: Count of Observed 30-Day Readmissions must be 0 when Count of Index Hospital Stays is 0",
+        denominatorCol1: "",
+        expectedRateCol3: "",
+        numeratorDenominatorCol4: "",
+        expectedRateCol5: "",
+        expectedRateCol6: "",
+        denominatorCol7: "",
+        numeratorCol8: "",
+        expectedRateCol9: "",
+      },
+    };
 
-    test("returns false when errors exist", () => {
-      const element: ReadmissionRateTemplate = {
-        ...baseReadmissionRateElement,
-        answer: {
-          denominatorCol1: 0,
-          numeratorCol2: 1,
-          expectedRateCol3: undefined,
-          numeratorDenominatorCol4: 0,
-          expectedRateCol5: 0,
-          expectedRateCol6: 0,
-          denominatorCol7: 0,
-          numeratorCol8: 0,
-          expectedRateCol9: 0,
-        },
-        errors: {
-          numeratorCol2:
-            "Error: Count of Observed 30-Day Readmissions must be 0 when Count of Index Hospital Stays is 0",
-          denominatorCol1: "",
-          expectedRateCol3: "",
-          numeratorDenominatorCol4: "",
-          expectedRateCol5: "",
-          expectedRateCol6: "",
-          denominatorCol7: "",
-          numeratorCol8: "",
-          expectedRateCol9: "",
-        },
-      };
+    expect(elementSatisfiesRequired(element, [])).toBe(false);
+  });
 
-      expect(elementSatisfiesRequired(element, [])).toBe(false);
-    });
+  test("returns true when errors object exists but all error values are empty strings", () => {
+    const element: ReadmissionRateTemplate = {
+      ...baseReadmissionRateElement,
+      answer: {
+        denominatorCol1: 100,
+        numeratorCol2: 25,
+        expectedRateCol3: 25,
+        numeratorDenominatorCol4: 20,
+        expectedRateCol5: 20,
+        expectedRateCol6: 1.25,
+        denominatorCol7: 1000,
+        numeratorCol8: 5,
+        expectedRateCol9: 5,
+      },
+      errors: {
+        denominatorCol1: "",
+        numeratorCol2: "",
+        expectedRateCol3: "",
+        numeratorDenominatorCol4: "",
+        expectedRateCol5: "",
+        expectedRateCol6: "",
+        denominatorCol7: "",
+        numeratorCol8: "",
+        expectedRateCol9: "",
+      },
+    };
 
-    test("returns true when errors object exists but all error values are empty strings", () => {
-      const element: ReadmissionRateTemplate = {
-        ...baseReadmissionRateElement,
-        answer: {
-          denominatorCol1: 100,
-          numeratorCol2: 25,
-          expectedRateCol3: 25,
-          numeratorDenominatorCol4: 20,
-          expectedRateCol5: 20,
-          expectedRateCol6: 1.25,
-          denominatorCol7: 1000,
-          numeratorCol8: 5,
-          expectedRateCol9: 5,
-        },
-        errors: {
-          denominatorCol1: "",
-          numeratorCol2: "",
-          expectedRateCol3: "",
-          numeratorDenominatorCol4: "",
-          expectedRateCol5: "",
-          expectedRateCol6: "",
-          denominatorCol7: "",
-          numeratorCol8: "",
-          expectedRateCol9: "",
-        },
-      };
+    expect(elementSatisfiesRequired(element, [])).toBe(true);
+  });
 
-      expect(elementSatisfiesRequired(element, [])).toBe(true);
-    });
+  test("returns true when all fields are 0 (0/0 case)", () => {
+    const element: ReadmissionRateTemplate = {
+      ...baseReadmissionRateElement,
+      answer: {
+        denominatorCol1: 0,
+        numeratorCol2: 0,
+        expectedRateCol3: 0,
+        numeratorDenominatorCol4: 0,
+        expectedRateCol5: 0,
+        expectedRateCol6: 0,
+        denominatorCol7: 0,
+        numeratorCol8: 0,
+        expectedRateCol9: 0,
+      },
+    };
 
-    test("returns true when all fields are 0 (0/0 case)", () => {
-      const element: ReadmissionRateTemplate = {
-        ...baseReadmissionRateElement,
-        answer: {
-          denominatorCol1: 0,
-          numeratorCol2: 0,
-          expectedRateCol3: 0,
-          numeratorDenominatorCol4: 0,
-          expectedRateCol5: 0,
-          expectedRateCol6: 0,
-          denominatorCol7: 0,
-          numeratorCol8: 0,
-          expectedRateCol9: 0,
-        },
-      };
-
-      expect(elementSatisfiesRequired(element, [])).toBe(true);
-    });
+    expect(elementSatisfiesRequired(element, [])).toBe(true);
   });
 });
