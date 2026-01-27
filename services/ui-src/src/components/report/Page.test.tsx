@@ -178,6 +178,22 @@ const elements: PageElement[] = [
     type: ElementType.SubHeaderMeasure,
     id: "",
   },
+  {
+    type: ElementType.ReadmissionRate,
+    id: "readmission-rate-element",
+    required: true,
+    labels: {
+      denominatorCol1: "Count of Index Hospital Stays",
+      numeratorCol2: "Count of Observed 30-Day Readmissions",
+      expectedRateCol3: "Observed Readmission Rate",
+      numeratorDenominatorCol4: "Count of Expected 30-Day readmissions",
+      expectedRateCol5: "Expected Readmission Rate",
+      expectedRateCol6: "Observed-to-Expected Ratio",
+      denominatorCol7: "Count of Beneficiaries in Medicaid Population",
+      numeratorCol8: "Number of Outliers",
+      expectedRateCol9: "Outlier Rate",
+    },
+  },
 ];
 
 const textFieldElement: PageElement[] = [
