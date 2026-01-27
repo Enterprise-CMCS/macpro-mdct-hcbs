@@ -19,7 +19,6 @@
     "@cmsgov/design-system": "^13.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@hookform/resolvers": "^2.9.11",
     "@vitejs/plugin-react": "^4.3.0",
     "aws-amplify": "^6.6.4",
     "core-js": "^3.41.0",
