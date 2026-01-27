@@ -41,7 +41,7 @@ const ReadmissionRateWrapper = ({
   return <ReadmissionRate element={element} updateElement={onChange} />;
 };
 
-describe("<ReadmissionRate Fields/>", () => {
+describe("<ReadmissionRate />", () => {
   describe("Test ReadmissionRate component", () => {
     beforeEach(() => {
       jest.clearAllMocks();
@@ -56,7 +56,7 @@ describe("<ReadmissionRate Fields/>", () => {
       await act(() => userEvent.type(getInput(fieldId), value));
     };
 
-    test("ReadmissionRate Fields are visible, and disabled appropriately", async () => {
+    test("Fields are visible, and disabled appropriately", async () => {
       render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
       // All fields should be visible
@@ -86,21 +86,25 @@ describe("<ReadmissionRate Fields/>", () => {
       }
     });
 
-    test("ReadmissionRate Fields should auto-calculate", async () => {
+    test("Fields should auto-calculate with correct multipliers", async () => {
       render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
-      await enterValue("denominatorCol1", "2");
-      await enterValue("numeratorCol2", "1");
-      await enterValue("numeratorDenominatorCol4", "1");
-      await enterValue("denominatorCol7", "2");
-      await enterValue("numeratorCol8", "1");
+      await enterValue("denominatorCol1", "100");
+      await enterValue("numeratorCol2", "25");
+      await enterValue("numeratorDenominatorCol4", "20");
+      await enterValue("denominatorCol7", "1000");
+      await enterValue("numeratorCol8", "5");
 
-      expect(getInput("expectedRateCol3")).toHaveValue("0.5");
-      expect(getInput("expectedRateCol5")).toHaveValue("0.5");
-      expect(getInput("expectedRateCol6")).toHaveValue("1");
-      expect(getInput("expectedRateCol9")).toHaveValue("0.5");
+      // Col 3: (25/100) * 100 = 25%
+      expect(getInput("expectedRateCol3")).toHaveValue("25");
+      // Col 5: (20/100) * 100 = 20.00%
+      expect(getInput("expectedRateCol5")).toHaveValue("20");
+      // Col 6: 25/20 = 1.25 (ratio, no multiplier)
+      expect(getInput("expectedRateCol6")).toHaveValue("1.25");
+      // Col 9: (5/1000) * 1000 = 5.00 per 1000
+      expect(getInput("expectedRateCol9")).toHaveValue("5");
     });
 
-    test("Error should show if denominator is 0 and numerator is not 0", async () => {
+    test("Error should show if denominatorCol1 is 0 and numeratorCol2 is not 0", async () => {
       render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
       await enterValue("denominatorCol1", "0");
@@ -111,6 +115,54 @@ describe("<ReadmissionRate Fields/>", () => {
           ErrorMessages.denominatorZero(
             mockedPerformanceElement.labels.numeratorCol2,
             mockedPerformanceElement.labels.denominatorCol1
+          )
+        )
+      ).toBeVisible();
+    });
+
+    test("Error should show if denominatorCol1 is 0 and numeratorDenominatorCol4 is not 0", async () => {
+      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+
+      await enterValue("denominatorCol1", "0");
+      await enterValue("numeratorDenominatorCol4", "1");
+
+      expect(
+        screen.getByText(
+          ErrorMessages.denominatorZero(
+            mockedPerformanceElement.labels.numeratorDenominatorCol4,
+            mockedPerformanceElement.labels.denominatorCol1
+          )
+        )
+      ).toBeVisible();
+    });
+
+    test("Error should show if numeratorDenominatorCol4 is 0 and numeratorCol2 is not 0", async () => {
+      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+
+      await enterValue("numeratorDenominatorCol4", "0");
+      await enterValue("numeratorCol2", "1");
+
+      expect(
+        screen.getByText(
+          ErrorMessages.denominatorZero(
+            mockedPerformanceElement.labels.numeratorCol2,
+            mockedPerformanceElement.labels.numeratorDenominatorCol4
+          )
+        )
+      ).toBeVisible();
+    });
+
+    test("Error should show if denominatorCol7 is 0 and numeratorCol8 is not 0", async () => {
+      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+
+      await enterValue("denominatorCol7", "0");
+      await enterValue("numeratorCol8", "1");
+
+      expect(
+        screen.getByText(
+          ErrorMessages.denominatorZero(
+            mockedPerformanceElement.labels.numeratorCol8,
+            mockedPerformanceElement.labels.denominatorCol7
           )
         )
       ).toBeVisible();
@@ -148,6 +200,18 @@ describe("<ReadmissionRate Fields/>", () => {
       expect(getInput("expectedRateCol5")).toHaveValue("0.00");
       expect(getInput("expectedRateCol6")).toHaveValue("0.00");
       expect(getInput("expectedRateCol9")).toHaveValue("0.00");
+    });
+
+    test("Calculated fields should be empty when denominators are non-zero but numerators are missing", async () => {
+      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+
+      await enterValue("denominatorCol1", "100");
+      await enterValue("denominatorCol7", "1000");
+
+      expect(getInput("expectedRateCol3")).toHaveValue("");
+      expect(getInput("expectedRateCol5")).toHaveValue("");
+      expect(getInput("expectedRateCol6")).toHaveValue("");
+      expect(getInput("expectedRateCol9")).toHaveValue("");
     });
   });
 

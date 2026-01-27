@@ -106,23 +106,25 @@ export const ReadmissionRate = (
     // Helper to calculate rate or return 0 for 0/0
     const calculateRate = (
       numerator: number | undefined,
-      denominator: number | undefined
+      denominator: number | undefined,
+      multiplier: number = 1
     ): number | undefined => {
       if (numerator === undefined || denominator === undefined)
         return undefined;
       if (denominator === 0) return numerator === 0 ? 0 : undefined;
-      return numerator / denominator;
+      const rate = numerator / denominator;
+      return rate * multiplier;
     };
 
     return {
       denominatorCol1: removeNoise(denominatorCol1),
       numeratorCol2: removeNoise(numeratorCol2),
       expectedRateCol3: removeNoise(
-        calculateRate(numeratorCol2, denominatorCol1)
+        calculateRate(numeratorCol2, denominatorCol1, 100)
       ),
       numeratorDenominatorCol4: removeNoise(numeratorDenominatorCol4),
       expectedRateCol5: removeNoise(
-        calculateRate(numeratorDenominatorCol4, denominatorCol1)
+        calculateRate(numeratorDenominatorCol4, denominatorCol1, 100)
       ),
       expectedRateCol6: removeNoise(
         calculateRate(numeratorCol2, numeratorDenominatorCol4)
@@ -130,7 +132,7 @@ export const ReadmissionRate = (
       denominatorCol7: removeNoise(denominatorCol7),
       numeratorCol8: removeNoise(numeratorCol8),
       expectedRateCol9: removeNoise(
-        calculateRate(numeratorCol8, denominatorCol7)
+        calculateRate(numeratorCol8, denominatorCol7, 1000)
       ),
     };
   };
