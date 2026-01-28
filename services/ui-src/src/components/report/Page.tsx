@@ -29,6 +29,7 @@ import {
   TextField,
   StatusAlert,
   Fields,
+  ReadmissionRate,
   NDR,
   NDRBasic,
   NDRFields,
@@ -100,6 +101,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <MeasureFooterElement {...{ disabled, element }} />;
       case ElementType.LengthOfStayRate:
         return <Fields {...{ updateElement, disabled, element }} />;
+      case ElementType.ReadmissionRate:
+        return <ReadmissionRate {...{ updateElement, disabled, element }} />;
       case ElementType.NdrFields:
         return <NDRFields {...{ updateElement, disabled, element }} />;
       case ElementType.NdrEnhanced:

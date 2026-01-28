@@ -2,6 +2,7 @@ import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType, MeasurePageTemplate, PageElement } from "types";
 import { FieldsExport } from "components/rates/types/Fields";
+import { ReadmissionRateExport } from "components/rates/types/ReadmissionRate";
 import { NDRExport } from "components/rates/types/NDR";
 import { notAnsweredText } from "../../constants";
 import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
@@ -25,6 +26,7 @@ const renderElementList = [
   ElementType.NdrFields,
   ElementType.Ndr,
   ElementType.LengthOfStayRate,
+  ElementType.ReadmissionRate,
   ElementType.NdrBasic,
   ElementType.MeasureDetails,
   ElementType.SubHeader,
@@ -58,6 +60,8 @@ export const renderElements = (
       return NDRExport(element);
     case ElementType.LengthOfStayRate:
       return FieldsExport(element);
+    case ElementType.ReadmissionRate:
+      return ReadmissionRateExport(element);
     case ElementType.NdrBasic:
       return NDRBasicExport(element);
     case ElementType.MeasureDetails:

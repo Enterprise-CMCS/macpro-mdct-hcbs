@@ -218,6 +218,30 @@ export const lengthOfStayRateSection: FormPageTemplate = {
   ],
 };
 
+export const readmissionRateSection: FormPageTemplate = {
+  id: "mock-readmissionRate-id",
+  title: "mock-readmissionRate-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.ReadmissionRate,
+      id: "measure-rates",
+      labels: {
+        stayCount: "stayCount",
+        obsReadmissionCount: "obsReadmissionCount",
+        obsReadmissionRate: "obsReadmissionRate",
+        expReadmissionCount: "expReadmissionCount",
+        expReadmissionRate: "expReadmissionRate",
+        obsExpRatio: "obsExpRatio",
+        beneficiaryCount: "beneficiaryCount",
+        outlierCount: "outlierCount",
+        outlierRate: "outlierRate",
+      },
+      required: true,
+    },
+  ],
+};
+
 export const measureDetailsSection: MeasurePageTemplate = {
   id: "mock-lengthOfStayRate-id",
   title: "mock-lengthOfStayRate-title",

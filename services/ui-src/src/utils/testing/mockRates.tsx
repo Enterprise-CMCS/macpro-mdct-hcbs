@@ -5,6 +5,7 @@ import {
   NdrFieldsTemplate,
   NdrBasicTemplate,
   LengthOfStayRateTemplate,
+  ReadmissionRateTemplate,
 } from "types";
 
 export const mockNDR: NdrTemplate = {
@@ -85,6 +86,24 @@ export const mockLengthOfStayFields: LengthOfStayRateTemplate = {
     actualRate: "Actual Rate",
     expectedRate: "Expected Rate",
     adjustedRate: "Adjusted Rate",
+  },
+  answer: undefined,
+  required: true,
+};
+
+export const mockReadmissionRateFields: ReadmissionRateTemplate = {
+  id: "",
+  type: ElementType.ReadmissionRate,
+  labels: {
+    stayCount: "Count of Index Hospital Stays",
+    obsReadmissionCount: "Count of Observed 30-Day Readmissions",
+    obsReadmissionRate: "Observed Readmission Rate",
+    expReadmissionCount: "Count of Expected 30-Day readmissions",
+    expReadmissionRate: "Expected Readmission Rate",
+    obsExpRatio: "Observed-to-Expected Ratio",
+    beneficiaryCount: "Count of Beneficiaries in Medicaid Population",
+    outlierCount: "Number of Outliers",
+    outlierRate: "Outlier Rate",
   },
   answer: undefined,
   required: true,

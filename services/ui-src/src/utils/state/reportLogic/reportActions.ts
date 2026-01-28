@@ -273,6 +273,7 @@ export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
     "ndrFields",
     "ndrBasic",
     "lengthOfStay",
+    "readmissionRate",
   ];
   //find the measureFooter index if the page type is measure & measureResults page, else use the last element's index
   const footerIndex =

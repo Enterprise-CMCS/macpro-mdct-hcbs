@@ -13,6 +13,7 @@ import {
   isMeasurePageTemplate,
   LengthOfStayFieldNames,
   assertExhaustive,
+  ReadmissionRateFieldNames,
 } from "types";
 
 /**
@@ -200,6 +201,17 @@ export const elementSatisfiesRequired = (
     return Object.values(LengthOfStayFieldNames)
       .filter((fieldId) => fieldId !== "populationRate") // populationRate is not required
       .every((fieldId) => element.answer?.[fieldId] !== undefined);
+  }
+  if (element.type === ElementType.ReadmissionRate) {
+    if (element.errors) {
+      const hasErrors = Object.values(element.errors).some(
+        (error) => error !== undefined && error !== ""
+      );
+      if (hasErrors) return false;
+    }
+    return Object.values(ReadmissionRateFieldNames).every(
+      (fieldId) => element.answer?.[fieldId] !== undefined
+    );
   }
   if (element.type === ElementType.NdrFields) {
     return element.answer.every((assessObj) => {
