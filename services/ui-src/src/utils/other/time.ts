@@ -134,20 +134,6 @@ export const calculateRemainingSeconds = (expiresAt?: any) => {
   return differenceInSeconds(parsedDate, new Date());
 };
 
-export const calculateNextQuarter = (previousQuarter: string) => {
-  if (previousQuarter) {
-    const formattedQuarter = previousQuarter.split(" ");
-    const year = parseInt(formattedQuarter[0]);
-    const period = parseInt(
-      formattedQuarter[1][formattedQuarter[1].length - 1]
-    );
-    const nextPeriod = (period % 4) + 1;
-    const nextYear = period === 4 ? year + 1 : year;
-    return `${nextYear} Q${nextPeriod}`;
-  }
-  return "";
-};
-
 /**
  * Parse a date string in the format "MM/DD/YYYY"
  * @returns a Date, or `undefined` if the input is invalid

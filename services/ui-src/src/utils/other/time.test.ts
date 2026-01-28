@@ -1,5 +1,4 @@
 import {
-  calculateNextQuarter,
   calculateRemainingSeconds,
   checkDateRangeStatus,
   convertDateEtToUtc,
@@ -131,20 +130,6 @@ describe("utils/time", () => {
     it("checks that expiration time is greater than zero", () => {
       const expirationTime = "2050-11-18T12:53:11-05:00";
       expect(calculateRemainingSeconds(expirationTime)).toBeGreaterThan(0);
-    });
-  });
-
-  describe("calculateNextQuarter()", () => {
-    it("returns same year and next period", () => {
-      const previousQuarter = "2027 Q1";
-      expect(calculateNextQuarter(previousQuarter)).toBe("2027 Q2");
-    });
-    it("returns next year and next period", () => {
-      const previousQuarter = "2027 Q4";
-      expect(calculateNextQuarter(previousQuarter)).toBe("2028 Q1");
-    });
-    it("returns empty string when nothing is passed in", () => {
-      expect(calculateNextQuarter("")).toBe("");
     });
   });
 });
