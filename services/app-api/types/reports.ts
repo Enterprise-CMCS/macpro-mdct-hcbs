@@ -492,15 +492,15 @@ export type LengthOfStayRateTemplate = {
 };
 
 export const ReadmissionRateFieldNames = {
-  denominatorCol1: "denominatorCol1",
-  numeratorCol2: "numeratorCol2",
-  expectedRateCol3: "expectedRateCol3",
-  numeratorDenominatorCol4: "numeratorDenominatorCol4",
-  expectedRateCol5: "expectedRateCol5",
-  expectedRateCol6: "expectedRateCol6",
-  denominatorCol7: "denominatorCol7",
-  numeratorCol8: "numeratorCol8",
-  expectedRateCol9: "expectedRateCol9",
+  stayCount: "stayCount",
+  obsReadmissionCount: "obsReadmissionCount",
+  obsReadmissionRate: "obsReadmissionRate",
+  expReadmissionCount: "expReadmissionCount",
+  expReadmissionRate: "expReadmissionRate",
+  obsExpRatio: "obsExpRatio",
+  beneficiaryCount: "beneficiaryCount",
+  outlierCount: "outlierCount",
+  outlierRate: "outlierRate",
 } as const;
 
 export type ReadmissionRateField =

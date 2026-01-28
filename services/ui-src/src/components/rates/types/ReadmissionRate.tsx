@@ -24,17 +24,15 @@ export const ReadmissionRate = (
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
-      denominatorCol1: stringifyInput(newAnswer?.denominatorCol1),
-      numeratorCol2: stringifyInput(newAnswer?.numeratorCol2),
-      expectedRateCol3: stringifyResult(newAnswer?.expectedRateCol3),
-      numeratorDenominatorCol4: stringifyInput(
-        newAnswer?.numeratorDenominatorCol4
-      ),
-      expectedRateCol5: stringifyResult(newAnswer?.expectedRateCol5),
-      expectedRateCol6: stringifyResult(newAnswer?.expectedRateCol6),
-      denominatorCol7: stringifyInput(newAnswer?.denominatorCol7),
-      numeratorCol8: stringifyInput(newAnswer?.numeratorCol8),
-      expectedRateCol9: stringifyResult(newAnswer?.expectedRateCol9),
+      stayCount: stringifyInput(newAnswer?.stayCount),
+      obsReadmissionCount: stringifyInput(newAnswer?.obsReadmissionCount),
+      obsReadmissionRate: stringifyResult(newAnswer?.obsReadmissionRate),
+      expReadmissionCount: stringifyInput(newAnswer?.expReadmissionCount),
+      expReadmissionRate: stringifyResult(newAnswer?.expReadmissionRate),
+      obsExpRatio: stringifyResult(newAnswer?.obsExpRatio),
+      beneficiaryCount: stringifyInput(newAnswer?.beneficiaryCount),
+      outlierCount: stringifyInput(newAnswer?.outlierCount),
+      outlierRate: stringifyResult(newAnswer?.outlierRate),
     };
   };
 
@@ -55,53 +53,49 @@ export const ReadmissionRate = (
     // Helper function to validate denominator-zero cases
     const validateDenominatorZero = (
       denominatorField: ReadmissionRateField,
-      numeratorFields: ReadmissionRateField[]
+      numeratorField: ReadmissionRateField
     ) => {
       const denominatorValue = parseNumber(newDisplayValue[denominatorField]);
 
       if (denominatorValue === 0) {
         // Set errors for non-zero numerators
-        numeratorFields.forEach((numField) => {
-          if (parseNumber(newDisplayValue[numField]) !== 0) {
-            newErrors[numField] = ErrorMessages.denominatorZero(
-              labels[numField],
-              labels[denominatorField]
-            );
-          }
-        });
-      } else if (denominatorValue !== 0) {
-        // Clear denominator-zero errors
-        numeratorFields.forEach((numField) => {
-          const expectedError = ErrorMessages.denominatorZero(
-            labels[numField],
+        if (parseNumber(newDisplayValue[numeratorField]) !== 0) {
+          newErrors[numeratorField] = ErrorMessages.denominatorZero(
+            labels[numeratorField],
             labels[denominatorField]
           );
-          if (newErrors[numField] === expectedError) {
-            newErrors[numField] = "";
-          }
-        });
+        }
+      } else if (denominatorValue !== 0) {
+        // Clear denominator-zero errors
+        const expectedError = ErrorMessages.denominatorZero(
+          labels[numeratorField],
+          labels[denominatorField]
+        );
+        if (newErrors[numeratorField] === expectedError) {
+          newErrors[numeratorField] = "";
+        }
       }
     };
 
     // Validate all denominator-zero cases
-    validateDenominatorZero("denominatorCol1", [
-      "numeratorCol2",
-      "numeratorDenominatorCol4",
-    ]);
-    validateDenominatorZero("numeratorDenominatorCol4", ["numeratorCol2"]);
-    validateDenominatorZero("denominatorCol7", ["numeratorCol8"]);
+    validateDenominatorZero("stayCount", "obsReadmissionCount");
+    validateDenominatorZero("stayCount", "expReadmissionCount");
+    validateDenominatorZero("expReadmissionCount", "obsReadmissionCount");
+    validateDenominatorZero("beneficiaryCount", "outlierCount");
 
     return { displayValue: newDisplayValue, errors: newErrors };
   };
 
   const computeAnswer = (newDisplayValue: typeof displayValue) => {
-    const denominatorCol1 = parseNumber(newDisplayValue.denominatorCol1);
-    const numeratorCol2 = parseNumber(newDisplayValue.numeratorCol2);
-    const numeratorDenominatorCol4 = parseNumber(
-      newDisplayValue.numeratorDenominatorCol4
+    const stayCount = parseNumber(newDisplayValue.stayCount);
+    const obsReadmissionCount = parseNumber(
+      newDisplayValue.obsReadmissionCount
     );
-    const denominatorCol7 = parseNumber(newDisplayValue.denominatorCol7);
-    const numeratorCol8 = parseNumber(newDisplayValue.numeratorCol8);
+    const expReadmissionCount = parseNumber(
+      newDisplayValue.expReadmissionCount
+    );
+    const beneficiaryCount = parseNumber(newDisplayValue.beneficiaryCount);
+    const outlierCount = parseNumber(newDisplayValue.outlierCount);
 
     // Helper to calculate rate or return 0 for 0/0
     const calculateRate = (
@@ -117,22 +111,22 @@ export const ReadmissionRate = (
     };
 
     return {
-      denominatorCol1: removeNoise(denominatorCol1),
-      numeratorCol2: removeNoise(numeratorCol2),
-      expectedRateCol3: removeNoise(
-        calculateRate(numeratorCol2, denominatorCol1, 100)
+      stayCount: removeNoise(stayCount),
+      obsReadmissionCount: removeNoise(obsReadmissionCount),
+      obsReadmissionRate: removeNoise(
+        calculateRate(obsReadmissionCount, stayCount, 100)
       ),
-      numeratorDenominatorCol4: removeNoise(numeratorDenominatorCol4),
-      expectedRateCol5: removeNoise(
-        calculateRate(numeratorDenominatorCol4, denominatorCol1, 100)
+      expReadmissionCount: removeNoise(expReadmissionCount),
+      expReadmissionRate: removeNoise(
+        calculateRate(expReadmissionCount, stayCount, 100)
       ),
-      expectedRateCol6: removeNoise(
-        calculateRate(numeratorCol2, numeratorDenominatorCol4)
+      obsExpRatio: removeNoise(
+        calculateRate(obsReadmissionCount, expReadmissionCount)
       ),
-      denominatorCol7: removeNoise(denominatorCol7),
-      numeratorCol8: removeNoise(numeratorCol8),
-      expectedRateCol9: removeNoise(
-        calculateRate(numeratorCol8, denominatorCol7, 1000)
+      beneficiaryCount: removeNoise(beneficiaryCount),
+      outlierCount: removeNoise(outlierCount),
+      outlierRate: removeNoise(
+        calculateRate(outlierCount, beneficiaryCount, 1000)
       ),
     };
   };
@@ -141,18 +135,14 @@ export const ReadmissionRate = (
     newDisplayValue: typeof displayValue,
     newAnswer: NonNullable<typeof answer>
   ) => {
-    newDisplayValue.expectedRateCol3 = stringifyResult(
-      newAnswer.expectedRateCol3
+    newDisplayValue.obsReadmissionRate = stringifyResult(
+      newAnswer.obsReadmissionRate
     );
-    newDisplayValue.expectedRateCol5 = stringifyResult(
-      newAnswer.expectedRateCol5
+    newDisplayValue.expReadmissionRate = stringifyResult(
+      newAnswer.expReadmissionRate
     );
-    newDisplayValue.expectedRateCol6 = stringifyResult(
-      newAnswer.expectedRateCol6
-    );
-    newDisplayValue.expectedRateCol9 = stringifyResult(
-      newAnswer.expectedRateCol9
-    );
+    newDisplayValue.obsExpRatio = stringifyResult(newAnswer.obsExpRatio);
+    newDisplayValue.outlierRate = stringifyResult(newAnswer.outlierRate);
   };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -177,72 +167,72 @@ export const ReadmissionRate = (
       <Heading variant="subHeader">Performance Rates</Heading>
       <Stack gap="2rem">
         <CmsdsTextField
-          label={labels.denominatorCol1}
-          name="denominatorCol1"
+          label={labels.stayCount}
+          name="stayCount"
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
-          value={displayValue.denominatorCol1}
-          errorMessage={errors.denominatorCol1}
+          value={displayValue.stayCount}
+          errorMessage={errors.stayCount}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.numeratorCol2}
-          name="numeratorCol2"
+          label={labels.obsReadmissionCount}
+          name="obsReadmissionCount"
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
-          value={displayValue.numeratorCol2}
-          errorMessage={errors.numeratorCol2}
+          value={displayValue.obsReadmissionCount}
+          errorMessage={errors.obsReadmissionCount}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.expectedRateCol3}
-          name="expectedRateCol3"
-          value={displayValue.expectedRateCol3}
+          label={labels.obsReadmissionRate}
+          name="obsReadmissionRate"
+          value={displayValue.obsReadmissionRate}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
-          name="numeratorDenominatorCol4"
-          label={labels.numeratorDenominatorCol4}
+          name="expReadmissionCount"
+          label={labels.expReadmissionCount}
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
-          value={displayValue.numeratorDenominatorCol4}
-          errorMessage={errors.numeratorDenominatorCol4}
+          value={displayValue.expReadmissionCount}
+          errorMessage={errors.expReadmissionCount}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.expectedRateCol5}
-          name="expectedRateCol5"
-          value={displayValue.expectedRateCol5}
+          label={labels.expReadmissionRate}
+          name="expReadmissionRate"
+          value={displayValue.expReadmissionRate}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.expectedRateCol6}
-          name="expectedRateCol6"
-          value={displayValue.expectedRateCol6}
+          label={labels.obsExpRatio}
+          name="obsExpRatio"
+          value={displayValue.obsExpRatio}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.denominatorCol7}
-          name="denominatorCol7"
+          label={labels.beneficiaryCount}
+          name="beneficiaryCount"
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
-          value={displayValue.denominatorCol7}
+          value={displayValue.beneficiaryCount}
           disabled={disabled}
-          errorMessage={errors.denominatorCol7}
+          errorMessage={errors.beneficiaryCount}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.numeratorCol8}
-          name="numeratorCol8"
+          label={labels.outlierCount}
+          name="outlierCount"
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
-          value={displayValue.numeratorCol8}
+          value={displayValue.outlierCount}
           disabled={disabled}
-          errorMessage={errors.numeratorCol8}
+          errorMessage={errors.outlierCount}
         ></CmsdsTextField>
         <CmsdsTextField
-          label={labels.expectedRateCol9}
-          name="expectedRateCol9"
-          value={displayValue.expectedRateCol9}
+          label={labels.outlierRate}
+          name="outlierRate"
+          value={displayValue.outlierRate}
           disabled={true}
         ></CmsdsTextField>
         <Divider></Divider>
@@ -256,43 +246,43 @@ export const ReadmissionRateExport = (element: ReadmissionRateTemplate) => {
   const label = "Performance Rates";
   const rows = [
     {
-      indicator: element.labels?.denominatorCol1,
-      response: element.answer?.denominatorCol1,
+      indicator: element.labels?.stayCount,
+      response: element.answer?.stayCount,
     },
     {
-      indicator: element.labels?.numeratorCol2,
-      response: element.answer?.numeratorCol2,
+      indicator: element.labels?.obsReadmissionCount,
+      response: element.answer?.obsReadmissionCount,
     },
     {
-      indicator: element.labels?.expectedRateCol3,
-      response: stringifyResult(element.answer?.expectedRateCol3),
+      indicator: element.labels?.obsReadmissionRate,
+      response: stringifyResult(element.answer?.obsReadmissionRate),
       helperText: "Auto-calculates",
     },
     {
-      indicator: element.labels?.numeratorDenominatorCol4,
-      response: element.answer?.numeratorDenominatorCol4,
+      indicator: element.labels?.expReadmissionCount,
+      response: element.answer?.expReadmissionCount,
     },
     {
-      indicator: element.labels?.expectedRateCol5,
-      response: stringifyResult(element.answer?.expectedRateCol5),
+      indicator: element.labels?.expReadmissionRate,
+      response: stringifyResult(element.answer?.expReadmissionRate),
       helperText: "Auto-calculates",
     },
     {
-      indicator: element.labels?.expectedRateCol6,
-      response: stringifyResult(element.answer?.expectedRateCol6),
+      indicator: element.labels?.obsExpRatio,
+      response: stringifyResult(element.answer?.obsExpRatio),
       helperText: "Auto-calculates",
     },
     {
-      indicator: element.labels?.denominatorCol7,
-      response: element.answer?.denominatorCol7,
+      indicator: element.labels?.beneficiaryCount,
+      response: element.answer?.beneficiaryCount,
     },
     {
-      indicator: element.labels?.numeratorCol8,
-      response: element.answer?.numeratorCol8,
+      indicator: element.labels?.outlierCount,
+      response: element.answer?.outlierCount,
     },
     {
-      indicator: element.labels?.expectedRateCol9,
-      response: stringifyResult(element.answer?.expectedRateCol9),
+      indicator: element.labels?.outlierRate,
+      response: stringifyResult(element.answer?.outlierRate),
       helperText: "Auto-calculates",
     },
   ];
