@@ -1,51 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Medicaid Data Collection Tool" />
-  <meta name="theme-color" content="#ffffff" />
-  <title>Learning and Building Sandbox (LABS)</title>
-  <script src="/env-config.js"></script>
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
-  <!-- Tealium Analytics Tag Manager -->
-  <script>
-    window.utag_cfg_ovrd = { noview: true };
-    const tealiumEnvMap = {
-      "mdctlabs.cms.gov": "prod",
-      "mdctlabsval.cms.gov": "qa",
-    };
-    const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
-    // Load utag.sync.js
-    (function () {
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://tealium-tags.cms.gov/cms-general/${tealiumEnv}/utag.sync.js`;
-      document.head.appendChild(script);
-    })();
-  </script>
-</head>
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <!-- Tealium Analytics Tag Manager -->
-  <script>
-    // Load utag.js
-    (function (a, b, c, d) {
-      a = `https://tealium-tags.cms.gov/cms-general/${tealiumEnv}/utag.js`;
-      b = document;
-      c = "script";
-      d = b.createElement(c);
-      d.src = a;
-      d.type = "text/javascript";
-      d.async = true;
-      a = b.getElementsByTagName(c)[0];
-      a.parentNode.insertBefore(d, a);
-    })();
-  </script>
-  <div id="root"></div>
-  <script type="module" src="/src/index.tsx"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Medicaid Data Collection Tool" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Learning and Building Sandbox (LABS)</title>
+    <script src="/env-config.js"></script>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+      window.utag_cfg_ovrd = { noview: true };
+      const tealiumEnvMap = {
+        "mdctlabs.cms.gov": "prod",
+        "mdctlabsval.cms.gov": "qa",
+      };
+      const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
+      // Load utag.sync.js
+      (function () {
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://tealium-tags.cms.gov/cms-general/${tealiumEnv}/utag.sync.js`;
+        document.head.appendChild(script);
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+      // Load utag.js
+      (function (a, b, c, d) {
+        a = `https://tealium-tags.cms.gov/cms-general/${tealiumEnv}/utag.js`;
+        b = document;
+        c = "script";
+        d = b.createElement(c);
+        d.src = a;
+        d.type = "text/javascript";
+        d.async = true;
+        a = b.getElementsByTagName(c)[0];
+        a.parentNode.insertBefore(d, a);
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
 </html>

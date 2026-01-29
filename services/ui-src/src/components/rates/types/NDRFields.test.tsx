@@ -8,8 +8,6 @@ import { useState } from "react";
 const mockElementTemplate: NdrFieldsTemplate = {
   id: "mock-perf-id",
   type: ElementType.NdrFields,
-  labelTemplate:
-    "What is the 2028 state performance target for this assessment for {{field}} ({{assessment}})?",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
@@ -54,13 +52,6 @@ describe("<NDRFields />", () => {
         fields?.forEach((field) => {
           expect(
             screen.getByRole("textbox", {
-              name: `What is the 2028 state performance target for this assessment for ${field.label.toLowerCase()} (${
-                assess.label
-              })?`,
-            })
-          ).toBeInTheDocument();
-          expect(
-            screen.getByRole("textbox", {
               name: `Numerator: ${field.label} (${assess.label})`,
             })
           ).toBeInTheDocument();
@@ -91,7 +82,34 @@ describe("<NDRFields />", () => {
       });
       await act(async () => await userEvent.type(num, "1"));
       expect(num).toHaveValue("1");
+
+      const rate = screen.getByRole("textbox", {
+        name: `${fields?.[0].label} Rate (${assessments![0].label})`,
+      });
+      expect(rate).toHaveValue("1000");
     });
+  });
+
+  test("Rate should be 0 if both numerator and denominator are 0", async () => {
+    render(<NdrFieldsWrapper template={mockElementTemplate} />);
+    const { assessments, fields } = mockElementTemplate;
+
+    const denom = screen.getAllByRole("textbox", {
+      name: `Denominator (${assessments![0].label})`,
+    })[0];
+    await act(async () => await userEvent.type(denom, "0"));
+    expect(denom).toHaveValue("0");
+
+    const num = screen.getByRole("textbox", {
+      name: `Numerator: ${fields?.[0].label} (${assessments![0].label})`,
+    });
+    await act(async () => await userEvent.type(num, "0"));
+    expect(num).toHaveValue("0");
+
+    const rate = screen.getByRole("textbox", {
+      name: `${fields?.[0].label} Rate (${assessments![0].label})`,
+    });
+    expect(rate).toHaveValue("0.00");
   });
 
   testA11y(<NdrFieldsWrapper template={mockElementTemplate} />);

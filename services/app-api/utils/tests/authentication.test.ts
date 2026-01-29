@@ -12,7 +12,7 @@ jest.mock("jwt-decode", () => {
   mockDecode = jest.fn();
   return {
     __esModule: true,
-    jwtDecode: mockDecode,
+    default: mockDecode,
   };
 });
 

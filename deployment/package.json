@@ -2,7 +2,6 @@
   "name": "deployment",
   "version": "1.0.0",
   "license": "CC0-1.0",
-  "packageManager": "yarn@4.12.0",
   "type": "module",
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.940.0",
@@ -13,5 +12,6 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }

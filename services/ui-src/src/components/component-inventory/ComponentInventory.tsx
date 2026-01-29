@@ -71,6 +71,7 @@ export const ComponentInventory = () => {
       description: string;
       variants: ReactNode[];
       pdfVariants: ReactNode[];
+      id?: string;
     };
 
     return (
@@ -100,6 +101,7 @@ export const ComponentInventory = () => {
                     gap: "20px",
                     marginTop: "20px",
                   }}
+                  id={componentExample.id || undefined}
                 >
                   {componentExample.variants.map((variant, index) => (
                     <div

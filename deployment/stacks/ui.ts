@@ -8,8 +8,8 @@ import {
   RemovalPolicy,
   aws_certificatemanager as acm,
 } from "aws-cdk-lib";
-import { WafConstruct } from "../constructs/waf.js";
-import { isLocalStack } from "../local/util.js";
+import { WafConstruct } from "../constructs/waf.ts";
+import { isLocalStack } from "../local/util.ts";
 
 interface CreateUiComponentsProps {
   scope: Construct;

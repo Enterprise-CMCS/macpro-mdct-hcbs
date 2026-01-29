@@ -19,15 +19,12 @@ repos:
           - "eslint-plugin-jest@29.2.1"
           - "eslint-plugin-playwright@2.4.0"
           - "eslint-config-react-app@7.0.1"
-          - "eslint-config-prettier@10.1.8"
-          - "eslint-plugin-prettier@5.5.4"
           - "eslint-plugin-flowtype@8.0.3"
           - "eslint-plugin-import@2.32.0"
           - "eslint-plugin-jsx-a11y@6.10.2"
           - "eslint-plugin-react@7.37.5"
-          - "eslint-plugin-react-hooks@7.0.1"
-          - "@babel/eslint-parser@7.28.5"
-          - "prettier@3.7.3"
+          - "eslint-plugin-react-hooks@4.6.2"
+          - "@babel/eslint-parser@7.23.10"
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
@@ -42,22 +39,21 @@ repos:
       - id: gitleaks
   - repo: local
     hooks:
-      - id: prettier
-        name: prettier
-        entry: bash -c 'npx prettier@3.7.3 --config .prettierrc --write --ignore-unknown "$@"' --
+      - id: oxfmt
+        name: oxfmt
+        entry: npx oxfmt
         language: system
-        files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
-        pass_filenames: true
+        pass_filenames: false
       - id: branch-name-validation
         name: branch-name-validation
         entry: .github/branchNameValidation.ts
-        language: script
-        pass_filenames: false
-      - id: typescript-check-cdk
-        name: typescript-check-cdk
-        entry: bash -c "cd deployment && npx tsc --noEmit"
         language: system
         pass_filenames: false
+      - id: validate-commit-msg
+        name: validate-commit-msg
+        entry: .github/validateCommitMessage.ts
+        language: system
+        stages: [commit-msg]
       - id: typescript-check-cli
         name: typescript-check-cli
         entry: bash -c "cd cli && npx tsc --noEmit"
@@ -78,8 +74,3 @@ repos:
         entry: bash -c "cd deployment && npx tsc --noEmit"
         language: system
         pass_filenames: false
-      - id: validate-commit-msg
-        name: validate-commit-msg
-        entry: .github/validateCommitMessage.ts
-        language: script
-        stages: [commit-msg]

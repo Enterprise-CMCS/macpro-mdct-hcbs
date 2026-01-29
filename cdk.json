@@ -1,30 +1,16 @@
 {
   "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
-  "app": "npx tsx deployment/app.ts",
+  "app": "./deployment/app.ts",
   "requireApproval": "never",
   "output": ".cdk/cdk.out",
   "watch": {
     "hot": true,
-    "include": ["**"],
-    "exclude": [
-      "deployment/stacks/deployFrontend.ts",
-      "*.md",
-      "cdk*.json",
-      "**/*.d.ts",
-      "tsconfig.json",
-      "package*.json",
-      "yarn.lock",
-      "node_modules",
-      "test",
-      "services/ui-src/**",
-      "services/ui-auth/**",
-      "services/topics/**",
-      "services/app-api/coverage/**",
-      "cli/**",
-      "tests/**",
-      "**.md",
-      "scripts/**"
-    ]
+    "include": [
+      "deployment/**",
+      "services/app-api/**",
+      "services/carts-bigmac-streams/**"
+    ],
+    "exclude": ["services/app-api/coverage/**"]
   },
   "context": {
     "@aws-cdk/core:checkSecretUsage": true,

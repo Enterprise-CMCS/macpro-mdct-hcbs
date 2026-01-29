@@ -15,6 +15,8 @@ cdk.context.json
 !.qlty/qlty.toml
 /services/ui-src/build
 services/ui-src/public/env-config.js
+package-lock.json
+*._S3rver_cors.xml
 
 /services/app-api/coverage
 
@@ -26,3 +28,5 @@ tests/playwright/.auth
 /services/ui-src/coverage
 
 **/.yarn/*
+services/ui-src/public/env-config.ts
+.vscode/settings.json

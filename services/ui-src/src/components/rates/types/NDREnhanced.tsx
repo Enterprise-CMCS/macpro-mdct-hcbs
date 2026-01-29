@@ -22,12 +22,11 @@ import {
   ExportedReportTable,
   ExportRateTable,
 } from "components/export/ExportedReportTable";
-import { autoPopulatedText } from "../../../constants";
+import { autoPopulatedText, ErrorMessages } from "../../../constants";
 
 export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
   const { disabled, element, updateElement } = props;
-  const { assessments, answer, helperText, performanceTargetLabel, label } =
-    element;
+  const { assessments, answer, helperText, label } = element;
 
   const stringifyAnswer = (
     newAnswer: typeof answer | Record<string, undefined>
@@ -36,9 +35,6 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
       denominator: stringifyInput(newAnswer?.denominator),
       rates: assessments.map((assessment, i) => ({
         id: assessment.id,
-        performanceTarget: stringifyInput(
-          newAnswer?.rates?.[i].performanceTarget
-        ),
         numerator: stringifyInput(newAnswer?.rates?.[i].numerator),
         rate: stringifyResult(newAnswer?.rates?.[i].rate),
       })),
@@ -51,7 +47,7 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
     /*
-     * The name will look like "denominator" or "0.performanceTarget"
+     * The name will look like "denominator" or
      * or "1.numerator". The last part is always a RateInputFieldName.
      * If there are two parts, the first will be an index into answer.rates.
      */
@@ -71,6 +67,19 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
       newErrorObject.rates[assessIndex!][fieldType] = errorMessage;
     }
 
+    const parsedDenominator = parseNumber(newDisplayValue.denominator);
+    for (const [index, rate] of newDisplayValue.rates.entries()) {
+      if (parsedDenominator === 0 && parseNumber(rate.numerator) !== 0) {
+        newErrorObject.rates[index].numerator = ErrorMessages.denominatorZero();
+      } else if (
+        parsedDenominator !== 0 &&
+        newErrorObject.rates[index].numerator ===
+          ErrorMessages.denominatorZero()
+      ) {
+        newErrorObject.rates[index].numerator = "";
+      }
+    }
+
     return { displayValue: newDisplayValue, errors: newErrorObject };
   };
 
@@ -81,14 +90,21 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
     return {
       denominator: removeNoise(denominator),
       rates: newDisplayValue.rates.map((rateObj) => {
-        const performanceTarget = parseNumber(rateObj.performanceTarget);
         const numerator = parseNumber(rateObj.numerator);
+
+        if (denominator === 0 && numerator === 0) {
+          return {
+            id: rateObj.id,
+            numerator: 0,
+            rate: 0,
+          };
+        }
+
         const canCompute = canDivide && numerator !== undefined;
         const rate = canCompute ? numerator / denominator : undefined;
 
         return {
           id: rateObj.id,
-          performanceTarget: removeNoise(performanceTarget),
           numerator: removeNoise(numerator),
           rate: removeNoise(rate),
         };
@@ -150,17 +166,6 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
                 {": "}
                 {assess.label}
               </Heading>
-              {performanceTargetLabel && (
-                <CmsdsTextField
-                  label={performanceTargetLabel}
-                  name={`${index}.${RateInputFieldNames.performanceTarget}`}
-                  onChange={onChangeHandler}
-                  onBlur={onChangeHandler}
-                  value={value.performanceTarget}
-                  errorMessage={valueErrors.performanceTarget}
-                  disabled={disabled}
-                ></CmsdsTextField>
-              )}
               <CmsdsTextField
                 label="Numerator"
                 name={`${index}.${RateInputFieldNames.numerator}`}
@@ -203,14 +208,6 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
         (rate: { id: string }) => rate.id === assess.id
       );
       const row = [
-        ...(element.performanceTargetLabel
-          ? [
-              {
-                indicator: element.performanceTargetLabel,
-                response: performanceRate?.performanceTarget,
-              },
-            ]
-          : []),
         {
           indicator: "Numerator",
           response: performanceRate?.numerator,
@@ -228,13 +225,15 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
           helperText: "Auto-calculates",
         },
       ];
-      return { label: `${label} : ${assess.label}`, rows: row };
+      return { label: `${label}: ${assess.label}`, rows: row };
     }
   );
 
   return (
     <>
-      <Heading as="h4" fontWeight="bold">{`${label}`}</Heading>
+      <Heading as="h4" variant="nestedHeading">
+        {`${label}`}
+      </Heading>
       <ExportedReportTable
         rows={[
           {

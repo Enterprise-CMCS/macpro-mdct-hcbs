@@ -1,6 +1,7 @@
 import {
   ElementType,
   LengthOfStayRateTemplate,
+  ListInputTemplate,
   MeasurePageTemplate,
   NdrBasicTemplate,
   NdrEnhancedTemplate,
@@ -318,7 +319,6 @@ describe("elementSatisfiesRequired", () => {
     const element = {
       type: ElementType.LengthOfStayRate,
       answer: {
-        performanceTarget: 1,
         actualCount: 2,
         denominator: 3,
         expectedCount: 4,
@@ -336,7 +336,6 @@ describe("elementSatisfiesRequired", () => {
     undefined,
     {},
     {
-      performanceTarget: 1,
       actualCount: 2,
       expectedCount: 4,
       populationRate: 5,
@@ -355,7 +354,6 @@ describe("elementSatisfiesRequired", () => {
     const element = {
       type: ElementType.Ndr,
       answer: {
-        performanceTarget: 2,
         numerator: 1,
         denominator: 3,
         rate: 0.33,
@@ -365,21 +363,17 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test.each([
-    undefined,
-    {},
-    { numerator: 1, denominator: 3, rate: 0.33 },
-    { performanceTarget: 2, denominator: 3, rate: 0.33 },
-    { performanceTarget: 2, numerator: 1, rate: 0.33 },
-    { performanceTarget: 2, numerator: 1, denominator: 3 },
-  ])("rejects incomplete NDR rates", (answer) => {
-    const element = {
-      type: ElementType.Ndr,
-      answer,
-      required: true,
-    } as NdrTemplate;
-    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
-  });
+  test.each([undefined, {}, { numerator: 1, rate: 0.33 }])(
+    "rejects incomplete NDR rates",
+    (answer) => {
+      const element = {
+        type: ElementType.Ndr,
+        answer,
+        required: true,
+      } as NdrTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+    }
+  );
 
   test("accepts complete NDREnhanced rates", () => {
     const element = {
@@ -388,7 +382,6 @@ describe("elementSatisfiesRequired", () => {
         denominator: 5,
         rates: [
           {
-            performanceTarget: 6,
             numerator: 7,
             rate: 1.4,
           },
@@ -402,10 +395,10 @@ describe("elementSatisfiesRequired", () => {
   test.each([
     undefined,
     {},
-    { rates: [{ performanceTarget: 6, numerator: 7, rate: 1.4 }] },
+    { rates: [{ numerator: 7, rate: 1.4 }] },
     { denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] },
-    { denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] },
-    { denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] },
+    { denominator: 5, rates: [{ rate: 1.4 }] },
+    { denominator: 5, rates: [{ numerator: 7 }] },
   ])("accepts incomplete NDREnhanced rates", (answer) => {
     const element = {
       type: ElementType.NdrEnhanced,
@@ -423,7 +416,6 @@ describe("elementSatisfiesRequired", () => {
           denominator: 5,
           rates: [
             {
-              performanceTarget: 6,
               numerator: 7,
               rate: 1.4,
             },
@@ -479,10 +471,10 @@ describe("elementSatisfiesRequired", () => {
   test.each([
     undefined,
     [{}],
-    [{ rates: [{ performanceTarget: 6, numerator: 7, rate: 1.4 }] }],
+    [{ rates: [{ numerator: 7, rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
-    [{ denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] }],
-    [{ denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] }],
+    [{ denominator: 5, rates: [{ rate: 1.4 }] }],
+    [{ denominator: 5, rates: [{ numerator: 7 }] }],
   ])("accepts incomplete NDREnhanced rates", (answer) => {
     const element = {
       type: ElementType.NdrFields,
@@ -490,5 +482,13 @@ describe("elementSatisfiesRequired", () => {
       required: false,
     } as unknown as NdrFieldsTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+  test("reject incomplete ListInput", () => {
+    const element = {
+      type: ElementType.ListInput,
+      required: false,
+      answer: [""],
+    } as ListInputTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
 });

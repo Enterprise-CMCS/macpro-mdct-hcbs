@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, isUserRole, User } from "../types/types";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { isStateAbbreviation } from "./constants";
 
 export interface DecodedToken {

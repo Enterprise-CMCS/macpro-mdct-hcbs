@@ -164,6 +164,13 @@ export const elementSatisfiesRequired = (
   element: PageElement,
   pageElements: PageElement[]
 ) => {
+  //while list input is not required, if the user adds a field and leaves it blank, that would make it incomplete and prevent form submission
+  if (element.type === ElementType.ListInput) {
+    if (element.answer?.some((item) => item === "" || item === undefined)) {
+      return false;
+    }
+  }
+
   // TODO: make less ugly
   if (
     !("required" in element) ||
@@ -198,7 +205,6 @@ export const elementSatisfiesRequired = (
     return element.answer.every((assessObj) => {
       if (assessObj.denominator === undefined) return false;
       return assessObj.rates.every((rateObj) => {
-        if (rateObj.performanceTarget === undefined) return false;
         if (rateObj.numerator === undefined) return false;
         if (rateObj.rate === undefined) return false;
         return true;
@@ -208,15 +214,12 @@ export const elementSatisfiesRequired = (
   if (element.type === ElementType.NdrEnhanced) {
     if (element.answer.denominator === undefined) return false;
     return element.answer.rates.every((rateObj) => {
-      if (!element.required && rateObj.performanceTarget === undefined)
-        return false;
       if (rateObj.numerator === undefined) return false;
       if (rateObj.rate === undefined) return false;
       return true;
     });
   }
   if (element.type === ElementType.Ndr) {
-    if (element.answer.performanceTarget === undefined) return false;
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
