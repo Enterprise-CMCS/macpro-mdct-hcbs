@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "target": "ESNext",
-    "types": ["vite/client"],
+    "types": ["node", "vite/client"],
     "lib": ["esnext", "dom", "dom.iterable", "ES2021.String"],
     "jsx": "react-jsx",
     "sourceMap": true,

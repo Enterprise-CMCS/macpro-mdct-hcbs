@@ -51,6 +51,7 @@
     "@types/dompurify": "^2.3.3",
     "@types/jest": "^27.0.2",
     "@types/jest-axe": "^3.5.3",
+    "@types/node": "^22.19.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/react-helmet": "^6.1.11",
