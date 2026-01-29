@@ -3036,7 +3036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:~0.27.0":
+"esbuild@npm:^0.27.2, esbuild@npm:~0.27.0":
   version: 0.27.2
   resolution: "esbuild@npm:0.27.2"
   dependencies:
@@ -4455,6 +4455,7 @@ __metadata:
     aws-cdk-lib: "npm:^2.214.0"
     aws-cdk-local: "npm:^3.0.1"
     constructs: "npm:^10.4.2"
+    esbuild: "npm:^0.27.2"
     eslint: "npm:^9.39.1"
     eslint-plugin-jest: "npm:^29.12.0"
     eslint-plugin-playwright: "npm:^2.4.0"
