@@ -66,6 +66,19 @@ if [ "$LOCAL" = true ]; then
         echo "localstack is installed but not running. We'll start it up for you now."
         localstack start > /dev/null 2>&1 &
     fi
+
+    echo "Waiting for localstack to be ready..."
+    for i in $(seq 1 60); do
+        if curl -sf http://localhost:4566/_localstack/health > /dev/null 2>&1; then
+            echo "localstack is ready."
+            break
+        fi
+        if [ "$i" -eq 60 ]; then
+            echo "localstack failed to become ready." >&2
+            exit 1
+        fi
+        sleep 2
+    done
 fi
 
 IMMUTABLE_FLAG=""
