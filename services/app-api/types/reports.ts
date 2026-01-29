@@ -254,6 +254,7 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   LengthOfStayRate = "lengthOfStay",
+  ReadmissionRate = "readmissionRate",
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
   Ndr = "ndr",
@@ -286,6 +287,7 @@ export type PageElement =
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
   | LengthOfStayRateTemplate
+  | ReadmissionRateTemplate
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
@@ -476,6 +478,7 @@ export const LengthOfStayFieldNames = {
   expectedRate: "expectedRate",
   adjustedRate: "adjustedRate",
 } as const;
+
 export type LengthOfStayField =
   (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
@@ -486,6 +489,30 @@ export type LengthOfStayRateTemplate = {
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
   errors?: Record<LengthOfStayField, string>;
+};
+
+export const ReadmissionRateFieldNames = {
+  stayCount: "stayCount",
+  obsReadmissionCount: "obsReadmissionCount",
+  obsReadmissionRate: "obsReadmissionRate",
+  expReadmissionCount: "expReadmissionCount",
+  expReadmissionRate: "expReadmissionRate",
+  obsExpRatio: "obsExpRatio",
+  beneficiaryCount: "beneficiaryCount",
+  outlierCount: "outlierCount",
+  outlierRate: "outlierRate",
+} as const;
+
+export type ReadmissionRateField =
+  (typeof ReadmissionRateFieldNames)[keyof typeof ReadmissionRateFieldNames];
+
+export type ReadmissionRateTemplate = {
+  id: string;
+  type: ElementType.ReadmissionRate;
+  labels: Record<ReadmissionRateField, string>;
+  answer?: Record<ReadmissionRateField, number | undefined>;
+  required: boolean;
+  errors?: Record<ReadmissionRateField, string>;
 };
 
 export const RateInputFieldNames = {
