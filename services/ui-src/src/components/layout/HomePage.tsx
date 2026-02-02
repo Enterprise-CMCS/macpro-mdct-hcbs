@@ -1,4 +1,4 @@
-import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminDashSelector,
   Banner,
@@ -37,12 +37,8 @@ export const HomePage = () => {
 
   return (
     <>
-      <Collapse in={showBanner}>
-        <Box marginX={{ base: "spacer2", md: "spacer3" }} marginTop="spacer3">
-          <Banner bannerData={bannerData} />
-        </Box>
-      </Collapse>
       <PageTemplate>
+        {showBanner && <Banner bannerData={bannerData} />}
         {/* show standard view to state users */}
         {userIsEndUser ? (
           <>
