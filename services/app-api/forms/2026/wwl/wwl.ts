@@ -216,12 +216,12 @@ export const wwlReportTemplate: ReportBase = {
       elements: [
         {
           type: ElementType.Header,
-          id: "waiting-list-limits-header",
+          id: "amount-of-time-on-the-waiting-list-header",
           text: "Amount of time on the waiting list",
         },
         {
           type: ElementType.Accordion,
-          id: "required-instructions",
+          id: "amount-of-time-on-the-waiting-list-instructions",
           label: "Instructions",
           value:
             "<p><b>For calculating the numerator:</b></p>" +
@@ -230,7 +230,7 @@ export const wwlReportTemplate: ReportBase = {
         },
         {
           type: ElementType.NdrBasic,
-          id: "critical-incident-rate",
+          id: "amount-of-time-rate",
           required: true,
           hintText: {
             numHint:
