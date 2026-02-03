@@ -15,6 +15,7 @@ import {
   wwlRescreenForFunctionalEligibilityField,
   wwlUpdateInfoForFunctionalEligibilityField,
   wwlAddOtherEligibilityTableElement,
+  wwlFStateNotesField,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -30,6 +31,7 @@ export const wwlReportTemplate: ReportBase = {
         "functional-eligibility",
         "add-other-eligibility",
         "waiting-list-limits",
+        "additional-notes",
         "review-submit",
       ],
     },
@@ -205,6 +207,20 @@ export const wwlReportTemplate: ReportBase = {
             },
           ],
         },
+      ],
+    },
+    {
+      id: "additional-notes",
+      title: "Additional notes/comments",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "additional-notes-header",
+          text: "Additional notes/comments",
+        },
+        wwlFStateNotesField,
       ],
     },
     {

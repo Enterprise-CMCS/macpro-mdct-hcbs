@@ -172,3 +172,11 @@ export const wwlUpdateInfoForFunctionalEligibilityField: RadioTemplate = {
     answer: "no",
   },
 };
+
+export const wwlFStateNotesField: TextAreaBoxTemplate = {
+  type: ElementType.TextAreaField,
+  id: "state-notes",
+  label:
+    "If applicable, add any notes or comments to provide context to the reported results",
+  required: false,
+};
