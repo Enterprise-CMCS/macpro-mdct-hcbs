@@ -39,7 +39,7 @@ export const HomePage = () => {
     <>
       <PageTemplate>
         {showBanner && <Banner bannerData={bannerData} />}
-        {/* show standard view to state users */}
+        {/* Show standard view to state users */}
         {userIsEndUser ? (
           <>
             <Box>
