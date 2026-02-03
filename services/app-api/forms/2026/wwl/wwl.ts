@@ -15,7 +15,6 @@ import {
   wwlRescreenForFunctionalEligibilityField,
   wwlUpdateInfoForFunctionalEligibilityField,
   wwlAddOtherEligibilityTableElement,
-  wwlStateNotesField,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -220,7 +219,13 @@ export const wwlReportTemplate: ReportBase = {
           id: "additional-notes-header",
           text: "Additional notes/comments",
         },
-        wwlStateNotesField,
+        {
+          type: ElementType.TextAreaField,
+          id: "state-notes-field",
+          label:
+            "If applicable, add any notes or comments to provide context to the reported results",
+          required: false,
+        },
       ],
     },
     {
