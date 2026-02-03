@@ -196,6 +196,17 @@ export const elementSatisfiesRequired = (
     }
   }
 
+  if (element.type === ElementType.Checkbox) {
+    for (const choice of element.choices) {
+      if (!element.answer?.includes(choice.value) || !choice.checkedChildren)
+        continue;
+      for (const childElement of choice.checkedChildren) {
+        const satisfied = elementSatisfiesRequired(childElement, pageElements);
+        if (!satisfied) return false;
+      }
+    }
+  }
+
   if (element.type === ElementType.LengthOfStayRate) {
     if (element.errors && element.errors.populationRate) return false;
     return Object.values(LengthOfStayFieldNames)
