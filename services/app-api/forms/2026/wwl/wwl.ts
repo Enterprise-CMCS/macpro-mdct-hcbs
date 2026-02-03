@@ -15,7 +15,7 @@ import {
   wwlRescreenForFunctionalEligibilityField,
   wwlUpdateInfoForFunctionalEligibilityField,
   wwlAddOtherEligibilityTableElement,
-  wwlFStateNotesField,
+  wwlStateNotesField,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -220,7 +220,7 @@ export const wwlReportTemplate: ReportBase = {
           id: "additional-notes-header",
           text: "Additional notes/comments",
         },
-        wwlFStateNotesField,
+        wwlStateNotesField,
       ],
     },
     {
