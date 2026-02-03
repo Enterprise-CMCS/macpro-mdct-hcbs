@@ -2,7 +2,6 @@
  * File wrapping high level actions away from the useStore file for cleanliness.
  * This contains the root for logic for actions such as updating an answer, handling resetting, saving, etc.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HcbsReportState } from "types";
 import {
   FormPageTemplate,
@@ -10,11 +9,10 @@ import {
   isMeasureTemplate,
   MeasurePageTemplate,
   PageStatus,
-  PageType,
   ParentPageTemplate,
   Report,
 } from "types/report";
-import { putReport, postSubmitReport } from "utils/api/requestMethods/report";
+import { putReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
 
@@ -23,7 +21,6 @@ export const buildState = (
   preserveCurrentPage: boolean
 ) => {
   if (!report) return { report: undefined };
-  /* eslint-disable-next-line no-console */
   console.assert(
     report.pages.every((pg, i, a) => i === a.findIndex((p) => p.id === pg.id)),
     "Report pages have unique IDs"
@@ -255,6 +252,7 @@ export const saveReport = async (state: HcbsReportState) => {
   if (!state.report) return {};
   try {
     await putReport(state.report); // Submit to API
+    // oxlint-disable-next-line no-unused-vars
   } catch (_) {
     return { errorMessage: "Something went wrong, try again." };
   }

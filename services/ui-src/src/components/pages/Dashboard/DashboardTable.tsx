@@ -270,13 +270,11 @@ export const DashboardTable = ({
   const headers = [];
   if (showEditNameColumn) headers.push("");
   headers.push(
-    ...[
-      "Submission name",
-      "Reporting Year",
-      "Last edited",
-      "Edited by",
-      "Status",
-    ]
+    "Submission name",
+    "Reporting Year",
+    "Last edited",
+    "Edited by",
+    "Status"
   );
   if (showReportSubmissionsColumn) headers.push("#");
   headers.push("");
