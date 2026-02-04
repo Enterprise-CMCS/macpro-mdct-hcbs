@@ -31,6 +31,7 @@ export const wwlReportTemplate: ReportBase = {
         "add-other-eligibility",
         "waiting-list-limits",
         "amount-of-time-on-the-waiting-list",
+        "additional-notes",
         "review-submit",
       ],
     },
@@ -240,6 +241,26 @@ export const wwlReportTemplate: ReportBase = {
             rateHint:
               "Auto-calculates. Average number of days that individuals who were newly enrolled in the section 1915(c) waiver program or newly receiving HCBS under the section 1115 demonstration project were on the waiting list.",
           },
+        },
+      ],
+    },
+    {
+      id: "additional-notes",
+      title: "Additional notes/comments",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "additional-notes-header",
+          text: "Additional notes/comments",
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "state-notes-field",
+          label:
+            "If applicable, add any notes or comments to provide context to the reported results.",
+          required: false,
         },
       ],
     },
