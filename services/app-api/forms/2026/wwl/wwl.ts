@@ -259,7 +259,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.TextAreaField,
           id: "state-notes-field",
           label:
-            "If applicable, add any notes or comments to provide context to the reported results",
+            "If applicable, add any notes or comments to provide context to the reported results.",
           required: false,
         },
       ],
