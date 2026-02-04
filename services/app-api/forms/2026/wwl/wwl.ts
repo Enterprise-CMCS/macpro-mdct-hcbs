@@ -30,6 +30,7 @@ export const wwlReportTemplate: ReportBase = {
         "functional-eligibility",
         "add-other-eligibility",
         "waiting-list-limits",
+        "amount-of-time-on-the-waiting-list",
         "additional-notes",
         "review-submit",
       ],
@@ -205,6 +206,41 @@ export const wwlReportTemplate: ReportBase = {
               ],
             },
           ],
+        },
+      ],
+    },
+    {
+      id: "amount-of-time-on-the-waiting-list",
+      title: "Amount of time on the waiting list",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "amount-of-time-on-the-waiting-list-header",
+          text: "Amount of time on the waiting list",
+        },
+        {
+          type: ElementType.Accordion,
+          id: "amount-of-time-on-the-waiting-list-instructions",
+          label: "Instructions",
+          value:
+            "<p><b>For calculating the numerator:</b></p>" +
+            "<p><b>Step 1.</b> For each beneficiary newly enrolled or newly receiving HCBS during the measurement period, calculate the number of days between the date the individual was placed on the waiting list and the date the individual was enrolled (for section 1915 waiver programs) or began receiving HCBS (for section 1115 demonstration projects).</p>" +
+            "<p><b>Step 2.</b> Sum the waiting list days for all beneficiaries calculated in Step 1 to obtain the total number of days all beneficiaries newly enrolled or newly receiving HCBS were on the waiting list.</p>",
+        },
+        {
+          type: ElementType.NdrBasic,
+          id: "amount-of-time-rate",
+          required: true,
+          hintText: {
+            numHint:
+              "The number of days all beneficiaries newly enrolled during the measurement period in the section 1915(c) waiver program or newly receiving HCBS under the section 1115 demonstration project were on the waiting list prior to enrollment.",
+            denomHint:
+              "Number of beneficiaries who were newly enrolled in the section 1915(c) waiver program or newly receiving HCBS under the section 1115 demonstration project from the waiting list within the measurement period.",
+            rateHint:
+              "Auto-calculates. Average number of days that individuals who were newly enrolled in the section 1915(c) waiver program or newly receiving HCBS under the section 1115 demonstration project were on the waiting list.",
+          },
         },
       ],
     },
