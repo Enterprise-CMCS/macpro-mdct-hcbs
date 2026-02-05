@@ -252,8 +252,7 @@ export const saveReport = async (state: HcbsReportState) => {
   if (!state.report) return {};
   try {
     await putReport(state.report); // Submit to API
-    // oxlint-disable-next-line no-unused-vars
-  } catch (_) {
+  } catch {
     return { errorMessage: "Something went wrong, try again." };
   }
   return { lastSavedTime: getLocalHourMinuteTime() };
