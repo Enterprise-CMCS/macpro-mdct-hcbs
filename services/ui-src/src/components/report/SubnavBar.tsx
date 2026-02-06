@@ -34,6 +34,7 @@ export const SubnavBar = ({ stateName, reportType }: Props) => {
             )}
             <Link
               as={RouterLink}
+              // oxlint-disable-next-line no-constant-binary-expression
               to={`/report/${report?.type}/${report?.state}` || "/"}
               sx={sx.leaveFormLink}
               variant="outlineButton"

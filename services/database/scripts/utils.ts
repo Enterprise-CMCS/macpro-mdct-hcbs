@@ -13,9 +13,7 @@ const config = {
     trace: () => {},
     debug: () => {},
     info: () => {},
-    // eslint-disable-next-line no-console
     warn: console.warn,
-    // eslint-disable-next-line no-console
     error: console.error,
   },
 };
