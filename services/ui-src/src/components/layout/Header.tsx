@@ -1,14 +1,15 @@
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
-import { AccountMenu, MenuOption, SubnavBar } from "components";
-import { useBreakpoint } from "utils";
+import { AccountMenu, AdminMenu, MenuOption, SubnavBar } from "components";
+import { useBreakpoint, useStore } from "utils";
 import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
+  const { userIsAdmin } = useStore().user ?? {};
   const paths = pathname.split("/");
   return (
     <Box sx={sx.root} id="header">
@@ -22,6 +23,7 @@ export const Header = ({ handleLogout }: Props) => {
               <Image src={appLogo} alt="HCBS logo" sx={sx.appLogo} />
             </Link>
             <Flex sx={sx.menuFlex}>
+              {userIsAdmin ? <AdminMenu /> : null}
               <Link
                 as={RouterLink}
                 to="/help"
