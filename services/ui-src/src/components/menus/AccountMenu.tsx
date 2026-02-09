@@ -16,7 +16,7 @@ import chevronDownIcon from "assets/icons/arrows/icon_arrow_down.svg";
 import logoutIcon from "assets/icons/logout/icon_logout.svg";
 import editIcon from "assets/icons/edit/icon_edit_square_white.svg";
 
-export const Menu = ({ handleLogout }: Props) => {
+export const AccountMenu = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   return (
     <MenuRoot offset={[8, 20]}>

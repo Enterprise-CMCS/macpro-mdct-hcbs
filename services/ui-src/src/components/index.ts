@@ -73,7 +73,7 @@ export { Sidebar } from "./report/Sidebar";
 export { StatusTableElement } from "./report/StatusTable";
 export { SubnavBar } from "./report/SubnavBar";
 // menus
-export { Menu } from "./menus/Menu";
+export { AccountMenu } from "./menus/AccountMenu";
 export { MenuOption } from "./menus/MenuOption";
 // modals
 export { Modal } from "./modals/Modal";

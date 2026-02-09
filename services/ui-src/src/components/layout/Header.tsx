@@ -1,7 +1,7 @@
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
-import { Menu, MenuOption, SubnavBar } from "components";
+import { AccountMenu, MenuOption, SubnavBar } from "components";
 import { useBreakpoint } from "utils";
 import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
@@ -36,7 +36,7 @@ export const Header = ({ handleLogout }: Props) => {
                   hideText={isMobile}
                 />
               </Link>
-              <Menu handleLogout={handleLogout} />
+              <AccountMenu handleLogout={handleLogout} />
             </Flex>
           </Flex>
         </Container>
