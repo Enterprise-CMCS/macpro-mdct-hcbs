@@ -54,7 +54,8 @@ while still faithfully rendering questions and answers from previous years?
 
 The all-in-one approach is intended to make the latter as easy as possible:
 Each report stores all the questions that existed at the moment it was created.
-The downside is that changes to existing reports will require ETL-style scripts.
+The downside is that changes to existing reports will require migrations:
+we will need to write one-time-use Extract, Transform, and Load (ETL) scripts.
 
 Another consequence is that the schema of each `PageElement` becomes locked-in,
 as soon as it is included in any production report.
