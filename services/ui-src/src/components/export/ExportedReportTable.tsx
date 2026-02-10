@@ -51,7 +51,7 @@ export const ExportedReportTable = ({ rows }: Props) => {
               )}
               {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
             </Td>
-            <Td color={getTextColor(row)}>
+            <Td color={getTextColor(row)} style={{ whiteSpace: "pre-line" }}>
               {row.response ? row.response : notAnsweredText}
             </Td>
           </Tr>
