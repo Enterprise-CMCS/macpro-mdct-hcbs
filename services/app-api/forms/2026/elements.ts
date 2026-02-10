@@ -133,9 +133,9 @@ export const waiverListCheckboxField: CheckboxTemplate = {
   type: ElementType.Checkbox,
   id: "waivers-list-checkboxes",
   label:
-    "Deselect all programs and waivers are not included in this reporting period?",
+    "Select all programs and waivers that are included in this reporting period?",
   choices: [],
-  helperText: "Deselect all that do not apply.",
+  helperText: "Select all that apply.",
   required: true,
 };
 

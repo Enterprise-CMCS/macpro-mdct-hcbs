@@ -16,33 +16,11 @@ import {
   PageStatus,
   isReportWithMeasuresTemplate,
   ElementType,
-  WAIVER,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { logger } from "../../libs/debug-lib";
 import { StateAbbr } from "../../utils/constants";
-
-const generateWaiverCheckboxes = (report: Report, waiverList: WAIVER[]) => {
-  return [...report.pages].map((page) => {
-    if (page.elements) {
-      const waiver = page.elements.find(
-        (element) => element.id == "waivers-list-checkboxes"
-      );
-      if (waiver && waiver.type === ElementType.Checkbox) {
-        waiver.choices = waiverList.map((waiver) => {
-          return {
-            label: `${waiver.waiverType}: ${waiver.controlNumber} ${waiver.programTitle}`,
-            value: waiver.id,
-            checked: true,
-          };
-        });
-        waiver.answer = waiverList.map((waiver) => waiver.id);
-      }
-    }
-    return page;
-  });
-};
 
 export const buildReport = async (
   reportType: ReportType,
@@ -110,7 +88,17 @@ export const buildReport = async (
       report.type
     )
   ) {
-    report.pages = generateWaiverCheckboxes(report, waiverList);
+    const waiverQuestions = report.pages
+      .flatMap((page) => page.elements ?? [])
+      .filter((el) => el.id == "waivers-list-checkboxes")
+      .filter((el) => el.type === ElementType.Checkbox);
+
+    for (const question of waiverQuestions) {
+      question.choices = waiverList.map((waiver) => ({
+        label: `${waiver.waiverType}: ${waiver.controlNumber} ${waiver.programTitle}`,
+        value: waiver.id,
+      }));
+    }
   }
 
   /**
