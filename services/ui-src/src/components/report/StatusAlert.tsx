@@ -52,6 +52,7 @@ export const StatusAlert = (props: PageElementProps<StatusAlertTemplate>) => {
     <Alert
       status={alert.status}
       title={alert.title}
+      // oxlint-disable-next-line no-children-prop
       children={children}
     ></Alert>
   );

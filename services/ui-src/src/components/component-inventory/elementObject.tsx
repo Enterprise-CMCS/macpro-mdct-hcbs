@@ -59,7 +59,6 @@ import {
 import { formatMonthDayYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
 
-// eslint-disable-next-line no-console
 const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
 
 export const elementObject: {
