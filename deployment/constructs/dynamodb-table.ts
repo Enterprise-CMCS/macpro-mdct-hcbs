@@ -51,13 +51,13 @@ export class DynamoDBTable extends Construct {
     Tags.of(this.table).add("AWS_Backup", "d35");
 
     if (lsi) {
-      lsi.forEach((index) => {
+      for (const index of lsi) {
         this.table.addLocalSecondaryIndex({
           indexName: index.indexName,
           sortKey: index.sortKey,
           projectionType: dynamodb.ProjectionType.ALL,
         });
-      });
+      }
     }
 
     if (gsi) {

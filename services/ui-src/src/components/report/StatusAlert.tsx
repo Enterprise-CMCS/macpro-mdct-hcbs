@@ -30,9 +30,7 @@ export const StatusAlert = (props: PageElementProps<StatusAlertTemplate>) => {
   const returnElement = page?.elements?.find(
     (element) => element.id === "return-button"
   ) as ButtonLinkTemplate;
-  const pageTo = returnElement?.to
-    ? returnElement.to
-    : measurePrevPage(report, pageId!);
+  const pageTo = returnElement?.to ?? measurePrevPage(report, pageId!);
 
   const nav = () =>
     navigate(`/report/${reportType}/${state}/${reportId}/${pageTo}`);

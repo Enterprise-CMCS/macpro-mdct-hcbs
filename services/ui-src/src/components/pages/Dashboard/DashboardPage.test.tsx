@@ -123,7 +123,7 @@ describe("DashboardPage with state user", () => {
 
     const cellContent = (columnName: string) => {
       const columnIndex = columns.indexOf(columnName);
-      if (columnIndex < 0) throw new Error(`Could not find '${columnName}'`);
+      if (columnIndex === -1) throw new Error(`Could not find '${columnName}'`);
       const cell = rows[0][columnIndex];
       return cell.textContent;
     };
@@ -158,7 +158,7 @@ describe("DashboardPage with state user", () => {
 
     const cellContent = (columnName: string) => {
       const columnIndex = columns.indexOf(columnName);
-      if (columnIndex < 0) throw new Error(`Could not find '${columnName}'`);
+      if (columnIndex === -1) throw new Error(`Could not find '${columnName}'`);
       const cell = rows[0][columnIndex];
       return cell.textContent;
     };

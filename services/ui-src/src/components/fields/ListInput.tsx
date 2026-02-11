@@ -34,8 +34,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
   };
 
   const onAddHandler = () => {
-    const newDisplay = [...displayValue];
-    newDisplay.push("");
+    const newDisplay = [...displayValue, ""];
     setDisplayValue(newDisplay);
     updateElement({ answer: newDisplay });
   };

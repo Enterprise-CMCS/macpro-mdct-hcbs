@@ -135,7 +135,7 @@ const requiredRollupPageStatus = (report: Report) => {
   )
     return PageStatus.COMPLETE;
   if (
-    requiredMeasures.find(
+    requiredMeasures.some(
       (measure) =>
         measure.status &&
         [PageStatus.COMPLETE, PageStatus.IN_PROGRESS].includes(
@@ -166,10 +166,11 @@ export const elementSatisfiesRequired = (
   pageElements: PageElement[]
 ) => {
   //while list input is not required, if the user adds a field and leaves it blank, that would make it incomplete and prevent form submission
-  if (element.type === ElementType.ListInput) {
-    if (element.answer?.some((item) => item === "" || item === undefined)) {
-      return false;
-    }
+  if (
+    element.type === ElementType.ListInput &&
+    element.answer?.some((item) => item === "" || item === undefined)
+  ) {
+    return false;
   }
 
   // TODO: make less ugly
@@ -245,15 +246,13 @@ export const elementSatisfiesRequired = (
     //For forms like PCP-1 & PCP-2, they have conditional children rendered based on if performance level has been reached.
     if (
       element.minPerformanceLevel &&
-      element.answer.rate < element.minPerformanceLevel
+      element.answer.rate < element.minPerformanceLevel &&
+      element.conditionalChildren &&
+      !element.conditionalChildren
+        .filter((child) => "required" in child)
+        .every((child) => "answer" in child && child.answer != undefined)
     ) {
-      if (
-        element.conditionalChildren &&
-        !element.conditionalChildren
-          .filter((child) => "required" in child)
-          .every((child) => "answer" in child && child.answer != undefined)
-      )
-        return false;
+      return false;
     }
   }
 

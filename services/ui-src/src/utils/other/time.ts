@@ -20,7 +20,7 @@ export const getLocalHourMinuteTime = () => {
     localTime.lastIndexOf(":")
   );
   const twelveHourIndicator = localTime.includes("AM") ? "am" : "pm";
-  return localTimeHourMinute.concat(twelveHourIndicator);
+  return localTimeHourMinute + twelveHourIndicator;
 };
 
 /*
@@ -120,7 +120,7 @@ export const checkDateRangeStatus = (
   startDate: number,
   endDate: number
 ): boolean => {
-  const currentTime = new Date().valueOf();
+  const currentTime = Date.now();
   return currentTime >= startDate && currentTime <= endDate;
 };
 

@@ -55,7 +55,7 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
     timeout: 2, // seconds
   });
 
-  createRoot(document.getElementById("root")!).render(
+  createRoot(document.querySelector("#root")!).render(
     <ErrorBoundary FallbackComponent={Error}>
       <Router>
         <UserProvider>
@@ -70,6 +70,6 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
       </Router>
     </ErrorBoundary>
   );
-})().catch((e) => {
-  throw e;
+})().catch((error) => {
+  throw error;
 });

@@ -81,9 +81,9 @@ export const HorizontalTable = (props: TableProps) => {
             fontSize="body_md"
             padding="16px 16px 16px 0"
           >
-            {report.name ? report.name : "{Name of form}"}
+            {report.name}
           </Td>
-          <Td>{report.year ? report.year : "{Year of form}"}</Td>
+          <Td>{report.year}</Td>
           <Td>
             {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
           </Td>

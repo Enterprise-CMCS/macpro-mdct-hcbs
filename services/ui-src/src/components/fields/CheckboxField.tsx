@@ -29,7 +29,7 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
-    let set = new Set(checkbox.answer ?? []);
+    let set = new Set(checkbox.answer);
 
     if (set.has(value)) set.delete(value);
     else set.add(value);

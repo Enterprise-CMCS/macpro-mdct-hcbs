@@ -120,8 +120,8 @@ export const buildReport = async (
   let validatedReport: Report | undefined;
   try {
     validatedReport = await validateReportPayload(report);
-  } catch (err) {
-    logger.error(err);
+  } catch (error) {
+    logger.error(error);
     throw new Error("Invalid request");
   }
 

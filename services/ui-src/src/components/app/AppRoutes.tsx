@@ -24,8 +24,7 @@ export const AppRoutes = () => {
   const componentInventoryPageEnabled = useFlags()?.componentInventory;
 
   useEffect(() => {
-    const appWrapper = document.getElementById("app-wrapper")!;
-    appWrapper?.focus();
+    (document.querySelector("#app-wrapper") as HTMLElement)?.focus();
     window.scrollTo(0, 0);
   }, [pathname]);
 

@@ -7,7 +7,7 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 //methods
 const formatCollectionMethod = (method: string | undefined) => {
   if (!method) return "";
-  return method.replace(/([A-Z])/g, " $1").trim();
+  return method.replaceAll(/([A-Z])/g, " $1").trim();
 };
 
 //render

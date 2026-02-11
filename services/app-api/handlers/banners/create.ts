@@ -24,8 +24,8 @@ export const createBanner = handler(parseBannerId, async (request) => {
   let validatedPayload: BannerData | undefined;
   try {
     validatedPayload = await validateBannerPayload(request.body);
-  } catch (err) {
-    logger.error(err);
+  } catch (error) {
+    logger.error(error);
     return badRequest("Invalid request");
   }
 

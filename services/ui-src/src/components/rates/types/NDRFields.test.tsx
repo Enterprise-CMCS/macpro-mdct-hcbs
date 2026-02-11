@@ -44,13 +44,13 @@ describe("<NDRFields />", () => {
       render(<NdrFieldsWrapper template={mockElementTemplate} />);
       const { assessments, fields } = mockElementTemplate;
 
-      assessments?.forEach((assess) => {
+      for (const assess of assessments) {
         expect(
           screen.getAllByRole("textbox", {
             name: `Denominator (${assess.label})`,
           })
         ).toHaveLength(4);
-        fields?.forEach((field) => {
+        for (const field of fields) {
           expect(
             screen.getByRole("textbox", {
               name: `Numerator: ${field.label} (${assess.label})`,
@@ -61,8 +61,8 @@ describe("<NDRFields />", () => {
               name: `${field.label} Rate (${assess.label})`,
             })
           ).toBeInTheDocument();
-        });
-      });
+        }
+      }
     });
 
     test("Rate should calculate", async () => {

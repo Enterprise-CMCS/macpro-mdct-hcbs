@@ -38,7 +38,7 @@ describe("<DropdownField />", () => {
       render(<DropdownWrapper template={mockedDropdownElement} />);
       const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
       expect(dropdown).toBeInTheDocument();
-      assert(dropdown instanceof HTMLSelectElement);
+      assert.ok(dropdown instanceof HTMLSelectElement);
       expect(dropdown.options.length).toBe(3);
     });
 

@@ -17,10 +17,10 @@ const formatDateUS = (date: Date | number) => {
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
 /** Yesterday's date, in local time, as MM/dd/yyyy. Example: "12/29/2024" */
-export const yesterday = () => formatDateUS(new Date().valueOf() - ONE_DAY);
+export const yesterday = () => formatDateUS(Date.now() - ONE_DAY);
 
 /** Today's date, in local time, as MM/dd/yyyy. Example: "12/30/2024" */
 export const today = () => formatDateUS(new Date());
 
 /** Yesterday's date, in local time, as MM/dd/yyyy. Example: "12/31/2024" */
-export const tomorrow = () => formatDateUS(new Date().valueOf() + ONE_DAY);
+export const tomorrow = () => formatDateUS(Date.now() + ONE_DAY);

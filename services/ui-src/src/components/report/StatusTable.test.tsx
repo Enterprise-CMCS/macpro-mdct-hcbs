@@ -37,10 +37,11 @@ const report = {
   ],
 };
 
-const mockPageMap = new Map();
-mockPageMap.set("root", 0);
-mockPageMap.set("1", 1);
-mockPageMap.set("2", 2);
+const mockPageMap = new Map([
+  ["root", 0],
+  ["1", 1],
+  ["2", 2],
+]);
 
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 const mockSetModalComponent = jest.fn();

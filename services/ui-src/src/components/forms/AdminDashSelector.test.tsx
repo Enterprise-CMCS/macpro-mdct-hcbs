@@ -80,7 +80,7 @@ describe("AdminDashSelector Component", () => {
 
     // Select a state
     const dropdown = screen.getByLabelText("Select state or territory:");
-    assert(dropdown instanceof HTMLSelectElement);
+    assert.ok(dropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(dropdown, "CA");
 
     // Select a report

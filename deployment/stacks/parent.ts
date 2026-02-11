@@ -128,14 +128,13 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
     "AWSCDK.TriggerCustomResourceProviderCustomResourceProvider"
   )?.addPropertyOverride("Policies.1", denyCreateLogGroupPolicy);
 
-  stack.node
+  const bucketHandlers = stack.node
     .findAll()
-    .filter((c) => c.node.id.startsWith("BucketNotificationsHandler"))
-    .forEach((c) => {
-      (
-        c.node
-          .tryFindChild("Role")
-          ?.node.tryFindChild("Resource") as iam.CfnRole
-      )?.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
-    });
+    .filter((c) => c.node.id.startsWith("BucketNotificationsHandler"));
+
+  for (const c of bucketHandlers) {
+    (
+      c.node.tryFindChild("Role")?.node.tryFindChild("Resource") as iam.CfnRole
+    )?.addPropertyOverride("Policies", [denyCreateLogGroupPolicy]);
+  }
 }
