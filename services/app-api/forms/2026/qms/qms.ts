@@ -8,7 +8,7 @@ import {
   HeaderIcon,
   AlertTypes,
 } from "../../../types/reports";
-import { exportToPDF, waiverListInputField } from "../elements";
+import { exportToPDF } from "../elements";
 import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { measureTemplates } from "./measureTemplates";
 
@@ -52,7 +52,6 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           helperText:
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
-        waiverListInputField,
       ],
     },
     {
