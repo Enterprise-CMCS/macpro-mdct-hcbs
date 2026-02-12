@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { get, put, post, del } from "aws-amplify/api";
 import { updateTimeout } from "utils";
 

@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Accordion, Link } from "@chakra-ui/react";
+import { Accordion } from "@chakra-ui/react";
 import { AccordionItem, ReportIntroCard } from "components";
 import { ReportType } from "types";
 import { ReportIntroCardActions } from "./ReportIntroCardActions";
