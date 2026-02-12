@@ -11,15 +11,13 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { MenuOption } from "components";
 import { useBreakpoint } from "utils";
-import accountCircleIcon from "assets/icons/account/icon_account_circle.svg";
 import chevronDownIcon from "assets/icons/arrows/icon_arrow_down.svg";
-import logoutIcon from "assets/icons/logout/icon_logout.svg";
-import editIcon from "assets/icons/edit/icon_edit_square_white.svg";
+import gearIcon from "assets/icons/icon_gear.svg";
 
-export const Menu = ({ handleLogout }: Props) => {
+export const AdminMenu = () => {
   const { isMobile } = useBreakpoint();
   return (
-    <MenuRoot offset={[8, 20]}>
+    <MenuRoot offset={[0, 20]}>
       <Box role="group">
         <MenuButton
           as={Button}
@@ -27,42 +25,26 @@ export const Menu = ({ handleLogout }: Props) => {
             <Image src={chevronDownIcon} alt="Arrow down" sx={sx.menuIcon} />
           }
           sx={sx.menuButton}
-          aria-label="my account"
+          aria-label="admin menu"
         >
           <MenuOption
-            icon={accountCircleIcon}
-            altText="Account"
-            text="My Account"
+            icon={gearIcon}
+            altText=""
+            text="Admin"
             hideText={isMobile}
           />
         </MenuButton>
       </Box>
       <MenuList sx={sx.menuList}>
-        <Link as={RouterLink} to="/profile" variant="unstyled">
+        <Link as={RouterLink} to="/admin" variant="unstyled">
           <MenuItem sx={sx.menuItem}>
-            {/*
-             * TODO: Will a screen reader announce this
-             * as "manage account manage account?"
-             * We may need to tone down the alt text.
-             */}
-            <MenuOption
-              icon={editIcon}
-              altText="Manage account"
-              text="Manage Account"
-            />
+            <MenuOption role="button" text="Banner Editor" />
           </MenuItem>
         </Link>
-        <MenuItem onClick={handleLogout} sx={sx.menuItem} tabIndex={0}>
-          <MenuOption icon={logoutIcon} text="Log Out" altText="Logout" />
-        </MenuItem>
       </MenuList>
     </MenuRoot>
   );
 };
-
-interface Props {
-  handleLogout: () => void;
-}
 
 const sx = {
   menuButton: {

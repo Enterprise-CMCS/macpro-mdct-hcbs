@@ -1,13 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { Button, Heading, Link, Text } from "@chakra-ui/react";
+import { Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
 import { useStore } from "utils";
 import { HELP_DESK_EMAIL_ADDRESS } from "../../../constants";
 
 export const ProfilePage = () => {
-  const navigate = useNavigate();
-
-  const { email, given_name, family_name, userRole, state, userIsAdmin } =
+  const { email, given_name, family_name, userRole, state } =
     useStore().user ?? {};
 
   const tableContent = {
@@ -35,9 +32,6 @@ export const ProfilePage = () => {
         .
       </Text>
       <Table content={tableContent} variant="striped" />
-      {userIsAdmin && (
-        <Button onClick={() => navigate("/admin")}>Banner Editor</Button>
-      )}
     </PageTemplate>
   );
 };
