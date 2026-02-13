@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { Menu } from "components";
+import { AccountMenu } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
 const menuComponent = (
   <RouterWrappedComponent>
-    <Menu handleLogout={() => {}} />
+    <AccountMenu handleLogout={() => {}} />
   </RouterWrappedComponent>
 );
 

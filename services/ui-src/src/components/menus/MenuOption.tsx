@@ -7,7 +7,7 @@ export const MenuOption = ({ text, icon, altText, role, hideText }: Props) => {
       role={role}
       sx={!hideText ? { paddingRight: "spacer1" } : {}}
     >
-      <Image src={icon} alt={altText} sx={sx.menuIcon} />
+      {icon ? <Image src={icon} alt={altText} sx={sx.menuIcon} /> : null}
       {!hideText && <Text sx={sx.text}>{text}</Text>}
     </Flex>
   );
@@ -15,8 +15,8 @@ export const MenuOption = ({ text, icon, altText, role, hideText }: Props) => {
 
 interface Props {
   text: string;
-  icon: string;
-  altText: string;
+  icon?: string;
+  altText?: string;
   role?: string;
   hideText?: boolean;
 }

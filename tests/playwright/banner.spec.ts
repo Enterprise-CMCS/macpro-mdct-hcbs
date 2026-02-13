@@ -60,13 +60,12 @@ test.describe("Banner functionality", () => {
 // Go to the home page, and click through to the banner editor page.
 const navigateToBannerEditor = async (page: Page) => {
   await page.goto("/");
-  await page.getByLabel("My Account").click();
+  await page.getByLabel("Admin").click();
   const accountMenuItem = page.getByRole("menuitem", {
-    name: "Manage Account",
+    name: "Banner Editor",
     exact: false,
   });
   await accountMenuItem.click();
-  await page.getByRole("button", { name: "Banner Editor" }).click();
   const heading = page.getByRole("heading", { name: "Banner Admin" });
   await expect(heading).toBeVisible();
 };

@@ -30,6 +30,7 @@ export const wwlReportTemplate: ReportBase = {
         "functional-eligibility",
         "add-other-eligibility",
         "waiting-list-limits",
+        "placement",
         "amount-of-time-on-the-waiting-list",
         "additional-notes",
         "review-submit",
@@ -201,6 +202,49 @@ export const wwlReportTemplate: ReportBase = {
                   id: "waiting-list-limits-explanation",
                   label:
                     "Describe how the state limits the number of individuals on the waiting list (including the amount of the limit) or limits the waiting list to individuals who meet certain criteria (including the specific criteria used for the limit).",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "placement",
+      title: "Placement",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "placement-header",
+          text: "Placement",
+        },
+        {
+          id: "placement-of-individuals-waiting-list",
+          type: ElementType.Checkbox,
+          label:
+            "How does the state select individuals on the waiting list for enrollment when a slot becomes available?",
+          required: true,
+          choices: [
+            {
+              label: "Sequentially, in order of waiting list placement",
+              value: "Sequentially, in order of waiting list placement",
+            },
+            {
+              label: "Priority level",
+              value: "Priority level",
+            },
+            {
+              label: "Other",
+              value: "Other",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "placement-of-individuals-waiting-list-explanation",
+                  label:
+                    "Describe the other ways that the state selects individuals on the waiting list for enrollment when a slot becomes available.",
                   required: true,
                 },
               ],
