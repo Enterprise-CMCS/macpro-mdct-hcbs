@@ -138,7 +138,7 @@ export const waiverListCheckboxField: CheckboxTemplate = {
     /* Generated in buildReport, with data from waivers.ts */
   ],
   helperText: "Select all that apply.",
-  required: true,
+  required: false,
 };
 
 export const whichProgramsWaivers: PageElement[] = [
