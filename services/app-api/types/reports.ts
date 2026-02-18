@@ -264,6 +264,7 @@ export enum ElementType {
   SubmissionParagraph = "submissionParagraph",
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
+  WaiverAlert = "waiverAlert",
 }
 
 export type PageElement =
@@ -296,7 +297,8 @@ export type PageElement =
   | DividerTemplate
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
-  | ListInputTemplate;
+  | ListInputTemplate
+  | WaiverAlertTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -667,6 +669,14 @@ export type StatusTableTemplate = {
 
 export type StatusAlertTemplate = {
   type: ElementType.StatusAlert;
+  id: string;
+  title: string;
+  text: string;
+  status: AlertTypes;
+};
+
+export type WaiverAlertTemplate = {
+  type: ElementType.WaiverAlert;
   id: string;
   title: string;
   text: string;

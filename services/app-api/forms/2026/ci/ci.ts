@@ -11,6 +11,7 @@ import {
   didYouFollowSpecifications,
   exportToPDF,
   minPerformanceExplanationField,
+  waiverAlert,
   waiverListCheckboxField,
   waiverListInputField,
 } from "../elements";
@@ -58,6 +59,7 @@ export const ciReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         waiverListCheckboxField,
+        waiverAlert,
         waiverListInputField,
       ],
     },

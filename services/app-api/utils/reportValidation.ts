@@ -200,6 +200,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return eligibilityTableSchema;
     case ElementType.ListInput:
       return listInputTemplateSchema;
+      case ElementType.WaiverAlert:
+        return waiverAlertSchema;
     default:
       assertExhaustive(value);
       throw new Error("Page Element type is not valid");
@@ -504,6 +506,14 @@ const parentPageTemplateSchema = object().shape({
 
 const statusAlertSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.StatusAlert)),
+  id: string().required(),
+  title: string().required(),
+  text: string().required(),
+  status: string().required(),
+});
+
+const waiverAlertSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.WaiverAlert)),
   id: string().required(),
   title: string().required(),
   text: string().required(),

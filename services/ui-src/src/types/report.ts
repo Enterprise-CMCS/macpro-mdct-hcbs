@@ -43,6 +43,22 @@ export enum PageStatus {
   COMPLETE = "Complete",
 }
 
+export enum WaiverType {
+  WAIVER1915C = "1915(c) waiver",
+  SPA1915J = "1915(j) SPA",
+  SPA1915I = "1915(i) SPA",
+  SPA1015K = "1915(k) SPA",
+  DEMO1115 = "1115 Demonstration",
+}
+
+export interface WAIVER {
+  id: string;
+  state: StateAbbr;
+  controlNumber?: string;
+  programTitle: string;
+  waiverType: WaiverType;
+}
+
 export type ReportMeasureConfig = {
   measureLookup: {
     defaultMeasures: MeasureOptions[];
@@ -193,6 +209,7 @@ export enum ElementType {
   SubmissionParagraph = "submissionParagraph",
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
+  WaiverAlert = "waiverAlert",
 }
 
 export type PageElement =
@@ -225,7 +242,8 @@ export type PageElement =
   | DividerTemplate
   | ListInputTemplate
   | SubmissionParagraphTemplate
-  | EligibilityTableTemplate;
+  | EligibilityTableTemplate
+  | WaiverAlertTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -272,6 +290,14 @@ export type ParagraphTemplate = {
 
 export type StatusAlertTemplate = {
   type: ElementType.StatusAlert;
+  id: string;
+  title: string;
+  text: string;
+  status: AlertTypes;
+};
+
+export type WaiverAlertTemplate = {
+  type: ElementType.WaiverAlert;
   id: string;
   title: string;
   text: string;
