@@ -1,10 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { mockUseStore } from "utils/testing/setupJest";
 import { WaiverAlert } from "./WaiverAlert";
 import { AlertTypes, ElementType, WaiverAlertTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { useStore } from "utils";
-import userEvent from "@testing-library/user-event";
 
 const mockUseNavigate = jest.fn();
 

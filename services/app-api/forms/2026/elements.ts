@@ -7,7 +7,6 @@ import {
   CheckboxTemplate,
   PageElement,
   ListInputTemplate,
-  StatusAlertTemplate,
   AlertTypes,
   WaiverAlertTemplate,
 } from "../../types/reports";
