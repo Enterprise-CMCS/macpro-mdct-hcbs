@@ -200,8 +200,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return eligibilityTableSchema;
     case ElementType.ListInput:
       return listInputTemplateSchema;
-      case ElementType.WaiverAlert:
-        return waiverAlertSchema;
+    case ElementType.WaiverAlert:
+      return waiverAlertSchema;
     default:
       assertExhaustive(value);
       throw new Error("Page Element type is not valid");
