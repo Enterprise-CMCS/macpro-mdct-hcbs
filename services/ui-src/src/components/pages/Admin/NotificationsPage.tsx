@@ -17,6 +17,7 @@ import {
 } from "components";
 import { convertDateUtcToEt, useStore } from "utils";
 import { AlertTypes } from "types";
+import { ToggleButton } from "components/toggle/toggleButton";
 
 export const NotificationsPage = () => {
   const { deleteAdminBanner, writeAdminBanner } =
@@ -32,15 +33,6 @@ export const NotificationsPage = () => {
 
   return (
     <PageTemplate data-testid="admin-view">
-      {bannerErrorMessage ? (
-        <Alert
-          status={AlertTypes.ERROR}
-          title={bannerErrorMessage.title}
-          showIcon={false}
-        >
-          {bannerErrorMessage.children}
-        </Alert>
-      ) : null}
       <Box sx={sx.introTextBox}>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
             Notifications
@@ -48,15 +40,6 @@ export const NotificationsPage = () => {
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner</Text>
-        {bannerLoading ? (
-          <Flex sx={sx.spinnerContainer}>
-            <Spinner size="md" />
-          </Flex>
-        ) : (
-          <>
-            <Collapse in={!!bannerData?.key}>
-              {bannerData && (
-                <>
                   <Flex sx={sx.currentBannerInfo}>
                     <Text>
                       Status:{" "}
@@ -64,44 +47,10 @@ export const NotificationsPage = () => {
                         {bannerActive ? "Active" : "Inactive"}
                       </span>
                     </Text>
-                    <Text>
-                      Start Date:{" "}
-                      {bannerData.startDate && (
-                        <span>{convertDateUtcToEt(bannerData.startDate)}</span>
-                      )}
-                    </Text>
-                    <Text>
-                      End Date:{" "}
-                      {bannerData.endDate && (
-                        <span>{convertDateUtcToEt(bannerData.endDate)}</span>
-                      )}
-                    </Text>
                   </Flex>
-                  <Flex sx={sx.currentBannerFlex}>
-                    <Banner bannerData={bannerData} />
-                    <Button
-                      variant="danger"
-                      sx={sx.deleteBannerButton}
-                      onClick={deleteAdminBanner}
-                    >
-                      {bannerDeleting ? (
-                        <Spinner size="md" />
-                      ) : (
-                        "Delete Current Banner"
-                      )}
-                    </Button>
-                  </Flex>
-                </>
-              )}
-            </Collapse>
-            {!bannerData && <Text>There is no current banner</Text>}
-          </>
-        )}
+                  <ToggleButton />
+
       </Box>
-      <Flex sx={sx.newBannerBox} gap=".75rem">
-        <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-        <AdminBannerForm writeAdminBanner={writeAdminBanner} />
-      </Flex>
     </PageTemplate>
   );
 };
