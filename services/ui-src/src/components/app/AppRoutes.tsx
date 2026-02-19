@@ -15,6 +15,7 @@ import { useStore } from "utils";
 import { useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { ReportAutosaveProvider } from "components/report/ReportAutosaveProvider";
+import { NotificationsPage } from "components/pages/Admin/NotificationsPage";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -40,6 +41,12 @@ export const AppRoutes = () => {
               path="/admin"
               element={
                 !userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                !userIsAdmin ? <Navigate to="/profile" /> : <NotificationsPage />
               }
             />
             <Route path="/profile" element={<ProfilePage />} />
