@@ -1,0 +1,36 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
+name: "CodeQL" # Keep as-is to avoid updating branch rules
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+    branches:
+      - main
+      - val
+      - production
+  schedule:
+    # run every Monday against main
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["javascript"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4

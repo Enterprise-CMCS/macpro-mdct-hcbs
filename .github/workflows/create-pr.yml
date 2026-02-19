@@ -1,0 +1,37 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
+name: Create Deployment PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Enable Corepack
+        run: corepack enable
+      - uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Create a PR
+        run: .github/create-pr.ts
+        env:
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
+          APP_NAME_UPPER: ${{ vars.APP_NAME_UPPER }}
