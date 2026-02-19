@@ -146,7 +146,7 @@ export const waiverListCheckboxField: CheckboxTemplate = {
 export const waiverAlert: WaiverAlertTemplate = {
   type: ElementType.WaiverAlert,
   id: "status-alert",
-  title: "No programs of waivers found for you state/territory",
+  title: "No programs of waivers found for your state/territory",
   text: "If you believe this is in error please contact the MDCT Help Desk: mdct_help@cms.hhs.gov",
   status: AlertTypes.WARNING,
 };
