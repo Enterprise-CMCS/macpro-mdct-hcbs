@@ -180,6 +180,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureFooterSchema;
     case ElementType.LengthOfStayRate:
       return lengthOfStayRateSchema;
+    case ElementType.ReadmissionRate:
+      return ReadmissionRateSchema;
     case ElementType.NdrFields:
       return ndrFieldsRateSchema;
     case ElementType.NdrEnhanced:
@@ -356,6 +358,36 @@ const lengthOfStayRateSchema = object().shape({
       actualRate: number().notRequired(),
       expectedRate: number().notRequired(),
       adjustedRate: number().notRequired(),
+    })
+    .notRequired(),
+});
+
+const ReadmissionRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ReadmissionRate)),
+  id: string().required(),
+  labels: object().shape({
+    stayCount: string().required(),
+    obsReadmissionCount: string().required(),
+    obsReadmissionRate: string().required(),
+    expReadmissionCount: string().required(),
+    expReadmissionRate: string().required(),
+    obsExpRatio: string().required(),
+    beneficiaryCount: string().required(),
+    outlierCount: string().required(),
+    outlierRate: string().required(),
+  }),
+  required: boolean().required(),
+  answer: object()
+    .shape({
+      stayCount: number().notRequired(),
+      obsReadmissionCount: number().notRequired(),
+      obsReadmissionRate: number().notRequired(),
+      expReadmissionCount: number().notRequired(),
+      expReadmissionRate: number().notRequired(),
+      obsExpRatio: number().notRequired(),
+      beneficiaryCount: number().notRequired(),
+      outlierCount: number().notRequired(),
+      outlierRate: number().notRequired(),
     })
     .notRequired(),
 });

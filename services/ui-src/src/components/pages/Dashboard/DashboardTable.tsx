@@ -31,8 +31,10 @@ interface DashboardTableProps {
   unlockModalOnOpenHandler: () => void;
 }
 
-interface TableProps
-  extends Omit<DashboardTableProps, "unlockModalOnOpenHandler"> {
+interface TableProps extends Omit<
+  DashboardTableProps,
+  "unlockModalOnOpenHandler"
+> {
   tableContent: { caption: string; headRow: string[] };
   showEditNameColumn: boolean | undefined;
   showReportSubmissionsColumn: boolean;
@@ -268,13 +270,11 @@ export const DashboardTable = ({
   const headers = [];
   if (showEditNameColumn) headers.push("");
   headers.push(
-    ...[
-      "Submission name",
-      "Reporting Year",
-      "Last edited",
-      "Edited by",
-      "Status",
-    ]
+    "Submission name",
+    "Reporting Year",
+    "Last edited",
+    "Edited by",
+    "Status"
   );
   if (showReportSubmissionsColumn) headers.push("#");
   headers.push("");

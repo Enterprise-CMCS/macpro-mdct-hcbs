@@ -113,6 +113,19 @@ export const stateSamplingMethologyQuestion: RadioTemplate = {
         },
       ],
     },
+    {
+      label: "Other",
+      value: "Other",
+      checkedChildren: [
+        {
+          type: ElementType.TextAreaField,
+          id: "sampling-approach-used",
+          label:
+            "Please provide a detailed description of the alternative sampling methodology. If this measure aggregates results from multiple programs that used different methodologies, specify which method was used for each program and how the results were combined.",
+          required: true,
+        },
+      ],
+    },
   ],
 };
 
@@ -120,10 +133,12 @@ export const waiverListCheckboxField: CheckboxTemplate = {
   type: ElementType.Checkbox,
   id: "waivers-list-checkboxes",
   label:
-    "Deselect all programs and waivers are not included in this reporting period?",
-  choices: [],
-  helperText: "Deselect all that do not apply.",
-  required: true,
+    "Select all programs and waivers that are included in this reporting period?",
+  choices: [
+    /* Generated in buildReport, with data from waivers.ts */
+  ],
+  helperText: "Select all that apply.",
+  required: false,
 };
 
 export const whichProgramsWaivers: PageElement[] = [

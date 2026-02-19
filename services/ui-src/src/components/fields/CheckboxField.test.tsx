@@ -7,7 +7,7 @@ import { testA11y } from "utils/testing/commonTests";
 const updateSpy = jest.fn();
 
 const mockCheckboxElement: CheckboxTemplate = {
-  id: "mock-radio-id",
+  id: "mock-checkbox-id",
   type: ElementType.Checkbox,
   label: "mock label",
   required: true,
@@ -21,6 +21,14 @@ const mockCheckboxElement: CheckboxTemplate = {
     {
       label: "Choice 2",
       value: "B",
+      checkedChildren: [
+        {
+          id: "mock-text-box-id",
+          type: ElementType.Textbox,
+          label: "mock-text-box",
+          required: true,
+        },
+      ],
       checked: false,
     },
     {
@@ -53,6 +61,14 @@ describe("<CheckboxField />", () => {
     const firstCheckbox = screen.getByLabelText("Choice 1");
     await userEvent.click(firstCheckbox);
     expect(updateSpy).toHaveBeenCalledWith({ answer: ["A"] });
+  });
+
+  test("CheckboxField displays children fields after selection", async () => {
+    render(CheckboxComponent);
+    const secondCheckbox = screen.getByLabelText("Choice 2");
+    await userEvent.click(secondCheckbox);
+    expect(updateSpy).toHaveBeenCalledWith({ answer: ["B"] });
+    expect(screen.getByLabelText("mock-text-box")).toBeInTheDocument();
   });
 
   testA11y(CheckboxComponent);

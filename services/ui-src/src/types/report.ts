@@ -183,6 +183,7 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   LengthOfStayRate = "lengthOfStay",
+  ReadmissionRate = "readmissionRate",
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
   Ndr = "ndr",
@@ -215,6 +216,7 @@ export type PageElement =
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
   | LengthOfStayRateTemplate
+  | ReadmissionRateTemplate
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
@@ -449,8 +451,9 @@ export const LengthOfStayFieldNames = {
   expectedRate: "expectedRate",
   adjustedRate: "adjustedRate",
 } as const;
+
 export type LengthOfStayField =
-  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
+  (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
 export type LengthOfStayRateTemplate = {
   id: string;
@@ -461,19 +464,44 @@ export type LengthOfStayRateTemplate = {
   errors?: Record<LengthOfStayField, string>;
 };
 
+export const ReadmissionRateFieldNames = {
+  stayCount: "stayCount",
+  obsReadmissionCount: "obsReadmissionCount",
+  obsReadmissionRate: "obsReadmissionRate",
+  expReadmissionCount: "expReadmissionCount",
+  expReadmissionRate: "expReadmissionRate",
+  obsExpRatio: "obsExpRatio",
+  beneficiaryCount: "beneficiaryCount",
+  outlierCount: "outlierCount",
+  outlierRate: "outlierRate",
+} as const;
+
+export type ReadmissionRateField =
+  (typeof ReadmissionRateFieldNames)[keyof typeof ReadmissionRateFieldNames];
+
+export type ReadmissionRateTemplate = {
+  id: string;
+  type: ElementType.ReadmissionRate;
+  labels: Record<ReadmissionRateField, string>;
+  answer?: Record<ReadmissionRateField, number | undefined>;
+  required: boolean;
+  errors?: Record<ReadmissionRateField, string>;
+};
+
 export const RateInputFieldNames = {
   numerator: "numerator",
   denominator: "denominator",
 } as const;
 export type RateInputFieldName =
-  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+  (typeof RateInputFieldNames)[keyof typeof RateInputFieldNames];
 
 export const RateInputFieldNamesBasic = {
   numerator: "numerator",
   denominator: "denominator",
 } as const;
+
 export type RateInputFieldNameBasic =
-  typeof RateInputFieldNamesBasic[keyof typeof RateInputFieldNamesBasic];
+  (typeof RateInputFieldNamesBasic)[keyof typeof RateInputFieldNamesBasic];
 
 export type RateType = {
   id: string;

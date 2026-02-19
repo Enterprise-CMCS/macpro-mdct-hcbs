@@ -9,6 +9,7 @@ import {
   didYouFollowSpecifications,
   divider,
   whichProgramsWaivers,
+  waiverListInputField,
 } from "../elements";
 
 import {
@@ -39,6 +40,7 @@ import {
   exclusionRatesPersonPlanElements,
   performanceRatesReassessmentPlanElements,
   exclusionRatesPatientPlanElements,
+  readmissionRate,
   performanceRatePOM,
   performanceRateTermStay,
   performanceRateFacilityDischarges,
@@ -98,6 +100,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       {
@@ -129,6 +132,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatesAssessmentElements,
       exclusionRatesAssessmentElements,
       {
@@ -185,6 +189,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       {
@@ -216,6 +221,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatesPersonPlanElements,
       exclusionRatesPersonPlanElements,
       {
@@ -271,6 +277,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -301,6 +308,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRateTermStay,
       {
         type: ElementType.MeasureFooter,
@@ -355,6 +363,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRateFacilityDischarges,
       additionalNotesField,
       {
@@ -386,6 +395,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRateFacilityDischarges,
       additionalNotesField,
       {
@@ -441,6 +451,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRateFacilityTransitions,
       additionalNotesField,
       {
@@ -472,6 +483,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRateFacilityTransitions,
       additionalNotesField,
       {
@@ -527,6 +539,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       {
         type: ElementType.Ndr,
         id: "measure-rates",
@@ -563,6 +576,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       {
         type: ElementType.Ndr,
         id: "measure-rates",
@@ -623,6 +637,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       {
         type: ElementType.Ndr,
         id: "measure-rates",
@@ -659,6 +674,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       {
         type: ElementType.Ndr,
         id: "measure-rates",
@@ -715,6 +731,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRateSelfDirection,
       {
         type: ElementType.MeasureFooter,
@@ -769,6 +786,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       divider,
       {
         type: ElementType.NdrEnhanced,
@@ -822,6 +840,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       divider,
       {
         type: ElementType.NdrEnhanced,
@@ -900,6 +919,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatesReassessmentPlanElements,
       exclusionRatesPatientPlanElements,
       {
@@ -931,6 +951,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatesReassessmentPlanElements,
       exclusionRatesPatientPlanElements,
       {
@@ -984,6 +1005,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
@@ -1024,6 +1046,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       {
         type: ElementType.NdrEnhanced,
         id: "measure-rates",
@@ -1101,18 +1124,8 @@ export const measureTemplates: Record<
       },
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
-      {
-        type: ElementType.NdrEnhanced,
-        id: "measure-rates",
-        required: true,
-        assessments: [
-          {
-            id: "acute-readmission-plan",
-            label:
-              "Acute inpatient and observation stays during the measurement year that were followed by an unplanned acute readmission for any diagnosis within 30 days, for participants 65 years of age",
-          },
-        ],
-      },
+      waiverListInputField,
+      readmissionRate,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1165,6 +1178,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1195,6 +1209,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1248,6 +1263,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1278,6 +1294,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1331,6 +1348,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1361,6 +1379,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1414,6 +1433,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1444,6 +1464,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1497,6 +1518,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1527,6 +1549,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1580,6 +1603,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1610,6 +1634,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1663,6 +1688,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,
@@ -1693,6 +1719,7 @@ export const measureTemplates: Record<
       deliveryMethodMeasureInstructions,
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
+      waiverListInputField,
       performanceRatePOM,
       {
         type: ElementType.MeasureFooter,

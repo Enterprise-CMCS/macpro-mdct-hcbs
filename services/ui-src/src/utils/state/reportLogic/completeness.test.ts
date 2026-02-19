@@ -1,4 +1,5 @@
 import {
+  CheckboxTemplate,
   ElementType,
   LengthOfStayRateTemplate,
   ListInputTemplate,
@@ -315,6 +316,116 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(incompleteChildren, radios)).toBeFalsy();
   });
 
+  test("handles checkboxes", () => {
+    const checkbox = {
+      id: "checkbox-element",
+      answer: ["foo"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "me",
+          value: "foo",
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+    const incompleteChildren = {
+      id: "bad-checkbox-element",
+      answer: ["foo"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "me",
+          value: "foo",
+          checkedChildren: [
+            {
+              type: ElementType.Textbox,
+              answer: undefined,
+              required: true,
+            },
+          ],
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+    const checkboxes = [checkbox, incompleteChildren];
+    expect(elementSatisfiesRequired(checkbox, checkboxes)).toBeTruthy();
+    expect(
+      elementSatisfiesRequired(incompleteChildren, checkboxes)
+    ).toBeFalsy();
+  });
+
+  test("handles checkboxes with multiple selections", () => {
+    const completeCheckbox = {
+      id: "multi-checkbox",
+      answer: ["option1", "option2"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "Option 1",
+          value: "option1",
+          checkedChildren: [
+            {
+              type: ElementType.Textbox,
+              answer: "filled",
+              required: true,
+            },
+          ],
+        },
+        {
+          label: "Option 2",
+          value: "option2",
+          checkedChildren: [
+            {
+              type: ElementType.TextAreaField,
+              answer: "also filled",
+              required: true,
+            },
+          ],
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+
+    const incompleteCheckbox = {
+      id: "multi-checkbox-incomplete",
+      answer: ["option1", "option2"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "Option 1",
+          value: "option1",
+          checkedChildren: [
+            {
+              type: ElementType.Textbox,
+              answer: "filled",
+              required: true,
+            },
+          ],
+        },
+        {
+          label: "Option 2",
+          value: "option2",
+          checkedChildren: [
+            {
+              type: ElementType.TextAreaField,
+              answer: undefined,
+              required: true,
+            },
+          ],
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+
+    expect(
+      elementSatisfiesRequired(completeCheckbox, [completeCheckbox])
+    ).toBeTruthy();
+    expect(
+      elementSatisfiesRequired(incompleteCheckbox, [incompleteCheckbox])
+    ).toBeFalsy();
+  });
+
   test("accepts complete LengthOfStay rates", () => {
     const element = {
       type: ElementType.LengthOfStayRate,
@@ -408,7 +519,7 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test("accepts complete NDREnhanced rates", () => {
+  test("accepts complete NDRFields rates", () => {
     const element = {
       type: ElementType.NdrFields,
       answer: [
@@ -475,18 +586,18 @@ describe("elementSatisfiesRequired", () => {
     [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ numerator: 7 }] }],
-  ])("accepts incomplete NDREnhanced rates", (answer) => {
+  ])("accepts incomplete NDRFields when not required", (answer) => {
     const element = {
       type: ElementType.NdrFields,
       answer,
-      required: false,
+      required: false, // ← It's not required
     } as unknown as NdrFieldsTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
   test("reject incomplete ListInput", () => {
     const element = {
       type: ElementType.ListInput,
-      required: false,
+      required: true,
       answer: [""],
     } as ListInputTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
