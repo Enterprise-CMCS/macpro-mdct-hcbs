@@ -14,6 +14,7 @@ import {
   exportToPDF,
   waiverListCheckboxField,
   waiverListInputField,
+  waiverAlert,
 } from "../elements";
 import {
   conversionOfServiceUnitsField,
@@ -63,6 +64,7 @@ export const tacmReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         waiverListCheckboxField,
+        waiverAlert,
         waiverListInputField,
       ],
     },

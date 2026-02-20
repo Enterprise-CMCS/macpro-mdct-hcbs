@@ -37,6 +37,7 @@ import {
   CheckboxField,
   ListInput,
   EligibilityTableElement,
+  WaiverAlert,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -123,6 +124,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <ListInput {...{ updateElement, disabled, element }} />;
       case ElementType.EligibilityTable:
         return <EligibilityTableElement {...{ updateElement, element }} />;
+      case ElementType.WaiverAlert:
+        return <WaiverAlert {...{ element }} />;
       default:
         assertExhaustive(element);
         return null;

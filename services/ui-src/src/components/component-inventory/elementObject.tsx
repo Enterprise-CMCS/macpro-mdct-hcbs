@@ -22,6 +22,7 @@ import {
   StatusAlert,
   CheckboxField,
   EligibilityTableElement,
+  WaiverAlert,
 } from "components";
 
 import {
@@ -631,6 +632,22 @@ export const elementObject: {
       />,
     ],
     pdfVariants: ["StatusAlert currently not used in PDFs"],
+  },
+  [ElementType.WaiverAlert]: {
+    description: "Waiver Alert Type",
+    id: "id-waiver-alert",
+    variants: [
+      <WaiverAlert
+        element={{
+          type: ElementType.WaiverAlert,
+          id: "waiver-alert",
+          title: "Waiver Alert Title",
+          text: "AlertTypes.WARNING",
+          status: AlertTypes.WARNING,
+        }}
+      />,
+    ],
+    pdfVariants: ["WaiverAlert currently not used in PDFs"],
   },
   [ElementType.SubmissionParagraph]: {
     description: "Submission Paragraph",

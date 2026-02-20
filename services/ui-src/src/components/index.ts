@@ -72,6 +72,7 @@ export { ReportPageWrapper } from "./report/ReportPageWrapper";
 export { Sidebar } from "./report/Sidebar";
 export { StatusTableElement } from "./report/StatusTable";
 export { SubnavBar } from "./report/SubnavBar";
+export { WaiverAlert } from "./report/WaiverAlert";
 // menus
 export { AccountMenu } from "./menus/AccountMenu";
 export { AdminMenu } from "./menus/AdminMenu";
