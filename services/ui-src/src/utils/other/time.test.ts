@@ -1,9 +1,7 @@
 import {
   calculateRemainingSeconds,
-  checkDateRangeStatus,
-  convertDateEtToUtc,
   convertDateTimeEtToUtc,
-  convertDatetimeStringToNumber,
+  convertDateStringEtToUtc,
   convertDateUtcToEt,
   formatMonthDayYear,
   getLocalHourMinuteTime,
@@ -15,6 +13,7 @@ import {
 const testDate = {
   utcMS: 1641013200000,
   utcString: "Sat, 01 Jan 2022 05:00:00 GMT",
+  isoString: "2022-01-01T05:00:00.000Z",
   etFormattedString: "01/01/2022",
 };
 
@@ -34,15 +33,7 @@ describe("utils/time", () => {
         { year: 2022, month: 1, day: 1 },
         { hour: 0, minute: 0, second: 0 }
       );
-      expect(result).toBe(testDate.utcMS);
-      expect(new Date(result).toUTCString()).toBe(testDate.utcString);
-    });
-  });
-
-  describe("convertDateEtToUtc()", () => {
-    it("converts valid ET datetime to UTC correctly", () => {
-      const result = convertDateEtToUtc(testDate.etFormattedString);
-      expect(result).toBe(testDate.utcMS);
+      expect(result).toBe(testDate.isoString);
       expect(new Date(result).toUTCString()).toBe(testDate.utcString);
     });
   });
@@ -51,33 +42,6 @@ describe("utils/time", () => {
     it("converts valid UTC datetime to ET correctly", () => {
       const result = convertDateUtcToEt(testDate.utcMS);
       expect(result).toBe(testDate.etFormattedString);
-    });
-  });
-
-  describe("checkDateRangeStatus()", () => {
-    const currentTime = Date.now(); // 'current' time in ms since unix epoch
-    const oneDay = 1000 * 60 * 60 * 24; // 1000ms * 60s * 60m * 24h = 86,400,000ms
-    const twoDays = oneDay * 2;
-
-    it("returns false if startDate is in the future", () => {
-      const startDate = currentTime + oneDay;
-      const endDate = currentTime + twoDays;
-      const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
-      expect(dateRangeStatus).toBeFalsy();
-    });
-
-    it("returns false if endDate is in the past", () => {
-      const startDate = currentTime - twoDays;
-      const endDate = currentTime - oneDay;
-      const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
-      expect(dateRangeStatus).toBeFalsy();
-    });
-
-    it("returns true if startDate is in the past and endDate is in the future", () => {
-      const startDate = currentTime - oneDay;
-      const endDate = currentTime + oneDay;
-      const dateRangeStatus = checkDateRangeStatus(startDate, endDate);
-      expect(dateRangeStatus).toBeTruthy();
     });
   });
 
@@ -103,22 +67,31 @@ describe("utils/time", () => {
   });
 
   describe("convertDatetimeStringToNumber()", () => {
-    it("should return the correct epoch for midnight", () => {
-      const result = convertDatetimeStringToNumber("10/22/2024", {
+    it("should return the correct value for midnight", () => {
+      const result = convertDateStringEtToUtc("10/22/2024", {
         hour: 0,
         minute: 0,
         second: 0,
       });
-      expect(result).toBe(1729569600000);
+      expect(result).toBe("2024-10-22T04:00:00.000Z");
     });
 
-    it("should return the correct epoch for one second before midnight", () => {
-      const result = convertDatetimeStringToNumber("10/22/2024", {
+    it("should return the correct value for one second before midnight", () => {
+      const result = convertDateStringEtToUtc("10/22/2024", {
         hour: 23,
         minute: 59,
         second: 59,
       });
-      expect(result).toBe(1729655999000);
+      expect(result).toBe("2024-10-23T03:59:59.000Z");
+    });
+
+    it("should return the correct value during daylight savings", () => {
+      const result = convertDateStringEtToUtc("01/22/2024", {
+        hour: 0,
+        minute: 0,
+        second: 0,
+      });
+      expect(result).toBe("2024-01-22T05:00:00.000Z");
     });
   });
 

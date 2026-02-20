@@ -1,17 +1,24 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Flex, Spinner } from "@chakra-ui/react";
-import { Banner } from "components";
 import {
+  Dropdown as CmsdsDropdown,
   TextField as CmsdsTextField,
   SingleInputDateField as CmsdsDateField,
 } from "@cmsgov/design-system";
-import { bannerId, ErrorMessages } from "../../constants";
-import { convertDatetimeStringToNumber, parseMMDDYYYY } from "utils";
-import { AdminBannerMethods, BannerData } from "types";
+import { ErrorMessages } from "../../constants";
+import { convertDateStringEtToUtc, parseMMDDYYYY } from "utils";
+import {
+  BannerArea,
+  bannerAreaLabels,
+  BannerAreas,
+  BannerFormData,
+} from "types";
 import { isUrl } from "utils/validation/inputValidation";
+import { Banner } from "components/alerts/Banner";
 
-export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
-  const [formData, setFormData] = useState({
+export const AdminBannerForm = ({ updateBanner }: Props) => {
+  const [formData, setFormData] = useState<BannerFormData>({
+    area: BannerAreas.Home,
     title: "",
     description: "",
     link: "",
@@ -25,7 +32,7 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     startDate: "",
     endDate: "",
   });
-  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const onTextChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
@@ -129,25 +136,22 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
 
     setSubmitting(true);
 
-    const newBannerData: BannerData = {
-      key: bannerId,
-      title: formData.title,
-      description: formData.description,
-      link: formData.link,
-      startDate: convertDatetimeStringToNumber(formData.startDate, {
+    const newBannerData: BannerFormData = {
+      ...formData,
+      startDate: convertDateStringEtToUtc(formData.startDate, {
         hour: 0,
         minute: 0,
         second: 0,
-      }),
-      endDate: convertDatetimeStringToNumber(formData.endDate, {
+      })!,
+      endDate: convertDateStringEtToUtc(formData.endDate, {
         hour: 23,
         minute: 59,
         second: 59,
-      }),
+      })!,
     };
 
     try {
-      await writeAdminBanner(newBannerData);
+      await updateBanner(newBannerData);
       window.scrollTo(0, 0);
     } finally {
       setSubmitting(false);
@@ -158,6 +162,15 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
     <>
       <form id="addAdminBanner" onSubmit={onSubmit}>
         <Flex flexDirection="column" gap="1.5rem">
+          <CmsdsDropdown
+            name="area"
+            label="Site area"
+            onChange={(evt) =>
+              setFormData({ ...formData, area: evt.target.value as BannerArea })
+            }
+            options={areaOptions}
+            value={formData.area}
+          ></CmsdsDropdown>
           <CmsdsTextField
             name="title"
             label="Title text"
@@ -168,8 +181,10 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
             data-required="true"
           />
           <CmsdsTextField
+            multiline={true}
             name="description"
             label="Description text"
+            hint={supportedTagsHint}
             onChange={onTextChange}
             onBlur={onBlur}
             value={formData.description}
@@ -207,23 +222,35 @@ export const AdminBannerForm = ({ writeAdminBanner }: Props) => {
         </Flex>
       </form>
       <Banner
-        bannerData={{
-          title: formData.title || "New banner title",
-          description: formData.description || "New banner description",
-          link: formData.link,
-        }}
+        title={formData.title || "New banner title"}
+        link={formData.link}
+        description={formData.description || "New banner description"}
       />
       <Flex sx={sx.previewFlex}>
         <Button form="addAdminBanner" type="submit" sx={sx.replaceBannerButton}>
-          {submitting ? <Spinner size="md" /> : "Replace Current Banner"}
+          {submitting ? <Spinner size="md" /> : "Create Banner"}
         </Button>
       </Flex>
     </>
   );
 };
 
+const areaOptions = Object.entries(bannerAreaLabels).map(([key, value]) => ({
+  label: value,
+  value: key,
+}));
+
+const supportedTagsHint = (
+  <>
+    Formatting is supported with these HTML tags: <code>strong</code>/
+    <code>b</code>, <code>em</code>/<code>i</code>, <code>p</code>,{" "}
+    <code>ul</code>, <code>ol</code>, <code>li</code>, and <code>a</code>.
+    Remember to include the <code>target="_blank"</code> attribute in link tags.
+  </>
+);
+
 interface Props {
-  writeAdminBanner: AdminBannerMethods["writeAdminBanner"];
+  updateBanner: (data: BannerFormData) => void;
 }
 
 const sx = {

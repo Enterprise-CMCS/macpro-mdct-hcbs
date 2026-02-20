@@ -5,23 +5,17 @@ import {
   MeasurePageTemplate,
 } from "types/report";
 import { ReactNode } from "react";
-import { BannerData, ErrorVerbiage, HcbsUser } from "types";
+import { BannerShape, BannerFormData, HcbsUser } from "types";
 
-export interface AdminBannerState {
-  bannerData: BannerData | undefined;
-  bannerActive: boolean;
-  bannerLoading: boolean;
-  bannerErrorMessage: ErrorVerbiage | undefined;
-  bannerDeleting: boolean;
-  // ACTIONS
-  setBannerData: (newBannerData: BannerData | undefined) => void;
-  clearAdminBanner: () => void;
-  setBannerActive: (bannerStatus: boolean) => void;
-  setBannerLoading: (bannerLoading: boolean) => void;
-  setBannerErrorMessage: (
-    bannerErrorMessage: ErrorVerbiage | undefined
-  ) => void;
-  setBannerDeleting: (bannerDeleting: boolean) => void;
+export interface HcbsBannerState {
+  /** All banners, active and inactive, for every area of the site */
+  allBanners: BannerShape[];
+  /** When was the last time banners were fetched? */
+  _lastFetchTime: number;
+  /** Refresh the `allBanners` list */
+  fetchBanners: () => Promise<void>;
+  updateBanner: (data: BannerFormData) => Promise<void>;
+  deleteBanner: (id: string) => Promise<void>;
 }
 
 // initial user state

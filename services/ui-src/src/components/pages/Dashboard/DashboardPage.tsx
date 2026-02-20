@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { StateNames } from "../../../constants";
 import {
+  BannerArea,
   getReportName,
   isReportType,
   isStateAbbr,
@@ -13,10 +14,10 @@ import {
   ReportType,
 } from "types";
 import {
-  PageTemplate,
-  DashboardTable,
-  AddEditReportModal,
   AccordionItem,
+  AddEditReportModal,
+  DashboardTable,
+  PageTemplate,
   UnlockModal,
 } from "components";
 import {
@@ -35,10 +36,13 @@ import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
+import { activeBannerSelector } from "utils/state/selectors";
+import { Banner } from "components/alerts/Banner";
 
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
   const { reportType, state } = useParams();
+  const banners = useStore(activeBannerSelector(reportType as BannerArea));
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<LiteReport[]>([]);
   const [selectedReport, setSelectedReport] = useState<LiteReport | undefined>(
@@ -122,7 +126,9 @@ export const DashboardPage = () => {
         <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
         Return home
       </Link>
-
+      {banners.map((banner) => (
+        <Banner {...banner} key={banner.key} />
+      ))}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" variant="h1">
           {fullStateName} {reportName}

@@ -19,11 +19,7 @@ jest.mock("utils/other/useBreakpoint", () => ({
   makeMediaQueryClasses: jest.fn().mockReturnValue("desktop"),
 }));
 
-jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockReturnValue({}),
-}));
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
+useStore.setState(mockUseStore);
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -185,7 +181,7 @@ describe("DashboardPage with state user", () => {
 
 describe("DashboardPage with Read only user", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
+    useStore.setState(mockUseReadOnlyUserStore);
   });
   it("should not render the Start Report button when user is read only", async () => {
     render(dashboardComponent);
@@ -203,7 +199,7 @@ describe("DashboardPage with Read only user", () => {
 
 describe("DashboardPage with Admin user", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockUseAdminStore);
+    useStore.setState(mockUseAdminStore);
   });
   it("should not render the Start Report button when user is read only", async () => {
     render(dashboardComponent);

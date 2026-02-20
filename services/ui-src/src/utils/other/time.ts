@@ -25,12 +25,12 @@ export const getLocalHourMinuteTime = () => {
 
 /*
  * Converts passed ET datetime to UTC
- * returns -> UTC datetime in format 'ms since Unix epoch'
+ * returns -> UTC datetime in format 'yyyy-MM-ddThh:mm:ss.SSSZ'
  */
 export const convertDateTimeEtToUtc = (
   etDate: DateShape,
   etTime: TimeShape
-): number => {
+) => {
   const { year, month, day } = etDate;
   const { hour, minute, second } = etTime;
 
@@ -39,22 +39,7 @@ export const convertDateTimeEtToUtc = (
     new Date(year, month - 1, day, hour, minute, second),
     "America/New_York"
   );
-  return utcDatetime.getTime();
-};
-
-/*
- * Converts passed ET date to UTC
- * returns -> UTC datetime in format 'ms since Unix epoch'
- */
-export const convertDateEtToUtc = (date: string): number => {
-  const [month, day, year] = date.split("/");
-
-  // month - 1 because Date object months are zero-indexed
-  const utcDatetime = fromZonedTime(
-    new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
-    "America/New_York"
-  );
-  return utcDatetime.getTime();
+  return utcDatetime.toISOString();
 };
 
 /*
@@ -99,10 +84,7 @@ export const formatMonthDayYear = (date: number) => {
   return [getPart("month"), getPart("day"), getPart("year")].join("/");
 };
 
-export const convertDatetimeStringToNumber = (
-  date: string,
-  time: TimeShape
-): number | undefined => {
+export const convertDateStringEtToUtc = (date: string, time: TimeShape) => {
   const completeDate = parseMMDDYYYY(date);
   let convertedTime;
   if (completeDate) {
@@ -114,14 +96,6 @@ export const convertDatetimeStringToNumber = (
     convertedTime = convertDateTimeEtToUtc(dateShape, time);
   }
   return convertedTime || undefined;
-};
-
-export const checkDateRangeStatus = (
-  startDate: number,
-  endDate: number
-): boolean => {
-  const currentTime = new Date().valueOf();
-  return currentTime >= startDate && currentTime <= endDate;
 };
 
 /*
