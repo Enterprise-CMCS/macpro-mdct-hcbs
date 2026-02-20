@@ -19,7 +19,7 @@
     "oxc/no-this-in-exported-function": "error",
     "react/exhaustive-deps": "off",
     "react/jsx-key": "off",
-    "react/no-children-prop": "error",
+    "react/no-children-prop": "off",
     "react/rules-of-hooks": "off",
     "typescript/no-non-null-asserted-optional-chain": "off",
     "typescript/no-wrapper-object-types": "off",
@@ -121,6 +121,8 @@
     "unicorn/throw-new-error": "error"
 
     // May be added in the future:
+    // "unicorn/no-array-for-each": "error",
+    // "unicorn/no-array-reduce": "error",
     // "unicorn/no-null": "error",
     // "unicorn/no-useless-undefined": "error",
     // "unicorn/prefer-global-this": "error",
