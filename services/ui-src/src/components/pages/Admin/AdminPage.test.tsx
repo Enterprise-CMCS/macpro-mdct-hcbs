@@ -141,7 +141,7 @@ describe("<AdminPage />", () => {
 
   it("should display expired banner status", async () => {
     useStore.setState({ allBanners: [mockBannerHome1], ...bannerMethods });
-    const dates = `${reformatDate(mockBannerHome1.startDate)} - ${reformatDate(mockBannerHome1.endDate)}`;
+    const dates = `${reformatDate(mockBannerHome1.startDate)}–${reformatDate(mockBannerHome1.endDate)}`;
 
     render(<AdminPage />);
     await screen.findByText("Expired");
@@ -151,7 +151,7 @@ describe("<AdminPage />", () => {
 
   it("should display active banner status", async () => {
     useStore.setState({ allBanners: [mockBannerHome2], ...bannerMethods });
-    const dates = `${reformatDate(mockBannerHome2.startDate)} - ${reformatDate(mockBannerHome2.endDate)}`;
+    const dates = `${reformatDate(mockBannerHome2.startDate)}–${reformatDate(mockBannerHome2.endDate)}`;
 
     render(<AdminPage />);
     await screen.findByText("Active");
@@ -161,7 +161,7 @@ describe("<AdminPage />", () => {
 
   it("should display scheduled banner status", async () => {
     useStore.setState({ allBanners: [mockBannerHome3], ...bannerMethods });
-    const dates = `${reformatDate(mockBannerHome3.startDate)} - ${reformatDate(mockBannerHome3.endDate)}`;
+    const dates = `${reformatDate(mockBannerHome3.startDate)}–${reformatDate(mockBannerHome3.endDate)}`;
 
     render(<AdminPage />);
     await screen.findByText("Scheduled");
