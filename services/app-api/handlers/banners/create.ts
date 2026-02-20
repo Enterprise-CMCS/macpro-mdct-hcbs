@@ -1,53 +1,40 @@
 import { handler } from "../../libs/handler-lib";
-import { putBanner } from "../../storage/banners";
+import { getBanner, putBanner } from "../../storage/banners";
+import { randomUUID } from "node:crypto";
 import { error } from "../../utils/constants";
-import {
-  badRequest,
-  created,
-  forbidden,
-  internalServerError,
-} from "../../libs/response-lib";
+import { badRequest, ok, forbidden } from "../../libs/response-lib";
 import { canWriteBanner } from "../../utils/authorization";
-import { parseBannerId } from "../../libs/param-lib";
-import { validateBannerPayload } from "../../utils/bannerValidation";
-import { logger } from "../../libs/debug-lib";
-import { BannerData } from "../../types/banner";
+import { emptyParser } from "../../libs/param-lib";
+import { isValidBanner } from "../../utils/bannerValidation";
+import { BannerShape } from "../../types/banner";
 
-export const createBanner = handler(parseBannerId, async (request) => {
-  const { bannerId } = request.parameters;
+export const createBanner = handler(emptyParser, async (request) => {
   const user = request.user;
 
   if (!canWriteBanner(user)) {
     return forbidden(error.UNAUTHORIZED);
   }
 
-  let validatedPayload: BannerData | undefined;
-  try {
-    validatedPayload = await validateBannerPayload(request.body);
-  } catch (err) {
-    logger.error(err);
+  if (!isValidBanner(request.body)) {
     return badRequest("Invalid request");
   }
 
-  const { title, description, link, startDate, endDate } = validatedPayload;
+  const currentTime = new Date().toISOString();
 
-  const currentTime = Date.now();
+  let existingBanner: BannerShape | undefined;
+  if ("key" in request.body && "string" === typeof request.body.key) {
+    existingBanner = await getBanner(request.body.key);
+  }
 
   const newBanner = {
-    key: bannerId,
-    createdAt: currentTime,
+    ...request.body,
+    key: existingBanner?.key ?? randomUUID(),
+    createdAt: existingBanner?.createdAt ?? currentTime,
     lastAltered: currentTime,
     lastAlteredBy: user.fullName,
-    title,
-    description,
-    link,
-    startDate,
-    endDate,
   };
-  try {
-    await putBanner(newBanner);
-  } catch {
-    return internalServerError(error.CREATION_ERROR);
-  }
-  return created(newBanner);
+
+  await putBanner(newBanner);
+
+  return ok(newBanner);
 });

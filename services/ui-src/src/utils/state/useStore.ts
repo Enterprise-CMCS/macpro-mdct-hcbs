@@ -4,9 +4,8 @@ import {
   HcbsUserState,
   HcbsUser,
   HcbsReportState,
-  BannerData,
-  ErrorVerbiage,
-  AdminBannerState,
+  HcbsBannerState,
+  BannerFormData,
 } from "types";
 import { MeasurePageTemplate, Report } from "types/report";
 import { ReactNode } from "react";
@@ -21,6 +20,7 @@ import {
   setPage,
   substitute,
 } from "./reportLogic/reportActions";
+import { getBanners, updateBanner, deleteBanner } from "utils";
 
 // USER STORE
 const userStore = (set: Set<HcbsUserState>) => ({
@@ -37,34 +37,22 @@ const userStore = (set: Set<HcbsUserState>) => ({
 });
 
 // BANNER STORE
-const bannerStore = (set: Set<AdminBannerState>) => ({
+const bannerStore = (set: Set<HcbsBannerState>, get: Get<HcbsBannerState>) => ({
   // initial state
-  bannerData: undefined,
-  bannerActive: false,
-  bannerLoading: false,
-  bannerErrorMessage: undefined,
-  bannerDeleting: false,
-  // actions
-  setBannerData: (newBanner: BannerData | undefined) =>
-    set(() => ({ bannerData: newBanner }), false, { type: "setBannerData" }),
-  clearAdminBanner: () =>
-    set(() => ({ bannerData: undefined }), false, { type: "clearAdminBanner" }),
-  setBannerActive: (bannerStatus: boolean) =>
-    set(() => ({ bannerActive: bannerStatus }), false, {
-      type: "setBannerActive",
-    }),
-  setBannerLoading: (loading: boolean) =>
-    set(() => ({ bannerLoading: loading }), false, {
-      type: "setBannerLoading",
-    }),
-  setBannerErrorMessage: (errorMessage: ErrorVerbiage | undefined) =>
-    set(() => ({ bannerErrorMessage: errorMessage }), false, {
-      type: "setBannerErrorMessage",
-    }),
-  setBannerDeleting: (deleting: boolean) =>
-    set(() => ({ bannerDeleting: deleting }), false, {
-      type: "setBannerDeleting",
-    }),
+  allBanners: [],
+  _lastFetchTime: 0,
+  fetchBanners: async () => {
+    const allBanners = await getBanners();
+    set({ allBanners, _lastFetchTime: new Date().valueOf() });
+  },
+  updateBanner: async (banner: BannerFormData) => {
+    await updateBanner(banner);
+    await get().fetchBanners();
+  },
+  deleteBanner: async (bannerKey: string) => {
+    await deleteBanner(bannerKey);
+    await get().fetchBanners();
+  },
 });
 
 // REPORT STORE
@@ -152,13 +140,11 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState & HcbsReportState & AdminBannerState>(
-      (set, get) => ({
-        ...userStore(set),
-        ...bannerStore(set),
-        ...reportStore(set, get),
-      })
-    ),
+    devtools<HcbsUserState & HcbsReportState & HcbsBannerState>((set, get) => ({
+      ...userStore(set),
+      ...bannerStore(set, get),
+      ...reportStore(set, get),
+    })),
     {
       name: "hcbs-store",
       partialize: (state) => ({ report: state.report }),

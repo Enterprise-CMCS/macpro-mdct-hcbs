@@ -26,9 +26,7 @@ test.describe("Banner functionality", () => {
     await assertBannerIsPopulated(alertPreview, testBannerData);
   });
 
-  test.skip("The banner should be visible from other pages", async ({
-    page,
-  }) => {
+  test("The banner should be visible from other pages", async ({ page }) => {
     await navigateToBannerEditor(page);
     await fillBannerForm(page, testBannerData);
     await saveBanner(page);
@@ -93,7 +91,7 @@ const assertBannerIsPopulated = async (
 // Click the banner save button. Expects to be on the banner editor page.
 const saveBanner = async (page: Page) => {
   const saveButton = page.getByRole("button", {
-    name: "Replace Current Banner",
+    name: "Create Banner",
   });
 
   await saveButton.click();
@@ -104,7 +102,7 @@ const saveBanner = async (page: Page) => {
 // Click the banner save button. Expects to be on the banner editor page.
 const deleteBanner = async (page: Page) => {
   const deleteButton = page.getByRole("button", {
-    name: "Delete Current Banner",
+    name: /Delete banner titled .*/,
   });
 
   await deleteButton.click();

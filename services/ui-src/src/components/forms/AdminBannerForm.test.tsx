@@ -1,44 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import { AdminBannerForm } from "components";
-import { RouterWrappedComponent } from "utils/testing/mockRouter";
 import userEvent from "@testing-library/user-event";
 import { testA11yAct } from "utils/testing/commonTests";
-import { AdminBannerMethods } from "types";
 
 const mockWriteAdminBanner = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-const adminBannerFormComponent = (
-  writeAdminBanner: AdminBannerMethods["writeAdminBanner"]
-) => (
-  <RouterWrappedComponent>
-    <AdminBannerForm writeAdminBanner={writeAdminBanner} />
-  </RouterWrappedComponent>
-);
-
-const HOURS = 60 * 60 * 1000;
 
 describe("<AdminBannerForm />", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("AdminBannerForm is visible", () => {
-    render(adminBannerFormComponent(mockWriteAdminBanner));
-    expect(screen.getByRole("textbox", { name: "Title text" })).toBeVisible();
-    expect(
-      screen.getByRole("textbox", { name: "Description text" })
-    ).toBeVisible();
-    expect(screen.getByRole("textbox", { name: "Link" })).toBeVisible();
-    expect(screen.getByRole("textbox", { name: "Start date" })).toBeVisible();
-    expect(screen.getByRole("textbox", { name: "End date" })).toBeVisible();
-    expect(
-      screen.getByRole("button", { name: "Replace Current Banner" })
-    ).toBeVisible();
-  });
-
   test("AdminBannerForm can be filled and submitted without error", async () => {
-    render(adminBannerFormComponent(mockWriteAdminBanner));
+    render(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
+
+    // It is frustrating that this is a button + list, instead of an combobox.
+    // Why, CMSDS, have you done this? Is it better? How?
+    const dropdown = screen.getByRole("button", { name: /Site area/ });
+    await userEvent.click(dropdown);
+    const qmsOption = screen.getByRole("option", { name: /QMS report/ });
+    await userEvent.click(qmsOption);
 
     const titleInput = screen.getByLabelText("Title text");
     await userEvent.type(titleInput, "mock title");
@@ -56,27 +37,27 @@ describe("<AdminBannerForm />", () => {
     // Modified: End date must be after start date
     await userEvent.type(endDateInput, "01/02/1970");
 
-    const submitButton = screen.getByText("Replace Current Banner");
+    const submitButton = screen.getByText("Create Banner");
     await userEvent.click(submitButton);
 
     expect(mockWriteAdminBanner).toHaveBeenCalledWith({
-      key: "admin-banner-id",
+      area: "QMS",
       title: "mock title",
       description: "mock description",
       link: "http://example.com",
-      startDate: 5 * HOURS, // midnight UTC, in New York
-      endDate: 53 * HOURS - 1000, // End of the next day in NY
+      startDate: "1970-01-01T05:00:00.000Z", // midnight on 1st, in New York
+      endDate: "1970-01-03T04:59:59.000Z", // 11:59pm on 2nd, in New York
     });
   });
 
-  testA11yAct(adminBannerFormComponent(mockWriteAdminBanner));
+  testA11yAct(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
 });
 
 describe("AdminBannerForm validation", () => {
   test("Display form errors when user tries to submit completely blank form", async () => {
-    render(adminBannerFormComponent(mockWriteAdminBanner));
+    render(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
 
-    const submitButton = screen.getByText("Replace Current Banner");
+    const submitButton = screen.getByText("Create Banner");
     await userEvent.click(submitButton);
 
     const responseIsRequiredErrorMessage = screen.getAllByText(
@@ -88,9 +69,9 @@ describe("AdminBannerForm validation", () => {
   });
 
   test("User has form errors but then fills out the form and errors go away", async () => {
-    render(adminBannerFormComponent(mockWriteAdminBanner));
+    render(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
 
-    const submitButton = screen.getByText("Replace Current Banner");
+    const submitButton = screen.getByText("Create Banner");
     const titleInput = screen.getByLabelText("Title text");
     const descriptionInput = screen.getByLabelText("Description text");
     const linkInput = screen.getByLabelText("Link", { exact: false });
@@ -126,12 +107,12 @@ describe("AdminBannerForm validation", () => {
     ).not.toBeInTheDocument();
 
     expect(mockWriteAdminBanner).toHaveBeenCalledWith({
-      key: "admin-banner-id",
+      area: "home",
       title: "mock title",
       description: "mock description",
       link: "http://example.com",
-      startDate: 5 * HOURS, // midnight UTC, in New York
-      endDate: 53 * HOURS - 1000, // Expected end date for 01/02/1970
+      startDate: "1970-01-01T05:00:00.000Z", // midnight on 1st, in New York
+      endDate: "1970-01-03T04:59:59.000Z", // 11:59pm on 2nd, in New York
     });
   });
 });

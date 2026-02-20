@@ -1,88 +1,132 @@
-import { validateBannerPayload } from "../bannerValidation";
-import { error } from "../constants";
+import { isValidBanner } from "../bannerValidation";
+import { logger } from "../../libs/debug-lib";
+import { BannerAreas, BannerFormData } from "../../types/banner";
 
-const validObject = {
-  key: "1023",
-  title: "this is a title",
-  description: "this is a description",
-  link: "https://www.google.com",
-  startDate: 11022933, // Jan 1, 1970
-  endDate: 103444405, // Jan 2, 1970
-  isActive: false,
+jest.mock("../../libs/debug-lib", () => ({
+  logger: {
+    warn: jest.fn(),
+  },
+}));
+const warn = logger.warn as jest.Mock;
+
+const validPayload: BannerFormData = {
+  title: "mock title",
+  area: BannerAreas.QMS,
+  description: "mock description",
+  link: "https://example.com",
+  startDate: new Date().toISOString(),
+  endDate: new Date().toISOString(),
 };
 
-const invalidObject = {
-  // missing key
-  title: "this is a title",
-  description: "this is a description",
-  link: "https://www.google.com",
-  startDate: 11022933, // Jan 1, 1970
-  endDate: 103444405, // Jan 2, 1970
-};
-
-describe("Test validateBannerPayload function", () => {
-  it("successfully validates a valid object", async () => {
-    const validatedData = await validateBannerPayload(validObject);
-    expect(validatedData).toEqual(validObject);
+describe("isValidBanner", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  it("throws an error when validating an invalid object", () => {
-    expect(async () => {
-      await validateBannerPayload(invalidObject);
-    }).rejects.toThrow();
-  });
-});
 
-describe("Test validateBannerPayload function", () => {
-  it("successfully validates a valid object", async () => {
-    const validatedData = await validateBannerPayload(validObject);
-    expect(validatedData).toEqual(validObject);
+  it("should accept a valid payload", () => {
+    expect(isValidBanner(validPayload)).toBe(true);
   });
-  it("throws an error when validating an invalid object", () => {
-    expect(async () => {
-      await validateBannerPayload(invalidObject);
-    }).rejects.toThrow();
-  });
-});
 
-describe("validateBannerPayload for startDate (API)", () => {
-  const basePayload = {
-    key: "admin-banner-id",
-    title: "mock title",
-    description: "mock description",
-  };
-
-  it("should throw an error if the payload is undefined", async () => {
-    await expect(validateBannerPayload(undefined)).rejects.toThrow(
-      "Missing required data."
+  it.each([
+    { name: "null", value: null },
+    { name: "undefined", value: undefined },
+    { name: "empty string", value: "" },
+    { name: "a non-empty string", value: "oof" },
+    { name: "a number", value: 42 },
+  ])("should reject $name", ({ value }) => {
+    expect(isValidBanner(value)).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("banner must be an object")
     );
   });
 
-  it("should pass when startDate is before endDate", async () => {
-    const payload = {
-      ...basePayload,
-      startDate: 11022933, // Jan 1, 1970
-      endDate: 103444405, // Jan 2, 1970
-    };
-    await expect(validateBannerPayload(payload)).resolves.toEqual(payload);
+  it.each(["title", "area", "description", "startDate", "endDate"])(
+    "should reject a payload with no %s",
+    (key) => {
+      const payload = structuredClone(validPayload);
+      delete payload[key as keyof BannerFormData];
+      expect(isValidBanner(payload)).toBe(false);
+      expect(warn).toHaveBeenCalledWith(
+        expect.stringContaining("banner." + key)
+      );
+    }
+  );
+
+  it("should accept a valid payload with no link", () => {
+    const payload = structuredClone(validPayload);
+    delete payload.link;
+    expect(isValidBanner(payload)).toBe(true);
   });
 
-  it("should throw an error when endDate is before startDate", async () => {
-    const payload = {
-      ...basePayload,
-      startDate: 103444405, // Jan 2, 1970
-      endDate: 11022933, // Jan 1, 1970
-    };
-    await expect(validateBannerPayload(payload)).rejects.toThrow(
-      error.END_DATE_BEFORE_START_DATE
+  it.each(["key", "createdAt", "lastAltered", "lastAlteredBy"])(
+    "should accept the optional field %s",
+    (key) => {
+      const payload = structuredClone(validPayload);
+      (payload as any)[key] = "some value";
+      expect(isValidBanner(payload)).toBe(true);
+    }
+  );
+
+  it("should reject a payload with an unrecognized field", () => {
+    expect(isValidBanner({ ...validPayload, foo: "bar" })).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("unwanted field")
     );
   });
 
-  it("should pass when endDate is equal to startDate", async () => {
+  it("should reject a a banner with non-string title", () => {
+    expect(isValidBanner({ ...validPayload, title: 42 })).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("banner.title must be a string")
+    );
+  });
+
+  it("should reject a a banner with invalid area", () => {
+    expect(isValidBanner({ ...validPayload, area: "nowhere" })).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("banner.area must be one of")
+    );
+  });
+
+  it("should reject a a banner with non-string description", () => {
+    expect(isValidBanner({ ...validPayload, description: false })).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("banner.description must be a string")
+    );
+  });
+
+  it("should reject a a banner with non-URL link", () => {
+    expect(isValidBanner({ ...validPayload, link: "not a url" })).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringMatching(/banner\.link.* must be a valid URL/)
+    );
+  });
+
+  it("should reject a a banner with invalid startDate", () => {
+    const payload = { ...validPayload, startDate: "02/18/2026" };
+    expect(isValidBanner(payload)).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("banner.startDate must be an ISO date string")
+    );
+  });
+
+  it("should reject a a banner with invalid endDate", () => {
+    const payload = { ...validPayload, endDate: "2026-02-29T19:33:30.893Z" };
+    expect(isValidBanner(payload)).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("banner.endDate must be an ISO date string")
+    );
+  });
+
+  it("should reject a a banner that ends before it starts", () => {
     const payload = {
-      ...basePayload,
-      startDate: 11022933, // Jan 1, 1970
-      endDate: 11022933, // Jan 1, 1970
+      ...validPayload,
+      startDate: "2026-02-19T19:33:30.893Z",
+      endDate: "2026-02-17T19:33:30.893Z",
     };
-    await expect(validateBannerPayload(payload)).resolves.toEqual(payload);
+    expect(isValidBanner(payload)).toBe(false);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("banner.endDate must be after banner.startDate")
+    );
   });
 });

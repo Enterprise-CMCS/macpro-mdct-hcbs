@@ -1,6 +1,3 @@
-// BANNERS
-export const bannerId = "admin-banner-id";
-
 export const ErrorMessages = {
   endDateBeforeStartDate: "End date can't be before start date",
   mustBeADate: "Response must be a date in MMDDYYYY format",

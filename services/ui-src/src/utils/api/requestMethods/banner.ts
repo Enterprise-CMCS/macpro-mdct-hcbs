@@ -1,18 +1,18 @@
 import { apiLib, updateTimeout } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { BannerData } from "types/banners";
+import { BannerShape, BannerFormData } from "types/banners";
 
-async function getBanner(bannerKey: string) {
+export async function getBanners() {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
   };
 
   updateTimeout();
-  return await apiLib.get<BannerData>(`/banners/${bannerKey}`, options);
+  return await apiLib.get<BannerShape[]>("/banners", options);
 }
 
-async function writeBanner(bannerData: BannerData) {
+export async function updateBanner(bannerData: BannerFormData) {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -20,10 +20,10 @@ async function writeBanner(bannerData: BannerData) {
   };
 
   updateTimeout();
-  return await apiLib.post<BannerData>(`/banners/${bannerData.key}`, options);
+  return await apiLib.post<BannerShape>("/banners", options);
 }
 
-async function deleteBanner(bannerKey: string) {
+export async function deleteBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
   const request = {
     headers: { ...requestHeaders },
@@ -32,5 +32,3 @@ async function deleteBanner(bannerKey: string) {
   updateTimeout();
   return await apiLib.del(`/banners/${bannerKey}`, request);
 }
-
-export { getBanner, writeBanner, deleteBanner };

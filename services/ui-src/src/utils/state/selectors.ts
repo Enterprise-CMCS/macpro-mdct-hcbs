@@ -1,4 +1,6 @@
 import {
+  BannerArea,
+  HcbsBannerState,
   HcbsReportState,
   PageStatus,
   ParentPageTemplate,
@@ -67,4 +69,23 @@ export const submittableMetricsSelector = (state: HcbsReportState) => {
     report.status !== ReportStatus.SUBMITTED && allPagesSubmittable;
 
   return { sections: sections, submittable: submittable };
+};
+
+export const activeBannerSelector = (area: BannerArea) => {
+  return (state: HcbsBannerState) => {
+    const now = new Date();
+    const ONE_HOUR = 60 * 60 * 1000;
+    if (now.valueOf() - state._lastFetchTime > ONE_HOUR) {
+      // Kick off a fetch, but don't bother awaiting.
+      // The useStore hook will update dependent components as needed.
+      state.fetchBanners();
+    }
+
+    return state.allBanners.filter(
+      (banner) =>
+        area === banner.area &&
+        new Date(banner.startDate) <= now &&
+        now <= new Date(banner.endDate)
+    );
+  };
 };

@@ -1,5 +1,6 @@
 import { HttpResponse } from "../libs/response-lib";
 import { StateAbbr } from "../utils/constants";
+import { URL } from "node:url";
 
 export enum UserRoles {
   ADMIN = "mdcthcbs-bor", // "MDCT HCBS Business Owner Representative"
@@ -18,6 +19,31 @@ export interface User {
   email: string;
   fullName: string;
 }
+
+export type UrlString = string;
+export const isValidUrl = (x: unknown): x is UrlString => {
+  try {
+    const url = new URL(x as string);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+/** A date, formatted like `2026-02-17T02:50:44.752Z` */
+export type IsoDateString = string;
+export const isIsoDateString = (x: unknown): x is IsoDateString => {
+  if ("string" !== typeof x) {
+    return false;
+  }
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(x)) {
+    return false;
+  }
+  // The date constructor never throws, even given impossible values.
+  // But invalid values like "2001-02-31T00:00:00.000Z" do not round-trip,
+  // so we can use that fact for validation.
+  return new Date(x).toISOString() === x;
+};
 
 /**
  * Abridged definition of the type receieved by our lambdas in AWS.
