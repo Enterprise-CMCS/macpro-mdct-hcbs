@@ -1,55 +1,21 @@
-import { useContext } from "react";
-import {
-  Box,
-  Button,
-  Collapse,
-  Flex,
-  Heading,
-  Text,
-  Spinner,
-} from "@chakra-ui/react";
-import {
-  AdminBannerContext,
-  AdminBannerForm,
-  Alert,
-  Banner,
-  PageTemplate,
-} from "components";
-import { convertDateUtcToEt, useStore } from "utils";
-import { AlertTypes } from "types";
-import { ToggleButton } from "components/toggle/toggleButton";
+import { Box, Heading } from "@chakra-ui/react";
+import { PageTemplate } from "components";
+import { ToggleButton } from "components/toggle/ToggleButton";
 
 export const NotificationsPage = () => {
-  const { deleteAdminBanner, writeAdminBanner } =
-    useContext(AdminBannerContext);
-
-  const {
-    bannerData,
-    bannerActive,
-    bannerLoading,
-    bannerErrorMessage,
-    bannerDeleting,
-  } = useStore();
-
   return (
-    <PageTemplate data-testid="admin-view">
+    <PageTemplate data-testid="notifications-view">
       <Box sx={sx.introTextBox}>
-        <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
-            Notifications
+        <Heading as="h1" id="NotificationsHeader" tabIndex={-1} sx={sx.headerText}>
+          Notifications
         </Heading>
       </Box>
-      <Box sx={sx.currentBannerSectionBox}>
-        <Text sx={sx.sectionHeader}>Current Banner</Text>
-                  <Flex sx={sx.currentBannerInfo}>
-                    <Text>
-                      Status:{" "}
-                      <span className={bannerActive ? "active" : "inactive"}>
-                        {bannerActive ? "Active" : "Inactive"}
-                      </span>
-                    </Text>
-                  </Flex>
-                  <ToggleButton />
-
+      <Box>
+        <ToggleButton label="QMS" id="QMS-Toggle" />
+        <ToggleButton label="TACM" id="TACM-Toggle" />
+        <ToggleButton label="CI" id="CI-Toggle" />
+        <ToggleButton label="PCP" id="PCP-Toggle" />
+        <ToggleButton label="WWL" id="WWL-Toggle" />
       </Box>
     </PageTemplate>
   );
@@ -63,49 +29,5 @@ const sx = {
     marginBottom: "spacer2",
     fontSize: "heading_3xl",
     fontWeight: "heading_3xl",
-  },
-  currentBannerSectionBox: {
-    width: "100%",
-    marginBottom: "spacer4",
-  },
-  sectionHeader: {
-    fontSize: "heading_2xl",
-    fontWeight: "heading_2xl",
-  },
-  currentBannerInfo: {
-    flexDirection: "column",
-    marginBottom: "spacer1 !important",
-    span: {
-      marginLeft: "spacer1",
-      "&.active": {
-        color: "palette.success",
-      },
-      "&.inactive": {
-        color: "palette.error",
-      },
-    },
-  },
-  currentBannerFlex: {
-    flexDirection: "column",
-  },
-  spinnerContainer: {
-    marginTop: "spacer1",
-    ".ds-c-spinner": {
-      "&:before": {
-        borderColor: "palette.black",
-      },
-      "&:after": {
-        borderLeftColor: "palette.black",
-      },
-    },
-  },
-  deleteBannerButton: {
-    width: "13.3rem",
-    alignSelf: "end",
-    marginTop: "spacer2 !important",
-  },
-  newBannerBox: {
-    width: "100%",
-    flexDirection: "column",
   },
 };

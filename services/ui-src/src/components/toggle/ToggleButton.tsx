@@ -7,37 +7,43 @@ import {
   SystemStyleObject,
 } from "@chakra-ui/react";
 
-export const ToggleButton = ({ label, id, children, sx: sxOverride }: Props) => {
+export const ToggleButton = ({
+  label,
+  id,
+  sx: sxOverride,
+  isRequired,
+}: Props) => {
+  const [checked, setChecked] = useState(false);
+
   return (
     <Box>
-      <FormControl display="flex" alignItems="center">
-        <FormLabel htmlFor="email-alerts" mb="0">
+      <FormControl
+        display="flex"
+        alignItems="center"
+        isRequired={isRequired}
+        sx={sxOverride ?? sx.root}
+      >
+        <FormLabel htmlFor={id} mb="0">
           {label}
         </FormLabel>
-        <Switch id={id} />
+        <Switch
+          id={id}
+          aria-label={label}
+          isChecked={checked}
+          onChange={(e) => setChecked(e.target.checked)}
+        />
       </FormControl>
     </Box>
   );
 };
 
 interface Props {
-  children?: ReactNode | ReactNode[];
   label?: string;
   id: string;
   sx?: SystemStyleObject;
+  isRequired?: boolean;
 }
 
 const sx = {
-  children: {
-    padding: "0 22px",
-    border: "4px #0071BC solid",
-    borderWidth: "0 0 0 4px",
-    margin: "0 14px",
-    "input:not(.ds-c-choice)": {
-      width: "240px",
-    },
-    textarea: {
-      maxWidth: "440px",
-    },
-  },
+  /* no styling yet */
 };
