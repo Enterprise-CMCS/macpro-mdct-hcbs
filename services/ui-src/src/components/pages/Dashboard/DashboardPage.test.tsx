@@ -19,6 +19,8 @@ jest.mock("utils/other/useBreakpoint", () => ({
   makeMediaQueryClasses: jest.fn().mockReturnValue("desktop"),
 }));
 
+// These tests do `useStore.setState` rather than mocking the useStore hook,
+// to support selectors (like `activeBannerSelector`) with no further plumbing.
 useStore.setState(mockUseStore);
 
 jest.mock("react-router-dom", () => ({
