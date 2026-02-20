@@ -118,7 +118,7 @@ function displayStatus(banner: BannerShape) {
 
   return (
     <Text sx={sx.statusText}>
-      <span className={status}>{status}</span>: {startDateEt} - {endDateEt}
+      <span className={status}>{status}</span>: {startDateEt}&ndash;{endDateEt}
     </Text>
   );
 }

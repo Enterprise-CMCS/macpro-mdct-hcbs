@@ -16,7 +16,7 @@ export interface BannerShape extends BannerFormData {
   key: string;
   createdAt: IsoDateString;
   lastAltered: IsoDateString;
-  lastAlteredBy: IsoDateString;
+  lastAlteredBy: string;
 }
 
 export const BannerAreas = {
