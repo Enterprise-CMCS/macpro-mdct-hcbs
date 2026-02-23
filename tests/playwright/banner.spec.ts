@@ -59,7 +59,7 @@ test.describe("Banner functionality", () => {
       deleteButton.click(),
     ]);
 
-    expect(deleteButton).toBeHidden();
+    await expect(deleteButton).toBeHidden();
   });
 });
 
