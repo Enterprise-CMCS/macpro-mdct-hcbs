@@ -296,8 +296,7 @@ export type PageElement =
   | DividerTemplate
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
-  | ListInputTemplate
-  | WaiverAlertTemplate;
+  | ListInputTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
