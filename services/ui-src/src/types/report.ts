@@ -209,7 +209,6 @@ export enum ElementType {
   SubmissionParagraph = "submissionParagraph",
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
-  WaiverAlert = "waiverAlert",
 }
 
 export type PageElement =
@@ -290,14 +289,6 @@ export type ParagraphTemplate = {
 
 export type StatusAlertTemplate = {
   type: ElementType.StatusAlert;
-  id: string;
-  title: string;
-  text: string;
-  status: AlertTypes;
-};
-
-export type WaiverAlertTemplate = {
-  type: ElementType.WaiverAlert;
   id: string;
   title: string;
   text: string;
@@ -431,6 +422,8 @@ export type CheckboxTemplate = {
   choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string[];
+  emptyAlertTitle?: string;
+  emptyAlertDescription?: string;
   required: boolean;
 };
 

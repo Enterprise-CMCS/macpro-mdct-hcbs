@@ -22,7 +22,6 @@ import {
   StatusAlert,
   CheckboxField,
   EligibilityTableElement,
-  WaiverAlert,
 } from "components";
 
 import {
@@ -633,22 +632,6 @@ export const elementObject: {
     ],
     pdfVariants: ["StatusAlert currently not used in PDFs"],
   },
-  [ElementType.WaiverAlert]: {
-    description: "Waiver Alert Type",
-    id: "id-waiver-alert",
-    variants: [
-      <WaiverAlert
-        element={{
-          type: ElementType.WaiverAlert,
-          id: "waiver-alert",
-          title: "Waiver Alert Title",
-          text: "AlertTypes.WARNING",
-          status: AlertTypes.WARNING,
-        }}
-      />,
-    ],
-    pdfVariants: ["WaiverAlert currently not used in PDFs"],
-  },
   [ElementType.SubmissionParagraph]: {
     description: "Submission Paragraph",
     id: "id-submission-paragraph",
@@ -671,6 +654,8 @@ export const elementObject: {
             { value: "checkbox option 2", label: "checkbox option 2" },
             { value: "checkbox option 3", label: "checkbox option 3" },
           ],
+          emptyAlertTitle: "Empty Alert Title",
+          emptyAlertDescription: "Empty Alert Description",
         }}
       />,
     ],
