@@ -55,7 +55,7 @@ export const AdminPage = () => {
                 </Heading>
                 {banners.map((banner) => (
                   <Fragment key={banner.key}>
-                    <Banner {...banner} />
+                    <Banner {...banner} key={banner.key} />
                     <Flex sx={sx.bannerStatusAndButtonContainer}>
                       {displayStatus(banner)}
                       <Button
