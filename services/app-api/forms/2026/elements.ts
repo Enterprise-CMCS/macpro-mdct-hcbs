@@ -7,8 +7,6 @@ import {
   CheckboxTemplate,
   PageElement,
   ListInputTemplate,
-  AlertTypes,
-  WaiverAlertTemplate,
 } from "../../types/reports";
 
 // Any elements that are reused across multiple reports are added here
@@ -140,20 +138,14 @@ export const waiverListCheckboxField: CheckboxTemplate = {
     /* Generated in buildReport, with data from waivers.ts */
   ],
   helperText: "Select all that apply.",
+  emptyAlertTitle: "No programs of waivers found for your state/territory",
+  emptyAlertDescription:
+    "If you believe this is in error please contact the MDCT Help Desk: mdct_help@cms.hhs.gov",
   required: false,
-};
-
-export const waiverAlert: WaiverAlertTemplate = {
-  type: ElementType.WaiverAlert,
-  id: "status-alert",
-  title: "No programs of waivers found for your state/territory",
-  text: "If you believe this is in error please contact the MDCT Help Desk: mdct_help@cms.hhs.gov",
-  status: AlertTypes.WARNING,
 };
 
 export const whichProgramsWaivers: PageElement[] = [
   waiverListCheckboxField,
-  waiverAlert,
   divider,
 ];
 
