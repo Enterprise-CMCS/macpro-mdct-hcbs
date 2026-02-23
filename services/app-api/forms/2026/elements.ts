@@ -153,6 +153,6 @@ export const waiverListInputField: ListInputTemplate = {
   helperText:
     "Include the waiver/demonstration name and control numbers in your response.",
   fieldLabel: "Waiver/demonstration and/or control numbers",
-  buttonText: "Add waiver/demonstation name",
+  buttonText: "Add waiver/demonstration name",
   required: false,
 };
