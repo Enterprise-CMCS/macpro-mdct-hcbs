@@ -27,31 +27,39 @@ test.describe("Banner functionality", () => {
   });
 
   test("The banner should be visible from other pages", async ({ page }) => {
+    const title = `Banner visibility test ${new Date().toISOString()}`;
+    const bannerData = { ...testBannerData, title };
+
     await navigateToBannerEditor(page);
-    await fillBannerForm(page, testBannerData);
+    await fillBannerForm(page, bannerData);
     await saveBanner(page);
 
     await page.goto("/");
 
     // The new alert should be visible on the home page
-    const alertElement = page.getByRole("alert");
-    await assertBannerIsPopulated(alertElement, testBannerData);
+    const alertElement = page.getByRole("alert").filter({ hasText: title });
+    await assertBannerIsPopulated(alertElement, bannerData);
   });
 
   test("The banner should be deletable", async ({ page }) => {
+    const title = `Banner deletion test ${new Date().toISOString()}`;
+    const bannerData = { ...testBannerData, title };
+
     await navigateToBannerEditor(page);
-    await fillBannerForm(page, testBannerData);
+    await fillBannerForm(page, bannerData);
     await saveBanner(page);
 
-    // We have 2 alerts: the "Current Banner" preview, and the form preview.
-    let alertElements = await page.getByRole("alert").all();
-    expect(alertElements).toHaveLength(2);
+    const deleteButton = page.getByRole("button", {
+      name: "Delete banner titled " + title,
+    });
 
-    await deleteBanner(page);
+    await Promise.all([
+      waitForBannerRequest(page, "DELETE"),
+      waitForBannerRequest(page, "GET"),
+      deleteButton.click(),
+    ]);
 
-    // We should be back down to just 1 alert.
-    alertElements = await page.getByRole("alert").all();
-    expect(alertElements).toHaveLength(1);
+    expect(deleteButton).toBeHidden();
   });
 });
 
@@ -98,19 +106,6 @@ const saveBanner = async (page: Page) => {
     waitForBannerRequest(page, "POST"),
     waitForBannerRequest(page, "GET"),
     saveButton.click(),
-  ]);
-};
-
-// Click the banner save button. Expects to be on the banner editor page.
-const deleteBanner = async (page: Page) => {
-  const deleteButton = page.getByRole("button", {
-    name: /Delete banner titled .*/,
-  });
-
-  await Promise.all([
-    waitForBannerRequest(page, "DELETE"),
-    waitForBannerRequest(page, "GET"),
-    deleteButton.click(),
   ]);
 };
 
