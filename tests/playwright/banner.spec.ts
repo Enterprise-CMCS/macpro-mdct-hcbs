@@ -115,7 +115,7 @@ const waitForBannerRequest = async (
 ) => {
   await page.waitForResponse(
     (response) =>
-      response.url().includes(`/banners/`) &&
+      response.url().includes(`/banners`) &&
       response.request().method() === method &&
       response.ok()
   );
