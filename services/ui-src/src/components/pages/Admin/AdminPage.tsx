@@ -89,11 +89,12 @@ export const AdminPage = () => {
 };
 
 function groupAndSortBanners(banners: BannerShape[]) {
-  // Sort from earliest start to latest, then by earliest end to latest
+  // Sort by startDate, then by endDate, then by createdAt. Earliest first.
   banners.sort(
     (a, b) =>
       a.startDate.localeCompare(b.startDate) ||
-      a.endDate.localeCompare(b.endDate)
+      a.endDate.localeCompare(b.endDate) ||
+      a.createdAt.localeCompare(b.createdAt)
   );
 
   const groups: Record<string, BannerShape[]> = {};

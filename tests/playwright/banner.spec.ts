@@ -94,9 +94,11 @@ const saveBanner = async (page: Page) => {
     name: "Create Banner",
   });
 
-  await saveButton.click();
-  await waitForBannerRequest(page, "POST");
-  await waitForBannerRequest(page, "GET");
+  await Promise.all([
+    waitForBannerRequest(page, "POST"),
+    waitForBannerRequest(page, "GET"),
+    saveButton.click(),
+  ]);
 };
 
 // Click the banner save button. Expects to be on the banner editor page.
@@ -105,9 +107,11 @@ const deleteBanner = async (page: Page) => {
     name: /Delete banner titled .*/,
   });
 
-  await deleteButton.click();
-  await waitForBannerRequest(page, "DELETE");
-  await waitForBannerRequest(page, "GET");
+  await Promise.all([
+    waitForBannerRequest(page, "DELETE"),
+    waitForBannerRequest(page, "GET"),
+    deleteButton.click(),
+  ]);
 };
 
 const waitForBannerRequest = async (
