@@ -339,7 +339,7 @@ export const DashboardTable = ({
       <Hide below="sm">
         {HorizontalTable({
           tableContent,
-          reports: reports,
+          reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
           showAdminControlsColumn,
@@ -355,7 +355,7 @@ export const DashboardTable = ({
       <Show below="sm">
         {VerticalTable({
           tableContent,
-          reports: reports,
+          reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
           showAdminControlsColumn,
