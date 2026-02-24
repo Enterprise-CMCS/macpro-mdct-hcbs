@@ -27,7 +27,7 @@ import { useState, Fragment } from "react";
 
 interface DashboardTableProps {
   reports: LiteReport[];
-  openAddEditReportModal: Function;
+  openAddEditReportModal: (report: LiteReport) => void;
   unlockModalOnOpenHandler: () => void;
   onReportUpdate?: () => void;
 }
