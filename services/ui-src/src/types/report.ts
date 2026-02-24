@@ -43,22 +43,6 @@ export enum PageStatus {
   COMPLETE = "Complete",
 }
 
-export enum WaiverType {
-  WAIVER1915C = "1915(c) waiver",
-  SPA1915J = "1915(j) SPA",
-  SPA1915I = "1915(i) SPA",
-  SPA1015K = "1915(k) SPA",
-  DEMO1115 = "1115 Demonstration",
-}
-
-export interface WAIVER {
-  id: string;
-  state: StateAbbr;
-  controlNumber?: string;
-  programTitle: string;
-  waiverType: WaiverType;
-}
-
 export type ReportMeasureConfig = {
   measureLookup: {
     defaultMeasures: MeasureOptions[];
