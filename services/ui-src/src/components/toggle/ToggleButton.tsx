@@ -13,7 +13,6 @@ export const ToggleButton = ({
   checked,
   onCheckedChange,
 }: Props) => {
-
   return (
     <Box>
       <FormControl

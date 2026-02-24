@@ -50,4 +50,6 @@ describe("<ToggleButton />", () => {
 
     expect(toggle).toBeChecked();
   });
+
+  testA11y(toggleButtonComponent);
 });
