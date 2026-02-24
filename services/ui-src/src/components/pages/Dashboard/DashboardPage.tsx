@@ -240,6 +240,7 @@ export const DashboardPage = () => {
             reports={filteredReports}
             openAddEditReportModal={openAddEditReportModal}
             unlockModalOnOpenHandler={unlockModalOnOpenHandler}
+            onReportUpdate={() => reloadReports(reportType!, state!)}
           />
         )}
         {isLoading && (

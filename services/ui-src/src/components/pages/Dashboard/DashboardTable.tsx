@@ -27,8 +27,9 @@ import { useState, Fragment } from "react";
 
 interface DashboardTableProps {
   reports: LiteReport[];
-  openAddEditReportModal: (report: LiteReport) => void;
+  openAddEditReportModal: Function;
   unlockModalOnOpenHandler: () => void;
+  onReportUpdate?: () => void;
 }
 
 interface TableProps extends Omit<
@@ -253,10 +254,10 @@ export const DashboardTable = ({
   reports,
   openAddEditReportModal,
   unlockModalOnOpenHandler,
+  onReportUpdate,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
-  const [reportsInView, setReportsInView] = useState<LiteReport[]>(reports);
 
   const [archiving, setArchiving] = useState<number>();
   const [unlocking, setUnlocking] = useState<number>();
@@ -286,24 +287,50 @@ export const DashboardTable = ({
 
   const toggleArchived = async (idx: number) => {
     setArchiving(idx);
-    const reports = [...reportsInView];
     const report = reports[idx];
-    await updateArchivedStatus(report, !report.archived);
-    report.archived = !report.archived;
-    reports[idx] = report;
-    setReportsInView(reports);
+
+    if (!report) {
+      console.error("Report not found at index:", idx);
+      setArchiving(undefined);
+      return;
+    }
+
+    // Handle undefined archived property
+    const newArchivedStatus = !(report.archived ?? false);
+    await updateArchivedStatus(report, newArchivedStatus);
+
+    // Trigger parent to reload reports
+    if (onReportUpdate) {
+      onReportUpdate();
+    }
+
     setArchiving(undefined);
   };
 
   const toggleRelease = async (idx: number) => {
     setUnlocking(idx);
-    const reports = [...reportsInView];
     const report = reports[idx];
+
+    if (!report) {
+      console.error("Report not found at index:", idx);
+      setUnlocking(undefined);
+      return;
+    }
+
+    if (report.archived) {
+      console.error("Cannot release an archived report:");
+      setUnlocking(undefined);
+      return;
+    }
+
     await releaseReport(report);
     unlockModalOnOpenHandler();
-    report.status = ReportStatus.IN_PROGRESS;
-    reports[idx] = report;
-    setReportsInView(reports);
+
+    // Trigger parent to reload reports
+    if (onReportUpdate) {
+      onReportUpdate();
+    }
+
     setUnlocking(undefined);
   };
 
@@ -312,7 +339,7 @@ export const DashboardTable = ({
       <Hide below="sm">
         {HorizontalTable({
           tableContent,
-          reports,
+          reports: reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
           showAdminControlsColumn,
@@ -328,7 +355,7 @@ export const DashboardTable = ({
       <Show below="sm">
         {VerticalTable({
           tableContent,
-          reports,
+          reports: reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
           showAdminControlsColumn,
