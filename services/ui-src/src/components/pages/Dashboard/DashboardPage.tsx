@@ -42,7 +42,7 @@ import { Banner } from "components/alerts/Banner";
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
   const { reportType, state } = useParams();
-  const banners = useStore(activeBannerSelector(reportType as BannerArea));
+  const banner = useStore(activeBannerSelector(reportType as BannerArea));
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<LiteReport[]>([]);
   const [selectedReport, setSelectedReport] = useState<LiteReport | undefined>(
@@ -126,9 +126,7 @@ export const DashboardPage = () => {
         <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
         Return home
       </Link>
-      {banners.map((banner) => (
-        <Banner {...banner} key={banner.key} />
-      ))}
+      {banner ? <Banner {...banner} key={banner.key} /> : null}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" variant="h1">
           {fullStateName} {reportName}

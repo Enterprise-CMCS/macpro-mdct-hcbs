@@ -6,7 +6,7 @@ import {
   SingleInputDateField as CmsdsDateField,
 } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../constants";
-import { convertDateStringEtToUtc, parseMMDDYYYY } from "utils";
+import { parseMMDDYYYY } from "utils";
 import {
   BannerArea,
   bannerAreaLabels,
@@ -138,16 +138,8 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
 
     const newBannerData: BannerFormData = {
       ...formData,
-      startDate: convertDateStringEtToUtc(formData.startDate, {
-        hour: 0,
-        minute: 0,
-        second: 0,
-      })!,
-      endDate: convertDateStringEtToUtc(formData.endDate, {
-        hour: 23,
-        minute: 59,
-        second: 59,
-      })!,
+      startDate: format_mdy_to_ymd(formData.startDate),
+      endDate: format_mdy_to_ymd(formData.endDate),
     };
 
     try {
@@ -248,6 +240,11 @@ const supportedTagsHint = (
     Remember to include the <code>target="_blank"</code> attribute in link tags.
   </>
 );
+
+const format_mdy_to_ymd = (dateString: string) => {
+  const [m, d, y] = dateString.split("/");
+  return [y, m, d].join("-");
+};
 
 interface Props {
   updateBanner: (data: BannerFormData) => void;

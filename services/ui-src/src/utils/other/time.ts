@@ -139,3 +139,31 @@ export const parseMMDDYYYY = (dateString: string): Date | undefined => {
   }
   return undefined;
 };
+
+/**
+ * Parse the given date as if it were in the user's local time zone.
+ * @param {string} isoDateString A date formatted as yyyy-MM-dd
+ */
+export const parseAsLocalDate = (isoDateString: string) => {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDateString);
+  if (!match) throw new Error(`Invalid banner date: ${isoDateString}`);
+  const [year, month, day] = match.slice(1).map(Number);
+  return new Date(year, month - 1, day);
+};
+
+/**
+ * Compare _only the date_ portion of two date objects.
+ *
+ * Time of day is ignored, and we use the current local timezone.
+ * @returns
+ * - A negative number if `dateA` is earlier
+ * - `0` if the two dates are on the same day
+ * - A positive number if `dateA` is later
+ */
+export const compareDates = (dateA: Date, dateB: Date) => {
+  return (
+    dateA.getFullYear() - dateB.getFullYear() ||
+    dateA.getMonth() - dateB.getMonth() ||
+    dateA.getDate() - dateB.getDate()
+  );
+};

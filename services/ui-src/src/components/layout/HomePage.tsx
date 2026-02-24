@@ -15,7 +15,7 @@ import { BannerAreas } from "types";
 import { Banner } from "components/alerts/Banner";
 
 export const HomePage = () => {
-  const banners = useStore(activeBannerSelector(BannerAreas.Home));
+  const banner = useStore(activeBannerSelector(BannerAreas.Home));
   const { userIsEndUser } = useStore().user ?? {};
 
   const isTACMReportActive = useFlags()?.isTacmReportActive;
@@ -26,9 +26,7 @@ export const HomePage = () => {
   return (
     <>
       <PageTemplate>
-        {banners.map((banner) => (
-          <Banner {...banner} key={banner.key} />
-        ))}
+        {banner ? <Banner {...banner} key={banner.key} /> : null}
         {/* Show standard view to state users */}
         {userIsEndUser ? (
           <>

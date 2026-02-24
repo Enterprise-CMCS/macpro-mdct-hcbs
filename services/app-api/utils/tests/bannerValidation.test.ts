@@ -14,8 +14,8 @@ const validPayload: BannerFormData = {
   area: BannerAreas.QMS,
   description: "mock description",
   link: "https://example.com",
-  startDate: new Date().toISOString(),
-  endDate: new Date().toISOString(),
+  startDate: new Date().toISOString().slice(0, 10),
+  endDate: new Date().toISOString().slice(0, 10),
 };
 
 describe("isValidBanner", () => {
@@ -111,7 +111,7 @@ describe("isValidBanner", () => {
   });
 
   it("should reject a a banner with invalid endDate", () => {
-    const payload = { ...validPayload, endDate: "2026-02-29T19:33:30.893Z" };
+    const payload = { ...validPayload, endDate: "2026-02-29" };
     expect(isValidBanner(payload)).toBe(false);
     expect(warn).toHaveBeenCalledWith(
       expect.stringContaining("banner.endDate must be an ISO date string")
@@ -121,8 +121,8 @@ describe("isValidBanner", () => {
   it("should reject a a banner that ends before it starts", () => {
     const payload = {
       ...validPayload,
-      startDate: "2026-02-19T19:33:30.893Z",
-      endDate: "2026-02-17T19:33:30.893Z",
+      startDate: "2026-02-19",
+      endDate: "2026-02-17",
     };
     expect(isValidBanner(payload)).toBe(false);
     expect(warn).toHaveBeenCalledWith(

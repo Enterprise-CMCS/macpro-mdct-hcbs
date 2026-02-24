@@ -30,9 +30,24 @@ export const isValidUrl = (x: unknown): x is UrlString => {
   }
 };
 
-/** A date, formatted like `2026-02-17T02:50:44.752Z` */
+/** A date, formatted like `2026-02-17` */
 export type IsoDateString = string;
 export const isIsoDateString = (x: unknown): x is IsoDateString => {
+  if ("string" !== typeof x) {
+    return false;
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(x)) {
+    return false;
+  }
+  // The date constructor never throws, even given impossible values.
+  // But invalid values like "2001-02-31T00:00:00.000Z" do not round-trip,
+  // so we can use that fact for validation.
+  return new Date(x).toISOString().slice(0, 10) === x;
+};
+
+/** A date and time, formatted like `2026-02-17T02:50:44.752Z` */
+export type IsoDateTimeString = string;
+export const isIsoDateTimeString = (x: unknown): x is IsoDateTimeString => {
   if ("string" !== typeof x) {
     return false;
   }

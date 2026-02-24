@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Box, Button, Flex, Heading, Text, Spinner } from "@chakra-ui/react";
 import { AdminBannerForm, PageTemplate } from "components";
-import { convertDateUtcToEt, useStore } from "utils";
+import { formatMonthDayYear, parseAsLocalDate, useStore } from "utils";
 import { BannerArea, bannerAreaLabels, BannerShape } from "types";
 import { Banner } from "components/alerts/Banner";
 
@@ -110,12 +110,12 @@ function groupAndSortBanners(banners: BannerShape[]) {
 
 function displayStatus(banner: BannerShape) {
   const now = new Date();
-  const startDate = new Date(banner.startDate);
-  const endDate = new Date(banner.endDate);
+  const startDate = parseAsLocalDate(banner.startDate);
+  const endDate = parseAsLocalDate(banner.endDate);
   const status =
     now < startDate ? "Scheduled" : now <= endDate ? "Active" : "Expired";
-  const startDateEt = convertDateUtcToEt(startDate.valueOf());
-  const endDateEt = convertDateUtcToEt(endDate.valueOf());
+  const startDateEt = formatMonthDayYear(startDate.valueOf());
+  const endDateEt = formatMonthDayYear(endDate.valueOf());
 
   return (
     <Text sx={sx.statusText}>

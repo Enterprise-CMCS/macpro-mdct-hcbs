@@ -36,10 +36,10 @@ describe("Selectors", () => {
     const daysAfterNow = (days: number) => {
       const date = new Date();
       date.setDate(date.getDate() + days);
-      return date.toISOString();
+      return date.toISOString().slice(0, 10);
     };
 
-    it("should return active banners for the given area", () => {
+    it("should return the active banner for the given area", () => {
       const past = {
         area: BannerAreas.Home,
         startDate: daysAfterNow(-5),
@@ -63,9 +63,33 @@ describe("Selectors", () => {
       useStore.setState({ allBanners: [past, present, future, elsewhere] });
 
       const selector = activeBannerSelector(BannerAreas.Home);
-      const banners = selector(useStore.getState());
+      const banner = selector(useStore.getState());
 
-      expect(banners).toEqual([present]);
+      expect(banner).toBe(present);
+    });
+
+    it("should return undefined if there is no active banner for the given area", () => {
+      const past = {
+        area: BannerAreas.Home,
+        startDate: daysAfterNow(-5),
+        endDate: daysAfterNow(-2),
+      } as BannerShape;
+      const future = {
+        area: BannerAreas.Home,
+        startDate: daysAfterNow(5),
+        endDate: daysAfterNow(12),
+      } as BannerShape;
+      const elsewhere = {
+        area: BannerAreas.QMS,
+        startDate: daysAfterNow(-2),
+        endDate: daysAfterNow(5),
+      } as BannerShape;
+      useStore.setState({ allBanners: [past, future, elsewhere] });
+
+      const selector = activeBannerSelector(BannerAreas.Home);
+      const banner = selector(useStore.getState());
+
+      expect(banner).toBeUndefined();
     });
 
     it("should kick off a fetch if the data is old", () => {
@@ -82,7 +106,7 @@ describe("Selectors", () => {
       expect(mockFetch).toHaveBeenCalled();
     });
 
-    it("should NOT kick off a fetch if the data is old", () => {
+    it("should NOT kick off a fetch if the data is new", () => {
       const mockFetch = jest.fn();
       useStore.setState({
         allBanners: [],

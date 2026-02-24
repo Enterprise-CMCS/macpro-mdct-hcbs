@@ -45,8 +45,8 @@ describe("<AdminBannerForm />", () => {
       title: "mock title",
       description: "mock description",
       link: "http://example.com",
-      startDate: "1970-01-01T05:00:00.000Z", // midnight on 1st, in New York
-      endDate: "1970-01-03T04:59:59.000Z", // 11:59pm on 2nd, in New York
+      startDate: "1970-01-01",
+      endDate: "1970-01-02",
     });
   });
 
@@ -111,8 +111,8 @@ describe("AdminBannerForm validation", () => {
       title: "mock title",
       description: "mock description",
       link: "http://example.com",
-      startDate: "1970-01-01T05:00:00.000Z", // midnight on 1st, in New York
-      endDate: "1970-01-03T04:59:59.000Z", // 11:59pm on 2nd, in New York
+      startDate: "1970-01-01",
+      endDate: "1970-01-02",
     });
   });
 });

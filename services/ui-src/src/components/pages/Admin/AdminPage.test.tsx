@@ -8,8 +8,14 @@ import { BannerShape, BannerAreas } from "types";
 const daysFromToday = (offset: number) => {
   const date = new Date();
   date.setDate(date.getDate() + offset);
-  date.setHours(12);
-  return date.toISOString();
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const parts = formatter.formatToParts(date);
+  const f = (type: string) => parts.find((p) => p.type === type)!.value;
+  return `${f("year")}-${f("month")}-${f("day")}`;
 };
 
 const reformatDate = (isoString: string) => {
@@ -22,8 +28,8 @@ const mockBannerQms = {
   area: BannerAreas.QMS,
   description: "mock description",
   link: "https://example.com/qms-alert",
-  startDate: "2026-03-01T05:00:00.000Z",
-  endDate: "2026-03-06T04:59:59.000Z",
+  startDate: "2026-03-01",
+  endDate: "2026-03-05",
   key: "a8618482-5f61-4bfc-91ba-9f1d25609986", // #gitleaks:allow
 } as BannerShape;
 

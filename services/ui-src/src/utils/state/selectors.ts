@@ -10,6 +10,7 @@ import {
   inferredReportStatus,
   pageIsCompletable,
 } from "./reportLogic/completeness";
+import { compareDates, parseAsLocalDate } from "utils/other/time";
 
 export const currentPageSelector = (state: HcbsReportState) => {
   const { report, pageMap, currentPageId } = state;
@@ -81,11 +82,11 @@ export const activeBannerSelector = (area: BannerArea) => {
       state.fetchBanners();
     }
 
-    return state.allBanners.filter(
+    return state.allBanners.find(
       (banner) =>
         area === banner.area &&
-        new Date(banner.startDate) <= now &&
-        now <= new Date(banner.endDate)
+        compareDates(parseAsLocalDate(banner.startDate), now) <= 0 &&
+        compareDates(now, parseAsLocalDate(banner.endDate)) <= 0
     );
   };
 };

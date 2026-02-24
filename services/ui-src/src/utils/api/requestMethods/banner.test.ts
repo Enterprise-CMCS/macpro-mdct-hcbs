@@ -7,8 +7,8 @@ const mockBanner: BannerFormData = {
   area: BannerAreas.QMS,
   description: "mock description",
   link: "https://example.com/qms-alert",
-  startDate: "2026-03-01T05:00:00.000Z",
-  endDate: "2026-03-06T04:59:59.000Z",
+  startDate: "2026-03-01",
+  endDate: "2026-03-06",
 };
 
 describe("utils/banner", () => {

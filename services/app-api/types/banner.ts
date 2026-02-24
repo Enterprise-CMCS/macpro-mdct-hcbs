@@ -1,4 +1,4 @@
-import { IsoDateString, UrlString } from "./types";
+import { IsoDateString, IsoDateTimeString, UrlString } from "./types";
 import { ReportType } from "./reports";
 
 /** The shape of the request body for creating a banner */
@@ -14,8 +14,8 @@ export interface BannerFormData {
 /** The shape of a complete banner, as stored in the database */
 export interface BannerShape extends BannerFormData {
   key: string;
-  createdAt: IsoDateString;
-  lastAltered: IsoDateString;
+  createdAt: IsoDateTimeString;
+  lastAltered: IsoDateTimeString;
   lastAlteredBy: string;
 }
 
