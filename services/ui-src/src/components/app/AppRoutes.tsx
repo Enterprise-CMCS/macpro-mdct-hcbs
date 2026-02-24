@@ -23,6 +23,7 @@ export const AppRoutes = () => {
   const { pathname } = useLocation();
   const isPdfActive = useFlags()?.viewPdf;
   const componentInventoryPageEnabled = useFlags()?.componentInventory;
+  const notificationsPageEnabled = useFlags()?.notificationsSystem;
 
   useEffect(() => {
     const appWrapper = document.getElementById("app-wrapper")!;
@@ -43,12 +44,12 @@ export const AppRoutes = () => {
                 !userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />
               }
             />
-            <Route
-              path="/notifications"
-              element={
-                !userIsAdmin ? <Navigate to="/profile" /> : <NotificationsPage />
-              }
-            />
+            {notificationsPageEnabled && (
+              <Route
+                path="/notifications"
+                element={<NotificationsPage />}
+              />
+            )}
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/help" element={<HelpPage />} />
             <Route path="*" element={<NotFoundPage />} />

@@ -1,4 +1,3 @@
-import React, { useState, useEffect, ReactNode } from "react";
 import {
   Box,
   FormControl,
@@ -10,10 +9,10 @@ import {
 export const ToggleButton = ({
   label,
   id,
-  sx: sxOverride,
   isRequired,
+  checked,
+  onCheckedChange,
 }: Props) => {
-  const [checked, setChecked] = useState(false);
 
   return (
     <Box>
@@ -21,7 +20,7 @@ export const ToggleButton = ({
         display="flex"
         alignItems="center"
         isRequired={isRequired}
-        sx={sxOverride ?? sx.root}
+        sx={sx}
       >
         <FormLabel htmlFor={id} mb="0">
           {label}
@@ -30,7 +29,7 @@ export const ToggleButton = ({
           id={id}
           aria-label={label}
           isChecked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          onChange={(event) => onCheckedChange?.(event.target.checked)}
         />
       </FormControl>
     </Box>
@@ -42,6 +41,8 @@ interface Props {
   id: string;
   sx?: SystemStyleObject;
   isRequired?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  checked?: boolean;
 }
 
 const sx = {

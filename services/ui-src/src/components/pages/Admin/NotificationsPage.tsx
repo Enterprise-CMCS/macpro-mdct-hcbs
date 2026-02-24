@@ -1,8 +1,20 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { PageTemplate } from "components";
 import { ToggleButton } from "components/toggle/ToggleButton";
+import { useState } from "react";
 
 export const NotificationsPage = () => {
+    const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+    const [enabledMap, setEnabledMap] = useState<Record<string, boolean>>({});
+
+    const reports = [
+        { id: "Toggle-QMS", label: "QMS" },
+        { id: "Toggle-TACM", label: "TACM" },
+        { id: "Toggle-CI", label: "CI" },
+        { id: "Toggle-PCP", label: "PCP" },
+        { id: "Toggle-WWL", label: "WWL" },
+      ];
+
   return (
     <PageTemplate data-testid="notifications-view">
       <Box sx={sx.introTextBox}>
@@ -11,11 +23,20 @@ export const NotificationsPage = () => {
         </Heading>
       </Box>
       <Box>
-        <ToggleButton label="QMS" id="QMS-Toggle" />
-        <ToggleButton label="TACM" id="TACM-Toggle" />
-        <ToggleButton label="CI" id="CI-Toggle" />
-        <ToggleButton label="PCP" id="PCP-Toggle" />
-        <ToggleButton label="WWL" id="WWL-Toggle" />
+      {reports.map((report) => (
+        <ToggleButton
+          key={report.id}
+          id={report.id}
+          label={report.label}
+          checked={enabledMap[report.id] ?? false}
+          onCheckedChange={(checked) =>
+            setEnabledMap((prev) => ({
+              ...prev,
+              [report.id]: checked,
+            }))
+          }
+        />
+      ))}
       </Box>
     </PageTemplate>
   );
