@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { AdminBannerForm } from "components";
 import userEvent from "@testing-library/user-event";
 import { testA11yAct } from "utils/testing/commonTests";
+import { useStore } from "utils";
+import { BannerShape } from "types";
 
 const mockWriteAdminBanner = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
@@ -66,6 +68,59 @@ describe("AdminBannerForm validation", () => {
     );
     expect(responseIsRequiredErrorMessage[0]).toBeVisible();
     expect(responseIsRequiredErrorMessage.length).toBe(4);
+  });
+
+  test("Display errors when date range conflicts with existing banners", async () => {
+    const existingBanner = {
+      title: "alpha",
+      area: "home",
+      startDate: "2026-01-10",
+      endDate: "2026-01-20",
+    } as BannerShape;
+    useStore.setState({ allBanners: [existingBanner] });
+
+    render(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
+
+    const startDateInput = screen.getByLabelText("Start date");
+    const endDateInput = screen.getByLabelText("End date");
+    const startDateConflict = /Start date conflicts .* alpha/;
+    const endDateConflict = /End date conflicts .* alpha/;
+    const rangeConflict = /date range conflicts .* alpha/;
+
+    // No data entered yet, therefore no conflicts
+    expect(screen.queryByText(startDateConflict)).not.toBeInTheDocument();
+    expect(screen.queryByText(endDateConflict)).not.toBeInTheDocument();
+    expect(screen.queryByText(rangeConflict)).not.toBeInTheDocument();
+
+    // Start date OK, end date in existing banner's range
+    await userEvent.type(startDateInput, "01/05/2026");
+    await userEvent.type(endDateInput, "01/18/2026");
+    expect(screen.queryByText(startDateConflict)).not.toBeInTheDocument();
+    expect(screen.getByText(endDateConflict)).toBeVisible();
+    expect(screen.queryByText(rangeConflict)).not.toBeInTheDocument();
+
+    // End date OK, end date in existing banner's range
+    await userEvent.clear(startDateInput);
+    await userEvent.type(startDateInput, "01/12/2026");
+    await userEvent.clear(endDateInput);
+    await userEvent.type(endDateInput, "01/25/2026");
+    expect(screen.getByText(startDateConflict)).toBeVisible();
+    expect(screen.queryByText(endDateConflict)).not.toBeInTheDocument();
+    expect(screen.queryByText(rangeConflict)).not.toBeInTheDocument();
+
+    // Both dates OK individually, but the range overlaps
+    await userEvent.clear(startDateInput);
+    await userEvent.type(startDateInput, "01/05/2026");
+    expect(screen.queryByText(startDateConflict)).not.toBeInTheDocument();
+    expect(screen.queryByText(endDateConflict)).not.toBeInTheDocument();
+    expect(screen.getByText(rangeConflict)).toBeVisible();
+
+    // Move the banner to a different area, so no conflict
+    await userEvent.click(screen.getByRole("button", { name: /Site area/ }));
+    await userEvent.click(screen.getByRole("option", { name: /QMS report/ }));
+    expect(screen.queryByText(startDateConflict)).not.toBeInTheDocument();
+    expect(screen.queryByText(endDateConflict)).not.toBeInTheDocument();
+    expect(screen.queryByText(rangeConflict)).not.toBeInTheDocument();
   });
 
   test("User has form errors but then fills out the form and errors go away", async () => {
