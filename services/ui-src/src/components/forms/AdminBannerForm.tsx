@@ -4,9 +4,10 @@ import {
   Dropdown as CmsdsDropdown,
   TextField as CmsdsTextField,
   SingleInputDateField as CmsdsDateField,
+  DropdownChangeObject,
 } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../constants";
-import { parseMMDDYYYY } from "utils";
+import { parseMMDDYYYY, useStore } from "utils";
 import {
   BannerArea,
   bannerAreaLabels,
@@ -17,6 +18,7 @@ import { isUrl } from "utils/validation/inputValidation";
 import { Banner } from "components/alerts/Banner";
 
 export const AdminBannerForm = ({ updateBanner }: Props) => {
+  const allBanners = useStore((state) => state.allBanners);
   const [formData, setFormData] = useState<BannerFormData>({
     area: BannerAreas.Home,
     title: "",
@@ -26,6 +28,7 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
     endDate: "",
   });
   const [formErrors, setFormErrors] = useState({
+    area: "",
     title: "",
     description: "",
     link: "",
@@ -33,6 +36,18 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
     endDate: "",
   });
   const [submitting, setSubmitting] = useState(false);
+
+  const onAreaChange = (evt: DropdownChangeObject) => {
+    const updatedFormData = {
+      ...formData,
+      area: evt.target.value as BannerArea,
+    };
+    setFormData(updatedFormData);
+    setFormErrors({
+      ...formErrors,
+      ...checkDateOverlap(updatedFormData, formErrors),
+    });
+  };
 
   const onTextChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
@@ -80,7 +95,10 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
         updatedErrors.endDate = "";
       }
     }
-    setFormErrors(updatedErrors);
+    setFormErrors({
+      ...updatedErrors,
+      ...checkDateOverlap(updatedFormData, updatedErrors),
+    });
   };
 
   const onEndDateChange = (rawValue: string, maskedValue: string) => {
@@ -104,7 +122,54 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
         updatedErrors.endDate = ErrorMessages.endDateBeforeStartDate;
       }
     }
-    setFormErrors(updatedErrors);
+    setFormErrors({
+      ...updatedErrors,
+      ...checkDateOverlap(updatedFormData, updatedErrors),
+    });
+  };
+
+  const checkDateOverlap = (
+    newFormData: BannerFormData,
+    newFormErrors: typeof formErrors
+  ) => {
+    if (
+      !newFormData.startDate ||
+      !newFormData.endDate ||
+      newFormErrors.startDate ||
+      newFormErrors.endDate
+    ) {
+      return { area: "" };
+    }
+
+    const startDateIso = format_mdy_to_ymd(newFormData.startDate);
+    const endDateIso = format_mdy_to_ymd(newFormData.endDate);
+
+    const hasConflict = (banner: BannerFormData) => {
+      if (banner.area !== newFormData.area) {
+        return false;
+      } else if (
+        startDateIso.localeCompare(banner.startDate) <= 0 &&
+        banner.startDate.localeCompare(endDateIso) <= 0
+      ) {
+        return true;
+      } else if (
+        banner.startDate.localeCompare(startDateIso) <= 0 &&
+        startDateIso.localeCompare(banner.endDate) <= 0
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const conflictingBanner = allBanners.find(hasConflict);
+    if (conflictingBanner) {
+      return {
+        area: `Banner "${conflictingBanner.title}" would be displayed in this area on overlapping dates`,
+      };
+    } else {
+      return { area: "" };
+    }
   };
 
   const onBlur = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -157,11 +222,11 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
           <CmsdsDropdown
             name="area"
             label="Site area"
-            onChange={(evt) =>
-              setFormData({ ...formData, area: evt.target.value as BannerArea })
-            }
+            onChange={onAreaChange}
+            onBlur={onBlur}
             options={areaOptions}
             value={formData.area}
+            errorMessage={formErrors.area}
           ></CmsdsDropdown>
           <CmsdsTextField
             name="title"
