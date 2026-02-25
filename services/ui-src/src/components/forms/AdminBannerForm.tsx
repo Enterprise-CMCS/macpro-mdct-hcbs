@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Button, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import {
   Dropdown as CmsdsDropdown,
   TextField as CmsdsTextField,
@@ -245,7 +245,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
             multiline={true}
             name="description"
             label="Description text"
-            hint={supportedTagsHint}
+            hint={supportedTagsHint()}
             onChange={onChange}
             onBlur={onBlur}
             value={formData.description}
@@ -301,12 +301,31 @@ const areaOptions = Object.entries(bannerAreaLabels).map(([key, value]) => ({
   value: key,
 }));
 
-const supportedTagsHint = (
-  <>
-    Formatting is supported with these HTML tags: <code>&lt;strong&gt;</code>{" "}
-    <code>&lt;em&gt;</code> <code>&lt;p&gt;</code> <code>&lt;ul&gt;</code>{" "}
-    <code>&lt;ol&gt;</code> <code>&lt;li&gt;</code> <code>&lt;a&gt;</code>
-  </>
+const supportedTagsHint = () => (
+  <Box sx={sx.hint} as="span">
+    Formatting is supported with these HTML tags:
+    <span className="fake-list-item">
+      <code>&lt;strong&gt;</code>
+    </span>
+    <span className="fake-list-item">
+      <code>&lt;em&gt;</code>
+    </span>
+    <span className="fake-list-item">
+      <code>&lt;p&gt;</code>
+    </span>
+    <span className="fake-list-item">
+      <code>&lt;ul&gt;</code>
+    </span>
+    <span className="fake-list-item">
+      <code>&lt;ol&gt;</code>
+    </span>
+    <span className="fake-list-item">
+      <code>&lt;li&gt;</code>
+    </span>
+    <span className="fake-list-item">
+      <code>&lt;a&gt;</code>
+    </span>
+  </Box>
 );
 
 const format_mdy_to_ymd = (dateString: string) => {
@@ -326,5 +345,14 @@ const sx = {
     width: "14rem",
     marginTop: "spacer2 !important",
     alignSelf: "end",
+  },
+  hint: {
+    ".fake-list-item": {
+      display: "block",
+      marginLeft: "spacer2",
+      "&::before": {
+        content: '"• "',
+      },
+    },
   },
 };
