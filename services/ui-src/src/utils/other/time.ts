@@ -146,8 +146,8 @@ export const parseMMDDYYYY = (dateString: string): Date | undefined => {
  */
 export const parseAsLocalDate = (isoDateString: string) => {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDateString);
-  if (!match) throw new Error(`Invalid banner date: ${isoDateString}`);
-  const [year, month, day] = match.slice(1).map(Number);
+  console.assert(match, `Invalid banner date: ${isoDateString}`);
+  const [year, month, day] = match!.slice(1).map(Number);
   return new Date(year, month - 1, day);
 };
 
