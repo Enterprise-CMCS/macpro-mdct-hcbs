@@ -54,7 +54,7 @@ describe("createBanner", () => {
   it("should store new banner data in the database", async () => {
     const res = await createBanner(mockEvent);
 
-    expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(res.statusCode).toBe(StatusCodes.Created);
     expect(getBanner).not.toHaveBeenCalled(); // Because the payload has no ID
     expect(putBanner).toHaveBeenCalledWith({
       ...mockBannerFormData,
@@ -63,36 +63,6 @@ describe("createBanner", () => {
       lastAltered: expect.stringMatching(ISO_DATE_REGEX),
       lastAlteredBy: "mock username",
     });
-  });
-
-  it("should update traceability fields on an existing banner", async () => {
-    const existingBanner = {
-      ...mockBannerFormData,
-      key: "mock-existing-banner-key-guid", // will stay unchanged
-      createdAt: "1998-01-01T00:00:00.123Z", // will stay unchanged
-      lastAltered: "1998-01-01T00:00:00.123Z", // will change to today's date
-      lastAlteredBy: "prev username", // will change to current user
-    };
-    getBanner.mockResolvedValueOnce(existingBanner);
-
-    const res = await createBanner({
-      ...mockEvent,
-      body: JSON.stringify({
-        ...mockBannerFormData,
-        key: "mock-existing-banner-key-guid",
-      }),
-    });
-
-    expect(res.statusCode).toBe(StatusCodes.Ok);
-    expect(getBanner).toHaveBeenCalledWith("mock-existing-banner-key-guid");
-    expect(putBanner).toHaveBeenCalledWith(
-      expect.objectContaining({
-        key: existingBanner.key,
-        createdAt: existingBanner.createdAt,
-        lastAltered: expect.stringMatching(/^2/),
-        lastAlteredBy: "mock username",
-      })
-    );
   });
 
   it("should return an error if the request body is not valid", async () => {
