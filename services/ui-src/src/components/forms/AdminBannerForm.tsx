@@ -26,7 +26,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
     startDate: "",
     endDate: "",
   };
-  const blankDirtyState = {
+  const untouchedState = {
     area: true, // This starts at a valid value ("home")
     title: false,
     description: false,
@@ -43,7 +43,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
     endDate: "",
   };
   const [formData, setFormData] = useState(blankFormState);
-  const [dirtyState, setDirtyState] = useState(blankDirtyState);
+  const [touchedState, setTouchedState] = useState(untouchedState);
   const [formErrors, setFormErrors] = useState(blankErrorState);
   const [submitting, setSubmitting] = useState(false);
 
@@ -53,20 +53,20 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
     const newFormData = { ...formData, [evt.target.name]: evt.target.value };
     setFormData(newFormData);
 
-    const isDirty = { ...dirtyState, [evt.target.name]: true };
-    setDirtyState(isDirty);
+    const touched = { ...touchedState, [evt.target.name]: true };
+    setTouchedState(touched);
 
     const newFormErrors = blankErrorState;
 
-    if (isDirty.title && !newFormData.title) {
+    if (touched.title && !newFormData.title) {
       newFormErrors.title = ErrorMessages.requiredResponse;
     }
 
-    if (isDirty.description && !newFormData.description) {
+    if (touched.description && !newFormData.description) {
       newFormErrors.description = ErrorMessages.requiredResponse;
     }
 
-    if (isDirty.link && newFormData.link && !isUrl(newFormData.link)) {
+    if (touched.link && newFormData.link && !isUrl(newFormData.link)) {
       newFormErrors.link = "Response must be a valid hyperlink/URL";
     }
 
@@ -75,7 +75,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
         ? evt.target.maskedValue!
         : newFormData.startDate
     );
-    if (isDirty.startDate) {
+    if (touched.startDate) {
       if (!newFormData.startDate) {
         newFormErrors.startDate = ErrorMessages.requiredResponse;
       } else if (parsedStartDate === undefined) {
@@ -94,7 +94,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
         ? evt.target.maskedValue!
         : newFormData.endDate
     );
-    if (isDirty.endDate) {
+    if (touched.endDate) {
       if (!newFormData.endDate) {
         newFormErrors.endDate = ErrorMessages.requiredResponse;
       } else if (parsedEndDate === undefined) {
@@ -179,7 +179,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
     if (required && !value) {
       setFormErrors({ ...formErrors, [name]: ErrorMessages.requiredResponse });
     }
-    setDirtyState({ ...dirtyState, [name]: true });
+    setTouchedState({ ...touchedState, [name]: true });
   };
 
   const onSubmit = async (evt: FormEvent) => {
@@ -212,7 +212,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
       await createBanner(newBannerData);
       window.scrollTo(0, 0);
       setFormData(blankFormState);
-      setDirtyState(blankDirtyState);
+      setTouchedState(untouchedState);
       setFormErrors(blankErrorState);
     } finally {
       setSubmitting(false);
