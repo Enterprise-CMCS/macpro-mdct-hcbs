@@ -1,21 +1,9 @@
 import {
   calculateRemainingSeconds,
-  convertDateTimeEtToUtc,
-  convertDateStringEtToUtc,
-  convertDateUtcToEt,
   formatMonthDayYear,
   getLocalHourMinuteTime,
   parseMMDDYYYY,
-  twoDigitCalendarDate,
 } from "./time";
-
-// 1/1/2022 @ 00:00:00
-const testDate = {
-  utcMS: 1641013200000,
-  utcString: "Sat, 01 Jan 2022 05:00:00 GMT",
-  isoString: "2022-01-01T05:00:00.000Z",
-  etFormattedString: "01/01/2022",
-};
 
 const getLocalHourMinuteTimeRegex = /[0-2]?[0-9]:[0-5][0-9](a|p)m/;
 
@@ -27,71 +15,12 @@ describe("utils/time", () => {
     });
   });
 
-  describe("convertDateTimeEtToUtc()", () => {
-    it("converts valid ET datetime to UTC correctly", () => {
-      const result = convertDateTimeEtToUtc(
-        { year: 2022, month: 1, day: 1 },
-        { hour: 0, minute: 0, second: 0 }
-      );
-      expect(result).toBe(testDate.isoString);
-      expect(new Date(result).toUTCString()).toBe(testDate.utcString);
-    });
-  });
-
-  describe("convertDateUtcToEt()", () => {
-    it("converts valid UTC datetime to ET correctly", () => {
-      const result = convertDateUtcToEt(testDate.utcMS);
-      expect(result).toBe(testDate.etFormattedString);
-    });
-  });
-
-  describe("twoDigitCalendarDate()", () => {
-    it("should set 1 to 01", () => {
-      const startDay = 1;
-      expect(twoDigitCalendarDate(startDay)).toBe("01");
-    });
-
-    it("should set 12 to 12", () => {
-      const startMonth = 12;
-      expect(twoDigitCalendarDate(startMonth)).toBe("12");
-    });
-  });
-
   describe("formatMonthDayYear()", () => {
     it("should render dates as MM/dd/yyyy", () => {
       const date = new Date("2024-03-20").valueOf();
       const formatted = formatMonthDayYear(date);
       // Imprecise matcher, because the result depends on the user's time zone
       expect(formatted).toMatch(/03\/\d\d\/2024/);
-    });
-  });
-
-  describe("convertDatetimeStringToNumber()", () => {
-    it("should return the correct value for midnight", () => {
-      const result = convertDateStringEtToUtc("10/22/2024", {
-        hour: 0,
-        minute: 0,
-        second: 0,
-      });
-      expect(result).toBe("2024-10-22T04:00:00.000Z");
-    });
-
-    it("should return the correct value for one second before midnight", () => {
-      const result = convertDateStringEtToUtc("10/22/2024", {
-        hour: 23,
-        minute: 59,
-        second: 59,
-      });
-      expect(result).toBe("2024-10-23T03:59:59.000Z");
-    });
-
-    it("should return the correct value during daylight savings", () => {
-      const result = convertDateStringEtToUtc("01/22/2024", {
-        hour: 0,
-        minute: 0,
-        second: 0,
-      });
-      expect(result).toBe("2024-01-22T05:00:00.000Z");
     });
   });
 

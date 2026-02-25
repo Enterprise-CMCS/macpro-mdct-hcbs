@@ -1,12 +1,4 @@
-import { toZonedTime, fromZonedTime } from "date-fns-tz";
-import { DateShape } from "types";
 import { differenceInSeconds } from "date-fns";
-
-interface TimeShape {
-  hour: number;
-  minute: number;
-  second: number;
-}
 
 /*
  * Returns local time in HH:mm format with the "am/pm" indicator
@@ -23,52 +15,6 @@ export const getLocalHourMinuteTime = () => {
   return localTimeHourMinute.concat(twelveHourIndicator);
 };
 
-/*
- * Converts passed ET datetime to UTC
- * returns -> UTC datetime in format 'yyyy-MM-ddThh:mm:ss.SSSZ'
- */
-export const convertDateTimeEtToUtc = (
-  etDate: DateShape,
-  etTime: TimeShape
-) => {
-  const { year, month, day } = etDate;
-  const { hour, minute, second } = etTime;
-
-  // month - 1 because Date object months are zero-indexed
-  const utcDatetime = fromZonedTime(
-    new Date(year, month - 1, day, hour, minute, second),
-    "America/New_York"
-  );
-  return utcDatetime.toISOString();
-};
-
-/*
- * Converts passed UTC datetime to ET date
- * returns -> ET date in format mm/dd/yyyy
- */
-export const convertDateUtcToEt = (date: number): string => {
-  const convertedDate = date;
-  const easternDatetime = toZonedTime(
-    new Date(convertedDate),
-    "America/New_York"
-  );
-
-  const month = twoDigitCalendarDate(new Date(easternDatetime).getMonth() + 1);
-  const day = twoDigitCalendarDate(new Date(easternDatetime).getDate());
-  const year = new Date(easternDatetime).getFullYear();
-
-  // month + 1 because Date object months are zero-indexed
-  return `${month}/${day}/${year}`;
-};
-
-/*
- * This code ensures the date has a preceeding 0 if the month/day is a single digit.
- * Ex: 7 becomes 07 while 10 stays 10
- */
-export const twoDigitCalendarDate = (date: number) => {
-  return ("0" + date).slice(-2);
-};
-
 /**
  * Format the given date to MM/dd/yyyy. For example: "03/20/2024"
  */
@@ -82,20 +28,6 @@ export const formatMonthDayYear = (date: number) => {
   const parts = formatter.formatToParts(date);
   const getPart = (type: string) => parts.find((p) => p.type === type)!.value;
   return [getPart("month"), getPart("day"), getPart("year")].join("/");
-};
-
-export const convertDateStringEtToUtc = (date: string, time: TimeShape) => {
-  const completeDate = parseMMDDYYYY(date);
-  let convertedTime;
-  if (completeDate) {
-    let dateShape = {
-      year: completeDate.getFullYear(),
-      month: completeDate.getMonth() + 1,
-      day: completeDate.getDate(),
-    };
-    convertedTime = convertDateTimeEtToUtc(dateShape, time);
-  }
-  return convertedTime || undefined;
 };
 
 /*
