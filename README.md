@@ -40,7 +40,6 @@ Before starting the project we're going to install some tools. We recommend havi
 
 - Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 - Install specified version of node. We enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating): `nvm install`, then `nvm use`
-- Install [yarn](https://classic.yarnpkg.com/en/docs/install/): `brew install yarn`
 - Install pre-commit on your machine with either: `pip install pre-commit` or `brew install pre-commit`
 
 ### Setting up the project locally
@@ -73,11 +72,11 @@ M1 Mac users can download [java from azul](https://www.azul.com/downloads/?versi
 
 To view your database after the application is up and running you can install the [dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
 
-- Install and run `DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin` in a new terminal window
+- Install and run `DYNAMO_ENDPOINT=http://localhost:4566 dynamodb-admin` in a new terminal window
 
 #### DynamoDB Local failed to start with code 1
 
-If you're getting an error such as `inaccessible host: 'localhost' at port '8000'`, some steps to try:
+If you're getting an error such as `inaccessible host: 'localhost' at port '4566'`, some steps to try:
 
 - confirm that you're on the right Java version -- if you have an M1 mac, you need an [x86 install](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk#zulu)
 - delete your `services/database/.dynamodb` directory and then run `dev local` in your terminal
@@ -89,8 +88,6 @@ Local dev is configured as a Typescript project. The entrypoint in `./src/run.ts
 Local dev is built around the cdk setup which gets run locally by Localstack.
 
 Local authorization uses Cognito from the main/master stack in dev. The credentials are injected locally by the `./run update-env` command which fetches values from 1password and puts them into a gitignored `.env` file.
-
-The [postman folder](./postman/) contains a full API collection and environment for this application. See the [README](./postman/README.md) for more information.
 
 ## Testing
 
@@ -132,9 +129,9 @@ We use Playwright for integration tests. See the `tests/playwright` directory.
 
 We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa11y) for primary accessibility testing.
 
-Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
+Unit tests use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
-Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe) and [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html).
+Integration tests use [@axe-core/playwright](https://github.com/dequelabs/axe-core-npm).
 
 ### oxfmt
 
@@ -188,27 +185,51 @@ This application is built and deployed via GitHub Actions.
 
 We have 3 main branches that we work out of:
 
+- Main (Pointed to [https://mdctrhtpdev.cms.gov/](https://mdctrhtpdev.cms.gov/)) is our development branch
+- Val (Pointed to [https://mdctrhtpval.cms.gov/](https://mdctrhtpval.cms.gov/)) is our beta branch
+- Production (Pointed to [http://mdctrhtp.cms.gov/](http://mdctrhtp.cms.gov/)) is our release branch
+
+When a pull request is approved and merged into main the deploy script will spin up and upon completion will deploy to [https://mdctrhtpdev.cms.gov/](https://mdctrhtpdev.cms.gov/). If a user wants to deploy to val they can initiate the [Create Deployment PR action](https://github.com/Enterprise-CMCS/macpro-mdct-rhtp/actions/workflows/create-pr.yml) in GitHub actions. setting the target_branch variable to the destination environment. Once that pull request is approved, the deploy script will run again and upon completion will deploy to [https://mdctrhtpval.cms.gov/](https://mdctrhtpval.cms.gov/). So to quickly break it down:
+
+- Submit pull request of your code to main
+- Approve pull request and merge into main
+- Deploy script runs and will deploy to [https://mdctrhtpdev.cms.gov/](https://mdctrhtpdev.cms.gov/)
+- [Create Deployment PR action](https://github.com/Enterprise-CMCS/macpro-mdct-rhtp/actions/workflows/create-pr.yml) into val
+- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into val
+- Deploy script runs and will deploy to [https://mdctrhtpval.cms.gov/](https://mdctrhtpval.cms.gov/)
+- [Create Deployment PR action](https://github.com/Enterprise-CMCS/macpro-mdct-rhtp/actions/workflows/create-pr.yml) into production
+- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into production
+- Deploy script runs and will deploy to [http://mdctrhtp.cms.gov/](http://mdctrhtp.cms.gov/).
+
+If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. Click "Summary" and you will find the cloudfront URL in the deploy summary (once that step completes).
+
+### Deployment Steps
+
+**Please Note: Do Not Squash Your Merge Into Val Or Prod When Submitting Your Pull Request.**
+
+We have 3 main branches that we work out of:
+
 - Main (Pointed to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/)) is our development branch
 - Val (Pointed to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/)) is our beta branch
 - Production (Pointed to [http://mdcthcbs.cms.gov/](http://mdcthcbs.cms.gov/)) is our release branch
 
-When a pull request is approved and merged into main the deploy script will spin up and upon completion will deploy to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/). If a user wants to deploy to val they simply need to create a pull request where Main is being merged into Val. Once that pull request is approved, the deploy script will run again and upon completion will deploy to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/). So to quickly break it down:
+When a pull request is approved and merged into main the deploy script will spin up and upon completion will deploy to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/). If a user wants to deploy to val they can initiate the [Create Deployment PR action](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/create-pr.yml) in GitHub actions, setting the target_branch variable to the destination environment. Once that pull request is approved, the deploy script will run again and upon completion will deploy to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/). So to quickly break it down:
 
-- Submit pull request of your code to Main.
-- Approve pull request and merge into main.
-- Deploy script runs and will deploy to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/).
-- Submit pull request pointing Main into Val.
-- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Val
-- Deploy script runs and will deploy to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/).
-- Submit pull request pointing Val into Production.
-- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into Production
+- Submit pull request of your code to main
+- Approve pull request and merge into main
+- Deploy script runs and will deploy to [https://mdcthcbsdev.cms.gov/](https://mdcthcbsdev.cms.gov/)
+- [Create Deployment PR action](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/create-pr.yml) into val
+- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into val
+- Deploy script runs and will deploy to [https://mdcthcbsval.cms.gov/](https://mdcthcbsval.cms.gov/)
+- [Create Deployment PR action](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/actions/workflows/create-pr.yml) into production
+- Approve pull request and **DO NOT SQUASH YOUR MERGE**, just merge it into production
 - Deploy script runs and will deploy to [http://mdcthcbs.cms.gov/](http://mdcthcbs.cms.gov/).
 
-If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. click on `deploy`, then click to exapnd the `deploy` section on the right. Search for `Application endpoint` and click on the generated site.
+If you have a PR that needs Product/Design input, the easiest way to get it to them is to use the cloudfront site from Github. Go to your PR and the `Checks` tab, then `Deploy` tab. Click `Summary` and you will find the cloudfront URL in the deploy summary (once that step completes).
 
 ## BigMac Kafka Integration
 
-HCBS pipes updates from fieldData and the report object tables to BigMac for downstream consumption. To add a topic for a new report type, update the following locations:
+HCBS pipes updates from the report object tables to BigMac for downstream consumption. To add a topic for a new report type, update the following locations:
 
 - `deployment/topics.ts`
   - Any new table with come with streaming (tables are defined here: `deployment/data.ts`)
