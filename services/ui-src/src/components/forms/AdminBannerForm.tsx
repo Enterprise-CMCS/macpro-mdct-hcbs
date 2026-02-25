@@ -105,7 +105,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
       } else {
         const banner = findConflictingBanner(newFormData.area, parsedEndDate);
         if (banner) {
-          newFormErrors.startDate = `End date conflicts with existing banner: ${banner.title}`;
+          newFormErrors.endDate = `End date conflicts with existing banner: ${banner.title}`;
         }
       }
     }
@@ -303,10 +303,9 @@ const areaOptions = Object.entries(bannerAreaLabels).map(([key, value]) => ({
 
 const supportedTagsHint = (
   <>
-    Formatting is supported with these HTML tags: <code>strong</code>/
-    <code>b</code>, <code>em</code>/<code>i</code>, <code>p</code>,{" "}
-    <code>ul</code>, <code>ol</code>, <code>li</code>, and <code>a</code>.
-    Remember to include the <code>target="_blank"</code> attribute in link tags.
+    Formatting is supported with these HTML tags: <code>&lt;strong&gt;</code>{" "}
+    <code>&lt;em&gt;</code> <code>&lt;p&gt;</code> <code>&lt;ul&gt;</code>{" "}
+    <code>&lt;ol&gt;</code> <code>&lt;li&gt;</code> <code>&lt;a&gt;</code>
   </>
 );
 
