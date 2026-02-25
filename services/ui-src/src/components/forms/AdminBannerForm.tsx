@@ -4,10 +4,9 @@ import {
   Dropdown as CmsdsDropdown,
   TextField as CmsdsTextField,
   SingleInputDateField as CmsdsDateField,
-  DropdownChangeObject,
 } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../constants";
-import { parseMMDDYYYY, useStore } from "utils";
+import { parseAsLocalDate, parseMMDDYYYY, useStore } from "utils";
 import {
   BannerArea,
   bannerAreaLabels,
@@ -19,173 +18,175 @@ import { Banner } from "components/alerts/Banner";
 
 export const AdminBannerForm = ({ updateBanner }: Props) => {
   const allBanners = useStore((state) => state.allBanners);
-  const [formData, setFormData] = useState<BannerFormData>({
+  const blankFormState: BannerFormData = {
     area: BannerAreas.Home,
     title: "",
     description: "",
     link: "",
     startDate: "",
     endDate: "",
-  });
-  const [formErrors, setFormErrors] = useState({
+  };
+  const blankDirtyState = {
+    area: true, // This starts at a valid value ("home")
+    title: false,
+    description: false,
+    link: false,
+    startDate: false,
+    endDate: false,
+  };
+  const blankErrorState = {
     area: "",
     title: "",
     description: "",
     link: "",
     startDate: "",
     endDate: "",
-  });
+  };
+  const [formData, setFormData] = useState(blankFormState);
+  const [dirtyState, setDirtyState] = useState(blankDirtyState);
+  const [formErrors, setFormErrors] = useState(blankErrorState);
   const [submitting, setSubmitting] = useState(false);
 
-  const onAreaChange = (evt: DropdownChangeObject) => {
-    const updatedFormData = {
-      ...formData,
-      area: evt.target.value as BannerArea,
-    };
-    setFormData(updatedFormData);
-    setFormErrors({
-      ...formErrors,
-      ...checkDateOverlap(updatedFormData, formErrors),
-    });
-  };
+  const onChange = (evt: {
+    target: { name: string; value: string; maskedValue?: string };
+  }) => {
+    const newFormData = { ...formData, [evt.target.name]: evt.target.value };
+    setFormData(newFormData);
 
-  const onTextChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = evt.target;
-    const required = evt.target.dataset.required === "true";
-    const updatedFormData = {
-      ...formData,
-      [name]: value,
-    };
-    setFormData(updatedFormData);
+    const isDirty = { ...dirtyState, [evt.target.name]: true };
+    setDirtyState(isDirty);
 
-    let errorMessage = "";
-    if (required && !value) {
-      errorMessage = ErrorMessages.requiredResponse;
-    } else if (name === "link" && value && !isUrl(value)) {
-      errorMessage = "Response must be a valid hyperlink/URL";
+    const newFormErrors = blankErrorState;
+
+    if (isDirty.title && !newFormData.title) {
+      newFormErrors.title = ErrorMessages.requiredResponse;
     }
-    setFormErrors({
-      ...formErrors,
-      [name]: errorMessage,
-    });
-  };
 
-  const onStartDateChange = (rawValue: string, maskedValue: string) => {
-    const updatedFormData = {
-      ...formData,
-      startDate: rawValue,
-    };
-    setFormData(updatedFormData);
+    if (isDirty.description && !newFormData.description) {
+      newFormErrors.description = ErrorMessages.requiredResponse;
+    }
 
-    const parsedValue = parseMMDDYYYY(maskedValue);
-    let updatedErrors = structuredClone(formErrors);
-    updatedErrors.startDate = "";
-    if (!rawValue) {
-      updatedErrors.startDate = ErrorMessages.requiredResponse;
-    } else if (parsedValue === undefined) {
-      updatedErrors.startDate =
-        "Start date is invalid. Please enter date in MM/DD/YYYY format";
-    } else {
-      const endDate = parseMMDDYYYY(formData.endDate);
-      if (endDate && endDate < parsedValue) {
-        updatedErrors.endDate = ErrorMessages.endDateBeforeStartDate;
-      } else if (
-        updatedErrors.endDate === ErrorMessages.endDateBeforeStartDate
-      ) {
-        updatedErrors.endDate = "";
+    if (isDirty.link && newFormData.link && !isUrl(newFormData.link)) {
+      newFormErrors.link = "Response must be a valid hyperlink/URL";
+    }
+
+    const parsedStartDate = parseMMDDYYYY(
+      evt.target.name === "startDate"
+        ? evt.target.maskedValue!
+        : newFormData.startDate
+    );
+    if (isDirty.startDate) {
+      if (!newFormData.startDate) {
+        newFormErrors.startDate = ErrorMessages.requiredResponse;
+      } else if (parsedStartDate === undefined) {
+        newFormErrors.startDate =
+          "Start date is invalid. Please enter date in MM/DD/YYYY format";
+      } else {
+        const banner = findConflictingBanner(newFormData.area, parsedStartDate);
+        if (banner) {
+          newFormErrors.startDate = `Start date conflicts with existing banner: ${banner.title}`;
+        }
       }
     }
-    setFormErrors({
-      ...updatedErrors,
-      ...checkDateOverlap(updatedFormData, updatedErrors),
-    });
-  };
 
-  const onEndDateChange = (rawValue: string, maskedValue: string) => {
-    const updatedFormData = {
-      ...formData,
-      endDate: rawValue,
-    };
-    setFormData(updatedFormData);
-
-    const parsedValue = parseMMDDYYYY(maskedValue);
-    let updatedErrors = structuredClone(formErrors);
-    updatedErrors.endDate = "";
-    if (!rawValue) {
-      updatedErrors.endDate = ErrorMessages.requiredResponse;
-    } else if (parsedValue === undefined) {
-      updatedErrors.endDate =
-        "End date is invalid. Please enter date in MM/DD/YYYY format";
-    } else {
-      const startDate = parseMMDDYYYY(formData.startDate);
-      if (startDate && parsedValue < startDate) {
-        updatedErrors.endDate = ErrorMessages.endDateBeforeStartDate;
+    const parsedEndDate = parseMMDDYYYY(
+      evt.target.name === "endDate"
+        ? evt.target.maskedValue!
+        : newFormData.endDate
+    );
+    if (isDirty.endDate) {
+      if (!newFormData.endDate) {
+        newFormErrors.endDate = ErrorMessages.requiredResponse;
+      } else if (parsedEndDate === undefined) {
+        newFormErrors.endDate =
+          "End date is invalid. Please enter date in MM/DD/YYYY format";
+      } else if (parsedStartDate && parsedEndDate < parsedStartDate) {
+        newFormErrors.endDate = ErrorMessages.endDateBeforeStartDate;
+      } else {
+        const banner = findConflictingBanner(newFormData.area, parsedEndDate);
+        if (banner) {
+          newFormErrors.startDate = `End date conflicts with existing banner: ${banner.title}`;
+        }
       }
     }
-    setFormErrors({
-      ...updatedErrors,
-      ...checkDateOverlap(updatedFormData, updatedErrors),
-    });
-  };
 
-  const checkDateOverlap = (
-    newFormData: BannerFormData,
-    newFormErrors: typeof formErrors
-  ) => {
     if (
-      !newFormData.startDate ||
-      !newFormData.endDate ||
-      newFormErrors.startDate ||
-      newFormErrors.endDate
+      parsedStartDate &&
+      parsedEndDate &&
+      !newFormErrors.startDate &&
+      !newFormErrors.endDate
     ) {
-      return { area: "" };
+      const banner = findConflictingBanner(
+        newFormData.area,
+        parsedStartDate,
+        parsedEndDate
+      );
+      if (banner) {
+        newFormErrors.endDate = `This date range conflicts with existing banner: ${banner.title}`;
+      }
     }
 
-    const startDateIso = format_mdy_to_ymd(newFormData.startDate);
-    const endDateIso = format_mdy_to_ymd(newFormData.endDate);
+    setFormErrors(newFormErrors);
+  };
 
-    const hasConflict = (banner: BannerFormData) => {
-      if (banner.area !== newFormData.area) {
+  /**
+   * @param dateA - A date (start or end) just entered by the user
+   * @param dateB - Another date just entered by the user.
+   *                If present, this is the endDate, and dateA is the startDate.
+   */
+  const findConflictingBanner = (
+    area: BannerArea,
+    dateA: Date,
+    dateB?: Date
+  ) => {
+    return allBanners.find((banner) => {
+      const start = parseAsLocalDate(banner.startDate);
+      const end = parseAsLocalDate(banner.endDate);
+      if (banner.area !== area) {
         return false;
-      } else if (
-        startDateIso.localeCompare(banner.startDate) <= 0 &&
-        banner.startDate.localeCompare(endDateIso) <= 0
-      ) {
+      } else if (start <= dateA && dateA <= end) {
+        // This banner's range contains date A
         return true;
-      } else if (
-        banner.startDate.localeCompare(startDateIso) <= 0 &&
-        startDateIso.localeCompare(banner.endDate) <= 0
-      ) {
+      } else if (!dateB) {
+        // We're only checking for one end of the new range
+        return false;
+      } else if (start <= dateB && dateB <= end) {
+        // This banner's range contains date B
+        return true;
+      } else if (dateA <= start && end <= dateB) {
+        // The new range completely covers this banner's range
         return true;
       } else {
         return false;
       }
-    };
+    });
+  };
 
-    const conflictingBanner = allBanners.find(hasConflict);
-    if (conflictingBanner) {
-      return {
-        area: `Banner "${conflictingBanner.title}" would be displayed in this area on overlapping dates`,
-      };
-    } else {
-      return { area: "" };
-    }
+  // The CmsdsDateField change event has a different shape than other inputs,
+  // so we wrangle it into a standard shape with these custom handlers.
+  const onStartDateChange = (rawValue: string, maskedValue: string) => {
+    onChange({ target: { name: "startDate", value: rawValue, maskedValue } });
+  };
+  const onEndDateChange = (rawValue: string, maskedValue: string) => {
+    onChange({ target: { name: "endDate", value: rawValue, maskedValue } });
   };
 
   const onBlur = (evt: ChangeEvent<HTMLInputElement>) => {
+    // This check ensures an error appears when the user clicks into,
+    // and then clicks out of, an empty field.
     const { name, value } = evt.target;
     const required = evt.target.dataset.required === "true";
     if (required && !value) {
-      setFormErrors({
-        ...formErrors,
-        [name]: ErrorMessages.requiredResponse,
-      });
+      setFormErrors({ ...formErrors, [name]: ErrorMessages.requiredResponse });
     }
+    setDirtyState({ ...dirtyState, [name]: true });
   };
 
   const onSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
 
+    // This check ensures errors appear when the user clicks submit,
+    // without first having clicked any of the required input fields.
     const newErrors = structuredClone(formErrors);
     for (let key of ["title", "description", "startDate", "endDate"] as const) {
       if (!formErrors[key] && !formData[key]) {
@@ -210,6 +211,9 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
     try {
       await updateBanner(newBannerData);
       window.scrollTo(0, 0);
+      setFormData(blankFormState);
+      setDirtyState(blankDirtyState);
+      setFormErrors(blankErrorState);
     } finally {
       setSubmitting(false);
     }
@@ -222,7 +226,7 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
           <CmsdsDropdown
             name="area"
             label="Site area"
-            onChange={onAreaChange}
+            onChange={onChange}
             onBlur={onBlur}
             options={areaOptions}
             value={formData.area}
@@ -231,7 +235,7 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
           <CmsdsTextField
             name="title"
             label="Title text"
-            onChange={onTextChange}
+            onChange={onChange}
             onBlur={onBlur}
             value={formData.title}
             errorMessage={formErrors.title}
@@ -242,7 +246,7 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
             name="description"
             label="Description text"
             hint={supportedTagsHint}
-            onChange={onTextChange}
+            onChange={onChange}
             onBlur={onBlur}
             value={formData.description}
             errorMessage={formErrors.description}
@@ -252,7 +256,7 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
             name="link"
             label="Link"
             hint="Optional"
-            onChange={onTextChange}
+            onChange={onChange}
             onBlur={onBlur}
             value={formData.link}
             errorMessage={formErrors.link}
@@ -312,7 +316,7 @@ const format_mdy_to_ymd = (dateString: string) => {
 };
 
 interface Props {
-  updateBanner: (data: BannerFormData) => void;
+  updateBanner: (data: BannerFormData) => Promise<void>;
 }
 
 const sx = {
