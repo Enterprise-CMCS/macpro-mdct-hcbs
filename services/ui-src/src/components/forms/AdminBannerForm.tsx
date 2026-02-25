@@ -231,7 +231,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
             options={areaOptions}
             value={formData.area}
             errorMessage={formErrors.area}
-          ></CmsdsDropdown>
+          />
           <CmsdsTextField
             name="title"
             label="Title text"
