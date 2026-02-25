@@ -239,6 +239,8 @@ const checkboxTemplateSchema = object().shape({
     })
   ),
   answer: array().of(string()).notRequired(),
+  emptyAlertTitle: string().notRequired(),
+  emptyAlertDescription: string().notRequired(),
   required: boolean().required(),
 });
 

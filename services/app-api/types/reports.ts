@@ -432,6 +432,8 @@ export type CheckboxTemplate = {
   choices: ChoiceTemplate[];
   helperText?: string;
   answer?: string[];
+  emptyAlertTitle?: string;
+  emptyAlertDescription?: string;
   required: boolean;
 };
 
