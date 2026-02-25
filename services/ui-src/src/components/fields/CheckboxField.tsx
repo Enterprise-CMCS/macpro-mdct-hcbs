@@ -15,7 +15,7 @@ import { Alert } from "components/alerts/Alert";
 const formatChoices = (
   choices: ChoiceTemplate[],
   answer: string[],
-  updateElement: (element: Partial<CheckboxTemplate>) => void,
+  updateElement: (element: Partial<CheckboxTemplate>) => void
 ): ChoiceProps[] => {
   return choices.map((choice, choiceIndex) => {
     if (!choice.checkedChildren) {
@@ -59,7 +59,7 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   const initialDisplayValue = formatChoices(
     checkbox.choices,
     checkbox.answer ?? [],
-    props.updateElement,
+    props.updateElement
   );
   const [displayValue, setDisplayValue] = useState(initialDisplayValue);
 
@@ -69,8 +69,8 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
       formatChoices(
         checkbox.choices,
         checkbox.answer ?? [],
-        props.updateElement,
-      ),
+        props.updateElement
+      )
     );
   }, [checkbox.choices, checkbox.answer]);
 
@@ -86,7 +86,7 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
     const newDisplayValue = formatChoices(
       checkbox.choices,
       newValue,
-      props.updateElement,
+      props.updateElement
     );
     setDisplayValue(newDisplayValue);
     props.updateElement({ answer: newValue });
