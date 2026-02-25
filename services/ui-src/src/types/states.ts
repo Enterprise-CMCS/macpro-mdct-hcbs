@@ -14,7 +14,7 @@ export interface HcbsBannerState {
   _lastFetchTime: number;
   /** Refresh the `allBanners` list */
   fetchBanners: () => Promise<void>;
-  updateBanner: (data: BannerFormData) => Promise<void>;
+  createBanner: (data: BannerFormData) => Promise<void>;
   deleteBanner: (id: string) => Promise<void>;
 }
 

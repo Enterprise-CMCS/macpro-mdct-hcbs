@@ -20,7 +20,7 @@ import {
   setPage,
   substitute,
 } from "./reportLogic/reportActions";
-import { getBanners, updateBanner, deleteBanner } from "utils";
+import { getBanners, createBanner, deleteBanner } from "utils";
 
 // USER STORE
 const userStore = (set: Set<HcbsUserState>) => ({
@@ -45,8 +45,8 @@ const bannerStore = (set: Set<HcbsBannerState>, get: Get<HcbsBannerState>) => ({
     const allBanners = await getBanners();
     set({ allBanners, _lastFetchTime: new Date().valueOf() });
   },
-  updateBanner: async (banner: BannerFormData) => {
-    await updateBanner(banner);
+  createBanner: async (banner: BannerFormData) => {
+    await createBanner(banner);
     await get().fetchBanners();
   },
   deleteBanner: async (bannerKey: string) => {

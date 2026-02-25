@@ -9,7 +9,7 @@ import { useStore } from "./useStore";
 
 jest.mock("utils", () => ({
   getBanners: jest.fn(),
-  updateBanner: jest.fn(),
+  createBanner: jest.fn(),
   deleteBanner: jest.fn(),
 }));
 

@@ -12,7 +12,7 @@ export async function getBanners() {
   return await apiLib.get<BannerShape[]>("/banners", options);
 }
 
-export async function updateBanner(bannerData: BannerFormData) {
+export async function createBanner(bannerData: BannerFormData) {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },

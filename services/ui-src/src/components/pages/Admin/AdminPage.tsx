@@ -6,7 +6,7 @@ import { BannerArea, bannerAreaLabels, BannerShape } from "types";
 import { Banner } from "components/alerts/Banner";
 
 export const AdminPage = () => {
-  const { allBanners, fetchBanners, updateBanner, deleteBanner } = useStore();
+  const { allBanners, fetchBanners, createBanner, deleteBanner } = useStore();
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState<Record<string, boolean>>({});
 
@@ -82,7 +82,7 @@ export const AdminPage = () => {
         <Heading as="h2" sx={sx.sectionHeader}>
           Create a New Banner
         </Heading>
-        <AdminBannerForm updateBanner={updateBanner} />
+        <AdminBannerForm createBanner={createBanner} />
       </Flex>
     </PageTemplate>
   );

@@ -12,7 +12,7 @@ describe("<AdminBannerForm />", () => {
   });
 
   test("AdminBannerForm can be filled and submitted without error", async () => {
-    render(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
+    render(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 
     // It is frustrating that this is a button + list, instead of an combobox.
     // Why, CMSDS, have you done this? Is it better? How?
@@ -50,12 +50,12 @@ describe("<AdminBannerForm />", () => {
     });
   });
 
-  testA11yAct(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
+  testA11yAct(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 });
 
 describe("AdminBannerForm validation", () => {
   test("Display form errors when user tries to submit completely blank form", async () => {
-    render(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
+    render(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 
     const submitButton = screen.getByText("Create Banner");
     await userEvent.click(submitButton);
@@ -69,7 +69,7 @@ describe("AdminBannerForm validation", () => {
   });
 
   test("User has form errors but then fills out the form and errors go away", async () => {
-    render(<AdminBannerForm updateBanner={mockWriteAdminBanner} />);
+    render(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 
     const submitButton = screen.getByText("Create Banner");
     const titleInput = screen.getByLabelText("Title text");

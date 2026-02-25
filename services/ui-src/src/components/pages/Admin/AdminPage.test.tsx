@@ -61,11 +61,11 @@ const mockBannerHome3 = {
 } as BannerShape;
 
 const fetchBanners = jest.fn();
-const updateBanner = jest.fn();
+const createBanner = jest.fn();
 const deleteBanner = jest.fn();
 const bannerMethods = {
   fetchBanners,
-  updateBanner,
+  createBanner,
   deleteBanner,
 };
 

@@ -103,7 +103,7 @@ export const mockBannerStore: HcbsBannerState = {
   allBanners: [],
   _lastFetchTime: 0,
   fetchBanners: async () => {},
-  updateBanner: async () => {},
+  createBanner: async () => {},
   deleteBanner: async () => {},
 };
 

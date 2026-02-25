@@ -16,7 +16,7 @@ import {
 import { isUrl } from "utils/validation/inputValidation";
 import { Banner } from "components/alerts/Banner";
 
-export const AdminBannerForm = ({ updateBanner }: Props) => {
+export const AdminBannerForm = ({ createBanner }: Props) => {
   const allBanners = useStore((state) => state.allBanners);
   const blankFormState: BannerFormData = {
     area: BannerAreas.Home,
@@ -209,7 +209,7 @@ export const AdminBannerForm = ({ updateBanner }: Props) => {
     };
 
     try {
-      await updateBanner(newBannerData);
+      await createBanner(newBannerData);
       window.scrollTo(0, 0);
       setFormData(blankFormState);
       setDirtyState(blankDirtyState);
@@ -316,7 +316,7 @@ const format_mdy_to_ymd = (dateString: string) => {
 };
 
 interface Props {
-  updateBanner: (data: BannerFormData) => Promise<void>;
+  createBanner: (data: BannerFormData) => Promise<void>;
 }
 
 const sx = {

@@ -2,20 +2,20 @@ import { BannerShape, BannerAreas } from "types/banners";
 import { useStore } from "./useStore";
 import {
   getBanners as actualGetBanners,
-  updateBanner as actualUpdateBanner,
+  createBanner as actualCreateBanner,
   deleteBanner as actualDeleteBanner,
 } from "utils";
 
 jest.mock("utils", () => ({
   getBanners: jest.fn(),
-  updateBanner: jest.fn(),
+  createBanner: jest.fn(),
   deleteBanner: jest.fn(),
 }));
 const getBanners = actualGetBanners as jest.MockedFunction<
   typeof actualGetBanners
 >;
-const updateBanner = actualUpdateBanner as jest.MockedFunction<
-  typeof actualUpdateBanner
+const createBanner = actualCreateBanner as jest.MockedFunction<
+  typeof actualCreateBanner
 >;
 const deleteBanner = actualDeleteBanner as jest.MockedFunction<
   typeof actualDeleteBanner
@@ -58,8 +58,8 @@ describe("useStore", () => {
     });
 
     it("should fetch after updating", async () => {
-      await useStore.getState().updateBanner(mockBanner);
-      expect(updateBanner).toHaveBeenCalled();
+      await useStore.getState().createBanner(mockBanner);
+      expect(createBanner).toHaveBeenCalled();
       expect(getBanners).toHaveBeenCalled();
     });
 
