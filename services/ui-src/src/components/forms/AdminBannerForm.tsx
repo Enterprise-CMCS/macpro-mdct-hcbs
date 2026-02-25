@@ -12,6 +12,7 @@ import {
   bannerAreaLabels,
   BannerAreas,
   BannerFormData,
+  BannerShape,
 } from "types";
 import { isUrl } from "utils/validation/inputValidation";
 import { Banner } from "components/alerts/Banner";
@@ -82,7 +83,11 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
         newFormErrors.startDate =
           "Start date is invalid. Please enter date in MM/DD/YYYY format";
       } else {
-        const banner = findConflictingBanner(newFormData.area, parsedStartDate);
+        const banner = findConflictingBanner(
+          allBanners,
+          newFormData.area,
+          parsedStartDate
+        );
         if (banner) {
           newFormErrors.startDate = `Start date conflicts with existing banner: ${banner.title}`;
         }
@@ -103,7 +108,11 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
       } else if (parsedStartDate && parsedEndDate < parsedStartDate) {
         newFormErrors.endDate = ErrorMessages.endDateBeforeStartDate;
       } else {
-        const banner = findConflictingBanner(newFormData.area, parsedEndDate);
+        const banner = findConflictingBanner(
+          allBanners,
+          newFormData.area,
+          parsedEndDate
+        );
         if (banner) {
           newFormErrors.endDate = `End date conflicts with existing banner: ${banner.title}`;
         }
@@ -117,6 +126,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
       !newFormErrors.endDate
     ) {
       const banner = findConflictingBanner(
+        allBanners,
         newFormData.area,
         parsedStartDate,
         parsedEndDate
@@ -127,39 +137,6 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
     }
 
     setFormErrors(newFormErrors);
-  };
-
-  /**
-   * @param dateA - A date (start or end) just entered by the user
-   * @param dateB - Another date just entered by the user.
-   *                If present, this is the endDate, and dateA is the startDate.
-   */
-  const findConflictingBanner = (
-    area: BannerArea,
-    dateA: Date,
-    dateB?: Date
-  ) => {
-    return allBanners.find((banner) => {
-      const start = parseAsLocalDate(banner.startDate);
-      const end = parseAsLocalDate(banner.endDate);
-      if (banner.area !== area) {
-        return false;
-      } else if (start <= dateA && dateA <= end) {
-        // This banner's range contains date A
-        return true;
-      } else if (!dateB) {
-        // We're only checking for one end of the new range
-        return false;
-      } else if (start <= dateB && dateB <= end) {
-        // This banner's range contains date B
-        return true;
-      } else if (dateA <= start && end <= dateB) {
-        // The new range completely covers this banner's range
-        return true;
-      } else {
-        return false;
-      }
-    });
   };
 
   // The CmsdsDateField change event has a different shape than other inputs,
@@ -331,6 +308,42 @@ const supportedTagsHint = () => (
 const format_mdy_to_ymd = (dateString: string) => {
   const [m, d, y] = dateString.split("/");
   return [y, m, d].join("-");
+};
+
+/**
+ * @param allBanners Every banner that currently exists in the database
+ * @param area The area just selected by the user
+ * @param dateA A date (start or end) just entered by the user
+ * @param dateB Another date just entered by the user.
+ *              If present, this is the endDate, and dateA is the startDate.
+ */
+export const findConflictingBanner = (
+  allBanners: BannerShape[],
+  area: BannerArea,
+  dateA: Date,
+  dateB?: Date
+) => {
+  return allBanners.find((banner) => {
+    const start = parseAsLocalDate(banner.startDate);
+    const end = parseAsLocalDate(banner.endDate);
+    if (banner.area !== area) {
+      return false;
+    } else if (start <= dateA && dateA <= end) {
+      // This banner's range contains date A
+      return true;
+    } else if (!dateB) {
+      // We're only checking for one end of the new range
+      return false;
+    } else if (start <= dateB && dateB <= end) {
+      // This banner's range contains date B
+      return true;
+    } else if (dateA <= start && end <= dateB) {
+      // The new range completely covers this banner's range
+      return true;
+    } else {
+      return false;
+    }
+  });
 };
 
 interface Props {
