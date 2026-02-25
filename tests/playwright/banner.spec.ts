@@ -6,7 +6,7 @@ import { tomorrow, yesterday } from "./utils/time";
 test.use({ storageState: adminAuthPath });
 
 const testBannerData = {
-  title: "Important announcement",
+  title: "E2E Banner Test",
   description: "Please view this announcement",
   link: "https://example.com",
   startDate: yesterday(),
@@ -27,10 +27,11 @@ test.describe("Banner functionality", () => {
   });
 
   test("The banner should be visible from other pages", async ({ page }) => {
-    const title = `Banner visibility test ${new Date().toISOString()}`;
+    const title = `E2E banner visibility test ${new Date().toISOString()}`;
     const bannerData = { ...testBannerData, title };
 
     await navigateToBannerEditor(page);
+    await deleteExistingBanners(page);
     await fillBannerForm(page, bannerData);
     await saveBanner(page);
 
@@ -42,10 +43,11 @@ test.describe("Banner functionality", () => {
   });
 
   test("The banner should be deletable", async ({ page }) => {
-    const title = `Banner deletion test ${new Date().toISOString()}`;
+    const title = `E2E banner deletion test ${new Date().toISOString()}`;
     const bannerData = { ...testBannerData, title };
 
     await navigateToBannerEditor(page);
+    await deleteExistingBanners(page);
     await fillBannerForm(page, bannerData);
     await saveBanner(page);
 
@@ -107,6 +109,24 @@ const saveBanner = async (page: Page) => {
     waitForBannerRequest(page, "GET"),
     saveButton.click(),
   ]);
+};
+
+// Click every banner delete button. Expects to be on the banner editor page.
+const deleteExistingBanners = async (page: Page) => {
+  const loadingText = page.getByText("Loading...");
+  await expect(loadingText).toBeHidden();
+
+  const deleteButtons = await page
+    .getByRole("button", { name: /Delete banner/ })
+    .all();
+
+  for (let button of deleteButtons) {
+    await Promise.all([
+      waitForBannerRequest(page, "DELETE"),
+      waitForBannerRequest(page, "GET"),
+      button.click(),
+    ]);
+  }
 };
 
 const waitForBannerRequest = async (
