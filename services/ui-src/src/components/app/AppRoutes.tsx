@@ -45,7 +45,16 @@ export const AppRoutes = () => {
               }
             />
             {notificationsPageEnabled && (
-              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route
+                path="/notifications"
+                element={
+                  !userIsAdmin ? (
+                    <Navigate to="/profile" />
+                  ) : (
+                    <NotificationsPage />
+                  )
+                }
+              />
             )}
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/help" element={<HelpPage />} />
