@@ -7,7 +7,7 @@ import {
   UserRoles,
   HcbsUserState,
   UserContextShape,
-  AdminBannerState,
+  HcbsBannerState,
   HcbsReportState,
   ReportType,
   ReportStatus,
@@ -20,7 +20,7 @@ import {
   MeasureSpecification,
   ElementType,
 } from "types";
-import { mockBannerData } from "./mockBanner";
+
 // GLOBALS
 
 global.React = React;
@@ -99,18 +99,12 @@ jest.mock("aws-amplify/auth", () => ({
 
 //  BANNER STATES / STORE
 
-export const mockBannerStore: AdminBannerState = {
-  bannerData: mockBannerData,
-  bannerActive: false,
-  bannerLoading: false,
-  bannerErrorMessage: { title: "", children: undefined },
-  bannerDeleting: false,
-  setBannerData: () => {},
-  clearAdminBanner: () => {},
-  setBannerActive: () => {},
-  setBannerLoading: () => {},
-  setBannerErrorMessage: () => {},
-  setBannerDeleting: () => {},
+export const mockBannerStore: HcbsBannerState = {
+  allBanners: [],
+  _lastFetchTime: 0,
+  fetchBanners: async () => {},
+  createBanner: async () => {},
+  deleteBanner: async () => {},
 };
 
 // USER CONTEXT
@@ -368,19 +362,18 @@ export const mockReportStore: HcbsReportState = {
 
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState & AdminBannerState & HcbsReportState =
-  {
-    ...mockStateUserStore,
-    ...mockBannerStore,
-    ...mockReportStore,
-  };
+export const mockUseStore: HcbsUserState & HcbsBannerState & HcbsReportState = {
+  ...mockStateUserStore,
+  ...mockBannerStore,
+  ...mockReportStore,
+};
 
-export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
+export const mockUseAdminStore: HcbsUserState & HcbsBannerState = {
   ...mockAdminUserStore,
   ...mockBannerStore,
 };
 
-export const mockUseReadOnlyUserStore: HcbsUserState & AdminBannerState = {
+export const mockUseReadOnlyUserStore: HcbsUserState & HcbsBannerState = {
   ...mockHelpDeskUserStore,
   ...mockBannerStore,
   ...mockReportStore,
@@ -400,8 +393,6 @@ export const mockLDClient = {
 
 // ASSET
 export * from "./mockAsset";
-// BANNER
-export * from "./mockBanner";
 // FORM
 export * from "./mockForm";
 // ROUTER

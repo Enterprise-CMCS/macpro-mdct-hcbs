@@ -1,144 +1,163 @@
-import { useContext } from "react";
-import {
-  Box,
-  Button,
-  Collapse,
-  Flex,
-  Heading,
-  Text,
-  Spinner,
-} from "@chakra-ui/react";
-import {
-  AdminBannerContext,
-  AdminBannerForm,
-  Alert,
-  Banner,
-  PageTemplate,
-} from "components";
-import { convertDateUtcToEt, useStore } from "utils";
-import { AlertTypes } from "types";
+import { Fragment, useEffect, useState } from "react";
+import { Box, Button, Flex, Heading, Text, Spinner } from "@chakra-ui/react";
+import { AdminBannerForm, PageTemplate } from "components";
+import { formatMonthDayYear, parseAsLocalDate, useStore } from "utils";
+import { BannerArea, bannerAreaLabels, BannerShape } from "types";
+import { Banner } from "components/alerts/Banner";
 
 export const AdminPage = () => {
-  const { deleteAdminBanner, writeAdminBanner } =
-    useContext(AdminBannerContext);
+  const { allBanners, fetchBanners, createBanner, deleteBanner } = useStore();
+  const [loading, setLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState<Record<string, boolean>>({});
 
-  const {
-    bannerData,
-    bannerActive,
-    bannerLoading,
-    bannerErrorMessage,
-    bannerDeleting,
-  } = useStore();
+  useEffect(() => {
+    (async () => {
+      await fetchBanners();
+      setLoading(false);
+    })();
+  }, []);
+
+  const bannerGroups = groupAndSortBanners(allBanners);
+
+  const onDelete = async (bannerKey: string) => {
+    setIsDeleting({ ...isDeleting, [bannerKey]: true });
+    try {
+      await deleteBanner(bannerKey);
+    } finally {
+      setIsDeleting({ ...isDeleting, [bannerKey]: false });
+    }
+  };
 
   return (
     <PageTemplate data-testid="admin-view">
-      {bannerErrorMessage ? (
-        <Alert
-          status={AlertTypes.ERROR}
-          title={bannerErrorMessage.title}
-          showIcon={false}
-        >
-          {bannerErrorMessage.children}
-        </Alert>
-      ) : null}
-      <Box sx={sx.introTextBox}>
+      <Box>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           Banner Admin
         </Heading>
-        <Text>Manage the announcement banner below.</Text>
+        <Text>Manage the announcement banners below.</Text>
       </Box>
-      <Box sx={sx.currentBannerSectionBox}>
-        <Text sx={sx.sectionHeader}>Current Banner</Text>
-        {bannerLoading ? (
+      <Box>
+        <Heading as="h2" sx={sx.sectionHeader}>
+          Current Banners
+        </Heading>
+        {loading ? (
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="md" />
           </Flex>
+        ) : allBanners.length === 0 ? (
+          <Text>There are no existing banners.</Text>
         ) : (
-          <>
-            <Collapse in={!!bannerData?.key}>
-              {bannerData && (
-                <>
-                  <Flex sx={sx.currentBannerInfo}>
-                    <Text>
-                      Status:{" "}
-                      <span className={bannerActive ? "active" : "inactive"}>
-                        {bannerActive ? "Active" : "Inactive"}
-                      </span>
-                    </Text>
-                    <Text>
-                      Start Date:{" "}
-                      {bannerData.startDate && (
-                        <span>{convertDateUtcToEt(bannerData.startDate)}</span>
-                      )}
-                    </Text>
-                    <Text>
-                      End Date:{" "}
-                      {bannerData.endDate && (
-                        <span>{convertDateUtcToEt(bannerData.endDate)}</span>
-                      )}
-                    </Text>
-                  </Flex>
-                  <Flex sx={sx.currentBannerFlex}>
-                    <Banner bannerData={bannerData} />
-                    <Button
-                      variant="danger"
-                      sx={sx.deleteBannerButton}
-                      onClick={deleteAdminBanner}
-                    >
-                      {bannerDeleting ? (
-                        <Spinner size="md" />
-                      ) : (
-                        "Delete Current Banner"
-                      )}
-                    </Button>
-                  </Flex>
-                </>
-              )}
-            </Collapse>
-            {!bannerData && <Text>There is no current banner</Text>}
-          </>
+          <Flex sx={sx.bannerGroupsContainer}>
+            {Object.entries(bannerGroups).map(([area, banners]) => (
+              <Flex key={area} sx={sx.bannerGroupContainer}>
+                <Heading as="h3">
+                  {bannerAreaLabels[area as BannerArea]}
+                </Heading>
+                {banners.map((banner) => (
+                  <Fragment key={banner.key}>
+                    <Banner {...banner} key={banner.key} />
+                    <Flex sx={sx.bannerStatusAndButtonContainer}>
+                      {displayStatus(banner)}
+                      <Button
+                        variant="danger"
+                        onClick={() => onDelete(banner.key)}
+                        aria-label={`Delete banner titled ${banner.title}`}
+                      >
+                        {isDeleting[banner.key] ? (
+                          <Spinner size="md" />
+                        ) : (
+                          "Delete"
+                        )}
+                      </Button>
+                    </Flex>
+                  </Fragment>
+                ))}
+                <hr />
+              </Flex>
+            ))}
+          </Flex>
         )}
       </Box>
       <Flex sx={sx.newBannerBox} gap=".75rem">
-        <Text sx={sx.sectionHeader}>Create a New Banner</Text>
-        <AdminBannerForm writeAdminBanner={writeAdminBanner} />
+        <Heading as="h2" sx={sx.sectionHeader}>
+          Create a New Banner
+        </Heading>
+        <AdminBannerForm createBanner={createBanner} />
       </Flex>
     </PageTemplate>
   );
 };
 
+function groupAndSortBanners(banners: BannerShape[]) {
+  // Sort by startDate, then by endDate, then by createdAt. Earliest first.
+  banners.sort(
+    (a, b) =>
+      a.startDate.localeCompare(b.startDate) ||
+      a.endDate.localeCompare(b.endDate) ||
+      a.createdAt.localeCompare(b.createdAt)
+  );
+
+  const groups: Record<string, BannerShape[]> = {};
+  for (let area of Object.keys(bannerAreaLabels)) {
+    const group = banners.filter((b) => b.area === area);
+    if (group.length > 0) {
+      // Only display an area if it has any banners
+      groups[area] = group;
+    }
+  }
+  return groups;
+}
+
+function displayStatus(banner: BannerShape) {
+  const now = new Date();
+  const startDate = parseAsLocalDate(banner.startDate);
+  const endDate = parseAsLocalDate(banner.endDate);
+  const status =
+    now < startDate ? "Scheduled" : now <= endDate ? "Active" : "Expired";
+  const startDateEt = formatMonthDayYear(startDate.valueOf());
+  const endDateEt = formatMonthDayYear(endDate.valueOf());
+
+  return (
+    <Text sx={sx.statusText}>
+      <span className={status}>{status}</span>: {startDateEt}&ndash;{endDateEt}
+    </Text>
+  );
+}
+
 const sx = {
-  introTextBox: {
-    width: "100%",
-  },
   headerText: {
     marginBottom: "spacer2",
     fontSize: "heading_3xl",
     fontWeight: "heading_3xl",
   },
-  currentBannerSectionBox: {
-    width: "100%",
-    marginBottom: "spacer4",
-  },
   sectionHeader: {
+    marginBottom: "spacer2",
     fontSize: "heading_2xl",
     fontWeight: "heading_2xl",
   },
-  currentBannerInfo: {
+  bannerGroupsContainer: {
     flexDirection: "column",
-    marginBottom: "spacer1 !important",
-    span: {
-      marginLeft: "spacer1",
-      "&.active": {
-        color: "palette.success",
-      },
-      "&.inactive": {
-        color: "palette.error",
-      },
+    gap: "3rem",
+    h3: {
+      fontWeight: "bold",
     },
   },
-  currentBannerFlex: {
+  bannerGroupContainer: {
     flexDirection: "column",
+    gap: "2rem",
+  },
+  bannerStatusAndButtonContainer: {
+    display: "grid",
+    gridTemplateColumns: "1fr 10rem",
+    marginTop: "-1rem",
+    button: {
+      fontWeight: "bold",
+    },
+  },
+  statusText: {
+    ".Expired": { color: "palette.error" },
+    ".Active": { color: "palette.success" },
+    ".Scheduled": { color: "palette.primary" },
   },
   spinnerContainer: {
     marginTop: "spacer1",
@@ -150,11 +169,6 @@ const sx = {
         borderLeftColor: "palette.black",
       },
     },
-  },
-  deleteBannerButton: {
-    width: "13.3rem",
-    alignSelf: "end",
-    marginTop: "spacer2 !important",
   },
   newBannerBox: {
     width: "100%",

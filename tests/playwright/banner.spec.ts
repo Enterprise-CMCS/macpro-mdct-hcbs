@@ -6,7 +6,7 @@ import { tomorrow, yesterday } from "./utils/time";
 test.use({ storageState: adminAuthPath });
 
 const testBannerData = {
-  title: "Important announcement",
+  title: "E2E Banner Test",
   description: "Please view this announcement",
   link: "https://example.com",
   startDate: yesterday(),
@@ -26,34 +26,42 @@ test.describe("Banner functionality", () => {
     await assertBannerIsPopulated(alertPreview, testBannerData);
   });
 
-  test.skip("The banner should be visible from other pages", async ({
-    page,
-  }) => {
+  test("The banner should be visible from other pages", async ({ page }) => {
+    const title = `E2E banner visibility test ${new Date().toISOString()}`;
+    const bannerData = { ...testBannerData, title };
+
     await navigateToBannerEditor(page);
-    await fillBannerForm(page, testBannerData);
+    await deleteExistingBanners(page);
+    await fillBannerForm(page, bannerData);
     await saveBanner(page);
 
     await page.goto("/");
 
     // The new alert should be visible on the home page
-    const alertElement = page.getByRole("alert");
-    await assertBannerIsPopulated(alertElement, testBannerData);
+    const alertElement = page.getByRole("alert").filter({ hasText: title });
+    await assertBannerIsPopulated(alertElement, bannerData);
   });
 
   test("The banner should be deletable", async ({ page }) => {
+    const title = `E2E banner deletion test ${new Date().toISOString()}`;
+    const bannerData = { ...testBannerData, title };
+
     await navigateToBannerEditor(page);
-    await fillBannerForm(page, testBannerData);
+    await deleteExistingBanners(page);
+    await fillBannerForm(page, bannerData);
     await saveBanner(page);
 
-    // We have 2 alerts: the "Current Banner" preview, and the form preview.
-    let alertElements = await page.getByRole("alert").all();
-    expect(alertElements).toHaveLength(2);
+    const deleteButton = page.getByRole("button", {
+      name: "Delete banner titled " + title,
+    });
 
-    await deleteBanner(page);
+    await Promise.all([
+      waitForBannerRequest(page, "DELETE"),
+      waitForBannerRequest(page, "GET"),
+      deleteButton.click(),
+    ]);
 
-    // We should be back down to just 1 alert.
-    alertElements = await page.getByRole("alert").all();
-    expect(alertElements).toHaveLength(1);
+    await expect(deleteButton).toBeHidden();
   });
 });
 
@@ -93,23 +101,32 @@ const assertBannerIsPopulated = async (
 // Click the banner save button. Expects to be on the banner editor page.
 const saveBanner = async (page: Page) => {
   const saveButton = page.getByRole("button", {
-    name: "Replace Current Banner",
+    name: "Create Banner",
   });
 
-  await saveButton.click();
-  await waitForBannerRequest(page, "POST");
-  await waitForBannerRequest(page, "GET");
+  await Promise.all([
+    waitForBannerRequest(page, "POST"),
+    waitForBannerRequest(page, "GET"),
+    saveButton.click(),
+  ]);
 };
 
-// Click the banner save button. Expects to be on the banner editor page.
-const deleteBanner = async (page: Page) => {
-  const deleteButton = page.getByRole("button", {
-    name: "Delete Current Banner",
-  });
+// Click every banner delete button. Expects to be on the banner editor page.
+const deleteExistingBanners = async (page: Page) => {
+  const loadingText = page.getByText("Loading...");
+  await expect(loadingText).toBeHidden();
 
-  await deleteButton.click();
-  await waitForBannerRequest(page, "DELETE");
-  await waitForBannerRequest(page, "GET");
+  const deleteButtons = await page
+    .getByRole("button", { name: /Delete banner/ })
+    .all();
+
+  for (let button of deleteButtons) {
+    await Promise.all([
+      waitForBannerRequest(page, "DELETE"),
+      waitForBannerRequest(page, "GET"),
+      button.click(),
+    ]);
+  }
 };
 
 const waitForBannerRequest = async (
@@ -118,7 +135,7 @@ const waitForBannerRequest = async (
 ) => {
   await page.waitForResponse(
     (response) =>
-      response.url().includes(`/banners/`) &&
+      response.url().includes(`/banners`) &&
       response.request().method() === method &&
       response.ok()
   );
