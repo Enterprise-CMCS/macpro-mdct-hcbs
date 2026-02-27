@@ -29,6 +29,7 @@ export const Header = ({ handleLogout }: Props) => {
                 to="/help"
                 variant="unstyled"
                 aria-label="Get Help"
+                sx={sx.getHelp}
               >
                 <MenuOption
                   icon={getHelpIcon}
@@ -72,8 +73,16 @@ const sx = {
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: "palette.gray_lightest",
+    padding: "0 1rem",
     ".desktop &": {
-      padding: "0 1rem",
+      padding: "0 2rem",
+    },
+
+    header: {
+      display: "grid",
+      ".desktop &": {
+        display: "flex",
+      },
     },
   },
   headerBar: {
@@ -95,6 +104,9 @@ const sx = {
     alignItems: "center",
   },
   appLogo: {
-    maxWidth: "200px",
+    maxWidth: "238px",
+  },
+  getHelp: {
+    marginLeft: ".5rem",
   },
 };

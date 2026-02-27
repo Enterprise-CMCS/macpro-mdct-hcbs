@@ -1,7 +1,6 @@
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminDashSelector,
-  Banner,
   CiIntroductionCard,
   PageTemplate,
   QmsIntroductionCard,
@@ -9,12 +8,14 @@ import {
   PCPIntroductionCard,
   WWLIntroductionCard,
 } from "components";
-import { useEffect } from "react";
-import { checkDateRangeStatus, useStore } from "utils";
+import { useStore } from "utils";
 import { useFlags } from "launchdarkly-react-client-sdk";
+import { activeBannerSelector } from "utils/state/selectors";
+import { BannerAreas } from "types";
+import { Banner } from "components/alerts/Banner";
 
 export const HomePage = () => {
-  const { bannerData, bannerActive, setBannerActive } = useStore();
+  const banner = useStore(activeBannerSelector(BannerAreas.Home));
   const { userIsEndUser } = useStore().user ?? {};
 
   const isTACMReportActive = useFlags()?.isTacmReportActive;
@@ -22,23 +23,10 @@ export const HomePage = () => {
   const isPCPReportActive = useFlags()?.isPcpReportActive;
   const isWWLReportActive = useFlags()?.isWwlReportActive;
 
-  useEffect(() => {
-    let bannerActivity = false;
-    if (bannerData && bannerData.startDate && bannerData.endDate) {
-      bannerActivity = checkDateRangeStatus(
-        bannerData.startDate,
-        bannerData.endDate
-      );
-    }
-    setBannerActive(bannerActivity);
-  }, [bannerData]);
-
-  const showBanner = !!bannerData?.key && bannerActive;
-
   return (
     <>
       <PageTemplate>
-        {showBanner && <Banner bannerData={bannerData} />}
+        {banner ? <Banner {...banner} key={banner.key} /> : null}
         {/* Show standard view to state users */}
         {userIsEndUser ? (
           <>

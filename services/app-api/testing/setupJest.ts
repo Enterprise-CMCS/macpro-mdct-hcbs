@@ -32,6 +32,3 @@ jest.mock("../libs/debug-lib", () => {
     flush: jest.fn(),
   };
 });
-
-// BANNER
-export * from "../utils/tests/mockBanner";

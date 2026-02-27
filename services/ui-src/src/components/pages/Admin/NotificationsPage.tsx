@@ -1,32 +1,42 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { PageTemplate } from "components";
-import { ToggleButton } from "components/toggle/ToggleButton";
+import { Checkbox } from "components/checkbox/Checkbox";
 import { useEffect, useState } from "react";
+import { ReportType } from "types";
+import { Notifications } from "types/notifications";
+import { useStore } from "utils";
+
+const REPORTS = Object.values(ReportType) as ReportType[];
 
 export const NotificationsPage = () => {
-  const STORAGE_KEY = "notification-toggles";
-  const [notificationSettings, setNotificationSettings] = useState<
-    Record<string, boolean>
-  >(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
-  });
+  const [notifications, setNotifications] = useState<Notifications[]>([]);
+  const { fetchNotifications, updateNotifications } = useStore();
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(notificationSettings));
-  }, [notificationSettings]);
+    (async () => {
+      await fetchNotifications();
+    })();
+  }, []);
 
-  const reports = [
-    { id: "Toggle-QMS", label: "QMS" },
-    { id: "Toggle-TACM", label: "TACM" },
-    { id: "Toggle-CI", label: "CI" },
-    { id: "Toggle-PCP", label: "PCP" },
-    { id: "Toggle-WWL", label: "WWL" },
-  ];
+  const enableNotification = (category: ReportType) =>
+    notifications.find((report) => report.category === category)?.enabled ??
+    false;
+
+  const saveNotificationStatus = async (
+    category: ReportType,
+    enabled: boolean,
+  ) => {
+    setNotifications((prev) => {
+      const exists = prev.some((report) => report.category === category);
+      return exists
+        ? prev.map((report) =>
+            report.category === category ? { ...report, enabled } : report,
+          )
+        : [...prev, { category, enabled }];
+    });
+
+    await updateNotifications({ category, enabled });
+  };
 
   return (
     <PageTemplate data-testid="notifications-view">
@@ -41,17 +51,16 @@ export const NotificationsPage = () => {
         </Heading>
       </Box>
       <Box>
-        {reports.map((report) => (
-          <ToggleButton
-            key={report.id}
-            id={report.id}
-            label={report.label}
-            checked={notificationSettings[report.id] ?? false}
+        {REPORTS.map((report) => (
+          <Checkbox
+            key={report}
+            id={`toggle-${report}`}
+            name="notifications"
+            value={report}
+            label={report}
+            checked={enableNotification(report)}
             onCheckedChange={(checked) =>
-              setNotificationSettings((prev) => ({
-                ...prev,
-                [report.id]: checked,
-              }))
+              saveNotificationStatus(report, checked)
             }
           />
         ))}

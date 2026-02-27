@@ -6,7 +6,6 @@ import {
   ProfilePage,
   DashboardPage,
   NotFoundPage,
-  AdminBannerProvider,
   ExportedReportPage,
   ReportPageWrapper,
   ComponentInventory,
@@ -33,7 +32,6 @@ export const AppRoutes = () => {
 
   return (
     <main id="main-content" tabIndex={-1}>
-      <AdminBannerProvider>
         <ReportAutosaveProvider>
           <Routes>
             {/* General Routes */}
@@ -82,7 +80,6 @@ export const AppRoutes = () => {
             {/* TO DO: Load pageId by default? */}
           </Routes>
         </ReportAutosaveProvider>
-      </AdminBannerProvider>
     </main>
   );
 };

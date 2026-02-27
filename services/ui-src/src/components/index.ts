@@ -5,12 +5,6 @@ export { Alert } from "./alerts/Alert";
 // app
 export { App } from "./app/App";
 export { Error } from "./app/Error";
-// banners
-export {
-  AdminBannerContext,
-  AdminBannerProvider,
-} from "./banners/AdminBannerProvider";
-export { Banner } from "./banners/Banner";
 // layout
 export { HomePage } from "./layout/HomePage";
 export { Header } from "./layout/Header";
@@ -86,8 +80,8 @@ export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables
 export { Table } from "./tables/Table";
 export { TableStatusIcon } from "./tables/TableStatusIcon";
-// toggle
-export { ToggleButton } from "./toggle/ToggleButton";
+// checkbox
+export { Checkbox } from "./checkbox/Checkbox";
 // dashboard
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";
