@@ -196,7 +196,7 @@ export const AddEditReportModal = ({
         ),
         closeButtonText: "Cancel",
       }}
-      disableConfirm={readOnly}
+      disableConfirm={readOnly || submitting}
     >
       <form id="addEditReportModal" onSubmit={onSubmit}>
         <Flex direction="column" gap="2rem">
