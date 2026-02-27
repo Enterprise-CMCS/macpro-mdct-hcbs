@@ -6,6 +6,7 @@ import {
 } from "types/report";
 import { ReactNode } from "react";
 import { BannerShape, BannerFormData, HcbsUser } from "types";
+import { Notifications } from "./notifications";
 
 export interface HcbsBannerState {
   /** All banners, active and inactive, for every area of the site */
@@ -16,6 +17,12 @@ export interface HcbsBannerState {
   fetchBanners: () => Promise<void>;
   createBanner: (data: BannerFormData) => Promise<void>;
   deleteBanner: (id: string) => Promise<void>;
+}
+
+export interface HcbsNotificationsState {
+  allNotifications: Notifications[];
+  fetchNotifications: () => Promise<void>;
+  updateNotifications: (notification: Notifications) => Promise<void>;
 }
 
 // initial user state

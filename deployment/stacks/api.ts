@@ -173,6 +173,22 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "updateNotifications", {
+    entry: "services/app-api/handlers/notifications/put.ts",
+    handler: "updateNotifications",
+    path: "notifications",
+    method: "PUT",
+    ...commonProps,
+  });
+
+    new Lambda(scope, "fetchNotifications", {
+    entry: "services/app-api/handlers/notifications/fetch.ts",
+    handler: "fetchNotifications",
+    path: "notifications",
+    method: "GET",
+    ...commonProps,
+  });
+
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
     handler: "createReport",

@@ -45,6 +45,7 @@ export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 export { HelpPage } from "./pages/HelpPage/HelpPage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
+export { NotificationsPage } from "./pages/Admin/NotificationsPage";
 // report
 export { Fields } from "../components/rates/types/Fields";
 export { ReadmissionRate } from "../components/rates/types/ReadmissionRate";
@@ -79,6 +80,8 @@ export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables
 export { Table } from "./tables/Table";
 export { TableStatusIcon } from "./tables/TableStatusIcon";
+// checkbox
+export { Checkbox } from "./checkbox/Checkbox";
 // dashboard
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";

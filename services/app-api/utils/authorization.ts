@@ -37,3 +37,7 @@ export const canArchiveReport = (user: User) => {
 export const canReleaseReport = (user: User) => {
   return [UserRoles.ADMIN, UserRoles.APPROVER].includes(user.role);
 };
+
+export const canChangeNotification = (user: User) => {
+  return user.role == UserRoles.ADMIN;
+};

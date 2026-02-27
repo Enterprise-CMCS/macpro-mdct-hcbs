@@ -48,3 +48,13 @@ export const parseBannerKey = (event: APIGatewayProxyEvent) => {
 
   return { bannerKey };
 };
+
+export const parseNotificationId = (event: APIGatewayProxyEvent) => {
+  const { notificationId } = event.pathParameters ?? {};
+  if (!notificationId) {
+    logger.warn("Invalid notification id in path");
+    return undefined;
+  }
+
+  return { notificationId };
+};
