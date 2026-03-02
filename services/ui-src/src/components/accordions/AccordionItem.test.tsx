@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Accordion } from "@chakra-ui/react";
@@ -8,7 +8,9 @@ import { testA11yAct } from "utils/testing/commonTests";
 const accordionItemComponent = (
   <RouterWrappedComponent>
     <Accordion>
-      <AccordionItem />
+      <AccordionItem label="test">
+        <p>Content</p>
+      </AccordionItem>
     </Accordion>
   </RouterWrappedComponent>
 );
@@ -18,17 +20,31 @@ describe("Test AccordionItem", () => {
     render(accordionItemComponent);
   });
 
-  test("Find Expand button", () => {
-    const button = screen.getByRole("button", { name: "Expand" });
-    expect(button).toBeEnabled();
-    const img = screen.getByRole("img", { name: "Expand" });
-    expect(img).toBeVisible();
+  test("Find button", () => {
+    const button = screen.getByRole("button", { name: "test" });
+
+    expect(button).toBeVisible();
   });
 
-  test("When Expand button clicked it switches to Collapse", async () => {
-    const button = screen.getByRole("button", { name: "Expand" });
+  test("By default accordion is closed", () => {
+    const button = screen.getByRole("button", { name: "test" });
+    const content = screen.getByText("Content");
+
+    expect(button).toBeVisible();
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    expect(content).not.toBeVisible();
+  });
+
+  test("When button is clicked, accordion is open", async () => {
+    const button = screen.getByRole("button", { name: "test" });
+
     await userEvent.click(button);
-    expect(screen.getByRole("button", { name: "Collapse" })).toBeVisible();
+
+    expect(button).toHaveAttribute("aria-expanded", "true");
+
+    await waitFor(() => {
+      expect(screen.getByText("Content")).toBeVisible();
+    });
   });
 
   testA11yAct(accordionItemComponent);
