@@ -119,6 +119,29 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   );
 };
 
+export const CheckboxExport = (element: CheckboxTemplate) => {
+  if (!element.answer) {
+    return <></>;
+  }
+  // Note that from this point on, the answer is a label and not a key.
+  const selectedLabels = element.answer.map(
+    (choiceId) =>
+      element.choices.find((choice) => choice.value === choiceId)!.label
+  );
+
+  // Checkbox elements never have children.
+  // TODO: If we ever give children to checkboxes, this code will have to account for that.
+  // See how radio buttons render checkedChildren, in ExportedReportWrapper@expandCheckedChildren
+  return (
+    // Styling: remove bullets (list-style-type: none), top margin and left padding. Add margin-block-end to children.
+    <ul>
+      {selectedLabels.map((label, i) => (
+        <li key={i}>{label}</li>
+      ))}
+    </ul>
+  );
+};
+
 const sx = {
   children: {
     padding: "0 22px",
