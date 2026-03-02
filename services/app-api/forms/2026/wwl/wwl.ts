@@ -29,6 +29,7 @@ export const wwlReportTemplate: ReportBase = {
       id: "root",
       childPageIds: [
         "general-info",
+        "waiting-list-identifiers",
         "financial-eligibility",
         "functional-eligibility",
         "add-other-eligibility",
@@ -36,7 +37,6 @@ export const wwlReportTemplate: ReportBase = {
         "placement",
         "amount-of-time-on-the-waiting-list",
         "additional-notes",
-        "waiting-list-identifiers",
         "review-submit",
       ],
     },
