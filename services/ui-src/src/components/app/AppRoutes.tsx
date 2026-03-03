@@ -32,54 +32,52 @@ export const AppRoutes = () => {
 
   return (
     <main id="main-content" tabIndex={-1}>
-        <ReportAutosaveProvider>
-          <Routes>
-            {/* General Routes */}
-            <Route path="/" element={<HomePage />} />
+      <ReportAutosaveProvider>
+        <Routes>
+          {/* General Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/admin"
+            element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
+          />
+          {notificationsPageEnabled && (
             <Route
-              path="/admin"
+              path="/notifications"
               element={
-                !userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />
+                !userIsAdmin ? (
+                  <Navigate to="/profile" />
+                ) : (
+                  <NotificationsPage />
+                )
               }
             />
-            {notificationsPageEnabled && (
-              <Route
-                path="/notifications"
-                element={
-                  !userIsAdmin ? (
-                    <Navigate to="/profile" />
-                  ) : (
-                    <NotificationsPage />
-                  )
-                }
-              />
-            )}
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/help" element={<HelpPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+          )}
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/help" element={<HelpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="/report/:reportType/:state"
+            element={<DashboardPage />}
+          />
+          {isPdfActive && (
             <Route
-              path="/report/:reportType/:state"
-              element={<DashboardPage />}
+              path="/report/:reportType/:state/:reportId/export"
+              element={<ExportedReportPage />}
             />
-            {isPdfActive && (
-              <Route
-                path="/report/:reportType/:state/:reportId/export"
-                element={<ExportedReportPage />}
-              />
-            )}
+          )}
+          <Route
+            path="/report/:reportType/:state/:reportId/:pageId?"
+            element={<ReportPageWrapper />}
+          />
+          {componentInventoryPageEnabled && (
             <Route
-              path="/report/:reportType/:state/:reportId/:pageId?"
-              element={<ReportPageWrapper />}
+              path="/component-inventory"
+              element={<ComponentInventory />}
             />
-            {componentInventoryPageEnabled && (
-              <Route
-                path="/component-inventory"
-                element={<ComponentInventory />}
-              />
-            )}
-            {/* TO DO: Load pageId by default? */}
-          </Routes>
-        </ReportAutosaveProvider>
+          )}
+          {/* TO DO: Load pageId by default? */}
+        </Routes>
+      </ReportAutosaveProvider>
     </main>
   );
 };

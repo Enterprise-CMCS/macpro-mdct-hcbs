@@ -6,7 +6,6 @@ import {
   HcbsReportState,
   HcbsBannerState,
   BannerFormData,
-  HcbsNotificationsState,
 } from "types";
 import { MeasurePageTemplate, Report } from "types/report";
 import { ReactNode } from "react";
@@ -22,7 +21,10 @@ import {
   substitute,
 } from "./reportLogic/reportActions";
 import { getBanners, createBanner, deleteBanner } from "utils";
-import { getNotifications, updateNotifications } from "utils/api/requestMethods/notifications";
+import {
+  getNotifications,
+  updateNotifications,
+} from "utils/api/requestMethods/notifications";
 import { Notifications } from "types/notifications";
 
 // USER STORE
@@ -55,18 +57,6 @@ const bannerStore = (set: Set<HcbsBannerState>, get: Get<HcbsBannerState>) => ({
   deleteBanner: async (bannerKey: string) => {
     await deleteBanner(bannerKey);
     await get().fetchBanners();
-  },
-});
-
-const notificationStore = (set: Set<HcbsNotificationsState>, get: Get<HcbsNotificationsState>) => ({
-  allNotifications: [] as Notifications[],
-  fetchNotifications: async () => {
-    const allNotifications = await getNotifications();
-    set({ allNotifications });
-  },
-  updateNotifications: async (notification: Notifications) => {
-    await updateNotifications(notification);
-    await get().fetchNotifications();
   },
 });
 
@@ -155,11 +145,10 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
 export const useStore = create(
   // devtools is being used for debugging state
   persist(
-    devtools<HcbsUserState & HcbsReportState & HcbsBannerState & HcbsNotificationsState >((set, get) => ({
+    devtools<HcbsUserState & HcbsReportState & HcbsBannerState>((set, get) => ({
       ...userStore(set),
       ...bannerStore(set, get),
       ...reportStore(set, get),
-      ...notificationStore(set, get),
     })),
     {
       name: "hcbs-store",

@@ -1,6 +1,4 @@
-import {
-  Box,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Choice } from "@cmsgov/design-system";
 
 export const Checkbox = ({
@@ -14,18 +12,18 @@ export const Checkbox = ({
 }: Props) => {
   return (
     <Box>
-    <Choice
-      id={id}
-      type="checkbox"
-      name={name}
-      value={value}
-      label={label}
-      checked={checked}
-      hint={hint}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-        onCheckedChange(e.target.checked);
-      }}
-    />
+      <Choice
+        id={id}
+        type="checkbox"
+        name={name}
+        value={value}
+        label={label}
+        checked={checked}
+        hint={hint}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          onCheckedChange(e.target.checked);
+        }}
+      />
     </Box>
   );
 };

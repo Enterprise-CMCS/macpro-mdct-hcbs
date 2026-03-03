@@ -2,16 +2,15 @@ import { logger } from "../libs/debug-lib";
 import { Notifications } from "../types/notifications";
 import { isReportType } from "../types/reports";
 
-export const isValidNotification = (notification: unknown): notification is Notifications => {
+export const isValidNotification = (
+  notification: unknown
+): notification is Notifications => {
   if (!notification || "object" !== typeof notification) {
     logger.warn("Invalid: notification must be an object");
     return false;
   }
 
-  const requiredFields = [
-    "category",
-    "enabled",
-  ];
+  const requiredFields = ["category", "enabled"];
 
   if (Object.keys(notification).some((key) => !requiredFields.includes(key))) {
     logger.warn("Invalid: notification contains unwanted fields");
@@ -23,7 +22,10 @@ export const isValidNotification = (notification: unknown): notification is Noti
     return false;
   }
 
-  if (!("enabled" in notification) || "boolean" !== typeof notification.enabled) {
+  if (
+    !("enabled" in notification) ||
+    "boolean" !== typeof notification.enabled
+  ) {
     logger.warn("Invalid: notification.enabled must be a boolean");
     return false;
   }

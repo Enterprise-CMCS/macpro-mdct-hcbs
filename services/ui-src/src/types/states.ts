@@ -19,12 +19,6 @@ export interface HcbsBannerState {
   deleteBanner: (id: string) => Promise<void>;
 }
 
-export interface HcbsNotificationsState {
-  allNotifications: Notifications[];
-  fetchNotifications: () => Promise<void>;
-  updateNotifications: (notification: Notifications) => Promise<void>;
-}
-
 // initial user state
 export interface HcbsUserState {
   // INITIAL STATE

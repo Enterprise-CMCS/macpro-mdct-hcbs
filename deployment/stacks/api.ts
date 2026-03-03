@@ -181,7 +181,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-    new Lambda(scope, "fetchNotifications", {
+  new Lambda(scope, "fetchNotifications", {
     entry: "services/app-api/handlers/notifications/fetch.ts",
     handler: "fetchNotifications",
     path: "notifications",
