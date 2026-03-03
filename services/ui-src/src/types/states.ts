@@ -6,7 +6,6 @@ import {
 } from "types/report";
 import { ReactNode } from "react";
 import { BannerShape, BannerFormData, HcbsUser } from "types";
-import { Notifications } from "./notifications";
 
 export interface HcbsBannerState {
   /** All banners, active and inactive, for every area of the site */

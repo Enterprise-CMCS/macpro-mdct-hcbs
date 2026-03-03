@@ -37,7 +37,3 @@ interface Props {
   value?: string;
   hint?: string;
 }
-
-const sx = {
-  /* no styling yet */
-};

@@ -21,11 +21,6 @@ import {
   substitute,
 } from "./reportLogic/reportActions";
 import { getBanners, createBanner, deleteBanner } from "utils";
-import {
-  getNotifications,
-  updateNotifications,
-} from "utils/api/requestMethods/notifications";
-import { Notifications } from "types/notifications";
 
 // USER STORE
 const userStore = (set: Set<HcbsUserState>) => ({
