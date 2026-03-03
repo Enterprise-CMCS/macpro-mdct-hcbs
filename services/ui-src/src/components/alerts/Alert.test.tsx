@@ -3,17 +3,6 @@ import { Alert } from "components";
 import { AlertTypes } from "types";
 import { testA11y } from "utils/testing/commonTests";
 
-// jest.mock("react", () => ({
-//   ...jest.requireActual("react"),
-//   useRef: jest.fn().mockReturnValue({
-//     current: {
-//       scrollIntoView: jest.fn(),
-//       focus: jest.fn(),
-//     },
-//   }),
-// }));
-// const mockRef = useRef(null).current as any;
-
 /** The path to our alert SVG, as injected by jest */
 const alertIcon = "test-file-stub";
 
