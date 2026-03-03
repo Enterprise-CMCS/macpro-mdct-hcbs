@@ -173,15 +173,15 @@ export const VerticalTable = (props: TableProps) => {
           </div>
           <HStack gap="4rem">
             <div>
-              <Text variant="grey">Reporting Year</Text>
+              <Text variant="grey">Reporting year</Text>
               <Text>{report.year}</Text>
             </div>
             <div>
-              <Text variant="grey">Last Edited</Text>
+              <Text variant="grey">Last edited</Text>
               <Text>{formatMonthDayYear(report.lastEdited!)}</Text>
             </div>
             <div>
-              <Text variant="grey">Edited By</Text>
+              <Text variant="grey">Edited by</Text>
               <Text>{report.lastEditedBy}</Text>
             </div>
           </HStack>
@@ -272,7 +272,7 @@ export const DashboardTable = ({
   if (showEditNameColumn) headers.push("");
   headers.push(
     "Submission name",
-    "Reporting Year",
+    "Reporting year",
     "Last edited",
     "Edited by",
     "Status"

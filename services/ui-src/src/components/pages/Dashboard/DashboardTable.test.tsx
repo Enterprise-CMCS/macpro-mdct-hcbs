@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
-import { ReportStatus, Report } from "types";
+import { ReportStatus, Report, LiteReport } from "types";
 import { useStore } from "utils";
 import {
   mockUseAdminStore,
   mockUseStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { VerticalTable } from "./DashboardTable";
 
 jest.mock("utils/state/useStore", () => ({
   useStore: jest.fn().mockReturnValue({}),
@@ -46,71 +47,213 @@ const reports = [
   },
 ] as Report[];
 
-const dashboardTableComponent = (
+const mockOpenAddEditReportModal = jest.fn();
+const mockUnlockModalOnOpenHandler = jest.fn();
+
+const standardDashboardTableComponent = (
   <RouterWrappedComponent>
     <DashboardTable
       reports={reports}
-      openAddEditReportModal={jest.fn}
-      unlockModalOnOpenHandler={jest.fn}
+      openAddEditReportModal={mockOpenAddEditReportModal}
+      unlockModalOnOpenHandler={mockUnlockModalOnOpenHandler}
     />
   </RouterWrappedComponent>
 );
 
-const adminDashboardTableComponent = (
-  <RouterWrappedComponent>
-    <DashboardTable
-      reports={reports}
-      openAddEditReportModal={jest.fn}
-      unlockModalOnOpenHandler={jest.fn}
-    />
-  </RouterWrappedComponent>
-);
+const mockTableProps = {
+  tableContent: {
+    caption: "Quality Measure Reports",
+    headRow: [
+      "Submission name",
+      "Reporting year",
+      "Last edited",
+      "Edited by",
+      "Status",
+      "#",
+    ],
+  },
+  reports: reports,
+  showEditNameColumn: true,
+  showReportSubmissionsColumn: false,
+  showAdminControlsColumn: false,
+  openAddEditReportModal: mockOpenAddEditReportModal,
+  navigate: jest.fn(),
+  userIsEndUser: true,
+  toggleArchived: jest.fn(),
+  toggleRelease: jest.fn(),
+  archiving: undefined,
+  unlocking: undefined,
+};
+
+const mockAdminTableProps = {
+  ...mockTableProps,
+  showEditNameColumn: false,
+  showReportSubmissionsColumn: true,
+  showAdminControlsColumn: true,
+  userIsEndUser: false,
+};
+
+const propsWithAdminControls = {
+  ...mockAdminTableProps,
+};
+
+const renderVerticalTableWithAdminControls = (overrideProps = {}) => {
+  return render(
+    <RouterWrappedComponent>
+      <VerticalTable {...{ ...propsWithAdminControls, ...overrideProps }} />
+    </RouterWrappedComponent>
+  );
+};
 
 describe("Dashboard table with state user", () => {
-  beforeEach(() => jest.clearAllMocks());
-  it("should render report name and edit button in table", async () => {
-    render(dashboardTableComponent);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockedUseStore.mockReturnValue(mockUseStore);
+  });
+
+  it("should render edit button and call openAddEditReportModal on click", async () => {
+    render(standardDashboardTableComponent);
+    const editButton = screen.getByLabelText("Edit report 1 report name");
+    expect(editButton).toBeInTheDocument();
+    await userEvent.click(editButton);
+    expect(mockOpenAddEditReportModal).toHaveBeenCalled();
+  });
+
+  it("should display report values", () => {
+    render(standardDashboardTableComponent);
     expect(screen.getByText("report 1")).toBeInTheDocument();
-    expect(screen.getAllByLabelText("Edit report 1 report name").length).toBe(
-      1
-    );
+    expect(screen.getByText("report 2")).toBeInTheDocument();
+    expect(screen.getByText(ReportStatus.IN_PROGRESS)).toBeInTheDocument();
   });
 });
 
-describe("Dashboard table with admin user", () => {
+describe("DashboardTable conditional rendering", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should call toggleArchived when Archive button is clicked in DashboardTable", async () => {
+    const mockToggleArchived = jest.fn();
+    renderVerticalTableWithAdminControls({
+      toggleArchived: mockToggleArchived,
+    });
+
+    const archiveButton = screen.getAllByText("Archive")[0];
+    await userEvent.click(archiveButton);
+
+    expect(mockToggleArchived).toHaveBeenCalled();
+  });
+
+  it("should call toggleRelease when Unlock button is clicked in DashboardTable", async () => {
+    const mockToggleRelease = jest.fn();
+    const submittedReports = [
+      {
+        ...reports[0],
+        status: ReportStatus.SUBMITTED,
+        archived: false,
+      },
+    ];
+    renderVerticalTableWithAdminControls({
+      reports: submittedReports,
+      toggleRelease: mockToggleRelease,
+    });
+
+    const unlockButton = screen.getByText("Unlock");
+    await userEvent.click(unlockButton);
+
+    expect(mockToggleRelease).toHaveBeenCalled();
+  });
+
+  it("should show Unarchive text for archived reports", () => {
+    renderVerticalTableWithAdminControls();
+    expect(screen.getByText("Unarchive")).toBeInTheDocument();
+  });
+
+  it("should disabled Unlock button for archived reports", () => {
+    renderVerticalTableWithAdminControls();
+    const unlockButtons = screen.getAllByText("Unlock");
+    const archivedReportUnlockButton = unlockButtons[unlockButtons.length - 1];
+    expect(archivedReportUnlockButton.closest("button")).toBeDisabled();
+  });
+});
+
+describe("DashboardTable toggleArchived and toggleRelease", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockedUseStore.mockReturnValue(mockUseAdminStore);
   });
 
-  it("should not render the proper controls when admin", async () => {
-    render(adminDashboardTableComponent);
-    expect(screen.getByText("report 1")).toBeInTheDocument();
-    expect(
-      screen.queryByLabelText("Edit report 1 report name")
-    ).not.toBeInTheDocument();
-    expect(screen.getAllByText("Archive").length).toBe(2);
-    expect(screen.getAllByText("View").length).toBe(3);
-    expect(screen.getAllByText("Unlock").length).toBe(3);
-  });
+  it("should handle undefined archived property and set to true", async () => {
+    const reportWithUndefinedArchived = [
+      {
+        ...reports[0],
+        archived: undefined,
+      },
+    ];
 
-  it("should unlock a report on click", async () => {
-    render(adminDashboardTableComponent);
-    const releaseBtn = screen.getAllByRole("button", { name: "Unlock" })[1];
-    await userEvent.click(releaseBtn);
-    expect(mockRelease).toHaveBeenCalled();
-  });
+    render(
+      <RouterWrappedComponent>
+        <DashboardTable
+          reports={reportWithUndefinedArchived as unknown as LiteReport[]}
+          openAddEditReportModal={jest.fn()}
+          unlockModalOnOpenHandler={jest.fn()}
+        />
+      </RouterWrappedComponent>
+    );
 
-  it("should archive a report on click", async () => {
-    render(adminDashboardTableComponent);
-    const button = screen.getAllByRole("button", { name: "Archive" })[0];
-    await userEvent.click(button);
+    const archiveButton = screen.getByText("Archive");
+    await userEvent.click(archiveButton);
+
     expect(mockArchive).toHaveBeenCalled();
   });
 
-  it("should render In revision text for a returned report", async () => {
-    render(adminDashboardTableComponent);
-    // Setup data includes In Progress with Submission Count >= 1
-    expect(screen.getByText("In revision")).toBeInTheDocument();
+  it("should call onReportUpdate after toggling archive status", async () => {
+    const mockOnReportUpdate = jest.fn();
+
+    render(
+      <RouterWrappedComponent>
+        <DashboardTable
+          reports={reports}
+          openAddEditReportModal={jest.fn()}
+          unlockModalOnOpenHandler={jest.fn()}
+          onReportUpdate={mockOnReportUpdate}
+        />
+      </RouterWrappedComponent>
+    );
+
+    const archiveButton = screen.getAllByText("Archive")[0];
+    await userEvent.click(archiveButton);
+
+    expect(mockOnReportUpdate).toHaveBeenCalled();
+  });
+
+  it("should call onReportUpdate after releasing report", async () => {
+    const mockOnReportUpdate = jest.fn();
+    const mockUnlockHandler = jest.fn();
+    const submittedReport = [
+      {
+        ...reports[0],
+        status: ReportStatus.SUBMITTED,
+        archived: false,
+      },
+    ];
+
+    render(
+      <RouterWrappedComponent>
+        <DashboardTable
+          reports={submittedReport as LiteReport[]}
+          openAddEditReportModal={jest.fn()}
+          unlockModalOnOpenHandler={mockUnlockHandler}
+          onReportUpdate={mockOnReportUpdate}
+        />
+      </RouterWrappedComponent>
+    );
+
+    const unlockButton = screen.getByText("Unlock");
+    await userEvent.click(unlockButton);
+
+    expect(mockRelease).toHaveBeenCalled();
+    expect(mockUnlockHandler).toHaveBeenCalled();
+    expect(mockOnReportUpdate).toHaveBeenCalled();
   });
 });
