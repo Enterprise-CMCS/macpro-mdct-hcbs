@@ -2,11 +2,10 @@ import { mockClient } from "aws-sdk-client-mock";
 import {
   DynamoDBDocumentClient,
   PutCommand,
-  ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { Notifications } from "../types/notifications";
 import { ReportType } from "../types/reports";
-import { putNotifications, scanAllNotifications } from "./notifications";
+import { putNotifications } from "./notifications";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 
@@ -33,21 +32,4 @@ describe("Notification storage methods", () => {
       expect.any(Function)
     );
   });
-
-  // it("should call Dynamo to scan all notification", async () => {
-  //   const mockScan = jest
-  //     .fn()
-  //     .mockResolvedValueOnce({ Items: mockNotification });
-  //   mockDynamo.on(ScanCommand).callsFakeOnce(mockScan);
-
-  //   const notification = await scanAllNotifications();
-
-  //   expect(notification).toEqual(mockNotification);
-  //   expect(mockScan).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       Item: mockNotification,
-  //     }),
-  //     expect.any(Function)
-  //   );
-  // });
 });
