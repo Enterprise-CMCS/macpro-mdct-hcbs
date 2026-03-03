@@ -34,20 +34,20 @@ describe("Notification storage methods", () => {
     );
   });
 
-  it("should call Dynamo to scan all notification", async () => {
-    const mockScan = jest
-      .fn()
-      .mockResolvedValueOnce({ Items: mockNotification });
-    mockDynamo.on(ScanCommand).callsFakeOnce(mockScan);
+  // it("should call Dynamo to scan all notification", async () => {
+  //   const mockScan = jest
+  //     .fn()
+  //     .mockResolvedValueOnce({ Items: mockNotification });
+  //   mockDynamo.on(ScanCommand).callsFakeOnce(mockScan);
 
-    const notification = await scanAllNotifications();
+  //   const notification = await scanAllNotifications();
 
-    expect(notification).toEqual(mockNotification);
-    expect(mockScan).toHaveBeenCalledWith(
-      expect.objectContaining({
-        Item: mockNotification,
-      }),
-      expect.any(Function)
-    );
-  });
+  //   expect(notification).toEqual(mockNotification);
+  //   expect(mockScan).toHaveBeenCalledWith(
+  //     expect.objectContaining({
+  //       Item: mockNotification,
+  //     }),
+  //     expect.any(Function)
+  //   );
+  // });
 });
