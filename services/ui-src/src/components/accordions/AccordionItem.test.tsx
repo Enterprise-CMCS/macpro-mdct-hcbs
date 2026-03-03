@@ -15,18 +15,12 @@ const accordionItemComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test AccordionItem", () => {
+describe("AccordionItem", () => {
   beforeEach(() => {
     render(accordionItemComponent);
   });
 
-  test("Find button", () => {
-    const button = screen.getByRole("button", { name: "test" });
-
-    expect(button).toBeVisible();
-  });
-
-  test("By default accordion is closed", () => {
+  it("should be closed by default", () => {
     const button = screen.getByRole("button", { name: "test" });
     const content = screen.getByText("Content");
 
@@ -35,7 +29,7 @@ describe("Test AccordionItem", () => {
     expect(content).not.toBeVisible();
   });
 
-  test("When button is clicked, accordion is open", async () => {
+  test("should expand when clicked", async () => {
     const button = screen.getByRole("button", { name: "test" });
 
     await userEvent.click(button);
