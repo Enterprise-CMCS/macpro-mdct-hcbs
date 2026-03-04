@@ -84,9 +84,13 @@ export const buildReport = async (
 
   //certain checkbox forms that utilize waivers need to have their checkboxes generate during form generation
   if (
-    [ReportType.CI, ReportType.PCP, ReportType.TACM, ReportType.QMS].includes(
-      report.type
-    )
+    [
+      ReportType.CI,
+      ReportType.PCP,
+      ReportType.TACM,
+      ReportType.QMS,
+      ReportType.WWL,
+    ].includes(report.type)
   ) {
     const waiverQuestions = report.pages
       .flatMap((page) => page.elements ?? [])

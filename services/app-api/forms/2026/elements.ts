@@ -133,7 +133,7 @@ export const waiverListCheckboxField: CheckboxTemplate = {
   type: ElementType.Checkbox,
   id: "waivers-list-checkboxes",
   label:
-    "Select all programs and waivers that are included in this reporting period?",
+    "Select all programs and waivers that are included in this reporting period.",
   choices: [
     /* Generated in buildReport, with data from waivers.ts */
   ],
