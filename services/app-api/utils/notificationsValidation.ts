@@ -10,8 +10,6 @@ export const isValidNotification = (
     return false;
   }
 
-  const requiredFields = ["category", "enabled"];
-
   if (!("category" in notification) || !isReportType(notification.category)) {
     logger.warn("Invalid: notification.category must be a valid ReportType");
     return false;
