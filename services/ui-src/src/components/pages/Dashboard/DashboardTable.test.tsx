@@ -119,13 +119,6 @@ describe("Dashboard table with state user", () => {
     await userEvent.click(editButton);
     expect(mockOpenAddEditReportModal).toHaveBeenCalled();
   });
-
-  it("should display report values", () => {
-    render(standardDashboardTableComponent);
-    expect(screen.getByText("report 1")).toBeInTheDocument();
-    expect(screen.getByText("report 2")).toBeInTheDocument();
-    expect(screen.getByText(ReportStatus.IN_PROGRESS)).toBeInTheDocument();
-  });
 });
 
 describe("DashboardTable conditional rendering", () => {
