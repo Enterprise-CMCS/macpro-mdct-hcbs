@@ -29,11 +29,12 @@ interface DashboardTableProps {
   reports: LiteReport[];
   openAddEditReportModal: (report: LiteReport) => void;
   unlockModalOnOpenHandler: () => void;
+  onReportUpdate: () => void;
 }
 
 interface TableProps extends Omit<
   DashboardTableProps,
-  "unlockModalOnOpenHandler"
+  "unlockModalOnOpenHandler" | "onReportUpdate"
 > {
   tableContent: { caption: string; headRow: string[] };
   showEditNameColumn: boolean | undefined;
@@ -172,15 +173,15 @@ export const VerticalTable = (props: TableProps) => {
           </div>
           <HStack gap="4rem">
             <div>
-              <Text variant="grey">Reporting Year</Text>
+              <Text variant="grey">Reporting year</Text>
               <Text>{report.year}</Text>
             </div>
             <div>
-              <Text variant="grey">Last Edited</Text>
+              <Text variant="grey">Last edited</Text>
               <Text>{formatMonthDayYear(report.lastEdited!)}</Text>
             </div>
             <div>
-              <Text variant="grey">Edited By</Text>
+              <Text variant="grey">Edited by</Text>
               <Text>{report.lastEditedBy}</Text>
             </div>
           </HStack>
@@ -253,10 +254,10 @@ export const DashboardTable = ({
   reports,
   openAddEditReportModal,
   unlockModalOnOpenHandler,
+  onReportUpdate,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
-  const [reportsInView, setReportsInView] = useState<LiteReport[]>(reports);
 
   const [archiving, setArchiving] = useState<number>();
   const [unlocking, setUnlocking] = useState<number>();
@@ -271,7 +272,7 @@ export const DashboardTable = ({
   if (showEditNameColumn) headers.push("");
   headers.push(
     "Submission name",
-    "Reporting Year",
+    "Reporting year",
     "Last edited",
     "Edited by",
     "Status"
@@ -286,24 +287,28 @@ export const DashboardTable = ({
 
   const toggleArchived = async (idx: number) => {
     setArchiving(idx);
-    const reports = [...reportsInView];
     const report = reports[idx];
-    await updateArchivedStatus(report, !report.archived);
-    report.archived = !report.archived;
-    reports[idx] = report;
-    setReportsInView(reports);
+
+    console.assert(!!report, `Report exists at index ${idx}`);
+
+    // Handle undefined archived property
+    const newArchivedStatus = !(report.archived ?? false);
+    await updateArchivedStatus(report, newArchivedStatus);
+
+    onReportUpdate();
     setArchiving(undefined);
   };
 
   const toggleRelease = async (idx: number) => {
     setUnlocking(idx);
-    const reports = [...reportsInView];
     const report = reports[idx];
+
+    console.assert(!!report, `Report exists at index ${idx}`);
+
     await releaseReport(report);
     unlockModalOnOpenHandler();
-    report.status = ReportStatus.IN_PROGRESS;
-    reports[idx] = report;
-    setReportsInView(reports);
+
+    onReportUpdate();
     setUnlocking(undefined);
   };
 
