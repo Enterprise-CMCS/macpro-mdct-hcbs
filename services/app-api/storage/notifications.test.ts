@@ -1,8 +1,5 @@
 import { mockClient } from "aws-sdk-client-mock";
-import {
-  DynamoDBDocumentClient,
-  PutCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { Notifications } from "../types/notifications";
 import { ReportType } from "../types/reports";
 import { putNotifications } from "./notifications";
