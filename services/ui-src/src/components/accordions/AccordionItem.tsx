@@ -15,15 +15,11 @@ export const AccordionItem = ({ label, children, sx: sxOverride }: Props) => {
     <AccordionItemRoot sx={sxOverride ?? sx.root}>
       {({ isExpanded }) => (
         <>
-          <AccordionButton
-            sx={sx.accordionButton}
-            aria-label={label}
-            title="accordion-button"
-          >
+          <AccordionButton sx={sx.accordionButton}>
             <Text flex="1">{label}</Text>
             <Image
               src={isExpanded ? minusIcon : plusIcon}
-              alt={isExpanded ? "Collapse" : "Expand"}
+              alt=""
               sx={sx.accordionIcon}
             />
           </AccordionButton>
