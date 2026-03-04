@@ -56,6 +56,7 @@ const standardDashboardTableComponent = (
       reports={reports}
       openAddEditReportModal={mockOpenAddEditReportModal}
       unlockModalOnOpenHandler={mockUnlockModalOnOpenHandler}
+      onReportUpdate={jest.fn()}
     />
   </RouterWrappedComponent>
 );
@@ -197,6 +198,7 @@ describe("DashboardTable toggleArchived and toggleRelease", () => {
           reports={reportWithUndefinedArchived as unknown as LiteReport[]}
           openAddEditReportModal={jest.fn()}
           unlockModalOnOpenHandler={jest.fn()}
+          onReportUpdate={jest.fn()}
         />
       </RouterWrappedComponent>
     );

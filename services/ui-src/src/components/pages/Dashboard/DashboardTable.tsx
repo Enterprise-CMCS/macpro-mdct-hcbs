@@ -29,12 +29,12 @@ interface DashboardTableProps {
   reports: LiteReport[];
   openAddEditReportModal: (report: LiteReport) => void;
   unlockModalOnOpenHandler: () => void;
-  onReportUpdate?: () => void;
+  onReportUpdate: () => void;
 }
 
 interface TableProps extends Omit<
   DashboardTableProps,
-  "unlockModalOnOpenHandler"
+  "unlockModalOnOpenHandler" | "onReportUpdate"
 > {
   tableContent: { caption: string; headRow: string[] };
   showEditNameColumn: boolean | undefined;
@@ -289,20 +289,14 @@ export const DashboardTable = ({
     setArchiving(idx);
     const report = reports[idx];
 
-    if (!report) {
-      console.error("Report not found at index:", idx);
-      setArchiving(undefined);
-      return;
-    }
+    console.assert(!!report, `Report exists at index ${idx}`);
 
     // Handle undefined archived property
     const newArchivedStatus = !(report.archived ?? false);
     await updateArchivedStatus(report, newArchivedStatus);
 
     // Trigger parent to reload reports
-    if (onReportUpdate) {
-      onReportUpdate();
-    }
+    onReportUpdate();
 
     setArchiving(undefined);
   };
@@ -317,19 +311,11 @@ export const DashboardTable = ({
       return;
     }
 
-    if (report.archived) {
-      console.error("Cannot release an archived report:");
-      setUnlocking(undefined);
-      return;
-    }
-
     await releaseReport(report);
     unlockModalOnOpenHandler();
 
     // Trigger parent to reload reports
-    if (onReportUpdate) {
-      onReportUpdate();
-    }
+    onReportUpdate();
 
     setUnlocking(undefined);
   };
