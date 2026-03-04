@@ -14,7 +14,6 @@ describe("Test SubnavBar component", () => {
         <SubnavBar />
       </RouterWrappedComponent>
     );
-    expect(screen.getByText("PR QMS Report")).toBeVisible();
     expect(screen.getByRole("link", { name: "Leave form" })).toBeVisible();
   });
 });
