@@ -295,9 +295,7 @@ export const DashboardTable = ({
     const newArchivedStatus = !(report.archived ?? false);
     await updateArchivedStatus(report, newArchivedStatus);
 
-    // Trigger parent to reload reports
     onReportUpdate();
-
     setArchiving(undefined);
   };
 
@@ -305,18 +303,12 @@ export const DashboardTable = ({
     setUnlocking(idx);
     const report = reports[idx];
 
-    if (!report) {
-      console.error("Report not found at index:", idx);
-      setUnlocking(undefined);
-      return;
-    }
+    console.assert(!!report, `Report exists at index ${idx}`);
 
     await releaseReport(report);
     unlockModalOnOpenHandler();
 
-    // Trigger parent to reload reports
     onReportUpdate();
-
     setUnlocking(undefined);
   };
 
