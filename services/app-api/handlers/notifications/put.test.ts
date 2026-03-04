@@ -28,8 +28,17 @@ const mockNotification: Notifications = {
   enabled: true,
 };
 
+const mockFalseNotification = {
+  category: ReportType.WWL,
+  enabled: "hi",
+};
+
 const mockEvent = {
   body: JSON.stringify(mockNotification),
+} as APIGatewayProxyEvent;
+
+const mockFalseEvent = {
+  body: JSON.stringify(mockFalseNotification),
 } as APIGatewayProxyEvent;
 
 describe("putNotifications", () => {
@@ -46,5 +55,15 @@ describe("putNotifications", () => {
     const res = await updateNotifications(mockEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
+  });
+
+  it("should return an error if the notification data is invalid", async () => {
+    authenticatedUser.mockReturnValueOnce({
+      ...mockUser,
+      role: UserRoles.ADMIN,
+    });
+
+    const res = await updateNotifications(mockFalseEvent);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 });

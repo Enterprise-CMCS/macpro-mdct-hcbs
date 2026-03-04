@@ -20,6 +20,15 @@ describe("isValidNotifications", () => {
     jest.clearAllMocks();
   });
 
+  it("should reject a notification with non object type", () => {
+    const result = isValidNotification(undefined as any);
+
+    expect(result).toBe(false);
+    expect(logger.warn).toHaveBeenCalledWith(
+      "Invalid: notification must be an object"
+    );
+  });
+
   it("should accept a valid payload", () => {
     expect(isValidNotification(validPayload)).toBe(true);
   });

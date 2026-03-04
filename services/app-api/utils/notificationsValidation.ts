@@ -12,11 +12,6 @@ export const isValidNotification = (
 
   const requiredFields = ["category", "enabled"];
 
-  if (Object.keys(notification).some((key) => !requiredFields.includes(key))) {
-    logger.warn("Invalid: notification contains unwanted fields");
-    return false;
-  }
-
   if (!("category" in notification) || !isReportType(notification.category)) {
     logger.warn("Invalid: notification.category must be a valid ReportType");
     return false;
