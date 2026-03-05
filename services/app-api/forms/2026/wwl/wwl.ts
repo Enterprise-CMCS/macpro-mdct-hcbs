@@ -6,7 +6,11 @@ import {
   ReportBase,
   AlertTypes,
 } from "../../../types/reports";
-import { exportToPDF } from "../elements";
+import {
+  exportToPDF,
+  waiverListCheckboxField,
+  waiverListInputField,
+} from "../elements";
 import {
   wwlFinancialEligiblityExplanationField,
   wwlRescreenForFinancialEligibilityField,
@@ -70,19 +74,6 @@ export const wwlReportTemplate: ReportBase = {
           required: true,
           helperText:
             "Enter the total number of individuals on the waiting list. Use whole numbers only. Include all individuals who were enrolled at any point during the measurement period.",
-        },
-      ],
-    },
-    {
-      id: "waiting-list-identifiers",
-      title: "Waiting List Identifiers",
-      type: PageType.Standard,
-      sidebar: true,
-      elements: [
-        {
-          type: ElementType.Header,
-          id: "waiting-list-identifiers-header",
-          text: "Waiting List Identifiers",
         },
       ],
     },
@@ -306,6 +297,21 @@ export const wwlReportTemplate: ReportBase = {
             "If applicable, add any notes or comments to provide context to the reported results.",
           required: false,
         },
+      ],
+    },
+    {
+      id: "waiting-list-identifiers",
+      title: "Waiting List Identifiers",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "waiting-list-identifiers-header",
+          text: "Waiting List Identifiers",
+        },
+        waiverListCheckboxField,
+        waiverListInputField,
       ],
     },
     {
