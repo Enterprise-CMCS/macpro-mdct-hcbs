@@ -12,7 +12,9 @@ export const SubnavBar = () => {
       <Container sx={sx.subnavContainer}>
         <Flex sx={sx.subnavFlex}>
           <Flex>
-            <Text sx={sx.submissionNameText}>{` ${report!.name}`}</Text>
+            <Text sx={sx.submissionNameText}>
+              {report ? ` ${report.name}` : ""}
+            </Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
             {lastSavedTime && (
