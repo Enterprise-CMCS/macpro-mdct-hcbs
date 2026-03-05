@@ -1,11 +1,15 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
 
 export const SubnavBar = () => {
+  const { reportType, state } = useParams();
   const { report, lastSavedTime } = useStore();
   const saveStatusText = "Last saved " + lastSavedTime;
+
+  // Use URL params if available, otherwise fall back to report object
+  const leaveFormPath = `/report/${reportType || report?.type}/${state || report?.state}`;
 
   return (
     <Flex sx={sx.subnavBar}>
@@ -13,7 +17,7 @@ export const SubnavBar = () => {
         <Flex sx={sx.subnavFlex}>
           <Flex>
             <Text sx={sx.submissionNameText}>
-              {report ? ` ${report.name}` : ""}
+              {report?.name ? ` ${report.name}` : ""}
             </Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
@@ -29,8 +33,7 @@ export const SubnavBar = () => {
             )}
             <Link
               as={RouterLink}
-              // oxlint-disable-next-line no-constant-binary-expression
-              to={`/report/${report?.type}/${report?.state}` || "/"}
+              to={leaveFormPath}
               sx={sx.leaveFormLink}
               variant="outlineButton"
             >

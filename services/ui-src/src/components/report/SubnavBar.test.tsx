@@ -2,9 +2,16 @@ import { render, screen } from "@testing-library/react";
 import { RouterWrappedComponent, mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { SubnavBar } from "./SubnavBar";
+import { useParams } from "react-router-dom";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: jest.fn(),
+}));
+const mockedUseParams = useParams as jest.MockedFunction<typeof useParams>;
 
 const mockReport = {
   id: "1",
@@ -26,6 +33,10 @@ describe("Test SubnavBar component", () => {
       ...mockUseStore,
       report: mockReport,
       lastSavedTime: "2 minutes ago",
+    });
+    mockedUseParams.mockReturnValue({
+      reportType: "mockType",
+      state: "mockState",
     });
   });
 
