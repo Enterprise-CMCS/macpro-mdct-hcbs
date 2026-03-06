@@ -7,6 +7,7 @@ TacmReportsTable=local-tacm-reports
 CiReportsTable=local-ci-reports
 PcpReportsTable=local-pcp-reports
 WwlReportsTable=local-wwl-reports
+NotificationsTable=local-notifications
 
 COGNITO_IDENTITY_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_IDENTITY_POOL_ID
 COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT_ID

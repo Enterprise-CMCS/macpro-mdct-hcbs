@@ -14,6 +14,7 @@ import { useStore } from "utils";
 import { useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { ReportAutosaveProvider } from "components/report/ReportAutosaveProvider";
+import { NotificationsPage } from "components/pages/Admin/NotificationsPage";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -21,6 +22,7 @@ export const AppRoutes = () => {
   const { pathname } = useLocation();
   const isPdfActive = useFlags()?.viewPdf;
   const componentInventoryPageEnabled = useFlags()?.componentInventory;
+  const notificationsPageEnabled = useFlags()?.notificationsSystem;
 
   useEffect(() => {
     const appWrapper = document.getElementById("app-wrapper")!;
@@ -38,6 +40,18 @@ export const AppRoutes = () => {
             path="/admin"
             element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
           />
+          {notificationsPageEnabled && (
+            <Route
+              path="/notifications"
+              element={
+                !userIsAdmin ? (
+                  <Navigate to="/profile" />
+                ) : (
+                  <NotificationsPage />
+                )
+              }
+            />
+          )}
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="*" element={<NotFoundPage />} />

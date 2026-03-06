@@ -1,0 +1,27 @@
+import { logger } from "../libs/debug-lib";
+import { Notification } from "../types/notification";
+import { isReportType } from "../types/reports";
+
+export const isValidNotification = (
+  notification: unknown
+): notification is Notification => {
+  if (!notification || "object" !== typeof notification) {
+    logger.warn("Invalid: notification must be an object");
+    return false;
+  }
+
+  if (!("category" in notification) || !isReportType(notification.category)) {
+    logger.warn("Invalid: notification.category must be a valid ReportType");
+    return false;
+  }
+
+  if (
+    !("enabled" in notification) ||
+    "boolean" !== typeof notification.enabled
+  ) {
+    logger.warn("Invalid: notification.enabled must be a boolean");
+    return false;
+  }
+
+  return true;
+};

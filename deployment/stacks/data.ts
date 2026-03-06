@@ -86,6 +86,15 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }),
+    new DynamoDBTable(scope, "Notifications", {
+      stage,
+      isDev,
+      name: "notifications",
+      partitionKey: {
+        name: "category",
+        type: dynamodb.AttributeType.STRING,
+      },
+    }),
   ];
 
   return { tables };
