@@ -27,7 +27,6 @@ export const authenticatedUser = (
       logger.debug(`Requesting user has sub '${token.sub}'`);
       return parseUserFromToken(token);
     }
-    return undefined;
   }
   return undefined;
 };
