@@ -166,7 +166,7 @@ describe("DashboardTable conditional rendering", () => {
   it("should disabled Unlock button for archived reports", () => {
     renderVerticalTableWithAdminControls();
     const unlockButtons = screen.getAllByText("Unlock");
-    const archivedReportUnlockButton = unlockButtons[unlockButtons.length - 1];
+    const archivedReportUnlockButton = unlockButtons.at(-1)!;
     expect(archivedReportUnlockButton.closest("button")).toBeDisabled();
   });
 });

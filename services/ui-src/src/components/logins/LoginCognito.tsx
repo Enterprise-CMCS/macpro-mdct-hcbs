@@ -16,8 +16,8 @@ export const LoginCognito = () => {
     try {
       await signIn({ username, password });
       navigate(`/`);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "");
     }
   };
 

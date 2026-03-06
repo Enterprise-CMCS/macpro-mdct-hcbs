@@ -24,7 +24,7 @@ export const isValidBanner = (banner: unknown): banner is BannerFormData => {
     "lastAltered",
     "lastAlteredBy",
   ];
-  const allowedFields = requiredFields.concat(optionalFields);
+  const allowedFields = [...requiredFields, ...optionalFields];
   if (Object.keys(banner).some((key) => !allowedFields.includes(key))) {
     logger.warn("Invalid: banner contains unwanted fields");
     return false;

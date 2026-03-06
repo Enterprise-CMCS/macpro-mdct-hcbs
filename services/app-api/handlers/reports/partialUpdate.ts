@@ -36,8 +36,8 @@ export const partialUpdateReport = handler(
     let fieldsToUpdate;
     try {
       fieldsToUpdate = await validateReportEditPayload(request.body);
-    } catch (err) {
-      logger.error(err);
+    } catch (error) {
+      logger.error(error);
       return badRequest("Invalid request");
     }
 

@@ -142,7 +142,7 @@ describe("Test dropdown for year", () => {
     const dropdown = screen.getAllByLabelText(
       "Select the quality measure set reporting year."
     )[0];
-    assert(dropdown instanceof HTMLSelectElement);
+    assert.ok(dropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
   });

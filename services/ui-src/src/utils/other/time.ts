@@ -12,7 +12,7 @@ export const getLocalHourMinuteTime = () => {
     localTime.lastIndexOf(":")
   );
   const twelveHourIndicator = localTime.includes("AM") ? "am" : "pm";
-  return localTimeHourMinute.concat(twelveHourIndicator);
+  return localTimeHourMinute + twelveHourIndicator;
 };
 
 /**
