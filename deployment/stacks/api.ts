@@ -174,7 +174,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "updateNotifications", {
-    entry: "services/app-api/handlers/notifications/put.ts",
+    entry: "services/app-api/handlers/notification/put.ts",
     handler: "updateNotifications",
     path: "notifications",
     method: "PUT",
@@ -182,7 +182,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   new Lambda(scope, "fetchNotifications", {
-    entry: "services/app-api/handlers/notifications/fetch.ts",
+    entry: "services/app-api/handlers/notification/fetch.ts",
     handler: "fetchNotifications",
     path: "notifications",
     method: "GET",
