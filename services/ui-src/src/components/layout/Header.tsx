@@ -44,6 +44,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
+      {/* report-related pages have more than 4 path segments */}
       {paths.length > 4 && <SubnavBar />}
     </Box>
   );
