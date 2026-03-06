@@ -1,5 +1,5 @@
 import { logger } from "../../libs/debug-lib";
-import { Notifications } from "../../types/notifications";
+import { Notifications } from "../../types/notification";
 import { ReportType } from "../../types/reports";
 import { isValidNotification } from "../notificationsValidation";
 

@@ -1,7 +1,7 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { APIGatewayProxyEvent, User, UserRoles } from "../../types/types";
 import { authenticatedUser as actualAuthenticatedUser } from "../../utils/authentication";
-import { Notifications } from "../../types/notifications";
+import { Notification } from "../../types/notification";
 import { ReportType } from "../../types/reports";
 import { updateNotifications } from "./put";
 
@@ -23,7 +23,7 @@ jest.mock("../../storage/notifications", () => ({
   putNotifications: jest.fn(),
 }));
 
-const mockNotification: Notifications = {
+const mockNotification: Notification = {
   category: ReportType.WWL,
   enabled: true,
 };
@@ -65,5 +65,15 @@ describe("putNotifications", () => {
 
     const res = await updateNotifications(mockFalseEvent);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  });
+
+  it("should put data if the user is authorized and data is valid", async () => {
+    authenticatedUser.mockReturnValueOnce({
+      ...mockUser,
+      role: UserRoles.ADMIN,
+    });
+
+    const res = await updateNotifications(mockEvent);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 });

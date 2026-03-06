@@ -1,6 +1,6 @@
 import { apiLib, updateTimeout } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { Notifications } from "types/notifications";
+import { Notifications } from "types/notification";
 
 export async function getNotifications() {
   const requestHeaders = await getRequestHeaders();

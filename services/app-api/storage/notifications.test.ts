@@ -4,13 +4,13 @@ import {
   paginateScan,
   PutCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { Notifications } from "../types/notifications";
+import { Notification } from "../types/notification";
 import { ReportType } from "../types/reports";
 import { putNotifications, scanAllNotifications } from "./notifications";
 
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 
-const mockNotification: Notifications = {
+const mockNotification: Notification = {
   category: ReportType.WWL,
   enabled: true,
 };

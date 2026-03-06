@@ -1,6 +1,6 @@
 import { PutCommand, paginateScan } from "@aws-sdk/lib-dynamodb";
 import { collectPageItems, createClient } from "./dynamo/dynamodb-lib";
-import { Notifications } from "../types/notifications";
+import { Notifications } from "../types/notification";
 
 const notificationTableName = process.env.NotificationsTable;
 const client = createClient();

@@ -1,6 +1,6 @@
 import { initAuthManager } from "utils/auth/authLifecycle";
 import { ReportType } from "types";
-import { Notifications } from "types/notifications";
+import { Notifications } from "types/notification";
 import { getNotifications, updateNotifications } from "./notifications";
 
 const mockNotifications: Notifications[] = [

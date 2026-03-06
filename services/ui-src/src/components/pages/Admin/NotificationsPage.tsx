@@ -3,7 +3,7 @@ import { PageTemplate } from "components";
 import { Checkbox } from "components/checkbox/Checkbox";
 import { useEffect, useState } from "react";
 import { ReportType } from "types";
-import { Notifications } from "types/notifications";
+import { Notifications } from "types/notification";
 import {
   getNotifications,
   updateNotifications,

@@ -3,8 +3,8 @@ import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { fetchNotifications } from "./fetch";
 import { scanAllNotifications } from "../../storage/notifications";
-import { Notifications } from "../../types/notifications";
 import { ReportType } from "../../types/reports";
+import { Notification } from "../../types/notification";
 
 jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn().mockResolvedValue({
@@ -26,7 +26,7 @@ const testEvent: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test" },
 };
 
-const mockNotification: Notifications = {
+const mockNotification: Notification = {
   category: ReportType.QMS,
   enabled: true,
 };

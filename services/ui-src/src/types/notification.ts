@@ -1,6 +1,6 @@
 import { ReportType } from "./report";
 
-export interface Notifications {
+export interface Notification {
   category: ReportType;
   enabled: boolean;
 }

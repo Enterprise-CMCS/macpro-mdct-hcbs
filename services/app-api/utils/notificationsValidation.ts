@@ -1,5 +1,5 @@
 import { logger } from "../libs/debug-lib";
-import { Notifications } from "../types/notifications";
+import { Notifications } from "../types/notification";
 import { isReportType } from "../types/reports";
 
 export const isValidNotification = (
