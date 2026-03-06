@@ -43,7 +43,7 @@ const bannerStore = (set: Set<HcbsBannerState>, get: Get<HcbsBannerState>) => ({
   _lastFetchTime: 0,
   fetchBanners: async () => {
     const allBanners = await getBanners();
-    set({ allBanners, _lastFetchTime: new Date().valueOf() });
+    set({ allBanners, _lastFetchTime: Date.now() });
   },
   createBanner: async (banner: BannerFormData) => {
     await createBanner(banner);

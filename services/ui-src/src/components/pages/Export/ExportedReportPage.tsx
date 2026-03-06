@@ -159,7 +159,7 @@ export const renderReportSections = (
   const requiredMeasuresStartIdx = reportPages.findIndex(
     (section) => section.id === "req-measure-result"
   );
-  requiredMeasuresStartIdx >= 0 &&
+  requiredMeasuresStartIdx !== -1 &&
     reportPages.splice(
       requiredMeasuresStartIdx,
       1,
@@ -170,7 +170,7 @@ export const renderReportSections = (
   const optionalMeasuresStartIdx = reportPages.findIndex(
     (section) => section.id === "optional-measure-result"
   );
-  optionalMeasuresStartIdx >= 0 &&
+  optionalMeasuresStartIdx !== -1 &&
     reportPages.splice(
       optionalMeasuresStartIdx,
       1,

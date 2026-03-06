@@ -6,7 +6,7 @@ import {
   aws_iam as iam,
   Duration,
 } from "aws-cdk-lib";
-import path from "path";
+import path from "node:path";
 import { execSync } from "node:child_process";
 
 interface DeployFrontendProps {

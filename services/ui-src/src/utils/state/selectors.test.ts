@@ -110,7 +110,7 @@ describe("Selectors", () => {
       const mockFetch = jest.fn();
       useStore.setState({
         allBanners: [],
-        _lastFetchTime: new Date().valueOf(),
+        _lastFetchTime: Date.now(),
         fetchBanners: mockFetch,
       });
 

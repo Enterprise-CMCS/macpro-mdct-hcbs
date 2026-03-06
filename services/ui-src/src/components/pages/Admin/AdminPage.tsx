@@ -44,7 +44,8 @@ export const AdminPage = () => {
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="md" />
           </Flex>
-        ) : allBanners.length === 0 ? (
+        ) : // oxlint-disable-next-line no-nested-ternary
+        allBanners.length === 0 ? (
           <Text>There are no existing banners.</Text>
         ) : (
           <Flex sx={sx.bannerGroupsContainer}>
@@ -112,7 +113,7 @@ function displayStatus(banner: BannerShape) {
   const now = new Date();
   const startDate = parseAsLocalDate(banner.startDate);
   const endDate = parseAsLocalDate(banner.endDate);
-  const status =
+  const status = // oxlint-disable-next-line no-nested-ternary
     now < startDate ? "Scheduled" : now <= endDate ? "Active" : "Expired";
   const startDateEt = formatMonthDayYear(startDate.valueOf());
   const endDateEt = formatMonthDayYear(endDate.valueOf());

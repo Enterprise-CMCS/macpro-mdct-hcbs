@@ -2,7 +2,7 @@ import { expect, Page } from "@playwright/test";
 
 export const testModalData = {
   reportName: "test report name",
-  datetime: new Date().getTime(),
+  datetime: Date.now(),
   cahpsSurveyOption: "No",
   nciiddSurveyOption: "No",
   nciadSurveyOption: "No",

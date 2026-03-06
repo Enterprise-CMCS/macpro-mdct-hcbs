@@ -31,9 +31,9 @@ export const getBanner = async (bannerKey: string) => {
 
 export const scanAllBanners = async () => {
   const pages = paginateScan({ client }, { TableName: bannerTableName });
-  let items: Record<string, any>[] = [];
+  const items: Record<string, any>[] = [];
   for await (const page of pages) {
-    items = items.concat(page.Items ?? []);
+    items.push(...(page.Items ?? []));
   }
   return items as BannerShape[];
 };
