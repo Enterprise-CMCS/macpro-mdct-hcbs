@@ -9,7 +9,12 @@ export const SubnavBar = () => {
   const saveStatusText = "Last saved " + lastSavedTime;
 
   // Use URL params if available, otherwise fall back to report object
-  const leaveFormPath = `/report/${reportType || report?.type}/${state || report?.state}`;
+  const leaveFormPath =
+    reportType && state
+      ? `/report/${reportType}/${state}`
+      : report?.type && report?.state
+        ? `/report/${report.type}/${report.state}`
+        : "/";
 
   return (
     <Flex sx={sx.subnavBar}>
