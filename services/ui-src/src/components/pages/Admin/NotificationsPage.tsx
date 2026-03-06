@@ -3,7 +3,7 @@ import { PageTemplate } from "components";
 import { Checkbox } from "components/checkbox/Checkbox";
 import { useEffect, useState } from "react";
 import { ReportType } from "types";
-import { Notifications } from "types/notification";
+import { Notification } from "types/notification";
 import {
   getNotifications,
   updateNotifications,
@@ -12,7 +12,7 @@ import {
 const REPORTS = Object.values(ReportType) as ReportType[];
 
 export const NotificationsPage = () => {
-  const [notifications, setNotifications] = useState<Notifications[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

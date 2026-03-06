@@ -1,11 +1,11 @@
 import { PutCommand, paginateScan } from "@aws-sdk/lib-dynamodb";
 import { collectPageItems, createClient } from "./dynamo/dynamodb-lib";
-import { Notifications } from "../types/notification";
+import { Notification } from "../types/notification";
 
 const notificationTableName = process.env.NotificationsTable;
 const client = createClient();
 
-export const putNotifications = async (notification: Notifications) => {
+export const putNotifications = async (notification: Notification) => {
   await client.send(
     new PutCommand({
       TableName: notificationTableName,
@@ -17,5 +17,5 @@ export const putNotifications = async (notification: Notifications) => {
 export const scanAllNotifications = async () => {
   const pages = paginateScan({ client }, { TableName: notificationTableName });
   const items = await collectPageItems(pages);
-  return items as Notifications[];
+  return items as Notification[];
 };

@@ -1,10 +1,10 @@
 import { logger } from "../libs/debug-lib";
-import { Notifications } from "../types/notification";
+import { Notification } from "../types/notification";
 import { isReportType } from "../types/reports";
 
 export const isValidNotification = (
   notification: unknown
-): notification is Notifications => {
+): notification is Notification => {
   if (!notification || "object" !== typeof notification) {
     logger.warn("Invalid: notification must be an object");
     return false;

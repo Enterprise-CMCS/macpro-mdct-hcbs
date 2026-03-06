@@ -1,5 +1,5 @@
 import { logger } from "../../libs/debug-lib";
-import { Notifications } from "../../types/notification";
+import { Notification } from "../../types/notification";
 import { ReportType } from "../../types/reports";
 import { isValidNotification } from "../notificationsValidation";
 
@@ -10,7 +10,7 @@ jest.mock("../../libs/debug-lib", () => ({
 }));
 const warn = logger.warn as jest.Mock;
 
-const validPayload: Notifications = {
+const validPayload: Notification = {
   category: ReportType.CI,
   enabled: true,
 };

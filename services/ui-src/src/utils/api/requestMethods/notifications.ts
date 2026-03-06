@@ -1,6 +1,6 @@
 import { apiLib, updateTimeout } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { Notifications } from "types/notification";
+import { Notification } from "types/notification";
 
 export async function getNotifications() {
   const requestHeaders = await getRequestHeaders();
@@ -9,10 +9,10 @@ export async function getNotifications() {
   };
 
   updateTimeout();
-  return await apiLib.get<Notifications[]>("/notifications", options);
+  return await apiLib.get<Notification[]>("/notifications", options);
 }
 
-export async function updateNotifications(notification: Notifications) {
+export async function updateNotifications(notification: Notification) {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -20,5 +20,5 @@ export async function updateNotifications(notification: Notifications) {
   };
 
   updateTimeout();
-  return await apiLib.put<Notifications[]>("/notifications", options);
+  return await apiLib.put<Notification[]>("/notifications", options);
 }
