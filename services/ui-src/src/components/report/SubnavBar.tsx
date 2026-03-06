@@ -1,29 +1,22 @@
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
 
 export const SubnavBar = () => {
-  const { reportType, state } = useParams();
   const { report, lastSavedTime } = useStore();
-  const saveStatusText = "Last saved " + lastSavedTime;
 
-  // Use URL params if available, otherwise fall back to report object
-  const leaveFormPath =
-    reportType && state
-      ? `/report/${reportType}/${state}`
-      : report?.type && report?.state
-        ? `/report/${report.type}/${report.state}`
-        : "/";
+  if (!report) {
+    // This component should only be rendered on report pages.
+    return null;
+  }
 
   return (
     <Flex sx={sx.subnavBar}>
       <Container sx={sx.subnavContainer}>
         <Flex sx={sx.subnavFlex}>
           <Flex>
-            <Text sx={sx.submissionNameText}>
-              {report?.name ? ` ${report.name}` : ""}
-            </Text>
+            <Text sx={sx.submissionNameText}>{report.name}</Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
             {lastSavedTime && (
@@ -33,12 +26,14 @@ export const SubnavBar = () => {
                   alt="gray checkmark icon"
                   sx={sx.checkIcon}
                 />
-                <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
+                <Text
+                  sx={sx.saveStatusText}
+                >{`Last saved ${lastSavedTime}`}</Text>
               </>
             )}
             <Link
               as={RouterLink}
-              to={leaveFormPath}
+              to={`/report/${report.type}/${report.state}`}
               sx={sx.leaveFormLink}
               variant="outlineButton"
             >
