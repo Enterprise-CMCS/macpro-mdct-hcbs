@@ -61,7 +61,7 @@ export const performResetMeasure = (measureId: string, report: Report) => {
   }
 
   // Clean measure
-  for (let element of page.elements ?? []) {
+  for (const element of page.elements ?? []) {
     performResetPageElement(element);
   }
 

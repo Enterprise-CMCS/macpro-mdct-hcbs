@@ -23,7 +23,7 @@ export const AppRoutes = () => {
   const componentInventoryPageEnabled = useFlags()?.componentInventory;
 
   useEffect(() => {
-    (document.querySelector("#app-wrapper") as HTMLElement)?.focus();
+    document.getElementById("app-wrapper")!.focus();
     window.scrollTo(0, 0);
   }, [pathname]);
 

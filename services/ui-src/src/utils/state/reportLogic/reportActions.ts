@@ -57,7 +57,7 @@ export const setPage = (
 
   let parentPage = undefined;
   if (parent) {
-    const pageIndex = parent.childPageIds?.indexOf(targetPageId) ?? -1;
+    const pageIndex = parent.childPageIds!.indexOf(targetPageId);
 
     parentPage = {
       parent: parent.id,

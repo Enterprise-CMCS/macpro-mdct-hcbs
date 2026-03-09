@@ -55,7 +55,7 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
     timeout: 2, // seconds
   });
 
-  createRoot(document.querySelector("#root")!).render(
+  createRoot(document.getElementById("root")!).render(
     <ErrorBoundary FallbackComponent={Error}>
       <Router>
         <UserProvider>
