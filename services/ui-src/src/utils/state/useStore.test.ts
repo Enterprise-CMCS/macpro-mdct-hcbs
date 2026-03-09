@@ -50,7 +50,7 @@ describe("useStore", () => {
       expect(useStore.getState().allBanners).toEqual([mockBanner]);
 
       const newFetchTime = useStore.getState()._lastFetchTime;
-      const now = new Date().valueOf();
+      const now = Date.now();
       // It's been more than 50 years since Jan 1 1970
       expect(newFetchTime).toBeGreaterThan(1000 * 60 * 60 * 24 * 365 * 50);
       // Hopefully this test took less than 10 seconds to run.

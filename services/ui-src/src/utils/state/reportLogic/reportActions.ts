@@ -57,10 +57,8 @@ export const setPage = (
 
   let parentPage = undefined;
   if (parent) {
-    // @ts-ignore TODO
-    const pageIndex = parent.childPageIds.findIndex(
-      (pageId) => pageId === targetPageId
-    );
+    const pageIndex = parent.childPageIds!.indexOf(targetPageId);
+
     parentPage = {
       parent: parent.id,
       childPageIds: parent.childPageIds!,

@@ -23,8 +23,8 @@ export const updateReport = handler(parseReportParameters, async (request) => {
   let report;
   try {
     report = await validateReportPayload(request.body);
-  } catch (err) {
-    logger.error(err);
+  } catch (error) {
+    logger.error(error);
     return badRequest("Invalid request");
   }
 

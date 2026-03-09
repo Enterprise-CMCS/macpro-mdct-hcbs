@@ -25,8 +25,7 @@ export const AppRoutes = () => {
   const notificationsPageEnabled = useFlags()?.notificationsSystem;
 
   useEffect(() => {
-    const appWrapper = document.getElementById("app-wrapper")!;
-    appWrapper?.focus();
+    document.getElementById("app-wrapper")!.focus();
     window.scrollTo(0, 0);
   }, [pathname]);
 

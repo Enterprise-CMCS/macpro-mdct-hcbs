@@ -17,7 +17,7 @@ export const removeNoise = (value: number | undefined): number | undefined => {
    * That is the default behavior of Math.round already, but many numbers which
    * appear to be 5s are actually stored as slightly smaller.
    * For example, the actual value of 0.145 is about 0.144999999999999990,
-   * where (0.145 + number.EPSILON) results in about 0.145000000000000017.
+   * where (0.145 + Number.EPSILON) results in about 0.145000000000000017.
    * The former rounds down, and the latter rounds up.
    *
    * On the other hand, adding epsilon will produce just as many errors:
@@ -84,7 +84,7 @@ export const parseNumber = (value: string) => {
   value = value.trim();
   if (value === "") return undefined;
   const nonNumericChars = /[^.-\d]/;
-  if (value.match(nonNumericChars)) return undefined;
+  if (nonNumericChars.test(value)) return undefined;
   if (isNaN(Number(value))) return undefined;
   const parsed = parseFloat(value);
   if (Object.is(parsed, -0)) return 0;
