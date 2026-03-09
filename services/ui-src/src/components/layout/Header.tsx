@@ -16,7 +16,7 @@ export const Header = ({ handleLogout }: Props) => {
       <Flex sx={sx.usaBannerContainer}>
         <UsaBanner />
       </Flex>
-      <Flex sx={sx.headerBar} role="navigation">
+      <Flex sx={sx.headerBar} role="banner">
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
             <Link as={RouterLink} to="/" variant="unstyled">
