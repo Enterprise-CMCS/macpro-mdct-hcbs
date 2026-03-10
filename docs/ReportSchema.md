@@ -78,6 +78,7 @@ Some are presentational, some are inputs or groups of related inputs, and some
 are placeholders for report status and navigation aids.
 
 Each element object has a `type` (string) field, indicating its role on the page.
+Input elements have an `answer` field, the type of which varies.
 
 - Presentational element types:
   - `header`: Renders an `<h1>`.
