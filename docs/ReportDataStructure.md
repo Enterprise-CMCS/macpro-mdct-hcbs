@@ -1,5 +1,10 @@
 # Report Data Structure
 
+This document is a high-level look at how HCBS stores report data.
+It includes some justifications for the architectural decisions,
+and looks ahead at possible challenges and changes.
+For a more detailed description of report fields, see docs/ReportSchema.md.
+
 HCBS takes an all-in-one approach to storing report data.
 Whereas other MDCT apps may store questions, answers, and metadata separately
 (in separate tables or even separate AWS services),
