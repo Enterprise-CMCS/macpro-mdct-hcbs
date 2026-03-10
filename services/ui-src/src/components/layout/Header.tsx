@@ -17,36 +17,36 @@ export const Header = ({ handleLogout }: Props) => {
         <UsaBanner />
       </Flex>
       <header>
-      <Flex sx={sx.headerBar}>
-        <Container sx={sx.headerContainer}>
-          <Flex sx={sx.headerFlex}>
-            <Link as={RouterLink} to="/" variant="unstyled">
-              <Image src={appLogo} alt="HCBS logo" sx={sx.appLogo} />
-            </Link>
-            <Flex sx={sx.menuFlex}>
-              {userIsAdmin ? <AdminMenu /> : null}
-              <Link
-                as={RouterLink}
-                to="/help"
-                variant="unstyled"
-                aria-label="Get Help"
-                sx={sx.getHelp}
-              >
-                <MenuOption
-                  icon={getHelpIcon}
-                  text="Get Help"
-                  altText="Help"
-                  role="group"
-                  hideText={isMobile}
-                />
+        <Flex sx={sx.headerBar}>
+          <Container sx={sx.headerContainer}>
+            <Flex sx={sx.headerFlex}>
+              <Link as={RouterLink} to="/" variant="unstyled">
+                <Image src={appLogo} alt="HCBS logo" sx={sx.appLogo} />
               </Link>
-              <AccountMenu handleLogout={handleLogout} />
+              <Flex sx={sx.menuFlex}>
+                {userIsAdmin ? <AdminMenu /> : null}
+                <Link
+                  as={RouterLink}
+                  to="/help"
+                  variant="unstyled"
+                  aria-label="Get Help"
+                  sx={sx.getHelp}
+                >
+                  <MenuOption
+                    icon={getHelpIcon}
+                    text="Get Help"
+                    altText="Help"
+                    role="group"
+                    hideText={isMobile}
+                  />
+                </Link>
+                <AccountMenu handleLogout={handleLogout} />
+              </Flex>
             </Flex>
-          </Flex>
-        </Container>
-      </Flex>
-      {/* report-related pages have more than 4 path segments */}
-      {paths.length > 4 && <SubnavBar />}
+          </Container>
+        </Flex>
+        {/* report-related pages have more than 4 path segments */}
+        {paths.length > 4 && <SubnavBar />}
       </header>
     </Box>
   );
