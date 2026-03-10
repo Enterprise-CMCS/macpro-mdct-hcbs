@@ -102,14 +102,7 @@ export const Sidebar = () => {
 
   return (
     <Box sx={sx.sidebar} className={sidebarOpen ? "open" : "closed"}>
-      <Flex sx={sx.sidebarNav}>
-        <Flex sx={sx.sidebarList}>
-          <Heading variant="sidebar">{title}</Heading>
-          {report.pages[root].childPageIds?.map((child) =>
-            navSection(pageMap.get(child)!)
-          )}
-        </Flex>
-        <Button
+              <Button
           aria-label="Open/Close sidebar menu"
           variant="sidebarToggle"
           onClick={() => setSidebar(!sidebarOpen)}
@@ -121,6 +114,13 @@ export const Sidebar = () => {
             className={sidebarOpen ? "left" : "right"}
           />
         </Button>
+      <Flex sx={sx.sidebarNav}>
+        <Flex sx={sx.sidebarList}>
+          <Heading variant="sidebar">{title}</Heading>
+          {report.pages[root].childPageIds?.map((child) =>
+            navSection(pageMap.get(child)!)
+          )}
+        </Flex>
       </Flex>
     </Box>
   );
