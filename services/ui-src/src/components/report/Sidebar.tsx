@@ -102,18 +102,18 @@ export const Sidebar = () => {
 
   return (
     <Box sx={sx.sidebar} className={sidebarOpen ? "open" : "closed"}>
-              <Button
-          aria-label="Open/Close sidebar menu"
-          variant="sidebarToggle"
-          onClick={() => setSidebar(!sidebarOpen)}
-          className={sidebarOpen ? "open" : "closed"}
-        >
-          <Image
-            src={arrowDownIcon}
-            alt={sidebarOpen ? "Arrow left" : "Arrow right"}
-            className={sidebarOpen ? "left" : "right"}
-          />
-        </Button>
+      <Button
+        aria-label="Open/Close sidebar menu"
+        variant="sidebarToggle"
+        onClick={() => setSidebar(!sidebarOpen)}
+        className={sidebarOpen ? "open" : "closed"}
+      >
+        <Image
+          src={arrowDownIcon}
+          alt={sidebarOpen ? "Arrow left" : "Arrow right"}
+          className={sidebarOpen ? "left" : "right"}
+        />
+      </Button>
       <Flex sx={sx.sidebarNav}>
         <Flex sx={sx.sidebarList}>
           <Heading variant="sidebar">{title}</Heading>
