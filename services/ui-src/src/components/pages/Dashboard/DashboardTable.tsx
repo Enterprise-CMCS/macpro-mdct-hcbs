@@ -1,7 +1,7 @@
 import {
   Button,
   Hide,
-  Image,
+  Flex,
   Show,
   Td,
   Tr,
@@ -22,7 +22,6 @@ import {
   useStore,
 } from "utils";
 
-import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 import { useState, Fragment } from "react";
 
 interface DashboardTableProps {
@@ -65,17 +64,6 @@ export const HorizontalTable = (props: TableProps) => {
     <Table content={props.tableContent}>
       {props.reports.map((report, idx) => (
         <Tr key={report.id}>
-          {props.showEditNameColumn && (
-            <Td fontWeight={"bold"}>
-              <button onClick={() => props.openAddEditReportModal(report)}>
-                <Image
-                  src={editIcon}
-                  aria-label={`Edit ${report.name} report name`}
-                  minW={"1.75rem"}
-                />
-              </button>
-            </Td>
-          )}
           <Td
             fontWeight={"bold"}
             maxWidth={"14.25rem"}
@@ -94,20 +82,31 @@ export const HorizontalTable = (props: TableProps) => {
             <Td width="3rem">{report.submissionCount ?? 0}</Td>
           )}
           <Td>
-            <Button
-              onClick={() => props.navigate(reportBasePath(report))}
-              variant="outline"
-              disabled={report.archived}
-              aria-label={
-                report.status !== ReportStatus.SUBMITTED
-                  ? `Edit ${report.name} report`
-                  : `View ${report.name} report`
-              }
-            >
-              {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
-                ? "Edit"
-                : "View"}
-            </Button>
+            <Flex display="flex" gap="spacer2" wrap="wrap">
+              {props.showEditNameColumn && (
+                <Button
+                  variant="link"
+                  onClick={() => props.openAddEditReportModal(report)}
+                  aria-label={`Edit ${report.name} name`}
+                >
+                  Edit name
+                </Button>
+              )}
+              <Button
+                onClick={() => props.navigate(reportBasePath(report))}
+                variant="outline"
+                disabled={report.archived}
+                aria-label={
+                  report.status !== ReportStatus.SUBMITTED
+                    ? `Edit ${report.name} report`
+                    : `View ${report.name} report`
+                }
+              >
+                {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
+                  ? "Edit"
+                  : "View"}
+              </Button>
+            </Flex>
           </Td>
           {props.showAdminControlsColumn && (
             <>
@@ -157,15 +156,6 @@ export const VerticalTable = (props: TableProps) => {
           <div>
             <Text variant="grey">Submission name</Text>
             <HStack>
-              {props.showEditNameColumn && (
-                <button onClick={() => props.openAddEditReportModal(report)}>
-                  <Image
-                    src={editIcon}
-                    aria-label={`Edit ${report.name} report name`}
-                    minW={"1.75rem"}
-                  />
-                </button>
-              )}
               <Text fontWeight="heading_md" fontSize="heading_md">
                 {report.name}
               </Text>
@@ -193,6 +183,15 @@ export const VerticalTable = (props: TableProps) => {
             <Text>{report.submissionCount ?? 0}</Text>
           )}
           <HStack gap={"6"}>
+            {props.showEditNameColumn && (
+              <Button
+                variant="link"
+                onClick={() => props.openAddEditReportModal(report)}
+                aria-label={`Edit ${report.name} name`}
+              >
+                Edit name
+              </Button>
+            )}
             <Button
               onClick={() => props.navigate(reportBasePath(report))}
               variant="outline"
@@ -268,15 +267,14 @@ export const DashboardTable = ({
   const showAdminControlsColumn = userIsAdmin;
 
   // Build header columns based on defined behaviors per role
-  const headers = [];
-  if (showEditNameColumn) headers.push("");
-  headers.push(
+  const headers = [
     "Submission name",
     "Reporting year",
     "Last edited",
     "Edited by",
-    "Status"
-  );
+    "Status",
+    "Actions",
+  ];
   if (showReportSubmissionsColumn) headers.push("#");
   headers.push("");
 

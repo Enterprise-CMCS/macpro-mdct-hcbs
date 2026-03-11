@@ -114,7 +114,7 @@ describe("Dashboard table with state user", () => {
 
   it("should render edit button and call openAddEditReportModal on click", async () => {
     render(standardDashboardTableComponent);
-    const editButton = screen.getByLabelText("Edit report 1 report name");
+    const editButton = screen.getByLabelText("Edit report 1 name");
     expect(editButton).toBeInTheDocument();
     await userEvent.click(editButton);
     expect(mockOpenAddEditReportModal).toHaveBeenCalled();
