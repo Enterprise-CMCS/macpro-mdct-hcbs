@@ -18,11 +18,9 @@ const sx = {
     transition: "all 0.3s ease",
     color: "palette.primary",
     textDecoration: "underline",
-    textDecorationColor: "palette.primary",
   },
   "& a:hover, & a:visited:hover": {
     color: "palette.primary_darkest",
-    textDecorationColor: "palette.primary_darkest",
   },
   "& a:focus, & a:visited:focus": {
     color: "inherit",
