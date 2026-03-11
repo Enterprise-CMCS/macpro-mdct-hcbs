@@ -16,9 +16,9 @@ type Props = Pick<BannerFormData, "title" | "description" | "link">;
 const sx = {
   "& a, & a:visited": {
     transition: "all 0.3s ease",
-    color: "palette.primary_darker",
+    color: "palette.primary",
     textDecoration: "underline",
-    textDecorationColor: "palette.primary_darker",
+    textDecorationColor: "palette.primary",
   },
   "& a:hover, & a:visited:hover": {
     color: "palette.primary_darkest",
@@ -26,6 +26,6 @@ const sx = {
   },
   "& a:focus, & a:visited:focus": {
     color: "inherit",
-    textDecorationColor: "palette.primary_darker",
+    textDecorationColor: "palette.primary",
   },
 };
