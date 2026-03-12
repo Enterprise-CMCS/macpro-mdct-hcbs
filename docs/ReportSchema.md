@@ -77,10 +77,25 @@ Each object in the `page.elements` array represents something that the user sees
 Some are presentational, some are inputs or groups of related inputs, and some
 are placeholders for report status and navigation aids.
 
-Each element object has a `type` (string) field, indicating its role on the page.
-Input elements have an `answer` field, the type of which varies.
+Element objects have varying shapes, but some fields are common:
 
-- Presentational element types:
+- `type` (string): Indicates this element's role, and dictates its shape.
+- `id` (string): An identifier. Should always be unique _within a page_,
+  but IDs may be reused for elements on different pages.
+- `answer` (varies, optional): If this element accepts user input,
+  that input will be stored in the `answer` property.
+  - Different elements have different answer types: string, number, object...
+  - If an element has not been completed by a user,
+    this may be absent, or undefined.
+  - For inputs with more complex answer types,
+    any sub-field of the answer may be undefined.
+  - For example, if an NDR has been partially completed,
+    you may see `{ type: "ndr", id: "foo", answer: { numerator: 1 } }`
+    with the `denominator` and `rate` fields missing.
+
+Here is the complete list of element types, roughly categorized:
+
+- Presentational elements:
   - `header`: Renders an `<h1>`.
   - `subHeader`: Renders an `<h2>`.
   - `subHeaderMeasure`: When displaying this element,
@@ -98,7 +113,24 @@ Input elements have an `answer` field, the type of which varies.
   - `statusAlert`: May display an informational banner:
     - When on a measure page, displays if the measure has been completed.
     - When on the Review & Submit page, displays if the report is incomplete.
-- Simple input element types:
+- Navigational elements:
+  - `buttonLink`: Renders a link, with the appearance of a button.
+  - `measureTable`: Renders a list of measures, including a link to each.
+    - HCBS has only two of these, both in QMS.
+    - One shows the required measures, the other shows the optional measures.
+  - `measureResultsNavigationTable`: Renders a list of child pages, including a link to each.
+    - These only appear on Measure pages in QMS.
+      There are usually two child pages:
+      One for FFS results, the other for MLTSS results.
+  - `statusTable`: Renders a list of other pages on the report,
+    showing the completion status of each.
+    - This appears in every report, on the last page ("Review & Submit").
+  - `measureFooter`: Renders a few buttons.
+    - Usually includes previous/next navigation buttons.
+    - Used only at the bottom of measure pages in QMS.
+    - May also include buttons to reset the measure,
+      complete the measure, or complete the section.
+- Simple input elements:
   - `textbox`: A one-line text input field. Answer is a string.
   - `textAreaField`: A multi-line text input field. Answer is a string.
   - `numberField`: A text input field, with number parsing & masking.
@@ -115,7 +147,7 @@ Input elements have an `answer` field, the type of which varies.
   - `checkbox`: A set of checkboxes.
     - The options work just like they do for `radio`
     - Answer is a string array.
-- Grouped input element types:
+- Grouped input elements:
   - `listInput`: Allows the user to enter a list.
     - Renders as a textbox with an "add" button.
     - Answer is a string array.
@@ -163,23 +195,6 @@ Input elements have an `answer` field, the type of which varies.
     - The `frequency` input is rendered as a radio button, if and only if `recheck` is `Yes`; its options are listed on the element as `frequencyOptions` with type `{ label: string, value: string }`.
     - The `eligibilityUpdate` input is also a radio button with options `Yes` and `No`.
     - Currently used only in the WWL report.
-- Navigational element types:
-  - `buttonLink`: Renders a link, with the appearance of a button.
-  - `measureTable`: Renders a list of measures, including a link to each.
-    - HCBS has only two of these, both in QMS.
-    - One shows the required measures, the other shows the optional measures.
-  - `measureResultsNavigationTable`: Renders a list of child pages, including a link to each.
-    - These only appear on Measure pages in QMS.
-      There are usually two child pages:
-      One for FFS results, the other for MLTSS results.
-  - `statusTable`: Renders a list of other pages on the report,
-    showing the completion status of each.
-    - This appears in every report, on the last page ("Review & Submit").
-  - `measureFooter`: Renders a few buttons.
-    - Usually includes previous/next navigation buttons.
-    - Used only at the bottom of measure pages in QMS.
-    - May also include buttons to reset the measure,
-      complete the measure, or complete the section.
 
 ## QMS considerations
 
