@@ -6,7 +6,12 @@ import {
   SingleInputDateField as CmsdsDateField,
 } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../constants";
-import { parseAsLocalDate, parseMMDDYYYY, useStore } from "utils";
+import {
+  formatMonthDayYear,
+  parseAsLocalDate,
+  parseMMDDYYYY,
+  useStore,
+} from "utils";
 import {
   BannerArea,
   bannerAreaLabels,
@@ -209,6 +214,7 @@ export const AdminBannerForm = ({ createBanner }: Props) => {
             value={formData.area}
             errorMessage={formErrors.area}
           />
+          {listBannersInArea(allBanners, formData.area)}
           <CmsdsTextField
             name="title"
             label="Title text"
@@ -346,6 +352,34 @@ export const findConflictingBanner = (
   });
 };
 
+export const listBannersInArea = (
+  allBanners: BannerShape[],
+  area: BannerArea
+) => {
+  const bannersInArea = allBanners.filter((b) => b.area === area);
+  if (bannersInArea.length === 0) {
+    return null;
+  }
+  return (
+    <Box sx={sx.otherBannersInArea}>
+      <p>Existing {bannerAreaLabels[area]} banners:</p>
+      <ol>
+        {bannersInArea.map((banner) => {
+          const startDate = parseAsLocalDate(banner.startDate);
+          const endDate = parseAsLocalDate(banner.endDate);
+          const startDateEt = formatMonthDayYear(startDate.valueOf());
+          const endDateEt = formatMonthDayYear(endDate.valueOf());
+          return (
+            <li key={banner.key}>
+              {banner.title} {startDateEt}&ndash;{endDateEt}
+            </li>
+          );
+        })}
+      </ol>
+    </Box>
+  );
+};
+
 interface Props {
   createBanner: (data: BannerFormData) => Promise<void>;
 }
@@ -366,6 +400,11 @@ const sx = {
       "&::before": {
         content: '"• "',
       },
+    },
+  },
+  otherBannersInArea: {
+    ol: {
+      listStyleType: "none",
     },
   },
 };

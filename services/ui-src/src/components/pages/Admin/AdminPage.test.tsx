@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdminPage } from "components";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { BannerShape, BannerAreas } from "types";
 
 const daysFromToday = (offset: number) => {
@@ -147,35 +147,35 @@ describe("<AdminPage />", () => {
 
   it("should display expired banner status", async () => {
     useStore.setState({ allBanners: [mockBannerHome1], ...bannerMethods });
-    const dates = `${reformatDate(mockBannerHome1.startDate)}–${reformatDate(mockBannerHome1.endDate)}`;
+    const dates = `: ${reformatDate(mockBannerHome1.startDate)}–${reformatDate(mockBannerHome1.endDate)}`;
 
     render(<AdminPage />);
     await screen.findByText("Expired");
 
-    expect(screen.getByText(dates, { exact: false })).toBeVisible();
+    expect(screen.getByText(dates)).toBeVisible();
   });
 
   it("should display active banner status", async () => {
     useStore.setState({ allBanners: [mockBannerHome2], ...bannerMethods });
-    const dates = `${reformatDate(mockBannerHome2.startDate)}–${reformatDate(mockBannerHome2.endDate)}`;
+    const dates = `: ${reformatDate(mockBannerHome2.startDate)}–${reformatDate(mockBannerHome2.endDate)}`;
 
     render(<AdminPage />);
     await screen.findByText("Active");
 
-    expect(screen.getByText(dates, { exact: false })).toBeVisible();
+    expect(screen.getByText(dates)).toBeVisible();
   });
 
   it("should display scheduled banner status", async () => {
     useStore.setState({ allBanners: [mockBannerHome3], ...bannerMethods });
-    const dates = `${reformatDate(mockBannerHome3.startDate)}–${reformatDate(mockBannerHome3.endDate)}`;
+    const dates = `: ${reformatDate(mockBannerHome3.startDate)}–${reformatDate(mockBannerHome3.endDate)}`;
 
     render(<AdminPage />);
     await screen.findByText("Scheduled");
 
-    expect(screen.getByText(dates, { exact: false })).toBeVisible();
+    expect(screen.getByText(dates)).toBeVisible();
   });
 
-  testA11y(<AdminPage />, () => {
+  testA11yAct(<AdminPage />, () => {
     useStore.setState({
       allBanners: [
         mockBannerQms,
@@ -186,7 +186,7 @@ describe("<AdminPage />", () => {
     });
   });
 
-  testA11y(<AdminPage />, () => {
+  testA11yAct(<AdminPage />, () => {
     useStore.setState({ allBanners: [] });
   });
 });
