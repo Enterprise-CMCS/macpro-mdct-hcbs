@@ -1,53 +1,34 @@
 import { handler } from "../../libs/handler-lib";
 import { putBanner } from "../../storage/banners";
+import { randomUUID } from "node:crypto";
 import { error } from "../../utils/constants";
-import {
-  badRequest,
-  created,
-  forbidden,
-  internalServerError,
-} from "../../libs/response-lib";
+import { badRequest, created, forbidden } from "../../libs/response-lib";
 import { canWriteBanner } from "../../utils/authorization";
-import { parseBannerId } from "../../libs/param-lib";
-import { validateBannerPayload } from "../../utils/bannerValidation";
-import { logger } from "../../libs/debug-lib";
-import { BannerData } from "../../types/banner";
+import { emptyParser } from "../../libs/param-lib";
+import { isValidBanner } from "../../utils/bannerValidation";
 
-export const createBanner = handler(parseBannerId, async (request) => {
-  const { bannerId } = request.parameters;
+export const createBanner = handler(emptyParser, async (request) => {
   const user = request.user;
 
   if (!canWriteBanner(user)) {
     return forbidden(error.UNAUTHORIZED);
   }
 
-  let validatedPayload: BannerData | undefined;
-  try {
-    validatedPayload = await validateBannerPayload(request.body);
-  } catch (err) {
-    logger.error(err);
+  if (!isValidBanner(request.body)) {
     return badRequest("Invalid request");
   }
 
-  const { title, description, link, startDate, endDate } = validatedPayload;
-
-  const currentTime = Date.now();
+  const currentTime = new Date().toISOString();
 
   const newBanner = {
-    key: bannerId,
+    ...request.body,
+    key: randomUUID(),
     createdAt: currentTime,
     lastAltered: currentTime,
     lastAlteredBy: user.fullName,
-    title,
-    description,
-    link,
-    startDate,
-    endDate,
   };
-  try {
-    await putBanner(newBanner);
-  } catch {
-    return internalServerError(error.CREATION_ERROR);
-  }
+
+  await putBanner(newBanner);
+
   return created(newBanner);
 });

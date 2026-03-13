@@ -2,24 +2,21 @@ import { Link as RouterLink } from "react-router-dom";
 import { Flex, Container, Image, Link, Text } from "@chakra-ui/react";
 import { useStore } from "utils";
 import checkIcon from "assets/icons/check/icon_check_gray.png";
-import { isReportType } from "types";
 
-const getTitle = (reportType: string) => {
-  if (!isReportType(reportType)) return "";
-  return `${reportType} Report`;
-};
-
-export const SubnavBar = ({ stateName, reportType }: Props) => {
+export const SubnavBar = () => {
   const { report, lastSavedTime } = useStore();
-  const saveStatusText = "Last saved " + lastSavedTime;
-  const title = getTitle(reportType);
+
+  if (!report) {
+    // This component should only be rendered on report pages.
+    return null;
+  }
 
   return (
     <Flex sx={sx.subnavBar}>
       <Container sx={sx.subnavContainer}>
         <Flex sx={sx.subnavFlex}>
           <Flex>
-            <Text sx={sx.submissionNameText}>{`${stateName} ${title}`}</Text>
+            <Text sx={sx.submissionNameText}>{report.name}</Text>
           </Flex>
           <Flex sx={sx.subnavFlexRight}>
             {lastSavedTime && (
@@ -29,13 +26,14 @@ export const SubnavBar = ({ stateName, reportType }: Props) => {
                   alt="gray checkmark icon"
                   sx={sx.checkIcon}
                 />
-                <Text sx={sx.saveStatusText}>{saveStatusText}</Text>
+                <Text
+                  sx={sx.saveStatusText}
+                >{`Last saved ${lastSavedTime}`}</Text>
               </>
             )}
             <Link
               as={RouterLink}
-              // oxlint-disable-next-line no-constant-binary-expression
-              to={`/report/${report?.type}/${report?.state}` || "/"}
+              to={`/report/${report.type}/${report.state}`}
               sx={sx.leaveFormLink}
               variant="outlineButton"
             >
@@ -47,11 +45,6 @@ export const SubnavBar = ({ stateName, reportType }: Props) => {
     </Flex>
   );
 };
-
-interface Props {
-  stateName: string;
-  reportType: string;
-}
 
 const sx = {
   subnavBar: {

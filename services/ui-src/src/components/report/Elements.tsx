@@ -194,7 +194,7 @@ export const ButtonLinkElement = ({
   //swapping between props based on style
   const getPropObj = (style: string) => {
     switch (style) {
-      case "pdf": {
+      case "pdf":
         return {
           prop: {
             as: Link,
@@ -207,8 +207,8 @@ export const ButtonLinkElement = ({
             alt: "pdf icon",
           },
         };
-      }
-      default: {
+
+      default:
         return {
           prop: {
             variant: "return",
@@ -219,7 +219,6 @@ export const ButtonLinkElement = ({
             alt: "Arrow left",
           },
         };
-      }
     }
   };
 

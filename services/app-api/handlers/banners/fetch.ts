@@ -1,10 +1,9 @@
 import { handler } from "../../libs/handler-lib";
-import { getBanner } from "../../storage/banners";
+import { scanAllBanners } from "../../storage/banners";
 import { ok } from "../../libs/response-lib";
-import { parseBannerId } from "../../libs/param-lib";
+import { emptyParser } from "../../libs/param-lib";
 
-export const fetchBanner = handler(parseBannerId, async (request) => {
-  const { bannerId } = request.parameters;
-  const banner = await getBanner(bannerId);
-  return ok(banner);
+export const listBanners = handler(emptyParser, async (_request) => {
+  const banners = await scanAllBanners();
+  return ok(banners);
 });

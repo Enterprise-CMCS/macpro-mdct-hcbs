@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { CheckboxTemplate, ChoiceTemplate, PageElement } from "types";
+import {
+  AlertTypes,
+  CheckboxTemplate,
+  ChoiceTemplate,
+  PageElement,
+} from "types";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
 import { Page } from "components/report/Page";
+import { Alert } from "components/alerts/Alert";
 
 const formatChoices = (
   choices: ChoiceTemplate[],
@@ -71,7 +77,7 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
-    let set = new Set(checkbox.answer ?? []);
+    let set = new Set(checkbox.answer);
 
     if (set.has(value)) set.delete(value);
     else set.add(value);
@@ -99,6 +105,16 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
         onChange={onChangeHandler}
         {...props}
       />
+      {displayValue.length === 0 && !!checkbox.emptyAlertDescription ? (
+        <Box mt={2}>
+          <Alert
+            title={checkbox.emptyAlertTitle ?? ""}
+            status={AlertTypes.WARNING}
+          >
+            {checkbox.emptyAlertDescription}
+          </Alert>
+        </Box>
+      ) : null}
     </Box>
   );
 };

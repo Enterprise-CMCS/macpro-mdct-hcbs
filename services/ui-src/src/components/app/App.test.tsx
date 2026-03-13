@@ -36,7 +36,6 @@ describe("<App />", () => {
     expect(screen.getAllByAltText("HCBS logo"));
     expect(screen.getAllByAltText("Help"));
     expect(screen.getAllByAltText("Account"));
-    expect(screen.getAllByAltText("Expand"));
     expect(
       screen.getAllByAltText("Department of Health and Human Services, USA")
     );

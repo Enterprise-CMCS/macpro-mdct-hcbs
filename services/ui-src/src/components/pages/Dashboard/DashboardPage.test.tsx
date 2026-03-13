@@ -19,11 +19,9 @@ jest.mock("utils/other/useBreakpoint", () => ({
   makeMediaQueryClasses: jest.fn().mockReturnValue("desktop"),
 }));
 
-jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockReturnValue({}),
-}));
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
+// These tests do `useStore.setState` rather than mocking the useStore hook,
+// to support selectors (like `activeBannerSelector`) with no further plumbing.
+useStore.setState(mockUseStore);
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -123,7 +121,7 @@ describe("DashboardPage with state user", () => {
 
     const cellContent = (columnName: string) => {
       const columnIndex = columns.indexOf(columnName);
-      if (columnIndex < 0) throw new Error(`Could not find '${columnName}'`);
+      if (columnIndex === -1) throw new Error(`Could not find '${columnName}'`);
       const cell = rows[0][columnIndex];
       return cell.textContent;
     };
@@ -158,7 +156,7 @@ describe("DashboardPage with state user", () => {
 
     const cellContent = (columnName: string) => {
       const columnIndex = columns.indexOf(columnName);
-      if (columnIndex < 0) throw new Error(`Could not find '${columnName}'`);
+      if (columnIndex === -1) throw new Error(`Could not find '${columnName}'`);
       const cell = rows[0][columnIndex];
       return cell.textContent;
     };
@@ -185,7 +183,7 @@ describe("DashboardPage with state user", () => {
 
 describe("DashboardPage with Read only user", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
+    useStore.setState(mockUseReadOnlyUserStore);
   });
   it("should not render the Start Report button when user is read only", async () => {
     render(dashboardComponent);
@@ -203,7 +201,7 @@ describe("DashboardPage with Read only user", () => {
 
 describe("DashboardPage with Admin user", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockUseAdminStore);
+    useStore.setState(mockUseAdminStore);
   });
   it("should not render the Start Report button when user is read only", async () => {
     render(dashboardComponent);

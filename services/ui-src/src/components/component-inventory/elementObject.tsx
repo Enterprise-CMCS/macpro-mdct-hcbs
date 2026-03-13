@@ -654,6 +654,8 @@ export const elementObject: {
             { value: "checkbox option 2", label: "checkbox option 2" },
             { value: "checkbox option 3", label: "checkbox option 3" },
           ],
+          emptyAlertTitle: "Empty Alert Title",
+          emptyAlertDescription: "Empty Alert Description",
         }}
       />,
     ],

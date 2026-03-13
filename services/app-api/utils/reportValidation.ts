@@ -137,7 +137,7 @@ const accordionTemplateSchema = object().shape({
 
 const pageElementSchema = lazy((value: PageElement): Schema => {
   if (!value.type) {
-    throw new Error();
+    throw new Error("Missing type field on page element");
   }
   switch (value.type) {
     case ElementType.Header:
@@ -239,6 +239,8 @@ const checkboxTemplateSchema = object().shape({
     })
   ),
   answer: array().of(string()).notRequired(),
+  emptyAlertTitle: string().notRequired(),
+  emptyAlertDescription: string().notRequired(),
   required: boolean().required(),
 });
 
@@ -575,7 +577,9 @@ const pagesSchema = array()
         if (pageObject.id && pageObject.childPageIds) {
           return parentPageTemplateSchema;
         } else {
-          throw new Error();
+          throw new Error(
+            "Type missing on pageObject and id or childPageIds missing"
+          );
         }
       } else {
         switch (pageObject.type) {
@@ -583,7 +587,6 @@ const pagesSchema = array()
             return reviewSubmitTemplateSchema;
           case PageType.Measure:
             return measurePageTemplateSchema;
-          case PageType.Standard:
           default:
             return formPageTemplateSchema;
         }

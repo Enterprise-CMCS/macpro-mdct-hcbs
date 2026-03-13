@@ -32,7 +32,7 @@ const isStateReporting = (elements: PageElement[]) => {
     );
   });
 
-  return stateReportIndex > -1
+  return stateReportIndex !== -1
     ? elements.splice(0, stateReportIndex + 1)
     : elements;
 };

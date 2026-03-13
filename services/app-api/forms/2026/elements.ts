@@ -133,11 +133,14 @@ export const waiverListCheckboxField: CheckboxTemplate = {
   type: ElementType.Checkbox,
   id: "waivers-list-checkboxes",
   label:
-    "Select all programs and waivers that are included in this reporting period?",
+    "Select all programs and waivers that are included in this reporting period.",
   choices: [
     /* Generated in buildReport, with data from waivers.ts */
   ],
   helperText: "Select all that apply.",
+  emptyAlertTitle: "No programs or waivers found for your state/territory",
+  emptyAlertDescription:
+    "If you believe this is in error please contact the MDCT Help Desk: mdct_help@cms.hhs.gov",
   required: false,
 };
 
@@ -153,6 +156,6 @@ export const waiverListInputField: ListInputTemplate = {
   helperText:
     "Include the waiver/demonstration name and control numbers in your response.",
   fieldLabel: "Waiver/demonstration and/or control numbers",
-  buttonText: "Add waiver/demonstation name",
+  buttonText: "Add waiver/demonstration name",
   required: false,
 };

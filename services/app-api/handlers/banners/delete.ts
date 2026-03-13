@@ -3,15 +3,16 @@ import { canWriteBanner } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { deleteBanner as deleteBannerById } from "../../storage/banners";
 import { forbidden, ok } from "../../libs/response-lib";
-import { parseBannerId } from "../../libs/param-lib";
+import { parseBannerKey } from "../../libs/param-lib";
 
-export const deleteBanner = handler(parseBannerId, async (request) => {
-  const { bannerId } = request.parameters;
+export const deleteBanner = handler(parseBannerKey, async (request) => {
+  const { bannerKey } = request.parameters;
   const user = request.user;
 
   if (!canWriteBanner(user)) {
     return forbidden(error.UNAUTHORIZED);
   }
-  await deleteBannerById(bannerId);
+
+  await deleteBannerById(bannerKey);
   return ok();
 });
