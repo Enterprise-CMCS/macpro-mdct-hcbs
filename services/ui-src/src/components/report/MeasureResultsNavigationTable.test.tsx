@@ -238,7 +238,7 @@ describe("Measure Results Navigation Table", () => {
     await waitForRender();
 
     const findTableHeader = () =>
-      screen.queryByText("Measure section name", { exact: false });
+      screen.queryByRole("columnheader", { name: "Measure section" });
     const notReporting = screen.getByText("No, CMS is reporting");
     const yesReporting = screen.getByText("Yes, the state is reporting");
 

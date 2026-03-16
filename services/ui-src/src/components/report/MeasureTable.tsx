@@ -143,12 +143,9 @@ export const MeasureTableElement = (
     <Table variant="measure">
       <Thead>
         <Tr>
-          <Th></Th>
-          <Th>
-            Measure Name <br />
-            CMIT Number <br />
-            Status
-          </Th>
+          <Th>Status</Th>
+          <Th>Measure</Th>
+          <Th>Actions</Th>
         </Tr>
       </Thead>
       <Tbody>{rows}</Tbody>
