@@ -12,8 +12,8 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { Table } from "components";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { LiteReport, ReportStatus } from "types";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { getReportName, LiteReport, ReportStatus } from "types";
 import {
   formatMonthDayYear,
   releaseReport,
@@ -279,9 +279,9 @@ export const DashboardTable = ({
   );
   if (showReportSubmissionsColumn) headers.push("#");
   headers.push("");
-
+  const { reportType } = useParams();
   const tableContent = {
-    caption: "Quality Measure Reports",
+    caption: `${getReportName(reportType)}s`,
     headRow: headers,
   };
 
