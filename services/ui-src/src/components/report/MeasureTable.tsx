@@ -9,6 +9,7 @@ import {
   Tr,
   Text,
   Link,
+  TableCaption,
 } from "@chakra-ui/react";
 import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
@@ -81,6 +82,11 @@ export const MeasureTableElement = (
     return measure.status ?? PageStatus.NOT_STARTED;
   };
 
+  const getCaption = (measureDisplay: string) =>
+    measureDisplay === "required"
+      ? "Required Measure Results"
+      : "Optional Measure Results";
+
   const errorMessage = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
     if (
@@ -141,6 +147,7 @@ export const MeasureTableElement = (
   });
   return (
     <Table variant="measure">
+      <TableCaption>{getCaption(table.measureDisplay)}</TableCaption>
       <Thead>
         <Tr>
           <Th></Th>
