@@ -12,6 +12,8 @@ import {
   Th,
   Thead,
   Tr,
+  TableCaption,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { formatMonthDayYear, useStore } from "utils";
 import {
@@ -94,6 +96,9 @@ export const reportTitle = (report: Report) => {
 export const reportDetails = (report: Report) => {
   return (
     <Table variant={"reportDetails"}>
+      <VisuallyHidden>
+        <TableCaption>{reportTitle(report)}</TableCaption>
+      </VisuallyHidden>
       <Thead>
         <Tr>
           <Th>Reporting year</Th>
@@ -140,7 +145,10 @@ export const reportSubmissionSetUp = (report: Report) => {
       <Heading as="h2" variant="h2">
         Submission Set Up
       </Heading>
-      <ExportedReportTable rows={rows}></ExportedReportTable>
+      <ExportedReportTable
+        rows={rows}
+        caption="Submission Set Up"
+      ></ExportedReportTable>
     </Box>
   );
 };
