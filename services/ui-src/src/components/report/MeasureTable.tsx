@@ -109,7 +109,7 @@ export const MeasureTableElement = (
           {errorMessage(measure)}
         </Td>
         <Td>
-          <Flex gap="spacer2">
+          <Flex gap="spacer2" sx={sx.flex}>
             {measure.substitutable &&
             measure.required &&
             report?.status !== ReportStatus.SUBMITTED ? (
@@ -152,4 +152,14 @@ export const MeasureTableElement = (
       <Tbody>{rows}</Tbody>
     </Table>
   );
+};
+
+const sx = {
+  flex: {
+    justifyContent: "flex-end",
+
+    ".mobile &": {
+      justifyContent: "flex-start",
+    },
+  },
 };
