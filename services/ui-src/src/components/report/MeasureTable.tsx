@@ -9,6 +9,7 @@ import {
   Tr,
   Text,
   Link,
+  Flex,
 } from "@chakra-ui/react";
 import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
@@ -101,40 +102,40 @@ export const MeasureTableElement = (
             tableStatus={getTableStatus(measure)}
           ></TableStatusIcon>
         </Td>
-        <Td width="100%">
+        <Td>
           <Text fontWeight="bold">{measure.title}</Text>
           <Text>CMIT number: #{measure.cmit}</Text>
           <Text>Status: {measure.status ?? "Not started"}</Text>
           {errorMessage(measure)}
         </Td>
         <Td>
-          {measure.substitutable &&
-          measure.required &&
-          report?.status !== ReportStatus.SUBMITTED ? (
+          <Flex gap="spacer2">
+            {measure.substitutable &&
+            measure.required &&
+            report?.status !== ReportStatus.SUBMITTED ? (
+              <Button
+                variant="link"
+                sx={{ fontSize: "body_sm" }}
+                onClick={() => {
+                  buildModal(measure);
+                }}
+              >
+                Substitute measure
+              </Button>
+            ) : null}
+            {/* TO-DO: Fix format of measure id */}
             <Button
-              variant="link"
-              sx={{ fontSize: "body_sm" }}
-              onClick={() => {
-                buildModal(measure);
+              as={Link}
+              variant={"outline"}
+              href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleEditClick(measure.id);
               }}
             >
-              Substitute measure
+              Edit
             </Button>
-          ) : null}
-        </Td>
-        <Td>
-          {/* TO-DO: Fix format of measure id */}
-          <Button
-            as={Link}
-            variant={"outline"}
-            href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleEditClick(measure.id);
-            }}
-          >
-            Edit
-          </Button>
+          </Flex>
         </Td>
       </Tr>
     );
