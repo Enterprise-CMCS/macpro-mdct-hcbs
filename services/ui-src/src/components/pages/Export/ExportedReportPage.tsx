@@ -96,9 +96,9 @@ export const reportTitle = (report: Report) => {
 export const reportDetails = (report: Report) => {
   return (
     <Table variant={"reportDetails"}>
-      <VisuallyHidden>
-        <TableCaption>{reportTitle(report)}</TableCaption>
-      </VisuallyHidden>
+      <TableCaption>
+        <VisuallyHidden>{reportTitle(report)}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Reporting year</Th>
