@@ -90,7 +90,7 @@ export const StatusTableElement = () => {
           <Tr>
             <Th>Section</Th>
             <Th>Status</Th>
-            <Th></Th>
+            <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>{rows}</Tbody>
