@@ -13,6 +13,7 @@ import {
   Text,
   Spinner,
   TableCaption,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { postSubmitReport, useStore } from "utils";
 import editIconPrimary from "assets/icons/edit/icon_edit_primary.svg";
@@ -87,7 +88,9 @@ export const StatusTableElement = () => {
   return (
     <>
       <Table variant="status">
-        <TableCaption>Review & Submit</TableCaption>
+        <VisuallyHidden>
+          <TableCaption>Review & Submit</TableCaption>
+        </VisuallyHidden>
         <Thead>
           <Tr>
             <Th>Section</Th>
