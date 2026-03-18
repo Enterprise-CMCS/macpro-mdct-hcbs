@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import {
+  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   PageElement,
@@ -62,7 +63,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   const expandCheckedChildren = (elements: PageElement[]): PageElement[] => {
     return elements.flatMap((element) => {
-      if ("choices" in element) {
+      if (element.type === ElementType.Radio) {
         const checkedChoice = element.choices.find(
           (choice) => choice.value === element.answer
         );

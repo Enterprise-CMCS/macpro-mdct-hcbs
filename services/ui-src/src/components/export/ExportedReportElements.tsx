@@ -1,6 +1,7 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType, MeasurePageTemplate, PageElement } from "types";
+import { CheckboxExport } from "components/fields/CheckboxField";
 import { FieldsExport } from "components/rates/types/Fields";
 import { ReadmissionRateExport } from "components/rates/types/ReadmissionRate";
 import { NDRExport } from "components/rates/types/NDR";
@@ -18,6 +19,7 @@ const tableElementList = [
   ElementType.Textbox,
   ElementType.Radio,
   ElementType.TextAreaField,
+  ElementType.Checkbox,
 ];
 
 const renderElementList = [
@@ -68,6 +70,8 @@ export const renderElements = (
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element);
+    case ElementType.Checkbox:
+      return CheckboxExport(element);
   }
 
   if (!("answer" in element)) {
