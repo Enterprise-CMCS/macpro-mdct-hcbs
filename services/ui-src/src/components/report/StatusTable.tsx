@@ -95,6 +95,7 @@ export const StatusTableElement = () => {
           <Tr>
             <Th>Section</Th>
             <Th>Status</Th>
+            <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>{rows}</Tbody>

@@ -48,8 +48,9 @@ test.describe("create and complete a PCP report as a state user", () => {
     await assertReportIsCreated(page, testModalData);
   });
   test("complete a PCP report as a state user", async ({ page }) => {
-    //get the last element in the table
-    const reportBtn = page.getByRole("cell", { name: "test" }).last();
+    const reportBtn = page.getByRole("button", {
+      name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
+    });
     await reportBtn.click();
 
     await completeGeneralInfo(page);
