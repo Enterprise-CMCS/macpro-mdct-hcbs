@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import {
+  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   PageElement,
@@ -14,7 +15,13 @@ export const renderReportTable = (elements: ReportTableType[] | undefined) => {
   const filteredElements = elements?.filter((element) => element.indicator);
   if (filteredElements?.length == 0) return;
 
-  return <ExportedReportTable rows={filteredElements!}></ExportedReportTable>;
+  const caption = elements?.[0]?.caption;
+  return (
+    <ExportedReportTable
+      rows={filteredElements!}
+      caption={caption}
+    ></ExportedReportTable>
+  );
 };
 
 export const renderReportDisplay = (
@@ -84,14 +91,34 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   const expandedElements = expandCheckedChildren(stateReportingFiltered);
 
+  // Track SubHeader to use as caption for the pdf tables.
+  const sectionTitle =
+    "title" in section ? (section.title as string) : undefined;
+  let pendingCaption: string | undefined = sectionTitle;
+  let tableGroupActive = false;
+
   const elements =
     expandedElements?.map((element) => {
+      const isTableEl = shouldUseTable(element.type as ElementType);
+
+      if (!isTableEl) {
+        tableGroupActive = false;
+        if (element.type === ElementType.SubHeader && "text" in element) {
+          pendingCaption = element.text as string;
+        }
+      }
+
+      const caption =
+        isTableEl && !tableGroupActive ? pendingCaption : undefined;
+      if (isTableEl) tableGroupActive = true;
+
       return {
         indicator: "label" in element ? (element.label ?? "") : "",
         helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
         required: "required" in element ? element.required : false,
+        caption,
       };
     }) ?? [];
 
