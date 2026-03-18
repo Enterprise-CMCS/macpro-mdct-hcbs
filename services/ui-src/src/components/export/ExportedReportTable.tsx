@@ -1,14 +1,15 @@
 import {
+  Box,
+  Heading,
   Table,
+  TableCaption,
   Thead,
   Th,
   Tr,
-  Tbody,
   Td,
+  Tbody,
   Text,
-  Heading,
-  Box,
-  TableCaption,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { notAnsweredText } from "../../constants";
 import { ElementType } from "types";
@@ -21,6 +22,7 @@ export type ReportTableType = {
   helperText?: string;
   type?: ElementType;
   required?: boolean;
+  caption?: string;
 };
 
 interface Props {
@@ -37,7 +39,9 @@ export const ExportedReportTable = ({ rows, caption }: Props) => {
 
   return (
     <Table variant="export">
-      <TableCaption>{caption}</TableCaption>
+      <TableCaption>
+        <VisuallyHidden>{caption}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Indicator</Th>
