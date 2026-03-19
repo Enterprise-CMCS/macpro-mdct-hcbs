@@ -55,7 +55,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-helmet": "^6.1.11",
     "@types/react-router-dom": "^5.3.2",
-    "babel-jest": "^26.6.3",
+    "babel-jest": "^29.7.0",
     "jest-axe": "^6.0.0",
     "jest-environment-jsdom": "^29.7.0",
     "pa11y": "^6.2.3",
@@ -119,6 +119,5 @@
       "node_modules/(?!(date-fns|date-fns-tz))"
     ],
     "verbose": true
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }
