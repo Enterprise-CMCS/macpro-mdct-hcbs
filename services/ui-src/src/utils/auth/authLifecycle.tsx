@@ -56,7 +56,7 @@ class AuthManager {
   setTimer = () => {
     const expiration = new Date();
     expiration.setMilliseconds(expiration.getMilliseconds() + IDLE_WINDOW);
-    localStorage.setItem("mdcthcbs_session_exp", expiration.toString());
+    localStorage.setItem("mdcthcbs_session_exp", expiration.toISOString());
   };
 }
 

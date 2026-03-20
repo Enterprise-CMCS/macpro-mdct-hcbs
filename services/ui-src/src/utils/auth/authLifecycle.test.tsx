@@ -8,7 +8,7 @@ describe("utils/auth", () => {
       // Set an initial time, because jest runs too fast to have different timestamps
       const expired = new Date();
       expired.setDate(expired.getDate() - 5);
-      localStorage.setItem("mdcthcbs_session_exp", expired.toDateString());
+      localStorage.setItem("mdcthcbs_session_exp", expired.toISOString());
 
       initAuthManager();
       const clearedTime = localStorage.getItem("mdcthcbs_session_exp");
@@ -49,7 +49,7 @@ describe("utils/auth", () => {
       initialExpiration.setSeconds(initialExpiration.getSeconds() - 5);
       localStorage.setItem(
         "mdcthcbs_session_exp",
-        initialExpiration.toString()
+        initialExpiration.toISOString()
       );
       await refreshCredentials();
       jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
