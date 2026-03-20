@@ -1,7 +1,6 @@
 import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
 import { IDLE_WINDOW } from "../../constants";
-import { isBefore, addMilliseconds } from "date-fns";
 
 let authManager: AuthManager;
 
@@ -15,9 +14,7 @@ class AuthManager {
   constructor() {
     // Force users with stale tokens > then the timeout to log in for a fresh session
     const expiration = localStorage.getItem("mdcthcbs_session_exp");
-    const isExpired =
-      expiration &&
-      isBefore(new Date(expiration).valueOf(), Date.now().valueOf());
+    const isExpired = expiration && new Date(expiration) < new Date();
     if (isExpired) {
       localStorage.removeItem("mdcthcbs_session_exp");
       signOut().then(() => {
@@ -57,8 +54,9 @@ class AuthManager {
    * Timer function for idle timeout, keeps track of an idle timer that triggers a forced logout timer if not reset.
    */
   setTimer = () => {
-    const expiration = addMilliseconds(new Date(), IDLE_WINDOW).toString();
-    localStorage.setItem("mdcthcbs_session_exp", expiration);
+    const expiration = new Date();
+    expiration.setMilliseconds(expiration.getMilliseconds() + IDLE_WINDOW);
+    localStorage.setItem("mdcthcbs_session_exp", expiration.toISOString());
   };
 }
 

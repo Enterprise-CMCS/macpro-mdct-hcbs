@@ -1,5 +1,3 @@
-import { differenceInSeconds } from "date-fns";
-
 /*
  * Returns local time in HH:mm format with the "am/pm" indicator
  * ex: 12:02pm
@@ -37,7 +35,8 @@ export const calculateRemainingSeconds = (expiresAt?: any) => {
   if (!expiresAt) return 0;
   const parsedDate = new Date(expiresAt);
   if (isNaN(parsedDate.getTime())) return 0;
-  return differenceInSeconds(parsedDate, new Date());
+
+  return Math.floor((parsedDate.valueOf() - Date.now()) / 1000);
 };
 
 /**
