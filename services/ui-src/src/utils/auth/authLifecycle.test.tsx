@@ -1,16 +1,14 @@
 import { initAuthManager, updateTimeout, getExpiration } from "utils";
 import { refreshCredentials } from "./authLifecycle";
 import { Hub } from "aws-amplify/utils";
-import { sub } from "date-fns";
 
 describe("utils/auth", () => {
   describe("Test AuthManager Init", () => {
     test("Initializing when past expiration will require a new login", async () => {
       // Set an initial time, because jest runs too fast to have different timestamps
-      const expired = sub(Date.now(), {
-        days: 5,
-      }).toDateString();
-      localStorage.setItem("mdcthcbs_session_exp", expired);
+      const expired = new Date();
+      expired.setDate(expired.getDate() - 5);
+      localStorage.setItem("mdcthcbs_session_exp", expired.toDateString());
 
       initAuthManager();
       const clearedTime = localStorage.getItem("mdcthcbs_session_exp");
@@ -26,21 +24,33 @@ describe("utils/auth", () => {
       jest.runAllTimers();
     });
 
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
     test("Test updateTimeout", () => {
-      const currentTime = Date.now();
+      const currentTime = new Date("2026-03-20T20:02:22.130Z");
+      jest.setSystemTime(currentTime);
       updateTimeout();
       jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
 
       const savedTime = localStorage.getItem("mdcthcbs_session_exp");
-      expect(new Date(savedTime!).valueOf()).toBeGreaterThanOrEqual(
-        new Date(currentTime).valueOf()
+      const differenceMs = Math.abs(
+        new Date("2026-03-20T20:32:22.130Z").valueOf() -
+          new Date(savedTime!).valueOf()
       );
+
+      expect(differenceMs).toBeLessThan(5000);
     });
 
     test("Test getExpiration and refreshCredentials", async () => {
       // Set an initial time, because jest runs too fast to have different timestamps
-      const initialExpiration = sub(Date.now(), { seconds: 5 }).toString();
-      localStorage.setItem("mdcthcbs_session_exp", initialExpiration);
+      const initialExpiration = new Date();
+      initialExpiration.setSeconds(initialExpiration.getSeconds() - 5);
+      localStorage.setItem(
+        "mdcthcbs_session_exp",
+        initialExpiration.toString()
+      );
       await refreshCredentials();
       jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
 
