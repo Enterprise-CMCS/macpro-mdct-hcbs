@@ -94,6 +94,11 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   // Track SubHeader to use as caption for the pdf tables.
   const sectionTitle =
     "title" in section ? (section.title as string) : undefined;
+  const buildCaption = (subheader: string) =>
+    sectionTitle && section.type === "measure"
+      ? `${sectionTitle}: ${subheader}`
+      : subheader;
+
   let pendingCaption: string | undefined = sectionTitle;
   let tableGroupActive = false;
 
@@ -104,7 +109,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       if (!isTableEl) {
         tableGroupActive = false;
         if (element.type === ElementType.SubHeader && "text" in element) {
-          pendingCaption = element.text as string;
+          pendingCaption = buildCaption(element.text as string);
         }
       }
 
