@@ -1,12 +1,14 @@
 import {
   Button,
   Table,
+  TableCaption,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
   Text,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { TableStatusIcon } from "components/tables/TableStatusIcon";
@@ -114,6 +116,9 @@ export const MeasureResultsNavigationTableElement = (
   });
   return (
     <Table variant="measure">
+      <TableCaption>
+        <VisuallyHidden>{currentPage.title} Measure Details</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Status</Th>
