@@ -116,12 +116,9 @@ export const MeasureResultsNavigationTableElement = (
     <Table variant="measure">
       <Thead>
         <Tr>
-          <Th></Th>
-          <Th>
-            Measure section name <br />
-            CMIT Number <br />
-            Status
-          </Th>
+          <Th>Status</Th>
+          <Th>Measure section</Th>
+          <Th>Actions</Th>
         </Tr>
       </Thead>
       <Tbody>{rows}</Tbody>
