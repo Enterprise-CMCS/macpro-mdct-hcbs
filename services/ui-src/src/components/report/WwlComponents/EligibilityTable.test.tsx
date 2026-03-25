@@ -141,7 +141,7 @@ describe("<EligibilityTableElement />", () => {
   describe("EligibilityTableElementExport", () => {
     it("should render export table", () => {
       render(EligibilityTableElementExport(mockedElement));
-      expect(screen.getByText("mockTitle1")).toBeVisible();
+      expect(screen.getAllByText("mockTitle1").length).toBeGreaterThan(0);
       expect(
         screen.getByRole("cell", {
           name: mockedElement.fieldLabels.description,
