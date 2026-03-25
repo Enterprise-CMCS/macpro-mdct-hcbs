@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, list, ListItem, UnorderedList } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import {
   AlertTypes,
   CheckboxTemplate,
   ChoiceTemplate,
+  ElementType,
   PageElement,
 } from "types";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -119,6 +120,31 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   );
 };
 
+export const CheckboxExport = (element: CheckboxTemplate) => {
+  if (
+    !element.answer ||
+    (Array.isArray(element.answer) && element.answer.length === 0)
+  ) {
+    return <></>;
+  }
+
+  const selectedLabels = Array.isArray(element.answer)
+    ? element.answer.map(
+        (choiceId) =>
+          element.choices.find((choice) => choice.value === choiceId)?.label ??
+          choiceId
+      )
+    : [String(element.answer)];
+
+  return (
+    <UnorderedList sx={sx.checkboxExport}>
+      {selectedLabels.map((label, i) => (
+        <ListItem key={`${label}-${i}`}>{label}</ListItem>
+      ))}
+    </UnorderedList>
+  );
+};
+
 const sx = {
   children: {
     padding: "0 22px",
@@ -130,6 +156,13 @@ const sx = {
     },
     textarea: {
       maxWidth: "440px",
+    },
+  },
+  checkboxExport: {
+    listStyleType: "none",
+    marginLeft: 0,
+    "& > li + li": {
+      marginTop: 1,
     },
   },
 };

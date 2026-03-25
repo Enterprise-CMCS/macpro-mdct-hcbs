@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import {
+  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   PageElement,
@@ -62,7 +63,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   const expandCheckedChildren = (elements: PageElement[]): PageElement[] => {
     return elements.flatMap((element) => {
-      if ("choices" in element) {
+      if (element.type === ElementType.Radio) {
         const checkedChoice = element.choices.find(
           (choice) => choice.value === element.answer
         );
@@ -75,10 +76,31 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           element,
           ...expandCheckedChildren(checkedChoice?.checkedChildren ?? []),
         ];
-      } else {
-        // All other element types stand on their own.
-        return [element];
       }
+
+      if (element.type === ElementType.Checkbox) {
+        const answers = Array.isArray(element.answer) ? element.answer : [];
+        if (answers.length === 0) return [element];
+
+        return answers.flatMap((answerValue) => {
+          const checkedChoice = element.choices.find(
+            (choice) => choice.value === answerValue
+          );
+          if (!checkedChoice) return [];
+
+          const checkboxCopy: PageElement = {
+            ...element,
+            answer: checkedChoice.label,
+          } as unknown as PageElement;
+
+          return [
+            checkboxCopy,
+            ...expandCheckedChildren(checkedChoice.checkedChildren ?? []),
+          ];
+        });
+      }
+
+      return [element];
     });
   };
 
