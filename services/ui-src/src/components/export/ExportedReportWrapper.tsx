@@ -82,22 +82,16 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         const answers = Array.isArray(element.answer) ? element.answer : [];
         if (answers.length === 0) return [element];
 
-        return answers.flatMap((answerValue) => {
+        // Collect all checkedChildren from all selected answers
+        const allCheckedChildren = answers.flatMap((answerValue) => {
           const checkedChoice = element.choices.find(
             (choice) => choice.value === answerValue
           );
-          if (!checkedChoice) return [];
-
-          const checkboxCopy: PageElement = {
-            ...element,
-            answer: checkedChoice.label,
-          } as unknown as PageElement;
-
-          return [
-            checkboxCopy,
-            ...expandCheckedChildren(checkedChoice.checkedChildren ?? []),
-          ];
+          return checkedChoice?.checkedChildren ?? [];
         });
+
+        // Keep checkbox element intact with original answers
+        return [element, ...expandCheckedChildren(allCheckedChildren)];
       }
 
       return [element];
