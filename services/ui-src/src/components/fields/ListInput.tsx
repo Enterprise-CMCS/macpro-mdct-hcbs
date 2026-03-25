@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ElementType, ListInputTemplate, PageElement } from "types";
+import { ListInputTemplate } from "types";
 import { PageElementProps } from "components/report/Elements";
 import {
   Button,

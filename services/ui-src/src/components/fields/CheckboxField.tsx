@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, list, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import {
   AlertTypes,
   CheckboxTemplate,
   ChoiceTemplate,
-  ElementType,
   PageElement,
 } from "types";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";

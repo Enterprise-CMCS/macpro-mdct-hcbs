@@ -46,15 +46,66 @@ const getHelperText = (element: PageElement) => {
   return element.helperText;
 };
 
-export const ExportedReportWrapper = ({ section }: Props) => {
-  const filteredElements = section.elements?.filter((element) => {
-    const hasAnswer =
-      "answer" in element &&
-      element.answer !== undefined &&
-      element.answer !== "";
-    const isRequired = !("required" in element) || element.required !== false;
-    return hasAnswer || isRequired;
+const isElementVisible = (element: PageElement) => {
+  const hasAnswer =
+    "answer" in element &&
+    element.answer !== undefined &&
+    element.answer !== "";
+  const isRequired = !("required" in element) || element.required !== false;
+  return hasAnswer || isRequired;
+};
+
+const expandRadioElement = (element: PageElement): PageElement[] => {
+  if (!("choices" in element) || !("answer" in element)) return [element];
+
+  const checkedChoice = element.choices.find(
+    (choice) => choice.value === element.answer
+  );
+
+  element.answer = checkedChoice?.label;
+
+  return [
+    element,
+    ...expandCheckedChildren(checkedChoice?.checkedChildren ?? []),
+  ];
+};
+
+const expandCheckboxElement = (element: PageElement): PageElement[] => {
+  if (!("choices" in element) || !("answer" in element)) return [element];
+
+  const answers = Array.isArray(element.answer) ? element.answer : [];
+  if (answers.length === 0) return [element];
+
+  return answers.flatMap((answerValue) => {
+    const checkedChoice = element.choices.find(
+      (choice) => choice.value === answerValue
+    );
+
+    if (!checkedChoice) return [];
+
+    const checkboxCopy: PageElement = {
+      ...element,
+      answer: checkedChoice.label,
+    } as unknown as PageElement;
+
+    return [
+      checkboxCopy,
+      ...expandCheckedChildren(checkedChoice.checkedChildren ?? []),
+    ];
   });
+};
+
+const expandCheckedChildren = (elements: PageElement[]): PageElement[] => {
+  return elements.flatMap((element) => {
+    if (element.type === ElementType.Radio) return expandRadioElement(element);
+    if (element.type === ElementType.Checkbox)
+      return expandCheckboxElement(element);
+    return [element];
+  });
+};
+
+export const ExportedReportWrapper = ({ section }: Props) => {
+  const filteredElements = section.elements?.filter(isElementVisible);
 
   if (filteredElements == undefined) return null;
 

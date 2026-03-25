@@ -60,7 +60,7 @@ import {
 } from "./pdfElementSectionHelpers";
 import { formatMonthDayYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
-import { ListInput, ListInputExport } from "components/fields/ListInput";
+import { ListInput } from "components/fields/ListInput";
 
 const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
 
