@@ -19,7 +19,7 @@ export const renderReportTable = (elements: ReportTableType[] | undefined) => {
   return (
     <ExportedReportTable
       rows={filteredElements!}
-      caption={caption}
+      caption={caption!}
     ></ExportedReportTable>
   );
 };

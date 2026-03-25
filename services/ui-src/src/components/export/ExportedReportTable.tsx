@@ -27,7 +27,7 @@ export type ReportTableType = {
 
 interface Props {
   rows: ReportTableType[];
-  caption?: string;
+  caption: string;
 }
 
 export const ExportedReportTable = ({ rows, caption }: Props) => {
@@ -77,7 +77,7 @@ export const ExportRateTable = (
         <Heading as="h5" variant="h5" className="performance-rate-header">
           {data?.label}
         </Heading>
-        <ExportedReportTable rows={data?.rows} />
+        <ExportedReportTable rows={data?.rows} caption={data.label} />
       </Box>
     )
   );
