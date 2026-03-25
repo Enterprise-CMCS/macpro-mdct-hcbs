@@ -102,10 +102,12 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   let pendingCaption: string | undefined = sectionTitle;
   let tableGroupActive = false;
 
+  // Only the first element of a table group gets the caption
   const elements =
     expandedElements?.map((element) => {
       const isTableEl = shouldUseTable(element.type as ElementType);
 
+      // Set the pending caption if the element is a table element and there is not an active table group
       if (!isTableEl) {
         tableGroupActive = false;
         if (element.type === ElementType.SubHeader && "text" in element) {
@@ -113,6 +115,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         }
       }
 
+      // The caption is either the pending caption or the section title
       const caption =
         isTableEl && !tableGroupActive ? pendingCaption : undefined;
       if (isTableEl) tableGroupActive = true;
