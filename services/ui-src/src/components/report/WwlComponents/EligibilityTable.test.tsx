@@ -53,7 +53,7 @@ describe("<EligibilityTableElement />", () => {
 
     test("EligibilityTableElement is visible", () => {
       render(<EligibilityTableWrapper template={mockedElement} />);
-      expect(screen.getByText("Other Eligibility")).toBeVisible();
+      expect(screen.getAllByText("Other Eligibility")[0]).toBeVisible();
       expect(screen.getByText("mockTitle1")).toBeVisible();
     });
 
