@@ -4,6 +4,7 @@ import {
   FormPageTemplate,
   MeasurePageTemplate,
   PageElement,
+  PageType,
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
@@ -92,33 +93,27 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   const expandedElements = expandCheckedChildren(stateReportingFiltered);
 
   // Track SubHeader to use as caption for the pdf tables.
-  const sectionTitle =
-    "title" in section ? (section.title as string) : undefined;
-  const buildCaption = (subheader: string) =>
-    sectionTitle && section.type === "measure"
-      ? `${sectionTitle}: ${subheader}`
-      : subheader;
+  let mostRecentSubheader: string | undefined = undefined;
 
-  let pendingCaption: string | undefined = sectionTitle;
-  let tableGroupActive = false;
+  const determineCaption = (element: PageElement) => {
+    if (!shouldUseTable(element.type)) {
+      return undefined;
+    } else if (mostRecentSubheader === undefined) {
+      return section.title;
+    } else if (section.type === PageType.Measure) {
+      return `${section.title}: ${mostRecentSubheader}`;
+    } else {
+      return mostRecentSubheader;
+    }
+  };
 
   // Only the first element of a table group gets the caption
   const elements =
     expandedElements?.map((element) => {
-      const isTableEl = shouldUseTable(element.type as ElementType);
-
-      // Set the pending caption if the element is a table element and there is not an active table group
-      if (!isTableEl) {
-        tableGroupActive = false;
-        if (element.type === ElementType.SubHeader && "text" in element) {
-          pendingCaption = buildCaption(element.text as string);
-        }
+      const caption = determineCaption(element);
+      if (element.type === ElementType.SubHeader) {
+        mostRecentSubheader = element.text;
       }
-
-      // The caption is either the pending caption or the section title
-      const caption =
-        isTableEl && !tableGroupActive ? pendingCaption : undefined;
-      if (isTableEl) tableGroupActive = true;
 
       return {
         indicator: "label" in element ? (element.label ?? "") : "",
