@@ -628,6 +628,7 @@ export enum MeasureSpecification {
 export type MeasureTableTemplate = {
   id: string;
   type: ElementType.MeasureTable;
+  caption: string;
   measureDisplay: "required" | "optional";
 };
 

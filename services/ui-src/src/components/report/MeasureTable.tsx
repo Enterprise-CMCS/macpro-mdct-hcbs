@@ -84,11 +84,6 @@ export const MeasureTableElement = (
     return measure.status ?? PageStatus.NOT_STARTED;
   };
 
-  const caption =
-    table.measureDisplay === "required"
-      ? "Required Measure Results"
-      : "Optional Measure Results";
-
   const errorMessage = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
     if (
@@ -150,7 +145,7 @@ export const MeasureTableElement = (
   return (
     <Table variant="measure">
       <TableCaption>
-        <VisuallyHidden>{caption}</VisuallyHidden>
+        <VisuallyHidden>{table.caption}</VisuallyHidden>
       </TableCaption>
       <Thead>
         <Tr>

@@ -380,6 +380,7 @@ export const elementObject: {
           type: ElementType.MeasureTable,
           id: "id-measure-table",
           measureDisplay: "required",
+          caption: "Required Measure Results",
         }}
       />,
     ],
