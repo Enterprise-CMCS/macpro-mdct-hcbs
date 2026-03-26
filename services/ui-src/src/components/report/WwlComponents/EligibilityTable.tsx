@@ -190,9 +190,9 @@ export const EligibilityTableElement = (
   return (
     <Fragment>
       <Table variant="measure">
-        <VisuallyHidden>
-          <TableCaption>Other Eligibility</TableCaption>
-        </VisuallyHidden>
+        <TableCaption>
+          <VisuallyHidden>Other Eligibility</VisuallyHidden>
+        </TableCaption>
         <Thead>
           <Tr>
             <Th>Other Eligibility</Th>
