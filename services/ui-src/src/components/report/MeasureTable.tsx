@@ -84,8 +84,8 @@ export const MeasureTableElement = (
     return measure.status ?? PageStatus.NOT_STARTED;
   };
 
-  const getCaption = (measureDisplay: string) =>
-    measureDisplay === "required"
+  const caption =
+    table.measureDisplay === "required"
       ? "Required Measure Results"
       : "Optional Measure Results";
 
@@ -149,9 +149,9 @@ export const MeasureTableElement = (
   });
   return (
     <Table variant="measure">
-      <VisuallyHidden>
-        <TableCaption>{getCaption(table.measureDisplay)}</TableCaption>
-      </VisuallyHidden>
+      <TableCaption>
+        <VisuallyHidden>{caption}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Status</Th>

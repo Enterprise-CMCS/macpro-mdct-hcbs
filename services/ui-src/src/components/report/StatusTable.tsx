@@ -88,9 +88,9 @@ export const StatusTableElement = () => {
   return (
     <>
       <Table variant="status">
-        <VisuallyHidden>
-          <TableCaption>Review & Submit</TableCaption>
-        </VisuallyHidden>
+        <TableCaption>
+          <VisuallyHidden>Review & Submit</VisuallyHidden>
+        </TableCaption>
         <Thead>
           <Tr>
             <Th>Section</Th>
