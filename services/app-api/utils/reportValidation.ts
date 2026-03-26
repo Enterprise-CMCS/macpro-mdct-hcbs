@@ -268,6 +268,7 @@ const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
+  caption: string().required(),
 });
 
 const eligibilityTableSchema = object().shape({
@@ -636,6 +637,7 @@ const reportValidateSchema = object().shape({
   year: number().required(),
   submissionCount: number().required(),
   archived: boolean().required(),
+  caption: string().notRequired(),
   options: optionsSchema,
   pages: pagesSchema,
 });

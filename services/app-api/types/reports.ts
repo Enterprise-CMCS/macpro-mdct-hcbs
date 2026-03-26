@@ -281,7 +281,7 @@ export type PageElement =
   | RadioTemplate
   | CheckboxTemplate
   | ButtonLinkTemplate
-  | MeasureTableTemplate
+  | MeasureTableTemplateWithCaption
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
@@ -297,6 +297,10 @@ export type PageElement =
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
   | ListInputTemplate;
+
+export type MeasureTableTemplateWithCaption = MeasureTableTemplate & {
+  caption: string;
+};
 
 export type HideCondition = {
   controllerElementId: string;
