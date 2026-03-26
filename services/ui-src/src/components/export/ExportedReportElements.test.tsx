@@ -66,7 +66,7 @@ describe("Test ExportedReportElements", () => {
       screen.getAllByText(
         "Performance Rate : Person uses the same environments as people without disabilities"
       ).length
-    ).toBeGreaterThan(0);
+    ).toBe(2);
     expect(screen.getByRole("row", { name: "Numerator 5" })).toBeVisible();
     expect(screen.getByRole("row", { name: "Denominator 3" })).toBeVisible();
     expect(screen.getByRole("row", { name: /Rate .* 1\.67/ })).toBeVisible();

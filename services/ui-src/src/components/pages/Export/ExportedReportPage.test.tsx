@@ -76,8 +76,7 @@ describe("ExportedReportPage", () => {
     const elements = screen.getAllByText(
       "Colorado Quality Measure Set Report for: mock-title"
     );
-    expect(elements.length).toBeGreaterThan(0);
-    elements.forEach((element) => expect(element).toBeInTheDocument());
+    expect(elements.length).toBe(2);
   });
 
   it("Should not render filtered sections", () => {

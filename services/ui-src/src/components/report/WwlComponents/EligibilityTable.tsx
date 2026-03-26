@@ -1,6 +1,7 @@
 import {
   Button,
   Table,
+  TableCaption,
   Tbody,
   Td,
   Th,
@@ -17,6 +18,7 @@ import {
   ModalFooter,
   Box,
   Flex,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { EligibilityTableTemplate, EligibilityTableItem } from "types";
 import { PageElementProps } from "../Elements";
@@ -188,6 +190,9 @@ export const EligibilityTableElement = (
   return (
     <Fragment>
       <Table variant="measure">
+        <VisuallyHidden>
+          <TableCaption>Other Eligibility</TableCaption>
+        </VisuallyHidden>
         <Thead>
           <Tr>
             <Th>Other Eligibility</Th>
