@@ -120,25 +120,15 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
 };
 
 export const CheckboxExport = (element: CheckboxTemplate) => {
-  if (
-    !element.answer ||
-    (Array.isArray(element.answer) && element.answer.length === 0)
-  ) {
+  if (!element.answer || element.answer.length === 0) {
     return <></>;
   }
-
-  const selectedLabels = Array.isArray(element.answer)
-    ? element.answer.map(
-        (choiceId) =>
-          element.choices.find((choice) => choice.value === choiceId)?.label ??
-          choiceId
-      )
-    : [String(element.answer)];
-
+  const getLabel = (choiceId: string) =>
+    element.choices.find((choice) => choice.value === choiceId)!.label;
   return (
     <UnorderedList sx={sx.checkboxExport}>
-      {selectedLabels.map((label, i) => (
-        <ListItem key={`${label}-${i}`}>{label}</ListItem>
+      {element.answer.map((choiceId) => (
+        <ListItem key={choiceId}>{getLabel(choiceId)}</ListItem>
       ))}
     </UnorderedList>
   );

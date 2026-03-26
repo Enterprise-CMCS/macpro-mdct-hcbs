@@ -79,18 +79,14 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       }
 
       if (element.type === ElementType.Checkbox) {
-        const answers = Array.isArray(element.answer) ? element.answer : [];
-        if (answers.length === 0) return [element];
-
         // Collect all checkedChildren from all selected answers
-        const allCheckedChildren = answers.flatMap((answerValue) => {
-          const checkedChoice = element.choices.find(
-            (choice) => choice.value === answerValue
-          );
-          return checkedChoice?.checkedChildren ?? [];
-        });
-
-        // Keep checkbox element intact with original answers
+        const allCheckedChildren = (element.answer ?? []).flatMap(
+          (answerValue) =>
+            element.choices.find((choice) => choice.value === answerValue)!
+              .checkedChildren ?? []
+        );
+        // The list of top-level answers is followed by the children of the 1st
+        // selected answer, then the children of the 2nd selected answer, etc.
         return [element, ...expandCheckedChildren(allCheckedChildren)];
       }
 
