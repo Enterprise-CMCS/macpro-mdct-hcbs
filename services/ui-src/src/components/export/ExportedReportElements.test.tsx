@@ -36,6 +36,9 @@ const section = {
 };
 
 describe("Test ExportedReportElements", () => {
+  beforeEach(() => {
+    section.elements = [];
+  });
   test("Test render SubHeader element", () => {
     const element = renderElements(section, {
       id: "mock-sub-header",
