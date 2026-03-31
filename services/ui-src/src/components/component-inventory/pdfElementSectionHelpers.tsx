@@ -174,6 +174,7 @@ export const EligibilityTableSection: FormPageTemplate = {
     {
       type: ElementType.EligibilityTable,
       id: "add-other-eligibility-table",
+      caption: "Other Eligibility",
       fieldLabels: {
         title: "title",
         description: "description",

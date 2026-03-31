@@ -671,6 +671,7 @@ export const elementObject: {
         element={{
           type: ElementType.EligibilityTable,
           id: "id-eligibility-table",
+          caption: "Other Eligibility",
           fieldLabels: {
             title: "title",
             description: "description",

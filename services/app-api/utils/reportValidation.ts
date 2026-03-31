@@ -274,6 +274,7 @@ const measureTableTemplateSchema = object().shape({
 const eligibilityTableSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.EligibilityTable)),
   id: string().required(),
+  caption: string().required(),
   fieldLabels: object().shape({
     title: string().required(),
     description: string().required(),

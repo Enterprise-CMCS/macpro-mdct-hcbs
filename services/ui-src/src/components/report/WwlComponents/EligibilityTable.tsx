@@ -34,7 +34,7 @@ export const EligibilityTableElement = (
   props: PageElementProps<EligibilityTableTemplate>
 ) => {
   const { element, updateElement } = props;
-  const { fieldLabels, modalInstructions, frequencyOptions } = element;
+  const { fieldLabels, caption, modalInstructions, frequencyOptions } = element;
 
   const initialValues = {
     title: "",
@@ -191,7 +191,7 @@ export const EligibilityTableElement = (
     <Fragment>
       <Table variant="measure">
         <TableCaption>
-          <VisuallyHidden>Other Eligibility</VisuallyHidden>
+          <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
         <Thead>
           <Tr>

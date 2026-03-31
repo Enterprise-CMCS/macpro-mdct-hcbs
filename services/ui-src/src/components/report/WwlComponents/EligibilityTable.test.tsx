@@ -11,6 +11,7 @@ import {
 const mockedElement: EligibilityTableTemplate = {
   id: "mock-id",
   type: ElementType.EligibilityTable,
+  caption: "Other Eligibility",
   fieldLabels: {
     title: "title",
     description: "description",
