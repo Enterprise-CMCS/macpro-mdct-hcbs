@@ -9,6 +9,8 @@ import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
 import { NDRFieldExport } from "components/rates/types/NDRFields";
 import { NDRBasicExport } from "components/rates/types/NDRBasic";
 import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
+import { CheckboxExport } from "components/fields/CheckboxField";
+import { ListInputExport } from "components/fields/ListInput";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -18,6 +20,8 @@ const tableElementList = [
   ElementType.Textbox,
   ElementType.Radio,
   ElementType.TextAreaField,
+  ElementType.Checkbox,
+  ElementType.ListInput,
 ];
 
 const renderElementList = [
@@ -68,6 +72,10 @@ export const renderElements = (
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element);
+    case ElementType.Checkbox:
+      return CheckboxExport(element);
+    case ElementType.ListInput:
+      return ListInputExport(element);
   }
 
   if (!("answer" in element)) {

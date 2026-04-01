@@ -91,6 +91,38 @@ export const radioFieldSection: FormPageTemplate = {
   ],
 };
 
+export const checkboxFieldSection: FormPageTemplate = {
+  id: "mock-checkbox-id",
+  title: "mock-checkbox-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.Checkbox,
+      id: "id-checkbox",
+      label: "CheckboxField",
+      choices: [
+        {
+          value: "checkbox option 1",
+          label: "checkbox option 1",
+          checked: true,
+        },
+        {
+          value: "checkbox option 2",
+          label: "checkbox option 2",
+          checked: true,
+        },
+        {
+          value: "checkbox option 3",
+          label: "checkbox option 3",
+          checked: false,
+        },
+      ],
+      answer: ["checkbox option 1", "checkbox option 2"],
+      required: true,
+    },
+  ],
+};
+
 export const ndrFieldsSection: FormPageTemplate = {
   id: "mock-ndrFields-id",
   title: "mock-ndrFields-title",
@@ -257,6 +289,24 @@ export const measureDetailsSection: MeasurePageTemplate = {
     {
       type: ElementType.MeasureDetails,
       id: "",
+    },
+  ],
+};
+
+export const listInputSection: FormPageTemplate = {
+  id: "mock-list-input-id",
+  title: "mock-list-input-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.ListInput,
+      id: "ListInput",
+      label: "ListInput",
+      fieldLabel: "List Input Field",
+      helperText: "Information to help user fill out list input",
+      buttonText: "Add another",
+      answer: ["sample text", "sample text 2"],
+      required: true,
     },
   ],
 };

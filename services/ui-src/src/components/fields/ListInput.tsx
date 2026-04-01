@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { ListInputTemplate } from "types";
 import { PageElementProps } from "components/report/Elements";
-import { Button, HStack, Image } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Image,
+  ListItem,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { TextField } from "@cmsgov/design-system";
 import cancelPrimary from "assets/icons/cancel/icon_cancel_primary.svg";
 import addPrimary from "assets/icons/add/icon_add_blue.svg";
@@ -87,4 +93,40 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
       </Button>
     </fieldset>
   );
+};
+
+export const ListInputExport = (element: ListInputTemplate) => {
+  if (!element.answer || element.answer.length === 0) {
+    return <></>;
+  }
+
+  return (
+    <UnorderedList sx={sx.checkboxExport}>
+      {element.answer.map((item, i) => (
+        <ListItem key={`list-item-${i}`}>{item}</ListItem>
+      ))}
+    </UnorderedList>
+  );
+};
+
+const sx = {
+  children: {
+    padding: "0 22px",
+    border: "4px #0071BC solid",
+    borderWidth: "0 0 0 4px",
+    margin: "0 14px",
+    "input:not(.ds-c-choice)": {
+      width: "240px",
+    },
+    textarea: {
+      maxWidth: "440px",
+    },
+  },
+  checkboxExport: {
+    listStyleType: "none",
+    marginLeft: 0,
+    "& > li + li": {
+      marginTop: 1,
+    },
+  },
 };

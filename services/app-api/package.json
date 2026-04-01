@@ -9,8 +9,8 @@
     "test-watch": "jest --watch"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.985.0",
-    "@aws-sdk/lib-dynamodb": "^3.985.0",
+    "@aws-sdk/client-dynamodb": "~3.1012.0",
+    "@aws-sdk/lib-dynamodb": "~3.1012.0",
     "dompurify": "^3.2.4",
     "jsdom": "^26.0.0",
     "jwt-decode": "3.1.2",
@@ -24,7 +24,7 @@
     "@types/jest": "^29.5.12",
     "@types/jsdom": "20.0.0",
     "@types/node": "^22.5.1",
-    "aws-sdk-client-mock": "^4.0.1",
+    "aws-sdk-client-mock": "~4.1.0",
     "dotenv": "^16.4.5",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
@@ -65,6 +65,5 @@
       "^.+\\.ts?$": "ts-jest"
     },
     "verbose": true
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }
