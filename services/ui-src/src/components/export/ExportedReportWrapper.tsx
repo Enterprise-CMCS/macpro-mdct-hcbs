@@ -4,6 +4,7 @@ import {
   FormPageTemplate,
   MeasurePageTemplate,
   PageElement,
+  PageType,
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
@@ -15,7 +16,13 @@ export const renderReportTable = (elements: ReportTableType[] | undefined) => {
   const filteredElements = elements?.filter((element) => element.indicator);
   if (filteredElements?.length == 0) return;
 
-  return <ExportedReportTable rows={filteredElements!}></ExportedReportTable>;
+  const caption = elements?.[0]?.caption;
+  return (
+    <ExportedReportTable
+      rows={filteredElements!}
+      caption={caption!}
+    ></ExportedReportTable>
+  );
 };
 
 export const renderReportDisplay = (
@@ -96,14 +103,36 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   const expandedElements = expandCheckedChildren(stateReportingFiltered);
 
+  // Track SubHeader to use as caption for the pdf tables.
+  let mostRecentSubheader: string | undefined = undefined;
+
+  const determineCaption = (element: PageElement) => {
+    if (!shouldUseTable(element.type)) {
+      return undefined;
+    } else if (mostRecentSubheader === undefined) {
+      return section.title;
+    } else if (section.type === PageType.Measure) {
+      return `${section.title}: ${mostRecentSubheader}`;
+    } else {
+      return mostRecentSubheader;
+    }
+  };
+
+  // Only the first element of a table group gets the caption
   const elements =
     expandedElements?.map((element) => {
+      const caption = determineCaption(element);
+      if (element.type === ElementType.SubHeader) {
+        mostRecentSubheader = element.text;
+      }
+
       return {
         indicator: "label" in element ? (element.label ?? "") : "",
         helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
         required: "required" in element ? element.required : false,
+        caption,
       };
     }) ?? [];
 

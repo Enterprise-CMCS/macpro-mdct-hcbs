@@ -383,6 +383,7 @@ export const elementObject: {
           type: ElementType.MeasureTable,
           id: "id-measure-table",
           measureDisplay: "required",
+          caption: "Required Measure Results",
         }}
       />,
     ],
@@ -686,6 +687,7 @@ export const elementObject: {
         element={{
           type: ElementType.EligibilityTable,
           id: "id-eligibility-table",
+          caption: "Other Eligibility",
           fieldLabels: {
             title: "title",
             description: "description",

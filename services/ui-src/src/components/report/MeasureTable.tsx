@@ -9,7 +9,9 @@ import {
   Tr,
   Text,
   Link,
+  TableCaption,
   Flex,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
@@ -142,6 +144,9 @@ export const MeasureTableElement = (
   });
   return (
     <Table variant="measure">
+      <TableCaption>
+        <VisuallyHidden>{table.caption}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Status</Th>

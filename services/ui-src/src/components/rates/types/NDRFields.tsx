@@ -267,6 +267,7 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
                 response: build.denominator,
               },
             ]}
+            caption={`Performance Rates: ${build.label}`}
           />
           {build.rates?.map((rate) =>
             ExportRateTable([{ label: rate.fieldLabel, rows: rate.rate }])

@@ -1,6 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { ExportedReportWrapper } from "./ExportedReportWrapper";
-import { ElementType, FormPageTemplate, PageElement, PageType } from "types";
+import {
+  ElementType,
+  FormPageTemplate,
+  MeasurePageTemplate,
+  PageElement,
+  PageType,
+} from "types";
 
 const elements: PageElement[] = [
   {
@@ -107,5 +113,74 @@ describe("ExportedReportWrapper", () => {
     // The choice IDs should not render anywhere
     expect(screen.queryByText("bananah")).not.toBeInTheDocument();
     expect(screen.queryByText("bananya")).not.toBeInTheDocument();
+  });
+
+  it("should assign sectionTitle as caption to the first table element when no SubHeader precedes it", () => {
+    const elements: PageElement[] = [
+      {
+        type: ElementType.Textbox,
+        id: "first-field",
+        label: "First field",
+        required: true,
+        answer: "Some answer",
+      },
+    ];
+    const { container } = render(
+      <ExportedReportWrapper section={{ ...section, elements }} />
+    );
+    const caption = container.querySelector("caption");
+    expect(caption).toHaveTextContent("mock-title");
+  });
+
+  it("should use SubHeader text as caption on a non-measure page", () => {
+    const elements: PageElement[] = [
+      {
+        type: ElementType.SubHeader,
+        id: "sub-header",
+        text: "My Section Header",
+      },
+      {
+        type: ElementType.Textbox,
+        id: "field-after-subheader",
+        label: "A field",
+        required: true,
+        answer: "Some answer",
+      },
+    ];
+    const { container } = render(
+      <ExportedReportWrapper section={{ ...section, elements }} />
+    );
+    const caption = container.querySelector("caption");
+    expect(caption).toHaveTextContent("My Section Header");
+  });
+
+  it("should prefix caption with measure title on a measure page", () => {
+    const measureSection: MeasurePageTemplate = {
+      id: "mock-measure-id",
+      title: "LTSS-1: Comprehensive Assessment and Update",
+      type: PageType.Measure,
+      cmitId: "mock-cmit",
+      elements: [
+        {
+          type: ElementType.SubHeader,
+          id: "sub-header",
+          text: "Measure Information",
+        },
+        {
+          type: ElementType.Textbox,
+          id: "measure-field",
+          label: "A measure field",
+          required: true,
+          answer: "Some answer",
+        },
+      ],
+    };
+    const { container } = render(
+      <ExportedReportWrapper section={measureSection} />
+    );
+    const caption = container.querySelector("caption");
+    expect(caption).toHaveTextContent(
+      "LTSS-1: Comprehensive Assessment and Update: Measure Information"
+    );
   });
 });

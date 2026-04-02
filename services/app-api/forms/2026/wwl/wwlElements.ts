@@ -6,6 +6,7 @@ import {
 } from "../../../types/reports";
 
 export const addOtherEligibilityTableVerbiage = {
+  caption: "Other Eligibility",
   fieldLabels: {
     title:
       "What other eligibility requirement does your state use for this waiting list?",

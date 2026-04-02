@@ -347,6 +347,7 @@ export type AccordionTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   id: string;
+  caption: string;
   measureDisplay: "required" | "optional";
 };
 
@@ -361,6 +362,7 @@ export type EligibilityTableItem = {
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;
+  caption: string;
   fieldLabels: {
     title: string;
     description: string;
