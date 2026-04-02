@@ -252,7 +252,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
 };
 
 //The pdf rendering of NDRBasic component
-export const NDRBasicExport = (element: NdrBasicTemplate) => {
+export const NDRBasicExport = (element: NdrBasicTemplate, caption?: string) => {
   const label = element.label ?? "";
 
   const minimum =
@@ -296,7 +296,7 @@ export const NDRBasicExport = (element: NdrBasicTemplate) => {
     },
     ...children,
   ];
-  return <>{ExportRateTable([{ label, rows }])}</>;
+  return <>{ExportRateTable([{ label, rows }], caption)}</>;
 };
 
 const formatRateForExport = (

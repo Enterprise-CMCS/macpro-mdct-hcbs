@@ -69,7 +69,8 @@ export const ExportedReportTable = ({ rows, caption }: Props) => {
 };
 
 export const ExportRateTable = (
-  tableData: { label: string; rows: ReportTableType[] }[]
+  tableData: { label: string; rows: ReportTableType[] }[],
+  caption?: string
 ) => {
   return tableData.map(
     (data: { label: string; rows: ReportTableType[] }, idx) => (
@@ -77,7 +78,10 @@ export const ExportRateTable = (
         <Heading as="h5" variant="h5" className="performance-rate-header">
           {data?.label}
         </Heading>
-        <ExportedReportTable rows={data?.rows} caption={data.label} />
+        <ExportedReportTable
+          rows={data?.rows}
+          caption={caption || data.label}
+        />
       </Box>
     )
   );

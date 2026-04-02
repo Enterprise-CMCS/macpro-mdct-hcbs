@@ -317,11 +317,11 @@ export const EligibilityTableElement = (
 
 //The pdf rendering of EligibilityTableElement component
 export const EligibilityTableElementExport = (
-  element: EligibilityTableTemplate
+  element: EligibilityTableTemplate,
+  sectionTitle?: string
 ) => {
   const { fieldLabels } = element;
   const exportElements = element.answer?.map((eligibility) => {
-    const label = eligibility.title;
     const rows = [
       {
         indicator: fieldLabels.description,
@@ -340,11 +340,11 @@ export const EligibilityTableElementExport = (
         response: eligibility.eligibilityUpdate,
       },
     ];
-    return { label, rows };
+    return ExportRateTable([{ label: eligibility.title, rows }], sectionTitle);
   });
 
   if (!exportElements) return <></>;
-  return <>{ExportRateTable(exportElements)}</>;
+  return <>{exportElements}</>;
 };
 
 const sx = {
