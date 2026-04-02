@@ -55,9 +55,12 @@ import {
   readmissionRateSection,
   measureDetailsSection,
   EligibilityTableSection,
+  checkboxFieldSection,
+  listInputSection,
 } from "./pdfElementSectionHelpers";
 import { formatMonthDayYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
+import { ListInput } from "components/fields/ListInput";
 
 const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
 
@@ -651,16 +654,29 @@ export const elementObject: {
           label: "CheckboxField",
           required: true,
           choices: [
-            { value: "checkbox option 1", label: "checkbox option 1" },
-            { value: "checkbox option 2", label: "checkbox option 2" },
-            { value: "checkbox option 3", label: "checkbox option 3" },
+            {
+              value: "checkbox option 1",
+              label: "checkbox option 1",
+              checked: true,
+            },
+            {
+              value: "checkbox option 2",
+              label: "checkbox option 2",
+              checked: true,
+            },
+            {
+              value: "checkbox option 3",
+              label: "checkbox option 3",
+              checked: false,
+            },
           ],
+          answer: ["checkbox option 1", "checkbox option 2"],
           emptyAlertTitle: "Empty Alert Title",
           emptyAlertDescription: "Empty Alert Description",
         }}
       />,
     ],
-    pdfVariants: ["Checkbox currently not used in PDFs"],
+    pdfVariants: [<ExportedReportWrapper section={checkboxFieldSection} />],
   },
   [ElementType.EligibilityTable]: {
     description: "Eligibility Table for WWL report",
@@ -694,5 +710,25 @@ export const elementObject: {
       />,
     ],
     pdfVariants: [<ExportedReportWrapper section={EligibilityTableSection} />],
+  },
+  [ElementType.ListInput]: {
+    description: "A field for entering a list of text values",
+    id: "id-list-input",
+    variants: [
+      <ListInput
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.ListInput,
+          id: "id-list-input",
+          label: "ListInput",
+          fieldLabel: "List Input Field Label",
+          helperText: "Information to help user fill out list input",
+          buttonText: "Add another",
+          answer: ["sample text", "sample text 2"],
+          required: false,
+        }}
+      />,
+    ],
+    pdfVariants: [<ExportedReportWrapper section={listInputSection} />],
   },
 };

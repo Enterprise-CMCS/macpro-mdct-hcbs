@@ -70,7 +70,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   const expandCheckedChildren = (elements: PageElement[]): PageElement[] => {
     return elements.flatMap((element) => {
-      if ("choices" in element) {
+      if (element.type === ElementType.Radio) {
         const checkedChoice = element.choices.find(
           (choice) => choice.value === element.answer
         );
@@ -83,10 +83,21 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           element,
           ...expandCheckedChildren(checkedChoice?.checkedChildren ?? []),
         ];
-      } else {
-        // All other element types stand on their own.
-        return [element];
       }
+
+      if (element.type === ElementType.Checkbox) {
+        // Collect all checkedChildren from all selected answers
+        const allCheckedChildren = (element.answer ?? []).flatMap(
+          (answerValue) =>
+            element.choices.find((choice) => choice.value === answerValue)!
+              .checkedChildren ?? []
+        );
+        // The list of top-level answers is followed by the children of the 1st
+        // selected answer, then the children of the 2nd selected answer, etc.
+        return [element, ...expandCheckedChildren(allCheckedChildren)];
+      }
+
+      return [element];
     });
   };
 

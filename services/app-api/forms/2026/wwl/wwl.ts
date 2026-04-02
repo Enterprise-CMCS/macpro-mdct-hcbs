@@ -78,6 +78,21 @@ export const wwlReportTemplate: ReportBase = {
       ],
     },
     {
+      id: "waiting-list-identifiers",
+      title: "Waiting List Identifiers",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "waiting-list-identifiers-header",
+          text: "Waiting List Identifiers",
+        },
+        waiverListCheckboxField,
+        waiverListInputField,
+      ],
+    },
+    {
       id: "financial-eligibility",
       title: "Financial Eligibility",
       type: PageType.Standard,
@@ -297,21 +312,6 @@ export const wwlReportTemplate: ReportBase = {
             "If applicable, add any notes or comments to provide context to the reported results.",
           required: false,
         },
-      ],
-    },
-    {
-      id: "waiting-list-identifiers",
-      title: "Waiting List Identifiers",
-      type: PageType.Standard,
-      sidebar: true,
-      elements: [
-        {
-          type: ElementType.Header,
-          id: "waiting-list-identifiers-header",
-          text: "Waiting List Identifiers",
-        },
-        waiverListCheckboxField,
-        waiverListInputField,
       ],
     },
     {

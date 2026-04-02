@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import {
   AlertTypes,
@@ -119,6 +119,21 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   );
 };
 
+export const CheckboxExport = (element: CheckboxTemplate) => {
+  if (!element.answer || element.answer.length === 0) {
+    return <></>;
+  }
+  const getLabel = (choiceId: string) =>
+    element.choices.find((choice) => choice.value === choiceId)!.label;
+  return (
+    <UnorderedList sx={sx.checkboxExport}>
+      {element.answer.map((choiceId) => (
+        <ListItem key={choiceId}>{getLabel(choiceId)}</ListItem>
+      ))}
+    </UnorderedList>
+  );
+};
+
 const sx = {
   children: {
     padding: "0 22px",
@@ -130,6 +145,13 @@ const sx = {
     },
     textarea: {
       maxWidth: "440px",
+    },
+  },
+  checkboxExport: {
+    listStyleType: "none",
+    marginLeft: 0,
+    "& > li + li": {
+      marginTop: 1,
     },
   },
 };
