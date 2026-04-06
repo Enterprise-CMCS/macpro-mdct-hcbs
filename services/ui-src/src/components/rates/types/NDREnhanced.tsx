@@ -241,6 +241,7 @@ export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
             response: element?.answer?.denominator,
           },
         ]}
+        caption="Performance Rates Denominator"
       />
       {ExportRateTable(buildData)}
     </>

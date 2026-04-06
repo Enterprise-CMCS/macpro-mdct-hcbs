@@ -1,8 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import {
+  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   PageElement,
+  PageType,
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
@@ -14,7 +16,13 @@ export const renderReportTable = (elements: ReportTableType[] | undefined) => {
   const filteredElements = elements?.filter((element) => element.indicator);
   if (filteredElements?.length == 0) return;
 
-  return <ExportedReportTable rows={filteredElements!}></ExportedReportTable>;
+  const caption = elements?.[0]?.caption;
+  return (
+    <ExportedReportTable
+      rows={filteredElements!}
+      caption={caption!}
+    ></ExportedReportTable>
+  );
 };
 
 export const renderReportDisplay = (
@@ -62,7 +70,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
   const expandCheckedChildren = (elements: PageElement[]): PageElement[] => {
     return elements.flatMap((element) => {
-      if ("choices" in element) {
+      if (element.type === ElementType.Radio) {
         const checkedChoice = element.choices.find(
           (choice) => choice.value === element.answer
         );
@@ -75,23 +83,56 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           element,
           ...expandCheckedChildren(checkedChoice?.checkedChildren ?? []),
         ];
-      } else {
-        // All other element types stand on their own.
-        return [element];
       }
+
+      if (element.type === ElementType.Checkbox) {
+        // Collect all checkedChildren from all selected answers
+        const allCheckedChildren = (element.answer ?? []).flatMap(
+          (answerValue) =>
+            element.choices.find((choice) => choice.value === answerValue)!
+              .checkedChildren ?? []
+        );
+        // The list of top-level answers is followed by the children of the 1st
+        // selected answer, then the children of the 2nd selected answer, etc.
+        return [element, ...expandCheckedChildren(allCheckedChildren)];
+      }
+
+      return [element];
     });
   };
 
   const expandedElements = expandCheckedChildren(stateReportingFiltered);
 
+  // Track SubHeader to use as caption for the pdf tables.
+  let mostRecentSubheader: string | undefined = undefined;
+
+  const determineCaption = (element: PageElement) => {
+    if (!shouldUseTable(element.type)) {
+      return undefined;
+    } else if (mostRecentSubheader === undefined) {
+      return section.title;
+    } else if (section.type === PageType.Measure) {
+      return `${section.title}: ${mostRecentSubheader}`;
+    } else {
+      return mostRecentSubheader;
+    }
+  };
+
+  // Only the first element of a table group gets the caption
   const elements =
     expandedElements?.map((element) => {
+      const caption = determineCaption(element);
+      if (element.type === ElementType.SubHeader) {
+        mostRecentSubheader = element.text;
+      }
+
       return {
         indicator: "label" in element ? (element.label ?? "") : "",
         helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
         required: "required" in element ? element.required : false,
+        caption,
       };
     }) ?? [];
 

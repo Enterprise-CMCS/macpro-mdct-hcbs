@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { CheckboxField } from "components";
 import { ElementType, CheckboxTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
+import { CheckboxExport } from "./CheckboxField";
 
 const updateSpy = jest.fn();
 
@@ -72,4 +73,40 @@ describe("<CheckboxField />", () => {
   });
 
   testA11y(CheckboxComponent);
+});
+
+describe("<CheckboxExport/>", () => {
+  it("renders selected labels when answer is array", () => {
+    const element: CheckboxTemplate = {
+      type: ElementType.Checkbox,
+      id: "check",
+      label: "Label",
+      required: false,
+      choices: [
+        { value: "a", label: "Option A" },
+        { value: "b", label: "Option B" },
+      ],
+      answer: ["a", "b"],
+    };
+
+    render(<>{CheckboxExport(element)}</>);
+
+    expect(screen.getByText("Option A")).toBeInTheDocument();
+    expect(screen.getByText("Option B")).toBeInTheDocument();
+  });
+
+  it("returns empty for no answer", () => {
+    const element: CheckboxTemplate = {
+      type: ElementType.Checkbox,
+      id: "check",
+      label: "Label",
+      required: false,
+      choices: [],
+      answer: [],
+    };
+
+    render(<>{CheckboxExport(element)}</>);
+
+    expect(screen.queryByRole("listitem")).toBeNull();
+  });
 });

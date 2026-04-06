@@ -628,6 +628,7 @@ export enum MeasureSpecification {
 export type MeasureTableTemplate = {
   id: string;
   type: ElementType.MeasureTable;
+  caption: string;
   measureDisplay: "required" | "optional";
 };
 
@@ -642,6 +643,7 @@ export type EligibilityTableItem = {
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;
+  caption: string;
   fieldLabels: {
     title: string;
     description: string;

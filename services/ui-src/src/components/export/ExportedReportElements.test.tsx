@@ -36,6 +36,9 @@ const section = {
 };
 
 describe("Test ExportedReportElements", () => {
+  beforeEach(() => {
+    section.elements = [];
+  });
   test("Test render SubHeader element", () => {
     const element = renderElements(section, {
       id: "mock-sub-header",
@@ -63,10 +66,10 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockNDR);
     render(element);
     expect(
-      screen.getByText(
+      screen.getAllByText(
         "Performance Rate : Person uses the same environments as people without disabilities"
-      )
-    ).toBeInTheDocument();
+      ).length
+    ).toBe(2);
     expect(screen.getByRole("row", { name: "Numerator 5" })).toBeVisible();
     expect(screen.getByRole("row", { name: "Denominator 3" })).toBeVisible();
     expect(screen.getByRole("row", { name: /Rate .* 1\.67/ })).toBeVisible();
@@ -76,10 +79,12 @@ describe("Test ExportedReportElements", () => {
     const element = renderElements(section, mockedNDREnhanced);
     render(element);
 
-    expect(screen.getByText("test label: assessment 1")).toBeInTheDocument();
     expect(
-      screen.getByText("Performance Rates Denominator")
-    ).toBeInTheDocument();
+      screen.getAllByText("test label: assessment 1").length
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText("Performance Rates Denominator").length
+    ).toBeGreaterThan(0);
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });

@@ -64,6 +64,7 @@ const mockTemplate: MeasureTableTemplate = {
   type: ElementType.MeasureTable,
   id: "mock-table-id",
   measureDisplay: "required",
+  caption: "Required Measure Results",
 };
 
 jest.mock("./MeasureReplacementModal", () => ({

@@ -83,6 +83,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
         {
           type: ElementType.MeasureTable,
           id: "required-measures",
+          caption: "Required Measure Results",
           measureDisplay: "required",
         },
       ],
@@ -117,6 +118,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
         {
           type: ElementType.MeasureTable,
           id: "optional-measures",
+          caption: "Optional Measure Results",
           measureDisplay: "optional",
         },
       ],
