@@ -24,7 +24,7 @@ describe("utils/time", () => {
     });
   });
 
-  describe("calculateTimeLeft()", () => {
+  describe("calculateRemainingSeconds()", () => {
     it("returns 0 when no value is given", () => {
       expect(calculateRemainingSeconds()).toBeCloseTo(0);
     });
@@ -32,6 +32,22 @@ describe("utils/time", () => {
     it("checks that expiration time is greater than zero", () => {
       const expirationTime = "2050-11-18T12:53:11-05:00";
       expect(calculateRemainingSeconds(expirationTime)).toBeGreaterThan(0);
+    });
+
+    it("calculates the number of seconds until a given date", () => {
+      const present = new Date("2026-03-20T20:02:22.130Z");
+      const future = new Date("2026-03-20T20:02:52.130Z");
+      jest.useFakeTimers().setSystemTime(present);
+      expect(calculateRemainingSeconds(future)).toBe(30);
+      jest.useRealTimers();
+    });
+
+    it("truncates partial seconds", () => {
+      const present = new Date("2026-03-20T20:02:22.130Z");
+      const future = new Date("2026-03-20T20:02:22.930Z");
+      jest.useFakeTimers().setSystemTime(present);
+      expect(calculateRemainingSeconds(future)).toBe(0);
+      jest.useRealTimers();
     });
   });
 });
