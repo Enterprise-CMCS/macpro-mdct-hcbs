@@ -4,7 +4,6 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { StateNames } from "../../../constants";
 import {
   BannerArea,
   getReportName,
