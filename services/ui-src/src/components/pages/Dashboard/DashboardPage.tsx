@@ -54,7 +54,6 @@ export const DashboardPage = () => {
     searchParams.get("year") || "All"
   );
 
-  const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
   const reportName = getReportName(reportType);
   const filterYear = searchParams.get("year") || "All";
   const filterDropdownOptions = [
