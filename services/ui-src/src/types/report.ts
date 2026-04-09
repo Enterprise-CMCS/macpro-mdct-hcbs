@@ -21,7 +21,7 @@ export const getReportName = (type: string | undefined) => {
     case ReportType.TACM:
       return "Timely Access Compliance Measure Report";
     case ReportType.CI:
-      return "Critical Incident Report";
+      return "Critical Incident Report - HCBS";
     case ReportType.PCP:
       return "Person-Centered Planning Report";
     case ReportType.WWL:

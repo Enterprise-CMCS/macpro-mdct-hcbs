@@ -129,7 +129,7 @@ export const DashboardPage = () => {
       {banner ? <Banner {...banner} key={banner.key} /> : null}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" variant="h1">
-          {fullStateName} {reportName}
+          {reportName}
         </Heading>
         <Accordion
           allowToggle={true}

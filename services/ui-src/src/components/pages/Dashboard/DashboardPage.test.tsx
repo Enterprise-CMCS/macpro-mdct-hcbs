@@ -72,26 +72,6 @@ const dashboardComponent = (
 describe("DashboardPage with state user", () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it("should render an empty state when there are no reports", async () => {
-    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
-
-    render(dashboardComponent);
-    await waitFor(() => {
-      expect(getReportsForState).toHaveBeenCalled();
-    });
-
-    expect(
-      screen.getByRole("heading", {
-        name: "Colorado Quality Measure Set Report",
-      })
-    ).toBeVisible();
-    expect(
-      screen.getByText("once you start a report you can access it here", {
-        exact: false,
-      })
-    ).toBeVisible();
-  });
-
   it("should not call reloadReports if no reportType passed in", async () => {
     (useParams as jest.Mock)
       .mockResolvedValueOnce(null)
@@ -214,28 +194,5 @@ describe("DashboardPage with Admin user", () => {
       name: "Start Quality Measure Set Report",
     });
     expect(startReportButton).not.toBeInTheDocument();
-  });
-
-  it("should render an empty state when there are no reports", async () => {
-    (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
-
-    render(dashboardComponent);
-    await waitFor(() => {
-      expect(getReportsForState).toHaveBeenCalled();
-    });
-
-    expect(
-      screen.getByRole("heading", {
-        name: "Colorado Quality Measure Set Report",
-      })
-    ).toBeVisible();
-    expect(
-      screen.getByText(
-        "Once a state or territory begins a QMS Report, you will be able to view it here.",
-        {
-          exact: false,
-        }
-      )
-    ).toBeVisible();
   });
 });

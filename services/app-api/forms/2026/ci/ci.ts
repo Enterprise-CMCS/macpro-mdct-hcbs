@@ -39,7 +39,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "general-info-header",
-          text: "General Information",
+          text: "General Information - CI - HCBS",
         },
         {
           id: "contact-name",
@@ -70,7 +70,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "incid-1-header",
-          text: "HCBS INCID-1: Critical Incidents for Which an Investigation Was Initiated Within State-Specified Timeframes",
+          text: "INCID-1: Investigation Timeframes - CI - HCBS",
         },
         {
           type: ElementType.NdrBasic,
@@ -102,7 +102,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "incid-2-header",
-          text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution Within State-Specified Timeframes",
+          text: "INCID-2: Resolution Timeframes - CI - HCBS",
         },
         {
           type: ElementType.NdrBasic,
@@ -134,7 +134,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "incid-3-header",
-          text: "HCBS INCID-3: Critical Incidents Requiring Corrective Action for Which the Required Corrective Action Was Completed Within State-Specified Timeframes",
+          text: "INCID-3: Corrective Action Completion - CI - HCBS",
         },
         {
           type: ElementType.NdrBasic,
@@ -174,7 +174,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "review-header",
-          text: "Review & Submit",
+          text: "	Review & Submit - CI - HCBS",
         },
         {
           type: ElementType.Paragraph,
@@ -198,7 +198,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "submitted-header",
-          text: "Successfully Submitted",
+          text: "	Successfully Submitted - CI - HCBS",
           icon: HeaderIcon.Check,
         },
         {
