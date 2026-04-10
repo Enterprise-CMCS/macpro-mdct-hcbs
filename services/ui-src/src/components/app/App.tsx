@@ -12,6 +12,7 @@ import {
 } from "components";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
+import { HelmetProvider } from "react-helmet-async";
 import {
   fireTealiumPageView,
   makeMediaQueryClasses,
@@ -67,12 +68,14 @@ export const App = () => {
   );
 
   return (
-    <div id="app-wrapper" className={mqClasses}>
-      <Routes>
-        <Route path="*" element={authenticatedRoutes} />
-        <Route path="postLogout" element={<PostLogoutRedirect />} />
-      </Routes>
-    </div>
+    <HelmetProvider>
+      <div id="app-wrapper" className={mqClasses}>
+        <Routes>
+          <Route path="*" element={authenticatedRoutes} />
+          <Route path="postLogout" element={<PostLogoutRedirect />} />
+        </Routes>
+      </div>
+    </HelmetProvider>
   );
 };
 

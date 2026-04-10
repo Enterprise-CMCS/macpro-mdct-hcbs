@@ -4,6 +4,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import { StateNames } from "../../../constants";
 import {
   BannerArea,
   getReportName,
@@ -53,6 +54,7 @@ export const DashboardPage = () => {
     searchParams.get("year") || "All"
   );
 
+  const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
   const reportName = getReportName(reportType);
   const filterYear = searchParams.get("year") || "All";
   const filterDropdownOptions = [
@@ -127,7 +129,7 @@ export const DashboardPage = () => {
       {banner ? <Banner {...banner} key={banner.key} /> : null}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" variant="h1">
-          {reportName}
+          {fullStateName} {reportName}
         </Heading>
         <Accordion
           allowToggle={true}

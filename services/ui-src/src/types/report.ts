@@ -21,7 +21,7 @@ export const getReportName = (type: string | undefined) => {
     case ReportType.TACM:
       return "Timely Access Compliance Measure Report";
     case ReportType.CI:
-      return "Critical Incident Report - HCBS";
+      return "Critical Incident Report";
     case ReportType.PCP:
       return "Person-Centered Planning Report";
     case ReportType.WWL:
@@ -92,6 +92,7 @@ export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
   title?: undefined;
+  pageTitle?: undefined;
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
@@ -107,6 +108,7 @@ export interface PageData {
 export type FormPageTemplate = {
   id: PageId;
   title: string;
+  pageTitle?: string;
   type: PageType;
   status?: PageStatus;
   elements: PageElement[];
@@ -117,6 +119,7 @@ export type FormPageTemplate = {
 
 export interface ReviewSubmitTemplate extends FormPageTemplate {
   submittedView: PageElement[];
+  pageTitle?: string;
 }
 
 export const isReviewSubmitPage = (
@@ -129,6 +132,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   cmit?: number;
   cmitId: string;
   required?: boolean;
+  pageTitle?: string;
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;

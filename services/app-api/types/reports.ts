@@ -158,6 +158,7 @@ export type LiteReport = Omit<Report, "pages">;
 
 export interface ReviewSubmitTemplate extends FormPageTemplate {
   submittedView: PageElement[];
+  pageTitle?: string;
 }
 
 export interface MeasurePageTemplate extends FormPageTemplate {
@@ -168,6 +169,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
   waiverInfo?: WAIVER[];
+  pageTitle?: string;
 }
 
 export type ReportMeasureConfig = {
@@ -206,6 +208,7 @@ export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
   title?: undefined;
+  pageTitle?: undefined;
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
@@ -217,6 +220,7 @@ export type FormPageTemplate = {
   title: string;
   type: PageType;
   status?: PageStatus;
+  pageTitle?: string;
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;

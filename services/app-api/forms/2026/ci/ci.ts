@@ -33,13 +33,14 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "general-info",
       title: "General Information",
+      pageTitle: "General Information - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
         {
           type: ElementType.Header,
           id: "general-info-header",
-          text: "General Information - CI - HCBS",
+          text: "General Information",
         },
         {
           id: "contact-name",
@@ -64,13 +65,14 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "incid-1",
       title: "HCBS INCID-1",
+      pageTitle: "INCID-1: Investigation Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
         {
           type: ElementType.Header,
           id: "incid-1-header",
-          text: "INCID-1: Investigation Timeframes - CI - HCBS",
+          text: "HCBS INCID-1: Critical Incidents for Which an Investigation Was Initiated Within State-Specified Timeframes",
         },
         {
           type: ElementType.NdrBasic,
@@ -96,13 +98,14 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "incid-2",
       title: "HCBS INCID-2",
+      pageTitle: "INCID-2: Resolution Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
         {
           type: ElementType.Header,
           id: "incid-2-header",
-          text: "INCID-2: Resolution Timeframes - CI - HCBS",
+          text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution Within State-Specified Timeframes",
         },
         {
           type: ElementType.NdrBasic,
@@ -128,13 +131,14 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "incid-3",
       title: "HCBS INCID-3",
+      pageTitle: "INCID-3: Corrective Action Completion - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
         {
           type: ElementType.Header,
           id: "incid-3-header",
-          text: "INCID-3: Corrective Action Completion - CI - HCBS",
+          text: "HCBS INCID-3: Critical Incidents Requiring Corrective Action for Which the Required Corrective Action Was Completed Within State-Specified Timeframes",
         },
         {
           type: ElementType.NdrBasic,
@@ -160,6 +164,7 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "review-submit",
       title: "Review & Submit",
+      pageTitle: "Review & Submit - CI - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -174,7 +179,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "review-header",
-          text: "	Review & Submit - CI - HCBS",
+          text: "Review & Submit",
         },
         {
           type: ElementType.Paragraph,
@@ -198,7 +203,7 @@ export const ciReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "submitted-header",
-          text: "	Successfully Submitted - CI - HCBS",
+          text: "Successfully Submitted",
           icon: HeaderIcon.Check,
         },
         {
