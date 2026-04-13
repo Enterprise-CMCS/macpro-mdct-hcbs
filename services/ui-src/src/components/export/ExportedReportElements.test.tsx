@@ -20,7 +20,7 @@ import {
 const section = {
   id: "mock-section",
   cmitId: "1",
-  title: "mock section title",
+  navTitle: "mock section title",
   type: PageType.Measure,
   cmitInfo: {
     cmit: 1,
