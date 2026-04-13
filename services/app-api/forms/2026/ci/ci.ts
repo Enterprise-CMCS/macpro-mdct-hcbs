@@ -33,7 +33,7 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "general-info",
       title: "General Information",
-      pageTitle: "General Information - CI - HCBS",
+      tabTitle: "General Information - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -65,7 +65,7 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "incid-1",
       title: "HCBS INCID-1",
-      pageTitle: "INCID-1: Investigation Timeframes - CI - HCBS",
+      tabTitle: "INCID-1: Investigation Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -98,7 +98,7 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "incid-2",
       title: "HCBS INCID-2",
-      pageTitle: "INCID-2: Resolution Timeframes - CI - HCBS",
+      tabTitle: "INCID-2: Resolution Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -131,7 +131,7 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "incid-3",
       title: "HCBS INCID-3",
-      pageTitle: "INCID-3: Corrective Action Completion - CI - HCBS",
+      tabTitle: "INCID-3: Corrective Action Completion - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -164,7 +164,8 @@ export const ciReportTemplate: ReportBase = {
     {
       id: "review-submit",
       title: "Review & Submit",
-      pageTitle: "Review & Submit - CI - HCBS",
+      tabTitle: "Review & Submit - CI - HCBS",
+      submittedTabTitle: "Successfully Submitted - CI - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,

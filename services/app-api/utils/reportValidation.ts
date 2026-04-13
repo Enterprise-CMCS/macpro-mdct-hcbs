@@ -519,6 +519,8 @@ const formPageTemplateSchema = object().shape({
   title: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
   status: string().notRequired(),
+  tabTitle: string().notRequired(),
+  submittedTabTitle: string().notRequired(),
   elements: array().of(pageElementSchema).required(),
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),

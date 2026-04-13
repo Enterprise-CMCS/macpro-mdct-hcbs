@@ -30,6 +30,8 @@ export const ReportPageWrapper = () => {
   } = useStore();
   const currentPage = useStore(currentPageSelector);
 
+  console.log("currentPage from report.pages:", currentPage);
+
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { autosave } = useContext(ReportAutosaveContext);
@@ -86,9 +88,14 @@ export const ReportPageWrapper = () => {
   const renderedElements = submittedView
     ? currentPage.submittedView
     : currentPage.elements;
+
+  const renderTabTitle =
+    (submittedView ? currentPage?.submittedTabTitle : currentPage?.tabTitle) ??
+    "";
+
   return (
     <>
-      <Title pageTitle={currentPage?.pageTitle || currentPage?.title || ""} />
+      <Title tabTitle={renderTabTitle} />
       <HStack position="relative" spacing="0" height="100%">
         <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
         <VStack
