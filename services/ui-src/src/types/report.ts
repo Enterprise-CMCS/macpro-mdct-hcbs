@@ -91,7 +91,7 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-  title?: undefined;
+  navTitle?: undefined;
   tabTitle?: undefined;
   submittedTabTitle?: undefined;
   type?: undefined;
@@ -108,7 +108,7 @@ export interface PageData {
 
 export type FormPageTemplate = {
   id: PageId;
-  title: string;
+  navTitle: string;
   tabTitle?: string;
   submittedTabTitle?: string;
   type: PageType;
@@ -148,7 +148,7 @@ export const isMeasureTemplate = (
 export const isFormPageTemplate = (
   page: PageTemplate
 ): page is FormPageTemplate => {
-  return (page as FormPageTemplate).title != undefined;
+  return (page as FormPageTemplate).navTitle != undefined;
 };
 
 export const isMeasurePageTemplate = (

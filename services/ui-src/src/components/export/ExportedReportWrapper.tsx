@@ -110,9 +110,9 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     if (!shouldUseTable(element.type)) {
       return undefined;
     } else if (mostRecentSubheader === undefined) {
-      return section.title;
+      return section.navTitle;
     } else if (section.type === PageType.Measure) {
-      return `${section.title}: ${mostRecentSubheader}`;
+      return `${section.navTitle}: ${mostRecentSubheader}`;
     } else {
       return mostRecentSubheader;
     }

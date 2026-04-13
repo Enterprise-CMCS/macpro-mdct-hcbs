@@ -42,7 +42,7 @@ const elements: PageElement[] = [
 
 const section: FormPageTemplate = {
   id: "mock-id",
-  title: "mock-title",
+  navTitle: "mock-title",
   type: PageType.Standard,
   elements: elements,
   sidebar: true,
@@ -157,7 +157,7 @@ describe("ExportedReportWrapper", () => {
   it("should prefix caption with measure title on a measure page", () => {
     const measureSection: MeasurePageTemplate = {
       id: "mock-measure-id",
-      title: "LTSS-1: Comprehensive Assessment and Update",
+      navTitle: "LTSS-1: Comprehensive Assessment and Update",
       type: PageType.Measure,
       cmitId: "mock-cmit",
       elements: [

@@ -19,7 +19,7 @@ const mockReport = {
     {
       type: PageType.Measure,
       id: "mock-measure-1",
-      title: "Mock Measure Req",
+      navTitle: "Mock Measure Req",
       cmit: 42,
       substitutable: "mock-measure-3",
       required: true,
@@ -27,14 +27,14 @@ const mockReport = {
     {
       type: PageType.Measure,
       id: "mock-measure-2",
-      title: "Mock Measure Strat",
+      navTitle: "Mock Measure Strat",
       cmit: 43,
       required: true,
     },
     {
       type: PageType.Measure,
       id: "mock-measure-3",
-      title: "Mock Measure Opt",
+      navTitle: "Mock Measure Opt",
       cmit: 44,
       substitutable: "mock-measure-1",
       required: false,

@@ -205,7 +205,7 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-  title?: undefined;
+  navTitle?: undefined;
   tabTitle?: undefined;
   submittedTabTitle?: undefined;
   type?: undefined;
@@ -216,7 +216,7 @@ export type ParentPageTemplate = {
 
 export type FormPageTemplate = {
   id: PageId;
-  title: string;
+  navTitle: string;
   type: PageType;
   status?: PageStatus;
   tabTitle?: string;

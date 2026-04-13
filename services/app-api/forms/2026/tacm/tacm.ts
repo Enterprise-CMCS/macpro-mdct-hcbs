@@ -37,7 +37,7 @@ export const tacmReportTemplate: ReportBase = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -68,7 +68,7 @@ export const tacmReportTemplate: ReportBase = {
     },
     {
       id: "hapch-1",
-      title: "HCBS HAPCH-1",
+      navTitle: "HCBS HAPCH-1",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -117,7 +117,7 @@ export const tacmReportTemplate: ReportBase = {
     },
     {
       id: "hapch-2",
-      title: "HCBS HAPCH-2",
+      navTitle: "HCBS HAPCH-2",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -167,7 +167,7 @@ export const tacmReportTemplate: ReportBase = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,

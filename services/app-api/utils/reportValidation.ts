@@ -516,7 +516,7 @@ const statusAlertSchema = object().shape({
 
 const formPageTemplateSchema = object().shape({
   id: string().required(),
-  title: string().required(),
+  navTitle: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
   status: string().notRequired(),
   tabTitle: string().notRequired(),

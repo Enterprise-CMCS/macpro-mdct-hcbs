@@ -42,7 +42,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -79,7 +79,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "waiting-list-identifiers",
-      title: "Waiting List Identifiers",
+      navTitle: "Waiting List Identifiers",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -94,7 +94,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "financial-eligibility",
-      title: "Financial Eligibility",
+      navTitle: "Financial Eligibility",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -127,7 +127,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "functional-eligibility",
-      title: "Functional Eligibility",
+      navTitle: "Functional Eligibility",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -160,7 +160,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "add-other-eligibility",
-      title: "Other Eligibility",
+      navTitle: "Other Eligibility",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -179,7 +179,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "waiting-list-limits",
-      title: "Waiting List Limits",
+      navTitle: "Waiting List Limits",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -218,7 +218,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "placement",
-      title: "Placement",
+      navTitle: "Placement",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -261,7 +261,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "amount-of-time-on-the-waiting-list",
-      title: "Amount of time on the waiting list",
+      navTitle: "Amount of time on the waiting list",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -296,7 +296,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "additional-notes",
-      title: "Additional notes/comments",
+      navTitle: "Additional notes/comments",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -316,7 +316,7 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
