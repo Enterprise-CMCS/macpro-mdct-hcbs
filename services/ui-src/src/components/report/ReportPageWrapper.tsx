@@ -30,8 +30,6 @@ export const ReportPageWrapper = () => {
   } = useStore();
   const currentPage = useStore(currentPageSelector);
 
-  console.log("currentPage from report.pages:", currentPage);
-
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { autosave } = useContext(ReportAutosaveContext);

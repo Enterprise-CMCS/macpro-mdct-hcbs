@@ -5,11 +5,9 @@ interface TitleProps {
 }
 
 export const Title = ({ tabTitle }: TitleProps) => {
-  const fullTitle = `${tabTitle}`;
-
   return (
     <Helmet>
-      <title>{fullTitle}</title>
+      <title>{tabTitle}</title>
     </Helmet>
   );
 };
