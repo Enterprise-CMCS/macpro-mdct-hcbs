@@ -12,7 +12,6 @@ export { PageTemplate } from "./layout/PageTemplate";
 export { Footer } from "./layout/Footer";
 export { AppRoutes } from "./app/AppRoutes";
 export { Timeout } from "./layout/Timeout";
-export { Title } from "./Title";
 // cards
 export { Card } from "./cards/Card";
 export { HelpCard } from "./cards/HelpCard";

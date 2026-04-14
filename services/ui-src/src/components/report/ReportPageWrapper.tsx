@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { getReport, useStore } from "utils";
-import { ReportModal, Sidebar, Page, PraDisclosure, Title } from "components";
+import { ReportModal, Sidebar, Page, PraDisclosure } from "components";
 import { currentPageSelector } from "utils/state/selectors";
 
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
@@ -92,75 +92,73 @@ export const ReportPageWrapper = () => {
     "";
 
   return (
-    <>
-      <Title tabTitle={renderTabTitle} />
-      <HStack position="relative" spacing="0" height="100%">
-        <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
-        <VStack
-          height="100%"
-          padding={
-            currentPage.sidebar
-              ? { base: "3.5rem 1rem", md: "3.5rem 0rem" }
-              : { base: "2rem 1rem", md: "2rem 0rem" }
-          }
-          margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
+    <HStack position="relative" spacing="0" height="100%">
+      <title>{renderTabTitle}</title>
+      <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
+      <VStack
+        height="100%"
+        padding={
+          currentPage.sidebar
+            ? { base: "3.5rem 1rem", md: "3.5rem 0rem" }
+            : { base: "2rem 1rem", md: "2rem 0rem" }
+        }
+        margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
+        width="100%"
+        maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
+        gap="0rem"
+      >
+        <Box
+          flex="auto"
+          alignItems="flex-start"
           width="100%"
-          maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
-          gap="0rem"
+          marginBottom="spacer4"
         >
-          <Box
-            flex="auto"
-            alignItems="flex-start"
-            width="100%"
-            marginBottom="spacer4"
-          >
-            <form id="aFormId" autoComplete="off">
-              {currentPage.elements && (
-                <Page
-                  id={currentPage.id}
-                  setElements={(elements: PageElement[]) => {
-                    setAnswers({ ...currentPage, elements });
-                    autosave();
-                  }}
-                  elements={renderedElements ?? []}
-                ></Page>
+          <form id="aFormId" autoComplete="off">
+            {currentPage.elements && (
+              <Page
+                id={currentPage.id}
+                setElements={(elements: PageElement[]) => {
+                  setAnswers({ ...currentPage, elements });
+                  autosave();
+                }}
+                elements={renderedElements ?? []}
+              ></Page>
+            )}
+          </form>
+        </Box>
+        {!currentPage.hideNavButtons && parentPage && (
+          <>
+            {displayDivider(currentPage) && <Divider></Divider>}
+            <Flex width="100%" marginTop="spacer3">
+              {parentPage.index > 0 && (
+                <Button
+                  onClick={() => SetPageIndex(parentPage.index - 1)}
+                  variant="outline"
+                  leftIcon={<Image src={prevArrowIcon} />}
+                >
+                  Previous
+                </Button>
               )}
-            </form>
-          </Box>
-          {!currentPage.hideNavButtons && parentPage && (
-            <>
-              {displayDivider(currentPage) && <Divider></Divider>}
-              <Flex width="100%" marginTop="spacer3">
-                {parentPage.index > 0 && (
-                  <Button
-                    onClick={() => SetPageIndex(parentPage.index - 1)}
-                    variant="outline"
-                    leftIcon={<Image src={prevArrowIcon} />}
-                  >
-                    Previous
-                  </Button>
-                )}
-                {parentPage.index < parentPage.childPageIds.length - 1 && (
-                  <Button
-                    onClick={() => SetPageIndex(parentPage.index + 1)}
-                    marginLeft="auto"
-                    rightIcon={<Image src={nextArrowIcon} />}
-                  >
-                    Continue
-                  </Button>
-                )}
-              </Flex>
-              {parentPage.index == 0 && (
-                <Box flex="auto" marginTop="spacer7">
-                  <PraDisclosure />
-                </Box>
+              {parentPage.index < parentPage.childPageIds.length - 1 && (
+                <Button
+                  onClick={() => SetPageIndex(parentPage.index + 1)}
+                  marginLeft="auto"
+                  rightIcon={<Image src={nextArrowIcon} />}
+                >
+                  Continue
+                </Button>
               )}
-            </>
-          )}
-        </VStack>
-        <ReportModal />
-      </HStack>
-    </>
+            </Flex>
+            {parentPage.index == 0 && (
+              <Box flex="auto" marginTop="spacer7">
+                <PraDisclosure />
+              </Box>
+            )}
+          </>
+        )}
+      </VStack>
+      <ReportModal />
+    </HStack>
   );
 };
 

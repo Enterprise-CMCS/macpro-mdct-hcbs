@@ -18,7 +18,6 @@ import {
   AddEditReportModal,
   DashboardTable,
   PageTemplate,
-  Title,
   UnlockModal,
 } from "components";
 import {
@@ -122,177 +121,175 @@ export const DashboardPage = () => {
   };
 
   return (
-    <>
-      <Title tabTitle={`${reportName} - HCBS`} />
-      <PageTemplate type="report" sxOverride={sx.layout}>
-        <Link as={RouterLink} to="/" variant="return">
-          <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
-          Return home
-        </Link>
-        {banner ? <Banner {...banner} key={banner.key} /> : null}
-        <Box sx={sx.leadTextBox}>
-          <Heading as="h1" variant="h1">
-            {fullStateName} {reportName}
-          </Heading>
-          <Accordion
-            allowToggle={true}
-            sx={sx.accordion}
-            defaultIndex={[-1]} // sets the accordion to closed by default
-          >
-            <AccordionItem label="Instructions" sx={sx.accordionItem}>
-              {userIsAdmin ? (
-                <Box sx={sx.accordionPanel}>
-                  <Heading fontSize="heading_md" fontWeight="heading_md">
-                    Admin Instructions
-                  </Heading>
-                  <ul>
-                    <li>
-                      To view a state or territory’s submission, use “View”.
-                    </li>
-                    <li>
-                      To allow a state or territory to make corrections or edits
-                      to a submission use “Unlock” to release the submission.
-                      The status will change to “In revision”.
-                    </li>
-                    <li>
-                      Submission count is shown in the # column. Submissions
-                      started and submitted once have a count of 1. When a state
-                      or territory resubmits a previous submission, the count
-                      increases by 1.
-                    </li>
-                    <li>
-                      To archive a submission and hide it from a state or
-                      territory’s dashboard, use “Archive”.
-                    </li>
-                  </ul>
-                </Box>
-              ) : (
-                <Box sx={sx.accordionPanel}>
+    <PageTemplate type="report" sxOverride={sx.layout}>
+      <title>{`${reportName} - HCBS`}</title>
+      <Link as={RouterLink} to="/" variant="return">
+        <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
+        Return home
+      </Link>
+      {banner ? <Banner {...banner} key={banner.key} /> : null}
+      <Box sx={sx.leadTextBox}>
+        <Heading as="h1" variant="h1">
+          {fullStateName} {reportName}
+        </Heading>
+        <Accordion
+          allowToggle={true}
+          sx={sx.accordion}
+          defaultIndex={[-1]} // sets the accordion to closed by default
+        >
+          <AccordionItem label="Instructions" sx={sx.accordionItem}>
+            {userIsAdmin ? (
+              <Box sx={sx.accordionPanel}>
+                <Heading fontSize="heading_md" fontWeight="heading_md">
+                  Admin Instructions
+                </Heading>
+                <ul>
+                  <li>
+                    To view a state or territory’s submission, use “View”.
+                  </li>
+                  <li>
+                    To allow a state or territory to make corrections or edits
+                    to a submission use “Unlock” to release the submission. The
+                    status will change to “In revision”.
+                  </li>
+                  <li>
+                    Submission count is shown in the # column. Submissions
+                    started and submitted once have a count of 1. When a state
+                    or territory resubmits a previous submission, the count
+                    increases by 1.
+                  </li>
+                  <li>
+                    To archive a submission and hide it from a state or
+                    territory’s dashboard, use “Archive”.
+                  </li>
+                </ul>
+              </Box>
+            ) : (
+              <Box sx={sx.accordionPanel}>
+                <p>
+                  <strong>Creating a New Report</strong>
+                </p>
+                <p>
+                  Click the <b>“Start {reportName}”</b> button to begin creating
+                  your report. A series of questions will appear to gather the
+                  necessary information for your report. Fill out each field
+                  accurately to ensure your report is complete. Before
+                  submitting, review the information you’ve provided. If
+                  everything looks good, confirm your entries and proceed.
+                </p>
+                <p>
+                  Once the report is generated, you can edit the name of the
+                  report and monitor its status in the dashboard below.
+                </p>
+                {reportType === ReportType.WWL ? (
                   <p>
-                    <strong>Creating a New Report</strong>
+                    A separate report should be generated for each waiver
+                    waiting list your state intends to include during the
+                    current reporting year.
                   </p>
+                ) : (
                   <p>
-                    Click the <b>“Start {reportName}”</b> button to begin
-                    creating your report. A series of questions will appear to
-                    gather the necessary information for your report. Fill out
-                    each field accurately to ensure your report is complete.
-                    Before submitting, review the information you’ve provided.
-                    If everything looks good, confirm your entries and proceed.
+                    Please note, while you can generate multiple reports for the
+                    same reporting period, you should only submit a single
+                    report for the state.
                   </p>
-                  <p>
-                    Once the report is generated, you can edit the name of the
-                    report and monitor its status in the dashboard below.
-                  </p>
-                  {reportType === ReportType.WWL ? (
-                    <p>
-                      A separate report should be generated for each waiver
-                      waiting list your state intends to include during the
-                      current reporting year.
-                    </p>
-                  ) : (
-                    <p>
-                      Please note, while you can generate multiple reports for
-                      the same reporting period, you should only submit a single
-                      report for the state.
-                    </p>
-                  )}
+                )}
 
-                  <p>
-                    <strong>Understanding Report Statuses</strong>
-                  </p>
-                  <ul>
-                    <li>
-                      <strong>Not started:</strong> The report has been created
-                      but no data has been entered or actions taken.
-                    </li>
-                    <li>
-                      <strong>In progress:</strong> The report is actively being
-                      worked on, with some or all data entered.
-                    </li>
-                    <li>
-                      <strong>Submitted:</strong> The report has been completed
-                      and submitted to CMS for review.
-                    </li>
-                    <li>
-                      <strong>In revision:</strong> The report has been sent
-                      back to the state for revisions or additional information
-                      after submission.
-                    </li>
-                  </ul>
-                  <p>
-                    Use the dashboard below to check your report’s status and
-                    take any necessary follow-up actions.
-                  </p>
-                </Box>
-              )}
-            </AccordionItem>
-          </Accordion>
-        </Box>
-        <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
-          <Flex alignItems="flex-end" gap="spacer3">
-            <CmsdsDropdownField
-              name="yearFilter"
-              label="Filter by Year"
-              value={dropdownValue}
-              onChange={handleYearChange}
-              data-testid="year-filter-dropdown"
-              options={filterDropdownOptions}
-            />
-            <Button onClick={handleFilter} variant="outline">
-              Filter
+                <p>
+                  <strong>Understanding Report Statuses</strong>
+                </p>
+                <ul>
+                  <li>
+                    <strong>Not started:</strong> The report has been created
+                    but no data has been entered or actions taken.
+                  </li>
+                  <li>
+                    <strong>In progress:</strong> The report is actively being
+                    worked on, with some or all data entered.
+                  </li>
+                  <li>
+                    <strong>Submitted:</strong> The report has been completed
+                    and submitted to CMS for review.
+                  </li>
+                  <li>
+                    <strong>In revision:</strong> The report has been sent back
+                    to the state for revisions or additional information after
+                    submission.
+                  </li>
+                </ul>
+                <p>
+                  Use the dashboard below to check your report’s status and take
+                  any necessary follow-up actions.
+                </p>
+              </Box>
+            )}
+          </AccordionItem>
+        </Accordion>
+      </Box>
+      <Flex sx={sx.bodyBox} gap="2rem" flexDirection="column">
+        <Flex alignItems="flex-end" gap="spacer3">
+          <CmsdsDropdownField
+            name="yearFilter"
+            label="Filter by Year"
+            value={dropdownValue}
+            onChange={handleYearChange}
+            data-testid="year-filter-dropdown"
+            options={filterDropdownOptions}
+          />
+          <Button onClick={handleFilter} variant="outline">
+            Filter
+          </Button>
+        </Flex>
+        {!isLoading && (
+          <DashboardTable
+            reports={filteredReports}
+            openAddEditReportModal={openAddEditReportModal}
+            unlockModalOnOpenHandler={unlockModalOnOpenHandler}
+            onReportUpdate={() => reloadReports(reportType!, state!)}
+          />
+        )}
+        {isLoading && (
+          <Flex justify="center">
+            <Spinner size="md" />
+          </Flex>
+        )}
+        {!reports?.length &&
+          (userIsAdmin ? (
+            <Text variant="tableEmpty">
+              Once a state or territory begins a QMS Report, you will be able to
+              view it here.
+            </Text>
+          ) : (
+            <Text variant="tableEmpty">
+              Keep track of your {reportName}s, once you start a report you can
+              access it here.
+            </Text>
+          ))}
+        {userIsEndUser && (
+          <Flex justifyContent="center">
+            <Button onClick={() => openAddEditReportModal()} type="submit">
+              Start {reportName}
             </Button>
           </Flex>
-          {!isLoading && (
-            <DashboardTable
-              reports={filteredReports}
-              openAddEditReportModal={openAddEditReportModal}
-              unlockModalOnOpenHandler={unlockModalOnOpenHandler}
-              onReportUpdate={() => reloadReports(reportType!, state!)}
-            />
-          )}
-          {isLoading && (
-            <Flex justify="center">
-              <Spinner size="md" />
-            </Flex>
-          )}
-          {!reports?.length &&
-            (userIsAdmin ? (
-              <Text variant="tableEmpty">
-                Once a state or territory begins a QMS Report, you will be able
-                to view it here.
-              </Text>
-            ) : (
-              <Text variant="tableEmpty">
-                Keep track of your {reportName}s, once you start a report you
-                can access it here.
-              </Text>
-            ))}
-          {userIsEndUser && (
-            <Flex justifyContent="center">
-              <Button onClick={() => openAddEditReportModal()} type="submit">
-                Start {reportName}
-              </Button>
-            </Flex>
-          )}
-        </Flex>
-        <AddEditReportModal
-          activeState={state!}
-          reportType={reportType!}
-          modalDisclosure={{
-            isOpen: addEditReportModalIsOpen,
-            onClose: addEditReportModalOnCloseHandler,
-          }}
-          reportHandler={reloadReports}
-          selectedReport={selectedReport}
-        />
-        <UnlockModal
-          modalDisclosure={{
-            isOpen: unlockModalIsOpen,
-            onClose: unlockModalOnCloseHandler,
-          }}
-        ></UnlockModal>
-      </PageTemplate>
-    </>
+        )}
+      </Flex>
+      <AddEditReportModal
+        activeState={state!}
+        reportType={reportType!}
+        modalDisclosure={{
+          isOpen: addEditReportModalIsOpen,
+          onClose: addEditReportModalOnCloseHandler,
+        }}
+        reportHandler={reloadReports}
+        selectedReport={selectedReport}
+      />
+      <UnlockModal
+        modalDisclosure={{
+          isOpen: unlockModalIsOpen,
+          onClose: unlockModalOnCloseHandler,
+        }}
+      ></UnlockModal>
+    </PageTemplate>
   );
 };
 
