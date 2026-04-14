@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { getReport, useStore } from "utils";
-import { ReportModal, Sidebar, Page, PraDisclosure } from "components";
+import { ReportModal, Sidebar, Page, PraDisclosure, Title } from "components";
 import { currentPageSelector } from "utils/state/selectors";
 
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
@@ -93,7 +93,7 @@ export const ReportPageWrapper = () => {
 
   return (
     <HStack position="relative" spacing="0" height="100%">
-      <title>{renderTabTitle}</title>
+      <Title tabTitle={renderTabTitle} />
       <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
       <VStack
         height="100%"
