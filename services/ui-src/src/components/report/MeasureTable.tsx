@@ -105,7 +105,7 @@ export const MeasureTableElement = (
           ></TableStatusIcon>
         </Td>
         <Td>
-          <Text fontWeight="bold">{measure.title}</Text>
+          <Text fontWeight="bold">{measure.navTitle}</Text>
           <Text>CMIT number: #{measure.cmit}</Text>
           <Text>Status: {measure.status ?? "Not started"}</Text>
           {errorMessage(measure)}

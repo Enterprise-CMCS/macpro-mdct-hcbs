@@ -67,7 +67,7 @@ export const StatusTableElement = () => {
     return (
       <Tr key={section.id || index} p={0}>
         <Td>
-          <Text>{section.title}</Text>
+          <Text>{section.navTitle}</Text>
         </Td>
         <Td>
           <TableStatusIcon tableStatus={status} showLabel={true} />

@@ -67,11 +67,11 @@ export const renderElements = (
     case ElementType.ReadmissionRate:
       return ReadmissionRateExport(element);
     case ElementType.NdrBasic:
-      return NDRBasicExport(element, section.title);
+      return NDRBasicExport(element, section.navTitle);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:
-      return EligibilityTableElementExport(element, section.title);
+      return EligibilityTableElementExport(element, section.navTitle);
     case ElementType.Checkbox:
       return CheckboxExport(element);
     case ElementType.ListInput:

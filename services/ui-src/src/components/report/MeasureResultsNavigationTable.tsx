@@ -117,7 +117,7 @@ export const MeasureResultsNavigationTableElement = (
   return (
     <Table variant="measure">
       <TableCaption>
-        <VisuallyHidden>{currentPage.title} Measure Details</VisuallyHidden>
+        <VisuallyHidden>{currentPage.navTitle} Measure Details</VisuallyHidden>
       </TableCaption>
       <Thead>
         <Tr>

@@ -56,7 +56,7 @@ export const measureTemplates: Record<
 > = {
   [MeasureTemplateName["LTSS-1"]]: {
     id: "LTSS-1",
-    title: "LTSS-1: Comprehensive Assessment and Update",
+    navTitle: "LTSS-1: Comprehensive Assessment and Update",
     type: PageType.Measure,
     substitutable: MeasureTemplateName["FASI-1"],
     sidebar: false,
@@ -81,7 +81,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-1"]]: {
     id: "FFS-1",
-    title: "LTSS-1: Fee-For-Service (FFS LTSS)",
+    navTitle: "LTSS-1: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -113,7 +113,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-1"]]: {
     id: "MLTSS-1",
-    title: "LTSS-1: Managed Care (MLTSS)",
+    navTitle: "LTSS-1: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -145,7 +145,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["LTSS-2"]]: {
     id: "LTSS-2",
-    title: "LTSS-2: Comprehensive Person-Centered Plan and Update",
+    navTitle: "LTSS-2: Comprehensive Person-Centered Plan and Update",
     type: PageType.Measure,
     sidebar: false,
     substitutable: MeasureTemplateName["FASI-2"],
@@ -170,7 +170,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-2"]]: {
     id: "FFS-2",
-    title: "LTSS-2: Fee-For-Service (FFS LTSS)",
+    navTitle: "LTSS-2: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -202,7 +202,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-2"]]: {
     id: "MLTSS-2",
-    title: "LTSS-2: Managed Care (MLTSS)",
+    navTitle: "LTSS-2: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -234,7 +234,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["LTSS-6"]]: {
     id: "LTSS-6",
-    title: "LTSS-6: Admission to a Facility from the Community",
+    navTitle: "LTSS-6: Admission to a Facility from the Community",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -258,7 +258,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-6"]]: {
     id: "FFS-6",
-    title: "LTSS-6: Fee-For-Service (FFS LTSS)",
+    navTitle: "LTSS-6: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -289,7 +289,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-6"]]: {
     id: "MLTSS-6",
-    title: "LTSS-6: Managed Care (MLTSS)",
+    navTitle: "LTSS-6: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -320,7 +320,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["LTSS-7"]]: {
     id: "LTSS-7",
-    title: "LTSS-7: Minimizing Facility Length of Stay",
+    navTitle: "LTSS-7: Minimizing Facility Length of Stay",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -344,7 +344,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-7"]]: {
     id: "FFS-7",
-    title: "LTSS-7: Fee-For-Service (FFS LTSS)",
+    navTitle: "LTSS-7: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -376,7 +376,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-7"]]: {
     id: "MLTSS-7",
-    title: "LTSS-7: Managed Care (MLTSS)",
+    navTitle: "LTSS-7: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -408,7 +408,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["LTSS-8"]]: {
     id: "LTSS-8",
-    title: "LTSS-8: Successful Transition after Long-Term Facility Stay",
+    navTitle: "LTSS-8: Successful Transition after Long-Term Facility Stay",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -432,7 +432,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-8"]]: {
     id: "FFS-8",
-    title: "LTSS-8: Fee-For-Service (FFS LTSS)",
+    navTitle: "LTSS-8: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -464,7 +464,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-8"]]: {
     id: "MLTSS-8",
-    title: "LTSS-8: Managed Care (MLTSS)",
+    navTitle: "LTSS-8: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -496,7 +496,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FASI-1"]]: {
     id: "FASI-1",
-    title: "FASI-1: Identification of Person-Centered Priorities",
+    navTitle: "FASI-1: Identification of Person-Centered Priorities",
     substitutable: MeasureTemplateName["LTSS-1"],
     type: PageType.Measure,
     sidebar: false,
@@ -520,7 +520,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-FASI-1"]]: {
     id: "FFS-FASI-1",
-    title: "FASI-1: Fee-For-Service (FFS FASI-1)",
+    navTitle: "FASI-1: Fee-For-Service (FFS FASI-1)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -557,7 +557,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-FASI-1"]]: {
     id: "MLTSS-FASI-1",
-    title: "FASI-1: Managed Care (MLTSS)",
+    navTitle: "FASI-1: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -594,7 +594,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FASI-2"]]: {
     id: "FASI-2",
-    title: "FASI-2: Documentation of a Person-Centered Service Plan",
+    navTitle: "FASI-2: Documentation of a Person-Centered Service Plan",
     type: PageType.Measure,
     substitutable: MeasureTemplateName["LTSS-2"],
     sidebar: false,
@@ -618,7 +618,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-FASI-2"]]: {
     id: "FFS-FASI-2",
-    title: "FASI-2: Fee-For-Service (FFS FASI-2)",
+    navTitle: "FASI-2: Fee-For-Service (FFS FASI-2)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -655,7 +655,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-FASI-2"]]: {
     id: "MLTSS-FASI-2",
-    title: "FASI-2: Managed Care (MLTSS)",
+    navTitle: "FASI-2: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -692,7 +692,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["HCBS-10"]]: {
     id: "HCBS-10",
-    title:
+    navTitle:
       "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through Managed Care Organizations",
     type: PageType.Measure,
     sidebar: false,
@@ -714,7 +714,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-HCBS-10"]]: {
     id: "MLTSS-HCBS-10",
-    title: "HCBS-10: Managed Care (MLTSS)",
+    navTitle: "HCBS-10: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -743,7 +743,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["LTSS-3"]]: {
     id: "LTSS-3",
-    title: "LTSS-3: Shared Person-Centered Plan with Primary Care Provider",
+    navTitle: "LTSS-3: Shared Person-Centered Plan with Primary Care Provider",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -767,7 +767,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-3"]]: {
     id: "FFS-3",
-    title: "LTSS-3: Fee-For-Service (FFS LTSS)",
+    navTitle: "LTSS-3: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -821,7 +821,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-3"]]: {
     id: "MLTSS-3",
-    title: "LTSS-3: Managed Care (MLTSS)",
+    navTitle: "LTSS-3: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -875,7 +875,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["LTSS-4"]]: {
     id: "LTSS-4",
-    title:
+    navTitle:
       "LTSS-4: Reassessment and Person-Centered Plan Update after Inpatient Discharge",
     type: PageType.Measure,
     sidebar: false,
@@ -900,7 +900,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-4"]]: {
     id: "FFS-4",
-    title: "LTSS-4: Fee-For-Service (FFS LTSS)",
+    navTitle: "LTSS-4: Fee-For-Service (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -932,7 +932,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-4"]]: {
     id: "MLTSS-4",
-    title: "LTSS-4: Managed Care (MLTSS)",
+    navTitle: "LTSS-4: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -964,7 +964,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-5"]]: {
     id: "MLTSS-5",
-    title:
+    navTitle:
       "MLTSS-5: Screening, Risk Assessment, and Plan of Care to Prevent Future Falls",
     type: PageType.Measure,
     sidebar: false,
@@ -986,7 +986,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-5-PT1"]]: {
     id: "MLTSS-5-PT1",
-    title: "MLTSS-5 Part 1: Screening (MLTSS)",
+    navTitle: "MLTSS-5 Part 1: Screening (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1027,7 +1027,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-5-PT2"]]: {
     id: "MLTSS-5-PT2",
-    title: "MLTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
+    navTitle: "MLTSS-5 Part 2: Risk Assessment and Plan of Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1084,7 +1084,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS"]]: {
     id: "MLTSS",
-    title: "MLTSS: Plan All-Cause Readmission",
+    navTitle: "MLTSS: Plan All-Cause Readmission",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1105,7 +1105,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-DM"]]: {
     id: "MLTSS-DM",
-    title: "MLTSS: Managed Care (MLTSS)",
+    navTitle: "MLTSS: Managed Care (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1136,7 +1136,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-1"]]: {
     id: "POM-1",
-    title: "POM: People Live in Integrated Environments",
+    navTitle: "POM: People Live in Integrated Environments",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1159,7 +1159,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-1"]]: {
     id: "FFS-POM-1",
-    title: "POM: People Live in Integrated Environments (FFS LTSS)",
+    navTitle: "POM: People Live in Integrated Environments (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1190,7 +1190,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-1"]]: {
     id: "MLTSS-POM-1",
-    title: "POM: People Live in Integrated Environments (MLTSS)",
+    navTitle: "POM: People Live in Integrated Environments (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1221,7 +1221,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-2"]]: {
     id: "POM-2",
-    title: "POM: People Participate in the Life of the Community",
+    navTitle: "POM: People Participate in the Life of the Community",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1244,7 +1244,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-2"]]: {
     id: "FFS-POM-2",
-    title: "POM: People Participate in the Life of the Community (FFS LTSS)",
+    navTitle: "POM: People Participate in the Life of the Community (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1275,7 +1275,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-2"]]: {
     id: "MLTSS-POM-2",
-    title: "POM: People Participate in the Life of the Community (MLTSS)",
+    navTitle: "POM: People Participate in the Life of the Community (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1306,7 +1306,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-3"]]: {
     id: "POM-3",
-    title: "POM: People Choose Services",
+    navTitle: "POM: People Choose Services",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1329,7 +1329,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-3"]]: {
     id: "FFS-POM-3",
-    title: "POM: People Choose Services (FFS LTSS)",
+    navTitle: "POM: People Choose Services (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1360,7 +1360,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-3"]]: {
     id: "MLTSS-POM-3",
-    title: "POM: People Choose Services (MLTSS)",
+    navTitle: "POM: People Choose Services (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1391,7 +1391,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-4"]]: {
     id: "POM-4",
-    title: "POM: People Realize Personal Goals",
+    navTitle: "POM: People Realize Personal Goals",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1414,7 +1414,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-4"]]: {
     id: "FFS-POM-4",
-    title: "POM: People Realize Personal Goals (FFS LTSS)",
+    navTitle: "POM: People Realize Personal Goals (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1445,7 +1445,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-4"]]: {
     id: "MLTSS-POM-4",
-    title: "POM: People Realize Personal Goals (MLTSS)",
+    navTitle: "POM: People Realize Personal Goals (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1476,7 +1476,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-5"]]: {
     id: "POM-5",
-    title: "POM: People are Free from Abuse and Neglect",
+    navTitle: "POM: People are Free from Abuse and Neglect",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1499,7 +1499,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-5"]]: {
     id: "FFS-POM-5",
-    title: "POM: People are Free from Abuse and Neglect (FFS LTSS)",
+    navTitle: "POM: People are Free from Abuse and Neglect (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1530,7 +1530,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-5"]]: {
     id: "MLTSS-POM-5",
-    title: "POM: People are Free from Abuse and Neglect (MLTSS)",
+    navTitle: "POM: People are Free from Abuse and Neglect (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1561,7 +1561,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-6"]]: {
     id: "POM-6",
-    title: "POM: People Have the Best Possible Health",
+    navTitle: "POM: People Have the Best Possible Health",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1584,7 +1584,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-6"]]: {
     id: "FFS-POM-6",
-    title: "POM: People Have the Best Possible Health (FFS LTSS)",
+    navTitle: "POM: People Have the Best Possible Health (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1615,7 +1615,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-6"]]: {
     id: "MLTSS-POM-6",
-    title: "POM: People Have the Best Possible Health (MLTSS)",
+    navTitle: "POM: People Have the Best Possible Health (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1646,7 +1646,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["POM-7"]]: {
     id: "POM-7",
-    title: "POM: People Interact with Other Members of the Community",
+    navTitle: "POM: People Interact with Other Members of the Community",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -1669,7 +1669,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["FFS-POM-7"]]: {
     id: "FFS-POM-7",
-    title: "People Interact with Other Members of the Community (FFS LTSS)",
+    navTitle: "People Interact with Other Members of the Community (FFS LTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
@@ -1700,7 +1700,7 @@ export const measureTemplates: Record<
   },
   [MeasureTemplateName["MLTSS-POM-7"]]: {
     id: "MLTSS-POM-7",
-    title: "People Interact with Other Members of the Community (MLTSS)",
+    navTitle: "People Interact with Other Members of the Community (MLTSS)",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [

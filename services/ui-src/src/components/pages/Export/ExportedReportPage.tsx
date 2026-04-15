@@ -200,7 +200,7 @@ export const renderReportSections = (
       return (
         <Box key={`${section.id}.${idx}`} marginBottom="-spacer4">
           <Heading as="h2" variant="h2">
-            {section.title}
+            {section.navTitle}
           </Heading>
         </Box>
       );
@@ -213,7 +213,7 @@ export const renderReportSections = (
         <Flex flexDirection="column">
           {showHeader && (
             <Heading as="h2" variant="h2">
-              {section.title}
+              {section.navTitle}
             </Heading>
           )}
           <ExportedReportWrapper section={section} />

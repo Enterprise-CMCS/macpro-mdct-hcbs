@@ -74,7 +74,7 @@ export const Sidebar = () => {
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box width="100%" height="100%">
-              {navItem(page.title!, index)}
+              {navItem(page.navTitle!, index)}
             </Box>
             {childSections?.length! > 0 && (
               <Box onClick={() => setToggle(page.id)}>

@@ -27,7 +27,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -56,7 +56,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     },
     {
       id: "req-measure-result",
-      title: "Required Measure Results",
+      navTitle: "Required Measure Results",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -90,7 +90,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     },
     {
       id: "optional-measure-result",
-      title: "Optional Measure Results",
+      navTitle: "Optional Measure Results",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -125,7 +125,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
