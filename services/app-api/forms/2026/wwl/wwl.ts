@@ -43,6 +43,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "general-info",
       navTitle: "General Information",
+      tabTitle: "General Information - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -80,6 +81,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "waiting-list-identifiers",
       navTitle: "Waiting List Identifiers",
+      tabTitle: "Waiting List Identifiers - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -95,6 +97,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "financial-eligibility",
       navTitle: "Financial Eligibility",
+      tabTitle: "Financial Eligibility - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -128,6 +131,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "functional-eligibility",
       navTitle: "Functional Eligibility",
+      tabTitle: "Functional Eligibility - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -161,6 +165,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "add-other-eligibility",
       navTitle: "Other Eligibility",
+      tabTitle: "Other Eligibility - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -180,6 +185,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "waiting-list-limits",
       navTitle: "Waiting List Limits",
+      tabTitle: "Waiting List Limits - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -219,6 +225,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "placement",
       navTitle: "Placement",
+      tabTitle: "Placement - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -262,6 +269,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "amount-of-time-on-the-waiting-list",
       navTitle: "Amount of time on the waiting list",
+      tabTitle: "Time on Waiting List - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -297,6 +305,7 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "additional-notes",
       navTitle: "Additional notes/comments",
+      tabTitle: "Notes and Comments - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -317,6 +326,8 @@ export const wwlReportTemplate: ReportBase = {
     {
       id: "review-submit",
       navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - WWL - HCBS",
+      submittedTabTitle: "Successfully Submitted - WWL - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
