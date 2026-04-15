@@ -8,7 +8,7 @@ export const Title = ({ tabTitle }: TitleProps) => {
   const defaultTitle = useRef(document.title);
 
   useEffect(() => {
-    document.title = tabTitle ? tabTitle : defaultTitle.current;
+    document.title = tabTitle ?? defaultTitle.current;
 
     return () => {
       document.title = defaultTitle.current;
