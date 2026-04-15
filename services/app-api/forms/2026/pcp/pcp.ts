@@ -27,7 +27,7 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -58,7 +58,7 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "pcp-1",
-      title: "HCBS PCP-1",
+      navTitle: "HCBS PCP-1",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -87,7 +87,7 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "pcp-2",
-      title: "HCBS PCP-2",
+      navTitle: "HCBS PCP-2",
       type: PageType.Standard,
       sidebar: true,
       hideNavButtons: false,
@@ -117,7 +117,7 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,

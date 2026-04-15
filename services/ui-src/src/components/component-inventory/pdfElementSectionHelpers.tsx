@@ -9,7 +9,7 @@ import {
 
 export const textboxSection: FormPageTemplate = {
   id: "mock-textbox-id",
-  title: "mock-textbox-title",
+  navTitle: "mock-textbox-title",
   type: PageType.Standard,
   elements: [
     {
@@ -25,7 +25,7 @@ export const textboxSection: FormPageTemplate = {
 
 export const textAreaSection: FormPageTemplate = {
   id: "mock-textarea-id",
-  title: "mock-textarea-title",
+  navTitle: "mock-textarea-title",
   type: PageType.Standard,
   elements: [
     {
@@ -41,7 +41,7 @@ export const textAreaSection: FormPageTemplate = {
 
 export const numberFieldSection: FormPageTemplate = {
   id: "mock-numberfield-id",
-  title: "mock-number-title",
+  navTitle: "mock-number-title",
   type: PageType.Standard,
   elements: [
     {
@@ -57,7 +57,7 @@ export const numberFieldSection: FormPageTemplate = {
 
 export const dateFieldSection: FormPageTemplate = {
   id: "mock-date-id",
-  title: "mock-date-title",
+  navTitle: "mock-date-title",
   type: PageType.Standard,
   elements: [
     {
@@ -73,7 +73,7 @@ export const dateFieldSection: FormPageTemplate = {
 
 export const radioFieldSection: FormPageTemplate = {
   id: "mock-radio-id",
-  title: "mock-radio-title",
+  navTitle: "mock-radio-title",
   type: PageType.Standard,
   elements: [
     {
@@ -93,7 +93,7 @@ export const radioFieldSection: FormPageTemplate = {
 
 export const checkboxFieldSection: FormPageTemplate = {
   id: "mock-checkbox-id",
-  title: "mock-checkbox-title",
+  navTitle: "mock-checkbox-title",
   type: PageType.Standard,
   elements: [
     {
@@ -125,7 +125,7 @@ export const checkboxFieldSection: FormPageTemplate = {
 
 export const ndrFieldsSection: FormPageTemplate = {
   id: "mock-ndrFields-id",
-  title: "mock-ndrFields-title",
+  navTitle: "mock-ndrFields-title",
   type: PageType.Standard,
   elements: [
     {
@@ -147,7 +147,7 @@ export const ndrFieldsSection: FormPageTemplate = {
 
 export const ndrEnhancedSection: FormPageTemplate = {
   id: "mock-ndrEnhanced-id",
-  title: "mock-ndrEnhanced-title",
+  navTitle: "mock-ndrEnhanced-title",
   type: PageType.Standard,
   elements: [
     {
@@ -165,7 +165,7 @@ export const ndrEnhancedSection: FormPageTemplate = {
 
 export const ndrSection: FormPageTemplate = {
   id: "mock-ndr-id",
-  title: "mock-ndr-title",
+  navTitle: "mock-ndr-title",
   type: PageType.Standard,
   elements: [
     {
@@ -179,7 +179,7 @@ export const ndrSection: FormPageTemplate = {
 
 export const ndrBasicSection: FormPageTemplate = {
   id: "mock-ndrBasic-id",
-  title: "mock-ndrBasic-title",
+  navTitle: "mock-ndrBasic-title",
   type: PageType.Standard,
   elements: [
     {
@@ -200,7 +200,7 @@ export const ndrBasicSection: FormPageTemplate = {
 
 export const EligibilityTableSection: FormPageTemplate = {
   id: "mock-eligibilityTable-id",
-  title: "mock-eligibilityTable-title",
+  navTitle: "mock-eligibilityTable-title",
   type: PageType.Standard,
   elements: [
     {
@@ -231,7 +231,7 @@ export const EligibilityTableSection: FormPageTemplate = {
 
 export const lengthOfStayRateSection: FormPageTemplate = {
   id: "mock-lengthOfStayRate-id",
-  title: "mock-lengthOfStayRate-title",
+  navTitle: "mock-lengthOfStayRate-title",
   type: PageType.Standard,
   elements: [
     {
@@ -253,7 +253,7 @@ export const lengthOfStayRateSection: FormPageTemplate = {
 
 export const readmissionRateSection: FormPageTemplate = {
   id: "mock-readmissionRate-id",
-  title: "mock-readmissionRate-title",
+  navTitle: "mock-readmissionRate-title",
   type: PageType.Standard,
   elements: [
     {
@@ -277,7 +277,7 @@ export const readmissionRateSection: FormPageTemplate = {
 
 export const measureDetailsSection: MeasurePageTemplate = {
   id: "mock-lengthOfStayRate-id",
-  title: "mock-lengthOfStayRate-title",
+  navTitle: "mock-lengthOfStayRate-title",
   type: PageType.Measure,
   cmitId: "mockCmitID",
   cmitInfo: {
@@ -296,7 +296,7 @@ export const measureDetailsSection: MeasurePageTemplate = {
 
 export const listInputSection: FormPageTemplate = {
   id: "mock-list-input-id",
-  title: "mock-list-input-title",
+  navTitle: "mock-list-input-title",
   type: PageType.Standard,
   elements: [
     {
