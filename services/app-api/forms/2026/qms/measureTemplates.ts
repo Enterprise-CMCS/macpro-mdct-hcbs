@@ -715,7 +715,7 @@ export const measureTemplates: Record<
     id: "HCBS-10",
     navTitle:
       "HCBS-10: Self-direction of Services and Supports Among Medicaid Beneficiaries Receiving LTSS through Managed Care Organizations",
-    tabTitle: "",
+    tabTitle: "HCBS-10: Self-direction of Services - QMS - HCBS",
     type: PageType.Measure,
     sidebar: false,
     elements: [
@@ -737,7 +737,7 @@ export const measureTemplates: Record<
   [MeasureTemplateName["MLTSS-HCBS-10"]]: {
     id: "MLTSS-HCBS-10",
     navTitle: "HCBS-10: Managed Care (MLTSS)",
-    tabTitle: "HCBS-10: Self-direction of Services - QMS - HCBS",
+    tabTitle: "",
     type: PageType.MeasureResults,
     sidebar: false,
     elements: [
