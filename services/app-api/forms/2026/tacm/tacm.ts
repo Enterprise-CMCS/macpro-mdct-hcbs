@@ -38,6 +38,7 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "general-info",
       navTitle: "General Information",
+      tabTitle: "General Information - TACM - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -69,6 +70,7 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "hapch-1",
       navTitle: "HCBS HAPCH-1",
+      tabTitle: "HAPCH-1: Service Start Time - TACM - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -118,6 +120,7 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "hapch-2",
       navTitle: "HCBS HAPCH-2",
+      tabTitle: "HAPCH-2: Authorized Hours Provided - TACM - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -168,6 +171,8 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "review-submit",
       navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - TACM - HCBS",
+      submittedTabTitle: "Successfully Submitted - TACM - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
