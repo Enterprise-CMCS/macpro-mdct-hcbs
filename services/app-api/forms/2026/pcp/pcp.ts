@@ -28,6 +28,7 @@ export const pcpReportTemplate: ReportBase = {
     {
       id: "general-info",
       navTitle: "General Information",
+      tabTitle: "General Information - PCP - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -59,6 +60,7 @@ export const pcpReportTemplate: ReportBase = {
     {
       id: "pcp-1",
       navTitle: "HCBS PCP-1",
+      tabTitle: "PCP-1: Functional Reassessment - PCP - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -88,6 +90,7 @@ export const pcpReportTemplate: ReportBase = {
     {
       id: "pcp-2",
       navTitle: "HCBS PCP-2",
+      tabTitle: "PCP-2: Service Plan Update - PCP - HCBS",
       type: PageType.Standard,
       sidebar: true,
       hideNavButtons: false,
@@ -118,6 +121,8 @@ export const pcpReportTemplate: ReportBase = {
     {
       id: "review-submit",
       navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - PCP - HCBS",
+      submittedTabTitle: "Successfully Submitted - PCP - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
