@@ -130,6 +130,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
       id: "review-submit",
       navTitle: "Review & Submit",
       tabTitle: "Review & Submit - QMS - HCBS",
+      submittedTabTitle: "Successfully Submitted - QMS - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -169,7 +170,6 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Header,
           id: "submitted-header",
           text: "Successfully Submitted",
-          tabTitle: "Successfully Submitted - QMS - HCBS",
           icon: HeaderIcon.Check,
         },
         {

@@ -315,7 +315,6 @@ export type HeaderTemplate = {
   type: ElementType.Header;
   id: string;
   text: string;
-  tabTitle?: string;
   icon?: HeaderIcon;
 };
 
