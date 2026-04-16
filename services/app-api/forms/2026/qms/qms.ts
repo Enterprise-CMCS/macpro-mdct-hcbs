@@ -28,6 +28,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     {
       id: "general-info",
       navTitle: "General Information",
+      tabTitle: "General Information - QMS - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -57,6 +58,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     {
       id: "req-measure-result",
       navTitle: "Required Measure Results",
+      tabTitle: "Required Measure Results - QMS - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -91,6 +93,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     {
       id: "optional-measure-result",
       navTitle: "Optional Measure Results",
+      tabTitle: "Optional Measure Results - QMS - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -126,6 +129,8 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     {
       id: "review-submit",
       navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - QMS - HCBS",
+      submittedTabTitle: "Successfully Submitted - QMS - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
