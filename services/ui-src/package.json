@@ -60,7 +60,7 @@
     "pa11y": "^6.2.3",
     "pa11y-runner-htmlcs": "^2.0.1",
     "typescript": "^5.9.3",
-    "vite": "^5.4.21",
+    "vite": "^8.0.8",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "browserslist": {
