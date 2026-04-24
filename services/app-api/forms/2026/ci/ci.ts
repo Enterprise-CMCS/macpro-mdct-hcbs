@@ -225,7 +225,7 @@ export const ciReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them that you have submitted the CI report and it is ready for their review",
+          text: "Email your CMS representative to inform them that you have submitted the CI report and it is ready for their review.",
         },
         exportToPDF,
       ],

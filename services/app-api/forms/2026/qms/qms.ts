@@ -190,7 +190,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them that you have submitted the QMS report and it is ready for their review",
+          text: "Email your CMS representative to inform them that you have submitted the QMS report and it is ready for their review.",
         },
         exportToPDF,
       ],
