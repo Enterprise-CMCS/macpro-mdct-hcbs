@@ -387,7 +387,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
+          text: "Email your CMS HCBS Lead to inform them you submitted the Waiver Waiting List Report and it is ready for their review.",
         },
         exportToPDF,
       ],
