@@ -239,6 +239,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Checkbox,
           label:
             "How does the state select individuals on the waiting list for enrollment when a slot becomes available?",
+          helperText: "Select all that apply",
           required: true,
           choices: [
             {
