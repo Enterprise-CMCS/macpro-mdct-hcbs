@@ -135,7 +135,7 @@ export const tacmReportTemplate: ReportBase = {
           label: "Instructions",
           value:
             "<b>Sampling methodologies</b>" +
-            "<p>States have the choice of two sampling methodologies when reporting on HAPCH-1: Entire population or probability sample. If the probability sample is chosen, the state is required describe the:</p>" +
+            "<p>States have the choice of two sampling methodologies when reporting on HAPCH-2: Entire population or probability sample. If the probability sample is chosen, the state is required describe the:</p>" +
             "<ul>" +
             "  <li>Sampling approach used</li>" +
             "  <li>Total eligible population</li>" +
