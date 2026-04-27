@@ -268,11 +268,13 @@ const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
+  caption: string().required(),
 });
 
 const eligibilityTableSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.EligibilityTable)),
   id: string().required(),
+  caption: string().required(),
   fieldLabels: object().shape({
     title: string().required(),
     description: string().required(),
@@ -514,9 +516,11 @@ const statusAlertSchema = object().shape({
 
 const formPageTemplateSchema = object().shape({
   id: string().required(),
-  title: string().required(),
+  navTitle: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
   status: string().notRequired(),
+  tabTitle: string().notRequired(),
+  submittedTabTitle: string().notRequired(),
   elements: array().of(pageElementSchema).required(),
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),

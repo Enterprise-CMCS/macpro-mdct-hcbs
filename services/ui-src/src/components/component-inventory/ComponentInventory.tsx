@@ -43,7 +43,7 @@ export const ComponentInventory = () => {
         },
         childPageIds: [],
         type: "measure",
-        title: "Measure Title",
+        navTitle: "Measure Title",
         dependentPages: [
           {
             key: "FFS",

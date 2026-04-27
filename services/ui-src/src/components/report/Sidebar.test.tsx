@@ -34,9 +34,9 @@ const mockPageMap = new Map([
 const report = {
   pages: [
     { childPageIds: ["id-1", "id-2"], id: "root" },
-    { title: "Section 1", id: "id-1", childPageIds: ["child-1"] },
-    { title: "Section 2", id: "id-2" },
-    { title: "Child 1", id: "child-1" },
+    { navTitle: "Section 1", id: "id-1", childPageIds: ["child-1"] },
+    { navTitle: "Section 2", id: "id-2" },
+    { navTitle: "Child 1", id: "child-1" },
   ],
 };
 

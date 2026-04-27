@@ -91,7 +91,9 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-  title?: undefined;
+  navTitle?: undefined;
+  tabTitle?: undefined;
+  submittedTabTitle?: undefined;
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
@@ -106,7 +108,9 @@ export interface PageData {
 
 export type FormPageTemplate = {
   id: PageId;
-  title: string;
+  navTitle: string;
+  tabTitle?: string;
+  submittedTabTitle?: string;
   type: PageType;
   status?: PageStatus;
   elements: PageElement[];
@@ -143,7 +147,7 @@ export const isMeasureTemplate = (
 export const isFormPageTemplate = (
   page: PageTemplate
 ): page is FormPageTemplate => {
-  return (page as FormPageTemplate).title != undefined;
+  return (page as FormPageTemplate).navTitle != undefined;
 };
 
 export const isMeasurePageTemplate = (
@@ -347,6 +351,7 @@ export type AccordionTemplate = {
 export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   id: string;
+  caption: string;
   measureDisplay: "required" | "optional";
 };
 
@@ -361,6 +366,7 @@ export type EligibilityTableItem = {
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;
+  caption: string;
   fieldLabels: {
     title: string;
     description: string;

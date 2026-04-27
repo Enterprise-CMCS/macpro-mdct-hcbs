@@ -42,7 +42,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
+      tabTitle: "General Information - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -79,7 +80,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "waiting-list-identifiers",
-      title: "Waiting List Identifiers",
+      navTitle: "Waiting List Identifiers",
+      tabTitle: "Waiting List Identifiers - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -94,7 +96,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "financial-eligibility",
-      title: "Financial Eligibility",
+      navTitle: "Financial Eligibility",
+      tabTitle: "Financial Eligibility - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -127,7 +130,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "functional-eligibility",
-      title: "Functional Eligibility",
+      navTitle: "Functional Eligibility",
+      tabTitle: "Functional Eligibility - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -160,7 +164,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "add-other-eligibility",
-      title: "Other Eligibility",
+      navTitle: "Other Eligibility",
+      tabTitle: "Other Eligibility - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -179,7 +184,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "waiting-list-limits",
-      title: "Waiting List Limits",
+      navTitle: "Waiting List Limits",
+      tabTitle: "Waiting List Limits - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -218,7 +224,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "placement",
-      title: "Placement",
+      navTitle: "Placement",
+      tabTitle: "Placement - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -232,6 +239,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Checkbox,
           label:
             "How does the state select individuals on the waiting list for enrollment when a slot becomes available?",
+          helperText: "Select all that apply",
           required: true,
           choices: [
             {
@@ -261,7 +269,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "amount-of-time-on-the-waiting-list",
-      title: "Amount of time on the waiting list",
+      navTitle: "Amount of time on the waiting list",
+      tabTitle: "Time on Waiting List - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -296,7 +305,8 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "additional-notes",
-      title: "Additional notes/comments",
+      navTitle: "Additional notes/comments",
+      tabTitle: "Notes and Comments - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -316,7 +326,9 @@ export const wwlReportTemplate: ReportBase = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - WWL - HCBS",
+      submittedTabTitle: "Successfully Submitted - WWL - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -337,7 +349,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your WWL Report is accurate.  While it is in the "Submitted" status, you will only be able to make edits if you contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your WWL Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -370,13 +382,13 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the WWL report and it is ready for their review.",
         },
         exportToPDF,
       ],

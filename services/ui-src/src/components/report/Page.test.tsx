@@ -133,16 +133,19 @@ const elements: PageElement[] = [
     type: ElementType.MeasureTable,
     measureDisplay: "required",
     id: "",
+    caption: "Required Measure Results",
   },
   {
     type: ElementType.MeasureTable,
     measureDisplay: "required",
     id: "",
+    caption: "Required Measure Results",
   },
   {
     type: ElementType.MeasureTable,
     id: "",
     measureDisplay: "optional",
+    caption: "Optional Measure Results",
   },
   {
     type: ElementType.StatusTable,

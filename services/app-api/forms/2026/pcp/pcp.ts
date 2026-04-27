@@ -27,7 +27,8 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
+      tabTitle: "General Information - PCP - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -58,7 +59,8 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "pcp-1",
-      title: "HCBS PCP-1",
+      navTitle: "HCBS PCP-1",
+      tabTitle: "PCP-1: Functional Reassessment - PCP - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -87,7 +89,8 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "pcp-2",
-      title: "HCBS PCP-2",
+      navTitle: "HCBS PCP-2",
+      tabTitle: "PCP-2: Service Plan Update - PCP - HCBS",
       type: PageType.Standard,
       sidebar: true,
       hideNavButtons: false,
@@ -117,7 +120,9 @@ export const pcpReportTemplate: ReportBase = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - PCP - HCBS",
+      submittedTabTitle: "Successfully Submitted - PCP - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -138,7 +143,7 @@ export const pcpReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your PCP Report is accurate.  While it is in the "Submitted" status, you will only be able to make edits if you contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your PCP Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -171,13 +176,13 @@ export const pcpReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the PCP report and it is ready for their review.",
         },
         exportToPDF,
       ],

@@ -73,9 +73,10 @@ describe("ExportedReportPage", () => {
   });
   it("ExportReportPage is visible", () => {
     render(<ExportedReportPage></ExportedReportPage>);
-    expect(
-      screen.getByText("Colorado Quality Measure Set Report for: mock-title")
-    ).toBeInTheDocument();
+    const elements = screen.getAllByText(
+      "Colorado Quality Measure Set Report for: mock-title"
+    );
+    expect(elements.length).toBe(2);
   });
 
   it("Should not render filtered sections", () => {

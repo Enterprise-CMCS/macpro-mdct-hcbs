@@ -34,7 +34,7 @@ const testReport: Report = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -56,7 +56,7 @@ const testReport: Report = {
     },
     {
       id: "req-measure-result",
-      title: "Required Measure Results",
+      navTitle: "Required Measure Results",
       type: PageType.Standard,
       sidebar: true,
       elements: [

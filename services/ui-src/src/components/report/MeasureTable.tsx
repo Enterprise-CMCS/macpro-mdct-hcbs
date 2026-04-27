@@ -9,7 +9,9 @@ import {
   Tr,
   Text,
   Link,
+  TableCaption,
   Flex,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { MeasureReplacementModal, TableStatusIcon } from "components";
 import {
@@ -103,7 +105,7 @@ export const MeasureTableElement = (
           ></TableStatusIcon>
         </Td>
         <Td>
-          <Text fontWeight="bold">{measure.title}</Text>
+          <Text fontWeight="bold">{measure.navTitle}</Text>
           <Text>CMIT number: #{measure.cmit}</Text>
           <Text>Status: {measure.status ?? "Not started"}</Text>
           {errorMessage(measure)}
@@ -142,6 +144,9 @@ export const MeasureTableElement = (
   });
   return (
     <Table variant="measure">
+      <TableCaption>
+        <VisuallyHidden>{table.caption}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Status</Th>

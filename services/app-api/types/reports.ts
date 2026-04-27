@@ -205,7 +205,9 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-  title?: undefined;
+  navTitle?: undefined;
+  tabTitle?: undefined;
+  submittedTabTitle?: undefined;
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
@@ -214,9 +216,11 @@ export type ParentPageTemplate = {
 
 export type FormPageTemplate = {
   id: PageId;
-  title: string;
+  navTitle: string;
   type: PageType;
   status?: PageStatus;
+  tabTitle?: string;
+  submittedTabTitle?: string;
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
@@ -628,6 +632,7 @@ export enum MeasureSpecification {
 export type MeasureTableTemplate = {
   id: string;
   type: ElementType.MeasureTable;
+  caption: string;
   measureDisplay: "required" | "optional";
 };
 
@@ -642,6 +647,7 @@ export type EligibilityTableItem = {
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;
+  caption: string;
   fieldLabels: {
     title: string;
     description: string;

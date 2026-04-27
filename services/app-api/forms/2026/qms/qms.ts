@@ -27,7 +27,8 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
+      tabTitle: "General Information - QMS - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -56,7 +57,8 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
     },
     {
       id: "req-measure-result",
-      title: "Required Measure Results",
+      navTitle: "Required Measure Results",
+      tabTitle: "Required Measure Results - QMS - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -83,13 +85,15 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
         {
           type: ElementType.MeasureTable,
           id: "required-measures",
+          caption: "Required Measure Results",
           measureDisplay: "required",
         },
       ],
     },
     {
       id: "optional-measure-result",
-      title: "Optional Measure Results",
+      navTitle: "Optional Measure Results",
+      tabTitle: "Optional Measure Results - QMS - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -117,13 +121,16 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
         {
           type: ElementType.MeasureTable,
           id: "optional-measures",
+          caption: "Optional Measure Results",
           measureDisplay: "optional",
         },
       ],
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - QMS - HCBS",
+      submittedTabTitle: "Successfully Submitted - QMS - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -144,7 +151,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: "Double check that everything in your QMS Report is accurate. To make edits to your report after submitting, contact your CMS HCBS Lead to unlock your report.",
+          text: 'Double check that everything in your QMS Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -177,13 +184,13 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them you submitted the QMS Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the QMS report and it is ready for their review.",
         },
         exportToPDF,
       ],

@@ -32,7 +32,8 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
+      tabTitle: "General Information - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -63,7 +64,8 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "incid-1",
-      title: "HCBS INCID-1",
+      navTitle: "HCBS INCID-1",
+      tabTitle: "INCID-1: Investigation Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -95,7 +97,8 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "incid-2",
-      title: "HCBS INCID-2",
+      navTitle: "HCBS INCID-2",
+      tabTitle: "INCID-2: Resolution Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -127,7 +130,8 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "incid-3",
-      title: "HCBS INCID-3",
+      navTitle: "HCBS INCID-3",
+      tabTitle: "INCID-3: Corrective Action Completion - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -159,7 +163,9 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - CI - HCBS",
+      submittedTabTitle: "Successfully Submitted - CI - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -180,7 +186,7 @@ export const ciReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your CI Report is accurate. You will be able to make edits after submitting if you contact your CMS HCBS Lead to unlock your report while it is in "Submitted" status.',
+          text: 'Double check that everything in your CI Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -213,13 +219,13 @@ export const ciReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them you submitted the CI Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the CI report and it is ready for their review.",
         },
         exportToPDF,
       ],

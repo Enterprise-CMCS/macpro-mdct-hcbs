@@ -1,6 +1,7 @@
 import {
   Button,
   Table,
+  TableCaption,
   Tbody,
   Td,
   Th,
@@ -17,6 +18,7 @@ import {
   ModalFooter,
   Box,
   Flex,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { EligibilityTableTemplate, EligibilityTableItem } from "types";
 import { PageElementProps } from "../Elements";
@@ -32,7 +34,7 @@ export const EligibilityTableElement = (
   props: PageElementProps<EligibilityTableTemplate>
 ) => {
   const { element, updateElement } = props;
-  const { fieldLabels, modalInstructions, frequencyOptions } = element;
+  const { fieldLabels, caption, modalInstructions, frequencyOptions } = element;
 
   const initialValues = {
     title: "",
@@ -188,6 +190,9 @@ export const EligibilityTableElement = (
   return (
     <Fragment>
       <Table variant="measure">
+        <TableCaption>
+          <VisuallyHidden>{caption}</VisuallyHidden>
+        </TableCaption>
         <Thead>
           <Tr>
             <Th>Other Eligibility</Th>
@@ -312,11 +317,11 @@ export const EligibilityTableElement = (
 
 //The pdf rendering of EligibilityTableElement component
 export const EligibilityTableElementExport = (
-  element: EligibilityTableTemplate
+  element: EligibilityTableTemplate,
+  sectionTitle?: string
 ) => {
   const { fieldLabels } = element;
   const exportElements = element.answer?.map((eligibility) => {
-    const label = eligibility.title;
     const rows = [
       {
         indicator: fieldLabels.description,
@@ -335,11 +340,11 @@ export const EligibilityTableElementExport = (
         response: eligibility.eligibilityUpdate,
       },
     ];
-    return { label, rows };
+    return ExportRateTable([{ label: eligibility.title, rows }], sectionTitle);
   });
 
   if (!exportElements) return <></>;
-  return <>{ExportRateTable(exportElements)}</>;
+  return <>{exportElements}</>;
 };
 
 const sx = {

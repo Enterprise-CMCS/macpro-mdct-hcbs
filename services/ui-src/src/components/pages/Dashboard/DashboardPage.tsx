@@ -18,6 +18,7 @@ import {
   AddEditReportModal,
   DashboardTable,
   PageTemplate,
+  Title,
   UnlockModal,
 } from "components";
 import {
@@ -122,6 +123,7 @@ export const DashboardPage = () => {
 
   return (
     <PageTemplate type="report" sxOverride={sx.layout}>
+      <Title tabTitle={`${reportName} - HCBS`} />
       <Link as={RouterLink} to="/" variant="return">
         <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
         Return home

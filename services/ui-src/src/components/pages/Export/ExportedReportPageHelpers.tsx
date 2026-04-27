@@ -43,7 +43,7 @@ export const createMeasuresSection = (
   if (filteredMeasures.length > 0) {
     // Add heading to beginning of section
     measuresSection.push({
-      title: isRequired ? "Required Measures" : "Optional Measures",
+      navTitle: isRequired ? "Required Measures" : "Optional Measures",
       id: isRequired
         ? "required-measures-heading"
         : "optional-measures-heading",

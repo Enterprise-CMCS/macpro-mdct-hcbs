@@ -1,13 +1,15 @@
 import {
+  Box,
+  Heading,
   Table,
+  TableCaption,
   Thead,
   Th,
   Tr,
-  Tbody,
   Td,
+  Tbody,
   Text,
-  Heading,
-  Box,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { notAnsweredText } from "../../constants";
 import { ElementType } from "types";
@@ -20,13 +22,15 @@ export type ReportTableType = {
   helperText?: string;
   type?: ElementType;
   required?: boolean;
+  caption?: string;
 };
 
 interface Props {
   rows: ReportTableType[];
+  caption: string;
 }
 
-export const ExportedReportTable = ({ rows }: Props) => {
+export const ExportedReportTable = ({ rows, caption }: Props) => {
   const getTextColor = (element: ReportTableType) => {
     return element.response === notAnsweredText && element.required
       ? "palette.error_darker"
@@ -35,6 +39,9 @@ export const ExportedReportTable = ({ rows }: Props) => {
 
   return (
     <Table variant="export">
+      <TableCaption>
+        <VisuallyHidden>{caption}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Indicator</Th>
@@ -62,7 +69,8 @@ export const ExportedReportTable = ({ rows }: Props) => {
 };
 
 export const ExportRateTable = (
-  tableData: { label: string; rows: ReportTableType[] }[]
+  tableData: { label: string; rows: ReportTableType[] }[],
+  caption?: string
 ) => {
   return tableData.map(
     (data: { label: string; rows: ReportTableType[] }, idx) => (
@@ -70,7 +78,10 @@ export const ExportRateTable = (
         <Heading as="h5" variant="h5" className="performance-rate-header">
           {data?.label}
         </Heading>
-        <ExportedReportTable rows={data?.rows} />
+        <ExportedReportTable
+          rows={data?.rows}
+          caption={caption || data.label}
+        />
       </Box>
     )
   );

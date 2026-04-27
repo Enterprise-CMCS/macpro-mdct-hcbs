@@ -11,6 +11,7 @@ import {
 const mockedElement: EligibilityTableTemplate = {
   id: "mock-id",
   type: ElementType.EligibilityTable,
+  caption: "Other Eligibility",
   fieldLabels: {
     title: "title",
     description: "description",
@@ -53,7 +54,7 @@ describe("<EligibilityTableElement />", () => {
 
     test("EligibilityTableElement is visible", () => {
       render(<EligibilityTableWrapper template={mockedElement} />);
-      expect(screen.getByText("Other Eligibility")).toBeVisible();
+      expect(screen.getAllByText("Other Eligibility")[0]).toBeVisible();
       expect(screen.getByText("mockTitle1")).toBeVisible();
     });
 
@@ -141,7 +142,9 @@ describe("<EligibilityTableElement />", () => {
   describe("EligibilityTableElementExport", () => {
     it("should render export table", () => {
       render(EligibilityTableElementExport(mockedElement));
-      expect(screen.getByText("mockTitle1")).toBeVisible();
+      const mockTitleElements = screen.getAllByText("mockTitle1");
+      expect(mockTitleElements).toHaveLength(2);
+      expect(mockTitleElements[0]).toBeVisible();
       expect(
         screen.getByRole("cell", {
           name: mockedElement.fieldLabels.description,
