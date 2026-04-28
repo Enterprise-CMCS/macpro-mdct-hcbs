@@ -169,6 +169,7 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
+  Label = "label",
   SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
@@ -202,6 +203,7 @@ export enum ElementType {
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
+  | LabelTemplate
   | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
@@ -253,6 +255,13 @@ export type SubHeaderTemplate = {
   text: string;
   helperText?: string;
   hideCondition?: HideCondition;
+};
+
+export type LabelTemplate = {
+  type: ElementType.Label;
+  id: string;
+  label: string;
+  helperText?: string;
 };
 
 export type SubHeaderMeasureTemplate = {
@@ -316,9 +325,11 @@ export type DateTemplate = {
   type: ElementType.Date;
   id: string;
   label: string;
-  helperText: string;
+  helperText?: string;
   answer?: string;
   required: boolean;
+  invalidDateMessage?: string;
+  marginBottom?: string;
 };
 
 export type DropdownTemplate = {

@@ -40,7 +40,8 @@ export const makeEmptyStringCopyOf = <T>(obj: T): T => {
 export const validateDate = (
   rawValue: string,
   maskedValue: string,
-  isRequired: boolean
+  isRequired: boolean,
+  invalidDateMessage?: string
 ) => {
   const parsedValue = parseMMDDYYYY(maskedValue);
   const isValid = parsedValue !== undefined;
@@ -49,9 +50,9 @@ export const validateDate = (
     if (!rawValue && isRequired) {
       errorMessage = ErrorMessages.requiredResponse;
     } else if (isRequired) {
-      errorMessage = ErrorMessages.mustBeADate;
+      errorMessage = invalidDateMessage ?? ErrorMessages.mustBeADate;
     } else if (rawValue && !isRequired) {
-      errorMessage = ErrorMessages.mustBeADateOptional;
+      errorMessage = invalidDateMessage ?? ErrorMessages.mustBeADateOptional;
     }
   }
   return { parsedValue, isValid, errorMessage };

@@ -43,6 +43,13 @@ const subHeaderTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const labelTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.Label)),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().notRequired(),
+});
+
 const subHeaderMeasureSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.SubHeaderMeasure)),
   id: string().required(),
@@ -106,9 +113,11 @@ const dateTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Date)),
   id: string().required(),
   label: string().required(),
-  helperText: string().required(),
+  helperText: string().notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
+  invalidDateMessage: string().notRequired(),
+  marginBottom: string().notRequired(),
 });
 
 const dropdownTemplateSchema = object().shape({
@@ -144,6 +153,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return headerTemplateSchema;
     case ElementType.SubHeader:
       return subHeaderTemplateSchema;
+    case ElementType.Label:
+      return labelTemplateSchema;
     case ElementType.SubHeaderMeasure:
       return subHeaderMeasureSchema;
     case ElementType.NestedHeading:

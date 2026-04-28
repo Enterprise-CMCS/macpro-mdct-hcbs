@@ -7,6 +7,8 @@ import {
   CheckboxTemplate,
   PageElement,
   ListInputTemplate,
+  DateTemplate,
+  LabelTemplate,
 } from "../../types/reports";
 
 // Any elements that are reused across multiple reports are added here
@@ -159,3 +161,35 @@ export const waiverListInputField: ListInputTemplate = {
   buttonText: "Add waiver/demonstration name",
   required: false,
 };
+
+export const dateRangeFieldLabel: LabelTemplate = {
+  type: ElementType.Label,
+  id: "date-range-field-label",
+  label: "Measurement period dates",
+  helperText:
+    "Select the measurement period start and end dates for this individual metric.",
+};
+
+export const startDateField: DateTemplate = {
+  type: ElementType.Date,
+  id: "measurement-period-start-date",
+  label: "Measurement start date",
+  invalidDateMessage:
+    "Measurement start date is invalid. Please enter date in MM/DD/YYYY format",
+  required: true,
+};
+
+export const endDateField: DateTemplate = {
+  type: ElementType.Date,
+  id: "measurement-period-end-date",
+  label: "Measurement end date",
+  invalidDateMessage:
+    "Measurement end date is invalid. Please enter date in MM/DD/YYYY format",
+  required: true,
+};
+
+export const dateRangeField: PageElement[] = [
+  dateRangeFieldLabel,
+  startDateField,
+  endDateField,
+];
