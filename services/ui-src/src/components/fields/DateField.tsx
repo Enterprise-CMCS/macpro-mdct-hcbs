@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Box } from "@chakra-ui/react";
 import { parseHtml } from "utils";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { PageElementProps } from "../report/Elements";
@@ -62,14 +63,16 @@ export const DateField = (props: DateFieldProps) => {
   })();
 
   return (
-    <CmsdsDateField
-      name={dateTextbox.id}
-      label={labelText}
-      onChange={onChangeHandler}
-      value={displayValue}
-      hint={parsedHint}
-      errorMessage={errorMessage || rangeErrorMessage}
-      disabled={props.disabled}
-    />
+    <Box>
+      <CmsdsDateField
+        name={dateTextbox.id}
+        label={labelText}
+        onChange={onChangeHandler}
+        value={displayValue}
+        hint={parsedHint}
+        errorMessage={errorMessage || rangeErrorMessage}
+        disabled={props.disabled}
+      />
+    </Box>
   );
 };
