@@ -228,6 +228,15 @@ const dateFieldElement: PageElement[] = [
   },
 ];
 
+const labelElement: PageElement[] = [
+  {
+    type: ElementType.Label,
+    id: "measurement-period-label",
+    label: "Measurement period dates",
+    helperText: "Select the measurement period start and end dates.",
+  },
+];
+
 describe("Page Component with state user", () => {
   test.each(elements)("Renders all element types: %p", (element) => {
     const { container } = render(
@@ -275,6 +284,41 @@ describe("Page Component with state user", () => {
       />
     );
     expect(container).not.toBeEmptyDOMElement();
+  });
+
+  test("renders Label element text and helper text", () => {
+    render(
+      <Page id="mock-page" elements={labelElement} setElements={jest.fn()} />
+    );
+
+    expect(screen.getByText("Measurement period dates")).toBeInTheDocument();
+    expect(
+      screen.getByText("Select the measurement period start and end dates.")
+    ).toBeInTheDocument();
+  });
+
+  test("date field update calls setElements", async () => {
+    const setElements = jest.fn();
+    render(
+      <Page
+        id="mock-page"
+        elements={[
+          {
+            type: ElementType.Date,
+            id: "measurement-period-start-date",
+            label: "Measurement start date",
+            helperText: "MM/DD/YYYY",
+            required: true,
+          },
+        ]}
+        setElements={setElements}
+      />
+    );
+
+    const dateField = screen.getByRole("textbox");
+    await userEvent.type(dateField, "10162024");
+
+    expect(setElements).toHaveBeenCalled();
   });
 });
 
