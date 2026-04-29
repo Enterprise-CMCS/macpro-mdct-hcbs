@@ -47,11 +47,21 @@ export const HomePage = () => {
                 </Link>
               </Text>
             </Box>
+            <Heading as="h2" variant="h2">
+              Quality Reports
+            </Heading>
             <QmsIntroductionCard />
-            {isCIReportActive && <CiIntroductionCard />}
+            <Heading as="h2" variant="h2">
+              Transparency Reports
+            </Heading>
             {isTACMReportActive && <TacmIntroductionCard />}
-            {isPCPReportActive && <PCPIntroductionCard />}
             {isWWLReportActive && <WWLIntroductionCard />}
+
+            <Heading as="h2" variant="h2">
+              Compliance Reports
+            </Heading>
+            {isCIReportActive && <CiIntroductionCard />}
+            {isPCPReportActive && <PCPIntroductionCard />}
           </>
         ) : (
           // show read-only view to non-state users
