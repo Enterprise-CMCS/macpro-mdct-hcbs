@@ -162,7 +162,7 @@ export const ParagraphElement = ({
 export const LabelElement = ({ element }: PageElementProps<LabelTemplate>) => {
   return (
     <Stack spacing={0}>
-      <Text fontSize="heading_md" fontWeight="heading_md">
+      <Text fontSize="heading_lg" fontWeight="heading_md">
         {element.label}
       </Text>
       {element.helperText && (
