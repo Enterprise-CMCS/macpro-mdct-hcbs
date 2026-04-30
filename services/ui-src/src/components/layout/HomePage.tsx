@@ -47,21 +47,30 @@ export const HomePage = () => {
                 </Link>
               </Text>
             </Box>
-            <Heading as="h2" variant="h2">
-              Quality Reports
-            </Heading>
-            <QmsIntroductionCard />
-            <Heading as="h2" variant="h2">
-              Transparency Reports
-            </Heading>
-            {isTACMReportActive && <TacmIntroductionCard />}
-            {isWWLReportActive && <WWLIntroductionCard />}
-
-            <Heading as="h2" variant="h2">
-              Compliance Reports
-            </Heading>
-            {isCIReportActive && <CiIntroductionCard />}
-            {isPCPReportActive && <PCPIntroductionCard />}
+            <Box>
+              <Heading as="h2" variant="h2" marginBottom="spacer3">
+                Quality Reports
+              </Heading>
+              <QmsIntroductionCard />
+            </Box>
+            <Box>
+              <Heading as="h2" variant="h2" marginBottom="spacer3">
+                Transparency Reports
+              </Heading>
+              <Box display="flex" flexDirection="column" gap="spacer4">
+                {isTACMReportActive && <TacmIntroductionCard />}
+                {isWWLReportActive && <WWLIntroductionCard />}
+              </Box>
+            </Box>
+            <Box>
+              <Heading as="h2" variant="h2" marginBottom="spacer3">
+                Compliance Reports
+              </Heading>
+              <Box display="flex" flexDirection="column" gap="spacer4">
+                {isCIReportActive && <CiIntroductionCard />}
+                {isPCPReportActive && <PCPIntroductionCard />}
+              </Box>
+            </Box>
           </>
         ) : (
           // show read-only view to non-state users
