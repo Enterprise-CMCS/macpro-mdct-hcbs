@@ -5,7 +5,7 @@ import {
   ListInputTemplate,
   MeasurePageTemplate,
   PerformanceNdrTemplate,
-  NdrEnhancedTemplate,
+  MultiRateNdrTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
   PageElement,
@@ -486,9 +486,9 @@ describe("elementSatisfiesRequired", () => {
     }
   );
 
-  test("accepts complete NDREnhanced rates", () => {
+  test("accepts complete MultiRateNdr elements", () => {
     const element = {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       answer: {
         denominator: 5,
         rates: [
@@ -499,7 +499,7 @@ describe("elementSatisfiesRequired", () => {
         ],
       },
       required: true,
-    } as NdrEnhancedTemplate;
+    } as MultiRateNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
@@ -510,12 +510,12 @@ describe("elementSatisfiesRequired", () => {
     { denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] },
     { denominator: 5, rates: [{ rate: 1.4 }] },
     { denominator: 5, rates: [{ numerator: 7 }] },
-  ])("accepts incomplete NDREnhanced rates", (answer) => {
+  ])("accepts incomplete MultiRateNdr elements", (answer) => {
     const element = {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       answer,
       required: false,
-    } as NdrEnhancedTemplate;
+    } as MultiRateNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 

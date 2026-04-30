@@ -33,7 +33,7 @@ import {
   NDR,
   PerformanceNdr,
   NDRFields,
-  NDREnhanced,
+  MultiRateNdr,
   CheckboxField,
   ListInput,
   EligibilityTableElement,
@@ -105,8 +105,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <ReadmissionRate {...{ updateElement, disabled, element }} />;
       case ElementType.NdrFields:
         return <NDRFields {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrEnhanced:
-        return <NDREnhanced {...{ updateElement, disabled, element }} />;
+      case ElementType.MultiRateNdr:
+        return <MultiRateNdr {...{ updateElement, disabled, element }} />;
       case ElementType.Ndr:
         return <NDR {...{ updateElement, disabled, element }} />;
       case ElementType.PerformanceNdr:

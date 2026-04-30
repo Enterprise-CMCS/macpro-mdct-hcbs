@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { NdrEnhancedTemplate } from "types";
+import { MultiRateNdrTemplate } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -26,7 +26,7 @@ const FieldNames = {
 } as const;
 type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 
-export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
+export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
   const { disabled, element, updateElement } = props;
   const { assessments, answer, helperText, label } = element;
 
@@ -201,7 +201,7 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
 };
 
 //The pdf rendering of NDREnchanced component
-export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
+export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
   const label = element.label ?? "Performance Rates";
 
   const buildData = element.assessments?.map(

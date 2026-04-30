@@ -5,7 +5,7 @@ import { FieldsExport } from "components/rates/types/Fields";
 import { ReadmissionRateExport } from "components/rates/types/ReadmissionRate";
 import { NDRExport } from "components/rates/types/NDR";
 import { notAnsweredText } from "../../constants";
-import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
+import { MultiRateNdrExport } from "components/rates/types/MultiRateNdr";
 import { NDRFieldExport } from "components/rates/types/NDRFields";
 import { PerformanceNdrExport } from "components/rates/types/PerformanceNdr";
 import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
@@ -26,7 +26,7 @@ const tableElementList = [
 
 const renderElementList = [
   ...tableElementList,
-  ElementType.NdrEnhanced,
+  ElementType.MultiRateNdr,
   ElementType.NdrFields,
   ElementType.Ndr,
   ElementType.LengthOfStayRate,
@@ -56,8 +56,8 @@ export const renderElements = (
           {element.text}
         </Heading>
       );
-    case ElementType.NdrEnhanced:
-      return NDREnhancedExport(element);
+    case ElementType.MultiRateNdr:
+      return MultiRateNdrExport(element);
     case ElementType.NdrFields:
       return NDRFieldExport(element);
     case ElementType.Ndr:

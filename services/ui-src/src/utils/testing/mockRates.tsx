@@ -1,7 +1,7 @@
 import {
   NdrTemplate,
   ElementType,
-  NdrEnhancedTemplate,
+  MultiRateNdrTemplate,
   NdrFieldsTemplate,
   PerformanceNdrTemplate,
   LengthOfStayRateTemplate,
@@ -20,9 +20,9 @@ export const mockNDR: NdrTemplate = {
   required: true,
 };
 
-export const mockedNDREnhanced: NdrEnhancedTemplate = {
-  id: "mock-ndr-enhanced",
-  type: ElementType.NdrEnhanced,
+export const mockedMultiRateNdr: MultiRateNdrTemplate = {
+  id: "mock-multi-rate-ndr",
+  type: ElementType.MultiRateNdr,
   label: "test label",
   helperText: "helper text",
   required: true,

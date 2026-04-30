@@ -263,7 +263,7 @@ export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
   const hideFromElements = [
     "measureTable",
     "measureResultsNavigationTable",
-    "ndrEnhanced",
+    "multiRateNdr",
     "ndr",
     "ndrFields",
     "performanceNdr",

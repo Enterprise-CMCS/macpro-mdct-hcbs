@@ -184,8 +184,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return ReadmissionRateSchema;
     case ElementType.NdrFields:
       return ndrFieldsRateSchema;
-    case ElementType.NdrEnhanced:
-      return ndrEnhancedRateSchema;
+    case ElementType.MultiRateNdr:
+      return multiRateNdrSchema;
     case ElementType.Ndr:
       return ndrRateSchema;
     case ElementType.PerformanceNdr:
@@ -434,8 +434,8 @@ const ndrFieldsRateSchema = object().shape({
     .notRequired(),
 });
 
-const ndrEnhancedRateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrEnhanced)),
+const multiRateNdrSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),

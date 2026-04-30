@@ -9,7 +9,7 @@ import {
   PageType,
 } from "types";
 import {
-  mockedNDREnhanced,
+  mockedMultiRateNdr,
   mockLengthOfStayFields,
   mockReadmissionRateFields,
   mockNDR,
@@ -74,9 +74,9 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByRole("row", { name: "Denominator 3" })).toBeVisible();
     expect(screen.getByRole("row", { name: /Rate .* 1\.67/ })).toBeVisible();
   });
-  test("Test render NDR Enhanced element", () => {
-    section.elements.push(mockedNDREnhanced);
-    const element = renderElements(section, mockedNDREnhanced);
+  test("Test render Multi-Rate NDR element", () => {
+    section.elements.push(mockedMultiRateNdr);
+    const element = renderElements(section, mockedMultiRateNdr);
     render(element);
 
     expect(

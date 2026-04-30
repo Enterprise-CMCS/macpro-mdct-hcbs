@@ -236,7 +236,7 @@ export const elementSatisfiesRequired = (
       });
     });
   }
-  if (element.type === ElementType.NdrEnhanced) {
+  if (element.type === ElementType.MultiRateNdr) {
     if (element.answer.denominator === undefined) return false;
     return element.answer.rates.every((rateObj) => {
       if (rateObj.numerator === undefined) return false;

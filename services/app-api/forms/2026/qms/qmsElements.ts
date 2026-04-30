@@ -8,7 +8,7 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
-  NdrEnhancedTemplate,
+  MultiRateNdrTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
   PageElement,
@@ -262,8 +262,8 @@ export const measureFooter: MeasureFooterTemplate = {
 };
 
 //Rates for LTSS-1
-export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
+export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
   id: "measure-rates",
   required: true,
   assessments: [
@@ -278,8 +278,8 @@ export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
   ],
 };
 
-export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
+export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
   id: "measure-rates",
   label: "Exclusion Rate",
   required: true,
@@ -296,8 +296,8 @@ export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
 };
 
 //Rates for LTSS-2
-export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
+export const performanceRatesPersonPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
   id: "measure-rates",
   required: true,
   assessments: [
@@ -312,8 +312,8 @@ export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
   ],
 };
 
-export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
+export const exclusionRatesPersonPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
   id: "measure-rates",
   label: "Exclusion Rate",
   required: true,
@@ -330,8 +330,8 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
 };
 
 //Rates for LTSS-4
-export const performanceRatesReassessmentPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
+export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
   id: "measure-rates",
   required: true,
   assessments: [
@@ -346,8 +346,8 @@ export const performanceRatesReassessmentPlanElements: NdrEnhancedTemplate = {
   ],
 };
 
-export const exclusionRatesPatientPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
+export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
   id: "measure-rates",
   label: "Exclusion Rate",
   required: true,

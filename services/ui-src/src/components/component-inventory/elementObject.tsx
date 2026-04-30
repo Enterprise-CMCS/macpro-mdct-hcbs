@@ -16,7 +16,7 @@ import {
   Fields,
   ReadmissionRate,
   NDRFields,
-  NDREnhanced,
+  MultiRateNdr,
   NDR,
   PerformanceNdr,
   StatusAlert,
@@ -48,7 +48,7 @@ import {
   numberFieldSection,
   radioFieldSection,
   ndrFieldsSection,
-  ndrEnhancedSection,
+  multiRateNdrSection,
   ndrSection,
   performanceNdrSection,
   lengthOfStayRateSection,
@@ -515,15 +515,14 @@ export const elementObject: {
     ],
     pdfVariants: [<ExportedReportWrapper section={ndrFieldsSection} />],
   },
-  [ElementType.NdrEnhanced]: {
-    description:
-      "Enhanced Numerator/Denominator Fields to gather performance rates",
-    id: "id-ndr-enhanced",
+  [ElementType.MultiRateNdr]: {
+    description: "Multiple Numerator + Rate fields with a shared Denominator",
+    id: "id-multi-rate-ndr",
     variants: [
-      <NDREnhanced
+      <MultiRateNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrEnhanced,
+          type: ElementType.MultiRateNdr,
           id: "measure-rates",
           assessments: [
             { id: "assessment-1", label: "First Assessment" },
@@ -534,7 +533,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [<ExportedReportWrapper section={ndrEnhancedSection} />],
+    pdfVariants: [<ExportedReportWrapper section={multiRateNdrSection} />],
   },
   [ElementType.Ndr]: {
     description: "Numerator/Denominator Fields to gather performance rates",

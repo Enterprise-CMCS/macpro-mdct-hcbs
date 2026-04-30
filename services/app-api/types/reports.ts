@@ -260,7 +260,7 @@ export enum ElementType {
   LengthOfStayRate = "lengthOfStay",
   ReadmissionRate = "readmissionRate",
   NdrFields = "ndrFields",
-  NdrEnhanced = "ndrEnhanced",
+  MultiRateNdr = "multiRateNdr",
   Ndr = "ndr",
   PerformanceNdr = "performanceNdr",
   StatusAlert = "statusAlert",
@@ -293,7 +293,7 @@ export type PageElement =
   | LengthOfStayRateTemplate
   | ReadmissionRateTemplate
   | NdrFieldsTemplate
-  | NdrEnhancedTemplate
+  | MultiRateNdrTemplate
   | NdrTemplate
   | PerformanceNdrTemplate
   | StatusAlertTemplate
@@ -548,9 +548,9 @@ export type NdrFieldsTemplate = {
   required: boolean;
 };
 
-export type NdrEnhancedTemplate = {
+export type MultiRateNdrTemplate = {
   id: string;
-  type: ElementType.NdrEnhanced;
+  type: ElementType.MultiRateNdr;
   label?: string;
   helperText?: string;
   assessments: { label: string; id: string }[];

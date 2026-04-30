@@ -51,7 +51,7 @@ export { NotificationsPage } from "./pages/Admin/NotificationsPage";
 export { Fields } from "../components/rates/types/Fields";
 export { ReadmissionRate } from "../components/rates/types/ReadmissionRate";
 export { NDRFields } from "../components/rates/types/NDRFields";
-export { NDREnhanced } from "../components/rates/types/NDREnhanced";
+export { MultiRateNdr } from "../components/rates/types/MultiRateNdr";
 export { NDR } from "../components/rates/types/NDR";
 export { PerformanceNdr } from "./rates/types/PerformanceNdr";
 export { MeasureDetailsElement } from "./report/MeasureDetails";

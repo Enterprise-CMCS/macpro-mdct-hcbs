@@ -162,16 +162,16 @@ Here is the complete list of element types, roughly categorized:
       If it does not, the user will be shown a warning.
     - `conditionalChildren`: Just like `checkedChildren` for a radio option.
       Shown only if `rate < minPerformanceLevel`.
-  - `ndrEnhanced`: A set of rates with a shared denominator.
+  - `multiRateNdr`: A set of rates with a shared denominator.
     - The `assessments` property is an array of `{ id: string, label: string }`
       corresponding to the numerators.
     - Answer is an object of type `{ denominator: number, rates: { numerator: number, rate: number }[] }`
   - `ndrFields`: A collection of rates sets with shared denominators.
     - The `fields` property is an array of `{ id: string, label: string }`
       corresponding to the denominators.
-    - The `assessments` property works just like in `ndrEnhanced`.
+    - The `assessments` property works just like in `multiRateNdr`.
     - Answer is an array of objects, each of which is the same shape
-      as the answer for an `ndrEnhanced` element.
+      as the answer for an `multiRateNdr` element.
     - For example, if there are two `fields` and three `assessments`,
       there will be six rates in all.
       In this case, the answer will be an array containing two objects,

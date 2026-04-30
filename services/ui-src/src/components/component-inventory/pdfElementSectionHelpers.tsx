@@ -145,13 +145,13 @@ export const ndrFieldsSection: FormPageTemplate = {
   ],
 };
 
-export const ndrEnhancedSection: FormPageTemplate = {
-  id: "mock-ndrEnhanced-id",
-  navTitle: "mock-ndrEnhanced-title",
+export const multiRateNdrSection: FormPageTemplate = {
+  id: "mock-multiRateNdr-id",
+  navTitle: "mock-multiRateNdr-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       id: "measure-rates",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
