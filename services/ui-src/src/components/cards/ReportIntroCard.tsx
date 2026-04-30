@@ -25,7 +25,9 @@ export const ReportIntroCard = ({ title, children }: Props) => {
           />
         )}
         <Flex sx={sx.cardContentFlex}>
-          <Heading sx={sx.cardTitleText}>{title}</Heading>
+          <Heading variant="h3" as="h3" sx={sx.cardTitleText}>
+            {title}
+          </Heading>
           {children}
         </Flex>
       </Flex>
