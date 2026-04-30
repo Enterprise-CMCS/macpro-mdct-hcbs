@@ -13,7 +13,7 @@ import {
   mockLengthOfStayFields,
   mockReadmissionRateFields,
   mockNDR,
-  mockNDRBasics,
+  mockPerformanceNdr,
   mockNDRFields,
 } from "utils/testing/mockRates";
 
@@ -110,9 +110,9 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByText("Expected Readmission Rate")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(9);
   });
-  test("Test render NDR Basic element", () => {
-    section.elements.push(mockNDRBasics);
-    const element = renderElements(section, mockNDRBasics);
+  test("Test render Performance NDR element", () => {
+    section.elements.push(mockPerformanceNdr);
+    const element = renderElements(section, mockPerformanceNdr);
     render(element);
     expect(screen.getByText("Result")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(2);

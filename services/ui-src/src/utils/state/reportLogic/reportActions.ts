@@ -266,7 +266,7 @@ export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
     "ndrEnhanced",
     "ndr",
     "ndrFields",
-    "ndrBasic",
+    "performanceNdr",
     "lengthOfStay",
     "readmissionRate",
   ];

@@ -18,7 +18,7 @@ import {
   NDRFields,
   NDREnhanced,
   NDR,
-  NDRBasic,
+  PerformanceNdr,
   StatusAlert,
   CheckboxField,
   EligibilityTableElement,
@@ -50,7 +50,7 @@ import {
   ndrFieldsSection,
   ndrEnhancedSection,
   ndrSection,
-  ndrBasicSection,
+  performanceNdrSection,
   lengthOfStayRateSection,
   readmissionRateSection,
   measureDetailsSection,
@@ -552,15 +552,15 @@ export const elementObject: {
     ],
     pdfVariants: [<ExportedReportWrapper section={ndrSection} />],
   },
-  [ElementType.NdrBasic]: {
+  [ElementType.PerformanceNdr]: {
     description:
-      "Basic and minimum target Numerator/Denominator Fields to gather performance rates",
-    id: "id-ndr-basic",
+      "Numerator/Denominator Fields to gather targeted performance rates",
+    id: "id-performance-ndr",
     variants: [
-      <NDRBasic
+      <PerformanceNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "measure-rates",
           label: "Label",
           required: true,
@@ -573,10 +573,10 @@ export const elementObject: {
           displayRateAsPercent: true,
         }}
       />,
-      <NDRBasic
+      <PerformanceNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "measure-rates",
           label: "Label",
           required: true,
@@ -591,7 +591,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [<ExportedReportWrapper section={ndrBasicSection} />],
+    pdfVariants: [<ExportedReportWrapper section={performanceNdrSection} />],
   },
   [ElementType.StatusAlert]: {
     description: "Different Alert Types",

@@ -3,7 +3,7 @@ import {
   ElementType,
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
-  NdrBasicTemplate,
+  PerformanceNdrTemplate,
   LengthOfStayRateTemplate,
   ReadmissionRateTemplate,
 } from "types";
@@ -69,9 +69,9 @@ export const mockNDRFields: NdrFieldsTemplate = {
   ],
 };
 
-export const mockNDRBasics: NdrBasicTemplate = {
-  id: "mock-ndr-basic",
-  type: ElementType.NdrBasic,
+export const mockPerformanceNdr: PerformanceNdrTemplate = {
+  id: "mock-performance-ndr",
+  type: ElementType.PerformanceNdr,
   required: true,
 };
 

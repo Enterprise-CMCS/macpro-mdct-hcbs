@@ -53,7 +53,7 @@ export { ReadmissionRate } from "../components/rates/types/ReadmissionRate";
 export { NDRFields } from "../components/rates/types/NDRFields";
 export { NDREnhanced } from "../components/rates/types/NDREnhanced";
 export { NDR } from "../components/rates/types/NDR";
-export { NDRBasic } from "../components/rates/types/NDRBasic";
+export { PerformanceNdr } from "./rates/types/PerformanceNdr";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";

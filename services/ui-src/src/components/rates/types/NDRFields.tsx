@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import {
-  NdrFieldsTemplate,
-  RateInputFieldName,
-  RateInputFieldNames,
-} from "types";
+import { NdrFieldsTemplate } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -23,6 +19,12 @@ import {
   ExportRateTable,
 } from "components/export/ExportedReportTable";
 import { ErrorMessages } from "../../../constants";
+
+const FieldNames = {
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 
 export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
   const { disabled, element, updateElement } = props;
@@ -53,7 +55,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
      * answer[i].rates array.
      */
     const parts = input.name.split(".");
-    const fieldType = parts.at(-1) as RateInputFieldName;
+    const fieldType = parts.at(-1) as FieldName;
     const assessIndex = Number(parts.at(0));
     const fieldIndex = parts.length > 2 ? Number(parts.at(2)) : undefined;
     const stringValue = input.value;
@@ -62,7 +64,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
     const newDisplayValue = structuredClone(displayValue);
     const newErrors = structuredClone(errors);
-    if (fieldType === RateInputFieldNames.denominator) {
+    if (fieldType === FieldNames.denominator) {
       newDisplayValue[assessIndex].denominator = stringValue;
       newErrors[assessIndex].denominator = errorMessage;
     } else {
@@ -169,7 +171,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
               <CmsdsTextField
                 label={`Denominator (${assess.label})`}
-                name={`${assessIndex}.${RateInputFieldNames.denominator}`}
+                name={`${assessIndex}.${FieldNames.denominator}`}
                 onChange={onChangeHandler}
                 onBlur={onChangeHandler}
                 value={rateSet.denominator}
@@ -186,7 +188,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
                     <Heading variant="nestedHeading">{field.label}</Heading>
                     <CmsdsTextField
                       label={`Numerator: ${field.label} (${assess.label})`}
-                      name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.numerator}`}
+                      name={`${assessIndex}.rates.${fieldIndex}.${FieldNames.numerator}`}
                       onChange={onChangeHandler}
                       onBlur={onChangeHandler}
                       value={rateObject.numerator}

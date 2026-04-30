@@ -177,13 +177,13 @@ export const ndrSection: FormPageTemplate = {
   ],
 };
 
-export const ndrBasicSection: FormPageTemplate = {
-  id: "mock-ndrBasic-id",
-  navTitle: "mock-ndrBasic-title",
+export const performanceNdrSection: FormPageTemplate = {
+  id: "mock-performanceNdr-id",
+  navTitle: "mock-performanceNdr-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       id: "measure-rates",
       label: "Label",
       required: true,

@@ -4,7 +4,7 @@ import {
   LengthOfStayRateTemplate,
   ListInputTemplate,
   MeasurePageTemplate,
-  NdrBasicTemplate,
+  PerformanceNdrTemplate,
   NdrEnhancedTemplate,
   NdrFieldsTemplate,
   NdrTemplate,
@@ -537,10 +537,10 @@ describe("elementSatisfiesRequired", () => {
     } as NdrFieldsTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
-  test("rejects incomplete  NDRBasic rates", () => {
+  test("rejects incomplete PerformanceNdr rates", () => {
     const element = {
       id: "mock-id",
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       answer: {
         numerator: 1,
         denominator: 2,
@@ -554,13 +554,13 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrBasicTemplate;
+    } as PerformanceNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
-  test("accepts complete NDRBasic rates", () => {
+  test("accepts complete PerformanceNdr rates", () => {
     const element = {
       id: "mock-id",
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       answer: {
         numerator: 2,
         denominator: 2,
@@ -575,7 +575,7 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrBasicTemplate;
+    } as PerformanceNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 

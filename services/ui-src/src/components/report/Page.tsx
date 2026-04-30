@@ -31,7 +31,7 @@ import {
   Fields,
   ReadmissionRate,
   NDR,
-  NDRBasic,
+  PerformanceNdr,
   NDRFields,
   NDREnhanced,
   CheckboxField,
@@ -109,8 +109,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <NDREnhanced {...{ updateElement, disabled, element }} />;
       case ElementType.Ndr:
         return <NDR {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrBasic:
-        return <NDRBasic {...{ updateElement, disabled, element }} />;
+      case ElementType.PerformanceNdr:
+        return <PerformanceNdr {...{ updateElement, disabled, element }} />;
       case ElementType.StatusAlert:
         return <StatusAlert {...{ element }} />;
       case ElementType.Divider:

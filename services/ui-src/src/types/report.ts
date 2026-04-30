@@ -191,7 +191,7 @@ export enum ElementType {
   NdrFields = "ndrFields",
   NdrEnhanced = "ndrEnhanced",
   Ndr = "ndr",
-  NdrBasic = "ndrBasic",
+  PerformanceNdr = "performanceNdr",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -224,7 +224,7 @@ export type PageElement =
   | NdrFieldsTemplate
   | NdrEnhancedTemplate
   | NdrTemplate
-  | NdrBasicTemplate
+  | PerformanceNdrTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | ListInputTemplate
@@ -496,21 +496,6 @@ export type ReadmissionRateTemplate = {
   errors?: Record<ReadmissionRateField, string>;
 };
 
-export const RateInputFieldNames = {
-  numerator: "numerator",
-  denominator: "denominator",
-} as const;
-export type RateInputFieldName =
-  (typeof RateInputFieldNames)[keyof typeof RateInputFieldNames];
-
-export const RateInputFieldNamesBasic = {
-  numerator: "numerator",
-  denominator: "denominator",
-} as const;
-
-export type RateInputFieldNameBasic =
-  (typeof RateInputFieldNamesBasic)[keyof typeof RateInputFieldNamesBasic];
-
 export type RateType = {
   id: string;
   numerator: number | undefined;
@@ -556,9 +541,9 @@ export type NdrTemplate = {
   required: boolean;
 };
 
-export type NdrBasicTemplate = {
+export type PerformanceNdrTemplate = {
   id: string;
-  type: ElementType.NdrBasic;
+  type: ElementType.PerformanceNdr;
   label?: string;
   answer?: RateData;
   hintText?: {

@@ -7,7 +7,7 @@ import { NDRExport } from "components/rates/types/NDR";
 import { notAnsweredText } from "../../constants";
 import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
 import { NDRFieldExport } from "components/rates/types/NDRFields";
-import { NDRBasicExport } from "components/rates/types/NDRBasic";
+import { PerformanceNdrExport } from "components/rates/types/PerformanceNdr";
 import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
 import { CheckboxExport } from "components/fields/CheckboxField";
 import { ListInputExport } from "components/fields/ListInput";
@@ -31,7 +31,7 @@ const renderElementList = [
   ElementType.Ndr,
   ElementType.LengthOfStayRate,
   ElementType.ReadmissionRate,
-  ElementType.NdrBasic,
+  ElementType.PerformanceNdr,
   ElementType.MeasureDetails,
   ElementType.SubHeader,
   ElementType.EligibilityTable,
@@ -66,8 +66,8 @@ export const renderElements = (
       return FieldsExport(element);
     case ElementType.ReadmissionRate:
       return ReadmissionRateExport(element);
-    case ElementType.NdrBasic:
-      return NDRBasicExport(element, section.navTitle);
+    case ElementType.PerformanceNdr:
+      return PerformanceNdrExport(element, section.navTitle);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:

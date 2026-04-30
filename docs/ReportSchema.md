@@ -154,7 +154,7 @@ Here is the complete list of element types, roughly categorized:
   - `ndr`: A set of three numeric fields: numerator, denominator, and rate.
     - Rate is auto-calculated as soon as numerator and denominator are entered.
     - Answer is an object of type `{ numerator: number, denominator: number, rate: number }`.
-  - `ndrBasic`: Similar to NDR, with the same answer shape.
+  - `performanceNdr`: Similar to NDR, with the same answer shape.
     May have additional properties:
     - `multiplier`: May be applied to the rate during auto-calculation.
       For example, percentage rates would have `multiplier: 100`
