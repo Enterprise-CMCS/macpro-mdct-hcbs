@@ -9,6 +9,7 @@ import {
   PostLogoutRedirect,
   Footer,
   Timeout,
+  SkipNav,
 } from "components";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -37,6 +38,7 @@ export const App = () => {
     <>
       {user && (
         <Flex sx={sx.appLayout}>
+          <SkipNav />
           <Timeout />
           {!isExportPage && <Header handleLogout={logout} />}
           <Container sx={sx.appContainer}>
@@ -48,7 +50,9 @@ export const App = () => {
         </Flex>
       )}
       {!user && showLocalLogins && (
-        <main>
+        <>
+          <SkipNav />
+          <main id="main-content" tabIndex={-1}>
           <Container sx={sx.appContainer}>
             <Heading as="h1" fontSize="heading_3xl" variant="login">
               Home &amp; Community Based Services
@@ -61,7 +65,8 @@ export const App = () => {
               <LoginCognito />
             </Stack>
           </Container>
-        </main>
+          </main>
+        </>
       )}
     </>
   );
