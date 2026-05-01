@@ -815,7 +815,7 @@ export const measureTemplates: Record<
       divider,
       {
         type: ElementType.MultiRateNdr,
-        id: "measure-rates",
+        id: "measure-rates-transmitted",
         required: true,
         assessments: [
           {
@@ -826,7 +826,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.MultiRateNdr,
-        id: "measure-rates",
+        id: "measure-rates-refused",
         label: "Exclusion Rate",
         required: true,
         assessments: [
@@ -870,7 +870,7 @@ export const measureTemplates: Record<
       divider,
       {
         type: ElementType.MultiRateNdr,
-        id: "measure-rates",
+        id: "measure-rates-transmitted",
         required: true,
         assessments: [
           {
@@ -881,7 +881,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.MultiRateNdr,
-        id: "measure-rates",
+        id: "measure-rates-refused",
         label: "Exclusion Rate",
         required: true,
         assessments: [
@@ -1081,7 +1081,7 @@ export const measureTemplates: Record<
       waiverListInputField,
       {
         type: ElementType.MultiRateNdr,
-        id: "measure-rates",
+        id: "measure-rates-assessed",
         required: true,
         assessments: [
           {
@@ -1096,7 +1096,7 @@ export const measureTemplates: Record<
       },
       {
         type: ElementType.MultiRateNdr,
-        id: "measure-rates",
+        id: "measure-rates-refused",
         required: true,
         label: "Exclusion Rate",
         assessments: [

@@ -264,7 +264,7 @@ export const measureFooter: MeasureFooterTemplate = {
 //Rates for LTSS-1
 export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates",
+  id: "measure-rates-assessment",
   required: true,
   assessments: [
     {
@@ -280,7 +280,7 @@ export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
 
 export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates",
+  id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
   assessments: [
@@ -298,7 +298,7 @@ export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
 //Rates for LTSS-2
 export const performanceRatesPersonPlanElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates",
+  id: "measure-rates-performance",
   required: true,
   assessments: [
     {
@@ -314,7 +314,7 @@ export const performanceRatesPersonPlanElements: MultiRateNdrTemplate = {
 
 export const exclusionRatesPersonPlanElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates",
+  id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
   assessments: [
@@ -332,7 +332,7 @@ export const exclusionRatesPersonPlanElements: MultiRateNdrTemplate = {
 //Rates for LTSS-4
 export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates",
+  id: "measure-rates-reassessment",
   required: true,
   assessments: [
     {
@@ -348,7 +348,7 @@ export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
 
 export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates",
+  id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
   assessments: [

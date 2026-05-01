@@ -82,6 +82,7 @@ Element objects have varying shapes, but some fields are common:
 - `type` (string): Indicates this element's role, and dictates its shape.
 - `id` (string): An identifier. Should always be unique _within a page_,
   but IDs may be reused for elements on different pages.
+  - One exception is divider elements; these always have `id: "divider"`.
 - `answer` (varies, optional): If this element accepts user input,
   that input will be stored in the `answer` property.
   - Different elements have different answer types: string, number, object...
