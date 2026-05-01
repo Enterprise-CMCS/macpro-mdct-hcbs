@@ -32,7 +32,7 @@ import {
   ReadmissionRate,
   NDR,
   PerformanceNdr,
-  NDRFields,
+  MultiCategoryNdr,
   MultiRateNdr,
   CheckboxField,
   ListInput,
@@ -103,8 +103,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <Fields {...{ updateElement, disabled, element }} />;
       case ElementType.ReadmissionRate:
         return <ReadmissionRate {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrFields:
-        return <NDRFields {...{ updateElement, disabled, element }} />;
+      case ElementType.MultiCategoryNdr:
+        return <MultiCategoryNdr {...{ updateElement, disabled, element }} />;
       case ElementType.MultiRateNdr:
         return <MultiRateNdr {...{ updateElement, disabled, element }} />;
       case ElementType.Ndr:

@@ -9,7 +9,7 @@ import {
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
   MultiRateNdrTemplate,
-  NdrFieldsTemplate,
+  MultiCategoryNdrTemplate,
   NdrTemplate,
   PageElement,
   RadioTemplate,
@@ -372,8 +372,8 @@ export const performanceRatePOM: NdrTemplate = {
 };
 
 // Rates for LTSS-6
-export const performanceRateTermStay: NdrFieldsTemplate = {
-  type: ElementType.NdrFields,
+export const performanceRateTermStay: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
@@ -381,7 +381,7 @@ export const performanceRateTermStay: NdrFieldsTemplate = {
     { id: "year-3", label: "75 to 84 Years" },
     { id: "year-4", label: "85 years or older" },
   ],
-  fields: [
+  categories: [
     { id: "short-term", label: "Short Term Stay" },
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
@@ -446,15 +446,15 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
 };
 
 // Rates for HCBS-10
-export const performanceRateSelfDirection: NdrFieldsTemplate = {
-  type: ElementType.NdrFields,
+export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   required: true,
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },
     { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
   ],
-  fields: [
+  categories: [
     { id: "self-label", label: "Total" },
     { id: "18-to-64-years", label: "18 to 64 Years" },
     { id: "65-years-or-older", label: "65 years or older" },

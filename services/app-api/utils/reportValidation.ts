@@ -182,7 +182,7 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return lengthOfStayRateSchema;
     case ElementType.ReadmissionRate:
       return ReadmissionRateSchema;
-    case ElementType.NdrFields:
+    case ElementType.MultiCategoryNdr:
       return ndrFieldsRateSchema;
     case ElementType.MultiRateNdr:
       return multiRateNdrSchema;
@@ -397,7 +397,7 @@ const ReadmissionRateSchema = object().shape({
 });
 
 const ndrFieldsRateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrFields)),
+  type: string().required().matches(new RegExp(ElementType.MultiCategoryNdr)),
   id: string().required(),
   assessments: array()
     .of(
@@ -407,7 +407,7 @@ const ndrFieldsRateSchema = object().shape({
       })
     )
     .required(),
-  fields: array()
+  categories: array()
     .of(
       object().shape({
         id: string().required(),

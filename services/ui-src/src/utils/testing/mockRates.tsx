@@ -2,7 +2,7 @@ import {
   NdrTemplate,
   ElementType,
   MultiRateNdrTemplate,
-  NdrFieldsTemplate,
+  MultiCategoryNdrTemplate,
   PerformanceNdrTemplate,
   LengthOfStayRateTemplate,
   ReadmissionRateTemplate,
@@ -39,9 +39,9 @@ export const mockedMultiRateNdr: MultiRateNdrTemplate = {
   },
 };
 
-export const mockNDRFields: NdrFieldsTemplate = {
-  id: "mock-ndr-fields",
-  type: ElementType.NdrFields,
+export const mockMultiCategoryNdr: MultiCategoryNdrTemplate = {
+  id: "mock-multi-category-ndr",
+  type: ElementType.MultiCategoryNdr,
   required: true,
   assessments: [
     {
@@ -49,10 +49,10 @@ export const mockNDRFields: NdrFieldsTemplate = {
       id: "mock-assess-1",
     },
   ],
-  fields: [
+  categories: [
     {
-      label: "Field 1",
-      id: "mock-field-1",
+      label: "Category 1",
+      id: "mock-category-1",
     },
   ],
   answer: [
@@ -60,7 +60,7 @@ export const mockNDRFields: NdrFieldsTemplate = {
       denominator: 2,
       rates: [
         {
-          id: "mock-assess-1.mock-field-1",
+          id: "mock-assess-1.mock-category-1",
           numerator: undefined,
           rate: undefined,
         },

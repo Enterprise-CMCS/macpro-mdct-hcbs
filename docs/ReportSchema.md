@@ -166,13 +166,13 @@ Here is the complete list of element types, roughly categorized:
     - The `assessments` property is an array of `{ id: string, label: string }`
       corresponding to the numerators.
     - Answer is an object of type `{ denominator: number, rates: { numerator: number, rate: number }[] }`
-  - `ndrFields`: A collection of rates sets with shared denominators.
-    - The `fields` property is an array of `{ id: string, label: string }`
+  - `multiCategoryNdr`: A collection of rates sets with shared denominators.
+    - The `categories` property is an array of `{ id: string, label: string }`
       corresponding to the denominators.
     - The `assessments` property works just like in `multiRateNdr`.
     - Answer is an array of objects, each of which is the same shape
       as the answer for an `multiRateNdr` element.
-    - For example, if there are two `fields` and three `assessments`,
+    - For example, if there are two `categories` and three `assessments`,
       there will be six rates in all.
       In this case, the answer will be an array containing two objects,
       each of which will have a `rates` property containing three objects.

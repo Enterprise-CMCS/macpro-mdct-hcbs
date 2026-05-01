@@ -15,7 +15,7 @@ import {
   MeasureFooterElement,
   Fields,
   ReadmissionRate,
-  NDRFields,
+  MultiCategoryNdr,
   MultiRateNdr,
   NDR,
   PerformanceNdr,
@@ -47,7 +47,7 @@ import {
   textAreaSection,
   numberFieldSection,
   radioFieldSection,
-  ndrFieldsSection,
+  multiCategoryNdrSection,
   multiRateNdrSection,
   ndrSection,
   performanceNdrSection,
@@ -491,29 +491,29 @@ export const elementObject: {
     ],
     pdfVariants: [<ExportedReportWrapper section={readmissionRateSection} />],
   },
-  [ElementType.NdrFields]: {
-    description: "Numerator/Denominator Fields to gather performance rates",
-    id: "id-ndr-fields",
+  [ElementType.MultiCategoryNdr]: {
+    description: "Multiple Denominators, each with multiple Numerators + Rates",
+    id: "id-multi-category-ndr",
     variants: [
-      <NDRFields
+      <MultiCategoryNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrFields,
+          type: ElementType.MultiCategoryNdr,
           id: "measure-rates",
           assessments: [
             { id: "assessment-1", label: "First Assessment" },
             { id: "assessment-2", label: "Second Assessment" },
           ],
-          fields: [
-            { id: "field-1", label: "First Field" },
-            { id: "field-2", label: "Second Field" },
+          categories: [
+            { id: "category-1", label: "First Category" },
+            { id: "category-2", label: "Second Category" },
           ],
           required: true,
           multiplier: 1000,
         }}
       />,
     ],
-    pdfVariants: [<ExportedReportWrapper section={ndrFieldsSection} />],
+    pdfVariants: [<ExportedReportWrapper section={multiCategoryNdrSection} />],
   },
   [ElementType.MultiRateNdr]: {
     description: "Multiple Numerator + Rate fields with a shared Denominator",

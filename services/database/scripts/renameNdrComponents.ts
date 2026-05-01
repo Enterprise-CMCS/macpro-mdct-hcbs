@@ -21,7 +21,7 @@ main();
  * and since we don't want this rename to break all existing reports,
  * this is not a mere code change; we need to modify existing report data.
  *
- * The components being renamed are some of our multi-input components.
+ * The components being renamed are some of our multi-input components:
  *
  * | Before          | After            | What is it                          |
  * |-----------------|------------------|-------------------------------------|
@@ -31,6 +31,8 @@ main();
  * | NDRFields       | MultiCategoryNdr | Many Ds, each with many NR pairs    |
  * | LengthOfStay    | [no rename]      | Actual vs Expected counts and rates |
  * | ReadmissionRate | [no rename]      | Observed vs Expected readmissions   |
+ *
+ * NDRFieldsTemplate.fields is also renamed, to MultiCategoryNdr.categories.
  */
 
 const client = createClient();
@@ -95,6 +97,10 @@ function updateComponentNames(report: Report) {
     for (const element of iterateElements(page.elements)) {
       if (element.type in NEW_NAMES) {
         element.type = NEW_NAMES[element.type];
+        if (element.type === "multiCategoryNdr") {
+          element.categories = element.fields;
+          delete element.fields;
+        }
         isChanged = true;
       }
     }
@@ -175,6 +181,8 @@ type Report = {
 /** An element on a report page. Imitates the real type used in the app. */
 type PageElement = {
   type: string;
+  fields?: unknown;
+  categories?: unknown;
   choices?: {
     checkedChildren?: PageElement[];
   }[];

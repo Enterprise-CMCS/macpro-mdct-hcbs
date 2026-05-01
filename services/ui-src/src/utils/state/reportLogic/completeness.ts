@@ -226,7 +226,7 @@ export const elementSatisfiesRequired = (
       (fieldId) => element.answer?.[fieldId] !== undefined
     );
   }
-  if (element.type === ElementType.NdrFields) {
+  if (element.type === ElementType.MultiCategoryNdr) {
     return element.answer.every((assessObj) => {
       if (assessObj.denominator === undefined) return false;
       return assessObj.rates.every((rateObj) => {

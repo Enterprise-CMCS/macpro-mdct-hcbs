@@ -50,7 +50,7 @@ export { NotificationsPage } from "./pages/Admin/NotificationsPage";
 // report
 export { Fields } from "../components/rates/types/Fields";
 export { ReadmissionRate } from "../components/rates/types/ReadmissionRate";
-export { NDRFields } from "../components/rates/types/NDRFields";
+export { MultiCategoryNdr } from "./rates/types/MultiCategoryNdr";
 export { MultiRateNdr } from "../components/rates/types/MultiRateNdr";
 export { NDR } from "../components/rates/types/NDR";
 export { PerformanceNdr } from "./rates/types/PerformanceNdr";

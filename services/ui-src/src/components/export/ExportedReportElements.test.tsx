@@ -14,7 +14,7 @@ import {
   mockReadmissionRateFields,
   mockNDR,
   mockPerformanceNdr,
-  mockNDRFields,
+  mockMultiCategoryNdr,
 } from "utils/testing/mockRates";
 
 const section = {
@@ -88,9 +88,9 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });
-  test("Test render NDR Fields element", () => {
-    section.elements.push(mockNDRFields);
-    const element = renderElements(section, mockNDRFields);
+  test("Test render Multi-Category NDR element", () => {
+    section.elements.push(mockMultiCategoryNdr);
+    const element = renderElements(section, mockMultiCategoryNdr);
     render(element);
 
     expect(screen.getAllByText("Denominator (Assessment 1)")).toHaveLength(2);

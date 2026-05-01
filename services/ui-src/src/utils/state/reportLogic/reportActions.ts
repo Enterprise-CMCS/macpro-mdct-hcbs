@@ -265,7 +265,7 @@ export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
     "measureResultsNavigationTable",
     "multiRateNdr",
     "ndr",
-    "ndrFields",
+    "multiCategoryNdr",
     "performanceNdr",
     "lengthOfStay",
     "readmissionRate",

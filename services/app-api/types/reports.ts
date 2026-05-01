@@ -259,7 +259,7 @@ export enum ElementType {
   MeasureFooter = "measureFooter",
   LengthOfStayRate = "lengthOfStay",
   ReadmissionRate = "readmissionRate",
-  NdrFields = "ndrFields",
+  MultiCategoryNdr = "multiCategoryNdr",
   MultiRateNdr = "multiRateNdr",
   Ndr = "ndr",
   PerformanceNdr = "performanceNdr",
@@ -292,7 +292,7 @@ export type PageElement =
   | MeasureFooterTemplate
   | LengthOfStayRateTemplate
   | ReadmissionRateTemplate
-  | NdrFieldsTemplate
+  | MultiCategoryNdrTemplate
   | MultiRateNdrTemplate
   | NdrTemplate
   | PerformanceNdrTemplate
@@ -538,11 +538,11 @@ export type RateSetData = {
   rates: RateType[];
 };
 
-export type NdrFieldsTemplate = {
+export type MultiCategoryNdrTemplate = {
   id: string;
-  type: ElementType.NdrFields;
+  type: ElementType.MultiCategoryNdr;
   assessments: { label: string; id: string }[];
-  fields: { label: string; id: string; autoCalc?: boolean }[];
+  categories: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;
