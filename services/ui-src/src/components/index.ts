@@ -48,7 +48,7 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { NotificationsPage } from "./pages/Admin/NotificationsPage";
 // report
-export { Fields } from "../components/rates/types/Fields";
+export { LengthOfStay } from "./rates/types/LengthOfStay";
 export { ReadmissionRate } from "../components/rates/types/ReadmissionRate";
 export { MultiCategoryNdr } from "./rates/types/MultiCategoryNdr";
 export { MultiRateNdr } from "../components/rates/types/MultiRateNdr";

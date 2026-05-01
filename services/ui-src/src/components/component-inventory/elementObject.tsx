@@ -13,7 +13,7 @@ import {
   StatusTableElement,
   MeasureDetailsElement,
   MeasureFooterElement,
-  Fields,
+  LengthOfStay,
   ReadmissionRate,
   MultiCategoryNdr,
   MultiRateNdr,
@@ -444,7 +444,7 @@ export const elementObject: {
       "Numerator/Denominator Fields to gather LengthOfStayRate performance rates",
     id: "id-length-of-stay-rate",
     variants: [
-      <Fields
+      <LengthOfStay
         updateElement={logNewElement}
         element={{
           type: ElementType.LengthOfStayRate,

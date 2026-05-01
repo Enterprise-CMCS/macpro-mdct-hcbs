@@ -1,7 +1,7 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType, MeasurePageTemplate, PageElement } from "types";
-import { FieldsExport } from "components/rates/types/Fields";
+import { LengthOfStayExport } from "components/rates/types/LengthOfStay";
 import { ReadmissionRateExport } from "components/rates/types/ReadmissionRate";
 import { NDRExport } from "components/rates/types/NDR";
 import { notAnsweredText } from "../../constants";
@@ -63,7 +63,7 @@ export const renderElements = (
     case ElementType.Ndr:
       return NDRExport(element);
     case ElementType.LengthOfStayRate:
-      return FieldsExport(element);
+      return LengthOfStayExport(element);
     case ElementType.ReadmissionRate:
       return ReadmissionRateExport(element);
     case ElementType.PerformanceNdr:

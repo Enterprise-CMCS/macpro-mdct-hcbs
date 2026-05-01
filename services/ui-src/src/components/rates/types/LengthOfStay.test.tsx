@@ -1,5 +1,5 @@
 import { act, render, screen } from "@testing-library/react";
-import { Fields } from "./Fields";
+import { LengthOfStay } from "./LengthOfStay";
 import userEvent from "@testing-library/user-event";
 import {
   ElementType,
@@ -38,11 +38,11 @@ const LengthOfStayWrapper = ({
     updateSpy(updatedElement);
     setElement({ ...element, ...updatedElement });
   };
-  return <Fields element={element} updateElement={onChange} />;
+  return <LengthOfStay element={element} updateElement={onChange} />;
 };
 
-describe("<Fields />", () => {
-  describe("Test Fields component", () => {
+describe("<LengthOfStay />", () => {
+  describe("Test LengthOfStay component", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
