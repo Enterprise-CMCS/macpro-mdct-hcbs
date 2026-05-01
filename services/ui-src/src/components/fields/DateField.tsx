@@ -6,9 +6,7 @@ import { PageElementProps } from "../report/Elements";
 import { DateTemplate } from "../../types/report";
 import { validateDate } from "utils/validation/inputValidation";
 
-type DateFieldProps = PageElementProps<DateTemplate>;
-
-export const DateField = (props: DateFieldProps) => {
+export const DateField = (props: PageElementProps<DateTemplate>) => {
   const dateTextbox = props.element;
   const updateElement = props.updateElement;
   const [displayValue, setDisplayValue] = useState(dateTextbox.answer ?? "");
