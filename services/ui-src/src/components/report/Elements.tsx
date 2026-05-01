@@ -12,7 +12,6 @@ import {
 import {
   HeaderTemplate,
   SubHeaderTemplate,
-  LabelTemplate,
   ParagraphTemplate,
   AccordionTemplate,
   ButtonLinkTemplate,
@@ -29,7 +28,6 @@ import successIcon from "assets/icons/status/icon_status_check.svg";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
 import whitePDFPrimary from "assets/icons/pdf/icon_pdf_white.svg";
-import { colors } from "styles/foundations/colors";
 
 export type PageElementProps<T extends PageElement = PageElement> = T extends {
   answer?: any;
@@ -155,21 +153,6 @@ export const ParagraphElement = ({
       <Text fontSize="body_md" fontWeight={element.weight}>
         {element.text}
       </Text>
-    </Stack>
-  );
-};
-
-export const LabelElement = ({ element }: PageElementProps<LabelTemplate>) => {
-  return (
-    <Stack spacing={0}>
-      <Text fontSize="heading_lg" fontWeight="heading_md">
-        {element.label}
-      </Text>
-      {element.helperText && (
-        <Text fontSize="body_md" color={colors.palette.gray_dark}>
-          {element.helperText}
-        </Text>
-      )}
     </Stack>
   );
 };

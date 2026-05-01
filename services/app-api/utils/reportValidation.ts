@@ -43,13 +43,6 @@ const subHeaderTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
-const labelTemplateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.Label)),
-  id: string().required(),
-  label: string().required(),
-  helperText: string().notRequired(),
-});
-
 const subHeaderMeasureSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.SubHeaderMeasure)),
   id: string().required(),
@@ -116,8 +109,26 @@ const dateTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
-  invalidDateMessage: string().notRequired(),
-  marginBottom: string().notRequired(),
+});
+
+const dateRangeTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.DateRange)),
+  id: string().required(),
+  labels: object()
+    .shape({
+      top: string().required(),
+      start: string().required(),
+      end: string().required(),
+    })
+    .required(),
+  helperText: string().notRequired(),
+  answer: object()
+    .shape({
+      start: string().notRequired(),
+      end: string().notRequired(),
+    })
+    .notRequired(),
+  required: boolean().required(),
 });
 
 const dropdownTemplateSchema = object().shape({
@@ -153,8 +164,6 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return headerTemplateSchema;
     case ElementType.SubHeader:
       return subHeaderTemplateSchema;
-    case ElementType.Label:
-      return labelTemplateSchema;
     case ElementType.SubHeaderMeasure:
       return subHeaderMeasureSchema;
     case ElementType.NestedHeading:
@@ -169,6 +178,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return numberFieldTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
+    case ElementType.DateRange:
+      return dateRangeTemplateSchema;
     case ElementType.Dropdown:
       return dropdownTemplateSchema;
     case ElementType.Accordion:

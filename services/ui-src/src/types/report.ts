@@ -169,13 +169,13 @@ export enum PageType {
 export enum ElementType {
   Header = "header",
   SubHeader = "subHeader",
-  Label = "label",
   SubHeaderMeasure = "subHeaderMeasure",
   NestedHeading = "nestedHeading",
   Textbox = "textbox",
   NumberField = "numberField",
   TextAreaField = "textAreaField",
   Date = "date",
+  DateRange = "dateRange",
   Dropdown = "dropdown",
   Accordion = "accordion",
   Paragraph = "paragraph",
@@ -203,13 +203,13 @@ export enum ElementType {
 export type PageElement =
   | HeaderTemplate
   | SubHeaderTemplate
-  | LabelTemplate
   | SubHeaderMeasureTemplate
   | NestedHeadingTemplate
   | TextboxTemplate
   | NumberFieldTemplate
   | TextAreaBoxTemplate
   | DateTemplate
+  | DateRangeTemplate
   | DropdownTemplate
   | AccordionTemplate
   | ParagraphTemplate
@@ -255,13 +255,6 @@ export type SubHeaderTemplate = {
   text: string;
   helperText?: string;
   hideCondition?: HideCondition;
-};
-
-export type LabelTemplate = {
-  type: ElementType.Label;
-  id: string;
-  label: string;
-  helperText?: string;
 };
 
 export type SubHeaderMeasureTemplate = {
@@ -328,8 +321,22 @@ export type DateTemplate = {
   helperText?: string;
   answer?: string;
   required: boolean;
-  invalidDateMessage?: string;
-  marginBottom?: string;
+};
+
+export type DateRangeTemplate = {
+  type: ElementType.DateRange;
+  id: string;
+  labels: {
+    top: string;
+    start: string;
+    end: string;
+  };
+  helperText?: string;
+  answer?: {
+    start?: string;
+    end?: string;
+  };
+  required: boolean;
 };
 
 export type DropdownTemplate = {

@@ -1,4 +1,5 @@
 export { DateField } from "./DateField";
+export { DateRange } from "./DateRange";
 export { DropdownField } from "./DropdownField";
 export { RadioField } from "./RadioField";
 export { TextField } from "./TextField";

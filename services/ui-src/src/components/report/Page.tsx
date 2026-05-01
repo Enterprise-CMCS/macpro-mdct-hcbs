@@ -3,7 +3,6 @@ import { VStack } from "@chakra-ui/react";
 import {
   HeaderElement,
   SubHeaderElement,
-  LabelElement,
   ParagraphElement,
   AccordionElement,
   ButtonLinkElement,
@@ -19,6 +18,7 @@ import {
 } from "../../types/report";
 import {
   DateField,
+  DateRange,
   DropdownField,
   MeasureDetailsElement,
   MeasureFooterElement,
@@ -68,8 +68,6 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <HeaderElement {...{ element }} />;
       case ElementType.SubHeader:
         return <SubHeaderElement {...{ element }} />;
-      case ElementType.Label:
-        return <LabelElement {...{ element }} />;
       case ElementType.NestedHeading:
         return <NestedHeadingElement {...{ element }} />;
       case ElementType.Paragraph:
@@ -81,11 +79,9 @@ export const Page = ({ id, setElements, elements }: Props) => {
       case ElementType.NumberField:
         return <TextField {...{ updateElement, disabled, element }} />;
       case ElementType.Date:
-        return (
-          <DateField
-            {...{ updateElement, disabled, element, allElements: elements }}
-          />
-        );
+        return <DateField {...{ updateElement, disabled, element }} />;
+      case ElementType.DateRange:
+        return <DateRange {...{ updateElement, disabled, element }} />;
       case ElementType.Dropdown:
         return <DropdownField {...{ updateElement, disabled, element }} />;
       case ElementType.Accordion:
