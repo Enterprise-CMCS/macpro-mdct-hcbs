@@ -9,6 +9,7 @@ import {
   PostLogoutRedirect,
   Footer,
   Timeout,
+  SkipNav,
 } from "components";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -37,6 +38,7 @@ export const App = () => {
     <>
       {user && (
         <Flex sx={sx.appLayout}>
+          <SkipNav />
           <Timeout />
           {!isExportPage && <Header handleLogout={logout} />}
           <Container sx={sx.appContainer}>
@@ -48,20 +50,23 @@ export const App = () => {
         </Flex>
       )}
       {!user && showLocalLogins && (
-        <main>
-          <Container sx={sx.appContainer}>
-            <Heading as="h1" fontSize="heading_3xl" variant="login">
-              Home &amp; Community Based Services
-            </Heading>
-          </Container>
-          <Container sx={sx.loginContainer}>
-            <Stack spacing={8}>
-              <LoginIDM />
-              <Divider />
-              <LoginCognito />
-            </Stack>
-          </Container>
-        </main>
+        <>
+          <SkipNav />
+          <main id="main-content" tabIndex={-1} style={sx.loginMain}>
+            <Container sx={sx.appContainer}>
+              <Heading as="h1" fontSize="heading_3xl" variant="login">
+                Home &amp; Community Based Services
+              </Heading>
+            </Container>
+            <Container sx={sx.loginContainer}>
+              <Stack spacing={8}>
+                <LoginIDM />
+                <Divider />
+                <LoginCognito />
+              </Stack>
+            </Container>
+          </main>
+        </>
       )}
     </>
   );
@@ -99,5 +104,8 @@ const sx = {
     maxWidth: "25rem",
     height: "full",
     marginY: "auto",
+  },
+  loginMain: {
+    display: "block",
   },
 };
