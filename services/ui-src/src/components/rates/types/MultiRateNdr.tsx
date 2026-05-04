@@ -200,7 +200,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
   );
 };
 
-//The pdf rendering of NDREnchanced component
+//The pdf rendering of a MultiRateNdr component
 export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
   const label = element.label ?? "Performance Rates";
 
