@@ -1,4 +1,4 @@
-import { createClient } from "./utils";
+import { createClient } from "./utils.ts";
 import {
   paginateScan,
   BatchWriteCommand,
@@ -71,11 +71,11 @@ async function* reportsToUpdate() {
 
 /** Find all reports in a given Dynamo table */
 async function* scanReports(TableName: string) {
-  console.info(`${logPrefix}Scanning table ${TableName}...`);
+  console.info(`${logPrefix()}Scanning table ${TableName}...`);
   let pageNumber = 0;
   for await (const page of paginateScan({ client }, { TableName })) {
     pageNumber += 1;
-    console.debug(`${logPrefix}${TableName} page ${pageNumber}...`);
+    console.debug(`${logPrefix()}${TableName} page ${pageNumber}...`);
     yield* (page.Items ?? []) as Report[];
   }
 }
@@ -131,6 +131,11 @@ function* iterateElements(elements: PageElement[] | undefined) {
 async function* createBatches(
   iterator: AsyncGenerator<{ tableName: string; Item: Report }>
 ) {
+  /**
+   * Dynamo BatchWriteCommand allows up to 25 items, but also has a size cap.
+   * Limiting each batch to 5 items should be safe.
+   */
+  const MAX_BATCH_SIZE = 5;
   let batchNumber = 0;
   let currentBatchSize = 0;
   let RequestItems: Record<string, { PutRequest: { Item: any } }[]> = {};
@@ -140,11 +145,13 @@ async function* createBatches(
     RequestItems[tableName].push({ PutRequest: { Item } });
     currentBatchSize += 1;
 
-    if (currentBatchSize === 25) {
+    if (currentBatchSize >= MAX_BATCH_SIZE) {
       batchNumber += 1;
       console.debug(`Saving batch ${batchNumber}...`);
 
       yield { RequestItems };
+
+      currentBatchSize = 0;
       RequestItems = {};
     }
   }
@@ -156,7 +163,7 @@ async function* createBatches(
 
 /** Send a BatchWriteCommand containing the given reports. */
 async function sendBatch(params: BatchWriteCommandInput) {
-  console.trace(JSON.stringify(params, null, 2));
+  // console.trace(JSON.stringify(params, null, 2));
 
   const command = new BatchWriteCommand(params);
   const response = await client.send(command);
