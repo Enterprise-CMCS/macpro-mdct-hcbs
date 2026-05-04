@@ -87,6 +87,6 @@ export { Checkbox } from "./checkbox/Checkbox";
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";
 // skipNav
-export { SkipNav } from "./skipNav/skipNav";
+export { SkipNav } from "./skipNav/SkipNav";
 // component inventory
 export { ComponentInventory } from "./component-inventory/ComponentInventory";
