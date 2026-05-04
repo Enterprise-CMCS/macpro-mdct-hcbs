@@ -117,4 +117,30 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByText("Result")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(2);
   });
+
+  test("Test render DateRange element", () => {
+    const element = renderElements(section, {
+      id: "measurement-period",
+      type: ElementType.DateRange,
+      labels: {
+        top: "Measurement period dates",
+        start: "Measurement start date",
+        end: "Measurement end date",
+      },
+      answer: {
+        start: "01/01/2024",
+        end: "12/31/2024",
+      },
+      required: true,
+    });
+
+    render(element);
+
+    expect(
+      screen.getByText(/Measurement start date: 01\/01\/2024/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Measurement end date: 12\/31\/2024/)
+    ).toBeInTheDocument();
+  });
 });
