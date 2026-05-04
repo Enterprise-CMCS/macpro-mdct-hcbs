@@ -226,7 +226,7 @@ export const elementSatisfiesRequired = (
       (fieldId) => element.answer?.[fieldId] !== undefined
     );
   }
-  if (element.type === ElementType.NdrFields) {
+  if (element.type === ElementType.MultiCategoryNdr) {
     return element.answer.every((assessObj) => {
       if (assessObj.denominator === undefined) return false;
       return assessObj.rates.every((rateObj) => {
@@ -236,7 +236,7 @@ export const elementSatisfiesRequired = (
       });
     });
   }
-  if (element.type === ElementType.NdrEnhanced) {
+  if (element.type === ElementType.MultiRateNdr) {
     if (element.answer.denominator === undefined) return false;
     return element.answer.rates.every((rateObj) => {
       if (rateObj.numerator === undefined) return false;
@@ -250,7 +250,7 @@ export const elementSatisfiesRequired = (
     if (element.answer.rate === undefined) return false;
   }
 
-  if (element.type === ElementType.NdrBasic) {
+  if (element.type === ElementType.PerformanceNdr) {
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;

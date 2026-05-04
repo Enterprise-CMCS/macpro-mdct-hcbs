@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { NDRBasic, NDRBasicExport } from "./NDRBasic";
-import { ElementType, NdrBasicTemplate } from "types";
+import { PerformanceNdr, PerformanceNdrExport } from "./PerformanceNdr";
+import { ElementType, PerformanceNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
 import { ErrorMessages } from "../../../constants";
 
-const mockedElement: NdrBasicTemplate = {
+const mockedElement: PerformanceNdrTemplate = {
   id: "mock-perf-id",
-  type: ElementType.NdrBasic,
+  type: ElementType.PerformanceNdr,
   label: "test label",
   multiplier: 100,
   minPerformanceLevel: 90,
@@ -25,23 +25,27 @@ const mockedElement: NdrBasicTemplate = {
 };
 const updateSpy = jest.fn();
 
-const NdrBasicWrapper = ({ template }: { template: NdrBasicTemplate }) => {
+const PerformanceNdrWrapper = ({
+  template,
+}: {
+  template: PerformanceNdrTemplate;
+}) => {
   const [element, setElement] = useState(template);
   const onChange = (updatedElement: Partial<typeof element>) => {
     updateSpy(updatedElement);
     setElement({ ...element, ...updatedElement });
   };
-  return <NDRBasic element={element} updateElement={onChange} />;
+  return <PerformanceNdr element={element} updateElement={onChange} />;
 };
 
-describe("<NDRBasic />", () => {
-  describe("Test NDRBasic component", () => {
+describe("<PerformanceNdr />", () => {
+  describe("Test PerformanceNdr component", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    test("NDRBasic is visible", () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+    test("PerformanceNdr is visible", () => {
+      render(<PerformanceNdrWrapper template={mockedElement} />);
       expect(
         screen.getByRole("textbox", { name: "Numerator" })
       ).toBeInTheDocument();
@@ -55,7 +59,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Rate should calculate", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "1");
@@ -70,7 +74,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Rate should not display a decimal point if it is not needed", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "27");
@@ -84,7 +88,7 @@ describe("<NDRBasic />", () => {
 
     test("Rate should not display as a percent normally", async () => {
       render(
-        <NdrBasicWrapper
+        <PerformanceNdrWrapper
           template={{ ...mockedElement, displayRateAsPercent: false }}
         />
       );
@@ -101,7 +105,7 @@ describe("<NDRBasic />", () => {
 
     test("Rate should display as a percent when appropriate", async () => {
       render(
-        <NdrBasicWrapper
+        <PerformanceNdrWrapper
           template={{ ...mockedElement, displayRateAsPercent: true }}
         />
       );
@@ -117,7 +121,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "4");
@@ -130,7 +134,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Proper error should show if a required field is empty", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
       await userEvent.type(denominator, "4");
@@ -140,7 +144,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Proper error should show if a field has invalid input", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
       await userEvent.type(denominator, "string");
@@ -149,7 +153,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Error should show if the denominator is 0 and the numerator is not 0, and also clear", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "4");
@@ -166,7 +170,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Rate should be 0 if both numerator and denominator are 0", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "0");
@@ -181,12 +185,12 @@ describe("<NDRBasic />", () => {
 
   describe("Miniminum Performance Rate Alerts", () => {
     test("Alert should be not visible if rate is empty", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
     test("Success Alert should be visible if minimum rate is met", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "9");
@@ -200,7 +204,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Warning Alert should be visible if minimum rate is met", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "1");
@@ -214,7 +218,7 @@ describe("<NDRBasic />", () => {
     });
 
     test("Conditional children should be visible if minimum rate is met", async () => {
-      render(<NdrBasicWrapper template={mockedElement} />);
+      render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
       await userEvent.type(numerator, "1");
@@ -226,10 +230,10 @@ describe("<NDRBasic />", () => {
     });
   });
 
-  describe("NDRBasicExport", () => {
+  describe("PerformanceNdr Export", () => {
     it("should render a normal rate", () => {
       render(
-        NDRBasicExport({
+        PerformanceNdrExport({
           ...mockedElement,
           displayRateAsPercent: false,
           answer: {
@@ -247,7 +251,7 @@ describe("<NDRBasic />", () => {
 
     it("should render a percentage", () => {
       render(
-        NDRBasicExport({
+        PerformanceNdrExport({
           ...mockedElement,
           displayRateAsPercent: true,
           answer: {
@@ -263,5 +267,5 @@ describe("<NDRBasic />", () => {
     });
   });
 
-  testA11y(<NdrBasicWrapper template={mockedElement} />);
+  testA11y(<PerformanceNdrWrapper template={mockedElement} />);
 });

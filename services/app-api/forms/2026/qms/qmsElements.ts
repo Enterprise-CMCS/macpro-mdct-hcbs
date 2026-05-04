@@ -8,8 +8,8 @@ import {
   MeasureDetailsTemplate,
   MeasureFooterTemplate,
   MeasureResultsNavigationTableTemplate,
-  NdrEnhancedTemplate,
-  NdrFieldsTemplate,
+  MultiRateNdrTemplate,
+  MultiCategoryNdrTemplate,
   NdrTemplate,
   PageElement,
   RadioTemplate,
@@ -262,9 +262,9 @@ export const measureFooter: MeasureFooterTemplate = {
 };
 
 //Rates for LTSS-1
-export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
-  id: "measure-rates",
+export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-assessment",
   required: true,
   assessments: [
     {
@@ -278,9 +278,9 @@ export const performanceRatesAssessmentElements: NdrEnhancedTemplate = {
   ],
 };
 
-export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
-  id: "measure-rates",
+export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
   assessments: [
@@ -296,9 +296,9 @@ export const exclusionRatesAssessmentElements: NdrEnhancedTemplate = {
 };
 
 //Rates for LTSS-2
-export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
-  id: "measure-rates",
+export const performanceRatesPersonPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-performance",
   required: true,
   assessments: [
     {
@@ -312,9 +312,9 @@ export const performanceRatesPersonPlanElements: NdrEnhancedTemplate = {
   ],
 };
 
-export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
-  id: "measure-rates",
+export const exclusionRatesPersonPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
   assessments: [
@@ -330,9 +330,9 @@ export const exclusionRatesPersonPlanElements: NdrEnhancedTemplate = {
 };
 
 //Rates for LTSS-4
-export const performanceRatesReassessmentPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
-  id: "measure-rates",
+export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-reassessment",
   required: true,
   assessments: [
     {
@@ -346,9 +346,9 @@ export const performanceRatesReassessmentPlanElements: NdrEnhancedTemplate = {
   ],
 };
 
-export const exclusionRatesPatientPlanElements: NdrEnhancedTemplate = {
-  type: ElementType.NdrEnhanced,
-  id: "measure-rates",
+export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
   assessments: [
@@ -372,8 +372,8 @@ export const performanceRatePOM: NdrTemplate = {
 };
 
 // Rates for LTSS-6
-export const performanceRateTermStay: NdrFieldsTemplate = {
-  type: ElementType.NdrFields,
+export const performanceRateTermStay: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
@@ -381,7 +381,7 @@ export const performanceRateTermStay: NdrFieldsTemplate = {
     { id: "year-3", label: "75 to 84 Years" },
     { id: "year-4", label: "85 years or older" },
   ],
-  fields: [
+  categories: [
     { id: "short-term", label: "Short Term Stay" },
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
@@ -446,15 +446,15 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
 };
 
 // Rates for HCBS-10
-export const performanceRateSelfDirection: NdrFieldsTemplate = {
-  type: ElementType.NdrFields,
+export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   required: true,
   assessments: [
     { id: "self-direction-offer", label: "Self-Direction Offer" },
     { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
   ],
-  fields: [
+  categories: [
     { id: "self-label", label: "Total" },
     { id: "18-to-64-years", label: "18 to 64 Years" },
     { id: "65-years-or-older", label: "65 years or older" },

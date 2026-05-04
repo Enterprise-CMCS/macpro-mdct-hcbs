@@ -48,12 +48,12 @@ export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { NotificationsPage } from "./pages/Admin/NotificationsPage";
 // report
-export { Fields } from "../components/rates/types/Fields";
+export { LengthOfStay } from "./rates/types/LengthOfStay";
 export { ReadmissionRate } from "../components/rates/types/ReadmissionRate";
-export { NDRFields } from "../components/rates/types/NDRFields";
-export { NDREnhanced } from "../components/rates/types/NDREnhanced";
+export { MultiCategoryNdr } from "./rates/types/MultiCategoryNdr";
+export { MultiRateNdr } from "../components/rates/types/MultiRateNdr";
 export { NDR } from "../components/rates/types/NDR";
-export { NDRBasic } from "../components/rates/types/NDRBasic";
+export { PerformanceNdr } from "./rates/types/PerformanceNdr";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
