@@ -52,7 +52,7 @@ export const App = () => {
       {!user && showLocalLogins && (
         <>
           <SkipNav />
-          <main id="main-content" tabIndex={-1}>
+          <main id="main-content" tabIndex={-1} style={sx.loginMain}>
             <Container sx={sx.appContainer}>
               <Heading as="h1" fontSize="heading_3xl" variant="login">
                 Home &amp; Community Based Services
@@ -104,5 +104,8 @@ const sx = {
     maxWidth: "25rem",
     height: "full",
     marginY: "auto",
+  },
+  loginMain: {
+    display: "block",
   },
 };

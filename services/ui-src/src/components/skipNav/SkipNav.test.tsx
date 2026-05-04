@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { SkipNav } from "components";
 import { testA11yAct } from "utils/testing/commonTests";
 
@@ -19,7 +20,7 @@ describe("<SkipNav />", () => {
       name: "Skip to main content",
     });
 
-    skipNavLink.focus();
+    await userEvent.tab();
 
     expect(skipNavLink).toHaveAttribute("href", "#main-content");
     expect(skipNavLink).toHaveFocus();
