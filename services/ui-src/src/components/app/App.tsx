@@ -53,18 +53,18 @@ export const App = () => {
         <>
           <SkipNav />
           <main id="main-content" tabIndex={-1}>
-          <Container sx={sx.appContainer}>
-            <Heading as="h1" fontSize="heading_3xl" variant="login">
-              Home &amp; Community Based Services
-            </Heading>
-          </Container>
-          <Container sx={sx.loginContainer}>
-            <Stack spacing={8}>
-              <LoginIDM />
-              <Divider />
-              <LoginCognito />
-            </Stack>
-          </Container>
+            <Container sx={sx.appContainer}>
+              <Heading as="h1" fontSize="heading_3xl" variant="login">
+                Home &amp; Community Based Services
+              </Heading>
+            </Container>
+            <Container sx={sx.loginContainer}>
+              <Stack spacing={8}>
+                <LoginIDM />
+                <Divider />
+                <LoginCognito />
+              </Stack>
+            </Container>
           </main>
         </>
       )}
