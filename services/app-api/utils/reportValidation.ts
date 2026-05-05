@@ -106,7 +106,7 @@ const dateTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Date)),
   id: string().required(),
   label: string().required(),
-  helperText: string().notRequired(),
+  helperText: string().required(),
   answer: string().notRequired(),
   required: boolean().required(),
 });
@@ -121,7 +121,7 @@ const dateRangeTemplateSchema = object().shape({
       end: string().required(),
     })
     .required(),
-  helperText: string().notRequired(),
+  helperText: string().required(),
   answer: object()
     .shape({
       start: string().notRequired(),

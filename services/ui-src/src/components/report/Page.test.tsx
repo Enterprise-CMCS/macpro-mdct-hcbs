@@ -277,7 +277,7 @@ describe("Page Component with state user", () => {
     expect(container).not.toBeEmptyDOMElement();
   });
 
-  test("date field update calls setElements", async () => {
+  test("should transmit changes to its parent through setElements", async () => {
     const setElements = jest.fn();
     render(
       <Page
@@ -298,7 +298,16 @@ describe("Page Component with state user", () => {
     const dateField = screen.getByRole("textbox");
     await userEvent.type(dateField, "10162024");
 
-    expect(setElements).toHaveBeenCalled();
+    expect(setElements).toHaveBeenLastCalledWith([
+      {
+        type: ElementType.Date,
+        id: "measurement-period-start-date",
+        label: "Measurement start date",
+        helperText: "MM/DD/YYYY",
+        required: true,
+        answer: "10/16/2024",
+      },
+    ]);
   });
 });
 

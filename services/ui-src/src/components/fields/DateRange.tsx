@@ -11,72 +11,86 @@ import { parseMMDDYYYY } from "utils/other/time";
 const invalidMessage = (label: string) =>
   `${label} is invalid. Please enter date in MM/DD/YYYY format`;
 
+type DateRangeErrors = {
+  start: string;
+  end: string;
+  range: string;
+};
+
+type DateValues = {
+  start: string;
+  end: string;
+};
+
+const getRangeErrorMessage = (answer?: DateRangeTemplate["answer"]) => {
+  const parsedStart = parseMMDDYYYY(answer?.start ?? "");
+  const parsedEnd = parseMMDDYYYY(answer?.end ?? "");
+
+  if (parsedStart && parsedEnd && parsedEnd < parsedStart) {
+    return ErrorMessages.measurementEndDateBeforeStartDate;
+  }
+
+  return "";
+};
+
 export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
   const dateRange = props.element;
   const updateElement = props.updateElement;
 
-  const [displayStart, setDisplayStart] = useState(
-    dateRange.answer?.start ?? ""
-  );
-  const [displayEnd, setDisplayEnd] = useState(dateRange.answer?.end ?? "");
-  const [startErrorMessage, setStartErrorMessage] = useState("");
-  const [endErrorMessage, setEndErrorMessage] = useState("");
+  const [displayValues, setDisplayValues] = useState<DateValues>({
+    start: dateRange.answer?.start ?? "",
+    end: dateRange.answer?.end ?? "",
+  });
+  const [errors, setErrors] = useState<DateRangeErrors>({
+    start: "",
+    end: "",
+    range: getRangeErrorMessage(dateRange.answer),
+  });
 
   useEffect(() => {
-    setDisplayStart(dateRange.answer?.start ?? "");
-    setDisplayEnd(dateRange.answer?.end ?? "");
+    setDisplayValues({
+      start: dateRange.answer?.start ?? "",
+      end: dateRange.answer?.end ?? "",
+    });
+    setErrors((prev) => ({
+      ...prev,
+      range: getRangeErrorMessage(dateRange.answer),
+    }));
   }, [dateRange.answer?.start, dateRange.answer?.end]);
 
-  const onStartChangeHandler = (rawValue: string, maskedValue: string) => {
-    setDisplayStart(rawValue);
+  const handleDateChange = (
+    fieldName: "start" | "end",
+    rawValue: string,
+    maskedValue: string
+  ) => {
+    setDisplayValues((prev) => ({ ...prev, [fieldName]: rawValue }));
+
     const { isValid, errorMessage } = validateDate(
       rawValue,
       maskedValue,
       !!dateRange.required,
-      invalidMessage(dateRange.labels.start)
+      invalidMessage(dateRange.labels[fieldName])
     );
 
-    updateElement({
-      answer: {
-        ...dateRange.answer,
-        start: isValid ? maskedValue : undefined,
-      },
-    });
-
-    setStartErrorMessage(errorMessage);
-  };
-
-  const onEndChangeHandler = (rawValue: string, maskedValue: string) => {
-    setDisplayEnd(rawValue);
-    const { isValid, errorMessage } = validateDate(
-      rawValue,
-      maskedValue,
-      !!dateRange.required,
-      invalidMessage(dateRange.labels.end)
-    );
+    const nextAnswer = {
+      ...dateRange.answer,
+      [fieldName]: isValid ? maskedValue : undefined,
+    };
+    const rangeError = getRangeErrorMessage(nextAnswer);
 
     updateElement({
-      answer: {
-        ...dateRange.answer,
-        end: isValid ? maskedValue : undefined,
-      },
+      answer: nextAnswer,
     });
 
-    setEndErrorMessage(errorMessage);
+    setErrors((prev) => ({
+      ...prev,
+      [fieldName]: errorMessage,
+      range: rangeError,
+    }));
   };
-
-  const rangeErrorMessage = (() => {
-    const parsedStart = parseMMDDYYYY(dateRange.answer?.start ?? "");
-    const parsedEnd = parseMMDDYYYY(dateRange.answer?.end ?? "");
-
-    if (parsedStart && parsedEnd && parsedEnd < parsedStart) {
-      return ErrorMessages.endDateBeforeStartDate;
-    }
-
-    return "";
-  })();
 
   const parsedHint = dateRange.helperText && parseHtml(dateRange.helperText);
+  const endFieldError = errors.end || errors.range;
 
   return (
     <Stack spacing={0} width="100%">
@@ -92,9 +106,11 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
         <CmsdsDateField
           name={`${dateRange.id}-start`}
           label={dateRange.labels.start}
-          onChange={onStartChangeHandler}
-          value={displayStart}
-          errorMessage={startErrorMessage}
+          onChange={(rawValue, maskedValue) =>
+            handleDateChange("start", rawValue, maskedValue)
+          }
+          value={displayValues.start}
+          errorMessage={errors.start}
           disabled={props.disabled}
         />
       </Box>
@@ -102,9 +118,11 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
         <CmsdsDateField
           name={`${dateRange.id}-end`}
           label={dateRange.labels.end}
-          onChange={onEndChangeHandler}
-          value={displayEnd}
-          errorMessage={endErrorMessage || rangeErrorMessage}
+          onChange={(rawValue, maskedValue) =>
+            handleDateChange("end", rawValue, maskedValue)
+          }
+          value={displayValues.end}
+          errorMessage={endFieldError}
           disabled={props.disabled}
         />
       </Box>

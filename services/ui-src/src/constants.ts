@@ -1,5 +1,7 @@
 export const ErrorMessages = {
-  endDateBeforeStartDate: "Measurement end date can't be before start date",
+  endDateBeforeStartDate: "End date can't be before start date",
+  measurementEndDateBeforeStartDate:
+    "Measurement end date can't be before start date",
   mustBeADate: "Response must be a date in MMDDYYYY format",
   mustBeADateOptional:
     "If provided, response must be a date in MMDDYYYY format",

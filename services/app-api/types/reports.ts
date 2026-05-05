@@ -387,7 +387,7 @@ export type DateTemplate = {
   type: ElementType.Date;
   id: string;
   label: string;
-  helperText?: string;
+  helperText: string;
   answer?: string;
   required: boolean;
 };
@@ -400,7 +400,7 @@ export type DateRangeTemplate = {
     start: string;
     end: string;
   };
-  helperText?: string;
+  helperText: string;
   answer?: {
     start?: string;
     end?: string;
