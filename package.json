@@ -63,8 +63,10 @@
     "yargs": "^17.7.2"
   },
   "resolutions": {
+    "brace-expansion@^1.1.7": "^1.1.14",
     "lodash@^4.17.21": "^4.18.0",
     "minimatch@^10.1.1": "^10.2.5",
+    "minimatch@^10.2.3": "^10.2.5",
     "minimatch@^3.1.1": "^3.1.5",
     "minimatch@^3.0.4": "^3.1.5",
     "path-to-regexp@^8.3.0": "^8.4.0",
