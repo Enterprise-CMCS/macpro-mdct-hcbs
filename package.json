@@ -62,5 +62,8 @@
     "util": "^0.12.5",
     "yargs": "^17.7.2"
   },
+  "resolutions": {
+    "tar@^7.5.2": "^7.5.4"
+  },
   "packageManager": "yarn@4.12.0"
 }
