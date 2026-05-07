@@ -19,7 +19,7 @@
     "@cmsgov/design-system": "^13.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@vitejs/plugin-react": "^4.3.0",
+    "@vitejs/plugin-react": "^6.0.1",
     "aws-amplify": "~6.17.0",
     "core-js": "^3.41.0",
     "date-fns": "^4.1.0",
