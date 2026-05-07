@@ -267,14 +267,14 @@ export const DashboardTable = ({
   const showAdminControlsColumn = userIsAdmin;
 
   // Build header columns based on defined behaviors per role
-  const baseHeaders = [
+  const headers = [
     "Submission name",
     "Reporting year",
     "Last edited",
     "Edited by",
     "Status",
   ];
-  const headers = [...baseHeaders];
+
   if (showReportSubmissionsColumn) headers.push("#");
   headers.push("Actions");
   if (showAdminControlsColumn) headers.push("", "");
