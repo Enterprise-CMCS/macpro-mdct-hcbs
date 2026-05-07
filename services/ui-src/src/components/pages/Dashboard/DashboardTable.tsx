@@ -273,10 +273,11 @@ export const DashboardTable = ({
     "Last edited",
     "Edited by",
     "Status",
-    "Actions",
   ];
+
   if (showReportSubmissionsColumn) headers.push("#");
-  headers.push("");
+  headers.push("Actions");
+  if (showAdminControlsColumn) headers.push("", "");
   const { reportType } = useParams();
   const tableContent = {
     caption: `${getReportName(reportType)}s`,
