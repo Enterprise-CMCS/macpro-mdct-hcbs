@@ -75,6 +75,41 @@ const sx = {
     alignItems: "center",
     backgroundColor: "palette.gray_lightest",
     padding: "0 1rem",
+    "& .ds-c-usa-banner__header-icon": {
+      width: "2rem",
+      height: "0.6875rem",
+      alignSelf: "center",
+      verticalAlign: "middle",
+    },
+    "& .ds-c-usa-banner__action-icon": {
+      width: "0.75rem",
+      height: "0.75rem",
+    },
+    "& .ds-c-usa-banner__button-icon": {
+      width: "0.875rem",
+      height: "0.875rem",
+    },
+    "& .ds-c-usa-banner__guidance-icon": {
+      width: "1.5rem",
+      height: "1.5rem",
+    },
+    "& .ds-c-usa-banner__inline-lock-icon": {
+      display: "inline",
+      width: "0.65rem",
+      height: "0.8rem",
+    },
+    "& .ds-c-usa-banner__button-text": {
+      alignItems: "center",
+      paddingInlineStart: "0.2rem",
+    },
+    "@media (min-width: 768px)": {
+      "& .ds-c-usa-banner__action": {
+        display: "none",
+      },
+      "& .ds-c-usa-banner__button-text": {
+        display: "flex",
+      },
+    },
     ".desktop &": {
       padding: "0 2rem",
     },
