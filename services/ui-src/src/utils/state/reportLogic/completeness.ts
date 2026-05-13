@@ -15,6 +15,7 @@ import {
   assertExhaustive,
   ReadmissionRateFieldNames,
 } from "types";
+import { parseMMDDYYYY } from "utils/other/time";
 
 /**
  * Calculate the status of any page, including calculated values.
@@ -248,6 +249,18 @@ export const elementSatisfiesRequired = (
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
+  }
+
+  if (element.type === ElementType.DateRange) {
+    const start = element.answer?.start?.trim();
+    const end = element.answer?.end?.trim();
+    if (!start || !end) return false;
+
+    const parsedStart = parseMMDDYYYY(start);
+    const parsedEnd = parseMMDDYYYY(end);
+    if (!parsedStart || !parsedEnd) return false;
+
+    return parsedEnd >= parsedStart;
   }
 
   if (element.type === ElementType.NdrBasic) {
