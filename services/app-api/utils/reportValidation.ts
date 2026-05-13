@@ -204,14 +204,14 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return lengthOfStayRateSchema;
     case ElementType.ReadmissionRate:
       return ReadmissionRateSchema;
-    case ElementType.NdrFields:
-      return ndrFieldsRateSchema;
-    case ElementType.NdrEnhanced:
-      return ndrEnhancedRateSchema;
+    case ElementType.MultiCategoryNdr:
+      return multiCategoryNdrSchema;
+    case ElementType.MultiRateNdr:
+      return multiRateNdrSchema;
     case ElementType.Ndr:
       return ndrRateSchema;
-    case ElementType.NdrBasic:
-      return ndrRateBasicSchema;
+    case ElementType.PerformanceNdr:
+      return performanceNdrSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
     case ElementType.Divider:
@@ -418,8 +418,8 @@ const ReadmissionRateSchema = object().shape({
     .notRequired(),
 });
 
-const ndrFieldsRateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrFields)),
+const multiCategoryNdrSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.MultiCategoryNdr)),
   id: string().required(),
   assessments: array()
     .of(
@@ -429,7 +429,7 @@ const ndrFieldsRateSchema = object().shape({
       })
     )
     .required(),
-  fields: array()
+  categories: array()
     .of(
       object().shape({
         id: string().required(),
@@ -456,8 +456,8 @@ const ndrFieldsRateSchema = object().shape({
     .notRequired(),
 });
 
-const ndrEnhancedRateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrEnhanced)),
+const multiRateNdrSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
@@ -498,8 +498,8 @@ const ndrRateSchema = object().shape({
     .notRequired(),
 });
 
-const ndrRateBasicSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrBasic)),
+const performanceNdrSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.PerformanceNdr)),
   id: string().required(),
   label: string().notRequired(),
   required: boolean().required(),

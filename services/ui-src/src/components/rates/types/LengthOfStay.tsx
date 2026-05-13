@@ -16,7 +16,9 @@ import {
 import { ExportRateTable } from "components/export/ExportedReportTable";
 import { ErrorMessages } from "../../../constants";
 
-export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
+export const LengthOfStay = (
+  props: PageElementProps<LengthOfStayRateTemplate>
+) => {
   const { disabled, updateElement } = props;
   const { labels, answer } = props.element;
 
@@ -215,8 +217,8 @@ export const Fields = (props: PageElementProps<LengthOfStayRateTemplate>) => {
   );
 };
 
-//The pdf rendering of Fields component
-export const FieldsExport = (element: LengthOfStayRateTemplate) => {
+//The pdf rendering of LengthOfStay component
+export const LengthOfStayExport = (element: LengthOfStayRateTemplate) => {
   const label = "Performance Rates";
   const rows = [
     {

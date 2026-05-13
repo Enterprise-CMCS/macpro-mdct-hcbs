@@ -114,7 +114,7 @@ export const Sidebar = () => {
           className={sidebarOpen ? "left" : "right"}
         />
       </Button>
-      <Flex sx={sx.sidebarNav}>
+      <Flex sx={sx.sidebarNav} inert={sidebarOpen ? undefined : true}>
         <Flex sx={sx.sidebarList}>
           <Heading variant="sidebar">{title}</Heading>
           {report.pages[root].childPageIds?.map((child) =>

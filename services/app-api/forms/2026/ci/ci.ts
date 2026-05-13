@@ -75,7 +75,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-1: Critical Incidents for Which an Investigation Was Initiated Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -108,7 +108,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -141,7 +141,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-3: Critical Incidents Requiring Corrective Action for Which the Required Corrective Action Was Completed Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -186,7 +186,7 @@ export const ciReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your CI Report is accurate. You will be able to make edits after submitting if you contact your CMS HCBS Lead to unlock your report while it is in "Submitted" status.',
+          text: 'Double check that everything in your CI Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -219,13 +219,13 @@ export const ciReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them you submitted the CI Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the CI report and it is ready for their review.",
         },
         exportToPDF,
       ],

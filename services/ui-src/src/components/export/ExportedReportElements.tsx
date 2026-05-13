@@ -1,13 +1,13 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType, MeasurePageTemplate, PageElement } from "types";
-import { FieldsExport } from "components/rates/types/Fields";
+import { LengthOfStayExport } from "components/rates/types/LengthOfStay";
 import { ReadmissionRateExport } from "components/rates/types/ReadmissionRate";
 import { NDRExport } from "components/rates/types/NDR";
 import { notAnsweredText } from "../../constants";
-import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
-import { NDRFieldExport } from "components/rates/types/NDRFields";
-import { NDRBasicExport } from "components/rates/types/NDRBasic";
+import { MultiRateNdrExport } from "components/rates/types/MultiRateNdr";
+import { MultiCategoryNdrExport } from "components/rates/types/MultiCategoryNdr";
+import { PerformanceNdrExport } from "components/rates/types/PerformanceNdr";
 import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
 import { CheckboxExport } from "components/fields/CheckboxField";
 import { ListInputExport } from "components/fields/ListInput";
@@ -29,12 +29,12 @@ const tableElementList = [
 
 const renderElementList = [
   ...tableElementList,
-  ElementType.NdrEnhanced,
-  ElementType.NdrFields,
+  ElementType.MultiRateNdr,
+  ElementType.MultiCategoryNdr,
   ElementType.Ndr,
   ElementType.LengthOfStayRate,
   ElementType.ReadmissionRate,
-  ElementType.NdrBasic,
+  ElementType.PerformanceNdr,
   ElementType.MeasureDetails,
   ElementType.SubHeader,
   ElementType.EligibilityTable,
@@ -66,18 +66,18 @@ export const renderElements = (
           {element.text}
         </Heading>
       );
-    case ElementType.NdrEnhanced:
-      return NDREnhancedExport(element);
-    case ElementType.NdrFields:
-      return NDRFieldExport(element);
+    case ElementType.MultiRateNdr:
+      return MultiRateNdrExport(element);
+    case ElementType.MultiCategoryNdr:
+      return MultiCategoryNdrExport(element);
     case ElementType.Ndr:
       return NDRExport(element);
     case ElementType.LengthOfStayRate:
-      return FieldsExport(element);
+      return LengthOfStayExport(element);
     case ElementType.ReadmissionRate:
       return ReadmissionRateExport(element);
-    case ElementType.NdrBasic:
-      return NDRBasicExport(element, section.navTitle);
+    case ElementType.PerformanceNdr:
+      return PerformanceNdrExport(element, section.navTitle);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:

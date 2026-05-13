@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import {
-  NdrBasicTemplate,
-  RateInputFieldNameBasic,
-  RateInputFieldNamesBasic,
-  AlertTypes,
-  PageElement,
-} from "types";
+import { PerformanceNdrTemplate, AlertTypes, PageElement } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -19,7 +13,15 @@ import { ErrorMessages, autoCalculatesText } from "../../../constants";
 import { Alert, Page } from "components";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
-export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
+const FieldNames = {
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
+
+export const PerformanceNdr = (
+  props: PageElementProps<PerformanceNdrTemplate>
+) => {
   const { updateElement, disabled, element } = props;
   const {
     label,
@@ -46,7 +48,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   const [errors, setErrors] = useState(initialErrors);
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
-    const fieldType = input.name as RateInputFieldNameBasic;
+    const fieldType = input.name as FieldName;
     const stringValue = input.value;
 
     const newDisplayValue = structuredClone(displayValue);
@@ -59,7 +61,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     input: HTMLInputElement,
     newDisplayValue: typeof displayValue
   ) => {
-    const fieldType = input.name as RateInputFieldNameBasic;
+    const fieldType = input.name as FieldName;
     const stringValue = input.value;
     const parsedValue = parseNumber(stringValue);
     let errorMessage;
@@ -74,19 +76,18 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
     ) {
       return {
         ...errors,
-        [RateInputFieldNamesBasic.numerator]: ErrorMessages.denominatorZero(),
-        [RateInputFieldNamesBasic.denominator]: "",
+        [FieldNames.numerator]: ErrorMessages.denominatorZero(),
+        [FieldNames.denominator]: "",
       };
     } else if (
-      fieldType === RateInputFieldNamesBasic.denominator &&
+      fieldType === FieldNames.denominator &&
       parsedValue !== 0 &&
-      errors[RateInputFieldNamesBasic.numerator] ===
-        ErrorMessages.denominatorZero()
+      errors[FieldNames.numerator] === ErrorMessages.denominatorZero()
     ) {
       return {
         ...errors,
-        [RateInputFieldNamesBasic.numerator]: "",
-        [RateInputFieldNamesBasic.denominator]: "",
+        [FieldNames.numerator]: "",
+        [FieldNames.denominator]: "",
       };
     } else {
       errorMessage = "";
@@ -216,7 +217,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
           <CmsdsTextField
             label="Numerator"
             hint={hintText?.numHint}
-            name={RateInputFieldNamesBasic.numerator}
+            name={FieldNames.numerator}
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.numerator}
@@ -226,7 +227,7 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
           <CmsdsTextField
             label="Denominator"
             hint={hintText?.denomHint}
-            name={RateInputFieldNamesBasic.denominator}
+            name={FieldNames.denominator}
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.denominator}
@@ -251,8 +252,11 @@ export const NDRBasic = (props: PageElementProps<NdrBasicTemplate>) => {
   );
 };
 
-//The pdf rendering of NDRBasic component
-export const NDRBasicExport = (element: NdrBasicTemplate, caption?: string) => {
+//The pdf rendering of PerformanceNdr component
+export const PerformanceNdrExport = (
+  element: PerformanceNdrTemplate,
+  caption?: string
+) => {
   const label = element.label ?? "";
 
   const minimum =

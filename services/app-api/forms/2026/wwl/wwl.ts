@@ -239,6 +239,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Checkbox,
           label:
             "How does the state select individuals on the waiting list for enrollment when a slot becomes available?",
+          helperText: "Select all that apply",
           required: true,
           choices: [
             {
@@ -288,7 +289,7 @@ export const wwlReportTemplate: ReportBase = {
             "<p><b>Step 2.</b> Sum the waiting list days for all beneficiaries calculated in Step 1 to obtain the total number of days all beneficiaries newly enrolled or newly receiving HCBS were on the waiting list.</p>",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "amount-of-time-rate",
           required: true,
           hintText: {
@@ -348,7 +349,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your WWL Report is accurate.  While it is in the "Submitted" status, you will only be able to make edits if you contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your WWL Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -381,13 +382,13 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the WWL report and it is ready for their review.",
         },
         exportToPDF,
       ],

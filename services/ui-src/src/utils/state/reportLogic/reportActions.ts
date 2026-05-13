@@ -4,11 +4,13 @@
  */
 import { HcbsReportState } from "types";
 import {
+  ElementType,
   FormPageTemplate,
   isMeasurePageTemplate,
   isMeasureTemplate,
   MeasurePageTemplate,
   PageStatus,
+  PageType,
   ParentPageTemplate,
   Report,
 } from "types/report";
@@ -261,19 +263,19 @@ export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
 
   //add elements that already have bottom borders to prevent double diviers on the page
   const hideFromElements = [
-    "measureTable",
-    "measureResultsNavigationTable",
-    "ndrEnhanced",
-    "ndr",
-    "ndrFields",
-    "ndrBasic",
-    "lengthOfStay",
-    "readmissionRate",
+    ElementType.MeasureTable,
+    ElementType.MeasureResultsNavigationTable,
+    ElementType.MultiRateNdr,
+    ElementType.Ndr,
+    ElementType.MultiCategoryNdr,
+    ElementType.PerformanceNdr,
+    ElementType.LengthOfStayRate,
+    ElementType.ReadmissionRate,
   ];
   //find the measureFooter index if the page type is measure & measureResults page, else use the last element's index
   const footerIndex =
-    page.type == "measure" || page.type == "measureResults"
-      ? page.elements.findIndex((ele) => ele.type == "measureFooter")
+    page.type == PageType.Measure || page.type == PageType.MeasureResults
+      ? page.elements.findIndex((ele) => ele.type == ElementType.MeasureFooter)
       : page.elements?.length;
 
   return !(

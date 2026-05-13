@@ -29,12 +29,12 @@ import {
   TextAreaField,
   TextField,
   StatusAlert,
-  Fields,
+  LengthOfStay,
   ReadmissionRate,
   NDR,
-  NDRBasic,
-  NDRFields,
-  NDREnhanced,
+  PerformanceNdr,
+  MultiCategoryNdr,
+  MultiRateNdr,
   CheckboxField,
   ListInput,
   EligibilityTableElement,
@@ -103,17 +103,17 @@ export const Page = ({ id, setElements, elements }: Props) => {
       case ElementType.MeasureFooter:
         return <MeasureFooterElement {...{ disabled, element }} />;
       case ElementType.LengthOfStayRate:
-        return <Fields {...{ updateElement, disabled, element }} />;
+        return <LengthOfStay {...{ updateElement, disabled, element }} />;
       case ElementType.ReadmissionRate:
         return <ReadmissionRate {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrFields:
-        return <NDRFields {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrEnhanced:
-        return <NDREnhanced {...{ updateElement, disabled, element }} />;
+      case ElementType.MultiCategoryNdr:
+        return <MultiCategoryNdr {...{ updateElement, disabled, element }} />;
+      case ElementType.MultiRateNdr:
+        return <MultiRateNdr {...{ updateElement, disabled, element }} />;
       case ElementType.Ndr:
         return <NDR {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrBasic:
-        return <NDRBasic {...{ updateElement, disabled, element }} />;
+      case ElementType.PerformanceNdr:
+        return <PerformanceNdr {...{ updateElement, disabled, element }} />;
       case ElementType.StatusAlert:
         return <StatusAlert {...{ element }} />;
       case ElementType.Divider:

@@ -1,9 +1,9 @@
 import {
   NdrTemplate,
   ElementType,
-  NdrEnhancedTemplate,
-  NdrFieldsTemplate,
-  NdrBasicTemplate,
+  MultiRateNdrTemplate,
+  MultiCategoryNdrTemplate,
+  PerformanceNdrTemplate,
   LengthOfStayRateTemplate,
   ReadmissionRateTemplate,
 } from "types";
@@ -20,9 +20,9 @@ export const mockNDR: NdrTemplate = {
   required: true,
 };
 
-export const mockedNDREnhanced: NdrEnhancedTemplate = {
-  id: "mock-ndr-enhanced",
-  type: ElementType.NdrEnhanced,
+export const mockedMultiRateNdr: MultiRateNdrTemplate = {
+  id: "mock-multi-rate-ndr",
+  type: ElementType.MultiRateNdr,
   label: "test label",
   helperText: "helper text",
   required: true,
@@ -39,9 +39,9 @@ export const mockedNDREnhanced: NdrEnhancedTemplate = {
   },
 };
 
-export const mockNDRFields: NdrFieldsTemplate = {
-  id: "mock-ndr-fields",
-  type: ElementType.NdrFields,
+export const mockMultiCategoryNdr: MultiCategoryNdrTemplate = {
+  id: "mock-multi-category-ndr",
+  type: ElementType.MultiCategoryNdr,
   required: true,
   assessments: [
     {
@@ -49,10 +49,10 @@ export const mockNDRFields: NdrFieldsTemplate = {
       id: "mock-assess-1",
     },
   ],
-  fields: [
+  categories: [
     {
-      label: "Field 1",
-      id: "mock-field-1",
+      label: "Category 1",
+      id: "mock-category-1",
     },
   ],
   answer: [
@@ -60,7 +60,7 @@ export const mockNDRFields: NdrFieldsTemplate = {
       denominator: 2,
       rates: [
         {
-          id: "mock-assess-1.mock-field-1",
+          id: "mock-assess-1.mock-category-1",
           numerator: undefined,
           rate: undefined,
         },
@@ -69,9 +69,9 @@ export const mockNDRFields: NdrFieldsTemplate = {
   ],
 };
 
-export const mockNDRBasics: NdrBasicTemplate = {
-  id: "mock-ndr-basic",
-  type: ElementType.NdrBasic,
+export const mockPerformanceNdr: PerformanceNdrTemplate = {
+  id: "mock-performance-ndr",
+  type: ElementType.PerformanceNdr,
   required: true,
 };
 

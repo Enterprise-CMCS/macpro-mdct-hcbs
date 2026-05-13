@@ -9,12 +9,12 @@ import {
   PageType,
 } from "types";
 import {
-  mockedNDREnhanced,
+  mockedMultiRateNdr,
   mockLengthOfStayFields,
   mockReadmissionRateFields,
   mockNDR,
-  mockNDRBasics,
-  mockNDRFields,
+  mockPerformanceNdr,
+  mockMultiCategoryNdr,
 } from "utils/testing/mockRates";
 
 const section = {
@@ -74,9 +74,9 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByRole("row", { name: "Denominator 3" })).toBeVisible();
     expect(screen.getByRole("row", { name: /Rate .* 1\.67/ })).toBeVisible();
   });
-  test("Test render NDR Enhanced element", () => {
-    section.elements.push(mockedNDREnhanced);
-    const element = renderElements(section, mockedNDREnhanced);
+  test("Test render Multi-Rate NDR element", () => {
+    section.elements.push(mockedMultiRateNdr);
+    const element = renderElements(section, mockedMultiRateNdr);
     render(element);
 
     expect(
@@ -88,9 +88,9 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });
-  test("Test render NDR Fields element", () => {
-    section.elements.push(mockNDRFields);
-    const element = renderElements(section, mockNDRFields);
+  test("Test render Multi-Category NDR element", () => {
+    section.elements.push(mockMultiCategoryNdr);
+    const element = renderElements(section, mockMultiCategoryNdr);
     render(element);
 
     expect(screen.getAllByText("Denominator (Assessment 1)")).toHaveLength(2);
@@ -110,9 +110,9 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByText("Expected Readmission Rate")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(9);
   });
-  test("Test render NDR Basic element", () => {
-    section.elements.push(mockNDRBasics);
-    const element = renderElements(section, mockNDRBasics);
+  test("Test render Performance NDR element", () => {
+    section.elements.push(mockPerformanceNdr);
+    const element = renderElements(section, mockPerformanceNdr);
     render(element);
     expect(screen.getByText("Result")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(2);

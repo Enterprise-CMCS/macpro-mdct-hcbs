@@ -260,10 +260,10 @@ export enum ElementType {
   MeasureFooter = "measureFooter",
   LengthOfStayRate = "lengthOfStay",
   ReadmissionRate = "readmissionRate",
-  NdrFields = "ndrFields",
-  NdrEnhanced = "ndrEnhanced",
+  MultiCategoryNdr = "multiCategoryNdr",
+  MultiRateNdr = "multiRateNdr",
   Ndr = "ndr",
-  NdrBasic = "ndrBasic",
+  PerformanceNdr = "performanceNdr",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
@@ -294,10 +294,10 @@ export type PageElement =
   | MeasureFooterTemplate
   | LengthOfStayRateTemplate
   | ReadmissionRateTemplate
-  | NdrFieldsTemplate
-  | NdrEnhancedTemplate
+  | MultiCategoryNdrTemplate
+  | MultiRateNdrTemplate
   | NdrTemplate
-  | NdrBasicTemplate
+  | PerformanceNdrTemplate
   | StatusAlertTemplate
   | DividerTemplate
   | SubmissionParagraphTemplate
@@ -539,13 +539,6 @@ export type ReadmissionRateTemplate = {
   errors?: Record<ReadmissionRateField, string>;
 };
 
-export const RateInputFieldNames = {
-  numerator: "numerator",
-  denominator: "denominator",
-} as const;
-export type RateInputFieldName =
-  (typeof RateInputFieldNames)[keyof typeof RateInputFieldNames];
-
 export type RateType = {
   id: string;
   numerator: number | undefined;
@@ -563,19 +556,19 @@ export type RateSetData = {
   rates: RateType[];
 };
 
-export type NdrFieldsTemplate = {
+export type MultiCategoryNdrTemplate = {
   id: string;
-  type: ElementType.NdrFields;
+  type: ElementType.MultiCategoryNdr;
   assessments: { label: string; id: string }[];
-  fields: { label: string; id: string; autoCalc?: boolean }[];
+  categories: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;
 };
 
-export type NdrEnhancedTemplate = {
+export type MultiRateNdrTemplate = {
   id: string;
-  type: ElementType.NdrEnhanced;
+  type: ElementType.MultiRateNdr;
   label?: string;
   helperText?: string;
   assessments: { label: string; id: string }[];
@@ -591,9 +584,9 @@ export type NdrTemplate = {
   required: boolean;
 };
 
-export type NdrBasicTemplate = {
+export type PerformanceNdrTemplate = {
   id: string;
-  type: ElementType.NdrBasic;
+  type: ElementType.PerformanceNdr;
   label?: string;
   answer?: RateData;
   hintText?: {

@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useState, ReactElement } from "react";
-import { Modal } from "components";
+import { Alert, Modal } from "components";
 import {
   TextField as CmsdsTextField,
   Dropdown as CmsdsDropdownField,
 } from "@cmsgov/design-system";
-import { Spinner, Flex, Text } from "@chakra-ui/react";
+import { Spinner, Flex, Text, Box } from "@chakra-ui/react";
 import {
   createReport,
   updateReport,
@@ -17,6 +17,7 @@ import {
   ReportStatus,
   ReportType,
 } from "types/report";
+import { AlertTypes } from "types";
 import QmsOptions from "./AddFormOptions/QmsOptions";
 import TacmOptions from "./AddFormOptions/TacmOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
@@ -188,7 +189,21 @@ export const AddEditReportModal = ({
         heading: `${selectedReport ? "Edit" : "Add new"} ${
           verbiage.reportName
         }`,
-        subheading: "",
+        subheading:
+          reportType === ReportType.WWL ? (
+            <Box mt={4} mb={8}>
+              <Alert
+                status={AlertTypes.WARNING}
+                title="Waiting List Separation"
+              >
+                A separate report should be generated for each waiver waiting
+                list your state intends to include during the current reporting
+                year.
+              </Alert>
+            </Box>
+          ) : (
+            ""
+          ),
         actionButtonText: submitting ? (
           <Spinner size="md" />
         ) : (

@@ -5,9 +5,9 @@ import {
   LengthOfStayRateTemplate,
   ListInputTemplate,
   MeasurePageTemplate,
-  NdrBasicTemplate,
-  NdrEnhancedTemplate,
-  NdrFieldsTemplate,
+  PerformanceNdrTemplate,
+  MultiRateNdrTemplate,
+  MultiCategoryNdrTemplate,
   NdrTemplate,
   PageElement,
   PageStatus,
@@ -528,9 +528,9 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
 
-  test("accepts complete NDREnhanced rates", () => {
+  test("accepts complete MultiRateNdr elements", () => {
     const element = {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       answer: {
         denominator: 5,
         rates: [
@@ -541,7 +541,7 @@ describe("elementSatisfiesRequired", () => {
         ],
       },
       required: true,
-    } as NdrEnhancedTemplate;
+    } as MultiRateNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
@@ -552,18 +552,18 @@ describe("elementSatisfiesRequired", () => {
     { denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] },
     { denominator: 5, rates: [{ rate: 1.4 }] },
     { denominator: 5, rates: [{ numerator: 7 }] },
-  ])("accepts incomplete NDREnhanced rates", (answer) => {
+  ])("accepts incomplete MultiRateNdr elements", (answer) => {
     const element = {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       answer,
       required: false,
-    } as NdrEnhancedTemplate;
+    } as MultiRateNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test("accepts complete NDRFields rates", () => {
+  test("accepts complete multiCategoryNdr elements", () => {
     const element = {
-      type: ElementType.NdrFields,
+      type: ElementType.MultiCategoryNdr,
       answer: [
         {
           denominator: 5,
@@ -576,13 +576,13 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrFieldsTemplate;
+    } as MultiCategoryNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
-  test("rejects incomplete  NDRBasic rates", () => {
+  test("rejects incomplete PerformanceNdr rates", () => {
     const element = {
       id: "mock-id",
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       answer: {
         numerator: 1,
         denominator: 2,
@@ -596,13 +596,13 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrBasicTemplate;
+    } as PerformanceNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
-  test("accepts complete NDRBasic rates", () => {
+  test("accepts complete PerformanceNdr rates", () => {
     const element = {
       id: "mock-id",
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       answer: {
         numerator: 2,
         denominator: 2,
@@ -617,7 +617,7 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrBasicTemplate;
+    } as PerformanceNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
@@ -628,12 +628,12 @@ describe("elementSatisfiesRequired", () => {
     [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ numerator: 7 }] }],
-  ])("accepts incomplete NDRFields when not required", (answer) => {
+  ])("accepts incomplete MultiCategoryNdr elements when optional", (answer) => {
     const element = {
-      type: ElementType.NdrFields,
+      type: ElementType.MultiCategoryNdr,
       answer,
       required: false, // ← It's not required
-    } as unknown as NdrFieldsTemplate;
+    } as unknown as MultiCategoryNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
   test("reject incomplete ListInput", () => {

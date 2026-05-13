@@ -88,7 +88,7 @@ export const stateSamplingMethologyQuestion: RadioTemplate = {
       checkedChildren: [
         {
           type: ElementType.TextAreaField,
-          id: "sampling-approach-used",
+          id: "sampling-approach-used-probability",
           label: "Describe the sampling approach used",
           required: true,
         },
@@ -119,7 +119,7 @@ export const stateSamplingMethologyQuestion: RadioTemplate = {
       checkedChildren: [
         {
           type: ElementType.TextAreaField,
-          id: "sampling-approach-used",
+          id: "sampling-approach-used-other",
           label:
             "Please provide a detailed description of the alternative sampling methodology. If this measure aggregates results from multiple programs that used different methodologies, specify which method was used for each program and how the results were combined.",
           required: true,
