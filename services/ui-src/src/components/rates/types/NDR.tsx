@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { NdrTemplate, RateInputFieldName, RateInputFieldNames } from "types";
+import { NdrTemplate } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -11,6 +11,12 @@ import {
 import { PageElementProps } from "components/report/Elements";
 import { autoCalculatesText, ErrorMessages } from "../../../constants";
 import { ExportRateTable } from "components/export/ExportedReportTable";
+
+const FieldNames = {
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 
 export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const { disabled, element, updateElement } = props;
@@ -33,7 +39,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const [errors, setErrors] = useState(initialErrors);
 
   const updatedDisplayValue = (input: HTMLInputElement) => {
-    const fieldType = input.name as RateInputFieldName;
+    const fieldType = input.name as FieldName;
     const stringValue = input.value;
 
     const newDisplayValue = structuredClone(displayValue);
@@ -46,7 +52,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     input: HTMLInputElement,
     newDisplayValue: typeof displayValue
   ) => {
-    const fieldType = input.name as RateInputFieldName;
+    const fieldType = input.name as FieldName;
     const stringValue = input.value;
     const parsedValue = parseNumber(stringValue);
     let errorMessage;
@@ -61,18 +67,18 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
     ) {
       return {
         ...errors,
-        [RateInputFieldNames.numerator]: ErrorMessages.denominatorZero(),
-        [RateInputFieldNames.denominator]: "",
+        [FieldNames.numerator]: ErrorMessages.denominatorZero(),
+        [FieldNames.denominator]: "",
       };
     } else if (
-      fieldType === RateInputFieldNames.denominator &&
+      fieldType === FieldNames.denominator &&
       parsedValue !== 0 &&
-      errors[RateInputFieldNames.numerator] === ErrorMessages.denominatorZero()
+      errors[FieldNames.numerator] === ErrorMessages.denominatorZero()
     ) {
       return {
         ...errors,
-        [RateInputFieldNames.numerator]: "",
-        [RateInputFieldNames.denominator]: "",
+        [FieldNames.numerator]: "",
+        [FieldNames.denominator]: "",
       };
     } else {
       errorMessage = "";
@@ -138,7 +144,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
           <Heading variant="subHeader">Performance Rate: {label}</Heading>
           <CmsdsTextField
             label="Numerator"
-            name={RateInputFieldNames.numerator}
+            name={FieldNames.numerator}
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.numerator}
@@ -147,7 +153,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
           ></CmsdsTextField>
           <CmsdsTextField
             label="Denominator"
-            name={RateInputFieldNames.denominator}
+            name={FieldNames.denominator}
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.denominator}

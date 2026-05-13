@@ -19,12 +19,12 @@
     "@cmsgov/design-system": "^13.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@vitejs/plugin-react": "^4.3.0",
-    "aws-amplify": "~6.16.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "aws-amplify": "~6.17.0",
     "core-js": "^3.41.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
-    "dompurify": "^3.2.4",
+    "dompurify": "^3.4.2",
     "framer-motion": "^11",
     "html-react-parser": "^3.0.16",
     "jest": "^29.7.0",
@@ -47,7 +47,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.6.1",
-    "@types/dompurify": "^2.3.3",
+    "@types/dompurify": "^3.2.0",
     "@types/jest": "^27.0.2",
     "@types/jest-axe": "^3.5.3",
     "@types/node": "^22.19.0",
@@ -60,8 +60,7 @@
     "pa11y": "^6.2.3",
     "pa11y-runner-htmlcs": "^2.0.1",
     "typescript": "^5.9.3",
-    "vite": "^5.4.21",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite": "^8.0.10"
   },
   "browserslist": {
     "production": [

@@ -82,6 +82,7 @@ Element objects have varying shapes, but some fields are common:
 - `type` (string): Indicates this element's role, and dictates its shape.
 - `id` (string): An identifier. Should always be unique _within a page_,
   but IDs may be reused for elements on different pages.
+  - One exception is divider elements; these always have `id: "divider"`.
 - `answer` (varies, optional): If this element accepts user input,
   that input will be stored in the `answer` property.
   - Different elements have different answer types: string, number, object...
@@ -154,7 +155,7 @@ Here is the complete list of element types, roughly categorized:
   - `ndr`: A set of three numeric fields: numerator, denominator, and rate.
     - Rate is auto-calculated as soon as numerator and denominator are entered.
     - Answer is an object of type `{ numerator: number, denominator: number, rate: number }`.
-  - `ndrBasic`: Similar to NDR, with the same answer shape.
+  - `performanceNdr`: Similar to NDR, with the same answer shape.
     May have additional properties:
     - `multiplier`: May be applied to the rate during auto-calculation.
       For example, percentage rates would have `multiplier: 100`
@@ -162,17 +163,17 @@ Here is the complete list of element types, roughly categorized:
       If it does not, the user will be shown a warning.
     - `conditionalChildren`: Just like `checkedChildren` for a radio option.
       Shown only if `rate < minPerformanceLevel`.
-  - `ndrEnhanced`: A set of rates with a shared denominator.
+  - `multiRateNdr`: A set of rates with a shared denominator.
     - The `assessments` property is an array of `{ id: string, label: string }`
       corresponding to the numerators.
     - Answer is an object of type `{ denominator: number, rates: { numerator: number, rate: number }[] }`
-  - `ndrFields`: A collection of rates sets with shared denominators.
-    - The `fields` property is an array of `{ id: string, label: string }`
+  - `multiCategoryNdr`: A collection of rates sets with shared denominators.
+    - The `categories` property is an array of `{ id: string, label: string }`
       corresponding to the denominators.
-    - The `assessments` property works just like in `ndrEnhanced`.
+    - The `assessments` property works just like in `multiRateNdr`.
     - Answer is an array of objects, each of which is the same shape
-      as the answer for an `ndrEnhanced` element.
-    - For example, if there are two `fields` and three `assessments`,
+      as the answer for an `multiRateNdr` element.
+    - For example, if there are two `categories` and three `assessments`,
       there will be six rates in all.
       In this case, the answer will be an array containing two objects,
       each of which will have a `rates` property containing three objects.

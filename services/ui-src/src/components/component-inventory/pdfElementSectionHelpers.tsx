@@ -123,21 +123,21 @@ export const checkboxFieldSection: FormPageTemplate = {
   ],
 };
 
-export const ndrFieldsSection: FormPageTemplate = {
-  id: "mock-ndrFields-id",
-  navTitle: "mock-ndrFields-title",
+export const multiCategoryNdrSection: FormPageTemplate = {
+  id: "mock-multiCategoryNdr-id",
+  navTitle: "mock-multiCategoryNdr-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrFields,
+      type: ElementType.MultiCategoryNdr,
       id: "measure-rates",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
         { id: "assessment-2", label: "Second Assessment" },
       ],
-      fields: [
-        { id: "field-1", label: "First Field" },
-        { id: "field-2", label: "Second Field" },
+      categories: [
+        { id: "category-1", label: "First Category" },
+        { id: "category-2", label: "Second Category" },
       ],
       required: true,
       multiplier: 1000,
@@ -145,13 +145,13 @@ export const ndrFieldsSection: FormPageTemplate = {
   ],
 };
 
-export const ndrEnhancedSection: FormPageTemplate = {
-  id: "mock-ndrEnhanced-id",
-  navTitle: "mock-ndrEnhanced-title",
+export const multiRateNdrSection: FormPageTemplate = {
+  id: "mock-multiRateNdr-id",
+  navTitle: "mock-multiRateNdr-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       id: "measure-rates",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
@@ -177,13 +177,13 @@ export const ndrSection: FormPageTemplate = {
   ],
 };
 
-export const ndrBasicSection: FormPageTemplate = {
-  id: "mock-ndrBasic-id",
-  navTitle: "mock-ndrBasic-title",
+export const performanceNdrSection: FormPageTemplate = {
+  id: "mock-performanceNdr-id",
+  navTitle: "mock-performanceNdr-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       id: "measure-rates",
       label: "Label",
       required: true,

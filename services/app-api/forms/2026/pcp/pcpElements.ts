@@ -1,8 +1,8 @@
-import { ElementType, NdrBasicTemplate } from "../../../types/reports";
+import { ElementType, PerformanceNdrTemplate } from "../../../types/reports";
 import { minPerformanceExplanationField } from "../elements";
 
-export const beneficiariesRate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const beneficiariesRate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "beneficiaries-rate",
   required: true,
   hintText: {
@@ -19,8 +19,8 @@ export const beneficiariesRate: NdrBasicTemplate = {
   conditionalChildren: [minPerformanceExplanationField],
 };
 
-export const beneficiariesReviewedRate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const beneficiariesReviewedRate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "pcp-2-rate",
   required: true,
   hintText: {

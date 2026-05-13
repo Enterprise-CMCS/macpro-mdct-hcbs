@@ -289,7 +289,7 @@ export const wwlReportTemplate: ReportBase = {
             "<p><b>Step 2.</b> Sum the waiting list days for all beneficiaries calculated in Step 1 to obtain the total number of days all beneficiaries newly enrolled or newly receiving HCBS were on the waiting list.</p>",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "amount-of-time-rate",
           required: true,
           hintText: {

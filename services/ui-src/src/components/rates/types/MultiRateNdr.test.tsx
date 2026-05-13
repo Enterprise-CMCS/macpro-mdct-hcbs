@@ -1,14 +1,14 @@
 import { act, render, screen } from "@testing-library/react";
-import { NDREnhanced } from "./NDREnhanced";
+import { MultiRateNdr } from "./MultiRateNdr";
 import userEvent from "@testing-library/user-event";
-import { ElementType, NdrEnhancedTemplate } from "types";
+import { ElementType, MultiRateNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
 import { ErrorMessages } from "../../../constants";
 
-const mockedElement: NdrEnhancedTemplate = {
+const mockedElement: MultiRateNdrTemplate = {
   id: "mock-perf-id",
-  type: ElementType.NdrEnhanced,
+  type: ElementType.MultiRateNdr,
   label: "test label",
   helperText: "helper text",
   required: true,
@@ -19,14 +19,14 @@ const updateSpy = jest.fn();
 const NdrEnhancedWrapper = ({
   template,
 }: {
-  template: NdrEnhancedTemplate;
+  template: MultiRateNdrTemplate;
 }) => {
   const [element, setElement] = useState(template);
   const onChange = (updatedElement: Partial<typeof element>) => {
     updateSpy(updatedElement);
     setElement({ ...element, ...updatedElement });
   };
-  return <NDREnhanced element={element} updateElement={onChange} />;
+  return <MultiRateNdr element={element} updateElement={onChange} />;
 };
 
 describe("<NDREnhanced />", () => {

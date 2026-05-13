@@ -13,12 +13,12 @@ import {
   StatusTableElement,
   MeasureDetailsElement,
   MeasureFooterElement,
-  Fields,
+  LengthOfStay,
   ReadmissionRate,
-  NDRFields,
-  NDREnhanced,
+  MultiCategoryNdr,
+  MultiRateNdr,
   NDR,
-  NDRBasic,
+  PerformanceNdr,
   StatusAlert,
   CheckboxField,
   EligibilityTableElement,
@@ -47,10 +47,10 @@ import {
   textAreaSection,
   numberFieldSection,
   radioFieldSection,
-  ndrFieldsSection,
-  ndrEnhancedSection,
+  multiCategoryNdrSection,
+  multiRateNdrSection,
   ndrSection,
-  ndrBasicSection,
+  performanceNdrSection,
   lengthOfStayRateSection,
   readmissionRateSection,
   measureDetailsSection,
@@ -444,7 +444,7 @@ export const elementObject: {
       "Numerator/Denominator Fields to gather LengthOfStayRate performance rates",
     id: "id-length-of-stay-rate",
     variants: [
-      <Fields
+      <LengthOfStay
         updateElement={logNewElement}
         element={{
           type: ElementType.LengthOfStayRate,
@@ -491,39 +491,38 @@ export const elementObject: {
     ],
     pdfVariants: [<ExportedReportWrapper section={readmissionRateSection} />],
   },
-  [ElementType.NdrFields]: {
-    description: "Numerator/Denominator Fields to gather performance rates",
-    id: "id-ndr-fields",
+  [ElementType.MultiCategoryNdr]: {
+    description: "Multiple Denominators, each with multiple Numerators + Rates",
+    id: "id-multi-category-ndr",
     variants: [
-      <NDRFields
+      <MultiCategoryNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrFields,
+          type: ElementType.MultiCategoryNdr,
           id: "measure-rates",
           assessments: [
             { id: "assessment-1", label: "First Assessment" },
             { id: "assessment-2", label: "Second Assessment" },
           ],
-          fields: [
-            { id: "field-1", label: "First Field" },
-            { id: "field-2", label: "Second Field" },
+          categories: [
+            { id: "category-1", label: "First Category" },
+            { id: "category-2", label: "Second Category" },
           ],
           required: true,
           multiplier: 1000,
         }}
       />,
     ],
-    pdfVariants: [<ExportedReportWrapper section={ndrFieldsSection} />],
+    pdfVariants: [<ExportedReportWrapper section={multiCategoryNdrSection} />],
   },
-  [ElementType.NdrEnhanced]: {
-    description:
-      "Enhanced Numerator/Denominator Fields to gather performance rates",
-    id: "id-ndr-enhanced",
+  [ElementType.MultiRateNdr]: {
+    description: "Multiple Numerator + Rate fields with a shared Denominator",
+    id: "id-multi-rate-ndr",
     variants: [
-      <NDREnhanced
+      <MultiRateNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrEnhanced,
+          type: ElementType.MultiRateNdr,
           id: "measure-rates",
           assessments: [
             { id: "assessment-1", label: "First Assessment" },
@@ -534,7 +533,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [<ExportedReportWrapper section={ndrEnhancedSection} />],
+    pdfVariants: [<ExportedReportWrapper section={multiRateNdrSection} />],
   },
   [ElementType.Ndr]: {
     description: "Numerator/Denominator Fields to gather performance rates",
@@ -552,15 +551,15 @@ export const elementObject: {
     ],
     pdfVariants: [<ExportedReportWrapper section={ndrSection} />],
   },
-  [ElementType.NdrBasic]: {
+  [ElementType.PerformanceNdr]: {
     description:
-      "Basic and minimum target Numerator/Denominator Fields to gather performance rates",
-    id: "id-ndr-basic",
+      "Numerator/Denominator Fields to gather targeted performance rates",
+    id: "id-performance-ndr",
     variants: [
-      <NDRBasic
+      <PerformanceNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "measure-rates",
           label: "Label",
           required: true,
@@ -573,10 +572,10 @@ export const elementObject: {
           displayRateAsPercent: true,
         }}
       />,
-      <NDRBasic
+      <PerformanceNdr
         updateElement={logNewElement}
         element={{
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "measure-rates",
           label: "Label",
           required: true,
@@ -591,7 +590,7 @@ export const elementObject: {
         }}
       />,
     ],
-    pdfVariants: [<ExportedReportWrapper section={ndrBasicSection} />],
+    pdfVariants: [<ExportedReportWrapper section={performanceNdrSection} />],
   },
   [ElementType.StatusAlert]: {
     description: "Different Alert Types",
