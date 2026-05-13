@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import {
-  NdrFieldsTemplate,
-  RateInputFieldName,
-  RateInputFieldNames,
-} from "types";
+import { MultiCategoryNdrTemplate } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -24,16 +20,24 @@ import {
 } from "components/export/ExportedReportTable";
 import { ErrorMessages } from "../../../constants";
 
-export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
+const FieldNames = {
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
+
+export const MultiCategoryNdr = (
+  props: PageElementProps<MultiCategoryNdrTemplate>
+) => {
   const { disabled, element, updateElement } = props;
-  const { assessments, answer, multiplier = 1, fields } = element;
+  const { assessments, answer, multiplier = 1, categories } = element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return assessments.map((assessment, i) => ({
       id: assessment.id,
       denominator: stringifyInput(newAnswer?.[i].denominator),
-      rates: fields.map((field, j) => ({
-        id: `${assessment.id}.${field.id}`,
+      rates: categories.map((category, j) => ({
+        id: `${assessment.id}.${category.id}`,
         numerator: stringifyInput(newAnswer?.[i].rates[j].numerator),
         rate: stringifyResult(newAnswer?.[i].rates[j].rate),
       })),
@@ -53,7 +57,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
      * answer[i].rates array.
      */
     const parts = input.name.split(".");
-    const fieldType = parts.at(-1) as RateInputFieldName;
+    const fieldType = parts.at(-1) as FieldName;
     const assessIndex = Number(parts.at(0));
     const fieldIndex = parts.length > 2 ? Number(parts.at(2)) : undefined;
     const stringValue = input.value;
@@ -62,7 +66,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
     // displayValue corresponds to the inputs on screen. Its values are strings.
     const newDisplayValue = structuredClone(displayValue);
     const newErrors = structuredClone(errors);
-    if (fieldType === RateInputFieldNames.denominator) {
+    if (fieldType === FieldNames.denominator) {
       newDisplayValue[assessIndex].denominator = stringValue;
       newErrors[assessIndex].denominator = errorMessage;
     } else {
@@ -169,7 +173,7 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
 
               <CmsdsTextField
                 label={`Denominator (${assess.label})`}
-                name={`${assessIndex}.${RateInputFieldNames.denominator}`}
+                name={`${assessIndex}.${FieldNames.denominator}`}
                 onChange={onChangeHandler}
                 onBlur={onChangeHandler}
                 value={rateSet.denominator}
@@ -177,16 +181,16 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
                 disabled={disabled}
               ></CmsdsTextField>
 
-              {fields.map((field, fieldIndex) => {
-                const rateObject = rateSet.rates[fieldIndex];
-                const errorObject = errorSet.rates[fieldIndex];
+              {categories.map((category, catIndex) => {
+                const rateObject = rateSet.rates[catIndex];
+                const errorObject = errorSet.rates[catIndex];
 
                 return (
-                  <Stack key={`${assess.id}.${field.id}`} gap="2rem">
-                    <Heading variant="nestedHeading">{field.label}</Heading>
+                  <Stack key={`${assess.id}.${category.id}`} gap="2rem">
+                    <Heading variant="nestedHeading">{category.label}</Heading>
                     <CmsdsTextField
-                      label={`Numerator: ${field.label} (${assess.label})`}
-                      name={`${assessIndex}.rates.${fieldIndex}.${RateInputFieldNames.numerator}`}
+                      label={`Numerator: ${category.label} (${assess.label})`}
+                      name={`${assessIndex}.rates.${catIndex}.${FieldNames.numerator}`}
                       onChange={onChangeHandler}
                       onBlur={onChangeHandler}
                       value={rateObject.numerator}
@@ -195,13 +199,13 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
                     ></CmsdsTextField>
                     <CmsdsTextField
                       label={`Denominator (${assess.label})`}
-                      name={`${assessIndex}.rates.${fieldIndex}.denominator`}
+                      name={`${assessIndex}.rates.${catIndex}.denominator`}
                       value={rateSet.denominator}
                       disabled
                     ></CmsdsTextField>
                     <CmsdsTextField
-                      label={`${field.label} Rate (${assess.label})`}
-                      name={`${assessIndex}.rates.${fieldIndex}.rate`}
+                      label={`${category.label} Rate (${assess.label})`}
+                      name={`${assessIndex}.rates.${catIndex}.rate`}
                       hint="Auto-calculates"
                       value={rateObject.rate}
                       disabled
@@ -218,19 +222,19 @@ export const NDRFields = (props: PageElementProps<NdrFieldsTemplate>) => {
   );
 };
 
-//The pdf rendering of NDRField component
-export const NDRFieldExport = (element: NdrFieldsTemplate) => {
+//The pdf rendering of MultiCategoryNdr component
+export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
   const buildData = element.assessments?.map((assess) => {
     const data = element.answer?.find((item) =>
       item.rates[0].id.includes(assess.id)
     );
-    const rates = element.fields.map((field) => {
-      const rate = data?.rates.find((rate) => rate.id.includes(field.id));
+    const rates = element.categories.map((category) => {
+      const rate = data?.rates.find((rate) => rate.id.includes(category.id));
       return {
-        fieldLabel: field.label,
+        fieldLabel: category.label,
         rate: [
           {
-            indicator: `Numerator: ${field.label} (${assess.label})`,
+            indicator: `Numerator: ${category.label} (${assess.label})`,
             response: rate?.numerator,
           },
           {
@@ -239,7 +243,7 @@ export const NDRFieldExport = (element: NdrFieldsTemplate) => {
             helperText: "Auto-calculates",
           },
           {
-            indicator: `${field.label} Rate (${assess.label})`,
+            indicator: `${category.label} Rate (${assess.label})`,
             response: stringifyResult(rate?.rate),
             helperText: "Auto-calculates",
           },

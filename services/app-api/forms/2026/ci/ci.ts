@@ -75,7 +75,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-1: Critical Incidents for Which an Investigation Was Initiated Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -108,7 +108,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -141,7 +141,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-3: Critical Incidents Requiring Corrective Action for Which the Required Corrective Action Was Completed Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {

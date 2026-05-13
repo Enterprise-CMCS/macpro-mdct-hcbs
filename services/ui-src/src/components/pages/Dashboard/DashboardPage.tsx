@@ -125,7 +125,7 @@ export const DashboardPage = () => {
     <PageTemplate type="report" sxOverride={sx.layout}>
       <Title tabTitle={`${reportName} - HCBS`} />
       <Link as={RouterLink} to="/" variant="return">
-        <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
+        <Image src={arrowLeftIcon} alt="" className="icon" />
         Return home
       </Link>
       {banner ? <Banner {...banner} key={banner.key} /> : null}

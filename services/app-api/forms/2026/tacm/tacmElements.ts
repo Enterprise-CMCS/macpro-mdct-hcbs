@@ -1,6 +1,6 @@
 import {
   ElementType,
-  NdrBasicTemplate,
+  PerformanceNdrTemplate,
   TextAreaBoxTemplate,
 } from "../../../types/reports";
 
@@ -14,8 +14,8 @@ export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
 };
 
 // Rates for Homemaker for HAPC-1 measure
-export const homemakerRate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const homemakerRate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "homemaker-1-rate",
   required: true,
   label: "Homemaker",
@@ -32,8 +32,8 @@ export const homemakerRate: NdrBasicTemplate = {
 };
 
 // Rates for Homemaker for HAPC-2 measure
-export const homemakerHAPCH2Rate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const homemakerHAPCH2Rate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "homemaker-2-rate",
   required: true,
   label: "Homemaker",
@@ -50,8 +50,8 @@ export const homemakerHAPCH2Rate: NdrBasicTemplate = {
 };
 
 // Rates for Home Health Aide or HAPCH-1 measure
-export const homeHealthAideRate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const homeHealthAideRate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "home-health-aide-1-rate",
   required: true,
   label: "Home Health Aide",
@@ -68,8 +68,8 @@ export const homeHealthAideRate: NdrBasicTemplate = {
 };
 
 // Rates for Home Health Aide for HAPCH-2 measure
-export const homeHealthAideHAPCH2Rate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const homeHealthAideHAPCH2Rate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "home-health-aide-2-rate",
   required: true,
   label: "Home Health Aide",
@@ -86,8 +86,8 @@ export const homeHealthAideHAPCH2Rate: NdrBasicTemplate = {
 };
 
 // Rates for Personal Care for HAPCH-1 measure
-export const personalCareRate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const personalCareRate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "personal-care-1-rate",
   required: true,
   label: "Personal Care",
@@ -104,8 +104,8 @@ export const personalCareRate: NdrBasicTemplate = {
 };
 
 // Rates for Personal Care for HAPCH-2 measure
-export const personalCareHAPCH2Rate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const personalCareHAPCH2Rate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "personal-care-2-rate",
   required: true,
   label: "Personal Care",
@@ -122,8 +122,8 @@ export const personalCareHAPCH2Rate: NdrBasicTemplate = {
 };
 
 // Rates for Habilitation for HAPCH-1 measure
-export const habilitationRate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const habilitationRate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "habilitation-1-rate",
   required: true,
   label: "Habilitation",
@@ -140,8 +140,8 @@ export const habilitationRate: NdrBasicTemplate = {
 };
 
 // Rates for Habilitation for HAPCH-2 measure
-export const habilitationHAPCH2Rate: NdrBasicTemplate = {
-  type: ElementType.NdrBasic,
+export const habilitationHAPCH2Rate: PerformanceNdrTemplate = {
+  type: ElementType.PerformanceNdr,
   id: "habilitation-2-rate",
   required: true,
   label: "Habilitation",

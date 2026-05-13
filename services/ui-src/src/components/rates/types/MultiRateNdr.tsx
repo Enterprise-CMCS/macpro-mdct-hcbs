@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import {
-  NdrEnhancedTemplate,
-  RateInputFieldName,
-  RateInputFieldNames,
-} from "types";
+import { MultiRateNdrTemplate } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -24,7 +20,13 @@ import {
 } from "components/export/ExportedReportTable";
 import { autoPopulatedText, ErrorMessages } from "../../../constants";
 
-export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
+const FieldNames = {
+  numerator: "numerator",
+  denominator: "denominator",
+} as const;
+type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
+
+export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
   const { disabled, element, updateElement } = props;
   const { assessments, answer, helperText, label } = element;
 
@@ -48,18 +50,18 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
   const updatedDisplayValue = (input: HTMLInputElement) => {
     /*
      * The name will look like "denominator" or
-     * or "1.numerator". The last part is always a RateInputFieldName.
+     * or "1.numerator". The last part is always a FieldName.
      * If there are two parts, the first will be an index into answer.rates.
      */
     const parts = input.name.split(".");
-    const fieldType = parts.at(-1) as RateInputFieldName;
+    const fieldType = parts.at(-1) as FieldName;
     const assessIndex = parts.length > 1 ? Number(parts.at(0)) : undefined;
     const stringValue = input.value;
     const { errorMessage } = validateNumber(stringValue, true);
 
     const newDisplayValue = structuredClone(displayValue);
     const newErrorObject = structuredClone(errors);
-    if (fieldType === RateInputFieldNames.denominator) {
+    if (fieldType === FieldNames.denominator) {
       newDisplayValue.denominator = stringValue;
       newErrorObject.denominator = errorMessage;
     } else {
@@ -148,7 +150,7 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
       <Stack gap="2rem">
         <CmsdsTextField
           label={`${label ? `${label}s` : "Performance Rates"} Denominator`}
-          name={RateInputFieldNames.denominator}
+          name={FieldNames.denominator}
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.denominator}
@@ -168,7 +170,7 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
               </Heading>
               <CmsdsTextField
                 label="Numerator"
-                name={`${index}.${RateInputFieldNames.numerator}`}
+                name={`${index}.${FieldNames.numerator}`}
                 onChange={onChangeHandler}
                 onBlur={onChangeHandler}
                 value={value.numerator}
@@ -198,8 +200,8 @@ export const NDREnhanced = (props: PageElementProps<NdrEnhancedTemplate>) => {
   );
 };
 
-//The pdf rendering of NDREnchanced component
-export const NDREnhancedExport = (element: NdrEnhancedTemplate) => {
+//The pdf rendering of a MultiRateNdr component
+export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
   const label = element.label ?? "Performance Rates";
 
   const buildData = element.assessments?.map(

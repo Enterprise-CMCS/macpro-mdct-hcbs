@@ -1,21 +1,21 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ElementType, NdrFieldsTemplate } from "types";
+import { ElementType, MultiCategoryNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { NDRFields } from "./NDRFields";
+import { MultiCategoryNdr } from "./MultiCategoryNdr";
 import { useState } from "react";
 import { ErrorMessages } from "../../../constants";
 
-const mockElementTemplate: NdrFieldsTemplate = {
+const mockElementTemplate: MultiCategoryNdrTemplate = {
   id: "mock-perf-id",
-  type: ElementType.NdrFields,
+  type: ElementType.MultiCategoryNdr,
   assessments: [
     { id: "year-1", label: "18 to 64 Years" },
     { id: "year-2", label: "65 to 74 Years" },
     { id: "year-3", label: "75 to 84 Years" },
     { id: "year-4", label: "85 years or older" },
   ],
-  fields: [
+  categories: [
     { id: "short-term", label: "Short Term Stay" },
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
@@ -25,24 +25,28 @@ const mockElementTemplate: NdrFieldsTemplate = {
 };
 const updateSpy = jest.fn();
 
-const NdrFieldsWrapper = ({ template }: { template: NdrFieldsTemplate }) => {
+const MultiCategoryNdrWrapper = ({
+  template,
+}: {
+  template: MultiCategoryNdrTemplate;
+}) => {
   const [element, setElement] = useState(template);
   const onChange = (updatedElement: Partial<typeof element>) => {
     updateSpy(updatedElement);
     setElement({ ...element, ...updatedElement });
   };
-  return <NDRFields element={element} updateElement={onChange} />;
+  return <MultiCategoryNdr element={element} updateElement={onChange} />;
 };
 
-describe("<NDRFields />", () => {
-  describe("Test NDRFields component", () => {
+describe("<MultiCategoryNdr />", () => {
+  describe("Test MultiCategoryNdr component", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    test("NDRFields is visible", () => {
-      render(<NdrFieldsWrapper template={mockElementTemplate} />);
-      const { assessments, fields } = mockElementTemplate;
+    test("MultiCategoryNdr is visible", () => {
+      render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
+      const { assessments, categories } = mockElementTemplate;
 
       for (const assess of assessments) {
         expect(
@@ -50,15 +54,15 @@ describe("<NDRFields />", () => {
             name: `Denominator (${assess.label})`,
           })
         ).toHaveLength(4);
-        for (const field of fields) {
+        for (const category of categories) {
           expect(
             screen.getByRole("textbox", {
-              name: `Numerator: ${field.label} (${assess.label})`,
+              name: `Numerator: ${category.label} (${assess.label})`,
             })
           ).toBeInTheDocument();
           expect(
             screen.getByRole("textbox", {
-              name: `${field.label} Rate (${assess.label})`,
+              name: `${category.label} Rate (${assess.label})`,
             })
           ).toBeInTheDocument();
         }
@@ -66,8 +70,8 @@ describe("<NDRFields />", () => {
     });
 
     test("Rate should calculate", async () => {
-      render(<NdrFieldsWrapper template={mockElementTemplate} />);
-      const { assessments, fields } = mockElementTemplate;
+      render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
+      const { assessments, categories } = mockElementTemplate;
 
       if (assessments && assessments.length > 0) {
         const denom = screen.getAllByRole("textbox", {
@@ -77,20 +81,20 @@ describe("<NDRFields />", () => {
         expect(denom).toHaveValue("1");
 
         const num = screen.getByRole("textbox", {
-          name: `Numerator: ${fields?.[0].label} (${assessments[0].label})`,
+          name: `Numerator: ${categories?.[0].label} (${assessments[0].label})`,
         });
         await act(async () => await userEvent.type(num, "1"));
         expect(num).toHaveValue("1");
 
         const rate = screen.getByRole("textbox", {
-          name: `${fields?.[0].label} Rate (${assessments[0].label})`,
+          name: `${categories?.[0].label} Rate (${assessments[0].label})`,
         });
         expect(rate).toHaveValue("1000");
       }
     });
 
     test("Error should show if the denominator is 0", async () => {
-      render(<NdrFieldsWrapper template={mockElementTemplate} />);
+      render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
       const { assessments } = mockElementTemplate;
 
       if (assessments && assessments.length > 0) {
@@ -113,8 +117,8 @@ describe("<NDRFields />", () => {
   });
 
   test("Rate should be 0 if both numerator and denominator are 0", async () => {
-    render(<NdrFieldsWrapper template={mockElementTemplate} />);
-    const { assessments, fields } = mockElementTemplate;
+    render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
+    const { assessments, categories } = mockElementTemplate;
 
     if (assessments && assessments.length > 0) {
       const denom = screen.getAllByRole("textbox", {
@@ -124,17 +128,17 @@ describe("<NDRFields />", () => {
       expect(denom).toHaveValue("0");
 
       const num = screen.getByRole("textbox", {
-        name: `Numerator: ${fields?.[0].label} (${assessments[0].label})`,
+        name: `Numerator: ${categories?.[0].label} (${assessments[0].label})`,
       });
       await act(async () => await userEvent.type(num, "0"));
       expect(num).toHaveValue("0");
 
       const rate = screen.getByRole("textbox", {
-        name: `${fields?.[0].label} Rate (${assessments[0].label})`,
+        name: `${categories?.[0].label} Rate (${assessments[0].label})`,
       });
       expect(rate).toHaveValue("0.00");
     }
   });
 
-  testA11y(<NdrFieldsWrapper template={mockElementTemplate} />);
+  testA11y(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
 });

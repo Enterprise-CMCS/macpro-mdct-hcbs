@@ -1,4 +1,5 @@
 import { buildReport } from "../../handlers/reports/buildReport";
+import { booleanCombinations } from "../../testing/setupJest";
 import { ReportType } from "../../types/reports";
 import { User } from "../../types/types";
 import { sanitizeArray, sanitizeObject, sanitizeString } from "../sanitize";
@@ -131,27 +132,3 @@ describe("Test sanitizeObject is friendly to the markup embedded in our report t
     }
   });
 });
-
-/**
- * Generate every combination of the given number of boolean values.
- *
- * @example
- * for (let combo of booleanCombinations(2)) {
- *  console.log(combo);
- * }
- * // [true, true]
- * // [true, false]
- * // [false, true]
- * // [false, false]
- */
-function* booleanCombinations(count: number): Generator<boolean[]> {
-  if (count <= 1) {
-    yield [true];
-    yield [false];
-  } else {
-    for (let combo of booleanCombinations(count - 1)) {
-      yield [true, ...combo];
-      yield [false, ...combo];
-    }
-  }
-}

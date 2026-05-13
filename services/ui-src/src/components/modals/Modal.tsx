@@ -98,7 +98,7 @@ interface Props {
   };
   content: {
     heading: string;
-    subheading?: string;
+    subheading?: ReactNode;
     actionButtonText: string | ReactNode;
     closeButtonText?: string;
   };
