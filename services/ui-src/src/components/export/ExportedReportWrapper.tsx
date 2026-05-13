@@ -12,6 +12,24 @@ import { renderElements, shouldUseTable } from "./ExportedReportElements";
 import { chunkBy } from "utils/other/arrays";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
+const hasElementAnswer = (element: PageElement) => {
+  if (!("answer" in element)) return false;
+
+  if (element.type === ElementType.DateRange) {
+    return !!element.answer?.start || !!element.answer?.end;
+  }
+
+  return element.answer !== undefined && element.answer !== "";
+};
+
+const getIndicator = (element: PageElement) => {
+  if (element.type === ElementType.DateRange) {
+    return element.labels.top;
+  }
+
+  return "label" in element ? (element.label ?? "") : "";
+};
+
 export const renderReportTable = (elements: ReportTableType[] | undefined) => {
   const filteredElements = elements?.filter((element) => element.indicator);
   if (filteredElements?.length == 0) return;
@@ -55,10 +73,7 @@ const getHelperText = (element: PageElement) => {
 
 export const ExportedReportWrapper = ({ section }: Props) => {
   const filteredElements = section.elements?.filter((element) => {
-    const hasAnswer =
-      "answer" in element &&
-      element.answer !== undefined &&
-      element.answer !== "";
+    const hasAnswer = hasElementAnswer(element);
     const isRequired = !("required" in element) || element.required !== false;
     return hasAnswer || isRequired;
   });
@@ -127,7 +142,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       }
 
       return {
-        indicator: "label" in element ? (element.label ?? "") : "",
+        indicator: getIndicator(element),
         helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",

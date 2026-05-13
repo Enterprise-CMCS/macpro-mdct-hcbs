@@ -18,6 +18,7 @@ import {
 } from "../../types/report";
 import {
   DateField,
+  DateRange,
   DropdownField,
   MeasureDetailsElement,
   MeasureFooterElement,
@@ -79,6 +80,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <TextField {...{ updateElement, disabled, element }} />;
       case ElementType.Date:
         return <DateField {...{ updateElement, disabled, element }} />;
+      case ElementType.DateRange:
+        return <DateRange {...{ updateElement, disabled, element }} />;
       case ElementType.Dropdown:
         return <DropdownField {...{ updateElement, disabled, element }} />;
       case ElementType.Accordion:
