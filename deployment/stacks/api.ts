@@ -140,6 +140,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
+  const sesPolicy = new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    actions: ["ses:SendEmail", "ses:SendRawEmail"],
+    resources: ["*"],
+  });
+
   const commonProps = {
     brokerString,
     stackName: `${service}-${stage}`,
@@ -148,6 +154,19 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     additionalPolicies,
     isDev,
   };
+
+  new Lambda(scope, "sendEmail", {
+    entry: "services/app-api/handlers/notification/sendEmail.ts",
+    handler: "sendEmail",
+    path: "notification/send",
+    method: "POST",
+    ...commonProps,
+    additionalPolicies: [...additionalPolicies, sesPolicy],
+    environment: {
+      ...environment,
+      SES_SENDER_EMAIL: "MDCT_NoReply@cms.hhs.gov",
+    },
+  });
 
   new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
