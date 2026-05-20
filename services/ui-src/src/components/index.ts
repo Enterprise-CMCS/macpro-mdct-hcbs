@@ -28,6 +28,7 @@ export { ExportedReportBanner } from "./export/ExportedReportBanner";
 export { ExportedReportWrapper } from "./export/ExportedReportWrapper";
 // fields
 export { DateField } from "./fields/DateField";
+export { DateRange } from "./fields/DateRange";
 export { DropdownField } from "./fields/DropdownField";
 export { RadioField } from "./fields/RadioField";
 export { CheckboxField } from "./fields/CheckboxField";

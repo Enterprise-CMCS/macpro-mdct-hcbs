@@ -111,6 +111,26 @@ const dateTemplateSchema = object().shape({
   required: boolean().required(),
 });
 
+const dateRangeTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.DateRange)),
+  id: string().required(),
+  labels: object()
+    .shape({
+      top: string().required(),
+      start: string().required(),
+      end: string().required(),
+    })
+    .required(),
+  helperText: string().required(),
+  answer: object()
+    .shape({
+      start: string().notRequired(),
+      end: string().notRequired(),
+    })
+    .notRequired(),
+  required: boolean().required(),
+});
+
 const dropdownTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Dropdown)),
   id: string().required(),
@@ -158,6 +178,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return numberFieldTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
+    case ElementType.DateRange:
+      return dateRangeTemplateSchema;
     case ElementType.Dropdown:
       return dropdownTemplateSchema;
     case ElementType.Accordion:

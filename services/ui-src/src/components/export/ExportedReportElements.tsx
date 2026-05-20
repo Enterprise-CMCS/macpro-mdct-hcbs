@@ -11,6 +11,7 @@ import { PerformanceNdrExport } from "components/rates/types/PerformanceNdr";
 import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
 import { CheckboxExport } from "components/fields/CheckboxField";
 import { ListInputExport } from "components/fields/ListInput";
+import { DateRangeTemplate } from "types/report";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -18,6 +19,8 @@ const ignoreIdList = ["quality-measures-subheader"];
 //elements that are rendered as part of the table that does not need a unique renderer
 const tableElementList = [
   ElementType.Textbox,
+  ElementType.Date,
+  ElementType.DateRange,
   ElementType.Radio,
   ElementType.TextAreaField,
   ElementType.Checkbox,
@@ -39,6 +42,13 @@ const renderElementList = [
 
 export const shouldUseTable = (type: ElementType) => {
   return tableElementList.includes(type);
+};
+
+const renderDateRangeAnswer = (element: DateRangeTemplate) => {
+  const start = element.answer?.start ?? notAnsweredText;
+  const end = element.answer?.end ?? notAnsweredText;
+
+  return `${element.labels.start}: ${start}\n${element.labels.end}: ${end}`;
 };
 
 export const renderElements = (
@@ -76,6 +86,8 @@ export const renderElements = (
       return CheckboxExport(element);
     case ElementType.ListInput:
       return ListInputExport(element);
+    case ElementType.DateRange:
+      return renderDateRangeAnswer(element);
   }
 
   if (!("answer" in element)) {

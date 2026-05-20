@@ -2,6 +2,7 @@ import {
   AccordionTemplate,
   AlertTypes,
   ButtonLinkTemplate,
+  DateRangeTemplate,
   ElementType,
   HeaderTemplate,
   LengthOfStayRateTemplate,
@@ -105,6 +106,19 @@ export const managedCareMeasureResultsSubheader: SubHeaderTemplate = {
   type: ElementType.SubHeader,
   id: "managed-care-measure-results-subheader",
   text: "Managed Care Measure Results",
+};
+
+export const measurementPeriodDateRange: DateRangeTemplate = {
+  type: ElementType.DateRange,
+  id: "measurement-period",
+  labels: {
+    top: "Measurement period dates",
+    start: "Measurement start date",
+    end: "Measurement end date",
+  },
+  helperText:
+    "Select the measurement period start and end dates for this individual metric.",
+  required: true,
 };
 
 export const isTheStateReportingThisMeasure: RadioTemplate = {
