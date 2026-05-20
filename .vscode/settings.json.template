@@ -1,0 +1,14 @@
+{
+  "oxc.path.oxfmt": "node_modules/oxfmt/bin/oxfmt",
+  "workbench.colorCustomizations": {
+    "commandCenter.border": "#15202b99",
+    "sash.hoverBorder": "#e2e6c5",
+    "titleBar.activeBackground": "#d0d7a1",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#d0d7a199",
+    "titleBar.inactiveForeground": "#15202b99",
+    "panel.border": "#e2e6c5",
+    "sideBar.border": "#e2e6c5"
+  },
+  "peacock.color": "#d0d7a1"
+}

@@ -15,6 +15,18 @@ const h1Variant = {
   display: "inline-block",
 };
 
+const h2Variant = {
+  fontSize: "heading_2xl",
+  fontWeight: "heading_2xl",
+  lineHeight: "heading_2xl",
+};
+
+const h5Variant = {
+  fontSize: "heading_md",
+  fontWeight: "heading_md",
+  lineHeight: "heading_md",
+};
+
 const subHeaderVariant = {
   fontSize: "heading_xl",
   fontWeight: "heading_xl",
@@ -29,6 +41,7 @@ const subHeaderVariant = {
 const nestedHeadingVariant = {
   fontSize: "heading_lg",
   fontWeight: "heading_lg",
+  lineHeight: "heading_lg",
   p: {
     margin: "0",
   },
@@ -52,6 +65,8 @@ const loginVariant = {
 
 const variants = {
   h1: h1Variant,
+  h2: h2Variant,
+  h5: h5Variant,
   subHeader: subHeaderVariant,
   nestedHeading: nestedHeadingVariant,
   sidebar: sidebarVariant,

@@ -8,10 +8,13 @@ import {
 } from "../../../types/reports";
 
 import {
-  criticalIncidentCommentsField,
   didYouFollowSpecifications,
+  exportToPDF,
   minPerformanceExplanationField,
+  waiverListCheckboxField,
+  waiverListInputField,
 } from "../elements";
+import { criticalIncidentCommentsField } from "./ciElements";
 
 export const ciReportTemplate: ReportBase = {
   type: ReportType.CI,
@@ -29,7 +32,8 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
+      tabTitle: "General Information - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -54,35 +58,14 @@ export const ciReportTemplate: ReportBase = {
           helperText:
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
-        {
-          type: ElementType.Radio,
-          id: "report-coverage-waivers-programs",
-          label:
-            "Does this report cover all the programs that are required under the relevant authorities?",
-          required: true,
-          choices: [
-            { label: "Yes", value: "yes" },
-            {
-              label: "No",
-              value: "no",
-              checkedChildren: [
-                {
-                  type: ElementType.TextAreaField,
-                  id: "included-waivers-programs",
-                  label: "Which programs and waivers are included?",
-                  required: true,
-                  helperText:
-                    "Please specify all the 1915(c) waivers, 1915(i), 1915(j), and 1915(k) State plan benefits, as well as any 1115 demonstrations that include HCBS, that you are including in this report. Include the program name and control numbers in your response.",
-                },
-              ],
-            },
-          ],
-        },
+        waiverListCheckboxField,
+        waiverListInputField,
       ],
     },
     {
       id: "incid-1",
-      title: "HCBS INCID-1",
+      navTitle: "HCBS INCID-1",
+      tabTitle: "INCID-1: Investigation Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -92,7 +75,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-1: Critical Incidents for Which an Investigation Was Initiated Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -114,7 +97,8 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "incid-2",
-      title: "HCBS INCID-2",
+      navTitle: "HCBS INCID-2",
+      tabTitle: "INCID-2: Resolution Timeframes - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -124,7 +108,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-2: Critical Incidents for Which the State Determined the Resolution Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -146,7 +130,8 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "incid-3",
-      title: "HCBS INCID-3",
+      navTitle: "HCBS INCID-3",
+      tabTitle: "INCID-3: Corrective Action Completion - CI - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -156,7 +141,7 @@ export const ciReportTemplate: ReportBase = {
           text: "HCBS INCID-3: Critical Incidents Requiring Corrective Action for Which the Required Corrective Action Was Completed Within State-Specified Timeframes",
         },
         {
-          type: ElementType.NdrBasic,
+          type: ElementType.PerformanceNdr,
           id: "critical-incident-rate",
           required: true,
           hintText: {
@@ -178,7 +163,9 @@ export const ciReportTemplate: ReportBase = {
     },
     {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - CI - HCBS",
+      submittedTabTitle: "Successfully Submitted - CI - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -199,7 +186,7 @@ export const ciReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your CI Report is accurate. You will be able to make edits after submitting if you contact your CMS HCBS Lead to unlock your report while it is in "Submitted" status.',
+          text: 'Double check that everything in your CI Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -232,14 +219,15 @@ export const ciReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them you submitted the CI Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the CI report and it is ready for their review.",
         },
+        exportToPDF,
       ],
     },
   ],

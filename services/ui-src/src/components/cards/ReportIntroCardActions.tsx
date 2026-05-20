@@ -1,6 +1,6 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
-import externalLinkIcon from "assets/icons/externalLink/icon_external_link_main.svg";
+import externalLinkIcon from "/icon_external_link_main.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType, isReportType } from "types";
 import { useStore } from "utils";
@@ -49,7 +49,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           <Image
             src={externalLinkIcon}
             sx={sx.externalLinkIcon}
-            alt="External Link Opens in New Tab"
+            alt="(Opens in New Tab)"
           />
         </Button>
       )}

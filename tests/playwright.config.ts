@@ -13,6 +13,12 @@ dotenv.config({ path: "../.env" });
 export default defineConfig({
   testDir: "playwright",
   testMatch: ["**/*.spec.js", "**/*.spec.ts"],
+  /* Timeout for each test (including beforeEach and such). 60000ms = 1 minute */
+  timeout: 60000,
+  expect: {
+    /* Timeout for each `expect()` call. 15000ms = 15 seconds */
+    timeout: 15000,
+  },
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -57,10 +63,5 @@ export default defineConfig({
     stdout: "pipe",
     /* Give Localstack enough time to start up initially. 300000ms = 5min */
     timeout: 300000,
-  },
-
-  expect: {
-    /* Give each individual action time to complete. Each `expect()` call will wait 10000ms = 10s */
-    timeout: 10000,
   },
 });

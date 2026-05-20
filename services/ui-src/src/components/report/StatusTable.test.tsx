@@ -32,15 +32,16 @@ const report = {
   state: "CO",
   pages: [
     { childPageIds: ["1", "2"] },
-    { title: "Section 1", id: "id-1" },
-    { title: "Section 2", id: "id-2" },
+    { navTitle: "Section 1", id: "id-1" },
+    { navTitle: "Section 2", id: "id-2" },
   ],
 };
 
-const mockPageMap = new Map();
-mockPageMap.set("root", 0);
-mockPageMap.set("1", 1);
-mockPageMap.set("2", 2);
+const mockPageMap = new Map([
+  ["root", 0],
+  ["1", 1],
+  ["2", 2],
+]);
 
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 const mockSetModalComponent = jest.fn();
@@ -55,12 +56,12 @@ describe("StatusTable with state user", () => {
           return {
             sections: [
               {
-                section: { title: "Section 1", id: "id-1" },
+                section: { navTitle: "Section 1", id: "id-1" },
                 displayStatus: PageStatus.COMPLETE,
                 submittable: true,
               },
               {
-                section: { title: "Section 2", id: "id-2" },
+                section: { navTitle: "Section 2", id: "id-2" },
                 displayStatus: PageStatus.IN_PROGRESS,
                 submittable: false,
               },
@@ -89,7 +90,7 @@ describe("StatusTable with state user", () => {
     expect(screen.getByText("Section")).toBeInTheDocument();
     expect(screen.getByText("Status")).toBeInTheDocument();
 
-    // Section title and status for Section 1
+    // Section navTitle and status for Section 1
     expect(screen.getByText("Section 1")).toBeInTheDocument();
     expect(screen.getByText("Complete")).toBeInTheDocument();
     expect(screen.getByAltText("complete icon")).toBeInTheDocument();
@@ -166,7 +167,7 @@ describe("StatusTable with state user", () => {
           return {
             sections: [
               {
-                section: { title: "Section 1", id: "id-1" },
+                section: { navTitle: "Section 1", id: "id-1" },
                 displayStatus: PageStatus.COMPLETE,
                 submittable: true,
               },
@@ -225,12 +226,12 @@ describe("StatusPage with Read only user", () => {
           return {
             sections: [
               {
-                section: { title: "Section 1", id: "id-1" },
+                section: { navTitle: "Section 1", id: "id-1" },
                 displayStatus: PageStatus.COMPLETE,
                 submittable: true,
               },
               {
-                section: { title: "Section 2", id: "id-2" },
+                section: { navTitle: "Section 2", id: "id-2" },
                 displayStatus: PageStatus.IN_PROGRESS,
                 submittable: false,
               },

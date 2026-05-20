@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { get, put, post, del } from "aws-amplify/api";
 import { updateTimeout } from "utils";
 
@@ -33,10 +32,10 @@ const apiRequest = async <T = unknown>(
     }
 
     return undefined as T;
-  } catch (e: any) {
+  } catch (error: any) {
     // Return our own error for handling in the app
-    const info = `Request Failed - ${path} - ${e.response?.body}`;
-    console.log(e);
+    const info = `Request Failed - ${path} - ${error.response?.body}`;
+    console.log(error);
     console.log(info);
     throw new Error(info);
   }

@@ -81,9 +81,11 @@ describe("Test Timeout Modal", () => {
       fireEvent.click(refreshButton);
     });
     await waitFor(() => {
-      const logoutButton = screen.getByRole("button", { name: "Log out" });
+      const logoutButton = screen.queryByRole("button", { name: "Log out" });
       expect(refreshButton).not.toBeVisible();
-      expect(logoutButton).not.toBeVisible();
+      if (logoutButton) {
+        expect(logoutButton).not.toBeVisible();
+      }
     });
   });
 

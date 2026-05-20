@@ -1,7 +1,6 @@
-import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import {
   AdminDashSelector,
-  Banner,
   CiIntroductionCard,
   PageTemplate,
   QmsIntroductionCard,
@@ -9,12 +8,14 @@ import {
   PCPIntroductionCard,
   WWLIntroductionCard,
 } from "components";
-import { useEffect } from "react";
-import { checkDateRangeStatus, useStore } from "utils";
+import { useStore } from "utils";
 import { useFlags } from "launchdarkly-react-client-sdk";
+import { activeBannerSelector } from "utils/state/selectors";
+import { BannerAreas } from "types";
+import { Banner } from "components/alerts/Banner";
 
 export const HomePage = () => {
-  const { bannerData, bannerActive, setBannerActive } = useStore();
+  const banner = useStore(activeBannerSelector(BannerAreas.Home));
   const { userIsEndUser } = useStore().user ?? {};
 
   const isTACMReportActive = useFlags()?.isTacmReportActive;
@@ -22,28 +23,11 @@ export const HomePage = () => {
   const isPCPReportActive = useFlags()?.isPcpReportActive;
   const isWWLReportActive = useFlags()?.isWwlReportActive;
 
-  useEffect(() => {
-    let bannerActivity = false;
-    if (bannerData && bannerData.startDate && bannerData.endDate) {
-      bannerActivity = checkDateRangeStatus(
-        bannerData.startDate,
-        bannerData.endDate
-      );
-    }
-    setBannerActive(bannerActivity);
-  }, [bannerData]);
-
-  const showBanner = !!bannerData?.key && bannerActive;
-
   return (
     <>
-      <Collapse in={showBanner}>
-        <Box marginX={{ base: "spacer2", md: "spacer3" }} marginTop="spacer3">
-          <Banner bannerData={bannerData} />
-        </Box>
-      </Collapse>
       <PageTemplate>
-        {/* show standard view to state users */}
+        {banner ? <Banner {...banner} key={banner.key} /> : null}
+        {/* Show standard view to state users */}
         {userIsEndUser ? (
           <>
             <Box>
@@ -63,11 +47,30 @@ export const HomePage = () => {
                 </Link>
               </Text>
             </Box>
-            <QmsIntroductionCard />
-            {isCIReportActive && <CiIntroductionCard />}
-            {isTACMReportActive && <TacmIntroductionCard />}
-            {isPCPReportActive && <PCPIntroductionCard />}
-            {isWWLReportActive && <WWLIntroductionCard />}
+            <Box>
+              <Heading as="h2" variant="h2" marginBottom="spacer3">
+                Quality Reports
+              </Heading>
+              <QmsIntroductionCard />
+            </Box>
+            <Box>
+              <Heading as="h2" variant="h2" marginBottom="spacer3">
+                Transparency Reports
+              </Heading>
+              <Box display="flex" flexDirection="column" gap="spacer4">
+                {isTACMReportActive && <TacmIntroductionCard />}
+                {isWWLReportActive && <WWLIntroductionCard />}
+              </Box>
+            </Box>
+            <Box>
+              <Heading as="h2" variant="h2" marginBottom="spacer3">
+                Compliance Reports
+              </Heading>
+              <Box display="flex" flexDirection="column" gap="spacer4">
+                {isCIReportActive && <CiIntroductionCard />}
+                {isPCPReportActive && <PCPIntroductionCard />}
+              </Box>
+            </Box>
           </>
         ) : (
           // show read-only view to non-state users

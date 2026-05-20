@@ -7,9 +7,18 @@ import {
   AlertTypes,
 } from "../../../types/reports";
 import {
+  exportToPDF,
+  waiverListCheckboxField,
+  waiverListInputField,
+} from "../elements";
+import {
   wwlFinancialEligiblityExplanationField,
   wwlRescreenForFinancialEligibilityField,
   wwlUpdateInfoForFinancialEligibilityField,
+  wwlFunctionalEligiblityExplanationField,
+  wwlRescreenForFunctionalEligibilityField,
+  wwlUpdateInfoForFunctionalEligibilityField,
+  wwlAddOtherEligibilityTableElement,
 } from "./wwlElements";
 
 export const wwlReportTemplate: ReportBase = {
@@ -22,12 +31,19 @@ export const wwlReportTemplate: ReportBase = {
         "general-info",
         "waiting-list-identifiers",
         "financial-eligibility",
+        "functional-eligibility",
+        "add-other-eligibility",
+        "waiting-list-limits",
+        "placement",
+        "amount-of-time-on-the-waiting-list",
+        "additional-notes",
         "review-submit",
       ],
     },
     {
       id: "general-info",
-      title: "General Information",
+      navTitle: "General Information",
+      tabTitle: "General Information - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -53,34 +69,19 @@ export const wwlReportTemplate: ReportBase = {
             "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
         },
         {
-          type: ElementType.Radio,
-          id: "report-coverage-waivers-programs",
-          label:
-            "Does this report cover all the programs that are required under the relevant authorities?",
-          choices: [
-            { label: "Yes", value: "yes" },
-            {
-              label: "No",
-              value: "no",
-              checkedChildren: [
-                {
-                  type: ElementType.TextAreaField,
-                  id: "included-waivers-programs",
-                  label: "Which programs and waivers are included?",
-                  required: true,
-                  helperText:
-                    "Please specify all the 1915(c) waivers, 1915(i), 1915(j), and 1915(k) State plan benefits, as well as any 1115 demonstrations that include HCBS, that you are including in this report. Include the program name and control numbers in your response.",
-                },
-              ],
-            },
-          ],
+          type: ElementType.NumberField,
+          id: "number-of-individuals",
+          label: "Number of individuals included on the waiting list",
           required: true,
+          helperText:
+            "Enter the total number of individuals on the waiting list. Use whole numbers only. Include all individuals who were enrolled at any point during the measurement period.",
         },
       ],
     },
     {
       id: "waiting-list-identifiers",
-      title: "Waiting List Identifiers",
+      navTitle: "Waiting List Identifiers",
+      tabTitle: "Waiting List Identifiers - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -89,11 +90,14 @@ export const wwlReportTemplate: ReportBase = {
           id: "waiting-list-identifiers-header",
           text: "Waiting List Identifiers",
         },
+        waiverListCheckboxField,
+        waiverListInputField,
       ],
     },
     {
       id: "financial-eligibility",
-      title: "Financial Eligibility",
+      navTitle: "Financial Eligibility",
+      tabTitle: "Financial Eligibility - WWL - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -125,8 +129,206 @@ export const wwlReportTemplate: ReportBase = {
       ],
     },
     {
+      id: "functional-eligibility",
+      navTitle: "Functional Eligibility",
+      tabTitle: "Functional Eligibility - WWL - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "functional-eligibility-header",
+          text: "Functional Eligibility",
+        },
+        {
+          id: "functional-eligibility-confirmation",
+          type: ElementType.Radio,
+          label:
+            "Does the state confirm whether someone meets functional eligibility before they’re added to the waiting list?",
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        wwlFunctionalEligiblityExplanationField,
+        wwlRescreenForFunctionalEligibilityField,
+        wwlUpdateInfoForFunctionalEligibilityField,
+      ],
+    },
+    {
+      id: "add-other-eligibility",
+      navTitle: "Other Eligibility",
+      tabTitle: "Other Eligibility - WWL - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "add-other-eligibility-header",
+          text: "Other Eligibility",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "add-other-eligibility-instructions",
+          text: "If the state screens individuals for other eligibility requirements before placing them on the waiting list, add those eligibility requirements here.",
+        },
+        wwlAddOtherEligibilityTableElement,
+      ],
+    },
+    {
+      id: "waiting-list-limits",
+      navTitle: "Waiting List Limits",
+      tabTitle: "Waiting List Limits - WWL - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "waiting-list-limits-header",
+          text: "Waiting List Limits",
+        },
+        {
+          id: "waiting-list-limits-confirmation",
+          type: ElementType.Radio,
+          label:
+            "Does the state limit the number of individuals who can be on the waiting list or limit the waiting list to individuals who meet certain criteria?",
+          required: true,
+          choices: [
+            {
+              label: "No",
+              value: "no",
+            },
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "waiting-list-limits-explanation",
+                  label:
+                    "Describe how the state limits the number of individuals on the waiting list (including the amount of the limit) or limits the waiting list to individuals who meet certain criteria (including the specific criteria used for the limit).",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "placement",
+      navTitle: "Placement",
+      tabTitle: "Placement - WWL - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "placement-header",
+          text: "Placement",
+        },
+        {
+          id: "placement-of-individuals-waiting-list",
+          type: ElementType.Checkbox,
+          label:
+            "How does the state select individuals on the waiting list for enrollment when a slot becomes available?",
+          helperText: "Select all that apply",
+          required: true,
+          choices: [
+            {
+              label: "Sequentially, in order of waiting list placement",
+              value: "Sequentially, in order of waiting list placement",
+            },
+            {
+              label: "Priority level",
+              value: "Priority level",
+            },
+            {
+              label: "Other",
+              value: "Other",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "placement-of-individuals-waiting-list-explanation",
+                  label:
+                    "Describe the other ways that the state selects individuals on the waiting list for enrollment when a slot becomes available.",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "amount-of-time-on-the-waiting-list",
+      navTitle: "Amount of time on the waiting list",
+      tabTitle: "Time on Waiting List - WWL - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "amount-of-time-on-the-waiting-list-header",
+          text: "Amount of time on the waiting list",
+        },
+        {
+          type: ElementType.Accordion,
+          id: "amount-of-time-on-the-waiting-list-instructions",
+          label: "Instructions",
+          value:
+            "<p><b>For calculating the numerator:</b></p>" +
+            "<p><b>Step 1.</b> For each beneficiary newly enrolled or newly receiving HCBS during the measurement period, calculate the number of days between the date the individual was placed on the waiting list and the date the individual was enrolled (for section 1915 waiver programs) or began receiving HCBS (for section 1115 demonstration projects).</p>" +
+            "<p><b>Step 2.</b> Sum the waiting list days for all beneficiaries calculated in Step 1 to obtain the total number of days all beneficiaries newly enrolled or newly receiving HCBS were on the waiting list.</p>",
+        },
+        {
+          type: ElementType.PerformanceNdr,
+          id: "amount-of-time-rate",
+          required: true,
+          hintText: {
+            numHint:
+              "The number of days all beneficiaries newly enrolled during the measurement period in the section 1915(c) waiver program or newly receiving HCBS under the section 1115 demonstration project were on the waiting list prior to enrollment.",
+            denomHint:
+              "Number of beneficiaries who were newly enrolled in the section 1915(c) waiver program or newly receiving HCBS under the section 1115 demonstration project from the waiting list within the measurement period.",
+            rateHint:
+              "Auto-calculates. Average number of days that individuals who were newly enrolled in the section 1915(c) waiver program or newly receiving HCBS under the section 1115 demonstration project were on the waiting list.",
+          },
+        },
+      ],
+    },
+    {
+      id: "additional-notes",
+      navTitle: "Additional notes/comments",
+      tabTitle: "Notes and Comments - WWL - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "additional-notes-header",
+          text: "Additional notes/comments",
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "state-notes-field",
+          label:
+            "If applicable, add any notes or comments to provide context to the reported results.",
+          required: false,
+        },
+      ],
+    },
+    {
       id: "review-submit",
-      title: "Review & Submit",
+      navTitle: "Review & Submit",
+      tabTitle: "Review & Submit - WWL - HCBS",
+      submittedTabTitle: "Successfully Submitted - WWL - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -147,7 +349,7 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your WWL Report is accurate.  While it is in the "Submitted" status, you will only be able to make edits if you contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your WWL Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -180,14 +382,15 @@ export const wwlReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "submitted-what-explanation",
           title: "What happens now?",
-          text: 'Your dashboard will indicate the status of this report as "Submitted" and and it is now locked from editing.',
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
         },
         {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS HCBS Lead to inform them you submitted the Person-Centered Planning Report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the WWL report and it is ready for their review.",
         },
+        exportToPDF,
       ],
     },
   ],

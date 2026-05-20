@@ -1,18 +1,18 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { Argv } from "yargs";
+import { type Argv } from "yargs";
 import {
   CloudFormationClient,
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { checkIfAuthenticated } from "../lib/sts.js";
-import { project, region } from "../lib/consts.js";
+import { checkIfAuthenticated } from "../lib/sts.ts";
+import { project, region } from "../lib/consts.ts";
 import { createInterface } from "node:readline/promises";
-import { delete_topics } from "./delete-topics.js";
+import { delete_topics } from "./delete-topics.ts";
 
 const confirmDestroyCommand = async (stack: string) => {
-  const orange = "\x1b[38;5;208m";
-  const reset = "\x1b[0m";
+  const orange = "\u001B[38;5;208m";
+  const reset = "\u001B[0m";
 
   const readline = createInterface({
     input: process.stdin,
@@ -78,8 +78,7 @@ export const destroy = {
     const stackName = `${project}-${stage}`;
 
     if (stage === "production") {
-      console.log("Error: Destruction of production stages is not allowed.");
-      process.exit(1);
+      throw new Error("Destruction of production stages is not allowed.");
     }
 
     if (verify) await confirmDestroyCommand(stackName);

@@ -28,11 +28,15 @@ import {
   TextAreaField,
   TextField,
   StatusAlert,
-  Fields,
+  LengthOfStay,
+  ReadmissionRate,
   NDR,
-  NDRBasic,
-  NDRFields,
-  NDREnhanced,
+  PerformanceNdr,
+  MultiCategoryNdr,
+  MultiRateNdr,
+  CheckboxField,
+  ListInput,
+  EligibilityTableElement,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -81,6 +85,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <AccordionElement {...{ disabled, element }} />;
       case ElementType.Radio:
         return <RadioField {...{ updateElement, disabled, element }} />;
+      case ElementType.Checkbox:
+        return <CheckboxField {...{ updateElement, disabled, element }} />;
       case ElementType.ButtonLink:
         return <ButtonLinkElement {...{ disabled, element }} />;
       case ElementType.MeasureTable:
@@ -94,15 +100,17 @@ export const Page = ({ id, setElements, elements }: Props) => {
       case ElementType.MeasureFooter:
         return <MeasureFooterElement {...{ disabled, element }} />;
       case ElementType.LengthOfStayRate:
-        return <Fields {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrFields:
-        return <NDRFields {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrEnhanced:
-        return <NDREnhanced {...{ updateElement, disabled, element }} />;
+        return <LengthOfStay {...{ updateElement, disabled, element }} />;
+      case ElementType.ReadmissionRate:
+        return <ReadmissionRate {...{ updateElement, disabled, element }} />;
+      case ElementType.MultiCategoryNdr:
+        return <MultiCategoryNdr {...{ updateElement, disabled, element }} />;
+      case ElementType.MultiRateNdr:
+        return <MultiRateNdr {...{ updateElement, disabled, element }} />;
       case ElementType.Ndr:
         return <NDR {...{ updateElement, disabled, element }} />;
-      case ElementType.NdrBasic:
-        return <NDRBasic {...{ updateElement, disabled, element }} />;
+      case ElementType.PerformanceNdr:
+        return <PerformanceNdr {...{ updateElement, disabled, element }} />;
       case ElementType.StatusAlert:
         return <StatusAlert {...{ element }} />;
       case ElementType.Divider:
@@ -111,6 +119,10 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <SubmissionParagraph />;
       case ElementType.SubHeaderMeasure:
         return <SubHeaderMeasureElement {...{ element }} />;
+      case ElementType.ListInput:
+        return <ListInput {...{ updateElement, disabled, element }} />;
+      case ElementType.EligibilityTable:
+        return <EligibilityTableElement {...{ updateElement, element }} />;
       default:
         assertExhaustive(element);
         return null;

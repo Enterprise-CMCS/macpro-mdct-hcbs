@@ -1,6 +1,3 @@
-// BANNERS
-export const bannerId = "admin-banner-id";
-
 export const ErrorMessages = {
   endDateBeforeStartDate: "End date can't be before start date",
   mustBeADate: "Response must be a date in MMDDYYYY format",
@@ -9,6 +6,12 @@ export const ErrorMessages = {
   mustBeANumber: "Response must be a number",
   requiredResponse: "A response is required",
   mustBeAnEmail: "Response must be a valid email address",
+  denominatorZero: (
+    numerator: string = "Numerator",
+    denominator: string = "denominator"
+  ) => `${numerator} must be 0 when the ${denominator} is 0`,
+  mustBeUniqueReportName:
+    "A report with this name already exists during this reporting period.",
 } as const;
 
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";

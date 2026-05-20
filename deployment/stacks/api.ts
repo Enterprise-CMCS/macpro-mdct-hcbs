@@ -9,12 +9,12 @@ import {
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { Lambda } from "../constructs/lambda";
-import { WafConstruct } from "../constructs/waf";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
-import { isLocalStack } from "../local/util";
-import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { isDefined } from "../utils/misc";
+import { Lambda } from "../constructs/lambda.ts";
+import { WafConstruct } from "../constructs/waf.ts";
+import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
+import { isLocalStack } from "../local/util.ts";
+import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
+import { isDefined } from "../utils/misc.ts";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -64,11 +64,13 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     deployOptions: {
       stageName: stage,
       tracingEnabled: true,
-      loggingLevel: apigateway.MethodLoggingLevel.INFO,
+      loggingLevel: isDev
+        ? apigateway.MethodLoggingLevel.OFF
+        : apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
       metricsEnabled: false,
       throttlingBurstLimit: 5000,
-      throttlingRateLimit: 10000.0,
+      throttlingRateLimit: 10000,
       cachingEnabled: false,
       cacheTtl: Duration.seconds(300),
       cacheDataEncrypted: false,
@@ -118,6 +120,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:GetItem",
         "dynamodb:PutItem",
         "dynamodb:Query",
+        "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
       resources: tables.map((table) => table.table.tableArn),
@@ -149,7 +152,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
     handler: "createBanner",
-    path: "banners/{bannerId}",
+    path: "banners",
     method: "POST",
     ...commonProps,
   });
@@ -162,10 +165,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "fetchBanner", {
+  new Lambda(scope, "listBanners", {
     entry: "services/app-api/handlers/banners/fetch.ts",
-    handler: "fetchBanner",
-    path: "banners/{bannerId}",
+    handler: "listBanners",
+    path: "banners",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "updateNotifications", {
+    entry: "services/app-api/handlers/notification/put.ts",
+    handler: "updateNotifications",
+    path: "notifications",
+    method: "PUT",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "fetchNotifications", {
+    entry: "services/app-api/handlers/notification/fetch.ts",
+    handler: "fetchNotifications",
+    path: "notifications",
     method: "GET",
     ...commonProps,
   });

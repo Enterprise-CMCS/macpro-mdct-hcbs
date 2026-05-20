@@ -12,6 +12,8 @@ import {
   Th,
   Thead,
   Tr,
+  TableCaption,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { formatMonthDayYear, useStore } from "utils";
 import {
@@ -94,6 +96,9 @@ export const reportTitle = (report: Report) => {
 export const reportDetails = (report: Report) => {
   return (
     <Table variant={"reportDetails"}>
+      <TableCaption>
+        <VisuallyHidden>{reportTitle(report)}</VisuallyHidden>
+      </TableCaption>
       <Thead>
         <Tr>
           <Th>Reporting year</Th>
@@ -137,10 +142,13 @@ export const reportSubmissionSetUp = (report: Report) => {
 
   return (
     <Box>
-      <Heading as="h2" fontWeight="bold">
+      <Heading as="h2" variant="h2">
         Submission Set Up
       </Heading>
-      <ExportedReportTable rows={rows}></ExportedReportTable>
+      <ExportedReportTable
+        rows={rows}
+        caption="Submission Set Up"
+      ></ExportedReportTable>
     </Box>
   );
 };
@@ -159,7 +167,7 @@ export const renderReportSections = (
   const requiredMeasuresStartIdx = reportPages.findIndex(
     (section) => section.id === "req-measure-result"
   );
-  requiredMeasuresStartIdx >= 0 &&
+  requiredMeasuresStartIdx !== -1 &&
     reportPages.splice(
       requiredMeasuresStartIdx,
       1,
@@ -170,7 +178,7 @@ export const renderReportSections = (
   const optionalMeasuresStartIdx = reportPages.findIndex(
     (section) => section.id === "optional-measure-result"
   );
-  optionalMeasuresStartIdx >= 0 &&
+  optionalMeasuresStartIdx !== -1 &&
     reportPages.splice(
       optionalMeasuresStartIdx,
       1,
@@ -191,7 +199,9 @@ export const renderReportSections = (
     if (isHeaderOnlySection) {
       return (
         <Box key={`${section.id}.${idx}`} marginBottom="-spacer4">
-          <Heading variant="subHeader">{section.title}</Heading>
+          <Heading as="h2" variant="h2">
+            {section.navTitle}
+          </Heading>
         </Box>
       );
     }
@@ -201,7 +211,11 @@ export const renderReportSections = (
     return (
       <Box key={`${section.id}.${idx}`}>
         <Flex flexDirection="column">
-          {showHeader && <Heading variant="subHeader">{section.title}</Heading>}
+          {showHeader && (
+            <Heading as="h2" variant="h2">
+              {section.navTitle}
+            </Heading>
+          )}
           <ExportedReportWrapper section={section} />
         </Flex>
       </Box>
@@ -226,6 +240,7 @@ export const sx = {
     },
     ".performance-rate-header": {
       marginBottom: "spacer2",
+      color: "palette.black",
     },
   },
   innerContainer: {

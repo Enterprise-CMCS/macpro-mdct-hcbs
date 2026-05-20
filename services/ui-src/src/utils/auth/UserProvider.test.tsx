@@ -60,7 +60,7 @@ const setWindowOrigin = (windowOrigin: string) => {
 const breakCheckAuthState = async () => {
   const mockAmplify = require("aws-amplify/auth");
   mockAmplify.currentSession = jest.fn().mockImplementation(() => {
-    throw new Error();
+    throw new Error("Some error occured");
   });
 };
 
@@ -136,7 +136,7 @@ describe("<UserProvider />", () => {
 
       const mockAmplify = require("aws-amplify/auth");
       mockAmplify.signOut = jest.fn().mockImplementation(() => {
-        throw new Error();
+        throw new Error("Some error occured");
       });
 
       await act(async () => {

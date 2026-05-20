@@ -17,13 +17,20 @@ const primaryVariant = {
   fontWeight: "bold",
   backgroundColor: "palette.primary",
   color: "palette.white",
-  "&:hover": {
+  "&:hover, &:focus, &:focus:visited": {
     backgroundColor: "palette.primary_darker",
+    color: "palette.white",
   },
   "&:disabled, &:disabled:hover": {
     color: "palette.gray_dark",
     backgroundColor: "palette.gray_lighter",
     opacity: 1,
+  },
+  _visited: {
+    color: "palette.white",
+  },
+  ".icon": {
+    marginRight: "spacer1",
   },
 };
 const transparentVariant = {

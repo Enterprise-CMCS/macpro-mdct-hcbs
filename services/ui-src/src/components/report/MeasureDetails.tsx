@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, HStack, Text, Heading } from "@chakra-ui/react";
 import { useStore } from "utils";
 import { MeasurePageTemplate, PageType } from "types";
 import { currentPageSelector } from "utils/state/selectors";
@@ -7,7 +7,7 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 //methods
 const formatCollectionMethod = (method: string | undefined) => {
   if (!method) return "";
-  return method.replace(/([A-Z])/g, " $1").trim();
+  return method.replaceAll(/([A-Z])/g, " $1").trim();
 };
 
 //render
@@ -23,13 +23,17 @@ const render = (
       <Flex flexDirection="column" alignItems="space-between">
         <>
           {!isPdf && (
-            <Text fontWeight="bold" paddingBottom="spacer2">
+            <Heading
+              fontWeight="heading_md"
+              fontSize="heading_md"
+              paddingBottom="spacer2"
+            >
               Quality Measure Details:
-            </Text>
+            </Heading>
           )}
-          <Text fontWeight={isPdf ? "bold" : "normal"}>
-            {`Measure Name: ${title}`}
-          </Text>
+          <Heading variant="subHeader" marginBottom="0 !important" as="h3">
+            {`${!isPdf ? "Measure Name: " : ""}${title}`}
+          </Heading>
           <Text>{`CMIT number: #${cmit}`}</Text>
           <Text>{`Steward: ${steward}`}</Text>
           <Text>{`Collection method: ${formattedCollectionMethod}`}</Text>

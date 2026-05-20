@@ -133,16 +133,19 @@ const elements: PageElement[] = [
     type: ElementType.MeasureTable,
     measureDisplay: "required",
     id: "",
+    caption: "Required Measure Results",
   },
   {
     type: ElementType.MeasureTable,
     measureDisplay: "required",
     id: "",
+    caption: "Required Measure Results",
   },
   {
     type: ElementType.MeasureTable,
     id: "",
     measureDisplay: "optional",
+    caption: "Optional Measure Results",
   },
   {
     type: ElementType.StatusTable,
@@ -166,7 +169,8 @@ const elements: PageElement[] = [
   {
     type: ElementType.StatusAlert,
     id: "",
-    text: "mock status",
+    title: "mock alert title",
+    text: "mock alert text",
     status: AlertTypes.ERROR,
   },
   {
@@ -176,6 +180,22 @@ const elements: PageElement[] = [
   {
     type: ElementType.SubHeaderMeasure,
     id: "",
+  },
+  {
+    type: ElementType.ReadmissionRate,
+    id: "readmission-rate-element",
+    required: true,
+    labels: {
+      stayCount: "Count of Index Hospital Stays",
+      obsReadmissionCount: "Count of Observed 30-Day Readmissions",
+      obsReadmissionRate: "Observed Readmission Rate",
+      expReadmissionCount: "Count of Expected 30-Day readmissions",
+      expReadmissionRate: "Expected Readmission Rate",
+      obsExpRatio: "Observed-to-Expected Ratio",
+      beneficiaryCount: "Count of Beneficiaries in Medicaid Population",
+      outlierCount: "Number of Outliers",
+      outlierRate: "Outlier Rate",
+    },
   },
 ];
 

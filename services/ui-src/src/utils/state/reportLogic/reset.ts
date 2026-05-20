@@ -40,9 +40,9 @@ export const performClearMeasure = (
 
   // Clear children of measures - hard reset
   if (page.type === PageType.Measure) {
-    (page as MeasurePageTemplate).dependentPages?.forEach((child) => {
+    for (const child of (page as MeasurePageTemplate).dependentPages ?? []) {
       performResetMeasure(child.template, report);
-    });
+    }
   }
 
   return { report };
@@ -61,15 +61,15 @@ export const performResetMeasure = (measureId: string, report: Report) => {
   }
 
   // Clean measure
-  page.elements?.forEach((element) => {
+  for (const element of page.elements ?? []) {
     performResetPageElement(element);
-  });
+  }
 
   // Clear children of measures
   if (page.type === PageType.Measure) {
-    (page as MeasurePageTemplate).dependentPages?.forEach((child) => {
+    for (const child of (page as MeasurePageTemplate).dependentPages ?? []) {
       performResetMeasure(child.template, report);
-    });
+    }
   }
   return { report };
 };
@@ -81,7 +81,10 @@ const performResetPageElement = (element: PageElement) => {
   if ("answer" in element) {
     element.answer = undefined;
   }
-  if (element.type == ElementType.Radio) {
+  if (
+    element.type === ElementType.Radio ||
+    element.type === ElementType.Checkbox
+  ) {
     for (const choice of element.choices) {
       if (!choice.checkedChildren) continue;
       for (const childElement of choice.checkedChildren) {

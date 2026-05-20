@@ -1,12 +1,16 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType, MeasurePageTemplate, PageElement } from "types";
-import { FieldsExport } from "components/rates/types/Fields";
+import { LengthOfStayExport } from "components/rates/types/LengthOfStay";
+import { ReadmissionRateExport } from "components/rates/types/ReadmissionRate";
 import { NDRExport } from "components/rates/types/NDR";
 import { notAnsweredText } from "../../constants";
-import { NDREnhancedExport } from "components/rates/types/NDREnhanced";
-import { NDRFieldExport } from "components/rates/types/NDRFields";
-import { NDRBasicExport } from "components/rates/types/NDRBasic";
+import { MultiRateNdrExport } from "components/rates/types/MultiRateNdr";
+import { MultiCategoryNdrExport } from "components/rates/types/MultiCategoryNdr";
+import { PerformanceNdrExport } from "components/rates/types/PerformanceNdr";
+import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
+import { CheckboxExport } from "components/fields/CheckboxField";
+import { ListInputExport } from "components/fields/ListInput";
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -16,17 +20,21 @@ const tableElementList = [
   ElementType.Textbox,
   ElementType.Radio,
   ElementType.TextAreaField,
+  ElementType.Checkbox,
+  ElementType.ListInput,
 ];
 
 const renderElementList = [
   ...tableElementList,
-  ElementType.NdrEnhanced,
-  ElementType.NdrFields,
+  ElementType.MultiRateNdr,
+  ElementType.MultiCategoryNdr,
   ElementType.Ndr,
   ElementType.LengthOfStayRate,
-  ElementType.NdrBasic,
+  ElementType.ReadmissionRate,
+  ElementType.PerformanceNdr,
   ElementType.MeasureDetails,
   ElementType.SubHeader,
+  ElementType.EligibilityTable,
 ];
 
 export const shouldUseTable = (type: ElementType) => {
@@ -44,22 +52,30 @@ export const renderElements = (
   switch (type) {
     case ElementType.SubHeader:
       return (
-        <Heading as="h4" fontWeight="bold">
+        <Heading as="h4" variant="nestedHeading">
           {element.text}
         </Heading>
       );
-    case ElementType.NdrEnhanced:
-      return NDREnhancedExport(element);
-    case ElementType.NdrFields:
-      return NDRFieldExport(element);
+    case ElementType.MultiRateNdr:
+      return MultiRateNdrExport(element);
+    case ElementType.MultiCategoryNdr:
+      return MultiCategoryNdrExport(element);
     case ElementType.Ndr:
       return NDRExport(element);
     case ElementType.LengthOfStayRate:
-      return FieldsExport(element);
-    case ElementType.NdrBasic:
-      return NDRBasicExport(element);
+      return LengthOfStayExport(element);
+    case ElementType.ReadmissionRate:
+      return ReadmissionRateExport(element);
+    case ElementType.PerformanceNdr:
+      return PerformanceNdrExport(element, section.navTitle);
     case ElementType.MeasureDetails:
       return MeasureDetailsExport(section);
+    case ElementType.EligibilityTable:
+      return EligibilityTableElementExport(element, section.navTitle);
+    case ElementType.Checkbox:
+      return CheckboxExport(element);
+    case ElementType.ListInput:
+      return ListInputExport(element);
   }
 
   if (!("answer" in element)) {

@@ -1,49 +1,53 @@
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
-import { Menu, MenuOption, SubnavBar } from "components";
-import { useBreakpoint } from "utils";
+import { AccountMenu, AdminMenu, MenuOption, SubnavBar } from "components";
+import { useBreakpoint, useStore } from "utils";
 import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
   const { pathname } = useLocation();
+  const { userIsAdmin } = useStore().user ?? {};
   const paths = pathname.split("/");
   return (
     <Box sx={sx.root} id="header">
       <Flex sx={sx.usaBannerContainer}>
         <UsaBanner />
       </Flex>
-      <Flex sx={sx.headerBar} role="navigation">
-        <Container sx={sx.headerContainer}>
-          <Flex sx={sx.headerFlex}>
-            <Link as={RouterLink} to="/" variant="unstyled">
-              <Image src={appLogo} alt="HCBS logo" sx={sx.appLogo} />
-            </Link>
-            <Flex sx={sx.menuFlex}>
-              <Link
-                as={RouterLink}
-                to="/help"
-                variant="unstyled"
-                aria-label="Get Help"
-              >
-                <MenuOption
-                  icon={getHelpIcon}
-                  text="Get Help"
-                  altText="Help"
-                  role="group"
-                  hideText={isMobile}
-                />
+      <header>
+        <Flex sx={sx.headerBar}>
+          <Container sx={sx.headerContainer}>
+            <Flex sx={sx.headerFlex}>
+              <Link as={RouterLink} to="/" variant="unstyled">
+                <Image src={appLogo} alt="HCBS logo" sx={sx.appLogo} />
               </Link>
-              <Menu handleLogout={handleLogout} />
+              <Flex sx={sx.menuFlex}>
+                {userIsAdmin ? <AdminMenu /> : null}
+                <Link
+                  as={RouterLink}
+                  to="/help"
+                  variant="unstyled"
+                  aria-label="Get Help"
+                  sx={sx.getHelp}
+                >
+                  <MenuOption
+                    icon={getHelpIcon}
+                    text="Get Help"
+                    altText="Help"
+                    role="group"
+                    hideText={isMobile}
+                  />
+                </Link>
+                <AccountMenu handleLogout={handleLogout} />
+              </Flex>
             </Flex>
-          </Flex>
-        </Container>
-      </Flex>
-      {paths.length > 4 && (
-        <SubnavBar reportType={paths[2]} stateName={paths[3]} />
-      )}
+          </Container>
+        </Flex>
+        {/* report-related pages have more than 4 path segments */}
+        {paths.length > 4 && <SubnavBar />}
+      </header>
     </Box>
   );
 };
@@ -70,8 +74,16 @@ const sx = {
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: "palette.gray_lightest",
+    padding: "0 1rem",
     ".desktop &": {
-      padding: "0 1rem",
+      padding: "0 2rem",
+    },
+
+    header: {
+      display: "grid",
+      ".desktop &": {
+        display: "flex",
+      },
     },
   },
   headerBar: {
@@ -93,6 +105,9 @@ const sx = {
     alignItems: "center",
   },
   appLogo: {
-    maxWidth: "200px",
+    maxWidth: "238px",
+  },
+  getHelp: {
+    marginLeft: ".5rem",
   },
 };

@@ -1,34 +1,46 @@
 {
   "name": "mdct-hcbs",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
   "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
+  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs#readme",
+  "bugs": {
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/issues"
   },
-  "scripts": {
-    "test:e2e": "pushd tests && yarn test ; popd",
-    "test:e2e-ui": "pushd tests && yarn test-ui ; popd"
-  },
+  "license": "CC0-1.0",
+  "author": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs.git"
   },
-  "author": "",
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/issues"
+  "directories": {
+    "test": "tests"
   },
-  "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-hcbs#readme",
+  "workspaces": [
+    "cli",
+    "deployment",
+    ".github/scanResources",
+    "services/app-api",
+    "services/database",
+    "services/topics",
+    "services/ui",
+    "services/ui-auth",
+    "services/ui-src",
+    "tests"
+  ],
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e": "pushd tests && yarn test ; popd",
+    "test:e2e-ui": "pushd tests && yarn test-ui ; popd"
+  },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.921.0",
-    "@aws-sdk/client-cloudfront": "^3.921.0",
-    "@aws-sdk/client-lambda": "^3.921.0",
-    "@aws-sdk/client-s3": "^3.921.0",
-    "@aws-sdk/client-secrets-manager": "^3.921.0",
-    "aws-cdk-lib": "^2.214.0",
-    "constructs": "^10.4.2",
+    "@aws-sdk/client-cloudformation": "~3.1044.0",
+    "@aws-sdk/client-lambda": "~3.1044.0",
+    "@aws-sdk/client-s3": "~3.1044.0",
+    "@aws-sdk/client-secrets-manager": "~3.1044.0",
+    "aws-cdk-lib": "~2.253.0",
+    "constructs": "~10.5.0",
     "jsdom": "^26.1.0",
     "source-map-support": "^0.5.21"
   },
@@ -39,24 +51,36 @@
     "@types/flat": "^5.0.5",
     "@types/node": "^22.18.13",
     "@types/yargs": "^17.0.33",
-    "@typescript-eslint/eslint-plugin": "5.18.0",
-    "@typescript-eslint/parser": "5.18.0",
-    "aws-cdk": "^2.1029.0",
-    "aws-cdk-local": "^2.19.2",
+    "aws-cdk": "~2.1112.0",
+    "aws-cdk-local": "~2.19.2",
     "dotenv": "^16.6.1",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-cypress": "^2.15.2",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-jest": "^26.9.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-playwright": "^2.4.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "prettier": "2.4.1",
+    "esbuild": "^0.27.0",
+    "oxfmt": "^0.24.0",
+    "oxlint": "^1.41.0",
     "tsx": "^4.20.5",
-    "typescript": "^5.8.2",
+    "typescript": "^5.9.3",
     "util": "^0.12.5",
     "yargs": "^17.7.2"
-  }
+  },
+  "resolutions": {
+    "ajv@^8.0.1": "^8.18.0",
+    "brace-expansion@^1.1.7": "^1.1.14",
+    "http-proxy-agent@^5.0.0": "^6.1.1",
+    "lodash@^4.17.21": "^4.18.0",
+    "minimatch@^10.1.1": "^10.2.5",
+    "minimatch@^10.2.3": "^10.2.5",
+    "minimatch@^3.0.4": "^3.1.5",
+    "minimatch@^3.1.1": "^3.1.5",
+    "path-to-regexp@^8.3.0": "^8.4.0",
+    "picomatch@^2.0.4": "^2.3.2",
+    "picomatch@^2.2.3": "^2.3.2",
+    "picomatch@^2.3.1": "^2.3.2",
+    "picomatch@^4.0.3": "^4.0.4",
+    "semver@^6.3.0": "^6.3.1",
+    "semver@^7.3.5": "^7.5.2",
+    "semver@~7.3.5": "^7.5.2",
+    "tar@^7.5.2": "^7.5.11",
+    "yaml@^1.10.0": "^1.10.3"
+  },
+  "packageManager": "yarn@4.12.0"
 }

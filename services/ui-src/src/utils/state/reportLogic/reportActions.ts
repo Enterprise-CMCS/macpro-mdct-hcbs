@@ -2,9 +2,10 @@
  * File wrapping high level actions away from the useStore file for cleanliness.
  * This contains the root for logic for actions such as updating an answer, handling resetting, saving, etc.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HcbsReportState } from "types";
 import {
+  ElementType,
+  FormPageTemplate,
   isMeasurePageTemplate,
   isMeasureTemplate,
   MeasurePageTemplate,
@@ -13,7 +14,7 @@ import {
   ParentPageTemplate,
   Report,
 } from "types/report";
-import { putReport, postSubmitReport } from "utils/api/requestMethods/report";
+import { putReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
 import { performClearMeasure, performResetMeasure } from "./reset";
 
@@ -22,6 +23,10 @@ export const buildState = (
   preserveCurrentPage: boolean
 ) => {
   if (!report) return { report: undefined };
+  console.assert(
+    report.pages.every((pg, i, a) => i === a.findIndex((p) => p.id === pg.id)),
+    "Report pages have unique IDs"
+  );
   const pageMap = new Map<string, number>(
     report.pages.map((page, index) => [page.id, index])
   );
@@ -54,10 +59,8 @@ export const setPage = (
 
   let parentPage = undefined;
   if (parent) {
-    // @ts-ignore TODO
-    const pageIndex = parent.childPageIds.findIndex(
-      (pageId) => pageId === targetPageId
-    );
+    const pageIndex = parent.childPageIds!.indexOf(targetPageId);
+
     parentPage = {
       parent: parent.id,
       childPageIds: parent.childPageIds!,
@@ -70,6 +73,12 @@ export const setPage = (
 export const deepMerge = (obj1: any, obj2: any) => {
   const clone1 = structuredClone(obj1);
   const clone2 = structuredClone(obj2);
+  // If comparing arrays, always use the updated array
+  // This is for checkbox values which are an array of strings, and eligibility table which is an array of objects
+  if (Array.isArray(clone1) && Array.isArray(clone2)) {
+    return clone2;
+  }
+
   for (let key in clone2) {
     if (clone2[key] instanceof Object && clone1[key] instanceof Object) {
       clone1[key] = deepMerge(clone1[key], clone2[key]);
@@ -243,8 +252,34 @@ export const saveReport = async (state: HcbsReportState) => {
   if (!state.report) return {};
   try {
     await putReport(state.report); // Submit to API
-  } catch (_) {
+  } catch {
     return { errorMessage: "Something went wrong, try again." };
   }
   return { lastSavedTime: getLocalHourMinuteTime() };
+};
+
+export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
+  if (!page.elements) return false;
+
+  //add elements that already have bottom borders to prevent double diviers on the page
+  const hideFromElements = [
+    ElementType.MeasureTable,
+    ElementType.MeasureResultsNavigationTable,
+    ElementType.MultiRateNdr,
+    ElementType.Ndr,
+    ElementType.MultiCategoryNdr,
+    ElementType.PerformanceNdr,
+    ElementType.LengthOfStayRate,
+    ElementType.ReadmissionRate,
+  ];
+  //find the measureFooter index if the page type is measure & measureResults page, else use the last element's index
+  const footerIndex =
+    page.type == PageType.Measure || page.type == PageType.MeasureResults
+      ? page.elements.findIndex((ele) => ele.type == ElementType.MeasureFooter)
+      : page.elements?.length;
+
+  return !(
+    footerIndex &&
+    hideFromElements.includes(page.elements[footerIndex - 1]?.type)
+  );
 };

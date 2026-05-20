@@ -5,10 +5,7 @@
     "incremental": true,
     "target": "es2023",
     "module": "nodenext",
-    "lib": [
-      "ES2023",
-      "dom"
-    ],
+    "lib": ["ES2023", "dom"],
     "jsx": "preserve",
     "outDir": "build_dev",
     "rootDir": "./",
@@ -30,7 +27,6 @@
     "forceConsistentCasingInFileNames": true
   },
   "exclude": [
-    "node_modules",
     ".cdk",
     "./services/ui-src/*",
     "./services/database/*",

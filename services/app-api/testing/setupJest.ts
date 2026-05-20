@@ -33,5 +33,27 @@ jest.mock("../libs/debug-lib", () => {
   };
 });
 
-// BANNER
-export * from "../utils/tests/mockBanner";
+/**
+ * Generate every combination of the given number of boolean values.
+ *
+ * Technically it's every _permutation_, but who's counting?
+ * @example
+ * for (let combo of booleanCombinations(2)) {
+ *  console.log(combo);
+ * }
+ * // [true, true]
+ * // [true, false]
+ * // [false, true]
+ * // [false, false]
+ */
+export function* booleanCombinations(count: number): Generator<boolean[]> {
+  if (count <= 1) {
+    yield [true];
+    yield [false];
+  } else {
+    for (let combo of booleanCombinations(count - 1)) {
+      yield [true, ...combo];
+      yield [false, ...combo];
+    }
+  }
+}

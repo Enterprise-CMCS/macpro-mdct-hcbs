@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import "source-map-support/register";
+import "source-map-support/register.js";
 import {
   App,
   aws_apigateway as apigateway,
@@ -8,14 +8,14 @@ import {
   aws_iam as iam,
   DefaultStackSynthesizer,
   Stack,
-  StackProps,
   Tags,
+  type StackProps,
 } from "aws-cdk-lib";
-import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
-import { loadDefaultSecret } from "./deployment-config";
 import { Construct } from "constructs";
-import { isLocalStack } from "./local/util";
-import { tryImport } from "./utils/misc";
+import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy.ts";
+import { loadDefaultSecret } from "./deployment-config.ts";
+import { isLocalStack } from "./local/util.ts";
+import { tryImport } from "./utils/misc.ts";
 
 interface PrerequisiteConfigProps {
   project: string;
@@ -135,15 +135,15 @@ async function main() {
   const app = new App({
     defaultStackSynthesizer: new DefaultStackSynthesizer({
       deployRoleArn:
-        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}",
       fileAssetPublishingRoleArn:
-        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}",
       imageAssetPublishingRoleArn:
-        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-image-publishing-role-${AWS::AccountId}-${AWS::Region}",
       cloudFormationExecutionRole:
-        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
       lookupRoleArn:
-        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/delegatedadmin/developer/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}",
+        "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-lookup-role-${AWS::AccountId}-${AWS::Region}",
       qualifier: "hnb659fds",
     }),
   });

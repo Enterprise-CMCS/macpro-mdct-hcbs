@@ -6,7 +6,6 @@ import {
   ProfilePage,
   DashboardPage,
   NotFoundPage,
-  AdminBannerProvider,
   ExportedReportPage,
   ReportPageWrapper,
   ComponentInventory,
@@ -15,6 +14,7 @@ import { useStore } from "utils";
 import { useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { ReportAutosaveProvider } from "components/report/ReportAutosaveProvider";
+import { NotificationsPage } from "components/pages/Admin/NotificationsPage";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -22,53 +22,61 @@ export const AppRoutes = () => {
   const { pathname } = useLocation();
   const isPdfActive = useFlags()?.viewPdf;
   const componentInventoryPageEnabled = useFlags()?.componentInventory;
+  const notificationsPageEnabled = useFlags()?.notificationsSystem;
 
   useEffect(() => {
-    const appWrapper = document.getElementById("app-wrapper")!;
-    appWrapper?.focus();
+    document.getElementById("app-wrapper")!.focus();
     window.scrollTo(0, 0);
   }, [pathname]);
 
   return (
     <main id="main-content" tabIndex={-1}>
-      <AdminBannerProvider>
-        <ReportAutosaveProvider>
-          <Routes>
-            {/* General Routes */}
-            <Route path="/" element={<HomePage />} />
+      <ReportAutosaveProvider>
+        <Routes>
+          {/* General Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/admin"
+            element={!userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />}
+          />
+          {notificationsPageEnabled && (
             <Route
-              path="/admin"
+              path="/notifications"
               element={
-                !userIsAdmin ? <Navigate to="/profile" /> : <AdminPage />
+                !userIsAdmin ? (
+                  <Navigate to="/profile" />
+                ) : (
+                  <NotificationsPage />
+                )
               }
             />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/help" element={<HelpPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+          )}
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/help" element={<HelpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="/report/:reportType/:state"
+            element={<DashboardPage />}
+          />
+          {isPdfActive && (
             <Route
-              path="/report/:reportType/:state"
-              element={<DashboardPage />}
+              path="/report/:reportType/:state/:reportId/export"
+              element={<ExportedReportPage />}
             />
-            {isPdfActive && (
-              <Route
-                path="/report/:reportType/:state/:reportId/export"
-                element={<ExportedReportPage />}
-              />
-            )}
+          )}
+          <Route
+            path="/report/:reportType/:state/:reportId/:pageId?"
+            element={<ReportPageWrapper />}
+          />
+          {componentInventoryPageEnabled && (
             <Route
-              path="/report/:reportType/:state/:reportId/:pageId?"
-              element={<ReportPageWrapper />}
+              path="/component-inventory"
+              element={<ComponentInventory />}
             />
-            {componentInventoryPageEnabled && (
-              <Route
-                path="/component-inventory"
-                element={<ComponentInventory />}
-              />
-            )}
-            {/* TO DO: Load pageId by default? */}
-          </Routes>
-        </ReportAutosaveProvider>
-      </AdminBannerProvider>
+          )}
+          {/* TO DO: Load pageId by default? */}
+        </Routes>
+      </ReportAutosaveProvider>
     </main>
   );
 };

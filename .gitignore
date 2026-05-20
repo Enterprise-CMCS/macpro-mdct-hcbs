@@ -8,7 +8,6 @@ tsconfig.tsbuildinfo
 tests_output
 *.log
 package-lock.json
-.vscode/
 *._S3rver_cors.xml
 tests/test-results/
 tests/playwright-report/
@@ -16,3 +15,6 @@ tests/playwright/.cache/
 tests/playwright/.auth
 /.cdk
 cdk.context.json
+**/.yarn/*
+services/ui-src/public/env-config.ts
+.vscode/settings.json

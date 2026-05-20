@@ -2,11 +2,12 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import "jest-axe/extend-expect";
+import * as framerMotion from "framer-motion";
 import {
   UserRoles,
   HcbsUserState,
   UserContextShape,
-  AdminBannerState,
+  HcbsBannerState,
   HcbsReportState,
   ReportType,
   ReportStatus,
@@ -19,12 +20,14 @@ import {
   MeasureSpecification,
   ElementType,
 } from "types";
-import { mockBannerData } from "./mockBanner";
+
 // GLOBALS
 
 global.React = React;
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+
+framerMotion.MotionGlobalConfig.skipAnimations = true;
 
 /* Mocks window.matchMedia (https://bit.ly/3Qs4ZrV) */
 Object.defineProperty(window, "matchMedia", {
@@ -33,6 +36,7 @@ Object.defineProperty(window, "matchMedia", {
     matches: false,
     media: query,
     onchange: null,
+    addListener: jest.fn(),
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
@@ -42,6 +46,7 @@ Object.defineProperty(window, "matchMedia", {
 window.scrollBy = jest.fn();
 window.scrollTo = jest.fn();
 Element.prototype.scrollTo = jest.fn();
+Element.prototype.scrollIntoView = jest.fn();
 
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
 jest.mock("@chakra-ui/transition", () => ({
@@ -95,18 +100,12 @@ jest.mock("aws-amplify/auth", () => ({
 
 //  BANNER STATES / STORE
 
-export const mockBannerStore: AdminBannerState = {
-  bannerData: mockBannerData,
-  bannerActive: false,
-  bannerLoading: false,
-  bannerErrorMessage: { title: "", children: undefined },
-  bannerDeleting: false,
-  setBannerData: () => {},
-  clearAdminBanner: () => {},
-  setBannerActive: () => {},
-  setBannerLoading: () => {},
-  setBannerErrorMessage: () => {},
-  setBannerDeleting: () => {},
+export const mockBannerStore: HcbsBannerState = {
+  allBanners: [],
+  _lastFetchTime: 0,
+  fetchBanners: async () => {},
+  createBanner: async () => {},
+  deleteBanner: async () => {},
 };
 
 // USER CONTEXT
@@ -204,7 +203,7 @@ export const mockMeasureTemplate: MeasurePageTemplate = {
     dataSource: DataSource.Hybrid,
   },
   status: PageStatus.IN_PROGRESS,
-  title: "mock-title",
+  navTitle: "mock-title",
   type: PageType.Measure,
   required: true,
   substitutable: "FASI-1",
@@ -257,7 +256,7 @@ export const mock2MeasureTemplate: MeasurePageTemplate = {
     dataSource: DataSource.Hybrid,
   },
   status: PageStatus.IN_PROGRESS,
-  title: "mock-title-2",
+  navTitle: "mock-title-2",
   type: PageType.Measure,
   required: true,
   elements: [],
@@ -279,7 +278,7 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   id: "LTSS-1",
   cmitId: "960",
   status: PageStatus.IN_PROGRESS,
-  title: "mock-title-2",
+  navTitle: "mock-title-2",
   type: PageType.Measure,
   required: true,
   substitutable: "FASI-1",
@@ -364,19 +363,18 @@ export const mockReportStore: HcbsReportState = {
 
 // BOUND STORE
 
-export const mockUseStore: HcbsUserState & AdminBannerState & HcbsReportState =
-  {
-    ...mockStateUserStore,
-    ...mockBannerStore,
-    ...mockReportStore,
-  };
+export const mockUseStore: HcbsUserState & HcbsBannerState & HcbsReportState = {
+  ...mockStateUserStore,
+  ...mockBannerStore,
+  ...mockReportStore,
+};
 
-export const mockUseAdminStore: HcbsUserState & AdminBannerState = {
+export const mockUseAdminStore: HcbsUserState & HcbsBannerState = {
   ...mockAdminUserStore,
   ...mockBannerStore,
 };
 
-export const mockUseReadOnlyUserStore: HcbsUserState & AdminBannerState = {
+export const mockUseReadOnlyUserStore: HcbsUserState & HcbsBannerState = {
   ...mockHelpDeskUserStore,
   ...mockBannerStore,
   ...mockReportStore,
@@ -396,8 +394,6 @@ export const mockLDClient = {
 
 // ASSET
 export * from "./mockAsset";
-// BANNER
-export * from "./mockBanner";
 // FORM
 export * from "./mockForm";
 // ROUTER

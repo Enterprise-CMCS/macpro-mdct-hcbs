@@ -1,11 +1,14 @@
 import {
+  CheckboxTemplate,
   ElementType,
   LengthOfStayRateTemplate,
+  ListInputTemplate,
   MeasurePageTemplate,
-  NdrEnhancedTemplate,
-  NdrFieldsTemplate,
+  PerformanceNdrTemplate,
+  MultiRateNdrTemplate,
+  MultiCategoryNdrTemplate,
   NdrTemplate,
-  NdrBasicTemplate,
+  PageElement,
   PageStatus,
   PageType,
   RadioTemplate,
@@ -15,6 +18,7 @@ import {
 import {
   elementSatisfiesRequired,
   inferredReportStatus,
+  pageInProgress,
   pageIsCompletable,
 } from "./completeness";
 
@@ -25,7 +29,7 @@ describe("inferredReportStatus", () => {
         {
           id: "my-id",
           cmitId: "MyCmit",
-          title: "a title",
+          navTitle: "a title",
           status: PageStatus.COMPLETE,
           required: true,
           type: PageType.Measure,
@@ -66,7 +70,7 @@ describe("inferredReportStatus", () => {
         {
           id: "general-id",
           required: true,
-          title: "a title",
+          navTitle: "a title",
           elements: [
             {
               id: "good-question",
@@ -79,7 +83,7 @@ describe("inferredReportStatus", () => {
         {
           id: "other-id",
           required: true,
-          title: "a title",
+          navTitle: "a title",
           elements: [
             {
               id: "no-question",
@@ -106,6 +110,51 @@ describe("inferredReportStatus", () => {
     );
   });
 });
+
+describe("pageInProgress", () => {
+  const isInProgress = (element: object) => {
+    const report = {
+      pages: [
+        {
+          id: "mock-page-id",
+          elements: [element as PageElement],
+        },
+      ],
+    } as Report;
+    return pageInProgress(report, "mock-page-id");
+  };
+
+  it("should treat missing or empty answers as not in progress", () => {
+    expect(isInProgress({})).toBe(false);
+    expect(isInProgress({ answer: undefined })).toBe(false);
+    expect(isInProgress({ answer: "" })).toBe(false);
+  });
+
+  it("should treat numeric answers as in progress", () => {
+    expect(isInProgress({ answer: 0 })).toBe(true);
+    expect(isInProgress({ answer: 42 })).toBe(true);
+  });
+
+  it("should treat empty answer objects as not in progress", () => {
+    expect(isInProgress({ answer: {} })).toBe(false);
+    expect(isInProgress({ answer: [] })).toBe(false);
+    expect(isInProgress({ answer: [{}, {}] })).toBe(false);
+    expect(isInProgress({ answer: { x: [{}] } })).toBe(false);
+  });
+
+  it("should treat answers with data in progress", () => {
+    expect(isInProgress({ answer: "hello" })).toBe(true);
+    expect(isInProgress({ answer: [1, 2] })).toBe(true);
+    expect(isInProgress({ answer: [{ x: 42 }] })).toBe(true);
+    expect(isInProgress({ answer: { x: [96, 78] } })).toBe(true);
+  });
+
+  it("should treat unknown data types as in progress", () => {
+    // We don't, and should never, have a BigInt answer type. But if we did:
+    expect(isInProgress({ answer: 99n })).toBe(true);
+  });
+});
+
 describe("pageIsCompletable", () => {
   test("handles empty conditions", () => {
     const missingPageReport = {
@@ -144,7 +193,7 @@ describe("pageIsCompletable", () => {
       pages: [
         {
           id: "my-id",
-          title: "my title",
+          navTitle: "my title",
           status: PageStatus.IN_PROGRESS,
           cmitId: "MyCmit",
           elements: [
@@ -165,7 +214,7 @@ describe("pageIsCompletable", () => {
         },
         {
           id: "FFS-1",
-          title: "child title",
+          navTitle: "child title",
           status: PageStatus.IN_PROGRESS,
           elements: [
             {
@@ -267,11 +316,120 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(incompleteChildren, radios)).toBeFalsy();
   });
 
+  test("handles checkboxes", () => {
+    const checkbox = {
+      id: "checkbox-element",
+      answer: ["foo"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "me",
+          value: "foo",
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+    const incompleteChildren = {
+      id: "bad-checkbox-element",
+      answer: ["foo"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "me",
+          value: "foo",
+          checkedChildren: [
+            {
+              type: ElementType.Textbox,
+              answer: undefined,
+              required: true,
+            },
+          ],
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+    const checkboxes = [checkbox, incompleteChildren];
+    expect(elementSatisfiesRequired(checkbox, checkboxes)).toBeTruthy();
+    expect(
+      elementSatisfiesRequired(incompleteChildren, checkboxes)
+    ).toBeFalsy();
+  });
+
+  test("handles checkboxes with multiple selections", () => {
+    const completeCheckbox = {
+      id: "multi-checkbox",
+      answer: ["option1", "option2"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "Option 1",
+          value: "option1",
+          checkedChildren: [
+            {
+              type: ElementType.Textbox,
+              answer: "filled",
+              required: true,
+            },
+          ],
+        },
+        {
+          label: "Option 2",
+          value: "option2",
+          checkedChildren: [
+            {
+              type: ElementType.TextAreaField,
+              answer: "also filled",
+              required: true,
+            },
+          ],
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+
+    const incompleteCheckbox = {
+      id: "multi-checkbox-incomplete",
+      answer: ["option1", "option2"],
+      type: ElementType.Checkbox,
+      choices: [
+        {
+          label: "Option 1",
+          value: "option1",
+          checkedChildren: [
+            {
+              type: ElementType.Textbox,
+              answer: "filled",
+              required: true,
+            },
+          ],
+        },
+        {
+          label: "Option 2",
+          value: "option2",
+          checkedChildren: [
+            {
+              type: ElementType.TextAreaField,
+              answer: undefined,
+              required: true,
+            },
+          ],
+        },
+      ],
+      required: true,
+    } as CheckboxTemplate;
+
+    expect(
+      elementSatisfiesRequired(completeCheckbox, [completeCheckbox])
+    ).toBeTruthy();
+    expect(
+      elementSatisfiesRequired(incompleteCheckbox, [incompleteCheckbox])
+    ).toBeFalsy();
+  });
+
   test("accepts complete LengthOfStay rates", () => {
     const element = {
       type: ElementType.LengthOfStayRate,
       answer: {
-        performanceTarget: 1,
         actualCount: 2,
         denominator: 3,
         expectedCount: 4,
@@ -289,7 +447,6 @@ describe("elementSatisfiesRequired", () => {
     undefined,
     {},
     {
-      performanceTarget: 1,
       actualCount: 2,
       expectedCount: 4,
       populationRate: 5,
@@ -308,7 +465,6 @@ describe("elementSatisfiesRequired", () => {
     const element = {
       type: ElementType.Ndr,
       answer: {
-        performanceTarget: 2,
         numerator: 1,
         denominator: 3,
         rate: 0.33,
@@ -318,65 +474,59 @@ describe("elementSatisfiesRequired", () => {
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test.each([
-    undefined,
-    {},
-    { numerator: 1, denominator: 3, rate: 0.33 },
-    { performanceTarget: 2, denominator: 3, rate: 0.33 },
-    { performanceTarget: 2, numerator: 1, rate: 0.33 },
-    { performanceTarget: 2, numerator: 1, denominator: 3 },
-  ])("rejects incomplete NDR rates", (answer) => {
-    const element = {
-      type: ElementType.Ndr,
-      answer,
-      required: true,
-    } as NdrTemplate;
-    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
-  });
+  test.each([undefined, {}, { numerator: 1, rate: 0.33 }])(
+    "rejects incomplete NDR rates",
+    (answer) => {
+      const element = {
+        type: ElementType.Ndr,
+        answer,
+        required: true,
+      } as NdrTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+    }
+  );
 
-  test("accepts complete NDREnhanced rates", () => {
+  test("accepts complete MultiRateNdr elements", () => {
     const element = {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       answer: {
         denominator: 5,
         rates: [
           {
-            performanceTarget: 6,
             numerator: 7,
             rate: 1.4,
           },
         ],
       },
       required: true,
-    } as NdrEnhancedTemplate;
+    } as MultiRateNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
   test.each([
     undefined,
     {},
-    { rates: [{ performanceTarget: 6, numerator: 7, rate: 1.4 }] },
+    { rates: [{ numerator: 7, rate: 1.4 }] },
     { denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] },
-    { denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] },
-    { denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] },
-  ])("accepts incomplete NDREnhanced rates", (answer) => {
+    { denominator: 5, rates: [{ rate: 1.4 }] },
+    { denominator: 5, rates: [{ numerator: 7 }] },
+  ])("accepts incomplete MultiRateNdr elements", (answer) => {
     const element = {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       answer,
       required: false,
-    } as NdrEnhancedTemplate;
+    } as MultiRateNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
-  test("accepts complete NDREnhanced rates", () => {
+  test("accepts complete multiCategoryNdr elements", () => {
     const element = {
-      type: ElementType.NdrFields,
+      type: ElementType.MultiCategoryNdr,
       answer: [
         {
           denominator: 5,
           rates: [
             {
-              performanceTarget: 6,
               numerator: 7,
               rate: 1.4,
             },
@@ -384,13 +534,13 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrFieldsTemplate;
+    } as MultiCategoryNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
-  test("rejects incomplete  NDRBasic rates", () => {
+  test("rejects incomplete PerformanceNdr rates", () => {
     const element = {
       id: "mock-id",
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       answer: {
         numerator: 1,
         denominator: 2,
@@ -404,13 +554,13 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrBasicTemplate;
+    } as PerformanceNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
-  test("accepts complete NDRBasic rates", () => {
+  test("accepts complete PerformanceNdr rates", () => {
     const element = {
       id: "mock-id",
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       answer: {
         numerator: 2,
         denominator: 2,
@@ -425,23 +575,31 @@ describe("elementSatisfiesRequired", () => {
         },
       ],
       required: true,
-    } as NdrBasicTemplate;
+    } as PerformanceNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
   test.each([
     undefined,
     [{}],
-    [{ rates: [{ performanceTarget: 6, numerator: 7, rate: 1.4 }] }],
+    [{ rates: [{ numerator: 7, rate: 1.4 }] }],
     [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
-    [{ denominator: 5, rates: [{ performanceTarget: 6, rate: 1.4 }] }],
-    [{ denominator: 5, rates: [{ performanceTarget: 6, numerator: 7 }] }],
-  ])("accepts incomplete NDREnhanced rates", (answer) => {
+    [{ denominator: 5, rates: [{ rate: 1.4 }] }],
+    [{ denominator: 5, rates: [{ numerator: 7 }] }],
+  ])("accepts incomplete MultiCategoryNdr elements when optional", (answer) => {
     const element = {
-      type: ElementType.NdrFields,
+      type: ElementType.MultiCategoryNdr,
       answer,
-      required: false,
-    } as unknown as NdrFieldsTemplate;
+      required: false, // ← It's not required
+    } as unknown as MultiCategoryNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+  test("reject incomplete ListInput", () => {
+    const element = {
+      type: ElementType.ListInput,
+      required: true,
+      answer: [""],
+    } as ListInputTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
   });
 });

@@ -1,8 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import {
+  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
   PageElement,
+  PageType,
   ParentPageTemplate,
   ReviewSubmitTemplate,
 } from "types";
@@ -14,7 +16,13 @@ export const renderReportTable = (elements: ReportTableType[] | undefined) => {
   const filteredElements = elements?.filter((element) => element.indicator);
   if (filteredElements?.length == 0) return;
 
-  return <ExportedReportTable rows={filteredElements!}></ExportedReportTable>;
+  const caption = elements?.[0]?.caption;
+  return (
+    <ExportedReportTable
+      rows={filteredElements!}
+      caption={caption!}
+    ></ExportedReportTable>
+  );
 };
 
 export const renderReportDisplay = (
@@ -32,14 +40,17 @@ const isStateReporting = (elements: PageElement[]) => {
     );
   });
 
-  return stateReportIndex > -1
+  return stateReportIndex !== -1
     ? elements.splice(0, stateReportIndex + 1)
     : elements;
 };
 
-//not all hint text should be render so this function is used as a filter
-const isValidHelperText = (helperText: string) => {
-  return !helperText.includes("Warning:") ? helperText : "";
+// Render helper text only if it exists and is not a warning.
+const getHelperText = (element: PageElement) => {
+  if (!("helperText" in element)) return "";
+  if (!element.helperText) return "";
+  if (element.helperText.includes("Warning:")) return "";
+  return element.helperText;
 };
 
 export const ExportedReportWrapper = ({ section }: Props) => {
@@ -57,38 +68,71 @@ export const ExportedReportWrapper = ({ section }: Props) => {
   //removes follow up content for "is the state reporting on this measure?" question if the user selects no
   const stateReportingFiltered = isStateReporting(filteredElements);
 
-  //if the element is a radio, replace the answer with a the label text and get the children elements
-  const expandElements: PageElement[] = [];
-  stateReportingFiltered.forEach((element) => {
-    const modifiedElemet = { ...element };
+  const expandCheckedChildren = (elements: PageElement[]): PageElement[] => {
+    return elements.flatMap((element) => {
+      if (element.type === ElementType.Radio) {
+        const checkedChoice = element.choices.find(
+          (choice) => choice.value === element.answer
+        );
 
-    const child = [modifiedElemet];
-    if (modifiedElemet.type === "radio") {
-      child.push(
-        ...modifiedElemet.choices
-          .filter((choice) => choice.value == modifiedElemet.answer)
-          .flatMap((choice) => choice?.checkedChildren ?? [])
-      );
-      //Note: answer is be modified from key value to label value from this point onward
-      modifiedElemet.answer = modifiedElemet.choices.find(
-        (choice) => choice.value === modifiedElemet.answer
-      )?.label;
+        // Note that from this point on, the answer is a label and not a key.
+        element.answer = checkedChoice?.label;
+
+        // A radio element is immediately followed by all of its child elements.
+        return [
+          element,
+          ...expandCheckedChildren(checkedChoice?.checkedChildren ?? []),
+        ];
+      }
+
+      if (element.type === ElementType.Checkbox) {
+        // Collect all checkedChildren from all selected answers
+        const allCheckedChildren = (element.answer ?? []).flatMap(
+          (answerValue) =>
+            element.choices.find((choice) => choice.value === answerValue)!
+              .checkedChildren ?? []
+        );
+        // The list of top-level answers is followed by the children of the 1st
+        // selected answer, then the children of the 2nd selected answer, etc.
+        return [element, ...expandCheckedChildren(allCheckedChildren)];
+      }
+
+      return [element];
+    });
+  };
+
+  const expandedElements = expandCheckedChildren(stateReportingFiltered);
+
+  // Track SubHeader to use as caption for the pdf tables.
+  let mostRecentSubheader: string | undefined = undefined;
+
+  const determineCaption = (element: PageElement) => {
+    if (!shouldUseTable(element.type)) {
+      return undefined;
+    } else if (mostRecentSubheader === undefined) {
+      return section.navTitle;
+    } else if (section.type === PageType.Measure) {
+      return `${section.navTitle}: ${mostRecentSubheader}`;
+    } else {
+      return mostRecentSubheader;
     }
+  };
 
-    expandElements.push(...child);
-  });
-
+  // Only the first element of a table group gets the caption
   const elements =
-    expandElements?.map((element) => {
+    expandedElements?.map((element) => {
+      const caption = determineCaption(element);
+      if (element.type === ElementType.SubHeader) {
+        mostRecentSubheader = element.text;
+      }
+
       return {
-        indicator: "label" in element ? element.label ?? "" : "",
-        helperText:
-          "helperText" in element && element.helperText
-            ? isValidHelperText(element.helperText)
-            : "",
+        indicator: "label" in element ? (element.label ?? "") : "",
+        helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
         required: "required" in element ? element.required : false,
+        caption,
       };
     }) ?? [];
 

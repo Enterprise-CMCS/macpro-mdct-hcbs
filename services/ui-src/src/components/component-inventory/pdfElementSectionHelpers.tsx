@@ -9,7 +9,7 @@ import {
 
 export const textboxSection: FormPageTemplate = {
   id: "mock-textbox-id",
-  title: "mock-textbox-title",
+  navTitle: "mock-textbox-title",
   type: PageType.Standard,
   elements: [
     {
@@ -25,7 +25,7 @@ export const textboxSection: FormPageTemplate = {
 
 export const textAreaSection: FormPageTemplate = {
   id: "mock-textarea-id",
-  title: "mock-textarea-title",
+  navTitle: "mock-textarea-title",
   type: PageType.Standard,
   elements: [
     {
@@ -41,7 +41,7 @@ export const textAreaSection: FormPageTemplate = {
 
 export const numberFieldSection: FormPageTemplate = {
   id: "mock-numberfield-id",
-  title: "mock-number-title",
+  navTitle: "mock-number-title",
   type: PageType.Standard,
   elements: [
     {
@@ -57,7 +57,7 @@ export const numberFieldSection: FormPageTemplate = {
 
 export const dateFieldSection: FormPageTemplate = {
   id: "mock-date-id",
-  title: "mock-date-title",
+  navTitle: "mock-date-title",
   type: PageType.Standard,
   elements: [
     {
@@ -73,7 +73,7 @@ export const dateFieldSection: FormPageTemplate = {
 
 export const radioFieldSection: FormPageTemplate = {
   id: "mock-radio-id",
-  title: "mock-radio-title",
+  navTitle: "mock-radio-title",
   type: PageType.Standard,
   elements: [
     {
@@ -91,22 +91,53 @@ export const radioFieldSection: FormPageTemplate = {
   ],
 };
 
-export const ndrFieldsSection: FormPageTemplate = {
-  id: "mock-ndrFields-id",
-  title: "mock-ndrFields-title",
+export const checkboxFieldSection: FormPageTemplate = {
+  id: "mock-checkbox-id",
+  navTitle: "mock-checkbox-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrFields,
+      type: ElementType.Checkbox,
+      id: "id-checkbox",
+      label: "CheckboxField",
+      choices: [
+        {
+          value: "checkbox option 1",
+          label: "checkbox option 1",
+          checked: true,
+        },
+        {
+          value: "checkbox option 2",
+          label: "checkbox option 2",
+          checked: true,
+        },
+        {
+          value: "checkbox option 3",
+          label: "checkbox option 3",
+          checked: false,
+        },
+      ],
+      answer: ["checkbox option 1", "checkbox option 2"],
+      required: true,
+    },
+  ],
+};
+
+export const multiCategoryNdrSection: FormPageTemplate = {
+  id: "mock-multiCategoryNdr-id",
+  navTitle: "mock-multiCategoryNdr-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.MultiCategoryNdr,
       id: "measure-rates",
-      labelTemplate: "Label",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
         { id: "assessment-2", label: "Second Assessment" },
       ],
-      fields: [
-        { id: "field-1", label: "First Field" },
-        { id: "field-2", label: "Second Field" },
+      categories: [
+        { id: "category-1", label: "First Category" },
+        { id: "category-2", label: "Second Category" },
       ],
       required: true,
       multiplier: 1000,
@@ -114,15 +145,14 @@ export const ndrFieldsSection: FormPageTemplate = {
   ],
 };
 
-export const ndrEnhancedSection: FormPageTemplate = {
-  id: "mock-ndrEnhanced-id",
-  title: "mock-ndrEnhanced-title",
+export const multiRateNdrSection: FormPageTemplate = {
+  id: "mock-multiRateNdr-id",
+  navTitle: "mock-multiRateNdr-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrEnhanced,
+      type: ElementType.MultiRateNdr,
       id: "measure-rates",
-      performanceTargetLabel: "Label",
       assessments: [
         { id: "assessment-1", label: "First Assessment" },
         { id: "assessment-2", label: "Second Assessment" },
@@ -135,26 +165,25 @@ export const ndrEnhancedSection: FormPageTemplate = {
 
 export const ndrSection: FormPageTemplate = {
   id: "mock-ndr-id",
-  title: "mock-ndr-title",
+  navTitle: "mock-ndr-title",
   type: PageType.Standard,
   elements: [
     {
       type: ElementType.Ndr,
       id: "measure-rates",
-      performanceTargetLabel: "performanceTargetLabel",
       label: "Label",
       required: true,
     },
   ],
 };
 
-export const ndrBasicSection: FormPageTemplate = {
-  id: "mock-ndrBasic-id",
-  title: "mock-ndrBasic-title",
+export const performanceNdrSection: FormPageTemplate = {
+  id: "mock-performanceNdr-id",
+  navTitle: "mock-performanceNdr-title",
   type: PageType.Standard,
   elements: [
     {
-      type: ElementType.NdrBasic,
+      type: ElementType.PerformanceNdr,
       id: "measure-rates",
       label: "Label",
       required: true,
@@ -169,16 +198,46 @@ export const ndrBasicSection: FormPageTemplate = {
   ],
 };
 
+export const EligibilityTableSection: FormPageTemplate = {
+  id: "mock-eligibilityTable-id",
+  navTitle: "mock-eligibilityTable-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.EligibilityTable,
+      id: "add-other-eligibility-table",
+      caption: "Other Eligibility",
+      fieldLabels: {
+        title: "title",
+        description: "description",
+        recheck: "recheck",
+        frequency: "frequency",
+        eligibilityUpdate: "eligibilityUpdate",
+      },
+      modalInstructions: "modalInstructions",
+      frequencyOptions: [{ label: "Annually", value: "Annually" }],
+      answer: [
+        {
+          title: "string",
+          description: "string",
+          recheck: "Yes",
+          frequency: "Annually",
+          eligibilityUpdate: "No",
+        },
+      ],
+    },
+  ],
+};
+
 export const lengthOfStayRateSection: FormPageTemplate = {
   id: "mock-lengthOfStayRate-id",
-  title: "mock-lengthOfStayRate-title",
+  navTitle: "mock-lengthOfStayRate-title",
   type: PageType.Standard,
   elements: [
     {
       type: ElementType.LengthOfStayRate,
       id: "measure-rates",
       labels: {
-        performanceTarget: "performanceTarget",
         actualCount: "actualCount",
         denominator: "denominator",
         expectedCount: "expectedCount",
@@ -192,9 +251,33 @@ export const lengthOfStayRateSection: FormPageTemplate = {
   ],
 };
 
+export const readmissionRateSection: FormPageTemplate = {
+  id: "mock-readmissionRate-id",
+  navTitle: "mock-readmissionRate-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.ReadmissionRate,
+      id: "measure-rates",
+      labels: {
+        stayCount: "stayCount",
+        obsReadmissionCount: "obsReadmissionCount",
+        obsReadmissionRate: "obsReadmissionRate",
+        expReadmissionCount: "expReadmissionCount",
+        expReadmissionRate: "expReadmissionRate",
+        obsExpRatio: "obsExpRatio",
+        beneficiaryCount: "beneficiaryCount",
+        outlierCount: "outlierCount",
+        outlierRate: "outlierRate",
+      },
+      required: true,
+    },
+  ],
+};
+
 export const measureDetailsSection: MeasurePageTemplate = {
   id: "mock-lengthOfStayRate-id",
-  title: "mock-lengthOfStayRate-title",
+  navTitle: "mock-lengthOfStayRate-title",
   type: PageType.Measure,
   cmitId: "mockCmitID",
   cmitInfo: {
@@ -207,6 +290,24 @@ export const measureDetailsSection: MeasurePageTemplate = {
     {
       type: ElementType.MeasureDetails,
       id: "",
+    },
+  ],
+};
+
+export const listInputSection: FormPageTemplate = {
+  id: "mock-list-input-id",
+  navTitle: "mock-list-input-title",
+  type: PageType.Standard,
+  elements: [
+    {
+      type: ElementType.ListInput,
+      id: "ListInput",
+      label: "ListInput",
+      fieldLabel: "List Input Field",
+      helperText: "Information to help user fill out list input",
+      buttonText: "Add another",
+      answer: ["sample text", "sample text 2"],
+      required: true,
     },
   ],
 };

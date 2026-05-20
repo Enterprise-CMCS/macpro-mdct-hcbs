@@ -12,6 +12,8 @@ import {
   isFormPageTemplate,
   isMeasurePageTemplate,
   LengthOfStayFieldNames,
+  assertExhaustive,
+  ReadmissionRateFieldNames,
 } from "types";
 
 /**
@@ -41,14 +43,38 @@ export const inferredReportStatus = (report: Report, pageId: string) => {
     : PageStatus.NOT_STARTED;
 };
 
-// Simple check to see if a page has been dirtied if it is not keeping a signoff status
+// Check to see if a page has been dirtied if it is not keeping a signoff status
 export const pageInProgress = (report: Report, pageId: string) => {
   const targetPage = report.pages.find((page) => page.id === pageId);
   if (!targetPage) return false;
   if (!targetPage.elements) return true;
 
+  const hasData = (answerPart: string | number | object | undefined) => {
+    if (answerPart === undefined || answerPart === null) {
+      // null and undefined are not data
+      return false;
+    } else if (typeof answerPart === "number") {
+      // Zero would be considered data, as would any other number
+      return true;
+    } else if (typeof answerPart === "string") {
+      // An empty string would not be data, but any other string would be.
+      return answerPart !== "";
+    } else if (Array.isArray(answerPart)) {
+      // An array only has data if some element of the array is data.
+      return answerPart.some(hasData);
+    } else if (typeof answerPart === "object") {
+      // An object only has data if one of its properties is data.
+      return Object.values(answerPart).some(hasData);
+    } else {
+      // It shouldn't be possible to reach this code branch.
+      assertExhaustive(answerPart);
+      // But if some value somehow does make it here, let's call it data.
+      return true;
+    }
+  };
+
   const anyEdited = targetPage.elements.find(
-    (element) => "answer" in element && element.answer
+    (element) => "answer" in element && hasData(element.answer)
   );
   return !!anyEdited;
 };
@@ -109,7 +135,7 @@ const requiredRollupPageStatus = (report: Report) => {
   )
     return PageStatus.COMPLETE;
   if (
-    requiredMeasures.find(
+    requiredMeasures.some(
       (measure) =>
         measure.status &&
         [PageStatus.COMPLETE, PageStatus.IN_PROGRESS].includes(
@@ -139,6 +165,14 @@ export const elementSatisfiesRequired = (
   element: PageElement,
   pageElements: PageElement[]
 ) => {
+  //while list input is not required, if the user adds a field and leaves it blank, that would make it incomplete and prevent form submission
+  if (
+    element.type === ElementType.ListInput &&
+    element.answer?.some((item) => item === "" || item === undefined)
+  ) {
+    return false;
+  }
+
   // TODO: make less ugly
   if (
     !("required" in element) ||
@@ -163,41 +197,60 @@ export const elementSatisfiesRequired = (
     }
   }
 
+  if (element.type === ElementType.Checkbox) {
+    for (const choice of element.choices) {
+      if (!element.answer?.includes(choice.value) || !choice.checkedChildren) {
+        continue;
+      }
+      for (const childElement of choice.checkedChildren) {
+        const satisfied = elementSatisfiesRequired(childElement, pageElements);
+        if (!satisfied) return false;
+      }
+    }
+  }
+
   if (element.type === ElementType.LengthOfStayRate) {
     if (element.errors && element.errors.populationRate) return false;
     return Object.values(LengthOfStayFieldNames)
       .filter((fieldId) => fieldId !== "populationRate") // populationRate is not required
       .every((fieldId) => element.answer?.[fieldId] !== undefined);
   }
-  if (element.type === ElementType.NdrFields) {
+  if (element.type === ElementType.ReadmissionRate) {
+    if (element.errors) {
+      const hasErrors = Object.values(element.errors).some(
+        (error) => error !== undefined && error !== ""
+      );
+      if (hasErrors) return false;
+    }
+    return Object.values(ReadmissionRateFieldNames).every(
+      (fieldId) => element.answer?.[fieldId] !== undefined
+    );
+  }
+  if (element.type === ElementType.MultiCategoryNdr) {
     return element.answer.every((assessObj) => {
       if (assessObj.denominator === undefined) return false;
       return assessObj.rates.every((rateObj) => {
-        if (rateObj.performanceTarget === undefined) return false;
         if (rateObj.numerator === undefined) return false;
         if (rateObj.rate === undefined) return false;
         return true;
       });
     });
   }
-  if (element.type === ElementType.NdrEnhanced) {
+  if (element.type === ElementType.MultiRateNdr) {
     if (element.answer.denominator === undefined) return false;
     return element.answer.rates.every((rateObj) => {
-      if (!element.required && rateObj.performanceTarget === undefined)
-        return false;
       if (rateObj.numerator === undefined) return false;
       if (rateObj.rate === undefined) return false;
       return true;
     });
   }
   if (element.type === ElementType.Ndr) {
-    if (element.answer.performanceTarget === undefined) return false;
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
   }
 
-  if (element.type === ElementType.NdrBasic) {
+  if (element.type === ElementType.PerformanceNdr) {
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
@@ -205,15 +258,13 @@ export const elementSatisfiesRequired = (
     //For forms like PCP-1 & PCP-2, they have conditional children rendered based on if performance level has been reached.
     if (
       element.minPerformanceLevel &&
-      element.answer.rate < element.minPerformanceLevel
+      element.answer.rate < element.minPerformanceLevel &&
+      element.conditionalChildren &&
+      !element.conditionalChildren
+        .filter((child) => "required" in child)
+        .every((child) => "answer" in child && child.answer != undefined)
     ) {
-      if (
-        element.conditionalChildren &&
-        !element.conditionalChildren
-          .filter((child) => "required" in child)
-          .every((child) => "answer" in child && child.answer != undefined)
-      )
-        return false;
+      return false;
     }
   }
 

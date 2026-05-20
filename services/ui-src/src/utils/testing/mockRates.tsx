@@ -1,10 +1,11 @@
 import {
   NdrTemplate,
   ElementType,
-  NdrEnhancedTemplate,
-  NdrFieldsTemplate,
-  NdrBasicTemplate,
+  MultiRateNdrTemplate,
+  MultiCategoryNdrTemplate,
+  PerformanceNdrTemplate,
   LengthOfStayRateTemplate,
+  ReadmissionRateTemplate,
 } from "types";
 
 export const mockNDR: NdrTemplate = {
@@ -12,24 +13,19 @@ export const mockNDR: NdrTemplate = {
   type: ElementType.Ndr,
   label: "Person uses the same environments as people without disabilities",
   answer: {
-    performanceTarget: 4,
     rate: 1.66666666666667,
     numerator: 5,
     denominator: 3,
   },
-  performanceTargetLabel: "What is the 2028 state performance target?",
   required: true,
 };
 
-export const mockedNDREnhanced: NdrEnhancedTemplate = {
-  id: "mock-ndr-enhanced",
-  type: ElementType.NdrEnhanced,
+export const mockedMultiRateNdr: MultiRateNdrTemplate = {
+  id: "mock-multi-rate-ndr",
+  type: ElementType.MultiRateNdr,
   label: "test label",
   helperText: "helper text",
   required: true,
-  performanceTargetLabel: "What is the 2028 state performance target?" as
-    | string
-    | undefined,
   assessments: [{ id: "test-1", label: "assessment 1" }],
   answer: {
     denominator: 2,
@@ -38,28 +34,25 @@ export const mockedNDREnhanced: NdrEnhancedTemplate = {
         id: "test-1",
         numerator: undefined,
         rate: undefined,
-        performanceTarget: undefined,
       },
     ],
   },
 };
 
-export const mockNDRFields: NdrFieldsTemplate = {
-  id: "mock-ndr-fields",
-  type: ElementType.NdrFields,
+export const mockMultiCategoryNdr: MultiCategoryNdrTemplate = {
+  id: "mock-multi-category-ndr",
+  type: ElementType.MultiCategoryNdr,
   required: true,
-  labelTemplate:
-    "What is the 2028 state performance target for this {{assessment}} {{field}}?",
   assessments: [
     {
       label: "Assessment 1",
       id: "mock-assess-1",
     },
   ],
-  fields: [
+  categories: [
     {
-      label: "Field 1",
-      id: "mock-field-1",
+      label: "Category 1",
+      id: "mock-category-1",
     },
   ],
   answer: [
@@ -67,19 +60,18 @@ export const mockNDRFields: NdrFieldsTemplate = {
       denominator: 2,
       rates: [
         {
-          id: "mock-assess-1.mock-field-1",
+          id: "mock-assess-1.mock-category-1",
           numerator: undefined,
           rate: undefined,
-          performanceTarget: undefined,
         },
       ],
     },
   ],
 };
 
-export const mockNDRBasics: NdrBasicTemplate = {
-  id: "mock-ndr-basic",
-  type: ElementType.NdrBasic,
+export const mockPerformanceNdr: PerformanceNdrTemplate = {
+  id: "mock-performance-ndr",
+  type: ElementType.PerformanceNdr,
   required: true,
 };
 
@@ -88,13 +80,30 @@ export const mockLengthOfStayFields: LengthOfStayRateTemplate = {
   type: ElementType.LengthOfStayRate,
   labels: {
     actualCount: "Actual Count",
-    performanceTarget: "Performance Target",
     denominator: "Denominator",
     expectedCount: "Expected Count",
     populationRate: "Population Rate",
     actualRate: "Actual Rate",
     expectedRate: "Expected Rate",
     adjustedRate: "Adjusted Rate",
+  },
+  answer: undefined,
+  required: true,
+};
+
+export const mockReadmissionRateFields: ReadmissionRateTemplate = {
+  id: "",
+  type: ElementType.ReadmissionRate,
+  labels: {
+    stayCount: "Count of Index Hospital Stays",
+    obsReadmissionCount: "Count of Observed 30-Day Readmissions",
+    obsReadmissionRate: "Observed Readmission Rate",
+    expReadmissionCount: "Count of Expected 30-Day readmissions",
+    expReadmissionRate: "Expected Readmission Rate",
+    obsExpRatio: "Observed-to-Expected Ratio",
+    beneficiaryCount: "Count of Beneficiaries in Medicaid Population",
+    outlierCount: "Number of Outliers",
+    outlierRate: "Outlier Rate",
   },
   answer: undefined,
   required: true,

@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import { aws_dynamodb as dynamodb } from "aws-cdk-lib";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
+import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateDataComponentsProps {
   scope: Construct;
@@ -83,6 +83,15 @@ export function createDataComponents(props: CreateDataComponentsProps) {
       },
       sortKey: {
         name: "id",
+        type: dynamodb.AttributeType.STRING,
+      },
+    }),
+    new DynamoDBTable(scope, "Notifications", {
+      stage,
+      isDev,
+      name: "notifications",
+      partitionKey: {
+        name: "category",
         type: dynamodb.AttributeType.STRING,
       },
     }),

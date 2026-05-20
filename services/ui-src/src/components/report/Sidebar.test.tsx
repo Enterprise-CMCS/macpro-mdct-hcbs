@@ -24,18 +24,19 @@ jest.mock("react-router-dom", () => ({
 const setCurrentPageId = jest.fn();
 const mockUseNavigate = jest.fn();
 
-const mockPageMap = new Map();
-mockPageMap.set("root", 0);
-mockPageMap.set("id-1", 1);
-mockPageMap.set("id-2", 2);
-mockPageMap.set("child-1", 3);
+const mockPageMap = new Map([
+  ["root", 0],
+  ["id-1", 1],
+  ["id-2", 2],
+  ["child-1", 3],
+]);
 
 const report = {
   pages: [
     { childPageIds: ["id-1", "id-2"], id: "root" },
-    { title: "Section 1", id: "id-1", childPageIds: ["child-1"] },
-    { title: "Section 2", id: "id-2" },
-    { title: "Child 1", id: "child-1" },
+    { navTitle: "Section 1", id: "id-1", childPageIds: ["child-1"] },
+    { navTitle: "Section 2", id: "id-2" },
+    { navTitle: "Child 1", id: "child-1" },
   ],
 };
 

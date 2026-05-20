@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { ProfilePage } from "components";
 import {
   mockAdminUserStore,
@@ -33,19 +32,9 @@ describe("Test ProfilePage for admin users", () => {
     expect(screen.queryByText("stateuser@test.com")).not.toBeInTheDocument();
   });
 
-  test("Check that there is a banner editor button visible", () => {
-    expect(screen.getByRole("button", { name: "Banner Editor" })).toBeVisible();
-  });
-
   test("Check that the state field is set to N/A", () => {
     expect(screen.getByText("State")).toBeVisible();
     expect(screen.getByText("N/A")).toBeVisible();
-  });
-
-  test("Check that admin button navigates to /admin on click", async () => {
-    const adminButton = screen.getByRole("button", { name: "Banner Editor" });
-    await userEvent.click(adminButton);
-    expect(window.location.pathname).toEqual("/admin");
   });
 });
 

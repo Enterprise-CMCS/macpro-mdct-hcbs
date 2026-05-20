@@ -1,7 +1,7 @@
 import {
   Button,
   Hide,
-  Image,
+  Flex,
   Show,
   Td,
   Tr,
@@ -12,8 +12,8 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { Table } from "components";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { LiteReport, ReportStatus } from "types";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { getReportName, LiteReport, ReportStatus } from "types";
 import {
   formatMonthDayYear,
   releaseReport,
@@ -22,17 +22,19 @@ import {
   useStore,
 } from "utils";
 
-import editIcon from "assets/icons/edit/icon_edit_square_gray.svg";
 import { useState, Fragment } from "react";
 
 interface DashboardTableProps {
   reports: LiteReport[];
   openAddEditReportModal: (report: LiteReport) => void;
   unlockModalOnOpenHandler: () => void;
+  onReportUpdate: () => void;
 }
 
-interface TableProps
-  extends Omit<DashboardTableProps, "unlockModalOnOpenHandler"> {
+interface TableProps extends Omit<
+  DashboardTableProps,
+  "unlockModalOnOpenHandler" | "onReportUpdate"
+> {
   tableContent: { caption: string; headRow: string[] };
   showEditNameColumn: boolean | undefined;
   showReportSubmissionsColumn: boolean;
@@ -62,25 +64,15 @@ export const HorizontalTable = (props: TableProps) => {
     <Table content={props.tableContent}>
       {props.reports.map((report, idx) => (
         <Tr key={report.id}>
-          {props.showEditNameColumn && (
-            <Td fontWeight={"bold"}>
-              <button onClick={() => props.openAddEditReportModal(report)}>
-                <Image
-                  src={editIcon}
-                  aria-label={`Edit ${report.name} report name`}
-                  minW={"1.75rem"}
-                />
-              </button>
-            </Td>
-          )}
           <Td
             fontWeight={"bold"}
             maxWidth={"14.25rem"}
             fontSize="body_md"
             padding="16px 16px 16px 0"
           >
-            {report.name ? report.name : "{Name of form}"}
+            {report.name}
           </Td>
+          <Td>{report.year}</Td>
           <Td>
             {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
           </Td>
@@ -90,20 +82,31 @@ export const HorizontalTable = (props: TableProps) => {
             <Td width="3rem">{report.submissionCount ?? 0}</Td>
           )}
           <Td>
-            <Button
-              onClick={() => props.navigate(reportBasePath(report))}
-              variant="outline"
-              disabled={report.archived}
-              aria-label={
-                report.status !== ReportStatus.SUBMITTED
-                  ? `Edit ${report.name} report`
-                  : `View ${report.name} report`
-              }
-            >
-              {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
-                ? "Edit"
-                : "View"}
-            </Button>
+            <Flex display="flex" gap="spacer2" wrap="wrap">
+              {props.showEditNameColumn && (
+                <Button
+                  variant="link"
+                  onClick={() => props.openAddEditReportModal(report)}
+                  aria-label={`Edit ${report.name} name`}
+                >
+                  Edit name
+                </Button>
+              )}
+              <Button
+                onClick={() => props.navigate(reportBasePath(report))}
+                variant="outline"
+                disabled={report.archived}
+                aria-label={
+                  report.status !== ReportStatus.SUBMITTED
+                    ? `Edit ${report.name} report`
+                    : `View ${report.name} report`
+                }
+              >
+                {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
+                  ? "Edit"
+                  : "View"}
+              </Button>
+            </Flex>
           </Td>
           {props.showAdminControlsColumn && (
             <>
@@ -153,15 +156,6 @@ export const VerticalTable = (props: TableProps) => {
           <div>
             <Text variant="grey">Submission name</Text>
             <HStack>
-              {props.showEditNameColumn && (
-                <button onClick={() => props.openAddEditReportModal(report)}>
-                  <Image
-                    src={editIcon}
-                    aria-label={`Edit ${report.name} report name`}
-                    minW={"1.75rem"}
-                  />
-                </button>
-              )}
               <Text fontWeight="heading_md" fontSize="heading_md">
                 {report.name}
               </Text>
@@ -169,11 +163,15 @@ export const VerticalTable = (props: TableProps) => {
           </div>
           <HStack gap="4rem">
             <div>
-              <Text variant="grey">Last Edited</Text>
+              <Text variant="grey">Reporting year</Text>
+              <Text>{report.year}</Text>
+            </div>
+            <div>
+              <Text variant="grey">Last edited</Text>
               <Text>{formatMonthDayYear(report.lastEdited!)}</Text>
             </div>
             <div>
-              <Text variant="grey">Edited By</Text>
+              <Text variant="grey">Edited by</Text>
               <Text>{report.lastEditedBy}</Text>
             </div>
           </HStack>
@@ -185,6 +183,15 @@ export const VerticalTable = (props: TableProps) => {
             <Text>{report.submissionCount ?? 0}</Text>
           )}
           <HStack gap={"6"}>
+            {props.showEditNameColumn && (
+              <Button
+                variant="link"
+                onClick={() => props.openAddEditReportModal(report)}
+                aria-label={`Edit ${report.name} name`}
+              >
+                Edit name
+              </Button>
+            )}
             <Button
               onClick={() => props.navigate(reportBasePath(report))}
               variant="outline"
@@ -246,10 +253,10 @@ export const DashboardTable = ({
   reports,
   openAddEditReportModal,
   unlockModalOnOpenHandler,
+  onReportUpdate,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
   const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
-  const [reportsInView, setReportsInView] = useState<LiteReport[]>(reports);
 
   const [archiving, setArchiving] = useState<number>();
   const [unlocking, setUnlocking] = useState<number>();
@@ -260,37 +267,47 @@ export const DashboardTable = ({
   const showAdminControlsColumn = userIsAdmin;
 
   // Build header columns based on defined behaviors per role
-  const headers = [];
-  if (showEditNameColumn) headers.push("");
-  headers.push(...["Submission name", "Last edited", "Edited by", "Status"]);
-  if (showReportSubmissionsColumn) headers.push("#");
-  headers.push("");
+  const headers = [
+    "Submission name",
+    "Reporting year",
+    "Last edited",
+    "Edited by",
+    "Status",
+  ];
 
+  if (showReportSubmissionsColumn) headers.push("#");
+  headers.push("Actions");
+  if (showAdminControlsColumn) headers.push("", "");
+  const { reportType } = useParams();
   const tableContent = {
-    caption: "Quality Measure Reports",
+    caption: `${getReportName(reportType)}s`,
     headRow: headers,
   };
 
   const toggleArchived = async (idx: number) => {
     setArchiving(idx);
-    const reports = [...reportsInView];
     const report = reports[idx];
-    await updateArchivedStatus(report, !report.archived);
-    report.archived = !report.archived;
-    reports[idx] = report;
-    setReportsInView(reports);
+
+    console.assert(!!report, `Report exists at index ${idx}`);
+
+    // Handle undefined archived property
+    const newArchivedStatus = !(report.archived ?? false);
+    await updateArchivedStatus(report, newArchivedStatus);
+
+    onReportUpdate();
     setArchiving(undefined);
   };
 
   const toggleRelease = async (idx: number) => {
     setUnlocking(idx);
-    const reports = [...reportsInView];
     const report = reports[idx];
+
+    console.assert(!!report, `Report exists at index ${idx}`);
+
     await releaseReport(report);
     unlockModalOnOpenHandler();
-    report.status = ReportStatus.IN_PROGRESS;
-    reports[idx] = report;
-    setReportsInView(reports);
+
+    onReportUpdate();
     setUnlocking(undefined);
   };
 

@@ -49,8 +49,8 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   let validatedPayload: Report | undefined;
   try {
     validatedPayload = await validateReportPayload(report);
-  } catch (err) {
-    logger.error(err);
+  } catch (error) {
+    logger.error(error);
     return badRequest("Invalid request");
   }
 

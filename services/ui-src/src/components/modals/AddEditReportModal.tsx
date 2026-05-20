@@ -1,11 +1,15 @@
 import { FormEvent, useEffect, useState, ReactElement } from "react";
-import { Modal } from "components";
+import { Alert, Modal } from "components";
 import {
   TextField as CmsdsTextField,
   Dropdown as CmsdsDropdownField,
 } from "@cmsgov/design-system";
-import { Spinner, Flex, Text } from "@chakra-ui/react";
-import { createReport, updateReport } from "utils/api/requestMethods/report";
+import { Spinner, Flex, Text, Box } from "@chakra-ui/react";
+import {
+  createReport,
+  updateReport,
+  getReportsForState,
+} from "utils/api/requestMethods/report";
 import {
   isReportType,
   LiteReport,
@@ -13,6 +17,7 @@ import {
   ReportStatus,
   ReportType,
 } from "types/report";
+import { AlertTypes } from "types";
 import QmsOptions from "./AddFormOptions/QmsOptions";
 import TacmOptions from "./AddFormOptions/TacmOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
@@ -79,10 +84,45 @@ export const AddEditReportModal = ({
   const [submissionAttempted, setSubmissionAttempted] = useState(false);
   const [optionsComplete, setOptionsComplete] = useState(!OptionsComponent);
   const readOnly = selectedReport?.status === ReportStatus.SUBMITTED;
+  const [reportTitleFieldDirtied, setReportTitleFieldDirtied] = useState(false);
 
   useEffect(() => {
     setFormData(formDataForReport(selectedReport));
+    setReportTitleFieldDirtied(false);
   }, [selectedReport, modalDisclosure.isOpen]);
+
+  useEffect(() => {
+    if (!reportTitleFieldDirtied) return;
+    setErrorMessage(formData.reportTitle).then((errorMessage) => {
+      setErrorData((prevErrorData) => ({
+        ...prevErrorData,
+        reportTitle: errorMessage,
+      }));
+    });
+  }, [formData.reportTitle]);
+
+  const doesReportNameExist = async (value: string) => {
+    let existingReports = await getReportsForState(reportType, activeState);
+    const doesReportNameAlreadyExist = existingReports.some(
+      (report) =>
+        report.name === value &&
+        report.year === Number(formData.year) &&
+        report.id !== selectedReport?.id
+    );
+
+    return doesReportNameAlreadyExist;
+  };
+
+  const setErrorMessage = async (value: string): Promise<string> => {
+    if (!value) {
+      return ErrorMessages.requiredResponse;
+    }
+    const duplicateReportName = await doesReportNameExist(value);
+    if (duplicateReportName) {
+      return ErrorMessages.mustBeUniqueReportName;
+    }
+    return "";
+  };
 
   const onChange = (evt: { target: { name: string; value: string } }) => {
     const { name, value } = evt.target;
@@ -90,11 +130,8 @@ export const AddEditReportModal = ({
       ...formData,
       [name]: value,
     };
-    setErrorData({
-      ...errorData,
-      [name]: value ? "" : ErrorMessages.requiredResponse,
-    });
     setFormData(updatedFormData);
+    setReportTitleFieldDirtied(true);
   };
 
   const onOptionsChange = (optionsData: Record<string, any>) => {
@@ -103,22 +140,25 @@ export const AddEditReportModal = ({
       options: optionsData,
     });
   };
-
   const onSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
+    setSubmitting(true);
     setSubmissionAttempted(true);
+    const reportTitleError = await setErrorMessage(formData.reportTitle);
     const newErrorData = {
-      reportTitle: formData.reportTitle ? "" : ErrorMessages.requiredResponse,
+      reportTitle: reportTitleError,
       year: formData.year ? "" : ErrorMessages.requiredResponse,
     };
     setErrorData(newErrorData);
     const canSubmit =
-      optionsComplete && !!formData.reportTitle && !!formData.year;
+      optionsComplete &&
+      !newErrorData.reportTitle &&
+      !!formData.reportTitle &&
+      !!formData.year;
     if (!canSubmit) {
+      setSubmitting(false);
       return;
     }
-
-    setSubmitting(true);
 
     const userEnteredReportName = formData.reportTitle!;
     if (selectedReport) {
@@ -149,7 +189,21 @@ export const AddEditReportModal = ({
         heading: `${selectedReport ? "Edit" : "Add new"} ${
           verbiage.reportName
         }`,
-        subheading: "",
+        subheading:
+          reportType === ReportType.WWL ? (
+            <Box mt={4} mb={8}>
+              <Alert
+                status={AlertTypes.WARNING}
+                title="Waiting List Separation"
+              >
+                A separate report should be generated for each waiver waiting
+                list your state intends to include during the current reporting
+                year.
+              </Alert>
+            </Box>
+          ) : (
+            ""
+          ),
         actionButtonText: submitting ? (
           <Spinner size="md" />
         ) : (
@@ -157,7 +211,7 @@ export const AddEditReportModal = ({
         ),
         closeButtonText: "Cancel",
       }}
-      disableConfirm={readOnly}
+      disableConfirm={readOnly || submitting}
     >
       <form id="addEditReportModal" onSubmit={onSubmit}>
         <Flex direction="column" gap="2rem">

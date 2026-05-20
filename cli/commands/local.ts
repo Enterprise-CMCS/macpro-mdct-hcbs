@@ -1,15 +1,14 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { runCommand } from "../lib/runner.js";
-import { execSync } from "child_process";
-import { region } from "../lib/consts.js";
-import { runFrontendLocally } from "../lib/utils.js";
-import { seedData } from "../lib/seedData.js";
-import { tryImport } from "../lib/optional-imports.js";
+import { runCommand } from "../lib/runner.ts";
+import { execSync } from "node:child_process";
+import { region } from "../lib/consts.ts";
+import { runFrontendLocally } from "../lib/utils.ts";
+import { seedData } from "../lib/seedData.ts";
 
 const isColimaRunning = () => {
   try {
     const output = execSync("colima status 2>&1", {
-      encoding: "utf-8",
+      encoding: "utf8",
       stdio: "pipe",
     }).trim();
     return output.includes("running");
@@ -21,7 +20,7 @@ const isColimaRunning = () => {
 const isLocalStackRunning = () => {
   try {
     return execSync("localstack status", {
-      encoding: "utf-8",
+      encoding: "utf8",
       stdio: "pipe",
     }).includes("running");
   } catch {
@@ -46,6 +45,8 @@ export const local = {
     process.env.AWS_ACCESS_KEY_ID = "localstack";
     process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
     process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
+    process.env.AWS_ENDPOINT_URL_S3 =
+      "http://s3.localhost.localstack.cloud:4566";
 
     await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(
@@ -68,30 +69,16 @@ export const local = {
         "cdklocal",
         "deploy",
         "--app",
-        '"npx --prefix deployment tsx deployment/local/prerequisites.ts"',
+        "./deployment/local/prerequisites.ts",
       ],
       "."
     );
 
     await runCommand(
       "CDK local prerequisite deploy",
-      [
-        "yarn",
-        "cdklocal",
-        "deploy",
-        "--app",
-        '"npx --prefix deployment tsx deployment/prerequisites.ts"',
-      ],
+      ["yarn", "cdklocal", "deploy", "--app", "./deployment/prerequisites.ts"],
       "."
     );
-
-    const clamModule = await tryImport<{ default: () => Promise<void> }>(
-      "../lib/clam.js"
-    );
-    if (clamModule) {
-      const downloadClamAvLayer = clamModule.default;
-      await downloadClamAvLayer();
-    }
 
     await runCommand(
       "CDK local deploy",

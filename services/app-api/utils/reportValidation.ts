@@ -72,6 +72,17 @@ const textboxTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const listInputTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ListInput)),
+  id: string().required(),
+  label: string().required(),
+  fieldLabel: string().required(),
+  helperText: string().required(),
+  buttonText: string().required(),
+  answer: array().of(string()).notRequired(),
+  required: boolean().required(),
+});
+
 const numberFieldTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NumberField)),
   id: string().required(),
@@ -126,7 +137,7 @@ const accordionTemplateSchema = object().shape({
 
 const pageElementSchema = lazy((value: PageElement): Schema => {
   if (!value.type) {
-    throw new Error();
+    throw new Error("Missing type field on page element");
   }
   switch (value.type) {
     case ElementType.Header:
@@ -153,6 +164,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return accordionTemplateSchema;
     case ElementType.Radio:
       return radioTemplateSchema;
+    case ElementType.Checkbox:
+      return checkboxTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
@@ -167,20 +180,26 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureFooterSchema;
     case ElementType.LengthOfStayRate:
       return lengthOfStayRateSchema;
-    case ElementType.NdrFields:
-      return ndrFieldsRateSchema;
-    case ElementType.NdrEnhanced:
-      return ndrEnhancedRateSchema;
+    case ElementType.ReadmissionRate:
+      return ReadmissionRateSchema;
+    case ElementType.MultiCategoryNdr:
+      return multiCategoryNdrSchema;
+    case ElementType.MultiRateNdr:
+      return multiRateNdrSchema;
     case ElementType.Ndr:
       return ndrRateSchema;
-    case ElementType.NdrBasic:
-      return ndrRateBasicSchema;
+    case ElementType.PerformanceNdr:
+      return performanceNdrSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
     case ElementType.Divider:
       return dividerSchema;
     case ElementType.SubmissionParagraph:
       return submissionParagraphSchema;
+    case ElementType.EligibilityTable:
+      return eligibilityTableSchema;
+    case ElementType.ListInput:
+      return listInputTemplateSchema;
     default:
       assertExhaustive(value);
       throw new Error("Page Element type is not valid");
@@ -206,11 +225,31 @@ const radioTemplateSchema = object().shape({
   hideCondition: hideConditionSchema,
 });
 
+const checkboxTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.Checkbox)),
+  id: string().required(),
+  label: string().required(),
+  helperText: string().notRequired(),
+  choices: array().of(
+    object().shape({
+      label: string().required(),
+      value: string().required(),
+      checked: boolean().notRequired(),
+      checkedChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+    })
+  ),
+  answer: array().of(string()).notRequired(),
+  emptyAlertTitle: string().notRequired(),
+  emptyAlertDescription: string().notRequired(),
+  required: boolean().required(),
+});
+
 const buttonLinkTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.ButtonLink)),
   id: string().required(),
   label: string().optional(),
   to: string().optional(),
+  style: string().optional(),
 });
 
 const dividerSchema = object().shape({
@@ -229,6 +268,40 @@ const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
+  caption: string().required(),
+});
+
+const eligibilityTableSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.EligibilityTable)),
+  id: string().required(),
+  caption: string().required(),
+  fieldLabels: object().shape({
+    title: string().required(),
+    description: string().required(),
+    recheck: string().required(),
+    frequency: string().required(),
+    eligibilityUpdate: string().required(),
+  }),
+  modalInstructions: string().required(),
+  frequencyOptions: array()
+    .of(
+      object().shape({
+        label: string().required(),
+        value: string().required(),
+      })
+    )
+    .required(),
+  answer: array()
+    .of(
+      object().shape({
+        title: string().required(),
+        description: string().required(),
+        recheck: string().required(),
+        frequency: string().notRequired(),
+        eligibilityUpdate: string().required(),
+      })
+    )
+    .notRequired(),
 });
 
 const measureResultsNavigationTableTemplateSchema = object().shape({
@@ -271,7 +344,6 @@ const lengthOfStayRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.LengthOfStayRate)),
   id: string().required(),
   labels: object().shape({
-    performanceTarget: string().required(),
     actualCount: string().required(),
     denominator: string().required(),
     expectedCount: string().required(),
@@ -283,7 +355,6 @@ const lengthOfStayRateSchema = object().shape({
   required: boolean().required(),
   answer: object()
     .shape({
-      performanceTarget: number().notRequired(),
       actualCount: number().notRequired(),
       denominator: number().notRequired(),
       expectedCount: number().notRequired(),
@@ -295,10 +366,39 @@ const lengthOfStayRateSchema = object().shape({
     .notRequired(),
 });
 
-const ndrFieldsRateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrFields)),
+const ReadmissionRateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ReadmissionRate)),
   id: string().required(),
-  labelTemplate: string().required(),
+  labels: object().shape({
+    stayCount: string().required(),
+    obsReadmissionCount: string().required(),
+    obsReadmissionRate: string().required(),
+    expReadmissionCount: string().required(),
+    expReadmissionRate: string().required(),
+    obsExpRatio: string().required(),
+    beneficiaryCount: string().required(),
+    outlierCount: string().required(),
+    outlierRate: string().required(),
+  }),
+  required: boolean().required(),
+  answer: object()
+    .shape({
+      stayCount: number().notRequired(),
+      obsReadmissionCount: number().notRequired(),
+      obsReadmissionRate: number().notRequired(),
+      expReadmissionCount: number().notRequired(),
+      expReadmissionRate: number().notRequired(),
+      obsExpRatio: number().notRequired(),
+      beneficiaryCount: number().notRequired(),
+      outlierCount: number().notRequired(),
+      outlierRate: number().notRequired(),
+    })
+    .notRequired(),
+});
+
+const multiCategoryNdrSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.MultiCategoryNdr)),
+  id: string().required(),
   assessments: array()
     .of(
       object().shape({
@@ -307,7 +407,7 @@ const ndrFieldsRateSchema = object().shape({
       })
     )
     .required(),
-  fields: array()
+  categories: array()
     .of(
       object().shape({
         id: string().required(),
@@ -327,7 +427,6 @@ const ndrFieldsRateSchema = object().shape({
             id: string().required(),
             numerator: number().notRequired(),
             rate: number().notRequired(),
-            performanceTarget: number().notRequired(),
           })
         ),
       })
@@ -335,12 +434,11 @@ const ndrFieldsRateSchema = object().shape({
     .notRequired(),
 });
 
-const ndrEnhancedRateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrEnhanced)),
+const multiRateNdrSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
-  performanceTargetLabel: string().notRequired(),
   assessments: array()
     .of(
       object().shape({
@@ -358,7 +456,6 @@ const ndrEnhancedRateSchema = object().shape({
           id: string().required(),
           numerator: number().notRequired(),
           rate: number().notRequired(),
-          performanceTarget: number().notRequired(),
         })
       ),
     })
@@ -369,11 +466,9 @@ const ndrRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Ndr)),
   id: string().required(),
   label: string().required(),
-  performanceTargetLabel: string().required(),
   required: boolean().required(),
   answer: object()
     .shape({
-      performanceTarget: number().notRequired(),
       numerator: number().notRequired(),
       denominator: number().notRequired(),
       rate: number().notRequired(),
@@ -381,8 +476,8 @@ const ndrRateSchema = object().shape({
     .notRequired(),
 });
 
-const ndrRateBasicSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.NdrBasic)),
+const performanceNdrSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.PerformanceNdr)),
   id: string().required(),
   label: string().notRequired(),
   required: boolean().required(),
@@ -414,16 +509,18 @@ const parentPageTemplateSchema = object().shape({
 const statusAlertSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.StatusAlert)),
   id: string().required(),
-  title: string().notRequired(),
+  title: string().required(),
   text: string().required(),
   status: string().required(),
 });
 
 const formPageTemplateSchema = object().shape({
   id: string().required(),
-  title: string().required(),
+  navTitle: string().required(),
   type: mixed<PageType>().oneOf(Object.values(PageType)).required(),
   status: string().notRequired(),
+  tabTitle: string().notRequired(),
+  submittedTabTitle: string().notRequired(),
   elements: array().of(pageElementSchema).required(),
   sidebar: boolean().notRequired(),
   hideNavButtons: boolean().notRequired(),
@@ -484,7 +581,9 @@ const pagesSchema = array()
         if (pageObject.id && pageObject.childPageIds) {
           return parentPageTemplateSchema;
         } else {
-          throw new Error();
+          throw new Error(
+            "Type missing on pageObject and id or childPageIds missing"
+          );
         }
       } else {
         switch (pageObject.type) {
@@ -492,7 +591,6 @@ const pagesSchema = array()
             return reviewSubmitTemplateSchema;
           case PageType.Measure:
             return measurePageTemplateSchema;
-          case PageType.Standard:
           default:
             return formPageTemplateSchema;
         }

@@ -2,6 +2,7 @@ import KSUID from "ksuid";
 import {
   getReportTemplate,
   getCmitInfo,
+  getWaiverInfo,
 } from "../../forms/yearlyFormSelection";
 import {
   Report,
@@ -14,6 +15,7 @@ import {
   CMIT,
   PageStatus,
   isReportWithMeasuresTemplate,
+  ElementType,
 } from "../../types/reports";
 import { User } from "../../types/types";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -27,8 +29,9 @@ export const buildReport = async (
   user: User
 ) => {
   const year = reportOptions.year;
-  const template = getReportTemplate(reportType, year);
+  const template = structuredClone(getReportTemplate(reportType, year));
   const cmitList = getCmitInfo(year);
+  const waiverList = getWaiverInfo(year, state);
 
   const report: Report = {
     state: state,
@@ -44,7 +47,7 @@ export const buildReport = async (
     options: reportOptions.options,
     archived: false,
     submissionCount: 0,
-    pages: structuredClone(template.pages),
+    pages: template.pages,
   };
 
   /**
@@ -79,6 +82,29 @@ export const buildReport = async (
     }
   }
 
+  //certain checkbox forms that utilize waivers need to have their checkboxes generate during form generation
+  if (
+    [
+      ReportType.CI,
+      ReportType.PCP,
+      ReportType.TACM,
+      ReportType.QMS,
+      ReportType.WWL,
+    ].includes(report.type)
+  ) {
+    const waiverQuestions = report.pages
+      .flatMap((page) => page.elements ?? [])
+      .filter((el) => el.id == "waivers-list-checkboxes")
+      .filter((el) => el.type === ElementType.Checkbox);
+
+    for (const question of waiverQuestions) {
+      question.choices = waiverList.map((waiver) => ({
+        label: `${waiver.waiverType}: ${waiver.controlNumber} ${waiver.programTitle}`,
+        value: waiver.id,
+      }));
+    }
+  }
+
   /**
    * Report should always be valid in this function, but we're going
    * to send it through the report validator for a sanity check
@@ -86,8 +112,8 @@ export const buildReport = async (
   let validatedReport: Report | undefined;
   try {
     validatedReport = await validateReportPayload(report);
-  } catch (err) {
-    logger.error(err);
+  } catch (error) {
+    logger.error(error);
     throw new Error("Invalid request");
   }
 

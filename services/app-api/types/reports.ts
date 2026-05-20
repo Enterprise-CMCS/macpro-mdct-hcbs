@@ -9,7 +9,7 @@ export enum ReportType {
   PCP = "PCP",
   WWL = "WWL",
 }
-export const isReportType = (x: string | undefined): x is ReportType => {
+export const isReportType = (x: unknown): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);
 };
 
@@ -32,6 +32,14 @@ export interface CMIT {
   measureSteward: string;
   measureSpecification: MeasureSpecification[];
   dataSource: DataSource;
+}
+
+export interface WAIVER {
+  id: string;
+  state: StateAbbr;
+  controlNumber?: string;
+  programTitle: string;
+  waiverType: WaiverType;
 }
 
 export interface DependentPageInfo {
@@ -159,6 +167,7 @@ export interface MeasurePageTemplate extends FormPageTemplate {
   substitutable?: string;
   dependentPages?: DependentPageInfo[];
   cmitInfo?: CMIT;
+  waiverInfo?: WAIVER[];
 }
 
 export type ReportMeasureConfig = {
@@ -196,7 +205,9 @@ export type PageTemplate =
 export type ParentPageTemplate = {
   id: PageId;
   childPageIds: PageId[];
-  title?: undefined;
+  navTitle?: undefined;
+  tabTitle?: undefined;
+  submittedTabTitle?: undefined;
   type?: undefined;
   elements?: undefined;
   sidebar?: undefined;
@@ -205,9 +216,11 @@ export type ParentPageTemplate = {
 
 export type FormPageTemplate = {
   id: PageId;
-  title: string;
+  navTitle: string;
   type: PageType;
   status?: PageStatus;
+  tabTitle?: string;
+  submittedTabTitle?: string;
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
@@ -237,6 +250,7 @@ export enum ElementType {
   Accordion = "accordion",
   Paragraph = "paragraph",
   Radio = "radio",
+  Checkbox = "checkbox",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
@@ -244,13 +258,16 @@ export enum ElementType {
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
   LengthOfStayRate = "lengthOfStay",
-  NdrFields = "ndrFields",
-  NdrEnhanced = "ndrEnhanced",
+  ReadmissionRate = "readmissionRate",
+  MultiCategoryNdr = "multiCategoryNdr",
+  MultiRateNdr = "multiRateNdr",
   Ndr = "ndr",
-  NdrBasic = "ndrBasic",
+  PerformanceNdr = "performanceNdr",
   StatusAlert = "statusAlert",
   Divider = "divider",
   SubmissionParagraph = "submissionParagraph",
+  ListInput = "listInput",
+  EligibilityTable = "eligibilityTable",
 }
 
 export type PageElement =
@@ -266,6 +283,7 @@ export type PageElement =
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
+  | CheckboxTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
@@ -273,13 +291,16 @@ export type PageElement =
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
   | LengthOfStayRateTemplate
-  | NdrFieldsTemplate
-  | NdrEnhancedTemplate
+  | ReadmissionRateTemplate
+  | MultiCategoryNdrTemplate
+  | MultiRateNdrTemplate
   | NdrTemplate
-  | NdrBasicTemplate
+  | PerformanceNdrTemplate
   | StatusAlertTemplate
   | DividerTemplate
-  | SubmissionParagraphTemplate;
+  | SubmissionParagraphTemplate
+  | EligibilityTableTemplate
+  | ListInputTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -408,11 +429,35 @@ export type RadioTemplate = {
   clickAction?: string;
 };
 
+export type CheckboxTemplate = {
+  type: ElementType.Checkbox;
+  id: string;
+  label: string;
+  choices: ChoiceTemplate[];
+  helperText?: string;
+  answer?: string[];
+  emptyAlertTitle?: string;
+  emptyAlertDescription?: string;
+  required: boolean;
+};
+
 export type ButtonLinkTemplate = {
   type: ElementType.ButtonLink;
   id: string;
   label?: string;
   to?: PageId;
+  style?: string;
+};
+
+export type ListInputTemplate = {
+  type: ElementType.ListInput;
+  id: string;
+  label: string;
+  fieldLabel: string;
+  helperText: string;
+  buttonText: string;
+  answer?: string[];
+  required: boolean;
 };
 
 export type MeasureDetailsTemplate = {
@@ -431,7 +476,6 @@ export type MeasureFooterTemplate = {
 };
 
 export const LengthOfStayFieldNames = {
-  performanceTarget: "performanceTarget",
   actualCount: "actualCount",
   denominator: "denominator",
   expectedCount: "expectedCount",
@@ -440,8 +484,9 @@ export const LengthOfStayFieldNames = {
   expectedRate: "expectedRate",
   adjustedRate: "adjustedRate",
 } as const;
+
 export type LengthOfStayField =
-  typeof LengthOfStayFieldNames[keyof typeof LengthOfStayFieldNames];
+  (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
 export type LengthOfStayRateTemplate = {
   id: string;
@@ -452,23 +497,37 @@ export type LengthOfStayRateTemplate = {
   errors?: Record<LengthOfStayField, string>;
 };
 
-export const RateInputFieldNames = {
-  performanceTarget: "performanceTarget",
-  numerator: "numerator",
-  denominator: "denominator",
+export const ReadmissionRateFieldNames = {
+  stayCount: "stayCount",
+  obsReadmissionCount: "obsReadmissionCount",
+  obsReadmissionRate: "obsReadmissionRate",
+  expReadmissionCount: "expReadmissionCount",
+  expReadmissionRate: "expReadmissionRate",
+  obsExpRatio: "obsExpRatio",
+  beneficiaryCount: "beneficiaryCount",
+  outlierCount: "outlierCount",
+  outlierRate: "outlierRate",
 } as const;
-export type RateInputFieldName =
-  typeof RateInputFieldNames[keyof typeof RateInputFieldNames];
+
+export type ReadmissionRateField =
+  (typeof ReadmissionRateFieldNames)[keyof typeof ReadmissionRateFieldNames];
+
+export type ReadmissionRateTemplate = {
+  id: string;
+  type: ElementType.ReadmissionRate;
+  labels: Record<ReadmissionRateField, string>;
+  answer?: Record<ReadmissionRateField, number | undefined>;
+  required: boolean;
+  errors?: Record<ReadmissionRateField, string>;
+};
 
 export type RateType = {
   id: string;
   numerator: number | undefined;
   rate: number | undefined;
-  performanceTarget: number | undefined;
 };
 
 export type RateData = {
-  performanceTarget?: number | undefined;
   numerator: number | undefined;
   denominator: number | undefined;
   rate: number | undefined;
@@ -479,23 +538,21 @@ export type RateSetData = {
   rates: RateType[];
 };
 
-export type NdrFieldsTemplate = {
+export type MultiCategoryNdrTemplate = {
   id: string;
-  type: ElementType.NdrFields;
-  labelTemplate: string;
+  type: ElementType.MultiCategoryNdr;
   assessments: { label: string; id: string }[];
-  fields: { label: string; id: string; autoCalc?: boolean }[];
+  categories: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;
 };
 
-export type NdrEnhancedTemplate = {
+export type MultiRateNdrTemplate = {
   id: string;
-  type: ElementType.NdrEnhanced;
+  type: ElementType.MultiRateNdr;
   label?: string;
   helperText?: string;
-  performanceTargetLabel?: string | undefined;
   assessments: { label: string; id: string }[];
   answer?: RateSetData;
   required: boolean;
@@ -505,14 +562,13 @@ export type NdrTemplate = {
   id: string;
   type: ElementType.Ndr;
   label: string;
-  performanceTargetLabel: string;
   answer?: RateData;
   required: boolean;
 };
 
-export type NdrBasicTemplate = {
+export type PerformanceNdrTemplate = {
   id: string;
-  type: ElementType.NdrBasic;
+  type: ElementType.PerformanceNdr;
   label?: string;
   answer?: RateData;
   hintText?: {
@@ -547,6 +603,14 @@ export enum DataSource {
   Survey = "Survey",
 }
 
+export enum WaiverType {
+  WAIVER1915C = "1915(c) waiver",
+  SPA1915J = "1915(j) SPA",
+  SPA1915I = "1915(i) SPA",
+  SPA1015K = "1915(k) SPA",
+  DEMO1115 = "1115 Demonstration",
+}
+
 export enum MeasureSteward {
   CMS,
   CQL,
@@ -561,7 +625,32 @@ export enum MeasureSpecification {
 export type MeasureTableTemplate = {
   id: string;
   type: ElementType.MeasureTable;
+  caption: string;
   measureDisplay: "required" | "optional";
+};
+
+export type EligibilityTableItem = {
+  title: string;
+  description: string;
+  recheck: string;
+  frequency: string;
+  eligibilityUpdate: string;
+};
+
+export type EligibilityTableTemplate = {
+  type: ElementType.EligibilityTable;
+  id: string;
+  caption: string;
+  fieldLabels: {
+    title: string;
+    description: string;
+    recheck: string;
+    frequency: string;
+    eligibilityUpdate: string;
+  };
+  modalInstructions: string;
+  frequencyOptions: { label: string; value: string }[];
+  answer?: EligibilityTableItem[];
 };
 
 export type MeasureResultsNavigationTableTemplate = {
@@ -580,7 +669,7 @@ export type StatusTableTemplate = {
 export type StatusAlertTemplate = {
   type: ElementType.StatusAlert;
   id: string;
-  title?: string;
+  title: string;
   text: string;
   status: AlertTypes;
 };

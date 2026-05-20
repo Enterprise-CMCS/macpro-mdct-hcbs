@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { StateNames } from "../../../constants";
 import {
+  BannerArea,
   getReportName,
   isReportType,
   isStateAbbr,
@@ -13,10 +14,11 @@ import {
   ReportType,
 } from "types";
 import {
-  PageTemplate,
-  DashboardTable,
-  AddEditReportModal,
   AccordionItem,
+  AddEditReportModal,
+  DashboardTable,
+  PageTemplate,
+  Title,
   UnlockModal,
 } from "components";
 import {
@@ -35,10 +37,13 @@ import { useStore } from "utils";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
+import { activeBannerSelector } from "utils/state/selectors";
+import { Banner } from "components/alerts/Banner";
 
 export const DashboardPage = () => {
   const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
   const { reportType, state } = useParams();
+  const banner = useStore(activeBannerSelector(reportType as BannerArea));
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<LiteReport[]>([]);
   const [selectedReport, setSelectedReport] = useState<LiteReport | undefined>(
@@ -118,11 +123,12 @@ export const DashboardPage = () => {
 
   return (
     <PageTemplate type="report" sxOverride={sx.layout}>
+      <Title tabTitle={`${reportName} - HCBS`} />
       <Link as={RouterLink} to="/" variant="return">
-        <Image src={arrowLeftIcon} alt="Arrow left" className="icon" />
+        <Image src={arrowLeftIcon} alt="" className="icon" />
         Return home
       </Link>
-
+      {banner ? <Banner {...banner} key={banner.key} /> : null}
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" variant="h1">
           {fullStateName} {reportName}
@@ -240,6 +246,7 @@ export const DashboardPage = () => {
             reports={filteredReports}
             openAddEditReportModal={openAddEditReportModal}
             unlockModalOnOpenHandler={unlockModalOnOpenHandler}
+            onReportUpdate={() => reloadReports(reportType!, state!)}
           />
         )}
         {isLoading && (

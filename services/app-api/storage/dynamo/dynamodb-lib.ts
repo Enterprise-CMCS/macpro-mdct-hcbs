@@ -17,13 +17,13 @@ export const createClient = () => {
 };
 
 export const collectPageItems = async <
-  T extends QueryCommandOutput | ScanCommandOutput
+  T extends QueryCommandOutput | ScanCommandOutput,
 >(
   paginator: Paginator<T>
 ) => {
   let items: Record<string, any>[] = [];
   for await (let page of paginator) {
-    items = items.concat(page.Items ?? []);
+    items.push(...(page.Items ?? []));
   }
   return items;
 };

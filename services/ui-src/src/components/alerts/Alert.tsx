@@ -7,35 +7,49 @@ import {
   Image,
   Link,
   Text,
-  SystemStyleObject,
 } from "@chakra-ui/react";
 import { AlertTypes } from "types";
-import alertIcon from "assets/icons/alert/icon_alert.svg";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
+import infoIcon from "assets/icons/alert/icon_info.svg";
+import errorIcon from "assets/icons/alert/icon_error.svg";
+import warningIcon from "assets/icons/alert/icon_warning.svg";
+import successIcon from "assets/icons/alert/icon_success.svg";
+
+const ALERT_ICONS: Record<AlertTypes, string> = {
+  [AlertTypes.ERROR]: errorIcon,
+  [AlertTypes.SUCCESS]: successIcon,
+  [AlertTypes.WARNING]: warningIcon,
+  [AlertTypes.INFO]: infoIcon,
+};
 
 export const Alert = ({
   status = AlertTypes.INFO,
-  sx: sxOverride,
-  className,
   showIcon = true,
-  icon,
   title,
   children,
   link,
 }: Props) => {
+  // Focus the alert whenever an error is rendered (or re-rendered)
+  const ref = useRef<HTMLDivElement>(null);
+  if (ref.current && status === AlertTypes.ERROR) {
+    ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    ref.current.focus({ preventScroll: true });
+  }
+
   return (
     <AlertRoot
+      ref={ref}
       status={status}
       variant="left-accent"
-      sx={sxOverride ?? sx.root}
-      className={className ?? status}
+      sx={sx.root}
+      className={status}
     >
       <Flex>
         {showIcon && (
-          <Image src={icon ? icon : alertIcon} sx={sx.icon} alt="Alert" />
+          <Image src={ALERT_ICONS[status]} sx={sx.icon} alt="Alert" />
         )}
         <Box sx={sx.content}>
-          {title && <AlertTitle>{title}</AlertTitle>}
+          {title && <AlertTitle sx={sx.title}>{title}</AlertTitle>}
           {children && (
             <AlertDescription>
               <Box sx={sx.descriptionText}>{children}</Box>
@@ -56,19 +70,15 @@ export const Alert = ({
 
 interface Props {
   status?: AlertTypes;
-  sx?: SystemStyleObject;
   showIcon?: boolean;
-  icon?: string;
-  title?: string;
-  className?: string;
+  title: string;
   children?: ReactNode;
   link?: string;
 }
 
 const sx = {
   root: {
-    paddingX: "0",
-    paddingY: "spacer2",
+    padding: "spacer2",
     borderInlineStartWidth: "0.5rem",
     alignItems: "start",
     "&.info": {
@@ -91,7 +101,11 @@ const sx = {
   content: {
     paddingX: "spacer2",
   },
+  title: {
+    fontSize: "lg",
+  },
   descriptionText: {
+    fontSize: "md",
     marginY: "spacer1",
     p: {
       marginY: "spacer1",
@@ -104,6 +118,6 @@ const sx = {
     color: "palette.base",
     minWidth: "1.5rem",
     height: "1.5rem",
-    marginLeft: "spacer3",
+    marginLeft: "spacer1",
   },
 };

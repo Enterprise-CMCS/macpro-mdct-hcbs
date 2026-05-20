@@ -74,7 +74,7 @@ export const Sidebar = () => {
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Box width="100%" height="100%">
-              {navItem(page.title!, index)}
+              {navItem(page.navTitle!, index)}
             </Box>
             {childSections?.length! > 0 && (
               <Box onClick={() => setToggle(page.id)}>
@@ -102,25 +102,25 @@ export const Sidebar = () => {
 
   return (
     <Box sx={sx.sidebar} className={sidebarOpen ? "open" : "closed"}>
-      <Flex sx={sx.sidebarNav}>
+      <Button
+        aria-label="Open/Close sidebar menu"
+        variant="sidebarToggle"
+        onClick={() => setSidebar(!sidebarOpen)}
+        className={sidebarOpen ? "open" : "closed"}
+      >
+        <Image
+          src={arrowDownIcon}
+          alt={sidebarOpen ? "Arrow left" : "Arrow right"}
+          className={sidebarOpen ? "left" : "right"}
+        />
+      </Button>
+      <Flex sx={sx.sidebarNav} inert={sidebarOpen ? undefined : true}>
         <Flex sx={sx.sidebarList}>
           <Heading variant="sidebar">{title}</Heading>
           {report.pages[root].childPageIds?.map((child) =>
             navSection(pageMap.get(child)!)
           )}
         </Flex>
-        <Button
-          aria-label="Open/Close sidebar menu"
-          variant="sidebarToggle"
-          onClick={() => setSidebar(!sidebarOpen)}
-          className={sidebarOpen ? "open" : "closed"}
-        >
-          <Image
-            src={arrowDownIcon}
-            alt={sidebarOpen ? "Arrow left" : "Arrow right"}
-            className={sidebarOpen ? "left" : "right"}
-          />
-        </Button>
       </Flex>
     </Box>
   );
@@ -142,7 +142,7 @@ const sx = {
       position: "sticky",
       top: "0",
       display: "block",
-      height: "100vh",
+      maxHeight: "100vh",
     },
   },
   sidebarNav: {

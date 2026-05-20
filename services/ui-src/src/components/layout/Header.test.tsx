@@ -19,8 +19,8 @@ describe("<Header />", () => {
     });
 
     test("Logo, Help and Menu is visible on Header", () => {
-      const header = screen.getByRole("navigation");
-      expect(header).toBeVisible();
+      const header = screen.getAllByRole("banner");
+      expect(header[0]).toBeVisible();
       // find img elements
       expect(screen.getByRole("img", { name: "HCBS logo" })).toBeVisible();
       expect(screen.getByRole("img", { name: "Help" })).toBeVisible();

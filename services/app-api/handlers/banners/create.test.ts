@@ -1,89 +1,92 @@
-import { StatusCodes } from "../../libs/response-lib";
-import { proxyEvent } from "../../testing/proxyEvent";
-import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
-import { canWriteBanner } from "../../utils/authorization";
 import { createBanner } from "./create";
-import { error } from "../../utils/constants";
+import { StatusCodes } from "../../libs/response-lib";
+import { APIGatewayProxyEvent, User, UserRoles } from "../../types/types";
+import { authenticatedUser as actualAuthenticatedUser } from "../../utils/authentication";
+import { BannerAreas, BannerFormData } from "../../types/banner";
+import {
+  getBanner as actualGetBanner,
+  putBanner as actualPutBanner,
+} from "../../storage/banners";
 
 jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
-    role: UserRoles.ADMIN,
-    state: "PA",
-  }),
+  authenticatedUser: jest.fn(),
 }));
-
-jest.mock("../../utils/authorization", () => ({
-  canWriteBanner: jest.fn().mockReturnValue(true),
-}));
+const authenticatedUser = actualAuthenticatedUser as jest.MockedFunction<
+  typeof actualAuthenticatedUser
+>;
+const mockUser = {
+  role: UserRoles.ADMIN,
+  fullName: "mock username",
+} as User;
+authenticatedUser.mockReturnValue(mockUser);
 
 jest.mock("../../storage/banners", () => ({
-  putBanner: jest.fn().mockReturnValue({}),
+  getBanner: jest.fn(),
+  putBanner: jest.fn(),
 }));
+const getBanner = actualGetBanner as jest.MockedFunction<
+  typeof actualGetBanner
+>;
+const putBanner = actualPutBanner as jest.MockedFunction<
+  typeof actualPutBanner
+>;
 
-const testEvent: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"key":"mock-id","title":"test banner","description":"test description","link":"https://www.mocklink.com","startDate":1000,"endDate":2000}`,
-  pathParameters: { bannerId: "testKey" },
-  headers: { "cognito-identity-id": "test" },
+const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+
+const mockBannerFormData: BannerFormData = {
+  area: BannerAreas.Home,
+  title: "mock title",
+  description: "mock description",
+  link: "https://example.com",
+  startDate: "2026-03-01",
+  endDate: "2026-03-06",
 };
 
-const testEventWithInvalidData: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  body: `{"description":"test description","link":"test link","startDate":"1000","endDate":2000}`,
-  pathParameters: { bannerId: "testKey" },
-  headers: { "cognito-identity-id": "test" },
-};
+const mockEvent = {
+  body: JSON.stringify(mockBannerFormData),
+} as APIGatewayProxyEvent;
 
-describe("Test createBanner API method", () => {
+describe("createBanner", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
-    const badTestEvent = {
-      ...proxyEvent,
-      pathParameters: {},
-    } as APIGatewayProxyEvent;
-    const res = await createBanner(badTestEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
+  it("should store new banner data in the database", async () => {
+    const res = await createBanner(mockEvent);
 
-  test("Test unauthorized banner creation throws 403 error", async () => {
-    (canWriteBanner as jest.Mock).mockReturnValueOnce(false);
-    const res = await createBanner(testEvent);
-    expect(res.statusCode).toBe(StatusCodes.Forbidden);
-    expect(res.body).toContain(error.UNAUTHORIZED);
-  });
-
-  test("Test Successful Run of Banner Creation", async () => {
-    const res = await createBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Created);
-    expect(res.body).toContain("test banner");
-    expect(res.body).toContain("test description");
+    expect(getBanner).not.toHaveBeenCalled(); // Because the payload has no ID
+    expect(putBanner).toHaveBeenCalledWith({
+      ...mockBannerFormData,
+      key: expect.stringMatching(/^[0-9a-f\-]{36}$/),
+      createdAt: expect.stringMatching(ISO_DATE_REGEX),
+      lastAltered: expect.stringMatching(ISO_DATE_REGEX),
+      lastAlteredBy: "mock username",
+    });
   });
 
-  test("Test bannerKey not provided throws 500 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testEvent,
-      pathParameters: {},
+  it("should return an error if the request body is not valid", async () => {
+    const badEvent = {
+      ...mockEvent,
+      body: JSON.stringify({
+        ...mockBannerFormData,
+        link: "invalid url",
+      }),
     };
-    const res = await createBanner(noKeyEvent);
+
+    const res = await createBanner(badEvent);
+
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.MISSING_DATA);
   });
 
-  test("Test bannerKey empty throws 500 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testEvent,
-      pathParameters: { bannerId: "" },
-    };
-    const res = await createBanner(noKeyEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.MISSING_DATA);
-  });
+  it("should return an error if the user is not authorized", async () => {
+    authenticatedUser.mockReturnValueOnce({
+      ...mockUser,
+      role: UserRoles.STATE_USER,
+    });
 
-  test("Test invalid data causes internal server error", async () => {
-    const res = await createBanner(testEventWithInvalidData);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    const res = await createBanner(mockEvent);
+
+    expect(res.statusCode).toBe(StatusCodes.Forbidden);
   });
 });
