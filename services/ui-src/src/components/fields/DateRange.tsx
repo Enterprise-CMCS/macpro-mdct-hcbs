@@ -78,9 +78,9 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
     };
     const rangeError = getRangeErrorMessage(nextAnswer);
 
-    updateElement({
-      answer: nextAnswer,
-    });
+    if (!rangeError) {
+      updateElement({ answer: nextAnswer });
+    }
 
     setErrors((prev) => ({
       ...prev,
