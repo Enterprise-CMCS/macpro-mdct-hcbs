@@ -1,6 +1,7 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
+  aws_ses as ses,
   aws_iam as iam,
   aws_logs as logs,
   aws_wafv2 as wafv2,
@@ -144,6 +145,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     effect: iam.Effect.ALLOW,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
     resources: ["*"],
+  });
+
+  new ses.EmailIdentity(scope, "SenderDomainIdentity", {
+    identity: ses.Identity.domain("cms.hhs.gov"),
   });
 
   const commonProps = {
