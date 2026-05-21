@@ -141,14 +141,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
+  const emailIdentity = new ses.EmailIdentity(scope, "SenderDomainIdentity", {
+    identity: ses.Identity.domain("cms.hhs.gov"),
+  });
+
   const sesPolicy = new iam.PolicyStatement({
     effect: iam.Effect.ALLOW,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: ["*"],
-  });
-
-  new ses.EmailIdentity(scope, "SenderDomainIdentity", {
-    identity: ses.Identity.domain("cms.hhs.gov"),
+    resources: [emailIdentity.emailIdentityArn],
   });
 
   const commonProps = {
@@ -161,16 +161,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   };
 
   new Lambda(scope, "sendEmail", {
-    entry: "services/app-api/handlers/notification/sendEmail.ts",
+    entry: "services/app-api/handlers/notifications/sendEmail.ts",
     handler: "sendEmail",
-    path: "notification/send",
+    path: "reports/{reportType}/{state}/{id}/notifications",
     method: "POST",
     ...commonProps,
     additionalPolicies: [...additionalPolicies, sesPolicy],
-    environment: {
-      ...environment,
-      SES_SENDER_EMAIL: "MDCT_NoReply@cms.hhs.gov",
-    },
   });
 
   new Lambda(scope, "createBanner", {
