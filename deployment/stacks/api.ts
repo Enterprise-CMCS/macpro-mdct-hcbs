@@ -161,7 +161,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   };
 
   new Lambda(scope, "sendEmail", {
-    entry: "services/app-api/handlers/notifications/sendEmail.ts",
+    entry: "services/app-api/handlers/notification/sendEmail.ts",
     handler: "sendEmail",
     path: "reports/{reportType}/{state}/{id}/notifications",
     method: "POST",
