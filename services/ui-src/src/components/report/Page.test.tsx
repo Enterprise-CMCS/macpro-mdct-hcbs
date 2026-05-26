@@ -276,6 +276,39 @@ describe("Page Component with state user", () => {
     );
     expect(container).not.toBeEmptyDOMElement();
   });
+
+  test("should transmit changes to its parent through setElements", async () => {
+    const setElements = jest.fn();
+    render(
+      <Page
+        id="mock-page"
+        elements={[
+          {
+            type: ElementType.Date,
+            id: "measurement-period-start-date",
+            label: "Measurement start date",
+            helperText: "MM/DD/YYYY",
+            required: true,
+          },
+        ]}
+        setElements={setElements}
+      />
+    );
+
+    const dateField = screen.getByRole("textbox");
+    await userEvent.type(dateField, "10162024");
+
+    expect(setElements).toHaveBeenLastCalledWith([
+      {
+        type: ElementType.Date,
+        id: "measurement-period-start-date",
+        label: "Measurement start date",
+        helperText: "MM/DD/YYYY",
+        required: true,
+        answer: "10/16/2024",
+      },
+    ]);
+  });
 });
 
 describe("Page Component with read only user", () => {

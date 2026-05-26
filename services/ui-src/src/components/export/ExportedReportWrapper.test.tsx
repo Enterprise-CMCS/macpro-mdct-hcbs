@@ -183,4 +183,34 @@ describe("ExportedReportWrapper", () => {
       "LTSS-1: Comprehensive Assessment and Update: Measure Information"
     );
   });
+
+  it("should render date range elements in export tables", () => {
+    const elements: PageElement[] = [
+      {
+        type: ElementType.DateRange,
+        id: "measurement-period",
+        labels: {
+          top: "Measurement period dates",
+          start: "Measurement start date",
+          end: "Measurement end date",
+        },
+        helperText: "Select the measurement period start and end dates.",
+        answer: {
+          start: "01/01/2024",
+          end: "12/31/2024",
+        },
+        required: true,
+      },
+    ];
+
+    render(<ExportedReportWrapper section={{ ...section, elements }} />);
+
+    expect(screen.getByText("Measurement period dates")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Measurement start date: 01\/01\/2024/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Measurement end date: 12\/31\/2024/)
+    ).toBeInTheDocument();
+  });
 });

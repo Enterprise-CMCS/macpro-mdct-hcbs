@@ -250,6 +250,10 @@ export const elementSatisfiesRequired = (
     if (element.answer.rate === undefined) return false;
   }
 
+  if (element.type === ElementType.DateRange) {
+    return !!element.answer.start && !!element.answer.end;
+  }
+
   if (element.type === ElementType.PerformanceNdr) {
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;

@@ -114,6 +114,20 @@ describe("Input validation utilities", () => {
       );
     });
 
+    it("should use a custom invalid date message when provided", () => {
+      const result = validateDate(
+        "99999999",
+        "99/99/9999",
+        true,
+        "Measurement end date is invalid. Please enter date in MM/DD/YYYY format"
+      );
+      expect(result.parsedValue).toBeUndefined();
+      expect(result.isValid).toBe(false);
+      expect(result.errorMessage).toBe(
+        "Measurement end date is invalid. Please enter date in MM/DD/YYYY format"
+      );
+    });
+
     it("should allow valid dates", () => {
       const result = validateDate("07292025", "07/29/2025", true);
       expect(result.parsedValue).toBeDefined();

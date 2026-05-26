@@ -1,5 +1,6 @@
 import {
   CheckboxTemplate,
+  DateRangeTemplate,
   ElementType,
   LengthOfStayRateTemplate,
   ListInputTemplate,
@@ -482,6 +483,42 @@ describe("elementSatisfiesRequired", () => {
         answer,
         required: true,
       } as NdrTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+    }
+  );
+
+  test("accepts complete DateRange", () => {
+    const element = {
+      type: ElementType.DateRange,
+      id: "date-range",
+      labels: {
+        top: "Date range",
+        start: "Start date",
+        end: "End date",
+      },
+      answer: {
+        start: "01/01/2026",
+        end: "01/31/2026",
+      },
+      required: true,
+    } as DateRangeTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+
+  test.each([undefined, {}, { start: "2026-01-01" }, { end: "2026-01-31" }])(
+    "rejects incomplete DateRange",
+    (answer) => {
+      const element = {
+        type: ElementType.DateRange,
+        id: "date-range",
+        labels: {
+          top: "Date range",
+          start: "Start date",
+          end: "End date",
+        },
+        answer,
+        required: true,
+      } as DateRangeTemplate;
       expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
     }
   );

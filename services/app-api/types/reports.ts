@@ -246,6 +246,7 @@ export enum ElementType {
   TextAreaField = "textAreaField",
   NumberField = "numberField",
   Date = "date",
+  DateRange = "dateRange",
   Dropdown = "dropdown",
   Accordion = "accordion",
   Paragraph = "paragraph",
@@ -279,6 +280,7 @@ export type PageElement =
   | NumberFieldTemplate
   | TextAreaBoxTemplate
   | DateTemplate
+  | DateRangeTemplate
   | DropdownTemplate
   | AccordionTemplate
   | ParagraphTemplate
@@ -387,6 +389,22 @@ export type DateTemplate = {
   label: string;
   helperText: string;
   answer?: string;
+  required: boolean;
+};
+
+export type DateRangeTemplate = {
+  type: ElementType.DateRange;
+  id: string;
+  labels: {
+    top: string;
+    start: string;
+    end: string;
+  };
+  helperText: string;
+  answer?: {
+    start?: string;
+    end?: string;
+  };
   required: boolean;
 };
 
