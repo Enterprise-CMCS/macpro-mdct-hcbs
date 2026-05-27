@@ -4,7 +4,6 @@ import { execSync } from "node:child_process";
 import { region } from "../lib/consts.ts";
 import { runFrontendLocally } from "../lib/utils.ts";
 import { seedData } from "../lib/seedData.ts";
-import { SESClient, VerifyEmailIdentityCommand } from "@aws-sdk/client-ses";
 
 const isColimaRunning = () => {
   try {
@@ -96,13 +95,6 @@ export const local = {
     );
 
     await seedData();
-
-    const sesClient = new SESClient({ region });
-    await sesClient.send(
-      new VerifyEmailIdentityCommand({
-        EmailAddress: "MDCT_NoReply@cms.hhs.gov",
-      })
-    );
 
     await Promise.all([
       runCommand(
