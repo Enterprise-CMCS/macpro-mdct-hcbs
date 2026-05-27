@@ -8,7 +8,7 @@ import {
   getNotifications,
   updateNotifications,
 } from "utils/api/requestMethods/notifications";
-import { sendEmail } from "utils/api/requestMethods/sendEmail";
+import { sendEmail } from "utils/api/requestMethods/emailNotification";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
 const REPORTS = Object.values(ReportType) as ReportType[];
@@ -23,7 +23,7 @@ export const NotificationsPage = () => {
     setSending(true);
     try {
       await sendEmail({
-        toAddress: "test@test.com",
+        toAddress: "rocio.de-santiago@coforma.io",
         subject: "HCBS Notification",
         message: "This is a notification from the HCBS system.",
       });

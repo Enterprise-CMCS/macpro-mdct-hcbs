@@ -3,7 +3,7 @@ import {
   getNotifications,
   updateNotifications,
 } from "utils/api/requestMethods/notifications";
-import { sendEmail } from "utils/api/requestMethods/sendEmail";
+import { sendEmail } from "utils/api/requestMethods/emailNotification";
 import { NotificationsPage } from "./NotificationsPage";
 import { ReportType } from "types";
 import userEvent from "@testing-library/user-event";
@@ -13,7 +13,7 @@ jest.mock("utils/api/requestMethods/notifications", () => ({
   updateNotifications: jest.fn(),
 }));
 
-jest.mock("utils/api/requestMethods/sendEmail", () => ({
+jest.mock("utils/api/requestMethods/emailNotification", () => ({
   sendEmail: jest.fn(),
 }));
 
@@ -76,7 +76,7 @@ describe("<NotificationsPage />", () => {
 
     await waitFor(() => {
       expect(mockedSendEmail).toHaveBeenCalledWith({
-        toAddress: "test@test.com",
+        toAddress: "rocio.de-santiago@coforma.io",
         subject: "HCBS Notification",
         message: "This is a notification from the HCBS system.",
       });
