@@ -76,7 +76,7 @@ const mockTableProps = {
   reports: reports,
   showEditNameColumn: true,
   showReportSubmissionsColumn: false,
-  showAdminControlsColumn: false,
+  showAdminControls: false,
   openAddEditReportModal: mockOpenAddEditReportModal,
   navigate: jest.fn(),
   userIsEndUser: true,
@@ -90,7 +90,7 @@ const mockAdminTableProps = {
   ...mockTableProps,
   showEditNameColumn: false,
   showReportSubmissionsColumn: true,
-  showAdminControlsColumn: true,
+  showAdminControls: true,
   userIsEndUser: false,
 };
 

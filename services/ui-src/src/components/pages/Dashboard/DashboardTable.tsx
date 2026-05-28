@@ -38,7 +38,7 @@ interface TableProps extends Omit<
   tableContent: { caption: string; headRow: string[] };
   showEditNameColumn: boolean | undefined;
   showReportSubmissionsColumn: boolean;
-  showAdminControlsColumn: boolean | undefined;
+  showAdminControls: boolean | undefined;
   navigate: NavigateFunction;
   userIsEndUser: boolean | undefined;
   toggleArchived: (rowIndex: number) => void;
@@ -106,7 +106,7 @@ export const HorizontalTable = (props: TableProps) => {
                   ? "Edit"
                   : "View"}
               </Button>
-              {props.showAdminControlsColumn && (
+              {props.showAdminControls && (
                 <>
                   <Button
                     variant="link"
@@ -205,7 +205,7 @@ export const VerticalTable = (props: TableProps) => {
                 ? "Edit"
                 : "View"}
             </Button>
-            {props.showAdminControlsColumn && (
+            {props.showAdminControls && (
               <>
                 <Button
                   variant="link"
@@ -256,7 +256,7 @@ export const DashboardTable = ({
   // Translate role to defined behaviors
   const showEditNameColumn = userIsEndUser;
   const showReportSubmissionsColumn = !userIsEndUser;
-  const showAdminControlsColumn = userIsAdmin;
+  const showAdminControls = userIsAdmin;
 
   // Build header columns based on defined behaviors per role
   const headers = [
@@ -310,7 +310,7 @@ export const DashboardTable = ({
           reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
-          showAdminControlsColumn,
+          showAdminControls,
           openAddEditReportModal,
           navigate,
           userIsEndUser,
@@ -326,7 +326,7 @@ export const DashboardTable = ({
           reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
-          showAdminControlsColumn,
+          showAdminControls,
           openAddEditReportModal,
           navigate,
           userIsEndUser,
