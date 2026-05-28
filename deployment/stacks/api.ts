@@ -141,27 +141,15 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
-  // sending emails requires manual steps and approvals, so we only do them in dev, val, prod
-  let sesPolicy = new iam.PolicyStatement({
-    effect: iam.Effect.DENY,
-    actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: ["*"],
+  const senderIdentity = new ses.EmailIdentity(scope, "SenderDomainIdentity", {
+    identity: ses.Identity.domain("cms.hhs.gov"),
   });
-  if (!isDev) {
-    const senderIdentity = new ses.EmailIdentity(
-      scope,
-      "SenderDomainIdentity",
-      {
-        identity: ses.Identity.domain("cms.hhs.gov"),
-      }
-    );
 
-    sesPolicy = new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["ses:SendEmail", "ses:SendRawEmail"],
-      resources: [senderIdentity.emailIdentityArn],
-    });
-  }
+  const sesPolicy = new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    actions: ["ses:SendEmail", "ses:SendRawEmail"],
+    resources: [senderIdentity.emailIdentityArn],
+  });
 
   const commonProps = {
     brokerString,
