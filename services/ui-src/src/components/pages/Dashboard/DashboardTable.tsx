@@ -106,42 +106,38 @@ export const HorizontalTable = (props: TableProps) => {
                   ? "Edit"
                   : "View"}
               </Button>
+              {props.showAdminControlsColumn && (
+                <>
+                  <Button
+                    variant="link"
+                    fontSize="body_sm"
+                    onClick={async () => await props.toggleRelease(idx)}
+                    disabled={
+                      report.status !== ReportStatus.SUBMITTED ||
+                      report.archived ||
+                      props.unlocking === idx
+                    }
+                  >
+                    {props.unlocking === idx && (
+                      <Spinner size="sm" marginRight="spacer_half" />
+                    )}
+                    Unlock
+                  </Button>
+                  <Button
+                    variant="link"
+                    fontSize="body_sm"
+                    onClick={async () => await props.toggleArchived(idx)}
+                    disabled={props.archiving === idx}
+                  >
+                    {props.archiving === idx && (
+                      <Spinner size="sm" marginRight="spacer_half" />
+                    )}
+                    {report.archived ? "Unarchive" : "Archive"}
+                  </Button>
+                </>
+              )}
             </Flex>
           </Td>
-          {props.showAdminControlsColumn && (
-            <>
-              <td>
-                <Button
-                  variant="link"
-                  fontSize="body_sm"
-                  onClick={async () => await props.toggleRelease(idx)}
-                  disabled={
-                    report.status !== ReportStatus.SUBMITTED ||
-                    report.archived ||
-                    props.unlocking === idx
-                  }
-                >
-                  {props.unlocking === idx && (
-                    <Spinner size="sm" marginRight="spacer_half" />
-                  )}
-                  Unlock
-                </Button>
-              </td>
-              <td>
-                <Button
-                  variant="link"
-                  fontSize="body_sm"
-                  onClick={async () => await props.toggleArchived(idx)}
-                  disabled={props.archiving === idx}
-                >
-                  {props.archiving === idx && (
-                    <Spinner size="sm" marginRight="spacer_half" />
-                  )}
-                  {report.archived ? "Unarchive" : "Archive"}
-                </Button>
-              </td>
-            </>
-          )}
         </Tr>
       ))}
     </Table>
@@ -211,34 +207,30 @@ export const VerticalTable = (props: TableProps) => {
             </Button>
             {props.showAdminControlsColumn && (
               <>
-                <td>
-                  <Button
-                    variant="link"
-                    onClick={async () => await props.toggleRelease(idx)}
-                    disabled={
-                      report.status !== ReportStatus.SUBMITTED ||
-                      report.archived ||
-                      props.unlocking === idx
-                    }
-                  >
-                    {props.unlocking === idx && (
-                      <Spinner size="sm" marginRight="spacer_half" />
-                    )}
-                    Unlock
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    variant="link"
-                    onClick={async () => await props.toggleArchived(idx)}
-                    disabled={props.archiving === idx}
-                  >
-                    {props.archiving === idx && (
-                      <Spinner size="sm" marginRight="spacer_half" />
-                    )}
-                    {report.archived ? "Unarchive" : "Archive"}
-                  </Button>
-                </td>
+                <Button
+                  variant="link"
+                  onClick={async () => await props.toggleRelease(idx)}
+                  disabled={
+                    report.status !== ReportStatus.SUBMITTED ||
+                    report.archived ||
+                    props.unlocking === idx
+                  }
+                >
+                  {props.unlocking === idx && (
+                    <Spinner size="sm" marginRight="spacer_half" />
+                  )}
+                  Unlock
+                </Button>
+                <Button
+                  variant="link"
+                  onClick={async () => await props.toggleArchived(idx)}
+                  disabled={props.archiving === idx}
+                >
+                  {props.archiving === idx && (
+                    <Spinner size="sm" marginRight="spacer_half" />
+                  )}
+                  {report.archived ? "Unarchive" : "Archive"}
+                </Button>
               </>
             )}
           </HStack>
@@ -277,7 +269,6 @@ export const DashboardTable = ({
 
   if (showReportSubmissionsColumn) headers.push("#");
   headers.push("Actions");
-  if (showAdminControlsColumn) headers.push("", "");
   const { reportType } = useParams();
   const tableContent = {
     caption: `${getReportName(reportType)}s`,
