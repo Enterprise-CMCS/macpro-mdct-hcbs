@@ -13,7 +13,7 @@ import { VerticalTable } from "./DashboardTable";
 jest.mock("utils/state/useStore", () => ({
   useStore: jest.fn().mockReturnValue({}),
 }));
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockedUseStore = jest.mocked(useStore);
 mockedUseStore.mockReturnValue(mockUseStore);
 
 const mockArchive = jest.fn();
