@@ -141,15 +141,27 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
-  const senderIdentity = new ses.EmailIdentity(scope, "SenderDomainIdentity", {
-    identity: ses.Identity.domain("cms.hhs.gov"),
-  });
-
-  const sesPolicy = new iam.PolicyStatement({
-    effect: iam.Effect.ALLOW,
+  // sending emails requires manual steps and approvals, so we only do them in dev, val, prod
+  let sesPolicy = new iam.PolicyStatement({
+    effect: iam.Effect.DENY,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: [senderIdentity.emailIdentityArn],
+    resources: ["*"],
   });
+  if (!isDev) {
+    const senderIdentity = new ses.EmailIdentity(
+      scope,
+      "SenderDomainIdentity",
+      {
+        identity: ses.Identity.domain("cms.hhs.gov"),
+      }
+    );
+
+    sesPolicy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["ses:SendEmail", "ses:SendRawEmail"],
+      resources: [senderIdentity.emailIdentityArn],
+    });
+  }
 
   const commonProps = {
     brokerString,
@@ -159,15 +171,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     additionalPolicies,
     isDev,
   };
-
-  new Lambda(scope, "sendEmail", {
-    entry: "services/app-api/handlers/notification/sendEmail.ts",
-    handler: "sendEmail",
-    path: "reports/{reportType}/{state}/{id}/notifications",
-    method: "POST",
-    ...commonProps,
-    additionalPolicies: [...additionalPolicies, sesPolicy],
-  });
 
   new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
@@ -239,6 +242,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/submit/{reportType}/{state}/{id}",
     method: "POST",
     ...commonProps,
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new Lambda(scope, "getReport", {
@@ -271,6 +275,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/release/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {

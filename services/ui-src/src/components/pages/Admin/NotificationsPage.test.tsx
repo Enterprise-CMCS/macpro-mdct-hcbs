@@ -3,7 +3,6 @@ import {
   getNotifications,
   updateNotifications,
 } from "utils/api/requestMethods/notifications";
-import { sendEmail } from "utils/api/requestMethods/emailNotification";
 import { NotificationsPage } from "./NotificationsPage";
 import { ReportType } from "types";
 import userEvent from "@testing-library/user-event";
@@ -13,22 +12,20 @@ jest.mock("utils/api/requestMethods/notifications", () => ({
   updateNotifications: jest.fn(),
 }));
 
-jest.mock("utils/api/requestMethods/emailNotification", () => ({
-  sendEmail: jest.fn(),
-}));
-
 jest.mock("launchdarkly-react-client-sdk", () => ({
   useFlags: jest.fn().mockReturnValue({ notificationsSystem: true }),
 }));
 
-const mockedGet = jest.mocked(getNotifications);
-const mockedUpdate = jest.mocked(updateNotifications);
-const mockedSendEmail = jest.mocked(sendEmail);
+const mockedGet = getNotifications as jest.MockedFunction<
+  typeof getNotifications
+>;
+const mockedUpdate = updateNotifications as jest.MockedFunction<
+  typeof updateNotifications
+>;
 
 describe("<NotificationsPage />", () => {
   beforeEach(() => {
     mockedGet.mockResolvedValue([]);
-    mockedSendEmail.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -36,7 +33,9 @@ describe("<NotificationsPage />", () => {
   });
 
   it("should display checked state for enabled notifications", async () => {
-    mockedGet.mockResolvedValue([{ category: ReportType.CI, enabled: true }]);
+    (getNotifications as jest.Mock).mockResolvedValue([
+      { category: "CI", enabled: true },
+    ]);
 
     render(<NotificationsPage />);
 
@@ -65,45 +64,6 @@ describe("<NotificationsPage />", () => {
         category: ReportType.WWL,
         enabled: false,
       });
-    });
-  });
-
-  it("should call sendEmail with the correct payload when Send Email is clicked", async () => {
-    render(<NotificationsPage />);
-
-    const button = await screen.findByRole("button", { name: /send email/i });
-    await userEvent.click(button);
-
-    await waitFor(() => {
-      expect(mockedSendEmail).toHaveBeenCalledWith({
-        toAddress: "rocio.de-santiago@coforma.io",
-        subject: "HCBS Notification",
-        message: "This is a notification from the HCBS system.",
-      });
-    });
-  });
-
-  it("should show loading state while sending email", async () => {
-    let resolveSend!: () => void;
-    mockedSendEmail.mockReturnValue(
-      new Promise<undefined>((resolve) => {
-        resolveSend = () => resolve(undefined);
-      })
-    );
-
-    render(<NotificationsPage />);
-
-    const button = await screen.findByRole("button", { name: /send email/i });
-    await userEvent.click(button);
-
-    expect(await screen.findByText("Sending...")).toBeInTheDocument();
-
-    resolveSend();
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: /send email/i })
-      ).toBeInTheDocument();
     });
   });
 });

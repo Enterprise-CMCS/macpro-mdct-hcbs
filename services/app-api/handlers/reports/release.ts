@@ -5,6 +5,8 @@ import { canReleaseReport } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { getReport, putReport } from "../../storage/reports";
 import { ReportStatus } from "../../types/reports";
+import { sendEmail } from "../../../app-api/utils/notifications/email";
+import { logger } from "../../../app-api/libs/debug-lib";
 
 export const releaseReport = handler(parseReportParameters, async (request) => {
   const { reportType, state, id } = request.parameters;
@@ -37,6 +39,13 @@ export const releaseReport = handler(parseReportParameters, async (request) => {
 
   // save the report that's being submitted (with the new information on top of it)
   await putReport(report);
+
+  try {
+    await sendEmail(report);
+  } catch (error) {
+    // log and allow call to succeed even if email fails
+    logger.error(error);
+  }
 
   return ok();
 });

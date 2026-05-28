@@ -8,7 +8,6 @@ import {
   getNotifications,
   updateNotifications,
 } from "utils/api/requestMethods/notifications";
-import { sendEmail } from "utils/api/requestMethods/emailNotification";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
 const REPORTS = Object.values(ReportType) as ReportType[];
@@ -16,21 +15,7 @@ const REPORTS = Object.values(ReportType) as ReportType[];
 export const NotificationsPage = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sending, setSending] = useState(false);
   const { notificationsSystem } = useFlags() ?? {};
-
-  const handleSendEmail = async () => {
-    setSending(true);
-    try {
-      await sendEmail({
-        toAddress: "rocio.de-santiago@coforma.io",
-        subject: "HCBS Notification",
-        message: "This is a notification from the HCBS system.",
-      });
-    } finally {
-      setSending(false);
-    }
-  };
 
   useEffect(() => {
     (async () => {
@@ -93,12 +78,7 @@ export const NotificationsPage = () => {
           ))}
           <Box mt="spacer4">
             {notificationsSystem && (
-              <Button
-                sx={sx.sendButton}
-                onClick={handleSendEmail}
-                isLoading={sending}
-                loadingText="Sending..."
-              >
+              <Button sx={sx.sendButton} loadingText="Sending...">
                 Send Email
               </Button>
             )}
