@@ -32,7 +32,7 @@ Update Summary
 
     Date of Change: ${new Date().toDateString()}
 
-If you believe this status change was made in error, or if you have questions regarding the requirements for this new status, please contact your system administrator or reach out to the RHTP support desk.
+If you believe this status change was made in error, or if you have questions regarding the requirements for this new status, please contact your system administrator or reach out to the HCBS support desk.
 `,
       },
     },
