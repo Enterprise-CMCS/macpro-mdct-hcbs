@@ -59,10 +59,10 @@ const getRecipients = (report: Report): string[] => {
 };
 
 export const sendEmail = async (report: Report) => {
-  if (process.env.NOTIFICATIONS_SYSTEM_ENABLED !== "true") {
-    logger.info("Notifications system is disabled, skipping email");
-    return;
-  }
+  // if (process.env.NOTIFICATIONS_SYSTEM_ENABLED !== "true") {
+  //   logger.info("Notifications system is disabled, skipping email");
+  //   return;
+  // }
 
   const { name, status } = report;
   const recipients = getRecipients(report);

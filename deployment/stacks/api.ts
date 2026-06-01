@@ -111,7 +111,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
-    NOTIFICATIONS_SYSTEM_ENABLED: isDev ? "false" : "true",
+    // NOTIFICATIONS_SYSTEM_ENABLED: isDev ? "false" : "true",
   };
 
   const additionalPolicies = [
