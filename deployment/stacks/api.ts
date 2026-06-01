@@ -111,7 +111,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
-    // NOTIFICATIONS_SYSTEM_ENABLED: isDev ? "false" : "true",
   };
 
   const additionalPolicies = [
@@ -199,15 +198,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "notifications",
     method: "GET",
     ...commonProps,
-  });
-
-  new Lambda(scope, "sendTestEmail", {
-    entry: "services/app-api/handlers/notification/sendEmail.ts",
-    handler: "sendTestEmail",
-    path: "notifications/send",
-    method: "POST",
-    ...commonProps,
-    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new Lambda(scope, "createReport", {
