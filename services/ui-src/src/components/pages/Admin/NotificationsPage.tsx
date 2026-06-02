@@ -105,7 +105,7 @@ export const NotificationsPage = () => {
                   isDisabled={!testEmailAddress}
                   onClick={handleSendEmail}
                 >
-                  Send Email
+                  Send Test Email
                 </Button>
               </Flex>
             )}

@@ -35,12 +35,10 @@ export const sendTestEmail = handler(emptyParser, async (request) => {
   logger.info("Sending test email to:", toAddress);
   try {
     await sesLib.sendSesEmail(params);
-    logger.info("Email sent successfully to:", toAddress);
+    logger.info("Test email sent successfully to:", toAddress);
   } catch (error) {
-    logger.warn(
-      "SES send failed (expected in localstack without verified identities):",
-      error
-    );
+    // SES not available in localstack — log and succeed anyway
+    logger.warn("SES send failed (expected in localstack):", error);
   }
 
   return ok();
