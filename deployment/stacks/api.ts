@@ -141,14 +141,18 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
-  const senderIdentity = new ses.EmailIdentity(scope, "SenderDomainIdentity", {
-    identity: ses.Identity.domain("cms.hhs.gov"),
-  });
+  const sesResources = isLocalStack
+    ? ["*"]
+    : [
+        new ses.EmailIdentity(scope, "SenderDomainIdentity", {
+          identity: ses.Identity.domain("cms.hhs.gov"),
+        }).emailIdentityArn,
+      ];
 
   const sesPolicy = new iam.PolicyStatement({
     effect: iam.Effect.ALLOW,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: [senderIdentity.emailIdentityArn],
+    resources: sesResources,
   });
 
   const commonProps = {
@@ -199,6 +203,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     method: "GET",
     ...commonProps,
   });
+
+  if (isDev) {
+    new Lambda(scope, "sendTestEmail", {
+      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
+      handler: "sendTestEmail",
+      path: "notifications/test-email",
+      method: "POST",
+      ...commonProps,
+      additionalPolicies: [...additionalPolicies, sesPolicy],
+    });
+  }
 
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
