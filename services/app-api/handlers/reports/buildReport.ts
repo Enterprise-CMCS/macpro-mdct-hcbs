@@ -89,6 +89,7 @@ export const buildReport = async (
       ReportType.PCP,
       ReportType.TACM,
       ReportType.QMS,
+      ReportType.QI,
       ReportType.WWL,
     ].includes(report.type)
   ) {

@@ -6,6 +6,7 @@ import {
   QmsIntroductionCard,
   TacmIntroductionCard,
   PCPIntroductionCard,
+  QiIntroductionCard,
   WWLIntroductionCard,
 } from "components";
 import { useStore } from "utils";
@@ -21,6 +22,7 @@ export const HomePage = () => {
   const isTACMReportActive = useFlags()?.isTacmReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
   const isPCPReportActive = useFlags()?.isPcpReportActive;
+  const isQiReportActive = useFlags()?.isQiReportActive;
   const isWWLReportActive = useFlags()?.isWwlReportActive;
 
   return (
@@ -51,7 +53,10 @@ export const HomePage = () => {
               <Heading as="h2" variant="h2" marginBottom="spacer3">
                 Quality Reports
               </Heading>
-              <QmsIntroductionCard />
+              <Box display="flex" flexDirection="column" gap="spacer4">
+                <QmsIntroductionCard />
+                {isQiReportActive && <QiIntroductionCard />}
+              </Box>
             </Box>
             <Box>
               <Heading as="h2" variant="h2" marginBottom="spacer3">
