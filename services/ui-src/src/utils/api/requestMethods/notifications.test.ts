@@ -1,7 +1,11 @@
 import { initAuthManager } from "utils/auth/authLifecycle";
 import { ReportType } from "types";
 import { Notification } from "types/notification";
-import { getNotifications, updateNotifications } from "./notifications";
+import {
+  getNotifications,
+  updateNotifications,
+  sendTestEmail,
+} from "./notifications";
 
 const mockNotifications: Notification[] = [
   {
@@ -28,6 +32,18 @@ describe("utils/notifications", () => {
   describe("updateNotifications()", () => {
     test("executes", () => {
       expect(updateNotifications(mockNotifications[0])).toBeTruthy();
+    });
+  });
+
+  describe("sendTestEmail()", () => {
+    test("executes", () => {
+      expect(
+        sendTestEmail({
+          toAddress: "test@example.com",
+          subject: "Test Subject",
+          message: "Test message",
+        })
+      ).toBeTruthy();
     });
   });
 });
