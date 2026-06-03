@@ -63,6 +63,7 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   } catch (error) {
     // log and allow call to succeed even if email fails
     logger.error(error);
+    //TO-DO: alert to let us or the user know an email not sent
   }
 
   return ok(validatedPayload);

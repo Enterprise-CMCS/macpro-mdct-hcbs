@@ -88,8 +88,8 @@ export const NotificationsPage = () => {
               }
             />
           ))}
-          <Box mt="spacer4">
-            {notificationsSystem && (
+          {notificationsSystem && (
+            <Box mt="spacer4">
               <Flex gap="spacer2" align="center">
                 <Input
                   sx={sx.emailInput}
@@ -108,8 +108,8 @@ export const NotificationsPage = () => {
                   Send Test Email
                 </Button>
               </Flex>
-            )}
-          </Box>
+            </Box>
+          )}
         </Box>
       )}
     </PageTemplate>
