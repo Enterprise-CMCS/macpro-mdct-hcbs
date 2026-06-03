@@ -239,14 +239,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "submitReport", {
-    entry: "services/app-api/handlers/reports/submit.ts",
-    handler: "submitReport",
-    path: "reports/submit/{reportType}/{state}/{id}",
-    method: "POST",
-    ...commonProps,
-    additionalPolicies: [...additionalPolicies, sesPolicy],
-  });
+  if (isDev) {
+    new Lambda(scope, "submitReport", {
+      entry: "services/app-api/handlers/reports/submit.ts",
+      handler: "submitReport",
+      path: "reports/submit/{reportType}/{state}/{id}",
+      method: "POST",
+      ...commonProps,
+      additionalPolicies: [...additionalPolicies, sesPolicy],
+    });
+  }
 
   new Lambda(scope, "getReport", {
     entry: "services/app-api/handlers/reports/get.ts",
@@ -272,14 +274,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "releaseReport", {
-    entry: "services/app-api/handlers/reports/release.ts",
-    handler: "releaseReport",
-    path: "reports/release/{reportType}/{state}/{id}",
-    method: "PUT",
-    ...commonProps,
-    additionalPolicies: [...additionalPolicies, sesPolicy],
-  });
+  if (isDev) {
+    new Lambda(scope, "releaseReport", {
+      entry: "services/app-api/handlers/reports/release.ts",
+      handler: "releaseReport",
+      path: "reports/release/{reportType}/{state}/{id}",
+      method: "PUT",
+      ...commonProps,
+      additionalPolicies: [...additionalPolicies, sesPolicy],
+    });
+  }
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
