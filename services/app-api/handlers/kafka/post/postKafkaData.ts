@@ -8,6 +8,7 @@ const tables = [
   { sourceName: reportTables.TACM, topicName: tableTopics.TACM },
   { sourceName: reportTables.CI, topicName: tableTopics.CI },
   { sourceName: reportTables.PCP, topicName: tableTopics.PCP },
+  { sourceName: reportTables.QIP, topicName: tableTopics.QIP },
   { sourceName: reportTables.WWL, topicName: tableTopics.WWL },
 ];
 

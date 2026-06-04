@@ -182,19 +182,27 @@ export const DashboardPage = () => {
                   Once the report is generated, you can edit the name of the
                   report and monitor its status in the dashboard below.
                 </p>
-                {reportType === ReportType.WWL ? (
-                  <p>
-                    A separate report should be generated for each waiver
-                    waiting list your state intends to include during the
-                    current reporting year.
-                  </p>
-                ) : (
-                  <p>
-                    Please note, while you can generate multiple reports for the
-                    same reporting period, you should only submit a single
-                    report for the state.
-                  </p>
-                )}
+                {(() => {
+                  if (reportType === ReportType.WWL) {
+                    return (
+                      <p>
+                        A separate report should be generated for each waiver
+                        waiting list your state intends to include during the
+                        current reporting year.
+                      </p>
+                    );
+                  } else if (reportType === ReportType.QIP) {
+                    return null;
+                  } else {
+                    return (
+                      <p>
+                        Please note, while you can generate multiple reports for
+                        the same reporting period, you should only submit a
+                        single report for the state.
+                      </p>
+                    );
+                  }
+                })()}
 
                 <p>
                   <strong>Understanding Report Statuses</strong>

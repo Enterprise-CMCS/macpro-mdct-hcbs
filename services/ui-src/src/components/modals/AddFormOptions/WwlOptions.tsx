@@ -2,7 +2,6 @@ export default {
   verbiage: {
     reportName: "Waiver Waiting List Report",
     yearSelect: "Select the waiting list measurement year",
-    shortName: "WWL",
     sampleName: "HCBS WWL Report for 2026",
     nameLabel: "Waiting List Name",
     nameHelperText: () =>

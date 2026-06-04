@@ -5,6 +5,7 @@ export enum ReportType {
   TACM = "TACM",
   CI = "CI",
   PCP = "PCP",
+  QIP = "QIP",
   WWL = "WWL",
 }
 
@@ -24,6 +25,8 @@ export const getReportName = (type: string | undefined) => {
       return "Critical Incident Report";
     case ReportType.PCP:
       return "Person-Centered Planning Report";
+    case ReportType.QIP:
+      return "QMS Quality Improvement Plan";
     case ReportType.WWL:
       return "Waiver Waiting List Report";
     default:

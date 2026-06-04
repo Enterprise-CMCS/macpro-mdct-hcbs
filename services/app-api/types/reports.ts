@@ -7,6 +7,7 @@ export enum ReportType {
   TACM = "TACM",
   CI = "CI",
   PCP = "PCP",
+  QIP = "QIP",
   WWL = "WWL",
 }
 export const isReportType = (x: unknown): x is ReportType => {
