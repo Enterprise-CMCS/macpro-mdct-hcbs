@@ -12,17 +12,17 @@ import { StateNames } from "../../constants";
 const getReportName = (type: string | undefined) => {
   switch (type) {
     case ReportType.QMS:
-      return "Quality Measure Set Report";
+      return "Quality Measure Set Report (QMS)";
     case ReportType.TACM:
-      return "Timely Access Compliance Measure Report";
+      return "Timely Access Compliance Measure Report (TACM)";
     case ReportType.CI:
-      return "Critical Incident Report";
+      return "Critical Incident Report (CI)";
     case ReportType.PCP:
-      return "Person-Centered Planning Report";
+      return "Person-Centered Planning Report (PCP)";
     case ReportType.QIP:
       return "QMS Quality Improvement Plans (QMS QIP)";
     case ReportType.WWL:
-      return "Waiver Waiting List Report";
+      return "Waiver Waiting List Report (WWL)";
     default:
       return "";
   }
@@ -31,7 +31,7 @@ const getReportName = (type: string | undefined) => {
 const reportChoices = Object.values(ReportType).map((type) => {
   return {
     value: type,
-    label: `${getReportName(type)} (${type})`,
+    label: `${getReportName(type)}`,
   };
 });
 
