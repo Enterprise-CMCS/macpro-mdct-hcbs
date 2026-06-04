@@ -378,12 +378,12 @@ export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
 };
 
 //Rates for POM
-export const performanceRatePOM: NdrTemplate = {
+export const performanceRatePOM = (label: string): NdrTemplate => ({
   type: ElementType.Ndr,
   id: "measure-rates",
   required: true,
-  label: "Person uses the same environments as people without disabilities",
-};
+  label,
+});
 
 // Rates for LTSS-6
 export const performanceRateTermStay: MultiCategoryNdrTemplate = {
