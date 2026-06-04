@@ -6,7 +6,7 @@ QmsReportsTable=local-qms-reports
 TacmReportsTable=local-tacm-reports
 CiReportsTable=local-ci-reports
 PcpReportsTable=local-pcp-reports
-QiReportsTable=local-qi-reports
+QipReportsTable=local-qip-reports
 WwlReportsTable=local-wwl-reports
 NotificationsTable=local-notifications
 

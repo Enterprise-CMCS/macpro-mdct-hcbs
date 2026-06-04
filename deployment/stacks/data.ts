@@ -73,10 +73,10 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }),
-    new DynamoDBTable(scope, "QiReports", {
+    new DynamoDBTable(scope, "QipReports", {
       stage,
       isDev,
-      name: "qi-reports",
+      name: "qip-reports",
       partitionKey: {
         name: "state",
         type: dynamodb.AttributeType.STRING,

@@ -191,7 +191,7 @@ export const DashboardPage = () => {
                         current reporting year.
                       </p>
                     );
-                  } else if (reportType === ReportType.QI) {
+                  } else if (reportType === ReportType.QIP) {
                     return null;
                   } else {
                     return (

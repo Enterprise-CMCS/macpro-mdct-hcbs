@@ -1,15 +1,15 @@
-import { QiIntroductionCard } from "./QiIntroductionCard";
+import { QipIntroductionCard } from "./QipIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11yAct } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const component = (
   <RouterWrappedComponent>
-    <QiIntroductionCard />
+    <QipIntroductionCard />
   </RouterWrappedComponent>
 );
 
-describe("QiIntroductionCard", () => {
+describe("QipIntroductionCard", () => {
   it("should render", () => {
     render(component);
     expect(

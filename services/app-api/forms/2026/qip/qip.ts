@@ -12,8 +12,8 @@ import {
   waiverListInputField,
 } from "../elements";
 
-export const qiReportTemplate: ReportBase = {
-  type: ReportType.QI,
+export const qipReportTemplate: ReportBase = {
+  type: ReportType.QIP,
   year: 2026,
   pages: [
     {
@@ -23,7 +23,7 @@ export const qiReportTemplate: ReportBase = {
     {
       id: "general-info",
       navTitle: "General Information",
-      tabTitle: "General Information - QI - HCBS",
+      tabTitle: "General Information - QIP - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -55,8 +55,8 @@ export const qiReportTemplate: ReportBase = {
     {
       id: "review-submit",
       navTitle: "Review & Submit",
-      tabTitle: "Review & Submit - QI - HCBS",
-      submittedTabTitle: "Successfully Submitted - QI - HCBS",
+      tabTitle: "Review & Submit - QIP - HCBS",
+      submittedTabTitle: "Successfully Submitted - QIP - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -66,7 +66,7 @@ export const qiReportTemplate: ReportBase = {
           id: "review-alert",
           status: AlertTypes.ERROR,
           title: "Your form is not ready for submission",
-          text: "Some sections of the QI Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
+          text: "Some sections of the report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
@@ -77,7 +77,7 @@ export const qiReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your QI Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -116,7 +116,7 @@ export const qiReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them that you have submitted the QI report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the report and it is ready for their review.",
         },
         exportToPDF,
       ],

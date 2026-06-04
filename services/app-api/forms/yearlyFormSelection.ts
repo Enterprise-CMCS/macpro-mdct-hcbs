@@ -5,7 +5,7 @@ import { WAIVER_LIST as WAIVER_LIST_2026 } from "./2026/waivers";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { tacmReportTemplate as tacmReportTemplate2026 } from "./2026/tacm/tacm";
 import { pcpReportTemplate as pcpReportTemplate2026 } from "./2026/pcp/pcp";
-import { qiReportTemplate as qiReportTemplate2026 } from "./2026/qi/qi";
+import { qipReportTemplate as qipReportTemplate2026 } from "./2026/qip/qip";
 import { wwlReportTemplate as wwlReportTemplate2026 } from "./2026/wwl/wwl";
 import { StateAbbr } from "../utils/constants";
 
@@ -17,7 +17,7 @@ const formsByYear = {
     tacmReportTemplate: tacmReportTemplate2026,
     ciReportTemplate: ciReportTemplate2026,
     pcpReportTemplate: pcpReportTemplate2026,
-    qiReportTemplate: qiReportTemplate2026,
+    qipReportTemplate: qipReportTemplate2026,
     wwlReportTemplate: wwlReportTemplate2026,
   },
 };
@@ -57,8 +57,8 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
       return formsByYear[year].ciReportTemplate;
     case ReportType.PCP:
       return formsByYear[year].pcpReportTemplate;
-    case ReportType.QI:
-      return formsByYear[year].qiReportTemplate;
+    case ReportType.QIP:
+      return formsByYear[year].qipReportTemplate;
     case ReportType.WWL:
       return formsByYear[year].wwlReportTemplate;
     default:

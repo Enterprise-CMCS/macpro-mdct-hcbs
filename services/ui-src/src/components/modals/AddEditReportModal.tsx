@@ -22,7 +22,7 @@ import QmsOptions from "./AddFormOptions/QmsOptions";
 import TacmOptions from "./AddFormOptions/TacmOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
 import PcpOptions from "./AddFormOptions/PcpOptions";
-import QiOptions from "./AddFormOptions/QiOptions";
+import QipOptions from "./AddFormOptions/QipOptions";
 import WwlOptions from "./AddFormOptions/WwlOptions";
 import { ErrorMessages } from "../../constants";
 
@@ -56,7 +56,7 @@ const buildModalOptions = (
     [ReportType.TACM]: TacmOptions,
     [ReportType.CI]: CiOptions,
     [ReportType.PCP]: PcpOptions,
-    [ReportType.QI]: QiOptions,
+    [ReportType.QIP]: QipOptions,
     [ReportType.WWL]: WwlOptions,
   };
   return optionsByReportType[reportType];

@@ -9,7 +9,7 @@ export default [
       ".tacm-reports",
       ".ci-reports",
       ".pcp-reports",
-      ".qi-reports",
+      ".qip-reports",
       ".wwl-reports",
     ],
   },
