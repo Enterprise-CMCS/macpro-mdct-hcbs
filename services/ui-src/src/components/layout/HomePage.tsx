@@ -10,7 +10,7 @@ import {
   WWLIntroductionCard,
 } from "components";
 import { useStore } from "utils";
-import { useFlags } from "launchdarkly-react-client-sdk";
+import { useFlags } from "../../utils/other/useLaunchDarklyFlags";
 import { activeBannerSelector } from "utils/state/selectors";
 import { BannerAreas } from "types";
 import { Banner } from "components/alerts/Banner";
@@ -19,11 +19,11 @@ export const HomePage = () => {
   const banner = useStore(activeBannerSelector(BannerAreas.Home));
   const { userIsEndUser } = useStore().user ?? {};
 
-  const isTACMReportActive = useFlags()?.isTacmReportActive;
-  const isCIReportActive = useFlags()?.isCiReportActive;
-  const isPCPReportActive = useFlags()?.isPcpReportActive;
-  const isQipReportActive = useFlags()?.isQipReportActive;
-  const isWWLReportActive = useFlags()?.isWwlReportActive;
+  const isTACMReportActive = useFlags().isTacmReportActive;
+  const isCIReportActive = useFlags().isCIReportActive;
+  const isPCPReportActive = useFlags().isPCPReportActive;
+  const isQipReportActive = useFlags().isQipReportActive;
+  const isWWLReportActive = useFlags().isWwlReportActive;
 
   return (
     <>

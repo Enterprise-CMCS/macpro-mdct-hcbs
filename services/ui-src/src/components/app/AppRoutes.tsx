@@ -12,7 +12,7 @@ import {
 } from "components";
 import { useStore } from "utils";
 import { useEffect } from "react";
-import { useFlags } from "launchdarkly-react-client-sdk";
+import { useFlags } from "../../utils/other/useLaunchDarklyFlags";
 import { ReportAutosaveProvider } from "components/report/ReportAutosaveProvider";
 import { NotificationsPage } from "components/pages/Admin/NotificationsPage";
 
@@ -20,9 +20,9 @@ export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
 
   const { pathname } = useLocation();
-  const isPdfActive = useFlags()?.viewPdf;
-  const componentInventoryPageEnabled = useFlags()?.componentInventory;
-  const notificationsPageEnabled = useFlags()?.notificationsSystem;
+  const isPdfActive = useFlags().ViewPDF;
+  const componentInventoryPageEnabled = useFlags().componentInventory;
+  const notificationsPageEnabled = useFlags()["notifications-system"];
 
   useEffect(() => {
     document.getElementById("app-wrapper")!.focus();

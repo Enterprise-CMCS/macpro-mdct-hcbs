@@ -5,7 +5,6 @@ import { Amplify } from "aws-amplify";
 import config from "config";
 import "aws-amplify/auth/enable-oauth-listener";
 import { ApiProvider, UserProvider } from "utils";
-import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import { App, Error } from "components";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "styles/theme";
@@ -41,35 +40,17 @@ Amplify.configure({
     },
   },
 });
-// LaunchDarkly configuration
-const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
-(async () => {
-  const LDProvider = await asyncWithLDProvider({
-    clientSideID: ldClientId!,
-    options: {
-      baseUrl: "https://clientsdk.launchdarkly.us",
-      streamUrl: "https://clientstream.launchdarkly.us",
-      eventsUrl: "https://events.launchdarkly.us",
-    },
-    deferInitialization: false,
-    timeout: 2, // seconds
-  });
 
-  createRoot(document.getElementById("root")!).render(
-    <ErrorBoundary FallbackComponent={Error}>
-      <Router>
-        <UserProvider>
-          <ApiProvider>
-            <ChakraProvider theme={theme}>
-              <LDProvider>
-                <App />
-              </LDProvider>
-            </ChakraProvider>
-          </ApiProvider>
-        </UserProvider>
-      </Router>
-    </ErrorBoundary>
-  );
-})().catch((error) => {
-  throw error;
-});
+createRoot(document.getElementById("root")!).render(
+  <ErrorBoundary FallbackComponent={Error}>
+    <Router>
+      <UserProvider>
+        <ApiProvider>
+          <ChakraProvider theme={theme}>
+            <App />
+          </ChakraProvider>
+        </ApiProvider>
+      </UserProvider>
+    </Router>
+  </ErrorBoundary>
+);

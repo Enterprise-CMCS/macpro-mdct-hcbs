@@ -22,7 +22,7 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("launchdarkly-react-client-sdk", () => ({
   useFlags: jest.fn().mockReturnValue({
-    viewPdf: true,
+    ViewPDF: true,
   }),
 }));
 

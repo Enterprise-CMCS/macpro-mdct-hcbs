@@ -13,11 +13,11 @@ import { MenuOption } from "components";
 import { useBreakpoint } from "utils";
 import chevronDownIcon from "assets/icons/arrows/icon_arrow_down.svg";
 import gearIcon from "assets/icons/icon_gear.svg";
-import { useFlags } from "launchdarkly-react-client-sdk";
+import { useFlags } from "../../utils/other/useLaunchDarklyFlags";
 
 export const AdminMenu = () => {
   const { isMobile } = useBreakpoint();
-  const notificationsPageEnabled = useFlags()?.notificationsSystem;
+  const notificationsPageEnabled = useFlags()["notifications-system"];
 
   return (
     <MenuRoot offset={[0, 20]}>

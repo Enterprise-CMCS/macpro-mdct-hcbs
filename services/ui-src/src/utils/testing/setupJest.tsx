@@ -386,12 +386,6 @@ export const RouterWrappedComponent: React.FC<{ children: any }> = ({
   children,
 }) => <Router>{children}</Router>;
 
-// LAUNCHDARKLY
-
-export const mockLDClient = {
-  variation: jest.fn(() => true),
-};
-
 // ASSET
 export * from "./mockAsset";
 // FORM

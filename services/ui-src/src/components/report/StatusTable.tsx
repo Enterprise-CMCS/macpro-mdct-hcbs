@@ -22,7 +22,7 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 import { SubmitReportModal } from "./SubmitReportModal";
 import { submittableMetricsSelector } from "utils/state/selectors";
-import { useFlags } from "launchdarkly-react-client-sdk";
+import { useFlags } from "../../utils/other/useLaunchDarklyFlags";
 
 export const StatusTableElement = () => {
   const { report, user, setModalComponent, setModalOpen, updateReport } =
@@ -30,7 +30,7 @@ export const StatusTableElement = () => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
   const submittableMetrics = useStore(submittableMetricsSelector);
-  const isPdfActive = useFlags()?.viewPdf;
+  const isPdfActive = useFlags().ViewPDF;
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   if (!report) {
