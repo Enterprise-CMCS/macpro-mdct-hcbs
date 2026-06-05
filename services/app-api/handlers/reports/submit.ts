@@ -8,13 +8,10 @@ import { Report, ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { validateReportPayload } from "../../utils/reportValidation";
-import { sendEmail } from "../../../app-api/utils/notifications/email";
+import { sendEmail } from "../../utils/notifications/email";
 
 export const submitReport = handler(parseReportParameters, async (request) => {
   const notificationsEnabled = await getFlag("notificationsSystem");
-  if (!notificationsEnabled) {
-    return forbidden(error.UNAUTHORIZED);
-  }
 
   const { reportType, state, id } = request.parameters;
   const user = request.user;
@@ -64,12 +61,14 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   // save the report that's being submitted (with the new information on top of it)
   await putReport(validatedPayload);
 
-  try {
-    await sendEmail(report);
-  } catch (error) {
-    // log and allow call to succeed even if email fails
-    logger.error(error);
-    //TO-DO: alert to let us or the user know an email not sent
+  if (notificationsEnabled) {
+    try {
+      await sendEmail(report);
+    } catch (error) {
+      // log and allow call to succeed even if email fails
+      logger.error(error);
+      //TO-DO: alert to let us or the user know an email not sent
+    }
   }
 
   return ok(validatedPayload);

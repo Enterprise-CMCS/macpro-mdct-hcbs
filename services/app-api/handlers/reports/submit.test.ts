@@ -9,6 +9,10 @@ jest.mock("../../libs/launchdarkly-lib", () => ({
   getFlag: jest.fn().mockResolvedValue(true),
 }));
 
+jest.mock("../../utils/notifications/email", () => ({
+  sendEmail: jest.fn().mockResolvedValue(undefined),
+}));
+
 jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
