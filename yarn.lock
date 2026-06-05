@@ -5112,6 +5112,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@launchdarkly/js-sdk-common@npm:2.25.0":
+  version: 2.25.0
+  resolution: "@launchdarkly/js-sdk-common@npm:2.25.0"
+  checksum: 10c0/ac7a80e398ed4461deeba51096598aa454c025fa03bd716a87312776136da18d2fce8fd24c5f97dc15468686ac9a527a4abbd8dd3b59178cd7def5efd4cde8c3
+  languageName: node
+  linkType: hard
+
+"@launchdarkly/js-server-sdk-common@npm:2.19.0":
+  version: 2.19.0
+  resolution: "@launchdarkly/js-server-sdk-common@npm:2.19.0"
+  dependencies:
+    "@launchdarkly/js-sdk-common": "npm:2.25.0"
+    semver: "npm:7.5.4"
+  checksum: 10c0/b5e04eba6fb3bc1e90d77a2fcfbedee0cb87b8a4a80b022cecdad303bf72858e26131325648a3cd07d1959e0d774700d5af9ab15274327c319095a170b8e4bb4
+  languageName: node
+  linkType: hard
+
+"@launchdarkly/node-server-sdk@npm:^9.11.1":
+  version: 9.11.1
+  resolution: "@launchdarkly/node-server-sdk@npm:9.11.1"
+  dependencies:
+    "@launchdarkly/js-server-sdk-common": "npm:2.19.0"
+    https-proxy-agent: "npm:^7.0.6"
+    launchdarkly-eventsource: "npm:2.2.0"
+  checksum: 10c0/5990511656488576c8d4b67276bbcc75897a6fd6939d9538dbfa79cc69dc1341a1cfb05773bbdb3217be1654267dcb05e271d318467cb7cfffecb43d44efccc4
+  languageName: node
+  linkType: hard
+
 "@napi-rs/wasm-runtime@npm:^1.1.4":
   version: 1.1.4
   resolution: "@napi-rs/wasm-runtime@npm:1.1.4"
@@ -9077,6 +9105,7 @@ __metadata:
     "@aws-sdk/client-dynamodb": "npm:~3.1044.0"
     "@aws-sdk/client-ses": "npm:~3.1012.0"
     "@aws-sdk/lib-dynamodb": "npm:~3.1044.0"
+    "@launchdarkly/node-server-sdk": "npm:^9.11.1"
     "@types/dompurify": "npm:^3.2.0"
     "@types/jest": "npm:^29.5.12"
     "@types/jsdom": "npm:20.0.0"
@@ -12902,6 +12931,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"launchdarkly-eventsource@npm:2.2.0":
+  version: 2.2.0
+  resolution: "launchdarkly-eventsource@npm:2.2.0"
+  checksum: 10c0/fce94e58ef5eb560349b2f5405276c01b86d83afc3f7149c6e58ce4fcdf69f1ef8c97c9800bedf0986b41fa7a1f14740aee804d8c74f9fc81b6cf22f4bd5a7f1
+  languageName: node
+  linkType: hard
+
 "launchdarkly-js-client-sdk@npm:^3.9.0":
   version: 3.9.0
   resolution: "launchdarkly-js-client-sdk@npm:3.9.0"
@@ -13170,6 +13206,15 @@ __metadata:
   dependencies:
     yallist: "npm:^3.0.2"
   checksum: 10c0/89b2ef2ef45f543011e38737b8a8622a2f8998cddf0e5437174ef8f1f70a8b9d14a918ab3e232cb3ba343b7abddffa667f0b59075b2b80e6b4d63c3de6127482
+  languageName: node
+  linkType: hard
+
+"lru-cache@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "lru-cache@npm:6.0.0"
+  dependencies:
+    yallist: "npm:^4.0.0"
+  checksum: 10c0/cb53e582785c48187d7a188d3379c181b5ca2a9c78d2bce3e7dee36f32761d1c42983da3fe12b55cb74e1779fa94cdc2e5367c028a9b35317184ede0c07a30a9
   languageName: node
   linkType: hard
 
@@ -14872,6 +14917,17 @@ __metadata:
   version: 0.27.0
   resolution: "scheduler@npm:0.27.0"
   checksum: 10c0/4f03048cb05a3c8fddc45813052251eca00688f413a3cee236d984a161da28db28ba71bd11e7a3dd02f7af84ab28d39fb311431d3b3772fed557945beb00c452
+  languageName: node
+  linkType: hard
+
+"semver@npm:7.5.4":
+  version: 7.5.4
+  resolution: "semver@npm:7.5.4"
+  dependencies:
+    lru-cache: "npm:^6.0.0"
+  bin:
+    semver: bin/semver.js
+  checksum: 10c0/5160b06975a38b11c1ab55950cb5b8a23db78df88275d3d8a42ccf1f29e55112ac995b3a26a522c36e3b5f76b0445f1eef70d696b8c7862a2b4303d7b0e7609e
   languageName: node
   linkType: hard
 

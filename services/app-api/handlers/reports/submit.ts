@@ -1,5 +1,6 @@
 import { logger } from "../../libs/debug-lib";
 import { handler } from "../../libs/handler-lib";
+import { getFlag } from "../../libs/launchdarkly-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { putReport } from "../../storage/reports";
@@ -10,6 +11,11 @@ import { validateReportPayload } from "../../utils/reportValidation";
 import { sendEmail } from "../../../app-api/utils/notifications/email";
 
 export const submitReport = handler(parseReportParameters, async (request) => {
+  const notificationsEnabled = await getFlag("notificationsSystem");
+  if (!notificationsEnabled) {
+    return forbidden(error.UNAUTHORIZED);
+  }
+
   const { reportType, state, id } = request.parameters;
   const user = request.user;
 

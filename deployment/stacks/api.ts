@@ -26,6 +26,7 @@ interface CreateApiComponentsProps {
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   brokerString: string;
+  LD_SDK_SERVER?: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -38,6 +39,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnets,
     brokerString,
     tables,
+    LD_SDK_SERVER,
   } = props;
 
   const service = "app-api";
@@ -111,6 +113,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
+    ...(LD_SDK_SERVER ? { LD_SDK_SERVER } : {}),
   };
 
   const additionalPolicies = [

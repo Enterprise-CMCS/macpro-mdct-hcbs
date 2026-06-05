@@ -7,6 +7,7 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   oktaMetadataUrl: string;
   launchDarklyClient: string;
+  LD_SDK_SERVER: string;
   redirectSignout: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
