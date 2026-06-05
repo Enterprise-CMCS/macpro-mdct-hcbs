@@ -5,9 +5,14 @@ import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { validReport } from "../../utils/tests/mockReport";
 import { ReportStatus } from "../../types/reports";
+import { getFlag } from "../../libs/launchdarkly-lib";
 
 jest.mock("../../libs/launchdarkly-lib", () => ({
   getFlag: jest.fn().mockResolvedValue(true),
+}));
+
+jest.mock("../../utils/notifications/email", () => ({
+  sendEmail: jest.fn().mockResolvedValue(undefined),
 }));
 
 jest.mock("../../utils/authentication", () => ({
@@ -98,5 +103,15 @@ describe("Test releaseReport handler", () => {
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
+  });
+
+  test("Test release succeeds without sending email when flag is off", async () => {
+    (getFlag as jest.Mock).mockResolvedValueOnce(false);
+    const { sendEmail } = require("../../utils/notifications/email");
+
+    const res = await releaseReport(testEvent);
+
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(sendEmail).not.toHaveBeenCalled();
   });
 });
