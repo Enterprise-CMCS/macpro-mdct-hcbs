@@ -6,6 +6,10 @@ import { proxyEvent } from "../../testing/proxyEvent";
 import { validReport } from "../../utils/tests/mockReport";
 import { ReportStatus } from "../../types/reports";
 
+jest.mock("../../libs/launchdarkly-lib", () => ({
+  getFlag: jest.fn().mockResolvedValue(true),
+}));
+
 jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn().mockResolvedValue({
     role: UserRoles.ADMIN,
