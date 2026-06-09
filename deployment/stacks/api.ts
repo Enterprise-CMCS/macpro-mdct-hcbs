@@ -207,16 +207,18 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "sendTestEmail", {
-    entry: "services/app-api/handlers/notification/sendTestEmail.ts",
-    handler: "sendTestEmail",
-    path: "notifications/test-email",
-    method: "POST",
-    ...commonProps,
-    additionalPolicies: isDev
-      ? additionalPolicies
-      : [...additionalPolicies, sesPolicy],
-  });
+  if (isDev) {
+    new Lambda(scope, "sendTestEmail", {
+      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
+      handler: "sendTestEmail",
+      path: "notifications/test-email",
+      method: "POST",
+      ...commonProps,
+      additionalPolicies: isDev
+        ? additionalPolicies
+        : [...additionalPolicies, sesPolicy],
+    });
+  }
 
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
