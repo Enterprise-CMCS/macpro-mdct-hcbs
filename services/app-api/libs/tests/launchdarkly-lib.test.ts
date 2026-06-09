@@ -61,6 +61,6 @@ describe("getFlag", () => {
 
     await getFlag("testFlag");
 
-    expect(mockInit).toHaveBeenCalledWith("local");
+    expect(mockInit.mock.calls[0][0]).toBe("local");
   });
 });
