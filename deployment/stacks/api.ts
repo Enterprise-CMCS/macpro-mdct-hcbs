@@ -113,7 +113,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
-    LD_SDK_SERVER,
+    ...(LD_SDK_SERVER !== undefined && { LD_SDK_SERVER }),
   };
 
   const additionalPolicies = [
