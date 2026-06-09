@@ -4,7 +4,7 @@ let client: ld.LDClient | undefined;
 
 async function getLdClient(): Promise<ld.LDClient> {
   if (client) return client;
-  const sdkKey = process.env.LD_SDK_SERVER ?? "local";
+  const sdkKey = process.env.launchDarklyServer ?? "local";
   client = ld.init(sdkKey, {
     baseUri: "https://sdk.launchdarkly.us/",
     eventsUri: "https://events.launchdarkly.us/",
