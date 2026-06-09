@@ -214,9 +214,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       path: "notifications/test-email",
       method: "POST",
       ...commonProps,
-      additionalPolicies: isDev
-        ? additionalPolicies
-        : [...additionalPolicies, sesPolicy],
+      additionalPolicies: [...additionalPolicies, sesPolicy],
     });
   }
 
