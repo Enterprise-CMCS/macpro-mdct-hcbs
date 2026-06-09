@@ -226,6 +226,7 @@ describe("Test AddEditReportModal types", () => {
     { type: ReportType.TACM, text: "TACM Report" },
     { type: ReportType.CI, text: "Critical Incident Report" },
     { type: ReportType.PCP, text: "Person-Centered Planning Report" },
+    { type: ReportType.QIP, text: "Quality Improvement Plan" },
     { type: ReportType.WWL, text: "Waiver Waiting List Report" },
   ])("$type report type renders a title", ({ type, text }) => {
     render(

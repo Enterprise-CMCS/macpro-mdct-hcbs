@@ -42,16 +42,17 @@ describe("<ReportIntroCardActions />", () => {
     });
 
     test.each([
-      { type: ReportType.QMS, text: "QMS" },
-      { type: ReportType.TACM, text: "TACM" },
-      { type: ReportType.CI, text: "CI" },
-      { type: ReportType.PCP, text: "PCP" },
-      { type: ReportType.WWL, text: "WWL" },
+      { type: ReportType.QMS, text: "QMS Report" },
+      { type: ReportType.TACM, text: "TACM Report" },
+      { type: ReportType.CI, text: "CI Report" },
+      { type: ReportType.PCP, text: "PCP Report" },
+      { type: ReportType.QIP, text: "QMS QIP" },
+      { type: ReportType.WWL, text: "WWL Report" },
       { type: "bad name" as ReportType, text: "" },
     ])("$type report card renders action button", ({ type, text }) => {
       render(reportActionsComponent(type));
       expect(
-        screen.getByText(`Enter ${text} Report online`, {
+        screen.getByText(`Enter ${text} online`, {
           normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
         })
       ).toBeVisible();

@@ -7,7 +7,6 @@ import { ErrorMessages } from "../../../constants";
 export const verbiage = {
   reportName: "Quality Measure Set Report",
   yearSelect: "Select the quality measure set reporting year.",
-  shortName: "QMS",
   sampleName: "HCBS QMS Report for 2026",
   topText:
     "Answering “Yes” or “No” to the following questions will impact which measure results must be reported.",

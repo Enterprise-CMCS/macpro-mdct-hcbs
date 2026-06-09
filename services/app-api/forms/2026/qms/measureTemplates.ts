@@ -1217,7 +1217,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Live in Integrated Environments (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1249,7 +1252,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Live in Integrated Environments (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1306,7 +1312,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Participate in the Life of the Community (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1338,7 +1347,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Participate in the Life of the Community (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1395,7 +1407,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Choose Services (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1427,7 +1442,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Choose Services (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1484,7 +1502,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Realize Personal Goals (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1516,7 +1537,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Realize Personal Goals (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1573,7 +1597,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People are Free from Abuse and Neglect (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1605,7 +1632,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People are Free from Abuse and Neglect (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1662,7 +1692,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Have the Best Possible Health (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1694,7 +1727,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Have the Best Possible Health (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1751,7 +1787,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Interact with Other Members of the Community (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1783,7 +1822,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM,
+        label: "People Interact with Other Members of the Community (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",

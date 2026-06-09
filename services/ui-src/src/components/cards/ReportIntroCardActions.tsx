@@ -14,19 +14,21 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   const state = useStore().user?.state;
   const dashboardRoute = `/report/${reportType}/${state}`;
 
-  const getAbbreviation = (reportType: string) => {
+  const getReportName = (reportType: string) => {
     if (!isReportType(reportType)) return "";
     switch (reportType) {
       case ReportType.CI:
-        return "CI";
+        return "CI Report";
       case ReportType.QMS:
-        return "QMS";
+        return "QMS Report";
       case ReportType.TACM:
-        return "TACM";
+        return "TACM Report";
       case ReportType.PCP:
-        return "PCP";
+        return "PCP Report";
+      case ReportType.QIP:
+        return "QMS QIP";
       case ReportType.WWL:
-        return "WWL";
+        return "WWL Report";
     }
   };
 
@@ -64,7 +66,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
         sx={sx.link}
       >
-        Enter {getAbbreviation(reportType)} Report online
+        Enter {getReportName(reportType)} online
       </Button>
     </Flex>
   );
