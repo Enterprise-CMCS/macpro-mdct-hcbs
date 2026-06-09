@@ -281,7 +281,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry: "services/app-api/handlers/reports/release.ts",
     handler: "releaseReport",
     path: "reports/release/{reportType}/{state}/{id}",
-    method: "POST",
+    method: "PUT",
     ...commonProps,
     additionalPolicies: isDev
       ? additionalPolicies

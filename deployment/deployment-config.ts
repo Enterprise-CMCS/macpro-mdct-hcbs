@@ -73,7 +73,6 @@ function validateConfig(
     "stage",
     "oktaMetadataUrl",
     "launchDarklyClient",
-    "LD_SDK_SERVER",
     "redirectSignout",
     "vpcName",
     "brokerString",
