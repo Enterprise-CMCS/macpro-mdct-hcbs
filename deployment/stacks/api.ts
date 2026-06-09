@@ -207,16 +207,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (isDev) {
-    new Lambda(scope, "sendTestEmail", {
-      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
-      handler: "sendTestEmail",
-      path: "notifications/test-email",
-      method: "POST",
-      ...commonProps,
-      additionalPolicies: [...additionalPolicies, sesPolicy],
-    });
-  }
+  new Lambda(scope, "sendTestEmail", {
+    entry: "services/app-api/handlers/notification/sendTestEmail.ts",
+    handler: "sendTestEmail",
+    path: "notifications/test-email",
+    method: "POST",
+    ...commonProps,
+    additionalPolicies: isDev
+      ? additionalPolicies
+      : [...additionalPolicies, sesPolicy],
+  });
 
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
@@ -242,16 +242,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (isDev) {
-    new Lambda(scope, "submitReport", {
-      entry: "services/app-api/handlers/reports/submit.ts",
-      handler: "submitReport",
-      path: "reports/submit/{reportType}/{state}/{id}",
-      method: "POST",
-      ...commonProps,
-      additionalPolicies: [...additionalPolicies, sesPolicy],
-    });
-  }
+  new Lambda(scope, "submitReport", {
+    entry: "services/app-api/handlers/reports/submit.ts",
+    handler: "submitReport",
+    path: "reports/submit/{reportType}/{state}/{id}",
+    method: "POST",
+    ...commonProps,
+    additionalPolicies: isDev
+      ? additionalPolicies
+      : [...additionalPolicies, sesPolicy],
+  });
 
   new Lambda(scope, "getReport", {
     entry: "services/app-api/handlers/reports/get.ts",
@@ -277,16 +277,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (isDev) {
-    new Lambda(scope, "releaseReport", {
-      entry: "services/app-api/handlers/reports/release.ts",
-      handler: "releaseReport",
-      path: "reports/release/{reportType}/{state}/{id}",
-      method: "PUT",
-      ...commonProps,
-      additionalPolicies: [...additionalPolicies, sesPolicy],
-    });
-  }
+  new Lambda(scope, "releaseReport", {
+    entry: "services/app-api/handlers/reports/release.ts",
+    handler: "releaseReport",
+    path: "reports/release/{reportType}/{state}/{id}",
+    method: "POST",
+    ...commonProps,
+    additionalPolicies: isDev
+      ? additionalPolicies
+      : [...additionalPolicies, sesPolicy],
+  });
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
