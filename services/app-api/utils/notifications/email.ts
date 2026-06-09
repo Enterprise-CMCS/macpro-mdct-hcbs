@@ -61,8 +61,13 @@ const getRecipients = (report: Report): string[] => {
 export const sendEmail = async (report: Report) => {
   const { name, status } = report;
   const recipients = getRecipients(report);
-  // TO-DO: log warning if report with no contact
-  if (recipients.length === 0) return;
+  if (recipients.length === 0) {
+    logger.warn("sendEmail: no recipients found for report", {
+      id: report.id,
+      status: report.status,
+    });
+    return;
+  }
   const emailTemplate = getTemplate(name, status, recipients);
   logger.info(
     "Sending email to: ",
