@@ -3,7 +3,7 @@ import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { error } from "../../utils/constants";
 import { canChangeNotification } from "../../utils/authorization";
 import { emptyParser } from "../../libs/param-lib";
-import sesLib from "../../libs/ses-lib";
+import { sesLib } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
 
 const FROM_ADDRESS = "MDCT_NoReply@cms.hhs.gov";
@@ -34,7 +34,7 @@ export const sendTestEmail = handler(emptyParser, async (request) => {
 
   logger.info("Sending test email to:", toAddress);
   try {
-    await sesLib.sendSesEmail(params);
+    await sesLib(params);
     logger.info("Test email sent successfully to:", toAddress);
   } catch (error) {
     // SES not available in localstack — log and succeed anyway

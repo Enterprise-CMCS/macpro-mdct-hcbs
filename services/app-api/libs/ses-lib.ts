@@ -14,7 +14,5 @@ export const awsConfig = {
 
 const client = new SESClient(awsConfig);
 
-export default {
-  sendSesEmail: (params: SendEmailRequest) =>
-    client.send(new SendEmailCommand(params)),
-};
+export const sesLib = (params: SendEmailRequest) =>
+  client.send(new SendEmailCommand(params));

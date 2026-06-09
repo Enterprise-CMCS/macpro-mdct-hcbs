@@ -1,5 +1,5 @@
 import { Report, ReportStatus } from "../../types/reports";
-import sesLib from "../../libs/ses-lib";
+import { sesLib } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
 import { isLocalStack } from "../../libs/localstack";
 
@@ -70,7 +70,7 @@ export const sendEmail = async (report: Report) => {
     emailTemplate
   );
   if (!isLocalStack()) {
-    await sesLib.sendSesEmail(emailTemplate);
+    await sesLib(emailTemplate);
   } else {
     logger.info("Skipping email in dev env");
   }

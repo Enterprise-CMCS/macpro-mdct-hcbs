@@ -1,6 +1,6 @@
 import { mockClient } from "aws-sdk-client-mock";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import sesLib from "../ses-lib";
+import { sesLib } from "../ses-lib";
 
 jest.mock("../debug-lib", () => ({
   debug: jest.fn(),
@@ -30,7 +30,7 @@ describe("sesLib", () => {
   it("calls client.send with a SendEmailCommand", async () => {
     sesMock.on(SendEmailCommand).resolves({});
 
-    await sesLib.sendSesEmail(mockParams);
+    await sesLib(mockParams);
 
     expect(sesMock.calls()).toHaveLength(1);
     expect(sesMock.calls()[0].args[0].input).toMatchObject(mockParams);

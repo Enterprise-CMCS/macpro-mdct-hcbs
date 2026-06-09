@@ -6,6 +6,7 @@ import { proxyEvent } from "../../testing/proxyEvent";
 import { validReport } from "../../utils/tests/mockReport";
 import { ReportStatus } from "../../types/reports";
 import { getFlag } from "../../libs/launchdarkly-lib";
+import { sendEmail } from "../../utils/notifications/email";
 
 jest.mock("../../libs/launchdarkly-lib", () => ({
   getFlag: jest.fn().mockResolvedValue(true),
@@ -107,7 +108,6 @@ describe("Test releaseReport handler", () => {
 
   test("Test release succeeds without sending email when flag is off", async () => {
     (getFlag as jest.Mock).mockResolvedValueOnce(false);
-    const { sendEmail } = require("../../utils/notifications/email");
 
     const res = await releaseReport(testEvent);
 

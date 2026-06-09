@@ -1,15 +1,10 @@
 import { StatusCodes } from "../../libs/response-lib";
 import { APIGatewayProxyEvent, User, UserRoles } from "../../types/types";
 import { authenticatedUser as actualAuthenticatedUser } from "../../utils/authentication";
-import sesLib from "../../libs/ses-lib";
 import { sendTestEmail } from "./sendTestEmail";
+import { sesLib } from "../../libs/ses-lib";
 
-jest.mock("../../libs/ses-lib", () => ({
-  __esModule: true,
-  default: {
-    sendSesEmail: jest.fn().mockResolvedValue({}),
-  },
-}));
+jest.mock("../../libs/ses-lib");
 
 jest.mock("../../utils/authentication", () => ({
   authenticatedUser: jest.fn(),
@@ -34,8 +29,6 @@ const authenticatedUser = actualAuthenticatedUser as jest.MockedFunction<
   typeof actualAuthenticatedUser
 >;
 
-const mockSendSesEmail = sesLib.sendSesEmail as jest.Mock;
-
 const mockAdminUser = {
   role: UserRoles.ADMIN,
   fullName: "mock admin",
@@ -54,7 +47,6 @@ const mockEvent = (body: object | null = validBody) =>
 
 describe("sendTestEmail handler", () => {
   beforeEach(() => {
-    mockSendSesEmail.mockResolvedValue({});
     authenticatedUser.mockReturnValue(mockAdminUser);
   });
 
@@ -85,8 +77,8 @@ describe("sendTestEmail handler", () => {
     const res = await sendTestEmail(mockEvent());
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
-    expect(mockSendSesEmail).toHaveBeenCalledTimes(1);
-    expect(mockSendSesEmail).toHaveBeenCalledWith(
+    expect(sesLib).toHaveBeenCalledTimes(1);
+    expect(sesLib).toHaveBeenCalledWith(
       expect.objectContaining({
         Destination: { ToAddresses: [validBody.toAddress] },
         Message: expect.objectContaining({
@@ -98,7 +90,7 @@ describe("sendTestEmail handler", () => {
   });
 
   it("returns 200 even when SES throws (localstack)", async () => {
-    mockSendSesEmail.mockRejectedValueOnce(
+    (sesLib as jest.Mock).mockRejectedValueOnce(
       new Error("Email address not verified")
     );
 
