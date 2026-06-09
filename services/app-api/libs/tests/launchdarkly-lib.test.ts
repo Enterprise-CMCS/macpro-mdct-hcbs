@@ -24,7 +24,7 @@ describe("getFlag", () => {
   });
 
   afterEach(() => {
-    delete process.env.launchDarklyServer;
+    delete process.env.LD_SDK_SERVER;
   });
 
   it("returns the flag value from LaunchDarkly", async () => {
@@ -56,7 +56,7 @@ describe("getFlag", () => {
     expect(result).toBe(false);
   });
 
-  it("falls back to 'local' when launchDarklyServer is not set", async () => {
+  it("falls back to 'local' when LD_SDK_SERVER is not set", async () => {
     mockVariation.mockResolvedValue(false);
 
     await getFlag("testFlag");
