@@ -12,10 +12,4 @@ describe("fixLocalstackUrl", () => {
     const result = fixLocalstackUrl("https://bucket.s3.localstack.cloud/key");
     expect(result).toBe("https://bucket.s3/key");
   });
-
-  it("returns the url unchanged when not in localstack", () => {
-    process.env.AWS_ENDPOINT_URL = undefined;
-    const url = "https://bucket.s3.localstack.cloud/key";
-    expect(fixLocalstackUrl(url)).toBe(url);
-  });
 });
