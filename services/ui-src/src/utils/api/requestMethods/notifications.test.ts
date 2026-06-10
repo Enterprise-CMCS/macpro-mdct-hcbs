@@ -7,6 +7,8 @@ import {
   sendTestEmail,
 } from "./notifications";
 
+const mockPost = require("aws-amplify/api").post;
+
 const mockNotifications: Notification[] = [
   {
     category: ReportType.CI,
@@ -36,14 +38,21 @@ describe("utils/notifications", () => {
   });
 
   describe("sendTestEmail()", () => {
-    test("executes", () => {
-      expect(
-        sendTestEmail({
-          toAddress: "test@example.com",
-          subject: "Test Subject",
-          message: "Test message",
+    test("calls the test-email endpoint with the provided payload", async () => {
+      const payload = {
+        toAddress: "test@example.com",
+        subject: "Test Subject",
+        message: "Test message",
+      };
+      await sendTestEmail(payload);
+      expect(mockPost).toHaveBeenCalledWith(
+        expect.objectContaining({
+          path: "/notifications/test-email",
+          options: expect.objectContaining({
+            body: payload,
+          }),
         })
-      ).toBeTruthy();
+      );
     });
   });
 });
