@@ -250,9 +250,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/submit/{reportType}/{state}/{id}",
     method: "POST",
     ...commonProps,
-    additionalPolicies: isDev
-      ? additionalPolicies
-      : [...additionalPolicies, sesPolicy],
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new Lambda(scope, "getReport", {
@@ -285,9 +283,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/release/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
-    additionalPolicies: isDev
-      ? additionalPolicies
-      : [...additionalPolicies, sesPolicy],
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
