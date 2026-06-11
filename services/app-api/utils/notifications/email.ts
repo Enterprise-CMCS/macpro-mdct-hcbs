@@ -1,4 +1,4 @@
-import { Report, ReportStatus } from "../../types/reports";
+import { FormPageTemplate, Report, ReportStatus } from "../../types/reports";
 import { sesLib } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
 import { isLocalStack } from "../../libs/localstack";
@@ -39,42 +39,30 @@ If you believe this status change was made in error, or if you have questions re
   },
 });
 
-const getRecipients = (report: Report): string[] => {
-  const generalInfoPage = report.pages.find(
-    (page) => "id" in page && page.id === "general-info"
-  );
-  if (!generalInfoPage || !("elements" in generalInfoPage)) return [];
-
-  const contactEmailElement = generalInfoPage.elements?.find(
+const getContactEmail = (report: Report): string | undefined => {
+  const generalInfoPage = report.pages
+    .filter((page): page is FormPageTemplate => "elements" in page)
+    .find((page) => page.id === "general-info");
+  const contactEmailElement = generalInfoPage?.elements.find(
     (element) => "id" in element && element.id === "contact-email"
   );
-  if (
-    !contactEmailElement ||
-    !("answer" in contactEmailElement) ||
-    !contactEmailElement.answer
-  ) {
-    return [];
-  }
-  return [contactEmailElement.answer as string];
+  return contactEmailElement && "answer" in contactEmailElement
+    ? (contactEmailElement.answer as string | undefined)
+    : undefined;
 };
 
 export const sendEmail = async (report: Report) => {
   const { name, status } = report;
-  const recipients = getRecipients(report);
-  if (recipients.length === 0) {
+  const recipient = getContactEmail(report);
+  if (!recipient) {
     logger.warn("sendEmail: no recipients found for report", {
       id: report.id,
       status: report.status,
     });
     return;
   }
-  const emailTemplate = getTemplate(name, status, recipients);
-  logger.info(
-    "Sending email to: ",
-    recipients,
-    "with content: ",
-    emailTemplate
-  );
+  const emailTemplate = getTemplate(name, status, [recipient]);
+  logger.info("Sending email to: ", recipient, "with content: ", emailTemplate);
   if (!isLocalStack()) {
     await sesLib(emailTemplate);
   } else {
