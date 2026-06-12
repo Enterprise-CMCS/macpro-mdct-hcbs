@@ -149,9 +149,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     : [`arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`];
 
   const sesPolicy = new iam.PolicyStatement({
-    effect: isDev ? iam.Effect.ALLOW : iam.Effect.DENY,
+    effect: iam.Effect.ALLOW,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: isDev ? sesResources : ["*"],
+    resources: sesResources,
   });
 
   const commonProps = {
