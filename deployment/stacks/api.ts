@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
-  aws_ses as ses,
   aws_iam as iam,
   aws_logs as logs,
   aws_wafv2 as wafv2,
@@ -9,6 +8,7 @@ import {
   CfnOutput,
   Duration,
   RemovalPolicy,
+  Stack,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
@@ -146,16 +146,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const sesResources = isLocalStack
     ? ["*"]
-    : [
-        new ses.EmailIdentity(scope, "SenderDomainIdentity", {
-          identity: ses.Identity.domain("cms.hhs.gov"),
-        }).emailIdentityArn,
-      ];
+    : [`arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`];
 
   const sesPolicy = new iam.PolicyStatement({
-    effect: iam.Effect.ALLOW,
+    effect: isDev ? iam.Effect.ALLOW : iam.Effect.DENY,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: sesResources,
+    resources: isDev ? sesResources : ["*"],
   });
 
   const commonProps = {
