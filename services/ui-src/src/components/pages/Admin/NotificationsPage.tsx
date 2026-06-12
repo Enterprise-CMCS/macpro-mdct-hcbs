@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Input, Spinner } from "@chakra-ui/react";
 import { PageTemplate } from "components";
 import { Checkbox } from "components/checkbox/Checkbox";
 import { useEffect, useState } from "react";
@@ -6,14 +6,19 @@ import { ReportType } from "types";
 import { Notification } from "types/notification";
 import {
   getNotifications,
+  sendTestEmail,
   updateNotifications,
 } from "utils/api/requestMethods/notifications";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 const REPORTS = Object.values(ReportType) as ReportType[];
 
 export const NotificationsPage = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
+  const [testEmailAddress, setTestEmailAddress] = useState("");
+  const { notificationsSystem } = useFlags() ?? {};
 
   useEffect(() => {
     (async () => {
@@ -27,6 +32,15 @@ export const NotificationsPage = () => {
     notifications.find((report) => report.category === category)?.enabled ??
     false;
 
+  const handleSendEmail = async () => {
+    setSending(true);
+    await sendTestEmail({
+      toAddress: testEmailAddress,
+      subject: "HCBS Notification Test",
+      message: "This is a test notification from the HCBS system.",
+    });
+    setSending(false);
+  };
   const saveNotificationStatus = async (
     category: ReportType,
     enabled: boolean
@@ -74,6 +88,28 @@ export const NotificationsPage = () => {
               }
             />
           ))}
+          {notificationsSystem && (
+            <Box mt="spacer4">
+              <Flex gap="spacer2" align="center">
+                <Input
+                  sx={sx.emailInput}
+                  type="email"
+                  placeholder="Enter recipient email"
+                  value={testEmailAddress}
+                  onChange={(e) => setTestEmailAddress(e.target.value)}
+                />
+                <Button
+                  sx={sx.sendButton}
+                  loadingText="Sending..."
+                  isLoading={sending}
+                  isDisabled={!testEmailAddress}
+                  onClick={handleSendEmail}
+                >
+                  Send Test Email
+                </Button>
+              </Flex>
+            </Box>
+          )}
         </Box>
       )}
     </PageTemplate>
@@ -81,6 +117,12 @@ export const NotificationsPage = () => {
 };
 
 const sx = {
+  emailInput: {
+    maxWidth: "20rem",
+  },
+  sendButton: {
+    padding: "0 1.5rem",
+  },
   introTextBox: {
     width: "100%",
   },
