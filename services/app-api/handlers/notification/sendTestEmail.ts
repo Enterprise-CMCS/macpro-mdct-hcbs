@@ -37,8 +37,7 @@ export const sendTestEmail = handler(emptyParser, async (request) => {
     await sesLib(params);
     logger.info("Test email sent successfully to:", toAddress);
   } catch (error) {
-    // SES not available in localstack — log and succeed anyway
-    logger.warn("SES send failed (expected in localstack):", error);
+    logger.warn("SES send failed:", error);
   }
 
   return ok();
