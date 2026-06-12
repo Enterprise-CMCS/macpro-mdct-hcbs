@@ -1,5 +1,5 @@
 import { FormPageTemplate, Report, ReportStatus } from "../../types/reports";
-import { sesLib } from "../../libs/ses-lib";
+import { sendSesEmail } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
 
 const FROM_ADDRESS = "MDCT_NoReply@cms.hhs.gov";
@@ -62,5 +62,5 @@ export const sendEmail = async (report: Report) => {
   }
   const emailTemplate = getTemplate(name, status, [recipient]);
   logger.info("Sending email to: ", recipient, "with content: ", emailTemplate);
-  await sesLib(emailTemplate);
+  await sendSesEmail(emailTemplate);
 };

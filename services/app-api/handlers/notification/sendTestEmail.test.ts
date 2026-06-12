@@ -2,7 +2,7 @@ import { StatusCodes } from "../../libs/response-lib";
 import { APIGatewayProxyEvent, User, UserRoles } from "../../types/types";
 import { authenticatedUser as actualAuthenticatedUser } from "../../utils/authentication";
 import { sendTestEmail } from "./sendTestEmail";
-import { sesLib } from "../../libs/ses-lib";
+import { sendSesEmail } from "../../libs/ses-lib";
 
 jest.mock("../../libs/ses-lib");
 
@@ -77,8 +77,8 @@ describe("sendTestEmail handler", () => {
     const res = await sendTestEmail(mockEvent());
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
-    expect(sesLib).toHaveBeenCalledTimes(1);
-    expect(sesLib).toHaveBeenCalledWith(
+    expect(sendSesEmail).toHaveBeenCalledTimes(1);
+    expect(sendSesEmail).toHaveBeenCalledWith(
       expect.objectContaining({
         Destination: { ToAddresses: [validBody.toAddress] },
         Message: expect.objectContaining({
@@ -90,7 +90,7 @@ describe("sendTestEmail handler", () => {
   });
 
   it("returns 200 even when SES throws (localstack)", async () => {
-    (sesLib as jest.Mock).mockRejectedValueOnce(
+    (sendSesEmail as jest.Mock).mockRejectedValueOnce(
       new Error("Email address not verified")
     );
 

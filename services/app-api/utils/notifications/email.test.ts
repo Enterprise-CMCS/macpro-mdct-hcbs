@@ -1,6 +1,6 @@
 import { sendEmail } from "./email";
 import { validReport } from "../tests/mockReport";
-import { sesLib } from "../../libs/ses-lib";
+import { sendSesEmail } from "../../libs/ses-lib";
 
 jest.mock("../../libs/ses-lib");
 
@@ -11,7 +11,7 @@ describe("sendEmail", () => {
 
   test("should not issue a send email command when no email in report", async () => {
     await sendEmail(validReport);
-    expect(sesLib).not.toHaveBeenCalled();
+    expect(sendSesEmail).not.toHaveBeenCalled();
   });
 
   test("should issue a send email command when email in report", async () => {
@@ -19,6 +19,6 @@ describe("sendEmail", () => {
     const reportWithEmail: any = structuredClone(validReport);
     reportWithEmail.pages[1].elements[2].answer = "test@email.com";
     await sendEmail(reportWithEmail);
-    expect(sesLib).toHaveBeenCalledTimes(1);
+    expect(sendSesEmail).toHaveBeenCalledTimes(1);
   });
 });
