@@ -1,4 +1,4 @@
-import { FormPageTemplate, Report, ReportStatus } from "../../types/reports";
+import { ElementType, Report, ReportStatus } from "../../types/reports";
 import { sendSesEmail } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
 
@@ -39,15 +39,10 @@ If you believe this status change was made in error, or if you have questions re
 });
 
 const getContactEmail = (report: Report): string | undefined => {
-  const generalInfoPage = report.pages
-    .filter((page): page is FormPageTemplate => "elements" in page)
-    .find((page) => page.id === "general-info");
-  const contactEmailElement = generalInfoPage?.elements.find(
-    (element) => "id" in element && element.id === "contact-email"
-  );
-  return contactEmailElement && "answer" in contactEmailElement
-    ? (contactEmailElement.answer as string | undefined)
-    : undefined;
+  return report.pages
+    .find((page) => page.id === "general-info")
+    ?.elements?.filter((element) => element.type === ElementType.Textbox)
+    .find((element) => element.id === "contact-email")?.answer;
 };
 
 export const sendEmail = async (report: Report) => {
