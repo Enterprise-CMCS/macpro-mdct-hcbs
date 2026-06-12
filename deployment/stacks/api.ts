@@ -113,7 +113,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
-    ...(launchDarklyServer && { LD_SDK_SERVER: launchDarklyServer }),
+    launchDarklyServer,
   };
 
   const additionalPolicies = [

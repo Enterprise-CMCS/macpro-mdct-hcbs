@@ -48,7 +48,7 @@ describe("getFlag", () => {
     expect(result).toBe(false);
   });
 
-  it("returns defaultValue when LaunchDarkly client fails to initialize", async () => {
+  it("falls back to 'local' when launchDarklyServer is not set", async () => {
     mockWaitForInitialization.mockRejectedValueOnce(new Error("timeout"));
 
     const result = await getFlag("testFlag", false);
@@ -61,6 +61,6 @@ describe("getFlag", () => {
 
     await getFlag("testFlag");
 
-    expect(mockInit.mock.calls[0][0]).toBe("local");
+    expect(mockInit).toHaveBeenCalledWith("local", expect.anything());
   });
 });
