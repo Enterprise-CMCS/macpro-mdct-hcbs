@@ -284,6 +284,7 @@ export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
     {
       id: "assess-of-core",
       label: "Assessment of Core Elements",
+      hint: "Statistically valid random sample of participants in enrolled in Medicaid MLTSS or FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
     },
     {
       id: "assess-of-supplemental",

@@ -171,6 +171,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
               <CmsdsTextField
                 label="Numerator"
                 name={`${index}.${FieldNames.numerator}`}
+                hint={assess.hint}
                 onChange={onChangeHandler}
                 onBlur={onChangeHandler}
                 value={value.numerator}

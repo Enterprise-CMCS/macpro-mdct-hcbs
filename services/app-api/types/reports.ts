@@ -572,7 +572,7 @@ export type MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr;
   label?: string;
   helperText?: string;
-  assessments: { label: string; id: string }[];
+  assessments: { label: string; id: string; hint?: string }[];
   answer?: RateSetData;
   required: boolean;
 };
