@@ -5,6 +5,7 @@ import { testA11y } from "utils/testing/commonTests";
 import { ElementType, TextAreaBoxTemplate } from "types/report";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { useState } from "react";
+import { ErrorMessages } from "../../constants";
 
 jest.mock("utils/state/hooks/useElementIsHidden");
 const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
@@ -59,6 +60,49 @@ describe("<TextAreaField />", () => {
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
     const textField = screen.queryByLabelText("test label");
     expect(textField).not.toBeInTheDocument();
+  });
+
+  test("word count is not shown when no wordLimit is set", () => {
+    render(<TextAreaWrapper template={mockedTextAreaElement} />);
+    expect(
+      screen.queryByTestId("mock-textarea-id-word-count")
+    ).not.toBeInTheDocument();
+  });
+
+  test("word count shows 0 when field is empty", () => {
+    render(
+      <TextAreaWrapper
+        template={{ ...mockedTextAreaElement, wordCount: 300 }}
+      />
+    );
+    expect(screen.getByTestId("mock-textarea-id-word-count")).toHaveTextContent(
+      "Suggested length 0/300 words"
+    );
+  });
+
+  test("word count updates as user types", async () => {
+    render(
+      <TextAreaWrapper
+        template={{ ...mockedTextAreaElement, wordCount: 300 }}
+      />
+    );
+    await userEvent.type(screen.getByRole("textbox"), "hello world");
+    expect(screen.getByTestId("mock-textarea-id-word-count")).toHaveTextContent(
+      "Suggested length 2/300 words"
+    );
+  });
+
+  test("error shown when word limit exceeded", async () => {
+    render(
+      <TextAreaWrapper template={{ ...mockedTextAreaElement, wordCount: 3 }} />
+    );
+    await userEvent.type(screen.getByRole("textbox"), "hello world hi there");
+    expect(
+      screen.getByText(ErrorMessages.wordCountExceeded(3))
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("mock-textarea-id-word-count")).toHaveTextContent(
+      "Suggested length 4/3 words"
+    );
   });
 
   testA11y(<TextAreaWrapper template={mockedTextAreaElement} />);

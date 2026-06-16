@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { Box } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 import { parseHtml } from "utils";
+import { colors } from "styles/foundations/colors";
 import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ErrorMessages } from "../../constants";
+import warningIcon from "assets/icons/alert/icon_warning.svg";
+
+const countWords = (value: string): number => {
+  const trimmed = value.trim();
+  if (!trimmed) return 0;
+  return trimmed.split(/\s+/).length;
+};
 
 export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   const textbox = props.element;
   const updateElement = props.updateElement;
-  const defaultValue = textbox.answer ?? "";
-  const [displayValue, setDisplayValue] = useState(defaultValue);
+  const wordLimit = textbox.wordCount;
+  const [displayValue, setDisplayValue] = useState(textbox.answer ?? "");
   const [errorMessage, setErrorMessage] = useState("");
 
   const hideElement = useElementIsHidden(textbox.hideCondition);
@@ -21,9 +29,28 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
     setDisplayValue(textbox.answer ?? "");
   }, [textbox.answer]);
 
-  const onChangeHandler = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const wordCount = countWords(displayValue);
+  const isOverLimit = wordLimit !== undefined && wordCount > wordLimit;
+
+  useEffect(() => {
+    const element = document.querySelector<HTMLTextAreaElement>(
+      `textarea[name="${textbox.id}"]`
+    );
+    if (!element) return;
+
+    if (isOverLimit) {
+      element.style.borderColor = colors.palette.warn_darkest;
+      element.style.outlineColor = colors.palette.warn_darkest;
+      element.style.boxShadow = `0 0 0 1px ${colors.palette.warn_darkest}`;
+      return;
+    }
+
+    element.style.borderColor = "";
+    element.style.outlineColor = "";
+    element.style.boxShadow = "";
+  }, [isOverLimit, textbox.id]);
+
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setDisplayValue(value);
     if (!value && textbox.required) {
@@ -31,11 +58,41 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
     } else {
       setErrorMessage("");
     }
-    const answer = value === "" ? undefined : value;
-    updateElement({ answer });
+    updateElement({ answer: value === "" ? undefined : value });
   };
 
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
+  const hintContent = (
+    <>
+      {parsedHint}
+      {isOverLimit && wordLimit !== undefined && (
+        <Text
+          as="span"
+          display="inline-flex"
+          mt="1"
+          alignItems="flex-start"
+          gap="2"
+        >
+          <Image
+            src={warningIcon}
+            alt="warning icon"
+            boxSize="16px"
+            mt="2px"
+            data-testid={`${textbox.id}-word-warning-icon`}
+          />
+          <Text
+            as="span"
+            display="block"
+            fontSize="sm"
+            color="palette.warn_darkest"
+            data-testid={`${textbox.id}-word-warning`}
+          >
+            {ErrorMessages.wordCountExceeded(wordLimit)}
+          </Text>
+        </Text>
+      )}
+    </>
+  );
 
   const labelText = (
     <>
@@ -53,7 +110,7 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
       <CmsdsTextField
         name={textbox.id}
         label={labelText}
-        hint={parsedHint}
+        hint={hintContent}
         onChange={onChangeHandler}
         onBlur={onChangeHandler}
         value={displayValue}
@@ -62,6 +119,17 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
         rows={3}
         disabled={props.disabled}
       />
+      {wordLimit !== undefined && (
+        <Text
+          fontSize="sm"
+          color={isOverLimit ? "palette.warn_darkest" : "gray.600"}
+          mt="1"
+          aria-live="polite"
+          data-testid={`${textbox.id}-word-count`}
+        >
+          Suggested length {wordCount}/{wordLimit} words
+        </Text>
+      )}
     </Box>
   );
 };

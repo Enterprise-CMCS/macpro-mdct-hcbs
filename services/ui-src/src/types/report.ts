@@ -312,6 +312,7 @@ export type TextAreaBoxTemplate = {
   id: string;
   label: string;
   helperText?: string;
+  wordCount?: number;
   answer?: string;
   hideCondition?: HideCondition;
   required: boolean;

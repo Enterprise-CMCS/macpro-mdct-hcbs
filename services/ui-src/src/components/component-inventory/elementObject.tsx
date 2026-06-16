@@ -175,6 +175,18 @@ export const elementObject: {
           required: true,
         }}
       />,
+      <TextAreaField
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.TextAreaField,
+          id: "id-textareafield-word-count",
+          label: "TextAreaField with word count",
+          helperText:
+            "Briefly describe the tracking used to monitor progress toward the performance target (250-300 words).",
+          required: false,
+          wordCount: 300,
+        }}
+      />,
     ],
     pdfVariants: [<ExportedReportWrapper section={textAreaSection} />],
   },

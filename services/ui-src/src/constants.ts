@@ -14,6 +14,8 @@ export const ErrorMessages = {
   ) => `${numerator} must be 0 when the ${denominator} is 0`,
   mustBeUniqueReportName:
     "A report with this name already exists during this reporting period.",
+  wordCountExceeded: (count: number) =>
+    `Warning: You have exceeded the recommended ${count}-word limit. Please consider condensing your response to ensure clarity and conciseness before submitting.`,
 } as const;
 
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";
