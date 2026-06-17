@@ -72,7 +72,7 @@ describe("<TextAreaField />", () => {
   test("word count shows 0 when field is empty", () => {
     render(
       <TextAreaWrapper
-        template={{ ...mockedTextAreaElement, wordCount: 300 }}
+        template={{ ...mockedTextAreaElement, wordLimit: 300 }}
       />
     );
     expect(screen.getByTestId("mock-textarea-id-word-count")).toHaveTextContent(
@@ -83,7 +83,7 @@ describe("<TextAreaField />", () => {
   test("word count updates as user types", async () => {
     render(
       <TextAreaWrapper
-        template={{ ...mockedTextAreaElement, wordCount: 300 }}
+        template={{ ...mockedTextAreaElement, wordLimit: 300 }}
       />
     );
     await userEvent.type(screen.getByRole("textbox"), "hello world");
@@ -94,7 +94,7 @@ describe("<TextAreaField />", () => {
 
   test("error shown when word limit exceeded", async () => {
     render(
-      <TextAreaWrapper template={{ ...mockedTextAreaElement, wordCount: 3 }} />
+      <TextAreaWrapper template={{ ...mockedTextAreaElement, wordLimit: 3 }} />
     );
     await userEvent.type(screen.getByRole("textbox"), "hello world hi there");
     expect(

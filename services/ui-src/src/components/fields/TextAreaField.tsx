@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { parseHtml } from "utils";
-import { colors } from "styles/foundations/colors";
 import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
@@ -18,7 +17,7 @@ const countWords = (value: string): number => {
 export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   const textbox = props.element;
   const updateElement = props.updateElement;
-  const wordLimit = textbox.wordCount;
+  const wordLimit = textbox.wordLimit;
   const [displayValue, setDisplayValue] = useState(textbox.answer ?? "");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,26 +30,11 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
 
   const wordCount = countWords(displayValue);
   const isOverLimit = wordLimit !== undefined && wordCount > wordLimit;
+  const fieldClassName = isOverLimit ? "word-limit-warning" : undefined;
 
-  useEffect(() => {
-    const element = document.querySelector<HTMLTextAreaElement>(
-      `textarea[name="${textbox.id}"]`
-    );
-    if (!element) return;
-
-    if (isOverLimit) {
-      element.style.borderColor = colors.palette.warn_darkest;
-      element.style.outlineColor = colors.palette.warn_darkest;
-      element.style.boxShadow = `0 0 0 1px ${colors.palette.warn_darkest}`;
-      return;
-    }
-
-    element.style.borderColor = "";
-    element.style.outlineColor = "";
-    element.style.boxShadow = "";
-  }, [isOverLimit, textbox.id]);
-
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const value = event.target.value;
     setDisplayValue(value);
     if (!value && textbox.required) {
@@ -75,12 +59,13 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
         >
           <Image
             src={warningIcon}
-            alt="warning icon"
+            alt=""
+            aria-hidden="true"
             boxSize="16px"
-            mt="2px"
+            mt="1"
             data-testid={`${textbox.id}-word-warning-icon`}
           />
-          <Text
+          <Box
             as="span"
             display="block"
             fontSize="sm"
@@ -88,7 +73,7 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
             data-testid={`${textbox.id}-word-warning`}
           >
             {ErrorMessages.wordCountExceeded(wordLimit)}
-          </Text>
+          </Box>
         </Text>
       )}
     </>
@@ -108,6 +93,7 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   return (
     <Box>
       <CmsdsTextField
+        className={fieldClassName}
         name={textbox.id}
         label={labelText}
         hint={hintContent}

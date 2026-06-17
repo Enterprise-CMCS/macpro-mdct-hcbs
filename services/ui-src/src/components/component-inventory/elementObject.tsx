@@ -184,7 +184,7 @@ export const elementObject: {
           helperText:
             "Briefly describe the tracking used to monitor progress toward the performance target (250-300 words).",
           required: false,
-          wordCount: 300,
+          wordLimit: 300,
         }}
       />,
     ],
