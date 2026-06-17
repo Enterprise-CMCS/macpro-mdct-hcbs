@@ -6,7 +6,7 @@ import { TextAreaBoxTemplate } from "../../types/report";
 import { PageElementProps } from "../report/Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ErrorMessages } from "../../constants";
-import warningIcon from "assets/icons/alert/icon_warning.svg";
+import warningIconBrown from "assets/icons/alert/icon_warning_brown.svg";
 
 const countWords = (value: string): number => {
   const trimmed = value.trim();
@@ -50,7 +50,7 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
     <>
       {parsedHint}
       {isOverLimit && wordLimit !== undefined && (
-        <Text
+        <Box
           as="span"
           display="inline-flex"
           mt="1"
@@ -58,23 +58,21 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
           gap="2"
         >
           <Image
-            src={warningIcon}
+            src={warningIconBrown}
             alt=""
             aria-hidden="true"
             boxSize="16px"
             mt="1"
-            data-testid={`${textbox.id}-word-warning-icon`}
           />
-          <Box
+          <Text
             as="span"
             display="block"
             fontSize="sm"
             color="palette.warn_darkest"
-            data-testid={`${textbox.id}-word-warning`}
           >
             {ErrorMessages.wordCountExceeded(wordLimit)}
-          </Box>
-        </Text>
+          </Text>
+        </Box>
       )}
     </>
   );
@@ -111,7 +109,6 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
           color={isOverLimit ? "palette.warn_darkest" : "gray.600"}
           mt="1"
           aria-live="polite"
-          data-testid={`${textbox.id}-word-count`}
         >
           Suggested length {wordCount}/{wordLimit} words
         </Text>

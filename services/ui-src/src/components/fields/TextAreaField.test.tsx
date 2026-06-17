@@ -64,9 +64,7 @@ describe("<TextAreaField />", () => {
 
   test("word count is not shown when no wordLimit is set", () => {
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
-    expect(
-      screen.queryByTestId("mock-textarea-id-word-count")
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/Suggested length/)).not.toBeInTheDocument();
   });
 
   test("word count shows 0 when field is empty", () => {
@@ -75,9 +73,7 @@ describe("<TextAreaField />", () => {
         template={{ ...mockedTextAreaElement, wordLimit: 300 }}
       />
     );
-    expect(screen.getByTestId("mock-textarea-id-word-count")).toHaveTextContent(
-      "Suggested length 0/300 words"
-    );
+    expect(screen.getByText("Suggested length 0/300 words")).toBeVisible();
   });
 
   test("word count updates as user types", async () => {
@@ -87,9 +83,7 @@ describe("<TextAreaField />", () => {
       />
     );
     await userEvent.type(screen.getByRole("textbox"), "hello world");
-    expect(screen.getByTestId("mock-textarea-id-word-count")).toHaveTextContent(
-      "Suggested length 2/300 words"
-    );
+    expect(screen.getByText("Suggested length 2/300 words")).toBeVisible();
   });
 
   test("error shown when word limit exceeded", async () => {
@@ -97,12 +91,8 @@ describe("<TextAreaField />", () => {
       <TextAreaWrapper template={{ ...mockedTextAreaElement, wordLimit: 3 }} />
     );
     await userEvent.type(screen.getByRole("textbox"), "hello world hi there");
-    expect(
-      screen.getByText(ErrorMessages.wordCountExceeded(3))
-    ).toBeInTheDocument();
-    expect(screen.getByTestId("mock-textarea-id-word-count")).toHaveTextContent(
-      "Suggested length 4/3 words"
-    );
+    expect(screen.getByText(ErrorMessages.wordCountExceeded(3))).toBeVisible();
+    expect(screen.getByText("Suggested length 4/3 words")).toBeVisible();
   });
 
   testA11y(<TextAreaWrapper template={mockedTextAreaElement} />);
