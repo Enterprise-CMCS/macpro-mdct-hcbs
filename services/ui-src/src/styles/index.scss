@@ -176,6 +176,12 @@ button {
   font-weight: normal;
 }
 
+.word-limit-warning .ds-c-field {
+  border-color: var(--chakra-colors-palette-warn_darkest);
+  outline-color: var(--chakra-colors-palette-warn_darkest);
+  box-shadow: 0 0 0 1px var(--chakra-colors-palette-warn_darkest);
+}
+
 // Tech Specs Link Styles
 .tech-spec-link {
   color: var(--chakra-colors-palette-primary);

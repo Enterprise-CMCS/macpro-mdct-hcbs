@@ -97,6 +97,7 @@ const textAreaTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
+  wordLimit: number().notRequired(),
   answer: string().notRequired(),
   hideCondition: hideConditionSchema,
   required: boolean().required(),
