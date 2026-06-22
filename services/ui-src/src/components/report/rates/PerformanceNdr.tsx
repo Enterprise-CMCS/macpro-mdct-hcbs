@@ -8,8 +8,8 @@ import {
   stringifyInput,
   stringifyResult,
 } from "./calculations";
-import { PageElementProps } from "components/report/SimpleElements";
-import { ErrorMessages, autoCalculatesText } from "../../constants";
+import { PageElementProps } from "components/report/Elements";
+import { ErrorMessages, autoCalculatesText } from "../../../constants";
 import { Alert } from "components/alerts/Alert";
 import { Page } from "components/report/Page";
 import { ExportRateTable } from "components/export/ExportedReportTable";

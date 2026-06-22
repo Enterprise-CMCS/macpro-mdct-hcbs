@@ -8,7 +8,7 @@ import {
 } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 
 const mockedPerformanceElement: LengthOfStayRateTemplate = {
   id: "mock-perf-id",

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { parseHtml } from "utils";
-import { TextAreaBoxTemplate } from "../../types/report";
-import { PageElementProps } from "../report/SimpleElements";
+import { TextAreaBoxTemplate } from "types/report";
+import { PageElementProps } from "../Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 import warningIconBrown from "assets/icons/alert/icon_warning_brown.svg";
 
 const countWords = (value: string): number => {

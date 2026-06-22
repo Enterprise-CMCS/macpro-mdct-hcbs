@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
-import { PageElementProps } from "components/report/SimpleElements";
+import { PageElementProps } from "components/report/Elements";
 import { ChoiceTemplate, PageElement, RadioTemplate } from "types";
 import { parseHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";

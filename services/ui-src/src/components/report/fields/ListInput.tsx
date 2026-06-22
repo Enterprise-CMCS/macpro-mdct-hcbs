@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ListInputTemplate } from "types";
-import { PageElementProps } from "components/report/SimpleElements";
+import { PageElementProps } from "components/report/Elements";
 import {
   Button,
   HStack,
@@ -11,7 +11,7 @@ import {
 import { TextField } from "@cmsgov/design-system";
 import cancelPrimary from "assets/icons/cancel/icon_cancel_primary.svg";
 import addPrimary from "assets/icons/add/icon_add_blue.svg";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 
 export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
   const { updateElement, disabled, element } = props;

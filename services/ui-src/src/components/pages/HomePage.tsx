@@ -1,12 +1,12 @@
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
-import { PageTemplate } from "./PageTemplate";
+import { PageTemplate } from "components/layout/PageTemplate";
+import { AdminDashSelector } from "components/forms/AdminDashSelector";
 import { CiIntroductionCard } from "components/cards/CiIntroductionCard";
-import { QmsIntroductionCard } from "components/cards/QmsIntroductionCard";
-import { TacmIntroductionCard } from "components/cards/TacmIntroductionCard";
 import { PCPIntroductionCard } from "components/cards/PCPIntroductionCard";
 import { QipIntroductionCard } from "components/cards/QipIntroductionCard";
+import { QmsIntroductionCard } from "components/cards/QmsIntroductionCard";
+import { TacmIntroductionCard } from "components/cards/TacmIntroductionCard";
 import { WWLIntroductionCard } from "components/cards/WWLIntroductionCard";
-import { AdminDashSelector } from "components/forms/AdminDashSelector";
 import { useStore } from "utils";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { activeBannerSelector } from "utils/state/selectors";

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { measurePrevPage, useStore } from "utils";
 import { Alert } from "components/alerts/Alert";
-import { PageElementProps } from "./SimpleElements";
+import { PageElementProps } from "./Elements";
 import { ButtonLinkTemplate, PageStatus, StatusAlertTemplate } from "types";
 import { submittableMetricsSelector } from "utils/state/selectors";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";

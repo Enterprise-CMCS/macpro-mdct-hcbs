@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { ElementType, MultiRateNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 
 const mockedElement: MultiRateNdrTemplate = {
   id: "mock-perf-id",

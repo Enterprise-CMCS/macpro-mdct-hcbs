@@ -1,4 +1,4 @@
-import { DateField } from "components/fields/DateField";
+import { DateField } from "./DateField";
 import { testA11y } from "utils/testing/commonTests";
 import { DateTemplate, ElementType } from "types/report";
 import { render, screen } from "@testing-library/react";

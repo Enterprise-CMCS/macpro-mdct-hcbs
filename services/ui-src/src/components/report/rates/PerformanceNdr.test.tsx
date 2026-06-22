@@ -4,7 +4,7 @@ import { PerformanceNdr, PerformanceNdrExport } from "./PerformanceNdr";
 import { ElementType, PerformanceNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 
 const mockedElement: PerformanceNdrTemplate = {
   id: "mock-perf-id",

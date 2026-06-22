@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { parseHtml } from "utils";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
-import { PageElementProps } from "../report/SimpleElements";
-import { DateTemplate } from "../../types/report";
+import { PageElementProps } from "../Elements";
+import { DateTemplate } from "types/report";
 import { validateDate } from "utils/validation/inputValidation";
 
 export const DateField = (props: PageElementProps<DateTemplate>) => {

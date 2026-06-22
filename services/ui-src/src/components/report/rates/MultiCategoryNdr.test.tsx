@@ -4,7 +4,7 @@ import { ElementType, MultiCategoryNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { MultiCategoryNdr } from "./MultiCategoryNdr";
 import { useState } from "react";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 
 const mockElementTemplate: MultiCategoryNdrTemplate = {
   id: "mock-perf-id",

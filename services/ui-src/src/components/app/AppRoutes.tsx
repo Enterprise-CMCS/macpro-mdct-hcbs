@@ -1,18 +1,18 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { HomePage } from "components/layout/HomePage";
-import { AdminPage } from "components/pages/AdminPage";
-import { HelpPage } from "components/pages/HelpPage";
-import { ProfilePage } from "components/pages/ProfilePage";
-import { NotFoundPage } from "components/pages/NotFoundPage";
-import { ExportedReportPage } from "components/pages/ExportedReportPage";
+import { ReportAutosaveProvider } from "components/report/ReportAutosaveProvider";
 import { ComponentInventory } from "components/component-inventory/ComponentInventory";
+import { AdminPage } from "components/pages/AdminPage";
 import { DashboardPage } from "components/pages/DashboardPage";
-import { ReportPageWrapper } from "components/report/ReportPageWrapper";
+import { ExportedReportPage } from "components/pages/ExportedReportPage";
+import { HelpPage } from "components/pages/HelpPage";
+import { HomePage } from "components/pages/HomePage";
+import { NotFoundPage } from "components/pages/NotFoundPage";
+import { NotificationsPage } from "components/pages/NotificationsPage";
+import { ProfilePage } from "components/pages/ProfilePage";
+import { ReportPageWrapper } from "components/pages/ReportPageWrapper";
 import { useStore } from "utils";
 import { useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
-import { ReportAutosaveProvider } from "components/report/ReportAutosaveProvider";
-import { NotificationsPage } from "components/pages/NotificationsPage";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};

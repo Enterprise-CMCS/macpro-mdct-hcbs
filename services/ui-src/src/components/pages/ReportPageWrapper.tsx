@@ -12,15 +12,15 @@ import {
 } from "@chakra-ui/react";
 import { getReport, useStore } from "utils";
 import { Title } from "components/layout/Title";
-import { Page } from "./Page";
-import { ReportModal } from "./ReportModal";
-import { Sidebar } from "./Sidebar";
-import { PraDisclosure } from "./PraDisclosure";
+import { Page } from "../report/Page";
+import { ReportModal } from "../report/ReportModal";
+import { Sidebar } from "../report/Sidebar";
+import { PraDisclosure } from "../report/PraDisclosure";
 import { currentPageSelector } from "utils/state/selectors";
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
 import { isReviewSubmitPage, PageElement, ReportStatus } from "types";
-import { ReportAutosaveContext } from "./ReportAutosaveProvider";
+import { ReportAutosaveContext } from "../report/ReportAutosaveProvider";
 import { displayDivider } from "utils/state/reportLogic/reportActions";
 
 export const ReportPageWrapper = () => {

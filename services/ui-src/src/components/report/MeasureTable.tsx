@@ -24,7 +24,7 @@ import {
   ReportStatus,
 } from "types";
 import { useStore } from "utils";
-import { PageElementProps } from "./SimpleElements";
+import { PageElementProps } from "./Elements";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 

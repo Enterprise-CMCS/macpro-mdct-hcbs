@@ -5,7 +5,7 @@ import { testA11y } from "utils/testing/commonTests";
 import { ElementType, TextAreaBoxTemplate } from "types/report";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { useState } from "react";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 
 jest.mock("utils/state/hooks/useElementIsHidden");
 const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<

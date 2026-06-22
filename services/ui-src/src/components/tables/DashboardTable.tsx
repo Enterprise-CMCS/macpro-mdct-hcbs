@@ -11,7 +11,7 @@ import {
   HStack,
   Spinner,
 } from "@chakra-ui/react";
-import { Table } from "components/tables/Table";
+import { Table } from "./Table";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { getReportName, LiteReport, ReportStatus } from "types";
 import {

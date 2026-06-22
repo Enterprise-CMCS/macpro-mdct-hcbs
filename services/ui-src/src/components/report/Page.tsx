@@ -9,28 +9,28 @@ import {
   NestedHeadingElement,
   DividerElement,
   SubHeaderMeasureElement,
-} from "./SimpleElements";
+} from "./Elements";
 import {
   assertExhaustive,
   ElementType,
   PageElement,
   ReportStatus,
 } from "../../types/report";
-import { DateField } from "components/fields/DateField";
-import { DateRange } from "components/fields/DateRange";
-import { DropdownField } from "components/fields/DropdownField";
-import { RadioField } from "components/fields/RadioField";
-import { TextAreaField } from "components/fields/TextAreaField";
-import { TextField } from "components/fields/TextField";
-import { CheckboxField } from "components/fields/CheckboxField";
-import { ListInput } from "components/fields/ListInput";
-import { EligibilityTableElement } from "./WwlComponents/EligibilityTable";
-import { LengthOfStay } from "components/rates/LengthOfStay";
-import { ReadmissionRate } from "components/rates/ReadmissionRate";
-import { MultiCategoryNdr } from "components/rates/MultiCategoryNdr";
-import { MultiRateNdr } from "components/rates/MultiRateNdr";
-import { NDR } from "components/rates/NDR";
-import { PerformanceNdr } from "components/rates/PerformanceNdr";
+import { DateField } from "components/report/fields/DateField";
+import { DateRange } from "components/report/fields/DateRange";
+import { DropdownField } from "components/report/fields/DropdownField";
+import { RadioField } from "components/report/fields/RadioField";
+import { TextAreaField } from "components/report/fields/TextAreaField";
+import { TextField } from "components/report/fields/TextField";
+import { CheckboxField } from "components/report/fields/CheckboxField";
+import { ListInput } from "components/report/fields/ListInput";
+import { LengthOfStay } from "components/report/rates/LengthOfStay";
+import { ReadmissionRate } from "components/report/rates/ReadmissionRate";
+import { MultiCategoryNdr } from "components/report/rates/MultiCategoryNdr";
+import { MultiRateNdr } from "components/report/rates/MultiRateNdr";
+import { NDR } from "components/report/rates/NDR";
+import { PerformanceNdr } from "components/report/rates/PerformanceNdr";
+import { EligibilityTableElement } from "./EligibilityTable";
 import { MeasureTableElement } from "./MeasureTable";
 import { MeasureResultsNavigationTableElement } from "./MeasureResultsNavigationTable";
 import { StatusTableElement } from "./StatusTable";

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CheckboxField, CheckboxExport } from "./CheckboxField";
+import { CheckboxExport, CheckboxField } from "./CheckboxField";
 import { ElementType, CheckboxTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 

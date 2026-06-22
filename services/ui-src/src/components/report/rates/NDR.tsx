@@ -8,8 +8,8 @@ import {
   stringifyInput,
   stringifyResult,
 } from "./calculations";
-import { PageElementProps } from "components/report/SimpleElements";
-import { autoCalculatesText, ErrorMessages } from "../../constants";
+import { PageElementProps } from "components/report/Elements";
+import { autoCalculatesText, ErrorMessages } from "../../../constants";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
 const FieldNames = {

@@ -8,7 +8,7 @@ import {
   stringifyInput,
   stringifyResult,
 } from "./calculations";
-import { PageElementProps } from "components/report/SimpleElements";
+import { PageElementProps } from "components/report/Elements";
 import { zip } from "utils/other/arrays";
 import {
   makeEmptyStringCopyOf,
@@ -18,7 +18,7 @@ import {
   ExportedReportTable,
   ExportRateTable,
 } from "components/export/ExportedReportTable";
-import { autoPopulatedText, ErrorMessages } from "../../constants";
+import { autoPopulatedText, ErrorMessages } from "../../../constants";
 
 const FieldNames = {
   numerator: "numerator",

@@ -8,13 +8,13 @@ import {
   stringifyInput,
   stringifyResult,
 } from "./calculations";
-import { PageElementProps } from "components/report/SimpleElements";
+import { PageElementProps } from "components/report/Elements";
 import {
   makeEmptyStringCopyOf,
   validateNumber,
 } from "utils/validation/inputValidation";
 import { ExportRateTable } from "components/export/ExportedReportTable";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 
 export const LengthOfStay = (
   props: PageElementProps<LengthOfStayRateTemplate>

@@ -15,7 +15,7 @@ import {
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
 import { useStore } from "utils";
-import { ReportAutosaveProvider } from "./ReportAutosaveProvider";
+import { ReportAutosaveProvider } from "components/report/ReportAutosaveProvider";
 
 const testReport: Report = {
   type: ReportType.QMS,

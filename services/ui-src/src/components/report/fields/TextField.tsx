@@ -6,10 +6,10 @@ import {
   TextboxTemplate,
   NumberFieldTemplate,
   ElementType,
-} from "../../types/report";
-import { PageElementProps } from "../report/SimpleElements";
+} from "types/report";
+import { PageElementProps } from "../Elements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
-import { ErrorMessages } from "../../constants";
+import { ErrorMessages } from "../../../constants";
 import { parseNumber, stringifyInput } from "../rates/calculations";
 import { isEmail } from "utils/validation/inputValidation";
 

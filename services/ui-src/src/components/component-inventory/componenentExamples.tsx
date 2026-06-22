@@ -1,25 +1,25 @@
 import { Accordion, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { DateField } from "components/fields/DateField";
-import { DropdownField } from "components/fields/DropdownField";
-import { RadioField } from "components/fields/RadioField";
-import { TextAreaField } from "components/fields/TextAreaField";
-import { TextField } from "components/fields/TextField";
+import { DateField } from "components/report/fields/DateField";
+import { DropdownField } from "components/report/fields/DropdownField";
+import { RadioField } from "components/report/fields/RadioField";
+import { TextAreaField } from "components/report/fields/TextAreaField";
+import { TextField } from "components/report/fields/TextField";
 import { AccordionItem } from "components/accordions/AccordionItem";
-import { CheckboxField } from "components/fields/CheckboxField";
-import { EligibilityTableElement } from "components/report/WwlComponents/EligibilityTable";
-import { LengthOfStay } from "components/rates/LengthOfStay";
-import { ReadmissionRate } from "components/rates/ReadmissionRate";
-import { MultiCategoryNdr } from "components/rates/MultiCategoryNdr";
-import { MultiRateNdr } from "components/rates/MultiRateNdr";
-import { NDR } from "components/rates/NDR";
-import { PerformanceNdr } from "components/rates/PerformanceNdr";
+import { CheckboxField } from "components/report/fields/CheckboxField";
+import { LengthOfStay } from "components/report/rates/LengthOfStay";
+import { ReadmissionRate } from "components/report/rates/ReadmissionRate";
+import { MultiCategoryNdr } from "components/report/rates/MultiCategoryNdr";
+import { MultiRateNdr } from "components/report/rates/MultiRateNdr";
+import { NDR } from "components/report/rates/NDR";
+import { PerformanceNdr } from "components/report/rates/PerformanceNdr";
 import { MeasureTableElement } from "components/report/MeasureTable";
+import { EligibilityTableElement } from "components/report/EligibilityTable";
 import { MeasureResultsNavigationTableElement } from "components/report/MeasureResultsNavigationTable";
 import { StatusTableElement } from "components/report/StatusTable";
 import { MeasureDetailsElement } from "components/report/MeasureDetails";
 import { MeasureFooterElement } from "components/report/MeasureFooter";
 import { StatusAlert } from "components/report/StatusAlert";
-
+import { ListInput } from "components/report/fields/ListInput";
 import {
   ButtonLinkElement,
   DividerElement,
@@ -28,7 +28,7 @@ import {
   ParagraphElement,
   SubHeaderElement,
   SubHeaderMeasureElement,
-} from "components/report/SimpleElements";
+} from "components/report/Elements";
 import {
   AlertTypes,
   ElementType,
@@ -56,7 +56,6 @@ import {
 } from "./pdfElementSectionHelpers";
 import { formatMonthDayYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
-import { ListInput } from "components/fields/ListInput";
 
 const logNewElement = (el: Partial<PageElement>) => console.log("Updated:", el);
 
