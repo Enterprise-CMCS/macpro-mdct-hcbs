@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { PageElementProps } from "components/report/Elements";
+import { PageElementProps } from "components/report/SimpleElements";
 import { DropdownTemplate } from "types";
 import {
   Dropdown as CmsdsDropdownField,

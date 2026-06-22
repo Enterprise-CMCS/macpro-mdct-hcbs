@@ -1,6 +1,6 @@
 import { Divider, Heading, Spinner, Flex } from "@chakra-ui/react";
 import { ReactNode, Fragment, useEffect, useState } from "react";
-import { elementObject } from "./elementObject";
+import { componentExamples } from "./componenentExamples";
 import { ElementType, Report, ReportStatus } from "types";
 import { useStore } from "utils";
 
@@ -67,7 +67,7 @@ export const ComponentInventory = () => {
   }, []);
 
   const buildComponentDisplay = (type: ElementType) => {
-    const componentExample = elementObject[type] as {
+    const componentExample = componentExamples[type] as {
       description: string;
       variants: ReactNode[];
       pdfVariants: ReactNode[];

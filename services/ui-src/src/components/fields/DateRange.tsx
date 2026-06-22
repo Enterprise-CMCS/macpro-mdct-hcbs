@@ -3,7 +3,7 @@ import { Box, Stack, Text } from "@chakra-ui/react";
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { parseHtml } from "utils";
 import { DateRangeTemplate } from "types/report";
-import { PageElementProps } from "components/report/Elements";
+import { PageElementProps } from "components/report/SimpleElements";
 import { ErrorMessages } from "../../constants";
 import { validateDate } from "utils/validation/inputValidation";
 import { parseMMDDYYYY } from "utils/other/time";

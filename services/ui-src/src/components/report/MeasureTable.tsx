@@ -13,7 +13,8 @@ import {
   Flex,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { MeasureReplacementModal, TableStatusIcon } from "components";
+import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import { MeasureReplacementModal } from "components/report/MeasureReplacementModal";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,
@@ -23,7 +24,7 @@ import {
   ReportStatus,
 } from "types";
 import { useStore } from "utils";
-import { PageElementProps } from "./Elements";
+import { PageElementProps } from "./SimpleElements";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 

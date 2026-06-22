@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Flex } from "@chakra-ui/react";
-import { PageElementProps } from "../report/Elements";
+import { PageElementProps } from "./SimpleElements";
 import {
   isFormPageTemplate,
   MeasureFooterTemplate,

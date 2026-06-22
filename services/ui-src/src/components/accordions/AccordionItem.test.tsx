@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { Accordion } from "@chakra-ui/react";
-import { AccordionItem } from "components";
+import { AccordionItem } from "./AccordionItem";
 import { testA11yAct } from "utils/testing/commonTests";
 
 const accordionItemComponent = (

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { LoginCognito } from "components";
+import { LoginCognito } from "./LoginCognito";
 import { testA11yAct } from "utils/testing/commonTests";
 
 const loginCognitoComponent = (

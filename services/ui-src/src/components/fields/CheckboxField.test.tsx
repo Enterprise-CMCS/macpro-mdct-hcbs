@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CheckboxField } from "components";
+import { CheckboxField, CheckboxExport } from "./CheckboxField";
 import { ElementType, CheckboxTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
-import { CheckboxExport } from "./CheckboxField";
 
 const updateSpy = jest.fn();
 

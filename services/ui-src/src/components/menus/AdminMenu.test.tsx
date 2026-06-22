@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { AdminMenu } from "components";
+import { AdminMenu } from "./AdminMenu";
 import { testA11y } from "utils/testing/commonTests";
 
 const menuComponent = (

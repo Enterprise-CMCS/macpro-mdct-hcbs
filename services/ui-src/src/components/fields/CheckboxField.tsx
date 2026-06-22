@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
-import { PageElementProps } from "components/report/Elements";
+import { PageElementProps } from "components/report/SimpleElements";
 import {
   AlertTypes,
   CheckboxTemplate,

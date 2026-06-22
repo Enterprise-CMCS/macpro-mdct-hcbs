@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
-import { PageElementProps } from "components/report/Elements";
+import { PageElementProps } from "components/report/SimpleElements";
 import { ChoiceTemplate, PageElement, RadioTemplate } from "types";
 import { parseHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
@@ -8,7 +8,7 @@ import { Page } from "components/report/Page";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
-import { Modal } from "components";
+import { Modal } from "components/modals/Modal";
 
 const formatChoices = (
   choices: ChoiceTemplate[],

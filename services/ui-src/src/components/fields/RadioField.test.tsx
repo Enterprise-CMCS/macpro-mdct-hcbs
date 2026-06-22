@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RadioField } from "components";
+import { RadioField } from "./RadioField";
 import { ElementType, RadioTemplate } from "types";
 import { useStore } from "utils";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";

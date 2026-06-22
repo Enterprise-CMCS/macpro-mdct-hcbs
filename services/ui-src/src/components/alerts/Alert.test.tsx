@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Alert } from "components";
+import { Alert } from "./Alert";
 import { AlertTypes } from "types";
 import { testA11y } from "utils/testing/commonTests";
 

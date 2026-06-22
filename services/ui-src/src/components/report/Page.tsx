@@ -9,36 +9,34 @@ import {
   NestedHeadingElement,
   DividerElement,
   SubHeaderMeasureElement,
-} from "./Elements";
+} from "./SimpleElements";
 import {
   assertExhaustive,
   ElementType,
   PageElement,
   ReportStatus,
 } from "../../types/report";
-import {
-  DateField,
-  DateRange,
-  DropdownField,
-  MeasureDetailsElement,
-  MeasureFooterElement,
-  MeasureTableElement,
-  MeasureResultsNavigationTableElement,
-  RadioField,
-  StatusTableElement,
-  TextAreaField,
-  TextField,
-  StatusAlert,
-  LengthOfStay,
-  ReadmissionRate,
-  NDR,
-  PerformanceNdr,
-  MultiCategoryNdr,
-  MultiRateNdr,
-  CheckboxField,
-  ListInput,
-  EligibilityTableElement,
-} from "components";
+import { DateField } from "components/fields/DateField";
+import { DateRange } from "components/fields/DateRange";
+import { DropdownField } from "components/fields/DropdownField";
+import { RadioField } from "components/fields/RadioField";
+import { TextAreaField } from "components/fields/TextAreaField";
+import { TextField } from "components/fields/TextField";
+import { CheckboxField } from "components/fields/CheckboxField";
+import { ListInput } from "components/fields/ListInput";
+import { EligibilityTableElement } from "./WwlComponents/EligibilityTable";
+import { LengthOfStay } from "components/rates/LengthOfStay";
+import { ReadmissionRate } from "components/rates/ReadmissionRate";
+import { MultiCategoryNdr } from "components/rates/MultiCategoryNdr";
+import { MultiRateNdr } from "components/rates/MultiRateNdr";
+import { NDR } from "components/rates/NDR";
+import { PerformanceNdr } from "components/rates/PerformanceNdr";
+import { MeasureTableElement } from "./MeasureTable";
+import { MeasureResultsNavigationTableElement } from "./MeasureResultsNavigationTable";
+import { StatusTableElement } from "./StatusTable";
+import { MeasureDetailsElement } from "./MeasureDetails";
+import { MeasureFooterElement } from "./MeasureFooter";
+import { StatusAlert } from "./StatusAlert";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
 

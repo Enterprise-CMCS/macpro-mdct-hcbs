@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { AccountMenu } from "components";
+import { AccountMenu } from "./AccountMenu";
 import { testA11y } from "utils/testing/commonTests";
 
 const menuComponent = (

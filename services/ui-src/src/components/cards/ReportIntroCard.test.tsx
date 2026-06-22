@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { ReportIntroCard } from "components";
+import { ReportIntroCard } from "./ReportIntroCard";
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";

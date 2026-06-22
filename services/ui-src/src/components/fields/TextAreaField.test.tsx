@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { TextAreaField } from "components";
+import { TextAreaField } from "./TextAreaField";
 import { testA11y } from "utils/testing/commonTests";
 import { ElementType, TextAreaBoxTemplate } from "types/report";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";

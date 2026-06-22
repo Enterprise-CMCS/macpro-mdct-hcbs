@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ListInputTemplate } from "types";
-import { PageElementProps } from "components/report/Elements";
+import { PageElementProps } from "components/report/SimpleElements";
 import {
   Button,
   HStack,

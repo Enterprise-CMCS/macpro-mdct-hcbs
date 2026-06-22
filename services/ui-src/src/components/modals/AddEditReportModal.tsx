@@ -1,5 +1,6 @@
-import { FormEvent, useEffect, useState, ReactElement } from "react";
-import { Alert, Modal } from "components";
+import { useEffect, useState, ReactElement, SubmitEventHandler } from "react";
+import { Alert } from "components/alerts/Alert";
+import { Modal } from "./Modal";
 import {
   TextField as CmsdsTextField,
   Dropdown as CmsdsDropdownField,
@@ -142,7 +143,7 @@ export const AddEditReportModal = ({
       options: optionsData,
     });
   };
-  const onSubmit = async (evt: FormEvent) => {
+  const onSubmit: SubmitEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
     setSubmitting(true);
     setSubmissionAttempted(true);

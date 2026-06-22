@@ -1,5 +1,5 @@
 import { Flex, Image } from "@chakra-ui/react";
-import { Card } from "components";
+import { Card } from "./Card";
 import spreadsheetIcon from "assets/icons/spreadsheet/icon_spreadsheet_gray.svg";
 import settingsIcon from "assets/icons/icon_wrench_gear.svg";
 import { ReactNode } from "react";

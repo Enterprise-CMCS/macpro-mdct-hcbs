@@ -5,7 +5,7 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import { Timeout } from "components";
+import { Timeout } from "./Timeout";
 import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
 import {
   mockStateUserStore,

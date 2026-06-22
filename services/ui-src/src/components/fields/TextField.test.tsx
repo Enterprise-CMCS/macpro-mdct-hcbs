@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { TextField } from "components";
+import { TextField } from "./TextField";
 import { testA11y } from "utils/testing/commonTests";
 import {
   ElementType,

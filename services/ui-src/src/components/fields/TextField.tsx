@@ -7,7 +7,7 @@ import {
   NumberFieldTemplate,
   ElementType,
 } from "../../types/report";
-import { PageElementProps } from "../report/Elements";
+import { PageElementProps } from "../report/SimpleElements";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ErrorMessages } from "../../constants";
 import { parseNumber, stringifyInput } from "../rates/calculations";

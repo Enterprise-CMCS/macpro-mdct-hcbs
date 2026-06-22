@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { testA11y } from "utils/testing/commonTests";
-import { Card } from "components";
+import { Card } from "./Card";
 
 const cardComponent = (
   <Card>

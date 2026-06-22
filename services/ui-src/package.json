@@ -77,14 +77,11 @@
   "jest": {
     "collectCoverageFrom": [
       "src/components/**/*.{ts,tsx}",
-      "!src/components/index.ts*",
       "src/routes/**/*.{ts,tsx}",
-      "!src/routes/index.tsx",
       "!src/types/index.ts*",
       "src/utils/**/*.{ts,tsx}",
       "!src/utils/testing/*",
-      "!src/utils/index.ts*",
-      "!src/utils/**/index.ts*"
+      "!src/utils/index.ts*"
     ],
     "coverageReporters": [
       "json",

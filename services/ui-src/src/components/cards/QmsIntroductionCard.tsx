@@ -1,5 +1,6 @@
 import { Accordion } from "@chakra-ui/react";
-import { AccordionItem, ReportIntroCard } from "components";
+import { AccordionItem } from "components/accordions/AccordionItem";
+import { ReportIntroCard } from "./ReportIntroCard";
 import { ReportType } from "types";
 import { ReportIntroCardActions } from "./ReportIntroCardActions";
 

@@ -11,9 +11,12 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { getReport, useStore } from "utils";
-import { ReportModal, Sidebar, Page, PraDisclosure, Title } from "components";
+import { Title } from "components/layout/Title";
+import { Page } from "./Page";
+import { ReportModal } from "./ReportModal";
+import { Sidebar } from "./Sidebar";
+import { PraDisclosure } from "./PraDisclosure";
 import { currentPageSelector } from "utils/state/selectors";
-
 import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
 import { isReviewSubmitPage, PageElement, ReportStatus } from "types";

@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { PageTemplate } from "components";
+import { PageTemplate } from "./PageTemplate";
 import { testA11y } from "utils/testing/commonTests";
 
 const standardPageComponent = (

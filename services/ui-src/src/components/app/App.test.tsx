@@ -5,7 +5,7 @@ import {
   mockUseStore,
 } from "utils/testing/setupJest";
 import { useStore, UserProvider } from "utils";
-import { App } from "components";
+import { App } from "./App";
 import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");

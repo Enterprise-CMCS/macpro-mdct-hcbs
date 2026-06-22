@@ -21,7 +21,7 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { EligibilityTableTemplate, EligibilityTableItem } from "types";
-import { PageElementProps } from "../Elements";
+import { PageElementProps } from "../SimpleElements";
 import { Fragment, useState, ChangeEvent, useEffect } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
