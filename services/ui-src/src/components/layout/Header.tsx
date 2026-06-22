@@ -1,7 +1,10 @@
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { UsaBanner } from "@cmsgov/design-system";
 import { Box, Container, Flex, Image, Link } from "@chakra-ui/react";
-import { AccountMenu, AdminMenu, MenuOption, SubnavBar } from "components";
+import { AccountMenu } from "components/menus/AccountMenu";
+import { AdminMenu } from "components/menus/AdminMenu";
+import { MenuOption } from "components/menus/MenuOption";
+import { SubnavBar } from "components/report/SubnavBar";
 import { useBreakpoint, useStore } from "utils";
 import appLogo from "assets/logos/logo_mdct_hcbs.svg";
 import getHelpIcon from "assets/icons/help/icon_help_white.svg";

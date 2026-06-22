@@ -1,16 +1,16 @@
 import { Heading } from "@chakra-ui/react";
 import { MeasureDetailsExport } from "components/report/MeasureDetails";
 import { ElementType, MeasurePageTemplate, PageElement } from "types";
-import { LengthOfStayExport } from "components/rates/types/LengthOfStay";
-import { ReadmissionRateExport } from "components/rates/types/ReadmissionRate";
-import { NDRExport } from "components/rates/types/NDR";
+import { CheckboxExport } from "components/report/fields/CheckboxField";
+import { ListInputExport } from "components/report/fields/ListInput";
+import { LengthOfStayExport } from "components/report/rates/LengthOfStay";
+import { ReadmissionRateExport } from "components/report/rates/ReadmissionRate";
+import { NDRExport } from "components/report/rates/NDR";
+import { MultiRateNdrExport } from "components/report/rates/MultiRateNdr";
+import { MultiCategoryNdrExport } from "components/report/rates/MultiCategoryNdr";
+import { PerformanceNdrExport } from "components/report/rates/PerformanceNdr";
+import { EligibilityTableElementExport } from "components/report/EligibilityTable";
 import { notAnsweredText } from "../../constants";
-import { MultiRateNdrExport } from "components/rates/types/MultiRateNdr";
-import { MultiCategoryNdrExport } from "components/rates/types/MultiCategoryNdr";
-import { PerformanceNdrExport } from "components/rates/types/PerformanceNdr";
-import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
-import { CheckboxExport } from "components/fields/CheckboxField";
-import { ListInputExport } from "components/fields/ListInput";
 import { DateRangeTemplate } from "types/report";
 
 //for ignoring any elements within the page by their id

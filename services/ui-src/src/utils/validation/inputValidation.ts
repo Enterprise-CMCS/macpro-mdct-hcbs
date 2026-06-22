@@ -1,4 +1,4 @@
-import { parseNumber } from "components/rates/calculations";
+import { parseNumber } from "components/report/rates/calculations";
 import { ErrorMessages } from "../../constants";
 import { parseMMDDYYYY } from "utils";
 

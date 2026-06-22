@@ -9,7 +9,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { MenuOption } from "components";
+import { MenuOption } from "./MenuOption";
 import { useBreakpoint } from "utils";
 import chevronDownIcon from "assets/icons/arrows/icon_arrow_down.svg";
 import gearIcon from "assets/icons/icon_gear.svg";

@@ -11,7 +11,7 @@ import {
   ReportType,
 } from "types/report";
 import { getReport } from "../../utils/api/requestMethods/report";
-import { ReportPageWrapper } from "./ReportPageWrapper";
+import { ReportPageWrapper } from "../pages/ReportPageWrapper";
 import { useStore } from "utils";
 import { HcbsUser } from "types";
 import React, { useEffect } from "react";

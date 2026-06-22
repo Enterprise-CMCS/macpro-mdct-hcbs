@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-// utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import {
   ReportAutosaveContext,
@@ -16,8 +15,6 @@ jest.mock("utils/state/useStore", () => ({
     saveReport: mockSaveReport,
   }),
 }));
-
-// COMPONENTS
 
 const TestComponent = () => {
   const { ...context } = useContext(ReportAutosaveContext);

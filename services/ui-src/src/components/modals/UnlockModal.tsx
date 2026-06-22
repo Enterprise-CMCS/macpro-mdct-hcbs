@@ -1,4 +1,4 @@
-import { Modal } from "components";
+import { Modal } from "./Modal";
 import { Text } from "@chakra-ui/react";
 
 export const UnlockModal = ({ modalDisclosure }: Props) => {

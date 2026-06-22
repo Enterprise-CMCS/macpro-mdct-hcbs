@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { UnlockModal } from "components";
+import { UnlockModal } from "./UnlockModal";
 import { testA11y } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();

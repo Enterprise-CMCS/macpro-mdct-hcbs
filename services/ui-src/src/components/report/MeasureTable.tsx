@@ -13,7 +13,8 @@ import {
   Flex,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { MeasureReplacementModal, TableStatusIcon } from "components";
+import { TableStatusIcon } from "components/tables/TableStatusIcon";
+import { MeasureReplacementModal } from "components/report/MeasureReplacementModal";
 import {
   isMeasureTemplate,
   MeasurePageTemplate,

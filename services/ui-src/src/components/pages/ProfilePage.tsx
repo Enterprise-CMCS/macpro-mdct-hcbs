@@ -1,0 +1,38 @@
+import { Heading, Link, Text } from "@chakra-ui/react";
+import { PageTemplate } from "components/layout/PageTemplate";
+import { Table } from "components/tables/Table";
+import { useStore } from "utils";
+import { HELP_DESK_EMAIL_ADDRESS } from "../../constants";
+
+export const ProfilePage = () => {
+  const { email, given_name, family_name, userRole, state } =
+    useStore().user ?? {};
+
+  const tableContent = {
+    caption: "Profile Account Information",
+    bodyRows: [
+      ["Email", email!],
+      ["First Name", given_name!],
+      ["Last Name", family_name!],
+      ["Role", userRole!],
+      ["State", state || "N/A"],
+    ],
+  };
+
+  return (
+    <PageTemplate>
+      <Heading as="h1" variant="h1">
+        My Account
+      </Heading>
+      <Text>
+        If any information is incorrect, please contact the Home and Community
+        Based Services (HCBS) Help Desk at{" "}
+        <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} isExternal>
+          {HELP_DESK_EMAIL_ADDRESS}
+        </Link>
+        .
+      </Text>
+      <Table content={tableContent} variant="striped" />
+    </PageTemplate>
+  );
+};

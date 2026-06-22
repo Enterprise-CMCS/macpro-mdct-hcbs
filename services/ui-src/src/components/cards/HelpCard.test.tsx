@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { testA11y } from "utils/testing/commonTests";
-import { HelpCard } from "components";
+import { HelpCard } from "./HelpCard";
 import { Link } from "@chakra-ui/react";
 
 describe("Test EmailCard", () => {

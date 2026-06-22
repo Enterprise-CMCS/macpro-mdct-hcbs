@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { Footer } from "components";
+import { Footer } from "./Footer";
 import { testA11y } from "utils/testing/commonTests";
 
 const footerComponent = (

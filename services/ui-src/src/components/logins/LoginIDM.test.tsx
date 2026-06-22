@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { LoginIDM } from "components";
+import { LoginIDM } from "./LoginIDM";
 import { testA11y } from "utils/testing/commonTests";
 
 const loginIDMComponent = (

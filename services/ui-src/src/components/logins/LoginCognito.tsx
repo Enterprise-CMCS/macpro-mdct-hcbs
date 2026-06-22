@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "aws-amplify/auth";
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
-import { Alert } from "components";
+import { Alert } from "components/alerts/Alert";
 import { AlertTypes } from "types";
 
 export const LoginCognito = () => {

@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-// utils
 import { UserContext, UserProvider, useStore } from "utils";
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 
@@ -12,8 +11,6 @@ mockedUseStore.mockReturnValue({
   ...mockUseStore,
   setUser: mockSetUser,
 });
-
-// COMPONENTS
 
 const TestComponent = () => {
   const { ...context } = useContext(UserContext);

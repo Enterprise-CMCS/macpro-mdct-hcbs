@@ -21,7 +21,7 @@ import {
   isMeasurePageTemplate,
   PageElement,
 } from "types";
-import { AccordionItem } from "components";
+import { AccordionItem } from "components/accordions/AccordionItem";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { measurePrevPage, parseHtml, useStore } from "utils";
 import successIcon from "assets/icons/status/icon_status_check.svg";

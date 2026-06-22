@@ -16,29 +16,27 @@ import {
   PageElement,
   ReportStatus,
 } from "../../types/report";
-import {
-  DateField,
-  DateRange,
-  DropdownField,
-  MeasureDetailsElement,
-  MeasureFooterElement,
-  MeasureTableElement,
-  MeasureResultsNavigationTableElement,
-  RadioField,
-  StatusTableElement,
-  TextAreaField,
-  TextField,
-  StatusAlert,
-  LengthOfStay,
-  ReadmissionRate,
-  NDR,
-  PerformanceNdr,
-  MultiCategoryNdr,
-  MultiRateNdr,
-  CheckboxField,
-  ListInput,
-  EligibilityTableElement,
-} from "components";
+import { DateField } from "components/report/fields/DateField";
+import { DateRange } from "components/report/fields/DateRange";
+import { DropdownField } from "components/report/fields/DropdownField";
+import { RadioField } from "components/report/fields/RadioField";
+import { TextAreaField } from "components/report/fields/TextAreaField";
+import { TextField } from "components/report/fields/TextField";
+import { CheckboxField } from "components/report/fields/CheckboxField";
+import { ListInput } from "components/report/fields/ListInput";
+import { LengthOfStay } from "components/report/rates/LengthOfStay";
+import { ReadmissionRate } from "components/report/rates/ReadmissionRate";
+import { MultiCategoryNdr } from "components/report/rates/MultiCategoryNdr";
+import { MultiRateNdr } from "components/report/rates/MultiRateNdr";
+import { NDR } from "components/report/rates/NDR";
+import { PerformanceNdr } from "components/report/rates/PerformanceNdr";
+import { EligibilityTableElement } from "./EligibilityTable";
+import { MeasureTableElement } from "./MeasureTable";
+import { MeasureResultsNavigationTableElement } from "./MeasureResultsNavigationTable";
+import { StatusTableElement } from "./StatusTable";
+import { MeasureDetailsElement } from "./MeasureDetails";
+import { MeasureFooterElement } from "./MeasureFooter";
+import { StatusAlert } from "./StatusAlert";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
 

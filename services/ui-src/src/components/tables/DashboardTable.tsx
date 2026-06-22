@@ -1,0 +1,341 @@
+import {
+  Button,
+  Hide,
+  Flex,
+  Show,
+  Td,
+  Tr,
+  VStack,
+  Text,
+  Divider,
+  HStack,
+  Spinner,
+} from "@chakra-ui/react";
+import { Table } from "./Table";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import { getReportName, LiteReport, ReportStatus } from "types";
+import {
+  formatMonthDayYear,
+  releaseReport,
+  reportBasePath,
+  updateArchivedStatus,
+  useStore,
+} from "utils";
+
+import { useState, Fragment } from "react";
+
+interface DashboardTableProps {
+  reports: LiteReport[];
+  openAddEditReportModal: (report: LiteReport) => void;
+  unlockModalOnOpenHandler: () => void;
+  onReportUpdate: () => void;
+}
+
+interface TableProps extends Omit<
+  DashboardTableProps,
+  "unlockModalOnOpenHandler" | "onReportUpdate"
+> {
+  tableContent: { caption: string; headRow: string[] };
+  showEditNameColumn: boolean | undefined;
+  showReportSubmissionsColumn: boolean;
+  showAdminControls: boolean | undefined;
+  navigate: NavigateFunction;
+  userIsEndUser: boolean | undefined;
+  toggleArchived: (rowIndex: number) => void;
+  toggleRelease: (rowIndex: number) => void;
+  /** Used to store the archive index of the table row */
+  archiving: number | undefined;
+  /** Used to store the unlock index of the table row */
+  unlocking: number | undefined;
+}
+
+export const getStatus = (report: LiteReport) => {
+  if (
+    report.status === ReportStatus.IN_PROGRESS &&
+    report.submissionCount >= 1
+  ) {
+    return "In revision";
+  }
+  return report.status;
+};
+
+export const HorizontalTable = (props: TableProps) => {
+  return (
+    <Table content={props.tableContent}>
+      {props.reports.map((report, idx) => (
+        <Tr key={report.id}>
+          <Td
+            fontWeight={"bold"}
+            maxWidth={"14.25rem"}
+            fontSize="body_md"
+            padding="16px 16px 16px 0"
+          >
+            {report.name}
+          </Td>
+          <Td>{report.year}</Td>
+          <Td>
+            {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
+          </Td>
+          <Td>{report.lastEditedBy}</Td>
+          <Td>{getStatus(report)}</Td>
+          {props.showReportSubmissionsColumn && (
+            <Td width="3rem">{report.submissionCount ?? 0}</Td>
+          )}
+          <Td>
+            <Flex display="flex" gap="spacer2" wrap="wrap">
+              {props.showEditNameColumn && (
+                <Button
+                  variant="link"
+                  onClick={() => props.openAddEditReportModal(report)}
+                  aria-label={`Edit ${report.name} name`}
+                >
+                  Edit name
+                </Button>
+              )}
+              <Button
+                onClick={() => props.navigate(reportBasePath(report))}
+                variant="outline"
+                disabled={report.archived}
+                aria-label={
+                  report.status !== ReportStatus.SUBMITTED
+                    ? `Edit ${report.name} report`
+                    : `View ${report.name} report`
+                }
+              >
+                {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
+                  ? "Edit"
+                  : "View"}
+              </Button>
+              {props.showAdminControls && (
+                <>
+                  <Button
+                    variant="link"
+                    fontSize="body_sm"
+                    onClick={async () => await props.toggleRelease(idx)}
+                    disabled={
+                      report.status !== ReportStatus.SUBMITTED ||
+                      report.archived ||
+                      props.unlocking === idx
+                    }
+                  >
+                    {props.unlocking === idx && (
+                      <Spinner size="sm" marginRight="spacer_half" />
+                    )}
+                    Unlock
+                  </Button>
+                  <Button
+                    variant="link"
+                    fontSize="body_sm"
+                    onClick={async () => await props.toggleArchived(idx)}
+                    disabled={props.archiving === idx}
+                  >
+                    {props.archiving === idx && (
+                      <Spinner size="sm" marginRight="spacer_half" />
+                    )}
+                    {report.archived ? "Unarchive" : "Archive"}
+                  </Button>
+                </>
+              )}
+            </Flex>
+          </Td>
+        </Tr>
+      ))}
+    </Table>
+  );
+};
+
+export const VerticalTable = (props: TableProps) => {
+  return (
+    <VStack alignItems="start" gap={4}>
+      {props.reports.map((report, idx) => (
+        <Fragment key={idx}>
+          <div>
+            <Text variant="grey">Submission name</Text>
+            <HStack>
+              <Text fontWeight="heading_md" fontSize="heading_md">
+                {report.name}
+              </Text>
+            </HStack>
+          </div>
+          <HStack gap="4rem">
+            <div>
+              <Text variant="grey">Reporting year</Text>
+              <Text>{report.year}</Text>
+            </div>
+            <div>
+              <Text variant="grey">Last edited</Text>
+              <Text>{formatMonthDayYear(report.lastEdited!)}</Text>
+            </div>
+            <div>
+              <Text variant="grey">Edited by</Text>
+              <Text>{report.lastEditedBy}</Text>
+            </div>
+          </HStack>
+          <div>
+            <Text variant="grey">Status</Text>
+            <Text>{getStatus(report)}</Text>
+          </div>
+          {props.showReportSubmissionsColumn && (
+            <Text>{report.submissionCount ?? 0}</Text>
+          )}
+          <HStack gap={"6"}>
+            {props.showEditNameColumn && (
+              <Button
+                variant="link"
+                onClick={() => props.openAddEditReportModal(report)}
+                aria-label={`Edit ${report.name} name`}
+              >
+                Edit name
+              </Button>
+            )}
+            <Button
+              onClick={() => props.navigate(reportBasePath(report))}
+              variant="outline"
+              width="100px"
+              height="30px"
+              fontSize="body_sm"
+              disabled={report.archived}
+              aria-label={
+                report.status !== ReportStatus.SUBMITTED
+                  ? "Edit " + report.name + " report"
+                  : "View " + report.name + " report"
+              }
+            >
+              {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
+                ? "Edit"
+                : "View"}
+            </Button>
+            {props.showAdminControls && (
+              <>
+                <Button
+                  variant="link"
+                  onClick={async () => await props.toggleRelease(idx)}
+                  disabled={
+                    report.status !== ReportStatus.SUBMITTED ||
+                    report.archived ||
+                    props.unlocking === idx
+                  }
+                >
+                  {props.unlocking === idx && (
+                    <Spinner size="sm" marginRight="spacer_half" />
+                  )}
+                  Unlock
+                </Button>
+                <Button
+                  variant="link"
+                  onClick={async () => await props.toggleArchived(idx)}
+                  disabled={props.archiving === idx}
+                >
+                  {props.archiving === idx && (
+                    <Spinner size="sm" marginRight="spacer_half" />
+                  )}
+                  {report.archived ? "Unarchive" : "Archive"}
+                </Button>
+              </>
+            )}
+          </HStack>
+          <Divider></Divider>
+        </Fragment>
+      ))}
+    </VStack>
+  );
+};
+
+export const DashboardTable = ({
+  reports,
+  openAddEditReportModal,
+  unlockModalOnOpenHandler,
+  onReportUpdate,
+}: DashboardTableProps) => {
+  const navigate = useNavigate();
+  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
+
+  const [archiving, setArchiving] = useState<number>();
+  const [unlocking, setUnlocking] = useState<number>();
+
+  // Translate role to defined behaviors
+  const showEditNameColumn = userIsEndUser;
+  const showReportSubmissionsColumn = !userIsEndUser;
+  const showAdminControls = userIsAdmin;
+
+  // Build header columns based on defined behaviors per role
+  const headers = [
+    "Submission name",
+    "Reporting year",
+    "Last edited",
+    "Edited by",
+    "Status",
+  ];
+
+  if (showReportSubmissionsColumn) headers.push("#");
+  headers.push("Actions");
+  const { reportType } = useParams();
+  const tableContent = {
+    caption: `${getReportName(reportType)}s`,
+    headRow: headers,
+  };
+
+  const toggleArchived = async (idx: number) => {
+    setArchiving(idx);
+    const report = reports[idx];
+
+    console.assert(!!report, `Report exists at index ${idx}`);
+
+    // Handle undefined archived property
+    const newArchivedStatus = !(report.archived ?? false);
+    await updateArchivedStatus(report, newArchivedStatus);
+
+    onReportUpdate();
+    setArchiving(undefined);
+  };
+
+  const toggleRelease = async (idx: number) => {
+    setUnlocking(idx);
+    const report = reports[idx];
+
+    console.assert(!!report, `Report exists at index ${idx}`);
+
+    await releaseReport(report);
+    unlockModalOnOpenHandler();
+
+    onReportUpdate();
+    setUnlocking(undefined);
+  };
+
+  return (
+    <>
+      <Hide below="sm">
+        {HorizontalTable({
+          tableContent,
+          reports,
+          showEditNameColumn,
+          showReportSubmissionsColumn,
+          showAdminControls,
+          openAddEditReportModal,
+          navigate,
+          userIsEndUser,
+          toggleArchived,
+          toggleRelease,
+          archiving,
+          unlocking,
+        })}
+      </Hide>
+      <Show below="sm">
+        {VerticalTable({
+          tableContent,
+          reports,
+          showEditNameColumn,
+          showReportSubmissionsColumn,
+          showAdminControls,
+          openAddEditReportModal,
+          navigate,
+          userIsEndUser,
+          toggleArchived,
+          toggleRelease,
+          archiving,
+          unlocking,
+        })}
+      </Show>
+    </>
+  );
+};

@@ -1,0 +1,53 @@
+import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { PageTemplate } from "components/layout/PageTemplate";
+import { HelpCard } from "components/cards/HelpCard";
+import { HELP_DESK_EMAIL_ADDRESS } from "../../constants";
+import { useBreakpoint } from "utils";
+
+const hcbsDemoEmailAddress = "HCBSQuality@cms.hhs.gov";
+
+export const HelpPage = () => {
+  const { isDesktop } = useBreakpoint();
+  return (
+    <PageTemplate>
+      <Box>
+        <Heading as="h1" variant="h1">
+          How can we help you?
+        </Heading>
+        <Text>
+          Question or feedback? Please email us and we will respond as soon as
+          possible. You can also review our frequently asked questions below.
+        </Text>
+      </Box>
+      <Flex flexDirection="column" gap="spacer4">
+        <HelpCard icon="settings">
+          <Text sx={sx.bodyText}>For technical support and login issues:</Text>
+          <Text sx={sx.emailText}>
+            Email {!isDesktop && <br />}
+            <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} target="_blank">
+              {HELP_DESK_EMAIL_ADDRESS}
+            </Link>
+          </Text>
+        </HelpCard>
+        <HelpCard icon="spreadsheet">
+          <Text sx={sx.bodyText}>For questions about the online form:</Text>
+          <Text sx={sx.emailText}>
+            Email {!isDesktop && <br />}
+            <Link href={`mailto:${hcbsDemoEmailAddress}`} target="_blank">
+              {hcbsDemoEmailAddress}
+            </Link>
+          </Text>
+        </HelpCard>
+      </Flex>
+    </PageTemplate>
+  );
+};
+
+const sx = {
+  bodyText: {
+    marginBottom: "spacer1",
+  },
+  emailText: {
+    fontWeight: "body_md_link_bold",
+  },
+};

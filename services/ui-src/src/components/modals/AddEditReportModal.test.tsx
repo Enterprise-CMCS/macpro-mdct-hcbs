@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AddEditReportModal } from "components";
+import { AddEditReportModal } from "./AddEditReportModal";
 import {
   mockStateUserStore,
   RouterWrappedComponent,

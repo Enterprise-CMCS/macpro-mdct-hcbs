@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Error } from "components";
+import { Error } from "./Error";
 import { testA11y } from "utils/testing/commonTests";
 
 const errorView = <Error />;

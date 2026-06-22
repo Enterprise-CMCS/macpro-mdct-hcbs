@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-//components
 import { Text } from "@chakra-ui/react";
-import { Modal } from "components";
+import { Modal } from "./Modal";
 import { testA11y } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();

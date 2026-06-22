@@ -22,7 +22,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { currentPageSelector, elementSelector } from "utils/state/selectors";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
-import { PageElementProps } from "../report/Elements";
+import { PageElementProps } from "./Elements";
 
 export const MeasureResultsNavigationTableElement = (
   props: PageElementProps<MeasureResultsNavigationTableTemplate>

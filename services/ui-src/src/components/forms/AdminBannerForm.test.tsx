@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { AdminBannerForm } from "components";
+import { AdminBannerForm } from "./AdminBannerForm";
 import userEvent from "@testing-library/user-event";
 import { testA11yAct } from "utils/testing/commonTests";
 import { useStore } from "utils";

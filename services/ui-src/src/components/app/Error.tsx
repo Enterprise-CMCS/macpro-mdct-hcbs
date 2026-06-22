@@ -1,5 +1,5 @@
 import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
-import { PageTemplate } from "components";
+import { PageTemplate } from "components/layout/PageTemplate";
 import warningIcon from "assets/icons/alert/icon_warning.svg";
 import { HELP_DESK_EMAIL_ADDRESS } from "../../constants";
 

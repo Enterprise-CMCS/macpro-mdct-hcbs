@@ -1,0 +1,181 @@
+import { useContext, useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  HStack,
+  VStack,
+  Image,
+  Spinner,
+} from "@chakra-ui/react";
+import { getReport, useStore } from "utils";
+import { Title } from "components/layout/Title";
+import { Page } from "../report/Page";
+import { ReportModal } from "../report/ReportModal";
+import { Sidebar } from "../report/Sidebar";
+import { PraDisclosure } from "../report/PraDisclosure";
+import { currentPageSelector } from "utils/state/selectors";
+import nextArrowIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
+import prevArrowIcon from "assets/icons/arrows/icon_arrow_prev_primary.svg";
+import { isReviewSubmitPage, PageElement, ReportStatus } from "types";
+import { ReportAutosaveContext } from "../report/ReportAutosaveProvider";
+import { displayDivider } from "utils/state/reportLogic/reportActions";
+
+export const ReportPageWrapper = () => {
+  const {
+    report,
+    parentPage,
+    loadReport: setReport,
+    setAnswers,
+    setCurrentPageId,
+  } = useStore();
+  const currentPage = useStore(currentPageSelector);
+
+  const { reportType, state, reportId, pageId } = useParams();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { autosave } = useContext(ReportAutosaveContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (pageId) {
+      setCurrentPageId(pageId);
+    }
+  }, [pageId]);
+
+  const fetchReport = async () => {
+    if (!reportType || !state || !reportId) return;
+    setIsLoading(true);
+    setReport(undefined);
+    try {
+      const result = await getReport(reportType, state, reportId);
+      setReport(result);
+      if (pageId) {
+        setCurrentPageId(pageId);
+      }
+      setIsLoading(false);
+    } catch {
+      // console.log("oopsy")
+    }
+  };
+
+  useEffect(() => {
+    fetchReport();
+  }, [reportId]);
+
+  if (!reportType || !state || !reportId) {
+    return <div>bad params</div>; // TODO: error page
+  }
+
+  if (isLoading || !currentPage) {
+    return (
+      <Flex sx={sx.spinnerContainer}>
+        <Spinner size="md" />
+      </Flex>
+    );
+  }
+
+  const SetPageIndex = (newPageIndex: number) => {
+    if (!parentPage) return; // Pages can exist outside of the direct parentage structure
+    const sectionId = parentPage.childPageIds[newPageIndex];
+    navigate(`/report/${reportType}/${state}/${reportId}/${sectionId}`);
+  };
+
+  const submittedView =
+    isReviewSubmitPage(currentPage) &&
+    report?.status === ReportStatus.SUBMITTED;
+  const renderedElements = submittedView
+    ? currentPage.submittedView
+    : currentPage.elements;
+
+  const renderTabTitle =
+    (submittedView ? currentPage?.submittedTabTitle : currentPage?.tabTitle) ??
+    "";
+
+  return (
+    <HStack position="relative" spacing="0" height="100%">
+      <Title tabTitle={renderTabTitle} />
+      <Box sx={sx.sidebarContainer}>{currentPage.sidebar && <Sidebar />}</Box>
+      <VStack
+        height="100%"
+        padding={
+          currentPage.sidebar
+            ? { base: "3.5rem 1rem", md: "3.5rem 0rem" }
+            : { base: "2rem 1rem", md: "2rem 0rem" }
+        }
+        margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
+        width="100%"
+        maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
+        gap="0rem"
+      >
+        <Box
+          flex="auto"
+          alignItems="flex-start"
+          width="100%"
+          marginBottom="spacer4"
+        >
+          <form id="aFormId" autoComplete="off">
+            {currentPage.elements && (
+              <Page
+                id={currentPage.id}
+                setElements={(elements: PageElement[]) => {
+                  setAnswers({ ...currentPage, elements });
+                  autosave();
+                }}
+                elements={renderedElements ?? []}
+              ></Page>
+            )}
+          </form>
+        </Box>
+        {!currentPage.hideNavButtons && parentPage && (
+          <>
+            {displayDivider(currentPage) && <Divider></Divider>}
+            <Flex width="100%" marginTop="spacer3">
+              {parentPage.index > 0 && (
+                <Button
+                  onClick={() => SetPageIndex(parentPage.index - 1)}
+                  variant="outline"
+                  leftIcon={<Image src={prevArrowIcon} />}
+                >
+                  Previous
+                </Button>
+              )}
+              {parentPage.index < parentPage.childPageIds.length - 1 && (
+                <Button
+                  onClick={() => SetPageIndex(parentPage.index + 1)}
+                  marginLeft="auto"
+                  rightIcon={<Image src={nextArrowIcon} />}
+                >
+                  Continue
+                </Button>
+              )}
+            </Flex>
+            {parentPage.index == 0 && (
+              <Box flex="auto" marginTop="spacer7">
+                <PraDisclosure />
+              </Box>
+            )}
+          </>
+        )}
+      </VStack>
+      <ReportModal />
+    </HStack>
+  );
+};
+
+const sx = {
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+    padding: "10",
+  },
+  sidebarContainer: {
+    ".tablet &, .mobile &": {
+      position: "absolute",
+    },
+    height: "100%",
+  },
+};

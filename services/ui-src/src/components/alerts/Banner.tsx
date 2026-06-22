@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { Alert } from "components";
+import { Alert } from "./Alert";
 import { BannerFormData } from "types";
 import { parseHtml } from "utils";
 

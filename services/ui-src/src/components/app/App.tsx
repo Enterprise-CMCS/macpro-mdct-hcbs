@@ -1,16 +1,14 @@
 import { useContext, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import {
-  AppRoutes,
-  Error,
-  Header,
-  LoginCognito,
-  LoginIDM,
-  PostLogoutRedirect,
-  Footer,
-  Timeout,
-  SkipNav,
-} from "components";
+import { AppRoutes } from "./AppRoutes";
+import { Error } from "./Error";
+import { Header } from "components/layout/Header";
+import { Footer } from "components/layout/Footer";
+import { Timeout } from "components/layout/Timeout";
+import { LoginCognito } from "components/logins/LoginCognito";
+import { LoginIDM } from "components/logins/LoginIDM";
+import { PostLogoutRedirect } from "./PostLogoutRedirect";
+import { SkipNav } from "components/layout/SkipNav";
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { ErrorBoundary } from "react-error-boundary";
 import {
