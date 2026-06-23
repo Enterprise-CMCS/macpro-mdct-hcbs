@@ -534,6 +534,7 @@ export const elementObject: {
           ],
           required: true,
           helperText: "Helper text",
+          hint: "Hint text",
         }}
       />,
     ],

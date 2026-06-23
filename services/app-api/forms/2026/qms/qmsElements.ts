@@ -280,6 +280,7 @@ export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-assessment",
   required: true,
+  hint: "Statistically valid random sample of participants in enrolled in Medicaid MLTSS or FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "assess-of-core",

@@ -28,7 +28,7 @@ type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 
 export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
   const { disabled, element, updateElement } = props;
-  const { assessments, answer, helperText, label } = element;
+  const { assessments, answer, helperText, label, hint } = element;
 
   const stringifyAnswer = (
     newAnswer: typeof answer | Record<string, undefined>
@@ -151,6 +151,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
         <CmsdsTextField
           label={`${label ? `${label}s` : "Performance Rates"} Denominator`}
           name={FieldNames.denominator}
+          hint={hint}
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.denominator}
