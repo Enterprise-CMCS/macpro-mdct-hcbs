@@ -328,6 +328,13 @@ export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
     {
       id: "part-refuse-assess",
       label: "Participant Refused Assessment",
+      hints: {
+        numHint:
+          "Number of Medicaid {MLTSS/FFS LTSS} participants who refused an LTSS comprehensive assessment.",
+        denomHint: "Auto-populates",
+        rateHint:
+          "Percentage of participants who refused an LTSS comprehensive assessment. Auto-calculates.",
+      },
     },
   ],
 };
