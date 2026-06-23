@@ -296,6 +296,13 @@ export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
     {
       id: "assess-of-supplemental",
       label: "Assessment of Supplemental Elements",
+      hints: {
+        numHint:
+          "Number of Medicaid {MLTSS/FFS LTSS} participants who had an LTSS comprehensive assessment (containing all 10 core elements and at least 12 supplemental elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        denomHint: "Auto-populates",
+        rateHint:
+          "Percentage of Medicaid {MLTSS/FFS LTSS} participants who had an LTSS comprehensive assessment with 10 core elements and at least 12 supplemental elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
   ],
 };
