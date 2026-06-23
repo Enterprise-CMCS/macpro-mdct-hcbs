@@ -469,9 +469,9 @@ const multiRateNdrSchema = object().shape({
         label: string().required(),
         hints: object()
           .shape({
-            numHint: string().notRequired(),
-            denomHint: string().notRequired(),
-            rateHint: string().notRequired(),
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
           })
           .notRequired(),
       })
