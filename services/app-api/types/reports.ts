@@ -573,7 +573,15 @@ export type MultiRateNdrTemplate = {
   label?: string;
   hint?: string;
   helperText?: string;
-  assessments: { label: string; id: string; hint?: string }[];
+  assessments: {
+    label: string;
+    id: string;
+    hints?: {
+      numHint: string | undefined;
+      denomHint: string | undefined;
+      rateHint: string | undefined;
+    };
+  }[];
   answer?: RateSetData;
   required: boolean;
 };

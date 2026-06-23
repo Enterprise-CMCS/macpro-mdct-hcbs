@@ -528,7 +528,11 @@ export const elementObject: {
             {
               id: "assessment-1",
               label: "First Assessment",
-              hint: "Hint for first assessment",
+              hints: {
+                numHint: "Hint for first assessment",
+                denomHint: "Auto-populates",
+                rateHint: "Auto-calculates",
+              },
             },
             { id: "assessment-2", label: "Second Assessment" },
           ],
