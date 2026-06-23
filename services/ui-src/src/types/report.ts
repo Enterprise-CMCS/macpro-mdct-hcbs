@@ -26,7 +26,7 @@ export const getReportName = (type: string | undefined) => {
     case ReportType.PCP:
       return "Person-Centered Planning Report";
     case ReportType.QIP:
-      return "QMS Quality Improvement Plan";
+      return "QMS Quality Improvement Plans";
     case ReportType.WWL:
       return "Waiver Waiting List Report";
     default:

@@ -170,18 +170,53 @@ export const DashboardPage = () => {
                 <p>
                   <strong>Creating a New Report</strong>
                 </p>
-                <p>
-                  Click the <b>“Start {reportName}”</b> button to begin creating
-                  your report. A series of questions will appear to gather the
-                  necessary information for your report. Fill out each field
-                  accurately to ensure your report is complete. Before
-                  submitting, review the information you’ve provided. If
-                  everything looks good, confirm your entries and proceed.
-                </p>
-                <p>
-                  Once the report is generated, you can edit the name of the
-                  report and monitor its status in the dashboard below.
-                </p>
+                {reportType === ReportType.QIP ? (
+                  <>
+                    <p>
+                      Click the <b>"Start Quality Improvement Plan"</b> button
+                      to begin creating your report. Once the report is
+                      generated, you can edit its name and monitor the status in
+                      the dashboard below. A series of questions will appear to
+                      gather the necessary information for your report. Fill out
+                      each required field and, before submitting, confirm your
+                      entries and review the information you've provided.
+                    </p>
+                    <p>
+                      Enter a report for each of your state's quality
+                      improvement plans. If your state employs multiple QIPs,
+                      you will need a separate report for each one.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      Click the <b>"Start {reportName}"</b> button to begin
+                      creating your report. A series of questions will appear to
+                      gather the necessary information for your report. Fill out
+                      each field accurately to ensure your report is complete.
+                      Before submitting, review the information you've provided.
+                      If everything looks good, confirm your entries and
+                      proceed.
+                    </p>
+                    <p>
+                      Once the report is generated, you can edit the name of the
+                      report and monitor its status in the dashboard below.
+                    </p>
+                    {reportType === ReportType.WWL ? (
+                      <p>
+                        A separate report should be generated for each waiver
+                        waiting list your state intends to include during the
+                        current reporting year.
+                      </p>
+                    ) : (
+                      <p>
+                        Please note, while you can generate multiple reports for
+                        the same reporting period, you should only submit a
+                        single report for the state.
+                      </p>
+                    )}
+                  </>
+                )}
                 {(() => {
                   if (reportType === ReportType.WWL) {
                     return (
@@ -277,7 +312,9 @@ export const DashboardPage = () => {
         {userIsEndUser && (
           <Flex justifyContent="center">
             <Button onClick={() => openAddEditReportModal()} type="submit">
-              Start {reportName}
+              {reportType === ReportType.QIP
+                ? "Start Quality Improvement Plan"
+                : `Start ${reportName}`}
             </Button>
           </Flex>
         )}

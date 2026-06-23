@@ -182,6 +182,31 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
+  let subheading: ReactElement | string = "";
+
+  if (reportType === ReportType.WWL) {
+    subheading = (
+      <Box mt={4} mb={8}>
+        <Alert status={AlertTypes.WARNING} title="Waiting List Separation">
+          A separate report should be generated for each waiver waiting list
+          your state intends to include during the current reporting year.
+        </Alert>
+      </Box>
+    );
+  } else if (reportType === ReportType.QIP) {
+    subheading = (
+      <Box mt={4} mb={8}>
+        <Alert
+          status={AlertTypes.WARNING}
+          title="Enter a report for each of your state's quality improvement plans."
+        >
+          If your state employs multiple QI plans, you will need a separate
+          report for each one.
+        </Alert>
+      </Box>
+    );
+  }
+
   return (
     <Modal
       data-testid="add-edit-report-modal"
@@ -191,21 +216,7 @@ export const AddEditReportModal = ({
         heading: `${selectedReport ? "Edit" : "Add new"} ${
           verbiage.reportName
         }`,
-        subheading:
-          reportType === ReportType.WWL ? (
-            <Box mt={4} mb={8}>
-              <Alert
-                status={AlertTypes.WARNING}
-                title="Waiting List Separation"
-              >
-                A separate report should be generated for each waiver waiting
-                list your state intends to include during the current reporting
-                year.
-              </Alert>
-            </Box>
-          ) : (
-            ""
-          ),
+        subheading,
         actionButtonText: submitting ? (
           <Spinner size="md" />
         ) : (
