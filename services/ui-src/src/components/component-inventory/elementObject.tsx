@@ -525,7 +525,11 @@ export const elementObject: {
           type: ElementType.MultiRateNdr,
           id: "measure-rates",
           assessments: [
-            { id: "assessment-1", label: "First Assessment" },
+            {
+              id: "assessment-1",
+              label: "First Assessment",
+              hint: "Hint for first assessment",
+            },
             { id: "assessment-2", label: "Second Assessment" },
           ],
           required: true,

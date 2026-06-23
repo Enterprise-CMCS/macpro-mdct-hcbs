@@ -284,6 +284,7 @@ export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
     {
       id: "assess-of-core",
       label: "Assessment of Core Elements",
+      hint: "Number of Medicaid {MLTSS/FFS LTSS} participants who had an LTSS comprehensive assessment (containing all 10 core elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
     },
     {
       id: "assess-of-supplemental",
