@@ -311,11 +311,19 @@ export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
+  hint: "Number of participants who have been enrolled in Medicaid {MLTSS/FFS LTSS} plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   required: true,
   assessments: [
     {
       id: "part-not-contact",
       label: "Participant Could Not be Contacted",
+      hints: {
+        numHint:
+          "Number of Medicaid {MLTSS/FFS LTSS} participants who had could not be contacted for LTSS comprehensive assessment within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        denomHint: "Auto-populates",
+        rateHint:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
     },
     {
       id: "part-refuse-assess",
