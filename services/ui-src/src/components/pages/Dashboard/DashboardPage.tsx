@@ -57,6 +57,9 @@ export const DashboardPage = () => {
 
   const fullStateName = isStateAbbr(state) ? StateNames[state] : "";
   const reportName = getReportName(reportType);
+  const pluralReportName = reportName?.trim().endsWith("s")
+    ? reportName
+    : `${reportName}s`;
   const filterYear = searchParams.get("year") || "All";
   const filterDropdownOptions = [
     { label: "All", value: "All" },
@@ -202,19 +205,6 @@ export const DashboardPage = () => {
                       Once the report is generated, you can edit the name of the
                       report and monitor its status in the dashboard below.
                     </p>
-                    {reportType === ReportType.WWL ? (
-                      <p>
-                        A separate report should be generated for each waiver
-                        waiting list your state intends to include during the
-                        current reporting year.
-                      </p>
-                    ) : (
-                      <p>
-                        Please note, while you can generate multiple reports for
-                        the same reporting period, you should only submit a
-                        single report for the state.
-                      </p>
-                    )}
                   </>
                 )}
                 {(() => {
@@ -305,8 +295,8 @@ export const DashboardPage = () => {
             </Text>
           ) : (
             <Text variant="tableEmpty">
-              Keep track of your {reportName}s, once you start a report you can
-              access it here.
+              Keep track of your {pluralReportName}, once you start a report you
+              can access it here.
             </Text>
           ))}
         {userIsEndUser && (
