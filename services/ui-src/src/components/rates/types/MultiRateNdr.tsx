@@ -215,18 +215,28 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
         {
           indicator: "Numerator",
           response: performanceRate?.numerator,
+          helperText:
+            element.assessments?.find(
+              (assessment) => assessment.id === assess.id
+            )?.hints?.hintNumerator ?? undefined,
         },
         {
           indicator: "Denominator",
           response: element?.answer?.denominator ?? autoPopulatedText,
-          helperText: "Auto-populates",
+          helperText:
+            element.assessments?.find(
+              (assessment) => assessment.id === assess.id
+            )?.hints?.hintDenominator ?? undefined,
         },
         {
           indicator: "Rate",
           response: performanceRate?.rate
             ? stringifyResult(performanceRate?.rate)
             : autoPopulatedText,
-          helperText: "Auto-calculates",
+          helperText:
+            element.assessments?.find(
+              (assessment) => assessment.id === assess.id
+            )?.hints?.hintRate ?? undefined,
         },
       ];
       return { label: `${label}: ${assess.label}`, rows: row };
