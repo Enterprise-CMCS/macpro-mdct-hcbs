@@ -62,6 +62,34 @@ const buildModalOptions = (
   return optionsByReportType[reportType];
 };
 
+const getSubheading = (reportType: ReportType): ReactElement | null => {
+  switch (reportType) {
+    case ReportType.WWL:
+      return (
+        <Box mt={4} mb={8}>
+          <Alert status={AlertTypes.WARNING} title="Waiting List Separation">
+            A separate report should be generated for each waiver waiting list
+            your state intends to include during the current reporting year.
+          </Alert>
+        </Box>
+      );
+    case ReportType.QIP:
+      return (
+        <Box mt={4} mb={8}>
+          <Alert
+            status={AlertTypes.WARNING}
+            title="Enter a report for each of your state's quality improvement plans."
+          >
+            If your state employs multiple QI plans, you will need a separate
+            report for each one.
+          </Alert>
+        </Box>
+      );
+    default:
+      return null;
+  }
+};
+
 export const AddEditReportModal = ({
   activeState,
   reportType,
@@ -182,30 +210,7 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
-  let subheading: ReactElement | string = "";
-
-  if (reportType === ReportType.WWL) {
-    subheading = (
-      <Box mt={4} mb={8}>
-        <Alert status={AlertTypes.WARNING} title="Waiting List Separation">
-          A separate report should be generated for each waiver waiting list
-          your state intends to include during the current reporting year.
-        </Alert>
-      </Box>
-    );
-  } else if (reportType === ReportType.QIP) {
-    subheading = (
-      <Box mt={4} mb={8}>
-        <Alert
-          status={AlertTypes.WARNING}
-          title="Enter a report for each of your state's quality improvement plans."
-        >
-          If your state employs multiple QI plans, you will need a separate
-          report for each one.
-        </Alert>
-      </Box>
-    );
-  }
+  const subheading = getSubheading(reportType);
 
   return (
     <Modal
