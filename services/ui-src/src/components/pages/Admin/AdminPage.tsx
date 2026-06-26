@@ -29,7 +29,7 @@ export const AdminPage = () => {
   };
 
   return (
-    <PageTemplate data-testid="admin-view">
+    <PageTemplate>
       <Box>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           Banner Admin
