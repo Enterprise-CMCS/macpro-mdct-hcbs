@@ -82,6 +82,9 @@ export const renderElements = (
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element, section.navTitle);
+    case ElementType.QipMeasureTable:
+      // TODO: Should this render in the PDF? What should it look like?
+      return undefined;
     case ElementType.Checkbox:
       return CheckboxExport(element);
     case ElementType.ListInput:

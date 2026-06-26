@@ -34,6 +34,7 @@ export const buildReport = async (
   const waiverList = getWaiverInfo(year, state);
 
   const report: Report = {
+    ...template,
     state: state,
     id: KSUID.randomSync().string,
     created: Date.now(),
@@ -47,7 +48,6 @@ export const buildReport = async (
     options: reportOptions.options,
     archived: false,
     submissionCount: 0,
-    pages: template.pages,
   };
 
   /**

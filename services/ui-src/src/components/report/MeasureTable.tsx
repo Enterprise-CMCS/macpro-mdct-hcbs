@@ -27,6 +27,7 @@ import { PageElementProps } from "./Elements";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
+// TODO rename to QmsMeasureTable
 export const MeasureTableElement = (
   props: PageElementProps<MeasureTableTemplate>
 ) => {

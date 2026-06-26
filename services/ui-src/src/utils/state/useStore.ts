@@ -154,24 +154,11 @@ export const useStore = create(
 
 /*
  * Zustand doesn't directly export the type signatures of its callbacks.
- * These were manually written to precisely match what Zustand expects,
- * as of Zustand v4.5.2
- *
- * Note that it _is_ possible to access these types indirectly.
- * For example, Set<T> is `Parameters<Parameters<typeof devtools<T>>[0][0]`.
- * However, even though Typescript can handle that, our linter currently cannot.
- * If/when we upgrade our linter, it may be worthwhile to switch to that method.
+ * but we can access them indirectly with the Parameters utility type.
  */
 
 /** The type of a Set callback within Zustand. */
-type Set<TState> = <A extends string | { type: string }>(
-  partial:
-    | TState
-    | Partial<TState>
-    | ((state: TState) => TState | Partial<TState>),
-  replace?: boolean,
-  action?: A
-) => void;
+type Set<TState> = Parameters<Parameters<typeof devtools<TState>>[0]>[0];
 
 /** The type of a Get callback within Zustand. */
-type Get<TState> = () => TState;
+type Get<TState> = Parameters<Parameters<typeof devtools<TState>>[0]>[1];
