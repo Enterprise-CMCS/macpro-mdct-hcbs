@@ -252,6 +252,7 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
           {
             indicator: "Performance Rates Denominator",
             response: element?.answer?.denominator,
+            helperText: element?.hint ?? undefined,
           },
         ]}
         caption="Performance Rates Denominator"
