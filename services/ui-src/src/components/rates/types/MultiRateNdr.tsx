@@ -183,7 +183,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
                 label="Denominator"
                 name={`${index}.denominator`}
                 value={displayValue.denominator}
-                hint={assess.hints?.hintDenominator}
+                hint={assess.hints?.hintDenominator ?? "Auto-populates"}
                 disabled
               ></CmsdsTextField>
               <CmsdsTextField
@@ -207,7 +207,15 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
   const label = element.label ?? "Performance Rates";
 
   const buildData = element.assessments?.map(
-    (assess: { id: string; label: string }) => {
+    (assess: {
+      id: string;
+      label: string;
+      hints?: {
+        hintNumerator?: string;
+        hintDenominator?: string;
+        hintRate?: string;
+      };
+    }) => {
       const performanceRate = element.answer?.rates?.find(
         (rate: { id: string }) => rate.id === assess.id
       );
@@ -215,28 +223,19 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
         {
           indicator: "Numerator",
           response: performanceRate?.numerator,
-          helperText:
-            element.assessments?.find(
-              (assessment) => assessment.id === assess.id
-            )?.hints?.hintNumerator ?? undefined,
+          helperText: assess.hints?.hintNumerator ?? undefined,
         },
         {
           indicator: "Denominator",
           response: element?.answer?.denominator ?? autoPopulatedText,
-          helperText:
-            element.assessments?.find(
-              (assessment) => assessment.id === assess.id
-            )?.hints?.hintDenominator ?? undefined,
+          helperText: assess.hints?.hintDenominator ?? undefined,
         },
         {
           indicator: "Rate",
           response: performanceRate?.rate
             ? stringifyResult(performanceRate?.rate)
             : autoPopulatedText,
-          helperText:
-            element.assessments?.find(
-              (assessment) => assessment.id === assess.id
-            )?.hints?.hintRate ?? undefined,
+          helperText: assess.hints?.hintRate ?? undefined,
         },
       ];
       return { label: `${label}: ${assess.label}`, rows: row };

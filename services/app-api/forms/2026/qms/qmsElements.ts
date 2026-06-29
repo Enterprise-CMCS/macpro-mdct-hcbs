@@ -275,22 +275,22 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-//Rates for LTSS-1
-export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
+//Rates for LTSS-1 / FFS
+export const performanceRatesAssessmentFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-assessment",
   required: true,
-  hint: "Statistically valid random sample of participants in enrolled in Medicaid MLTSS or FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  hint: "Statistically valid random sample of participants in enrolled in Medicaid FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "assess-of-core",
       label: "Assessment of Core Elements",
       hints: {
         hintNumerator:
-          "Number of Medicaid {MLTSS/FFS LTSS} participants who had an LTSS comprehensive assessment (containing all 10 core elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
         hintDenominator: "Auto-populates",
         hintRate:
-          "Percentage of Medicaid {MLTSS/FFS LTSS} participants who had an LTSS comprehensive assessment with 10 core elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment with 10 core elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
       },
     },
     {
@@ -298,20 +298,20 @@ export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
       label: "Assessment of Supplemental Elements",
       hints: {
         hintNumerator:
-          "Number of Medicaid {MLTSS/FFS LTSS} participants who had an LTSS comprehensive assessment (containing all 10 core elements and at least 12 supplemental elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements and at least 12 supplemental elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
         hintDenominator: "Auto-populates",
         hintRate:
-          "Percentage of Medicaid {MLTSS/FFS LTSS} participants who had an LTSS comprehensive assessment with 10 core elements and at least 12 supplemental elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment with 10 core elements and at least 12 supplemental elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
       },
     },
   ],
 };
 
-export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
+export const exclusionRatesAssessmentFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
-  hint: "Number of participants who have been enrolled in Medicaid {MLTSS/FFS LTSS} plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   required: true,
   assessments: [
     {
@@ -319,7 +319,7 @@ export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
       label: "Participant Could Not be Contacted",
       hints: {
         hintNumerator:
-          "Number of Medicaid {MLTSS/FFS LTSS} participants who had could not be contacted for LTSS comprehensive assessment within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+          "Number of Medicaid FFS LTSS participants who could not be contacted for LTSS comprehensive assessment within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
         hintDenominator: "Auto-populates",
         hintRate:
           "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
@@ -330,7 +330,71 @@ export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
       label: "Participant Refused Assessment",
       hints: {
         hintNumerator:
-          "Number of Medicaid {MLTSS/FFS LTSS} participants who refused an LTSS comprehensive assessment.",
+          "Number of Medicaid FFS LTSS participants who refused an LTSS comprehensive assessment.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of participants who refused an LTSS comprehensive assessment. Auto-calculates.",
+      },
+    },
+  ],
+};
+
+//Rates for LTSS-1 / MLTSS
+export const performanceRatesAssessmentMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-assessment",
+  required: true,
+  hint: "Statistically valid random sample of participants in enrolled in Medicaid MLTSS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "assess-of-core",
+      label: "Assessment of Core Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS LTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS LTSS participants who had an LTSS comprehensive assessment with 10 core elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
+    },
+    {
+      id: "assess-of-supplemental",
+      label: "Assessment of Supplemental Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS LTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements and at least 12 supplemental elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS LTSS participants who had an LTSS comprehensive assessment with 10 core elements and at least 12 supplemental elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
+    },
+  ],
+};
+
+export const exclusionRatesAssessmentMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS LTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  required: true,
+  assessments: [
+    {
+      id: "part-not-contact",
+      label: "Participant Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS LTSS participants who could not be contacted for LTSS comprehensive assessment within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
+    },
+    {
+      id: "part-refuse-assess",
+      label: "Participant Refused Assessment",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS LTSS participants who refused an LTSS comprehensive assessment.",
         hintDenominator: "Auto-populates",
         hintRate:
           "Percentage of participants who refused an LTSS comprehensive assessment. Auto-calculates.",

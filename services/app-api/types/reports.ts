@@ -577,9 +577,9 @@ export type MultiRateNdrTemplate = {
     label: string;
     id: string;
     hints?: {
-      hintNumerator: string | undefined;
-      hintDenominator: string | undefined;
-      hintRate: string | undefined;
+      hintNumerator?: string;
+      hintDenominator?: string;
+      hintRate?: string;
     };
   }[];
   answer?: RateSetData;
@@ -600,9 +600,9 @@ export type PerformanceNdrTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint: string | undefined;
-    denomHint: string | undefined;
-    rateHint: string | undefined;
+    numHint?: string;
+    denomHint?: string;
+    rateHint?: string;
   };
   required: boolean;
   multiplier?: number;
