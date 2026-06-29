@@ -461,6 +461,7 @@ const multiCategoryNdrSchema = object().shape({
 const multiRateNdrSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
+  hint: string().notRequired(),
   label: string().notRequired(),
   hint: string().notRequired(),
   helperText: string().notRequired(),

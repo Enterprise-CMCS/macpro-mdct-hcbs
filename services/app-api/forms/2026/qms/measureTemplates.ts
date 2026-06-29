@@ -35,8 +35,13 @@ import {
   enterMeasureResultsSubheader,
   measureResultsNavigationTable,
   measureFooter,
+<<<<<<< HEAD
   performanceRatesPersonPlanElements,
   exclusionRatesPersonPlanElements,
+=======
+  performanceRatesAssessmentElements,
+  exclusionRatesAssessmentElements,
+>>>>>>> 70409a9 (Added hint text for LTSS-2.)
   performanceRatesReassessmentPlanElements,
   exclusionRatesPatientPlanElements,
   readmissionRate,
@@ -47,10 +52,17 @@ import {
   performanceRateSelfDirection,
   sectionCompleteBanner,
   measureCompleteBanner,
+<<<<<<< HEAD
   exclusionRatesAssessmentFfsElements,
   performanceRatesAssessmentFfsElements,
   performanceRatesAssessmentMltssElements,
   exclusionRatesAssessmentMltssElements,
+=======
+  performanceRatesPersonPlanFfsElements,
+  exclusionRatesPersonPlanFfsElements,
+  exclusionRatesPersonPlanMltssElements,
+  performanceRatesPersonPlanMltssElements,
+>>>>>>> 70409a9 (Added hint text for LTSS-2.)
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<
@@ -198,8 +210,8 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesPersonPlanElements,
-      exclusionRatesPersonPlanElements,
+      performanceRatesPersonPlanFfsElements,
+      exclusionRatesPersonPlanFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -231,8 +243,8 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesPersonPlanElements,
-      exclusionRatesPersonPlanElements,
+      performanceRatesPersonPlanMltssElements,
+      exclusionRatesPersonPlanMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
