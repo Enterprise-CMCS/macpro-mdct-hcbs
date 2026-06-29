@@ -76,7 +76,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
       } else if (
         parsedDenominator !== 0 &&
         newErrorObject.rates[index].numerator ===
-          ErrorMessages.denominatorZero()
+        ErrorMessages.denominatorZero()
       ) {
         newErrorObject.rates[index].numerator = "";
       }
@@ -206,43 +206,8 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
 export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
   const label = element.label ?? "Performance Rates";
 
-<<<<<<< HEAD
-  const buildData = element.assessments?.map((assess: Assessment) => {
-    const performanceRate = element.answer?.rates?.find(
-      (rate: { id: string }) => rate.id === assess.id
-    );
-    const row = [
-      {
-        indicator: "Numerator",
-        response: performanceRate?.numerator,
-        helperText: assess.hints?.hintNumerator ?? undefined,
-      },
-      {
-        indicator: "Denominator",
-        response: element?.answer?.denominator ?? autoPopulatedText,
-        helperText: assess.hints?.hintDenominator ?? "Auto-populates",
-      },
-      {
-        indicator: "Rate",
-        response: performanceRate?.rate
-          ? stringifyResult(performanceRate?.rate)
-          : autoPopulatedText,
-        helperText: assess.hints?.hintRate ?? "Auto-calculates",
-      },
-    ];
-    return { label: `${label}: ${assess.label}`, rows: row };
-  });
-=======
   const buildData = element.assessments?.map(
-    (assess: {
-      id: string;
-      label: string;
-      hints?: {
-        hintNumerator?: string;
-        hintDenominator?: string;
-        hintRate?: string;
-      };
-    }) => {
+    (assess: { id: string; label: string }) => {
       const performanceRate = element.answer?.rates?.find(
         (rate: { id: string }) => rate.id === assess.id
       );
@@ -250,25 +215,23 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
         {
           indicator: "Numerator",
           response: performanceRate?.numerator,
-          helperText: assess.hints?.hintNumerator ?? undefined,
         },
         {
           indicator: "Denominator",
           response: element?.answer?.denominator ?? autoPopulatedText,
-          helperText: assess.hints?.hintDenominator ?? "Auto-populates",
+          helperText: "Auto-populates",
         },
         {
           indicator: "Rate",
           response: performanceRate?.rate
             ? stringifyResult(performanceRate?.rate)
             : autoPopulatedText,
-          helperText: assess.hints?.hintRate ?? "Auto-calculates",
+          helperText: "Auto-calculates",
         },
       ];
       return { label: `${label}: ${assess.label}`, rows: row };
     }
   );
->>>>>>> 70409a9 (Added hint text for LTSS-2.)
 
   return (
     <>
@@ -280,7 +243,7 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
           {
             indicator: "Performance Rates Denominator",
             response: element?.answer?.denominator,
-            helperText: element?.hint,
+            helperText: element?.hint ?? undefined,
           },
         ]}
         caption="Performance Rates Denominator"
