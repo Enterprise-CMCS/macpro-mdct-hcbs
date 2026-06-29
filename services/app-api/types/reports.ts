@@ -585,7 +585,15 @@ export type MultiRateNdrTemplate = {
   label?: string;
   hint?: string;
   helperText?: string;
-  assessments: Assessment[];
+  assessments: {
+    label: string;
+    id: string;
+    hints?: {
+      hintNumerator?: string;
+      hintDenominator?: string;
+      hintRate?: string;
+    };
+  }[];
   answer?: RateSetData;
   required: boolean;
 };
@@ -604,9 +612,9 @@ export type PerformanceNdrTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint?: string;
-    denomHint?: string;
-    rateHint?: string;
+    numHint: string;
+    denomHint: string;
+    rateHint: string;
   };
   required: boolean;
   multiplier?: number;

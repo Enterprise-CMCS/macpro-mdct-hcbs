@@ -77,7 +77,7 @@ const listInputTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   fieldLabel: string().required(),
-  helperText: string().notRequired(),
+  helperText: string().required(),
   buttonText: string().required(),
   answer: array().of(string()).notRequired(),
   required: boolean().required(),

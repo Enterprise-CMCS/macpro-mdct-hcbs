@@ -76,7 +76,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
       } else if (
         parsedDenominator !== 0 &&
         newErrorObject.rates[index].numerator ===
-          ErrorMessages.denominatorZero()
+        ErrorMessages.denominatorZero()
       ) {
         newErrorObject.rates[index].numerator = "";
       }
@@ -172,7 +172,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
               <CmsdsTextField
                 label="Numerator"
                 name={`${index}.${FieldNames.numerator}`}
-                hint={assess.hints?.hintNumerator}
+                hint={assess.hints?.hintNumerator ?? undefined}
                 onChange={onChangeHandler}
                 onBlur={onChangeHandler}
                 value={value.numerator}
@@ -206,31 +206,33 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
 export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
   const label = element.label ?? "Performance Rates";
 
-  const buildData = element.assessments?.map((assess: Assessment) => {
-    const performanceRate = element.answer?.rates?.find(
-      (rate: { id: string }) => rate.id === assess.id
-    );
-    const row = [
-      {
-        indicator: "Numerator",
-        response: performanceRate?.numerator,
-        helperText: assess.hints?.hintNumerator ?? undefined,
-      },
-      {
-        indicator: "Denominator",
-        response: element?.answer?.denominator ?? autoPopulatedText,
-        helperText: assess.hints?.hintDenominator ?? "Auto-populates",
-      },
-      {
-        indicator: "Rate",
-        response: performanceRate?.rate
-          ? stringifyResult(performanceRate?.rate)
-          : autoPopulatedText,
-        helperText: assess.hints?.hintRate ?? "Auto-calculates",
-      },
-    ];
-    return { label: `${label}: ${assess.label}`, rows: row };
-  });
+  const buildData = element.assessments?.map(
+    (assess: { id: string; label: string; hints?: { hintNumerator?: string; hintDenominator?: string; hintRate?: string } }) => {
+      const performanceRate = element.answer?.rates?.find(
+        (rate: { id: string }) => rate.id === assess.id
+      );
+      const row = [
+        {
+          indicator: "Numerator",
+          response: performanceRate?.numerator,
+          helperText: assess.hints?.hintNumerator ?? undefined,
+        },
+        {
+          indicator: "Denominator",
+          response: element?.answer?.denominator ?? autoPopulatedText,
+          helperText: assess.hints?.hintDenominator ?? "Auto-populates",
+        },
+        {
+          indicator: "Rate",
+          response: performanceRate?.rate
+            ? stringifyResult(performanceRate?.rate)
+            : autoPopulatedText,
+          helperText: assess.hints?.hintRate ?? "Auto-calculates",
+        },
+      ];
+      return { label: `${label}: ${assess.label}`, rows: row };
+    }
+  );
 
   return (
     <>
@@ -242,7 +244,7 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
           {
             indicator: "Performance Rates Denominator",
             response: element?.answer?.denominator,
-            helperText: element?.hint,
+            helperText: element?.assessments?.[0]?.hints?.hintDenominator ?? "Auto-populates",
           },
         ]}
         caption="Performance Rates Denominator"
