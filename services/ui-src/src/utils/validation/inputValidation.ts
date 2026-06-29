@@ -1,6 +1,6 @@
 import { parseNumber } from "components/rates/calculations";
 import { ErrorMessages } from "../../constants";
-import { parseMMDDYYYY } from "utils";
+import { parseMMDDYYYY, parseMMYYYY } from "utils";
 
 /**
  * Copy the given object, with the same shape but all string values wiped out.
@@ -41,18 +41,30 @@ export const validateDate = (
   rawValue: string,
   maskedValue: string,
   isRequired: boolean,
-  invalidDateMessage?: string
+  invalidDateMessage?: string,
+  dateFormat: "MMDDYYYY" | "MMYYYY" = "MMDDYYYY"
 ) => {
-  const parsedValue = parseMMDDYYYY(maskedValue);
+  const parsedValue =
+    dateFormat === "MMYYYY"
+      ? parseMMYYYY(maskedValue)
+      : parseMMDDYYYY(maskedValue);
   const isValid = parsedValue !== undefined;
+  const requiredDateError =
+    dateFormat === "MMYYYY"
+      ? ErrorMessages.mustBeAMonthYear
+      : ErrorMessages.mustBeADate;
+  const optionalDateError =
+    dateFormat === "MMYYYY"
+      ? ErrorMessages.mustBeAMonthYearOptional
+      : ErrorMessages.mustBeADateOptional;
   let errorMessage = "";
   if (!isValid) {
     if (!rawValue && isRequired) {
       errorMessage = ErrorMessages.requiredResponse;
     } else if (isRequired) {
-      errorMessage = invalidDateMessage ?? ErrorMessages.mustBeADate;
+      errorMessage = invalidDateMessage ?? requiredDateError;
     } else if (rawValue && !isRequired) {
-      errorMessage = invalidDateMessage ?? ErrorMessages.mustBeADateOptional;
+      errorMessage = invalidDateMessage ?? optionalDateError;
     }
   }
   return { parsedValue, isValid, errorMessage };

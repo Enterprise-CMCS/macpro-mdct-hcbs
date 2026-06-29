@@ -291,6 +291,17 @@ export const elementObject: {
           required: true,
         }}
       />,
+      <DateField
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.Date,
+          id: "id-month-year-field",
+          label: "DateField (MM/YYYY)",
+          helperText: "DateFieldElement is used to select a month and year.",
+          dateFormat: "MMYYYY",
+          required: true,
+        }}
+      />,
     ],
     pdfVariants: [
       <Table variant={"reportDetails"}>

@@ -18,7 +18,7 @@ export const qipReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "review-submit"],
+      childPageIds: ["general-info", "plan-overview", "review-submit"],
     },
     {
       id: "general-info",
@@ -50,6 +50,47 @@ export const qipReportTemplate: ReportBase = {
         },
         waiverListCheckboxField,
         waiverListInputField,
+      ],
+    },
+    {
+      id: "plan-overview",
+      navTitle: "QI Plan Overview",
+      tabTitle: "Quality Improvement Plan Overview - QIP - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "plan-overview-header",
+          text: "Quality Improvement Plan Overview",
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "strategy-description",
+          label: "Strategy description",
+          helperText:
+            "Describe the planned intervention(s), relevant partners, populations affected, and the rationale for the strategy (500 words).",
+          wordLimit: 500,
+          required: true,
+        },
+        {
+          type: ElementType.Date,
+          id: "start-date",
+          label: "Start date",
+          helperText:
+            "Enter a projected start date for future strategies or enter a past start date for strategies in progress.",
+          dateFormat: "MMYYYY",
+          required: true,
+        },
+        {
+          type: ElementType.Date,
+          id: "end-date",
+          label: "Projected end date",
+          helperText:
+            "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
+          dateFormat: "MMYYYY",
+          required: false,
+        },
       ],
     },
     {

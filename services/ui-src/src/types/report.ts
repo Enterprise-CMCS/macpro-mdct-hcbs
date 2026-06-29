@@ -323,6 +323,7 @@ export type DateTemplate = {
   id: string;
   label: string;
   helperText?: string;
+  dateFormat?: "MMDDYYYY" | "MMYYYY";
   answer?: string;
   required: boolean;
 };

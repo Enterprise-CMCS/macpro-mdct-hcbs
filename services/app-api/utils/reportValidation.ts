@@ -108,6 +108,7 @@ const dateTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().required(),
+  dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
 });
