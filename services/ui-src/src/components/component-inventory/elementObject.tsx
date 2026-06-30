@@ -58,7 +58,7 @@ import {
   checkboxFieldSection,
   listInputSection,
 } from "./pdfElementSectionHelpers";
-import { formatMonthDayYear } from "utils";
+import { formatMonthDayYear, formatMonthYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
 import { ListInput } from "components/fields/ListInput";
 
@@ -317,6 +317,24 @@ export const elementObject: {
           <Tr>
             <Td>{2025}</Td>
             <Td>{formatMonthDayYear(1757897305331)}</Td>
+            <Td>{"test user"}</Td>
+            <Td>{"In progress"}</Td>
+          </Tr>
+        </Tbody>
+      </Table>,
+      <Table variant={"reportDetails"}>
+        <Thead>
+          <Tr>
+            <Th>Reporting year</Th>
+            <Th>Last edited</Th>
+            <Th>Edited by</Th>
+            <Th>Status</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>{2025}</Td>
+            <Td>{formatMonthYear(1757897305331)}</Td>
             <Td>{"test user"}</Td>
             <Td>{"In progress"}</Td>
           </Tr>

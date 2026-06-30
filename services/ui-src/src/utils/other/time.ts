@@ -30,6 +30,20 @@ export const formatMonthDayYear = (date: number) => {
   return [getPart("month"), getPart("day"), getPart("year")].join("/");
 };
 
+/**
+ * Format the given date to MM/yyyy. For example: "03/2024"
+ */
+export const formatMonthYear = (date: number) => {
+  const options = {
+    month: "2-digit",
+    year: "numeric",
+  } as const;
+  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const parts = formatter.formatToParts(date);
+  const getPart = (type: string) => parts.find((p) => p.type === type)!.value;
+  return [getPart("month"), getPart("year")].join("/");
+};
+
 /*
  * Calculates time remaining for things like timeout
  */

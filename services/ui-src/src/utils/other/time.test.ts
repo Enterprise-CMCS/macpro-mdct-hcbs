@@ -1,6 +1,7 @@
 import {
   calculateRemainingSeconds,
   formatMonthDayYear,
+  formatMonthYear,
   getLocalHourMinuteTime,
   parseMMDDYYYY,
   parseMMYYYY,
@@ -22,6 +23,14 @@ describe("utils/time", () => {
       const formatted = formatMonthDayYear(date);
       // Imprecise matcher, because the result depends on the user's time zone
       expect(formatted).toMatch(/03\/\d\d\/2024/);
+    });
+  });
+
+  describe("formatMonthYear()", () => {
+    it("should render dates as MM/yyyy", () => {
+      const date = new Date("2024-03-20").valueOf();
+      const formatted = formatMonthYear(date);
+      expect(formatted).toBe("03/2024");
     });
   });
 
