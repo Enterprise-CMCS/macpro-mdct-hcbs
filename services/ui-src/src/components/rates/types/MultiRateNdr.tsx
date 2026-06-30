@@ -189,7 +189,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
               <CmsdsTextField
                 label="Rate"
                 name={`${index}.rate`}
-                hint={assess.hints?.hintRate}
+                hint={assess.hints?.hintRate ?? "Auto-calculates"}
                 value={value.rate}
                 disabled
               ></CmsdsTextField>
@@ -228,14 +228,14 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
         {
           indicator: "Denominator",
           response: element?.answer?.denominator ?? autoPopulatedText,
-          helperText: assess.hints?.hintDenominator ?? undefined,
+          helperText: assess.hints?.hintDenominator ?? "Auto-populates",
         },
         {
           indicator: "Rate",
           response: performanceRate?.rate
             ? stringifyResult(performanceRate?.rate)
             : autoPopulatedText,
-          helperText: assess.hints?.hintRate ?? undefined,
+          helperText: assess.hints?.hintRate ?? "Auto-calculates",
         },
       ];
       return { label: `${label}: ${assess.label}`, rows: row };
@@ -252,7 +252,7 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
           {
             indicator: "Performance Rates Denominator",
             response: element?.answer?.denominator,
-            helperText: element?.hint ?? undefined,
+            helperText: element?.hint,
           },
         ]}
         caption="Performance Rates Denominator"
