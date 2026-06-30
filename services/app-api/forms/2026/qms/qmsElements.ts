@@ -443,7 +443,7 @@ export const performanceRatesPersonCenteredPlanFfsElements: MultiRateNdrTemplate
     type: ElementType.MultiRateNdr,
     id: "measure-rates-transmitted",
     required: true,
-    hint: "Statistically valid random sample of participants in enrolled in Medicaid FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    hint: "Statistically valid random sample of participants enrolled in Medicaid FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
     assessments: [
       {
         id: "pc-plan",
@@ -487,17 +487,17 @@ export const performanceRatesPersonCenteredPlanMltssElements: MultiRateNdrTempla
     type: ElementType.MultiRateNdr,
     id: "measure-rates-transmitted",
     required: true,
-    hint: "Statistically valid random sample of participants in enrolled in Medicaid MLTSS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
     assessments: [
       {
         id: "pc-plan",
         label: "Participant with Person-Centered Plan Transmitted to PCP",
         hints: {
           hintNumerator:
-            "Number of Medicaid MLTSS LTSS participants whose person-centered plan was transmitted to their PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
+            "Number of Medicaid MLTSS participants whose person-centered plan was transmitted to their PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
           hintDenominator: "Auto-populated.",
           hintRate:
-            "Percentage of Medicaid MLTSS LTSS participants whose person-centered plan was transmitted to the PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
+            "Percentage of Medicaid MLTSS participants whose person-centered plan was transmitted to the PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
         },
       },
     ],
@@ -509,17 +509,17 @@ export const exclusionRatesPersonCenteredPlanMltssElements: MultiRateNdrTemplate
     id: "measure-rates-refused",
     label: "Exclusion Rate",
     required: true,
-    hint: "Number of participants who have been enrolled in Medicaid MLTSS LTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
     assessments: [
       {
         id: "refused-pc-plan",
         label: "Participant Refused to Share Person-Centered Plan",
         hints: {
           hintNumerator:
-            "Number of Medicaid MLTSS LTSS participants who refused to allow the person-centered plan to be shared.",
+            "Number of Medicaid MLTSS participants who refused to allow the person-centered plan to be shared.",
           hintDenominator: "Auto-populated.",
           hintRate:
-            "Percentage of Medicaid MLTSS LTSS participants who refused to have the person-centered plan shared with a PCP (or other documented medical care provider).",
+            "Percentage of Medicaid MLTSS participants who refused to have the person-centered plan shared with a PCP (or other documented medical care provider).",
         },
       },
     ],
