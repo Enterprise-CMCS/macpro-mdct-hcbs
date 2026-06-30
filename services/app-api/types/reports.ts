@@ -557,10 +557,20 @@ export type RateSetData = {
   rates: RateType[];
 };
 
+export type MultiRateNdrAssessment = {
+  label: string;
+  id: string;
+  hints?: {
+    hintNumerator?: string;
+    hintDenominator?: string;
+    hintRate?: string;
+  };
+};
+
 export type MultiCategoryNdrTemplate = {
   id: string;
   type: ElementType.MultiCategoryNdr;
-  assessments: { label: string; id: string }[];
+  assessments: MultiRateNdrAssessment[];
   categories: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
@@ -573,15 +583,7 @@ export type MultiRateNdrTemplate = {
   label?: string;
   hint?: string;
   helperText?: string;
-  assessments: {
-    label: string;
-    id: string;
-    hints?: {
-      hintNumerator?: string;
-      hintDenominator?: string;
-      hintRate?: string;
-    };
-  }[];
+  assessments: MultiRateNdrAssessment[];
   answer?: RateSetData;
   required: boolean;
 };
