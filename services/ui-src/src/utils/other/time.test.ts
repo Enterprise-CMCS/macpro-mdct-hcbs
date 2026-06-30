@@ -3,6 +3,7 @@ import {
   formatMonthDayYear,
   getLocalHourMinuteTime,
   parseMMDDYYYY,
+  parseMMYYYY,
 } from "./time";
 
 const getLocalHourMinuteTimeRegex = /[0-2]?[0-9]:[0-5][0-9](a|p)m/;
@@ -111,5 +112,44 @@ describe("test parseMMDDYYYY helper function", () => {
   it("should return null for day or month being zero", () => {
     expect(parseMMDDYYYY("00/10/2023")).toBeFalsy();
     expect(parseMMDDYYYY("10/00/2023")).toBeFalsy();
+  });
+});
+
+describe("test parseMMYYYY helper function", () => {
+  it("should correctly parse a valid MMYYYY date string", () => {
+    const date = parseMMYYYY("12/2023");
+    expect(date).toBeInstanceOf(Date);
+    expect(date?.getFullYear()).toBe(2023);
+    expect(date?.getMonth()).toBe(11);
+    expect(date?.getDate()).toBe(1);
+    expect(date?.getHours()).toBe(0);
+    expect(date?.getMinutes()).toBe(0);
+    expect(date?.getSeconds()).toBe(0);
+    expect(date?.getMilliseconds()).toBe(0);
+  });
+
+  it("should correctly parse February in leap and non-leap years", () => {
+    const leapYearDate = parseMMYYYY("02/2028");
+    const nonLeapYearDate = parseMMYYYY("02/2027");
+
+    expect(leapYearDate).toBeInstanceOf(Date);
+    expect(nonLeapYearDate).toBeInstanceOf(Date);
+    expect(leapYearDate?.getMonth()).toBe(1);
+    expect(nonLeapYearDate?.getMonth()).toBe(1);
+    expect(leapYearDate?.getDate()).toBe(1);
+    expect(nonLeapYearDate?.getDate()).toBe(1);
+  });
+
+  it("should return null for invalid month bounds", () => {
+    expect(parseMMYYYY("00/2024")).toBeFalsy();
+    expect(parseMMYYYY("13/2024")).toBeFalsy();
+  });
+
+  it("should return null for incorrect formats", () => {
+    expect(parseMMYYYY("2/2024")).toBeFalsy();
+    expect(parseMMYYYY("02-2024")).toBeFalsy();
+    expect(parseMMYYYY("02/24")).toBeFalsy();
+    expect(parseMMYYYY("02/2024abc")).toBeFalsy();
+    expect(parseMMYYYY("")).toBeFalsy();
   });
 });
