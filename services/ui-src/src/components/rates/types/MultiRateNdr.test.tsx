@@ -10,6 +10,7 @@ const mockedElement: MultiRateNdrTemplate = {
   id: "mock-perf-id",
   type: ElementType.MultiRateNdr,
   label: "test label",
+  hint: "test hint",
   helperText: "helper text",
   required: true,
   assessments: [
@@ -52,7 +53,13 @@ describe("<NDREnhanced />", () => {
         screen.getByRole("textbox", { name: "test labels Denominator" })
       ).toBeInTheDocument();
       expect(
+        screen.getByText("test hint", { selector: "p" })
+      ).toBeInTheDocument();
+      expect(
         screen.getByRole("textbox", { name: "Numerator" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("hint numerator", { selector: "p" })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("textbox", { name: "Denominator" })
@@ -60,8 +67,14 @@ describe("<NDREnhanced />", () => {
       expect(
         screen.getByRole("textbox", { name: "Denominator" })
       ).toBeDisabled();
+      expect(
+        screen.getByText("hint denominator", { selector: "p" })
+      ).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
+      expect(
+        screen.getByText("hint rate", { selector: "p" })
+      ).toBeInTheDocument();
     });
 
     test("Rate should calculate", async () => {
