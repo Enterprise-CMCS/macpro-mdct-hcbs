@@ -12,7 +12,17 @@ const mockedElement: MultiRateNdrTemplate = {
   label: "test label",
   helperText: "helper text",
   required: true,
-  assessments: [{ id: "test-1", label: "assessment 1" }],
+  assessments: [
+    {
+      id: "test-1",
+      label: "assessment 1",
+      hints: {
+        hintNumerator: "hint numerator",
+        hintDenominator: "hint denominator",
+        hintRate: "hint rate",
+      },
+    },
+  ],
 };
 const updateSpy = jest.fn();
 

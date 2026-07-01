@@ -566,11 +566,20 @@ export const elementObject: {
           type: ElementType.MultiRateNdr,
           id: "measure-rates",
           assessments: [
-            { id: "assessment-1", label: "First Assessment" },
+            {
+              id: "assessment-1",
+              label: "First Assessment",
+              hints: {
+                hintNumerator: "Hint for first assessment",
+                hintDenominator: "Auto-populates",
+                hintRate: "Auto-calculates",
+              },
+            },
             { id: "assessment-2", label: "Second Assessment" },
           ],
           required: true,
           helperText: "Helper text",
+          hint: "Hint text",
         }}
       />,
     ],

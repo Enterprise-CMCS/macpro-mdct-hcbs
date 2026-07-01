@@ -462,12 +462,20 @@ const multiRateNdrSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
   label: string().notRequired(),
+  hint: string().notRequired(),
   helperText: string().notRequired(),
   assessments: array()
     .of(
       object().shape({
         id: string().required(),
         label: string().required(),
+        hints: object()
+          .shape({
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
+          })
+          .notRequired(),
       })
     )
     .required(),

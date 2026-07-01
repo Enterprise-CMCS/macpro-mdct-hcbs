@@ -35,8 +35,6 @@ import {
   enterMeasureResultsSubheader,
   measureResultsNavigationTable,
   measureFooter,
-  performanceRatesAssessmentElements,
-  exclusionRatesAssessmentElements,
   performanceRatesPersonPlanElements,
   exclusionRatesPersonPlanElements,
   performanceRatesReassessmentPlanElements,
@@ -49,6 +47,10 @@ import {
   performanceRateSelfDirection,
   sectionCompleteBanner,
   measureCompleteBanner,
+  exclusionRatesAssessmentFfsElements,
+  performanceRatesAssessmentFfsElements,
+  performanceRatesAssessmentMltssElements,
+  exclusionRatesAssessmentMltssElements,
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<
@@ -104,8 +106,8 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesAssessmentElements,
-      exclusionRatesAssessmentElements,
+      performanceRatesAssessmentFfsElements,
+      exclusionRatesAssessmentFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -137,8 +139,8 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesAssessmentElements,
-      exclusionRatesAssessmentElements,
+      performanceRatesAssessmentMltssElements,
+      exclusionRatesAssessmentMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",

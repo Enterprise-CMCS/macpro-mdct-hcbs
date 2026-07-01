@@ -559,10 +559,20 @@ export type RateSetData = {
   rates: RateType[];
 };
 
+export type Assessment = {
+  label: string;
+  id: string;
+  hints?: {
+    hintNumerator?: string;
+    hintDenominator?: string;
+    hintRate?: string;
+  };
+};
+
 export type MultiCategoryNdrTemplate = {
   id: string;
   type: ElementType.MultiCategoryNdr;
-  assessments: { label: string; id: string }[];
+  assessments: Assessment[];
   categories: { label: string; id: string; autoCalc?: boolean }[];
   multiplier?: number;
   answer?: RateSetData[];
@@ -573,8 +583,9 @@ export type MultiRateNdrTemplate = {
   id: string;
   type: ElementType.MultiRateNdr;
   label?: string;
+  hint?: string;
   helperText?: string;
-  assessments: { label: string; id: string }[];
+  assessments: Assessment[];
   answer?: RateSetData;
   required: boolean;
 };
@@ -593,9 +604,9 @@ export type PerformanceNdrTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint: string | undefined;
-    denomHint: string | undefined;
-    rateHint: string | undefined;
+    numHint?: string;
+    denomHint?: string;
+    rateHint?: string;
   };
   required: boolean;
   multiplier?: number;
