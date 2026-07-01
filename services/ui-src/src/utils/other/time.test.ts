@@ -149,16 +149,16 @@ describe("test parseMMYYYY helper function", () => {
     expect(nonLeapYearDate?.getDate()).toBe(1);
   });
 
-  it("should return null for invalid month bounds", () => {
-    expect(parseMMYYYY("00/2024")).toBeFalsy();
-    expect(parseMMYYYY("13/2024")).toBeFalsy();
+  it("should return undefined for invalid month bounds", () => {
+    expect(parseMMYYYY("00/2024")).toBeUndefined();
+    expect(parseMMYYYY("13/2024")).toBeUndefined();
   });
 
-  it("should return null for incorrect formats", () => {
-    expect(parseMMYYYY("2/2024")).toBeFalsy();
-    expect(parseMMYYYY("02-2024")).toBeFalsy();
-    expect(parseMMYYYY("02/24")).toBeFalsy();
-    expect(parseMMYYYY("02/2024abc")).toBeFalsy();
-    expect(parseMMYYYY("")).toBeFalsy();
+  it("should return undefined for incorrect formats", () => {
+    expect(parseMMYYYY("2/2024")).toBeUndefined();
+    expect(parseMMYYYY("02-2024")).toBeUndefined();
+    expect(parseMMYYYY("02/24")).toBeUndefined();
+    expect(parseMMYYYY("02/2024abc")).toBeUndefined();
+    expect(parseMMYYYY("")).toBeUndefined();
   });
 });
