@@ -440,7 +440,7 @@ export const exclusionRatesPersonPlanFfsElements: MultiRateNdrTemplate = {
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
-  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "part-not-contact",
@@ -504,7 +504,7 @@ export const exclusionRatesPersonPlanMltssElements: MultiRateNdrTemplate = {
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
-  hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "part-not-contact",
