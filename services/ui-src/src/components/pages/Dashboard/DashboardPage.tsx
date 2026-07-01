@@ -267,7 +267,6 @@ export const DashboardPage = () => {
             label="Filter by Year"
             value={dropdownValue}
             onChange={handleYearChange}
-            data-testid="year-filter-dropdown"
             options={filterDropdownOptions}
           />
           <Button onClick={handleFilter} variant="outline">

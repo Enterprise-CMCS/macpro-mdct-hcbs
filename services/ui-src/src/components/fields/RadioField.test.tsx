@@ -25,7 +25,7 @@ mockedUseStore.mockReturnValue({
 const mockRadioElement: RadioTemplate = {
   id: "mock-radio-id",
   type: ElementType.Radio,
-  label: "mock label",
+  label: "Mock Label",
   required: true,
   choices: [
     {
@@ -40,7 +40,7 @@ const mockRadioElement: RadioTemplate = {
         {
           id: "mock-text-box-id",
           type: ElementType.Textbox,
-          label: "mock-text-box",
+          label: "Text Label",
           required: true,
         },
       ],
@@ -60,9 +60,7 @@ const mockRadioElement: RadioTemplate = {
 const updateSpy = jest.fn();
 
 const RadioFieldComponent = (
-  <div data-testid="test-radio-list">
-    <RadioField element={mockRadioElement} updateElement={updateSpy} />
-  </div>
+  <RadioField element={mockRadioElement} updateElement={updateSpy} />
 );
 
 describe("<RadioField />", () => {
@@ -72,23 +70,28 @@ describe("<RadioField />", () => {
 
   test("RadioField renders as Radio", () => {
     render(RadioFieldComponent);
-    expect(screen.getByText("Choice 1")).toBeVisible();
-    expect(screen.getByTestId("test-radio-list")).toBeVisible();
+    expect(
+      screen.getByRole("radiogroup", { name: "Mock Label" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "Choice 1" })).toBeVisible();
+    expect(screen.getByRole("radio", { name: "Choice 2" })).toBeVisible();
+    expect(screen.getByRole("radio", { name: "Choice 3" })).toBeVisible();
   });
 
   test("RadioField allows checking radio choices", async () => {
     render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 1");
-    await userEvent.click(firstRadio);
+    await userEvent.click(screen.getByRole("radio", { name: "Choice 1" }));
     expect(updateSpy).toHaveBeenCalledWith({ answer: "A" });
   });
 
   test("RadioField displays children fields after selection", async () => {
     render(RadioFieldComponent);
-    const firstRadio = screen.getByLabelText("Choice 2");
-    await userEvent.click(firstRadio);
+    expect(
+      screen.queryByRole("textbox", { name: "Text Label" })
+    ).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("radio", { name: "Choice 2" }));
     expect(updateSpy).toHaveBeenCalledWith({ answer: "B" });
-    expect(screen.getByLabelText("mock-text-box")).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Text Label" })).toBeVisible();
   });
 
   testA11y(RadioFieldComponent);
@@ -121,9 +124,7 @@ describe("Radio field click action logic", () => {
       clickAction: "qmDeliveryMethodChange",
     };
     const deliveryRadio = (
-      <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} updateElement={updateSpy} />
-      </div>
+      <RadioField element={deliveryElement} updateElement={updateSpy} />
     );
     render(deliveryRadio);
     const radioField = screen.getByText("Choice 1");
@@ -139,9 +140,7 @@ describe("Radio field click action logic", () => {
       answer: "mock-answer",
     };
     const deliveryRadio = (
-      <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} updateElement={updateSpy} />
-      </div>
+      <RadioField element={deliveryElement} updateElement={updateSpy} />
     );
     render(deliveryRadio);
     const radioField = screen.getByText("Choice 1");
@@ -164,9 +163,7 @@ describe("Radio field click action logic", () => {
       answer: "mock-answer",
     };
     const deliveryRadio = (
-      <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} updateElement={updateSpy} />
-      </div>
+      <RadioField element={deliveryElement} updateElement={updateSpy} />
     );
     render(deliveryRadio);
     const radioField = screen.getByText("Choice 1");
@@ -199,9 +196,7 @@ describe("Radio field click action logic", () => {
       ],
     };
     const deliveryRadio = (
-      <div data-testid="test-radio-list">
-        <RadioField element={deliveryElement} updateElement={updateSpy} />
-      </div>
+      <RadioField element={deliveryElement} updateElement={updateSpy} />
     );
     render(deliveryRadio);
     const radioField = screen.getByText("Hey, no thanks");
