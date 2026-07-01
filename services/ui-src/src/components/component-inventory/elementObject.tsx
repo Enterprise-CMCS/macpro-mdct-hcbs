@@ -570,14 +570,6 @@ export const elementObject: {
               id: "assessment-1",
               label: "First Assessment",
               hints: {
-<<<<<<< HEAD
-                hintNumerator: "Hint for first assessment",
-                hintDenominator: "Auto-populates",
-                hintRate: "Auto-calculates",
-              },
-            },
-            { id: "assessment-2", label: "Second Assessment" },
-=======
                 hintNumerator: "hint numerator",
                 hintDenominator: "hint denominator",
                 hintRate: "hint rate",
@@ -592,7 +584,6 @@ export const elementObject: {
                 hintRate: "hint rate",
               },
             },
->>>>>>> 70409a9 (Added hint text for LTSS-2.)
           ],
           required: true,
           helperText: "Helper text",

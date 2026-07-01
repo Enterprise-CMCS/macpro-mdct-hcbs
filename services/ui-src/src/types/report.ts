@@ -562,19 +562,7 @@ export type MultiRateNdrTemplate = {
   label?: string;
   hint?: string;
   helperText?: string;
-<<<<<<< HEAD
   assessments: Assessment[];
-=======
-  assessments: {
-    label: string;
-    id: string;
-    hints?: {
-      hintNumerator?: string;
-      hintDenominator?: string;
-      hintRate?: string;
-    };
-  }[];
->>>>>>> 70409a9 (Added hint text for LTSS-2.)
   answer?: RateSetData;
   required: boolean;
 };
@@ -593,15 +581,9 @@ export type PerformanceNdrTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-<<<<<<< HEAD
     numHint?: string;
     denomHint?: string;
     rateHint?: string;
-=======
-    numHint: string;
-    denomHint: string;
-    rateHint: string;
->>>>>>> 70409a9 (Added hint text for LTSS-2.)
   };
   required: boolean;
   multiplier?: number;

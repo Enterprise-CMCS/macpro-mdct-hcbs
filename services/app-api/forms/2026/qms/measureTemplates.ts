@@ -35,15 +35,16 @@ import {
   enterMeasureResultsSubheader,
   measureResultsNavigationTable,
   measureFooter,
-<<<<<<< HEAD
-  performanceRatesPersonPlanElements,
-  exclusionRatesPersonPlanElements,
-=======
-  performanceRatesAssessmentElements,
-  exclusionRatesAssessmentElements,
->>>>>>> 70409a9 (Added hint text for LTSS-2.)
   performanceRatesReassessmentPlanElements,
   exclusionRatesPatientPlanElements,
+  performanceRatesAssessmentFfsElements,
+  exclusionRatesAssessmentFfsElements,
+  performanceRatesAssessmentMltssElements,
+  exclusionRatesAssessmentMltssElements,
+  performanceRatesPersonPlanFfsElements,
+  exclusionRatesPersonPlanFfsElements,
+  performanceRatesPersonPlanMltssElements,
+  exclusionRatesPersonPlanMltssElements,
   readmissionRate,
   performanceRatePOM,
   performanceRateTermStay,
@@ -52,17 +53,6 @@ import {
   performanceRateSelfDirection,
   sectionCompleteBanner,
   measureCompleteBanner,
-<<<<<<< HEAD
-  exclusionRatesAssessmentFfsElements,
-  performanceRatesAssessmentFfsElements,
-  performanceRatesAssessmentMltssElements,
-  exclusionRatesAssessmentMltssElements,
-=======
-  performanceRatesPersonPlanFfsElements,
-  exclusionRatesPersonPlanFfsElements,
-  exclusionRatesPersonPlanMltssElements,
-  performanceRatesPersonPlanMltssElements,
->>>>>>> 70409a9 (Added hint text for LTSS-2.)
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<

@@ -56,13 +56,22 @@ describe("<NDREnhanced />", () => {
         screen.getByRole("textbox", { name: "Numerator" })
       ).toBeInTheDocument();
       expect(
+        screen.getByRole("textbox", { name: "hint numerator" })
+      ).toBeInTheDocument();
+      expect(
         screen.getByRole("textbox", { name: "Denominator" })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("textbox", { name: "Denominator" })
       ).toBeDisabled();
+      expect(
+        screen.getByRole("textbox", { name: "hint denominator" })
+      ).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
+      expect(
+        screen.getByRole("textbox", { name: "hint rate" })
+      ).toBeInTheDocument();
     });
 
     test("Rate should calculate", async () => {
