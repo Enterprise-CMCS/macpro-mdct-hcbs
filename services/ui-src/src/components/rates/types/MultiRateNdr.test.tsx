@@ -10,6 +10,7 @@ const mockedElement: MultiRateNdrTemplate = {
   id: "mock-perf-id",
   type: ElementType.MultiRateNdr,
   label: "test label",
+  hint: "test hint",
   helperText: "helper text",
   required: true,
   assessments: [
