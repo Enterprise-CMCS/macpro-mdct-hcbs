@@ -589,9 +589,9 @@ export type PerformanceNdrTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint: string;
-    denomHint: string;
-    rateHint: string;
+    numHint?: string;
+    denomHint?: string;
+    rateHint?: string;
   };
   required: boolean;
   multiplier?: number;

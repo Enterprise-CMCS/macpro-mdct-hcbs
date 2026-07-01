@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { Assessment, MultiRateNdrTemplate } from "types";
+import { MultiRateNdrTemplate } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -76,7 +76,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
       } else if (
         parsedDenominator !== 0 &&
         newErrorObject.rates[index].numerator ===
-        ErrorMessages.denominatorZero()
+          ErrorMessages.denominatorZero()
       ) {
         newErrorObject.rates[index].numerator = "";
       }
@@ -207,7 +207,15 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
   const label = element.label ?? "Performance Rates";
 
   const buildData = element.assessments?.map(
-    (assess: { id: string; label: string; hints?: { hintNumerator?: string; hintDenominator?: string; hintRate?: string } }) => {
+    (assess: {
+      id: string;
+      label: string;
+      hints?: {
+        hintNumerator?: string;
+        hintDenominator?: string;
+        hintRate?: string;
+      };
+    }) => {
       const performanceRate = element.answer?.rates?.find(
         (rate: { id: string }) => rate.id === assess.id
       );
@@ -244,7 +252,9 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
           {
             indicator: "Performance Rates Denominator",
             response: element?.answer?.denominator,
-            helperText: element?.assessments?.[0]?.hints?.hintDenominator ?? "Auto-populates",
+            helperText:
+              element?.assessments?.[0]?.hints?.hintDenominator ??
+              "Auto-populates",
           },
         ]}
         caption="Performance Rates Denominator"
