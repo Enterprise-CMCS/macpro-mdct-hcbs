@@ -53,10 +53,13 @@ describe("<NDREnhanced />", () => {
         screen.getByRole("textbox", { name: "test labels Denominator" })
       ).toBeInTheDocument();
       expect(
+        screen.getByText("test hint", { selector: "p" })
+      ).toBeInTheDocument();
+      expect(
         screen.getByRole("textbox", { name: "Numerator" })
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("textbox", { name: "hint numerator" })
+        screen.getByText("hint numerator", { selector: "p" })
       ).toBeInTheDocument();
       expect(
         screen.getByRole("textbox", { name: "Denominator" })
@@ -65,12 +68,12 @@ describe("<NDREnhanced />", () => {
         screen.getByRole("textbox", { name: "Denominator" })
       ).toBeDisabled();
       expect(
-        screen.getByRole("textbox", { name: "hint denominator" })
+        screen.getByText("hint denominator", { selector: "p" })
       ).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
       expect(
-        screen.getByRole("textbox", { name: "hint rate" })
+        screen.getByText("hint rate", { selector: "p" })
       ).toBeInTheDocument();
     });
 
