@@ -578,11 +578,6 @@ export const elementObject: {
             {
               id: "assessment-2",
               label: "Second Assessment",
-              hints: {
-                hintNumerator: "hint numerator",
-                hintDenominator: "hint denominator",
-                hintRate: "hint rate",
-              },
             },
           ],
           required: true,
