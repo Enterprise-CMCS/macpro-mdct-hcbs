@@ -311,7 +311,7 @@ export const exclusionRatesAssessmentFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
-  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   required: true,
   assessments: [
     {
