@@ -451,7 +451,7 @@ export type ListInputTemplate = {
   id: string;
   label: string;
   fieldLabel: string;
-  helperText: string;
+  helperText?: string;
   buttonText: string;
   answer?: string[];
   required: boolean;

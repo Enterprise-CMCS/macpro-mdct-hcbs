@@ -56,7 +56,7 @@ export const ciReportTemplate: ReportBase = {
           label: "Contact email address",
           required: true,
           helperText:
-            "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
+            "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
         },
         waiverListCheckboxField,
         waiverListInputField,

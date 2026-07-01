@@ -55,7 +55,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
   return (
     <fieldset className="ds-c-fieldset" key="list-input-field">
       <legend className="ds-c-label">{label}</legend>
-      <p className="ds-c-hint">{helperText} </p>
+      {helperText && <p className="ds-c-hint">{helperText}</p>}
       {displayValue?.map((field, index) => (
         <HStack
           alignItems="flex-end"
