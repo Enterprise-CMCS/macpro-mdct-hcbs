@@ -147,11 +147,6 @@ export const qipReportTemplate: ReportBase = {
             "  <li><b>Monitoring Approach:</b>: Describe the tracking mechanisms, tools, or oversight processes used to monitor ongoing progress toward your performance targets.</li>" +
             "  <li><b>Evaluation Summary:</b>: Detail the strategy's specific success criteria, the data sources utilized, and how frequently the data is reviewed.</li>" +
             "</ul>" +
-            "<b>Complete the Optional Sections (Concluded Strategies Only):</b>" +
-            "<ul>" +
-            "  <li>If this strategy has already ended, use the <b>Strategy Success</b> field to evaluate whether it achieved its intended outcomes based on your evaluation summary.</li>" +
-            "  <li>Select the appropriate checkbox under <b>Future Action</b> to indicate if the concluded strategy will be scaled, adapted, continued as-is, or discontinued, and provide a clear narrative rationale for your choice.</li>" +
-            "</ul>" +
             "<p>Word Count Note: Each text narrative should be concise yet thorough, aiming for approximately 250 to 300 words</p>",
         },
         {
