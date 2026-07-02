@@ -6,11 +6,7 @@ import {
   ReportBase,
   AlertTypes,
 } from "../../../types/reports";
-import {
-  exportToPDF,
-  waiverListCheckboxField,
-  waiverListInputField,
-} from "../elements";
+import { exportToPDF } from "../elements";
 
 export const qipReportTemplate: ReportBase = {
   type: ReportType.QIP,
@@ -18,7 +14,7 @@ export const qipReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "review-submit"],
+      childPageIds: ["general-info", "plan-overview", "review-submit"],
     },
     {
       id: "general-info",
@@ -35,21 +31,92 @@ export const qipReportTemplate: ReportBase = {
         {
           id: "contact-name",
           type: ElementType.Textbox,
-          label: "Contact name",
+          label: "Contact name/title",
           required: true,
           helperText:
-            "Enter a person's name or a position title for CMS to contact with questions about this report.",
+            "Provide name, title, and email of the primary point of contact for follow-up regarding this QIP submission.",
         },
         {
           type: ElementType.Textbox,
           id: "contact-email",
-          label: "Contact email address",
+          label: "Contact email",
           required: true,
           helperText:
-            "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
+            "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
         },
-        waiverListCheckboxField,
-        waiverListInputField,
+        {
+          type: ElementType.Textbox,
+          id: "lead-agency-division",
+          label: "Lead Agency/Division responsible",
+          required: true,
+          helperText:
+            "Identify the lead state agency or division responsible for this plan.",
+        },
+        {
+          type: ElementType.Checkbox,
+          id: "waivers-list-checkboxes",
+          label:
+            "Select all HCBS authorities included in this quality improvement plan for this reporting period.",
+          choices: [
+            /* Generated in buildReport, with data from waivers.ts */
+          ],
+          helperText: "Select all that apply.",
+          emptyAlertTitle:
+            "No programs or waivers found for your state/territory",
+          emptyAlertDescription:
+            "If you believe this is in error please contact the MDCT Help Desk: mdct_help@cms.hhs.gov",
+          required: false,
+        },
+        {
+          type: ElementType.ListInput,
+          id: "waivers-list-inputs",
+          label:
+            "If an HCBS authority is not included above, but included in this QIP, add its name and control number here.",
+          fieldLabel: "Name and control number (if applicable)",
+          buttonText: "Add HCBS authority",
+          required: false,
+        },
+      ],
+    },
+    {
+      id: "plan-overview",
+      navTitle: "QI Plan Overview",
+      tabTitle: "Quality Improvement Plan Overview - QIP - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "plan-overview-header",
+          text: "Quality Improvement Plan Overview",
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "strategy-description",
+          label: "Strategy description",
+          helperText:
+            "Describe the planned intervention(s), relevant partners, populations affected, and the rationale for the strategy (500 words).",
+          wordLimit: 500,
+          required: true,
+        },
+        {
+          type: ElementType.Date,
+          id: "start-date",
+          label: "Start date",
+          helperText:
+            "Enter a projected start date for future strategies or enter a past start date for strategies in progress.",
+          dateFormat: "MMYYYY",
+          required: true,
+        },
+        {
+          type: ElementType.Date,
+          id: "end-date",
+          label: "Projected end date",
+          helperText:
+            "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
+          dateFormat: "MMYYYY",
+          required: false,
+        },
       ],
     },
     {

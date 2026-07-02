@@ -8,6 +8,7 @@ import {
   CfnOutput,
   Duration,
   RemovalPolicy,
+  Stack,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
@@ -25,6 +26,7 @@ interface CreateApiComponentsProps {
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   brokerString: string;
+  launchDarklyServer?: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -37,6 +39,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnets,
     brokerString,
     tables,
+    launchDarklyServer,
   } = props;
 
   const service = "app-api";
@@ -110,6 +113,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
+    launchDarklyServer,
   };
 
   const additionalPolicies = [
@@ -139,6 +143,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         .filter(isDefined),
     }),
   ];
+
+  const sesResources = isLocalStack
+    ? ["*"]
+    : [`arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`];
+
+  const sesPolicy = new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    actions: ["ses:SendEmail", "ses:SendRawEmail"],
+    resources: sesResources,
+  });
 
   const commonProps = {
     brokerString,
@@ -189,6 +203,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  if (isDev) {
+    new Lambda(scope, "sendTestEmail", {
+      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
+      handler: "sendTestEmail",
+      path: "notifications/test-email",
+      method: "POST",
+      ...commonProps,
+      additionalPolicies: [...additionalPolicies, sesPolicy],
+    });
+  }
+
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
     handler: "createReport",
@@ -219,6 +244,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/submit/{reportType}/{state}/{id}",
     method: "POST",
     ...commonProps,
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new Lambda(scope, "getReport", {
@@ -251,6 +277,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/release/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {

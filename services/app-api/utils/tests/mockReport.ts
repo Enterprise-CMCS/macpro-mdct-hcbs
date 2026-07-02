@@ -195,6 +195,33 @@ export const invalidRadioCheckedChildrenReport = {
   },
 };
 
+export const reportWithListInputNoHelperText = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["general-info"],
+    },
+    {
+      id: "general-info",
+      navTitle: "General Information",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.ListInput,
+          id: "waivers-list-inputs",
+          label: "If an HCBS authority is not included above, add it here.",
+          fieldLabel: "Name and control number (if applicable)",
+          // helperText optional
+          buttonText: "Add HCBS authority",
+          required: false,
+        },
+      ],
+    },
+  ],
+};
+
 export const invalidPageElementType = {
   ...validReport,
   pages: [

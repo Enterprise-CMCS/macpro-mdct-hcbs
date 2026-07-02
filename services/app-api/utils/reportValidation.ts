@@ -77,7 +77,7 @@ const listInputTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   fieldLabel: string().required(),
-  helperText: string().required(),
+  helperText: string().notRequired(),
   buttonText: string().required(),
   answer: array().of(string()).notRequired(),
   required: boolean().required(),
@@ -97,6 +97,7 @@ const textAreaTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
+  wordLimit: number().notRequired(),
   answer: string().notRequired(),
   hideCondition: hideConditionSchema,
   required: boolean().required(),
@@ -107,6 +108,7 @@ const dateTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().required(),
+  dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
 });
@@ -460,12 +462,20 @@ const multiRateNdrSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
   label: string().notRequired(),
+  hint: string().notRequired(),
   helperText: string().notRequired(),
   assessments: array()
     .of(
       object().shape({
         id: string().required(),
         label: string().required(),
+        hints: object()
+          .shape({
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
+          })
+          .notRequired(),
       })
     )
     .required(),

@@ -58,7 +58,7 @@ import {
   checkboxFieldSection,
   listInputSection,
 } from "./pdfElementSectionHelpers";
-import { formatMonthDayYear } from "utils";
+import { formatMonthDayYear, formatMonthYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
 import { ListInput } from "components/fields/ListInput";
 
@@ -175,6 +175,18 @@ export const elementObject: {
           required: true,
         }}
       />,
+      <TextAreaField
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.TextAreaField,
+          id: "id-textareafield-word-count",
+          label: "TextAreaField with word count",
+          helperText:
+            "Briefly describe the tracking used to monitor progress toward the performance target (250-300 words).",
+          required: false,
+          wordLimit: 300,
+        }}
+      />,
     ],
     pdfVariants: [<ExportedReportWrapper section={textAreaSection} />],
   },
@@ -279,6 +291,17 @@ export const elementObject: {
           required: true,
         }}
       />,
+      <DateField
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.Date,
+          id: "id-month-year-field",
+          label: "DateField (MM/YYYY)",
+          helperText: "DateFieldElement is used to select a month and year.",
+          dateFormat: "MMYYYY",
+          required: true,
+        }}
+      />,
     ],
     pdfVariants: [
       <Table variant={"reportDetails"}>
@@ -294,6 +317,24 @@ export const elementObject: {
           <Tr>
             <Td>{2025}</Td>
             <Td>{formatMonthDayYear(1757897305331)}</Td>
+            <Td>{"test user"}</Td>
+            <Td>{"In progress"}</Td>
+          </Tr>
+        </Tbody>
+      </Table>,
+      <Table variant={"reportDetails"}>
+        <Thead>
+          <Tr>
+            <Th>Reporting year</Th>
+            <Th>Last edited</Th>
+            <Th>Edited by</Th>
+            <Th>Status</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>{2025}</Td>
+            <Td>{formatMonthYear(1757897305331)}</Td>
             <Td>{"test user"}</Td>
             <Td>{"In progress"}</Td>
           </Tr>
@@ -525,11 +566,20 @@ export const elementObject: {
           type: ElementType.MultiRateNdr,
           id: "measure-rates",
           assessments: [
-            { id: "assessment-1", label: "First Assessment" },
+            {
+              id: "assessment-1",
+              label: "First Assessment",
+              hints: {
+                hintNumerator: "Hint for first assessment",
+                hintDenominator: "Auto-populates",
+                hintRate: "Auto-calculates",
+              },
+            },
             { id: "assessment-2", label: "Second Assessment" },
           ],
           required: true,
           helperText: "Helper text",
+          hint: "Hint text",
         }}
       />,
     ],
