@@ -545,7 +545,7 @@ export const performanceRatesPersonCenteredPlanFfsElements: MultiRateNdrTemplate
         hints: {
           hintNumerator:
             "Number of Medicaid FFS LTSS participants whose person-centered plan was transmitted to their PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
-          hintDenominator: "Auto-populated.",
+          hintDenominator: "Auto-populates.",
           hintRate:
             "Percentage of Medicaid FFS LTSS participants whose person-centered plan was transmitted to the PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
         },
@@ -567,7 +567,7 @@ export const exclusionRatesPersonCenteredPlanFfsElements: MultiRateNdrTemplate =
         hints: {
           hintNumerator:
             "Number of Medicaid FFS LTSS participants who refused to allow the person-centered plan to be shared.",
-          hintDenominator: "Auto-populated.",
+          hintDenominator: "Auto-populates.",
           hintRate:
             "Percentage of Medicaid FFS LTSS participants who refused to have the person-centered plan shared with a PCP (or other documented medical care provider).",
         },
@@ -589,7 +589,7 @@ export const performanceRatesPersonCenteredPlanMltssElements: MultiRateNdrTempla
         hints: {
           hintNumerator:
             "Number of Medicaid MLTSS participants whose person-centered plan was transmitted to their PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
-          hintDenominator: "Auto-populated.",
+          hintDenominator: "Auto-populates.",
           hintRate:
             "Percentage of Medicaid MLTSS participants whose person-centered plan was transmitted to the PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
         },
@@ -611,7 +611,7 @@ export const exclusionRatesPersonCenteredPlanMltssElements: MultiRateNdrTemplate
         hints: {
           hintNumerator:
             "Number of Medicaid MLTSS participants who refused to allow the person-centered plan to be shared.",
-          hintDenominator: "Auto-populated.",
+          hintDenominator: "Auto-populates.",
           hintRate:
             "Percentage of Medicaid MLTSS participants who refused to have the person-centered plan shared with a PCP (or other documented medical care provider).",
         },
