@@ -403,36 +403,130 @@ export const exclusionRatesAssessmentMltssElements: MultiRateNdrTemplate = {
   ],
 };
 
-//Rates for LTSS-2
-export const performanceRatesPersonPlanElements: MultiRateNdrTemplate = {
+//Rates for LTSS-2 / FFS
+export const performanceRatesPersonPlanFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-performance",
   required: true,
+  hint: "Statistically valid random sample of participants enrolled in Medicaid FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "person-plan-core",
       label: "Person-Centered Plan with Core Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
     {
       id: "person-plan-supplemental",
       label: "Person-Centered Plan with Supplemental Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements and at least 4 supplemental elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements and at least 4 supplemental elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
   ],
 };
 
-export const exclusionRatesPersonPlanElements: MultiRateNdrTemplate = {
+export const exclusionRatesPersonPlanFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "part-not-contact",
       label: "Participant Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who could not be contacted for an LTSS comprehensive person-centered plan within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
     },
     {
       id: "part-refuse-planning",
       label: "Participant Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who refused an LTSS comprehensive person-centered plan.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who refused an LTSS comprehensive person-centered plan. Auto-calculates.",
+      },
+    },
+  ],
+};
+
+//Rates for LTSS-2 / MLTSS
+export const performanceRatesPersonPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-performance",
+  required: true,
+  hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "person-plan-core",
+      label: "Person-Centered Plan with Core Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
+    },
+    {
+      id: "person-plan-supplemental",
+      label: "Person-Centered Plan with Supplemental Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements and at least 4 supplemental elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements and at least 4 supplemental elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
+    },
+  ],
+};
+
+export const exclusionRatesPersonPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
+  required: true,
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "part-not-contact",
+      label: "Participant Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who could not be contacted for an LTSS comprehensive person-centered plan within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
+    },
+    {
+      id: "part-refuse-planning",
+      label: "Participant Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who refused an LTSS comprehensive person-centered plan.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who refused an LTSS comprehensive person-centered plan. Auto-calculates.",
+      },
     },
   ],
 };
