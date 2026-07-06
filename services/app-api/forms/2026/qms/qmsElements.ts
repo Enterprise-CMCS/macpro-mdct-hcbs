@@ -753,6 +753,40 @@ export const performanceRatePOM7: Omit<NdrTemplate, "label"> = {
   },
 };
 
+//Rates for FASI-1
+export const performanceRateFASI1: NdrTemplate = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  label:
+    "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of HCBS participants aged 18 years or older who have identified at least as many total personal priorities (up to three) as functional needs in the areas of self-care, mobility, or IADL combined on the same FASI assessment​",
+    denominatorHint:
+      "Number of HCBS participants aged 18 years or older with documented needs in the areas of self-care, mobility, or IADL as determined by the most recent FASI assessment.",
+    rateHint:
+      "Percentage of HCBS participants aged 18 year or older who have identified at least as many total personal priorities (up to three) as functional needs in the areas of self-care, mobility, or IADL combined on the same FASI assessment.",
+  },
+};
+
+//Rates for FASI-2
+export const performanceRateFASI2: NdrTemplate = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  label:
+    "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of HCBS participants aged 18 years or older with documented needs in the areas of self-care, mobility, or IADL as determined by the most recent FASI assessment within the previous 12 months and with documentation that the subsequent PCSP addresses the FASI-identified functional needs in self-care, mobility, and IADLs.​",
+    denominatorHint:
+      "Number of HCBS participants aged 18 years or older with documented needs in the areas of self-care, mobility, or IADL as determined by the most recent FASI assessment within the previous 12 months.",
+    rateHint:
+      "Percentage of HCBS participants aged 18 years or older whose person-centered service planning documentation addresses needs in the areas of self-care, mobility, and instrumental activities of daily living as determined by the most recent FASI assessment.",
+  },
+};
+
 // Rates for LTSS-6
 export const performanceRateTermStay: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
