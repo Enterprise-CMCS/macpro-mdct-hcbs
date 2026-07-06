@@ -14,7 +14,12 @@ export const qipReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "plan-overview", "review-submit"],
+      childPageIds: [
+        "general-info",
+        "plan-overview",
+        "plan-details",
+        "review-submit",
+      ],
     },
     {
       id: "general-info",
@@ -116,6 +121,51 @@ export const qipReportTemplate: ReportBase = {
             "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
           dateFormat: "MMYYYY",
           required: false,
+        },
+      ],
+    },
+    {
+      id: "plan-details",
+      navTitle: "QI Plan Details",
+      tabTitle: "Quality Improvement Plan Details - QIP - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "plan-details-header",
+          text: "Quality Improvement Plan Details",
+        },
+        {
+          type: ElementType.Accordion,
+          id: "qip-details-instructions",
+          label: "Instructions",
+          value:
+            "<p>Provide comprehensive details on how this Quality Improvement Plan is monitored, evaluated, and sustained.</p>" +
+            "<b>Complete the Mandatory Sections:</b>" +
+            "<ul>" +
+            "  <li><b>Monitoring Approach:</b> Describe the tracking mechanisms, tools, or oversight processes used to monitor ongoing progress toward your performance targets.</li>" +
+            "  <li><b>Evaluation Summary:</b> Detail the strategy's specific success criteria, the data sources utilized, and how frequently the data is reviewed.</li>" +
+            "</ul>" +
+            "<p>Word Count Note: Each text narrative should be concise yet thorough, aiming for approximately 250 to 300 words</p>",
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "monitoring-approach",
+          label: "Monitoring approach",
+          helperText:
+            "Briefly describe the tracking used to monitor progress toward the performance target (250-300 words).",
+          wordLimit: 300,
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "evaluation-summary",
+          label: "Evaluation summary",
+          helperText:
+            "Briefly describe the strategy’s success criteria, data sources, and frequency of review (250-300 words). ",
+          wordLimit: 300,
+          required: true,
         },
       ],
     },
