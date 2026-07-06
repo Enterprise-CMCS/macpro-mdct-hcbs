@@ -490,6 +490,15 @@ export type LengthOfStayRateTemplate = {
   id: string;
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
+  hintText?: {
+    actualCountHint?: string;
+    denominatorHint?: string;
+    expectedCountHint?: string;
+    populationRateHint?: string;
+    actualRateHint?: string;
+    expectedRateHint?: string;
+    adjustedRateHint?: string;
+  };
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
   errors?: Record<LengthOfStayField, string>;

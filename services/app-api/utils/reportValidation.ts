@@ -376,6 +376,17 @@ const lengthOfStayRateSchema = object().shape({
     expectedRate: string().required(),
     adjustedRate: string().required(),
   }),
+  hintText: object()
+    .shape({
+      actualCountHint: string().notRequired(),
+      denominatorHint: string().notRequired(),
+      expectedCountHint: string().notRequired(),
+      populationRateHint: string().notRequired(),
+      actualRateHint: string().notRequired(),
+      expectedRateHint: string().notRequired(),
+      adjustedRateHint: string().notRequired(),
+    })
+    .notRequired(),
   required: boolean().required(),
   answer: object()
     .shape({
