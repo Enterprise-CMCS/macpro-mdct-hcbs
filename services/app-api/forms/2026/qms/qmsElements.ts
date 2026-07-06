@@ -485,7 +485,7 @@ export const exclusionRatesPatientPlanFfsElements: MultiRateNdrTemplate = {
           "Number of Medicaid FFS LTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
         hintDenominator: "Auto-populates",
         hintRate:
-          "Percentage of Medicaid FFS LTSS participants who could not be contacted for reassessment or person-centered-plan updates following inpatient discharges.",
+          "Percentage of Medicaid FFS LTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
       },
     },
     {
