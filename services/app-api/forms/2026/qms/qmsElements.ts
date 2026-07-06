@@ -550,7 +550,7 @@ export const exclusionRatesPatientPlanMltssElements: MultiRateNdrTemplate = {
           "Number of Medicaid MLTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
         hintDenominator: "Auto-populates",
         hintRate:
-          "Percentage of Medicaid MLTSS participants who could not be contacted for reassessment or person-centered-plan updates following inpatient discharges.",
+          "Percentage of Medicaid MLTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
       },
     },
     {
