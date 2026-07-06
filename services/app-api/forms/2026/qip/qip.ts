@@ -133,7 +133,7 @@ export const qipReportTemplate: ReportBase = {
       elements: [
         {
           type: ElementType.Header,
-          id: "plan-overview-header",
+          id: "plan-details-header",
           text: "Quality Improvement Plan Details",
         },
         {
@@ -144,8 +144,8 @@ export const qipReportTemplate: ReportBase = {
             "<p>Provide comprehensive details on how this Quality Improvement Plan is monitored, evaluated, and sustained.</p>" +
             "<b>Complete the Mandatory Sections:</b>" +
             "<ul>" +
-            "  <li><b>Monitoring Approach:</b>: Describe the tracking mechanisms, tools, or oversight processes used to monitor ongoing progress toward your performance targets.</li>" +
-            "  <li><b>Evaluation Summary:</b>: Detail the strategy's specific success criteria, the data sources utilized, and how frequently the data is reviewed.</li>" +
+            "  <li><b>Monitoring Approach:</b> Describe the tracking mechanisms, tools, or oversight processes used to monitor ongoing progress toward your performance targets.</li>" +
+            "  <li><b>Evaluation Summary:</b> Detail the strategy's specific success criteria, the data sources utilized, and how frequently the data is reviewed.</li>" +
             "</ul>" +
             "<p>Word Count Note: Each text narrative should be concise yet thorough, aiming for approximately 250 to 300 words</p>",
         },
