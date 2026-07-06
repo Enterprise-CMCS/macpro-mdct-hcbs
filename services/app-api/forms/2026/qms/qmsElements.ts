@@ -464,7 +464,7 @@ export const performanceRatesReassessmentPlanFfsElements: MultiRateNdrTemplate =
             "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
           hintDenominator: "Auto-populates",
           hintRate:
-            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment and person-centered-plan update within 30 days following discharge.",
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
         },
       },
     ],
