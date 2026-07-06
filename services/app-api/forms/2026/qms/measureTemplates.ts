@@ -55,6 +55,10 @@ import {
   performanceRateSelfDirection,
   sectionCompleteBanner,
   measureCompleteBanner,
+  performanceRatesPersonCenteredPlanFfsElements,
+  exclusionRatesPersonCenteredPlanFfsElements,
+  exclusionRatesPersonCenteredPlanMltssElements,
+  performanceRatesPersonCenteredPlanMltssElements,
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<
@@ -820,29 +824,8 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       divider,
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-transmitted",
-        required: true,
-        assessments: [
-          {
-            id: "pc-plan",
-            label: "Participant with Person-Centered Plan Transmitted to PCP",
-          },
-        ],
-      },
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-refused",
-        label: "Exclusion Rate",
-        required: true,
-        assessments: [
-          {
-            id: "refused-pc-plan",
-            label: "Participant Refused to Share Person-Centered Plan",
-          },
-        ],
-      },
+      performanceRatesPersonCenteredPlanFfsElements,
+      exclusionRatesPersonCenteredPlanFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -875,29 +858,8 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       divider,
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-transmitted",
-        required: true,
-        assessments: [
-          {
-            id: "pc-plan",
-            label: "Participant with Person-Centered Plan Transmitted to PCP",
-          },
-        ],
-      },
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-refused",
-        label: "Exclusion Rate",
-        required: true,
-        assessments: [
-          {
-            id: "refused-pc-plan",
-            label: "Participant Refused to Share Person-Centered Plan",
-          },
-        ],
-      },
+      performanceRatesPersonCenteredPlanMltssElements,
+      exclusionRatesPersonCenteredPlanMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1048,10 +1010,18 @@ export const measureTemplates: Record<
         type: ElementType.MultiRateNdr,
         id: "measure-rates",
         required: true,
+        hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
         assessments: [
           {
-            id: "gait-evaulation",
+            id: "gait-evaluation",
             label: "Fall or Problems with Balance or Gait Evaluation",
+            hints: {
+              hintNumerator:
+                "Number of Medicaid MLTSS participants who have documentation of an evaluation of whether the participant has experienced a fall or problems with balance or gait.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid MLTSS participants who have documentation of an evaluation of whether the participant has experienced a fall or problems with balance or gait.",
+            },
           },
         ],
       },
@@ -1090,14 +1060,29 @@ export const measureTemplates: Record<
         type: ElementType.MultiRateNdr,
         id: "measure-rates-assessed",
         required: true,
+        hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
         assessments: [
           {
             id: "fall-risk-assess",
             label: "Falls Risk Assessment",
+            hints: {
+              hintNumerator:
+                "Number of Medicaid MLTSS participants who have documentation of a falls risk assessment completed between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid MLTSS participants at risk for future falls who completed a risk assessment for falls.",
+            },
           },
           {
             id: "plan-care-falls",
             label: "Plan of Care for Falls",
+            hints: {
+              hintNumerator:
+                "Number of Medicaid MLTSS participants who have documentation of a plan of care to prevent future falls completed between August 1 of the year prior to the measurement year and December 31 of the measurement year, which includes, at a minimum, exercise therapy or referral to exercise.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid MLTSS participants at risk for future falls who had a documented plan of care to prevent future falls.",
+            },
           },
         ],
       },
@@ -1106,10 +1091,18 @@ export const measureTemplates: Record<
         id: "measure-rates-refused",
         required: true,
         label: "Exclusion Rate",
+        hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
         assessments: [
           {
             id: "refused-risk-assess",
             label: "Participant Refused Risk Assessment",
+            hints: {
+              hintNumerator:
+                "Number of participants who refused a risk assessment, a plan of care, or both a risk assessment for falls and a plan of care for falls.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid managed care plan participants receiving LTSS who refused a risk assessment for falls, creation of a plan of care for falls, or both a risk assessment for falls and a plan of care for falls.",
+            },
           },
         ],
       },
