@@ -499,6 +499,13 @@ const ndrRateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   required: boolean().required(),
+  hintText: object()
+    .shape({
+      numeratorHint: string().notRequired(),
+      denominatorHint: string().notRequired(),
+      rateHint: string().notRequired(),
+    })
+    .notRequired(),
   answer: object()
     .shape({
       numerator: number().notRequired(),

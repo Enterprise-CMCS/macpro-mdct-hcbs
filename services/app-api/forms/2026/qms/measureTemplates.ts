@@ -46,7 +46,6 @@ import {
   performanceRatesPersonPlanMltssElements,
   exclusionRatesPersonPlanMltssElements,
   readmissionRate,
-  performanceRatePOM,
   performanceRateTermStay,
   performanceRateFacilityDischarges,
   performanceRateFacilityTransitions,
@@ -57,6 +56,13 @@ import {
   exclusionRatesPersonCenteredPlanFfsElements,
   exclusionRatesPersonCenteredPlanMltssElements,
   performanceRatesPersonCenteredPlanMltssElements,
+  performanceRatePOM2,
+  performanceRatePOM1,
+  performanceRatePOM3,
+  performanceRatePOM4,
+  performanceRatePOM5,
+  performanceRatePOM6,
+  performanceRatePOM7,
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<
@@ -1184,7 +1190,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM1,
         label: "People Live in Integrated Environments (FFS LTSS)",
       },
       {
@@ -1219,7 +1225,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM1,
         label: "People Live in Integrated Environments (MLTSS)",
       },
       {
@@ -1279,7 +1285,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM2,
         label: "People Participate in the Life of the Community (FFS LTSS)",
       },
       {
@@ -1314,7 +1320,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM2,
         label: "People Participate in the Life of the Community (MLTSS)",
       },
       {
@@ -1374,7 +1380,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM3,
         label: "People Choose Services (FFS LTSS)",
       },
       {
@@ -1409,7 +1415,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM3,
         label: "People Choose Services (MLTSS)",
       },
       {
@@ -1469,7 +1475,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM4,
         label: "People Realize Personal Goals (FFS LTSS)",
       },
       {
@@ -1504,7 +1510,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM4,
         label: "People Realize Personal Goals (MLTSS)",
       },
       {
@@ -1564,7 +1570,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM5,
         label: "People are Free from Abuse and Neglect (FFS LTSS)",
       },
       {
@@ -1599,7 +1605,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM5,
         label: "People are Free from Abuse and Neglect (MLTSS)",
       },
       {
@@ -1659,7 +1665,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM6,
         label: "People Have the Best Possible Health (FFS LTSS)",
       },
       {
@@ -1694,7 +1700,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM6,
         label: "People Have the Best Possible Health (MLTSS)",
       },
       {
@@ -1754,7 +1760,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM7,
         label: "People Interact with Other Members of the Community (FFS LTSS)",
       },
       {
@@ -1789,7 +1795,7 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       {
-        ...performanceRatePOM,
+        ...performanceRatePOM7,
         label: "People Interact with Other Members of the Community (MLTSS)",
       },
       {

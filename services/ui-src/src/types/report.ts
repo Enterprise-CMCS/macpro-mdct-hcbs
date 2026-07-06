@@ -571,6 +571,11 @@ export type NdrTemplate = {
   id: string;
   type: ElementType.Ndr;
   label: string;
+  hintText?: {
+    numeratorHint?: string;
+    denominatorHint?: string;
+    rateHint?: string;
+  };
   answer?: RateData;
   required: boolean;
 };
