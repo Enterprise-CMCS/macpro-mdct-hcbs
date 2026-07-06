@@ -1047,7 +1047,7 @@ export const measureTemplates: Record<
         hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
         assessments: [
           {
-            id: "gait-evaulation",
+            id: "gait-evaluation",
             label: "Fall or Problems with Balance or Gait Evaluation",
             hints: {
               hintNumerator:
