@@ -487,7 +487,7 @@ export const performanceRatesPersonCenteredPlanMltssElements: MultiRateNdrTempla
     type: ElementType.MultiRateNdr,
     id: "measure-rates-transmitted",
     required: true,
-    hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
     assessments: [
       {
         id: "pc-plan",
