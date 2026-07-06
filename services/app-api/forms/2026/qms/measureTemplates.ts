@@ -53,6 +53,10 @@ import {
   performanceRateSelfDirection,
   sectionCompleteBanner,
   measureCompleteBanner,
+  performanceRatesPersonCenteredPlanFfsElements,
+  exclusionRatesPersonCenteredPlanFfsElements,
+  exclusionRatesPersonCenteredPlanMltssElements,
+  performanceRatesPersonCenteredPlanMltssElements,
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<
@@ -818,29 +822,8 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       divider,
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-transmitted",
-        required: true,
-        assessments: [
-          {
-            id: "pc-plan",
-            label: "Participant with Person-Centered Plan Transmitted to PCP",
-          },
-        ],
-      },
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-refused",
-        label: "Exclusion Rate",
-        required: true,
-        assessments: [
-          {
-            id: "refused-pc-plan",
-            label: "Participant Refused to Share Person-Centered Plan",
-          },
-        ],
-      },
+      performanceRatesPersonCenteredPlanFfsElements,
+      exclusionRatesPersonCenteredPlanFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -873,29 +856,8 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       divider,
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-transmitted",
-        required: true,
-        assessments: [
-          {
-            id: "pc-plan",
-            label: "Participant with Person-Centered Plan Transmitted to PCP",
-          },
-        ],
-      },
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-refused",
-        label: "Exclusion Rate",
-        required: true,
-        assessments: [
-          {
-            id: "refused-pc-plan",
-            label: "Participant Refused to Share Person-Centered Plan",
-          },
-        ],
-      },
+      performanceRatesPersonCenteredPlanMltssElements,
+      exclusionRatesPersonCenteredPlanMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
