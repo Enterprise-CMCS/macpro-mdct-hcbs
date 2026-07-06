@@ -478,8 +478,8 @@ export const performanceRatePOM: Omit<NdrTemplate, "label"> = {
   required: true,
 };
 
-// Rates for LTSS-6
-export const performanceRateTermStay: MultiCategoryNdrTemplate = {
+// Rates for LTSS-6 / FFS
+export const performanceRateTermStayFfsElements: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
@@ -488,10 +488,65 @@ export const performanceRateTermStay: MultiCategoryNdrTemplate = {
     { id: "year-3", label: "75 to 84 Years" },
     { id: "year-4", label: "85 years or older" },
   ],
+  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
   categories: [
-    { id: "short-term", label: "Short Term Stay" },
-    { id: "med-term", label: "Medium Term Stay" },
-    { id: "long-term", label: "Long Term Stay" },
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+  ],
+  required: true,
+  multiplier: 1000,
+};
+
+// Rates for LTSS-6 / MLTSS
+export const performanceRateTermStayMltssElements: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
+  id: "measure-rates",
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years" },
+    { id: "year-2", label: "65 to 74 Years" },
+    { id: "year-3", label: "75 to 84 Years" },
+    { id: "year-4", label: "85 years or older" },
+  ],
+  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
+  categories: [
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
   ],
   required: true,
   multiplier: 1000,

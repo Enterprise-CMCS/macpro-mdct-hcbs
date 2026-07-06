@@ -550,7 +550,14 @@ export type MultiCategoryNdrTemplate = {
   id: string;
   type: ElementType.MultiCategoryNdr;
   assessments: Assessment[];
-  categories: { label: string; id: string; autoCalc?: boolean }[];
+  categories: {
+    label: string;
+    id: string;
+    autoCalc?: boolean;
+    hintRate?: string;
+  }[];
+  hint?: string;
+  hintNumerator?: string;
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;

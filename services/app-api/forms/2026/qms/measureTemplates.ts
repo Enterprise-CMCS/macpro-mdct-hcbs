@@ -41,7 +41,8 @@ import {
   exclusionRatesPatientPlanElements,
   readmissionRate,
   performanceRatePOM,
-  performanceRateTermStay,
+  performanceRateTermStayFfsElements,
+  performanceRateTermStayMltssElements,
   performanceRateFacilityDischarges,
   performanceRateFacilityTransitions,
   performanceRateSelfDirection,
@@ -289,7 +290,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRateTermStay,
+      performanceRateTermStayFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -321,7 +322,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRateTermStay,
+      performanceRateTermStayMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
