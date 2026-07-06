@@ -54,18 +54,18 @@ describe("<MultiCategoryNdr />", () => {
         expect(
           screen.getAllByRole("textbox", {
             name: `Denominator (${assess.label})`,
-          }),
+          })
         ).toHaveLength(4);
         for (const category of categories) {
           expect(
             screen.getByRole("textbox", {
               name: `Numerator: ${category.label} (${assess.label})`,
-            }),
+            })
           ).toBeInTheDocument();
           expect(
             screen.getByRole("textbox", {
               name: `${category.label} Rate (${assess.label})`,
-            }),
+            })
           ).toBeInTheDocument();
         }
       }
@@ -74,8 +74,12 @@ describe("<MultiCategoryNdr />", () => {
     test("MultiCategoryNdr hints are visible", () => {
       render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
 
-      expect(screen.getAllByText("Denominator hint text").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("Numerator hint text").length).toBeGreaterThan(0);
+      expect(
+        screen.getAllByText("Denominator hint text").length
+      ).toBeGreaterThan(0);
+      expect(screen.getAllByText("Numerator hint text").length).toBeGreaterThan(
+        0
+      );
       expect(screen.getAllByText("Rate hint text").length).toBeGreaterThan(0);
     });
 
@@ -120,7 +124,7 @@ describe("<MultiCategoryNdr />", () => {
 
         await act(async () => await userEvent.type(denom, "4"));
         expect(
-          screen.queryByText(ErrorMessages.denominatorZero()),
+          screen.queryByText(ErrorMessages.denominatorZero())
         ).not.toBeInTheDocument();
       }
     });
