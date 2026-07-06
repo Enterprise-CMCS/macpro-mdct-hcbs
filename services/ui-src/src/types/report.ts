@@ -546,16 +546,18 @@ export type Assessment = {
   };
 };
 
+export type NdrCategory = {
+  label: string;
+  id: string;
+  autoCalc?: boolean;
+  hintRate?: string;
+};
+
 export type MultiCategoryNdrTemplate = {
   id: string;
   type: ElementType.MultiCategoryNdr;
   assessments: Assessment[];
-  categories: {
-    label: string;
-    id: string;
-    autoCalc?: boolean;
-    hintRate?: string;
-  }[];
+  categories: NdrCategory[];
   hint?: string;
   hintNumerator?: string;
   multiplier?: number;
