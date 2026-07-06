@@ -172,7 +172,7 @@ export const MultiRateNdr = (props: PageElementProps<MultiRateNdrTemplate>) => {
               <CmsdsTextField
                 label="Numerator"
                 name={`${index}.${FieldNames.numerator}`}
-                hint={assess.hints?.hintNumerator}
+                hint={assess.hints?.hintNumerator ?? undefined}
                 onChange={onChangeHandler}
                 onBlur={onChangeHandler}
                 value={value.numerator}
@@ -240,12 +240,18 @@ export const MultiRateNdrExport = (element: MultiRateNdrTemplate) => {
       <ExportedReportTable
         rows={[
           {
-            indicator: "Performance Rates Denominator",
+            indicator: element?.label
+              ? `${element.label}s Denominator`
+              : "Performance Rates Denominator",
             response: element?.answer?.denominator,
             helperText: element?.hint,
           },
         ]}
-        caption="Performance Rates Denominator"
+        caption={
+          element?.label
+            ? `${element.label}s Denominator`
+            : "Performance Rates Denominator"
+        }
       />
       {ExportRateTable(buildData)}
     </>
