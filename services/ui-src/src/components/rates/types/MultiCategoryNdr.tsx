@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Divider, Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { MultiCategoryNdrTemplate } from "types";
+import { Assessment, MultiCategoryNdrTemplate, NdrCategory } from "types";
 import {
   parseNumber,
   removeNoise,
@@ -25,6 +25,9 @@ const FieldNames = {
   denominator: "denominator",
 } as const;
 type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
+
+const rateHint = (assess: Assessment, category: NdrCategory) =>
+  category.hintRate ?? assess.hints?.hintRate ?? "Auto-calculates";
 
 export const MultiCategoryNdr = (
   props: PageElementProps<MultiCategoryNdrTemplate>
@@ -208,11 +211,7 @@ export const MultiCategoryNdr = (
                     <CmsdsTextField
                       label={`${category.label} Rate (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.rate`}
-                      hint={
-                        category.hintRate ??
-                        assess.hints?.hintRate ??
-                        "Auto-calculates"
-                      }
+                      hint={rateHint(assess, category)}
                       value={rateObject.rate}
                       disabled
                     ></CmsdsTextField>
@@ -252,8 +251,7 @@ export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
           {
             indicator: `${category.label} Rate (${assess.label})`,
             response: stringifyResult(rate?.rate),
-            helperText:
-              category.hintRate ?? assess.hints?.hintRate ?? "Auto-calculates",
+            helperText: rateHint(assess, category),
           },
         ],
       };
