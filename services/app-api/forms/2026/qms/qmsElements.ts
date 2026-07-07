@@ -660,7 +660,7 @@ export const performanceRatePOM1: Omit<NdrTemplate, "label"> = {
   required: true,
   hintText: {
     numeratorHint:
-      "Number of people who live in typical community housing, work in buildings where people from their community work, and participate in leisure activities in settings used by people from their community. ​ This includes people who have chosen integrated environments and are satisfied with their living, working, and leisure arrangements.​",
+      "Number of people who live in typical community housing, work in buildings where people from their community work, and participate in leisure activities in settings used by people from their community. ​This includes people who have chosen integrated environments and are satisfied with their living, working, and leisure arrangements.​",
     denominatorHint:
       'Total number of people interviewed for the "People live in integrated environments" metric.',
     rateHint: "Percentage of people who live in integrated environments.",
@@ -703,7 +703,7 @@ export const performanceRatePOM4: Omit<NdrTemplate, "label"> = {
   required: true,
   hintText: {
     numeratorHint:
-      "Number of people who set and achieve personal goals.  Include only those who have accomplished a personal milestone within the past year or two.​",
+      "Number of people who set and achieve personal goals. Include only those who have accomplished a personal milestone within the past year or two.​",
     denominatorHint:
       'Total number of people interviewed for the "People realize personal goals" metric.',
     rateHint: "Percentage of people who set and achieve personal goals.",
@@ -717,7 +717,7 @@ export const performanceRatePOM5: Omit<NdrTemplate, "label"> = {
   required: true,
   hintText: {
     numeratorHint:
-      "Number of people who are not subject to actions, by anyone, that cause them physical or emotional harm.  Include those who are able to recognize and report all forms of abuse, neglect, and exploitation.​",
+      "Number of people who are not subject to actions, by anyone, that cause them physical or emotional harm. Include those who are able to recognize and report all forms of abuse, neglect, and exploitation.​",
     denominatorHint:
       'Total number of people interviewed for the "People are free from abuse and neglect" metric.',
     rateHint: "Percentage of people who are free from abuse and neglect.",
