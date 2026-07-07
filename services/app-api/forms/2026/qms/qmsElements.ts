@@ -610,7 +610,7 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
     actualCountHint:
       "Count of discharges from a facility to the community during the measurement year that occurred within 100 days or fewer of admission.",
     denominatorHint:
-      "Number of facility admissions occurring during the measurement period, removing those for which the admission represented a transfer between facilities and those for which an expiration occurred while admitted.",
+      "Number of facility admissions occurring during the measurement period, removing those for which the admission represented a transfer between facilities and those for which a death occurred while admitted.",
     expectedCountHint:
       "Sum of the estimated discharge probability for each facility admission.",
     populationRateHint:
@@ -620,7 +620,7 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
     expectedRateHint:
       "Expected rate of successful discharges from a facility to the community during the measurement year.",
     adjustedRateHint:
-      "Risk adjusted rate of successful discharges from a facility to the community during the measurement year.Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
+      "Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
   },
   required: true,
 };
