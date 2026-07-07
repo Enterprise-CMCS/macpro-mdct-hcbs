@@ -619,36 +619,132 @@ export const exclusionRatesPersonCenteredPlanMltssElements: MultiRateNdrTemplate
     ],
   };
 
-//Rates for LTSS-4
-export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
-  type: ElementType.MultiRateNdr,
-  id: "measure-rates-reassessment",
-  required: true,
-  assessments: [
-    {
-      id: "reassessment-plan-core",
-      label: "Reassessment after Inpatient Discharge",
-    },
-    {
-      id: "reassessment-plan-supplemental",
-      label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
-    },
-  ],
-};
+//Rates for LTSS-4 / FFS
+export const performanceRatesReassessmentPlanFfsElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
 
-export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
+export const exclusionRatesPatientPlanFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "patient-not-contact",
       label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
     },
     {
       id: "patient-refuse-planning",
       label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
+    },
+  ],
+};
+
+//Rates for LTSS-4 / MLTSS
+export const performanceRatesReassessmentPlanMltssElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
+
+export const exclusionRatesPatientPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
+  required: true,
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "patient-not-contact",
+      label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
+    },
+    {
+      id: "patient-refuse-planning",
+      label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
     },
   ],
 };
