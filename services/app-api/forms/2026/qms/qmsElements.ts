@@ -756,19 +756,23 @@ export const performanceRatePOM: Omit<NdrTemplate, "label"> = {
   required: true,
 };
 
+const termStayHints = {
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
+  hintDenominator:
+    "Number of participant months where the participant was residing in the community for at least one day of the month.",
+};
+
 // Rates for LTSS-6 / FFS
 export const performanceRateTermStayFfsElements: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
-    { id: "year-1", label: "18 to 64 Years" },
-    { id: "year-2", label: "65 to 74 Years" },
-    { id: "year-3", label: "75 to 84 Years" },
-    { id: "year-4", label: "85 years or older" },
+    { id: "year-1", label: "18 to 64 Years", hints: termStayHints },
+    { id: "year-2", label: "65 to 74 Years", hints: termStayHints },
+    { id: "year-3", label: "75 to 84 Years", hints: termStayHints },
+    { id: "year-4", label: "85 years or older", hints: termStayHints },
   ],
-  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
-  hintNumerator:
-    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
   categories: [
     {
       id: "short-term",
@@ -798,14 +802,11 @@ export const performanceRateTermStayMltssElements: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
-    { id: "year-1", label: "18 to 64 Years" },
-    { id: "year-2", label: "65 to 74 Years" },
-    { id: "year-3", label: "75 to 84 Years" },
-    { id: "year-4", label: "85 years or older" },
+    { id: "year-1", label: "18 to 64 Years", hints: termStayHints },
+    { id: "year-2", label: "65 to 74 Years", hints: termStayHints },
+    { id: "year-3", label: "75 to 84 Years", hints: termStayHints },
+    { id: "year-4", label: "85 years or older", hints: termStayHints },
   ],
-  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
-  hintNumerator:
-    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
   categories: [
     {
       id: "short-term",

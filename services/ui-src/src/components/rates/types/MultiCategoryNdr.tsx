@@ -174,7 +174,7 @@ export const MultiCategoryNdr = (
               <CmsdsTextField
                 label={`Denominator (${assess.label})`}
                 name={`${assessIndex}.${FieldNames.denominator}`}
-                hint={assess.hints?.hintDenominator ?? undefined}
+                hint={assess.hints?.hintDenominator}
                 onChange={onChangeHandler}
                 onBlur={onChangeHandler}
                 value={rateSet.denominator}
@@ -192,7 +192,7 @@ export const MultiCategoryNdr = (
                     <CmsdsTextField
                       label={`Numerator: ${category.label} (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.${FieldNames.numerator}`}
-                      hint={assess.hints?.hintNumerator ?? undefined}
+                      hint={assess.hints?.hintNumerator}
                       onChange={onChangeHandler}
                       onBlur={onChangeHandler}
                       value={rateObject.numerator}
@@ -208,7 +208,11 @@ export const MultiCategoryNdr = (
                     <CmsdsTextField
                       label={`${category.label} Rate (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.rate`}
-                      hint={assess.hints?.hintRate ?? "Auto-calculates"}
+                      hint={
+                        category.hintRate ??
+                        assess.hints?.hintRate ??
+                        "Auto-calculates"
+                      }
                       value={rateObject.rate}
                       disabled
                     ></CmsdsTextField>
@@ -238,17 +242,18 @@ export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
           {
             indicator: `Numerator: ${category.label} (${assess.label})`,
             response: rate?.numerator,
-            helperText: assess.hints?.hintNumerator ?? undefined,
+            helperText: assess.hints?.hintNumerator,
           },
           {
             indicator: `Denominator (${assess.label})`,
             response: data?.denominator,
-            helperText: assess.hints?.hintDenominator ?? undefined,
+            helperText: assess.hints?.hintDenominator,
           },
           {
             indicator: `${category.label} Rate (${assess.label})`,
             response: stringifyResult(rate?.rate),
-            helperText: assess.hints?.hintRate ?? "Auto-calculates",
+            helperText:
+              category.hintRate ?? assess.hints?.hintRate ?? "Auto-calculates",
           },
         ],
       };
@@ -273,7 +278,7 @@ export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
               {
                 indicator: `Denominator (${build.label})`,
                 response: build.denominator,
-                helperText: build.hintDenominator ?? undefined,
+                helperText: build.hintDenominator,
               },
             ]}
             caption={`Performance Rates: ${build.label}`}
