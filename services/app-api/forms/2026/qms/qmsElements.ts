@@ -619,38 +619,295 @@ export const exclusionRatesPersonCenteredPlanMltssElements: MultiRateNdrTemplate
     ],
   };
 
-//Rates for LTSS-4
-export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
-  type: ElementType.MultiRateNdr,
-  id: "measure-rates-reassessment",
-  required: true,
-  assessments: [
-    {
-      id: "reassessment-plan-core",
-      label: "Reassessment after Inpatient Discharge",
-    },
-    {
-      id: "reassessment-plan-supplemental",
-      label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
-    },
-  ],
-};
+//Rates for LTSS-4 / FFS
+export const performanceRatesReassessmentPlanFfsElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
 
-export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
+export const exclusionRatesPatientPlanFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "patient-not-contact",
       label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
     },
     {
       id: "patient-refuse-planning",
       label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
     },
   ],
+};
+
+//Rates for LTSS-4 / MLTSS
+export const performanceRatesReassessmentPlanMltssElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
+
+export const exclusionRatesPatientPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
+  required: true,
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "patient-not-contact",
+      label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
+    },
+    {
+      id: "patient-refuse-planning",
+      label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
+    },
+  ],
+};
+
+// Rates for LTSS-6 / FFS
+export const performanceRateTermStayFfsElements: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
+  id: "measure-rates",
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years" },
+    { id: "year-2", label: "65 to 74 Years" },
+    { id: "year-3", label: "75 to 84 Years" },
+    { id: "year-4", label: "85 years or older" },
+  ],
+  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
+  categories: [
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+  ],
+  required: true,
+  multiplier: 1000,
+};
+
+// Rates for LTSS-6 / MLTSS
+export const performanceRateTermStayMltssElements: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
+  id: "measure-rates",
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years" },
+    { id: "year-2", label: "65 to 74 Years" },
+    { id: "year-3", label: "75 to 84 Years" },
+    { id: "year-4", label: "85 years or older" },
+  ],
+  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
+  categories: [
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
+  ],
+  required: true,
+  multiplier: 1000,
+};
+
+//Rates for LTSS-7
+export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
+  id: "measure-rates",
+  labels: {
+    actualCount: "Count of Successful Discharges to the Community",
+    denominator: "Facility Admission Count",
+    expectedCount: "Expected Count of Successful Discharges to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Minimizing Length of Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Minimizing Length of Facility Stay",
+    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
+  },
+  hintText: {
+    actualCountHint:
+      "Count of discharges from a facility to the community during the measurement year that occurred within 100 days or fewer of admission.",
+    denominatorHint:
+      "Number of facility admissions occurring during the measurement period, removing those for which the admission represented a transfer between facilities and those for which a death occurred while admitted.",
+    expectedCountHint:
+      "Sum of the estimated discharge probability for each facility admission.",
+    populationRateHint:
+      "Sum of all observed numerator events divided by the sum of all observed denominator events.",
+    actualRateHint:
+      "Actual rate of successful discharges from a facility to the community during the measurement year.",
+    expectedRateHint:
+      "Expected rate of successful discharges from a facility to the community during the measurement year.",
+    adjustedRateHint:
+      "Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
+  },
+  required: true,
+};
+
+// Rates for MLTSS: Plan All-Cause Readmission
+export const readmissionRate: ReadmissionRateTemplate = {
+  type: ElementType.ReadmissionRate,
+  id: "measure-rates",
+  labels: {
+    stayCount: "Count of Index Hospital Stays",
+    obsReadmissionCount: "Count of Observed 30-Day Readmissions",
+    obsReadmissionRate: "Observed Readmission Rate",
+    expReadmissionCount: "Count of Expected 30-Day readmissions",
+    expReadmissionRate: "Expected Readmission Rate",
+    obsExpRatio: "Observed-to-Expected Ratio",
+    beneficiaryCount: "Count of Beneficiaries in Medicaid Population",
+    outlierCount: "Number of Outliers",
+    outlierRate: "Outlier Rate",
+  },
+  required: true,
+};
+
+//Rates for LTSS-8
+export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
+  type: ElementType.LengthOfStayRate,
+  id: "measure-rates",
+  labels: {
+    actualCount: "Count of Successful Transitions to the Community",
+    denominator: "Long-Term Facility Stay Count",
+    expectedCount: "Expected Count of Successful Transitions to the Community",
+    populationRate: "Multi-Plan Population Rate",
+    actualRate:
+      "Observed Performance Rate for Successful Transition after Long-Term Facility Stay",
+    expectedRate:
+      "Expected Performance Rate for Successful Transition after Long-Term Facility Stay",
+    adjustedRate:
+      "Risk Adjusted Rate for Successful Transition after Long-Term Facility Stay",
+  },
+  hintText: {
+    actualCountHint:
+      "Count of discharges from a facility to the community from July 1 of the year prior to the measurement year through October 31 of the measurement year that resulted in a successful transition to the community for 60 consecutive days.",
+    denominatorHint:
+      "Number of long-term facility stays (101 days or longer), excluding admissions that were direct transfers between facilities or that resulted in death within the facility or within one day of discharge.",
+    expectedCountHint:
+      "Sum of the estimated transition probability for each long-term facility stay.",
+    populationRateHint:
+      "Sum of all observed numerator events divided by the sum of all observed denominator events.",
+    actualRateHint:
+      "Actual rate of successful transitions to the community after the long-term facility stay.",
+    expectedRateHint:
+      "Expected rate of successful transitions to the community after the long-term facility stay.",
+    adjustedRateHint:
+      "Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
+  },
+  required: true,
 };
 
 //Rates for POM-1
@@ -660,7 +917,7 @@ export const performanceRatePOM1: Omit<NdrTemplate, "label"> = {
   required: true,
   hintText: {
     numeratorHint:
-      "Number of people who live in typical community housing, work in buildings where people from their community work, and participate in leisure activities in settings used by people from their community. ​ This includes people who have chosen integrated environments and are satisfied with their living, working, and leisure arrangements.​",
+      "Number of people who live in typical community housing, work in buildings where people from their community work, and participate in leisure activities in settings used by people from their community. ​This includes people who have chosen integrated environments and are satisfied with their living, working, and leisure arrangements.​",
     denominatorHint:
       'Total number of people interviewed for the "People live in integrated environments" metric.',
     rateHint: "Percentage of people who live in integrated environments.",
@@ -703,7 +960,7 @@ export const performanceRatePOM4: Omit<NdrTemplate, "label"> = {
   required: true,
   hintText: {
     numeratorHint:
-      "Number of people who set and achieve personal goals.  Include only those who have accomplished a personal milestone within the past year or two.​",
+      "Number of people who set and achieve personal goals. Include only those who have accomplished a personal milestone within the past year or two.​",
     denominatorHint:
       'Total number of people interviewed for the "People realize personal goals" metric.',
     rateHint: "Percentage of people who set and achieve personal goals.",
@@ -717,7 +974,7 @@ export const performanceRatePOM5: Omit<NdrTemplate, "label"> = {
   required: true,
   hintText: {
     numeratorHint:
-      "Number of people who are not subject to actions, by anyone, that cause them physical or emotional harm.  Include those who are able to recognize and report all forms of abuse, neglect, and exploitation.​",
+      "Number of people who are not subject to actions, by anyone, that cause them physical or emotional harm. Include those who are able to recognize and report all forms of abuse, neglect, and exploitation.​",
     denominatorHint:
       'Total number of people interviewed for the "People are free from abuse and neglect" metric.',
     rateHint: "Percentage of people who are free from abuse and neglect.",
@@ -785,80 +1042,6 @@ export const performanceRateFASI2: NdrTemplate = {
     rateHint:
       "Percentage of HCBS participants aged 18 years or older whose person-centered service planning documentation addresses needs in the areas of self-care, mobility, and instrumental activities of daily living as determined by the most recent FASI assessment.",
   },
-};
-
-// Rates for LTSS-6
-export const performanceRateTermStay: MultiCategoryNdrTemplate = {
-  type: ElementType.MultiCategoryNdr,
-  id: "measure-rates",
-  assessments: [
-    { id: "year-1", label: "18 to 64 Years" },
-    { id: "year-2", label: "65 to 74 Years" },
-    { id: "year-3", label: "75 to 84 Years" },
-    { id: "year-4", label: "85 years or older" },
-  ],
-  categories: [
-    { id: "short-term", label: "Short Term Stay" },
-    { id: "med-term", label: "Medium Term Stay" },
-    { id: "long-term", label: "Long Term Stay" },
-  ],
-  required: true,
-  multiplier: 1000,
-};
-
-//Rates for LTSS-7
-export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
-  type: ElementType.LengthOfStayRate,
-  id: "measure-rates",
-  labels: {
-    actualCount: "Count of Successful Discharges to the Community",
-    denominator: "Facility Admission Count",
-    expectedCount: "Expected Count of Successful Discharges to the Community",
-    populationRate: "Multi-Plan Population Rate",
-    actualRate:
-      "Observed Performance Rate for Minimizing Length of Facility Stay",
-    expectedRate:
-      "Expected Performance Rate for Minimizing Length of Facility Stay",
-    adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
-  },
-  required: true,
-};
-
-// Rates for MLTSS: Plan All-Cause Readmission
-export const readmissionRate: ReadmissionRateTemplate = {
-  type: ElementType.ReadmissionRate,
-  id: "measure-rates",
-  labels: {
-    stayCount: "Count of Index Hospital Stays",
-    obsReadmissionCount: "Count of Observed 30-Day Readmissions",
-    obsReadmissionRate: "Observed Readmission Rate",
-    expReadmissionCount: "Count of Expected 30-Day readmissions",
-    expReadmissionRate: "Expected Readmission Rate",
-    obsExpRatio: "Observed-to-Expected Ratio",
-    beneficiaryCount: "Count of Beneficiaries in Medicaid Population",
-    outlierCount: "Number of Outliers",
-    outlierRate: "Outlier Rate",
-  },
-  required: true,
-};
-
-//Rates for LTSS-8
-export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
-  type: ElementType.LengthOfStayRate,
-  id: "measure-rates",
-  labels: {
-    actualCount: "Count of Successful Transitions to the Community",
-    denominator: "Long-Term Facility Stay Count",
-    expectedCount: "Expected Count of Successful Transitions to the Community",
-    populationRate: "Multi-Plan Population Rate",
-    actualRate:
-      "Observed Performance Rate for Successful Transition after Long-Term Facility Stay",
-    expectedRate:
-      "Expected Performance Rate for Successful Transition after Long-Term Facility Stay",
-    adjustedRate:
-      "Risk Adjusted Rate for Successful Transition after Long-Term Facility Stay",
-  },
-  required: true,
 };
 
 // Rates for HCBS-10

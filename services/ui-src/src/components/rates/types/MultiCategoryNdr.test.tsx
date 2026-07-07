@@ -16,11 +16,13 @@ const mockElementTemplate: MultiCategoryNdrTemplate = {
     { id: "year-4", label: "85 years or older" },
   ],
   categories: [
-    { id: "short-term", label: "Short Term Stay" },
+    { id: "short-term", label: "Short Term Stay", hintRate: "Rate hint text" },
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
   ],
   multiplier: 1000,
+  hint: "Denominator hint text",
+  hintNumerator: "Numerator hint text",
   required: true,
 };
 const updateSpy = jest.fn();
@@ -67,6 +69,18 @@ describe("<MultiCategoryNdr />", () => {
           ).toBeInTheDocument();
         }
       }
+    });
+
+    test("MultiCategoryNdr hints are visible", () => {
+      render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
+
+      expect(
+        screen.getAllByText("Denominator hint text").length
+      ).toBeGreaterThan(0);
+      expect(screen.getAllByText("Numerator hint text").length).toBeGreaterThan(
+        0
+      );
+      expect(screen.getAllByText("Rate hint text").length).toBeGreaterThan(0);
     });
 
     test("Rate should calculate", async () => {

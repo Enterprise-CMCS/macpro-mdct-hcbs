@@ -509,10 +509,21 @@ export const LengthOfStayFieldNames = {
 export type LengthOfStayField =
   (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
+export type LengthOfStayHint = {
+  actualCountHint?: string;
+  denominatorHint?: string;
+  expectedCountHint?: string;
+  populationRateHint?: string;
+  actualRateHint?: string;
+  expectedRateHint?: string;
+  adjustedRateHint?: string;
+};
+
 export type LengthOfStayRateTemplate = {
   id: string;
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
+  hintText?: LengthOfStayHint;
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
   errors?: Record<LengthOfStayField, string>;
@@ -569,11 +580,20 @@ export type Assessment = {
   };
 };
 
+export type NdrCategory = {
+  label: string;
+  id: string;
+  autoCalc?: boolean;
+  hintRate?: string;
+};
+
 export type MultiCategoryNdrTemplate = {
   id: string;
   type: ElementType.MultiCategoryNdr;
   assessments: Assessment[];
-  categories: { label: string; id: string; autoCalc?: boolean }[];
+  categories: NdrCategory[];
+  hint?: string;
+  hintNumerator?: string;
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;

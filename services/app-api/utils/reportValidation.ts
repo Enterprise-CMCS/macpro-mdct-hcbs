@@ -376,6 +376,17 @@ const lengthOfStayRateSchema = object().shape({
     expectedRate: string().required(),
     adjustedRate: string().required(),
   }),
+  hintText: object()
+    .shape({
+      actualCountHint: string().notRequired(),
+      denominatorHint: string().notRequired(),
+      expectedCountHint: string().notRequired(),
+      populationRateHint: string().notRequired(),
+      actualRateHint: string().notRequired(),
+      expectedRateHint: string().notRequired(),
+      adjustedRateHint: string().notRequired(),
+    })
+    .notRequired(),
   required: boolean().required(),
   answer: object()
     .shape({
@@ -437,9 +448,12 @@ const multiCategoryNdrSchema = object().shape({
         id: string().required(),
         label: string().required(),
         autoCalc: boolean().notRequired(),
+        hintRate: string().notRequired(),
       })
     )
     .required(),
+  hint: string().notRequired(),
+  hintNumerator: string().notRequired(),
   required: boolean().required(),
   multiplier: number().notRequired(),
   answer: array()
