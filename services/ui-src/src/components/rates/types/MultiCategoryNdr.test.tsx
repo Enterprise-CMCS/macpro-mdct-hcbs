@@ -93,6 +93,35 @@ describe("<MultiCategoryNdr />", () => {
       }
     });
 
+    test("Hint text should render for numerator, denominator, and rate", () => {
+      const templateWithHints: MultiCategoryNdrTemplate = {
+        ...mockElementTemplate,
+        assessments: [
+          {
+            id: "year-1",
+            label: "18 to 64 Years",
+            hints: {
+              hintNumerator: "hint numerator",
+              hintDenominator: "hint denominator",
+              hintRate: "hint rate",
+            },
+          },
+        ],
+      };
+      render(<MultiCategoryNdrWrapper template={templateWithHints} />);
+
+      // Numerator and rate hints render once per category
+      expect(
+        screen.getAllByText("hint numerator", { selector: "p" })
+      ).toHaveLength(mockElementTemplate.categories.length);
+      expect(
+        screen.getByText("hint denominator", { selector: "p" })
+      ).toBeVisible();
+      expect(screen.getAllByText("hint rate", { selector: "p" })).toHaveLength(
+        mockElementTemplate.categories.length
+      );
+    });
+
     test("Error should show if the denominator is 0", async () => {
       render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
       const { assessments } = mockElementTemplate;

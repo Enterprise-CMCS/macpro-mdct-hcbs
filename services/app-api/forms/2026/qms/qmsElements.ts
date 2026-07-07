@@ -740,8 +740,30 @@ export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
   id: "measure-rates",
   required: true,
   assessments: [
-    { id: "self-direction-offer", label: "Self-Direction Offer" },
-    { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
+    {
+      id: "self-direction-offer",
+      label: "Self-Direction Offer",
+      hints: {
+        hintNumerator:
+          "Number of MLTSS plan participants aged 18 years and older who received an offer to self-direct their HCBS in the last 12 months.",
+        hintDenominator:
+          "Number of participants receiving HCBS aged 18 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+        hintRate:
+          "Percentage of eligible participants receiving HCBS aged 18 years and older in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
+      },
+    },
+    {
+      id: "self-direction-opt-in",
+      label: "Self-Direction Opt-In",
+      hints: {
+        hintNumerator:
+          "Number of MLTSS plan participants aged 18 years and older who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
+        hintDenominator:
+          "Number of participants aged 18 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+        hintRate:
+          "Percentage of participants receiving HCBS aged 18 years and older in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
+      },
+    },
   ],
   categories: [
     { id: "self-label", label: "Total" },
