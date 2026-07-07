@@ -749,11 +749,104 @@ export const exclusionRatesPatientPlanMltssElements: MultiRateNdrTemplate = {
   ],
 };
 
-//Rates for POM
-export const performanceRatePOM: Omit<NdrTemplate, "label"> = {
+//Rates for POM-1
+export const performanceRatePOM1: Omit<NdrTemplate, "label"> = {
   type: ElementType.Ndr,
   id: "measure-rates",
   required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who live in typical community housing, work in buildings where people from their community work, and participate in leisure activities in settings used by people from their community. ​This includes people who have chosen integrated environments and are satisfied with their living, working, and leisure arrangements.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People live in integrated environments" metric.',
+    rateHint: "Percentage of people who live in integrated environments.",
+  },
+};
+
+//Rates for POM-2
+export const performanceRatePOM2: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who actively participate in community activities and are satisfied with the type and frequency of their participation. Include those who choose not to participate if it’s an informed personal choice.",
+    denominatorHint:
+      'Total number of people interviewed for the "People participate in the life of the community" metric.',
+    rateHint:
+      "Percentage of people who participate in the life of the community.",
+  },
+};
+
+//Rates for POM-3
+export const performanceRatePOM3: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who select the services they receive, including the provider and staff, and ensure the services align with their personal goals. ​Include those who maintain services by informed personal choice.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People choose services" metric.',
+    rateHint: "Percentage of people who choose services.",
+  },
+};
+
+//Rates for POM-4
+export const performanceRatePOM4: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who set and achieve personal goals. Include only those who have accomplished a personal milestone within the past year or two.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People realize personal goals" metric.',
+    rateHint: "Percentage of people who set and achieve personal goals.",
+  },
+};
+
+//Rates for POM-5
+export const performanceRatePOM5: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who are not subject to actions, by anyone, that cause them physical or emotional harm. Include those who are able to recognize and report all forms of abuse, neglect, and exploitation.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People are free from abuse and neglect" metric.',
+    rateHint: "Percentage of people who are free from abuse and neglect.",
+  },
+};
+
+//Rates for POM-6
+export const performanceRatePOM6: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who define their own best possible health, and are able select health services based on that definition. Include people whose health care interventions are personalized and effective.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People have the best possible health" metric.',
+    rateHint: "Percentage of people who have the best possible health.",
+  },
+};
+
+//Rates for POM-7
+export const performanceRatePOM7: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      'Number of people who have contact with a broad range of other people, are supported to "earn" social capital, and have opportunities to meet and spend time with others outside the organization. Include those who have the opportunity, freedom and support to define what level of contact they want for themselves.​',
+    denominatorHint:
+      'Total number of people interviewed for the "People interact with other members of the community" metric.',
+    rateHint:
+      "Percentage of people who interact with other members of the community.",
+  },
 };
 
 // Rates for LTSS-6 / FFS

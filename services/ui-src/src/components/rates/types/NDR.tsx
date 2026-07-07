@@ -20,7 +20,7 @@ type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 
 export const NDR = (props: PageElementProps<NdrTemplate>) => {
   const { disabled, element, updateElement } = props;
-  const { label, answer } = element;
+  const { label, answer, hintText } = element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
@@ -145,6 +145,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
           <CmsdsTextField
             label="Numerator"
             name={FieldNames.numerator}
+            hint={hintText?.numeratorHint}
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.numerator}
@@ -154,6 +155,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
           <CmsdsTextField
             label="Denominator"
             name={FieldNames.denominator}
+            hint={hintText?.denominatorHint}
             onChange={onChangeHandler}
             onBlur={onChangeHandler}
             value={displayValue.denominator}
@@ -163,7 +165,7 @@ export const NDR = (props: PageElementProps<NdrTemplate>) => {
           <CmsdsTextField
             label="Rate"
             name="rate"
-            hint="Auto-calculates"
+            hint={hintText?.rateHint ?? "Auto-calculates"}
             value={displayValue.rate}
             disabled
           ></CmsdsTextField>
