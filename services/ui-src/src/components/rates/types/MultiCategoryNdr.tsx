@@ -243,7 +243,7 @@ export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
           {
             indicator: `Denominator (${assess.label})`,
             response: data?.denominator,
-            helperText: "Auto-calculates",
+            helperText: assess.hints?.hintDenominator ?? undefined,
           },
           {
             indicator: `${category.label} Rate (${assess.label})`,
