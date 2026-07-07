@@ -437,9 +437,12 @@ const multiCategoryNdrSchema = object().shape({
         id: string().required(),
         label: string().required(),
         autoCalc: boolean().notRequired(),
+        hintRate: string().notRequired(),
       })
     )
     .required(),
+  hint: string().notRequired(),
+  hintNumerator: string().notRequired(),
   required: boolean().required(),
   multiplier: number().notRequired(),
   answer: array()

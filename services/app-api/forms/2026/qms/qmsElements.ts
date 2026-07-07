@@ -619,36 +619,132 @@ export const exclusionRatesPersonCenteredPlanMltssElements: MultiRateNdrTemplate
     ],
   };
 
-//Rates for LTSS-4
-export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
-  type: ElementType.MultiRateNdr,
-  id: "measure-rates-reassessment",
-  required: true,
-  assessments: [
-    {
-      id: "reassessment-plan-core",
-      label: "Reassessment after Inpatient Discharge",
-    },
-    {
-      id: "reassessment-plan-supplemental",
-      label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
-    },
-  ],
-};
+//Rates for LTSS-4 / FFS
+export const performanceRatesReassessmentPlanFfsElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
 
-export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
+export const exclusionRatesPatientPlanFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "patient-not-contact",
       label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
     },
     {
       id: "patient-refuse-planning",
       label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
+    },
+  ],
+};
+
+//Rates for LTSS-4 / MLTSS
+export const performanceRatesReassessmentPlanMltssElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
+
+export const exclusionRatesPatientPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
+  required: true,
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "patient-not-contact",
+      label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
+    },
+    {
+      id: "patient-refuse-planning",
+      label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
     },
   ],
 };
@@ -660,8 +756,8 @@ export const performanceRatePOM: Omit<NdrTemplate, "label"> = {
   required: true,
 };
 
-// Rates for LTSS-6
-export const performanceRateTermStay: MultiCategoryNdrTemplate = {
+// Rates for LTSS-6 / FFS
+export const performanceRateTermStayFfsElements: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
@@ -670,10 +766,65 @@ export const performanceRateTermStay: MultiCategoryNdrTemplate = {
     { id: "year-3", label: "75 to 84 Years" },
     { id: "year-4", label: "85 years or older" },
   ],
+  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
   categories: [
-    { id: "short-term", label: "Short Term Stay" },
-    { id: "med-term", label: "Medium Term Stay" },
-    { id: "long-term", label: "Long Term Stay" },
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+  ],
+  required: true,
+  multiplier: 1000,
+};
+
+// Rates for LTSS-6 / MLTSS
+export const performanceRateTermStayMltssElements: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
+  id: "measure-rates",
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years" },
+    { id: "year-2", label: "65 to 74 Years" },
+    { id: "year-3", label: "75 to 84 Years" },
+    { id: "year-4", label: "85 years or older" },
+  ],
+  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
+  categories: [
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
   ],
   required: true,
   multiplier: 1000,
