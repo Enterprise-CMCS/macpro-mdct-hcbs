@@ -845,6 +845,22 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
       "Expected Performance Rate for Minimizing Length of Facility Stay",
     adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
   },
+  hintText: {
+    actualCountHint:
+      "Count of discharges from a facility to the community during the measurement year that occurred within 100 days or fewer of admission.",
+    denominatorHint:
+      "Number of facility admissions occurring during the measurement period, removing those for which the admission represented a transfer between facilities and those for which a death occurred while admitted.",
+    expectedCountHint:
+      "Sum of the estimated discharge probability for each facility admission.",
+    populationRateHint:
+      "Sum of all observed numerator events divided by the sum of all observed denominator events.",
+    actualRateHint:
+      "Actual rate of successful discharges from a facility to the community during the measurement year.",
+    expectedRateHint:
+      "Expected rate of successful discharges from a facility to the community during the measurement year.",
+    adjustedRateHint:
+      "Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
+  },
   required: true,
 };
 
@@ -881,6 +897,22 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
       "Expected Performance Rate for Successful Transition after Long-Term Facility Stay",
     adjustedRate:
       "Risk Adjusted Rate for Successful Transition after Long-Term Facility Stay",
+  },
+  hintText: {
+    actualCountHint:
+      "Count of discharges from a facility to the community from July 1 of the year prior to the measurement year through October 31 of the measurement year that resulted in a successful transition to the community for 60 consecutive days.",
+    denominatorHint:
+      "Number of long-term facility stays (101 days or longer), excluding admissions that were direct transfers between facilities or that resulted in death within the facility or within one day of discharge.",
+    expectedCountHint:
+      "Sum of the estimated transition probability for each long-term facility stay.",
+    populationRateHint:
+      "Sum of all observed numerator events divided by the sum of all observed denominator events.",
+    actualRateHint:
+      "Actual rate of successful transitions to the community after the long-term facility stay.",
+    expectedRateHint:
+      "Expected rate of successful transitions to the community after the long-term facility stay.",
+    adjustedRateHint:
+      "Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
   },
   required: true,
 };

@@ -486,10 +486,21 @@ export const LengthOfStayFieldNames = {
 export type LengthOfStayField =
   (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
+export type LengthOfStayHint = {
+  actualCountHint?: string;
+  denominatorHint?: string;
+  expectedCountHint?: string;
+  populationRateHint?: string;
+  actualRateHint?: string;
+  expectedRateHint?: string;
+  adjustedRateHint?: string;
+};
+
 export type LengthOfStayRateTemplate = {
   id: string;
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
+  hintText?: LengthOfStayHint;
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
   errors?: Record<LengthOfStayField, string>;
