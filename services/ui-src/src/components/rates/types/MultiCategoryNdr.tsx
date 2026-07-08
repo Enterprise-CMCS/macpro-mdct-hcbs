@@ -26,8 +26,24 @@ const FieldNames = {
 } as const;
 type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 
+const categoryHints = (assess: Assessment, category: NdrCategory) =>
+  assess.categoryHints?.find((hints) => hints.categoryId === category.id);
+
+// Per-category hint if present, otherwise the assessment-wide hint.
+const numeratorHint = (assess: Assessment, category: NdrCategory) =>
+  categoryHints(assess, category)?.hintNumerator ?? assess.hints?.hintNumerator;
+
+// Per-category denominator text. The single shared denominator input keeps its
+// own assessment-wide hint (`assess.hints.hintDenominator`); to give a measure
+// different denominator text per age band, populate `categoryHints[].hintDenominator`.
+const denominatorHint = (assess: Assessment, category: NdrCategory) =>
+  categoryHints(assess, category)?.hintDenominator;
+
 const rateHint = (assess: Assessment, category: NdrCategory) =>
-  category.hintRate ?? assess.hints?.hintRate ?? "Auto-calculates";
+  categoryHints(assess, category)?.hintRate ??
+  category.hintRate ??
+  assess.hints?.hintRate ??
+  "Auto-calculates";
 
 export const MultiCategoryNdr = (
   props: PageElementProps<MultiCategoryNdrTemplate>
@@ -195,7 +211,7 @@ export const MultiCategoryNdr = (
                     <CmsdsTextField
                       label={`Numerator: ${category.label} (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.${FieldNames.numerator}`}
-                      hint={assess.hints?.hintNumerator}
+                      hint={numeratorHint(assess, category)}
                       onChange={onChangeHandler}
                       onBlur={onChangeHandler}
                       value={rateObject.numerator}
@@ -205,6 +221,7 @@ export const MultiCategoryNdr = (
                     <CmsdsTextField
                       label={`Denominator (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.denominator`}
+                      hint={denominatorHint(assess, category)}
                       value={rateSet.denominator}
                       disabled
                     ></CmsdsTextField>
@@ -241,12 +258,14 @@ export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
           {
             indicator: `Numerator: ${category.label} (${assess.label})`,
             response: rate?.numerator,
-            helperText: assess.hints?.hintNumerator,
+            helperText: numeratorHint(assess, category),
           },
           {
             indicator: `Denominator (${assess.label})`,
             response: data?.denominator,
-            helperText: assess.hints?.hintDenominator,
+            helperText:
+              denominatorHint(assess, category) ??
+              assess.hints?.hintDenominator,
           },
           {
             indicator: `${category.label} Rate (${assess.label})`,

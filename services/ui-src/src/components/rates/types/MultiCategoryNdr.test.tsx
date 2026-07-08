@@ -142,6 +142,44 @@ describe("<MultiCategoryNdr />", () => {
       ).not.toBeInTheDocument();
     });
 
+    test("Category hints should take precedence over assessment hints", () => {
+      const template: MultiCategoryNdrTemplate = {
+        ...mockElementTemplate,
+        assessments: [
+          {
+            id: "year-1",
+            label: "18 to 64 Years",
+            hints: {
+              hintNumerator: "Assessment numerator",
+              hintDenominator: "Assessment denominator",
+              hintRate: "Assessment rate",
+            },
+            categoryHints: [
+              {
+                categoryId: "short-term",
+                hintNumerator: "Short numerator",
+                hintDenominator: "Short denominator",
+                hintRate: "Short rate",
+              },
+            ],
+          },
+        ],
+        categories: [{ id: "short-term", label: "Short Term Stay" }],
+      };
+      render(<MultiCategoryNdrWrapper template={template} />);
+
+      expect(screen.getByText("Short numerator")).toBeVisible();
+      expect(screen.getByText("Short denominator")).toBeVisible();
+      expect(screen.getByText("Short rate")).toBeVisible();
+      // Assessment-level numerator/rate fall back shows if the category does not
+      // override them, so they should not appear.
+      expect(
+        screen.queryByText("Assessment numerator")
+      ).not.toBeInTheDocument();
+      expect(screen.queryByText("Assessment rate")).not.toBeInTheDocument();
+      expect(screen.getByText("Assessment denominator")).toBeVisible();
+    });
+
     test("Error should show if the denominator is 0", async () => {
       render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
       const { assessments } = mockElementTemplate;
