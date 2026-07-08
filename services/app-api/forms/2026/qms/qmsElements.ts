@@ -1023,7 +1023,7 @@ export const performanceRateFASI1: NdrTemplate = {
     denominatorHint:
       "Number of HCBS participants aged 18 years or older with documented needs in the areas of self-care, mobility, or IADL as determined by the most recent FASI assessment.",
     rateHint:
-      "Percentage of HCBS participants aged 18 year or older who have identified at least as many total personal priorities (up to three) as functional needs in the areas of self-care, mobility, or IADL combined on the same FASI assessment.",
+      "Percentage of HCBS participants aged 18 years or older who have identified at least as many total personal priorities (up to three) as functional needs in the areas of self-care, mobility, or IADL combined on the same FASI assessment.",
   },
 };
 
