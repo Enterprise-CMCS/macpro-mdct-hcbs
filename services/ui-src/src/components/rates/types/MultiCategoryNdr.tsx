@@ -39,7 +39,7 @@ const hint = (
     case "hintNumerator":
       return assessmentCategoryHint ?? assess.hints?.hintNumerator;
     case "hintDenominator":
-      return assessmentCategoryHint ?? assess.hints?.hintDenominator;
+      return assessmentCategoryHint;
     case "hintRate":
       return (
         assessmentCategoryHint ??
@@ -268,7 +268,9 @@ export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
           {
             indicator: `Denominator (${assess.label})`,
             response: data?.denominator,
-            helperText: hint(assess, category, "hintDenominator"),
+            helperText:
+              hint(assess, category, "hintDenominator") ??
+              assess.hints?.hintDenominator,
           },
           {
             indicator: `${category.label} Rate (${assess.label})`,
