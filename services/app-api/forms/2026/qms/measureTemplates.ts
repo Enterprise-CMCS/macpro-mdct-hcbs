@@ -66,6 +66,8 @@ import {
   performanceRatePOM5,
   performanceRatePOM6,
   performanceRatePOM7,
+  performanceRateFASI1,
+  performanceRateFASI2,
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<
@@ -575,13 +577,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        required: true,
-        label:
-          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-      },
+      performanceRateFASI1,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -613,13 +609,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        required: true,
-        label:
-          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-      },
+      performanceRateFASI1,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -676,13 +666,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        required: true,
-        label:
-          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
-      },
+      performanceRateFASI2,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -714,13 +698,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        label:
-          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
-        required: true,
-      },
+      performanceRateFASI2,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
