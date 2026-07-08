@@ -132,6 +132,25 @@ describe("<NDR />", () => {
       const result = screen.getByRole("textbox", { name: "Rate" });
       expect(result).toHaveValue("0.00");
     });
+
+    test("should display hint text when provided", () => {
+      render(
+        <NdrWrapper
+          template={{
+            ...mockedPerformanceElement,
+            hintText: {
+              numeratorHint: "Numerator hint text",
+              denominatorHint: "Denominator hint text",
+              rateHint: "Rate hint text",
+            },
+          }}
+        />
+      );
+
+      expect(screen.getByText("Numerator hint text")).toBeVisible();
+      expect(screen.getByText("Denominator hint text")).toBeVisible();
+      expect(screen.getByText("Rate hint text")).toBeVisible();
+    });
   });
 
   testA11y(<NdrWrapper template={mockedPerformanceElement} />);
