@@ -570,14 +570,19 @@ export type RateSetData = {
   rates: RateType[];
 };
 
+export type RateHints = {
+  hintNumerator?: string;
+  hintDenominator?: string;
+  hintRate?: string;
+};
+
+export type CategoryHints = RateHints & { categoryId: string };
+
 export type Assessment = {
   label: string;
   id: string;
-  hints?: {
-    hintNumerator?: string;
-    hintDenominator?: string;
-    hintRate?: string;
-  };
+  hints?: RateHints;
+  categoryHints?: CategoryHints[];
 };
 
 export type NdrCategory = {
@@ -592,8 +597,6 @@ export type MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr;
   assessments: Assessment[];
   categories: NdrCategory[];
-  hint?: string;
-  hintNumerator?: string;
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;
