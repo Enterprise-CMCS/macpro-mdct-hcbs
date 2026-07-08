@@ -526,6 +526,17 @@ export const elementObject: {
             outlierCount: "outlierCount",
             outlierRate: "outlierRate",
           },
+          hintText: {
+            stayCountHint: "stayCountHint",
+            obsReadmissionCountHint: "obsReadmissionCountHint",
+            obsReadmissionRateHint: "obsReadmissionRateHint",
+            expReadmissionCountHint: "expReadmissionCountHint",
+            expReadmissionRateHint: "expReadmissionRateHint",
+            obsExpRatioHint: "obsExpRatioHint",
+            beneficiaryCountHint: "beneficiaryCountHint",
+            outlierCountHint: "outlierCountHint",
+            outlierRateHint: "outlierRateHint",
+          },
           required: true,
         }}
       />,

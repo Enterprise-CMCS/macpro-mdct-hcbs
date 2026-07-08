@@ -973,6 +973,26 @@ export const readmissionRate: ReadmissionRateTemplate = {
     outlierCount: "Number of Outliers",
     outlierRate: "Outlier Rate",
   },
+  hintText: {
+    stayCountHint:
+      "The total number of eligible acute inpatient and observation stay discharges among nonoutliers during the measurement year.",
+    obsReadmissionCountHint:
+      "The number of Index Hospital Stays among nonoutliers that were followed by an unplanned acute readmission for any diagnosis within 30 days of discharge.",
+    obsReadmissionRateHint:
+      "Auto-calculates. Represents the percentage of acute inpatient and observation stays followed by an unplanned acute readmission within 30 days.",
+    expReadmissionCountHint:
+      "The risk-adjusted sum of the estimated readmission risks across all Index Hospital Stays for nonoutliers, reported to four decimal places.",
+    expReadmissionRateHint:
+      "Auto-calculates. Represents the predicted percentage of acute inpatient and observation stays expected to result in an unplanned 30-day readmission based on beneficiary risk attributes.",
+    obsExpRatioHint:
+      "Auto-calculates. The ratio of actual readmissions to risk-adjusted expected readmissions. A value below 1.0 indicates the state had fewer readmissions than expected given the case mix.",
+    beneficiaryCountHint:
+      "The total count of unique beneficiaries aged 18 to 64 who met eligibility criteria prior to the exclusion of outliers.",
+    outlierCountHint:
+      "The number of unique Medicaid beneficiaries in the eligible population who had four or more Index Hospital Stays between January 1 and December 1 of the measurement year.",
+    outlierRateHint:
+      "Auto-calculates. The rate of outlier beneficiaries removed from the risk-adjusted measure calculation per 1,000 beneficiaries in the eligible population.",
+  },
   required: true,
 };
 

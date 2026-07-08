@@ -20,7 +20,7 @@ export const ReadmissionRate = (
   props: PageElementProps<ReadmissionRateTemplate>
 ) => {
   const { disabled, updateElement } = props;
-  const { labels, answer } = props.element;
+  const { labels, hintText, answer } = props.element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
@@ -173,6 +173,7 @@ export const ReadmissionRate = (
           onBlur={onChangeHandler}
           value={displayValue.stayCount}
           errorMessage={errors.stayCount}
+          hint={hintText?.stayCountHint}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
@@ -182,12 +183,14 @@ export const ReadmissionRate = (
           onBlur={onChangeHandler}
           value={displayValue.obsReadmissionCount}
           errorMessage={errors.obsReadmissionCount}
+          hint={hintText?.obsReadmissionCountHint}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.obsReadmissionRate}
           name="obsReadmissionRate"
           value={displayValue.obsReadmissionRate}
+          hint={hintText?.obsReadmissionRateHint}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
@@ -197,18 +200,21 @@ export const ReadmissionRate = (
           onBlur={onChangeHandler}
           value={displayValue.expReadmissionCount}
           errorMessage={errors.expReadmissionCount}
+          hint={hintText?.expReadmissionCountHint}
           disabled={disabled}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.expReadmissionRate}
           name="expReadmissionRate"
           value={displayValue.expReadmissionRate}
+          hint={hintText?.expReadmissionRateHint}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.obsExpRatio}
           name="obsExpRatio"
           value={displayValue.obsExpRatio}
+          hint={hintText?.obsExpRatioHint}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
@@ -218,6 +224,7 @@ export const ReadmissionRate = (
           onBlur={onChangeHandler}
           value={displayValue.beneficiaryCount}
           disabled={disabled}
+          hint={hintText?.beneficiaryCountHint}
           errorMessage={errors.beneficiaryCount}
         ></CmsdsTextField>
         <CmsdsTextField
@@ -227,12 +234,14 @@ export const ReadmissionRate = (
           onBlur={onChangeHandler}
           value={displayValue.outlierCount}
           disabled={disabled}
+          hint={hintText?.outlierCountHint}
           errorMessage={errors.outlierCount}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.outlierRate}
           name="outlierRate"
           value={displayValue.outlierRate}
+          hint={hintText?.outlierRateHint}
           disabled={true}
         ></CmsdsTextField>
         <Divider></Divider>
@@ -244,46 +253,52 @@ export const ReadmissionRate = (
 //The pdf rendering of Readmission Rate component
 export const ReadmissionRateExport = (element: ReadmissionRateTemplate) => {
   const label = "Performance Rates";
+  const { hintText } = element;
   const rows = [
     {
       indicator: element.labels?.stayCount,
       response: element.answer?.stayCount,
+      helperText: hintText?.stayCountHint,
     },
     {
       indicator: element.labels?.obsReadmissionCount,
       response: element.answer?.obsReadmissionCount,
+      helperText: hintText?.obsReadmissionCountHint,
     },
     {
       indicator: element.labels?.obsReadmissionRate,
       response: stringifyResult(element.answer?.obsReadmissionRate),
-      helperText: "Auto-calculates",
+      helperText: hintText?.obsReadmissionRateHint,
     },
     {
       indicator: element.labels?.expReadmissionCount,
       response: element.answer?.expReadmissionCount,
+      helperText: hintText?.expReadmissionCountHint,
     },
     {
       indicator: element.labels?.expReadmissionRate,
       response: stringifyResult(element.answer?.expReadmissionRate),
-      helperText: "Auto-calculates",
+      helperText: hintText?.expReadmissionRateHint,
     },
     {
       indicator: element.labels?.obsExpRatio,
       response: stringifyResult(element.answer?.obsExpRatio),
-      helperText: "Auto-calculates",
+      helperText: hintText?.obsExpRatioHint,
     },
     {
       indicator: element.labels?.beneficiaryCount,
       response: element.answer?.beneficiaryCount,
+      helperText: hintText?.beneficiaryCountHint,
     },
     {
       indicator: element.labels?.outlierCount,
       response: element.answer?.outlierCount,
+      helperText: hintText?.outlierCountHint,
     },
     {
       indicator: element.labels?.outlierRate,
       response: stringifyResult(element.answer?.outlierRate),
-      helperText: "Auto-calculates",
+      helperText: hintText?.outlierRateHint,
     },
   ];
   return <>{ExportRateTable([{ label, rows }])}</>;

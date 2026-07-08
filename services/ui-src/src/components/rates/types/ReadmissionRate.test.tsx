@@ -26,6 +26,18 @@ const mockedPerformanceElement: ReadmissionRateTemplate = {
     outlierRate: "Outlier Rate",
   },
 };
+
+const mockedHintText = {
+  stayCountHint: "Hint for count of index hospital stays",
+  obsReadmissionCountHint: "Hint for observed readmission count",
+  obsReadmissionRateHint: "Hint for observed readmission rate",
+  expReadmissionCountHint: "Hint for expected readmission count",
+  expReadmissionRateHint: "Hint for expected readmission rate",
+  obsExpRatioHint: "Hint for observed-to-expected ratio",
+  beneficiaryCountHint: "Hint for beneficiary count",
+  outlierCountHint: "Hint for outlier count",
+  outlierRateHint: "Hint for outlier rate",
+};
 const updateSpy = jest.fn();
 
 const ReadmissionRateWrapper = ({
@@ -212,6 +224,18 @@ describe("<ReadmissionRate />", () => {
       expect(getInput("expReadmissionRate")).toHaveValue("");
       expect(getInput("obsExpRatio")).toHaveValue("");
       expect(getInput("outlierRate")).toHaveValue("");
+    });
+
+    test("Hint text is displayed for each field when provided", () => {
+      render(
+        <ReadmissionRateWrapper
+          template={{ ...mockedPerformanceElement, hintText: mockedHintText }}
+        />
+      );
+
+      for (const hint of Object.values(mockedHintText)) {
+        expect(screen.getByText(hint)).toBeInTheDocument();
+      }
     });
   });
 
