@@ -16,13 +16,11 @@ const mockElementTemplate: MultiCategoryNdrTemplate = {
     { id: "year-4", label: "85 years or older" },
   ],
   categories: [
-    { id: "short-term", label: "Short Term Stay", hintRate: "Rate hint text" },
+    { id: "short-term", label: "Short Term Stay" },
     { id: "med-term", label: "Medium Term Stay" },
     { id: "long-term", label: "Long Term Stay" },
   ],
   multiplier: 1000,
-  hint: "Denominator hint text",
-  hintNumerator: "Numerator hint text",
   required: true,
 };
 const updateSpy = jest.fn();
@@ -71,18 +69,6 @@ describe("<MultiCategoryNdr />", () => {
       }
     });
 
-    test("MultiCategoryNdr hints are visible", () => {
-      render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
-
-      expect(
-        screen.getAllByText("Denominator hint text").length
-      ).toBeGreaterThan(0);
-      expect(screen.getAllByText("Numerator hint text").length).toBeGreaterThan(
-        0
-      );
-      expect(screen.getAllByText("Rate hint text").length).toBeGreaterThan(0);
-    });
-
     test("Rate should calculate", async () => {
       render(<MultiCategoryNdrWrapper template={mockElementTemplate} />);
       const { assessments, categories } = mockElementTemplate;
@@ -105,6 +91,93 @@ describe("<MultiCategoryNdr />", () => {
         });
         expect(rate).toHaveValue("1000");
       }
+    });
+
+    test("Assessment hints should render for numerator, denominator, and rate", () => {
+      const template: MultiCategoryNdrTemplate = {
+        ...mockElementTemplate,
+        assessments: [
+          {
+            id: "year-1",
+            label: "18 to 64 Years",
+            hints: {
+              hintNumerator: "Numerator hint",
+              hintDenominator: "Denominator hint",
+              hintRate: "Rate hint",
+            },
+          },
+        ],
+      };
+      render(<MultiCategoryNdrWrapper template={template} />);
+
+      const categoryCount = template.categories.length;
+      expect(screen.getByText("Denominator hint")).toBeVisible();
+      expect(screen.getAllByText("Numerator hint")).toHaveLength(categoryCount);
+      expect(screen.getAllByText("Rate hint")).toHaveLength(categoryCount);
+    });
+
+    test("Category rate hints should take precedence over assessment rate hints", () => {
+      const template: MultiCategoryNdrTemplate = {
+        ...mockElementTemplate,
+        assessments: [
+          {
+            id: "year-1",
+            label: "18 to 64 Years",
+            hints: { hintRate: "Assessment rate hint" },
+          },
+        ],
+        categories: [
+          {
+            id: "short-term",
+            label: "Short Term Stay",
+            hintRate: "Category rate hint",
+          },
+        ],
+      };
+      render(<MultiCategoryNdrWrapper template={template} />);
+
+      expect(screen.getByText("Category rate hint")).toBeVisible();
+      expect(
+        screen.queryByText("Assessment rate hint")
+      ).not.toBeInTheDocument();
+    });
+
+    test("Category hints should take precedence over assessment hints", () => {
+      const template: MultiCategoryNdrTemplate = {
+        ...mockElementTemplate,
+        assessments: [
+          {
+            id: "year-1",
+            label: "18 to 64 Years",
+            hints: {
+              hintNumerator: "Assessment numerator",
+              hintDenominator: "Assessment denominator",
+              hintRate: "Assessment rate",
+            },
+            categoryHints: [
+              {
+                categoryId: "short-term",
+                hintNumerator: "Short numerator",
+                hintDenominator: "Short denominator",
+                hintRate: "Short rate",
+              },
+            ],
+          },
+        ],
+        categories: [{ id: "short-term", label: "Short Term Stay" }],
+      };
+      render(<MultiCategoryNdrWrapper template={template} />);
+
+      expect(screen.getByText("Short numerator")).toBeVisible();
+      expect(screen.getByText("Short denominator")).toBeVisible();
+      expect(screen.getByText("Short rate")).toBeVisible();
+      // Assessment-level numerator/rate fall back shows if the category does not
+      // override them, so they should not appear.
+      expect(
+        screen.queryByText("Assessment numerator")
+      ).not.toBeInTheDocument();
+      expect(screen.queryByText("Assessment rate")).not.toBeInTheDocument();
+      expect(screen.getByText("Assessment denominator")).toBeVisible();
     });
 
     test("Error should show if the denominator is 0", async () => {

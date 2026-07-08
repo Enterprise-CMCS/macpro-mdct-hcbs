@@ -749,19 +749,23 @@ export const exclusionRatesPatientPlanMltssElements: MultiRateNdrTemplate = {
   ],
 };
 
+const termStayHints = {
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
+  hintDenominator:
+    "Number of participant months where the participant was residing in the community for at least one day of the month.",
+};
+
 // Rates for LTSS-6 / FFS
 export const performanceRateTermStayFfsElements: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
-    { id: "year-1", label: "18 to 64 Years" },
-    { id: "year-2", label: "65 to 74 Years" },
-    { id: "year-3", label: "75 to 84 Years" },
-    { id: "year-4", label: "85 years or older" },
+    { id: "year-1", label: "18 to 64 Years", hints: termStayHints },
+    { id: "year-2", label: "65 to 74 Years", hints: termStayHints },
+    { id: "year-3", label: "75 to 84 Years", hints: termStayHints },
+    { id: "year-4", label: "85 years or older", hints: termStayHints },
   ],
-  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
-  hintNumerator:
-    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
   categories: [
     {
       id: "short-term",
@@ -791,14 +795,11 @@ export const performanceRateTermStayMltssElements: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
-    { id: "year-1", label: "18 to 64 Years" },
-    { id: "year-2", label: "65 to 74 Years" },
-    { id: "year-3", label: "75 to 84 Years" },
-    { id: "year-4", label: "85 years or older" },
+    { id: "year-1", label: "18 to 64 Years", hints: termStayHints },
+    { id: "year-2", label: "65 to 74 Years", hints: termStayHints },
+    { id: "year-3", label: "75 to 84 Years", hints: termStayHints },
+    { id: "year-4", label: "85 years or older", hints: termStayHints },
   ],
-  hint: "Number of participant months where the participant was residing in the community for at least one day of the month.",
-  hintNumerator:
-    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
   categories: [
     {
       id: "short-term",
@@ -1050,8 +1051,81 @@ export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
   id: "measure-rates",
   required: true,
   assessments: [
-    { id: "self-direction-offer", label: "Self-Direction Offer" },
-    { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
+    {
+      id: "self-direction-offer",
+      label: "Self-Direction Offer",
+      hints: {
+        hintDenominator:
+          "Number of participants receiving HCBS aged 18 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+      },
+      categoryHints: [
+        {
+          categoryId: "self-label",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 years and older who received an offer to self-direct their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants receiving HCBS aged 18 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+          hintRate:
+            "Percentage of eligible participants receiving HCBS aged 18 years and older in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
+        },
+        {
+          categoryId: "18-to-64-years",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 to 64 years who received an offer to self-direct their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants receiving HCBS aged 18 to 64 years enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+          hintRate:
+            "Percentage of eligible participants receiving HCBS aged 18 to 64 years in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
+        },
+        {
+          categoryId: "65-years-or-older",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 65 years and older who received an offer to self-direct their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants receiving HCBS aged 65 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+          hintRate:
+            "Percentage of eligible participants receiving HCBS aged 65 years and older in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
+        },
+      ],
+    },
+    {
+      id: "self-direction-opt-in",
+      label: "Self-Direction Opt-In",
+      // Shared denominator input describes the aggregate (18+) population.
+      hints: {
+        hintDenominator:
+          "Number of participants aged 18 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+      },
+      categoryHints: [
+        {
+          categoryId: "self-label",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 years and older who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants aged 18 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+          hintRate:
+            "Percentage of participants receiving HCBS aged 18 years and older in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
+        },
+        {
+          categoryId: "18-to-64-years",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 to 64 years who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants aged 18 to 64 years enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+          hintRate:
+            "Percentage of participants receiving HCBS aged 18 to 64 years in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
+        },
+        {
+          categoryId: "65-years-or-older",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 65 years and older who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants aged 65 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+          hintRate:
+            "Percentage of participants receiving HCBS aged 65 years and older in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
+        },
+      ],
+    },
   ],
   categories: [
     { id: "self-label", label: "Total" },

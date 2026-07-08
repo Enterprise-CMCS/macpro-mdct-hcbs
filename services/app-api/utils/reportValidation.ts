@@ -439,6 +439,23 @@ const multiCategoryNdrSchema = object().shape({
       object().shape({
         id: string().required(),
         label: string().required(),
+        hints: object()
+          .shape({
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
+          })
+          .notRequired(),
+        categoryHints: array()
+          .of(
+            object().shape({
+              categoryId: string().required(),
+              hintNumerator: string().notRequired(),
+              hintDenominator: string().notRequired(),
+              hintRate: string().notRequired(),
+            })
+          )
+          .notRequired(),
       })
     )
     .required(),
@@ -452,8 +469,6 @@ const multiCategoryNdrSchema = object().shape({
       })
     )
     .required(),
-  hint: string().notRequired(),
-  hintNumerator: string().notRequired(),
   required: boolean().required(),
   multiplier: number().notRequired(),
   answer: array()
