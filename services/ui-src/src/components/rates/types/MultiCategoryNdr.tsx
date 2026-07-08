@@ -29,21 +29,26 @@ type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 const categoryHints = (assess: Assessment, category: NdrCategory) =>
   assess.categoryHints?.find((hints) => hints.categoryId === category.id);
 
-// Per-category hint if present, otherwise the assessment-wide hint.
-const numeratorHint = (assess: Assessment, category: NdrCategory) =>
-  categoryHints(assess, category)?.hintNumerator ?? assess.hints?.hintNumerator;
-
-// Per-category denominator text. The single shared denominator input keeps its
-// own assessment-wide hint (`assess.hints.hintDenominator`); to give a measure
-// different denominator text per age band, populate `categoryHints[].hintDenominator`.
-const denominatorHint = (assess: Assessment, category: NdrCategory) =>
-  categoryHints(assess, category)?.hintDenominator;
-
-const rateHint = (assess: Assessment, category: NdrCategory) =>
-  categoryHints(assess, category)?.hintRate ??
-  category.hintRate ??
-  assess.hints?.hintRate ??
-  "Auto-calculates";
+const hint = (
+  assess: Assessment,
+  category: NdrCategory,
+  key: "hintNumerator" | "hintDenominator" | "hintRate"
+) => {
+  const assessmentCategoryHint = categoryHints(assess, category)?.[key];
+  switch (key) {
+    case "hintNumerator":
+      return assessmentCategoryHint ?? assess.hints?.hintNumerator;
+    case "hintDenominator":
+      return assessmentCategoryHint ?? assess.hints?.hintDenominator;
+    case "hintRate":
+      return (
+        assessmentCategoryHint ??
+        category.hintRate ??
+        assess.hints?.hintRate ??
+        "Auto-calculates"
+      );
+  }
+};
 
 export const MultiCategoryNdr = (
   props: PageElementProps<MultiCategoryNdrTemplate>
@@ -211,7 +216,7 @@ export const MultiCategoryNdr = (
                     <CmsdsTextField
                       label={`Numerator: ${category.label} (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.${FieldNames.numerator}`}
-                      hint={numeratorHint(assess, category)}
+                      hint={hint(assess, category, "hintNumerator")}
                       onChange={onChangeHandler}
                       onBlur={onChangeHandler}
                       value={rateObject.numerator}
@@ -221,14 +226,14 @@ export const MultiCategoryNdr = (
                     <CmsdsTextField
                       label={`Denominator (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.denominator`}
-                      hint={denominatorHint(assess, category)}
+                      hint={hint(assess, category, "hintDenominator")}
                       value={rateSet.denominator}
                       disabled
                     ></CmsdsTextField>
                     <CmsdsTextField
                       label={`${category.label} Rate (${assess.label})`}
                       name={`${assessIndex}.rates.${catIndex}.rate`}
-                      hint={rateHint(assess, category)}
+                      hint={hint(assess, category, "hintRate")}
                       value={rateObject.rate}
                       disabled
                     ></CmsdsTextField>
@@ -258,19 +263,17 @@ export const MultiCategoryNdrExport = (element: MultiCategoryNdrTemplate) => {
           {
             indicator: `Numerator: ${category.label} (${assess.label})`,
             response: rate?.numerator,
-            helperText: numeratorHint(assess, category),
+            helperText: hint(assess, category, "hintNumerator"),
           },
           {
             indicator: `Denominator (${assess.label})`,
             response: data?.denominator,
-            helperText:
-              denominatorHint(assess, category) ??
-              assess.hints?.hintDenominator,
+            helperText: hint(assess, category, "hintDenominator"),
           },
           {
             indicator: `${category.label} Rate (${assess.label})`,
             response: stringifyResult(rate?.rate),
-            helperText: rateHint(assess, category),
+            helperText: hint(assess, category, "hintRate"),
           },
         ],
       };
