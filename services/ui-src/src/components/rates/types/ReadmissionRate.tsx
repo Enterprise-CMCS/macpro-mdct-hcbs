@@ -268,7 +268,7 @@ export const ReadmissionRateExport = (element: ReadmissionRateTemplate) => {
     {
       indicator: element.labels?.obsReadmissionRate,
       response: stringifyResult(element.answer?.obsReadmissionRate),
-      helperText: hintText?.obsReadmissionRateHint,
+      helperText: hintText?.obsReadmissionRateHint ?? "Auto-calculates",
     },
     {
       indicator: element.labels?.expReadmissionCount,
@@ -278,12 +278,12 @@ export const ReadmissionRateExport = (element: ReadmissionRateTemplate) => {
     {
       indicator: element.labels?.expReadmissionRate,
       response: stringifyResult(element.answer?.expReadmissionRate),
-      helperText: hintText?.expReadmissionRateHint,
+      helperText: hintText?.expReadmissionRateHint ?? "Auto-calculates",
     },
     {
       indicator: element.labels?.obsExpRatio,
       response: stringifyResult(element.answer?.obsExpRatio),
-      helperText: hintText?.obsExpRatioHint,
+      helperText: hintText?.obsExpRatioHint ?? "Auto-calculates",
     },
     {
       indicator: element.labels?.beneficiaryCount,
@@ -298,7 +298,7 @@ export const ReadmissionRateExport = (element: ReadmissionRateTemplate) => {
     {
       indicator: element.labels?.outlierRate,
       response: stringifyResult(element.answer?.outlierRate),
-      helperText: hintText?.outlierRateHint,
+      helperText: hintText?.outlierRateHint ?? "Auto-calculates",
     },
   ];
   return <>{ExportRateTable([{ label, rows }])}</>;
