@@ -592,7 +592,7 @@ export const qipReportTemplate: ReportBase = {
     {
       measureName:
         "NCI-AD: Percentage of people have transportation when they want to do things outside of their home",
-      value: "NICAD-TRANS-OTHER",
+      value: "NCIAD-TRANS-OTHER",
       includedInQms: false,
       deliveryMethods: ["FFS", "MLTSS"],
       rates: [{ label: "Performance Rate", id: "perf-rate" }],

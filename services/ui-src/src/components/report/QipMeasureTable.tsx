@@ -61,6 +61,8 @@ export const QipMeasureTableElement = ({
         pageId,
         measureId: measureInfo.value,
         sourceReportId: qmsReportId,
+        // TODO: We probably don't need these in the table's answer. Do we?
+        // But maybe it will be convenient down the road...
         deliveryMethods: deliveryMethods,
         rateIds: rates,
         // TODO: record values pulled from the QMS report, for later reference
@@ -69,13 +71,13 @@ export const QipMeasureTableElement = ({
     ];
     updateElement({ answer: newAnswer });
 
+    // TODO: We will already have autosaved due to updateElement... right?
     autosave();
     setModalOpen(false);
   };
 
   const modal = (
     <QipMeasureSelectModal
-      // TODO another awful cast here
       measureTargetInfo={measureTargetMapping}
       onClose={() => setModalOpen(false)}
       onSubmit={addMeasureTargetPage}
@@ -97,6 +99,7 @@ export const QipMeasureTableElement = ({
         </Td>
         <Td>
           <Flex gap="spacer2" sx={sx.flex}>
+            {/* TODO: We don't need this href, right? If not, remove from QMS Measure Table too. */}
             <Button
               as={Link}
               variant={"outline"}
@@ -171,6 +174,7 @@ export const cloneQipMeasureTemplatePage = (
   )!;
 
   // Generate a unique page ID, ex: "target-LTSS-1-1"
+  // TODO: This algorithm is not actually guaranteed to generate a unique ID.
   const pageIdPrefix = `target-${measureInfo.value}-`;
   const matchingPageCount = report.pages.filter((p) =>
     p.id.startsWith(pageIdPrefix)

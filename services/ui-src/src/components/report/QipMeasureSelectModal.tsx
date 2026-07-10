@@ -45,7 +45,6 @@ export const QipMeasureSelectModal = ({
     (async () => {
       console.assert(state, "Can't load QMS reports: state not in URL");
       try {
-        // TODO: This ain't workin'
         const allReports = await getReportsForState(ReportType.QMS, state!);
         setReports(
           allReports.filter((r) => r.status === ReportStatus.SUBMITTED)
@@ -117,7 +116,7 @@ export const QipMeasureSelectModal = ({
                 ({ value }) => value === evt.target.value
               );
               setSelectedMeasure(measure);
-              if (!measure!.includedInQms) {
+              if (!measure || !measure.includedInQms) {
                 setQmsReportId(undefined);
               }
               // Note: If we ever have a measure with unique delivery methods,
@@ -151,9 +150,9 @@ export const QipMeasureSelectModal = ({
                       disabled={!selectedMeasure?.includedInQms}
                       options={[
                         { label: "Select report", value: "" },
-                        ...reports!.map((r) => ({
+                        ...reports.map((r) => ({
                           label: r.name,
-                          value: r.id!,
+                          value: r.id!, // TODO: Do we ever have report w/o id?!
                         })),
                       ]}
                       onChange={(evt) => setQmsReportId(evt.target.value)}
