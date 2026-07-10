@@ -58,7 +58,7 @@ export const NotificationsPage = () => {
   };
 
   return (
-    <PageTemplate data-testid="notifications-view">
+    <PageTemplate>
       <Box sx={sx.introTextBox}>
         <Heading
           as="h1"
