@@ -61,6 +61,7 @@ export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
 export { MeasureTableElement } from "./report/MeasureTable";
 export { EligibilityTableElement } from "./report/WwlComponents/EligibilityTable";
+export { KeyActivitiesTableElement } from "./report/QipComponents/KeyActivitiesTable";
 export { StatusAlert } from "./report/StatusAlert";
 export { Page } from "./report/Page";
 export { PraDisclosure } from "./report/PraDisclosure";

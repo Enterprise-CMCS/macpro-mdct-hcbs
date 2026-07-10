@@ -22,6 +22,7 @@ import {
   StatusAlert,
   CheckboxField,
   EligibilityTableElement,
+  KeyActivitiesTableElement,
 } from "components";
 
 import {
@@ -762,6 +763,27 @@ export const elementObject: {
       />,
     ],
     pdfVariants: [<ExportedReportWrapper section={EligibilityTableSection} />],
+  },
+  [ElementType.KeyActivityTable]: {
+    description: "Key Activity Table for QIP report",
+    id: "id-key-activity-table",
+    variants: [
+      <KeyActivitiesTableElement
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.KeyActivityTable,
+          id: "id-key-activity-table",
+          caption: "Key Activities",
+          answer: [
+            {
+              title: "Sample Activity",
+              completionDate: "12/31/2026",
+            },
+          ],
+        }}
+      />,
+    ],
+    pdfVariants: ["KeyActivityTable currently not used in PDFs"],
   },
   [ElementType.ListInput]: {
     description: "A field for entering a list of text values",

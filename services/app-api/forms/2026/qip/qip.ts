@@ -17,6 +17,7 @@ export const qipReportTemplate: ReportBase = {
       childPageIds: [
         "general-info",
         "plan-overview",
+        "key-activities",
         "plan-details",
         "review-submit",
       ],
@@ -121,6 +122,33 @@ export const qipReportTemplate: ReportBase = {
             "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
           dateFormat: "MMYYYY",
           required: false,
+        },
+      ],
+    },
+    {
+      id: "key-activities",
+      navTitle: "Key Activities",
+      tabTitle: "Key Activities - QIP - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "key-activities-header",
+          text: "Key Activities",
+        },
+        {
+          type: ElementType.Accordion,
+          id: "key-activities-instructions",
+          label: "Instructions",
+          value:
+            '<p>Provide at least one key activity to support your Quality Improvement Plan. To begin, click the "Add key activity" button, which will open a pop-up window for data entry.</p>' +
+            "<p>Within the modal, enter a concise, one-sentence title or description of the activity, and specify an expected completion date if one can be determined. You may repeat this process to add multiple activities as needed to fully outline your strategy.</p>",
+        },
+        {
+          type: ElementType.KeyActivityTable,
+          id: "key-activities-table",
+          caption: "Key Activities",
         },
       ],
     },
