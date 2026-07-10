@@ -25,19 +25,20 @@ const mockedPerformanceElement: ReadmissionRateTemplate = {
     outlierCount: "Number of Outliers",
     outlierRate: "Outlier Rate",
   },
+  hintText: {
+    stayCount: "Hint for count of index hospital stays",
+    obsReadmissionCount: "Hint for observed readmission count",
+    obsReadmissionRate: "Hint for observed readmission rate",
+    expReadmissionCount: "Hint for expected readmission count",
+    expReadmissionRate: "Hint for expected readmission rate",
+    obsExpRatio: "Hint for observed-to-expected ratio",
+    beneficiaryCount: "Hint for beneficiary count",
+    outlierCount: "Hint for outlier count",
+    outlierRate: "Hint for outlier rate",
+  },
 };
 
-const mockedHintText = {
-  stayCountHint: "Hint for count of index hospital stays",
-  obsReadmissionCountHint: "Hint for observed readmission count",
-  obsReadmissionRateHint: "Hint for observed readmission rate",
-  expReadmissionCountHint: "Hint for expected readmission count",
-  expReadmissionRateHint: "Hint for expected readmission rate",
-  obsExpRatioHint: "Hint for observed-to-expected ratio",
-  beneficiaryCountHint: "Hint for beneficiary count",
-  outlierCountHint: "Hint for outlier count",
-  outlierRateHint: "Hint for outlier rate",
-};
+const mockedHintText = mockedPerformanceElement.hintText;
 const updateSpy = jest.fn();
 
 const ReadmissionRateWrapper = ({

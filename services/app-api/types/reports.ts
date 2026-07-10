@@ -541,18 +541,6 @@ export const ReadmissionRateFieldNames = {
   outlierRate: "outlierRate",
 } as const;
 
-export type ReadmissionRateHint = {
-  stayCountHint?: string;
-  obsReadmissionCountHint?: string;
-  obsReadmissionRateHint?: string;
-  expReadmissionCountHint?: string;
-  expReadmissionRateHint?: string;
-  obsExpRatioHint?: string;
-  beneficiaryCountHint?: string;
-  outlierCountHint?: string;
-  outlierRateHint?: string;
-};
-
 export type ReadmissionRateField =
   (typeof ReadmissionRateFieldNames)[keyof typeof ReadmissionRateFieldNames];
 
@@ -560,7 +548,7 @@ export type ReadmissionRateTemplate = {
   id: string;
   type: ElementType.ReadmissionRate;
   labels: Record<ReadmissionRateField, string>;
-  hintText?: ReadmissionRateHint;
+  hintText: Record<ReadmissionRateField, string>;
   answer?: Record<ReadmissionRateField, number | undefined>;
   required: boolean;
   errors?: Record<ReadmissionRateField, string>;
