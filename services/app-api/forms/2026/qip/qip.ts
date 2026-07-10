@@ -233,7 +233,7 @@ export const qipReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: 'Email <a href="mailto:HCBSQuality@cms.hhs.gov" class="tech-spec-link">HCBSQuality@cms.hhs.gov</a> to inform CMS that this Quality Improvement Plan has been submitted.',
+          text: 'Email <a href="mailto:HCBSQuality@cms.hhs.gov" class="parsed-html-link">HCBSQuality@cms.hhs.gov</a> to inform CMS that this Quality Improvement Plan has been submitted.',
         },
         exportToPDF,
       ],
