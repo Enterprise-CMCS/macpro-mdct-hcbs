@@ -1,8 +1,7 @@
 import { ElementType, Report, ReportStatus } from "../../types/reports";
 import { sendSesEmail } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
-
-const FROM_ADDRESS = "MDCT_NoReply@cms.hhs.gov";
+import { EMAIL_PATTERN, FROM_ADDRESS } from "../constants";
 
 const getTemplate = (
   name: string,
@@ -48,8 +47,8 @@ const getContactEmail = (report: Report): string | undefined => {
 export const sendEmail = async (report: Report) => {
   const { name, status } = report;
   const recipient = getContactEmail(report);
-  if (!recipient) {
-    logger.warn("sendEmail: no recipients found for report", {
+  if (!recipient || !EMAIL_PATTERN.test(recipient)) {
+    logger.warn("sendEmail: no valid recipient found for report", {
       id: report.id,
       status: report.status,
     });

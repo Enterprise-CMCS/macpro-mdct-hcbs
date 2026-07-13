@@ -144,9 +144,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
+  // The identity and configuration set are account-level singletons managed
+  // by the prerequisites stack (deployment/prerequisites-additional.ts).
   const sesResources = isLocalStack
     ? ["*"]
-    : [`arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`];
+    : [
+        `arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`,
+        `arn:aws:ses:us-east-1:${Stack.of(scope).account}:configuration-set/${project}-email-configuration-set`,
+      ];
 
   const sesPolicy = new iam.PolicyStatement({
     effect: iam.Effect.ALLOW,

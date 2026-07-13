@@ -21,4 +21,11 @@ describe("sendEmail", () => {
     await sendEmail(reportWithEmail);
     expect(sendSesEmail).toHaveBeenCalledTimes(1);
   });
+
+  test("should not issue a send email command when contact email is invalid", async () => {
+    const reportWithEmail: any = structuredClone(validReport);
+    reportWithEmail.pages[1].elements[2].answer = "not-an-email";
+    await sendEmail(reportWithEmail);
+    expect(sendSesEmail).not.toHaveBeenCalled();
+  });
 });

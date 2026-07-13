@@ -1,12 +1,10 @@
 import { handler } from "../../libs/handler-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
-import { error } from "../../utils/constants";
+import { error, EMAIL_PATTERN, FROM_ADDRESS } from "../../utils/constants";
 import { canChangeNotification } from "../../utils/authorization";
 import { emptyParser } from "../../libs/param-lib";
 import { sendSesEmail } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
-
-const FROM_ADDRESS = "MDCT_NoReply@cms.hhs.gov";
 
 export const sendTestEmail = handler(emptyParser, async (request) => {
   if (!canChangeNotification(request.user)) {
@@ -21,6 +19,10 @@ export const sendTestEmail = handler(emptyParser, async (request) => {
 
   if (!toAddress || !subject || !message) {
     return badRequest("Missing required fields: toAddress, subject, message");
+  }
+
+  if (!EMAIL_PATTERN.test(toAddress)) {
+    return badRequest("toAddress is not a valid email address");
   }
 
   const params = {
