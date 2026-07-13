@@ -80,6 +80,28 @@ describe("<KeyActivitiesTableElement />", () => {
     ).not.toBeInTheDocument();
   });
 
+  test("should close add modal when clicking Cancel", async () => {
+    render(<KeyActivitiesTableWrapper template={emptyTemplate} />);
+
+    await userEvent.click(screen.getByText("Add key activity"));
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    expect(
+      screen.queryByRole("dialog", { name: "Add key activity" })
+    ).not.toBeInTheDocument();
+  });
+
+  test("should close add modal with Escape key", async () => {
+    render(<KeyActivitiesTableWrapper template={emptyTemplate} />);
+
+    await userEvent.click(screen.getByText("Add key activity"));
+    await userEvent.keyboard("{Escape}");
+
+    expect(
+      screen.queryByRole("dialog", { name: "Add key activity" })
+    ).not.toBeInTheDocument();
+  });
+
   test("should add a new activity", async () => {
     render(<KeyActivitiesTableWrapper template={emptyTemplate} />);
 
@@ -137,6 +159,42 @@ describe("<KeyActivitiesTableElement />", () => {
     );
   });
 
+  test("should edit an activity and save updated values", async () => {
+    render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
+
+    await userEvent.click(screen.getByLabelText("Edit Activity 1"));
+    const titleInput = screen.getByRole("textbox", {
+      name: "Title or description",
+    });
+
+    await userEvent.clear(titleInput);
+    await userEvent.type(titleInput, "Updated Activity");
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(screen.getByText("Updated Activity")).toBeVisible();
+    expect(screen.queryByText("Activity 1")).not.toBeInTheDocument();
+  });
+
+  test("should update completion date from date field", async () => {
+    render(<KeyActivitiesTableWrapper template={emptyTemplate} />);
+
+    await userEvent.click(screen.getByText("Add key activity"));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Title or description" }),
+      "Date Activity"
+    );
+    await userEvent.type(
+      screen.getByLabelText("Expected completion date"),
+      "03/15/2027"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(
+      screen.getByText("Expected completion date: 03/15/2027")
+    ).toBeVisible();
+  });
+
   test("should open delete modal and removes activity", async () => {
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
 
@@ -164,6 +222,33 @@ describe("<KeyActivitiesTableElement />", () => {
     await userEvent.click(screen.getByText("Cancel"));
 
     expect(screen.getByText("Activity 1")).toBeVisible();
+  });
+
+  test("should close delete modal when clicking Close", async () => {
+    render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
+
+    await userEvent.click(screen.getByLabelText("Delete Activity 1"));
+    await userEvent.click(screen.getByRole("button", { name: "Close" }));
+
+    expect(
+      screen.queryByRole("dialog", {
+        name: "Are you sure you want to remove this key activity?",
+      })
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Activity 1")).toBeVisible();
+  });
+
+  test("should close delete modal with Escape key", async () => {
+    render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
+
+    await userEvent.click(screen.getByLabelText("Delete Activity 1"));
+    await userEvent.keyboard("{Escape}");
+
+    expect(
+      screen.queryByRole("dialog", {
+        name: "Are you sure you want to remove this key activity?",
+      })
+    ).not.toBeInTheDocument();
   });
 
   testA11y(<KeyActivitiesTableWrapper template={emptyTemplate} />);
