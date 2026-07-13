@@ -165,7 +165,6 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
         {...props}
       />
       <Modal
-        data-testid="confirm-modal"
         modalDisclosure={{
           isOpen: radioModalIsOpen,
           onClose: modalCloseCustomHandler,

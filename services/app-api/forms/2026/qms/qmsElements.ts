@@ -53,14 +53,14 @@ export const measureHeader: HeaderTemplate = {
 
 export const measureInstructionsWithLink: AccordionTemplate = {
   type: ElementType.Accordion,
-  id: "measure-instructions-with-tech-spec-link",
+  id: "measure-instructions-with-parsed-html-link",
   label: "Instructions",
   value:
     "<strong>Instructions for Completing this Measure</strong>" +
     "<p>Before you can click the <b>“Complete measure“</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).</p>" +
     "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
     "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections). All data previously entered will be cleared and not submitted upon report completion.</p>" +
-    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="tech-spec-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>',
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="parsed-html-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>',
 };
 
 export const measureInstructions: AccordionTemplate = {
@@ -209,7 +209,7 @@ export const didYouFollowSpecificationsHintTextLink: RadioTemplate = {
   },
   required: true,
   helperText:
-    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="tech-spec-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon-hint-size" alt="(Opens in a new tab)"></a>',
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="parsed-html-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon-hint-size" alt="(Opens in a new tab)"></a>',
 };
 
 export const measureDeliveryMethodsSubheader: PageElement[] = [
@@ -872,6 +872,26 @@ export const readmissionRate: ReadmissionRateTemplate = {
     beneficiaryCount: "Count of Beneficiaries in Medicaid Population",
     outlierCount: "Number of Outliers",
     outlierRate: "Outlier Rate",
+  },
+  hintText: {
+    stayCount:
+      "The total number of eligible acute inpatient and observation stay discharges among nonoutliers during the measurement year.",
+    obsReadmissionCount:
+      "The number of Index Hospital Stays among nonoutliers that were followed by an unplanned acute readmission for any diagnosis within 30 days of discharge.",
+    obsReadmissionRate:
+      "Auto-calculates. Represents the percentage of acute inpatient and observation stays followed by an unplanned acute readmission within 30 days.",
+    expReadmissionCount:
+      "The risk-adjusted sum of the estimated readmission risks across all Index Hospital Stays for nonoutliers, reported to four decimal places.",
+    expReadmissionRate:
+      "Auto-calculates. Represents the predicted percentage of acute inpatient and observation stays expected to result in an unplanned 30-day readmission based on beneficiary risk attributes.",
+    obsExpRatio:
+      "Auto-calculates. The ratio of actual readmissions to risk-adjusted expected readmissions. A value below 1.0 indicates the state had fewer readmissions than expected given the case mix.",
+    beneficiaryCount:
+      "The total count of unique beneficiaries aged 18 to 64 who met eligibility criteria prior to the exclusion of outliers.",
+    outlierCount:
+      "The number of unique Medicaid beneficiaries in the eligible population who had four or more Index Hospital Stays between January 1 and December 1 of the measurement year.",
+    outlierRate:
+      "Auto-calculates. The rate of outlier beneficiaries removed from the risk-adjusted measure calculation per 1,000 beneficiaries in the eligible population.",
   },
   required: true,
 };

@@ -214,7 +214,6 @@ export const AddEditReportModal = ({
 
   return (
     <Modal
-      data-testid="add-edit-report-modal"
       formId="addEditReportModal"
       modalDisclosure={modalDisclosure}
       content={{

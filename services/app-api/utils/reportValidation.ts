@@ -431,6 +431,19 @@ const ReadmissionRateSchema = object().shape({
     outlierCount: string().required(),
     outlierRate: string().required(),
   }),
+  hintText: object()
+    .shape({
+      stayCount: string().required(),
+      obsReadmissionCount: string().required(),
+      obsReadmissionRate: string().required(),
+      expReadmissionCount: string().required(),
+      expReadmissionRate: string().required(),
+      obsExpRatio: string().required(),
+      beneficiaryCount: string().required(),
+      outlierCount: string().required(),
+      outlierRate: string().required(),
+    })
+    .required(),
   required: boolean().required(),
   answer: object()
     .shape({

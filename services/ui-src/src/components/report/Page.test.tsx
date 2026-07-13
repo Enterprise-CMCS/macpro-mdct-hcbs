@@ -196,6 +196,17 @@ const elements: PageElement[] = [
       outlierCount: "Number of Outliers",
       outlierRate: "Outlier Rate",
     },
+    hintText: {
+      stayCount: "stayCount",
+      obsReadmissionCount: "obsReadmissionCount",
+      obsReadmissionRate: "obsReadmissionRate",
+      expReadmissionCount: "expReadmissionCount",
+      expReadmissionRate: "expReadmissionRate",
+      obsExpRatio: "obsExpRatio",
+      beneficiaryCount: "beneficiaryCount",
+      outlierCount: "outlierCount",
+      outlierRate: "outlierRate",
+    },
   },
   {
     type: ElementType.KeyActivityTable,

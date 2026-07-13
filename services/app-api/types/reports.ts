@@ -550,6 +550,7 @@ export type ReadmissionRateTemplate = {
   id: string;
   type: ElementType.ReadmissionRate;
   labels: Record<ReadmissionRateField, string>;
+  hintText: Record<ReadmissionRateField, string>;
   answer?: Record<ReadmissionRateField, number | undefined>;
   required: boolean;
   errors?: Record<ReadmissionRateField, string>;
