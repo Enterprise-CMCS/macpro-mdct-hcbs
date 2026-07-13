@@ -12,6 +12,9 @@ import { EligibilityTableElementExport } from "components/report/WwlComponents/E
 import { CheckboxExport } from "components/fields/CheckboxField";
 import { ListInputExport } from "components/fields/ListInput";
 import { DateRangeTemplate } from "types/report";
+import { ReportTableType } from "./ExportedReportTable";
+
+type ExportedElementResponse = ReportTableType["response"];
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -54,7 +57,7 @@ const renderDateRangeAnswer = (element: DateRangeTemplate) => {
 export const renderElements = (
   section: MeasurePageTemplate,
   element: PageElement
-) => {
+): ExportedElementResponse => {
   const { type } = element;
   if (!renderElementList.includes(type) || ignoreIdList.includes(element.id))
     return;
@@ -94,5 +97,14 @@ export const renderElements = (
     return notAnsweredText;
   }
 
-  return element.answer ?? notAnsweredText;
+  const answer = element.answer;
+
+  if (Array.isArray(answer)) {
+    const arrayAnswer = answer as unknown[];
+    return arrayAnswer.every((item) => typeof item === "string")
+      ? (arrayAnswer as string[])
+      : notAnsweredText;
+  }
+
+  return answer ?? notAnsweredText;
 };
