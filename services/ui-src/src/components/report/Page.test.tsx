@@ -197,6 +197,17 @@ const elements: PageElement[] = [
       outlierRate: "Outlier Rate",
     },
   },
+  {
+    type: ElementType.KeyActivityTable,
+    id: "key-activities-table",
+    caption: "Key Activities",
+    answer: [
+      {
+        title: "Activity 1",
+        completionDate: "01/01/2026",
+      },
+    ],
+  },
 ];
 
 const textFieldElement: PageElement[] = [

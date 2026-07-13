@@ -96,15 +96,60 @@ describe("<KeyActivitiesTableElement />", () => {
     expect(updateSpy).toHaveBeenCalled();
   });
 
+  test("should show required validation when title is empty", async () => {
+    render(<KeyActivitiesTableWrapper template={emptyTemplate} />);
+
+    await userEvent.click(screen.getByText("Add key activity"));
+    await userEvent.click(screen.getByText("Save"));
+
+    expect(screen.getByText("A response is required")).toBeVisible();
+    expect(updateSpy).not.toHaveBeenCalled();
+  });
+
+  test("should prevent duplicate title when adding activity", async () => {
+    render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
+
+    await userEvent.click(screen.getByText("Add key activity"));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Title or description" }),
+      "activity 1"
+    );
+
+    await userEvent.click(screen.getByText("Save"));
+
+    expect(screen.getByText("Title must be unique")).toBeVisible();
+    expect(screen.getAllByText("Activity 1")).toHaveLength(1);
+  });
+
+  test("should open edit modal with existing activity values", async () => {
+    render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
+
+    await userEvent.click(screen.getByLabelText("Edit Activity 1"));
+
+    expect(
+      screen.getByRole("dialog", { name: "Edit key activity" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("textbox", { name: "Title or description" })
+    ).toHaveValue("Activity 1");
+    expect(screen.getByLabelText("Expected completion date")).toHaveValue(
+      "01/01/2026"
+    );
+  });
+
   test("should open delete modal and removes activity", async () => {
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
 
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
 
     expect(
-      screen.getByText("Are you sure you want to remove this key activity?")
-    ).toBeVisible();
-    expect(screen.getByText("Remove key activity")).toBeVisible();
+      screen.getByRole("dialog", {
+        name: "Are you sure you want to remove this key activity?",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Remove key activity" })
+    ).toBeInTheDocument();
 
     await userEvent.click(screen.getByText("Remove key activity"));
 
