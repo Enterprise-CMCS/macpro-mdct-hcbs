@@ -147,7 +147,10 @@ export const KeyActivitiesTableElement = (
 
   const onEditClick = (activity: KeyActivityItem) => {
     setModalMode("Edit");
-    setFormValues(activity);
+    setFormValues({
+      title: activity.title,
+      completionDate: activity.completionDate ?? "",
+    });
     setSelectedItemTitle(activity.title);
     setModalOpen(true);
   };
@@ -257,7 +260,7 @@ export const KeyActivitiesTableElement = (
                   helperText:
                     "Specify an expected completion date if one can be determined.",
                   required: false,
-                  dateFormat: "MMDDYYYY",
+                  dateFormat: "MMYYYY",
                   answer: formValues.completionDate,
                 }}
                 updateElement={(updated) =>

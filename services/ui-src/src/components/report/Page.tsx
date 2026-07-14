@@ -38,8 +38,8 @@ import {
   CheckboxField,
   ListInput,
   EligibilityTableElement,
+  KeyActivitiesTableElement,
 } from "components";
-import { KeyActivitiesTableElement } from "./QipComponents/KeyActivitiesTable";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
 

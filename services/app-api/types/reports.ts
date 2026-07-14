@@ -718,7 +718,7 @@ export type EligibilityTableTemplate = {
 
 export type KeyActivityItem = {
   title: string;
-  completionDate: string;
+  completionDate?: string;
 };
 
 export type KeyActivityTableTemplate = {
