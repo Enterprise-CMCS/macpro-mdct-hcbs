@@ -35,7 +35,7 @@ const populatedTemplate: KeyActivityTableTemplate = {
     {
       id: "activity-1",
       title: "Activity 1",
-      completionDate: "01/01/2026",
+      completionDate: "01/2026",
     },
   ],
 };
@@ -161,7 +161,7 @@ describe("<KeyActivitiesTableElement />", () => {
       screen.getByRole("textbox", { name: "Title or description" })
     ).toHaveValue("Activity 1");
     expect(screen.getByLabelText("Expected completion date")).toHaveValue(
-      "01/01/2026"
+      "01/2026"
     );
   });
 
@@ -191,14 +191,12 @@ describe("<KeyActivitiesTableElement />", () => {
     );
     await userEvent.type(
       screen.getByLabelText("Expected completion date"),
-      "03/15/2027"
+      "03/2027"
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
-    expect(
-      screen.getByText("Expected completion date: 03/15/2027")
-    ).toBeVisible();
+    expect(screen.getByText("Expected completion date: 03/2027")).toBeVisible();
   });
 
   test("should open delete modal and removes activity", async () => {

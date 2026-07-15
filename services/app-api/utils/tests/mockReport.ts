@@ -243,7 +243,7 @@ export const reportWithKeyActivityTable = {
             {
               id: "activity-1",
               title: "Activity 1",
-              completionDate: "01/01/2026",
+              completionDate: "01/2026",
             },
           ],
         },

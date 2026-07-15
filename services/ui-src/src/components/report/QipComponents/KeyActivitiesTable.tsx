@@ -39,7 +39,9 @@ const initialValues = {
   completionDate: "",
 };
 
-const generateActivityId = () => crypto.randomUUID();
+const generateActivityId = () =>
+  globalThis.crypto?.randomUUID?.() ??
+  `activity-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
 export const KeyActivitiesTableElement = (
   props: PageElementProps<KeyActivityTableTemplate>

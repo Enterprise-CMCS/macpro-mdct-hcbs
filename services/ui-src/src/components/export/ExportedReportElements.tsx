@@ -87,7 +87,13 @@ export const renderElements = (
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element, section.navTitle);
     case ElementType.KeyActivityTable:
-      return notAnsweredText;
+      if (!element.answer?.length) return notAnsweredText;
+      return element.answer
+        .map(
+          (a) =>
+            `${a.title}${a.completionDate ? `\nExpected completion date: ${a.completionDate}` : ""}`
+        )
+        .join("\n\n");
     case ElementType.Checkbox:
       return CheckboxExport(element);
     case ElementType.ListInput:
