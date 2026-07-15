@@ -320,7 +320,7 @@ export const qipReportTemplate: ReportBase = {
         },
         {
           label:
-            "Performance Rate: Person-centered plan with Supplementant Elements",
+            "Performance Rate: Person-centered plan with Supplemental Elements",
           id: "person-plan-supplemental",
           qmsElementId: "measure-rates-performance",
         },
@@ -530,7 +530,8 @@ export const qipReportTemplate: ReportBase = {
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
-      measureName: "NCI-IDD PCP-5: Satisfaction with Community Inclusion Scale",
+      measureName:
+        "NCI-ICDD PCP-5: Satisfaction with Community Inclusion Scale",
       value: "PCP-5",
       includedInQms: false,
       deliveryMethods: ["FFS", "MLTSS"],
