@@ -26,7 +26,7 @@ const mockCheckboxElement: CheckboxTemplate = {
         {
           id: "mock-text-box-id",
           type: ElementType.Textbox,
-          label: "mock-text-box",
+          label: "Text Label",
           required: true,
         },
       ],
@@ -41,9 +41,7 @@ const mockCheckboxElement: CheckboxTemplate = {
 };
 
 const CheckboxComponent = (
-  <div data-testid="test-checkbox-list">
-    <CheckboxField element={mockCheckboxElement} updateElement={updateSpy} />
-  </div>
+  <CheckboxField element={mockCheckboxElement} updateElement={updateSpy} />
 );
 
 describe("<CheckboxField />", () => {
@@ -53,23 +51,25 @@ describe("<CheckboxField />", () => {
 
   test("CheckboxField renders as Checkboxes", () => {
     render(CheckboxComponent);
-    expect(screen.getByText("Choice 1")).toBeVisible();
-    expect(screen.getByTestId("test-checkbox-list")).toBeVisible();
+    expect(screen.getByRole("checkbox", { name: "Choice 1" })).toBeVisible();
+    expect(screen.getByRole("checkbox", { name: "Choice 2" })).toBeVisible();
+    expect(screen.getByRole("checkbox", { name: "Choice 3" })).toBeVisible();
   });
 
   test("CheckboxField allows checking checkbox choices", async () => {
     render(CheckboxComponent);
-    const firstCheckbox = screen.getByLabelText("Choice 1");
-    await userEvent.click(firstCheckbox);
+    await userEvent.click(screen.getByRole("checkbox", { name: "Choice 1" }));
     expect(updateSpy).toHaveBeenCalledWith({ answer: ["A"] });
   });
 
   test("CheckboxField displays children fields after selection", async () => {
     render(CheckboxComponent);
-    const secondCheckbox = screen.getByLabelText("Choice 2");
-    await userEvent.click(secondCheckbox);
+    expect(
+      screen.queryByRole("textbox", { name: "Text Label" })
+    ).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("checkbox", { name: "Choice 2" }));
     expect(updateSpy).toHaveBeenCalledWith({ answer: ["B"] });
-    expect(screen.getByLabelText("mock-text-box")).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Text Label" })).toBeVisible();
   });
 
   testA11y(CheckboxComponent);

@@ -14,7 +14,6 @@ import { getReport } from "../../utils/api/requestMethods/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
 import { useStore } from "utils";
 import { HcbsUser } from "types";
-import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 jest.mock("react-router-dom", () => ({
@@ -140,21 +139,7 @@ const mockedGetReport = getReport as unknown as jest.MockedFunction<
 mockedGetReport.mockResolvedValue(buildMockReport());
 
 const mockUser = { userIsEndUser: true } as HcbsUser;
-
-const MockReportPage = () => {
-  const { report, setUser } = useStore();
-  useEffect(() => {
-    setUser(mockUser);
-  }, []);
-  return (
-    <>
-      <ReportPageWrapper />
-      <div style={{ display: "none" }} data-testid="report-json">
-        {JSON.stringify(report)}
-      </div>
-    </>
-  );
-};
+useStore.setState({ user: mockUser });
 
 describe("Measure Results Navigation Table", () => {
   beforeEach(() => {
@@ -169,7 +154,7 @@ describe("Measure Results Navigation Table", () => {
   };
 
   it("should disabled both nav buttons when delivery method is unspecified", async () => {
-    act(() => render(<MockReportPage />));
+    act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
     const buttons = screen.queryAllByRole("button", { name: "Edit" });
@@ -179,7 +164,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   it("should enable nav buttons when delivery methods are selected", async () => {
-    act(() => render(<MockReportPage />));
+    act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
     const buttons = screen.queryAllByRole("button", { name: "Edit" });
@@ -210,7 +195,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   it("should navigate to details pages when the edit buttons are clicked", async () => {
-    act(() => render(<MockReportPage />));
+    act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
     const bothOption = screen.getByRole("radio", { name: /Both/ });
@@ -234,7 +219,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   it("should be hidden and shown according to the reporting radio", async () => {
-    act(() => render(<MockReportPage />));
+    act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
     const findTableHeader = () =>
@@ -253,21 +238,18 @@ describe("Measure Results Navigation Table", () => {
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
   test("Changing the reporting radio should clear data for this measure", async () => {
-    act(() => render(<MockReportPage />));
+    act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
     const notReporting = screen.getByText("No, CMS is reporting");
     const yesReporting = screen.getByText("Yes, the state is reporting");
     const ffsOption = screen.getByRole("radio", { name: /Fee-For-Service/ });
 
-    const getReportData = () =>
-      JSON.parse(screen.getByTestId("report-json").textContent!);
-
     expect(ffsOption).not.toBeChecked();
     await userEvent.click(ffsOption);
     expect(ffsOption).toBeChecked();
 
-    let report = getReportData();
+    let report = useStore.getState().report as any;
     expect(report.pages[1].elements[1].answer).toBe("FFS");
     expect(report.pages[2].elements[0].answer).toContain("first-rate");
 
@@ -275,7 +257,7 @@ describe("Measure Results Navigation Table", () => {
     expect(ffsOption).not.toBeVisible();
     await userEvent.click(yesReporting);
 
-    report = getReportData();
+    report = useStore.getState().report as any;
     expect(report.pages[1].elements[1].answer).toBeUndefined();
     expect(report.pages[2].elements[0].answer).toBeUndefined();
 
@@ -286,35 +268,29 @@ describe("Measure Results Navigation Table", () => {
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
   test("Changing delivery method should clear measure details pages", async () => {
-    act(() => render(<MockReportPage />));
+    act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
     const ffsOption = screen.getByRole("radio", { name: /Fee-For-Service/ });
     const mltssOption = screen.getByRole("radio", { name: /Managed Care/ });
 
-    const getReportData = () =>
-      JSON.parse(screen.getByTestId("report-json").textContent!);
-
     await userEvent.click(ffsOption);
-    let report = getReportData();
+    let report = useStore.getState().report as any;
     expect(report.pages[2].elements[0].answer).toContain("first-rate");
 
     await userEvent.click(mltssOption);
     // Dismiss the delivery method change confirmation modal
     await userEvent.click(screen.getByRole("button", { name: "Yes" }));
-    report = getReportData();
+    report = useStore.getState().report as any;
     expect(report.pages[2].elements[0].answer).toBeUndefined();
   });
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
   test("Changing delivery method should clear measure details pages", async () => {
-    act(() => render(<MockReportPage />));
+    act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
-    const getReportData = () =>
-      JSON.parse(screen.getByTestId("report-json").textContent!);
-
-    let report = getReportData();
+    let report = useStore.getState().report as any;
     expect(report.pages[2].elements[0].answer).toContain("first-rate");
     expect(report.pages[3].elements[0].answer).toContain("top-notch");
 
@@ -327,7 +303,7 @@ describe("Measure Results Navigation Table", () => {
       screen.getByRole("button", { name: /Clear measure/ })
     );
 
-    report = getReportData();
+    report = useStore.getState().report as any;
     expect(report.pages[2].elements[0].answer).not.toBeDefined();
     expect(report.pages[3].elements[0].answer).not.toBeDefined();
   });

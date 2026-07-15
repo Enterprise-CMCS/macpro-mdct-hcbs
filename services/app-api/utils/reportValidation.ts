@@ -77,7 +77,7 @@ const listInputTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   fieldLabel: string().required(),
-  helperText: string().required(),
+  helperText: string().notRequired(),
   buttonText: string().required(),
   answer: array().of(string()).notRequired(),
   required: boolean().required(),
@@ -108,6 +108,7 @@ const dateTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().required(),
+  dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
 });
@@ -383,6 +384,17 @@ const lengthOfStayRateSchema = object().shape({
     expectedRate: string().required(),
     adjustedRate: string().required(),
   }),
+  hintText: object()
+    .shape({
+      actualCountHint: string().notRequired(),
+      denominatorHint: string().notRequired(),
+      expectedCountHint: string().notRequired(),
+      populationRateHint: string().notRequired(),
+      actualRateHint: string().notRequired(),
+      expectedRateHint: string().notRequired(),
+      adjustedRateHint: string().notRequired(),
+    })
+    .notRequired(),
   required: boolean().required(),
   answer: object()
     .shape({
@@ -411,6 +423,19 @@ const ReadmissionRateSchema = object().shape({
     outlierCount: string().required(),
     outlierRate: string().required(),
   }),
+  hintText: object()
+    .shape({
+      stayCount: string().required(),
+      obsReadmissionCount: string().required(),
+      obsReadmissionRate: string().required(),
+      expReadmissionCount: string().required(),
+      expReadmissionRate: string().required(),
+      obsExpRatio: string().required(),
+      beneficiaryCount: string().required(),
+      outlierCount: string().required(),
+      outlierRate: string().required(),
+    })
+    .required(),
   required: boolean().required(),
   answer: object()
     .shape({
@@ -435,6 +460,23 @@ const multiCategoryNdrSchema = object().shape({
       object().shape({
         id: string().required(),
         label: string().required(),
+        hints: object()
+          .shape({
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
+          })
+          .notRequired(),
+        categoryHints: array()
+          .of(
+            object().shape({
+              categoryId: string().required(),
+              hintNumerator: string().notRequired(),
+              hintDenominator: string().notRequired(),
+              hintRate: string().notRequired(),
+            })
+          )
+          .notRequired(),
       })
     )
     .required(),
@@ -444,6 +486,7 @@ const multiCategoryNdrSchema = object().shape({
         id: string().required(),
         label: string().required(),
         autoCalc: boolean().notRequired(),
+        hintRate: string().notRequired(),
       })
     )
     .required(),
@@ -468,6 +511,7 @@ const multiCategoryNdrSchema = object().shape({
 const multiRateNdrSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
+  hint: string().notRequired(),
   label: string().notRequired(),
   helperText: string().notRequired(),
   assessments: array()
@@ -475,6 +519,13 @@ const multiRateNdrSchema = object().shape({
       object().shape({
         id: string().required(),
         label: string().required(),
+        hints: object()
+          .shape({
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
+          })
+          .notRequired(),
       })
     )
     .required(),
@@ -498,6 +549,13 @@ const ndrRateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   required: boolean().required(),
+  hintText: object()
+    .shape({
+      numeratorHint: string().notRequired(),
+      denominatorHint: string().notRequired(),
+      rateHint: string().notRequired(),
+    })
+    .notRequired(),
   answer: object()
     .shape({
       numerator: number().notRequired(),

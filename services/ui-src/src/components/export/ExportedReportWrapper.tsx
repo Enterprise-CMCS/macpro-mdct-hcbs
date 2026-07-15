@@ -146,6 +146,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         helperText: getHelperText(element),
         response: renderElements(section as MeasurePageTemplate, element),
         type: element.type ?? "",
+        dateFormat: "dateFormat" in element ? element.dateFormat : undefined,
         required: "required" in element ? element.required : false,
         caption,
       };

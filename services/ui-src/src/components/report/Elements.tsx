@@ -151,7 +151,7 @@ export const ParagraphElement = ({
         </Text>
       )}
       <Text fontSize="body_md" fontWeight={element.weight}>
-        {element.text}
+        {parseHtml(element.text)}
       </Text>
     </Stack>
   );

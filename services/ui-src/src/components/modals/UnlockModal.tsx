@@ -4,7 +4,6 @@ import { Text } from "@chakra-ui/react";
 export const UnlockModal = ({ modalDisclosure }: Props) => {
   return (
     <Modal
-      data-testid="unlock-modal"
       modalDisclosure={modalDisclosure}
       onConfirmHandler={() => modalDisclosure.onClose()}
       content={{

@@ -26,7 +26,7 @@ export const getReportName = (type: string | undefined) => {
     case ReportType.PCP:
       return "Person-Centered Planning Report";
     case ReportType.QIP:
-      return "QMS Quality Improvement Plan";
+      return "QMS Quality Improvement Plans";
     case ReportType.WWL:
       return "Waiver Waiting List Report";
     default:
@@ -330,6 +330,7 @@ export type DateTemplate = {
   id: string;
   label: string;
   helperText?: string;
+  dateFormat?: "MMDDYYYY" | "MMYYYY";
   answer?: string;
   required: boolean;
 };
@@ -477,7 +478,7 @@ export type ListInputTemplate = {
   id: string;
   label: string;
   fieldLabel: string;
-  helperText: string;
+  helperText?: string;
   buttonText: string;
   answer?: string[];
   required: boolean;
@@ -511,10 +512,21 @@ export const LengthOfStayFieldNames = {
 export type LengthOfStayField =
   (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
+export type LengthOfStayHint = {
+  actualCountHint?: string;
+  denominatorHint?: string;
+  expectedCountHint?: string;
+  populationRateHint?: string;
+  actualRateHint?: string;
+  expectedRateHint?: string;
+  adjustedRateHint?: string;
+};
+
 export type LengthOfStayRateTemplate = {
   id: string;
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
+  hintText?: LengthOfStayHint;
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
   errors?: Record<LengthOfStayField, string>;
@@ -539,6 +551,7 @@ export type ReadmissionRateTemplate = {
   id: string;
   type: ElementType.ReadmissionRate;
   labels: Record<ReadmissionRateField, string>;
+  hintText: Record<ReadmissionRateField, string>;
   answer?: Record<ReadmissionRateField, number | undefined>;
   required: boolean;
   errors?: Record<ReadmissionRateField, string>;
@@ -561,11 +574,33 @@ export type RateSetData = {
   rates: RateType[];
 };
 
+export type RateHints = {
+  hintNumerator?: string;
+  hintDenominator?: string;
+  hintRate?: string;
+};
+
+export type CategoryHints = RateHints & { categoryId: string };
+
+export type Assessment = {
+  label: string;
+  id: string;
+  hints?: RateHints;
+  categoryHints?: CategoryHints[];
+};
+
+export type NdrCategory = {
+  label: string;
+  id: string;
+  autoCalc?: boolean;
+  hintRate?: string;
+};
+
 export type MultiCategoryNdrTemplate = {
   id: string;
   type: ElementType.MultiCategoryNdr;
-  assessments: { label: string; id: string }[];
-  categories: { label: string; id: string; autoCalc?: boolean }[];
+  assessments: Assessment[];
+  categories: NdrCategory[];
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;
@@ -575,8 +610,9 @@ export type MultiRateNdrTemplate = {
   id: string;
   type: ElementType.MultiRateNdr;
   label?: string;
+  hint?: string;
   helperText?: string;
-  assessments: { label: string; id: string }[];
+  assessments: Assessment[];
   answer?: RateSetData;
   required: boolean;
 };
@@ -585,6 +621,11 @@ export type NdrTemplate = {
   id: string;
   type: ElementType.Ndr;
   label: string;
+  hintText?: {
+    numeratorHint?: string;
+    denominatorHint?: string;
+    rateHint?: string;
+  };
   answer?: RateData;
   required: boolean;
 };
@@ -595,9 +636,9 @@ export type PerformanceNdrTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint: string | undefined;
-    denomHint: string | undefined;
-    rateHint: string | undefined;
+    numHint?: string;
+    denomHint?: string;
+    rateHint?: string;
   };
   required: boolean;
   multiplier?: number;
