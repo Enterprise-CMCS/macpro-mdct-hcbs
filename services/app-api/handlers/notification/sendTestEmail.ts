@@ -1,6 +1,6 @@
 import { handler } from "../../libs/handler-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
-import { error, EMAIL_PATTERN, FROM_ADDRESS } from "../../utils/constants";
+import { error, FROM_ADDRESS } from "../../utils/constants";
 import { canChangeNotification } from "../../utils/authorization";
 import { emptyParser } from "../../libs/param-lib";
 import { sendSesEmail } from "../../libs/ses-lib";
@@ -19,10 +19,6 @@ export const sendTestEmail = handler(emptyParser, async (request) => {
 
   if (!toAddress || !subject || !message) {
     return badRequest("Missing required fields: toAddress, subject, message");
-  }
-
-  if (!EMAIL_PATTERN.test(toAddress)) {
-    return badRequest("toAddress is not a valid email address");
   }
 
   const params = {

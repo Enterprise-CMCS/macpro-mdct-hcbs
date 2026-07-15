@@ -73,15 +73,6 @@ describe("sendTestEmail handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  it("returns 400 if toAddress is not a valid email address", async () => {
-    const res = await sendTestEmail(
-      mockEvent({ ...validBody, toAddress: "not-an-email" })
-    );
-
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(sendSesEmail).not.toHaveBeenCalled();
-  });
-
   it("returns 200 and sends email when all fields are provided", async () => {
     const res = await sendTestEmail(mockEvent());
 

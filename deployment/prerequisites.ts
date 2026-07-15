@@ -57,7 +57,7 @@ export class PrerequisiteStack extends Stack {
       });
 
       // add optional app-specific prerequisites
-      this.addAdditionalPrerequisitesAsync(vpc);
+      this.addAdditionalPrerequisitesAsync();
     }
 
     new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
@@ -121,12 +121,12 @@ export class PrerequisiteStack extends Stack {
     });
   }
 
-  async addAdditionalPrerequisitesAsync(vpc: ec2.IVpc) {
+  async addAdditionalPrerequisitesAsync() {
     const module = await tryImport<{
-      addAdditionalPrerequisites: (stack: Stack, vpc: ec2.IVpc) => void;
+      addAdditionalPrerequisites: (stack: Stack) => void;
     }>("../prerequisites-additional");
     if (module?.addAdditionalPrerequisites) {
-      module.addAdditionalPrerequisites(this, vpc);
+      module.addAdditionalPrerequisites(this);
     }
   }
 }

@@ -2,8 +2,6 @@ import { ReportType } from "../types/reports";
 
 export const FROM_ADDRESS = "MDCT_NoReply@cms.hhs.gov";
 
-export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export const error = {
   UNAUTHORIZED: "User is not authorized to access this resource.",
   NO_KEY: "Must provide key for table.",
