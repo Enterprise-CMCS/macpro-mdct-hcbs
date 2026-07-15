@@ -127,7 +127,7 @@ export const QipMeasureTableElement = ({
         onClick={() => setModalComponent(modal, "Add Measure")}
         variant={"outline"}
       >
-        <Image src={addIcon} sx={{ padding: "3px" }} />
+        <Image src={addIcon} alt="" sx={{ padding: "3px" }} />
         Add measure
       </Button>
       <Table variant="measure">

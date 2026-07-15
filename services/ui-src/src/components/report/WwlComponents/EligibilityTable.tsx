@@ -207,7 +207,7 @@ export const EligibilityTableElement = (
           onAddClick();
         }}
       >
-        <Image src={addIcon} sx={sx.addIcon} />
+        <Image src={addIcon} alt="" sx={sx.addIcon} />
         Add eligibility
       </Button>
 
