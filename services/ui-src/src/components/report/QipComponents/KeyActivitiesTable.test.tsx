@@ -5,6 +5,11 @@ import { ElementType, KeyActivityTableTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { KeyActivitiesTableElement } from "./KeyActivitiesTable";
 
+Object.defineProperty(globalThis, "crypto", {
+  value: { randomUUID: () => `test-uuid-${Math.random()}` },
+  configurable: true,
+});
+
 jest.mock("components/fields", () => ({
   DateField: ({ element, updateElement }: any) => (
     <input
@@ -28,6 +33,7 @@ const populatedTemplate: KeyActivityTableTemplate = {
   caption: "Key Activities",
   answer: [
     {
+      id: "activity-1",
       title: "Activity 1",
       completionDate: "01/01/2026",
     },

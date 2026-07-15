@@ -8,7 +8,6 @@ import {
   Thead,
   Tr,
   Text,
-  Link,
   Image,
   Modal,
   ModalContent,
@@ -32,8 +31,15 @@ import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
-import { Alert } from "components/alerts/Alert";
+import { Alert } from "components";
 import { DateField } from "components/fields";
+
+const initialValues = {
+  title: "",
+  completionDate: "",
+};
+
+const generateActivityId = () => crypto.randomUUID();
 
 export const KeyActivitiesTableElement = (
   props: PageElementProps<KeyActivityTableTemplate>
@@ -41,25 +47,24 @@ export const KeyActivitiesTableElement = (
   const { element, updateElement } = props;
   const { caption } = element;
 
-  const initialValues = {
-    title: "",
-    completionDate: "",
-  };
-
-  const [activities, setActivities] = useState<KeyActivityItem[]>(
-    structuredClone(element.answer) || []
+  const [activities, setActivities] = useState<KeyActivityItem[]>(() =>
+    (structuredClone(element.answer) || []).map((item) => ({
+      ...item,
+      id: item.id ?? generateActivityId(),
+      completionDate: item.completionDate ?? "",
+    }))
   );
   const [formValues, setFormValues] = useState(initialValues);
   const [errorMessages, setErrorMessages] = useState(initialValues);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"Add" | "Edit">("Add");
-  const [selectedItemTitle, setSelectedItemTitle] = useState<string>("");
+  const [selectedItemId, setSelectedItemId] = useState<string>("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedDeleteTitle, setSelectedDeleteTitle] = useState<string>("");
+  const [selectedDeleteId, setSelectedDeleteId] = useState<string>("");
 
   const resetForm = () => {
     setFormValues(initialValues);
-    setSelectedItemTitle("");
+    setSelectedItemId("");
   };
 
   useEffect(() => {
@@ -70,9 +75,11 @@ export const KeyActivitiesTableElement = (
     if (name === "title" && !value) {
       return ErrorMessages.requiredResponse;
     }
-    if (name === "title" && selectedItemTitle !== value) {
+    if (name === "title") {
       const isDuplicate = activities.some(
-        (item) => item.title.toLowerCase() === value.toLowerCase()
+        (item) =>
+          item.id !== selectedItemId &&
+          item.title.toLowerCase() === value.toLowerCase()
       );
       if (isDuplicate) {
         return "Title must be unique";
@@ -94,21 +101,21 @@ export const KeyActivitiesTableElement = (
     }));
   };
 
-  const handleDeleteClick = (title: string) => {
-    setSelectedDeleteTitle(title);
+  const handleDeleteClick = (id: string) => {
+    setSelectedDeleteId(id);
     setDeleteModalOpen(true);
   };
 
   const onDeleteConfirm = () => {
-    if (!selectedDeleteTitle) return;
+    if (!selectedDeleteId) return;
 
     const updatedItems = activities.filter(
-      (item) => item.title !== selectedDeleteTitle
+      (item) => item.id !== selectedDeleteId
     );
     setActivities(updatedItems);
     updateElement({ answer: updatedItems });
     setDeleteModalOpen(false);
-    setSelectedDeleteTitle("");
+    setSelectedDeleteId("");
   };
 
   const onSubmit = () => {
@@ -124,10 +131,13 @@ export const KeyActivitiesTableElement = (
     let updatedItems;
 
     if (modalMode === "Add") {
-      updatedItems = [...activities, formValues];
+      updatedItems = [
+        ...activities,
+        { id: generateActivityId(), ...formValues },
+      ];
     } else if (modalMode === "Edit") {
       updatedItems = activities.map((item) =>
-        item.title === selectedItemTitle ? formValues : item
+        item.id === selectedItemId ? { ...item, ...formValues } : item
       );
     }
 
@@ -151,13 +161,13 @@ export const KeyActivitiesTableElement = (
       title: activity.title,
       completionDate: activity.completionDate ?? "",
     });
-    setSelectedItemTitle(activity.title);
+    setSelectedItemId(activity.id);
     setModalOpen(true);
   };
 
-  const rows = activities.map((activity, index) => {
+  const rows = activities.map((activity) => {
     return (
-      <Tr key={`${activity.title}-${index}`}>
+      <Tr key={activity.id}>
         <Td
           width="100%"
           paddingY="spacer2 !important"
@@ -174,7 +184,6 @@ export const KeyActivitiesTableElement = (
         <Td minWidth="150px" whiteSpace="nowrap">
           <Flex alignItems="center">
             <Button
-              as={Link}
               variant={"outline"}
               aria-label={`Edit ${activity.title}`}
               maxWidth="79px"
@@ -186,7 +195,7 @@ export const KeyActivitiesTableElement = (
             <Button
               variant="plain"
               aria-label={`Delete ${activity.title}`}
-              onClick={() => handleDeleteClick(activity.title)}
+              onClick={() => handleDeleteClick(activity.id)}
             >
               <Image src={cancelIcon} alt={"Delete Item"} />
             </Button>

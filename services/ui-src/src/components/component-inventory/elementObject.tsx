@@ -787,8 +787,9 @@ export const elementObject: {
           caption: "Key Activities",
           answer: [
             {
+              id: "sample-activity-1",
               title: "Sample Activity",
-              completionDate: "12/31/2026",
+              completionDate: "12/2026",
             },
           ],
         }}

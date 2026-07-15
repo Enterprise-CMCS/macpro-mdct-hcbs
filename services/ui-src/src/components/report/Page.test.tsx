@@ -214,6 +214,7 @@ const elements: PageElement[] = [
     caption: "Key Activities",
     answer: [
       {
+        id: "activity-1",
         title: "Activity 1",
         completionDate: "01/01/2026",
       },

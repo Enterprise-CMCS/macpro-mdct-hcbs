@@ -41,6 +41,7 @@ const renderElementList = [
   ElementType.MeasureDetails,
   ElementType.SubHeader,
   ElementType.EligibilityTable,
+  ElementType.KeyActivityTable,
 ];
 
 export const shouldUseTable = (type: ElementType) => {
@@ -85,6 +86,8 @@ export const renderElements = (
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element, section.navTitle);
+    case ElementType.KeyActivityTable:
+      return notAnsweredText;
     case ElementType.Checkbox:
       return CheckboxExport(element);
     case ElementType.ListInput:
@@ -97,14 +100,5 @@ export const renderElements = (
     return notAnsweredText;
   }
 
-  const answer = element.answer;
-
-  if (Array.isArray(answer)) {
-    const arrayAnswer = answer as unknown[];
-    return arrayAnswer.every((item) => typeof item === "string")
-      ? (arrayAnswer as string[])
-      : notAnsweredText;
-  }
-
-  return answer ?? notAnsweredText;
+  return (element as { answer?: string }).answer ?? notAnsweredText;
 };

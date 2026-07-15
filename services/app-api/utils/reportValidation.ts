@@ -337,6 +337,7 @@ const keyActivityTableSchema = object().shape({
   answer: array()
     .of(
       object().shape({
+        id: string().required(),
         title: string().required(),
         completionDate: string().notRequired(),
       })

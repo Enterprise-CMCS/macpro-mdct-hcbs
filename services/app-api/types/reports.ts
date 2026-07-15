@@ -717,6 +717,7 @@ export type EligibilityTableTemplate = {
 };
 
 export type KeyActivityItem = {
+  id: string;
   title: string;
   completionDate?: string;
 };
