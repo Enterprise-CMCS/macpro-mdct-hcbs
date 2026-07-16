@@ -161,7 +161,7 @@ export const isFormPageTemplate = (
 export const isMeasurePageTemplate = (
   page: PageTemplate
 ): page is MeasurePageTemplate => {
-  return (page as MeasurePageTemplate).cmitId != undefined;
+  return page.type === PageType.Measure;
 };
 
 export type PageId = string;
