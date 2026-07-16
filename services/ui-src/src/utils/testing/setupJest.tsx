@@ -27,11 +27,8 @@ global.React = React;
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
-let uuidCounter = 0;
-Object.defineProperty(global.crypto, "randomUUID", {
-  writable: true,
-  value: () => `test-uuid-${++uuidCounter}`,
-});
+export const generateTestId = () =>
+  `test-id-${Math.floor(Math.random() * 1e6)}`;
 
 framerMotion.MotionGlobalConfig.skipAnimations = true;
 
