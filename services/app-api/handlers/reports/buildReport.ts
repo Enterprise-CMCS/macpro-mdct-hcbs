@@ -132,12 +132,12 @@ const initializeMeasurePage = (
 ) => {
   const page = structuredClone(template);
   page.cmit = measure.cmit;
-  page.cmitId = measure.uid;
   page.required = measure.required;
   page.status = PageStatus.NOT_STARTED;
 
   if (isMeasurePage) {
     page.dependentPages = measure.dependentPages;
+    page.cmitId = measure.uid;
     page.cmitInfo = cmitInfo;
   }
 
