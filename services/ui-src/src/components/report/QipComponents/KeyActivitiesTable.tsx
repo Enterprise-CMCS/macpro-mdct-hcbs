@@ -25,7 +25,7 @@ import {
   ElementType,
 } from "types";
 import { PageElementProps } from "../Elements";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
@@ -39,9 +39,7 @@ const initialValues = {
   completionDate: "",
 };
 
-const generateActivityId = () =>
-  globalThis.crypto?.randomUUID?.() ??
-  `activity-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const generateActivityId = () => crypto.randomUUID();
 
 export const KeyActivitiesTableElement = (
   props: PageElementProps<KeyActivityTableTemplate>
@@ -57,7 +55,7 @@ export const KeyActivitiesTableElement = (
     }))
   );
   const [formValues, setFormValues] = useState(initialValues);
-  const [errorMessages, setErrorMessages] = useState(initialValues);
+  const [titleError, setTitleError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"Add" | "Edit">("Add");
   const [selectedItemId, setSelectedItemId] = useState<string>("");
@@ -67,27 +65,19 @@ export const KeyActivitiesTableElement = (
   const resetForm = () => {
     setFormValues(initialValues);
     setSelectedItemId("");
+    setTitleError("");
   };
 
-  useEffect(() => {
-    setErrorMessages(initialValues);
-  }, [modalOpen]);
-
-  const validateField = (name: string, value: string) => {
-    if (name === "title" && !value) {
+  const validateTitle = (value: string) => {
+    if (!value) {
       return ErrorMessages.requiredResponse;
     }
-    if (name === "title") {
-      const isDuplicate = activities.some(
-        (item) =>
-          item.id !== selectedItemId &&
-          item.title.toLowerCase() === value.toLowerCase()
-      );
-      if (isDuplicate) {
-        return "Title must be unique";
-      }
-    }
-    return "";
+    const isDuplicate = activities.some(
+      (item) =>
+        item.id !== selectedItemId &&
+        item.title.toLowerCase() === value.toLowerCase()
+    );
+    return isDuplicate ? "Title must be unique" : "";
   };
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -97,10 +87,9 @@ export const KeyActivitiesTableElement = (
       [name]: value,
     }));
 
-    setErrorMessages((prev) => ({
-      ...prev,
-      [name]: validateField(name, value),
-    }));
+    if (name === "title") {
+      setTitleError(validateTitle(value));
+    }
   };
 
   const handleDeleteClick = (id: string) => {
@@ -121,29 +110,16 @@ export const KeyActivitiesTableElement = (
   };
 
   const onSubmit = () => {
-    let errors = { ...initialValues };
-    let hasError = false;
+    const error = validateTitle(formValues.title);
+    setTitleError(error);
+    if (error) return;
 
-    errors.title = validateField("title", formValues.title);
-    if (errors.title) hasError = true;
-
-    setErrorMessages(errors);
-    if (hasError) return;
-
-    let updatedItems;
-
-    if (modalMode === "Add") {
-      updatedItems = [
-        ...activities,
-        { id: generateActivityId(), ...formValues },
-      ];
-    } else if (modalMode === "Edit") {
-      updatedItems = activities.map((item) =>
-        item.id === selectedItemId ? { ...item, ...formValues } : item
-      );
-    }
-
-    if (!updatedItems) return;
+    const updatedItems =
+      modalMode === "Add"
+        ? [...activities, { id: generateActivityId(), ...formValues }]
+        : activities.map((item) =>
+            item.id === selectedItemId ? { ...item, ...formValues } : item
+          );
 
     setActivities(updatedItems);
     updateElement({ answer: updatedItems });
@@ -164,6 +140,7 @@ export const KeyActivitiesTableElement = (
       completionDate: activity.completionDate ?? "",
     });
     setSelectedItemId(activity.id);
+    setTitleError("");
     setModalOpen(true);
   };
 
@@ -224,20 +201,18 @@ export const KeyActivitiesTableElement = (
       </Button>
 
       {activities.length > 0 && (
-        <>
-          <Table variant="measure">
-            <TableCaption>
-              <VisuallyHidden>{caption}</VisuallyHidden>
-            </TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Activity</Th>
-                <Th minWidth="150px">Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>{rows}</Tbody>
-          </Table>
-        </>
+        <Table variant="measure">
+          <TableCaption>
+            <VisuallyHidden>{caption}</VisuallyHidden>
+          </TableCaption>
+          <Thead>
+            <Tr>
+              <Th>Activity</Th>
+              <Th minWidth="150px">Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>{rows}</Tbody>
+        </Table>
       )}
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
@@ -259,7 +234,7 @@ export const KeyActivitiesTableElement = (
                 name="title"
                 onBlur={handleChange}
                 onChange={handleChange}
-                errorMessage={errorMessages.title}
+                errorMessage={titleError}
                 value={formValues.title}
                 hint="Provide a one-sentence title or description of the activity."
               />
