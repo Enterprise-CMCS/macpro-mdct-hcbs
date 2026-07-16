@@ -27,6 +27,12 @@ global.React = React;
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
+let uuidCounter = 0;
+Object.defineProperty(global.crypto, "randomUUID", {
+  writable: true,
+  value: () => `test-uuid-${++uuidCounter}`,
+});
+
 framerMotion.MotionGlobalConfig.skipAnimations = true;
 
 /* Mocks window.matchMedia (https://bit.ly/3Qs4ZrV) */
