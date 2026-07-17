@@ -188,6 +188,8 @@ export type ReportBase = {
     | MeasurePageTemplate
     | ReviewSubmitTemplate
   )[];
+  /** Appears only in QIP. Used to generate Measure Target pages. */
+  measureTargetMapping?: {}[];
 };
 export type ReportWithMeasuresTemplate = ReportBase & ReportMeasureConfig;
 
@@ -255,6 +257,7 @@ export enum ElementType {
   Checkbox = "checkbox",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  QipMeasureTable = "qipMeasureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
@@ -289,6 +292,7 @@ export type PageElement =
   | CheckboxTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
+  | QipMeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
@@ -688,6 +692,12 @@ export type MeasureTableTemplate = {
   type: ElementType.MeasureTable;
   caption: string;
   measureDisplay: "required" | "optional";
+};
+
+export type QipMeasureTableTemplate = {
+  id: string;
+  type: ElementType.QipMeasureTable;
+  caption: string;
 };
 
 export type EligibilityTableItem = {
