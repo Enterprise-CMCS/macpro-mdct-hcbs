@@ -23,6 +23,7 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   MeasureTableElement,
+  QipMeasureTableElement,
   MeasureResultsNavigationTableElement,
   RadioField,
   StatusTableElement,
@@ -95,6 +96,10 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <ButtonLinkElement {...{ disabled, element }} />;
       case ElementType.MeasureTable:
         return <MeasureTableElement {...{ disabled, element }} />;
+      case ElementType.QipMeasureTable:
+        return (
+          <QipMeasureTableElement {...{ updateElement, disabled, element }} />
+        );
       case ElementType.MeasureResultsNavigationTable:
         return <MeasureResultsNavigationTableElement {...{ element }} />;
       case ElementType.StatusTable:

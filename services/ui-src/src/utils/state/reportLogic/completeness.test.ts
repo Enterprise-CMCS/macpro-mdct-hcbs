@@ -196,7 +196,7 @@ describe("pageIsCompletable", () => {
           id: "my-id",
           navTitle: "my title",
           status: PageStatus.IN_PROGRESS,
-          cmitId: "MyCmit",
+          type: PageType.Measure,
           elements: [
             {
               id: "delivery-method-radio",
@@ -217,6 +217,7 @@ describe("pageIsCompletable", () => {
           id: "FFS-1",
           navTitle: "child title",
           status: PageStatus.IN_PROGRESS,
+          type: PageType.MeasureResults,
           elements: [
             {
               id: "a-text",

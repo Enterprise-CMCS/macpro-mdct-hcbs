@@ -194,6 +194,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return buttonLinkTemplateSchema;
     case ElementType.MeasureTable:
       return measureTableTemplateSchema;
+    case ElementType.QipMeasureTable:
+      return qipMeasureTableTemplateSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
@@ -294,6 +296,12 @@ const measureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
+  caption: string().required(),
+});
+
+const qipMeasureTableTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.QipMeasureTable)),
+  id: string().required(),
   caption: string().required(),
 });
 
@@ -740,6 +748,8 @@ const reportValidateSchema = object().shape({
   archived: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
+  // TODO: Be more specific
+  measureTargetMapping: array(object()).notRequired(),
 });
 
 // Can add more editable fields here in the future
@@ -753,7 +763,7 @@ export const validateReportPayload = async (payload: object | undefined) => {
   }
 
   const validatedPayload = await reportValidateSchema.validate(payload, {
-    stripUnknown: true,
+    //stripUnknown: true,
   });
 
   return validatedPayload as Report;

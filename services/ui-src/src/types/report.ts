@@ -85,6 +85,11 @@ export interface Report extends ReportBase, ReportOptions {
 
 export type LiteReport = Omit<Report, "pages">;
 
+export type QipReportShape = Omit<ReportBase, "type"> & {
+  type: ReportType.QIP;
+  measureTargetMapping: any[]; // TODO 😱
+};
+
 export type PageTemplate =
   | ParentPageTemplate
   | FormPageTemplate
@@ -156,7 +161,7 @@ export const isFormPageTemplate = (
 export const isMeasurePageTemplate = (
   page: PageTemplate
 ): page is MeasurePageTemplate => {
-  return (page as MeasurePageTemplate).cmitId != undefined;
+  return page.type === PageType.Measure;
 };
 
 export type PageId = string;
@@ -186,6 +191,7 @@ export enum ElementType {
   Checkbox = "checkbox",
   ButtonLink = "buttonLink",
   MeasureTable = "measureTable",
+  QipMeasureTable = "qipMeasureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
@@ -221,6 +227,7 @@ export type PageElement =
   | CheckboxTemplate
   | ButtonLinkTemplate
   | MeasureTableTemplate
+  | QipMeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
@@ -378,6 +385,25 @@ export type MeasureTableTemplate = {
   id: string;
   caption: string;
   measureDisplay: "required" | "optional";
+};
+
+export type QipMeasureTableTemplate = {
+  id: string;
+  type: ElementType.QipMeasureTable;
+  caption: string;
+  // TODO: copy this typedef to the backend, once it has crystallized
+  answer?: {
+    /** The generated page's ID, unique in this report */
+    pageId: string;
+    /** A short identifier, unique within the QipMeasureSelectModal dropdown. */
+    measureId: string;
+    /** The ID of the QMS report from which baseline values were copied */
+    sourceReportId?: string;
+    deliveryMethods: string[];
+    rateIds: string[];
+    /** The baseline values that were copied */
+    copiedValues: Record<string, number>;
+  }[];
 };
 
 export type EligibilityTableItem = {

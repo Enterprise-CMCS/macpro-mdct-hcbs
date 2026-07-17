@@ -94,6 +94,9 @@ export const renderElements = (
             `${a.title}${a.completionDate ? `\nExpected completion date: ${a.completionDate}` : ""}`
         )
         .join("\n\n");
+    case ElementType.QipMeasureTable:
+      // TODO: Should this render in the PDF? What should it look like?
+      return undefined;
     case ElementType.Checkbox:
       return CheckboxExport(element);
     case ElementType.ListInput:

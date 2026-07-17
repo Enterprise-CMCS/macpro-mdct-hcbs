@@ -60,6 +60,7 @@ export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
 export { MeasureTableElement } from "./report/MeasureTable";
+export { QipMeasureTableElement } from "./report/QipMeasureTable";
 export { EligibilityTableElement } from "./report/WwlComponents/EligibilityTable";
 export { KeyActivitiesTableElement } from "./report/QipComponents/KeyActivitiesTable";
 export { StatusAlert } from "./report/StatusAlert";
