@@ -27,9 +27,6 @@ global.React = React;
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
-export const generateTestId = () =>
-  `test-id-${Math.floor(Math.random() * 1e6)}`;
-
 framerMotion.MotionGlobalConfig.skipAnimations = true;
 
 /* Mocks window.matchMedia (https://bit.ly/3Qs4ZrV) */

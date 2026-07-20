@@ -200,7 +200,7 @@ export const KeyActivitiesTableElement = (
         Add key activity
       </Button>
 
-      {activities.length > 0 && (
+      {rows.length > 0 && (
         <Table variant="measure">
           <TableCaption>
             <VisuallyHidden>{caption}</VisuallyHidden>
