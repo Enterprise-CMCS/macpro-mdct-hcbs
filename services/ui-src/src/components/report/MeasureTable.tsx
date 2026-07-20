@@ -27,6 +27,7 @@ import { PageElementProps } from "./Elements";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
+// TODO rename to QmsMeasureTable
 export const MeasureTableElement = (
   props: PageElementProps<MeasureTableTemplate>
 ) => {
@@ -129,6 +130,7 @@ export const MeasureTableElement = (
             <Button
               as={Link}
               variant={"outline"}
+              aria-label={`Edit ${measure.navTitle}`}
               href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
               onClick={(e) => {
                 e.preventDefault();

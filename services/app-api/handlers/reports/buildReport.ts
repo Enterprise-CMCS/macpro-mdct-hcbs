@@ -34,6 +34,7 @@ export const buildReport = async (
   const waiverList = getWaiverInfo(year, state);
 
   const report: Report = {
+    ...template,
     state: state,
     id: KSUID.randomSync().string,
     created: Date.now(),
@@ -47,7 +48,6 @@ export const buildReport = async (
     options: reportOptions.options,
     archived: false,
     submissionCount: 0,
-    pages: template.pages,
   };
 
   /**
@@ -132,12 +132,12 @@ const initializeMeasurePage = (
 ) => {
   const page = structuredClone(template);
   page.cmit = measure.cmit;
-  page.cmitId = measure.uid;
   page.required = measure.required;
   page.status = PageStatus.NOT_STARTED;
 
   if (isMeasurePage) {
     page.dependentPages = measure.dependentPages;
+    page.cmitId = measure.uid;
     page.cmitInfo = cmitInfo;
   }
 

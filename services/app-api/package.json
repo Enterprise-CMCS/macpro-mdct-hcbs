@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "~3.1044.0",
+    "@aws-sdk/client-ses": "~3.1012.0",
     "@aws-sdk/lib-dynamodb": "~3.1044.0",
-    "dompurify": "^3.4.2",
+    "@launchdarkly/node-server-sdk": "^9.11.1",
+    "dompurify": "^3.4.11",
     "jsdom": "^26.0.0",
     "jwt-decode": "3.1.2",
     "kafkajs": "^2.2.4",

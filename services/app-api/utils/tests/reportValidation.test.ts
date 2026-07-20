@@ -13,12 +13,20 @@ import {
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
   invalidPageElementType,
+  reportWithListInputNoHelperText,
 } from "./mockReport";
 
 describe("Test validateReportPayload function with valid report", () => {
   it("successfully validates a valid report object", async () => {
     const validatedData = await validateReportPayload(validReport);
     expect(validatedData).toEqual(validReport);
+  });
+
+  it("successfully validates a report with a ListInput element that has no helperText", async () => {
+    const validatedData = await validateReportPayload(
+      reportWithListInputNoHelperText
+    );
+    expect(validatedData).toBeDefined();
   });
 });
 

@@ -244,4 +244,44 @@ describe("Test AddEditReportModal types", () => {
     );
     expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
   });
+
+  test("QIP renders the quality improvement plan subheading", () => {
+    render(
+      <RouterWrappedComponent>
+        <AddEditReportModal
+          activeState="AB"
+          reportType={ReportType.QIP}
+          modalDisclosure={{
+            isOpen: true,
+            onClose: mockCloseHandler,
+          }}
+          reportHandler={mockReportHandler}
+        />
+      </RouterWrappedComponent>
+    );
+
+    expect(
+      screen.getByText(
+        "Enter a report for each of your state's quality improvement plans."
+      )
+    ).toBeInTheDocument();
+  });
+
+  test("WWL renders the waiting list subheading", () => {
+    render(
+      <RouterWrappedComponent>
+        <AddEditReportModal
+          activeState="AB"
+          reportType={ReportType.WWL}
+          modalDisclosure={{
+            isOpen: true,
+            onClose: mockCloseHandler,
+          }}
+          reportHandler={mockReportHandler}
+        />
+      </RouterWrappedComponent>
+    );
+
+    expect(screen.getByText("Waiting List Separation")).toBeInTheDocument();
+  });
 });

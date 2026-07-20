@@ -83,7 +83,7 @@ describe("Test ExportedReportElements", () => {
       screen.getAllByText("test label: assessment 1").length
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText("Performance Rates Denominator").length
+      screen.getAllByText("test labels Denominator").length
     ).toBeGreaterThan(0);
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getAllByText("Not answered")).toHaveLength(1);

@@ -105,6 +105,17 @@ export const mockReadmissionRateFields: ReadmissionRateTemplate = {
     outlierCount: "Number of Outliers",
     outlierRate: "Outlier Rate",
   },
+  hintText: {
+    stayCount: "stayCount",
+    obsReadmissionCount: "obsReadmissionCount",
+    obsReadmissionRate: "obsReadmissionRate",
+    expReadmissionCount: "expReadmissionCount",
+    expReadmissionRate: "expReadmissionRate",
+    obsExpRatio: "obsExpRatio",
+    beneficiaryCount: "beneficiaryCount",
+    outlierCount: "outlierCount",
+    outlierRate: "outlierRate",
+  },
   answer: undefined,
   required: true,
 };

@@ -53,14 +53,14 @@ export const measureHeader: HeaderTemplate = {
 
 export const measureInstructionsWithLink: AccordionTemplate = {
   type: ElementType.Accordion,
-  id: "measure-instructions-with-tech-spec-link",
+  id: "measure-instructions-with-parsed-html-link",
   label: "Instructions",
   value:
     "<strong>Instructions for Completing this Measure</strong>" +
     "<p>Before you can click the <b>“Complete measure“</b> button, you must answer all required (non-optional) questions for the measure and any associated measure sections (such as delivery method or measure part).</p>" +
     "<p>Please review your responses to ensure all mandatory fields are filled out before proceeding.</p>" +
     "<p>The <b>“Clear measure data”</b> button can be used to reset the entire measure (including any completed sections). All data previously entered will be cleared and not submitted upon report completion.</p>" +
-    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="tech-spec-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>',
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="parsed-html-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>',
 };
 
 export const measureInstructions: AccordionTemplate = {
@@ -209,7 +209,7 @@ export const didYouFollowSpecificationsHintTextLink: RadioTemplate = {
   },
   required: true,
   helperText:
-    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="tech-spec-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon-hint-size" alt="(Opens in a new tab)"></a>',
+    '<a href="https://www.medicaid.gov/license/form/8586/3396" class="parsed-html-link" target="_blank">View Current Technical Specifications<img src="/icon_external_link_main.svg" class="tech-spec-icon-hint-size" alt="(Opens in a new tab)"></a>',
 };
 
 export const measureDeliveryMethodsSubheader: PageElement[] = [
@@ -275,129 +275,550 @@ export const measureFooter: MeasureFooterTemplate = {
   clear: true,
 };
 
-//Rates for LTSS-1
-export const performanceRatesAssessmentElements: MultiRateNdrTemplate = {
+//Rates for LTSS-1 / FFS
+export const performanceRatesAssessmentFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-assessment",
   required: true,
+  hint: "Statistically valid random sample of participants enrolled in Medicaid FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "assess-of-core",
       label: "Assessment of Core Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment with 10 core elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
     {
       id: "assess-of-supplemental",
       label: "Assessment of Supplemental Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements and at least 12 supplemental elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive assessment with 10 core elements and at least 12 supplemental elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
   ],
 };
 
-export const exclusionRatesAssessmentElements: MultiRateNdrTemplate = {
+export const exclusionRatesAssessmentFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   required: true,
   assessments: [
     {
       id: "part-not-contact",
       label: "Participant Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who could not be contacted for LTSS comprehensive assessment within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
     },
     {
       id: "part-refuse-assess",
       label: "Participant Refused Assessment",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who refused an LTSS comprehensive assessment.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of participants who refused an LTSS comprehensive assessment. Auto-calculates.",
+      },
     },
   ],
 };
 
-//Rates for LTSS-2
-export const performanceRatesPersonPlanElements: MultiRateNdrTemplate = {
+//Rates for LTSS-1 / MLTSS
+export const performanceRatesAssessmentMltssElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates-performance",
+  id: "measure-rates-assessment",
   required: true,
+  hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
-      id: "person-plan-core",
-      label: "Person-Centered Plan with Core Elements",
+      id: "assess-of-core",
+      label: "Assessment of Core Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who had an LTSS comprehensive assessment with 10 core elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
     {
-      id: "person-plan-supplemental",
-      label: "Person-Centered Plan with Supplemental Elements",
+      id: "assess-of-supplemental",
+      label: "Assessment of Supplemental Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who had an LTSS comprehensive assessment (containing all 10 core elements and at least 12 supplemental elements) within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who had an LTSS comprehensive assessment with 10 core elements and at least 12 supplemental elements documented within 90 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
   ],
 };
 
-export const exclusionRatesPersonPlanElements: MultiRateNdrTemplate = {
+export const exclusionRatesAssessmentMltssElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   required: true,
   assessments: [
     {
       id: "part-not-contact",
       label: "Participant Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who could not be contacted for LTSS comprehensive assessment within, either, 90 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
     },
     {
-      id: "part-refuse-planning",
-      label: "Participant Refused Person-Centered Planning",
+      id: "part-refuse-assess",
+      label: "Participant Refused Assessment",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who refused an LTSS comprehensive assessment.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of participants who refused an LTSS comprehensive assessment. Auto-calculates.",
+      },
     },
   ],
 };
 
-//Rates for LTSS-4
-export const performanceRatesReassessmentPlanElements: MultiRateNdrTemplate = {
+//Rates for LTSS-2 / FFS
+export const performanceRatesPersonPlanFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
-  id: "measure-rates-reassessment",
+  id: "measure-rates-performance",
   required: true,
+  hint: "Statistically valid random sample of participants enrolled in Medicaid FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
-      id: "reassessment-plan-core",
-      label: "Reassessment after Inpatient Discharge",
+      id: "person-plan-core",
+      label: "Person-Centered Plan with Core Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
     {
-      id: "reassessment-plan-supplemental",
-      label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+      id: "person-plan-supplemental",
+      label: "Person-Centered Plan with Supplemental Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements and at least 4 supplemental elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements and at least 4 supplemental elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
     },
   ],
 };
 
-export const exclusionRatesPatientPlanElements: MultiRateNdrTemplate = {
+export const exclusionRatesPersonPlanFfsElements: MultiRateNdrTemplate = {
   type: ElementType.MultiRateNdr,
   id: "measure-rates-exclusion",
   label: "Exclusion Rate",
   required: true,
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "part-not-contact",
+      label: "Participant Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who could not be contacted for an LTSS comprehensive person-centered plan within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
+    },
+    {
+      id: "part-refuse-planning",
+      label: "Participant Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who refused an LTSS comprehensive person-centered plan.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who refused an LTSS comprehensive person-centered plan. Auto-calculates.",
+      },
+    },
+  ],
+};
+
+//Rates for LTSS-2 / MLTSS
+export const performanceRatesPersonPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-performance",
+  required: true,
+  hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "person-plan-core",
+      label: "Person-Centered Plan with Core Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
+    },
+    {
+      id: "person-plan-supplemental",
+      label: "Person-Centered Plan with Supplemental Elements",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan (containing all 10 core elements and at least 4 supplemental elements) within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who had an LTSS comprehensive person-centered plan with 10 core elements and at least 4 supplemental elements documented within 120 days of enrollment (for new participants) or during the measurement year (for established participants). Auto-calculates.",
+      },
+    },
+  ],
+};
+
+export const exclusionRatesPersonPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
+  required: true,
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "part-not-contact",
+      label: "Participant Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who could not be contacted for an LTSS comprehensive person-centered plan within, either, 120 days of enrollment for new participants, or at least once during the measurement year for established participants.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who could not be contacted for an LTSS comprehensive assessment. Auto-calculates.",
+      },
+    },
+    {
+      id: "part-refuse-planning",
+      label: "Participant Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who refused an LTSS comprehensive person-centered plan.",
+        hintDenominator: "Auto-populates.",
+        hintRate:
+          "Percentage of participants who refused an LTSS comprehensive person-centered plan. Auto-calculates.",
+      },
+    },
+  ],
+};
+
+//Rates for LTSS-3 / FFS
+export const performanceRatesPersonCenteredPlanFfsElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-transmitted",
+    required: true,
+    hint: "Statistically valid random sample of participants enrolled in Medicaid FFS LTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    assessments: [
+      {
+        id: "pc-plan",
+        label: "Participant with Person-Centered Plan Transmitted to PCP",
+        hints: {
+          hintNumerator:
+            "Number of Medicaid FFS LTSS participants whose person-centered plan was transmitted to their PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
+          hintDenominator: "Auto-populates.",
+          hintRate:
+            "Percentage of Medicaid FFS LTSS participants whose person-centered plan was transmitted to the PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
+        },
+      },
+    ],
+  };
+
+export const exclusionRatesPersonCenteredPlanFfsElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-refused",
+    label: "Exclusion Rate",
+    required: true,
+    hint: "Number of participants who have been enrolled in Medicaid FFS LTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    assessments: [
+      {
+        id: "refused-pc-plan",
+        label: "Participant Refused to Share Person-Centered Plan",
+        hints: {
+          hintNumerator:
+            "Number of Medicaid FFS LTSS participants who refused to allow the person-centered plan to be shared.",
+          hintDenominator: "Auto-populates.",
+          hintRate:
+            "Percentage of Medicaid FFS LTSS participants who refused to have the person-centered plan shared with a PCP (or other documented medical care provider).",
+        },
+      },
+    ],
+  };
+
+//Rates for LTSS-3 / MLTSS
+export const performanceRatesPersonCenteredPlanMltssElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-transmitted",
+    required: true,
+    hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    assessments: [
+      {
+        id: "pc-plan",
+        label: "Participant with Person-Centered Plan Transmitted to PCP",
+        hints: {
+          hintNumerator:
+            "Number of Medicaid MLTSS participants whose person-centered plan was transmitted to their PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
+          hintDenominator: "Auto-populates.",
+          hintRate:
+            "Percentage of Medicaid MLTSS participants whose person-centered plan was transmitted to the PCP (or other documented medical care provider) identified by the participant within 30 days of the date when the participant agreed to the person-centered plan.",
+        },
+      },
+    ],
+  };
+
+export const exclusionRatesPersonCenteredPlanMltssElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-refused",
+    label: "Exclusion Rate",
+    required: true,
+    hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+    assessments: [
+      {
+        id: "refused-pc-plan",
+        label: "Participant Refused to Share Person-Centered Plan",
+        hints: {
+          hintNumerator:
+            "Number of Medicaid MLTSS participants who refused to allow the person-centered plan to be shared.",
+          hintDenominator: "Auto-populates.",
+          hintRate:
+            "Percentage of Medicaid MLTSS participants who refused to have the person-centered plan shared with a PCP (or other documented medical care provider).",
+        },
+      },
+    ],
+  };
+
+//Rates for LTSS-4 / FFS
+export const performanceRatesReassessmentPlanFfsElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid FFS LTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
+
+export const exclusionRatesPatientPlanFfsElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
+  required: true,
+  hint: "Number of participants who have been enrolled in Medicaid FFS LTSS for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
   assessments: [
     {
       id: "patient-not-contact",
       label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
     },
     {
       id: "patient-refuse-planning",
       label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid FFS LTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid FFS LTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
     },
   ],
 };
 
-//Rates for POM
-export const performanceRatePOM: Omit<NdrTemplate, "label"> = {
-  type: ElementType.Ndr,
-  id: "measure-rates",
+//Rates for LTSS-4 / MLTSS
+export const performanceRatesReassessmentPlanMltssElements: MultiRateNdrTemplate =
+  {
+    type: ElementType.MultiRateNdr,
+    id: "measure-rates-reassessment",
+    required: true,
+    hint: "A statistically valid random sample of acute or non-acute inpatient discharges for an unplanned admission between January 1 and December 1 of the measurement year.",
+    assessments: [
+      {
+        id: "reassessment-plan-core",
+        label: "Reassessment after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment within 30 days following discharge.",
+        },
+      },
+      {
+        id: "reassessment-plan-supplemental",
+        label: "Reassessment of Person-Centered Plan after Inpatient Discharge",
+        hints: {
+          hintNumerator:
+            "Number of participants who received an LTSS reassessment and person-centered plan update on the date of discharge or within 30 days after discharge.",
+          hintDenominator: "Auto-populates",
+          hintRate:
+            "Percentage of discharges from inpatient facilities for Medicaid MLTSS participants that result in an LTSS reassessment and person-centered plan update within 30 days following discharge.",
+        },
+      },
+    ],
+  };
+
+export const exclusionRatesPatientPlanMltssElements: MultiRateNdrTemplate = {
+  type: ElementType.MultiRateNdr,
+  id: "measure-rates-exclusion",
+  label: "Exclusion Rate",
   required: true,
+  hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+  assessments: [
+    {
+      id: "patient-not-contact",
+      label: "Patient Could Not be Contacted",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who could not be contacted for reassessment and update to the person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who could not be contacted for reassessment or person-centered plan updates following inpatient discharges.",
+      },
+    },
+    {
+      id: "patient-refuse-planning",
+      label: "Patient Refused Person-Centered Planning",
+      hints: {
+        hintNumerator:
+          "Number of Medicaid MLTSS participants who refused to participate in reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+        hintDenominator: "Auto-populates",
+        hintRate:
+          "Percentage of Medicaid MLTSS participants who refused reassessment or update to an LTSS person-centered plan following inpatient discharge.",
+      },
+    },
+  ],
 };
 
-// Rates for LTSS-6
-export const performanceRateTermStay: MultiCategoryNdrTemplate = {
+const termStayHints = {
+  hintNumerator:
+    "Number of facility admissions from a community residence from August 1 of the year prior to the measurement year through July 31 of the measurement year.",
+  hintDenominator:
+    "Number of participant months where the participant was residing in the community for at least one day of the month.",
+};
+
+// Rates for LTSS-6 / FFS
+export const performanceRateTermStayFfsElements: MultiCategoryNdrTemplate = {
   type: ElementType.MultiCategoryNdr,
   id: "measure-rates",
   assessments: [
-    { id: "year-1", label: "18 to 64 Years" },
-    { id: "year-2", label: "65 to 74 Years" },
-    { id: "year-3", label: "75 to 84 Years" },
-    { id: "year-4", label: "85 years or older" },
+    { id: "year-1", label: "18 to 64 Years", hints: termStayHints },
+    { id: "year-2", label: "65 to 74 Years", hints: termStayHints },
+    { id: "year-3", label: "75 to 84 Years", hints: termStayHints },
+    { id: "year-4", label: "85 years or older", hints: termStayHints },
   ],
   categories: [
-    { id: "short-term", label: "Short Term Stay" },
-    { id: "med-term", label: "Medium Term Stay" },
-    { id: "long-term", label: "Long Term Stay" },
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid FFS LTSS participant months.",
+    },
+  ],
+  required: true,
+  multiplier: 1000,
+};
+
+// Rates for LTSS-6 / MLTSS
+export const performanceRateTermStayMltssElements: MultiCategoryNdrTemplate = {
+  type: ElementType.MultiCategoryNdr,
+  id: "measure-rates",
+  assessments: [
+    { id: "year-1", label: "18 to 64 Years", hints: termStayHints },
+    { id: "year-2", label: "65 to 74 Years", hints: termStayHints },
+    { id: "year-3", label: "75 to 84 Years", hints: termStayHints },
+    { id: "year-4", label: "85 years or older", hints: termStayHints },
+  ],
+  categories: [
+    {
+      id: "short-term",
+      label: "Short Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 1 to 20 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "med-term",
+      label: "Medium Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of 21 to 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
+    {
+      id: "long-term",
+      label: "Long Term Stay",
+      hintRate:
+        "Rate of Admissions resulting in a stay of more than 100 days per 1,000 Medicaid MLTSS participant months.",
+    },
   ],
   required: true,
   multiplier: 1000,
@@ -418,6 +839,22 @@ export const performanceRateFacilityDischarges: LengthOfStayRateTemplate = {
       "Expected Performance Rate for Minimizing Length of Facility Stay",
     adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
   },
+  hintText: {
+    actualCountHint:
+      "Count of discharges from a facility to the community during the measurement year that occurred within 100 days or fewer of admission.",
+    denominatorHint:
+      "Number of facility admissions occurring during the measurement period, removing those for which the admission represented a transfer between facilities and those for which a death occurred while admitted.",
+    expectedCountHint:
+      "Sum of the estimated discharge probability for each facility admission.",
+    populationRateHint:
+      "Sum of all observed numerator events divided by the sum of all observed denominator events.",
+    actualRateHint:
+      "Actual rate of successful discharges from a facility to the community during the measurement year.",
+    expectedRateHint:
+      "Expected rate of successful discharges from a facility to the community during the measurement year.",
+    adjustedRateHint:
+      "Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
+  },
   required: true,
 };
 
@@ -435,6 +872,26 @@ export const readmissionRate: ReadmissionRateTemplate = {
     beneficiaryCount: "Count of Beneficiaries in Medicaid Population",
     outlierCount: "Number of Outliers",
     outlierRate: "Outlier Rate",
+  },
+  hintText: {
+    stayCount:
+      "The total number of eligible acute inpatient and observation stay discharges among nonoutliers during the measurement year.",
+    obsReadmissionCount:
+      "The number of Index Hospital Stays among nonoutliers that were followed by an unplanned acute readmission for any diagnosis within 30 days of discharge.",
+    obsReadmissionRate:
+      "Auto-calculates. Represents the percentage of acute inpatient and observation stays followed by an unplanned acute readmission within 30 days.",
+    expReadmissionCount:
+      "The risk-adjusted sum of the estimated readmission risks across all Index Hospital Stays for nonoutliers, reported to four decimal places.",
+    expReadmissionRate:
+      "Auto-calculates. Represents the predicted percentage of acute inpatient and observation stays expected to result in an unplanned 30-day readmission based on beneficiary risk attributes.",
+    obsExpRatio:
+      "Auto-calculates. The ratio of actual readmissions to risk-adjusted expected readmissions. A value below 1.0 indicates the state had fewer readmissions than expected given the case mix.",
+    beneficiaryCount:
+      "The total count of unique beneficiaries aged 18 to 64 who met eligibility criteria prior to the exclusion of outliers.",
+    outlierCount:
+      "The number of unique Medicaid beneficiaries in the eligible population who had four or more Index Hospital Stays between January 1 and December 1 of the measurement year.",
+    outlierRate:
+      "Auto-calculates. The rate of outlier beneficiaries removed from the risk-adjusted measure calculation per 1,000 beneficiaries in the eligible population.",
   },
   required: true,
 };
@@ -455,7 +912,157 @@ export const performanceRateFacilityTransitions: LengthOfStayRateTemplate = {
     adjustedRate:
       "Risk Adjusted Rate for Successful Transition after Long-Term Facility Stay",
   },
+  hintText: {
+    actualCountHint:
+      "Count of discharges from a facility to the community from July 1 of the year prior to the measurement year through October 31 of the measurement year that resulted in a successful transition to the community for 60 consecutive days.",
+    denominatorHint:
+      "Number of long-term facility stays (101 days or longer), excluding admissions that were direct transfers between facilities or that resulted in death within the facility or within one day of discharge.",
+    expectedCountHint:
+      "Sum of the estimated transition probability for each long-term facility stay.",
+    populationRateHint:
+      "Sum of all observed numerator events divided by the sum of all observed denominator events.",
+    actualRateHint:
+      "Actual rate of successful transitions to the community after the long-term facility stay.",
+    expectedRateHint:
+      "Expected rate of successful transitions to the community after the long-term facility stay.",
+    adjustedRateHint:
+      "Risk-adjusted rate is calculated as: (Observed Rate ÷ Expected Rate) x Multi-Plan Population Rate.",
+  },
   required: true,
+};
+
+//Rates for POM-1
+export const performanceRatePOM1: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who live in typical community housing, work in buildings where people from their community work, and participate in leisure activities in settings used by people from their community. ​This includes people who have chosen integrated environments and are satisfied with their living, working, and leisure arrangements.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People live in integrated environments" metric.',
+    rateHint: "Percentage of people who live in integrated environments.",
+  },
+};
+
+//Rates for POM-2
+export const performanceRatePOM2: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who actively participate in community activities and are satisfied with the type and frequency of their participation. Include those who choose not to participate if it’s an informed personal choice.",
+    denominatorHint:
+      'Total number of people interviewed for the "People participate in the life of the community" metric.',
+    rateHint:
+      "Percentage of people who participate in the life of the community.",
+  },
+};
+
+//Rates for POM-3
+export const performanceRatePOM3: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who select the services they receive, including the provider and staff, and ensure the services align with their personal goals. ​Include those who maintain services by informed personal choice.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People choose services" metric.',
+    rateHint: "Percentage of people who choose services.",
+  },
+};
+
+//Rates for POM-4
+export const performanceRatePOM4: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who set and achieve personal goals. Include only those who have accomplished a personal milestone within the past year or two.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People realize personal goals" metric.',
+    rateHint: "Percentage of people who set and achieve personal goals.",
+  },
+};
+
+//Rates for POM-5
+export const performanceRatePOM5: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who are not subject to actions, by anyone, that cause them physical or emotional harm. Include those who are able to recognize and report all forms of abuse, neglect, and exploitation.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People are free from abuse and neglect" metric.',
+    rateHint: "Percentage of people who are free from abuse and neglect.",
+  },
+};
+
+//Rates for POM-6
+export const performanceRatePOM6: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of people who define their own best possible health, and are able select health services based on that definition. Include people whose health care interventions are personalized and effective.​",
+    denominatorHint:
+      'Total number of people interviewed for the "People have the best possible health" metric.',
+    rateHint: "Percentage of people who have the best possible health.",
+  },
+};
+
+//Rates for POM-7
+export const performanceRatePOM7: Omit<NdrTemplate, "label"> = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  required: true,
+  hintText: {
+    numeratorHint:
+      'Number of people who have contact with a broad range of other people, are supported to "earn" social capital, and have opportunities to meet and spend time with others outside the organization. Include those who have the opportunity, freedom and support to define what level of contact they want for themselves.​',
+    denominatorHint:
+      'Total number of people interviewed for the "People interact with other members of the community" metric.',
+    rateHint:
+      "Percentage of people who interact with other members of the community.",
+  },
+};
+
+//Rates for FASI-1
+export const performanceRateFASI1: NdrTemplate = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  label:
+    "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of HCBS participants aged 18 years or older who have identified at least as many total personal priorities (up to three) as functional needs in the areas of self-care, mobility, or IADL combined on the same FASI assessment​",
+    denominatorHint:
+      "Number of HCBS participants aged 18 years or older with documented needs in the areas of self-care, mobility, or IADL as determined by the most recent FASI assessment.",
+    rateHint:
+      "Percentage of HCBS participants aged 18 years or older who have identified at least as many total personal priorities (up to three) as functional needs in the areas of self-care, mobility, or IADL combined on the same FASI assessment.",
+  },
+};
+
+//Rates for FASI-2
+export const performanceRateFASI2: NdrTemplate = {
+  type: ElementType.Ndr,
+  id: "measure-rates",
+  label:
+    "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
+  required: true,
+  hintText: {
+    numeratorHint:
+      "Number of HCBS participants aged 18 years or older with documented needs in the areas of self-care, mobility, or IADL as determined by the most recent FASI assessment within the previous 12 months and with documentation that the subsequent PCSP addresses the FASI-identified functional needs in self-care, mobility, and IADLs.​",
+    denominatorHint:
+      "Number of HCBS participants aged 18 years or older with documented needs in the areas of self-care, mobility, or IADL as determined by the most recent FASI assessment within the previous 12 months.",
+    rateHint:
+      "Percentage of HCBS participants aged 18 years or older whose person-centered service planning documentation addresses needs in the areas of self-care, mobility, and instrumental activities of daily living as determined by the most recent FASI assessment.",
+  },
 };
 
 // Rates for HCBS-10
@@ -464,8 +1071,81 @@ export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
   id: "measure-rates",
   required: true,
   assessments: [
-    { id: "self-direction-offer", label: "Self-Direction Offer" },
-    { id: "self-direction-opt-in", label: "Self-Direction Opt-In" },
+    {
+      id: "self-direction-offer",
+      label: "Self-Direction Offer",
+      hints: {
+        hintDenominator:
+          "Number of participants receiving HCBS aged 18 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+      },
+      categoryHints: [
+        {
+          categoryId: "self-label",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 years and older who received an offer to self-direct their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants receiving HCBS aged 18 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+          hintRate:
+            "Percentage of eligible participants receiving HCBS aged 18 years and older in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
+        },
+        {
+          categoryId: "18-to-64-years",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 to 64 years who received an offer to self-direct their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants receiving HCBS aged 18 to 64 years enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+          hintRate:
+            "Percentage of eligible participants receiving HCBS aged 18 to 64 years in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
+        },
+        {
+          categoryId: "65-years-or-older",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 65 years and older who received an offer to self-direct their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants receiving HCBS aged 65 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+          hintRate:
+            "Percentage of eligible participants receiving HCBS aged 65 years and older in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
+        },
+      ],
+    },
+    {
+      id: "self-direction-opt-in",
+      label: "Self-Direction Opt-In",
+      // Shared denominator input describes the aggregate (18+) population.
+      hints: {
+        hintDenominator:
+          "Number of participants aged 18 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+      },
+      categoryHints: [
+        {
+          categoryId: "self-label",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 years and older who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants aged 18 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+          hintRate:
+            "Percentage of participants receiving HCBS aged 18 years and older in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
+        },
+        {
+          categoryId: "18-to-64-years",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 18 to 64 years who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants aged 18 to 64 years enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+          hintRate:
+            "Percentage of participants receiving HCBS aged 18 to 64 years in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
+        },
+        {
+          categoryId: "65-years-or-older",
+          hintNumerator:
+            "Number of MLTSS plan participants aged 65 years and older who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
+          hintDenominator:
+            "Number of participants aged 65 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+          hintRate:
+            "Percentage of participants receiving HCBS aged 65 years and older in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
+        },
+      ],
+    },
   ],
   categories: [
     { id: "self-label", label: "Total" },

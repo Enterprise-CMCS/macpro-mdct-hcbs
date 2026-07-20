@@ -12,6 +12,10 @@ jest.mock("utils/api/requestMethods/notifications", () => ({
   updateNotifications: jest.fn(),
 }));
 
+jest.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: jest.fn().mockReturnValue({ notificationsSystem: true }),
+}));
+
 const mockedGet = getNotifications as jest.MockedFunction<
   typeof getNotifications
 >;
@@ -20,6 +24,14 @@ const mockedUpdate = updateNotifications as jest.MockedFunction<
 >;
 
 describe("<NotificationsPage />", () => {
+  beforeEach(() => {
+    mockedGet.mockResolvedValue([]);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should display checked state for enabled notifications", async () => {
     (getNotifications as jest.Mock).mockResolvedValue([
       { category: "CI", enabled: true },
