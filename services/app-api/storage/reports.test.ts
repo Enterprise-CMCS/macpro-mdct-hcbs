@@ -4,11 +4,10 @@ import {
   queryReportsForState,
   updateFields,
 } from "./reports";
-import { Report, ReportType } from "../types/reports";
+import { ElementType, Report, ReportType } from "../types/reports";
 import {
+  BatchWriteCommand,
   DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
   QueryCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
@@ -19,6 +18,11 @@ const mockReport = {
   type: "QMS",
   id: "mock-report-id",
   state: "CO",
+  pages: [
+    { id: "root", childPageIds: ["pageA", "pageB"] },
+    { id: "pageA", elements: [{ type: ElementType.Header, text: "Page A" }] },
+    { id: "pageB", elements: [{ type: ElementType.Header, text: "Page B" }] },
+  ],
 } as Report;
 
 describe("Report storage helpers", () => {
@@ -29,15 +33,62 @@ describe("Report storage helpers", () => {
 
   describe("putReport", () => {
     it("should call DynamoDB to put report data", async () => {
-      const mockPut = jest.fn();
-      mockDynamo.on(PutCommand).callsFake(mockPut);
+      const mockBatchWrite = jest.fn().mockResolvedValue({});
+      mockDynamo.on(BatchWriteCommand).callsFake(mockBatchWrite);
 
       await putReport(mockReport);
 
-      expect(mockPut).toHaveBeenCalledWith(
+      expect(mockBatchWrite).toHaveBeenCalledWith(
         {
-          TableName: "local-qms-reports",
-          Item: mockReport,
+          RequestItems: {
+            "local-qms-reports": [
+              {
+                PutRequest: {
+                  Item: {
+                    type: "QMS",
+                    id: "mock-report-id",
+                    state: "CO",
+                    sortKey: "mock-report-id",
+                    pages: [
+                      "mock-report-id#root",
+                      "mock-report-id#pageA",
+                      "mock-report-id#pageB",
+                    ],
+                  },
+                },
+              },
+              {
+                PutRequest: {
+                  Item: {
+                    id: "root",
+                    childPageIds: ["pageA", "pageB"],
+                    sortKey: "mock-report-id#root",
+                    state: "CO",
+                  },
+                },
+              },
+              {
+                PutRequest: {
+                  Item: {
+                    id: "pageA",
+                    elements: [{ type: ElementType.Header, text: "Page A" }],
+                    sortKey: "mock-report-id#pageA",
+                    state: "CO",
+                  },
+                },
+              },
+              {
+                PutRequest: {
+                  Item: {
+                    id: "pageB",
+                    elements: [{ type: ElementType.Header, text: "Page B" }],
+                    sortKey: "mock-report-id#pageB",
+                    state: "CO",
+                  },
+                },
+              },
+            ],
+          },
         },
         expect.any(Function)
       );
@@ -46,25 +97,61 @@ describe("Report storage helpers", () => {
 
   describe("getReport", () => {
     it("should call DynamoDB to get report data", async () => {
-      const mockGet = jest.fn().mockResolvedValue({
-        Item: mockReport,
+      const mockQuery = jest.fn().mockResolvedValue({
+        Items: [
+          {
+            type: "QMS",
+            id: "mock-report-id",
+            state: "CO",
+            sortKey: "mock-report-id",
+            pages: [
+              "mock-report-id#root",
+              "mock-report-id#pageA",
+              "mock-report-id#pageB",
+            ],
+          },
+          {
+            id: "root",
+            childPageIds: ["pageA", "pageB"],
+            sortKey: "mock-report-id#root",
+            state: "CO",
+          },
+          {
+            id: "pageA",
+            elements: [{ type: ElementType.Header, text: "Page A" }],
+            sortKey: "mock-report-id#pageA",
+            state: "CO",
+          },
+          {
+            id: "pageB",
+            elements: [{ type: ElementType.Header, text: "Page B" }],
+            sortKey: "mock-report-id#pageB",
+            state: "CO",
+          },
+        ],
       });
-      mockDynamo.on(GetCommand).callsFake(mockGet);
+      mockDynamo.on(QueryCommand).callsFake(mockQuery);
 
       const report = await getReport(ReportType.QMS, "CO", "mock-report-id");
 
-      expect(report).toBe(mockReport);
-      expect(mockGet).toHaveBeenCalledWith(
+      expect(report).toEqual(mockReport);
+      expect(mockQuery).toHaveBeenCalledWith(
         {
           TableName: "local-qms-reports",
-          Key: { state: "CO", id: "mock-report-id" },
+          KeyConditionExpression:
+            "#state = :state AND sortKey begins_with(:id)",
+          ExpressionAttributeNames: { "#state": "state" },
+          ExpressionAttributeValues: {
+            ":state": "CO",
+            ":id": "mock-report-id",
+          },
         },
         expect.any(Function)
       );
     });
 
     it("should return undefined if report is not found", async () => {
-      mockDynamo.on(GetCommand).resolvesOnce({});
+      mockDynamo.on(QueryCommand).resolvesOnce({});
       const report = await getReport(ReportType.QMS, "CO", "mock-report-id");
       expect(report).toBe(undefined);
     });
@@ -73,7 +160,7 @@ describe("Report storage helpers", () => {
   describe("queryReportsForState", () => {
     it("should call DynamoDB to get report data", async () => {
       const mockQuery = jest.fn().mockResolvedValue({
-        Items: [mockReport],
+        Items: [{ ...mockReport, sortKey: "mock-report-id" }],
         LastEvaluatedKey: undefined,
       });
       mockDynamo.on(QueryCommand).callsFake(mockQuery);
@@ -124,13 +211,13 @@ describe("Report storage helpers", () => {
       expect(mockUpdate).toHaveBeenCalledWith(
         {
           TableName: "local-qms-reports",
-          Key: { state: "CO", id: "mock-report-id" },
-          UpdateExpression: "set #updateField = :updateValue",
+          Key: { state: "CO", sortKey: "mock-report-id" },
+          UpdateExpression: "SET #name = :name",
           ExpressionAttributeNames: {
-            "#updateField": "name",
+            "#name": "name",
           },
           ExpressionAttributeValues: {
-            ":updateValue": "Updated Name",
+            ":name": "Updated Name",
           },
         },
         expect.any(Function)

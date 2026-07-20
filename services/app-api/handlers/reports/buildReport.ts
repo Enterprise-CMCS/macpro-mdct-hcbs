@@ -80,6 +80,8 @@ export const buildReport = async (
       );
       report.pages.push(parentPage, ...childPages);
     }
+    delete (report as any).measureTemplates;
+    delete (report as any).measureLookup;
   }
 
   //certain checkbox forms that utilize waivers need to have their checkboxes generate during form generation
