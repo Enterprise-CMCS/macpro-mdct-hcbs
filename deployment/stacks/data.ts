@@ -30,7 +30,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
-        name: "id",
+        name: "sortKey",
         type: dynamodb.AttributeType.STRING,
       },
     }),
@@ -43,7 +43,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
-        name: "id",
+        name: "sortKey",
         type: dynamodb.AttributeType.STRING,
       },
     }),
@@ -56,7 +56,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
-        name: "id",
+        name: "sortKey",
         type: dynamodb.AttributeType.STRING,
       },
     }),
@@ -69,7 +69,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
-        name: "id",
+        name: "sortKey",
         type: dynamodb.AttributeType.STRING,
       },
     }),
@@ -82,7 +82,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
-        name: "id",
+        name: "sortKey",
         type: dynamodb.AttributeType.STRING,
       },
     }),
@@ -95,7 +95,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
-        name: "id",
+        name: "sortKey",
         type: dynamodb.AttributeType.STRING,
       },
     }),
