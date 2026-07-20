@@ -139,7 +139,7 @@ describe("Report storage helpers", () => {
         {
           TableName: "local-qms-reports",
           KeyConditionExpression:
-            "#state = :state AND sortKey begins_with(:id)",
+            "#state = :state AND begins_with(sortKey, :id)",
           ExpressionAttributeNames: { "#state": "state" },
           ExpressionAttributeValues: {
             ":state": "CO",
@@ -187,9 +187,10 @@ describe("Report storage helpers", () => {
             "#year": "year",
             "#lastEditedByEmail": "lastEditedByEmail",
             "#options": "options",
+            "#sortKey": "sortKey",
           },
           ProjectionExpression:
-            "#id, #name, #state, #created, #status, #submissionCount, #archived, #lastEdited, #lastEditedBy, #type, #year, #lastEditedByEmail, #options",
+            "#id, #name, #state, #created, #status, #submissionCount, #archived, #lastEdited, #lastEditedBy, #type, #year, #lastEditedByEmail, #options, #sortKey",
         },
         expect.any(Function)
       );
