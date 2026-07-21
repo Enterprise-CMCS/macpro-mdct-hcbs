@@ -1,3 +1,27 @@
+/*
+ * Reports are stored with a heterogenous, single-table schema.
+ *
+ * Single table: All report types (QMS, PCP, etc) are stored in the same table.
+ * The partition key (`pKey`) includes both the report type and the state.
+ * This gives us performance roughly equivalent to table-per-type,
+ * without the operational complexity of creating and managing many tables.
+ * We never query for multiple states at once, or multiple types at once.
+ *
+ * Heterogenous: This table contains Report items and Page items.
+ * The rest of the app treats a 5-page report as one object,
+ * but we store it as six separate objects: the report plus its five pages.
+ * A report's `sortKey` is just its ID, but a page's `sortKey`
+ * contains its report's ID as well as its own (page) ID.
+ * Breaking things up this way keeps us under the DynamoDB item size limit,
+ * while still allowing for very fast queries.
+ *
+ * The `pKey` and `sortKey` properties are created on-the-fly when we send
+ * the report to DynamoDB, and stripped out when we query the report back;
+ * the rest of the application has no idea these two properties exist.
+ * For an example of how the report pages are disassembled and reassembled,
+ * see this code's unit tests.
+ */
+
 import {
   paginateQuery,
   QueryCommandInput,
@@ -9,23 +33,24 @@ import {
   collectPageItems,
   createClient as createDynamoClient,
 } from "./dynamo/dynamodb-lib";
-import { reportTables, StateAbbr } from "../utils/constants";
+import { StateAbbr } from "../utils/constants";
 import { Report, ReportType, LiteReport } from "../types/reports";
 
+const TableName = process.env.ReportsTable!;
 const dynamoClient = createDynamoClient();
 
 export const putReport = async (report: Report) => {
-  const tableName = reportTables[report.type];
   const items = [
     {
       ...report,
-      pages: report.pages.map((page) => [report.id, page.id].join("#")),
+      pKey: `${report.type}#${report.state}`,
       sortKey: report.id,
+      pages: report.pages.map((page) => `${report.id}#${page.id}`),
     },
     ...report.pages.map((page) => ({
       ...page,
-      state: report.state,
-      sortKey: [report.id, page.id].join("#"),
+      pKey: `${report.type}#${report.state}`,
+      sortKey: `${report.id}#${page.id}`,
     })),
   ];
 
@@ -35,7 +60,7 @@ export const putReport = async (report: Report) => {
     const batch = items.slice(i, i + MAX_BATCH_SIZE);
     const command = new BatchWriteCommand({
       RequestItems: {
-        [reportTables[report.type]]: batch.map((item) => ({
+        [TableName]: batch.map((item) => ({
           PutRequest: {
             Item: item,
           },
@@ -43,8 +68,8 @@ export const putReport = async (report: Report) => {
       },
     });
     const response = await dynamoClient.send(command);
-    if (response.UnprocessedItems?.[tableName]?.length) {
-      const unprocessedIds = response.UnprocessedItems[tableName]
+    if (response.UnprocessedItems?.[TableName]?.length) {
+      const unprocessedIds = response.UnprocessedItems[TableName]
         .map((req) => req.PutRequest!.Item!.sortKey)
         .join(", ");
       throw new Error(`Failed to insert item(s): [${unprocessedIds}]`);
@@ -58,27 +83,21 @@ export const updateFields = async (
   state: StateAbbr,
   id: string
 ) => {
-  const UpdateExpression =
-    "SET " +
-    Object.keys(updateFields)
-      .map((name) => `#${name} = :${name}`)
-      .join(", ");
-
-  const ExpressionAttributeNames = Object.fromEntries(
-    Object.keys(updateFields).map((name) => [`#${name}`, name])
-  );
-
-  const ExpressionAttributeValues = Object.fromEntries(
-    Object.entries(updateFields).map(([name, value]) => [`:${name}`, value])
-  );
-
   await dynamoClient.send(
     new UpdateCommand({
-      TableName: reportTables[reportType],
-      Key: { state, sortKey: id },
-      UpdateExpression,
-      ExpressionAttributeNames,
-      ExpressionAttributeValues,
+      TableName,
+      Key: { pKey: `${reportType}#${state}`, sortKey: id },
+      UpdateExpression:
+        "SET " +
+        Object.keys(updateFields)
+          .map((name) => `#${name} = :${name}`)
+          .join(", "),
+      ExpressionAttributeNames: Object.fromEntries(
+        Object.keys(updateFields).map((name) => [`#${name}`, name])
+      ),
+      ExpressionAttributeValues: Object.fromEntries(
+        Object.entries(updateFields).map(([name, value]) => [`:${name}`, value])
+      ),
     })
   );
 };
@@ -88,17 +107,18 @@ export const getReport = async (
   state: StateAbbr,
   id: string
 ) => {
-  const table = reportTables[reportType];
   const response = await dynamoClient.send(
     new QueryCommand({
-      TableName: table,
-      KeyConditionExpression: "#state = :state AND begins_with(sortKey, :id)",
-      ExpressionAttributeNames: { "#state": "state" },
-      ExpressionAttributeValues: { ":state": state, ":id": id },
+      TableName,
+      KeyConditionExpression: "pKey = :pKey AND begins_with(sortKey, :id)",
+      ExpressionAttributeValues: {
+        ":pKey": `${reportType}#${state}`,
+        ":id": id,
+      },
     })
   );
   const items = response.Items ?? [];
-  const liteReport = items.find((i) => i.sortKey === id);
+  const liteReport = items.find((item) => item.sortKey === id);
   if (!liteReport) return undefined;
 
   liteReport.pages = liteReport.pages.map((pageSortKey: string) =>
@@ -107,10 +127,11 @@ export const getReport = async (
   if (liteReport.pages.some((page: object) => !page)) {
     throw new Error(`Could not find all pages for report ${id}`);
   }
+  delete liteReport.pKey;
   delete liteReport.sortKey;
   for (let page of liteReport.pages) {
+    delete page.pKey;
     delete page.sortKey;
-    delete page.state;
   }
   return liteReport as Report;
 };
@@ -119,48 +140,40 @@ export const queryReportsForState = async (
   reportType: ReportType,
   state: StateAbbr
 ) => {
-  const table = reportTables[reportType];
-  const liteReportProperties = [
-    "id",
-    "name",
-    "state",
-    "created",
-    "status",
-    "submissionCount",
-    "archived",
-    "lastEdited",
-    "lastEditedBy",
-    "type",
-    "year",
-    "lastEditedByEmail",
-    "options",
-    "sortKey",
-  ];
-
-  const ExpressionAttributeNames = Object.fromEntries(
-    liteReportProperties.map((field) => [`#${field}`, field])
-  );
-
-  const ProjectionExpression = liteReportProperties
-    .map((field) => `#${field}`)
-    .join(", ");
   const params: QueryCommandInput = {
-    TableName: table,
-    KeyConditionExpression: "#state = :state",
-    ExpressionAttributeValues: {
-      ":state": state,
-    },
-    ExpressionAttributeNames,
-    ProjectionExpression,
+    TableName,
+    KeyConditionExpression: "pKey = :pKey",
+    ExpressionAttributeValues: { ":pKey": `${reportType}#${state}` },
   };
   const response = paginateQuery({ client: dynamoClient }, params);
-  let reports = await collectPageItems(response);
+  const items = await collectPageItems(response);
+  return (items as ReportTableItem[]).filter(isStoredReport).map(toLiteReport);
+};
 
-  // The query also returns pages, which we don't want. But a page sortKey
-  // is `reportId#pageId`, whereas a report sortKey is just the report id.
-  reports = reports.filter((item) => item.id === item.sortKey) as LiteReport[];
-  for (let report of reports) {
-    delete report.sortKey;
-  }
-  return reports;
+/** Is this item a StoredReport or StoredPage? */
+function isStoredReport(item: ReportTableItem): item is StoredReport {
+  return item.id === item.sortKey;
+}
+
+/** Strip out storage fields and the array of page sortKeys. */
+function toLiteReport(report: Partial<StoredReport>): LiteReport {
+  delete report.pKey;
+  delete report.sortKey;
+  delete report.pages;
+  return report as LiteReport;
+}
+
+type ReportTableItem = StoredReport | StoredPage;
+
+type ReportPage = Report["pages"][number];
+
+type StoredReport = Omit<Report, "pages"> & {
+  pKey: `${ReportType}#${StateAbbr}`;
+  sortKey: Report["id"];
+  pages: StoredPage["sortKey"][];
+};
+
+type StoredPage = ReportPage & {
+  pKey: StoredReport["pKey"];
+  sortKey: `${Report["id"]}#${ReportPage["id"]}`;
 };

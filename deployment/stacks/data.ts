@@ -21,77 +21,12 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }),
-    new DynamoDBTable(scope, "QmsReports", {
+    new DynamoDBTable(scope, "Reports", {
       stage,
       isDev,
-      name: "qms-reports",
+      name: "reports",
       partitionKey: {
-        name: "state",
-        type: dynamodb.AttributeType.STRING,
-      },
-      sortKey: {
-        name: "sortKey",
-        type: dynamodb.AttributeType.STRING,
-      },
-    }),
-    new DynamoDBTable(scope, "TacmReports", {
-      stage,
-      isDev,
-      name: "tacm-reports",
-      partitionKey: {
-        name: "state",
-        type: dynamodb.AttributeType.STRING,
-      },
-      sortKey: {
-        name: "sortKey",
-        type: dynamodb.AttributeType.STRING,
-      },
-    }),
-    new DynamoDBTable(scope, "CiReports", {
-      stage,
-      isDev,
-      name: "ci-reports",
-      partitionKey: {
-        name: "state",
-        type: dynamodb.AttributeType.STRING,
-      },
-      sortKey: {
-        name: "sortKey",
-        type: dynamodb.AttributeType.STRING,
-      },
-    }),
-    new DynamoDBTable(scope, "PcpReports", {
-      stage,
-      isDev,
-      name: "pcp-reports",
-      partitionKey: {
-        name: "state",
-        type: dynamodb.AttributeType.STRING,
-      },
-      sortKey: {
-        name: "sortKey",
-        type: dynamodb.AttributeType.STRING,
-      },
-    }),
-    new DynamoDBTable(scope, "QipReports", {
-      stage,
-      isDev,
-      name: "qip-reports",
-      partitionKey: {
-        name: "state",
-        type: dynamodb.AttributeType.STRING,
-      },
-      sortKey: {
-        name: "sortKey",
-        type: dynamodb.AttributeType.STRING,
-      },
-    }),
-    new DynamoDBTable(scope, "WwlReports", {
-      stage,
-      isDev,
-      name: "wwl-reports",
-      partitionKey: {
-        name: "state",
+        name: "pKey",
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {
