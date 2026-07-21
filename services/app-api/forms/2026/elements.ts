@@ -138,7 +138,7 @@ export const waiverListCheckboxField: CheckboxTemplate = {
     /* Generated in buildReport, with data from waivers.ts */
   ],
   helperText: "Select all that apply.",
-  emptyAlertTitle: "No HCBS authorities found for your state/territory TEST",
+  emptyAlertTitle: "No HCBS authorities found for your state/territory",
   emptyAlertDescription:
     "If you believe this is in error please contact the MDCT Help Desk: mdct_help@cms.hhs.gov",
   required: false,
