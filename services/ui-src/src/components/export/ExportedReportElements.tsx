@@ -12,6 +12,9 @@ import { EligibilityTableElementExport } from "components/report/WwlComponents/E
 import { CheckboxExport } from "components/fields/CheckboxField";
 import { ListInputExport } from "components/fields/ListInput";
 import { DateRangeTemplate } from "types/report";
+import { ReportTableType } from "./ExportedReportTable";
+
+type ExportedElementResponse = ReportTableType["response"];
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -38,6 +41,7 @@ const renderElementList = [
   ElementType.MeasureDetails,
   ElementType.SubHeader,
   ElementType.EligibilityTable,
+  ElementType.KeyActivityTable,
 ];
 
 export const shouldUseTable = (type: ElementType) => {
@@ -54,7 +58,7 @@ const renderDateRangeAnswer = (element: DateRangeTemplate) => {
 export const renderElements = (
   section: MeasurePageTemplate,
   element: PageElement
-) => {
+): ExportedElementResponse => {
   const { type } = element;
   if (!renderElementList.includes(type) || ignoreIdList.includes(element.id))
     return;
@@ -82,6 +86,14 @@ export const renderElements = (
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element, section.navTitle);
+    case ElementType.KeyActivityTable:
+      if (!element.answer?.length) return notAnsweredText;
+      return element.answer
+        .map(
+          (a) =>
+            `${a.title}${a.completionDate ? `\nExpected completion date: ${a.completionDate}` : ""}`
+        )
+        .join("\n\n");
     case ElementType.QipMeasureTable:
       // TODO: Should this render in the PDF? What should it look like?
       return undefined;
@@ -97,5 +109,5 @@ export const renderElements = (
     return notAnsweredText;
   }
 
-  return element.answer ?? notAnsweredText;
+  return (element as { answer?: string }).answer ?? notAnsweredText;
 };

@@ -39,6 +39,7 @@ import {
   CheckboxField,
   ListInput,
   EligibilityTableElement,
+  KeyActivitiesTableElement,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -131,6 +132,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <ListInput {...{ updateElement, disabled, element }} />;
       case ElementType.EligibilityTable:
         return <EligibilityTableElement {...{ updateElement, element }} />;
+      case ElementType.KeyActivityTable:
+        return <KeyActivitiesTableElement {...{ updateElement, element }} />;
       default:
         assertExhaustive(element);
         return null;

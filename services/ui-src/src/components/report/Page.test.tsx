@@ -208,6 +208,18 @@ const elements: PageElement[] = [
       outlierRate: "outlierRate",
     },
   },
+  {
+    type: ElementType.KeyActivityTable,
+    id: "key-activities-table",
+    caption: "Key Activities",
+    answer: [
+      {
+        id: "activity-1",
+        title: "Activity 1",
+        completionDate: "01/2026",
+      },
+    ],
+  },
 ];
 
 const textFieldElement: PageElement[] = [

@@ -273,6 +273,7 @@ export enum ElementType {
   SubmissionParagraph = "submissionParagraph",
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
+  KeyActivityTable = "keyActivityTable",
 }
 
 export type PageElement =
@@ -307,6 +308,7 @@ export type PageElement =
   | DividerTemplate
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
+  | KeyActivityTableTemplate
   | ListInputTemplate;
 
 export type HideCondition = {
@@ -786,6 +788,19 @@ export type EligibilityTableTemplate = {
   modalInstructions: string;
   frequencyOptions: { label: string; value: string }[];
   answer?: EligibilityTableItem[];
+};
+
+export type KeyActivityItem = {
+  id: string;
+  title: string;
+  completionDate?: string;
+};
+
+export type KeyActivityTableTemplate = {
+  type: ElementType.KeyActivityTable;
+  id: string;
+  caption: string;
+  answer?: KeyActivityItem[];
 };
 
 export type MeasureResultsNavigationTableTemplate = {
