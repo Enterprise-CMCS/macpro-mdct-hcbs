@@ -120,6 +120,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
+        "dynamodb:BatchWriteItem",
         "dynamodb:DeleteItem",
         "dynamodb:GetItem",
         "dynamodb:PutItem",
