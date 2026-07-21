@@ -699,9 +699,9 @@ export type QipMeasureTableTemplate = {
   type: ElementType.QipMeasureTable;
   caption: string;
   answer?: {
-    /** The ID of the correspond page in this QIP. Unique within this report. */
+    /** The ID of the corresponding page in this QIP. Unique within this report. */
     pageId: string;
-    /** The display name of the measure being targetted for improvment. */
+    /** The display name of the measure being targeted for improvement. */
     measureName: string;
     /** Mapping from rate ID to the value copied from QMS, if any. */
     originalValues?: Record<string, number>;
