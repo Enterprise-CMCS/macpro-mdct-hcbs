@@ -1,7 +1,7 @@
 import { DateField } from "components/fields/DateField";
 import { testA11y } from "utils/testing/commonTests";
 import { DateTemplate, ElementType } from "types/report";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 
@@ -79,6 +79,22 @@ describe("<DateField />", () => {
 
       await userEvent.type(dateFieldInput, "102024");
       expect(updateSpy).toHaveBeenCalledWith({ answer: "10/2024" });
+    });
+
+    test("Datefield normalizes slash input for MM/YYYY", async () => {
+      render(<DateFieldWrapper template={mockedMonthYearTextboxElement} />);
+      const dateFieldInput = screen.getByRole("textbox");
+
+      await userEvent.type(dateFieldInput, "1/2024");
+      expect(updateSpy).toHaveBeenCalledWith({ answer: "01/2024" });
+    });
+
+    test("Datefield normalizes 5-digit MYYYY input for MM/YYYY", () => {
+      render(<DateFieldWrapper template={mockedMonthYearTextboxElement} />);
+      const dateFieldInput = screen.getByRole("textbox");
+
+      fireEvent.change(dateFieldInput, { target: { value: "12024" } });
+      expect(updateSpy).toHaveBeenCalledWith({ answer: "01/2024" });
     });
 
     test("Datefield validates MM/YYYY when dateFormat is MMYYYY", async () => {
