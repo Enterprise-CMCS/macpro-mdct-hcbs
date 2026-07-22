@@ -1,9 +1,4 @@
-process.env.QmsReportsTable = "local-qms-reports";
-process.env.TacmReportsTable = "local-tacm-reports";
-process.env.CiReportsTable = "local-ci-reports";
-process.env.PcpReportsTable = "local-pcp-reports";
-process.env.QipReportsTable = "local-qip-reports";
-process.env.WwlReportsTable = "local-wwl-reports";
+process.env.ReportsTable = "local-reports";
 process.env.BannersTable = "local-banners";
 
 /*

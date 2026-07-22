@@ -478,6 +478,14 @@ export const elementObject: {
           completeSection: true,
         }}
       />,
+      <MeasureFooterElement
+        element={{
+          type: ElementType.MeasureFooter,
+          id: "measure-footer",
+          prevTo: "select-measures",
+          saveAndReturn: true,
+        }}
+      />,
     ],
     pdfVariants: ["MeasureFooter currently not used in PDFs"],
   },

@@ -120,6 +120,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
+        "dynamodb:BatchWriteItem",
         "dynamodb:DeleteItem",
         "dynamodb:GetItem",
         "dynamodb:PutItem",
@@ -302,7 +303,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       topicNamespace: isDev ? `--${project}--${stage}--` : "",
       ...commonProps.environment,
     },
-    tables: tables.filter((table) => table.node.id === "QmsReports"),
+    tables: tables.filter((table) => table.node.id === "Reports"),
   });
 
   if (!isLocalStack) {
