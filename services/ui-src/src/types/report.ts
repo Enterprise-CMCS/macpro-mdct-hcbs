@@ -343,11 +343,13 @@ export type DateRangeTemplate = {
     end: string;
   };
   helperText?: string;
+  dateFormat?: "MMDDYYYY" | "MMYYYY";
   answer?: {
     start?: string;
     end?: string;
   };
   required: boolean;
+  endDateRequired?: boolean;
 };
 
 export type DropdownTemplate = {

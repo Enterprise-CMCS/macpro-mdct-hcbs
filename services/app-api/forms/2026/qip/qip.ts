@@ -261,22 +261,18 @@ export const qipReportTemplate: ReportBase = {
           required: true,
         },
         {
-          type: ElementType.Date,
-          id: "start-date",
-          label: "Start date",
+          type: ElementType.DateRange,
+          id: "strategy-dates",
+          labels: {
+            top: "Strategy dates",
+            start: "Start date",
+            end: "Projected end date",
+          },
           helperText:
-            "Enter a projected start date for future strategies or enter a past start date for strategies in progress.",
+            "Enter a projected start date and, if known, a projected end date. Leave end date blank if the strategy is ongoing.",
           dateFormat: "MMYYYY",
           required: true,
-        },
-        {
-          type: ElementType.Date,
-          id: "end-date",
-          label: "Projected end date",
-          helperText:
-            "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
-          dateFormat: "MMYYYY",
-          required: false,
+          endDateRequired: false,
         },
       ],
     },

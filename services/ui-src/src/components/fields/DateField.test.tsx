@@ -22,14 +22,6 @@ const mockedMonthYearTextboxElement: DateTemplate = {
   required: true,
 };
 
-const mockedEndDateElement: DateTemplate = {
-  id: "end-date",
-  type: ElementType.Date,
-  label: "Projected end date",
-  helperText: "helper text",
-  dateFormat: "MMYYYY",
-  required: false,
-};
 const updateSpy = jest.fn();
 
 const DateFieldWrapper = ({ template }: { template: DateTemplate }) => {
@@ -109,70 +101,6 @@ describe("<DateField />", () => {
       expect(updateSpy).not.toHaveBeenCalledWith({
         answer: expect.any(String),
       });
-    });
-
-    test("end date shows error when it is not after start date", async () => {
-      render(
-        <>
-          <input name="start-date" defaultValue="10/2024" />
-          <DateFieldWrapper template={mockedEndDateElement} />
-        </>
-      );
-      await userEvent.type(screen.getAllByRole("textbox")[1], "092024");
-      expect(
-        screen.getByText("End date can't be before start date")
-      ).toBeInTheDocument();
-    });
-
-    test("end date accepts a date after start date", async () => {
-      render(
-        <>
-          <input name="start-date" defaultValue="10/2024" />
-          <DateFieldWrapper template={mockedEndDateElement} />
-        </>
-      );
-      await userEvent.type(screen.getAllByRole("textbox")[1], "112024");
-      expect(updateSpy).toHaveBeenCalledWith({ answer: "11/2024" });
-    });
-
-    test("end date accepts the same month/year as start date", async () => {
-      render(
-        <>
-          <input name="start-date" defaultValue="10/2024" />
-          <DateFieldWrapper template={mockedEndDateElement} />
-        </>
-      );
-      await userEvent.type(screen.getAllByRole("textbox")[1], "102024");
-
-      expect(
-        screen.queryByText("End date can't be before start date")
-      ).not.toBeInTheDocument();
-      expect(updateSpy).toHaveBeenCalledWith({ answer: "10/2024" });
-    });
-
-    test("end date does not show cross-date error when start date is missing", async () => {
-      render(<DateFieldWrapper template={mockedEndDateElement} />);
-      await userEvent.type(screen.getByRole("textbox"), "092024");
-
-      expect(
-        screen.queryByText("End date can't be before start date")
-      ).not.toBeInTheDocument();
-      expect(updateSpy).toHaveBeenCalledWith({ answer: "09/2024" });
-    });
-
-    test("non end-date MM/YYYY field does not run cross-date validation", async () => {
-      render(
-        <>
-          <input name="start-date" defaultValue="12/2025" />
-          <DateFieldWrapper template={mockedMonthYearTextboxElement} />
-        </>
-      );
-      await userEvent.type(screen.getAllByRole("textbox")[1], "012025");
-
-      expect(
-        screen.queryByText("End date can't be before start date")
-      ).not.toBeInTheDocument();
-      expect(updateSpy).toHaveBeenCalledWith({ answer: "01/2025" });
     });
   });
 

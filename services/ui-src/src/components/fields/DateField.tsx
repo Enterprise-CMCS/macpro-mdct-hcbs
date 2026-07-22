@@ -8,60 +8,13 @@ import {
 import { PageElementProps } from "../report/Elements";
 import { DateTemplate } from "../../types/report";
 import { validateDate } from "utils/validation/inputValidation";
-import { parseMMYYYY } from "utils/other/time";
-import { ErrorMessages } from "../../constants";
-
-const formatMonthYearInput = (value: string) => {
-  const sanitized = value.replaceAll(/[^\d/]/g, "").slice(0, 7);
-
-  if (sanitized.includes("/")) {
-    const [rawMonth = "", rawYear = ""] = sanitized.split("/");
-    const month = rawMonth.replaceAll(/\D/g, "").slice(0, 2);
-    const year = rawYear.replaceAll(/\D/g, "").slice(0, 4);
-
-    if (!month) return year ? `/${year}` : "";
-
-    const normalizedMonth = month.length === 1 ? `0${month}` : month;
-    return year ? `${normalizedMonth}/${year}` : `${normalizedMonth}/`;
-  }
-
-  const digitsOnly = sanitized.replaceAll(/\D/g, "").slice(0, 6);
-  if (digitsOnly.length === 5) {
-    return `0${digitsOnly[0]}/${digitsOnly.slice(1)}`;
-  }
-  if (digitsOnly.length <= 2) return digitsOnly;
-  return `${digitsOnly.slice(0, 2)}/${digitsOnly.slice(2)}`;
-};
-
-const formatWithPlaceholders = (value: string) => {
-  if (!value) return "MM/YYYY";
-
-  const [month = "", year = ""] = value.split("/");
-  const paddedMonth = month.padEnd(2, "M");
-  const paddedYear = year.padEnd(4, "Y");
-
-  return `${paddedMonth}/${paddedYear}`;
-};
+import { formatMonthYearInput, formatWithPlaceholders } from "./monthYearInput";
 
 export const DateField = (props: PageElementProps<DateTemplate>) => {
   const dateTextbox = props.element;
   const dateFormat = dateTextbox.dateFormat ?? "MMDDYYYY";
   const [displayValue, setDisplayValue] = useState(dateTextbox.answer ?? "");
   const [errorMessage, setErrorMessage] = useState("");
-
-  const getEndDateOrderingError = (endDateValue: string) => {
-    if (dateTextbox.id !== "end-date") return "";
-
-    const startDateInputValue =
-      document.querySelector<HTMLInputElement>(`[name="start-date"]`)?.value ??
-      "";
-    const parsedStartDate = parseMMYYYY(startDateInputValue);
-    const parsedEndDate = parseMMYYYY(endDateValue);
-
-    return parsedStartDate && parsedEndDate && parsedEndDate < parsedStartDate
-      ? ErrorMessages.endDateBeforeStartDate
-      : "";
-  };
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
@@ -98,10 +51,8 @@ export const DateField = (props: PageElementProps<DateTemplate>) => {
       return;
     }
 
-    const crossDateError = getEndDateOrderingError(maskedValue);
-
-    props.updateElement({ answer: crossDateError ? undefined : maskedValue });
-    setErrorMessage(crossDateError || errorMessage);
+    props.updateElement({ answer: maskedValue });
+    setErrorMessage(errorMessage);
   };
 
   const parsedHint =

@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { Box, Stack, Text } from "@chakra-ui/react";
-import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
+import {
+  SingleInputDateField as CmsdsDateField,
+  TextField as CmsdsTextField,
+} from "@cmsgov/design-system";
 import { parseHtml } from "utils";
 import { DateRangeTemplate } from "types/report";
 import { PageElementProps } from "components/report/Elements";
 import { ErrorMessages } from "../../constants";
 import { validateDate } from "utils/validation/inputValidation";
-import { parseMMDDYYYY } from "utils/other/time";
+import { parseMMDDYYYY, parseMMYYYY } from "utils/other/time";
+import { formatMonthYearInput, formatWithPlaceholders } from "./monthYearInput";
 
-const invalidMessage = (label: string) =>
-  `${label} is invalid. Please enter date in MM/DD/YYYY format`;
+const invalidMessage = (label: string, dateFormat: "MMDDYYYY" | "MMYYYY") =>
+  dateFormat === "MMYYYY"
+    ? `${label} is invalid. Please enter date in MM/YYYY format`
+    : `${label} is invalid. Please enter date in MM/DD/YYYY format`;
 
 type DateRangeErrors = {
   start: string;
@@ -22,12 +28,18 @@ type DateValues = {
   end: string;
 };
 
-const getRangeErrorMessage = (answer?: DateRangeTemplate["answer"]) => {
-  const parsedStart = parseMMDDYYYY(answer?.start ?? "");
-  const parsedEnd = parseMMDDYYYY(answer?.end ?? "");
+const getRangeErrorMessage = (
+  answer: DateRangeTemplate["answer"],
+  dateFormat: "MMDDYYYY" | "MMYYYY"
+) => {
+  const parse = dateFormat === "MMYYYY" ? parseMMYYYY : parseMMDDYYYY;
+  const parsedStart = parse(answer?.start ?? "");
+  const parsedEnd = parse(answer?.end ?? "");
 
   if (parsedStart && parsedEnd && parsedEnd < parsedStart) {
-    return ErrorMessages.measurementEndDateBeforeStartDate;
+    return dateFormat === "MMYYYY"
+      ? ErrorMessages.endDateBeforeStartDate
+      : ErrorMessages.measurementEndDateBeforeStartDate;
   }
 
   return "";
@@ -35,7 +47,7 @@ const getRangeErrorMessage = (answer?: DateRangeTemplate["answer"]) => {
 
 export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
   const dateRange = props.element;
-  const updateElement = props.updateElement;
+  const dateFormat = dateRange.dateFormat ?? "MMDDYYYY";
 
   const [displayValues, setDisplayValues] = useState<DateValues>({
     start: dateRange.answer?.start ?? "",
@@ -44,7 +56,7 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
   const [errors, setErrors] = useState<DateRangeErrors>({
     start: "",
     end: "",
-    range: getRangeErrorMessage(dateRange.answer),
+    range: getRangeErrorMessage(dateRange.answer, dateFormat),
   });
 
   useEffect(() => {
@@ -54,9 +66,9 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
     });
     setErrors((prev) => ({
       ...prev,
-      range: getRangeErrorMessage(dateRange.answer),
+      range: getRangeErrorMessage(dateRange.answer, dateFormat),
     }));
-  }, [dateRange.answer?.start, dateRange.answer?.end]);
+  }, [dateRange.answer?.start, dateRange.answer?.end, dateFormat]);
 
   const handleDateChange = (
     fieldName: "start" | "end",
@@ -65,21 +77,27 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
   ) => {
     setDisplayValues((prev) => ({ ...prev, [fieldName]: rawValue }));
 
+    const isRequired =
+      fieldName === "end"
+        ? (dateRange.endDateRequired ?? dateRange.required)
+        : dateRange.required;
+
     const { isValid, errorMessage } = validateDate(
       rawValue,
       maskedValue,
-      !!dateRange.required,
-      invalidMessage(dateRange.labels[fieldName])
+      isRequired,
+      invalidMessage(dateRange.labels[fieldName], dateFormat),
+      dateFormat
     );
 
     const nextAnswer = {
       ...dateRange.answer,
       [fieldName]: isValid ? maskedValue : undefined,
     };
-    const rangeError = getRangeErrorMessage(nextAnswer);
+    const rangeError = getRangeErrorMessage(nextAnswer, dateFormat);
 
     if (!rangeError) {
-      updateElement({ answer: nextAnswer });
+      props.updateElement({ answer: nextAnswer });
     }
 
     setErrors((prev) => ({
@@ -89,8 +107,56 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
     }));
   };
 
+  const onMonthYearChange =
+    (fieldName: "start" | "end") =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const masked = formatMonthYearInput(event.target.value);
+      handleDateChange(fieldName, masked, masked);
+    };
+
   const parsedHint = dateRange.helperText && parseHtml(dateRange.helperText);
-  const endFieldError = errors.end || errors.range;
+
+  const renderField = (fieldName: "start" | "end") => {
+    const name = `${dateRange.id}-${fieldName}`;
+    const label = dateRange.labels[fieldName];
+    const value = displayValues[fieldName];
+    const errorMessage =
+      fieldName === "end" ? errors.end || errors.range : errors.start;
+
+    if (dateFormat === "MMYYYY") {
+      return (
+        <Box sx={sx.monthYearInput}>
+          <CmsdsTextField
+            name={name}
+            label={label}
+            onChange={onMonthYearChange(fieldName)}
+            value={value}
+            hint={
+              <Text as="span" display="block" sx={sx.monthYearHintText}>
+                {formatWithPlaceholders(value)}
+              </Text>
+            }
+            errorMessage={errorMessage}
+            disabled={props.disabled}
+            inputMode="numeric"
+          />
+        </Box>
+      );
+    }
+
+    return (
+      <CmsdsDateField
+        name={name}
+        label={label}
+        onChange={(rawValue, maskedValue) =>
+          handleDateChange(fieldName, rawValue, maskedValue)
+        }
+        value={value}
+        errorMessage={errorMessage}
+        disabled={props.disabled}
+      />
+    );
+  };
 
   return (
     <Stack spacing={0} width="100%">
@@ -102,30 +168,23 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
           {parsedHint}
         </Text>
       )}
-      <Box marginTop="spacer3">
-        <CmsdsDateField
-          name={`${dateRange.id}-start`}
-          label={dateRange.labels.start}
-          onChange={(rawValue, maskedValue) =>
-            handleDateChange("start", rawValue, maskedValue)
-          }
-          value={displayValues.start}
-          errorMessage={errors.start}
-          disabled={props.disabled}
-        />
-      </Box>
-      <Box marginTop="8px">
-        <CmsdsDateField
-          name={`${dateRange.id}-end`}
-          label={dateRange.labels.end}
-          onChange={(rawValue, maskedValue) =>
-            handleDateChange("end", rawValue, maskedValue)
-          }
-          value={displayValues.end}
-          errorMessage={endFieldError}
-          disabled={props.disabled}
-        />
-      </Box>
+      <Box marginTop="spacer3">{renderField("start")}</Box>
+      <Box marginTop="8px">{renderField("end")}</Box>
     </Stack>
   );
+};
+
+const sx = {
+  monthYearHintText: {
+    mt: "1",
+    fontSize: "16px",
+    fontFamily: "Menlo, Consolas, Monaco",
+    fontWeight: "500",
+    color: "#5a5a5a",
+  },
+  monthYearInput: {
+    "input:not(.ds-c-choice)": {
+      maxWidth: "12ch",
+    },
+  },
 };
