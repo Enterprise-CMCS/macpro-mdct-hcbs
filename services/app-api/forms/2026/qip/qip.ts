@@ -237,6 +237,12 @@ export const qipReportTemplate: ReportBase = {
             "Provide 1-2 sentences about why this measure was selected.",
           required: false,
         },
+        {
+          type: ElementType.MeasureFooter,
+          id: "qip-measure-target-footer",
+          prevTo: "select-measures",
+          saveAndReturn: true,
+        },
       ],
     },
     {

@@ -50,6 +50,13 @@ const mockedMeasureSectionFooterElement: MeasureFooterTemplate = {
   completeSection: true,
 };
 
+const mockedMeasureFooterSaveAndReturn: MeasureFooterTemplate = {
+  id: "mock-footer-id",
+  type: ElementType.MeasureFooter,
+  prevTo: "select-measures",
+  saveAndReturn: true,
+};
+
 describe("Measure Footer", () => {
   it("Test Measure Footer component", async () => {
     render(<MeasureFooterElement element={mockedMeasureFooterElement} />);
@@ -119,6 +126,28 @@ describe("Measure Footer", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Complete measure" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("should render Save & return button and navigate correctly", async () => {
+    render(<MeasureFooterElement element={mockedMeasureFooterSaveAndReturn} />);
+
+    const previousLink = screen.getByRole("button", { name: "Previous" });
+    await userEvent.click(previousLink);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      "/report/QMS/CO/mock-id/select-measures"
+    );
+
+    const saveAndReturnBtn = screen.getByRole("button", {
+      name: "Save & return",
+    });
+    await userEvent.click(saveAndReturnBtn);
+
+    expect(
+      screen.queryByRole("button", { name: "Complete measure" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Complete section" })
     ).not.toBeInTheDocument();
   });
 });

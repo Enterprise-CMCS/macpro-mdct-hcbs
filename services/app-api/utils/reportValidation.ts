@@ -386,6 +386,7 @@ const measureFooterSchema = object().shape({
   nextTo: string().notRequired(),
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
+  saveAndReturn: boolean().notRequired(),
   clear: boolean().notRequired(),
 });
 
