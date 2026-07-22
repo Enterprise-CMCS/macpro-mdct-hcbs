@@ -35,6 +35,7 @@ export const QipMeasureSelectModal = ({
     useState<MeasureTargetMapping[number]>();
   const [measureError, setMeasureError] = useState<string>();
   const [isLoading, setIsLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [reports, setReports] = useState<LiteReport[]>();
   const [qmsReportId, setQmsReportId] = useState<string>();
   const [deliveryMethods, setDeliveryMethods] = useState<string[]>([]);
@@ -72,6 +73,7 @@ export const QipMeasureSelectModal = ({
     }
 
     if (allValid) {
+      setSubmitting(true);
       // "FFS" is before "MLTSS", so default sort works
       deliveryMethods.sort();
       // Match the rate order in the measure target info
@@ -87,7 +89,11 @@ export const QipMeasureSelectModal = ({
         qmsReportId,
         deliveryMethods,
         rates,
-      });
+      })
+        .catch(() => {
+          /* TODO: add error handling */
+        })
+        .finally(() => setSubmitting(false));
     }
   };
 
@@ -210,7 +216,12 @@ export const QipMeasureSelectModal = ({
         </form>
       </ModalBody>
       <ModalFooter gap="4">
-        <Button colorScheme="blue" mr={3} onClick={validateAndSubmit}>
+        <Button
+          colorScheme="blue"
+          mr={3}
+          onClick={validateAndSubmit}
+          isLoading={submitting}
+        >
           Save
         </Button>
         <Button variant="link" onClick={() => onClose(false)}>
