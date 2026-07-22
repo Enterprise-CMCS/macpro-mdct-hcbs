@@ -132,7 +132,7 @@ const addQipTargetPage = async (report: Report, targetInfo: unknown) => {
     ...newPage.elements.slice(targetHeaderIdx + 2),
   ];
 
-  const originalValues: Record<string, number> = {};
+  let originalValues: Record<string, number> = {};
   if (targetInfo.qmsReportId) {
     if (!targetMapping.includedInQms) {
       return badRequest(
@@ -149,12 +149,11 @@ const addQipTargetPage = async (report: Report, targetInfo: unknown) => {
         `Cannot copy baseline values: QMS Report ${targetInfo.qmsReportId} does not exist.`
       );
     }
-    fillBaselineValues(
+    originalValues = fillBaselineValues(
       targetInfo,
       targetMapping,
       qmsReport,
-      newPage,
-      originalValues
+      newPage
     );
   }
 
@@ -253,9 +252,9 @@ const fillBaselineValues = (
   targetInfo: MeasureTargetInfo,
   targetMapping: Extract<MeasureTargetMapping[number], { includedInQms: true }>,
   qmsReport: Report,
-  newPage: FormPageTemplate,
-  originalValues: Record<string, number>
+  newPage: FormPageTemplate
 ) => {
+  const originalValues: Record<string, number> = {};
   for (let deliveryMethodId of targetInfo.deliveryMethods) {
     const pageId = targetMapping.deliveryMethods[deliveryMethodId].qmsPageId;
     const qmsPage = qmsReport.pages.find((p) => p.id === pageId)!;
@@ -277,9 +276,10 @@ const fillBaselineValues = (
         (el) => el.id === `baseline-${deliveryMethodId}-${rateId}`
       ) as NumberFieldTemplate;
       qipElement.answer = value;
-      originalValues[rateId] = value;
+      originalValues[`${deliveryMethodId}-${rateId}`] = value;
     }
   }
+  return originalValues;
 };
 
 const getQmsElementValue = (qmsElement: PageElement, rateId: string) => {
