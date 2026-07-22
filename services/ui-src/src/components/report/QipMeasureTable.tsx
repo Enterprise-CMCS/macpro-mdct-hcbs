@@ -29,7 +29,13 @@ export const QipMeasureTableElement = ({
 }: PageElementProps<QipMeasureTableTemplate>) => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
-  const { report, updateReport, setModalComponent, setModalOpen } = useStore();
+  const {
+    report,
+    updateReport,
+    setCurrentPageId,
+    setModalComponent,
+    setModalOpen,
+  } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
 
   if (!measureTargetMapping) {
@@ -45,6 +51,8 @@ export const QipMeasureTableElement = ({
       originalValues,
     } = await addQipTargetPage(report!, params);
     updateReport(patchedReport);
+
+    if (reportId) setCurrentPageId("select-measures");
 
     updateElement({
       answer: [
@@ -95,7 +103,7 @@ export const QipMeasureTableElement = ({
           {errorMessage(status)}
         </Td>
         <Td textAlign="center">
-          <Flex justifyContent="center" sx={sx.flex}>
+          <Flex justifyContent="center">
             {/* TODO: We don't need this href, right? If not, remove from QMS Measure Table too. */}
             <Button
               as={Link}
@@ -147,14 +155,4 @@ export const QipMeasureTableElement = ({
         : null}
     </>
   );
-};
-
-const sx = {
-  flex: {
-    justifyContent: "flex-end",
-
-    ".mobile &": {
-      justifyContent: "flex-start",
-    },
-  },
 };
