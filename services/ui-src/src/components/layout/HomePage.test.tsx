@@ -62,6 +62,8 @@ describe("Home page", () => {
     render(homePage);
 
     const headings = [
+      { level: 2, name: /Transparency Reports/ },
+      { level: 2, name: /Compliance Reports/ },
       { level: 3, name: /QMS Quality Improvement Plans/ },
       { level: 3, name: /Timely Access Compliance Measure Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },

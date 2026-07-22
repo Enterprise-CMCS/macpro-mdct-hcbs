@@ -224,6 +224,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return submissionParagraphSchema;
     case ElementType.EligibilityTable:
       return eligibilityTableSchema;
+    case ElementType.KeyActivityTable:
+      return keyActivityTableSchema;
     case ElementType.ListInput:
       return listInputTemplateSchema;
     default:
@@ -331,6 +333,21 @@ const eligibilityTableSchema = object().shape({
         recheck: string().required(),
         frequency: string().notRequired(),
         eligibilityUpdate: string().required(),
+      })
+    )
+    .notRequired(),
+});
+
+const keyActivityTableSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.KeyActivityTable)),
+  id: string().required(),
+  caption: string().required(),
+  answer: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        title: string().required(),
+        completionDate: string().notRequired(),
       })
     )
     .notRequired(),

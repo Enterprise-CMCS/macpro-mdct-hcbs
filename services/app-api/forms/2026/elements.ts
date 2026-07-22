@@ -133,12 +133,12 @@ export const waiverListCheckboxField: CheckboxTemplate = {
   type: ElementType.Checkbox,
   id: "waivers-list-checkboxes",
   label:
-    "Select all the waivers and demonstrations included in this reporting period.",
+    "Select all HCBS authorities included in this quality measure for this reporting period.",
   choices: [
     /* Generated in buildReport, with data from waivers.ts */
   ],
   helperText: "Select all that apply.",
-  emptyAlertTitle: "No programs or waivers found for your state/territory",
+  emptyAlertTitle: "No HCBS authorities found for your state/territory",
   emptyAlertDescription:
     "If you believe this is in error please contact the MDCT Help Desk: mdct_help@cms.hhs.gov",
   required: false,
@@ -152,10 +152,9 @@ export const whichProgramsWaivers: PageElement[] = [
 export const waiverListInputField: ListInputTemplate = {
   type: ElementType.ListInput,
   id: "waivers-list-inputs",
-  label: "If a waiver or demonstration is not included above, add below:",
-  helperText:
-    "Include the waiver/demonstration name and control numbers in your response.",
-  fieldLabel: "Waiver/demonstration and/or control numbers",
-  buttonText: "Add waiver/demonstration name",
+  label:
+    "If an HCBS authority is not included above but is included in this measure, add its name and control number here.",
+  fieldLabel: "Name and control number, if applicable",
+  buttonText: "Add HCBS authority",
   required: false,
 };

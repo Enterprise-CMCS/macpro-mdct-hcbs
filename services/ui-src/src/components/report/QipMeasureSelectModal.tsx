@@ -7,31 +7,32 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
-import { LiteReport, ReportStatus, ReportType } from "types";
+import {
+  LiteReport,
+  MeasureTargetInfo,
+  MeasureTargetMapping,
+  ReportStatus,
+  ReportType,
+} from "types";
 import { useParams } from "react-router-dom";
 import { getReportsForState } from "utils";
 
 type Props = {
-  measureTargetInfo: QipMeasureTemplate[];
+  measureTargetMapping: MeasureTargetMapping;
   onClose: (modalOpen: boolean) => void;
-  onSubmit: (params: MeasureCreationParameters) => void;
-};
-
-// TODO: Where does this type belong? Probably not here.
-export type MeasureCreationParameters = {
-  measureInfo: QipMeasureTemplate;
-  qmsReportId?: string;
-  deliveryMethods: string[];
-  rates: string[];
+  onSubmit: (
+    params: MeasureTargetInfo & { measureName: string }
+  ) => Promise<void>;
 };
 
 export const QipMeasureSelectModal = ({
-  measureTargetInfo,
+  measureTargetMapping,
   onClose,
   onSubmit,
 }: Props) => {
   const state = useParams().state;
-  const [selectedMeasure, setSelectedMeasure] = useState<QipMeasureTemplate>();
+  const [selectedMeasure, setSelectedMeasure] =
+    useState<MeasureTargetMapping[number]>();
   const [measureError, setMeasureError] = useState<string>();
   const [isLoading, setIsLoading] = useState(true);
   const [reports, setReports] = useState<LiteReport[]>();
@@ -81,7 +82,8 @@ export const QipMeasureSelectModal = ({
       );
 
       onSubmit({
-        measureInfo: selectedMeasure!,
+        measureId: selectedMeasure!.measureId,
+        measureName: selectedMeasure!.measureName,
         qmsReportId,
         deliveryMethods,
         rates,
@@ -101,19 +103,19 @@ export const QipMeasureSelectModal = ({
           <Dropdown
             label="Measure report"
             name="measure"
-            value={selectedMeasure?.value ?? ""}
+            value={selectedMeasure?.measureId ?? ""}
             options={[
               { label: "Select measure", value: "" },
-              ...measureTargetInfo.map((mti) => ({
+              ...measureTargetMapping.map((mti) => ({
                 label: mti.measureName,
-                value: mti.value,
+                value: mti.measureId,
               })),
             ]}
             errorMessage={measureError}
             onChange={(evt) => {
               setMeasureError(undefined);
-              const measure = measureTargetInfo.find(
-                ({ value }) => value === evt.target.value
+              const measure = measureTargetMapping.find(
+                ({ measureId }) => measureId === evt.target.value
               );
               setSelectedMeasure(measure);
               if (!measure || !measure.includedInQms) {
@@ -165,11 +167,13 @@ export const QipMeasureSelectModal = ({
                 label="Which delivery sub-type will you be reporting on?"
                 name="delivery-method"
                 type="checkbox"
-                choices={selectedMeasure.deliveryMethods.map((dm) => ({
-                  label: `Delivery Method: ${dm}`,
-                  value: dm,
-                  checked: deliveryMethods.includes(dm),
-                }))}
+                choices={Object.keys(selectedMeasure.deliveryMethods).map(
+                  (deliveryMethodId) => ({
+                    label: `Delivery Method: ${deliveryMethodId}`,
+                    value: deliveryMethodId,
+                    checked: deliveryMethods.includes(deliveryMethodId),
+                  })
+                )}
                 errorMessage={deliveryMethodError}
                 onChange={(evt) => {
                   const dm = evt.target.value;
@@ -215,17 +219,4 @@ export const QipMeasureSelectModal = ({
       </ModalFooter>
     </>
   );
-};
-
-// TODO, probably move this type def to where the report schema is defined.
-type QipMeasureTemplate = {
-  measureName: string;
-  value: string;
-  includedInQms: boolean;
-  deliveryMethods: ["FFS", "MLTSS"];
-  rates: {
-    label: string;
-    id: string;
-    qmsElementId?: string;
-  }[];
 };
