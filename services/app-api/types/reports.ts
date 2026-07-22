@@ -499,6 +499,7 @@ export type MeasureFooterTemplate = {
   nextTo?: string;
   completeMeasure?: boolean;
   completeSection?: boolean;
+  saveAndReturn?: boolean;
   clear?: boolean;
 };
 
