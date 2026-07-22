@@ -4,9 +4,14 @@ import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok, notFound } from "../../libs/response-lib";
 import { getReport, putReport } from "../../storage/reports";
 import {
+  ElementType,
   FormPageTemplate,
+  LengthOfStayField,
   MeasureTargetInfo,
+  MeasureTargetMapping,
+  NumberFieldTemplate,
   PageElement,
+  ReadmissionRateField,
   Report,
   ReportStatus,
   ReportType,
@@ -127,6 +132,32 @@ const addQipTargetPage = async (report: Report, targetInfo: unknown) => {
     ...newPage.elements.slice(targetHeaderIdx + 2),
   ];
 
+  const originalValues: Record<string, number> = {};
+  if (targetInfo.qmsReportId) {
+    if (!targetMapping.includedInQms) {
+      return badRequest(
+        `Cannot copy baseline values: ${targetInfo.measureId} is not a QMS measure.`
+      );
+    }
+    let qmsReport = await getReport(
+      ReportType.QMS,
+      report.state,
+      targetInfo.qmsReportId
+    );
+    if (!qmsReport) {
+      return notFound(
+        `Cannot copy baseline values: QMS Report ${targetInfo.qmsReportId} does not exist.`
+      );
+    }
+    fillBaselineValues(
+      targetInfo,
+      targetMapping,
+      qmsReport,
+      newPage,
+      originalValues
+    );
+  }
+
   // Insert the new page just in front of the template page
   report.pages = [
     ...pages.slice(0, templatePageIndex),
@@ -139,7 +170,7 @@ const addQipTargetPage = async (report: Report, targetInfo: unknown) => {
   return ok({
     report,
     pageId: newPage.id,
-    originalValues: {},
+    originalValues,
   });
 };
 
@@ -216,4 +247,60 @@ const findTargetMapping = (report: Report, info: MeasureTargetInfo) => {
   }
 
   return mapping;
+};
+
+const fillBaselineValues = (
+  targetInfo: MeasureTargetInfo,
+  targetMapping: Extract<MeasureTargetMapping[number], { includedInQms: true }>,
+  qmsReport: Report,
+  newPage: FormPageTemplate,
+  originalValues: Record<string, number>
+) => {
+  for (let deliveryMethodId of targetInfo.deliveryMethods) {
+    const pageId = targetMapping.deliveryMethods[deliveryMethodId].qmsPageId;
+    const qmsPage = qmsReport.pages.find((p) => p.id === pageId)!;
+    for (let rateId of targetInfo.rates) {
+      const rateMapping = targetMapping.rates.find((r) => r.id === rateId)!;
+      const elemId = rateMapping.qmsElementId;
+      // Note: This does not recurse into radio/checkbox checkedChildren,
+      // because (at time of writing) none of the copyable values appear there.
+      // If we ever need to copy the answer of a nested question, change this.
+      const qmsElement = qmsPage.elements!.find((el) => el.id === elemId)!;
+      const value = getQmsElementValue(qmsElement, rateId);
+      if (value === undefined) {
+        console.warn(
+          `Cannot copy answer. QMS report ${targetInfo.qmsReportId}, page ${pageId}, element ${elemId}, rate ${rateId}.`
+        );
+        continue;
+      }
+      const qipElement = newPage.elements.find(
+        (el) => el.id === `baseline-${deliveryMethodId}-${rateId}`
+      ) as NumberFieldTemplate;
+      qipElement.answer = value;
+      originalValues[rateId] = value;
+    }
+  }
+};
+
+const getQmsElementValue = (qmsElement: PageElement, rateId: string) => {
+  if ("answer" in qmsElement && typeof qmsElement.answer === "number") {
+    return qmsElement.answer;
+  }
+  switch (qmsElement.type) {
+    case ElementType.LengthOfStayRate:
+      return qmsElement.answer?.[rateId as LengthOfStayField];
+    case ElementType.MultiCategoryNdr:
+      return qmsElement.answer
+        ?.flatMap((cat) => cat.rates)
+        .find((r) => r.id === rateId)?.rate;
+    case ElementType.MultiRateNdr:
+      return qmsElement.answer?.rates.find((r) => r.id === rateId)?.rate;
+    case ElementType.Ndr:
+    case ElementType.PerformanceNdr:
+      return qmsElement.answer?.rate;
+    case ElementType.ReadmissionRate:
+      return qmsElement.answer?.[rateId as ReadmissionRateField];
+    // Note: This accounts for all current element types with copyable values,
+    // but if we add a new element type to QMS, we may need to add a case here.
+  }
 };
