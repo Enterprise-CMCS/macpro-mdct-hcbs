@@ -8,20 +8,24 @@ Top-level fields are treated identically. The pages can have the same elements.
 The main exception is in how the QMS report treats measure sub-pages;
 more on that below.
 
-## Kafka Topics
-
-Each report type is stored in a separate DynamoDB table,
-and each table has a corresponding Kafka topic:
-
-- `aws.mdct.hcbs.qms-reports.v0`
-- `aws.mdct.hcbs.tacm-reports.v0`
-- `aws.mdct.hcbs.ci-reports.v0`
-- `aws.mdct.hcbs.pcp-reports.v0`
-- `aws.mdct.hcbs.qip-reports.v0`
-- `aws.mdct.hcbs.wwl-reports.v0`
-
-In ephemeral development environments, each topic name is prefixed:
-for example, `--hcbs--my-branch-name--aws.mdct.hcbs.qms-reports.v0`
+<!--
+  -- TODO: Update the Kafka documentation once we know how it'll actually work.
+  --
+  -- ## Kafka Topics
+  --
+  -- Each report type is stored in a separate DynamoDB table,
+  -- and each table has a corresponding Kafka topic:
+  --
+  -- - `aws.mdct.hcbs.qms-reports.v0`
+  -- - `aws.mdct.hcbs.tacm-reports.v0`
+  -- - `aws.mdct.hcbs.ci-reports.v0`
+  -- - `aws.mdct.hcbs.pcp-reports.v0`
+  -- - `aws.mdct.hcbs.qip-reports.v0`
+  -- - `aws.mdct.hcbs.wwl-reports.v0`
+  --
+  -- In ephemeral development environments, each topic name is prefixed:
+  -- for example, `--hcbs--my-branch-name--aws.mdct.hcbs.qms-reports.v0`
+  -->
 
 ## Report fields
 

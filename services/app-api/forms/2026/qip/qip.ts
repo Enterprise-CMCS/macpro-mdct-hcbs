@@ -34,6 +34,7 @@ export const qipReportTemplate: ReportBase = {
         "general-info",
         "select-measures",
         "plan-overview",
+        "key-activities",
         "plan-details",
         "review-submit",
       ],
@@ -105,6 +106,7 @@ export const qipReportTemplate: ReportBase = {
       navTitle: "Select Measures & Targets",
       tabTitle: "Select Measures & Targets - QIP - HCBS",
       type: PageType.Standard,
+      sidebar: true,
       elements: [
         {
           type: ElementType.Header,
@@ -235,6 +237,12 @@ export const qipReportTemplate: ReportBase = {
             "Provide 1-2 sentences about why this measure was selected.",
           required: false,
         },
+        {
+          type: ElementType.MeasureFooter,
+          id: "qip-measure-target-footer",
+          prevTo: "select-measures",
+          saveAndReturn: true,
+        },
       ],
     },
     {
@@ -275,6 +283,33 @@ export const qipReportTemplate: ReportBase = {
             "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
           dateFormat: "MMYYYY",
           required: false,
+        },
+      ],
+    },
+    {
+      id: "key-activities",
+      navTitle: "Key Activities",
+      tabTitle: "Key Activities - QIP - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "key-activities-header",
+          text: "Key Activities",
+        },
+        {
+          type: ElementType.Accordion,
+          id: "key-activities-instructions",
+          label: "Instructions",
+          value:
+            '<p>Provide at least one key activity to support your Quality Improvement Plan. To begin, click the "Add key activity" button, which will open a pop-up window for data entry.</p>' +
+            "<p>Within the modal, enter a concise, one-sentence title or description of the activity, and specify an expected completion date if one can be determined. You may repeat this process to add multiple activities as needed to fully outline your strategy.</p>",
+        },
+        {
+          type: ElementType.KeyActivityTable,
+          id: "key-activities-table",
+          caption: "Key Activities",
         },
       ],
     },
@@ -396,12 +431,12 @@ export const qipReportTemplate: ReportBase = {
   measureTargetMapping: [
     {
       measureName: "LTSS-1: Comprehensive Assessment and Update",
-      value: "LTSS-1",
+      measureId: "LTSS-1",
       includedInQms: true,
-      // TODO: Should we go directly to the measure result page,
-      //       or step through the measure page's `dependentPages[i].template`?
-      // deliveryMethods: { FFS: "FFS-1", MLTSS: "MLTSS-1" },
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-1" },
+        MLTSS: { qmsPageId: "MLTSS-1" },
+      },
       rates: [
         {
           label: "Performance Rate: Assessment of Core Elements",
@@ -427,9 +462,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "LTSS-2: Comprehensive Person-Centered Plan and Update",
-      value: "LTSS-2",
+      measureId: "LTSS-2",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-2" },
+        MLTSS: { qmsPageId: "MLTSS-2" },
+      },
       rates: [
         {
           label: "Performance Rate: Person-centered plan with Core Elements",
@@ -456,9 +494,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "LTSS-6: Admission to a Facility from the Community",
-      value: "LTSS-6",
+      measureId: "LTSS-6",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-6" },
+        MLTSS: { qmsPageId: "MLTSS-6" },
+      },
       rates: [
         {
           label: "18 to 64 years: Short term stay rate",
@@ -524,9 +565,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "LTSS-7: Minimizing Facility Length of Stay",
-      value: "LTSS-7",
+      measureId: "LTSS-7",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-7" },
+        MLTSS: { qmsPageId: "MLTSS-7" },
+      },
       rates: [
         {
           label:
@@ -551,9 +595,12 @@ export const qipReportTemplate: ReportBase = {
     {
       measureName:
         "LTSS-8: Successful Transition after Long-Term Facility Stay",
-      value: "LTSS-8",
+      measureId: "LTSS-8",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-8" },
+        MLTSS: { qmsPageId: "MLTSS-8" },
+      },
       rates: [
         {
           label:
@@ -577,9 +624,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "POM: People Live in Integrated Environments",
-      value: "POM-1",
+      measureId: "POM-1",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-POM-1" },
+        MLTSS: { qmsPageId: "MLTSS-POM-1" },
+      },
       rates: [
         {
           label: "Performance Rate",
@@ -590,9 +640,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "POM: People Participate in the Life of the Community",
-      value: "POM-2",
+      measureId: "POM-2",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-POM-2" },
+        MLTSS: { qmsPageId: "MLTSS-POM-2" },
+      },
       rates: [
         {
           label: "Performance Rate",
@@ -603,9 +656,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "POM: People Choose Services",
-      value: "POM-3",
+      measureId: "POM-3",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-POM-3" },
+        MLTSS: { qmsPageId: "MLTSS-POM-3" },
+      },
       rates: [
         {
           label: "Performance Rate",
@@ -616,9 +672,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "POM: People Realize Personal Goals",
-      value: "POM-4",
+      measureId: "POM-4",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-POM-4" },
+        MLTSS: { qmsPageId: "MLTSS-POM-4" },
+      },
       rates: [
         {
           label: "Performance Rate",
@@ -629,9 +688,12 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "POM: People are Free from Abuse and Neglect",
-      value: "POM-5",
+      measureId: "POM-5",
       includedInQms: true,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: {
+        FFS: { qmsPageId: "FFS-POM-5" },
+        MLTSS: { qmsPageId: "MLTSS-POM-5" },
+      },
       rates: [
         {
           label: "Performance Rate",
@@ -642,94 +704,94 @@ export const qipReportTemplate: ReportBase = {
     },
     {
       measureName: "NCI-IDD PCP-2: Person-Centered Goals",
-      value: "PCP-2",
+      measureId: "PCP-2",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "NCI-ICDD PCP-5: Satisfaction with Community Inclusion Scale",
-      value: "PCP-5",
+      measureId: "PCP-5",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName: "NCI-IDD CI-1: Social Connectedness",
-      value: "CI-1",
+      measureId: "CI-1",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName: "NCI-IDD CI-3: Transportation Availability Scale",
-      value: "CI-3",
+      measureId: "CI-3",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName: "NCI-IDD HLR-1: Respect for Personal Space Scale",
-      value: "HLR-1",
+      measureId: "HLR-1",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "NCI-AD: Percentage of people who are as active in their community as they would like to be",
-      value: "NCIAD-ACTIVE",
+      measureId: "NCIAD-ACTIVE",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "NCI-AD: Percentage of people whose service plan reflects their preferences and choices",
-      value: "NCIAD-PREF",
+      measureId: "NCIAD-PREF",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "NCI-AD: Percentage of people who feel safe around their support staff",
-      value: "NCIAD-SAFE",
+      measureId: "NCIAD-SAFE",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "NCI-AD: Percentage of people who have transportation to get to medical appointments when they need to",
-      value: "NCIAD-TRANS-MED",
+      measureId: "NCIAD-TRANS-MED",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "NCI-AD: Percentage of people have transportation when they want to do things outside of their home",
-      value: "NCIAD-TRANS-OTHER",
+      measureId: "NCIAD-TRANS-OTHER",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "HCBS-CAHPS: Planning Your Time and Activities Composite Measure",
-      value: "CAHPS-PLAN",
+      measureId: "CAHPS-PLAN",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
     {
       measureName:
         "HCBS-CAHPS: Choosing the Services That Matter To You Composite Measure",
-      value: "CAHPS-CHOOSE",
+      measureId: "CAHPS-CHOOSE",
       includedInQms: false,
-      deliveryMethods: ["FFS", "MLTSS"],
+      deliveryMethods: { FFS: {}, MLTSS: {} },
       rates: [{ label: "Performance Rate", id: "perf-rate" }],
     },
   ],

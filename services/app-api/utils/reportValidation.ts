@@ -224,6 +224,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return submissionParagraphSchema;
     case ElementType.EligibilityTable:
       return eligibilityTableSchema;
+    case ElementType.KeyActivityTable:
+      return keyActivityTableSchema;
     case ElementType.ListInput:
       return listInputTemplateSchema;
     default:
@@ -336,6 +338,21 @@ const eligibilityTableSchema = object().shape({
     .notRequired(),
 });
 
+const keyActivityTableSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.KeyActivityTable)),
+  id: string().required(),
+  caption: string().required(),
+  answer: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        title: string().required(),
+        completionDate: string().notRequired(),
+      })
+    )
+    .notRequired(),
+});
+
 const measureResultsNavigationTableTemplateSchema = object().shape({
   type: string()
     .required()
@@ -369,6 +386,7 @@ const measureFooterSchema = object().shape({
   nextTo: string().notRequired(),
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
+  saveAndReturn: boolean().notRequired(),
   clear: boolean().notRequired(),
 });
 

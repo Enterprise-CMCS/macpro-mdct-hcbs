@@ -63,6 +63,8 @@ export type ReportBase = {
     | MeasurePageTemplate
     | ReviewSubmitTemplate
   )[];
+  /** Appears only in QIP. Used to generate Measure Target pages. */
+  measureTargetMapping?: MeasureTargetMapping;
 };
 export type ReportWithMeasuresTemplate = ReportBase & ReportMeasureConfig;
 
@@ -84,11 +86,6 @@ export interface Report extends ReportBase, ReportOptions {
 }
 
 export type LiteReport = Omit<Report, "pages">;
-
-export type QipReportShape = Omit<ReportBase, "type"> & {
-  type: ReportType.QIP;
-  measureTargetMapping: any[]; // TODO 😱
-};
 
 export type PageTemplate =
   | ParentPageTemplate
@@ -207,6 +204,7 @@ export enum ElementType {
   SubmissionParagraph = "submissionParagraph",
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
+  KeyActivityTable = "keyActivityTable",
 }
 
 export type PageElement =
@@ -241,7 +239,8 @@ export type PageElement =
   | DividerTemplate
   | ListInputTemplate
   | SubmissionParagraphTemplate
-  | EligibilityTableTemplate;
+  | EligibilityTableTemplate
+  | KeyActivityTableTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -389,19 +388,70 @@ export type QipMeasureTableTemplate = {
   id: string;
   type: ElementType.QipMeasureTable;
   caption: string;
-  // TODO: copy this typedef to the backend, once it has crystallized
   answer?: {
-    /** The generated page's ID, unique in this report */
+    /** The ID of the corresponding page in this QIP. Unique within this report. */
     pageId: string;
-    /** A short identifier, unique within the QipMeasureSelectModal dropdown. */
-    measureId: string;
-    /** The ID of the QMS report from which baseline values were copied */
-    sourceReportId?: string;
-    deliveryMethods: string[];
-    rateIds: string[];
-    /** The baseline values that were copied */
-    copiedValues: Record<string, number>;
+    /** The display name of the measure being targeted for improvement. */
+    measureName: string;
+    /** Mapping from rate ID to the value copied from QMS, if any. */
+    originalValues?: Record<string, number>;
   }[];
+};
+
+/**
+ * Indicates which measures may be chosen for Quality Improvement Plans.
+ * Contains enough information to populate the measure target template pages.
+ * Used only within QIP reports.
+ *
+ * Note: This type def is shaped a bit oddly, such that TS can guarantee that
+ * any measure with includedInQms will also have qmsPageId and qmsElementId.
+ */
+export type MeasureTargetMapping = ({
+  /** The name as it will be displayed to the user, in various places. */
+  measureName: string;
+  /**
+   * An identifier unique within `report.measureTargetMapping`.
+   * Used as the value in a dropdown list, in order to tie back to this object.
+   *
+   * These identifiers may be official & meaningful (like `LTSS-1`)
+   * or invented for this purpose (like `CAHPS-CHOOSE`).
+   */
+  measureId: string;
+} & (
+  | {
+      /**
+       * Indicates that the measure is collected by the QMS report,
+       * and therefore that a baseline value _may_ be found there.
+       */
+      includedInQms: true;
+      deliveryMethods: {
+        [deliveryMethodId: string]: { qmsPageId: string };
+      };
+      rates: {
+        label: string;
+        id: string;
+        qmsElementId: string;
+      }[];
+    }
+  | {
+      /** Indicates that the measure is not collected by the QMS report. */
+      includedInQms: false;
+      deliveryMethods: {
+        [deliveryMethodId: string]: {};
+      };
+      rates: {
+        label: string;
+        id: string;
+      }[];
+    }
+))[];
+
+/** Payload of a request to PATCH addQipTargetPage. */
+export type MeasureTargetInfo = {
+  measureId: string;
+  qmsReportId?: string;
+  deliveryMethods: string[];
+  rates: string[];
 };
 
 export type EligibilityTableItem = {
@@ -426,6 +476,19 @@ export type EligibilityTableTemplate = {
   modalInstructions: string;
   frequencyOptions: { label: string; value: string }[];
   answer?: EligibilityTableItem[];
+};
+
+export type KeyActivityItem = {
+  id: string;
+  title: string;
+  completionDate?: string;
+};
+
+export type KeyActivityTableTemplate = {
+  type: ElementType.KeyActivityTable;
+  id: string;
+  caption: string;
+  answer?: KeyActivityItem[];
 };
 
 export type MeasureResultsNavigationTableTemplate = {
@@ -496,6 +559,7 @@ export type MeasureFooterTemplate = {
   nextTo?: string;
   completeMeasure?: boolean;
   completeSection?: boolean;
+  saveAndReturn?: boolean;
   clear?: boolean;
 };
 

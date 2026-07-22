@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
@@ -14,21 +13,10 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import {
-  QipMeasureTableTemplate,
-  QipReportShape,
-  FormPageTemplate,
-  HeaderTemplate,
-  NestedHeadingTemplate,
-  NumberFieldTemplate,
-} from "types";
-import {
-  MeasureCreationParameters,
-  QipMeasureSelectModal,
-} from "./QipMeasureSelectModal";
-import { useStore } from "utils";
+import { MeasureTargetInfo, QipMeasureTableTemplate } from "types";
+import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
+import { addQipTargetPage, useStore } from "utils";
 import { PageElementProps } from "./Elements";
-import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 
 export const QipMeasureTableElement = ({
@@ -39,60 +27,49 @@ export const QipMeasureTableElement = ({
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
   const { report, updateReport, setModalComponent, setModalOpen } = useStore();
-  const measureTargetMapping = (report as unknown as QipReportShape)
-    .measureTargetMapping;
-  const { autosave } = useContext(ReportAutosaveContext);
+  const measureTargetMapping = report?.measureTargetMapping;
 
-  const addMeasureTargetPage = (params: MeasureCreationParameters) => {
-    const { measureInfo, qmsReportId, deliveryMethods, rates } = params;
-    // TODO: fetch QMS report, to get its values. And look them up.
+  if (!measureTargetMapping) {
+    throw new Error("Can't render QIP Measure Table outside of QIP");
+  }
 
-    const pageId = cloneQipMeasureTemplatePage(
-      report as unknown as QipReportShape, // TODO get rid of this cast.
-      params
-    );
-    // Tell store to rebuild the pageMap, now that we have a new page
-    updateReport(report);
+  const addMeasureTargetPage = async (
+    params: MeasureTargetInfo & { measureName: string }
+  ) => {
+    const {
+      report: patchedReport,
+      pageId,
+      originalValues,
+    } = await addQipTargetPage(report!, params);
+    updateReport(patchedReport);
 
-    // TODO these property names are terrible.
-    const newAnswer = [
-      ...(answer ?? []),
-      {
-        pageId,
-        measureId: measureInfo.value,
-        sourceReportId: qmsReportId,
-        // TODO: We probably don't need these in the table's answer. Do we?
-        // But maybe it will be convenient down the road...
-        deliveryMethods: deliveryMethods,
-        rateIds: rates,
-        // TODO: record values pulled from the QMS report, for later reference
-        copiedValues: {},
-      },
-    ];
-    updateElement({ answer: newAnswer });
-
-    // TODO: We will already have autosaved due to updateElement... right?
-    autosave();
+    updateElement({
+      answer: [
+        ...(answer ?? []),
+        {
+          pageId: pageId,
+          measureName: params.measureName,
+          originalValues,
+        },
+      ],
+    });
     setModalOpen(false);
   };
 
   const modal = (
     <QipMeasureSelectModal
-      measureTargetInfo={measureTargetMapping}
+      measureTargetMapping={measureTargetMapping}
       onClose={() => setModalOpen(false)}
       onSubmit={addMeasureTargetPage}
     />
   );
 
-  const rows = (answer ?? []).map((measure, index) => {
-    const mapping = measureTargetMapping.find(
-      (mtm) => mtm.value === measure.measureId
-    );
+  const rows = (answer ?? []).map((answerRow, index) => {
     return (
       <Tr key={index}>
         <Td>{/* TODO: status icon */}</Td>
         <Td>
-          {mapping.measureName}
+          {answerRow.measureName}
           {/* TODO: CMIT number? */}
           {/* TODO: status text */}
           {/* TODO: error message? */}
@@ -103,12 +80,12 @@ export const QipMeasureTableElement = ({
             <Button
               as={Link}
               variant={"outline"}
-              aria-label={`Edit ${mapping.measureName}`}
-              href={`/report/${reportType}/${state}/${reportId}/${measure.pageId}`}
+              aria-label={`Edit ${answerRow.measureName}`}
+              href={`/report/${reportType}/${state}/${reportId}/${answerRow.pageId}`}
               onClick={(e) => {
                 e.preventDefault();
                 navigate(
-                  `/report/${reportType}/${state}/${reportId}/${measure.pageId}`
+                  `/report/${reportType}/${state}/${reportId}/${answerRow.pageId}`
                 );
               }}
             >
@@ -158,96 +135,4 @@ const sx = {
       justifyContent: "flex-start",
     },
   },
-};
-
-export const cloneQipMeasureTemplatePage = (
-  report: QipReportShape,
-  params: MeasureCreationParameters
-) => {
-  const { measureInfo, deliveryMethods, rates } = params;
-  const templatePage = report.pages.find(
-    (p) => p.id === "measure-target-template"
-  ) as FormPageTemplate;
-  const page = structuredClone(templatePage);
-  const mapping = report.measureTargetMapping.find(
-    (mtm) => mtm.value === measureInfo.value
-  )!;
-
-  // Generate a unique page ID, ex: "target-LTSS-1-1"
-  // TODO: This algorithm is not actually guaranteed to generate a unique ID.
-  const pageIdPrefix = `target-${measureInfo.value}-`;
-  const matchingPageCount = report.pages.filter((p) =>
-    p.id.startsWith(pageIdPrefix)
-  ).length;
-  page.id = pageIdPrefix + matchingPageCount.toString();
-
-  page.navTitle = page.navTitle!.replace("{measureName}", mapping.measureName);
-  page.tabTitle = page.tabTitle!.replace("{measureName}", mapping.measureName);
-  const header = page.elements.find(
-    (e) => e.id === "page-header"
-  ) as HeaderTemplate;
-  header.text = header.text.replace("{measureName}", mapping.measureName);
-
-  for (let section of ["baseline", "target"]) {
-    for (let deliveryMethodId of deliveryMethods) {
-      // TODO: Use the actual words. Maybe on the modal's checkboxes too??
-      const deliveryMethodLabel = deliveryMethodId;
-      const dmHeaderIndex = page.elements.findIndex(
-        (e) => e.id === `${section}-{deliveryMethodId}-header`
-      );
-      console.assert(
-        dmHeaderIndex > 0,
-        "found elem with id " + `${section}-{deliveryMethodId}-header`
-      );
-      const dmHeaderElement = structuredClone(
-        page.elements[dmHeaderIndex]
-      ) as NestedHeadingTemplate;
-      const dmRateElement = structuredClone(
-        page.elements[dmHeaderIndex + 1]
-      ) as NumberFieldTemplate;
-      dmHeaderElement.id = dmHeaderElement.id.replace(
-        "{deliveryMethodId}",
-        deliveryMethodId
-      );
-      dmHeaderElement.text = dmHeaderElement.text.replace(
-        "{deliveryMethodLabel}",
-        deliveryMethodLabel
-      );
-      dmRateElement.id = dmRateElement.id.replace(
-        "{deliveryMethodId}",
-        deliveryMethodId
-      );
-      page.elements.splice(dmHeaderIndex, 0, dmHeaderElement, dmRateElement);
-
-      for (let rateId of rates) {
-        // TODO any cast!
-        const rateLabel = mapping.rates.find(
-          (r: any) => r.id === rateId
-        )!.label;
-        const rateIndex = page.elements.findIndex(
-          (e) => e.id === `${section}-${deliveryMethodId}-{rateId}`
-        );
-        const rateElement = structuredClone(
-          page.elements[rateIndex]
-        ) as NumberFieldTemplate;
-        rateElement.id = rateElement.id.replace("{rateId}", rateId);
-        rateElement.label = rateElement.label.replace("{rateLabel}", rateLabel);
-        page.elements.splice(rateIndex, 0, rateElement);
-      }
-      const rateIndex = page.elements.findIndex(
-        (e) => e.id === `${section}-${deliveryMethodId}-{rateId}`
-      );
-      page.elements.splice(rateIndex, 1);
-    }
-    const headerTemplateIndex = page.elements.findIndex(
-      (e) => e.id === `${section}-{deliveryMethodId}-header`
-    );
-    page.elements.splice(headerTemplateIndex, 2);
-  }
-
-  // Insert the new page just before Review & Submit
-  const pageIndex = report.pages.findIndex((p) => p.id === "review-submit");
-  report.pages.splice(pageIndex, 0, page);
-
-  return page.id;
 };

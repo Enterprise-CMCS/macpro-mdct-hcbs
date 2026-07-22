@@ -120,6 +120,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
+        "dynamodb:BatchWriteItem",
         "dynamodb:DeleteItem",
         "dynamodb:GetItem",
         "dynamodb:PutItem",
@@ -238,6 +239,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "patchReport", {
+    entry: "services/app-api/handlers/reports/patch.ts",
+    handler: "patchReport",
+    path: "reports/{reportType}/{state}/{id}",
+    method: "PATCH",
+    ...commonProps,
+  });
+
   new Lambda(scope, "submitReport", {
     entry: "services/app-api/handlers/reports/submit.ts",
     handler: "submitReport",
@@ -294,7 +303,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       topicNamespace: isDev ? `--${project}--${stage}--` : "",
       ...commonProps.environment,
     },
-    tables: tables.filter((table) => table.node.id === "QmsReports"),
+    tables: tables.filter((table) => table.node.id === "Reports"),
   });
 
   if (!isLocalStack) {

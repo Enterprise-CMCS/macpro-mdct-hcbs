@@ -22,6 +22,7 @@ import {
   StatusAlert,
   CheckboxField,
   EligibilityTableElement,
+  KeyActivitiesTableElement,
 } from "components";
 
 import {
@@ -477,6 +478,14 @@ export const elementObject: {
           completeSection: true,
         }}
       />,
+      <MeasureFooterElement
+        element={{
+          type: ElementType.MeasureFooter,
+          id: "measure-footer",
+          prevTo: "select-measures",
+          saveAndReturn: true,
+        }}
+      />,
     ],
     pdfVariants: ["MeasureFooter currently not used in PDFs"],
   },
@@ -773,6 +782,28 @@ export const elementObject: {
       />,
     ],
     pdfVariants: [<ExportedReportWrapper section={EligibilityTableSection} />],
+  },
+  [ElementType.KeyActivityTable]: {
+    description: "Key Activity Table for QIP report",
+    id: "id-key-activity-table",
+    variants: [
+      <KeyActivitiesTableElement
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.KeyActivityTable,
+          id: "id-key-activity-table",
+          caption: "Key Activities",
+          answer: [
+            {
+              id: "sample-activity-1",
+              title: "Sample Activity",
+              completionDate: "12/2026",
+            },
+          ],
+        }}
+      />,
+    ],
+    pdfVariants: ["KeyActivityTable currently not used in PDFs"],
   },
   [ElementType.ListInput]: {
     description: "A field for entering a list of text values",

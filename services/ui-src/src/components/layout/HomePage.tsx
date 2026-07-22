@@ -58,24 +58,28 @@ export const HomePage = () => {
                 {isQipReportActive && <QipIntroductionCard />}
               </Box>
             </Box>
-            <Box>
-              <Heading as="h2" variant="h2" marginBottom="spacer3">
-                Transparency Reports
-              </Heading>
-              <Box display="flex" flexDirection="column" gap="spacer4">
-                {isTACMReportActive && <TacmIntroductionCard />}
-                {isWWLReportActive && <WWLIntroductionCard />}
+            {(isTACMReportActive || isWWLReportActive) && (
+              <Box>
+                <Heading as="h2" variant="h2" marginBottom="spacer3">
+                  Transparency Reports
+                </Heading>
+                <Box display="flex" flexDirection="column" gap="spacer4">
+                  {isTACMReportActive && <TacmIntroductionCard />}
+                  {isWWLReportActive && <WWLIntroductionCard />}
+                </Box>
               </Box>
-            </Box>
-            <Box>
-              <Heading as="h2" variant="h2" marginBottom="spacer3">
-                Compliance Reports
-              </Heading>
-              <Box display="flex" flexDirection="column" gap="spacer4">
-                {isCIReportActive && <CiIntroductionCard />}
-                {isPCPReportActive && <PCPIntroductionCard />}
+            )}
+            {(isCIReportActive || isPCPReportActive) && (
+              <Box>
+                <Heading as="h2" variant="h2" marginBottom="spacer3">
+                  Compliance Reports
+                </Heading>
+                <Box display="flex" flexDirection="column" gap="spacer4">
+                  {isCIReportActive && <CiIntroductionCard />}
+                  {isPCPReportActive && <PCPIntroductionCard />}
+                </Box>
               </Box>
-            </Box>
+            )}
           </>
         ) : (
           // show read-only view to non-state users

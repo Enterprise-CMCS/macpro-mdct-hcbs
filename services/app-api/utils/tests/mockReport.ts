@@ -222,6 +222,36 @@ export const reportWithListInputNoHelperText = {
   ],
 };
 
+export const reportWithKeyActivityTable = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["qip"],
+    },
+    {
+      id: "qip",
+      navTitle: "QIP",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.KeyActivityTable,
+          id: "key-activities-table",
+          caption: "Key Activities",
+          answer: [
+            {
+              id: "activity-1",
+              title: "Activity 1",
+              completionDate: "01/2026",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const invalidPageElementType = {
   ...validReport,
   pages: [

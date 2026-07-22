@@ -14,6 +14,7 @@ import {
   invalidRadioCheckedChildrenReport,
   invalidPageElementType,
   reportWithListInputNoHelperText,
+  reportWithKeyActivityTable,
 } from "./mockReport";
 
 describe("Test validateReportPayload function with valid report", () => {
@@ -25,6 +26,13 @@ describe("Test validateReportPayload function with valid report", () => {
   it("successfully validates a report with a ListInput element that has no helperText", async () => {
     const validatedData = await validateReportPayload(
       reportWithListInputNoHelperText
+    );
+    expect(validatedData).toBeDefined();
+  });
+
+  it("successfully validates a report with a KeyActivityTable element", async () => {
+    const validatedData = await validateReportPayload(
+      reportWithKeyActivityTable
     );
     expect(validatedData).toBeDefined();
   });
