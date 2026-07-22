@@ -8,6 +8,8 @@ import {
 import { PageElementProps } from "../report/Elements";
 import { DateTemplate } from "../../types/report";
 import { validateDate } from "utils/validation/inputValidation";
+import { parseMMYYYY } from "utils/other/time";
+import { ErrorMessages } from "../../constants";
 
 const formatMonthYearInput = (value: string) => {
   const digitsOnly = value.replaceAll(/\D/g, "").slice(0, 6);
@@ -30,6 +32,23 @@ export const DateField = (props: PageElementProps<DateTemplate>) => {
   const dateFormat = dateTextbox.dateFormat ?? "MMDDYYYY";
   const [displayValue, setDisplayValue] = useState(dateTextbox.answer ?? "");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const getEndDateOrderingError = (
+    endDateValue: string,
+    isDateInputValid: boolean
+  ) => {
+    if (!isDateInputValid || dateTextbox.id !== "end-date") return "";
+
+    const startDateInputValue =
+      document.querySelector<HTMLInputElement>(`[name="start-date"]`)?.value ??
+      "";
+    const parsedStartDate = parseMMYYYY(startDateInputValue);
+    const parsedEndDate = parseMMYYYY(endDateValue);
+
+    return parsedStartDate && parsedEndDate && parsedEndDate < parsedStartDate
+      ? ErrorMessages.endDateBeforeStartDate
+      : "";
+  };
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
@@ -59,8 +78,13 @@ export const DateField = (props: PageElementProps<DateTemplate>) => {
       undefined,
       "MMYYYY"
     );
-    props.updateElement({ answer: isValid ? maskedValue : undefined });
-    setErrorMessage(errorMessage);
+
+    const crossDateError = getEndDateOrderingError(maskedValue, isValid);
+
+    props.updateElement({
+      answer: isValid && !crossDateError ? maskedValue : undefined,
+    });
+    setErrorMessage(crossDateError || errorMessage);
   };
 
   const parsedHint =
