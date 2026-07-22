@@ -174,4 +174,22 @@ describe("Test QipMeasureTable", () => {
       "/report/QIP/CO/123/measure-targets-not-started"
     );
   });
+
+  it("should close modal after adding a measure", async () => {
+    const mockSetModalOpen = jest.fn();
+    const mockSetModalComponent = jest.fn();
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      report: mockReport,
+      setModalOpen: mockSetModalOpen,
+      setModalComponent: mockSetModalComponent,
+    });
+
+    render(QipMeasureTableComponent());
+
+    const addButton = screen.getByRole("button", { name: /Add measure/i });
+    await userEvent.click(addButton);
+
+    expect(mockSetModalComponent).toHaveBeenCalled();
+  });
 });
