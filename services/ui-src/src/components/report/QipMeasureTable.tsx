@@ -11,11 +11,14 @@ import {
   Th,
   Thead,
   Tr,
+  Text,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { MeasureTargetInfo, QipMeasureTableTemplate } from "types";
+import { MeasureTargetInfo, PageStatus, QipMeasureTableTemplate } from "types";
+import { TableStatusIcon } from "components";
 import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
 import { addQipTargetPage, useStore } from "utils";
+import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 
@@ -26,7 +29,13 @@ export const QipMeasureTableElement = ({
 }: PageElementProps<QipMeasureTableTemplate>) => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
-  const { report, updateReport, setModalComponent, setModalOpen } = useStore();
+  const {
+    report,
+    updateReport,
+    setCurrentPageId,
+    setModalComponent,
+    setModalOpen,
+  } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
 
   if (!measureTargetMapping) {
@@ -42,6 +51,8 @@ export const QipMeasureTableElement = ({
       originalValues,
     } = await addQipTargetPage(report!, params);
     updateReport(patchedReport);
+
+    if (reportId) setCurrentPageId("select-measures");
 
     updateElement({
       answer: [
@@ -64,18 +75,35 @@ export const QipMeasureTableElement = ({
     />
   );
 
-  const rows = (answer ?? []).map((answerRow, index) => {
+  const getTableStatus = (pageId: string) => {
+    if (!report) return PageStatus.NOT_STARTED;
+    return inferredReportStatus(report, pageId) ?? PageStatus.NOT_STARTED;
+  };
+
+  const errorMessage = (status: PageStatus) => {
+    if (status !== PageStatus.COMPLETE) {
+      return <Text variant="error">Select "Edit" to begin measure.</Text>;
+    }
+    return <></>;
+  };
+
+  const rows = (answer ?? []).map((answerRow) => {
+    const status = getTableStatus(answerRow.pageId);
     return (
-      <Tr key={index}>
-        <Td>{/* TODO: status icon */}</Td>
-        <Td>
-          {answerRow.measureName}
-          {/* TODO: CMIT number? */}
-          {/* TODO: status text */}
-          {/* TODO: error message? */}
+      <Tr key={answerRow.pageId}>
+        <Td textAlign="center">
+          <Flex justifyContent="center">
+            <TableStatusIcon tableStatus={status} />
+          </Flex>
         </Td>
         <Td>
-          <Flex gap="spacer2" sx={sx.flex}>
+          <Text fontWeight="bold">{answerRow.measureName}</Text>
+          {/* TODO: CMIT number? */}
+          <Text>Status: {status}</Text>
+          {errorMessage(status)}
+        </Td>
+        <Td textAlign="center">
+          <Flex justifyContent="center">
             {/* TODO: We don't need this href, right? If not, remove from QMS Measure Table too. */}
             <Button
               as={Link}
@@ -113,9 +141,11 @@ export const QipMeasureTableElement = ({
         </TableCaption>
         <Thead>
           <Tr>
-            <Th>Status</Th>
-            <Th>Measure details</Th>
-            <Th>Actions</Th>
+            <Th textAlign="center">Status</Th>
+            <Th paddingLeft="spacer6">Measure details</Th>
+            <Th textAlign="center" paddingLeft="spacer6">
+              Actions
+            </Th>
           </Tr>
         </Thead>
         {rows.length > 0 ? <Tbody>{rows}</Tbody> : null}
@@ -125,14 +155,4 @@ export const QipMeasureTableElement = ({
         : null}
     </>
   );
-};
-
-const sx = {
-  flex: {
-    justifyContent: "flex-end",
-
-    ".mobile &": {
-      justifyContent: "flex-start",
-    },
-  },
 };
