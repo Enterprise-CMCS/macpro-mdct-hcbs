@@ -87,10 +87,10 @@ export const QipMeasureTableElement = ({
     return <></>;
   };
 
-  const rows = (answer ?? []).map((answerRow, index) => {
+  const rows = (answer ?? []).map((answerRow) => {
     const status = getTableStatus(answerRow.pageId);
     return (
-      <Tr key={index}>
+      <Tr key={answerRow.pageId}>
         <Td textAlign="center">
           <Flex justifyContent="center">
             <TableStatusIcon tableStatus={status} />

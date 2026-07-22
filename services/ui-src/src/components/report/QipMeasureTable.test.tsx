@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { QipMeasureTableElement } from "./QipMeasureTable";
 import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
+import * as reportRequestMethods from "utils/api/requestMethods/report";
 import {
   ElementType,
   QipMeasureTableTemplate,
@@ -175,12 +176,23 @@ describe("Test QipMeasureTable", () => {
     );
   });
 
-  it("should close modal after adding a measure", async () => {
+  it("should call setCurrentPageId after adding a measure from the modal", async () => {
     const mockSetModalOpen = jest.fn();
     const mockSetModalComponent = jest.fn();
+    const mockSetCurrentPageId = jest.fn();
+    const mockUpdateReport = jest.fn();
+
+    jest.spyOn(reportRequestMethods, "addQipTargetPage").mockResolvedValue({
+      report: mockReport,
+      pageId: "measure-targets-new",
+      originalValues: {},
+    });
+
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
       report: mockReport,
+      updateReport: mockUpdateReport,
+      setCurrentPageId: mockSetCurrentPageId,
       setModalOpen: mockSetModalOpen,
       setModalComponent: mockSetModalComponent,
     });
@@ -191,5 +203,16 @@ describe("Test QipMeasureTable", () => {
     await userEvent.click(addButton);
 
     expect(mockSetModalComponent).toHaveBeenCalled();
+
+    const modal = mockSetModalComponent.mock.calls[0][0];
+    await modal.props.onSubmit({
+      measureId: "ltss4",
+      measureName: "New Measure",
+      deliveryMethods: ["FFS"],
+      rates: ["n"],
+    });
+
+    expect(mockSetCurrentPageId).toHaveBeenCalledWith("select-measures");
+    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
   });
 });
