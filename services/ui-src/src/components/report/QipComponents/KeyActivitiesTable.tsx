@@ -202,7 +202,12 @@ export const KeyActivitiesTableElement = (
           Plan.
         </Alert>
       )}
-      <Button variant={"outline"} onClick={onAddClick} mb="24px">
+      <Button
+        variant={"outline"}
+        isDisabled={isReadOnly}
+        onClick={onAddClick}
+        mb="24px"
+      >
         <Image src={addIcon} alt={"Add Item"} sx={sx.addIcon} />
         Add key activity
       </Button>
@@ -244,6 +249,7 @@ export const KeyActivitiesTableElement = (
                 errorMessage={titleError}
                 value={formValues.title}
                 hint="Provide a one-sentence title or description of the activity."
+                disabled={isReadOnly}
               />
               <DateField
                 element={{
@@ -266,7 +272,12 @@ export const KeyActivitiesTableElement = (
             </Flex>
           </ModalBody>
           <ModalFooter gap="4">
-            <Button colorScheme="blue" mr={3} onClick={onSubmit}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={onSubmit}
+              isDisabled={isReadOnly}
+            >
               Save
             </Button>
             <Button variant="link" onClick={() => setModalOpen(false)}>

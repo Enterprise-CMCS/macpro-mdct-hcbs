@@ -213,6 +213,7 @@ export const EligibilityTableElement = (
 
       <Button
         variant={"outline"}
+        isDisabled={isReadOnly}
         onClick={() => {
           onAddClick();
         }}
@@ -243,6 +244,7 @@ export const EligibilityTableElement = (
                 onChange={handleChange}
                 errorMessage={errorMessages.title}
                 value={formValues.title}
+                disabled={isReadOnly}
               />
               <TextField
                 label={fieldLabels.description}
@@ -252,12 +254,14 @@ export const EligibilityTableElement = (
                 multiline
                 errorMessage={errorMessages.description}
                 value={formValues.description}
+                disabled={isReadOnly}
               />
               <ChoiceList
                 name={"recheck"}
                 type={"radio"}
                 errorMessage={errorMessages.recheck}
                 label={fieldLabels.recheck}
+                disabled={isReadOnly}
                 choices={[
                   {
                     label: "No",
@@ -295,6 +299,7 @@ export const EligibilityTableElement = (
                 type={"radio"}
                 errorMessage={errorMessages.eligibilityUpdate}
                 label={fieldLabels.eligibilityUpdate}
+                disabled={isReadOnly}
                 choices={[
                   {
                     label: "No",
@@ -312,7 +317,12 @@ export const EligibilityTableElement = (
             </Flex>
           </ModalBody>
           <ModalFooter gap="4">
-            <Button colorScheme="blue" mr={3} onClick={() => onSubmit()}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => onSubmit()}
+              isDisabled={isReadOnly}
+            >
               Save
             </Button>
             <Button variant="link" onClick={() => setModalOpen(false)}>
