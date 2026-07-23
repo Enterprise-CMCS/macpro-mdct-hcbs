@@ -186,6 +186,10 @@ export const elementSatisfiesRequired = (
   element: PageElement,
   pageElements: PageElement[]
 ) => {
+  if (element.type === ElementType.KeyActivityTable) {
+    return !!element.answer && element.answer.length > 0;
+  }
+
   //while list input is not required, if the user adds a field and leaves it blank, that would make it incomplete and prevent form submission
   if (
     element.type === ElementType.ListInput &&

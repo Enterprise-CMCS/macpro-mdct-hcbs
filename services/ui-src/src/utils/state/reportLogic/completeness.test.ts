@@ -2,6 +2,7 @@ import {
   CheckboxTemplate,
   DateRangeTemplate,
   ElementType,
+  KeyActivityTableTemplate,
   LengthOfStayRateTemplate,
   ListInputTemplate,
   MeasurePageTemplate,
@@ -659,5 +660,33 @@ describe("elementSatisfiesRequired", () => {
       answer: [""],
     } as ListInputTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test("should require at least one row for KeyActivityTable", () => {
+    const element = {
+      type: ElementType.KeyActivityTable,
+      id: "key-activities",
+      caption: "Key activities",
+      answer: [],
+    } as KeyActivityTableTemplate;
+
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test("should accept KeyActivityTable with at least one row", () => {
+    const element = {
+      type: ElementType.KeyActivityTable,
+      id: "key-activities",
+      caption: "Key activities",
+      answer: [
+        {
+          id: "activity-1",
+          title: "Launch outreach campaign",
+          completionDate: "01/2027",
+        },
+      ],
+    } as KeyActivityTableTemplate;
+
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 });
