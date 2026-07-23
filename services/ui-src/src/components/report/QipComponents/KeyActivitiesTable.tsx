@@ -28,6 +28,7 @@ import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
+import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
@@ -44,7 +45,7 @@ const generateActivityId = () => `activity-${Math.floor(Math.random() * 1e6)}`;
 export const KeyActivitiesTableElement = (
   props: PageElementProps<KeyActivityTableTemplate>
 ) => {
-  const { element, updateElement } = props;
+  const { element, updateElement, disabled = false } = props;
   const { caption } = element;
 
   const [activities, setActivities] = useState<KeyActivityItem[]>(() =>
@@ -164,19 +165,20 @@ export const KeyActivitiesTableElement = (
           <Flex alignItems="center">
             <Button
               variant={"outline"}
-              aria-label={`Edit ${activity.title}`}
+              aria-label={`${disabled ? "View" : "Edit"} ${activity.title}`}
               maxWidth="79px"
               width="79px"
               onClick={() => onEditClick(activity)}
             >
-              Edit
+              {disabled ? "View" : "Edit"}
             </Button>
             <Button
-              variant="plain"
+              variant="transparent"
               aria-label={`Delete ${activity.title}`}
+              isDisabled={disabled}
               onClick={() => handleDeleteClick(activity.id)}
             >
-              <Image src={cancelIcon} alt={"Delete Item"} />
+              <Image src={disabled ? cancelIconGray : cancelIcon} alt="" />
             </Button>
           </Flex>
         </Td>
@@ -195,7 +197,12 @@ export const KeyActivitiesTableElement = (
           Plan.
         </Alert>
       )}
-      <Button variant={"outline"} onClick={onAddClick} mb="24px">
+      <Button
+        variant={"outline"}
+        isDisabled={disabled}
+        onClick={onAddClick}
+        mb="24px"
+      >
         <Image src={addIcon} alt={"Add Item"} sx={sx.addIcon} />
         Add key activity
       </Button>
@@ -237,8 +244,10 @@ export const KeyActivitiesTableElement = (
                 errorMessage={titleError}
                 value={formValues.title}
                 hint="Provide a one-sentence title or description of the activity."
+                disabled={disabled}
               />
               <DateField
+                disabled={disabled}
                 element={{
                   type: ElementType.Date,
                   id: "completion-date",
@@ -259,7 +268,12 @@ export const KeyActivitiesTableElement = (
             </Flex>
           </ModalBody>
           <ModalFooter gap="4">
-            <Button colorScheme="blue" mr={3} onClick={onSubmit}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={onSubmit}
+              isDisabled={disabled}
+            >
               Save
             </Button>
             <Button variant="link" onClick={() => setModalOpen(false)}>
