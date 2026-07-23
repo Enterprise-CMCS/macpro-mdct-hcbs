@@ -23,6 +23,7 @@ import {
   KeyActivityItem,
   AlertTypes,
   ElementType,
+  ReportStatus,
 } from "types";
 import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
@@ -32,6 +33,7 @@ import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
 import { Alert } from "components";
+import { useStore } from "utils";
 import { DateField } from "components/fields";
 
 const initialValues = {
@@ -46,6 +48,9 @@ export const KeyActivitiesTableElement = (
 ) => {
   const { element, updateElement } = props;
   const { caption } = element;
+  const { report, user } = useStore();
+  const isReadOnly =
+    report?.status === ReportStatus.SUBMITTED || !user?.userIsEndUser;
 
   const [activities, setActivities] = useState<KeyActivityItem[]>(() =>
     (structuredClone(element.answer) || []).map((item) => ({
@@ -174,6 +179,7 @@ export const KeyActivitiesTableElement = (
             <Button
               variant="transparent"
               aria-label={`Delete ${activity.title}`}
+              isDisabled={isReadOnly}
               onClick={() => handleDeleteClick(activity.id)}
             >
               <Image src={cancelIcon} alt={"Delete Item"} />

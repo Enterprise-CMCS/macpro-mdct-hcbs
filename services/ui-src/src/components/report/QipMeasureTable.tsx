@@ -14,7 +14,12 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { MeasureTargetInfo, PageStatus, QipMeasureTableTemplate } from "types";
+import {
+  MeasureTargetInfo,
+  PageStatus,
+  QipMeasureTableTemplate,
+  ReportStatus,
+} from "types";
 import { TableStatusIcon } from "components";
 import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
 import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
@@ -37,8 +42,11 @@ export const QipMeasureTableElement = ({
     setCurrentPageId,
     setModalComponent,
     setModalOpen,
+    user,
   } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
+  const isReadOnly =
+    report?.status === ReportStatus.SUBMITTED || !user?.userIsEndUser;
 
   if (!measureTargetMapping) {
     throw new Error("Can't render QIP Measure Table outside of QIP");
@@ -146,6 +154,7 @@ export const QipMeasureTableElement = ({
             <Button
               variant="transparent"
               aria-label={`Delete ${answerRow.measureName}`}
+              isDisabled={isReadOnly}
               onClick={() =>
                 handleDeleteClick(answerRow.pageId, answerRow.measureName)
               }
