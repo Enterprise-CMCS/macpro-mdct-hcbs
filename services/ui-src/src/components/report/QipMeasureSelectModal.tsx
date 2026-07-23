@@ -218,7 +218,7 @@ export const QipMeasureSelectModal = ({
           )}
         </form>
         {submitError && (
-          <Text color="red.600" mt={4}>
+          <Text color="red.600" mt={4} role="alert" aria-live="polite">
             {submitError}
           </Text>
         )}
