@@ -251,7 +251,8 @@ export const elementSatisfiesRequired = (
   }
 
   if (element.type === ElementType.DateRange) {
-    return !!element.answer.start && !!element.answer.end;
+    const endDateRequired = element.endDateRequired ?? element.required;
+    return !!element.answer.start && (!endDateRequired || !!element.answer.end);
   }
 
   if (element.type === ElementType.PerformanceNdr) {
