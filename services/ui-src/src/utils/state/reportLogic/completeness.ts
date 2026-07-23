@@ -174,10 +174,11 @@ const qipTargetsCombinedStatus = (report: Report) => {
 
   if (targetPageStatuses.every((st) => st === PageStatus.NOT_STARTED)) {
     return PageStatus.NOT_STARTED;
-  } else if (targetPageStatuses.some((st) => st === PageStatus.IN_PROGRESS)) {
-    return PageStatus.IN_PROGRESS;
-  } else {
+  } else if (targetPageStatuses.every((st) => st === PageStatus.COMPLETE)) {
     return PageStatus.COMPLETE;
+  } else {
+    // Some work has been done, but not all work is complete.
+    return PageStatus.IN_PROGRESS;
   }
 };
 
