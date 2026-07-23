@@ -9,7 +9,6 @@ import {
   ElementType,
   QipMeasureTableTemplate,
   Report,
-  ReportStatus,
   ReportType,
 } from "types";
 import { MemoryRouter, useNavigate } from "react-router-dom";
@@ -86,10 +85,15 @@ const mockTemplate: QipMeasureTableTemplate = {
 };
 
 const QipMeasureTableComponent = (
-  template: QipMeasureTableTemplate = mockTemplate
+  template: QipMeasureTableTemplate = mockTemplate,
+  disabled = false
 ) => (
   <MemoryRouter>
-    <QipMeasureTableElement element={template} updateElement={jest.fn()} />
+    <QipMeasureTableElement
+      element={template}
+      updateElement={jest.fn()}
+      disabled={disabled}
+    />
   </MemoryRouter>
 );
 
@@ -337,25 +341,14 @@ describe("Test QipMeasureTable", () => {
   });
 
   it("should disable the delete button when the report is submitted", () => {
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
-      report: { ...mockReport, status: ReportStatus.SUBMITTED },
-    });
-
-    render(QipMeasureTableComponent());
+    render(QipMeasureTableComponent(mockTemplate, true));
 
     const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
     deleteButtons.forEach((btn) => expect(btn).toBeDisabled());
   });
 
   it("should disable the delete button for non-end-users (admin)", () => {
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
-      report: mockReport,
-      user: { userIsAdmin: true, userIsEndUser: false } as any,
-    });
-
-    render(QipMeasureTableComponent());
+    render(QipMeasureTableComponent(mockTemplate, true));
 
     const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
     deleteButtons.forEach((btn) => expect(btn).toBeDisabled());
