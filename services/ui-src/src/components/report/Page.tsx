@@ -22,7 +22,7 @@ import {
   DropdownField,
   MeasureDetailsElement,
   MeasureFooterElement,
-  MeasureTableElement,
+  QmsMeasureTableElement,
   QipMeasureTableElement,
   MeasureResultsNavigationTableElement,
   RadioField,
@@ -94,8 +94,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <CheckboxField {...{ updateElement, disabled, element }} />;
       case ElementType.ButtonLink:
         return <ButtonLinkElement {...{ disabled, element }} />;
-      case ElementType.MeasureTable:
-        return <MeasureTableElement {...{ disabled, element }} />;
+      case ElementType.QmsMeasureTable:
+        return <QmsMeasureTableElement {...{ disabled, element }} />;
       case ElementType.QipMeasureTable:
         return (
           <QipMeasureTableElement {...{ updateElement, disabled, element }} />

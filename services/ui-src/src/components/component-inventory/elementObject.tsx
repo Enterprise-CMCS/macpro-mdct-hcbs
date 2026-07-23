@@ -7,7 +7,7 @@ import {
 } from "components/fields";
 import { Accordion, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
-  MeasureTableElement,
+  QmsMeasureTableElement,
   AccordionItem,
   MeasureResultsNavigationTableElement,
   StatusTableElement,
@@ -416,20 +416,20 @@ export const elementObject: {
     ],
     pdfVariants: ["Buttonlink currently not used in PDFs"],
   },
-  [ElementType.MeasureTable]: {
+  [ElementType.QmsMeasureTable]: {
     description: "A table for displaying measure status with navigation",
     id: "id-measure-table",
     variants: [
-      <MeasureTableElement
+      <QmsMeasureTableElement
         element={{
-          type: ElementType.MeasureTable,
+          type: ElementType.QmsMeasureTable,
           id: "id-measure-table",
           measureDisplay: "required",
           caption: "Required Measure Results",
         }}
       />,
     ],
-    pdfVariants: ["MeasureTable currently not used in PDFs"],
+    pdfVariants: ["QmsMeasureTable currently not used in PDFs"],
   },
   [ElementType.MeasureResultsNavigationTable]: {
     description: "A table for displaying measure results with navigation",

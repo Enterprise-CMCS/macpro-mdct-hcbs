@@ -18,7 +18,7 @@ import {
   isMeasureTemplate,
   MeasurePageTemplate,
   PageStatus,
-  MeasureTableTemplate,
+  QmsMeasureTableTemplate,
   PageType,
   ReportStatus,
 } from "types";
@@ -27,9 +27,8 @@ import { PageElementProps } from "./Elements";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
-// TODO rename to QmsMeasureTable
-export const MeasureTableElement = (
-  props: PageElementProps<MeasureTableTemplate>
+export const QmsMeasureTableElement = (
+  props: PageElementProps<QmsMeasureTableTemplate>
 ) => {
   const table = props.element;
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();

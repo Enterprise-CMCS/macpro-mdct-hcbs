@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MeasureTableElement } from "./MeasureTable";
+import { QmsMeasureTableElement } from "./QmsMeasureTable";
 import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import {
   ElementType,
   MeasurePageTemplate,
-  MeasureTableTemplate,
+  QmsMeasureTableTemplate,
   PageType,
   Report,
   ReportStatus,
@@ -60,8 +60,8 @@ jest.mock("react-router-dom", () => ({
 }));
 const mockedNavigate = useNavigate() as jest.Mock;
 
-const mockTemplate: MeasureTableTemplate = {
-  type: ElementType.MeasureTable,
+const mockTemplate: QmsMeasureTableTemplate = {
+  type: ElementType.QmsMeasureTable,
   id: "mock-table-id",
   measureDisplay: "required",
   caption: "Required Measure Results",
@@ -78,17 +78,17 @@ jest.mock("./MeasureReplacementModal", () => ({
 }));
 
 const MeasureTableComponent = (
-  measureDisplay: MeasureTableTemplate["measureDisplay"]
+  measureDisplay: QmsMeasureTableTemplate["measureDisplay"]
 ) => {
   const template = { ...mockTemplate, measureDisplay };
   return (
     <MemoryRouter>
-      <MeasureTableElement element={template} />
+      <QmsMeasureTableElement element={template} />
     </MemoryRouter>
   );
 };
 
-describe("Test MeasureTable", () => {
+describe("Test QmsMeasureTable", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

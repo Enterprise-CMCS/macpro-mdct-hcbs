@@ -263,7 +263,7 @@ export const displayDivider = (page: ParentPageTemplate | FormPageTemplate) => {
 
   //add elements that already have bottom borders to prevent double diviers on the page
   const hideFromElements = [
-    ElementType.MeasureTable,
+    ElementType.QmsMeasureTable,
     ElementType.MeasureResultsNavigationTable,
     ElementType.MultiRateNdr,
     ElementType.Ndr,
