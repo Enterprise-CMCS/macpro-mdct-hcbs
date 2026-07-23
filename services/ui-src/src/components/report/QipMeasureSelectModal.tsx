@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Spinner,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
@@ -42,6 +43,7 @@ export const QipMeasureSelectModal = ({
   const [deliveryMethodError, setDeliveryMethodError] = useState<string>();
   const [rates, setRates] = useState<string[]>([]);
   const [rateError, setRateError] = useState<string>();
+  const [submitError, setSubmitError] = useState<string>();
 
   useEffect(() => {
     (async () => {
@@ -74,6 +76,7 @@ export const QipMeasureSelectModal = ({
 
     if (allValid) {
       setSubmitting(true);
+      setSubmitError(undefined);
       // "FFS" is before "MLTSS", so default sort works
       deliveryMethods.sort();
       // Match the rate order in the measure target info
@@ -91,7 +94,7 @@ export const QipMeasureSelectModal = ({
         rates,
       })
         .catch(() => {
-          /* TODO: add error handling */
+          setSubmitError("Something went wrong");
         })
         .finally(() => setSubmitting(false));
     }
@@ -214,6 +217,11 @@ export const QipMeasureSelectModal = ({
             </>
           )}
         </form>
+        {submitError && (
+          <Text color="red.600" mt={4}>
+            {submitError}
+          </Text>
+        )}
       </ModalBody>
       <ModalFooter gap="4">
         <Button
