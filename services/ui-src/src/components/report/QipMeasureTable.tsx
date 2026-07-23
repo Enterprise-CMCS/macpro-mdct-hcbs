@@ -14,12 +14,7 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import {
-  MeasureTargetInfo,
-  PageStatus,
-  QipMeasureTableTemplate,
-  ReportStatus,
-} from "types";
+import { MeasureTargetInfo, PageStatus, QipMeasureTableTemplate } from "types";
 import { TableStatusIcon } from "components";
 import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
 import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
@@ -32,7 +27,7 @@ import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 
 export const QipMeasureTableElement = ({
   element: { caption, answer },
-  disabled: _disabled,
+  disabled = false,
   updateElement,
 }: PageElementProps<QipMeasureTableTemplate>) => {
   const { reportType, state, reportId } = useParams();
@@ -43,11 +38,8 @@ export const QipMeasureTableElement = ({
     setCurrentPageId,
     setModalComponent,
     setModalOpen,
-    user,
   } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
-  const isReadOnly =
-    report?.status === ReportStatus.SUBMITTED || !user?.userIsEndUser;
 
   if (!measureTargetMapping) {
     throw new Error("Can't render QIP Measure Table outside of QIP");
@@ -155,12 +147,12 @@ export const QipMeasureTableElement = ({
             <Button
               variant="transparent"
               aria-label={`Delete ${answerRow.measureName}`}
-              isDisabled={isReadOnly}
+              isDisabled={disabled}
               onClick={() =>
                 handleDeleteClick(answerRow.pageId, answerRow.measureName)
               }
             >
-              <Image src={isReadOnly ? cancelIconGray : cancelIcon} alt="" />
+              <Image src={disabled ? cancelIconGray : cancelIcon} alt="" />
             </Button>
           </Flex>
         </Td>

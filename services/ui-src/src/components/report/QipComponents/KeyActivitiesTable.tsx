@@ -23,7 +23,6 @@ import {
   KeyActivityItem,
   AlertTypes,
   ElementType,
-  ReportStatus,
 } from "types";
 import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
@@ -34,7 +33,6 @@ import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
 import { Alert } from "components";
-import { useStore } from "utils";
 import { DateField } from "components/fields";
 
 const initialValues = {
@@ -47,11 +45,8 @@ const generateActivityId = () => `activity-${Math.floor(Math.random() * 1e6)}`;
 export const KeyActivitiesTableElement = (
   props: PageElementProps<KeyActivityTableTemplate>
 ) => {
-  const { element, updateElement } = props;
+  const { element, updateElement, disabled = false } = props;
   const { caption } = element;
-  const { report, user } = useStore();
-  const isReadOnly =
-    report?.status === ReportStatus.SUBMITTED || !user?.userIsEndUser;
 
   const [activities, setActivities] = useState<KeyActivityItem[]>(() =>
     (structuredClone(element.answer) || []).map((item) => ({
@@ -175,15 +170,15 @@ export const KeyActivitiesTableElement = (
               width="79px"
               onClick={() => onEditClick(activity)}
             >
-              {isReadOnly ? "View" : "Edit"}
+              {disabled ? "View" : "Edit"}
             </Button>
             <Button
               variant="transparent"
               aria-label={`Delete ${activity.title}`}
-              isDisabled={isReadOnly}
+              isDisabled={disabled}
               onClick={() => handleDeleteClick(activity.id)}
             >
-              <Image src={isReadOnly ? cancelIconGray : cancelIcon} alt="" />
+              <Image src={disabled ? cancelIconGray : cancelIcon} alt="" />
             </Button>
           </Flex>
         </Td>
@@ -204,7 +199,7 @@ export const KeyActivitiesTableElement = (
       )}
       <Button
         variant={"outline"}
-        isDisabled={isReadOnly}
+        isDisabled={disabled}
         onClick={onAddClick}
         mb="24px"
       >
@@ -249,7 +244,7 @@ export const KeyActivitiesTableElement = (
                 errorMessage={titleError}
                 value={formValues.title}
                 hint="Provide a one-sentence title or description of the activity."
-                disabled={isReadOnly}
+                disabled={disabled}
               />
               <DateField
                 element={{
@@ -276,7 +271,7 @@ export const KeyActivitiesTableElement = (
               colorScheme="blue"
               mr={3}
               onClick={onSubmit}
-              isDisabled={isReadOnly}
+              isDisabled={disabled}
             >
               Save
             </Button>

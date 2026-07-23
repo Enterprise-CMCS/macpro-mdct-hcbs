@@ -20,11 +20,7 @@ import {
   Flex,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import {
-  EligibilityTableTemplate,
-  EligibilityTableItem,
-  ReportStatus,
-} from "types";
+import { EligibilityTableTemplate, EligibilityTableItem } from "types";
 import { PageElementProps } from "../Elements";
 import { Fragment, useState, ChangeEvent, useEffect } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
@@ -34,16 +30,12 @@ import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
 import { ExportRateTable } from "components/export/ExportedReportTable";
-import { useStore } from "utils";
 
 export const EligibilityTableElement = (
   props: PageElementProps<EligibilityTableTemplate>
 ) => {
-  const { element, updateElement } = props;
+  const { element, updateElement, disabled = false } = props;
   const { fieldLabels, caption, modalInstructions, frequencyOptions } = element;
-  const { report, user } = useStore();
-  const isReadOnly =
-    report?.status === ReportStatus.SUBMITTED || !user?.userIsEndUser;
 
   const initialValues = {
     title: "",
@@ -173,24 +165,24 @@ export const EligibilityTableElement = (
           <Button
             as={Link}
             variant={"outline"}
-            aria-label={`${isReadOnly ? "View" : "Edit"} ${eligibility.title}`}
+            aria-label={`${disabled ? "View" : "Edit"} ${eligibility.title}`}
             onClick={() => {
               onEditClick(eligibility);
             }}
           >
-            {isReadOnly ? "View" : "Edit"}
+            {disabled ? "View" : "Edit"}
           </Button>
         </Td>
         <Td>
           <Button
             variant="transparent"
             aria-label={`Delete ${eligibility.title}`}
-            isDisabled={isReadOnly}
+            isDisabled={disabled}
             onClick={() => {
               handleDeleteClick(eligibility.title);
             }}
           >
-            <Image src={isReadOnly ? cancelIconGray : cancelIcon} alt="" />
+            <Image src={disabled ? cancelIconGray : cancelIcon} alt="" />
           </Button>
         </Td>
       </Tr>
@@ -213,7 +205,7 @@ export const EligibilityTableElement = (
 
       <Button
         variant={"outline"}
-        isDisabled={isReadOnly}
+        isDisabled={disabled}
         onClick={() => {
           onAddClick();
         }}
@@ -244,7 +236,7 @@ export const EligibilityTableElement = (
                 onChange={handleChange}
                 errorMessage={errorMessages.title}
                 value={formValues.title}
-                disabled={isReadOnly}
+                disabled={disabled}
               />
               <TextField
                 label={fieldLabels.description}
@@ -254,14 +246,14 @@ export const EligibilityTableElement = (
                 multiline
                 errorMessage={errorMessages.description}
                 value={formValues.description}
-                disabled={isReadOnly}
+                disabled={disabled}
               />
               <ChoiceList
                 name={"recheck"}
                 type={"radio"}
                 errorMessage={errorMessages.recheck}
                 label={fieldLabels.recheck}
-                disabled={isReadOnly}
+                disabled={disabled}
                 choices={[
                   {
                     label: "No",
@@ -299,7 +291,7 @@ export const EligibilityTableElement = (
                 type={"radio"}
                 errorMessage={errorMessages.eligibilityUpdate}
                 label={fieldLabels.eligibilityUpdate}
-                disabled={isReadOnly}
+                disabled={disabled}
                 choices={[
                   {
                     label: "No",
@@ -321,7 +313,7 @@ export const EligibilityTableElement = (
               colorScheme="blue"
               mr={3}
               onClick={() => onSubmit()}
-              isDisabled={isReadOnly}
+              isDisabled={disabled}
             >
               Save
             </Button>
