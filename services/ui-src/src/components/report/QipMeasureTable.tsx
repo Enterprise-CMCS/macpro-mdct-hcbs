@@ -84,8 +84,10 @@ export const QipMeasureTableElement = ({
   };
 
   const errorMessage = (status: PageStatus) => {
-    if (status !== PageStatus.COMPLETE) {
-      return <Text variant="error">Select "Edit" to begin measure.</Text>;
+    if (!disabled && status !== PageStatus.COMPLETE) {
+      return (
+        <Text variant="error">Select &quot;Edit&quot; to begin measure.</Text>
+      );
     }
     return <></>;
   };
@@ -133,7 +135,7 @@ export const QipMeasureTableElement = ({
             <Button
               as={Link}
               variant={"outline"}
-              aria-label={`Edit ${answerRow.measureName}`}
+              aria-label={`${disabled ? "View" : "Edit"} ${answerRow.measureName}`}
               href={`/report/${reportType}/${state}/${reportId}/${answerRow.pageId}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -142,7 +144,7 @@ export const QipMeasureTableElement = ({
                 );
               }}
             >
-              Edit
+              {disabled ? "View" : "Edit"}
             </Button>
             <Button
               variant="transparent"
@@ -165,6 +167,7 @@ export const QipMeasureTableElement = ({
       <Button
         onClick={() => setModalComponent(modal, "Add Measure")}
         variant={"outline"}
+        isDisabled={disabled}
       >
         <Image src={addIcon} alt="" sx={{ padding: "3px" }} />
         Add measure
