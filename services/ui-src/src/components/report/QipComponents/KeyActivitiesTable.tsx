@@ -247,6 +247,7 @@ export const KeyActivitiesTableElement = (
                 disabled={disabled}
               />
               <DateField
+                disabled={disabled}
                 element={{
                   type: ElementType.Date,
                   id: "completion-date",
