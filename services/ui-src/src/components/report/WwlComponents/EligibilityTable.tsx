@@ -174,7 +174,7 @@ export const EligibilityTableElement = (
         </Td>
         <Td>
           <Button
-            variant="plain"
+            variant="transparent"
             aria-label={`Delete ${eligibility.title}`}
             onClick={() => {
               handleDeleteClick(eligibility.title);

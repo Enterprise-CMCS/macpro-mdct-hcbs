@@ -144,7 +144,7 @@ export const QipMeasureTableElement = ({
               Edit
             </Button>
             <Button
-              variant="plain"
+              variant="transparent"
               aria-label={`Delete ${answerRow.measureName}`}
               onClick={() =>
                 handleDeleteClick(answerRow.pageId, answerRow.measureName)

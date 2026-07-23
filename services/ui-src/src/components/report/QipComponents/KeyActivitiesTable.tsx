@@ -172,7 +172,7 @@ export const KeyActivitiesTableElement = (
               Edit
             </Button>
             <Button
-              variant="plain"
+              variant="transparent"
               aria-label={`Delete ${activity.title}`}
               onClick={() => handleDeleteClick(activity.id)}
             >
