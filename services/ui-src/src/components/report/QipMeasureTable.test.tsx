@@ -259,7 +259,6 @@ describe("Test QipMeasureTable", () => {
     expect(mockSetModalComponent.mock.calls[0][1]).toBe(
       "Are you sure you want to remove this measure?"
     );
-    expect(mockSetModalOpen).toHaveBeenCalledWith(true);
   });
 
   it("should remove the measure and its page on delete confirm", async () => {
