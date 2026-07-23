@@ -524,6 +524,26 @@ describe("elementSatisfiesRequired", () => {
     }
   );
 
+  test("accepts DateRange with missing end when endDateRequired is false", () => {
+    const element = {
+      type: ElementType.DateRange,
+      id: "date-range",
+      labels: {
+        top: "Date range",
+        start: "Start date",
+        end: "End date",
+      },
+      answer: {
+        start: "01/2026",
+      },
+      dateFormat: "MMYYYY",
+      required: true,
+      endDateRequired: false,
+    } as DateRangeTemplate;
+
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+  });
+
   test("accepts complete MultiRateNdr elements", () => {
     const element = {
       type: ElementType.MultiRateNdr,
