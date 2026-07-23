@@ -28,6 +28,7 @@ import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
+import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 
 export const QipMeasureTableElement = ({
   element: { caption, answer },
@@ -159,7 +160,7 @@ export const QipMeasureTableElement = ({
                 handleDeleteClick(answerRow.pageId, answerRow.measureName)
               }
             >
-              <Image src={cancelIcon} alt="Delete measure" />
+              <Image src={isReadOnly ? cancelIconGray : cancelIcon} alt="" />
             </Button>
           </Flex>
         </Td>

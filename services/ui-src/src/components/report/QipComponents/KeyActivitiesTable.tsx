@@ -29,6 +29,7 @@ import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
+import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
@@ -182,7 +183,7 @@ export const KeyActivitiesTableElement = (
               isDisabled={isReadOnly}
               onClick={() => handleDeleteClick(activity.id)}
             >
-              <Image src={cancelIcon} alt={"Delete Item"} />
+              <Image src={isReadOnly ? cancelIconGray : cancelIcon} alt="" />
             </Button>
           </Flex>
         </Td>

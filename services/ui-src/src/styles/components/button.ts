@@ -43,14 +43,6 @@ const transparentVariant = {
         filter: svgFilters.primary_darker,
       },
     },
-    _disabled: {
-      opacity: 0.5,
-      cursor: "not-allowed",
-      backgroundColor: "transparent",
-      img: {
-        filter: "grayscale(100%)",
-      },
-    },
   },
   sidebarToggleVariant = {
     position: "absolute",

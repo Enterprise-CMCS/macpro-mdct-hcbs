@@ -20,21 +20,30 @@ import {
   Flex,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { EligibilityTableTemplate, EligibilityTableItem } from "types";
+import {
+  EligibilityTableTemplate,
+  EligibilityTableItem,
+  ReportStatus,
+} from "types";
 import { PageElementProps } from "../Elements";
 import { Fragment, useState, ChangeEvent, useEffect } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
+import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
 import { ExportRateTable } from "components/export/ExportedReportTable";
+import { useStore } from "utils";
 
 export const EligibilityTableElement = (
   props: PageElementProps<EligibilityTableTemplate>
 ) => {
   const { element, updateElement } = props;
   const { fieldLabels, caption, modalInstructions, frequencyOptions } = element;
+  const { report, user } = useStore();
+  const isReadOnly =
+    report?.status === ReportStatus.SUBMITTED || !user?.userIsEndUser;
 
   const initialValues = {
     title: "",
@@ -176,11 +185,12 @@ export const EligibilityTableElement = (
           <Button
             variant="transparent"
             aria-label={`Delete ${eligibility.title}`}
+            isDisabled={isReadOnly}
             onClick={() => {
               handleDeleteClick(eligibility.title);
             }}
           >
-            <Image src={cancelIcon} alt={"Delete Item"} />
+            <Image src={isReadOnly ? cancelIconGray : cancelIcon} alt="" />
           </Button>
         </Td>
       </Tr>
