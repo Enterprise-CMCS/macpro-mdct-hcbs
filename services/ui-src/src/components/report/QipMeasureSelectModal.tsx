@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Spinner,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
@@ -35,12 +36,14 @@ export const QipMeasureSelectModal = ({
     useState<MeasureTargetMapping[number]>();
   const [measureError, setMeasureError] = useState<string>();
   const [isLoading, setIsLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [reports, setReports] = useState<LiteReport[]>();
   const [qmsReportId, setQmsReportId] = useState<string>();
   const [deliveryMethods, setDeliveryMethods] = useState<string[]>([]);
   const [deliveryMethodError, setDeliveryMethodError] = useState<string>();
   const [rates, setRates] = useState<string[]>([]);
   const [rateError, setRateError] = useState<string>();
+  const [submitError, setSubmitError] = useState<string>();
 
   useEffect(() => {
     (async () => {
@@ -72,6 +75,8 @@ export const QipMeasureSelectModal = ({
     }
 
     if (allValid) {
+      setSubmitting(true);
+      setSubmitError(undefined);
       // "FFS" is before "MLTSS", so default sort works
       deliveryMethods.sort();
       // Match the rate order in the measure target info
@@ -87,7 +92,11 @@ export const QipMeasureSelectModal = ({
         qmsReportId,
         deliveryMethods,
         rates,
-      });
+      })
+        .catch(() => {
+          setSubmitError("Something went wrong");
+        })
+        .finally(() => setSubmitting(false));
     }
   };
 
@@ -208,9 +217,19 @@ export const QipMeasureSelectModal = ({
             </>
           )}
         </form>
+        {submitError && (
+          <Text color="red.600" mt={4} role="alert" aria-live="polite">
+            {submitError}
+          </Text>
+        )}
       </ModalBody>
       <ModalFooter gap="4">
-        <Button colorScheme="blue" mr={3} onClick={validateAndSubmit}>
+        <Button
+          colorScheme="blue"
+          mr={3}
+          onClick={validateAndSubmit}
+          isLoading={submitting}
+        >
           Save
         </Button>
         <Button variant="link" onClick={() => onClose(false)}>

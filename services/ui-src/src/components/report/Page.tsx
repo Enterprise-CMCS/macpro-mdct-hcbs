@@ -131,9 +131,15 @@ export const Page = ({ id, setElements, elements }: Props) => {
       case ElementType.ListInput:
         return <ListInput {...{ updateElement, disabled, element }} />;
       case ElementType.EligibilityTable:
-        return <EligibilityTableElement {...{ updateElement, element }} />;
+        return (
+          <EligibilityTableElement {...{ updateElement, disabled, element }} />
+        );
       case ElementType.KeyActivityTable:
-        return <KeyActivitiesTableElement {...{ updateElement, element }} />;
+        return (
+          <KeyActivitiesTableElement
+            {...{ updateElement, disabled, element }}
+          />
+        );
       default:
         assertExhaustive(element);
         return null;

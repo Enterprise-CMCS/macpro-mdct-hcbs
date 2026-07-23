@@ -8,22 +8,7 @@ import {
 import { PageElementProps } from "../report/Elements";
 import { DateTemplate } from "../../types/report";
 import { validateDate } from "utils/validation/inputValidation";
-
-const formatMonthYearInput = (value: string) => {
-  const digitsOnly = value.replaceAll(/\D/g, "").slice(0, 6);
-  if (digitsOnly.length <= 2) return digitsOnly;
-  return `${digitsOnly.slice(0, 2)}/${digitsOnly.slice(2)}`;
-};
-
-const formatWithPlaceholders = (value: string) => {
-  if (!value) return "MM/YYYY";
-
-  const [month = "", year = ""] = value.split("/");
-  const paddedMonth = month.padEnd(2, "M");
-  const paddedYear = year.padEnd(4, "Y");
-
-  return `${paddedMonth}/${paddedYear}`;
-};
+import { formatMonthYearInput, formatWithPlaceholders } from "./monthYearInput";
 
 export const DateField = (props: PageElementProps<DateTemplate>) => {
   const dateTextbox = props.element;
@@ -59,7 +44,14 @@ export const DateField = (props: PageElementProps<DateTemplate>) => {
       undefined,
       "MMYYYY"
     );
-    props.updateElement({ answer: isValid ? maskedValue : undefined });
+
+    if (!isValid) {
+      props.updateElement({ answer: undefined });
+      setErrorMessage(errorMessage);
+      return;
+    }
+
+    props.updateElement({ answer: maskedValue });
     setErrorMessage(errorMessage);
   };
 
