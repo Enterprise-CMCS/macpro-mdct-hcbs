@@ -173,12 +173,12 @@ export const EligibilityTableElement = (
           <Button
             as={Link}
             variant={"outline"}
-            aria-label={`Edit ${eligibility.title}`}
+            aria-label={`${isReadOnly ? "View" : "Edit"} ${eligibility.title}`}
             onClick={() => {
               onEditClick(eligibility);
             }}
           >
-            Edit
+            {isReadOnly ? "View" : "Edit"}
           </Button>
         </Td>
         <Td>

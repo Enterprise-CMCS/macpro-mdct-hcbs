@@ -175,7 +175,7 @@ export const KeyActivitiesTableElement = (
               width="79px"
               onClick={() => onEditClick(activity)}
             >
-              Edit
+              {isReadOnly ? "View" : "Edit"}
             </Button>
             <Button
               variant="transparent"
