@@ -80,10 +80,15 @@ const mockTemplate: QipMeasureTableTemplate = {
 };
 
 const QipMeasureTableComponent = (
-  template: QipMeasureTableTemplate = mockTemplate
+  template: QipMeasureTableTemplate = mockTemplate,
+  disabled = false
 ) => (
   <MemoryRouter>
-    <QipMeasureTableElement element={template} updateElement={jest.fn()} />
+    <QipMeasureTableElement
+      element={template}
+      updateElement={jest.fn()}
+      disabled={disabled}
+    />
   </MemoryRouter>
 );
 
@@ -116,6 +121,26 @@ describe("Test QipMeasureTable", () => {
     render(QipMeasureTableComponent());
 
     expect(screen.getAllByRole("link", { name: /Edit/i })).toHaveLength(3);
+  });
+
+  it("should disable Add Measure button when table is disabled", () => {
+    render(QipMeasureTableComponent(mockTemplate, true));
+
+    expect(screen.getByRole("button", { name: /Add measure/i })).toBeDisabled();
+  });
+
+  it("should render View link for each measure when table is disabled", () => {
+    render(QipMeasureTableComponent(mockTemplate, true));
+
+    expect(screen.getAllByRole("link", { name: /View/i })).toHaveLength(3);
+  });
+
+  it("should not show edit guidance message when table is disabled", () => {
+    render(QipMeasureTableComponent(mockTemplate, true));
+
+    expect(
+      screen.queryByText(/Select .Edit. to begin measure./i)
+    ).not.toBeInTheDocument();
   });
 
   it("should render the empty state when no measures are added", () => {

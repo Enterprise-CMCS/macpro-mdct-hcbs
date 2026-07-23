@@ -21,10 +21,11 @@ import { addQipTargetPage, useStore } from "utils";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
+import addIconGray from "assets/icons/add/icon_add_gray.svg";
 
 export const QipMeasureTableElement = ({
   element: { caption, answer },
-  disabled: _disabled,
+  disabled = false,
   updateElement,
 }: PageElementProps<QipMeasureTableTemplate>) => {
   const { reportType, state, reportId } = useParams();
@@ -81,10 +82,10 @@ export const QipMeasureTableElement = ({
   };
 
   const errorMessage = (status: PageStatus) => {
-    if (status !== PageStatus.COMPLETE) {
+    if (!disabled && status !== PageStatus.COMPLETE) {
       return <Text variant="error">Select "Edit" to begin measure.</Text>;
     }
-    return <></>;
+    return null;
   };
 
   const rows = (answer ?? []).map((answerRow) => {
@@ -108,7 +109,7 @@ export const QipMeasureTableElement = ({
             <Button
               as={Link}
               variant={"outline"}
-              aria-label={`Edit ${answerRow.measureName}`}
+              aria-label={`${disabled ? "View" : "Edit"} ${answerRow.measureName}`}
               href={`/report/${reportType}/${state}/${reportId}/${answerRow.pageId}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -117,7 +118,7 @@ export const QipMeasureTableElement = ({
                 );
               }}
             >
-              Edit
+              {disabled ? "View" : "Edit"}
             </Button>
             {/* TODO delete button */}
           </Flex>
@@ -129,10 +130,15 @@ export const QipMeasureTableElement = ({
   return (
     <>
       <Button
+        isDisabled={disabled}
         onClick={() => setModalComponent(modal, "Add Measure")}
         variant={"outline"}
       >
-        <Image src={addIcon} alt="" sx={{ padding: "3px" }} />
+        <Image
+          src={disabled ? addIconGray : addIcon}
+          alt=""
+          sx={{ padding: "3px" }}
+        />
         Add measure
       </Button>
       <Table variant="measure">
