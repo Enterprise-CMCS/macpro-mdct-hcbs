@@ -8,19 +8,21 @@ import {
   TableCaption,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
-  Text,
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { MeasureTargetInfo, PageStatus, QipMeasureTableTemplate } from "types";
 import { TableStatusIcon } from "components";
 import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
+import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
 import { addQipTargetPage, useStore } from "utils";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
+import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 
 export const QipMeasureTableElement = ({
   element: { caption, answer },
@@ -87,6 +89,28 @@ export const QipMeasureTableElement = ({
     return <></>;
   };
 
+  const handleDeleteClick = (pageId: string, measureName: string) => {
+    const onClose = () => setModalOpen(false);
+    const onConfirm = () => {
+      if (report) {
+        const updatedReport = {
+          ...report,
+          pages: report.pages.filter((p) => p.id !== pageId),
+        };
+        updateReport(updatedReport);
+      }
+      updateElement({
+        answer: (answer ?? []).filter((item) => item.pageId !== pageId),
+      });
+      setModalOpen(false);
+    };
+    setModalComponent(
+      QipDeleteMeasureModal(measureName, onClose, onConfirm),
+      "Are you sure you want to remove this measure?"
+    );
+    setModalOpen(true);
+  };
+
   const rows = (answer ?? []).map((answerRow) => {
     const status = getTableStatus(answerRow.pageId);
     return (
@@ -119,7 +143,15 @@ export const QipMeasureTableElement = ({
             >
               Edit
             </Button>
-            {/* TODO delete button */}
+            <Button
+              variant="plain"
+              aria-label={`Delete ${answerRow.measureName}`}
+              onClick={() =>
+                handleDeleteClick(answerRow.pageId, answerRow.measureName)
+              }
+            >
+              <Image src={cancelIcon} alt="Delete measure" />
+            </Button>
           </Flex>
         </Td>
       </Tr>
