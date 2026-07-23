@@ -1093,7 +1093,7 @@ export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
           hintNumerator:
             "Number of MLTSS plan participants aged 18 to 64 years who received an offer to self-direct their HCBS in the last 12 months.",
           hintDenominator:
-            "Number of participants receiving HCBS aged 18 to 64 years enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+            "Number of participants receiving HCBS aged 18 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
           hintRate:
             "Percentage of eligible participants receiving HCBS aged 18 to 64 years in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
         },
@@ -1102,7 +1102,7 @@ export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
           hintNumerator:
             "Number of MLTSS plan participants aged 65 years and older who received an offer to self-direct their HCBS in the last 12 months.",
           hintDenominator:
-            "Number of participants receiving HCBS aged 65 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
+            "Number of participants receiving HCBS aged 18 and older enrolled in MLTSS plans who were eligible to self-direct their HCBS.",
           hintRate:
             "Percentage of eligible participants receiving HCBS aged 65 years and older in MLTSS plans who were offered the option to self-direct their services in the last 12 months.",
         },
@@ -1131,7 +1131,7 @@ export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
           hintNumerator:
             "Number of MLTSS plan participants aged 18 to 64 years who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
           hintDenominator:
-            "Number of participants aged 18 to 64 years enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+            "Number of participants aged 18 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
           hintRate:
             "Percentage of participants receiving HCBS aged 18 to 64 years in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
         },
@@ -1140,7 +1140,7 @@ export const performanceRateSelfDirection: MultiCategoryNdrTemplate = {
           hintNumerator:
             "Number of MLTSS plan participants aged 65 years and older who opted into self-direction to receive at least one of their HCBS in the last 12 months.",
           hintDenominator:
-            "Number of participants aged 65 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
+            "Number of participants aged 18 and older enrolled in MLTSS plans receiving HCBS who opted to self-direct at least one of their HCBS in the last 12 months.",
           hintRate:
             "Percentage of participants receiving HCBS aged 65 years and older in MLTSS plans who opted to self-direct their services, among those who were offered the option to self-direct in the last 12 months.",
         },
