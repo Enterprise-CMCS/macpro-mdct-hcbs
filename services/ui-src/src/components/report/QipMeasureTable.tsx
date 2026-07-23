@@ -111,7 +111,6 @@ export const QipMeasureTableElement = ({
       QipDeleteMeasureModal(measureName, onClose, onConfirm),
       "Are you sure you want to remove this measure?"
     );
-    setModalOpen(true);
   };
 
   const rows = (answer ?? []).map((answerRow) => {

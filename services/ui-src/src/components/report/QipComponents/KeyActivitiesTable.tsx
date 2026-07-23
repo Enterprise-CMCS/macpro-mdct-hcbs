@@ -165,7 +165,7 @@ export const KeyActivitiesTableElement = (
           <Flex alignItems="center">
             <Button
               variant={"outline"}
-              aria-label={`Edit ${activity.title}`}
+              aria-label={`${disabled ? "View" : "Edit"} ${activity.title}`}
               maxWidth="79px"
               width="79px"
               onClick={() => onEditClick(activity)}
