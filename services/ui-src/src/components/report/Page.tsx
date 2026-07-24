@@ -22,6 +22,7 @@ import {
   DropdownField,
   MeasureDetailsElement,
   MeasureFooterElement,
+  QipMeasureTargetFooterElement,
   MeasureTableElement,
   QipMeasureTableElement,
   MeasureResultsNavigationTableElement,
@@ -108,6 +109,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <MeasureDetailsElement />;
       case ElementType.MeasureFooter:
         return <MeasureFooterElement {...{ disabled, element }} />;
+      case ElementType.QipMeasureTargetFooter:
+        return <QipMeasureTargetFooterElement {...{ disabled, element }} />;
       case ElementType.LengthOfStayRate:
         return <LengthOfStay {...{ updateElement, disabled, element }} />;
       case ElementType.ReadmissionRate:

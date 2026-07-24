@@ -13,6 +13,7 @@ import {
   StatusTableElement,
   MeasureDetailsElement,
   MeasureFooterElement,
+  QipMeasureTargetFooterElement,
   LengthOfStay,
   ReadmissionRate,
   MultiCategoryNdr,
@@ -483,11 +484,25 @@ export const elementObject: {
           type: ElementType.MeasureFooter,
           id: "measure-footer",
           prevTo: "select-measures",
-          saveAndReturn: true,
         }}
       />,
     ],
     pdfVariants: ["MeasureFooter currently not used in PDFs"],
+  },
+  [ElementType.QipMeasureTargetFooter]: {
+    description:
+      "Footer for QIP measure target pages with a single action button",
+    id: "id-qip-measure-target-footer",
+    variants: [
+      <QipMeasureTargetFooterElement
+        element={{
+          type: ElementType.QipMeasureTargetFooter,
+          id: "qip-measure-target-footer",
+          returnTo: "select-measures",
+        }}
+      />,
+    ],
+    pdfVariants: ["QipMeasureTargetFooter currently not used in PDFs"],
   },
   [ElementType.LengthOfStayRate]: {
     description:

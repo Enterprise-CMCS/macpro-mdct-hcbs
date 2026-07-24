@@ -262,6 +262,7 @@ export enum ElementType {
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
+  QipMeasureTargetFooter = "qipMeasureTargetFooter",
   LengthOfStayRate = "lengthOfStay",
   ReadmissionRate = "readmissionRate",
   MultiCategoryNdr = "multiCategoryNdr",
@@ -298,6 +299,7 @@ export type PageElement =
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
+  | QipMeasureTargetFooterTemplate
   | LengthOfStayRateTemplate
   | ReadmissionRateTemplate
   | MultiCategoryNdrTemplate
@@ -501,8 +503,13 @@ export type MeasureFooterTemplate = {
   nextTo?: string;
   completeMeasure?: boolean;
   completeSection?: boolean;
-  saveAndReturn?: boolean;
   clear?: boolean;
+};
+
+export type QipMeasureTargetFooterTemplate = {
+  type: ElementType.QipMeasureTargetFooter;
+  id: string;
+  returnTo: string;
 };
 
 export const LengthOfStayFieldNames = {

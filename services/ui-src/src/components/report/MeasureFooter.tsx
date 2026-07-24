@@ -65,16 +65,6 @@ export const MeasureFooterElement = (
     }, 5);
   };
 
-  /* functionally this just doesn't mark the page as "complete";
-     we may find that we need to, so this could change/be refactored later */
-  const onSaveAndReturn = () => {
-    autosave();
-
-    setTimeout(function () {
-      navigate(`/report/${reportType}/${state}/${reportId}/${footer.prevTo}`);
-    }, 5);
-  };
-
   const onClearButton = () => {
     // Open Modal
     const modal = MeasureClearModal(
@@ -141,9 +131,6 @@ export const MeasureFooterElement = (
             >
               Complete section
             </Button>
-          )}
-          {footer.saveAndReturn && (
-            <Button onClick={() => onSaveAndReturn()}>Save &amp; return</Button>
           )}
         </Box>
       </Flex>
