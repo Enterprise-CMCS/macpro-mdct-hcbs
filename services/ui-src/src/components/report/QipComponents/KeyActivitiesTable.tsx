@@ -28,7 +28,6 @@ import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
-import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
@@ -172,14 +171,15 @@ export const KeyActivitiesTableElement = (
             >
               {disabled ? "View" : "Edit"}
             </Button>
-            <Button
-              variant="transparent"
-              aria-label={`Delete ${activity.title}`}
-              isDisabled={disabled}
-              onClick={() => handleDeleteClick(activity.id)}
-            >
-              <Image src={disabled ? cancelIconGray : cancelIcon} alt="" />
-            </Button>
+            {!disabled && (
+              <Button
+                variant="transparent"
+                aria-label={`Delete ${activity.title}`}
+                onClick={() => handleDeleteClick(activity.id)}
+              >
+                <Image src={cancelIcon} alt="" />
+              </Button>
+            )}
           </Flex>
         </Td>
       </Tr>

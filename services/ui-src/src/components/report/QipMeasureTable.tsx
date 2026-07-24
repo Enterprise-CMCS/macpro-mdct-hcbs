@@ -23,7 +23,6 @@ import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
-import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 
 export const QipMeasureTableElement = ({
   element: { caption, answer },
@@ -145,16 +144,17 @@ export const QipMeasureTableElement = ({
             >
               {disabled ? "View" : "Edit"}
             </Button>
-            <Button
-              variant="transparent"
-              aria-label={`Delete ${answerRow.measureName}`}
-              isDisabled={disabled}
-              onClick={() =>
-                handleDeleteClick(answerRow.pageId, answerRow.measureName)
-              }
-            >
-              <Image src={disabled ? cancelIconGray : cancelIcon} alt="" />
-            </Button>
+            {!disabled && (
+              <Button
+                variant="transparent"
+                aria-label={`Delete ${answerRow.measureName}`}
+                onClick={() =>
+                  handleDeleteClick(answerRow.pageId, answerRow.measureName)
+                }
+              >
+                <Image src={cancelIcon} alt="" />
+              </Button>
+            )}
           </Flex>
         </Td>
       </Tr>

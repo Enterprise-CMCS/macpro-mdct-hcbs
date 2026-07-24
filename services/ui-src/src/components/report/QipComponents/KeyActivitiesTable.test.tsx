@@ -258,5 +258,22 @@ describe("<KeyActivitiesTableElement />", () => {
     ).not.toBeInTheDocument();
   });
 
+  test("should hide delete button when disabled is true", () => {
+    render(
+      <KeyActivitiesTableElement
+        element={populatedTemplate}
+        updateElement={updateSpy}
+        disabled
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "View Activity 1" })
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: "Delete Activity 1" })
+    ).not.toBeInTheDocument();
+  });
+
   testA11y(<KeyActivitiesTableWrapper template={emptyTemplate} />);
 });
