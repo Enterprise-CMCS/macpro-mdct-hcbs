@@ -15,6 +15,9 @@ const mockedDateRangeElement: DateRangeTemplate = {
   helperText:
     "Select the measurement period start and end dates for this individual metric.",
   required: true,
+  answer: {
+    start: "",
+  },
 };
 
 const updateSpy = jest.fn();
@@ -97,6 +100,9 @@ const mockedMMYYYYRangeElement: DateRangeTemplate = {
   helperText: "Enter projected strategy dates.",
   required: true,
   endDateRequired: false,
+  answer: {
+    start: "",
+  },
 };
 
 describe("<DateRange /> with MMYYYY format", () => {

@@ -190,6 +190,9 @@ export const qipReportTemplate: ReportBase = {
           helperText:
             "In the baseline measurement period, MFP grant recipients should report the month(s) and year(s) for which the baseline value represents.",
           required: true,
+          answer: {
+            start: "",
+          },
         },
         { type: ElementType.Divider, id: "divider" },
         {
@@ -276,9 +279,16 @@ export const qipReportTemplate: ReportBase = {
           },
           helperText:
             "Enter a projected start date and, if known, a projected end date. Leave end date blank if the strategy is ongoing.",
+          startHelperText:
+            "Enter a projected start date for future strategies or enter a past start date for strategies in progress.",
+          endHelperText:
+            "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
           dateFormat: "MMYYYY",
           required: true,
           endDateRequired: false,
+          answer: {
+            start: "",
+          },
         },
       ],
     },

@@ -33,7 +33,7 @@ const getRangeErrorMessage = (
   dateFormat: "MMDDYYYY" | "MMYYYY"
 ) => {
   const parse = dateFormat === "MMYYYY" ? parseMMYYYY : parseMMDDYYYY;
-  const parsedStart = parse(answer?.start ?? "");
+  const parsedStart = parse(answer.start);
   const parsedEnd = parse(answer?.end ?? "");
 
   if (parsedStart && parsedEnd && parsedEnd < parsedStart) {
@@ -50,7 +50,7 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
   const dateFormat = dateRange.dateFormat ?? "MMDDYYYY";
 
   const [displayValues, setDisplayValues] = useState<DateValues>({
-    start: dateRange.answer?.start ?? "",
+    start: dateRange.answer.start,
     end: dateRange.answer?.end ?? "",
   });
   const [errors, setErrors] = useState<DateRangeErrors>({
@@ -61,14 +61,14 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
 
   useEffect(() => {
     setDisplayValues({
-      start: dateRange.answer?.start ?? "",
+      start: dateRange.answer.start,
       end: dateRange.answer?.end ?? "",
     });
     setErrors((prev) => ({
       ...prev,
       range: getRangeErrorMessage(dateRange.answer, dateFormat),
     }));
-  }, [dateRange.answer?.start, dateRange.answer?.end, dateFormat]);
+  }, [dateRange.answer.start, dateRange.answer?.end, dateFormat]);
 
   const handleDateChange = (
     fieldName: "start" | "end",
@@ -90,13 +90,13 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
       dateFormat
     );
 
-    const nextAnswer = {
+    const nextAnswer: DateRangeTemplate["answer"] = {
       ...dateRange.answer,
-      [fieldName]: isValid ? maskedValue : undefined,
+      ...(isValid ? { [fieldName]: maskedValue } : {}),
     };
     const rangeError = getRangeErrorMessage(nextAnswer, dateFormat);
 
-    if (!rangeError) {
+    if (isValid && !rangeError) {
       props.updateElement({ answer: nextAnswer });
     }
 
@@ -118,10 +118,23 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
 
   const renderField = (fieldName: "start" | "end") => {
     const name = `${dateRange.id}-${fieldName}`;
-    const label = dateRange.labels[fieldName];
+    const isOptionalEnd =
+      fieldName === "end" && !(dateRange.endDateRequired ?? dateRange.required);
+    const label = isOptionalEnd ? (
+      <>
+        {dateRange.labels[fieldName]}
+        <span className="optionalText"> (optional)</span>
+      </>
+    ) : (
+      dateRange.labels[fieldName]
+    );
     const value = displayValues[fieldName];
     const errorMessage =
       fieldName === "end" ? errors.end || errors.range : errors.start;
+    const fieldHelperText =
+      fieldName === "start"
+        ? dateRange.startHelperText
+        : dateRange.endHelperText;
 
     if (dateFormat === "MMYYYY") {
       return (
@@ -132,9 +145,16 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
             onChange={onMonthYearChange(fieldName)}
             value={value}
             hint={
-              <Text as="span" display="block" sx={sx.monthYearHintText}>
-                {formatWithPlaceholders(value)}
-              </Text>
+              <>
+                {fieldHelperText && (
+                  <Text as="span" display="block">
+                    {fieldHelperText}
+                  </Text>
+                )}
+                <Text as="span" display="block" sx={sx.monthYearHintText}>
+                  {formatWithPlaceholders(value)}
+                </Text>
+              </>
             }
             errorMessage={errorMessage}
             disabled={props.disabled}
