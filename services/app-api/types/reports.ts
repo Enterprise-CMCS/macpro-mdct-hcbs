@@ -256,7 +256,7 @@ export enum ElementType {
   Radio = "radio",
   Checkbox = "checkbox",
   ButtonLink = "buttonLink",
-  MeasureTable = "measureTable",
+  QmsMeasureTable = "measureTable",
   QipMeasureTable = "qipMeasureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
@@ -292,7 +292,7 @@ export type PageElement =
   | RadioTemplate
   | CheckboxTemplate
   | ButtonLinkTemplate
-  | MeasureTableTemplate
+  | QmsMeasureTableTemplate
   | QipMeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
@@ -692,9 +692,9 @@ export enum MeasureSpecification {
   CQL = "CQL",
 }
 
-export type MeasureTableTemplate = {
+export type QmsMeasureTableTemplate = {
   id: string;
-  type: ElementType.MeasureTable;
+  type: ElementType.QmsMeasureTable;
   caption: string;
   measureDisplay: "required" | "optional";
 };
