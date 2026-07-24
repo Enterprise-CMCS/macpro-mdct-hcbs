@@ -179,7 +179,6 @@ export const qipReportTemplate: ReportBase = {
           required: true,
         },
         {
-          // TODO: This is MMDDYYYY, but we need MMYYYY.
           type: ElementType.DateRange,
           id: "baseline-period",
           labels: {
@@ -189,6 +188,7 @@ export const qipReportTemplate: ReportBase = {
           },
           helperText:
             "In the baseline measurement period, MFP grant recipients should report the month(s) and year(s) for which the baseline value represents.",
+          dateFormat: "MMYYYY",
           required: true,
         },
         { type: ElementType.Divider, id: "divider" },
@@ -219,7 +219,6 @@ export const qipReportTemplate: ReportBase = {
           text: "Performance Target Timeframe",
         },
         {
-          // TODO: Our Date component is MMDDYYYY, but this one is supposed to be MMYYYY.
           type: ElementType.Date,
           id: "target-timeframe",
           label: "Target Timeframe",
@@ -227,6 +226,7 @@ export const qipReportTemplate: ReportBase = {
           // but our h3 component doesn't have helper text and our date component does.
           helperText:
             "In the baseline measurement period, MFP grant recipients should report the month(s) and year(s) for which the baseline value represents.",
+          dateFormat: "MMYYYY",
           required: true,
         },
         {
@@ -306,6 +306,7 @@ export const qipReportTemplate: ReportBase = {
           type: ElementType.KeyActivityTable,
           id: "key-activities-table",
           caption: "Key Activities",
+          required: true,
         },
       ],
     },

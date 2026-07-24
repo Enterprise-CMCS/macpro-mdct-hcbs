@@ -27,6 +27,7 @@ const emptyTemplate: KeyActivityTableTemplate = {
   id: "key-activities-table",
   type: ElementType.KeyActivityTable,
   caption: "Key Activities",
+  required: true,
   answer: [],
 };
 
@@ -34,6 +35,7 @@ const populatedTemplate: KeyActivityTableTemplate = {
   id: "key-activities-table",
   type: ElementType.KeyActivityTable,
   caption: "Key Activities",
+  required: true,
   answer: [
     {
       id: "activity-1",
