@@ -32,6 +32,7 @@ jest.mock("react-router-dom", () => ({
 const mockedMeasureFooterElement: MeasureFooterTemplate = {
   id: "mock-footer-id",
   type: ElementType.MeasureFooter,
+  prevTo: "req-measure-result",
   nextTo: "mock-next-link",
   completeMeasure: true,
   clear: true,
@@ -40,7 +41,6 @@ const mockedMeasureFooterElement: MeasureFooterTemplate = {
 const mockedMeasureFooterEmpty: MeasureFooterTemplate = {
   id: "mock-footer-id",
   type: ElementType.MeasureFooter,
-  prevTo: "mock-prev-link",
 };
 
 const mockedMeasureSectionFooterElement: MeasureFooterTemplate = {
@@ -124,8 +124,9 @@ describe("Measure Footer", () => {
   it("Test Measure Footer component without optional fields", () => {
     render(<MeasureFooterElement element={mockedMeasureFooterEmpty} />);
 
-    expect(screen.getByText("Previous")).toBeInTheDocument();
-
+    expect(
+      screen.queryByRole("button", { name: "Previous" })
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Next" })
     ).not.toBeInTheDocument();

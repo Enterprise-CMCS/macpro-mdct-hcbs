@@ -148,6 +148,12 @@ export const qipReportTemplate: ReportBase = {
       type: PageType.Standard,
       elements: [
         {
+          type: ElementType.ButtonLink,
+          id: "return-button",
+          label: "Return to Select Measures & Targets",
+          to: "select-measures",
+        },
+        {
           type: ElementType.Header,
           id: "page-header",
           text: "{measureName}",
@@ -240,7 +246,6 @@ export const qipReportTemplate: ReportBase = {
         {
           type: ElementType.MeasureFooter,
           id: "qip-measure-target-footer",
-          prevTo: "select-measures",
           saveAndReturn: true,
         },
       ],

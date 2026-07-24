@@ -94,16 +94,18 @@ export const MeasureFooterElement = (
         <Divider marginBottom="spacer3"></Divider>
       )}
       <Flex justifyContent="space-between">
-        <Button
-          variant="outline"
-          onClick={() =>
-            navigate(
-              `/report/${reportType}/${state}/${reportId}/${getPrevPageId()}`
-            )
-          }
-        >
-          Previous
-        </Button>
+        {footer.prevTo && (
+          <Button
+            variant="outline"
+            onClick={() =>
+              navigate(
+                `/report/${reportType}/${state}/${reportId}/${getPrevPageId()}`
+              )
+            }
+          >
+            Previous
+          </Button>
+        )}
         {footer.nextTo && (
           <Button
             onClick={() =>
@@ -115,7 +117,6 @@ export const MeasureFooterElement = (
             Next
           </Button>
         )}
-
         <Box>
           {footer.clear && !readOnlyView && (
             <Button
