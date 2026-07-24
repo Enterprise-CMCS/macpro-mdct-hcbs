@@ -161,9 +161,7 @@ export const renderReportSections = (
   reportPages = [...iterateExportPages(reportPages, "root")];
 
   return reportPages.map((section, idx) => {
-    const isHeaderOnlySection =
-      section.id === "required-measures-heading" ||
-      section.id === "optional-measures-heading";
+    const isHeaderOnlySection = section.id === "injected-heading";
 
     /*
      * There are some sections that were manually added into the PDF

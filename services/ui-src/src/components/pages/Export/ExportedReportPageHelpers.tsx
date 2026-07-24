@@ -13,59 +13,57 @@ export function* iterateExportPages(
 ): Generator<PageTemplate> {
   const page = allPages.find((p) => p.id === pageId)!;
 
-  if (page.id === "root") {
-    for (let childId of page.childPageIds ?? []) {
-      yield* iterateExportPages(allPages, childId);
-    }
-  } else if (page.id === "review-submit") {
-    // We never render the Review And Submit page in the export view.
-    return;
-  } else if (page.id === "req-measure-result") {
-    const childPages = getMeasurePageIds(allPages, true).flatMap((cpid) => [
-      ...iterateExportPages(allPages, cpid),
-    ]);
-    if (childPages.length > 0) {
-      yield {
-        navTitle: "Required Measures",
-        id: "required-measures-heading",
-        type: PageType.Standard,
-        elements: [],
-      };
-      yield* childPages;
-    }
-  } else if (page.id === "optional-measure-result") {
-    const childPages = getMeasurePageIds(allPages, false).flatMap((cpid) => [
-      ...iterateExportPages(allPages, cpid),
-    ]);
-    if (childPages.length > 0) {
-      yield {
-        navTitle: "Optional Measures",
-        id: "optional-measures-heading",
-        type: PageType.Standard,
-        elements: [],
-      };
-      yield* childPages;
-    }
-  } else if (page.id === "select-measures") {
-    for (let childId of getTargetPageIds(page as FormPageTemplate)) {
-      yield* iterateExportPages(allPages, childId);
-    }
-  } else if (page.type === PageType.Measure) {
-    const mPage = page as MeasurePageTemplate;
-    if (mPage.required || mPage.status !== PageStatus.NOT_STARTED) {
-      yield mPage;
-      for (let childId of mPage.dependentPages?.map((dp) => dp.key) ?? []) {
+  switch (pageId) {
+    case "root":
+      for (let childId of page.childPageIds ?? []) {
         yield* iterateExportPages(allPages, childId);
       }
-    }
-  } else if (page.type === PageType.MeasureResults) {
-    if ((page as FormPageTemplate).status !== PageStatus.NOT_STARTED) {
-      yield page;
-    }
-  } else {
-    // This is a standard form page. No hide conditions, no children.
-    yield page;
+      return;
+    case "review-submit":
+      // We never render the Review And Submit page in the export view.
+      return;
+    case "req-measure-result":
+    case "optional-measure-result":
+      const isRequired = pageId === "req-measure-result";
+      const childPages = getMeasurePageIds(allPages, isRequired).flatMap(
+        (mpid) => [...iterateExportPages(allPages, mpid)]
+      );
+      if (childPages.length > 0) {
+        yield {
+          navTitle: isRequired ? "Required Measures" : "Optional Measures",
+          id: "injected-heading",
+          type: PageType.Standard,
+          elements: [],
+        };
+        yield* childPages;
+      }
+      return;
+    case "select-measures":
+      for (let childId of getTargetPageIds(page as FormPageTemplate)) {
+        yield* iterateExportPages(allPages, childId);
+      }
+      return;
   }
+
+  switch (page.type) {
+    case PageType.Measure:
+      const mPage = page as MeasurePageTemplate;
+      if (mPage.required || mPage.status !== PageStatus.NOT_STARTED) {
+        yield mPage;
+        for (let childId of mPage.dependentPages?.map((dp) => dp.key) ?? []) {
+          yield* iterateExportPages(allPages, childId);
+        }
+      }
+      return;
+    case PageType.MeasureResults:
+      if ((page as FormPageTemplate).status !== PageStatus.NOT_STARTED) {
+        yield page;
+      }
+      return;
+  }
+
+  // This is a standard form page. No hide conditions, no children.
+  yield page;
 }
 
 function getMeasurePageIds(allPages: PageTemplate[], isRequired: boolean) {
