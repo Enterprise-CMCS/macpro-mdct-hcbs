@@ -28,10 +28,7 @@ import {
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 import { StateNames } from "../../../constants";
 import { ExportedReportTable } from "components/export/ExportedReportTable";
-import {
-  shouldRender,
-  createMeasuresSection,
-} from "./ExportedReportPageHelpers";
+import { iterateExportPages } from "./ExportedReportPageHelpers";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
@@ -161,29 +158,7 @@ export const renderReportSections = (
     | ReviewSubmitTemplate
   )[]
 ) => {
-  reportPages = reportPages.filter(shouldRender);
-
-  // REQUIRED MEASURES
-  const requiredMeasuresStartIdx = reportPages.findIndex(
-    (section) => section.id === "req-measure-result"
-  );
-  requiredMeasuresStartIdx !== -1 &&
-    reportPages.splice(
-      requiredMeasuresStartIdx,
-      1,
-      ...createMeasuresSection(true, reportPages)
-    );
-
-  // OPTIONAL MEASURES
-  const optionalMeasuresStartIdx = reportPages.findIndex(
-    (section) => section.id === "optional-measure-result"
-  );
-  optionalMeasuresStartIdx !== -1 &&
-    reportPages.splice(
-      optionalMeasuresStartIdx,
-      1,
-      ...createMeasuresSection(false, reportPages)
-    );
+  reportPages = [...iterateExportPages(reportPages, "root")];
 
   return reportPages.map((section, idx) => {
     const isHeaderOnlySection =
