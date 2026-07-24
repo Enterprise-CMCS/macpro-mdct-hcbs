@@ -306,6 +306,7 @@ export const qipReportTemplate: ReportBase = {
           type: ElementType.KeyActivityTable,
           id: "key-activities-table",
           caption: "Key Activities",
+          required: true,
         },
       ],
     },

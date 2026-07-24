@@ -342,6 +342,7 @@ const keyActivityTableSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.KeyActivityTable)),
   id: string().required(),
   caption: string().required(),
+  required: boolean().required(),
   answer: array()
     .of(
       object().shape({

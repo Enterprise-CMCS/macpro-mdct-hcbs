@@ -793,6 +793,7 @@ export const elementObject: {
           type: ElementType.KeyActivityTable,
           id: "id-key-activity-table",
           caption: "Key Activities",
+          required: true,
           answer: [
             {
               id: "sample-activity-1",

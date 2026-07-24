@@ -490,6 +490,7 @@ export type KeyActivityTableTemplate = {
   type: ElementType.KeyActivityTable;
   id: string;
   caption: string;
+  required: boolean;
   answer?: KeyActivityItem[];
 };
 
