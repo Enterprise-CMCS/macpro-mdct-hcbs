@@ -28,6 +28,7 @@ const tableElementList = [
   ElementType.TextAreaField,
   ElementType.Checkbox,
   ElementType.ListInput,
+  ElementType.NumberField,
 ];
 
 const renderElementList = [

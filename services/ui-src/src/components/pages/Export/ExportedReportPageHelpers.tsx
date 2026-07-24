@@ -7,7 +7,11 @@ import {
 } from "types";
 
 export const shouldRender = (section: PageTemplate) => {
-  if (section.id === "review-submit" || section.id === "root") {
+  if (
+    section.id === "review-submit" ||
+    section.id === "root" ||
+    section.id === "measure-target-template"
+  ) {
     return false;
   }
 
