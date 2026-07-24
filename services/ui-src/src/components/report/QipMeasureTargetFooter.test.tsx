@@ -5,10 +5,12 @@ import {
   ReportStatus,
 } from "types";
 import { QipMeasureTargetFooterElement } from "./QipMeasureTargetFooter";
+import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 import userEventTl from "@testing-library/user-event";
 import { mockUseStore } from "utils/testing/setupJest";
 
 const mockUseNavigate = jest.fn();
+const mockAutosave = jest.fn();
 
 jest.mock("utils/state/useStore", () => ({
   useStore: jest
@@ -39,6 +41,13 @@ const mockedQipMeasureTargetFooter: QipMeasureTargetFooterTemplate = {
   returnTo: "select-measures",
 };
 
+const renderWithAutosave = (element: QipMeasureTargetFooterTemplate) =>
+  render(
+    <ReportAutosaveContext.Provider value={{ autosave: mockAutosave }}>
+      <QipMeasureTargetFooterElement element={element} />
+    </ReportAutosaveContext.Provider>
+  );
+
 describe("QipMeasureTargetFooter test(s)", () => {
   const userEvent = userEventTl.setup({ delay: null });
 
@@ -51,10 +60,8 @@ describe("QipMeasureTargetFooter test(s)", () => {
     jest.useRealTimers();
   });
 
-  it("should render the button and navigate correctly", async () => {
-    render(
-      <QipMeasureTargetFooterElement element={mockedQipMeasureTargetFooter} />
-    );
+  it("should render the button, call autosave, and navigate", async () => {
+    renderWithAutosave(mockedQipMeasureTargetFooter);
 
     expect(
       screen.queryByRole("button", { name: "Previous" })
@@ -63,12 +70,14 @@ describe("QipMeasureTargetFooter test(s)", () => {
     const actionBtn = screen.getByRole("button", { name: "Save & return" });
     await userEvent.click(actionBtn);
     jest.advanceTimersByTime(10);
+
+    expect(mockAutosave).toHaveBeenCalledTimes(1);
     expect(mockUseNavigate).toHaveBeenCalledWith(
       "/report/QIP/CO/mock-id/select-measures"
     );
   });
 
-  it("should still navigate when report is read-only (submitted)", async () => {
+  it("should skip autosave and still navigate when report is read-only (submitted)", async () => {
     const readOnlyStore = {
       ...mockUseStore,
       report: { ...mockUseStore.report!, status: ReportStatus.SUBMITTED },
@@ -81,13 +90,13 @@ describe("QipMeasureTargetFooter test(s)", () => {
       }
     );
 
-    render(
-      <QipMeasureTargetFooterElement element={mockedQipMeasureTargetFooter} />
-    );
+    renderWithAutosave(mockedQipMeasureTargetFooter);
 
     const actionBtn = screen.getByRole("button", { name: "Save & return" });
     await userEvent.click(actionBtn);
     jest.advanceTimersByTime(10);
+
+    expect(mockAutosave).not.toHaveBeenCalled();
     expect(mockUseNavigate).toHaveBeenCalledWith(
       "/report/QIP/CO/mock-id/select-measures"
     );
