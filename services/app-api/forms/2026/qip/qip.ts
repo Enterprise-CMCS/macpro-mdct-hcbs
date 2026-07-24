@@ -238,10 +238,9 @@ export const qipReportTemplate: ReportBase = {
           required: false,
         },
         {
-          type: ElementType.MeasureFooter,
+          type: ElementType.QipMeasureTargetFooter,
           id: "qip-measure-target-footer",
-          prevTo: "select-measures",
-          saveAndReturn: true,
+          returnTo: "select-measures",
         },
       ],
     },
