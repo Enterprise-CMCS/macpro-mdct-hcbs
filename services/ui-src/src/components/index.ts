@@ -58,6 +58,7 @@ export { NDR } from "../components/rates/types/NDR";
 export { PerformanceNdr } from "./rates/types/PerformanceNdr";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
+export { QipMeasureTargetFooterElement } from "./report/QipMeasureTargetFooter";
 export { MeasureReplacementModal } from "./report/MeasureReplacementModal";
 export { MeasureTableElement } from "./report/MeasureTable";
 export { QipMeasureTableElement } from "./report/QipMeasureTable";
