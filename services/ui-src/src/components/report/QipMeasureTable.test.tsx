@@ -339,17 +339,31 @@ describe("Test QipMeasureTable", () => {
     expect(mockUpdateElement).not.toHaveBeenCalled();
   });
 
-  it("should disable the delete button when the report is submitted", () => {
+  it("should hide delete buttons when the report is submitted", () => {
     render(QipMeasureTableComponent(mockTemplate, true));
 
-    const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
-    deleteButtons.forEach((btn) => expect(btn).toBeDisabled());
+    expect(
+      screen.queryByRole("button", { name: "Delete Not Started Measure" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Delete In Progress Measure" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Delete Complete Measure" })
+    ).not.toBeInTheDocument();
   });
 
-  it("should disable the delete button for non-end-users (admin)", () => {
+  it("should hide delete buttons for non-end-users (admin)", () => {
     render(QipMeasureTableComponent(mockTemplate, true));
 
-    const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
-    deleteButtons.forEach((btn) => expect(btn).toBeDisabled());
+    expect(
+      screen.queryByRole("button", { name: "Delete Not Started Measure" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Delete In Progress Measure" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Delete Complete Measure" })
+    ).not.toBeInTheDocument();
   });
 });

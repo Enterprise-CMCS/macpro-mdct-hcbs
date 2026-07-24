@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { ListInput } from "./ListInput";
 import { ElementType, ListInputTemplate } from "types";
 import userEvent from "@testing-library/user-event";
@@ -70,6 +70,39 @@ describe("<ListInput />", () => {
     await userEvent.type(textbox, "text");
     expect(
       screen.queryByText("A response is required")
+    ).not.toBeInTheDocument();
+  });
+
+  it("ListInput hides remove button when disabled is true", async () => {
+    cleanup();
+
+    const { rerender } = render(
+      <div>
+        <ListInput
+          element={mockedListInputElement}
+          updateElement={updateSpy}
+          disabled={false}
+        />
+      </div>
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "mock button text" })
+    );
+    expect(screen.getByRole("button", { name: "Remove" })).toBeInTheDocument();
+
+    rerender(
+      <div>
+        <ListInput
+          element={{ ...mockedListInputElement, answer: [""] }}
+          updateElement={updateSpy}
+          disabled={true}
+        />
+      </div>
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Remove" })
     ).not.toBeInTheDocument();
   });
 });
