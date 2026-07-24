@@ -1,5 +1,9 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import { ElementType, QipMeasureTargetFooterTemplate } from "types";
+import { render, screen } from "@testing-library/react";
+import {
+  ElementType,
+  QipMeasureTargetFooterTemplate,
+  ReportStatus,
+} from "types";
 import { QipMeasureTargetFooterElement } from "./QipMeasureTargetFooter";
 import userEventTl from "@testing-library/user-event";
 import { mockUseStore } from "utils/testing/setupJest";
@@ -40,6 +44,11 @@ describe("QipMeasureTargetFooter test(s)", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("should render the button and navigate correctly", async () => {
@@ -53,10 +62,34 @@ describe("QipMeasureTargetFooter test(s)", () => {
 
     const actionBtn = screen.getByRole("button", { name: "Save & return" });
     await userEvent.click(actionBtn);
-    await waitFor(() => {
-      expect(mockUseNavigate).toHaveBeenCalledWith(
-        "/report/QIP/CO/mock-id/select-measures"
-      );
-    });
+    jest.advanceTimersByTime(10);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      "/report/QIP/CO/mock-id/select-measures"
+    );
+  });
+
+  it("should still navigate when report is read-only (submitted)", async () => {
+    const readOnlyStore = {
+      ...mockUseStore,
+      report: { ...mockUseStore.report!, status: ReportStatus.SUBMITTED },
+    };
+    const { useStore } = jest.requireMock("utils/state/useStore");
+    useStore.mockImplementation(
+      (selector?: (state: typeof readOnlyStore) => unknown) => {
+        if (selector) return selector(readOnlyStore);
+        return readOnlyStore;
+      }
+    );
+
+    render(
+      <QipMeasureTargetFooterElement element={mockedQipMeasureTargetFooter} />
+    );
+
+    const actionBtn = screen.getByRole("button", { name: "Save & return" });
+    await userEvent.click(actionBtn);
+    jest.advanceTimersByTime(10);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      "/report/QIP/CO/mock-id/select-measures"
+    );
   });
 });

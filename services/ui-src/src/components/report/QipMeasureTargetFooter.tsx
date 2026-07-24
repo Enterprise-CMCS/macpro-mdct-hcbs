@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { PageElementProps } from "./Elements";
-import { QipMeasureTargetFooterTemplate } from "types";
+import { QipMeasureTargetFooterTemplate, ReportStatus } from "types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "utils";
 import { currentPageSelector } from "utils/state/selectors";
@@ -11,16 +11,21 @@ import { displayDivider } from "utils/state/reportLogic/reportActions";
 export const QipMeasureTargetFooterElement = (
   props: PageElementProps<QipMeasureTargetFooterTemplate>
 ) => {
-  const footer = props.element;
+  const { element: footer } = props;
   const { reportType, state, reportId } = useParams();
+  const { report } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
+  const { userIsEndUser } = useStore().user ?? {};
+  const readOnly = !userIsEndUser || report?.status === ReportStatus.SUBMITTED;
   const currentPage = useStore(currentPageSelector);
   const navigate = useNavigate();
 
   if (!currentPage) return null;
 
   const onActionButton = () => {
-    autosave();
+    if (!readOnly) {
+      autosave();
+    }
 
     // following pattern in MeasureFooter for scroll timing
     setTimeout(function () {
@@ -34,7 +39,7 @@ export const QipMeasureTargetFooterElement = (
         <Divider marginBottom="spacer3"></Divider>
       )}
       <Flex justifyContent="flex-end">
-        <Button onClick={() => onActionButton()}>Save & return</Button>
+        <Button onClick={() => onActionButton()}>Save &amp; return</Button>
       </Flex>
     </Box>
   );
