@@ -128,7 +128,7 @@ const dateRangeTemplateSchema = object().shape({
   endHelperText: string().notRequired(),
   answer: object()
     .shape({
-      start: string().required(),
+      start: string().notRequired(),
       end: string().notRequired(),
     })
     .notRequired(),
