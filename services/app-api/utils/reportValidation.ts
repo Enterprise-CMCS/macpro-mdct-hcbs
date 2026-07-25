@@ -128,10 +128,10 @@ const dateRangeTemplateSchema = object().shape({
   endHelperText: string().notRequired(),
   answer: object()
     .shape({
-      start: string().notRequired(),
+      start: string().defined(), // required to be present, but may be empty string
       end: string().notRequired(),
     })
-    .notRequired(),
+    .required(),
   required: boolean().required(),
 });
 

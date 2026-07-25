@@ -92,11 +92,11 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
 
     const nextAnswer: DateRangeTemplate["answer"] = {
       ...dateRange.answer,
-      ...(isValid ? { [fieldName]: maskedValue } : {}),
+      ...(isValid || rawValue === "" ? { [fieldName]: maskedValue } : {}),
     };
     const rangeError = getRangeErrorMessage(nextAnswer, dateFormat);
 
-    if (isValid && !rangeError) {
+    if ((isValid || rawValue === "") && !rangeError) {
       props.updateElement({ answer: nextAnswer });
     }
 
