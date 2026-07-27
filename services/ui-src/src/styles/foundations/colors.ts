@@ -11,7 +11,7 @@ export const colors = {
     secondary: "#02bfe7",
     secondary_darkest: "#016074",
     // status: success
-    success_lightest: "#e7f3e7",
+    success_lightest: "#f6faf5",
     success: "#12890e",
     success_dark: "#107b0d",
     success_darker: "#0d600a",
