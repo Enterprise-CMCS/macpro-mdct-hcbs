@@ -50,7 +50,7 @@ export function* iterateExportPages(
       const mPage = page as MeasurePageTemplate;
       if (mPage.required || mPage.status !== PageStatus.NOT_STARTED) {
         yield mPage;
-        for (let childId of mPage.dependentPages?.map((dp) => dp.key) ?? []) {
+        for (let childId of getMeasureResultPageIds(mPage)) {
           yield* iterateExportPages(allPages, childId);
         }
       }
@@ -62,8 +62,14 @@ export function* iterateExportPages(
       return;
   }
 
-  // This is a standard form page. No hide conditions, no children.
+  // This is a standard form page, which may or may not have.
   yield page;
+
+  if ("childPageIds" in page) {
+    for (let childId of page.childPageIds ?? []) {
+      yield* iterateExportPages(allPages, childId);
+    }
+  }
 }
 
 function getMeasurePageIds(allPages: PageTemplate[], isRequired: boolean) {
@@ -71,6 +77,10 @@ function getMeasurePageIds(allPages: PageTemplate[], isRequired: boolean) {
     .filter((page) => page.type === "measure")
     .filter((page) => (page as MeasurePageTemplate).required === isRequired)
     .map((page) => page.id);
+}
+
+function getMeasureResultPageIds(measurePage: MeasurePageTemplate) {
+  return measurePage.dependentPages?.map((dp) => dp.template) ?? [];
 }
 
 function getTargetPageIds(selectMeasuresPage: FormPageTemplate) {

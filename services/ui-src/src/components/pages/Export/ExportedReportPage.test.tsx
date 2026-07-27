@@ -14,7 +14,10 @@ const report = {
   state: "CO",
   name: "mock-title",
   pages: [
-    { childPageIds: ["1", "2"] },
+    {
+      id: "root",
+      childPageIds: ["id-1", "id-2", "req-measure-result", "review-submit"],
+    },
     { title: "Section 1", id: "id-1" },
     { title: "Section 2", id: "id-2" },
     { title: "Section 3", id: "req-measure-result" },
