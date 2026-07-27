@@ -89,12 +89,18 @@ export const renderElements = (
       return EligibilityTableElementExport(element, section.navTitle);
     case ElementType.KeyActivityTable:
       if (!element.answer?.length) return notAnsweredText;
-      return element.answer
-        .map(
-          (a) =>
-            `${a.title}${a.completionDate ? `\nExpected completion date: ${a.completionDate}` : ""}`
-        )
-        .join("\n\n");
+      return (
+        <ul>
+          {element.answer.map((activity) => (
+            <li>
+              {activity.title}{" "}
+              {activity.completionDate ? (
+                <>Expected completion date: {activity.completionDate}</>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      );
     case ElementType.QipMeasureTable:
       // TODO: Should this render in the PDF? What should it look like?
       return undefined;
