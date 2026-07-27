@@ -16,15 +16,7 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { formatMonthDayYear, useStore } from "utils";
-import {
-  FormPageTemplate,
-  getReportName,
-  MeasurePageTemplate,
-  ParentPageTemplate,
-  Report,
-  ReportType,
-  ReviewSubmitTemplate,
-} from "types";
+import { getReportName, PageTemplate, Report, ReportType } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 import { StateNames } from "../../../constants";
 import { ExportedReportTable } from "components/export/ExportedReportTable";
@@ -150,15 +142,8 @@ export const reportSubmissionSetUp = (report: Report) => {
   );
 };
 
-export const renderReportSections = (
-  reportPages: (
-    | ParentPageTemplate
-    | FormPageTemplate
-    | MeasurePageTemplate
-    | ReviewSubmitTemplate
-  )[]
-) => {
-  reportPages = [...iterateExportPages(reportPages, "root")];
+export const renderReportSections = (reportPages: PageTemplate[]) => {
+  reportPages = [...iterateExportPages(reportPages)];
 
   return reportPages.map((section, idx) => {
     const isHeaderOnlySection = section.id === "injected-heading";
