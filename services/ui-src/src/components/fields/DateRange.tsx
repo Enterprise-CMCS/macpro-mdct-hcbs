@@ -148,7 +148,7 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
               <>
                 {fieldHelperText && (
                   <Text as="span" display="block">
-                    {fieldHelperText}
+                    {parseHtml(fieldHelperText)}
                   </Text>
                 )}
                 <Text as="span" display="block" sx={sx.monthYearHintText}>
