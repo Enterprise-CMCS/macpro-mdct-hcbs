@@ -73,3 +73,40 @@ describe("<ListInput />", () => {
     ).not.toBeInTheDocument();
   });
 });
+
+describe("<ListInput /> disabled behavior", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("ListInput hides remove button when disabled is true", async () => {
+    const { rerender } = render(
+      <div>
+        <ListInput
+          element={mockedListInputElement}
+          updateElement={updateSpy}
+          disabled={false}
+        />
+      </div>
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "mock button text" })
+    );
+    expect(screen.getByRole("button", { name: "Remove" })).toBeInTheDocument();
+
+    rerender(
+      <div>
+        <ListInput
+          element={{ ...mockedListInputElement, answer: [""] }}
+          updateElement={updateSpy}
+          disabled={true}
+        />
+      </div>
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Remove" })
+    ).not.toBeInTheDocument();
+  });
+});
