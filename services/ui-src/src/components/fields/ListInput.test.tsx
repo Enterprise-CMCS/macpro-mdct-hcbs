@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ListInput } from "./ListInput";
 import { ElementType, ListInputTemplate } from "types";
 import userEvent from "@testing-library/user-event";
@@ -72,10 +72,14 @@ describe("<ListInput />", () => {
       screen.queryByText("A response is required")
     ).not.toBeInTheDocument();
   });
+});
+
+describe("<ListInput /> disabled behavior", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it("ListInput hides remove button when disabled is true", async () => {
-    cleanup();
-
     const { rerender } = render(
       <div>
         <ListInput

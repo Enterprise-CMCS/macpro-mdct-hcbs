@@ -339,7 +339,7 @@ describe("Test QipMeasureTable", () => {
     expect(mockUpdateElement).not.toHaveBeenCalled();
   });
 
-  it("should hide delete buttons when the report is submitted", () => {
+  it("should hide delete buttons when disabled is true", () => {
     render(QipMeasureTableComponent(mockTemplate, true));
 
     expect(
