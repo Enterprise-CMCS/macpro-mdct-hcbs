@@ -23,6 +23,7 @@ import {
   MeasureDetailsElement,
   MeasureFooterElement,
   QmsMeasureTableElement,
+  QipMeasureTargetFooterElement,
   QipMeasureTableElement,
   MeasureResultsNavigationTableElement,
   RadioField,
@@ -108,6 +109,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <MeasureDetailsElement />;
       case ElementType.MeasureFooter:
         return <MeasureFooterElement {...{ disabled, element }} />;
+      case ElementType.QipMeasureTargetFooter:
+        return <QipMeasureTargetFooterElement {...{ disabled, element }} />;
       case ElementType.LengthOfStayRate:
         return <LengthOfStay {...{ updateElement, disabled, element }} />;
       case ElementType.ReadmissionRate:
@@ -131,9 +134,15 @@ export const Page = ({ id, setElements, elements }: Props) => {
       case ElementType.ListInput:
         return <ListInput {...{ updateElement, disabled, element }} />;
       case ElementType.EligibilityTable:
-        return <EligibilityTableElement {...{ updateElement, element }} />;
+        return (
+          <EligibilityTableElement {...{ updateElement, disabled, element }} />
+        );
       case ElementType.KeyActivityTable:
-        return <KeyActivitiesTableElement {...{ updateElement, element }} />;
+        return (
+          <KeyActivitiesTableElement
+            {...{ updateElement, disabled, element }}
+          />
+        );
       default:
         assertExhaustive(element);
         return null;

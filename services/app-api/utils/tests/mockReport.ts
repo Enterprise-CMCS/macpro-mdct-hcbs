@@ -239,6 +239,7 @@ export const reportWithKeyActivityTable = {
           type: ElementType.KeyActivityTable,
           id: "key-activities-table",
           caption: "Key Activities",
+          required: true,
           answer: [
             {
               id: "activity-1",

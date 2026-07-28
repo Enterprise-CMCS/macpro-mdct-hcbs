@@ -204,6 +204,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureDetailsTemplateSchema;
     case ElementType.MeasureFooter:
       return measureFooterSchema;
+    case ElementType.QipMeasureTargetFooter:
+      return qipMeasureTargetFooterSchema;
     case ElementType.LengthOfStayRate:
       return lengthOfStayRateSchema;
     case ElementType.ReadmissionRate:
@@ -342,6 +344,7 @@ const keyActivityTableSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.KeyActivityTable)),
   id: string().required(),
   caption: string().required(),
+  required: boolean().required(),
   answer: array()
     .of(
       object().shape({
@@ -386,8 +389,15 @@ const measureFooterSchema = object().shape({
   nextTo: string().notRequired(),
   completeMeasure: boolean().notRequired(),
   completeSection: boolean().notRequired(),
-  saveAndReturn: boolean().notRequired(),
   clear: boolean().notRequired(),
+});
+
+const qipMeasureTargetFooterSchema = object().shape({
+  type: string()
+    .required()
+    .matches(new RegExp(ElementType.QipMeasureTargetFooter)),
+  id: string().required(),
+  returnTo: string().required(),
 });
 
 const lengthOfStayRateSchema = object().shape({

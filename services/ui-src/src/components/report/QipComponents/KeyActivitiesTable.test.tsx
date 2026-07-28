@@ -3,7 +3,15 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { ElementType, KeyActivityTableTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
+import { useStore } from "utils";
+import { mockUseStore } from "utils/testing/setupJest";
 import { KeyActivitiesTableElement } from "./KeyActivitiesTable";
+
+jest.mock("utils/state/useStore", () => ({
+  useStore: jest.fn().mockReturnValue({}),
+}));
+const mockedUseStore = jest.mocked(useStore);
+mockedUseStore.mockReturnValue(mockUseStore);
 
 jest.mock("components/fields", () => ({
   DateField: ({ element, updateElement }: any) => (
@@ -19,6 +27,7 @@ const emptyTemplate: KeyActivityTableTemplate = {
   id: "key-activities-table",
   type: ElementType.KeyActivityTable,
   caption: "Key Activities",
+  required: true,
   answer: [],
 };
 
@@ -26,6 +35,7 @@ const populatedTemplate: KeyActivityTableTemplate = {
   id: "key-activities-table",
   type: ElementType.KeyActivityTable,
   caption: "Key Activities",
+  required: true,
   answer: [
     {
       id: "activity-1",

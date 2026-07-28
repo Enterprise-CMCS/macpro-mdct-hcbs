@@ -4,6 +4,7 @@ import { QipMeasureTableElement } from "./QipMeasureTable";
 import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import * as reportRequestMethods from "utils/api/requestMethods/report";
+import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
 import {
   ElementType,
   QipMeasureTableTemplate,
@@ -62,6 +63,10 @@ jest.mock("./QipMeasureSelectModal", () => ({
   QipMeasureSelectModal: () => <div>Modal</div>,
 }));
 
+jest.mock("./QipDeleteMeasureModal", () => ({
+  QipDeleteMeasureModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
+}));
+
 const mockTemplate: QipMeasureTableTemplate = {
   type: ElementType.QipMeasureTable,
   id: "qip-measure-table",
@@ -80,10 +85,15 @@ const mockTemplate: QipMeasureTableTemplate = {
 };
 
 const QipMeasureTableComponent = (
-  template: QipMeasureTableTemplate = mockTemplate
+  template: QipMeasureTableTemplate = mockTemplate,
+  disabled = false
 ) => (
   <MemoryRouter>
-    <QipMeasureTableElement element={template} updateElement={jest.fn()} />
+    <QipMeasureTableElement
+      element={template}
+      updateElement={jest.fn()}
+      disabled={disabled}
+    />
   </MemoryRouter>
 );
 
@@ -214,5 +224,132 @@ describe("Test QipMeasureTable", () => {
 
     expect(mockSetCurrentPageId).toHaveBeenCalledWith("select-measures");
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);
+  });
+
+  it("should render a delete button for each measure", () => {
+    render(QipMeasureTableComponent());
+
+    expect(
+      screen.getByRole("button", { name: "Delete Not Started Measure" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Delete In Progress Measure" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Delete Complete Measure" })
+    ).toBeInTheDocument();
+  });
+
+  it("should open the delete modal when the delete button is clicked", async () => {
+    const mockSetModalOpen = jest.fn();
+    const mockSetModalComponent = jest.fn();
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      report: mockReport,
+      setModalOpen: mockSetModalOpen,
+      setModalComponent: mockSetModalComponent,
+    });
+
+    render(QipMeasureTableComponent());
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete Not Started Measure" })
+    );
+
+    expect(mockSetModalComponent).toHaveBeenCalled();
+    expect(mockSetModalComponent.mock.calls[0][1]).toBe(
+      "Are you sure you want to remove this measure?"
+    );
+  });
+
+  it("should remove the measure and its page on delete confirm", async () => {
+    const mockSetModalOpen = jest.fn();
+    const mockSetModalComponent = jest.fn();
+    const mockUpdateReport = jest.fn();
+    const mockUpdateElement = jest.fn();
+    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
+
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      report: mockReport,
+      updateReport: mockUpdateReport,
+      setModalOpen: mockSetModalOpen,
+      setModalComponent: mockSetModalComponent,
+    });
+
+    render(
+      <MemoryRouter>
+        <QipMeasureTableElement
+          element={mockTemplate}
+          updateElement={mockUpdateElement}
+        />
+      </MemoryRouter>
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete Not Started Measure" })
+    );
+
+    // Invoke the onConfirm callback passed to QipDeleteMeasureModal
+    const onConfirm = mockedDeleteModal.mock.calls[0][2];
+    onConfirm();
+
+    expect(mockUpdateReport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        pages: expect.not.arrayContaining([
+          expect.objectContaining({ id: "measure-targets-not-started" }),
+        ]),
+      })
+    );
+    expect(mockUpdateElement).toHaveBeenCalledWith({
+      answer: expect.not.arrayContaining([
+        expect.objectContaining({ pageId: "measure-targets-not-started" }),
+      ]),
+    });
+    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
+  });
+
+  it("should close the modal without deleting on cancel", async () => {
+    const mockSetModalOpen = jest.fn();
+    const mockSetModalComponent = jest.fn();
+    const mockUpdateElement = jest.fn();
+    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
+
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      report: mockReport,
+      setModalOpen: mockSetModalOpen,
+      setModalComponent: mockSetModalComponent,
+    });
+
+    render(
+      <MemoryRouter>
+        <QipMeasureTableElement
+          element={mockTemplate}
+          updateElement={mockUpdateElement}
+        />
+      </MemoryRouter>
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete Not Started Measure" })
+    );
+
+    const onClose = mockedDeleteModal.mock.calls[0][1];
+    onClose();
+
+    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
+    expect(mockUpdateElement).not.toHaveBeenCalled();
+  });
+
+  it("should disable the delete button when the report is submitted", () => {
+    render(QipMeasureTableComponent(mockTemplate, true));
+
+    const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
+    deleteButtons.forEach((btn) => expect(btn).toBeDisabled());
+  });
+
+  it("should disable the delete button for non-end-users (admin)", () => {
+    render(QipMeasureTableComponent(mockTemplate, true));
+
+    const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
+    deleteButtons.forEach((btn) => expect(btn).toBeDisabled());
   });
 });

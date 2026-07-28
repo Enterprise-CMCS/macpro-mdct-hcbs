@@ -3,10 +3,18 @@ import userEvent from "@testing-library/user-event";
 import { ElementType, EligibilityTableTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
+import { useStore } from "utils";
+import { mockUseStore } from "utils/testing/setupJest";
 import {
   EligibilityTableElement,
   EligibilityTableElementExport,
 } from "./EligibilityTable";
+
+jest.mock("utils/state/useStore", () => ({
+  useStore: jest.fn().mockReturnValue({}),
+}));
+const mockedUseStore = jest.mocked(useStore);
+mockedUseStore.mockReturnValue(mockUseStore);
 
 const mockedElement: EligibilityTableTemplate = {
   id: "mock-id",
@@ -114,7 +122,9 @@ describe("<EligibilityTableElement />", () => {
 
     test("Able to delete eligibility", async () => {
       render(<EligibilityTableWrapper template={mockedElement} />);
-      const deleteButton = screen.getByAltText("Delete Item");
+      const deleteButton = screen.getByRole("button", {
+        name: "Delete mockTitle1",
+      });
       await userEvent.click(deleteButton);
 
       expect(screen.queryByText("mockTitle1")).not.toBeInTheDocument();

@@ -25,6 +25,7 @@ import { PageElementProps } from "../Elements";
 import { Fragment, useState, ChangeEvent, useEffect } from "react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
+import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
@@ -33,7 +34,7 @@ import { ExportRateTable } from "components/export/ExportedReportTable";
 export const EligibilityTableElement = (
   props: PageElementProps<EligibilityTableTemplate>
 ) => {
-  const { element, updateElement } = props;
+  const { element, updateElement, disabled = false } = props;
   const { fieldLabels, caption, modalInstructions, frequencyOptions } = element;
 
   const initialValues = {
@@ -164,23 +165,24 @@ export const EligibilityTableElement = (
           <Button
             as={Link}
             variant={"outline"}
-            aria-label={`Edit ${eligibility.title}`}
+            aria-label={`${disabled ? "View" : "Edit"} ${eligibility.title}`}
             onClick={() => {
               onEditClick(eligibility);
             }}
           >
-            Edit
+            {disabled ? "View" : "Edit"}
           </Button>
         </Td>
         <Td>
           <Button
-            variant="plain"
+            variant="transparent"
             aria-label={`Delete ${eligibility.title}`}
+            isDisabled={disabled}
             onClick={() => {
               handleDeleteClick(eligibility.title);
             }}
           >
-            <Image src={cancelIcon} alt={"Delete Item"} />
+            <Image src={disabled ? cancelIconGray : cancelIcon} alt="" />
           </Button>
         </Td>
       </Tr>
@@ -203,6 +205,7 @@ export const EligibilityTableElement = (
 
       <Button
         variant={"outline"}
+        isDisabled={disabled}
         onClick={() => {
           onAddClick();
         }}
@@ -233,6 +236,7 @@ export const EligibilityTableElement = (
                 onChange={handleChange}
                 errorMessage={errorMessages.title}
                 value={formValues.title}
+                disabled={disabled}
               />
               <TextField
                 label={fieldLabels.description}
@@ -242,12 +246,14 @@ export const EligibilityTableElement = (
                 multiline
                 errorMessage={errorMessages.description}
                 value={formValues.description}
+                disabled={disabled}
               />
               <ChoiceList
                 name={"recheck"}
                 type={"radio"}
                 errorMessage={errorMessages.recheck}
                 label={fieldLabels.recheck}
+                disabled={disabled}
                 choices={[
                   {
                     label: "No",
@@ -285,6 +291,7 @@ export const EligibilityTableElement = (
                 type={"radio"}
                 errorMessage={errorMessages.eligibilityUpdate}
                 label={fieldLabels.eligibilityUpdate}
+                disabled={disabled}
                 choices={[
                   {
                     label: "No",
@@ -302,7 +309,12 @@ export const EligibilityTableElement = (
             </Flex>
           </ModalBody>
           <ModalFooter gap="4">
-            <Button colorScheme="blue" mr={3} onClick={() => onSubmit()}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => onSubmit()}
+              isDisabled={disabled}
+            >
               Save
             </Button>
             <Button variant="link" onClick={() => setModalOpen(false)}>
