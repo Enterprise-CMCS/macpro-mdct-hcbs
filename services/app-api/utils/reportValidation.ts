@@ -124,13 +124,17 @@ const dateRangeTemplateSchema = object().shape({
     })
     .required(),
   helperText: string().required(),
+  startHelperText: string().notRequired(),
+  endHelperText: string().notRequired(),
+  dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
   answer: object()
     .shape({
-      start: string().notRequired(),
+      start: string().defined(), // required to be present, but may be empty string
       end: string().notRequired(),
     })
-    .notRequired(),
+    .required(),
   required: boolean().required(),
+  endDateRequired: boolean().notRequired(),
 });
 
 const dropdownTemplateSchema = object().shape({

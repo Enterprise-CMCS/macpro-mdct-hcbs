@@ -28,6 +28,7 @@ const tableElementList = [
   ElementType.TextAreaField,
   ElementType.Checkbox,
   ElementType.ListInput,
+  ElementType.NumberField,
 ];
 
 const renderElementList = [
@@ -49,8 +50,8 @@ export const shouldUseTable = (type: ElementType) => {
 };
 
 const renderDateRangeAnswer = (element: DateRangeTemplate) => {
-  const start = element.answer?.start ?? notAnsweredText;
-  const end = element.answer?.end ?? notAnsweredText;
+  const start = element.answer?.start || notAnsweredText;
+  const end = element.answer?.end || notAnsweredText;
 
   return `${element.labels.start}: ${start}\n${element.labels.end}: ${end}`;
 };
@@ -88,12 +89,18 @@ export const renderElements = (
       return EligibilityTableElementExport(element, section.navTitle);
     case ElementType.KeyActivityTable:
       if (!element.answer?.length) return notAnsweredText;
-      return element.answer
-        .map(
-          (a) =>
-            `${a.title}${a.completionDate ? `\nExpected completion date: ${a.completionDate}` : ""}`
-        )
-        .join("\n\n");
+      return (
+        <ul>
+          {element.answer.map((activity) => (
+            <li>
+              {activity.title}{" "}
+              {activity.completionDate ? (
+                <>Expected completion date: {activity.completionDate}</>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      );
     case ElementType.QipMeasureTable:
       // TODO: Should this render in the PDF? What should it look like?
       return undefined;

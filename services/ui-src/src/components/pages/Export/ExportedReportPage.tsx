@@ -16,22 +16,11 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { formatMonthDayYear, useStore } from "utils";
-import {
-  FormPageTemplate,
-  getReportName,
-  MeasurePageTemplate,
-  ParentPageTemplate,
-  Report,
-  ReportType,
-  ReviewSubmitTemplate,
-} from "types";
+import { getReportName, PageTemplate, Report, ReportType } from "types";
 import { ExportedReportBanner, ExportedReportWrapper } from "components";
 import { StateNames } from "../../../constants";
 import { ExportedReportTable } from "components/export/ExportedReportTable";
-import {
-  shouldRender,
-  createMeasuresSection,
-} from "./ExportedReportPageHelpers";
+import { iterateExportPages } from "./ExportedReportPageHelpers";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
@@ -153,42 +142,11 @@ export const reportSubmissionSetUp = (report: Report) => {
   );
 };
 
-export const renderReportSections = (
-  reportPages: (
-    | ParentPageTemplate
-    | FormPageTemplate
-    | MeasurePageTemplate
-    | ReviewSubmitTemplate
-  )[]
-) => {
-  reportPages = reportPages.filter(shouldRender);
-
-  // REQUIRED MEASURES
-  const requiredMeasuresStartIdx = reportPages.findIndex(
-    (section) => section.id === "req-measure-result"
-  );
-  requiredMeasuresStartIdx !== -1 &&
-    reportPages.splice(
-      requiredMeasuresStartIdx,
-      1,
-      ...createMeasuresSection(true, reportPages)
-    );
-
-  // OPTIONAL MEASURES
-  const optionalMeasuresStartIdx = reportPages.findIndex(
-    (section) => section.id === "optional-measure-result"
-  );
-  optionalMeasuresStartIdx !== -1 &&
-    reportPages.splice(
-      optionalMeasuresStartIdx,
-      1,
-      ...createMeasuresSection(false, reportPages)
-    );
+export const renderReportSections = (reportPages: PageTemplate[]) => {
+  reportPages = [...iterateExportPages(reportPages)];
 
   return reportPages.map((section, idx) => {
-    const isHeaderOnlySection =
-      section.id === "required-measures-heading" ||
-      section.id === "optional-measures-heading";
+    const isHeaderOnlySection = section.id === "injected-heading";
 
     /*
      * There are some sections that were manually added into the PDF

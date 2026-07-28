@@ -119,6 +119,9 @@ export const measurementPeriodDateRange: DateRangeTemplate = {
   helperText:
     "Select the measurement period start and end dates for this individual metric.",
   required: true,
+  answer: {
+    start: "",
+  },
 };
 
 export const isTheStateReportingThisMeasure: RadioTemplate = {
