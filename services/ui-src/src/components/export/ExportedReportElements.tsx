@@ -50,8 +50,8 @@ export const shouldUseTable = (type: ElementType) => {
 };
 
 const renderDateRangeAnswer = (element: DateRangeTemplate) => {
-  const start = element.answer?.start ?? notAnsweredText;
-  const end = element.answer?.end ?? notAnsweredText;
+  const start = element.answer?.start || notAnsweredText;
+  const end = element.answer?.end || notAnsweredText;
 
   return `${element.labels.start}: ${start}\n${element.labels.end}: ${end}`;
 };

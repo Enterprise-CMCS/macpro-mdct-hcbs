@@ -15,6 +15,9 @@ const mockedDateRangeElement: DateRangeTemplate = {
   helperText:
     "Select the measurement period start and end dates for this individual metric.",
   required: true,
+  answer: {
+    start: "",
+  },
 };
 
 const updateSpy = jest.fn();
@@ -95,8 +98,13 @@ const mockedMMYYYYRangeElement: DateRangeTemplate = {
     end: "Projected end date",
   },
   helperText: "Enter projected strategy dates.",
+  startHelperText: "Enter a projected start date.",
+  endHelperText: "Leave blank if the strategy is ongoing.",
   required: true,
   endDateRequired: false,
+  answer: {
+    start: "",
+  },
 };
 
 describe("<DateRange /> with MMYYYY format", () => {
@@ -109,6 +117,21 @@ describe("<DateRange /> with MMYYYY format", () => {
     expect(screen.getByText("Strategy dates")).toBeInTheDocument();
     expect(screen.getByText("Start date")).toBeInTheDocument();
     expect(screen.getByText("Projected end date")).toBeInTheDocument();
+  });
+
+  test("renders per-field helper text", () => {
+    render(<DateRangeWrapper template={mockedMMYYYYRangeElement} />);
+    expect(
+      screen.getByText("Enter a projected start date.")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Leave blank if the strategy is ongoing.")
+    ).toBeInTheDocument();
+  });
+
+  test("displays (optional) suffix on end date label when endDateRequired is false", () => {
+    render(<DateRangeWrapper template={mockedMMYYYYRangeElement} />);
+    expect(screen.getByText("(optional)")).toBeInTheDocument();
   });
 
   test("updates start and end MM/YYYY answers", async () => {

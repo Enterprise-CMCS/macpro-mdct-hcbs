@@ -412,9 +412,11 @@ export type DateRangeTemplate = {
     end: string;
   };
   helperText: string;
+  startHelperText?: string;
+  endHelperText?: string;
   dateFormat?: "MMDDYYYY" | "MMYYYY";
-  answer?: {
-    start?: string;
+  answer: {
+    start: string;
     end?: string;
   };
   required: boolean;
