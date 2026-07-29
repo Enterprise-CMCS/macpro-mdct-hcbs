@@ -59,7 +59,9 @@ export const QipMeasureSelectModal = ({
     })();
   }, []);
 
-  const validateAndSubmit = () => {
+  const validateAndSubmit = async () => {
+    setSubmitError(undefined);
+
     let allValid = true;
     if (!selectedMeasure) {
       setMeasureError("Please select a measure.");
@@ -76,7 +78,6 @@ export const QipMeasureSelectModal = ({
 
     if (allValid) {
       setSubmitting(true);
-      setSubmitError(undefined);
       // "FFS" is before "MLTSS", so default sort works
       deliveryMethods.sort();
       // Match the rate order in the measure target info
@@ -86,17 +87,19 @@ export const QipMeasureSelectModal = ({
           selectedMeasure!.rates.findIndex((r) => r.id === b)
       );
 
-      onSubmit({
-        measureId: selectedMeasure!.measureId,
-        measureName: selectedMeasure!.measureName,
-        qmsReportId,
-        deliveryMethods,
-        rates,
-      })
-        .catch(() => {
-          setSubmitError("Something went wrong");
-        })
-        .finally(() => setSubmitting(false));
+      try {
+        await onSubmit({
+          measureId: selectedMeasure!.measureId,
+          measureName: selectedMeasure!.measureName,
+          qmsReportId,
+          deliveryMethods,
+          rates,
+        });
+      } catch {
+        setSubmitError("Something went wrong");
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
