@@ -44,14 +44,6 @@ export const validQipReport: Report = {
   ...getReportTemplate(ReportType.QIP, 2026),
 };
 
-// Create empty answers for all date ranges immediately.
-// Otherwise they will be created during validation,
-// and throw off those tests.
-validQipReport.pages
-  .flatMap((p) => p.elements ?? [])
-  .filter((e) => e.type === ElementType.DateRange)
-  .forEach((e) => (e.answer = {}));
-
 export const missingStateReport = {
   ...validReport,
   state: undefined,
