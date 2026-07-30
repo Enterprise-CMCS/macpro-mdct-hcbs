@@ -1,6 +1,11 @@
 import { handler } from "../../libs/handler-lib";
 import { parseReportParameters } from "../../libs/param-lib";
-import { badRequest, forbidden, notFound } from "../../libs/response-lib";
+import {
+  badRequest,
+  conflict,
+  forbidden,
+  notFound,
+} from "../../libs/response-lib";
 import { getReport } from "../../storage/reports";
 import { ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
@@ -27,7 +32,7 @@ export const patchReport = handler(parseReportParameters, async (request) => {
     id !== report.id ||
     report.status === ReportStatus.SUBMITTED
   ) {
-    return badRequest("Invalid request");
+    return conflict("Invalid request");
   }
 
   switch (request.body.patchType) {
