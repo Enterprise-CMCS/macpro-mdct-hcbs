@@ -256,7 +256,7 @@ export enum ElementType {
   Radio = "radio",
   Checkbox = "checkbox",
   ButtonLink = "buttonLink",
-  QmsMeasureTable = "measureTable",
+  QmsMeasureTable = "qmsMeasureTable",
   QipMeasureTable = "qipMeasureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
