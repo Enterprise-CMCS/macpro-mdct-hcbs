@@ -51,10 +51,17 @@ async function main() {
 
 /** Find all QMS reports, and collect the ones that need updating */
 async function* reportsToUpdate() {
+  const stage = process.env.STAGE;
+  if (!stage) {
+    throw new Error(
+      'Missing required env var STAGE (e.g. "main", "val", or "production").'
+    );
+  }
+
   const reportTypes = ["qms"];
 
   for (const reportType of reportTypes) {
-    const tableName = `${process.env.STAGE}-${reportType}-reports`;
+    const tableName = `${stage}-${reportType}-reports`;
     for await (const report of scanReports(tableName)) {
       const needsUpdate = updateComponentNames(report);
       if (needsUpdate) {
