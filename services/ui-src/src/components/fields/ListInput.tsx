@@ -72,14 +72,15 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             errorMessage={errorMessages?.[index] ?? ""}
             disabled={disabled}
           ></TextField>
-          <Button
-            variant="unstyled"
-            onClick={() => onRemoveHandler(index)}
-            disabled={disabled}
-            aria-label={`Remove ${field}`}
-          >
-            <Image src={cancelPrimary} alt="Remove" />
-          </Button>
+          {!disabled && (
+            <Button
+              variant="unstyled"
+              onClick={() => onRemoveHandler(index)}
+              aria-label={`Remove ${field}`}
+            >
+              <Image src={cancelPrimary} alt="Remove" />
+            </Button>
+          )}
         </HStack>
       ))}
       <Button
