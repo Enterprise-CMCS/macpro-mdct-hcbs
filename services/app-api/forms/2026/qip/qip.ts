@@ -170,7 +170,7 @@ export const qipReportTemplate: ReportBase = {
             "  <li>In the performance target value field, MFP grant recipients should report the 2028 state performance target values. The performance target timeframe should be 2028.</li>" +
             "  <li>In the “Notes on Relevance” column, provide 1 to 2 sentences about why this measure was selected.</li>" +
             " </ul>" +
-            "The baseline value for the LTSS and POM measures can be found in the Quality Measure Set of the Medicaid Data Collection Tool (MDCT) and may be copied over from any submitted QMS report." +
+            "The baseline value for the LTSS and POM measures can be found in the Quality Measure Set of the Medicaid Data Collection Tool (MDCT) and may be copied over from any submitted QMS report. " +
             "For MFP grant recipients that report on NCI-IDD, NCI-AD, and/or HCBS CAHPS, the baseline value and the performance target value are captured outside of MDCT. MFP recipients will need to coordinate internally to input the reported value in this section.",
         },
         {
