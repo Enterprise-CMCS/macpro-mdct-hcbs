@@ -162,7 +162,16 @@ export const qipReportTemplate: ReportBase = {
           type: ElementType.Accordion,
           id: "instructions",
           label: "Instructions",
-          value: "Placeholder instruction accordion content",
+          value:
+            "Indicate the baseline rate value, baseline measurement period, performance target value, and performance target timeframe for each selected measure." +
+            " <ul>" +
+            "  <li>In the baseline value field, MFP grant recipients should report the performance rate value submitted as part of their reporting on the HCBS QMS in fall 2026.</li>" +
+            "  <li>In the baseline measurement period, MFP grant recipients should report the month(s) and year(s) for which the baseline value represents.</li>" +
+            "  <li>In the performance target value field, MFP grant recipients should report the 2028 state performance target values. The performance target timeframe should be 2028.</li>" +
+            "  <li>In the “Notes on Relevance” column, provide 1 to 2 sentences about why this measure was selected.</li>" +
+            " </ul>" +
+            "The baseline value for the LTSS and POM measures can be found in the Quality Measure Set of the Medicaid Data Collection Tool (MDCT) and may be copied over from any submitted QMS report." +
+            "For MFP grant recipients that report on NCI-IDD, NCI-AD, and/or HCBS CAHPS, the baseline value and the performance target value are captured outside of MDCT. MFP recipients will need to coordinate internally to input the reported value in this section.",
         },
         {
           type: ElementType.SubHeader,
