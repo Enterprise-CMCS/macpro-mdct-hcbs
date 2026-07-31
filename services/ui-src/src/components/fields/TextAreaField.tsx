@@ -89,7 +89,14 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   }
 
   return (
-    <Box>
+    <Box
+      maxWidth="456px"
+      sx={{
+        "input, textarea": {
+          boxSizing: "border-box",
+        },
+      }}
+    >
       <CmsdsTextField
         className={fieldClassName}
         name={textbox.id}

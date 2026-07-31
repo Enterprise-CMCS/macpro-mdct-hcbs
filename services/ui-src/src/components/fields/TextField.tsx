@@ -97,7 +97,14 @@ export const TextField = (
   }
 
   return (
-    <Box>
+    <Box
+      maxWidth="50%"
+      sx={{
+        "input, textarea": {
+          boxSizing: "border-box",
+        },
+      }}
+    >
       <CmsdsTextField
         name={textbox.id}
         label={labelText || ""}
