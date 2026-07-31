@@ -8954,15 +8954,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dompurify@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@types/dompurify@npm:3.2.0"
-  dependencies:
-    dompurify: "npm:*"
-  checksum: 10c0/e83fec586ffbb1b43f7c8479f2a99c223814d240db912d53fb126aaeea52a4091deceeb75632b5d76004d88ef0fbf444984887b121dece6fa69f4172ed4b2b07
-  languageName: node
-  linkType: hard
-
 "@types/dotenv@npm:^8.2.0":
   version: 8.2.0
   resolution: "@types/dotenv@npm:8.2.0"
@@ -9457,7 +9448,6 @@ __metadata:
     "@aws-sdk/client-ses": "npm:~3.1012.0"
     "@aws-sdk/lib-dynamodb": "npm:~3.1044.0"
     "@launchdarkly/node-server-sdk": "npm:^9.11.1"
-    "@types/dompurify": "npm:^3.2.0"
     "@types/jest": "npm:^29.5.12"
     "@types/jsdom": "npm:20.0.0"
     "@types/node": "npm:^22.5.1"
@@ -10744,18 +10734,6 @@ __metadata:
   dependencies:
     domelementtype: "npm:^2.3.0"
   checksum: 10c0/bba1e5932b3e196ad6862286d76adc89a0dbf0c773e5ced1eb01f9af930c50093a084eff14b8de5ea60b895c56a04d5de8bbc4930c5543d029091916770b2d2a
-  languageName: node
-  linkType: hard
-
-"dompurify@npm:*":
-  version: 3.4.2
-  resolution: "dompurify@npm:3.4.2"
-  dependencies:
-    "@types/trusted-types": "npm:^2.0.7"
-  dependenciesMeta:
-    "@types/trusted-types":
-      optional: true
-  checksum: 10c0/23ab3ab079480a49e1426c4ee7279e393913fa7f2193c4142a5be54d4163dbdd969558675876c6b8bbcbf2ad5d1bc3e00bf902acf142fff12e50274a65ae95b3
   languageName: node
   linkType: hard
 
@@ -16007,7 +15985,6 @@ __metadata:
     "@testing-library/jest-dom": "npm:^6.6.3"
     "@testing-library/react": "npm:^16.0.1"
     "@testing-library/user-event": "npm:^14.6.1"
-    "@types/dompurify": "npm:^3.2.0"
     "@types/jest": "npm:^27.0.2"
     "@types/jest-axe": "npm:^3.5.3"
     "@types/node": "npm:^22.19.0"
