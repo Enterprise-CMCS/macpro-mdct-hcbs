@@ -9,6 +9,7 @@ import {
 } from "types/report";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { useState } from "react";
+import { ErrorMessages } from "../../constants";
 
 jest.mock("utils/state/hooks/useElementIsHidden");
 const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
@@ -77,6 +78,38 @@ describe("<TextField />", () => {
     await userEvent.type(textField, "24");
 
     expect(updateSpy).toHaveBeenCalledWith({ answer: 24 });
+  });
+
+  test("TextField should show required validation error when required field is cleared", async () => {
+    render(<TextFieldWrapper template={mockedTextboxElement} />);
+    const textField = screen.getByRole("textbox");
+
+    await userEvent.type(textField, "hello");
+    await userEvent.clear(textField);
+
+    expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
+  });
+
+  test("TextField should validate email format for email labels", async () => {
+    render(
+      <TextFieldWrapper
+        template={{ ...mockedTextboxElement, label: "contact email" }}
+      />
+    );
+    const textField = screen.getByRole("textbox");
+
+    await userEvent.type(textField, "not-an-email");
+
+    expect(screen.getByText(ErrorMessages.mustBeAnEmail)).toBeVisible();
+  });
+
+  test("NumberField should show non-numeric validation error", async () => {
+    render(<TextFieldWrapper template={mockedNumberField} />);
+    const textField = screen.getByRole("textbox");
+
+    await userEvent.type(textField, "abc");
+
+    expect(screen.getByText(ErrorMessages.mustBeANumber)).toBeVisible();
   });
 
   test("NumberField should render its initial value", () => {
