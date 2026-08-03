@@ -377,4 +377,30 @@ describe("QipMeasureSelectModal", () => {
       )
     ).toBeInTheDocument();
   });
+
+  it("should remove selected delivery method and rate when clicked again", async () => {
+    renderInModal({});
+    await waitForInitialLoad();
+
+    const measureDropdown = screen.getByLabelText("Measure report");
+    assert.ok(measureDropdown instanceof HTMLSelectElement);
+    await userEvent.selectOptions(measureDropdown, "m1");
+
+    const deliveryMethod = screen.getByLabelText("Delivery Method: FFS");
+    const numeratorRate = screen.getByLabelText("Numerator");
+
+    await userEvent.click(deliveryMethod);
+    await userEvent.click(deliveryMethod);
+    await userEvent.click(numeratorRate);
+    await userEvent.click(numeratorRate);
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(
+      screen.getByText("Please select one or more delivery methods.")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Please select one or more rates.")
+    ).toBeInTheDocument();
+  });
 });
