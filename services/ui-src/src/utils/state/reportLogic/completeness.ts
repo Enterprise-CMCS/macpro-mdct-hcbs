@@ -194,7 +194,6 @@ export const elementSatisfiesRequired = (
     return false;
   }
 
-  // TODO: make less ugly
   if (
     !("required" in element) ||
     !element.required ||
@@ -203,8 +202,11 @@ export const elementSatisfiesRequired = (
   ) {
     return true;
   }
-  if (!("answer" in element) || !element.answer) {
-    // TODO: number fields are currently represented as strings, need to be handled here when fixed
+  if (
+    !("answer" in element) ||
+    element.answer === undefined ||
+    element.answer === ""
+  ) {
     return false;
   }
   // Special handling - nested children

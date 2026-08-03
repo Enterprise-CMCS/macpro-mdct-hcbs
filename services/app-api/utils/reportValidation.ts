@@ -132,7 +132,7 @@ const dateRangeTemplateSchema = object().shape({
       start: string().defined(), // required to be present, but may be empty string
       end: string().notRequired(),
     })
-    .required(),
+    .notRequired(),
   required: boolean().required(),
   endDateRequired: boolean().notRequired(),
 });
@@ -688,6 +688,33 @@ const optionsSchema = object().shape({
   pom: boolean().notRequired(),
 });
 
+const measureTargetMappingSchema = array(
+  object().shape({
+    measureName: string().required(),
+    measureId: string().required(),
+    includedInQms: boolean().required(),
+    deliveryMethods: object().shape({
+      FFS: object()
+        .shape({
+          qmsPageId: string().notRequired(),
+        })
+        .required(),
+      MLTSS: object()
+        .shape({
+          qmsPageId: string().notRequired(),
+        })
+        .required(),
+    }),
+    rates: array(
+      object().shape({
+        label: string().required(),
+        id: string().required(),
+        qmsElementId: string().notRequired(),
+      })
+    ),
+  })
+).notRequired();
+
 /**
  * This schema is meant to represent the pages field in the ReportTemplate type.
  * The following yup `lazy` function is building up the union type:
@@ -763,8 +790,7 @@ const reportValidateSchema = object().shape({
   archived: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
-  // TODO: Be more specific
-  measureTargetMapping: array(object()).notRequired(),
+  measureTargetMapping: measureTargetMappingSchema,
 });
 
 // Can add more editable fields here in the future
@@ -778,7 +804,7 @@ export const validateReportPayload = async (payload: object | undefined) => {
   }
 
   const validatedPayload = await reportValidateSchema.validate(payload, {
-    //stripUnknown: true,
+    stripUnknown: true,
   });
 
   return validatedPayload as Report;

@@ -4,23 +4,29 @@ import {
   validateReportEditPayload,
 } from "../reportValidation";
 import {
-  validReport,
-  missingStateReport,
   incorrectStatusReport,
   incorrectTypeReport,
   invalidFormPageReport,
   invalidMeasurePageReport,
+  invalidPageElementType,
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
-  invalidPageElementType,
-  reportWithListInputNoHelperText,
+  missingStateReport,
   reportWithKeyActivityTable,
+  reportWithListInputNoHelperText,
+  validQipReport,
+  validReport,
 } from "./mockReport";
 
 describe("Test validateReportPayload function with valid report", () => {
   it("successfully validates a valid report object", async () => {
     const validatedData = await validateReportPayload(validReport);
     expect(validatedData).toEqual(validReport);
+  });
+
+  it("successfully validates a QIP with measureTargetMapping", async () => {
+    const validatedData = await validateReportPayload(validQipReport);
+    expect(validatedData).toEqual(validQipReport);
   });
 
   it("successfully validates a report with a ListInput element that has no helperText", async () => {
