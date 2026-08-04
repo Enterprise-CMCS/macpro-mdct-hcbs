@@ -232,7 +232,6 @@ export const QipMeasureSelectModal = ({
           mr={3}
           onClick={validateAndSubmit}
           isLoading={submitting}
-          type="submit"
           form="qip-measure-select-form"
         >
           Save
