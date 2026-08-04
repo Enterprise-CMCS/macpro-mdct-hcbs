@@ -25,7 +25,7 @@ jest.mock("../../utils/authorization", () => ({
 }));
 
 jest.mock("../../storage/reports", () => ({
-  putReport: () => jest.fn(),
+  putReport: jest.fn(),
 }));
 
 const report = JSON.stringify(validReport);

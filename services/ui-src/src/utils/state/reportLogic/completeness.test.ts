@@ -15,6 +15,8 @@ import {
   RadioTemplate,
   Report,
   TextboxTemplate,
+  PageTemplate,
+  ReadmissionRateTemplate,
 } from "types";
 import {
   elementSatisfiesRequired,
@@ -110,6 +112,163 @@ describe("inferredReportStatus", () => {
       PageStatus.NOT_STARTED
     );
   });
+
+  test("should treat any mix of required measure statuses as In Progress", () => {
+    const buildReport = (requiredMeasureStatuses: PageStatus[]) =>
+      ({
+        pages: [
+          { id: "req-measure-result" },
+          ...requiredMeasureStatuses.map((status) => ({
+            type: PageType.Measure,
+            required: true,
+            status,
+          })),
+        ],
+      }) as Report;
+
+    const testCases = [
+      [PageStatus.NOT_STARTED, PageStatus.IN_PROGRESS],
+      [PageStatus.NOT_STARTED, PageStatus.COMPLETE],
+      [PageStatus.IN_PROGRESS, PageStatus.COMPLETE],
+      [PageStatus.IN_PROGRESS],
+    ];
+
+    for (let statusCombinations of testCases) {
+      expect(
+        inferredReportStatus(
+          buildReport(statusCombinations),
+          "req-measure-result"
+        )
+      ).toEqual(PageStatus.IN_PROGRESS);
+    }
+  });
+
+  test("should treat a set of Not Started required measures as Not Started", () => {
+    const report = {
+      pages: [
+        { id: "req-measure-result" },
+        {
+          type: PageType.Measure,
+          required: true,
+          status: PageStatus.NOT_STARTED,
+        },
+        {
+          type: PageType.Measure,
+          required: true,
+          status: PageStatus.NOT_STARTED,
+        },
+      ],
+    } as Report;
+
+    expect(inferredReportStatus(report, "req-measure-result")).toEqual(
+      PageStatus.NOT_STARTED
+    );
+  });
+
+  test("should treat a set of Not Started or Complete optional measures as Complete", () => {
+    const report = {
+      pages: [
+        { id: "optional-measure-result" },
+        {
+          type: PageType.Measure,
+          required: false,
+          status: PageStatus.NOT_STARTED,
+        },
+        {
+          type: PageType.Measure,
+          required: false,
+          status: PageStatus.COMPLETE,
+        },
+      ],
+    } as Report;
+
+    expect(inferredReportStatus(report, "optional-measure-result")).toEqual(
+      PageStatus.COMPLETE
+    );
+  });
+
+  it.each([
+    { inputs: [], expected: PageStatus.NOT_STARTED },
+    { inputs: [PageStatus.NOT_STARTED], expected: PageStatus.NOT_STARTED },
+    { inputs: [PageStatus.IN_PROGRESS], expected: PageStatus.IN_PROGRESS },
+    { inputs: [PageStatus.COMPLETE], expected: PageStatus.COMPLETE },
+    {
+      inputs: [PageStatus.NOT_STARTED, PageStatus.IN_PROGRESS],
+      expected: PageStatus.IN_PROGRESS,
+    },
+    {
+      inputs: [PageStatus.NOT_STARTED, PageStatus.COMPLETE],
+      expected: PageStatus.IN_PROGRESS,
+    },
+    {
+      inputs: [PageStatus.IN_PROGRESS, PageStatus.COMPLETE],
+      expected: PageStatus.IN_PROGRESS,
+    },
+    {
+      inputs: [
+        PageStatus.NOT_STARTED,
+        PageStatus.IN_PROGRESS,
+        PageStatus.COMPLETE,
+      ],
+      expected: PageStatus.IN_PROGRESS,
+    },
+  ])(
+    "should correctly combine target measure statuses: $inputs => $expected",
+    ({ inputs, expected }) => {
+      const report = {
+        pages: [
+          {
+            id: "select-measures",
+            elements: [
+              {
+                type: ElementType.QipMeasureTable,
+                id: "select-measures-table",
+                answer: [] as any,
+              },
+            ],
+          },
+        ],
+      } as Report;
+
+      const addPage = (status: PageStatus) => {
+        const id = "id-" + report.pages.length;
+        let page;
+        switch (status) {
+          case PageStatus.NOT_STARTED:
+            page = {
+              id,
+              elements: [{ type: ElementType.Textbox, required: true }],
+            };
+            break;
+          case PageStatus.IN_PROGRESS:
+            page = {
+              id,
+              elements: [
+                { type: ElementType.Textbox, required: true, answer: "foo" },
+                { type: ElementType.Textbox, required: true },
+              ],
+            };
+            break;
+          case PageStatus.COMPLETE:
+            page = {
+              id,
+              elements: [
+                { type: ElementType.Textbox, required: true, answer: "foo" },
+              ],
+            };
+            break;
+        }
+        (report.pages[0].elements![0] as any).answer!.push({ pageId: id });
+        report.pages.push(page as PageTemplate);
+      };
+
+      for (let inputStatus of inputs) {
+        addPage(inputStatus);
+      }
+
+      expect(inferredReportStatus(report, "select-measures")).toBe(expected);
+    }
+  );
 });
 
 describe("pageInProgress", () => {
@@ -652,6 +811,7 @@ describe("elementSatisfiesRequired", () => {
     } as unknown as MultiCategoryNdrTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
+
   test("reject incomplete ListInput", () => {
     const element = {
       type: ElementType.ListInput,
@@ -659,5 +819,63 @@ describe("elementSatisfiesRequired", () => {
       answer: [""],
     } as ListInputTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test("should reject ReadmissionRate with errors", () => {
+    const element = {
+      type: ElementType.ReadmissionRate,
+      required: true,
+      errors: { stayCount: "Mock error message" },
+      answer: {
+        stayCount: 42,
+        obsReadmissionCount: 42,
+        obsReadmissionRate: 42,
+        expReadmissionCount: 42,
+        expReadmissionRate: 42,
+        obsExpRatio: 42,
+        beneficiaryCount: 42,
+        outlierCount: 42,
+        outlierRate: 42,
+      },
+    } as ReadmissionRateTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBe(false);
+  });
+
+  test("should reject ReadmissionRate with missing fields", () => {
+    const element = {
+      type: ElementType.ReadmissionRate,
+      required: true,
+      answer: {
+        stayCount: 42,
+        obsReadmissionCount: 42,
+        obsReadmissionRate: 42,
+        expReadmissionCount: 42,
+        expReadmissionRate: 42,
+        obsExpRatio: 42,
+        beneficiaryCount: 42,
+        outlierCount: undefined,
+        outlierRate: 42,
+      },
+    } as ReadmissionRateTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBe(false);
+  });
+
+  test("should accept complete ReadmissionRate", () => {
+    const element = {
+      type: ElementType.ReadmissionRate,
+      required: true,
+      answer: {
+        stayCount: 42,
+        obsReadmissionCount: 42,
+        obsReadmissionRate: 42,
+        expReadmissionCount: 42,
+        expReadmissionRate: 42,
+        obsExpRatio: 42,
+        beneficiaryCount: 42,
+        outlierCount: 42,
+        outlierRate: 42,
+      },
+    } as ReadmissionRateTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBe(true);
   });
 });
