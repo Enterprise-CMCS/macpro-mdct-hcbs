@@ -255,7 +255,6 @@ export const QipMeasureSelectModal = ({
           type="submit"
           form="qip-measure-select-form"
           isLoading={submitting}
-          type="submit"
           form="qip-measure-select-form"
         >
           Save
