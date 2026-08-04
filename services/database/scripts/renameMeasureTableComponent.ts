@@ -58,15 +58,14 @@ async function* reportsToUpdate() {
     );
   }
 
-  const reportTypes = ["qms"];
+  const tableName = `${stage}-reports`;
 
-  for (const reportType of reportTypes) {
-    const tableName = `${stage}-${reportType}-reports`;
-    for await (const report of scanReports(tableName)) {
-      const needsUpdate = updateComponentNames(report);
-      if (needsUpdate) {
-        yield { tableName, Item: report };
-      }
+  for await (const item of scanReports(tableName)) {
+    if (!isQmsItem(item)) continue;
+
+    const needsUpdate = updateComponentNames(item);
+    if (needsUpdate) {
+      yield { tableName, Item: item };
     }
   }
 }
@@ -78,27 +77,30 @@ async function* scanReports(TableName: string) {
   for await (const page of paginateScan({ client }, { TableName })) {
     pageNumber += 1;
     console.debug(`${logPrefix()}${TableName} page ${pageNumber}...`);
-    yield* (page.Items ?? []) as Report[];
+    yield* (page.Items ?? []) as ReportTableItem[];
   }
+}
+
+function isQmsItem(item: ReportTableItem): boolean {
+  return item.pKey?.startsWith("QMS#") ?? false;
 }
 
 /**
  * Modify a report's component names in-place.
  * @returns `true` if a change was made, `false` otherwise.
  */
-function updateComponentNames(report: Report) {
+function updateComponentNames(item: ReportTableItem) {
   const NEW_NAMES: Record<string, string> = {
     measureTable: "qmsMeasureTable",
   };
 
   let isChanged = false;
 
-  for (const page of report.pages ?? []) {
-    for (const element of iterateElements(page.elements)) {
-      if (element.type in NEW_NAMES) {
-        element.type = NEW_NAMES[element.type];
-        isChanged = true;
-      }
+  // Current split-table shape where page items carry elements.
+  for (const element of iterateElements(item.elements)) {
+    if (element.type in NEW_NAMES) {
+      element.type = NEW_NAMES[element.type];
+      isChanged = true;
     }
   }
 
@@ -127,7 +129,7 @@ function* iterateElements(
  * because a BatchWriteCommand can touch multiple tables.
  */
 async function* createBatches(
-  iterator: AsyncGenerator<{ tableName: string; Item: Report }>
+  iterator: AsyncGenerator<{ tableName: string; Item: ReportTableItem }>
 ) {
   /**
    * Dynamo BatchWriteCommand allows up to 25 items, but also has a size cap.
@@ -164,8 +166,10 @@ async function sendBatch(params: BatchWriteCommandInput) {
   const command = new BatchWriteCommand(params);
   const response = await client.send(command);
 
-  const unprocessedIds = Object.entries(response.UnprocessedItems ?? {}).map(
-    ([table, reqs]) => reqs.map((req) => `${table}:${req.PutRequest!.Item!.id}`)
+  const unprocessedIds = Object.entries(
+    response.UnprocessedItems ?? {}
+  ).flatMap(([table, reqs]) =>
+    reqs.map((req) => `${table}:${req.PutRequest!.Item!.id}`)
   );
   if (unprocessedIds.length > 0) {
     const message = `Batch write failed! The following reports were not updated: ${unprocessedIds.join(", ")}`;
@@ -173,12 +177,11 @@ async function sendBatch(params: BatchWriteCommandInput) {
   }
 }
 
-/** An HCBS report. Imitates the real type used in the app. */
-type Report = {
+type ReportTableItem = {
   id: string;
-  pages: {
-    elements?: PageElement[];
-  }[];
+  pKey?: string;
+  sortKey?: string;
+  elements?: PageElement[];
 };
 
 /** An element on a report page. Imitates the real type used in the app. */
