@@ -61,6 +61,7 @@ export const MultiFormatDateField = ({
   }
 
   return (
+    // This className gets us the expected styling (such as input width)
     <div className="ds-c-single-input-date-field__field-wrapper">
       <TextField
         {...remainingProps}
