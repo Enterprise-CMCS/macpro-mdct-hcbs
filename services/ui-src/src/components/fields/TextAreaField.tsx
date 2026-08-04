@@ -90,8 +90,12 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
 
   return (
     <Box
-      maxWidth="456px"
+      width="100%"
+      maxWidth="460px"
       sx={{
+        ".ds-c-field": {
+          width: "100%",
+        },
         "input, textarea": {
           boxSizing: "border-box",
         },

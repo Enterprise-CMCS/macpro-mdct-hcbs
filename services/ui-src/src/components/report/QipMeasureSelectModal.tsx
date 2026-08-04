@@ -106,7 +106,7 @@ export const QipMeasureSelectModal = ({
 
   return (
     <>
-      <ModalBody pb={8}>
+      <ModalBody pb={6}>
         <Text mb={8}>
           Select a measure from the dropdown to add to this Quality Improvement
           Plan. You may either enter the measure rate details or copy the

@@ -98,8 +98,12 @@ export const TextField = (
 
   return (
     <Box
-      maxWidth="50%"
+      width="100%"
+      maxWidth="460px"
       sx={{
+        ".ds-c-field": {
+          width: "100%",
+        },
         "input, textarea": {
           boxSizing: "border-box",
         },
