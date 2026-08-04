@@ -20,9 +20,19 @@ import closeIcon from "assets/icons/close/icon_close_primary.svg";
  */
 
 export const ReportModal = () => {
-  const { modalOpen, modalHeader, modalComponent, setModalOpen } = useStore();
+  const {
+    modalOpen,
+    modalHeader,
+    modalComponent,
+    modalFinalFocusRef,
+    setModalOpen,
+  } = useStore();
   return (
-    <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+    <Modal
+      isOpen={modalOpen}
+      onClose={() => setModalOpen(false)}
+      finalFocusRef={modalFinalFocusRef ?? undefined}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{modalHeader}</ModalHeader>

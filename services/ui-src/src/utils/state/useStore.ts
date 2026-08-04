@@ -66,6 +66,7 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
   modalOpen: false,
   modalHeader: undefined,
   modalComponent: undefined,
+  modalFinalFocusRef: null,
   lastSavedTime: undefined,
   errorMessage: undefined,
   sidebarOpen: true,
@@ -88,6 +89,10 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
   setModalComponent: (modalComponent: ReactNode, modalHeader: string) =>
     set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
       type: "setModalComponent",
+    }),
+  setModalFinalFocusRef: (modalFinalFocusRef: any) =>
+    set(() => ({ modalFinalFocusRef }), false, {
+      type: "setModalFinalFocusRef",
     }),
   setAnswers: (answers: any) =>
     set((state: HcbsReportState) => mergeAnswers(answers, state), false, {

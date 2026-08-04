@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useRef } from "react";
 import {
   Button,
   Flex,
@@ -25,7 +26,7 @@ import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 
 export const QipMeasureTableElement = ({
-  element: { caption, answer },
+  element: { caption, answer: measureTargets },
   disabled = false,
   updateElement,
 }: PageElementProps<QipMeasureTableTemplate>) => {
@@ -36,9 +37,13 @@ export const QipMeasureTableElement = ({
     updateReport,
     setCurrentPageId,
     setModalComponent,
+    setModalFinalFocusRef,
     setModalOpen,
   } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
+  const addButtonRef = useRef<HTMLButtonElement | null>(null);
+  const deleteButtonRefs = useRef(new Map<string, HTMLButtonElement>());
+  const finalFocusRef = useRef<HTMLElement | null>(null);
 
   if (!measureTargetMapping) {
     throw new Error("Can't render QIP Measure Table outside of QIP");
@@ -58,7 +63,7 @@ export const QipMeasureTableElement = ({
 
     updateElement({
       answer: [
-        ...(answer ?? []),
+        ...(measureTargets ?? []),
         {
           pageId: pageId,
           measureName: params.measureName,
@@ -94,6 +99,25 @@ export const QipMeasureTableElement = ({
   const handleDeleteClick = (pageId: string, measureName: string) => {
     const onClose = () => setModalOpen(false);
     const onConfirm = () => {
+      const currentMeasureTargets = measureTargets ?? [];
+      const deletedIndex = currentMeasureTargets.findIndex(
+        (item) => item.pageId === pageId
+      );
+      const remainingMeasureTargets = currentMeasureTargets.filter(
+        (item) => item.pageId !== pageId
+      );
+      const nextFocusPageId =
+        remainingMeasureTargets.length > 0
+          ? remainingMeasureTargets[
+              Math.min(deletedIndex, remainingMeasureTargets.length - 1)
+            ].pageId
+          : null;
+
+      finalFocusRef.current = nextFocusPageId
+        ? (deleteButtonRefs.current.get(nextFocusPageId) ??
+          addButtonRef.current)
+        : addButtonRef.current;
+
       if (report) {
         const updatedReport = {
           ...report,
@@ -101,28 +125,30 @@ export const QipMeasureTableElement = ({
         };
         updateReport(updatedReport);
       }
-      updateElement({
-        answer: (answer ?? []).filter((item) => item.pageId !== pageId),
-      });
+      updateElement({ answer: remainingMeasureTargets });
       setModalOpen(false);
     };
+
+    // Default focus target - onConfirm overwrites this with the next item's button
+    finalFocusRef.current = deleteButtonRefs.current.get(pageId) ?? null;
+    setModalFinalFocusRef(finalFocusRef);
     setModalComponent(
       QipDeleteMeasureModal(measureName, onClose, onConfirm),
       "Are you sure you want to remove this measure?"
     );
   };
 
-  const rows = (answer ?? []).map((answerRow) => {
-    const status = getTableStatus(answerRow.pageId);
+  const rows = (measureTargets ?? []).map((measureTarget) => {
+    const status = getTableStatus(measureTarget.pageId);
     return (
-      <Tr key={answerRow.pageId}>
+      <Tr key={measureTarget.pageId}>
         <Td textAlign="center">
           <Flex justifyContent="center">
             <TableStatusIcon tableStatus={status} />
           </Flex>
         </Td>
         <Td>
-          <Text fontWeight="bold">{answerRow.measureName}</Text>
+          <Text fontWeight="bold">{measureTarget.measureName}</Text>
           {/* TODO: CMIT number? */}
           <Text>Status: {status}</Text>
           {errorMessage(status)}
@@ -133,12 +159,12 @@ export const QipMeasureTableElement = ({
             <Button
               as={Link}
               variant={"outline"}
-              aria-label={`${disabled ? "View" : "Edit"} ${answerRow.measureName}`}
-              href={`/report/${reportType}/${state}/${reportId}/${answerRow.pageId}`}
+              aria-label={`${disabled ? "View" : "Edit"} ${measureTarget.measureName}`}
+              href={`/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`}
               onClick={(e) => {
                 e.preventDefault();
                 navigate(
-                  `/report/${reportType}/${state}/${reportId}/${answerRow.pageId}`
+                  `/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`
                 );
               }}
             >
@@ -146,10 +172,18 @@ export const QipMeasureTableElement = ({
             </Button>
             {!disabled && (
               <Button
+                ref={(el) => {
+                  if (el)
+                    deleteButtonRefs.current.set(measureTarget.pageId, el);
+                  else deleteButtonRefs.current.delete(measureTarget.pageId);
+                }}
                 variant="transparent"
-                aria-label={`Delete ${answerRow.measureName}`}
+                aria-label={`Delete ${measureTarget.measureName}`}
                 onClick={() =>
-                  handleDeleteClick(answerRow.pageId, answerRow.measureName)
+                  handleDeleteClick(
+                    measureTarget.pageId,
+                    measureTarget.measureName
+                  )
                 }
               >
                 <Image src={cancelIcon} alt="" />
@@ -164,6 +198,7 @@ export const QipMeasureTableElement = ({
   return (
     <>
       <Button
+        ref={addButtonRef}
         onClick={() => setModalComponent(modal, "Add Measure")}
         variant={"outline"}
         isDisabled={disabled}
