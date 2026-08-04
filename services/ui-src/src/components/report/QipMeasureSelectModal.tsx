@@ -5,7 +5,7 @@ import {
   Flex,
   Spinner,
   Text,
-  Box,
+  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
@@ -112,7 +112,7 @@ export const QipMeasureSelectModal = ({
           Plan. You may either enter the measure rate details or copy the
           baseline values from an existing QMS where possible.
         </Text>
-        <form onSubmit={validateAndSubmit}>
+        <VStack onSubmit={validateAndSubmit} align="stretch" spacing={8}>
           <Dropdown
             label="Measure report"
             name="measure"
@@ -149,92 +149,82 @@ export const QipMeasureSelectModal = ({
                   return <></>;
                 } else if (isLoading) {
                   return (
-                    <Box mt={8}>
-                      <Flex justify="center">
-                        <Spinner size="md" />
-                      </Flex>
-                    </Box>
+                    <Flex justify="center">
+                      <Spinner size="md" />
+                    </Flex>
                   );
                 } else if (!reports) {
                   return (
-                    <Box mt={8}>
+                    <Text>
                       Error loading QMS reports! Please refresh the page.
-                    </Box>
+                    </Text>
                   );
                 } else {
                   return (
-                    <Box mt={8}>
-                      <Dropdown
-                        label="Please select from which submitted Quality Measure Set report you would like to copy over baseline values (optional)"
-                        hint="Only measures submitted as part of the HCBS Quality Measure Set report are available for copy-over."
-                        name="qms-report-id"
-                        value={qmsReportId ?? ""}
-                        disabled={!selectedMeasure?.includedInQms}
-                        options={[
-                          { label: "Select report", value: "" },
-                          ...reports.map((r) => ({
-                            label: r.name,
-                            value: r.id!, // TODO: Do we ever have report w/o id?!
-                          })),
-                        ]}
-                        onChange={(evt) => setQmsReportId(evt.target.value)}
-                      />
-                    </Box>
+                    <Dropdown
+                      label="Please select from which submitted Quality Measure Set report you would like to copy over baseline values (optional)"
+                      hint="Only measures submitted as part of the HCBS Quality Measure Set report are available for copy-over."
+                      name="qms-report-id"
+                      value={qmsReportId ?? ""}
+                      disabled={!selectedMeasure?.includedInQms}
+                      options={[
+                        { label: "Select report", value: "" },
+                        ...reports.map((r) => ({
+                          label: r.name,
+                          value: r.id!, // TODO: Do we ever have report w/o id?!
+                        })),
+                      ]}
+                      onChange={(evt) => setQmsReportId(evt.target.value)}
+                    />
                   );
                 }
               })()}
               {/* TODO: Is it weird that we use radio buttons in QMS but checkboxes in QIP for this same question? */}
-              <Box mt={8}>
-                <ChoiceList
-                  label="Which delivery sub-type will you be reporting on?"
-                  name="delivery-method"
-                  type="checkbox"
-                  choices={Object.keys(selectedMeasure.deliveryMethods).map(
-                    (deliveryMethodId) => ({
-                      label: `Delivery Method: ${deliveryMethodId}`,
-                      value: deliveryMethodId,
-                      checked: deliveryMethods.includes(deliveryMethodId),
-                    })
-                  )}
-                  errorMessage={deliveryMethodError}
-                  onChange={(evt) => {
-                    const dm = evt.target.value;
-                    setDeliveryMethodError(undefined);
-                    if (deliveryMethods.includes(dm)) {
-                      setDeliveryMethods(
-                        deliveryMethods.filter((m) => m !== dm)
-                      );
-                    } else {
-                      setDeliveryMethods([...deliveryMethods, dm]);
-                    }
-                  }}
-                />
-              </Box>
-              <Box mt={8}>
-                <ChoiceList
-                  label="Which rates will you be reporting on?"
-                  name="rates"
-                  type="checkbox"
-                  choices={selectedMeasure.rates.map((r) => ({
-                    label: r.label,
-                    value: r.id,
-                    checked: rates.includes(r.id),
-                  }))}
-                  errorMessage={rateError}
-                  onChange={(evt) => {
-                    const rate = evt.target.value;
-                    setRateError(undefined);
-                    if (rates.includes(rate)) {
-                      setRates(rates.filter((r) => r !== rate));
-                    } else {
-                      setRates([...rates, rate]);
-                    }
-                  }}
-                />
-              </Box>
+              <ChoiceList
+                label="Which delivery sub-type will you be reporting on?"
+                name="delivery-method"
+                type="checkbox"
+                choices={Object.keys(selectedMeasure.deliveryMethods).map(
+                  (deliveryMethodId) => ({
+                    label: `Delivery Method: ${deliveryMethodId}`,
+                    value: deliveryMethodId,
+                    checked: deliveryMethods.includes(deliveryMethodId),
+                  })
+                )}
+                errorMessage={deliveryMethodError}
+                onChange={(evt) => {
+                  const dm = evt.target.value;
+                  setDeliveryMethodError(undefined);
+                  if (deliveryMethods.includes(dm)) {
+                    setDeliveryMethods(deliveryMethods.filter((m) => m !== dm));
+                  } else {
+                    setDeliveryMethods([...deliveryMethods, dm]);
+                  }
+                }}
+              />
+              <ChoiceList
+                label="Which rates will you be reporting on?"
+                name="rates"
+                type="checkbox"
+                choices={selectedMeasure.rates.map((r) => ({
+                  label: r.label,
+                  value: r.id,
+                  checked: rates.includes(r.id),
+                }))}
+                errorMessage={rateError}
+                onChange={(evt) => {
+                  const rate = evt.target.value;
+                  setRateError(undefined);
+                  if (rates.includes(rate)) {
+                    setRates(rates.filter((r) => r !== rate));
+                  } else {
+                    setRates([...rates, rate]);
+                  }
+                }}
+              />
             </>
           )}
-        </form>
+        </VStack>
         {submitError && (
           <Text color="red.600" mt={4} role="alert" aria-live="polite">
             {submitError}

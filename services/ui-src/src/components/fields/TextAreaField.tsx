@@ -96,9 +96,6 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
         ".ds-c-field": {
           width: "100%",
         },
-        "input, textarea": {
-          boxSizing: "border-box",
-        },
       }}
     >
       <CmsdsTextField

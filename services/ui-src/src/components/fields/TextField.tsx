@@ -104,9 +104,6 @@ export const TextField = (
         ".ds-c-field": {
           width: "100%",
         },
-        "input, textarea": {
-          boxSizing: "border-box",
-        },
       }}
     >
       <CmsdsTextField
