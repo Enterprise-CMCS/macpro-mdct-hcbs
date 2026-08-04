@@ -3,6 +3,7 @@ import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { tacmReportTemplate as tacmReportTemplate2026 } from "./2026/tacm/tacm";
 import { ciReportTemplate as ciReportTemplate2026 } from "./2026/ci/ci";
 import { pcpReportTemplate as pcpReportTemplate2026 } from "./2026/pcp/pcp";
+import { imaReportTemplate as imaReportTemplate2026 } from "./2026/ima/ima";
 import { qipReportTemplate as qipReportTemplate2026 } from "./2026/qip/qip";
 import { wwlReportTemplate as wwlReportTemplate2026 } from "./2026/wwl/wwl";
 import { getReportTemplate } from "./yearlyFormSelection";
@@ -44,6 +45,15 @@ describe("Yearly Form Selection", () => {
 
   it("should return the template for the exact requested year, if one exists (PCP report)", () => {
     expect(getReportTemplate(ReportType.PCP, 2026)).toBe(pcpReportTemplate2026);
+  });
+
+  it("should throw an error if the requested year is not available (IMA report)", () => {
+    const getTemplateCall = () => getReportTemplate(ReportType.IMA, 2025);
+    expect(getTemplateCall).toThrow("not implemented");
+  });
+
+  it("should return the template for the exact requested year, if one exists (IMA report)", () => {
+    expect(getReportTemplate(ReportType.IMA, 2026)).toBe(imaReportTemplate2026);
   });
 
   it("should throw an error if the requested year is not available (WWL report)", () => {
