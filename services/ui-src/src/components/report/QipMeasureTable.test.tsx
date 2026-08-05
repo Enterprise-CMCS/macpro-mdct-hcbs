@@ -4,7 +4,7 @@ import { QipMeasureTableElement } from "./QipMeasureTable";
 import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import * as reportRequestMethods from "utils/api/requestMethods/report";
-import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
+import { DeleteConfirmModal } from "./QipDeleteMeasureModal";
 import {
   ElementType,
   QipMeasureTableTemplate,
@@ -64,7 +64,7 @@ jest.mock("./QipMeasureSelectModal", () => ({
 }));
 
 jest.mock("./QipDeleteMeasureModal", () => ({
-  QipDeleteMeasureModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
+  DeleteConfirmModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
 }));
 
 const mockTemplate: QipMeasureTableTemplate = {
@@ -266,7 +266,7 @@ describe("Test QipMeasureTable", () => {
     const mockSetModalComponent = jest.fn();
     const mockUpdateReport = jest.fn();
     const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
+    const mockedDeleteModal = DeleteConfirmModal as jest.Mock;
 
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
@@ -288,8 +288,8 @@ describe("Test QipMeasureTable", () => {
       screen.getByRole("button", { name: "Delete Not Started Measure" })
     );
 
-    // Invoke the onConfirm callback passed to QipDeleteMeasureModal
-    const onConfirm = mockedDeleteModal.mock.calls[0][2];
+    // Invoke the onConfirm callback passed to DeleteConfirmModal
+    const onConfirm = mockedDeleteModal.mock.calls[0][3];
     onConfirm();
 
     expect(mockUpdateReport).toHaveBeenCalledWith(
@@ -311,7 +311,7 @@ describe("Test QipMeasureTable", () => {
     const mockSetModalOpen = jest.fn();
     const mockSetModalComponent = jest.fn();
     const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
+    const mockedDeleteModal = DeleteConfirmModal as jest.Mock;
 
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
@@ -332,7 +332,7 @@ describe("Test QipMeasureTable", () => {
       screen.getByRole("button", { name: "Delete Not Started Measure" })
     );
 
-    const onClose = mockedDeleteModal.mock.calls[0][1];
+    const onClose = mockedDeleteModal.mock.calls[0][2];
     onClose();
 
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);

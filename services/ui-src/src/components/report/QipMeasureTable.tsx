@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useRef } from "react";
 import {
   Button,
   Flex,
@@ -18,7 +17,7 @@ import {
 import { MeasureTargetInfo, PageStatus, QipMeasureTableTemplate } from "types";
 import { TableStatusIcon } from "components";
 import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
-import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
+import { useDeleteConfirmModal } from "./useDeleteConfirmModal";
 import { addQipTargetPage, useStore } from "utils";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
@@ -37,13 +36,27 @@ export const QipMeasureTableElement = ({
     updateReport,
     setCurrentPageId,
     setModalComponent,
-    setModalFinalFocusRef,
     setModalOpen,
   } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
-  const addButtonRef = useRef<HTMLButtonElement | null>(null);
-  const deleteButtonRefs = useRef(new Map<string, HTMLButtonElement>());
-  const finalFocusRef = useRef<HTMLElement | null>(null);
+  const { addButtonRef, getDeleteButtonRef, openDeleteModal } =
+    useDeleteConfirmModal({
+      items: measureTargets ?? [],
+      getId: (item) => item.pageId,
+      getBody: (item) =>
+        `This action cannot be undone. It will remove the measure ${item.measureName} from this QI Plan.`,
+      confirmLabel: "Remove measure",
+      header: "Are you sure you want to remove this measure?",
+      onConfirm: (remaining, deletedPageId) => {
+        if (report) {
+          updateReport({
+            ...report,
+            pages: report.pages.filter((p) => p.id !== deletedPageId),
+          });
+        }
+        updateElement({ answer: remaining });
+      },
+    });
 
   if (!measureTargetMapping) {
     throw new Error("Can't render QIP Measure Table outside of QIP");
@@ -96,47 +109,7 @@ export const QipMeasureTableElement = ({
     return <></>;
   };
 
-  const handleDeleteClick = (pageId: string, measureName: string) => {
-    const onClose = () => setModalOpen(false);
-    const onConfirm = () => {
-      const currentMeasureTargets = measureTargets ?? [];
-      const deletedIndex = currentMeasureTargets.findIndex(
-        (item) => item.pageId === pageId
-      );
-      const remainingMeasureTargets = currentMeasureTargets.filter(
-        (item) => item.pageId !== pageId
-      );
-      const nextFocusPageId =
-        remainingMeasureTargets.length > 0
-          ? remainingMeasureTargets[
-              Math.min(deletedIndex, remainingMeasureTargets.length - 1)
-            ].pageId
-          : null;
-
-      finalFocusRef.current = nextFocusPageId
-        ? (deleteButtonRefs.current.get(nextFocusPageId) ??
-          addButtonRef.current)
-        : addButtonRef.current;
-
-      if (report) {
-        const updatedReport = {
-          ...report,
-          pages: report.pages.filter((p) => p.id !== pageId),
-        };
-        updateReport(updatedReport);
-      }
-      updateElement({ answer: remainingMeasureTargets });
-      setModalOpen(false);
-    };
-
-    // Default focus target - onConfirm overwrites this with the next item's button
-    finalFocusRef.current = deleteButtonRefs.current.get(pageId) ?? null;
-    setModalFinalFocusRef(finalFocusRef);
-    setModalComponent(
-      QipDeleteMeasureModal(measureName, onClose, onConfirm),
-      "Are you sure you want to remove this measure?"
-    );
-  };
+  const handleDeleteClick = (pageId: string) => openDeleteModal(pageId);
 
   const rows = (measureTargets ?? []).map((measureTarget) => {
     const status = getTableStatus(measureTarget.pageId);
@@ -172,19 +145,10 @@ export const QipMeasureTableElement = ({
             </Button>
             {!disabled && (
               <Button
-                ref={(el) => {
-                  if (el)
-                    deleteButtonRefs.current.set(measureTarget.pageId, el);
-                  else deleteButtonRefs.current.delete(measureTarget.pageId);
-                }}
+                ref={getDeleteButtonRef(measureTarget.pageId)}
                 variant="transparent"
                 aria-label={`Delete ${measureTarget.measureName}`}
-                onClick={() =>
-                  handleDeleteClick(
-                    measureTarget.pageId,
-                    measureTarget.measureName
-                  )
-                }
+                onClick={() => handleDeleteClick(measureTarget.pageId)}
               >
                 <Image src={cancelIcon} alt="" />
               </Button>
