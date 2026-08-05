@@ -213,10 +213,12 @@ describe("<KeyActivitiesTableElement />", () => {
   test("should open delete modal and removes activity", async () => {
     const mockSetModalComponent = jest.fn();
     const mockSetModalOpen = jest.fn();
+    const mockSetModalFinalFocusRef = jest.fn();
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
       setModalComponent: mockSetModalComponent,
       setModalOpen: mockSetModalOpen,
+      setModalFinalFocusRef: mockSetModalFinalFocusRef,
     });
 
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
@@ -226,6 +228,7 @@ describe("<KeyActivitiesTableElement />", () => {
     expect(mockSetModalComponent.mock.calls[0][1]).toBe(
       "Are you sure you want to remove this key activity?"
     );
+    expect(mockSetModalFinalFocusRef).toHaveBeenCalled();
 
     const onConfirm = mockedQipDeleteConfirmModal.mock.calls[0][3];
     await act(async () => onConfirm());

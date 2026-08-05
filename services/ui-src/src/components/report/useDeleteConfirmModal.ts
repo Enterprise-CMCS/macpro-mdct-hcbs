@@ -32,6 +32,7 @@ export function useDeleteConfirmModal<T>({
   const openDeleteModal = (id: string) => {
     const item = items.find((i) => getId(i) === id);
     const deletedIndex = items.findIndex((i) => getId(i) === id);
+    if (deletedIndex === -1) return;
     const remainingItems = items.filter((i) => getId(i) !== id);
     const nextFocusId =
       remainingItems.length > 0

@@ -243,11 +243,13 @@ describe("Test QipMeasureTable", () => {
   it("should open the delete modal when the delete button is clicked", async () => {
     const mockSetModalOpen = jest.fn();
     const mockSetModalComponent = jest.fn();
+    const mockSetModalFinalFocusRef = jest.fn();
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
       report: mockReport,
       setModalOpen: mockSetModalOpen,
       setModalComponent: mockSetModalComponent,
+      setModalFinalFocusRef: mockSetModalFinalFocusRef,
     });
 
     render(QipMeasureTableComponent());
@@ -259,6 +261,7 @@ describe("Test QipMeasureTable", () => {
     expect(mockSetModalComponent.mock.calls[0][1]).toBe(
       "Are you sure you want to remove this measure?"
     );
+    expect(mockSetModalFinalFocusRef).toHaveBeenCalled();
   });
 
   it("should remove the measure and its page on delete confirm", async () => {

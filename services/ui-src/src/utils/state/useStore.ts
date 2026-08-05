@@ -8,7 +8,7 @@ import {
   BannerFormData,
 } from "types";
 import { MeasurePageTemplate, Report } from "types/report";
-import { ReactNode } from "react";
+import { ReactNode, RefObject } from "react";
 import {
   buildState,
   changeDeliveryMethods,
@@ -87,10 +87,19 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
   setModalOpen: (modalOpen: boolean) =>
     set(() => ({ modalOpen }), false, { type: "setModalOpen" }),
   setModalComponent: (modalComponent: ReactNode, modalHeader: string) =>
-    set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
-      type: "setModalComponent",
-    }),
-  setModalFinalFocusRef: (modalFinalFocusRef: any) =>
+    set(
+      () => ({
+        modalComponent,
+        modalOpen: true,
+        modalHeader,
+        modalFinalFocusRef: null,
+      }),
+      false,
+      { type: "setModalComponent" }
+    ),
+  setModalFinalFocusRef: (
+    modalFinalFocusRef: RefObject<HTMLElement | null> | null
+  ) =>
     set(() => ({ modalFinalFocusRef }), false, {
       type: "setModalFinalFocusRef",
     }),
