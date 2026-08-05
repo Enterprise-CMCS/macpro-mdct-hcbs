@@ -165,7 +165,9 @@ describe("<KeyActivitiesTableElement />", () => {
     expect(
       screen.getByRole("textbox", { name: "Title or description" })
     ).toHaveValue("Activity 1");
-    expect(screen.getByLabelText("Expected completion date")).toHaveValue(
+    expect(
+      screen.getByLabelText("Expected completion month")
+    ).toHaveValue(
       "01/2026"
     );
   });
@@ -195,13 +197,15 @@ describe("<KeyActivitiesTableElement />", () => {
       "Date Activity"
     );
     await userEvent.type(
-      screen.getByLabelText("Expected completion date"),
+      screen.getByLabelText("Expected completion month (optional)"),
       "03/2027"
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
-    expect(screen.getByText("Expected completion date: 03/2027")).toBeVisible();
+    expect(
+      screen.getByText("Expected completion month: 03/2027")
+    ).toBeVisible();
   });
 
   test("should open delete modal and removes activity", async () => {

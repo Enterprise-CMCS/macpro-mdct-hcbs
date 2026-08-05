@@ -62,7 +62,7 @@ export const qipReportTemplate: ReportBase = {
         {
           type: ElementType.Textbox,
           id: "contact-email",
-          label: "Contact email",
+          label: "Contact email address",
           required: true,
           helperText:
             "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
@@ -324,7 +324,7 @@ export const qipReportTemplate: ReportBase = {
           label: "Instructions",
           value:
             '<p>Provide at least one key activity to support your Quality Improvement Plan. To begin, click the "Add key activity" button, which will open a pop-up window for data entry.</p>' +
-            "<p>Within the modal, enter a concise, one-sentence title or description of the activity, and specify an expected completion date if one can be determined. You may repeat this process to add multiple activities as needed to fully outline your strategy.</p>",
+            "<p>Within the modal, enter a concise, one-sentence title or description of the activity, and specify an expected completion month if one can be determined. You may repeat this process to add multiple activities as needed to fully outline your strategy.</p>",
         },
         {
           type: ElementType.KeyActivityTable,

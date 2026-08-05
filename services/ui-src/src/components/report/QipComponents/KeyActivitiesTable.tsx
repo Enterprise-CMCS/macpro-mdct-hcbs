@@ -157,7 +157,7 @@ export const KeyActivitiesTableElement = (
             {activity.title}
           </Text>
           <Text>
-            Expected completion date: {activity.completionDate || "N/A"}
+            Expected completion month: {activity.completionDate || "N/A"}
           </Text>
         </Td>
         <Td minWidth="150px" whiteSpace="nowrap">
@@ -251,9 +251,9 @@ export const KeyActivitiesTableElement = (
                 element={{
                   type: ElementType.Date,
                   id: "completion-date",
-                  label: "Expected completion date",
+                  label: "Expected completion month",
                   helperText:
-                    "Specify an expected completion date if one can be determined.",
+                    "Specify an expected completion month if one can be determined.",
                   required: false,
                   dateFormat: "MMYYYY",
                   answer: formValues.completionDate,
