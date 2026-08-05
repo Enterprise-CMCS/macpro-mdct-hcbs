@@ -6,12 +6,12 @@ import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import { mockUseStore } from "utils/testing/setupJest";
 import { KeyActivitiesTableElement } from "./KeyActivitiesTable";
-import { QipDeleteMeasureModal } from "../QipDeleteMeasureModal";
+import { QipDeleteModal } from "../QipDeleteModal";
 
-jest.mock("../QipDeleteMeasureModal", () => ({
-  QipDeleteMeasureModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
+jest.mock("../QipDeleteModal", () => ({
+  QipDeleteModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
 }));
-const mockedQipDeleteConfirmModal = QipDeleteMeasureModal as jest.Mock;
+const mockedQipDeleteConfirmModal = QipDeleteModal as jest.Mock;
 
 jest.mock("utils/state/useStore", () => ({
   useStore: jest.fn().mockReturnValue({}),

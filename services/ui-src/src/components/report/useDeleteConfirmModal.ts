@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useStore } from "utils";
-import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
+import { QipDeleteModal } from "./QipDeleteModal";
 
 interface Options<T> {
   items: T[];
@@ -54,12 +54,7 @@ export function useDeleteConfirmModal<T>({
     finalFocusRef.current = deleteButtonRefs.current.get(id) ?? null;
     setModalFinalFocusRef(finalFocusRef);
     setModalComponent(
-      QipDeleteMeasureModal(
-        item ? getBody(item) : "",
-        confirmLabel,
-        close,
-        confirm
-      ),
+      QipDeleteModal(item ? getBody(item) : "", confirmLabel, close, confirm),
       header
     );
   };
