@@ -5,12 +5,6 @@ import {
   BatchWriteCommandInput,
 } from "@aws-sdk/lib-dynamodb";
 
-declare const process: {
-  env: {
-    STAGE?: string;
-  };
-};
-
 /*
  * ENVIRONMENT VARIABLES TO SET:
  * STAGE: "main", "val", or "production" as appropriate.
@@ -23,21 +17,19 @@ declare const process: {
  * Since component names get baked into reports,
  * and since we changed the serialized value for QmsMeasureTable,
  * this is not a mere code change; we need to modify existing report data.
- *
- * | Before       | After           |
- * |--------------|-----------------|
- * | measureTable | qmsMeasureTable |
  */
 
 const client = createClient();
 const logPrefix = () => new Date().toISOString() + " | ";
+/** The table in which all Reports and Pages are stored */
+const TableName = `${process.env.STAGE}-reports`;
 
 async function main() {
   console.info(`${logPrefix()}Updating reports...`);
   let updatedCount = 0;
 
   try {
-    for await (const batch of createBatches(reportsToUpdate())) {
+    for await (const batch of createBatches(reportItemsToUpdate())) {
       await sendBatch(batch);
       updatedCount += Object.values(batch.RequestItems).flat().length;
     }
@@ -50,28 +42,19 @@ async function main() {
 }
 
 /** Find all QMS reports, and collect the ones that need updating */
-async function* reportsToUpdate() {
-  const stage = process.env.STAGE;
-  if (!stage) {
-    throw new Error(
-      'Missing required env var STAGE (e.g. "main", "val", or "production").'
-    );
-  }
-
-  const tableName = `${stage}-reports`;
-
-  for await (const item of scanReports(tableName)) {
-    if (!isQmsItem(item)) continue;
+async function* reportItemsToUpdate() {
+  for await (const item of scanReportTableItems()) {
+    if (!isQmsPage(item)) continue;
 
     const needsUpdate = updateComponentNames(item);
     if (needsUpdate) {
-      yield { tableName, Item: item };
+      yield item;
     }
   }
 }
 
 /** Find all reports in a given Dynamo table */
-async function* scanReports(TableName: string) {
+async function* scanReportTableItems() {
   console.info(`${logPrefix()}Scanning table ${TableName}...`);
   let pageNumber = 0;
   for await (const page of paginateScan({ client }, { TableName })) {
@@ -81,8 +64,8 @@ async function* scanReports(TableName: string) {
   }
 }
 
-function isQmsItem(item: ReportTableItem): boolean {
-  return item.pKey?.startsWith("QMS#") ?? false;
+function isQmsPage(item: ReportTableItem) {
+  return item.pKey?.startsWith("QMS#") && item.sortKey?.includes("#");
 }
 
 /**
@@ -90,16 +73,12 @@ function isQmsItem(item: ReportTableItem): boolean {
  * @returns `true` if a change was made, `false` otherwise.
  */
 function updateComponentNames(item: ReportTableItem) {
-  const NEW_NAMES: Record<string, string> = {
-    measureTable: "qmsMeasureTable",
-  };
-
   let isChanged = false;
 
   // Current split-table shape where page items carry elements.
   for (const element of iterateElements(item.elements)) {
-    if (element.type in NEW_NAMES) {
-      element.type = NEW_NAMES[element.type];
+    if (element.type === "measureTable") {
+      element.type = "qmsMeasureTable";
       isChanged = true;
     }
   }
@@ -128,9 +107,7 @@ function* iterateElements(
  * Note: this can handle reports of different types,
  * because a BatchWriteCommand can touch multiple tables.
  */
-async function* createBatches(
-  iterator: AsyncGenerator<{ tableName: string; Item: ReportTableItem }>
-) {
+async function* createBatches(iterator: AsyncGenerator<ReportTableItem>) {
   /**
    * Dynamo BatchWriteCommand allows up to 25 items, but also has a size cap.
    * Limiting each batch to 5 items should be safe.
@@ -138,11 +115,12 @@ async function* createBatches(
   const MAX_BATCH_SIZE = 5;
   let batchNumber = 0;
   let currentBatchSize = 0;
-  let RequestItems: Record<string, { PutRequest: { Item: any } }[]> = {};
+  let RequestItems: Record<string, { PutRequest: { Item: any } }[]> = {
+    [TableName]: [],
+  };
 
-  for await (const { tableName, Item } of iterator) {
-    RequestItems[tableName] ??= [];
-    RequestItems[tableName].push({ PutRequest: { Item } });
+  for await (const Item of iterator) {
+    RequestItems[TableName].push({ PutRequest: { Item } });
     currentBatchSize += 1;
 
     if (currentBatchSize >= MAX_BATCH_SIZE) {
@@ -152,7 +130,7 @@ async function* createBatches(
       yield { RequestItems };
 
       currentBatchSize = 0;
-      RequestItems = {};
+      RequestItems = { [TableName]: [] };
     }
   }
 
@@ -169,7 +147,10 @@ async function sendBatch(params: BatchWriteCommandInput) {
   const unprocessedIds = Object.entries(
     response.UnprocessedItems ?? {}
   ).flatMap(([table, reqs]) =>
-    reqs.map((req) => `${table}:${req.PutRequest!.Item!.id}`)
+    reqs.map(
+      (req) =>
+        `${table}:${req.PutRequest!.Item!.pKey}#${req.PutRequest!.Item!.sortKey}`
+    )
   );
   if (unprocessedIds.length > 0) {
     const message = `Batch write failed! The following reports were not updated: ${unprocessedIds.join(", ")}`;
