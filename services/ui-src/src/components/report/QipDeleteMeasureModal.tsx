@@ -1,7 +1,7 @@
 import { ModalBody, ModalFooter, Button, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-export const DeleteConfirmModal = (
+export const QipDeleteMeasureModal = (
   body: string,
   confirmLabel: string,
   onClose: () => void,

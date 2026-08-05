@@ -4,7 +4,7 @@ import { QipMeasureTableElement } from "./QipMeasureTable";
 import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import * as reportRequestMethods from "utils/api/requestMethods/report";
-import { DeleteConfirmModal } from "./QipDeleteMeasureModal";
+import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
 import {
   ElementType,
   QipMeasureTableTemplate,
@@ -64,7 +64,7 @@ jest.mock("./QipMeasureSelectModal", () => ({
 }));
 
 jest.mock("./QipDeleteMeasureModal", () => ({
-  DeleteConfirmModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
+  QipDeleteMeasureModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
 }));
 
 const mockTemplate: QipMeasureTableTemplate = {
@@ -266,7 +266,7 @@ describe("Test QipMeasureTable", () => {
     const mockSetModalComponent = jest.fn();
     const mockUpdateReport = jest.fn();
     const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = DeleteConfirmModal as jest.Mock;
+    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
 
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
@@ -288,7 +288,7 @@ describe("Test QipMeasureTable", () => {
       screen.getByRole("button", { name: "Delete Not Started Measure" })
     );
 
-    // Invoke the onConfirm callback passed to DeleteConfirmModal
+    // Invoke the onConfirm callback passed to QipDeleteMeasureModal
     const onConfirm = mockedDeleteModal.mock.calls[0][3];
     onConfirm();
 
@@ -311,7 +311,7 @@ describe("Test QipMeasureTable", () => {
     const mockSetModalOpen = jest.fn();
     const mockSetModalComponent = jest.fn();
     const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = DeleteConfirmModal as jest.Mock;
+    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
 
     mockedUseStore.mockReturnValue({
       ...mockUseStore,

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/react";
-import { DeleteConfirmModal } from "./QipDeleteMeasureModal";
+import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
 
 const onClose = jest.fn();
 const onConfirm = jest.fn();
@@ -11,12 +11,12 @@ const renderInModal = (body: string, confirmLabel: string) =>
     <Modal isOpen={true} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {DeleteConfirmModal(body, confirmLabel, onClose, onConfirm)}
+        {QipDeleteMeasureModal(body, confirmLabel, onClose, onConfirm)}
       </ModalContent>
     </Modal>
   );
 
-describe("DeleteConfirmModal", () => {
+describe("QipDeleteMeasureModal", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

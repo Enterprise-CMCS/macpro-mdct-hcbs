@@ -6,12 +6,12 @@ import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import { mockUseStore } from "utils/testing/setupJest";
 import { KeyActivitiesTableElement } from "./KeyActivitiesTable";
-import { DeleteConfirmModal } from "../QipDeleteMeasureModal";
+import { QipDeleteMeasureModal } from "../QipDeleteMeasureModal";
 
 jest.mock("../QipDeleteMeasureModal", () => ({
-  DeleteConfirmModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
+  QipDeleteMeasureModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
 }));
-const mockedDeleteConfirmModal = DeleteConfirmModal as jest.Mock;
+const mockedQipDeleteConfirmModal = QipDeleteMeasureModal as jest.Mock;
 
 jest.mock("utils/state/useStore", () => ({
   useStore: jest.fn().mockReturnValue({}),
@@ -227,7 +227,7 @@ describe("<KeyActivitiesTableElement />", () => {
       "Are you sure you want to remove this key activity?"
     );
 
-    const onConfirm = mockedDeleteConfirmModal.mock.calls[0][3];
+    const onConfirm = mockedQipDeleteConfirmModal.mock.calls[0][3];
     await act(async () => onConfirm());
 
     expect(screen.queryByText("Activity 1")).not.toBeInTheDocument();
@@ -244,7 +244,7 @@ describe("<KeyActivitiesTableElement />", () => {
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
 
-    const onClose = mockedDeleteConfirmModal.mock.calls[0][2];
+    const onClose = mockedQipDeleteConfirmModal.mock.calls[0][2];
     onClose();
 
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);
@@ -261,7 +261,7 @@ describe("<KeyActivitiesTableElement />", () => {
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
 
-    const onClose = mockedDeleteConfirmModal.mock.calls[0][2];
+    const onClose = mockedQipDeleteConfirmModal.mock.calls[0][2];
     onClose();
 
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);
@@ -278,7 +278,7 @@ describe("<KeyActivitiesTableElement />", () => {
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
 
-    const onClose = mockedDeleteConfirmModal.mock.calls[0][2];
+    const onClose = mockedQipDeleteConfirmModal.mock.calls[0][2];
     onClose();
 
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);
