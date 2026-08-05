@@ -7,7 +7,7 @@ import {
 
 /*
  * ENVIRONMENT VARIABLES TO SET:
- * STAGE: "main", "val", or "production" as appropriate.
+ * STAGE: "localstack", "main", "val", or "production" as appropriate.
  * AWS auth variables as usual.
  */
 
@@ -34,10 +34,10 @@ async function main() {
       updatedCount += Object.values(batch.RequestItems).flat().length;
     }
 
-    console.info(`${logPrefix()}Success. Updated ${updatedCount} reports.`);
+    console.info(`${logPrefix()}Success. Updated ${updatedCount} items.`);
   } catch (error) {
     console.error(error);
-    console.info(`${logPrefix()}Updated at least ${updatedCount} reports.`);
+    console.info(`${logPrefix()}Updated at least ${updatedCount} items.`);
   }
 }
 
@@ -153,7 +153,7 @@ async function sendBatch(params: BatchWriteCommandInput) {
     )
   );
   if (unprocessedIds.length > 0) {
-    const message = `Batch write failed! The following reports were not updated: ${unprocessedIds.join(", ")}`;
+    const message = `Batch write failed! The following items were not updated: ${unprocessedIds.join(", ")}`;
     throw new Error(message);
   }
 }
