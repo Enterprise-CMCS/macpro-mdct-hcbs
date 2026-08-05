@@ -24,6 +24,7 @@ import CiOptions from "./AddFormOptions/CiOptions";
 import PcpOptions from "./AddFormOptions/PcpOptions";
 import QipOptions from "./AddFormOptions/QipOptions";
 import WwlOptions from "./AddFormOptions/WwlOptions";
+import ImaOptions from "./AddFormOptions/ImaOptions";
 import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
@@ -58,6 +59,7 @@ const buildModalOptions = (
     [ReportType.PCP]: PcpOptions,
     [ReportType.QIP]: QipOptions,
     [ReportType.WWL]: WwlOptions,
+    [ReportType.IMA]: ImaOptions,
   };
   return optionsByReportType[reportType];
 };
@@ -99,7 +101,13 @@ export const AddEditReportModal = ({
 }: Props) => {
   if (!isReportType(reportType)) return null;
 
-  const dropdownYears = [{ label: "2026", value: "2026" }];
+  const dropdownYears =
+    reportType === ReportType.IMA
+      ? [
+          { label: "Default", value: "2028" },
+          { label: "2028", value: "2028" },
+        ]
+      : [{ label: "2026", value: "2026" }];
   const { verbiage, OptionsComponent } = buildModalOptions(reportType);
 
   const formDataForReport = (report: LiteReport | undefined) => ({

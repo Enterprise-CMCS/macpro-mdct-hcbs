@@ -190,6 +190,27 @@ export const DashboardPage = () => {
                       you will need a separate report for each one.
                     </p>
                   </>
+                ) : reportType === ReportType.IMA ? (
+                  <>
+                    <p>
+                      Click the <b>"Start Incident Management Assessment"</b>{" "}
+                      button to begin creating your report. A series of
+                      questions will appear to gather the necessary information
+                      for your report. Fill out each field accurately to ensure
+                      your report is complete. Before submitting, review the
+                      information you've provided. If everything looks good,
+                      confirm your entries and proceed.
+                    </p>
+                    <p>
+                      Enter an assessment for each of your state's incident
+                      management systems. If your state uses multiple systems,
+                      you will need a separate assessment for each one.
+                    </p>
+                    <p>
+                      Once the report is generated, you can edit the name of
+                      the report and monitor its status in the dashboard below.
+                    </p>
+                  </>
                 ) : (
                   <>
                     <p>
@@ -216,7 +237,10 @@ export const DashboardPage = () => {
                         current reporting year.
                       </p>
                     );
-                  } else if (reportType === ReportType.QIP) {
+                  } else if (
+                    reportType === ReportType.QIP ||
+                    reportType === ReportType.IMA
+                  ) {
                     return null;
                   } else {
                     return (

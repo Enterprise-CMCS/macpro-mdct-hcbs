@@ -6,6 +6,7 @@ import {
   QmsIntroductionCard,
   TacmIntroductionCard,
   PCPIntroductionCard,
+  IMAIntroductionCard,
   QipIntroductionCard,
   WWLIntroductionCard,
 } from "components";
@@ -24,6 +25,7 @@ export const HomePage = () => {
   const isPCPReportActive = useFlags()?.isPcpReportActive;
   const isQipReportActive = useFlags()?.isQipReportActive;
   const isWWLReportActive = useFlags()?.isWwlReportActive;
+  const isIMAReportActive = useFlags()?.isImaReportActive;
 
   return (
     <>
@@ -69,7 +71,7 @@ export const HomePage = () => {
                 </Box>
               </Box>
             )}
-            {(isCIReportActive || isPCPReportActive) && (
+            {(isCIReportActive || isPCPReportActive || isIMAReportActive) && (
               <Box>
                 <Heading as="h2" variant="h2" marginBottom="spacer3">
                   Compliance Reports
@@ -77,6 +79,7 @@ export const HomePage = () => {
                 <Box display="flex" flexDirection="column" gap="spacer4">
                   {isCIReportActive && <CiIntroductionCard />}
                   {isPCPReportActive && <PCPIntroductionCard />}
+                  <IMAIntroductionCard />
                 </Box>
               </Box>
             )}

@@ -12,9 +12,9 @@ import {
   waiverListInputField,
 } from "../elements";
 
-export const qipReportTemplate: ReportBase = {
-  type: ReportType.QIP,
-  year: 2026,
+export const imaReportTemplate: ReportBase = {
+  type: ReportType.IMA,
+  year: 2028,
   pages: [
     {
       id: "root",
@@ -23,7 +23,7 @@ export const qipReportTemplate: ReportBase = {
     {
       id: "general-info",
       navTitle: "General Information",
-      tabTitle: "General Information - QIP - HCBS",
+      tabTitle: "General Information - IMA - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -55,8 +55,8 @@ export const qipReportTemplate: ReportBase = {
     {
       id: "review-submit",
       navTitle: "Review & Submit",
-      tabTitle: "Review & Submit - QIP - HCBS",
-      submittedTabTitle: "Successfully Submitted - QIP - HCBS",
+      tabTitle: "Review & Submit - IMA - HCBS",
+      submittedTabTitle: "Successfully Submitted - IMA - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
