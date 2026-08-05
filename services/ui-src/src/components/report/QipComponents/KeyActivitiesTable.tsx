@@ -340,7 +340,7 @@ export const KeyActivitiesTableExport = (element: KeyActivityTableTemplate) => {
         {element.answer.map((activity) => (
           <Tr key={activity.id}>
             <Td>{activity.title}</Td>
-            <Td>{activity.completionDate || null}</Td>
+            <Td>{activity.completionDate || "N/A"}</Td>
           </Tr>
         ))}
       </Tbody>
