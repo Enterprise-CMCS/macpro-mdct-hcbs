@@ -178,7 +178,7 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByRole("cell", { name: "12/2026" })).toHaveLength(2);
   });
 
-  test("Test render Key Activities date as N/A when missing", () => {
+  test("Test render Key Activities date as blank when missing", () => {
     const element = renderElements(section, {
       id: "key-activities",
       type: ElementType.KeyActivityTable,
@@ -195,7 +195,12 @@ describe("Test ExportedReportElements", () => {
 
     render(element);
 
-    expect(screen.getByRole("cell", { name: "N/A" })).toBeVisible();
+    const activityCell = screen.getByRole("cell", { name: "Key activity one" });
+    const activityRow = activityCell.closest("tr");
+    const completionDateCell = activityRow?.querySelectorAll("td")[1];
+
+    expect(screen.queryByText("N/A")).not.toBeInTheDocument();
+    expect(completionDateCell).toHaveTextContent(/^$/);
   });
 
   test("Test render Key Activities element as Not answered when empty", () => {
