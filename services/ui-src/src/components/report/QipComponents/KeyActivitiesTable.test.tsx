@@ -165,9 +165,7 @@ describe("<KeyActivitiesTableElement />", () => {
     expect(
       screen.getByRole("textbox", { name: "Title or description" })
     ).toHaveValue("Activity 1");
-    expect(
-      screen.getByLabelText("Expected completion month")
-    ).toHaveValue(
+    expect(screen.getByLabelText("Expected completion month")).toHaveValue(
       "01/2026"
     );
   });

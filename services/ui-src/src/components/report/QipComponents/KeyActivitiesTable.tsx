@@ -333,7 +333,7 @@ export const KeyActivitiesTableExport = (element: KeyActivityTableTemplate) => {
       <Thead>
         <Tr>
           <Th>Activity</Th>
-          <Th>Expected completion date</Th>
+          <Th>Expected completion month</Th>
         </Tr>
       </Thead>
       <Tbody>
