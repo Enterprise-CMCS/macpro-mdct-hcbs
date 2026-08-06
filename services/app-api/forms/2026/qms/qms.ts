@@ -12,9 +12,11 @@ import { exportToPDF } from "../elements";
 import { defaultMeasures, pomMeasures } from "./measureOptions";
 import { measureTemplates } from "./measureTemplates";
 
+const YEAR = 2026;
+
 export const qmsReportTemplate: ReportWithMeasuresTemplate = {
   type: ReportType.QMS,
-  year: 2026,
+  year: YEAR,
   pages: [
     {
       id: "root",
@@ -52,6 +54,62 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           required: true,
           helperText:
             "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
+        },
+        {
+          type: ElementType.Dropdown,
+          id: "cahps-period",
+          label: "CAHPS reporting start and end date",
+          required: true,
+          options: [
+            {
+              label: `July ${YEAR - 2}—June ${YEAR - 1}`,
+              value: `${YEAR - 2}`,
+            },
+            { label: `July ${YEAR - 1}—June ${YEAR}`, value: `${YEAR - 1}` },
+            { label: `July ${YEAR}—June ${YEAR + 1}`, value: `${YEAR}` },
+          ],
+        },
+        {
+          type: ElementType.Dropdown,
+          id: "nciidd-period",
+          label: "NCI-IDD reporting start and end date",
+          required: true,
+          options: [
+            {
+              label: `July ${YEAR - 2}—June ${YEAR - 1}`,
+              value: `${YEAR - 2}`,
+            },
+            { label: `July ${YEAR - 1}—June ${YEAR}`, value: `${YEAR - 1}` },
+            { label: `July ${YEAR}—June ${YEAR + 1}`, value: `${YEAR}` },
+          ],
+        },
+        {
+          type: ElementType.Dropdown,
+          id: "nicad-period",
+          label: "NCI-AD reporting start and end date",
+          required: true,
+          options: [
+            {
+              label: `July ${YEAR - 2}—June ${YEAR - 1}`,
+              value: `${YEAR - 2}`,
+            },
+            { label: `July ${YEAR - 1}—June ${YEAR}`, value: `${YEAR - 1}` },
+            { label: `July ${YEAR}—June ${YEAR + 1}`, value: `${YEAR}` },
+          ],
+        },
+        {
+          type: ElementType.Dropdown,
+          id: "pom-period",
+          label: "POM reporting start and end date",
+          required: true,
+          options: [
+            {
+              label: `July ${YEAR - 2}—June ${YEAR - 1}`,
+              value: `${YEAR - 2}`,
+            },
+            { label: `July ${YEAR - 1}—June ${YEAR}`, value: `${YEAR - 1}` },
+            { label: `July ${YEAR}—June ${YEAR + 1}`, value: `${YEAR}` },
+          ],
         },
       ],
     },
