@@ -83,7 +83,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
             "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
-          type: ElementType.MeasureTable,
+          type: ElementType.QmsMeasureTable,
           id: "required-measures",
           caption: "Required Measure Results",
           measureDisplay: "required",
@@ -119,7 +119,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
             "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
-          type: ElementType.MeasureTable,
+          type: ElementType.QmsMeasureTable,
           id: "optional-measures",
           caption: "Optional Measure Results",
           measureDisplay: "optional",

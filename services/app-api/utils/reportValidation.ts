@@ -196,7 +196,7 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return checkboxTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
-    case ElementType.MeasureTable:
+    case ElementType.QmsMeasureTable:
       return measureTableTemplateSchema;
     case ElementType.QipMeasureTable:
       return qipMeasureTableTemplateSchema;
@@ -299,7 +299,7 @@ const submissionParagraphSchema = object().shape({
 });
 
 const measureTableTemplateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.MeasureTable)),
+  type: string().required().matches(new RegExp(ElementType.QmsMeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
   caption: string().required(),

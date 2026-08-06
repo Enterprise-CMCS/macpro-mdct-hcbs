@@ -81,11 +81,11 @@ describe("<DateField />", () => {
       expect(updateSpy).toHaveBeenCalledWith({ answer: "01/2024" });
     });
 
-    test("Datefield normalizes 5-digit MYYYY input for MM/YYYY", () => {
+    test("Datefield normalizes delimited M-YYYY input to 0M/YYYY", () => {
       render(<DateFieldWrapper template={mockedMonthYearTextboxElement} />);
       const dateFieldInput = screen.getByRole("textbox");
 
-      fireEvent.change(dateFieldInput, { target: { value: "12024" } });
+      fireEvent.change(dateFieldInput, { target: { value: "1.2024" } });
       expect(updateSpy).toHaveBeenCalledWith({ answer: "01/2024" });
     });
 

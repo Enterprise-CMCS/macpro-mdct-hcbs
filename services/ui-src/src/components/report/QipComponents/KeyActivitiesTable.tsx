@@ -30,7 +30,7 @@ import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
-import { ErrorMessages } from "../../../constants";
+import { ErrorMessages, notAnsweredText } from "../../../constants";
 import { Alert } from "components";
 import { DateField } from "components/fields";
 
@@ -203,7 +203,7 @@ export const KeyActivitiesTableElement = (
         onClick={onAddClick}
         mb="24px"
       >
-        <Image src={addIcon} alt={"Add Item"} sx={sx.addIcon} />
+        <Image src={addIcon} alt={"Add Item"} />
         Add key activity
       </Button>
 
@@ -320,8 +320,41 @@ export const KeyActivitiesTableElement = (
   );
 };
 
+export const KeyActivitiesTableExport = (element: KeyActivityTableTemplate) => {
+  if (!element.answer?.length) {
+    return notAnsweredText;
+  }
+
+  return (
+    <Table variant="export" size="sm" sx={sx.keyActivitiesExport}>
+      <TableCaption>
+        <VisuallyHidden>{element.caption}</VisuallyHidden>
+      </TableCaption>
+      <Thead>
+        <Tr>
+          <Th>Activity</Th>
+          <Th>Expected completion date</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {element.answer.map((activity) => (
+          <Tr key={activity.id}>
+            <Td>{activity.title}</Td>
+            <Td>{activity.completionDate || "N/A"}</Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  );
+};
+
 const sx = {
-  addIcon: {
-    padding: "3px",
+  keyActivitiesExport: {
+    "tbody td": {
+      color: "#000000",
+    },
+    "tbody td:first-of-type": {
+      fontWeight: "bold",
+    },
   },
 };
