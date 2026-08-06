@@ -50,13 +50,13 @@ export function useDeleteConfirmModal<T>({
       setModalOpen(false);
     };
 
-    // Default focus target - confirm overwrites this with the next item's button
-    finalFocusRef.current = deleteButtonRefs.current.get(id) ?? null;
-    setModalFinalFocusRef(finalFocusRef);
     setModalComponent(
       QipDeleteModal(item ? getBody(item) : "", confirmLabel, close, confirm),
       header
     );
+    // Must come after setModalComponent, which resets modalFinalFocusRef to null
+    finalFocusRef.current = deleteButtonRefs.current.get(id) ?? null;
+    setModalFinalFocusRef(finalFocusRef);
   };
 
   return { addButtonRef, getDeleteButtonRef, openDeleteModal };
