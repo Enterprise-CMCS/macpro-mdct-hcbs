@@ -160,7 +160,7 @@ export const QipMeasureSelectModal = ({
                       label={
                         <>
                           Please select from which submitted Quality Measure Set
-                          report you would like to copy over baseline values{" "}
+                          report you would like to copy-over baseline values{" "}
                           <span className="optionalText">(optional)</span>
                         </>
                       }
@@ -172,7 +172,7 @@ export const QipMeasureSelectModal = ({
                         reports.length === 0
                           ? [
                               {
-                                label: "No reports available for copy over",
+                                label: "No reports available for copy-over",
                                 value: "",
                               },
                             ]
