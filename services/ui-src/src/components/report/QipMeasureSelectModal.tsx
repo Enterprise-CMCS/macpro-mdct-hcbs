@@ -161,9 +161,7 @@ export const QipMeasureSelectModal = ({
                         <>
                           Please select from which submitted Quality Measure Set
                           report you would like to copy over baseline values{" "}
-                          <span style={{ fontWeight: "normal" }}>
-                            (optional)
-                          </span>
+                          <span className="optionalText">(optional)</span>
                         </>
                       }
                       hint="Only measures submitted as part of the HCBS Quality Measure Set report are available for copy-over."
