@@ -1,21 +1,12 @@
 import { useEffect, useState } from "react";
 import { Box, Stack, Text } from "@chakra-ui/react";
-import {
-  SingleInputDateField as CmsdsDateField,
-  TextField as CmsdsTextField,
-} from "@cmsgov/design-system";
 import { parseHtml } from "utils";
 import { DateRangeTemplate } from "types/report";
 import { PageElementProps } from "components/report/Elements";
 import { ErrorMessages } from "../../constants";
 import { validateDate } from "utils/validation/inputValidation";
 import { parseMMDDYYYY, parseMMYYYY } from "utils/other/time";
-import { formatMonthYearInput, formatWithPlaceholders } from "./monthYearInput";
-
-const invalidMessage = (label: string, dateFormat: "MMDDYYYY" | "MMYYYY") =>
-  dateFormat === "MMYYYY"
-    ? `${label} is invalid. Please enter date in MM/YYYY format`
-    : `${label} is invalid. Please enter date in MM/DD/YYYY format`;
+import { MultiFormatDateField } from "components/cms-extensions/MultiFormatDateField";
 
 type DateRangeErrors = {
   start: string;
@@ -73,7 +64,8 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
   const handleDateChange = (
     fieldName: "start" | "end",
     rawValue: string,
-    maskedValue: string
+    maskedValue: string,
+    _date: Date | undefined
   ) => {
     setDisplayValues((prev) => ({ ...prev, [fieldName]: rawValue }));
 
@@ -82,11 +74,16 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
         ? (dateRange.endDateRequired ?? dateRange.required)
         : dateRange.required;
 
+    const invalidText =
+      dateFormat === "MMYYYY"
+        ? `${dateRange.labels[fieldName]} is invalid. Please enter date in MM/YYYY format`
+        : `${dateRange.labels[fieldName]} is invalid. Please enter date in MM/DD/YYYY format`;
+
     const { isValid, errorMessage } = validateDate(
       rawValue,
       maskedValue,
       isRequired,
-      invalidMessage(dateRange.labels[fieldName], dateFormat),
+      invalidText,
       dateFormat
     );
 
@@ -107,76 +104,15 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
     }));
   };
 
-  const onMonthYearChange =
-    (fieldName: "start" | "end") =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const masked = formatMonthYearInput(event.target.value);
-      handleDateChange(fieldName, masked, masked);
-    };
-
   const parsedHint = dateRange.helperText && parseHtml(dateRange.helperText);
 
-  const renderField = (fieldName: "start" | "end") => {
-    const name = `${dateRange.id}-${fieldName}`;
-    const isOptionalEnd =
-      fieldName === "end" && !(dateRange.endDateRequired ?? dateRange.required);
-    const label = isOptionalEnd ? (
-      <>
-        {dateRange.labels[fieldName]}
-        <span className="optionalText"> (optional)</span>
-      </>
-    ) : (
-      dateRange.labels[fieldName]
-    );
-    const value = displayValues[fieldName];
-    const errorMessage =
-      fieldName === "end" ? errors.end || errors.range : errors.start;
-    const fieldHelperText =
-      fieldName === "start"
-        ? dateRange.startHelperText
-        : dateRange.endHelperText;
-
-    if (dateFormat === "MMYYYY") {
-      return (
-        <Box sx={sx.monthYearInput}>
-          <CmsdsTextField
-            name={name}
-            label={label}
-            onChange={onMonthYearChange(fieldName)}
-            value={value}
-            hint={
-              <>
-                {fieldHelperText && (
-                  <Text as="span" display="block">
-                    {parseHtml(fieldHelperText)}
-                  </Text>
-                )}
-                <Text as="span" display="block" sx={sx.monthYearHintText}>
-                  {formatWithPlaceholders(value)}
-                </Text>
-              </>
-            }
-            errorMessage={errorMessage}
-            disabled={props.disabled}
-            inputMode="numeric"
-          />
-        </Box>
-      );
-    }
-
-    return (
-      <CmsdsDateField
-        name={name}
-        label={label}
-        onChange={(rawValue, maskedValue) =>
-          handleDateChange(fieldName, rawValue, maskedValue)
-        }
-        value={value}
-        errorMessage={errorMessage}
-        disabled={props.disabled}
-      />
-    );
-  };
+  const isOptionalEnd = !(dateRange.endDateRequired ?? dateRange.required);
+  const endDateLabel = (
+    <>
+      {dateRange.labels.end}
+      {isOptionalEnd && <span className="optionalText"> (optional)</span>}
+    </>
+  );
 
   return (
     <Stack spacing={0} width="100%">
@@ -188,23 +124,34 @@ export const DateRange = (props: PageElementProps<DateRangeTemplate>) => {
           {parsedHint}
         </Text>
       )}
-      <Box marginTop="spacer3">{renderField("start")}</Box>
-      <Box marginTop="8px">{renderField("end")}</Box>
+      <Box marginTop="spacer3">
+        <MultiFormatDateField
+          dateFormat={dateFormat}
+          name={`${dateRange.id}-start`}
+          label={dateRange.labels.start}
+          onChange={(rawValue, maskedValue, date) =>
+            handleDateChange("start", rawValue, maskedValue, date)
+          }
+          value={displayValues.start}
+          hint={parseHtml(dateRange.startHelperText ?? "")}
+          errorMessage={errors.start}
+          disabled={props.disabled}
+        />
+      </Box>
+      <Box marginTop="8px">
+        <MultiFormatDateField
+          dateFormat={dateFormat}
+          name={`${dateRange.id}-end`}
+          label={endDateLabel}
+          onChange={(rawValue, maskedValue, date) =>
+            handleDateChange("end", rawValue, maskedValue, date)
+          }
+          value={displayValues.end}
+          hint={parseHtml(dateRange.endHelperText ?? "")}
+          errorMessage={errors.end || errors.range}
+          disabled={props.disabled}
+        />
+      </Box>
     </Stack>
   );
-};
-
-const sx = {
-  monthYearHintText: {
-    mt: "1",
-    fontSize: "16px",
-    fontFamily: "Menlo, Consolas, Monaco",
-    fontWeight: "500",
-    color: "#5a5a5a",
-  },
-  monthYearInput: {
-    "input:not(.ds-c-choice)": {
-      maxWidth: "12ch",
-    },
-  },
 };

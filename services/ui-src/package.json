@@ -15,7 +15,7 @@
     "@chakra-ui/react": "2.10.6",
     "@chakra-ui/styled-system": "2.6.0",
     "@chakra-ui/toast": "2.1.0",
-    "@cmsgov/design-system": "^13.0.0",
+    "@cmsgov/design-system": "^18.1.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@vitejs/plugin-react": "^6.0.1",
