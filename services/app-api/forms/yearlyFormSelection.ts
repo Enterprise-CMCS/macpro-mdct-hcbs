@@ -22,6 +22,17 @@ const formsByYear = {
     qipReportTemplate: qipReportTemplate2026,
     wwlReportTemplate: wwlReportTemplate2026,
   },
+  2028: {
+    CMIT_LIST: CMIT_LIST_2026,
+    WAIVER_LIST: WAIVER_LIST_2026,
+    qmsReportTemplate: qmsReportTemplate2026,
+    tacmReportTemplate: tacmReportTemplate2026,
+    ciReportTemplate: ciReportTemplate2026,
+    imaReportTemplate: imaReportTemplate2026,
+    pcpReportTemplate: pcpReportTemplate2026,
+    qipReportTemplate: qipReportTemplate2026,
+    wwlReportTemplate: wwlReportTemplate2026,
+  },
 };
 
 function assertYearIsValid(

@@ -13,7 +13,7 @@ describe("IMAIntroductionCard", () => {
   it("should render", () => {
     render(component);
     expect(
-      screen.getByText("When are the Quality Improvement Plans Due?")
+      screen.getByText("When are the Incident Management Assessments Due?")
     ).toBeVisible();
   });
 

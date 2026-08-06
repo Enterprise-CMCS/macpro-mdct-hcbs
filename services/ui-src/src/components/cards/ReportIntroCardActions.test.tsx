@@ -46,6 +46,7 @@ describe("<ReportIntroCardActions />", () => {
       { type: ReportType.TACM, text: "TACM Report" },
       { type: ReportType.CI, text: "CI Report" },
       { type: ReportType.PCP, text: "PCP Report" },
+      { type: ReportType.IMA, text: "IMA Report" },
       { type: ReportType.QIP, text: "QMS QIP" },
       { type: ReportType.WWL, text: "WWL Report" },
       { type: "bad name" as ReportType, text: "" },
