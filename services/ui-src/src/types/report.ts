@@ -759,9 +759,13 @@ export interface ReportOptions {
   year: number;
   options: {
     cahps?: boolean;
+    "cahps-period"?: string;
     nciidd?: boolean;
+    "nciidd-period"?: string;
     nciad?: boolean;
+    "nciad-period"?: string;
     pom?: boolean;
+    "pom-period"?: string;
   };
 }
 
