@@ -61,6 +61,10 @@ export const QipMeasureSelectModal = ({
   }, []);
 
   const validateAndSubmit = async () => {
+    if (submitting) {
+      return;
+    }
+
     setSubmitError(undefined);
 
     let allValid = true;
@@ -112,7 +116,13 @@ export const QipMeasureSelectModal = ({
           Plan. You may either enter the measure rate details or copy the
           baseline values from an existing QMS where possible.
         </Text>
-        <VStack onSubmit={validateAndSubmit} align="stretch" spacing={8}>
+        <VStack
+          as="form"
+          id="qip-measure-select-form"
+          onSubmit={validateAndSubmit}
+          align="stretch"
+          spacing={8}
+        >
           <Dropdown
             label="Measure report"
             name="measure"
@@ -235,7 +245,8 @@ export const QipMeasureSelectModal = ({
         <Button
           colorScheme="blue"
           mr={3}
-          onClick={validateAndSubmit}
+          type="submit"
+          form="qip-measure-select-form"
           isLoading={submitting}
         >
           Save
