@@ -112,6 +112,14 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         return [element, ...expandCheckedChildren(allCheckedChildren)];
       }
 
+      if (element.type === ElementType.Dropdown) {
+        const selectedOption = element.options.find(
+          (o) => o.value === element.answer
+        );
+        element.answer = selectedOption?.label;
+        return [element];
+      }
+
       return [element];
     });
   };
