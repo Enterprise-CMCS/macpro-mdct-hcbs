@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
 import {
   LiteReport,
@@ -60,7 +60,9 @@ export const QipMeasureSelectModal = ({
     })();
   }, []);
 
-  const validateAndSubmit = async () => {
+  const validateAndSubmit = async (evt: FormEvent) => {
+    evt.preventDefault();
+
     if (submitting) {
       return;
     }
