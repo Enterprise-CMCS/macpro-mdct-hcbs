@@ -31,13 +31,18 @@ export const DropdownField = (props: PageElementProps<DropdownTemplate>) => {
   const parsedHint = dropdown.helperText && parseHtml(dropdown.helperText);
   const labelText = dropdown.label;
 
+  const hasEmptyOption = dropdown.options.some((opt) => !opt.value);
+  const optionsToRender = hasEmptyOption
+    ? dropdown.options
+    : [{ label: "- Select an option -", value: "" }, ...dropdown.options];
+
   return (
     <CmsdsDropdownField
       name={dropdown.id}
       label={labelText}
       hint={parsedHint}
       onChange={onChangeHandler}
-      options={dropdown.options}
+      options={optionsToRender}
       value={displayValue}
       disabled={props.disabled}
     />
