@@ -130,19 +130,19 @@ const elements: PageElement[] = [
     id: "",
   },
   {
-    type: ElementType.MeasureTable,
+    type: ElementType.QmsMeasureTable,
     measureDisplay: "required",
     id: "",
     caption: "Required Measure Results",
   },
   {
-    type: ElementType.MeasureTable,
+    type: ElementType.QmsMeasureTable,
     measureDisplay: "required",
     id: "",
     caption: "Required Measure Results",
   },
   {
-    type: ElementType.MeasureTable,
+    type: ElementType.QmsMeasureTable,
     id: "",
     measureDisplay: "optional",
     caption: "Optional Measure Results",
