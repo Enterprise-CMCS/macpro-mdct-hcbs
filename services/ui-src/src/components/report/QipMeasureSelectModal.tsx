@@ -111,7 +111,7 @@ export const QipMeasureSelectModal = ({
           Plan. You may either enter the measure rate details or copy the
           baseline values from an existing QMS where possible.
         </p>
-        <form onSubmit={validateAndSubmit}>
+        <form onSubmit={validateAndSubmit} id="qip-measure-select-form">
           <Dropdown
             label="Measure report"
             name="measure"
@@ -232,6 +232,8 @@ export const QipMeasureSelectModal = ({
           mr={3}
           onClick={validateAndSubmit}
           isLoading={submitting}
+          type="submit"
+          form="qip-measure-select-form"
         >
           Save
         </Button>
