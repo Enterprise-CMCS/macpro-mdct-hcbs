@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { ElementType, KeyActivityTableTemplate } from "types";
@@ -6,6 +6,12 @@ import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import { mockUseStore } from "utils/testing/setupJest";
 import { KeyActivitiesTableElement } from "./KeyActivitiesTable";
+import { QipDeleteModal } from "../QipDeleteModal";
+
+jest.mock("../QipDeleteModal", () => ({
+  QipDeleteModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
+}));
+const mockedQipDeleteConfirmModal = QipDeleteModal as jest.Mock;
 
 jest.mock("utils/state/useStore", () => ({
   useStore: jest.fn().mockReturnValue({}),
@@ -205,59 +211,80 @@ describe("<KeyActivitiesTableElement />", () => {
   });
 
   test("should open delete modal and removes activity", async () => {
-    render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
+    const mockSetModalComponent = jest.fn();
+    const mockSetModalOpen = jest.fn();
+    const mockSetModalFinalFocusRef = jest.fn();
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      setModalComponent: mockSetModalComponent,
+      setModalOpen: mockSetModalOpen,
+      setModalFinalFocusRef: mockSetModalFinalFocusRef,
+    });
 
+    render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
 
-    expect(
-      screen.getByRole("dialog", {
-        name: "Are you sure you want to remove this key activity?",
-      })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Remove key activity" })
-    ).toBeInTheDocument();
+    expect(mockSetModalComponent).toHaveBeenCalled();
+    expect(mockSetModalComponent.mock.calls[0][1]).toBe(
+      "Are you sure you want to remove this key activity?"
+    );
+    expect(mockSetModalFinalFocusRef).toHaveBeenCalled();
 
-    await userEvent.click(screen.getByText("Remove key activity"));
+    const onConfirm = mockedQipDeleteConfirmModal.mock.calls[0][3];
+    await act(async () => onConfirm());
 
     expect(screen.queryByText("Activity 1")).not.toBeInTheDocument();
     expect(updateSpy).toHaveBeenCalled();
   });
 
   test("should cancel in delete modal keeps activity", async () => {
+    const mockSetModalOpen = jest.fn();
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      setModalOpen: mockSetModalOpen,
+    });
+
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
-
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
-    await userEvent.click(screen.getByText("Cancel"));
 
+    const onClose = mockedQipDeleteConfirmModal.mock.calls[0][2];
+    onClose();
+
+    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
     expect(screen.getByText("Activity 1")).toBeVisible();
   });
 
   test("should close delete modal when clicking Close", async () => {
+    const mockSetModalOpen = jest.fn();
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      setModalOpen: mockSetModalOpen,
+    });
+
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
-
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
-    await userEvent.click(screen.getByRole("button", { name: "Close" }));
 
-    expect(
-      screen.queryByRole("dialog", {
-        name: "Are you sure you want to remove this key activity?",
-      })
-    ).not.toBeInTheDocument();
+    const onClose = mockedQipDeleteConfirmModal.mock.calls[0][2];
+    onClose();
+
+    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
     expect(screen.getByText("Activity 1")).toBeVisible();
   });
 
   test("should close delete modal with Escape key", async () => {
+    const mockSetModalOpen = jest.fn();
+    mockedUseStore.mockReturnValue({
+      ...mockUseStore,
+      setModalOpen: mockSetModalOpen,
+    });
+
     render(<KeyActivitiesTableWrapper template={populatedTemplate} />);
-
     await userEvent.click(screen.getByLabelText("Delete Activity 1"));
-    await userEvent.keyboard("{Escape}");
 
-    expect(
-      screen.queryByRole("dialog", {
-        name: "Are you sure you want to remove this key activity?",
-      })
-    ).not.toBeInTheDocument();
+    const onClose = mockedQipDeleteConfirmModal.mock.calls[0][2];
+    onClose();
+
+    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
   });
 
   test("should hide delete button when disabled is true", () => {
