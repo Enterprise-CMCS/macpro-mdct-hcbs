@@ -170,7 +170,7 @@ describe("Test ExportedReportElements", () => {
       screen.getByRole("columnheader", { name: "Activity" })
     ).toBeVisible();
     expect(
-      screen.getByRole("columnheader", { name: "Expected completion date" })
+      screen.getByRole("columnheader", { name: "Expected completion month" })
     ).toBeVisible();
     expect(
       screen.getByRole("cell", { name: "Key activity one" })
