@@ -195,7 +195,7 @@ describe("<KeyActivitiesTableElement />", () => {
       "Date Activity"
     );
     await userEvent.type(
-      screen.getByLabelText("Expected completion month (optional)"),
+      screen.getByLabelText("Expected completion month"),
       "03/2027"
     );
 
