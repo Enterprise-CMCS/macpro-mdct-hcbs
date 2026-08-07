@@ -247,6 +247,7 @@ export const elementObject: {
           type: ElementType.Dropdown,
           id: "id-dropdown",
           label: "DropdownField",
+          helperText: "A helpful hint",
           required: true,
           options: [
             { value: "dropdown option 1", label: "dropdown option 1" },

@@ -361,7 +361,7 @@ export type DropdownTemplate = {
   id: string;
   label: string;
   options: ChoiceTemplate[];
-  helperText?: string;
+  helperText: string;
   answer?: string;
   required: boolean;
 };

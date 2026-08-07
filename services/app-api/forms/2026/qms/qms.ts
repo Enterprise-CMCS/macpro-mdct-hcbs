@@ -59,6 +59,8 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Dropdown,
           id: "cahps-period",
           label: "CAHPS reporting start and end date",
+          helperText:
+            "Only include dates from the two years prior to the reporting period",
           required: true,
           options: [
             {
@@ -73,6 +75,8 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Dropdown,
           id: "nciidd-period",
           label: "NCI-IDD reporting start and end date",
+          helperText:
+            "Only include dates from the two years prior to the reporting period",
           required: true,
           options: [
             {
@@ -87,6 +91,8 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Dropdown,
           id: "nicad-period",
           label: "NCI-AD reporting start and end date",
+          helperText:
+            "Only include dates from the two years prior to the reporting period",
           required: true,
           options: [
             {
@@ -101,6 +107,8 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           type: ElementType.Dropdown,
           id: "pom-period",
           label: "POM reporting start and end date",
+          helperText:
+            "Only include dates from the two years prior to the reporting period",
           required: true,
           options: [
             {
