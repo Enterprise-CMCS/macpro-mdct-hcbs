@@ -22,14 +22,15 @@ const ignoreIdList = ["quality-measures-subheader"];
 
 //elements that are rendered as part of the table that does not need a unique renderer
 const tableElementList = [
-  ElementType.Textbox,
+  ElementType.Checkbox,
   ElementType.Date,
   ElementType.DateRange,
-  ElementType.Radio,
-  ElementType.TextAreaField,
-  ElementType.Checkbox,
+  ElementType.Dropdown,
   ElementType.ListInput,
   ElementType.NumberField,
+  ElementType.Radio,
+  ElementType.TextAreaField,
+  ElementType.Textbox,
 ];
 
 const renderElementList = [
