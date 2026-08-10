@@ -83,7 +83,11 @@ export const QipMeasureSelectModal = ({
     return allValid;
   };
 
+<<<<<<< HEAD
   const handleSubmit = async (e: React.SubmitEvent<HTMLDivElement>) => {
+=======
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+>>>>>>> 339ee40 (Refactored QIP Add Measure form to remove extraneous submit call.)
     e.preventDefault();
 
     const isValid = validateForm();
@@ -255,8 +259,6 @@ export const QipMeasureSelectModal = ({
           type="submit"
           form="qip-measure-select-form"
           isLoading={submitting}
-          type="submit"
-          form="qip-measure-select-form"
         >
           Save
         </Button>

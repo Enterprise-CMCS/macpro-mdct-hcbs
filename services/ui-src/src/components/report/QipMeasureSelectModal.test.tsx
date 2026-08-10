@@ -270,7 +270,7 @@ describe("QipMeasureSelectModal", () => {
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledTimes(2);
+      expect(onSubmit).toHaveBeenCalledTimes(1);
     });
 
     expect(onSubmit).toHaveBeenCalledWith({
@@ -296,7 +296,7 @@ describe("QipMeasureSelectModal", () => {
     await userEvent.click(screen.getByLabelText("Numerator"));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
-    expect(onSubmit).toHaveBeenCalledTimes(2);
+    expect(onSubmit).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(screen.getByText("Something went wrong")).toBeInTheDocument();
     });
