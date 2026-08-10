@@ -83,7 +83,7 @@ export const QipMeasureTableElement = ({
   };
 
   const errorMessage = (status: PageStatus) => {
-    if (!disabled && status !== PageStatus.COMPLETE) {
+    if (!disabled && status === PageStatus.NOT_STARTED) {
       return (
         <Text variant="error">Select &quot;Edit&quot; to begin measure.</Text>
       );
