@@ -55,6 +55,17 @@ describe("<TextAreaField />", () => {
     expect(updateSpy).toHaveBeenCalledWith({ answer: "hello" });
   });
 
+  test("TextAreaField should send undefined when input is cleared", async () => {
+    render(<TextAreaWrapper template={mockedTextAreaElement} />);
+    const textAreaField = screen.getByRole("textbox");
+
+    await userEvent.type(textAreaField, "hello");
+    await userEvent.clear(textAreaField);
+
+    expect(updateSpy).toHaveBeenCalledWith({ answer: undefined });
+    expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
+  });
+
   test("Text area field is hidden if its hide conditions' controlling element has a matching answer", async () => {
     mockedUseElementIsHidden.mockReturnValueOnce(true);
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
@@ -65,6 +76,16 @@ describe("<TextAreaField />", () => {
   test("word count is not shown when no wordLimit is set", () => {
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
     expect(screen.queryByText(/Suggested length/)).not.toBeInTheDocument();
+  });
+
+  test("optional indicator is shown when field is not required", () => {
+    render(
+      <TextAreaWrapper
+        template={{ ...mockedTextAreaElement, required: false }}
+      />
+    );
+
+    expect(screen.getByText("(optional)")).toBeVisible();
   });
 
   test("word count shows 0 when field is empty", () => {

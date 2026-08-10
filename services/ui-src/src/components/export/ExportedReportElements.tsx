@@ -13,6 +13,7 @@ import { CheckboxExport } from "components/fields/CheckboxField";
 import { ListInputExport } from "components/fields/ListInput";
 import { DateRangeTemplate } from "types/report";
 import { ReportTableType } from "./ExportedReportTable";
+import { KeyActivitiesTableExport } from "components/report/QipComponents/KeyActivitiesTable";
 
 type ExportedElementResponse = ReportTableType["response"];
 
@@ -88,19 +89,7 @@ export const renderElements = (
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element, section.navTitle);
     case ElementType.KeyActivityTable:
-      if (!element.answer?.length) return notAnsweredText;
-      return (
-        <ul>
-          {element.answer.map((activity) => (
-            <li>
-              {activity.title}{" "}
-              {activity.completionDate ? (
-                <>Expected completion date: {activity.completionDate}</>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      );
+      return KeyActivitiesTableExport(element);
     case ElementType.QipMeasureTable:
       // TODO: Should this render in the PDF? What should it look like?
       return undefined;

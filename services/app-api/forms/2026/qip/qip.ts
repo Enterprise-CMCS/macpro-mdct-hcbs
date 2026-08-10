@@ -62,7 +62,7 @@ export const qipReportTemplate: ReportBase = {
         {
           type: ElementType.Textbox,
           id: "contact-email",
-          label: "Contact email",
+          label: "Contact email address",
           required: true,
           helperText:
             "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
@@ -285,18 +285,18 @@ export const qipReportTemplate: ReportBase = {
         },
         {
           type: ElementType.DateRange,
-          id: "strategy-dates",
+          id: "strategy-timeframe",
           labels: {
-            top: "Strategy dates",
-            start: "Start date",
-            end: "Projected end date",
+            top: "Strategy timeframe",
+            start: "Start month",
+            end: "Projected end month",
           },
           helperText:
-            "Enter a projected start date and, if known, a projected end date. Leave end date blank if the strategy is ongoing.",
+            "Enter a projected start month and, if known, a projected end month. Leave end month blank if the strategy is ongoing.",
           startHelperText:
-            "Enter a projected start date for future strategies or enter a past start date for strategies in progress.",
+            "Enter a projected start month for future strategies or enter a past start month for strategies in progress.",
           endHelperText:
-            "Enter a projected end date or leave blank if the strategy will be ongoing without a set end point.",
+            "Enter a projected end month or leave blank if the strategy will be ongoing without a set end point.",
           dateFormat: "MMYYYY",
           required: true,
           endDateRequired: false,
@@ -324,7 +324,7 @@ export const qipReportTemplate: ReportBase = {
           label: "Instructions",
           value:
             '<p>Provide at least one key activity to support your Quality Improvement Plan. To begin, click the "Add key activity" button, which will open a pop-up window for data entry.</p>' +
-            "<p>Within the modal, enter a concise, one-sentence title or description of the activity, and specify an expected completion date if one can be determined. You may repeat this process to add multiple activities as needed to fully outline your strategy.</p>",
+            "<p>Within the modal, enter a concise, one-sentence title or description of the activity, and specify an expected completion month if one can be determined. You may repeat this process to add multiple activities as needed to fully outline your strategy.</p>",
         },
         {
           type: ElementType.KeyActivityTable,
