@@ -123,8 +123,7 @@ export const QipMeasureTableElement = ({
         </Td>
         <Td>
           <Text fontWeight="bold">{answerRow.measureName}</Text>
-          {/* TODO: CMIT number? */}
-          <Text>Status: {status}</Text>
+          <Text fontSize="body_sm">Status: {status}</Text>
           {errorMessage(status)}
         </Td>
         <Td textAlign="center">
