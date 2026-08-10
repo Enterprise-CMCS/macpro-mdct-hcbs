@@ -103,10 +103,7 @@ export const AddEditReportModal = ({
 
   const dropdownYears =
     reportType === ReportType.IMA
-      ? [
-          { label: "Default", value: "2028" },
-          { label: "2028", value: "2028" },
-        ]
+      ? [{ label: "2028", value: "2028" }]
       : [{ label: "2026", value: "2026" }];
   const { verbiage, OptionsComponent } = buildModalOptions(reportType);
 

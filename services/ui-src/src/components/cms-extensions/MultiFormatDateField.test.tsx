@@ -34,20 +34,12 @@ describe("MultiFormatDateField", () => {
       // Partial date updates the hint text but doesn't parse
       await userEvent.type(input, "122026");
       expect(hint).toHaveTextContent("12/20/26YY");
-      expect(onChange).toHaveBeenLastCalledWith(
-        "122026",
-        "12/20/26",
-        undefined
-      );
+      expect(onChange).toHaveBeenLastCalledWith("122026", "12/20/26");
 
       // Finished date passes the parse
       await userEvent.type(input, "53");
       expect(hint).toHaveTextContent("12/20/2653");
-      expect(onChange).toHaveBeenLastCalledWith(
-        "12202653",
-        "12/20/2653",
-        expect.any(Date)
-      );
+      expect(onChange).toHaveBeenLastCalledWith("12202653", "12/20/2653");
 
       // Blurring the input reverts the hint
       await userEvent.tab();
@@ -62,11 +54,7 @@ describe("MultiFormatDateField", () => {
       // Non-numeric characters treated as delimiters
       await userEvent.type(input, "5-5.2026");
       expect(hint).toHaveTextContent("05/05/2026");
-      expect(onChange).toHaveBeenLastCalledWith(
-        "5-5.2026",
-        "05/05/2026",
-        expect.any(Date)
-      );
+      expect(onChange).toHaveBeenLastCalledWith("5-5.2026", "05/05/2026");
     });
   });
 
@@ -92,7 +80,7 @@ describe("MultiFormatDateField", () => {
 
       // Blurring the input reverts the hint
       await userEvent.tab();
-      expect(hint).toHaveTextContent("MM/YYYY");
+      expect(hint).toHaveTextContent("12/2026");
     });
 
     it("should pad single-digit month and year", async () => {
