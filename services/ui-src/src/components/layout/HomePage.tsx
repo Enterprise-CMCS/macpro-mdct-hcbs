@@ -79,7 +79,7 @@ export const HomePage = () => {
                 <Box display="flex" flexDirection="column" gap="spacer4">
                   {isCIReportActive && <CiIntroductionCard />}
                   {isPCPReportActive && <PCPIntroductionCard />}
-                  <IMAIntroductionCard />
+                  {isIMAReportActive && <IMAIntroductionCard />}
                 </Box>
               </Box>
             )}
