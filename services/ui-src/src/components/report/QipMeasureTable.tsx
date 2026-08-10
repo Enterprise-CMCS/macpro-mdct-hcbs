@@ -186,9 +186,12 @@ export const QipMeasureTableElement = ({
         </Thead>
         {rows.length > 0 ? <Tbody>{rows}</Tbody> : null}
       </Table>
-      {rows.length === 0
-        ? "Keep track of your measures, once you add a report you can access it here."
-        : null}
+      {rows.length === 0 ? (
+        <Text textAlign="center">
+          No measures found in this Quality Improvement Plan. Once you add a
+          measure you can access it here.
+        </Text>
+      ) : null}
     </>
   );
 };

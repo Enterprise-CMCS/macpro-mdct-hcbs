@@ -133,7 +133,7 @@ describe("Test QipMeasureTable", () => {
 
     expect(
       screen.getByText(
-        "Keep track of your measures, once you add a report you can access it here."
+        "No measures found in this Quality Improvement Plan. Once you add a measure you can access it here."
       )
     ).toBeInTheDocument();
   });
