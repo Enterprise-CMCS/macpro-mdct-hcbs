@@ -86,10 +86,7 @@ export const QmsMeasureTableElement = (
 
   const errorMessage = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
-    if (
-      measure.status === PageStatus.IN_PROGRESS ||
-      (measure.required && measure.status != PageStatus.COMPLETE)
-    ) {
+    if (measure.required && measure.status == PageStatus.NOT_STARTED) {
       return <Text variant="error">Select "Edit" to begin measure.</Text>;
     }
     return <></>;
