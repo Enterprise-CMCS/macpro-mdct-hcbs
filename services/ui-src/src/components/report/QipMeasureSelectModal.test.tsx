@@ -179,7 +179,7 @@ describe("QipMeasureSelectModal", () => {
     ).toBeInTheDocument();
   });
 
-  it("should show 'No reports available for copy over' when no submitted QMS reports exist", async () => {
+  it("should show 'No reports available for copy-over' when no submitted QMS reports exist", async () => {
     const qmsMeasureMapping: MeasureTargetMapping = [
       {
         ...defaultMeasureMapping[0],
@@ -203,7 +203,7 @@ describe("QipMeasureSelectModal", () => {
     assert.ok(qmsDropdown instanceof HTMLSelectElement);
 
     expect(
-      screen.getByText("No reports available for copy over")
+      screen.getByText("No reports available for copy-over")
     ).toBeInTheDocument();
   });
 
