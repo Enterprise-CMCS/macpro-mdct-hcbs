@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { SubmitEventHandler, useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
 import {
   LiteReport,
@@ -83,7 +83,7 @@ export const QipMeasureSelectModal = ({
     return allValid;
   };
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit: SubmitEventHandler<HTMLDivElement> = async (e) => {
     e.preventDefault();
 
     const isValid = validateForm();
@@ -126,7 +126,7 @@ export const QipMeasureSelectModal = ({
         <VStack
           as="form"
           id="qip-measure-select-form"
-          onSubmit={handleSubmit as any}
+          onSubmit={handleSubmit}
           align="stretch"
           spacing={8}
         >
