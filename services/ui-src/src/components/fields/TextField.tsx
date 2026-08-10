@@ -97,7 +97,15 @@ export const TextField = (
   }
 
   return (
-    <Box>
+    <Box
+      width="100%"
+      maxWidth="460px"
+      sx={{
+        ".ds-c-field": {
+          width: "100%",
+        },
+      }}
+    >
       <CmsdsTextField
         name={textbox.id}
         label={labelText || ""}
