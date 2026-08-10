@@ -174,18 +174,33 @@ export const QipMeasureSelectModal = ({
                 } else {
                   return (
                     <Dropdown
-                      label="Please select from which submitted Quality Measure Set report you would like to copy over baseline values (optional)"
+                      label={
+                        <>
+                          Please select from which submitted Quality Measure Set
+                          report you would like to copy over baseline values{" "}
+                          <span className="optionalText">(optional)</span>
+                        </>
+                      }
                       hint="Only measures submitted as part of the HCBS Quality Measure Set report are available for copy-over."
                       name="qms-report-id"
                       value={qmsReportId ?? ""}
                       disabled={!selectedMeasure?.includedInQms}
-                      options={[
-                        { label: "Select report", value: "" },
-                        ...reports.map((r) => ({
-                          label: r.name,
-                          value: r.id!, // TODO: Do we ever have report w/o id?!
-                        })),
-                      ]}
+                      options={
+                        reports.length === 0
+                          ? [
+                              {
+                                label: "No reports available for copy-over",
+                                value: "",
+                              },
+                            ]
+                          : [
+                              { label: "Select report", value: "" },
+                              ...reports.map((r) => ({
+                                label: r.name,
+                                value: r.id!, // TODO: Do we ever have report w/o id?!
+                              })),
+                            ]
+                      }
                       onChange={(evt) => setQmsReportId(evt.target.value)}
                     />
                   );
