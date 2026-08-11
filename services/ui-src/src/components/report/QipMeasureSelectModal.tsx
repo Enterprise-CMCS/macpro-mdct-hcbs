@@ -83,7 +83,7 @@ export const QipMeasureSelectModal = ({
     return allValid;
   };
 
-  const handleSubmit: SubmitEventHandler<HTMLDivElement> = async (e) => {
+  const handleSubmit: SubmitEventHandler<HTMLElement> = async (e) => {
     e.preventDefault();
 
     const isValid = validateForm();
