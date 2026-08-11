@@ -5,8 +5,9 @@ import {
   Flex,
   Spinner,
   Text,
+  VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
 import {
   LiteReport,
@@ -59,7 +60,13 @@ export const QipMeasureSelectModal = ({
     })();
   }, []);
 
-  const validateAndSubmit = async () => {
+  const validateAndSubmit = async (evt: FormEvent) => {
+    evt.preventDefault();
+
+    if (submitting) {
+      return;
+    }
+
     setSubmitError(undefined);
 
     let allValid = true;
@@ -105,13 +112,19 @@ export const QipMeasureSelectModal = ({
 
   return (
     <>
-      <ModalBody>
-        <p>
+      <ModalBody pb={6}>
+        <Text mb={8}>
           Select a measure from the dropdown to add to this Quality Improvement
           Plan. You may either enter the measure rate details or copy the
           baseline values from an existing QMS where possible.
-        </p>
-        <form onSubmit={validateAndSubmit}>
+        </Text>
+        <VStack
+          as="form"
+          id="qip-measure-select-form"
+          onSubmit={validateAndSubmit}
+          align="stretch"
+          spacing={8}
+        >
           <Dropdown
             label="Measure report"
             name="measure"
@@ -153,22 +166,41 @@ export const QipMeasureSelectModal = ({
                     </Flex>
                   );
                 } else if (!reports) {
-                  return "Error loading QMS reports! Please refresh the page.";
+                  return (
+                    <Text>
+                      Error loading QMS reports! Please refresh the page.
+                    </Text>
+                  );
                 } else {
                   return (
                     <Dropdown
-                      label="Please select from which submitted Quality Measure Set report you would like to copy over baseline values (optional)"
+                      label={
+                        <>
+                          Please select from which submitted Quality Measure Set
+                          report you would like to copy over baseline values{" "}
+                          <span className="optionalText">(optional)</span>
+                        </>
+                      }
                       hint="Only measures submitted as part of the HCBS Quality Measure Set report are available for copy-over."
                       name="qms-report-id"
                       value={qmsReportId ?? ""}
                       disabled={!selectedMeasure?.includedInQms}
-                      options={[
-                        { label: "Select report", value: "" },
-                        ...reports.map((r) => ({
-                          label: r.name,
-                          value: r.id!, // TODO: Do we ever have report w/o id?!
-                        })),
-                      ]}
+                      options={
+                        reports.length === 0
+                          ? [
+                              {
+                                label: "No reports available for copy-over",
+                                value: "",
+                              },
+                            ]
+                          : [
+                              { label: "Select report", value: "" },
+                              ...reports.map((r) => ({
+                                label: r.name,
+                                value: r.id!, // TODO: Do we ever have report w/o id?!
+                              })),
+                            ]
+                      }
                       onChange={(evt) => setQmsReportId(evt.target.value)}
                     />
                   );
@@ -219,7 +251,7 @@ export const QipMeasureSelectModal = ({
               />
             </>
           )}
-        </form>
+        </VStack>
         {submitError && (
           <Text color="red.600" mt={4} role="alert" aria-live="polite">
             {submitError}
@@ -230,7 +262,8 @@ export const QipMeasureSelectModal = ({
         <Button
           colorScheme="blue"
           mr={3}
-          onClick={validateAndSubmit}
+          type="submit"
+          form="qip-measure-select-form"
           isLoading={submitting}
         >
           Save

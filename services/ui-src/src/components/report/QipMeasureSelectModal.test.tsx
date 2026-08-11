@@ -11,7 +11,7 @@ import {
 } from "types";
 
 type DropdownProps = {
-  label: string;
+  label: React.ReactNode;
   name: string;
   value: string;
   options: { label: string; value: string }[];
@@ -39,8 +39,9 @@ jest.mock("@cmsgov/design-system", () => ({
     onChange,
   }: DropdownProps) => (
     <>
+      <label htmlFor={name}>{label}</label>
       <select
-        aria-label={label}
+        id={name}
         name={name}
         value={value}
         disabled={disabled}
@@ -178,6 +179,34 @@ describe("QipMeasureSelectModal", () => {
     ).toBeInTheDocument();
   });
 
+  it("should show 'No reports available for copy-over' when no submitted QMS reports exist", async () => {
+    const qmsMeasureMapping: MeasureTargetMapping = [
+      {
+        ...defaultMeasureMapping[0],
+        includedInQms: true,
+      },
+    ] as MeasureTargetMapping;
+
+    mockGetReportsForState.mockResolvedValue([]);
+
+    renderInModal({ measureTargetMapping: qmsMeasureMapping });
+
+    await waitForInitialLoad();
+
+    const measureDropdown = screen.getByLabelText("Measure report");
+    assert.ok(measureDropdown instanceof HTMLSelectElement);
+    await userEvent.selectOptions(measureDropdown, "m1");
+
+    const qmsDropdown = await screen.findByLabelText(
+      /submitted Quality Measure Set report/i
+    );
+    assert.ok(qmsDropdown instanceof HTMLSelectElement);
+
+    expect(
+      screen.getByText("No reports available for copy-over")
+    ).toBeInTheDocument();
+  });
+
   it("should render QMS report dropdown with only submitted reports", async () => {
     const qmsMeasureMapping: MeasureTargetMapping = [
       {
@@ -300,5 +329,107 @@ describe("QipMeasureSelectModal", () => {
     await waitFor(() => {
       expect(screen.getByText("Something went wrong")).toBeInTheDocument();
     });
+  });
+
+  it("should clear selected QMS report when switching to a non-QMS measure", async () => {
+    const mapping: MeasureTargetMapping = [
+      {
+        ...defaultMeasureMapping[0],
+        measureId: "m1",
+        includedInQms: true,
+      },
+      {
+        ...defaultMeasureMapping[0],
+        measureId: "m2",
+        measureName: "Measure 2",
+        includedInQms: false,
+      },
+    ] as MeasureTargetMapping;
+
+    mockGetReportsForState.mockResolvedValue([
+      {
+        id: "submitted-1",
+        name: "Submitted Report",
+        status: ReportStatus.SUBMITTED,
+      },
+    ] as LiteReport[]);
+
+    const { onSubmit } = renderInModal({ measureTargetMapping: mapping });
+    await waitForInitialLoad();
+
+    const measureDropdown = screen.getByLabelText("Measure report");
+    assert.ok(measureDropdown instanceof HTMLSelectElement);
+    await userEvent.selectOptions(measureDropdown, "m1");
+
+    const qmsDropdown = await screen.findByLabelText(
+      /submitted Quality Measure Set report/i
+    );
+    assert.ok(qmsDropdown instanceof HTMLSelectElement);
+    await userEvent.selectOptions(qmsDropdown, "submitted-1");
+
+    await userEvent.selectOptions(measureDropdown, "m2");
+    await userEvent.click(screen.getByLabelText("Delivery Method: FFS"));
+    await userEvent.click(screen.getByLabelText("Numerator"));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    expect(onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ qmsReportId: undefined, measureId: "m2" })
+    );
+  });
+
+  it("should show an error when QMS reports cannot be rendered", async () => {
+    const qmsMeasureMapping: MeasureTargetMapping = [
+      {
+        ...defaultMeasureMapping[0],
+        includedInQms: true,
+      },
+    ] as MeasureTargetMapping;
+
+    mockGetReportsForState.mockResolvedValueOnce({
+      filter: () => undefined,
+    });
+
+    renderInModal({ measureTargetMapping: qmsMeasureMapping });
+    await waitForInitialLoad();
+
+    const measureDropdown = screen.getByLabelText("Measure report");
+    assert.ok(measureDropdown instanceof HTMLSelectElement);
+    await userEvent.selectOptions(measureDropdown, "m1");
+
+    expect(
+      await screen.findByText(
+        "Error loading QMS reports! Please refresh the page."
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("should remove selected delivery method and rate when clicked again", async () => {
+    renderInModal({});
+    await waitForInitialLoad();
+
+    const measureDropdown = screen.getByLabelText("Measure report");
+    assert.ok(measureDropdown instanceof HTMLSelectElement);
+    await userEvent.selectOptions(measureDropdown, "m1");
+
+    const deliveryMethod = screen.getByLabelText("Delivery Method: FFS");
+    const numeratorRate = screen.getByLabelText("Numerator");
+
+    await userEvent.click(deliveryMethod);
+    await userEvent.click(deliveryMethod);
+    await userEvent.click(numeratorRate);
+    await userEvent.click(numeratorRate);
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(
+      screen.getByText("Please select one or more delivery methods.")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Please select one or more rates.")
+    ).toBeInTheDocument();
   });
 });

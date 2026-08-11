@@ -90,15 +90,15 @@ describe("<DateRange />", () => {
 
 const mockedMMYYYYRangeElement: DateRangeTemplate = {
   type: ElementType.DateRange,
-  id: "strategy-dates",
+  id: "strategy-timeframe",
   dateFormat: "MMYYYY",
   labels: {
-    top: "Strategy dates",
-    start: "Start date",
-    end: "Projected end date",
+    top: "Strategy timeframe",
+    start: "Start month",
+    end: "Projected end month",
   },
-  helperText: "Enter projected strategy dates.",
-  startHelperText: "Enter a projected start date.",
+  helperText: "Enter projected strategy timeframe.",
+  startHelperText: "Enter a projected start month.",
   endHelperText: "Leave blank if the strategy is ongoing.",
   required: true,
   endDateRequired: false,
@@ -114,15 +114,15 @@ describe("<DateRange /> with MMYYYY format", () => {
 
   test("renders MM/YYYY labels", () => {
     render(<DateRangeWrapper template={mockedMMYYYYRangeElement} />);
-    expect(screen.getByText("Strategy dates")).toBeInTheDocument();
-    expect(screen.getByText("Start date")).toBeInTheDocument();
-    expect(screen.getByText("Projected end date")).toBeInTheDocument();
+    expect(screen.getByText("Strategy timeframe")).toBeInTheDocument();
+    expect(screen.getByText("Start month")).toBeInTheDocument();
+    expect(screen.getByText("Projected end month")).toBeInTheDocument();
   });
 
   test("renders per-field helper text", () => {
     render(<DateRangeWrapper template={mockedMMYYYYRangeElement} />);
     expect(
-      screen.getByText("Enter a projected start date.")
+      screen.getByText("Enter a projected start month.")
     ).toBeInTheDocument();
     expect(
       screen.getByText("Leave blank if the strategy is ongoing.")

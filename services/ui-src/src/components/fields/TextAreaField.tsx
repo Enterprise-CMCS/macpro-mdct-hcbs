@@ -89,7 +89,15 @@ export const TextAreaField = (props: PageElementProps<TextAreaBoxTemplate>) => {
   }
 
   return (
-    <Box>
+    <Box
+      width="100%"
+      maxWidth="460px"
+      sx={{
+        ".ds-c-field": {
+          width: "100%",
+        },
+      }}
+    >
       <CmsdsTextField
         className={fieldClassName}
         name={textbox.id}
