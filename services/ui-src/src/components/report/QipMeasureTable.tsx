@@ -85,7 +85,9 @@ export const QipMeasureTableElement = ({
   const errorMessage = (status: PageStatus) => {
     if (!disabled && status === PageStatus.NOT_STARTED) {
       return (
-        <Text variant="error">Select &quot;Edit&quot; to begin measure.</Text>
+        <Text variant="error" fontSize="body_sm">
+          Select "Edit" to begin measure.
+        </Text>
       );
     }
     return <></>;
@@ -123,7 +125,7 @@ export const QipMeasureTableElement = ({
         </Td>
         <Td>
           <Text fontWeight="bold">{answerRow.measureName}</Text>
-          <Text fontSize="body_sm">Status: {status}</Text>
+          <Text>Status: {status}</Text>
           {errorMessage(status)}
         </Td>
         <Td textAlign="center">
