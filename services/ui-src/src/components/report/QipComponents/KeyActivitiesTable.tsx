@@ -33,6 +33,7 @@ import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages, notAnsweredText } from "../../../constants";
 import { Alert } from "components";
 import { DateField } from "components/fields";
+import { useStore } from "utils";
 
 const initialValues = {
   title: "",
@@ -46,6 +47,7 @@ export const KeyActivitiesTableElement = (
 ) => {
   const { element, updateElement, disabled = false } = props;
   const { caption } = element;
+  const { saveReport } = useStore();
 
   const [activities, setActivities] = useState<KeyActivityItem[]>(() =>
     (structuredClone(element.answer) || []).map((item) => ({
@@ -97,7 +99,7 @@ export const KeyActivitiesTableElement = (
     setDeleteModalOpen(true);
   };
 
-  const onDeleteConfirm = () => {
+  const onDeleteConfirm = async () => {
     if (!selectedDeleteId) return;
 
     const updatedItems = activities.filter(
@@ -107,9 +109,10 @@ export const KeyActivitiesTableElement = (
     updateElement({ answer: updatedItems });
     setDeleteModalOpen(false);
     setSelectedDeleteId("");
+    await saveReport();
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const error = validateTitle(formValues.title);
     setTitleError(error);
     if (error) return;
@@ -125,6 +128,7 @@ export const KeyActivitiesTableElement = (
     updateElement({ answer: updatedItems });
     setModalOpen(false);
     resetForm();
+    await saveReport();
   };
 
   const onAddClick = () => {

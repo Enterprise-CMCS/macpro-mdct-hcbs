@@ -37,6 +37,7 @@ export const QipMeasureTableElement = ({
     setCurrentPageId,
     setModalComponent,
     setModalOpen,
+    saveReport,
   } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
 
@@ -47,26 +48,23 @@ export const QipMeasureTableElement = ({
   const addMeasureTargetPage = async (
     params: MeasureTargetInfo & { measureName: string }
   ) => {
-    const {
-      report: patchedReport,
-      pageId,
-      originalValues,
-    } = await addQipTargetPage(report!, params);
+    const { report: patchedReport } = await addQipTargetPage(report!, params);
+    const selectMeasuresPage = patchedReport.pages.find(
+      (page) => page.id === "select-measures" && "elements" in page
+    ) as { elements?: QipMeasureTableTemplate[] } | undefined;
+    const updatedMeasures = selectMeasuresPage?.elements?.find(
+      (element) => element.id === "select-measures-table"
+    )?.answer;
+
     updateReport(patchedReport);
 
     if (reportId) setCurrentPageId("select-measures");
 
     updateElement({
-      answer: [
-        ...(answer ?? []),
-        {
-          pageId: pageId,
-          measureName: params.measureName,
-          originalValues,
-        },
-      ],
+      answer: updatedMeasures as QipMeasureTableTemplate["answer"],
     });
     setModalOpen(false);
+    await saveReport();
   };
 
   const modal = (
@@ -93,7 +91,7 @@ export const QipMeasureTableElement = ({
 
   const handleDeleteClick = (pageId: string, measureName: string) => {
     const onClose = () => setModalOpen(false);
-    const onConfirm = () => {
+    const onConfirm = async () => {
       if (report) {
         const updatedReport = {
           ...report,
@@ -105,6 +103,7 @@ export const QipMeasureTableElement = ({
         answer: (answer ?? []).filter((item) => item.pageId !== pageId),
       });
       setModalOpen(false);
+      await saveReport();
     };
     setModalComponent(
       QipDeleteMeasureModal(measureName, onClose, onConfirm),
