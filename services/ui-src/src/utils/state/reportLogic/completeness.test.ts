@@ -2,6 +2,7 @@ import {
   CheckboxTemplate,
   DateRangeTemplate,
   ElementType,
+  KeyActivityTableTemplate,
   LengthOfStayRateTemplate,
   ListInputTemplate,
   MeasurePageTemplate,
@@ -819,6 +820,31 @@ describe("elementSatisfiesRequired", () => {
       answer: [""],
     } as ListInputTemplate;
     expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test.each([
+    ["no entries", []],
+    ["no answer", undefined],
+  ])("should reject required KeyActivityTable with %s", (_, answer) => {
+    const element = {
+      type: ElementType.KeyActivityTable,
+      id: "key-activities-table",
+      caption: "Key Activities",
+      required: true,
+      answer,
+    } as KeyActivityTableTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+  });
+
+  test("should accept required KeyActivityTable with at least one entry", () => {
+    const element = {
+      type: ElementType.KeyActivityTable,
+      id: "key-activities-table",
+      caption: "Key Activities",
+      required: true,
+      answer: [{ id: "1", title: "Some Activity" }],
+    } as KeyActivityTableTemplate;
+    expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
   });
 
   test("should reject ReadmissionRate with errors", () => {

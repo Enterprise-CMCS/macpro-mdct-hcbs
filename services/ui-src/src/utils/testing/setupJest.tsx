@@ -351,6 +351,7 @@ export const mockReportStore: HcbsReportState = {
   setCurrentPageId: () => {},
   setModalOpen: () => {},
   setModalComponent: () => {},
+  setModalFinalFocusRef: () => {},
   setAnswers: () => {},
   resetMeasure: () => {},
   clearMeasure: () => {},
