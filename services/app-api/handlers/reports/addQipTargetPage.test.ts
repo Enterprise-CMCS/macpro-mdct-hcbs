@@ -158,6 +158,17 @@ describe("addQipTargetPage", () => {
     const { report, pageId, originalValues } = JSON.parse(response.body!);
     expect(pageId).toBe("measure-targets-PCP-2-0");
     expect(originalValues).toEqual({});
+    const selectMeasuresTable = report.pages
+      .find((p: any) => p.id === "select-measures")
+      ?.elements?.find((el: any) => el.id === "select-measures-table");
+    expect(selectMeasuresTable?.answer).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          pageId: "measure-targets-PCP-2-0",
+          measureName: expect.any(String),
+        }),
+      ])
+    );
     const newPage = report.pages.find(
       (p: any) => p.id === pageId
     ) as FormPageTemplate;

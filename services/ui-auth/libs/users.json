@@ -530,5 +530,34 @@
         "Value": "UT"
       }
     ]
+  },
+  {
+    "username": "hcbsdemouser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "hcbsdemouser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "HCBS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Demo User"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MD"
+      }
+    ]
   }
 ]

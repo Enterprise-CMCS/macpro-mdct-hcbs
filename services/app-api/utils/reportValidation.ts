@@ -309,6 +309,15 @@ const qipMeasureTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.QipMeasureTable)),
   id: string().required(),
   caption: string().required(),
+  answer: array()
+    .of(
+      object().shape({
+        pageId: string().required(),
+        measureName: string().required(),
+        originalValues: mixed().notRequired(),
+      })
+    )
+    .notRequired(),
 });
 
 const eligibilityTableSchema = object().shape({

@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FormEvent, useEffect, useState } from "react";
+import { SubmitEventHandler, useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
 import {
   LiteReport,
@@ -60,30 +60,35 @@ export const QipMeasureSelectModal = ({
     })();
   }, []);
 
-  const validateAndSubmit = async (evt: FormEvent) => {
-    evt.preventDefault();
-
-    if (submitting) {
-      return;
-    }
-
+  const validateForm = () => {
     setSubmitError(undefined);
 
     let allValid = true;
+
     if (!selectedMeasure) {
       setMeasureError("Please select a measure.");
       allValid = false;
     }
+
     if (deliveryMethods.length === 0) {
       setDeliveryMethodError("Please select one or more delivery methods.");
       allValid = false;
     }
+
     if (rates.length === 0) {
       setRateError("Please select one or more rates.");
       allValid = false;
     }
 
-    if (allValid) {
+    return allValid;
+  };
+
+  const handleSubmit: SubmitEventHandler<HTMLElement> = async (e) => {
+    e.preventDefault();
+
+    const isValid = validateForm();
+
+    if (isValid) {
       setSubmitting(true);
       // "FFS" is before "MLTSS", so default sort works
       deliveryMethods.sort();
@@ -121,7 +126,7 @@ export const QipMeasureSelectModal = ({
         <VStack
           as="form"
           id="qip-measure-select-form"
-          onSubmit={validateAndSubmit}
+          onSubmit={handleSubmit}
           align="stretch"
           spacing={8}
         >
