@@ -4,7 +4,7 @@ import { QipMeasureTableElement } from "./QipMeasureTable";
 import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import * as reportRequestMethods from "utils/api/requestMethods/report";
-import { QipDeleteMeasureModal } from "./QipDeleteMeasureModal";
+import { QipDeleteModal } from "./QipDeleteModal";
 import {
   ElementType,
   QipMeasureTableTemplate,
@@ -63,8 +63,8 @@ jest.mock("./QipMeasureSelectModal", () => ({
   QipMeasureSelectModal: () => <div>Modal</div>,
 }));
 
-jest.mock("./QipDeleteMeasureModal", () => ({
-  QipDeleteMeasureModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
+jest.mock("./QipDeleteModal", () => ({
+  QipDeleteModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
 }));
 
 const mockTemplate: QipMeasureTableTemplate = {
@@ -243,11 +243,13 @@ describe("Test QipMeasureTable", () => {
   it("should open the delete modal when the delete button is clicked", async () => {
     const mockSetModalOpen = jest.fn();
     const mockSetModalComponent = jest.fn();
+    const mockSetModalFinalFocusRef = jest.fn();
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
       report: mockReport,
       setModalOpen: mockSetModalOpen,
       setModalComponent: mockSetModalComponent,
+      setModalFinalFocusRef: mockSetModalFinalFocusRef,
     });
 
     render(QipMeasureTableComponent());
@@ -259,6 +261,7 @@ describe("Test QipMeasureTable", () => {
     expect(mockSetModalComponent.mock.calls[0][1]).toBe(
       "Are you sure you want to remove this measure?"
     );
+    expect(mockSetModalFinalFocusRef).toHaveBeenCalled();
   });
 
   it("should remove the measure and its page on delete confirm", async () => {
@@ -266,7 +269,7 @@ describe("Test QipMeasureTable", () => {
     const mockSetModalComponent = jest.fn();
     const mockUpdateReport = jest.fn();
     const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
+    const mockedDeleteModal = QipDeleteModal as jest.Mock;
 
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
@@ -288,9 +291,9 @@ describe("Test QipMeasureTable", () => {
       screen.getByRole("button", { name: "Delete Not Started Measure" })
     );
 
-    // Invoke the onConfirm callback passed to QipDeleteMeasureModal
-    const onConfirm = mockedDeleteModal.mock.calls[0][2];
-    onConfirm();
+    // Invoke the onConfirm callback passed to QipDeleteModal
+    const onConfirm = mockedDeleteModal.mock.calls[0][3];
+    await onConfirm();
 
     expect(mockUpdateReport).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -311,7 +314,7 @@ describe("Test QipMeasureTable", () => {
     const mockSetModalOpen = jest.fn();
     const mockSetModalComponent = jest.fn();
     const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = QipDeleteMeasureModal as jest.Mock;
+    const mockedDeleteModal = QipDeleteModal as jest.Mock;
 
     mockedUseStore.mockReturnValue({
       ...mockUseStore,
@@ -332,7 +335,7 @@ describe("Test QipMeasureTable", () => {
       screen.getByRole("button", { name: "Delete Not Started Measure" })
     );
 
-    const onClose = mockedDeleteModal.mock.calls[0][1];
+    const onClose = mockedDeleteModal.mock.calls[0][2];
     onClose();
 
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);
