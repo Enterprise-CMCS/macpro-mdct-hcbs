@@ -37,6 +37,7 @@ export const QipMeasureTableElement = ({
     setCurrentPageId,
     setModalComponent,
     setModalOpen,
+    saveReport,
   } = useStore();
   const measureTargetMapping = report?.measureTargetMapping;
   const { addButtonRef, getDeleteButtonRef, openDeleteModal } =
@@ -47,7 +48,7 @@ export const QipMeasureTableElement = ({
         `This action cannot be undone. It will remove the measure ${item.measureName} from this QI Plan.`,
       confirmLabel: "Remove measure",
       header: "Are you sure you want to remove this measure?",
-      onConfirm: (remaining, deletedPageId) => {
+      onConfirm: async (remaining, deletedPageId) => {
         if (report) {
           updateReport({
             ...report,
@@ -55,6 +56,7 @@ export const QipMeasureTableElement = ({
           });
         }
         updateElement({ answer: remaining });
+        await saveReport();
       },
     });
 
@@ -65,26 +67,23 @@ export const QipMeasureTableElement = ({
   const addMeasureTargetPage = async (
     params: MeasureTargetInfo & { measureName: string }
   ) => {
-    const {
-      report: patchedReport,
-      pageId,
-      originalValues,
-    } = await addQipTargetPage(report!, params);
+    const { report: patchedReport } = await addQipTargetPage(report!, params);
+    const selectMeasuresPage = patchedReport.pages.find(
+      (page) => page.id === "select-measures" && "elements" in page
+    ) as { elements?: QipMeasureTableTemplate[] } | undefined;
+    const updatedMeasures = selectMeasuresPage?.elements?.find(
+      (element) => element.id === "select-measures-table"
+    )?.answer;
+
     updateReport(patchedReport);
 
     if (reportId) setCurrentPageId("select-measures");
 
     updateElement({
-      answer: [
-        ...(measureTargets ?? []),
-        {
-          pageId: pageId,
-          measureName: params.measureName,
-          originalValues,
-        },
-      ],
+      answer: updatedMeasures as QipMeasureTableTemplate["answer"],
     });
     setModalOpen(false);
+    await saveReport();
   };
 
   const modal = (

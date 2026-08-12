@@ -34,6 +34,7 @@ import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages, notAnsweredText } from "../../../constants";
 import { Alert } from "components";
 import { DateField } from "components/fields";
+import { useStore } from "utils";
 
 const initialValues = {
   title: "",
@@ -47,6 +48,7 @@ export const KeyActivitiesTableElement = (
 ) => {
   const { element, updateElement, disabled = false } = props;
   const { caption } = element;
+  const { saveReport } = useStore();
 
   const [activities, setActivities] = useState<KeyActivityItem[]>(() =>
     (structuredClone(element.answer) || []).map((item) => ({
@@ -68,9 +70,10 @@ export const KeyActivitiesTableElement = (
         "This action cannot be undone. It will remove the key activity from the Quality Improvement Plan.",
       confirmLabel: "Remove key activity",
       header: "Are you sure you want to remove this key activity?",
-      onConfirm: (remaining) => {
+      onConfirm: async (remaining) => {
         setActivities(remaining);
         updateElement({ answer: remaining });
+        await saveReport();
       },
     });
 
@@ -106,7 +109,7 @@ export const KeyActivitiesTableElement = (
 
   const handleDeleteClick = (id: string) => openDeleteModal(id);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const error = validateTitle(formValues.title);
     setTitleError(error);
     if (error) return;
@@ -122,6 +125,7 @@ export const KeyActivitiesTableElement = (
     updateElement({ answer: updatedItems });
     setFormModalOpen(false);
     resetForm();
+    await saveReport();
   };
 
   const onAddClick = () => {

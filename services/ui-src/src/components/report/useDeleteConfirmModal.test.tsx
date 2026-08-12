@@ -94,11 +94,11 @@ describe("useDeleteConfirmModal", () => {
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);
   });
 
-  it("should call onConfirm with remaining items and id when confirmed", () => {
+  it("should call onConfirm with remaining items and id when confirmed", async () => {
     const { result } = renderHook(() => useDeleteConfirmModal(defaultOptions));
 
     act(() => result.current.openDeleteModal("item-1"));
-    act(() => mockQipOnConfirm());
+    await act(async () => mockQipOnConfirm());
 
     expect(mockOnConfirm).toHaveBeenCalledWith(
       [
@@ -109,16 +109,16 @@ describe("useDeleteConfirmModal", () => {
     );
   });
 
-  it("should call setModalOpen(false) after confirming", () => {
+  it("should call setModalOpen(false) after confirming", async () => {
     const { result } = renderHook(() => useDeleteConfirmModal(defaultOptions));
 
     act(() => result.current.openDeleteModal("item-1"));
-    act(() => mockQipOnConfirm());
+    await act(async () => mockQipOnConfirm());
 
     expect(mockSetModalOpen).toHaveBeenCalledWith(false);
   });
 
-  it("should focus next delete button after confirming a non-last item", () => {
+  it("should focus next delete button after confirming a non-last item", async () => {
     const { result } = renderHook(() => useDeleteConfirmModal(defaultOptions));
 
     // Register refs for item-2 and item-3
@@ -128,14 +128,14 @@ describe("useDeleteConfirmModal", () => {
     result.current.getDeleteButtonRef("item-3")(item3Button);
 
     act(() => result.current.openDeleteModal("item-2"));
-    act(() => mockQipOnConfirm());
+    await act(async () => mockQipOnConfirm());
 
     // After confirming item-2 (index 1), next focus is item-3 (same index in remaining)
     const focusRefArg = mockSetModalFinalFocusRef.mock.calls[0][0];
     expect(focusRefArg.current).toBe(item3Button);
   });
 
-  it("should fall back to addButtonRef when deleting the last item", () => {
+  it("should fall back to addButtonRef when deleting the last item", async () => {
     const singleItemOptions = {
       ...defaultOptions,
       items: [{ id: "item-1", label: "Item 1" }],
@@ -148,7 +148,7 @@ describe("useDeleteConfirmModal", () => {
     result.current.addButtonRef.current = addButton;
 
     act(() => result.current.openDeleteModal("item-1"));
-    act(() => mockQipOnConfirm());
+    await act(async () => mockQipOnConfirm());
 
     const focusRefArg = mockSetModalFinalFocusRef.mock.calls[0][0];
     expect(focusRefArg.current).toBe(addButton);

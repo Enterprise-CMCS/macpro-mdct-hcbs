@@ -8,7 +8,7 @@ interface Options<T> {
   getBody: (item: T) => string;
   confirmLabel: string;
   header: string;
-  onConfirm: (remainingItems: T[], deletedId: string) => void;
+  onConfirm: (remainingItems: T[], deletedId: string) => void | Promise<void>;
 }
 
 export function useDeleteConfirmModal<T>({
@@ -42,11 +42,11 @@ export function useDeleteConfirmModal<T>({
         : null;
 
     const close = () => setModalOpen(false);
-    const confirm = () => {
+    const confirm = async () => {
       finalFocusRef.current = nextFocusId
         ? (deleteButtonRefs.current.get(nextFocusId) ?? addButtonRef.current)
         : addButtonRef.current;
-      onConfirm(remainingItems, id);
+      await onConfirm(remainingItems, id);
       setModalOpen(false);
     };
 

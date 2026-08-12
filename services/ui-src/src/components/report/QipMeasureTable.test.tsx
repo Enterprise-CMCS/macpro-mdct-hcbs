@@ -293,7 +293,7 @@ describe("Test QipMeasureTable", () => {
 
     // Invoke the onConfirm callback passed to QipDeleteModal
     const onConfirm = mockedDeleteModal.mock.calls[0][3];
-    onConfirm();
+    await onConfirm();
 
     expect(mockUpdateReport).toHaveBeenCalledWith(
       expect.objectContaining({
