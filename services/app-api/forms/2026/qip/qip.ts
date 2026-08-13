@@ -57,7 +57,7 @@ export const qipReportTemplate: ReportBase = {
           label: "Contact name/title",
           required: true,
           helperText:
-            "Provide name, title, and email of the primary point of contact for follow-up regarding this QIP submission.",
+            "Provide name and/or title of the primary point of contact for follow-up regarding this QIP submission.",
         },
         {
           type: ElementType.Textbox,

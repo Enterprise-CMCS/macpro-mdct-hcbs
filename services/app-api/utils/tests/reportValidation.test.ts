@@ -43,6 +43,26 @@ describe("Test validateReportPayload function with valid report", () => {
     expect(validatedData).toBeDefined();
   });
 
+  it("successfully validates a report with a Date element that has empty helperText", async () => {
+    const reportWithDateEmptyHelperText = structuredClone(validReport);
+
+    for (const page of reportWithDateEmptyHelperText.pages) {
+      if (!("elements" in page)) continue;
+      const dateElement = page.elements?.find(
+        (element) => element.type === "date"
+      );
+      if (dateElement && "helperText" in dateElement) {
+        dateElement.helperText = "";
+        break;
+      }
+    }
+
+    const validatedData = await validateReportPayload(
+      reportWithDateEmptyHelperText
+    );
+    expect(validatedData).toBeDefined();
+  });
+
   it("preserves answers for QIP measure table elements", async () => {
     const reportWithQipMeasureTableAnswer = structuredClone(validQipReport);
     const selectMeasuresPage = reportWithQipMeasureTableAnswer.pages.find(
