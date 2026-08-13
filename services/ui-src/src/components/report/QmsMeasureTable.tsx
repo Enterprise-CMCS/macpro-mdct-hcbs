@@ -111,7 +111,9 @@ export const QmsMeasureTableElement = (
         <Td>
           <Text fontWeight="bold">{measure.navTitle}</Text>
           <Text fontSize="body_sm">CMIT number: #{measure.cmit}</Text>
-          <Text>Status: {measure.status ?? "Not started"}</Text>
+          <Text fontSize="body_sm">
+            Status: {measure.status ?? "Not started"}
+          </Text>
           {errorMessage(measure)}
         </Td>
         <Td>
