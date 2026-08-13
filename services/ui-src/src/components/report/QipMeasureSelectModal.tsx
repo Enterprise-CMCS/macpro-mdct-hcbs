@@ -218,7 +218,7 @@ export const QipMeasureSelectModal = ({
                 type="checkbox"
                 choices={Object.keys(selectedMeasure.deliveryMethods).map(
                   (deliveryMethodId) => ({
-                    label: `Delivery Method: ${deliveryMethodId === "FFS" ? "FFS LTSS" : "MLTSS"}`,
+                    label: `Delivery Method: ${deliveryMethodId === "FFS" ? "FFS LTSS" : deliveryMethodId}`,
                     value: deliveryMethodId,
                     checked: deliveryMethods.includes(deliveryMethodId),
                   })
