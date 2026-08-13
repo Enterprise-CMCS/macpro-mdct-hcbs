@@ -121,7 +121,7 @@ export const QipMeasureSelectModal = ({
         <Text mb={8}>
           Select a measure from the dropdown to add to this Quality Improvement
           Plan. You may either enter the measure rate details or copy the
-          baseline values from an existing QMS where possible.
+          baseline values from an existing HCBS QMS where possible.
         </Text>
         <VStack
           as="form"
@@ -218,7 +218,7 @@ export const QipMeasureSelectModal = ({
                 type="checkbox"
                 choices={Object.keys(selectedMeasure.deliveryMethods).map(
                   (deliveryMethodId) => ({
-                    label: `Delivery Method: ${deliveryMethodId}`,
+                    label: `Delivery Method: ${deliveryMethodId === "FFS" ? "FFS LTSS" : "MLTSS"}`,
                     value: deliveryMethodId,
                     checked: deliveryMethods.includes(deliveryMethodId),
                   })
