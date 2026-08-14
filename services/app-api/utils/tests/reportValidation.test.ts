@@ -31,14 +31,14 @@ describe("Test validateReportPayload function with valid report", () => {
 
   it("successfully validates a report with a ListInput element that has no helperText", async () => {
     const validatedData = await validateReportPayload(
-      reportWithListInputNoHelperText
+      reportWithListInputNoHelperText,
     );
     expect(validatedData).toBeDefined();
   });
 
   it("successfully validates a report with a KeyActivityTable element", async () => {
     const validatedData = await validateReportPayload(
-      reportWithKeyActivityTable
+      reportWithKeyActivityTable,
     );
     expect(validatedData).toBeDefined();
   });
@@ -49,16 +49,16 @@ describe("Test validateReportPayload function with valid report", () => {
     for (const page of reportWithDateEmptyHelperText.pages) {
       if (!("elements" in page)) continue;
       const dateElement = page.elements?.find(
-        (element) => element.type === "date"
+        (element) => element.type === "date",
       );
-      if (dateElement && "helperText" in dateElement) {
+      if (dateElement) {
         dateElement.helperText = "";
         break;
       }
     }
 
     const validatedData = await validateReportPayload(
-      reportWithDateEmptyHelperText
+      reportWithDateEmptyHelperText,
     );
     expect(validatedData).toBeDefined();
   });
@@ -66,10 +66,10 @@ describe("Test validateReportPayload function with valid report", () => {
   it("preserves answers for QIP measure table elements", async () => {
     const reportWithQipMeasureTableAnswer = structuredClone(validQipReport);
     const selectMeasuresPage = reportWithQipMeasureTableAnswer.pages.find(
-      (page) => page.id === "select-measures" && "elements" in page
+      (page) => page.id === "select-measures" && "elements" in page,
     );
     const selectMeasuresTable = selectMeasuresPage?.elements?.find(
-      (element) => element.id === "select-measures-table"
+      (element) => element.id === "select-measures-table",
     ) as { answer?: unknown[] } | undefined;
 
     selectMeasuresTable!.answer = [
@@ -81,16 +81,16 @@ describe("Test validateReportPayload function with valid report", () => {
     ];
 
     const validatedData = await validateReportPayload(
-      reportWithQipMeasureTableAnswer
+      reportWithQipMeasureTableAnswer,
     );
 
     const validatedSelectMeasuresPage = validatedData.pages.find(
-      (page) => page.id === "select-measures"
+      (page) => page.id === "select-measures",
     );
     const table = validatedSelectMeasuresPage?.elements?.find(
       (element) =>
         element.id === "select-measures-table" &&
-        element.type === "qipMeasureTable"
+        element.type === "qipMeasureTable",
     ) as { answer?: unknown[] } | undefined;
 
     expect(table?.answer).toEqual([
