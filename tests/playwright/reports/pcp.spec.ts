@@ -20,8 +20,8 @@ const reportSpecificData = {
 };
 
 const fillPCPForm = async (page: Page) => {
-  await page.getByRole("textbox", { name: "Numerator" }).fill("1");
-  await page.getByRole("textbox", { name: "Denominator" }).fill("1");
+  await page.locator('input[name="numerator"]').fill("1");
+  await page.locator('input[name="denominator"]').fill("1");
   await page
     .getByRole("radiogroup", { name: "What sampling methodology was used?" })
     .getByLabel("Entire population")
