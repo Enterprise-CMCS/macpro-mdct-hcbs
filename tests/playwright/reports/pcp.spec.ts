@@ -1,4 +1,4 @@
-import { Page, test } from "@playwright/test";
+import { expect, Page, test } from "@playwright/test";
 import { stateUserAuthPath } from "../utils/consts";
 import {
   navigateToReportHome,
@@ -20,8 +20,8 @@ const reportSpecificData = {
 };
 
 const fillPCPForm = async (page: Page) => {
-  await page.getByRole("textbox", { name: "Numerator" }).fill("1");
-  await page.getByRole("textbox", { name: "Denominator" }).fill("1");
+  await page.locator('input[name="numerator"]').fill("1");
+  await page.locator('input[name="denominator"]').fill("1");
   await page
     .getByRole("radiogroup", { name: "What sampling methodology was used?" })
     .getByLabel("Entire population")
@@ -71,12 +71,25 @@ test.describe("create and complete a PCP report as a state user", () => {
     const reportBtn = page.getByRole("button", {
       name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
     });
+
+    // Retries rerun only this test. Ensure the report exists before editing.
+    if ((await reportBtn.count()) === 0) {
+      await navigateToAddEditReportModal(
+        page,
+        reportSpecificData.startReportButtonName
+      );
+      await fillAddEditReportModal(page, reportSpecificData);
+      await assertReportIsCreated(page, testModalData);
+    }
+
     await reportBtn.click();
 
     await completeGeneralInfo(page);
     await page.getByRole("button", { name: "Continue" }).click();
+    await expect(page.getByRole("heading", { name: /HCBS PCP-1/ })).toBeVisible();
     await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
+    await expect(page.getByRole("heading", { name: /HCBS PCP-2/ })).toBeVisible();
     await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
     await submitReport("PCP", page);

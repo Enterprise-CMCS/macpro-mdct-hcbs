@@ -57,6 +57,10 @@ export const fillAddEditReportModal = async (page: Page) => {
     name: "Start new",
   });
   await addEditReportButton.click();
+
+  // Ensure modal overlay is gone before interacting with dashboard rows.
+  await expect(addQMSReportHeading).toBeHidden();
+  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
 };
 
 test.beforeEach(async ({ page }) => {
@@ -86,6 +90,9 @@ test.describe("create and complete a QMS report as a state user", () => {
       await fillAddEditReportModal(page);
       await assertReportIsCreated(page, testModalData);
     }
+
+    // Defensive wait for any lingering modal from report creation.
+    await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
 
     await reportBtn.click();
     await completeGeneralInfo(page);

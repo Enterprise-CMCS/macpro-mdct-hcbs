@@ -26,6 +26,9 @@ export const fillAddEditReportModal = async (page: Page, reportData: any) => {
     name: "Start new",
   });
   await addEditReportButton.click();
+
+  await expect(addReportHeading).toBeHidden();
+  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
 };
 
 export const navigateToReportHome = async (page: Page, name: string) => {
@@ -78,7 +81,6 @@ export const submitReport = async (reportType: string, page: Page) => {
     .getByRole("button", { name: "Submit " + reportType + " Report" })
     .click();
 
-  //wait until the modal is visible by checking for it's header before proceeding
   await expect(page.getByText("Are you sure you want to")).toBeVisible();
   await page
     .getByRole("button", {
@@ -87,7 +89,6 @@ export const submitReport = async (reportType: string, page: Page) => {
     })
     .click();
 
-  //checks that the successfully submitted page is showing
   await expect(page.getByText("Successfully Submitted")).toBeVisible();
 };
 
