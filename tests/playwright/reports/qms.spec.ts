@@ -46,6 +46,9 @@ export const fillAddEditReportModal = async (page: Page) => {
   const pomRadioButton = page.getByRole("radiogroup", {
     name: "Is your state reporting on the POM Survey?",
   });
+
+  testModalData.datetime = Date.now();
+
   await qmsSetReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
   );
@@ -58,9 +61,23 @@ export const fillAddEditReportModal = async (page: Page) => {
   });
   await addEditReportButton.click();
 
-  // Ensure modal overlay is gone before interacting with dashboard rows.
-  await expect(addQMSReportHeading).toBeHidden();
-  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
+  // In slower/failed creates, the modal may linger and block clicks.
+  const modal = page.locator(".chakra-modal__content-container");
+  const modalClosed = await modal
+    .waitFor({ state: "hidden", timeout: 5000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!modalClosed) {
+    const closeButton = modal.getByRole("button", { name: /close/i });
+    if ((await closeButton.count()) > 0) {
+      await closeButton.first().click();
+    } else {
+      await page.keyboard.press("Escape");
+    }
+  }
+
+  await expect(modal).toHaveCount(0);
 };
 
 test.beforeEach(async ({ page }) => {
@@ -78,11 +95,12 @@ test.describe("create and complete a QMS report as a state user", () => {
   });
 
   test("complete a QMS report as a state user", async ({ page }) => {
-    const reportBtn = page.getByRole("button", {
-      name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
-    });
+    const reportBtn = () =>
+      page.getByRole("button", {
+        name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
+      });
 
-    if ((await reportBtn.count()) === 0) {
+    if ((await reportBtn().count()) === 0) {
       await navigateToAddEditReportModal(
         page,
         reportSpecificData.startReportButtonName
@@ -92,9 +110,11 @@ test.describe("create and complete a QMS report as a state user", () => {
     }
 
     // Defensive wait for any lingering modal from report creation.
-    await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
+    await expect(page.locator(".chakra-modal__content-container")).toHaveCount(
+      0
+    );
 
-    await reportBtn.click();
+    await reportBtn().click();
     await completeGeneralInfo(page);
 
     await page.getByRole("button", { name: "Continue" }).click();

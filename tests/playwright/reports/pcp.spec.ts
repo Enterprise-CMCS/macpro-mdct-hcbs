@@ -68,12 +68,13 @@ test.describe("create and complete a PCP report as a state user", () => {
     await assertReportIsCreated(page, testModalData);
   });
   test("complete a PCP report as a state user", async ({ page }) => {
-    const reportBtn = page.getByRole("button", {
-      name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
-    });
+    const reportBtn = () =>
+      page.getByRole("button", {
+        name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
+      });
 
     // Retries rerun only this test. Ensure the report exists before editing.
-    if ((await reportBtn.count()) === 0) {
+    if ((await reportBtn().count()) === 0) {
       await navigateToAddEditReportModal(
         page,
         reportSpecificData.startReportButtonName
@@ -82,14 +83,18 @@ test.describe("create and complete a PCP report as a state user", () => {
       await assertReportIsCreated(page, testModalData);
     }
 
-    await reportBtn.click();
+    await reportBtn().click();
 
     await completeGeneralInfo(page);
     await page.getByRole("button", { name: "Continue" }).click();
-    await expect(page.getByRole("heading", { name: /HCBS PCP-1/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /HCBS PCP-1/ })
+    ).toBeVisible();
     await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
-    await expect(page.getByRole("heading", { name: /HCBS PCP-2/ })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /HCBS PCP-2/ })
+    ).toBeVisible();
     await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
     await submitReport("PCP", page);

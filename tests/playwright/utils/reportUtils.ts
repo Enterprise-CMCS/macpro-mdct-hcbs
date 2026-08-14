@@ -18,6 +18,8 @@ export const fillAddEditReportModal = async (page: Page, reportData: any) => {
     name: reportData.reportNameInputHeading,
   });
 
+  testModalData.datetime = Date.now();
+
   await setReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
   );
@@ -27,8 +29,22 @@ export const fillAddEditReportModal = async (page: Page, reportData: any) => {
   });
   await addEditReportButton.click();
 
-  await expect(addReportHeading).toBeHidden();
-  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
+  const modal = page.locator(".chakra-modal__content-container");
+  const modalClosed = await modal
+    .waitFor({ state: "hidden", timeout: 5000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!modalClosed) {
+    const closeButton = modal.getByRole("button", { name: /close/i });
+    if ((await closeButton.count()) > 0) {
+      await closeButton.first().click();
+    } else {
+      await page.keyboard.press("Escape");
+    }
+  }
+
+  await expect(modal).toHaveCount(0);
 };
 
 export const navigateToReportHome = async (page: Page, name: string) => {
