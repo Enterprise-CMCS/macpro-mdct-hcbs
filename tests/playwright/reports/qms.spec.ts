@@ -78,6 +78,15 @@ test.describe("create and complete a QMS report as a state user", () => {
       name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
     });
 
+    if ((await reportBtn.count()) === 0) {
+      await navigateToAddEditReportModal(
+        page,
+        reportSpecificData.startReportButtonName
+      );
+      await fillAddEditReportModal(page);
+      await assertReportIsCreated(page, testModalData);
+    }
+
     await reportBtn.click();
     await completeGeneralInfo(page);
 

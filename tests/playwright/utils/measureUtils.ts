@@ -86,9 +86,14 @@ export const completeLTSS6 = async (page: Page) => {
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
+  await expect(
+    page.getByRole("heading", { name: /LTSS-6: Fee-For-Service/ })
+  ).toBeVisible();
+
   const denominatorFields = await page
     .getByRole("textbox", { name: /^Denominator \(/ })
     .all();
+  expect(denominatorFields.length).toBeGreaterThan(0);
   for (let i = 0; i < denominatorFields.length; i++) {
     if (await denominatorFields[i].isEditable())
       await denominatorFields[i].fill((i + 1).toString());
@@ -97,6 +102,7 @@ export const completeLTSS6 = async (page: Page) => {
   const numeratorFields = await page
     .getByRole("textbox", { name: /^Numerator: / })
     .all();
+  expect(numeratorFields.length).toBeGreaterThan(0);
   for (let i = 0; i < numeratorFields.length; i++) {
     if (await numeratorFields[i].isEditable())
       await numeratorFields[i].fill((i + 1).toString());
