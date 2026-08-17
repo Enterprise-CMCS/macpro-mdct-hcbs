@@ -134,14 +134,9 @@ export const NestedHeadingElement = ({
   element,
 }: PageElementProps<NestedHeadingTemplate>) => {
   return (
-    <Stack>
-      <Heading as="h3" variant="nestedHeading">
-        {element.text}
-      </Heading>
-      {element.helperText && (
-        <Text variant="helperText">{element.helperText}</Text>
-      )}
-    </Stack>
+    <Heading as="h3" variant="nestedHeading">
+      {element.text}
+    </Heading>
   );
 };
 

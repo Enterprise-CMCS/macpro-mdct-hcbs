@@ -333,33 +333,6 @@ describe("Page Component with state user", () => {
       },
     ]);
   });
-
-  test("should render helper text for NestedHeading element", () => {
-    render(
-      <Page
-        id="mock-page"
-        elements={[
-          {
-            type: ElementType.NestedHeading,
-            id: "nested-heading-1",
-            text: "Performance Target Timeframe",
-            helperText:
-              "The performance target timeframe should be within the next reporting period.",
-          },
-        ]}
-        setElements={jest.fn()}
-      />
-    );
-
-    expect(
-      screen.getByText("Performance Target Timeframe")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "The performance target timeframe should be within the next reporting period."
-      )
-    ).toBeInTheDocument();
-  });
 });
 
 describe("Page Component with read only user", () => {

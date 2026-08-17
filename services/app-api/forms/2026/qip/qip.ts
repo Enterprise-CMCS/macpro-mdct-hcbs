@@ -57,7 +57,7 @@ export const qipReportTemplate: ReportBase = {
           label: "Contact name/title",
           required: true,
           helperText:
-            "Provide name and/or title of the primary point of contact for follow-up regarding this QIP submission.",
+            "Provide name, title, and email of the primary point of contact for follow-up regarding this QIP submission.",
         },
         {
           type: ElementType.Textbox,
@@ -235,13 +235,15 @@ export const qipReportTemplate: ReportBase = {
           type: ElementType.NestedHeading,
           id: "target-timeframe-header",
           text: "Performance Target Timeframe",
-          helperText:
-            "The performance target timeframe should be within the next reporting period.",
         },
         {
           type: ElementType.Date,
           id: "target-timeframe",
           label: "Target Timeframe",
+          // TODO: Per the designs, this helper text should be under the subheader.
+          // but our h3 component doesn't have helper text and our date component does.
+          helperText:
+            "In the baseline measurement period, MFP grant recipients should report the month(s) and year(s) for which the baseline value represents.",
           dateFormat: "MMYYYY",
           required: true,
         },

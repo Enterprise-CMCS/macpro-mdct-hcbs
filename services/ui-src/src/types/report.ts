@@ -277,7 +277,6 @@ export type NestedHeadingTemplate = {
   type: ElementType.NestedHeading;
   id: string;
   text: string;
-  helperText?: string;
 };
 
 export type ParagraphTemplate = {
