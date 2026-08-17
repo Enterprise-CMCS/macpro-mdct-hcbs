@@ -52,6 +52,7 @@ const nestedHeadingTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NestedHeading)),
   id: string().required(),
   text: string().required(),
+  helperText: string().notRequired(),
 });
 
 const paragraphTemplateSchema = object().shape({
@@ -107,7 +108,7 @@ const dateTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Date)),
   id: string().required(),
   label: string().required(),
-  helperText: string().required(),
+  helperText: string().notRequired(),
   dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
