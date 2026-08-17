@@ -100,9 +100,11 @@ export const QipMeasureTableElement = ({
   };
 
   const errorMessage = (status: PageStatus) => {
-    if (!disabled && status !== PageStatus.COMPLETE) {
+    if (!disabled && status === PageStatus.NOT_STARTED) {
       return (
-        <Text variant="error">Select &quot;Edit&quot; to begin measure.</Text>
+        <Text variant="error" fontSize="body_sm">
+          Select "Edit" to begin measure.
+        </Text>
       );
     }
     return <></>;
@@ -121,8 +123,7 @@ export const QipMeasureTableElement = ({
         </Td>
         <Td>
           <Text fontWeight="bold">{measureTarget.measureName}</Text>
-          {/* TODO: CMIT number? */}
-          <Text>Status: {status}</Text>
+          <Text fontSize="body_sm">Status: {status}</Text>
           {errorMessage(status)}
         </Td>
         <Td textAlign="center">
@@ -184,9 +185,12 @@ export const QipMeasureTableElement = ({
         </Thead>
         {rows.length > 0 ? <Tbody>{rows}</Tbody> : null}
       </Table>
-      {rows.length === 0
-        ? "Keep track of your measures, once you add a report you can access it here."
-        : null}
+      {rows.length === 0 ? (
+        <Text textAlign="center">
+          No measures found in this Quality Improvement Plan. Once you add a
+          measure you can access it here.
+        </Text>
+      ) : null}
     </>
   );
 };

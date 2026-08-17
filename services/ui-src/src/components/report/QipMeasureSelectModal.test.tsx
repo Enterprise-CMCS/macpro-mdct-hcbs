@@ -293,7 +293,7 @@ describe("QipMeasureSelectModal", () => {
     await userEvent.selectOptions(measureDropdown, "m1");
 
     await userEvent.click(screen.getByLabelText("Delivery Method: MLTSS"));
-    await userEvent.click(screen.getByLabelText("Delivery Method: FFS"));
+    await userEvent.click(screen.getByLabelText("Delivery Method: FFS LTSS"));
     await userEvent.click(screen.getByLabelText("Denominator"));
     await userEvent.click(screen.getByLabelText("Numerator"));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -321,7 +321,7 @@ describe("QipMeasureSelectModal", () => {
     assert.ok(measureDropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(measureDropdown, "m1");
 
-    await userEvent.click(screen.getByLabelText("Delivery Method: FFS"));
+    await userEvent.click(screen.getByLabelText("Delivery Method: FFS LTSS"));
     await userEvent.click(screen.getByLabelText("Numerator"));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
@@ -368,7 +368,7 @@ describe("QipMeasureSelectModal", () => {
     await userEvent.selectOptions(qmsDropdown, "submitted-1");
 
     await userEvent.selectOptions(measureDropdown, "m2");
-    await userEvent.click(screen.getByLabelText("Delivery Method: FFS"));
+    await userEvent.click(screen.getByLabelText("Delivery Method: FFS LTSS"));
     await userEvent.click(screen.getByLabelText("Numerator"));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
@@ -415,7 +415,7 @@ describe("QipMeasureSelectModal", () => {
     assert.ok(measureDropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(measureDropdown, "m1");
 
-    const deliveryMethod = screen.getByLabelText("Delivery Method: FFS");
+    const deliveryMethod = screen.getByLabelText("Delivery Method: FFS LTSS");
     const numeratorRate = screen.getByLabelText("Numerator");
 
     await userEvent.click(deliveryMethod);

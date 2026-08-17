@@ -133,7 +133,7 @@ describe("Test QipMeasureTable", () => {
 
     expect(
       screen.getByText(
-        "Keep track of your measures, once you add a report you can access it here."
+        "No measures found in this Quality Improvement Plan. Once you add a measure you can access it here."
       )
     ).toBeInTheDocument();
   });
@@ -146,12 +146,30 @@ describe("Test QipMeasureTable", () => {
     expect(screen.getByText("Status: Complete")).toBeInTheDocument();
   });
 
-  it("should show error message for not started and in progress measures", () => {
+  it("should show error message for not started", () => {
     render(QipMeasureTableComponent());
 
     expect(
       screen.getAllByText(/Select .Edit. to begin measure./i)
-    ).toHaveLength(2);
+    ).toHaveLength(1);
+  });
+
+  it("should not show error message for an in progress measure", () => {
+    render(
+      QipMeasureTableComponent({
+        ...mockTemplate,
+        answer: [
+          {
+            pageId: "measure-targets-in-progress",
+            measureName: "In Progress Measure",
+          },
+        ],
+      })
+    );
+
+    expect(
+      screen.queryByText(/Select .Edit. to begin measure./i)
+    ).not.toBeInTheDocument();
   });
 
   it("should not show error message for a complete measure", () => {
