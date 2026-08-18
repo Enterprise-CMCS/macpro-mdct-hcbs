@@ -126,9 +126,12 @@ export const reportSubmissionSetUp = (report: Report) => {
     });
     if (report.options[id]) {
       const year = Number(report.options[`${id}-period`]);
+      const isCalendarYear = id === "cahps" || id === "pom";
       rows.push({
         indicator: "Reporting start and end date",
-        response: `July ${year - 1}—June ${year}`,
+        response: isCalendarYear
+          ? `Jan ${year} - Dec ${year}`
+          : `July ${year} - June ${year + 1}`,
       });
     }
   }

@@ -146,6 +146,39 @@ describe("Test dropdown for year", () => {
     await userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
   });
+
+  test("period dropdowns show the two years before the reporting year", async () => {
+    for (const radio of screen.getAllByLabelText("Yes")) {
+      await userEvent.click(radio);
+    }
+
+    const periodDropdowns = screen.getAllByRole("button", {
+      name: /Reporting start and end date/,
+    });
+    const calendarYearPeriods = ["Jan 2024 - Dec 2024", "Jan 2025 - Dec 2025"];
+    const julyToJunePeriods = [
+      "July 2024 - June 2025",
+      "July 2025 - June 2026",
+    ];
+    const expectedPeriods = [
+      calendarYearPeriods,
+      julyToJunePeriods,
+      julyToJunePeriods,
+      calendarYearPeriods,
+    ];
+
+    for (const [index, dropdown] of periodDropdowns.entries()) {
+      await userEvent.click(dropdown);
+      for (const period of expectedPeriods[index]) {
+        expect(
+          screen.getByRole("option", { name: period })
+        ).toBeInTheDocument();
+      }
+      await userEvent.click(
+        screen.getByRole("option", { name: expectedPeriods[index][0] })
+      );
+    }
+  });
 });
 
 describe("Test submit", () => {

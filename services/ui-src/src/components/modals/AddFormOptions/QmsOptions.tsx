@@ -126,63 +126,35 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
     };
 
     const parsedYear = Number(year);
-    const periodOptions = {
-      nciidd: [
-        {
-          label: "Select a survey year",
-          value: "",
-        },
-        {
-          label: `July ${parsedYear - 2} - June ${parsedYear - 1}`,
-          value: `${parsedYear - 2}`,
-        },
-        {
-          label: `July ${parsedYear - 1} - June ${parsedYear}`,
-          value: `${parsedYear - 1}`,
-        },
-      ],
-      nciad: [
-        {
-          label: "Select a survey year",
-          value: "",
-        },
-        {
-          label: `July ${parsedYear - 2} - June ${parsedYear - 1}`,
-          value: `${parsedYear - 2}`,
-        },
-        {
-          label: `July ${parsedYear - 1} - June ${parsedYear}`,
-          value: `${parsedYear - 1}`,
-        },
-      ],
-      cahps: [
-        {
-          label: "Select a survey year",
-          value: "",
-        },
-        {
-          label: `Jan ${parsedYear - 2} - Dec ${parsedYear - 2}`,
-          value: `${parsedYear - 2}`,
-        },
-        {
-          label: `Jan ${parsedYear - 1} - Dec ${parsedYear - 1}`,
-          value: `${parsedYear - 1}`,
-        },
-      ],
-      pom: [
-        {
-          label: "Select a survey year",
-          value: "",
-        },
-        {
-          label: `Jan ${parsedYear - 2} - Dec ${parsedYear - 2}`,
-          value: `${parsedYear - 2}`,
-        },
-        {
-          label: `Jan ${parsedYear - 1} - Dec ${parsedYear - 1}`,
-          value: `${parsedYear - 1}`,
-        },
-      ],
+    const buildPeriodOptions = (
+      startMonth: string,
+      endMonth: string,
+      endYearOffset: number
+    ) => [
+      {
+        label: "Select a survey year",
+        value: "",
+      },
+      {
+        label: `${startMonth} ${parsedYear - 2} - ${endMonth} ${
+          parsedYear - 2 + endYearOffset
+        }`,
+        value: `${parsedYear - 2}`,
+      },
+      {
+        label: `${startMonth} ${parsedYear - 1} - ${endMonth} ${
+          parsedYear - 1 + endYearOffset
+        }`,
+        value: `${parsedYear - 1}`,
+      },
+    ];
+    const julyToJunePeriodOptions = buildPeriodOptions("July", "June", 1);
+    const calendarYearPeriodOptions = buildPeriodOptions("Jan", "Dec", 0);
+    const periodOptionsBySurvey = {
+      nciidd: julyToJunePeriodOptions,
+      nciad: julyToJunePeriodOptions,
+      cahps: calendarYearPeriodOptions,
+      pom: calendarYearPeriodOptions,
     };
 
     return (
@@ -211,7 +183,7 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
                       label="Reporting start and end date"
                       hint="Choose a survey year from the two years prior to the reporting year."
                       value={formData[`${key}-period`]}
-                      options={periodOptions[key]}
+                      options={periodOptionsBySurvey[key]}
                       errorMessage={errorData[`${key}-period`]}
                       onChange={onChange}
                       disabled={Number.isNaN(year)}
