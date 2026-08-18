@@ -340,9 +340,13 @@ export const DashboardPage = () => {
         {userIsEndUser && (
           <Flex justifyContent="center">
             <Button onClick={() => openAddEditReportModal()} type="submit">
-              {reportType === ReportType.QIP
-                ? "Start Quality Improvement Plan"
-                : `Start ${reportName}`}
+              {reportType === ReportType.QIP &&
+                "Start Quality Improvement Plan"}
+              {reportType === ReportType.IMA &&
+                "Start Incident Management Assessment"}
+              {reportType !== ReportType.QIP &&
+                reportType !== ReportType.IMA &&
+                `Start ${reportName}`}
             </Button>
           </Flex>
         )}

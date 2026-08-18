@@ -228,7 +228,7 @@ describe("Test AddEditReportModal types", () => {
     { type: ReportType.PCP, text: "Person-Centered Planning Report" },
     { type: ReportType.QIP, text: "Quality Improvement Plan" },
     { type: ReportType.WWL, text: "Waiver Waiting List Report" },
-    { type: ReportType.IMA, text: "Incident Management Assessments" },
+    { type: ReportType.IMA, text: "Incident Management Assessment" },
   ])("$type report type renders a title", ({ type, text }) => {
     render(
       <RouterWrappedComponent>

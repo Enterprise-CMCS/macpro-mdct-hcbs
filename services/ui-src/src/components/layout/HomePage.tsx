@@ -78,8 +78,8 @@ export const HomePage = () => {
                 </Heading>
                 <Box display="flex" flexDirection="column" gap="spacer4">
                   {isCIReportActive && <CiIntroductionCard />}
-                  {isPCPReportActive && <PCPIntroductionCard />}
                   {isIMAReportActive && <IMAIntroductionCard />}
+                  {isPCPReportActive && <PCPIntroductionCard />}
                 </Box>
               </Box>
             )}

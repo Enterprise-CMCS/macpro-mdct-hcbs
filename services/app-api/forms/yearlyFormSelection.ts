@@ -4,10 +4,18 @@ import { CMIT_LIST as CMIT_LIST_2026 } from "./2026/cmit";
 import { WAIVER_LIST as WAIVER_LIST_2026 } from "./2026/waivers";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { tacmReportTemplate as tacmReportTemplate2026 } from "./2026/tacm/tacm";
-import { imaReportTemplate as imaReportTemplate2026 } from "./2026/ima/ima";
 import { pcpReportTemplate as pcpReportTemplate2026 } from "./2026/pcp/pcp";
 import { qipReportTemplate as qipReportTemplate2026 } from "./2026/qip/qip";
 import { wwlReportTemplate as wwlReportTemplate2026 } from "./2026/wwl/wwl";
+import { ciReportTemplate as ciReportTemplate2028 } from "./2028/ci/ci";
+import { CMIT_LIST as CMIT_LIST_2028 } from "./2028/cmit";
+import { WAIVER_LIST as WAIVER_LIST_2028 } from "./2028/waivers";
+import { qmsReportTemplate as qmsReportTemplate2028 } from "./2028/qms/qms";
+import { tacmReportTemplate as tacmReportTemplate2028 } from "./2028/tacm/tacm";
+import { imaReportTemplate as imaReportTemplate2028 } from "./2028/ima/ima";
+import { pcpReportTemplate as pcpReportTemplate2028 } from "./2028/pcp/pcp";
+import { qipReportTemplate as qipReportTemplate2028 } from "./2028/qip/qip";
+import { wwlReportTemplate as wwlReportTemplate2028 } from "./2028/wwl/wwl";
 import { StateAbbr } from "../utils/constants";
 
 const formsByYear = {
@@ -17,21 +25,20 @@ const formsByYear = {
     qmsReportTemplate: qmsReportTemplate2026,
     tacmReportTemplate: tacmReportTemplate2026,
     ciReportTemplate: ciReportTemplate2026,
-    imaReportTemplate: imaReportTemplate2026,
     pcpReportTemplate: pcpReportTemplate2026,
     qipReportTemplate: qipReportTemplate2026,
     wwlReportTemplate: wwlReportTemplate2026,
   },
   2028: {
-    CMIT_LIST: CMIT_LIST_2026,
-    WAIVER_LIST: WAIVER_LIST_2026,
-    qmsReportTemplate: qmsReportTemplate2026,
-    tacmReportTemplate: tacmReportTemplate2026,
-    ciReportTemplate: ciReportTemplate2026,
-    imaReportTemplate: imaReportTemplate2026,
-    pcpReportTemplate: pcpReportTemplate2026,
-    qipReportTemplate: qipReportTemplate2026,
-    wwlReportTemplate: wwlReportTemplate2026,
+    CMIT_LIST: CMIT_LIST_2028,
+    WAIVER_LIST: WAIVER_LIST_2028,
+    qmsReportTemplate: qmsReportTemplate2028,
+    tacmReportTemplate: tacmReportTemplate2028,
+    ciReportTemplate: ciReportTemplate2028,
+    imaReportTemplate: imaReportTemplate2028,
+    pcpReportTemplate: pcpReportTemplate2028,
+    qipReportTemplate: qipReportTemplate2028,
+    wwlReportTemplate: wwlReportTemplate2028,
   },
 };
 
@@ -71,7 +78,12 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
     case ReportType.PCP:
       return formsByYear[year].pcpReportTemplate;
     case ReportType.IMA:
-      return formsByYear[year].imaReportTemplate;
+      if (year !== 2028) {
+        throw new Error(
+          `Invalid year - form templates for ${year} are not implemented`
+        );
+      }
+      return formsByYear[2028].imaReportTemplate;
     case ReportType.QIP:
       return formsByYear[year].qipReportTemplate;
     case ReportType.WWL:
