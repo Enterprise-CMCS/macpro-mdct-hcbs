@@ -80,8 +80,9 @@ const getSubheading = (reportType: ReportType): ReactElement | null => {
             status={AlertTypes.WARNING}
             title="Enter a report for each of your state's quality improvement plans."
           >
-            If your state employs multiple QI plans, you will need a separate
-            report for each one.
+            States may use the same quality improvement plan for more than one
+            mandatory measure. If your state employs multiple QI plans, you will
+            need a separate report for each one.
           </Alert>
         </Box>
       );
