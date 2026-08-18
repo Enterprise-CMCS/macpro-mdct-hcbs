@@ -42,6 +42,7 @@ export type AddEditReportModalOptions = {
    */
   OptionsComponent?: (props: {
     selectedReport: LiteReport | undefined;
+    year: string | undefined;
     onOptionsChange: (options: Record<string, any>) => void;
     submissionAttempted: boolean;
     setOptionsComplete: (isComplete: boolean) => void;
@@ -263,6 +264,7 @@ export const AddEditReportModal = ({
           {OptionsComponent ? (
             <OptionsComponent
               selectedReport={selectedReport}
+              year={formData.year}
               onOptionsChange={onOptionsChange}
               submissionAttempted={submissionAttempted}
               setOptionsComplete={setOptionsComplete}

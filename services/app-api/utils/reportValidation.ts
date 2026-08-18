@@ -692,9 +692,13 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
 
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
+  "cahps-period": string().notRequired(),
   nciidd: boolean().notRequired(),
+  "nciidd-period": string().notRequired(),
   nciad: boolean().notRequired(),
+  "nciad-period": string().notRequired(),
   pom: boolean().notRequired(),
+  "pom-period": string().notRequired(),
 });
 
 const measureTargetMappingSchema = array(

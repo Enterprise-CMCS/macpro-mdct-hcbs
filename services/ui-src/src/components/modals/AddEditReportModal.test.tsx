@@ -164,6 +164,14 @@ describe("Test submit", () => {
       await userEvent.click(radio);
     }
 
+    const periodDropdowns = screen.getAllByRole("button", {
+      name: /Reporting start and end date/,
+    });
+    for (const dropdown of periodDropdowns) {
+      await userEvent.click(dropdown);
+      await userEvent.click(screen.getByRole("option", { name: /2024/ }));
+    }
+
     const submitBtn = screen.getByText("Start new");
     await userEvent.click(submitBtn);
 
