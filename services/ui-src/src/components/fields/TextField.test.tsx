@@ -145,5 +145,32 @@ describe("<TextField />", () => {
     expect(textField).not.toBeInTheDocument();
   });
 
+  test("NumberField input has maxWidth of 240px", () => {
+    const { container } = render(
+      <TextFieldWrapper template={mockedNumberField} />
+    );
+    const inputElement = container.querySelector(".ds-c-field");
+    const computedStyle = window.getComputedStyle(inputElement!);
+    expect(computedStyle.maxWidth).toBe("240px");
+  });
+
+  test("Textbox input has maxWidth of 460px", () => {
+    const { container } = render(
+      <TextFieldWrapper template={mockedTextboxElement} />
+    );
+    const inputElement = container.querySelector(".ds-c-field");
+    const computedStyle = window.getComputedStyle(inputElement!);
+    expect(computedStyle.maxWidth).toBe("460px");
+  });
+
+  test("Input has responsive width of 100%", () => {
+    const { container } = render(
+      <TextFieldWrapper template={mockedNumberField} />
+    );
+    const inputElement = container.querySelector(".ds-c-field");
+    const computedStyle = window.getComputedStyle(inputElement!);
+    expect(computedStyle.width).toBe("100%");
+  });
+
   testA11y(<TextFieldWrapper template={mockedTextboxElement} />);
 });

@@ -91,6 +91,8 @@ export const TextField = (
 
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
   const labelText = textbox.label;
+  const maxFieldWidth =
+    textbox.type === ElementType.NumberField ? "240px" : "460px";
 
   if (hideElement) {
     return null;
@@ -99,10 +101,10 @@ export const TextField = (
   return (
     <Box
       width="100%"
-      maxWidth="460px"
       sx={{
         ".ds-c-field": {
           width: "100%",
+          maxWidth: maxFieldWidth,
         },
       }}
     >
