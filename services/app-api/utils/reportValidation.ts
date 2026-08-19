@@ -690,23 +690,20 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
   submittedView: array().of(pageElementSchema).required(),
 });
 
+const periodValidator = (fieldName: string) =>
+  string().when(fieldName, ([value], schema) =>
+    value === true ? schema.required() : schema.notRequired()
+  );
+
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
-  "cahps-period": string().when("cahps", ([cahps], schema) =>
-    cahps === true ? schema.required() : schema.notRequired()
-  ),
+  "cahps-period": periodValidator("cahps"),
   nciidd: boolean().notRequired(),
-  "nciidd-period": string().when("nciidd", ([nciidd], schema) =>
-    nciidd === true ? schema.required() : schema.notRequired()
-  ),
+  "nciidd-period": periodValidator("nciidd"),
   nciad: boolean().notRequired(),
-  "nciad-period": string().when("nciad", ([nciad], schema) =>
-    nciad === true ? schema.required() : schema.notRequired()
-  ),
+  "nciad-period": periodValidator("nciad"),
   pom: boolean().notRequired(),
-  "pom-period": string().when("pom", ([pom], schema) =>
-    pom === true ? schema.required() : schema.notRequired()
-  ),
+  "pom-period": periodValidator("pom"),
 });
 
 const measureTargetMappingSchema = array(
