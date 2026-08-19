@@ -174,6 +174,18 @@ describe("isReportOptions", () => {
     }
   );
 
+  it.each(["cahps-period", "nciidd-period", "nciad-period", "pom-period"])(
+    "should reject a non-four-digit year in %s",
+    (surveyPeriod) => {
+      const obj = buildValidReportOptions();
+      const surveyFlag = surveyPeriod.replace("-period", "");
+      obj.options[surveyFlag] = true;
+      obj.options[surveyPeriod] = "20x4";
+
+      expect(isReportOptions(obj)).toBe(false);
+    }
+  );
+
   function* generateInvalidReportOptions() {
     let obj = undefined;
     yield { obj, reason: "are undefined" };

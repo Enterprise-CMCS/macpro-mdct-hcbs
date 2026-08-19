@@ -692,7 +692,9 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
 
 const periodValidator = (fieldName: string) =>
   string().when(fieldName, ([value], schema) =>
-    value === true ? schema.required() : schema.notRequired()
+    value === true
+      ? schema.required().matches(/^\d{4}$/, "Must be a 4-digit year")
+      : schema.notRequired()
   );
 
 const optionsSchema = object().shape({

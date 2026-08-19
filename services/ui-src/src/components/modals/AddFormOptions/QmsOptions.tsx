@@ -118,10 +118,9 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
       onOptionsChange(updatedOptions);
 
       const updatedErrors = computeErrors(updatedFormData);
-      setErrorData({
-        ...errorData,
-        [name]: updatedErrors[name as keyof typeof errorData],
-      });
+      if (submissionAttempted) {
+        setErrorData(updatedErrors);
+      }
       setOptionsComplete(Object.values(updatedErrors).every((val) => !val));
     };
 
@@ -186,7 +185,7 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
                       options={periodOptionsBySurvey[key]}
                       errorMessage={errorData[`${key}-period`]}
                       onChange={onChange}
-                      disabled={Number.isNaN(year)}
+                      disabled={Number.isNaN(parsedYear)}
                     />
                   ),
                 },
