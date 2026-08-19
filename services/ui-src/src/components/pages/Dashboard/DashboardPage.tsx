@@ -187,7 +187,9 @@ export const DashboardPage = () => {
                     <p>
                       Enter a report for each of your state's quality
                       improvement plans. If your state employs multiple QIPs,
-                      you will need a separate report for each one.
+                      you will need a separate report for each one. States may
+                      use the same quality improvement plan for more than one
+                      mandatory measure.
                     </p>
                   </>
                 ) : (
