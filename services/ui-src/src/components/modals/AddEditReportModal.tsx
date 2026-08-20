@@ -88,6 +88,18 @@ const getSubheading = (reportType: ReportType): ReactElement | null => {
           </Alert>
         </Box>
       );
+    case ReportType.IMA:
+      return (
+        <Box mt={4} mb={8}>
+          <Alert
+            status={AlertTypes.WARNING}
+            title="Enter an assessment for each of your state's incident management systems."
+          >
+            If your state uses multiple systems, you will need a separate
+            assessment for each one.
+          </Alert>
+        </Box>
+      );
     default:
       return null;
   }

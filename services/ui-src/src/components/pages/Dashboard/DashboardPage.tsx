@@ -34,6 +34,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
@@ -61,10 +62,18 @@ export const DashboardPage = () => {
     ? reportName
     : `${reportName}s`;
   const filterYear = searchParams.get("year") || "All";
-  const filterDropdownOptions = [
-    { label: "All", value: "All" },
-    { label: "2026", value: "2026" },
-  ];
+  const isImaReportActive = useFlags()?.isImaReportActive;
+  const filterDropdownOptions =
+    reportType === ReportType.IMA
+      ? [
+          { label: "All", value: "All" },
+          { label: "2028", value: "2028" },
+        ]
+      : [
+          { label: "All", value: "All" },
+          { label: "2026", value: "2026" },
+          ...(isImaReportActive ? [{ label: "2028", value: "2028" }] : []),
+        ];
 
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {

@@ -7,6 +7,7 @@ import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
 import { qmsReportTemplate } from "./qms/qms";
 import { tacmReportTemplate } from "./tacm/tacm";
 import { wwlReportTemplate } from "./wwl/wwl";
+import { imaReportTemplate } from "./ima/ima";
 
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
@@ -15,6 +16,7 @@ const reportsToTest = [
   { template: qipReportTemplate, name: "QIP" },
   { template: pcpReportTemplate, name: "PCP" },
   { template: wwlReportTemplate, name: "WWL" },
+  { template: imaReportTemplate, name: "IMA" },
 ];
 describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
   it(`${name} should exist`, () => {
