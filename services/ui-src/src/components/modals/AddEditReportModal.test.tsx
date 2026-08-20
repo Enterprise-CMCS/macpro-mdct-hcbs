@@ -153,7 +153,7 @@ describe("Test dropdown for year", () => {
     }
 
     const periodDropdowns = screen.getAllByRole("button", {
-      name: "Survey start and end date",
+      name: /Survey start and end date/,
     });
     const calendarYearPeriods = ["Jan 2024 - Dec 2024", "Jan 2025 - Dec 2025"];
     const julyToJunePeriods = [
@@ -198,7 +198,7 @@ describe("Test submit", () => {
     }
 
     const periodDropdowns = screen.getAllByRole("button", {
-      name: "Survey start and end date",
+      name: /Survey start and end date/,
     });
     for (const dropdown of periodDropdowns) {
       await userEvent.click(dropdown);
