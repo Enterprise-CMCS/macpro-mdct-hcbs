@@ -179,7 +179,7 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
                   checkedChildren: (
                     <CmsdsDropdown
                       name={`${key}-period`}
-                      label="Reporting start and end date"
+                      label="Survey start and end date"
                       hint="Choose a survey year from the two years prior to the reporting year."
                       value={formData[`${key}-period`]}
                       options={periodOptionsBySurvey[key]}
