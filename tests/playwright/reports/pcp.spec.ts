@@ -20,8 +20,8 @@ const reportSpecificData = {
 };
 
 const fillPCPForm = async (page: Page) => {
-  await page.locator('input[name="numerator"]').fill("1");
-  await page.locator('input[name="denominator"]').fill("1");
+  await page.getByLabel("Numerator").fill("1");
+  await page.getByLabel("Denominator").fill("1");
   await page
     .getByRole("radiogroup", { name: "What sampling methodology was used?" })
     .getByLabel("Entire population")
@@ -72,16 +72,6 @@ test.describe("create and complete a PCP report as a state user", () => {
       page.getByRole("button", {
         name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
       });
-
-    // Retries rerun only this test. Ensure the report exists before editing.
-    if ((await reportBtn().count()) === 0) {
-      await navigateToAddEditReportModal(
-        page,
-        reportSpecificData.startReportButtonName
-      );
-      await fillAddEditReportModal(page, reportSpecificData);
-      await assertReportIsCreated(page, testModalData);
-    }
 
     await reportBtn().click();
 

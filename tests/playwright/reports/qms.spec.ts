@@ -59,25 +59,21 @@ export const fillAddEditReportModal = async (page: Page) => {
   const addEditReportButton = page.getByRole("button", {
     name: "Start new",
   });
-  await addEditReportButton.click();
+  await Promise.all([
+    waitForReportRequest(page, "POST"),
+    addEditReportButton.click(),
+  ]);
 
-  // In slower/failed creates, the modal may linger and block clicks.
-  const modal = page.locator(".chakra-modal__content-container");
-  const modalClosed = await modal
-    .waitFor({ state: "hidden", timeout: 5000 })
-    .then(() => true)
-    .catch(() => false);
+  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
+};
 
-  if (!modalClosed) {
-    const closeButton = modal.getByRole("button", { name: /close/i });
-    if ((await closeButton.count()) > 0) {
-      await closeButton.first().click();
-    } else {
-      await page.keyboard.press("Escape");
-    }
-  }
-
-  await expect(modal).toHaveCount(0);
+const waitForReportRequest = async (page: Page, method: "POST" | "PUT") => {
+  await page.waitForResponse(
+    (response) =>
+      response.url().includes("/reports") &&
+      response.request().method() === method &&
+      response.ok()
+  );
 };
 
 test.beforeEach(async ({ page }) => {
@@ -99,20 +95,6 @@ test.describe("create and complete a QMS report as a state user", () => {
       page.getByRole("button", {
         name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
       });
-
-    if ((await reportBtn().count()) === 0) {
-      await navigateToAddEditReportModal(
-        page,
-        reportSpecificData.startReportButtonName
-      );
-      await fillAddEditReportModal(page);
-      await assertReportIsCreated(page, testModalData);
-    }
-
-    // Defensive wait for any lingering modal from report creation.
-    await expect(page.locator(".chakra-modal__content-container")).toHaveCount(
-      0
-    );
 
     await reportBtn().click();
     await completeGeneralInfo(page);

@@ -27,24 +27,21 @@ export const fillAddEditReportModal = async (page: Page, reportData: any) => {
   const addEditReportButton = page.getByRole("button", {
     name: "Start new",
   });
-  await addEditReportButton.click();
+  await Promise.all([
+    waitForReportRequest(page, "POST"),
+    addEditReportButton.click(),
+  ]);
 
-  const modal = page.locator(".chakra-modal__content-container");
-  const modalClosed = await modal
-    .waitFor({ state: "hidden", timeout: 5000 })
-    .then(() => true)
-    .catch(() => false);
+  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
+};
 
-  if (!modalClosed) {
-    const closeButton = modal.getByRole("button", { name: /close/i });
-    if ((await closeButton.count()) > 0) {
-      await closeButton.first().click();
-    } else {
-      await page.keyboard.press("Escape");
-    }
-  }
-
-  await expect(modal).toHaveCount(0);
+const waitForReportRequest = async (page: Page, method: "POST" | "PUT") => {
+  await page.waitForResponse(
+    (response) =>
+      response.url().includes("/reports") &&
+      response.request().method() === method &&
+      response.ok()
+  );
 };
 
 export const navigateToReportHome = async (page: Page, name: string) => {

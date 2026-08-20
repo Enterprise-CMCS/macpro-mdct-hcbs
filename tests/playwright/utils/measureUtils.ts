@@ -1,12 +1,28 @@
 import { expect, Page } from "@playwright/test";
 
-export const quickFillFields = async (page: Page, label: string) => {
+export const quickFillFields = async (
+  page: Page,
+  label: string | RegExp,
+  waitForLabel?: string | RegExp
+) => {
+  const labelForWait = waitForLabel ?? label;
+
+  await expect(
+    page.getByRole("textbox", { name: labelForWait }).first()
+  ).toBeVisible();
+
   //find all textboxes that contains the label passed in
   const fields = await page.getByRole("textbox", { name: label }).all();
+  expect(fields.length).toBeGreaterThan(0);
 
   //loops through them all and only fill the ones that are enabled
-  for (var i = 0; i < fields.length; i++)
-    if (await fields[i].isEditable()) await fields[i].fill((i + 1).toString());
+  for (let i = 0; i < fields.length; i++) {
+    if (await fields[i].isEditable()) {
+      const value = (i + 1).toString();
+      await fields[i].fill(value);
+      await expect(fields[i]).toHaveValue(value);
+    }
+  }
 };
 
 export const completeAndReturn = async (page: Page) => {
@@ -90,23 +106,8 @@ export const completeLTSS6 = async (page: Page) => {
     page.getByRole("heading", { name: /LTSS-6: Fee-For-Service/ })
   ).toBeVisible();
 
-  const denominatorFields = await page
-    .getByRole("textbox", { name: /^Denominator \(/ })
-    .all();
-  expect(denominatorFields.length).toBeGreaterThan(0);
-  for (let i = 0; i < denominatorFields.length; i++) {
-    if (await denominatorFields[i].isEditable())
-      await denominatorFields[i].fill((i + 1).toString());
-  }
-
-  const numeratorFields = await page
-    .getByRole("textbox", { name: /^Numerator: / })
-    .all();
-  expect(numeratorFields.length).toBeGreaterThan(0);
-  for (let i = 0; i < numeratorFields.length; i++) {
-    if (await numeratorFields[i].isEditable())
-      await numeratorFields[i].fill((i + 1).toString());
-  }
+  await quickFillFields(page, /^Denominator \(/, /^Denominator \(/);
+  await quickFillFields(page, /^Numerator: /, /^Numerator: /);
 
   await completeAndReturn(page);
 };
