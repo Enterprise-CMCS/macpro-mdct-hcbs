@@ -20,8 +20,21 @@ const reportSpecificData = {
 };
 
 const fillPCPForm = async (page: Page) => {
-  await page.getByLabel("Numerator").fill("1");
-  await page.getByLabel("Denominator").fill("1");
+  await expect(page.getByRole("textbox", { name: "Numerator" })).toBeVisible();
+  await expect(
+    page.getByRole("textbox", { name: "Denominator" })
+  ).toBeVisible();
+
+  await page.getByRole("textbox", { name: "Numerator" }).fill("1");
+  await expect(page.getByRole("textbox", { name: "Numerator" })).toHaveValue(
+    "1"
+  );
+
+  await page.getByRole("textbox", { name: "Denominator" }).fill("1");
+  await expect(page.getByRole("textbox", { name: "Denominator" })).toHaveValue(
+    "1"
+  );
+
   await page
     .getByRole("radiogroup", { name: "What sampling methodology was used?" })
     .getByLabel("Entire population")
