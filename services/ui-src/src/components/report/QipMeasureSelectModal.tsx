@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FormEvent, useEffect, useState } from "react";
+import { SubmitEventHandler, useEffect, useState } from "react";
 import { ChoiceList, Dropdown } from "@cmsgov/design-system";
 import {
   LiteReport,
@@ -60,30 +60,35 @@ export const QipMeasureSelectModal = ({
     })();
   }, []);
 
-  const validateAndSubmit = async (evt: FormEvent) => {
-    evt.preventDefault();
-
-    if (submitting) {
-      return;
-    }
-
+  const validateForm = () => {
     setSubmitError(undefined);
 
     let allValid = true;
+
     if (!selectedMeasure) {
       setMeasureError("Please select a measure.");
       allValid = false;
     }
+
     if (deliveryMethods.length === 0) {
       setDeliveryMethodError("Please select one or more delivery methods.");
       allValid = false;
     }
+
     if (rates.length === 0) {
       setRateError("Please select one or more rates.");
       allValid = false;
     }
 
-    if (allValid) {
+    return allValid;
+  };
+
+  const handleSubmit: SubmitEventHandler<HTMLElement> = async (e) => {
+    e.preventDefault();
+
+    const isValid = validateForm();
+
+    if (isValid) {
       setSubmitting(true);
       // "FFS" is before "MLTSS", so default sort works
       deliveryMethods.sort();
@@ -116,12 +121,12 @@ export const QipMeasureSelectModal = ({
         <Text mb={8}>
           Select a measure from the dropdown to add to this Quality Improvement
           Plan. You may either enter the measure rate details or copy the
-          baseline values from an existing QMS where possible.
+          baseline values from an existing HCBS QMS where possible.
         </Text>
         <VStack
           as="form"
           id="qip-measure-select-form"
-          onSubmit={validateAndSubmit}
+          onSubmit={handleSubmit}
           align="stretch"
           spacing={8}
         >
@@ -174,18 +179,33 @@ export const QipMeasureSelectModal = ({
                 } else {
                   return (
                     <Dropdown
-                      label="Please select from which submitted Quality Measure Set report you would like to copy over baseline values (optional)"
+                      label={
+                        <>
+                          Please select from which submitted Quality Measure Set
+                          report you would like to copy over baseline values{" "}
+                          <span className="optionalText">(optional)</span>
+                        </>
+                      }
                       hint="Only measures submitted as part of the HCBS Quality Measure Set report are available for copy-over."
                       name="qms-report-id"
                       value={qmsReportId ?? ""}
                       disabled={!selectedMeasure?.includedInQms}
-                      options={[
-                        { label: "Select report", value: "" },
-                        ...reports.map((r) => ({
-                          label: r.name,
-                          value: r.id!, // TODO: Do we ever have report w/o id?!
-                        })),
-                      ]}
+                      options={
+                        reports.length === 0
+                          ? [
+                              {
+                                label: "No reports available for copy-over",
+                                value: "",
+                              },
+                            ]
+                          : [
+                              { label: "Select report", value: "" },
+                              ...reports.map((r) => ({
+                                label: r.name,
+                                value: r.id!, // TODO: Do we ever have report w/o id?!
+                              })),
+                            ]
+                      }
                       onChange={(evt) => setQmsReportId(evt.target.value)}
                     />
                   );
@@ -198,7 +218,7 @@ export const QipMeasureSelectModal = ({
                 type="checkbox"
                 choices={Object.keys(selectedMeasure.deliveryMethods).map(
                   (deliveryMethodId) => ({
-                    label: `Delivery Method: ${deliveryMethodId}`,
+                    label: `Delivery Method: ${deliveryMethodId === "FFS" ? "FFS LTSS" : deliveryMethodId}`,
                     value: deliveryMethodId,
                     checked: deliveryMethods.includes(deliveryMethodId),
                   })

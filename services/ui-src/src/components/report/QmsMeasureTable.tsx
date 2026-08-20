@@ -87,10 +87,14 @@ export const QmsMeasureTableElement = (
   const errorMessage = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
     if (
-      measure.status === PageStatus.IN_PROGRESS ||
-      (measure.required && measure.status != PageStatus.COMPLETE)
+      measure.required &&
+      (measure.status ?? PageStatus.NOT_STARTED) === PageStatus.NOT_STARTED
     ) {
-      return <Text variant="error">Select "Edit" to begin measure.</Text>;
+      return (
+        <Text variant="error" fontSize="body_sm">
+          Select "Edit" to begin measure.
+        </Text>
+      );
     }
     return <></>;
   };
@@ -106,8 +110,10 @@ export const QmsMeasureTableElement = (
         </Td>
         <Td>
           <Text fontWeight="bold">{measure.navTitle}</Text>
-          <Text>CMIT number: #{measure.cmit}</Text>
-          <Text>Status: {measure.status ?? "Not started"}</Text>
+          <Text fontSize="body_sm">CMIT number: #{measure.cmit}</Text>
+          <Text fontSize="body_sm">
+            Status: {measure.status ?? "Not started"}
+          </Text>
           {errorMessage(measure)}
         </Td>
         <Td>

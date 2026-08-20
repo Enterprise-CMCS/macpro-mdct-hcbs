@@ -11,7 +11,7 @@ import {
 } from "types";
 
 type DropdownProps = {
-  label: string;
+  label: React.ReactNode;
   name: string;
   value: string;
   options: { label: string; value: string }[];
@@ -39,8 +39,9 @@ jest.mock("@cmsgov/design-system", () => ({
     onChange,
   }: DropdownProps) => (
     <>
+      <label htmlFor={name}>{label}</label>
       <select
-        aria-label={label}
+        id={name}
         name={name}
         value={value}
         disabled={disabled}
@@ -178,6 +179,34 @@ describe("QipMeasureSelectModal", () => {
     ).toBeInTheDocument();
   });
 
+  it("should show 'No reports available for copy-over' when no submitted QMS reports exist", async () => {
+    const qmsMeasureMapping: MeasureTargetMapping = [
+      {
+        ...defaultMeasureMapping[0],
+        includedInQms: true,
+      },
+    ] as MeasureTargetMapping;
+
+    mockGetReportsForState.mockResolvedValue([]);
+
+    renderInModal({ measureTargetMapping: qmsMeasureMapping });
+
+    await waitForInitialLoad();
+
+    const measureDropdown = screen.getByLabelText("Measure report");
+    assert.ok(measureDropdown instanceof HTMLSelectElement);
+    await userEvent.selectOptions(measureDropdown, "m1");
+
+    const qmsDropdown = await screen.findByLabelText(
+      /submitted Quality Measure Set report/i
+    );
+    assert.ok(qmsDropdown instanceof HTMLSelectElement);
+
+    expect(
+      screen.getByText("No reports available for copy-over")
+    ).toBeInTheDocument();
+  });
+
   it("should render QMS report dropdown with only submitted reports", async () => {
     const qmsMeasureMapping: MeasureTargetMapping = [
       {
@@ -264,7 +293,7 @@ describe("QipMeasureSelectModal", () => {
     await userEvent.selectOptions(measureDropdown, "m1");
 
     await userEvent.click(screen.getByLabelText("Delivery Method: MLTSS"));
-    await userEvent.click(screen.getByLabelText("Delivery Method: FFS"));
+    await userEvent.click(screen.getByLabelText("Delivery Method: FFS LTSS"));
     await userEvent.click(screen.getByLabelText("Denominator"));
     await userEvent.click(screen.getByLabelText("Numerator"));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -292,7 +321,7 @@ describe("QipMeasureSelectModal", () => {
     assert.ok(measureDropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(measureDropdown, "m1");
 
-    await userEvent.click(screen.getByLabelText("Delivery Method: FFS"));
+    await userEvent.click(screen.getByLabelText("Delivery Method: FFS LTSS"));
     await userEvent.click(screen.getByLabelText("Numerator"));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
@@ -339,7 +368,7 @@ describe("QipMeasureSelectModal", () => {
     await userEvent.selectOptions(qmsDropdown, "submitted-1");
 
     await userEvent.selectOptions(measureDropdown, "m2");
-    await userEvent.click(screen.getByLabelText("Delivery Method: FFS"));
+    await userEvent.click(screen.getByLabelText("Delivery Method: FFS LTSS"));
     await userEvent.click(screen.getByLabelText("Numerator"));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
@@ -386,7 +415,7 @@ describe("QipMeasureSelectModal", () => {
     assert.ok(measureDropdown instanceof HTMLSelectElement);
     await userEvent.selectOptions(measureDropdown, "m1");
 
-    const deliveryMethod = screen.getByLabelText("Delivery Method: FFS");
+    const deliveryMethod = screen.getByLabelText("Delivery Method: FFS LTSS");
     const numeratorRate = screen.getByLabelText("Numerator");
 
     await userEvent.click(deliveryMethod);

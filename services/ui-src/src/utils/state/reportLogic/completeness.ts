@@ -278,6 +278,13 @@ export const elementSatisfiesRequired = (
     return !!element.answer.start && (!endDateRequired || !!element.answer.end);
   }
 
+  if (
+    element.type === ElementType.KeyActivityTable &&
+    element.answer?.length === 0
+  ) {
+    return false;
+  }
+
   if (element.type === ElementType.PerformanceNdr) {
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;

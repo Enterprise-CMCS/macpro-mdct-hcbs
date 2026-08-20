@@ -178,7 +178,7 @@ export const DashboardPage = () => {
                     return (
                       <>
                         <p>
-                          Click the <b>"Start Quality Improvement Plan"</b>{" "}
+                          Click the <b>"Start Quality Improvement Plan"</b>
                           button to begin creating your report. Once the report
                           is generated, you can edit its name and monitor the
                           status in the dashboard below. A series of questions
@@ -191,6 +191,8 @@ export const DashboardPage = () => {
                           Enter a report for each of your state's quality
                           improvement plans. If your state employs multiple
                           QIPs, you will need a separate report for each one.
+                          States may use the same quality improvement plan for
+                          more than one mandatory measure.
                         </p>
                       </>
                     );
@@ -201,13 +203,14 @@ export const DashboardPage = () => {
                       <>
                         <p>
                           Click the{" "}
-                          <b>"Start Incident Management Assessment"</b> button
-                          to begin creating your report. A series of questions
-                          will appear to gather the necessary information for
-                          your report. Fill out each field accurately to ensure
-                          your report is complete. Before submitting, review the
-                          information you've provided. If everything looks good,
-                          confirm your entries and proceed.
+                          <b>"Start Incident Management Assessment"</b>
+                          button to begin creating your report. A series of
+                          questions will appear to gather the necessary
+                          information for your report. Fill out each field
+                          accurately to ensure your report is complete. Before
+                          submitting, review the information you've provided. If
+                          everything looks good, confirm your entries and
+                          proceed.
                         </p>
                         <p>
                           Enter an assessment for each of your state's incident

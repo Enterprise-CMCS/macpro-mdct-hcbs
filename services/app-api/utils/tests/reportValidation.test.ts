@@ -42,6 +42,65 @@ describe("Test validateReportPayload function with valid report", () => {
     );
     expect(validatedData).toBeDefined();
   });
+
+  it("successfully validates a report with a Date element that has empty helperText", async () => {
+    const reportWithDateEmptyHelperText = structuredClone(validReport);
+
+    for (const page of reportWithDateEmptyHelperText.pages) {
+      if (!("elements" in page)) continue;
+      const dateElement = page.elements?.find(
+        (element) => element.type === "date"
+      );
+      if (dateElement) {
+        dateElement.helperText = "";
+        break;
+      }
+    }
+
+    const validatedData = await validateReportPayload(
+      reportWithDateEmptyHelperText
+    );
+    expect(validatedData).toBeDefined();
+  });
+
+  it("preserves answers for QIP measure table elements", async () => {
+    const reportWithQipMeasureTableAnswer = structuredClone(validQipReport);
+    const selectMeasuresPage = reportWithQipMeasureTableAnswer.pages.find(
+      (page) => page.id === "select-measures" && "elements" in page
+    );
+    const selectMeasuresTable = selectMeasuresPage?.elements?.find(
+      (element) => element.id === "select-measures-table"
+    ) as { answer?: unknown[] } | undefined;
+
+    selectMeasuresTable!.answer = [
+      {
+        pageId: "measure-targets-ltss-1-0",
+        measureName: "LTSS-1",
+        originalValues: { n: 5 },
+      },
+    ];
+
+    const validatedData = await validateReportPayload(
+      reportWithQipMeasureTableAnswer
+    );
+
+    const validatedSelectMeasuresPage = validatedData.pages.find(
+      (page) => page.id === "select-measures"
+    );
+    const table = validatedSelectMeasuresPage?.elements?.find(
+      (element) =>
+        element.id === "select-measures-table" &&
+        element.type === "qipMeasureTable"
+    ) as { answer?: unknown[] } | undefined;
+
+    expect(table?.answer).toEqual([
+      {
+        pageId: "measure-targets-ltss-1-0",
+        measureName: "LTSS-1",
+        originalValues: { n: 5 },
+      },
+    ]);
+  });
 });
 
 describe("Test validateReportEditPayload function with valid report", () => {

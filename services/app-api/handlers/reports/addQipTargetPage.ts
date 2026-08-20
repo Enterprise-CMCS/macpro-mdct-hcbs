@@ -9,6 +9,7 @@ import {
   MeasureTargetMapping,
   NumberFieldTemplate,
   PageElement,
+  QipMeasureTableTemplate,
   Report,
   ReportType,
 } from "../../types/reports";
@@ -126,6 +127,18 @@ export const addQipTargetPage = async (report: Report, targetInfo: unknown) => {
     newPage,
     ...pages.slice(templatePageIndex),
   ];
+
+  const selectMeasuresTable = (
+    report.pages.find((p) => p.id === "select-measures") as FormPageTemplate
+  ).elements.find(
+    (el) => el.id === "select-measures-table"
+  ) as QipMeasureTableTemplate;
+
+  (selectMeasuresTable.answer ??= []).push({
+    pageId: newPage.id,
+    measureName: targetMapping.measureName,
+    originalValues,
+  });
 
   await putReport(report);
 

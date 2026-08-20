@@ -10,13 +10,13 @@ export const QipIntroductionCard = () => {
         The Quality Improvement Plans (QIP) form is intended to capture
         information about MFP grant recipients’ QI targets and strategies. MFP
         grant recipients are required to establish performance targets and
-        develop QI strategies for meeting the performance targets beginning in
-        fall 2026. CMS will use this information to assess MFP grant recipients’
-        progress toward improving HCBS quality, identify opportunities for
-        support, and inform future guidance and policy development. Please see
-        the accompanying Help File for additional guidance regarding how to
-        complete each section of this form. Questions about this form or
-        requests for technical assistance may be directed to{" "}
+        develop QI plans for two mandatory measures in fall 2026. CMS will use
+        this information to assess MFP grant recipients’ progress toward
+        improving HCBS quality, identify opportunities for support, and inform
+        future guidance and policy development. Please see the accompanying Help
+        File for additional guidance regarding how to complete each section of
+        this form. Questions about this form or requests for technical
+        assistance may be directed to{" "}
         <Link href="mailto:HCBSQuality@cms.hhs.gov" isExternal>
           HCBSQuality@cms.hhs.gov
         </Link>

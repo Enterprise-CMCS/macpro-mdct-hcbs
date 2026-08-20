@@ -26,6 +26,7 @@ import {
 } from "types";
 import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
+import { useDeleteConfirmModal } from "../useDeleteConfirmModal";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
@@ -33,6 +34,7 @@ import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages, notAnsweredText } from "../../../constants";
 import { Alert } from "components";
 import { DateField } from "components/fields";
+import { useStore } from "utils";
 
 const initialValues = {
   title: "",
@@ -46,6 +48,7 @@ export const KeyActivitiesTableElement = (
 ) => {
   const { element, updateElement, disabled = false } = props;
   const { caption } = element;
+  const { saveReport } = useStore();
 
   const [activities, setActivities] = useState<KeyActivityItem[]>(() =>
     (structuredClone(element.answer) || []).map((item) => ({
@@ -56,11 +59,23 @@ export const KeyActivitiesTableElement = (
   );
   const [formValues, setFormValues] = useState(initialValues);
   const [titleError, setTitleError] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [formModalOpen, setFormModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"Add" | "Edit">("Add");
   const [selectedItemId, setSelectedItemId] = useState<string>("");
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedDeleteId, setSelectedDeleteId] = useState<string>("");
+  const { addButtonRef, getDeleteButtonRef, openDeleteModal } =
+    useDeleteConfirmModal({
+      items: activities,
+      getId: (item) => item.id,
+      getBody: () =>
+        "This action cannot be undone. It will remove the key activity from the Quality Improvement Plan.",
+      confirmLabel: "Remove key activity",
+      header: "Are you sure you want to remove this key activity?",
+      onConfirm: async (remaining) => {
+        setActivities(remaining);
+        updateElement({ answer: remaining });
+        await saveReport();
+      },
+    });
 
   const resetForm = () => {
     setFormValues(initialValues);
@@ -92,24 +107,9 @@ export const KeyActivitiesTableElement = (
     }
   };
 
-  const handleDeleteClick = (id: string) => {
-    setSelectedDeleteId(id);
-    setDeleteModalOpen(true);
-  };
+  const handleDeleteClick = (id: string) => openDeleteModal(id);
 
-  const onDeleteConfirm = () => {
-    if (!selectedDeleteId) return;
-
-    const updatedItems = activities.filter(
-      (item) => item.id !== selectedDeleteId
-    );
-    setActivities(updatedItems);
-    updateElement({ answer: updatedItems });
-    setDeleteModalOpen(false);
-    setSelectedDeleteId("");
-  };
-
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const error = validateTitle(formValues.title);
     setTitleError(error);
     if (error) return;
@@ -123,14 +123,15 @@ export const KeyActivitiesTableElement = (
 
     setActivities(updatedItems);
     updateElement({ answer: updatedItems });
-    setModalOpen(false);
+    setFormModalOpen(false);
     resetForm();
+    await saveReport();
   };
 
   const onAddClick = () => {
     setModalMode("Add");
     resetForm();
-    setModalOpen(true);
+    setFormModalOpen(true);
   };
 
   const onEditClick = (activity: KeyActivityItem) => {
@@ -141,7 +142,7 @@ export const KeyActivitiesTableElement = (
     });
     setSelectedItemId(activity.id);
     setTitleError("");
-    setModalOpen(true);
+    setFormModalOpen(true);
   };
 
   const rows = activities.map((activity) => {
@@ -173,6 +174,7 @@ export const KeyActivitiesTableElement = (
             </Button>
             {!disabled && (
               <Button
+                ref={getDeleteButtonRef(activity.id)}
                 variant="transparent"
                 aria-label={`Delete ${activity.title}`}
                 onClick={() => handleDeleteClick(activity.id)}
@@ -198,6 +200,7 @@ export const KeyActivitiesTableElement = (
         </Alert>
       )}
       <Button
+        ref={addButtonRef}
         variant={"outline"}
         isDisabled={disabled}
         onClick={onAddClick}
@@ -222,7 +225,7 @@ export const KeyActivitiesTableElement = (
         </Table>
       )}
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal isOpen={formModalOpen} onClose={() => setFormModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{modalMode} key activity</ModalHeader>
@@ -230,7 +233,7 @@ export const KeyActivitiesTableElement = (
             className="close"
             leftIcon={<Image src={closeIcon} alt="Close" />}
             variant="link"
-            onClick={() => setModalOpen(false)}
+            onClick={() => setFormModalOpen(false)}
           >
             Close
           </Button>
@@ -276,41 +279,7 @@ export const KeyActivitiesTableElement = (
             >
               Save
             </Button>
-            <Button variant="link" onClick={() => setModalOpen(false)}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-      <Modal isOpen={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            Are you sure you want to remove this key activity?
-          </ModalHeader>
-          <Button
-            className="close"
-            leftIcon={<Image src={closeIcon} alt="Close" />}
-            variant="link"
-            fontWeight="bold"
-            onClick={() => setDeleteModalOpen(false)}
-          >
-            Close
-          </Button>
-          <ModalBody>
-            This action cannot be undone. It will remove the key activity from
-            the Quality Improvement Plan.
-          </ModalBody>
-          <ModalFooter gap="4">
-            <Button colorScheme="blue" mr={3} onClick={onDeleteConfirm}>
-              Remove key activity
-            </Button>
-            <Button
-              variant="link"
-              fontWeight="bold"
-              onClick={() => setDeleteModalOpen(false)}
-            >
+            <Button variant="link" onClick={() => setFormModalOpen(false)}>
               Cancel
             </Button>
           </ModalFooter>

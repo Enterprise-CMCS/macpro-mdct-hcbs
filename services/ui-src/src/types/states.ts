@@ -4,7 +4,7 @@ import {
   Report,
   MeasurePageTemplate,
 } from "types/report";
-import { ReactNode } from "react";
+import { ReactNode, RefObject } from "react";
 import { BannerShape, BannerFormData, HcbsUser } from "types";
 
 export interface HcbsBannerState {
@@ -38,6 +38,7 @@ export interface HcbsReportState {
   modalOpen: boolean;
   modalHeader?: string;
   modalComponent?: ReactNode;
+  modalFinalFocusRef?: RefObject<HTMLElement | null> | null;
   lastSavedTime?: string;
   errorMessage?: string;
   sidebarOpen: boolean;
@@ -48,6 +49,7 @@ export interface HcbsReportState {
   setCurrentPageId: (currentPageId: string) => void;
   setModalOpen: (modalOpen: boolean) => void;
   setModalComponent: (modalComponent: ReactNode, modalHeader: string) => void;
+  setModalFinalFocusRef: (ref: RefObject<HTMLElement | null> | null) => void;
   setAnswers: (answers: any) => void;
   clearMeasure: (
     measureId: string,

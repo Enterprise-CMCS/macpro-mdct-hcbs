@@ -353,6 +353,7 @@ export type NestedHeadingTemplate = {
   type: ElementType.NestedHeading;
   id: string;
   text: string;
+  helperText?: string;
 };
 
 export type ParagraphTemplate = {
@@ -398,7 +399,7 @@ export type DateTemplate = {
   type: ElementType.Date;
   id: string;
   label: string;
-  helperText: string;
+  helperText?: string;
   dateFormat?: "MMDDYYYY" | "MMYYYY";
   answer?: string;
   required: boolean;
