@@ -169,8 +169,7 @@ button {
 }
 
 // Style children of radio choices
-.ds-c-fieldset > div > .ds-c-choice-wrapper + .ds-c-dropdown,
-.ds-c-fieldset > div > .ds-c-choice-wrapper + .ds-c-field {
+.ds-c-fieldset > div > .ds-c-choice-wrapper + * {
   margin-top: 8px;
   margin-left: 16px;
   padding-left: 16px;
