@@ -70,7 +70,14 @@ const dashboardComponent = (
 );
 
 describe("DashboardPage with state user", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useStore.setState(mockUseStore);
+    (useParams as jest.Mock).mockReturnValue({
+      reportType: "QMS",
+      state: "CO",
+    });
+  });
 
   it("should render an empty state when there are no reports", async () => {
     (getReportsForState as jest.Mock).mockResolvedValueOnce([]);
@@ -93,9 +100,7 @@ describe("DashboardPage with state user", () => {
   });
 
   it("should not call reloadReports if no reportType passed in", async () => {
-    (useParams as jest.Mock)
-      .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce(null);
+    (useParams as jest.Mock).mockReturnValue({});
 
     render(dashboardComponent);
     expect(getReportsForState).toHaveBeenCalledTimes(0);
@@ -179,10 +184,49 @@ describe("DashboardPage with state user", () => {
       screen.getByText("Add new Quality Measure Set Report")
     ).toBeInTheDocument();
   });
+
+  it("should render QIP-specific instructions", async () => {
+    (useParams as jest.Mock).mockReturnValue({
+      reportType: "QIP",
+      state: "CO",
+    });
+
+    render(dashboardComponent);
+
+    await waitFor(() => {
+      expect(getReportsForState).toHaveBeenCalled();
+    });
+
+    expect(
+      screen.getByText(/you will need a separate report for each one/i)
+    ).toBeInTheDocument();
+  });
+
+  it("should render IMA-specific instructions", async () => {
+    (useParams as jest.Mock).mockReturnValue({
+      reportType: "IMA",
+      state: "CO",
+    });
+
+    render(dashboardComponent);
+
+    await waitFor(() => {
+      expect(getReportsForState).toHaveBeenCalled();
+    });
+
+    expect(
+      screen.getByText(/you will need a separate assessment for each one/i)
+    ).toBeInTheDocument();
+  });
 });
 
 describe("DashboardPage with Read only user", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
+    (useParams as jest.Mock).mockReturnValue({
+      reportType: "QMS",
+      state: "CO",
+    });
     useStore.setState(mockUseReadOnlyUserStore);
   });
   it("should not render the Start Report button when user is read only", async () => {
@@ -201,6 +245,11 @@ describe("DashboardPage with Read only user", () => {
 
 describe("DashboardPage with Admin user", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
+    (useParams as jest.Mock).mockReturnValue({
+      reportType: "QMS",
+      state: "CO",
+    });
     useStore.setState(mockUseAdminStore);
   });
   it("should not render the Start Report button when user is read only", async () => {

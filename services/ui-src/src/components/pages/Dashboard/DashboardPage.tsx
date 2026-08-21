@@ -34,6 +34,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
@@ -61,10 +62,18 @@ export const DashboardPage = () => {
     ? reportName
     : `${reportName}s`;
   const filterYear = searchParams.get("year") || "All";
-  const filterDropdownOptions = [
-    { label: "All", value: "All" },
-    { label: "2026", value: "2026" },
-  ];
+  const isImaReportActive = useFlags()?.isImaReportActive;
+  const filterDropdownOptions =
+    reportType === ReportType.IMA
+      ? [
+          { label: "All", value: "All" },
+          { label: "2028", value: "2028" },
+        ]
+      : [
+          { label: "All", value: "All" },
+          { label: "2026", value: "2026" },
+          ...(isImaReportActive ? [{ label: "2028", value: "2028" }] : []),
+        ];
 
   useEffect(() => {
     if (!isReportType(reportType) || !isStateAbbr(state)) {
@@ -173,42 +182,79 @@ export const DashboardPage = () => {
                 <p>
                   <strong>Creating a New Report</strong>
                 </p>
-                {reportType === ReportType.QIP ? (
-                  <>
-                    <p>
-                      Click the <b>"Start Quality Improvement Plan"</b> button
-                      to begin creating your report. Once the report is
-                      generated, you can edit its name and monitor the status in
-                      the dashboard below. A series of questions will appear to
-                      gather the necessary information for your report. Fill out
-                      each required field and, before submitting, confirm your
-                      entries and review the information you've provided.
-                    </p>
-                    <p>
-                      Enter a report for each of your state's quality
-                      improvement plans. If your state employs multiple QIPs,
-                      you will need a separate report for each one. States may
-                      use the same quality improvement plan for more than one
-                      mandatory measure.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      Click the <b>"Start {reportName}"</b> button to begin
-                      creating your report. A series of questions will appear to
-                      gather the necessary information for your report. Fill out
-                      each field accurately to ensure your report is complete.
-                      Before submitting, review the information you've provided.
-                      If everything looks good, confirm your entries and
-                      proceed.
-                    </p>
-                    <p>
-                      Once the report is generated, you can edit the name of the
-                      report and monitor its status in the dashboard below.
-                    </p>
-                  </>
-                )}
+                {(() => {
+                  if (reportType === ReportType.QIP) {
+                    return (
+                      <>
+                        <p>
+                          Click the <b>"Start Quality Improvement Plan"</b>
+                          button to begin creating your report. Once the report
+                          is generated, you can edit its name and monitor the
+                          status in the dashboard below. A series of questions
+                          will appear to gather the necessary information for
+                          your report. Fill out each required field and, before
+                          submitting, confirm your entries and review the
+                          information you've provided.
+                        </p>
+                        <p>
+                          Enter a report for each of your state's quality
+                          improvement plans. If your state employs multiple
+                          QIPs, you will need a separate report for each one.
+                          States may use the same quality improvement plan for
+                          more than one mandatory measure.
+                        </p>
+                      </>
+                    );
+                  }
+
+                  if (reportType === ReportType.IMA) {
+                    return (
+                      <>
+                        <p>
+                          Click the{" "}
+                          <b>"Start Incident Management Assessment"</b>
+                          button to begin creating your report. A series of
+                          questions will appear to gather the necessary
+                          information for your report. Fill out each field
+                          accurately to ensure your report is complete. Before
+                          submitting, review the information you've provided. If
+                          everything looks good, confirm your entries and
+                          proceed.
+                        </p>
+                        <p>
+                          Enter an assessment for each of your state's incident
+                          management systems. If your state uses multiple
+                          systems, you will need a separate assessment for each
+                          one.
+                        </p>
+                        <p>
+                          Once the report is generated, you can edit the name of
+                          the report and monitor its status in the dashboard
+                          below.
+                        </p>
+                      </>
+                    );
+                  }
+
+                  return (
+                    <>
+                      <p>
+                        Click the <b>"Start {reportName}"</b> button to begin
+                        creating your report. A series of questions will appear
+                        to gather the necessary information for your report.
+                        Fill out each field accurately to ensure your report is
+                        complete. Before submitting, review the information
+                        you've provided. If everything looks good, confirm your
+                        entries and proceed.
+                      </p>
+                      <p>
+                        Once the report is generated, you can edit the name of
+                        the report and monitor its status in the dashboard
+                        below.
+                      </p>
+                    </>
+                  );
+                })()}
                 {(() => {
                   if (reportType === ReportType.WWL) {
                     return (
@@ -218,7 +264,10 @@ export const DashboardPage = () => {
                         current reporting year.
                       </p>
                     );
-                  } else if (reportType === ReportType.QIP) {
+                  } else if (
+                    reportType === ReportType.QIP ||
+                    reportType === ReportType.IMA
+                  ) {
                     return null;
                   } else {
                     return (
@@ -303,9 +352,13 @@ export const DashboardPage = () => {
         {userIsEndUser && (
           <Flex justifyContent="center">
             <Button onClick={() => openAddEditReportModal()} type="submit">
-              {reportType === ReportType.QIP
-                ? "Start Quality Improvement Plan"
-                : `Start ${reportName}`}
+              {reportType === ReportType.QIP &&
+                "Start Quality Improvement Plan"}
+              {reportType === ReportType.IMA &&
+                "Start Incident Management Assessment"}
+              {reportType !== ReportType.QIP &&
+                reportType !== ReportType.IMA &&
+                `Start ${reportName}`}
             </Button>
           </Flex>
         )}

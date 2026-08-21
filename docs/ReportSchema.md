@@ -3,7 +3,7 @@
 This document is a detailed look at the structure and fields of HCBS reports.
 For a more general overview, see docs/ReportDataStructure.md.
 
-Note that all HCBS report types (QMS, CI, TACM, PCP, WWL, QIP) use the same schema.
+Note that all HCBS report types (QMS, CI, TACM, IMA, PCP, WWL, QIP) use the same schema.
 Top-level fields are treated identically. The pages can have the same elements.
 The main exception is in how the QMS report treats measure sub-pages;
 more on that below.
@@ -19,6 +19,7 @@ more on that below.
   -- - `aws.mdct.hcbs.qms-reports.v0`
   -- - `aws.mdct.hcbs.tacm-reports.v0`
   -- - `aws.mdct.hcbs.ci-reports.v0`
+  -- - `aws.mdct.hcbs.ima-reports.v0`
   -- - `aws.mdct.hcbs.pcp-reports.v0`
   -- - `aws.mdct.hcbs.qip-reports.v0`
   -- - `aws.mdct.hcbs.wwl-reports.v0`

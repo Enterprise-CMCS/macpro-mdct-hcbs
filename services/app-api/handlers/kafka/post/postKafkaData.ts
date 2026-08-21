@@ -5,6 +5,7 @@ const _tableTopics: { [key in ReportType]: string } = {
   QMS: "qms-reports",
   TACM: "tacm-reports",
   CI: "ci-reports",
+  IMA: "ima-reports",
   PCP: "pcp-reports",
   QIP: "qip-reports",
   WWL: "wwl-reports",
