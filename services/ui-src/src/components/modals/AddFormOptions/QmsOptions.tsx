@@ -63,6 +63,23 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
       "pom-period": "",
     });
 
+    const buildOptions = (form: typeof formData) =>
+      Object.keys(optionLabels).reduce<Record<string, boolean | string>>(
+        (options, survey) => {
+          assertIsKey(survey);
+          const isSelected = form[survey] === "true";
+          const periodKey = `${survey}-period` as keyof typeof form;
+
+          options[survey] = isSelected;
+          if (isSelected && form[periodKey]) {
+            options[periodKey] = form[periodKey];
+          }
+
+          return options;
+        },
+        {}
+      );
+
     useEffect(() => {
       setFormData(formDataForReport(selectedReport));
     }, [selectedReport]);
@@ -99,23 +116,18 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
       target: { name: string; value: string };
     }) => {
       const { name, value } = evt.target;
+      const clearedPeriod =
+        name in optionLabels && value === "false"
+          ? { [`${name}-period`]: undefined }
+          : {};
       const updatedFormData = {
         ...formData,
         [name]: value,
+        ...clearedPeriod,
       };
       setFormData(updatedFormData);
 
-      const updatedOptions = {
-        cahps: updatedFormData.cahps == "true",
-        "cahps-period": updatedFormData["cahps-period"],
-        nciidd: updatedFormData.nciidd == "true",
-        "nciidd-period": updatedFormData["nciidd-period"],
-        nciad: updatedFormData.nciad == "true",
-        "nciad-period": updatedFormData["nciad-period"],
-        pom: updatedFormData.pom == "true",
-        "pom-period": updatedFormData["pom-period"],
-      };
-      onOptionsChange(updatedOptions);
+      onOptionsChange(buildOptions(updatedFormData));
 
       const updatedErrors = computeErrors(updatedFormData);
       if (submissionAttempted) {
