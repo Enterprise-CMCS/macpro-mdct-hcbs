@@ -90,14 +90,14 @@ test.describe("create and complete a PCP report as a state user", () => {
 
     await completeGeneralInfo(page);
     await page.getByRole("button", { name: "Continue" }).click();
-    await expect(
-      page.getByRole("heading", { name: /HCBS PCP-1/ })
-    ).toBeVisible();
+    await expect
+      .soft(page.getByRole("heading", { name: /HCBS PCP-1/ }))
+      .toBeVisible();
     await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
-    await expect(
-      page.getByRole("heading", { name: /HCBS PCP-2/ })
-    ).toBeVisible();
+    await expect
+      .soft(page.getByRole("heading", { name: /HCBS PCP-2/ }))
+      .toBeVisible();
     await fillPCPForm(page);
     await page.getByRole("button", { name: "Continue" }).click();
     await submitReport("PCP", page);

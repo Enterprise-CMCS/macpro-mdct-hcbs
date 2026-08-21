@@ -68,12 +68,13 @@ export const fillAddEditReportModal = async (page: Page) => {
 };
 
 const waitForReportRequest = async (page: Page, method: "POST" | "PUT") => {
-  await page.waitForResponse(
+  const response = await page.waitForResponse(
     (response) =>
       response.url().includes("/reports") &&
-      response.request().method() === method &&
-      response.ok()
+      response.request().method() === method
   );
+
+  expect.soft(response.ok()).toBeTruthy();
 };
 
 test.beforeEach(async ({ page }) => {
