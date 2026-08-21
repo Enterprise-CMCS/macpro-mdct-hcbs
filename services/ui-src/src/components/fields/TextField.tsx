@@ -101,6 +101,7 @@ export const TextField = (
   return (
     <Box
       width="100%"
+      maxWidth="460px"
       sx={{
         ".ds-c-field": {
           width: "100%",
