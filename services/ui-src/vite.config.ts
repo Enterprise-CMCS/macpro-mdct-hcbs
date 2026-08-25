@@ -23,7 +23,6 @@ export default defineConfig({
     root: "src",
     setupFiles: "utils/testing/setupTests.tsx",
     environment: "jsdom",
-    globals: true,
     coverage: {
       /*
        * The default coverage directory is "<root>/coverage",

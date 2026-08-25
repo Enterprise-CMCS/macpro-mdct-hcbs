@@ -2,7 +2,6 @@ import { defineConfig, configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
-    globals: true,
     setupFiles: "testing/setupTests.ts",
     exclude: [
       ...configDefaults.exclude, // Ignore tests found in node_modules, etc
