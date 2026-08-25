@@ -59,7 +59,11 @@ const buildQms = async (year: number = latestYear) =>
   buildReport(
     ReportType.QMS,
     "CO",
-    { name: "Mock QMS", year, options: { pom: true } },
+    {
+      name: "Mock QMS",
+      year,
+      options: { pom: true, "pom-period": `${year - 2}` },
+    },
     { fullName: "Breonna Taylor", email: "mock@example.com" } as User
   );
 

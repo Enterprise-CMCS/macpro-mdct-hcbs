@@ -159,8 +159,10 @@ describe("isReportOptions", () => {
     year: 2026,
     options: {
       cahps: true,
+      "cahps-period": "2024",
       nciidd: false,
       nciad: true,
+      "nciad-period": "2024",
       pom: false,
     },
   });
@@ -175,6 +177,34 @@ describe("isReportOptions", () => {
     obj.options = {};
     expect(isReportOptions(obj)).toBe(true);
   });
+
+  it.each([
+    ["cahps", "cahps-period"],
+    ["nciidd", "nciidd-period"],
+    ["nciad", "nciad-period"],
+    ["pom", "pom-period"],
+  ])(
+    "should reject options with %s set to true and no %s",
+    (surveyFlag, surveyPeriod) => {
+      const obj = buildValidReportOptions();
+      obj.options[surveyFlag] = true;
+      delete obj.options[surveyPeriod];
+
+      expect(isReportOptions(obj)).toBe(false);
+    }
+  );
+
+  it.each(["cahps-period", "nciidd-period", "nciad-period", "pom-period"])(
+    "should reject a non-four-digit year in %s",
+    (surveyPeriod) => {
+      const obj = buildValidReportOptions();
+      const surveyFlag = surveyPeriod.replace("-period", "");
+      obj.options[surveyFlag] = true;
+      obj.options[surveyPeriod] = "20x4";
+
+      expect(isReportOptions(obj)).toBe(false);
+    }
+  );
 
   function* generateInvalidReportOptions() {
     let obj = undefined;

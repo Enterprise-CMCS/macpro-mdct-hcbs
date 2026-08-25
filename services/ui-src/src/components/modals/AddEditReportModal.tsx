@@ -42,6 +42,7 @@ export type AddEditReportModalOptions = {
    */
   OptionsComponent?: (props: {
     selectedReport: LiteReport | undefined;
+    year: string | undefined;
     onOptionsChange: (options: Record<string, any>) => void;
     submissionAttempted: boolean;
     setOptionsComplete: (isComplete: boolean) => void;
@@ -80,8 +81,9 @@ const getSubheading = (reportType: ReportType): ReactElement | null => {
             status={AlertTypes.WARNING}
             title="Enter a report for each of your state's quality improvement plans."
           >
-            If your state employs multiple QI plans, you will need a separate
-            report for each one.
+            States may use the same quality improvement plan for more than one
+            mandatory measure. If your state employs multiple QI plans, you will
+            need a separate report for each one.
           </Alert>
         </Box>
       );
@@ -263,6 +265,7 @@ export const AddEditReportModal = ({
           {OptionsComponent ? (
             <OptionsComponent
               selectedReport={selectedReport}
+              year={formData.year}
               onOptionsChange={onOptionsChange}
               submissionAttempted={submissionAttempted}
               setOptionsComplete={setOptionsComplete}

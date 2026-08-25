@@ -691,11 +691,22 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
   submittedView: array().of(pageElementSchema).required(),
 });
 
+const periodValidator = (fieldName: string) =>
+  string().when(fieldName, ([value], schema) =>
+    value === true
+      ? schema.required().matches(/^\d{4}$/, "Must be a 4-digit year")
+      : schema.notRequired()
+  );
+
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
+  "cahps-period": periodValidator("cahps"),
   nciidd: boolean().notRequired(),
+  "nciidd-period": periodValidator("nciidd"),
   nciad: boolean().notRequired(),
+  "nciad-period": periodValidator("nciad"),
   pom: boolean().notRequired(),
+  "pom-period": periodValidator("pom"),
 });
 
 const measureTargetMappingSchema = array(
