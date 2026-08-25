@@ -1,5 +1,6 @@
+import { describe, expect, it } from "vitest";
 import { buildReport } from "../../handlers/reports/buildReport";
-import { booleanCombinations } from "../../testing/setupJest";
+import { booleanCombinations } from "../../testing/setupTests";
 import { ReportType } from "../../types/reports";
 import { User } from "../../types/types";
 import { sanitizeArray, sanitizeObject, sanitizeString } from "../sanitize";
@@ -62,73 +63,75 @@ const cleanComplexObject = {
   emptyObject: {},
 };
 
-describe("Test sanitizeString", () => {
-  test("Test sanitizeString passes through empty strings and clean strings", () => {
-    expect(sanitizeString("")).toEqual("");
-    expect(sanitizeString(cleanString)).toEqual(cleanString);
+describe("sanitization functions", () => {
+  describe("sanitizeString", () => {
+    it("should pass through empty strings and clean strings", () => {
+      expect(sanitizeString("")).toEqual("");
+      expect(sanitizeString(cleanString)).toEqual(cleanString);
+    });
+
+    it("should clean dirty strings", () => {
+      expect(sanitizeString(dirtyLinkString)).toEqual(cleanLinkString);
+    });
   });
 
-  test("Test sanitizeString cleans dirty strings", () => {
-    expect(sanitizeString(dirtyLinkString)).toEqual(cleanLinkString);
-  });
-});
+  describe("sanitizeArray", () => {
+    it("should pass through empty arrays and clean arrays", () => {
+      expect(sanitizeArray([])).toEqual([]);
+      expect(sanitizeArray(cleanStringArray)).toEqual(cleanStringArray);
+      expect(sanitizeArray(cleanNestedStringArray)).toEqual(
+        cleanNestedStringArray
+      );
+      expect(sanitizeArray(cleanObjectArray)).toEqual(cleanObjectArray);
+    });
 
-describe("Test sanitizeArray", () => {
-  test("Test sanitizeArray passes through empty arrays and clean arrays", () => {
-    expect(sanitizeArray([])).toEqual([]);
-    expect(sanitizeArray(cleanStringArray)).toEqual(cleanStringArray);
-    expect(sanitizeArray(cleanNestedStringArray)).toEqual(
-      cleanNestedStringArray
-    );
-    expect(sanitizeArray(cleanObjectArray)).toEqual(cleanObjectArray);
-  });
-
-  test("Test sanitizeArray cleans dirty arrays", () => {
-    expect(sanitizeArray(dirtyStringArray)).toEqual(cleanStringArray);
-    expect(sanitizeArray(dirtyNestedStringArray)).toEqual(
-      cleanNestedStringArray
-    );
-    expect(sanitizeArray(dirtyObjectArray)).toEqual(cleanObjectArray);
-  });
-});
-
-describe("Test sanitizeObject", () => {
-  test("Test sanitizeObject passes through safe types", () => {
-    expect(sanitizeObject({ safeBoolean })).toEqual({ safeBoolean });
-    expect(sanitizeObject({ safeNaN })).toEqual({ safeNaN });
-    expect(sanitizeObject({ safeNumber })).toEqual({ safeNumber });
-    expect(sanitizeObject({ safeNull })).toEqual({ safeNull });
-    expect(sanitizeObject({ safeUndefined })).toEqual({ safeUndefined });
+    it("should clean dirty arrays", () => {
+      expect(sanitizeArray(dirtyStringArray)).toEqual(cleanStringArray);
+      expect(sanitizeArray(dirtyNestedStringArray)).toEqual(
+        cleanNestedStringArray
+      );
+      expect(sanitizeArray(dirtyObjectArray)).toEqual(cleanObjectArray);
+    });
   });
 
-  test("Test sanitizeObject passes through empty object, clean object", () => {
-    expect(sanitizeObject({})).toEqual({});
-    expect(sanitizeObject(cleanObject)).toEqual(cleanObject);
-    expect(sanitizeObject(cleanComplexObject)).toEqual(cleanComplexObject);
+  describe("sanitizeObject", () => {
+    it("should pass through safe types", () => {
+      expect(sanitizeObject({ safeBoolean })).toEqual({ safeBoolean });
+      expect(sanitizeObject({ safeNaN })).toEqual({ safeNaN });
+      expect(sanitizeObject({ safeNumber })).toEqual({ safeNumber });
+      expect(sanitizeObject({ safeNull })).toEqual({ safeNull });
+      expect(sanitizeObject({ safeUndefined })).toEqual({ safeUndefined });
+    });
+
+    it("should pass through empty object, clean object", () => {
+      expect(sanitizeObject({})).toEqual({});
+      expect(sanitizeObject(cleanObject)).toEqual(cleanObject);
+      expect(sanitizeObject(cleanComplexObject)).toEqual(cleanComplexObject);
+    });
+
+    it("should clean dirty objects", () => {
+      expect(sanitizeObject(dirtyObject)).toEqual(cleanObject);
+      expect(sanitizeObject(dirtyComplexObject)).toEqual(cleanComplexObject);
+    });
   });
 
-  test("Test sanitizeObject cleans dirty objects", () => {
-    expect(sanitizeObject(dirtyObject)).toEqual(cleanObject);
-    expect(sanitizeObject(dirtyComplexObject)).toEqual(cleanComplexObject);
-  });
-});
-
-describe("Test sanitizeObject is friendly to the markup embedded in our report templates", () => {
-  test("Test that a freshly created 2026 QMS report will not be affected by sanitization", async () => {
-    for (let optionValues of booleanCombinations(4)) {
-      const [cahps, nciidd, nciad, pom] = optionValues;
-      const options = {
-        name: "mock-report",
-        year: 2026,
-        options: { cahps, nciidd, nciad, pom },
-      };
-      const user = {
-        fullName: "Mock User",
-        email: "mock.user@test.com",
-      } as User;
-      const original = await buildReport(ReportType.QMS, "CO", options, user);
-      const sanitized = sanitizeObject(original as any);
-      expect(sanitized).toEqual(original);
-    }
+  describe("sanitizeObject is friendly to the markup embedded in our report templates", () => {
+    it("should not affect a freshly created 2026 QMS report", async () => {
+      for (let optionValues of booleanCombinations(4)) {
+        const [cahps, nciidd, nciad, pom] = optionValues;
+        const options = {
+          name: "mock-report",
+          year: 2026,
+          options: { cahps, nciidd, nciad, pom },
+        };
+        const user = {
+          fullName: "Mock User",
+          email: "mock.user@test.com",
+        } as User;
+        const original = await buildReport(ReportType.QMS, "CO", options, user);
+        const sanitized = sanitizeObject(original as any);
+        expect(sanitized).toEqual(original);
+      }
+    });
   });
 });

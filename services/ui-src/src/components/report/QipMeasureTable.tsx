@@ -77,7 +77,9 @@ export const QipMeasureTableElement = ({
 
     updateReport(patchedReport);
 
-    if (reportId) setCurrentPageId("select-measures");
+    if (reportId) {
+      setCurrentPageId("select-measures");
+    }
 
     updateElement({
       answer: updatedMeasures as QipMeasureTableTemplate["answer"],
@@ -109,8 +111,6 @@ export const QipMeasureTableElement = ({
     }
     return <></>;
   };
-
-  const handleDeleteClick = (pageId: string) => openDeleteModal(pageId);
 
   const rows = (measureTargets ?? []).map((measureTarget) => {
     const status = getTableStatus(measureTarget.pageId);
@@ -148,7 +148,7 @@ export const QipMeasureTableElement = ({
                 ref={getDeleteButtonRef(measureTarget.pageId)}
                 variant="transparent"
                 aria-label={`Delete ${measureTarget.measureName}`}
-                onClick={() => handleDeleteClick(measureTarget.pageId)}
+                onClick={() => openDeleteModal(measureTarget.pageId)}
               >
                 <Image src={cancelIcon} alt="" />
               </Button>

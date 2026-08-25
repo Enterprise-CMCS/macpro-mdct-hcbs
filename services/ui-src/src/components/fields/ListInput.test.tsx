@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ListInput } from "./ListInput";
 import { ElementType, ListInputTemplate } from "types";
@@ -13,7 +14,7 @@ const mockedListInputElement: ListInputTemplate = {
   required: false,
 };
 
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const ListInputComponent = (
   <div>
@@ -23,17 +24,20 @@ const ListInputComponent = (
 
 describe("<ListInput />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    render(ListInputComponent);
+    vi.clearAllMocks();
   });
-  it("ListInput renders", () => {
+
+  it("should render correctly", () => {
+    render(ListInputComponent);
     expect(screen.getByText("This is a mock list input")).toBeVisible();
     expect(screen.getByText("mock helper text")).toBeVisible();
     expect(
       screen.getByRole("button", { name: "mock button text" })
     ).toBeVisible();
   });
-  it("ListInput allows adding fields", async () => {
+
+  it("should allow adding fields", async () => {
+    render(ListInputComponent);
     const addBtn = screen.getByRole("button", { name: "mock button text" });
     await userEvent.click(addBtn);
 
@@ -44,7 +48,8 @@ describe("<ListInput />", () => {
     expect(updateSpy).toHaveBeenCalledTimes(5);
   });
 
-  it("ListInput allows removing fields", async () => {
+  it("should allow removing fields", async () => {
+    render(ListInputComponent);
     const addBtn = screen.getByRole("button", { name: "mock button text" });
     await userEvent.click(addBtn);
     expect(screen.getByRole("textbox", { name: "mock field" })).toBeVisible();
@@ -58,7 +63,8 @@ describe("<ListInput />", () => {
     expect(updateSpy).toHaveBeenCalledTimes(2);
   });
 
-  it("ListInput shows error when user does not fillout the field", async () => {
+  it("should show an error when user does not fillout the field", async () => {
+    render(ListInputComponent);
     const addBtn = screen.getByRole("button", { name: "mock button text" });
     await userEvent.click(addBtn);
     const textbox = screen.getByRole("textbox", { name: "mock field" });
@@ -72,14 +78,8 @@ describe("<ListInput />", () => {
       screen.queryByText("A response is required")
     ).not.toBeInTheDocument();
   });
-});
 
-describe("<ListInput /> disabled behavior", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("ListInput hides remove button when disabled is true", async () => {
+  it("should hide remove button when disabled is true", async () => {
     const { rerender } = render(
       <div>
         <ListInput

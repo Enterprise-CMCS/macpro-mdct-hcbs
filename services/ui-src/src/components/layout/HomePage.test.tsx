@@ -1,13 +1,14 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { HomePage } from "./HomePage";
 import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import { BannerAreas, BannerShape, HcbsUser } from "types";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
-jest.mock("launchdarkly-react-client-sdk", () => ({
-  useFlags: jest.fn().mockReturnValue({
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn().mockReturnValue({
     isTacmReportActive: true,
     isCiReportActive: true,
     isPcpReportActive: true,

@@ -1,0 +1,423 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/Users/benmartin/Projects/macpro-mdct-hcbs/services/ui-src/src[39m
+
+ [32m✓[39m components/report/ReportAutosaveProvider.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 2112[2mms[22m[39m
+     [33m[2m✓[22m[39m should call the save function [33m 2070[2mms[22m[39m
+ [32m✓[39m components/forms/AdminBannerForm.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 1444[2mms[22m[39m
+     [33m[2m✓[22m[39m should call the API when filled and submitted [33m 673[2mms[22m[39m
+     [33m[2m✓[22m[39m should show errors when date range conflicts with existing banners [33m 324[2mms[22m[39m
+     [33m[2m✓[22m[39m should clear existing errors when the form is filled [33m 398[2mms[22m[39m
+ [32m✓[39m components/rates/types/MultiCategoryNdr.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 1556[2mms[22m[39m
+     [33m[2m✓[22m[39m should render correctly [33m 466[2mms[22m[39m
+       [33m[2m✓[22m[39m should not have basic accessibility issues [33m 401[2mms[22m[39m
+ [32m✓[39m components/modals/AddEditReportModal.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 1185[2mms[22m[39m
+ [32m✓[39m components/rates/types/ReadmissionRate.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 951[2mms[22m[39m
+ [31m❯[39m components/report/ReportPageWrapper.test.tsx [2m([22m[2m6 tests[22m[2m | [22m[31m2 failed[39m[2m | [22m[33m1 skipped[39m[2m)[22m[33m 5309[2mms[22m[39m
+     [32m✓[39m should not render if missing params[32m 116[2mms[22m[39m
+[31m     [31m×[31m should render Loading if report not loaded[39m[32m 60[2mms[22m[39m
+     [32m✓[39m should render if report exists[32m 31[2mms[22m[39m
+     [32m✓[39m should navigate on Continue button click[32m 91[2mms[22m[39m
+[31m     [31m×[31m should autosave when a text field has changed[39m[33m 5002[2mms[22m[39m
+     [2m[90m↓[39m[22m should display error when text field is blurred with no input
+ [32m✓[39m components/report/WwlComponents/EligibilityTable.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 916[2mms[22m[39m
+     [33m[2m✓[22m[39m should allow the user to add a new eligibility [33m 394[2mms[22m[39m
+ [32m✓[39m components/report/QipMeasureSelectModal.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 783[2mms[22m[39m
+ [31m❯[39m components/report/QipMeasureTargetFooter.test.tsx [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 10012[2mms[22m[39m
+[31m     [31m×[31m should render the button, call autosave, and navigate[39m[33m 5006[2mms[22m[39m
+[31m     [31m×[31m should skip autosave and still navigate when report is read-only (submitted)[39m[33m 5004[2mms[22m[39m
+ [31m❯[39m components/report/MeasureFooter.test.tsx [2m([22m[2m3 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 10020[2mms[22m[39m
+[31m     [31m×[31m should respond to button clicks[39m[33m 5007[2mms[22m[39m
+[31m     [31m×[31m should behave correctly as a measure section footer[39m[33m 5003[2mms[22m[39m
+     [32m✓[39m should not render optional buttons when they are not needed[32m 9[2mms[22m[39m
+ [32m✓[39m components/report/QipComponents/KeyActivitiesTable.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 1111[2mms[22m[39m
+ [32m✓[39m components/rates/types/PerformanceNdr.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 1009[2mms[22m[39m
+ [32m✓[39m components/report/MeasureResultsNavigationTable.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 1085[2mms[22m[39m
+     [33m[2m✓[22m[39m should enable nav buttons when delivery methods are selected [33m 318[2mms[22m[39m
+ [31m❯[39m components/layout/Timeout.test.tsx [2m([22m[2m5 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 10333[2mms[22m[39m
+[31m     [31m×[31m should become visible after some time[39m[33m 5156[2mms[22m[39m
+[31m     [31m×[31m should close when the refresh button is clicked[39m[33m 5008[2mms[22m[39m
+     [32m✓[39m should close and log the user out when the logout button is clicked[32m 34[2mms[22m[39m
+     [32m✓[39m should log the user out after some more time[32m 110[2mms[22m[39m
+       [32m✓[39m should not have basic accessibility issues[32m 17[2mms[22m[39m
+ [32m✓[39m components/pages/Admin/AdminPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 938[2mms[22m[39m
+ [32m✓[39m components/layout/Header.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 761[2mms[22m[39m
+ [32m✓[39m components/rates/types/LengthOfStay.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 711[2mms[22m[39m
+ [32m✓[39m components/pages/Dashboard/DashboardPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 897[2mms[22m[39m
+ [32m✓[39m components/rates/types/NDR.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 728[2mms[22m[39m
+ [32m✓[39m components/fields/DateRange.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 648[2mms[22m[39m
+ [32m✓[39m components/component-inventory/ComponentInventory.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 631[2mms[22m[39m
+     [33m[2m✓[22m[39m should render without error [33m 627[2mms[22m[39m
+ [32m✓[39m components/rates/types/MultiRateNdr.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 494[2mms[22m[39m
+ [32m✓[39m components/layout/HomePage.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 483[2mms[22m[39m
+ [32m✓[39m components/fields/RadioField.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 541[2mms[22m[39m
+ [32m✓[39m components/fields/TextAreaField.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 453[2mms[22m[39m
+ [32m✓[39m components/report/Page.test.tsx [2m([22m[2m31 tests[22m[2m)[22m[33m 374[2mms[22m[39m
+ [32m✓[39m components/fields/DateField.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 467[2mms[22m[39m
+ [32m✓[39m components/app/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 359[2mms[22m[39m
+ [32m✓[39m components/menus/AdminMenu.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 319[2mms[22m[39m
+ [32m✓[39m components/pages/Export/ExportedReportPage.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 357[2mms[22m[39m
+ [32m✓[39m components/forms/AdminDashSelector.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 339[2mms[22m[39m
+ [32m✓[39m components/fields/ListInput.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 380[2mms[22m[39m
+ [32m✓[39m components/pages/Dashboard/DashboardTable.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 382[2mms[22m[39m
+ [32m✓[39m components/fields/TextField.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 379[2mms[22m[39m
+ [32m✓[39m components/modals/Modal.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 335[2mms[22m[39m
+ [32m✓[39m components/logins/LoginCognito.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 378[2mms[22m[39m
+     [33m[2m✓[22m[39m should call amplify auth login [33m 332[2mms[22m[39m
+ [32m✓[39m components/report/StatusTable.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 272[2mms[22m[39m
+ [32m✓[39m components/cms-extensions/MultiFormatDateField.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 346[2mms[22m[39m
+ [32m✓[39m components/modals/UnlockModal.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 295[2mms[22m[39m
+ [32m✓[39m components/fields/CheckboxField.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 263[2mms[22m[39m
+ [32m✓[39m components/export/ExportedReportElements.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[32m 217[2mms[22m[39m
+ [32m✓[39m components/report/QipDeleteModal.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 232[2mms[22m[39m
+ [32m✓[39m components/pages/HelpPage/HelpPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 213[2mms[22m[39m
+ [32m✓[39m components/cards/ReportIntroCardActions.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 223[2mms[22m[39m
+ [32m✓[39m components/menus/AccountMenu.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 207[2mms[22m[39m
+ [32m✓[39m components/accordions/AccordionItem.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 175[2mms[22m[39m
+ [32m✓[39m components/layout/Footer.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 248[2mms[22m[39m
+ [32m✓[39m components/fields/DropdownField.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 195[2mms[22m[39m
+ [32m✓[39m components/report/StatusAlert.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 254[2mms[22m[39m
+ [32m✓[39m components/report/QmsMeasureTable.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 182[2mms[22m[39m
+ [32m✓[39m components/pages/Profile/ProfilePage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 255[2mms[22m[39m
+ [32m✓[39m components/pages/NotFound/NotFoundPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 147[2mms[22m[39m
+ [32m✓[39m components/pages/Admin/NotificationsPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 234[2mms[22m[39m
+ [32m✓[39m components/report/Sidebar.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 257[2mms[22m[39m
+ [32m✓[39m components/alerts/Alert.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 147[2mms[22m[39m
+ [32m✓[39m components/report/MeasureReplacementModal.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 201[2mms[22m[39m
+ [32m✓[39m components/report/SubmitReportModal.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 139[2mms[22m[39m
+ [32m✓[39m components/cards/WWLIntroductionCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 144[2mms[22m[39m
+ [32m✓[39m components/app/Error.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 216[2mms[22m[39m
+ [32m✓[39m utils/auth/UserProvider.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 164[2mms[22m[39m
+ [32m✓[39m components/checkbox/Checkbox.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 145[2mms[22m[39m
+ [32m✓[39m components/cards/QipIntroductionCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 139[2mms[22m[39m
+ [32m✓[39m components/cards/PCPIntroductionCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 190[2mms[22m[39m
+ [32m✓[39m components/tables/Table.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 129[2mms[22m[39m
+ [32m✓[39m components/export/ExportedReportWrapper.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 120[2mms[22m[39m
+ [32m✓[39m components/menus/MenuOption.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 172[2mms[22m[39m
+ [32m✓[39m components/cards/HelpCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 114[2mms[22m[39m
+ [32m✓[39m components/cards/ReportIntroCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 133[2mms[22m[39m
+ [32m✓[39m components/cards/CiIntroductionCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 127[2mms[22m[39m
+ [32m✓[39m components/cards/QMSIntroductionCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 146[2mms[22m[39m
+ [32m✓[39m components/report/MeasureClearModal.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 126[2mms[22m[39m
+ [32m✓[39m components/export/ExportedReportBanner.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 109[2mms[22m[39m
+ [32m✓[39m components/report/SubnavBar.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 98[2mms[22m[39m
+ [32m✓[39m utils/api/providers/ApiProvider.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m components/logins/LoginIDM.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 127[2mms[22m[39m
+ [32m✓[39m components/report/SubmissionParagraph.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 124[2mms[22m[39m
+ [32m✓[39m components/layout/PageTemplate.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 196[2mms[22m[39m
+ [32m✓[39m components/cards/TacmIntroductionCard.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 111[2mms[22m[39m
+ [32m✓[39m components/skipNav/SkipNav.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 89[2mms[22m[39m
+ [32m✓[39m utils/other/time.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m components/report/MeasureDetails.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m components/PostLogoutRedirect/index.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 59[2mms[22m[39m
+ [32m✓[39m components/cards/Card.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32m✓[39m utils/state/reportLogic/completeness.test.ts [2m([22m[2m62 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m utils/state/reportLogic/reportActions.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m components/report/useDeleteConfirmModal.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 52[2mms[22m[39m
+ [32m✓[39m utils/other/parsing.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m utils/api/apiLib.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m utils/auth/authLifecycle.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m utils/api/requestMethods/banner.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m components/rates/calculations.test.ts [2m([22m[2m50 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m utils/api/requestMethods/report.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m utils/other/arrays.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m utils/validation/inputValidation.test.ts [2m([22m[2m33 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m utils/state/useStore.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m utils/other/useBreakpoint.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m utils/state/selectors.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m utils/api/requestMethods/notifications.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+[90mstdout[2m | components/report/QipMeasureTable.test.tsx[2m > [22m[2mTest QipMeasureTable[2m > [22m[2mshould close the modal without deleting on cancel
+[22m[39mRIGHT HERE BEN
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button[39m
+      [33mclass[39m=[32m"chakra-button css-4xx2wk"[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33mclass[39m=[32m"chakra-image css-1knigk4"[39m
+        [33msrc[39m=[32m"data:image/svg+xml,%3csvg%20width='14'%20height='15'%20viewBox='0%200%2014%2015'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M5.43771%2013.9377C5.60606%2014.1061%205.84175%2014.2071%206.08418%2014.2071H7.91582C8.15825%2014.2071%208.39394%2014.1061%208.56229%2013.9377C8.73064%2013.7694%208.83165%2013.5337%208.83165%2013.2912L8.83165%209.33165L12.7912%209.33165C13.0337%209.33165%2013.2694%209.23064%2013.4377%209.06229C13.6061%208.89394%2013.7071%208.65825%2013.7071%208.41582L13.7071%206.58417C13.7071%206.34175%2013.6061%206.10606%2013.4377%205.93771C13.2694%205.76936%2013.0337%205.66835%2012.7912%205.66835L8.83165%205.66835L8.83165%201.70875C8.83165%201.46633%208.73064%201.23064%208.56229%201.06229C8.39394%200.893939%208.15825%200.792929%207.91582%200.792929H6.08418C5.84175%200.792929%205.60606%200.893939%205.43771%201.06229C5.26936%201.23064%205.16835%201.46633%205.16835%201.70875L5.16835%205.66835L1.20875%205.66835C0.96633%205.66835%200.73064%205.76936%200.56229%205.93771C0.393939%206.10606%200.29293%206.34175%200.29293%206.58417L0.29293%208.41582C0.29293%208.65825%200.39394%208.89394%200.56229%209.06229C0.73064%209.23064%200.966331%209.33165%201.20876%209.33165L5.16835%209.33165L5.16835%2013.2912C5.16835%2013.5337%205.26936%2013.7694%205.43771%2013.9377Z'%20fill='%230071bc'/%3e%3c/svg%3e"[39m
+      [36m/>[39m
+      [0mAdd measure[0m
+    [36m</button>[39m
+    [36m<table[39m
+      [33mclass[39m=[32m"chakra-table css-0"[39m
+    [36m>[39m
+      [36m<caption[39m
+        [33mclass[39m=[32m"css-18i7bby"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"css-idkz9h"[39m
+        [36m>[39m
+          [0mSelected Measures and Targets[0m
+        [36m</span>[39m
+      [36m</caption>[39m
+      [36m<thead[39m
+        [33mclass[39m=[32m"css-0"[39m
+      [36m>[39m
+        [36m<tr[39m
+          [33mclass[39m=[32m"css-0"[39m
+        [36m>[39m
+          [36m<th[39m
+            [33mclass[39m=[32m"css-xi606m"[39m
+          [36m>[39m
+            [0mStatus[0m
+          [36m</th>[39m
+          [36m<th[39m
+            [33mclass[39m=[32m"css-13bhbkv"[39m
+          [36m>[39m
+            [0mMeasure details[0m
+          [36m</th>[39m
+          [36m<th[39m
+            [33mclass[39m=[32m"css-e2v0un"[39m
+          [36m>[39m
+            [0mActions[0m
+          [36m</th>[39m
+        [36m</tr>[39m
+      [36m</thead>[39m
+      [36m<tbody[39m
+        [33mclass[39m=[32m"css-0"[39m
+      [36m>[39m
+        [36m<tr[39m
+          [33mclass[39m=[32m"css-0"[39m
+        [36m>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-xi606m"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"css-1l4w6pd"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"css-0"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"chakra-stack css-16mt9o"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"chakra-stack css-1igwmid"[39m
+                  [36m>[39m
+                    [36m<img[39m
+                      [33malt[39m=[32m"not started icon"[39m
+                      [33mclass[39m=[32m"chakra-image css-woqu9x"[39m
+                      [33msrc[39m=[32m"data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M18.6591%204.98042C17.7649%203.4484%2016.5519%202.23538%2015.0199%201.3412C13.4876%200.447012%2011.8147%200%2010.0003%200C8.18606%200%206.51292%200.447012%204.98074%201.3412C3.44856%202.23522%202.23554%203.44824%201.34136%204.98042C0.447012%206.5126%200%208.1859%200%2010C0%2011.8141%200.447172%2013.4872%201.3412%2015.0196C2.23538%2016.5513%203.4484%2017.7646%204.98058%2018.6588C6.51276%2019.553%208.1859%2020%2010.0002%2020C11.8144%2020%2013.4877%2019.553%2015.0197%2018.6588C16.5518%2017.7648%2017.7648%2016.5516%2018.659%2015.0196C19.553%2013.4872%2020%2011.8139%2020%2010C20%208.1859%2019.553%206.51244%2018.6591%204.98042ZM11.6671%2016.2369C11.6671%2016.3585%2011.6278%2016.4603%2011.5498%2016.5428C11.4718%2016.6253%2011.3762%2016.6663%2011.2632%2016.6663H8.76317C8.65033%2016.6663%208.55045%2016.623%208.46367%2016.5363C8.37688%2016.4495%208.33357%2016.3496%208.33357%2016.2369V13.7631C8.33357%2013.6503%208.37688%2013.5504%208.46367%2013.4636C8.55045%2013.3768%208.65033%2013.3335%208.76317%2013.3335H11.2632C11.3762%2013.3335%2011.4719%2013.3747%2011.5498%2013.457C11.6278%2013.5398%2011.6671%2013.6415%2011.6671%2013.7631V16.2369ZM11.6409%2011.7578C11.6321%2011.8446%2011.5867%2011.9207%2011.5044%2011.9857C11.4217%2012.0508%2011.3199%2012.0832%2011.1985%2012.0832H8.78954C8.66791%2012.0832%208.56371%2012.0508%208.47693%2011.9857C8.39015%2011.9207%208.34668%2011.8446%208.34668%2011.7578L8.12533%203.67183C8.12533%203.56747%208.16864%203.48948%208.25542%203.43737C8.34236%203.36801%208.44656%203.33317%208.56803%203.33317H11.4329C11.5546%203.33317%2011.6586%203.36785%2011.7454%203.43737C11.8322%203.48948%2011.8753%203.56763%2011.8753%203.67183L11.6409%2011.7578Z'%20fill='%23E31C3D'/%3e%3c/svg%3e"[39m
+                    [36m/>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</td>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-0"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"chakra-text css-in3yi3"[39m
+            [36m>[39m
+              [0mNot Started Measure[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"chakra-text css-rv96f7"[39m
+            [36m>[39m
+              [0mStatus: [0m
+              [0mNot started[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"chakra-text css-rv96f7"[39m
+            [36m>[39m
+              [0mSelect "Edit" to begin measure.[0m
+            [36m</p>[39m
+          [36m</td>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-xi606m"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"css-1l4w6pd"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33maria-label[39m=[32m"Edit Not Started Measure"[39m
+                [33mclass[39m=[32m"chakra-link chakra-button css-1ncwzw6"[39m
+                [33mhref[39m=[32m"/report/QIP/CO/123/measure-targets-not-started"[39m
+              [36m>[39m
+                [0mEdit[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Delete Not Started Measure"[39m
+                [33mclass[39m=[32m"chakra-button css-4xx2wk"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"chakra-image css-0"[39m
+                  [33msrc[39m=[32m"data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M12%200C5.364%200%200%205.364%200%2012C0%2018.636%205.364%2024%2012%2024C18.636%2024%2024%2018.636%2024%2012C24%205.364%2018.636%200%2012%200ZM18%2016.308L16.308%2018L12%2013.692L7.692%2018L6%2016.308L10.308%2012L6%207.692L7.692%206L12%2010.308L16.308%206L18%207.692L13.692%2012L18%2016.308Z'%20fill='%230071BC'/%3e%3c/svg%3e"[39m
+                [36m/>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</td>[39m
+        [36m</tr>[39m
+        [36m<tr[39m
+          [33mclass[39m=[32m"css-0"[39m
+        [36m>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-xi606m"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"css-1l4w6pd"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"css-0"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"chakra-stack css-16mt9o"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"chakra-stack css-1igwmid"[39m
+                  [36m>[39m
+                    [36m<img[39m
+                      [33malt[39m=[32m"in progress icon"[39m
+                      [33mclass[39m=[32m"chakra-image css-woqu9x"[39m
+                      [33msrc[39m=[32m"data:image/svg+xml,%3csvg%20width='21'%20height='20'%20viewBox='0%200%2021%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3ccircle%20cx='10.5'%20cy='10'%20r='9'%20fill='white'%20stroke='%230071BC'%20stroke-width='2'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M3.09961%2015.4669C4.76187%2017.6798%207.40827%2019.1111%2010.389%2019.1111C15.4209%2019.1111%2019.5001%2015.0319%2019.5001%2010C19.5001%204.96807%2015.4209%200.888885%2010.389%200.888885C10.3889%200.888885%2010.3889%200.888885%2010.3889%200.888885V10L3.09961%2015.4669Z'%20fill='%230071BC'/%3e%3c/svg%3e"[39m
+                    [36m/>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</td>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-0"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"chakra-text css-in3yi3"[39m
+            [36m>[39m
+              [0mIn Progress Measure[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"chakra-text css-rv96f7"[39m
+            [36m>[39m
+              [0mStatus: [0m
+              [0mIn progress[0m
+            [36m</p>[39m
+          [36m</td>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-xi606m"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"css-1l4w6pd"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33maria-label[39m=[32m"Edit In Progress Measure"[39m
+                [33mclass[39m=[32m"chakra-link chakra-button css-1ncwzw6"[39m
+                [33mhref[39m=[32m"/report/QIP/CO/123/measure-targets-in-progress"[39m
+              [36m>[39m
+                [0mEdit[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Delete In Progress Measure"[39m
+                [33mclass[39m=[32m"chakra-button css-4xx2wk"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"chakra-image css-0"[39m
+                  [33msrc[39m=[32m"data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M12%200C5.364%200%200%205.364%200%2012C0%2018.636%205.364%2024%2012%2024C18.636%2024%2024%2018.636%2024%2012C24%205.364%2018.636%200%2012%200ZM18%2016.308L16.308%2018L12%2013.692L7.692%2018L6%2016.308L10.308%2012L6%207.692L7.692%206L12%2010.308L16.308%206L18%207.692L13.692%2012L18%2016.308Z'%20fill='%230071BC'/%3e%3c/svg%3e"[39m
+                [36m/>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</td>[39m
+        [36m</tr>[39m
+        [36m<tr[39m
+          [33mclass[39m=[32m"css-0"[39m
+        [36m>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-xi606m"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"css-1l4w6pd"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"css-0"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"chakra-stack css-16mt9o"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"chakra-stack css-1igwmid"[39m
+                  [36m>[39m
+                    [36m<img[39m
+                      [33malt[39m=[32m"complete icon"[39m
+                      [33mclass[39m=[32m"chakra-image css-woqu9x"[39m
+                      [33msrc[39m=[32m"data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M18.6591%204.98042C17.7649%203.4484%2016.5519%202.23538%2015.0199%201.3412C13.4876%200.447012%2011.8147%200%2010.0003%200C8.18606%200%206.51276%200.447012%204.98074%201.3412C3.44856%202.23522%202.23554%203.44824%201.34136%204.98042C0.447012%206.5126%200%208.1859%200%2010C0%2011.8143%200.447172%2013.4872%201.3412%2015.0196C2.23538%2016.5514%203.4484%2017.7646%204.98058%2018.6588C6.51276%2019.553%208.1859%2020%2010.0002%2020C11.8144%2020%2013.4877%2019.553%2015.0197%2018.6588C16.5518%2017.7648%2017.7648%2016.5516%2018.659%2015.0196C19.553%2013.4874%2020%2011.8141%2020%2010C20%208.18574%2019.553%206.51244%2018.6591%204.98042ZM16.4843%208.47659L9.41412%2015.5468C9.24919%2015.7117%209.04958%2015.7944%208.81512%2015.7944C8.58946%2015.7944%208.39416%2015.7117%208.22923%2015.5468L3.51554%2010.8334C3.3594%2010.677%203.28125%2010.482%203.28125%2010.2475C3.28125%2010.0045%203.35924%209.80468%203.51554%209.64838L4.70044%208.47659C4.86553%208.31165%205.06067%208.22919%205.28649%208.22919C5.51232%208.22919%205.70761%208.31165%205.87255%208.47659L8.81528%2011.4193L14.1278%206.11974C14.2927%205.95481%2014.488%205.87234%2014.7137%205.87234C14.9392%205.87234%2015.1348%205.95481%2015.2996%206.11974L16.4845%207.29169C16.641%207.44784%2016.7189%207.64745%2016.7189%207.89053C16.7189%208.12499%2016.641%208.32028%2016.4843%208.47659Z'%20fill='%2312890E'/%3e%3c/svg%3e"[39m
+                    [36m/>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</td>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-0"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"chakra-text css-in3yi3"[39m
+            [36m>[39m
+              [0mComplete Measure[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"chakra-text css-rv96f7"[39m
+            [36m>[39m
+              [0mStatus: [0m
+              [0mComplete[0m
+            [36m</p>[39m
+          [36m</td>[39m
+          [36m<td[39m
+            [33mclass[39m=[32m"css-xi606m"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"css-1l4w6pd"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33maria-label[39m=[32m"Edit Complete Measure"[39m
+                [33mclass[39m=[32m"chakra-link chakra-button css-1ncwzw6"[39m
+                [33mhref[39m=[32m"/report/QIP/CO/123/measure-targets-complete"[39m
+              [36m>[39m
+                [0mEdit[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Delete Complete Measure"[39m
+                [33mclass[39m=[32m"chakra-button css-4xx2wk"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"chakra-image css-0"[39m
+                  [33msrc[39m=[32m"data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M12%200C5.364%200%200%205.364%200%2012C0%2018.636%205.364%2024%2012%2024C18.636%2024%2024%2018.636%2024%2012C24%205.364%2018.636%200%2012%200ZM18%2016.308L16.308%2018L12%2013.692L7.692%2018L6%2016.308L10.308%2012L6%207.692L7.692%206L12%2010.308L16.308%206L18%207.692L13.692%2012L18%2016.308Z'%20fill='%230071BC'/%3e%3c/svg%3e"[39m
+                [36m/>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</td>[39m
+        [36m</tr>[39m
+      [36m</tbody>[39m
+    [36m</table>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+ [31m❯[39m components/report/QipMeasureTable.test.tsx [2m([22m[2m16 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 506[2mms[22m[39m
+     [32m✓[39m should render table headers and all measure names[32m 49[2mms[22m[39m
+     [32m✓[39m should render the Add Measure button[32m 72[2mms[22m[39m
+     [32m✓[39m should render an Edit link for each measure[32m 19[2mms[22m[39m
+     [32m✓[39m should render the empty state when no measures are added[32m 4[2mms[22m[39m
+     [32m✓[39m should display the correct status text for each measure[32m 17[2mms[22m[39m
+     [32m✓[39m should show error message for not started[32m 13[2mms[22m[39m
+     [32m✓[39m should not show error message for an in progress measure[32m 7[2mms[22m[39m
+     [32m✓[39m should not show error message for a complete measure[32m 6[2mms[22m[39m
+     [32m✓[39m should navigate to the correct measure page on Edit click[32m 35[2mms[22m[39m
+     [32m✓[39m should call setCurrentPageId after adding a measure from the modal[32m 40[2mms[22m[39m
+     [32m✓[39m should render a delete button for each measure[32m 22[2mms[22m[39m
+     [32m✓[39m should open the delete modal when the delete button is clicked[32m 25[2mms[22m[39m
+[31m     [31m×[31m should remove the measure and its page on delete confirm[39m[32m 93[2mms[22m[39m
+[31m     [31m×[31m should close the modal without deleting on cancel[39m[32m 78[2mms[22m[39m
+     [32m✓[39m should hide delete buttons when disabled is true[32m 11[2mms[22m[39m
+     [32m✓[39m should hide delete buttons for non-end-users (admin)[32m 10[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m94 passed[39m[22m[90m (99)[39m
+[2m      Tests [22m [1m[31m10 failed[39m[22m[2m | [22m[1m[32m672 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (683)[39m
+[2m   Start at [22m 12:40:33
+[2m   Duration [22m 59.15s[2m (transform 6.51s, setup 30.00s, import 247.07s, tests 67.71s, environment 36.35s)[22m
+

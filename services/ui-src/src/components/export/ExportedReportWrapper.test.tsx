@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ExportedReportWrapper } from "./ExportedReportWrapper";
 import {
@@ -49,12 +50,12 @@ const section: FormPageTemplate = {
 };
 
 describe("ExportedReportWrapper", () => {
-  it("ExportedReportWrapper is visible", () => {
+  it("should render correctly", () => {
     render(<ExportedReportWrapper section={section}></ExportedReportWrapper>);
     expect(screen.getByText("Contact title")).toBeInTheDocument();
   });
 
-  it("Unanswered optional fields are not rendered", () => {
+  it("should not render unanswered optional fields", () => {
     render(<ExportedReportWrapper section={section}></ExportedReportWrapper>);
     expect(screen.queryByText("Additional comments")).not.toBeInTheDocument();
   });

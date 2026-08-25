@@ -1,5 +1,6 @@
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { AccountMenu } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -10,18 +11,10 @@ const menuComponent = (
 );
 
 describe("<Menu />", () => {
-  beforeEach(() => {
+  it("should render correctly", () => {
     render(menuComponent);
-  });
-  test("Menu button is visible", () => {
     expect(screen.getByRole("button", { name: "my account" })).toBeVisible();
-  });
-
-  test("Manage Account is a menu item available", () => {
     expect(screen.getByAltText("Manage account")).toBeInTheDocument();
-  });
-
-  test("Log Out is a menu item available", () => {
     expect(screen.getByAltText("Logout")).toBeInTheDocument();
   });
 

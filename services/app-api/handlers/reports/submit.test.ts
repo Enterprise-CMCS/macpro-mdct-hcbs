@@ -1,32 +1,36 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
 import { validReport } from "../../utils/tests/mockReport";
 import { submitReport } from "./submit";
+import { putReport } from "../../storage/reports";
+import { ReportStatus } from "../../types/reports";
 
-jest.mock("../../libs/launchdarkly-lib", () => ({
-  getFlag: jest.fn().mockResolvedValue(true),
+vi.mock("../../libs/launchdarkly-lib", () => ({
+  getFlag: vi.fn().mockResolvedValue(true),
 }));
 
-jest.mock("../../utils/notifications/email", () => ({
-  sendEmail: jest.fn().mockResolvedValue(undefined),
+vi.mock("../../utils/notifications/email", () => ({
+  sendEmail: vi.fn().mockResolvedValue(undefined),
 }));
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
     state: validReport.state,
     fullName: "myname",
+    email: "myname@example.com",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canWriteState: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canWriteState: vi.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../storage/reports", () => ({
-  putReport: () => jest.fn(),
+vi.mock("../../storage/reports", () => ({
+  putReport: vi.fn(),
 }));
 
 const invalidReport = JSON.stringify({
@@ -34,7 +38,6 @@ const invalidReport = JSON.stringify({
   state: "PA",
   id: "QMSPA123",
 });
-const report = JSON.stringify(validReport);
 
 const validPath = {
   reportType: validReport.type,
@@ -45,15 +48,15 @@ const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   pathParameters: validPath,
   headers: { "cognito-identity-id": "test" },
-  body: report,
+  body: JSON.stringify(validReport),
 };
 
-describe("Test submit report handler", () => {
+describe("submitReport", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  it("should return Bad Request if missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -62,13 +65,13 @@ describe("Test submit report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  it("should return 403 if user is not authorized", async () => {
-    (canWriteState as jest.Mock).mockReturnValueOnce(false);
+  it("should return Forbidden if user is not authorized", async () => {
+    vi.mocked(canWriteState).mockReturnValueOnce(false);
     const response = await submitReport(testEvent);
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  it("should return Bad Request if missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
       pathParameters: validPath,
@@ -78,7 +81,7 @@ describe("Test submit report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test invalid report", async () => {
+  it("should return Bad Request if the body contains an invalid report", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
       pathParameters: validPath,
@@ -88,34 +91,58 @@ describe("Test submit report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test body + param mismatch", async () => {
-    const badType = {
-      ...proxyEvent,
-      pathParameters: { ...validPath, reportType: "ZZ" },
-      body: report,
-    } as APIGatewayProxyEvent;
-    const badState = {
-      ...proxyEvent,
-      pathParameters: validPath,
-      body: JSON.stringify({ ...validReport, state: "OR" }),
-    } as APIGatewayProxyEvent;
-    const badId = {
-      ...proxyEvent,
-      pathParameters: { ...validPath, id: "ZZOR1234" },
-      body: report,
-    } as APIGatewayProxyEvent;
+  it.each([
+    {
+      reason: "report type",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { ...validPath, reportType: "ZZ" },
+        body: JSON.stringify(validReport),
+      },
+    },
+    {
+      reason: "state",
+      evt: {
+        ...proxyEvent,
+        pathParameters: validPath,
+        body: JSON.stringify({ ...validReport, state: "OR" }),
+      },
+    },
+    {
+      reason: "report ID",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { ...validPath, id: "ZZOR1234" },
+        body: JSON.stringify(validReport),
+      },
+    },
+  ])(
+    "should return Bad Request if body does not match path params: $reason",
+    async ({ evt }) => {
+      const res = await submitReport(evt);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    }
+  );
 
-    const resType = await submitReport(badType);
-    expect(resType.statusCode).toBe(StatusCodes.BadRequest);
-    const resState = await submitReport(badState);
-    expect(resState.statusCode).toBe(StatusCodes.BadRequest);
-    const resId = await submitReport(badId);
-    expect(resId.statusCode).toBe(StatusCodes.BadRequest);
-  });
-
-  test("Test Successful submit", async () => {
+  it("should successfully submit a report", async () => {
     const res = await submitReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        // Mostly the report is unchanged
+        ...validReport,
+        // But we added submit info
+        status: ReportStatus.SUBMITTED,
+        submissionCount: 1,
+        submissionDates: [{ submitted: expect.any(Number) }],
+        submitted: expect.any(Number),
+        submittedBy: "myname",
+        // And we added edit traceability
+        lastEdited: expect.any(Number),
+        lastEditedBy: "myname",
+        lastEditedByEmail: "myname@example.com",
+      })
+    );
   });
 });

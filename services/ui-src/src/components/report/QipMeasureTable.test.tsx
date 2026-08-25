@@ -1,17 +1,19 @@
-import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QipMeasureTableElement } from "./QipMeasureTable";
-import { mockUseStore } from "utils/testing/setupJest";
+import { useDeleteConfirmModal } from "./useDeleteConfirmModal";
 import { useStore } from "utils/state/useStore";
-import * as reportRequestMethods from "utils/api/requestMethods/report";
-import { QipDeleteModal } from "./QipDeleteModal";
 import {
   ElementType,
+  MeasureTargetMapping,
   QipMeasureTableTemplate,
   Report,
   ReportType,
 } from "types";
 import { MemoryRouter, useNavigate } from "react-router-dom";
+import { ReportModal } from "./ReportModal";
+import { addQipTargetPage } from "utils";
 
 const mockReport = {
   type: ReportType.QIP,
@@ -36,37 +38,118 @@ const mockReport = {
     },
   ],
   measureTargetMapping: [
-    { id: "ltss1", measureName: "Not Started Measure", rates: [] },
-    { id: "ltss2", measureName: "In Progress Measure", rates: [] },
-    { id: "ltss3", measureName: "Complete Measure", rates: [] },
-  ],
-} as unknown as Report;
+    {
+      measureName: "Not Started Measure",
+      measureId: "ltss1",
+      includedInQms: false,
+      deliveryMethods: { FFS: {} },
+      rates: [{ label: "Rate One", id: "r1" }],
+    },
+    {
+      measureName: "In Progress Measure",
+      measureId: "ltss2",
+      includedInQms: false,
+      deliveryMethods: { FFS: {} },
+      rates: [{ label: "Rate One", id: "r1" }],
+    },
+    {
+      measureName: "Complete Measure",
+      measureId: "ltss3",
+      includedInQms: false,
+      deliveryMethods: { FFS: {} },
+      rates: [{ label: "Rate One", id: "r1" }],
+    },
+  ] as MeasureTargetMapping,
+} as Report;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockUseStore,
-  report: mockReport,
-});
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({
     reportType: "QIP",
     state: "CO",
     reportId: "123",
   }),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
 
-jest.mock("./QipMeasureSelectModal", () => ({
-  QipMeasureSelectModal: () => <div>Modal</div>,
+vi.mock("./useDeleteConfirmModal", () => ({
+  useDeleteConfirmModal: vi.fn(),
 }));
 
-jest.mock("./QipDeleteModal", () => ({
-  QipDeleteModal: jest.fn().mockReturnValue(<div>Delete Modal</div>),
-}));
+const openDeleteModal = vi.fn();
+vi.mocked(useDeleteConfirmModal).mockReturnValue({
+  addButtonRef: { current: null },
+  getDeleteButtonRef: vi.fn(),
+  openDeleteModal: openDeleteModal,
+});
 
+vi.mock("utils", async (importOriginal) => ({
+  ...(await importOriginal()),
+  getReportsForState: vi.fn().mockResolvedValue([]),
+  addQipTargetPage: vi.fn().mockResolvedValue({ report: { pages: [] } }),
+}));
+/*
+vi.mock("@cmsgov/design-system", () => ({
+  Dropdown: ({
+    label,
+    name,
+    value,
+    options,
+    disabled,
+    errorMessage,
+    onChange,
+  }: Omit<React.ComponentProps<typeof Dropdown>, "options"> & {
+    options: { label: string; value: string }[];
+  }) => (
+    <>
+      <label htmlFor={name}>{label}</label>
+      <select
+        id={name}
+        name={name}
+        value={value}
+        disabled={disabled}
+        onChange={onChange}
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {errorMessage ? <div>{errorMessage}</div> : null}
+    </>
+  ),
+  ChoiceList: ({
+    label,
+    name,
+    choices,
+    errorMessage,
+    onChange,
+  }: Omit<React.ComponentProps<typeof ChoiceList>, "choices"> & {
+    choices: { label: string; value: string; checked: boolean }[];
+  }) => (
+    <>
+      <fieldset>
+        <legend>{label}</legend>
+        {choices.map((choice) => (
+          <div key={choice.value}>
+            <input
+              type="checkbox"
+              id={`${name}-${choice.value}`}
+              name={name}
+              value={choice.value}
+              checked={choice.checked}
+              onChange={onChange}
+            />
+            <label htmlFor={`${name}-${choice.value}`}>{choice.label}</label>
+          </div>
+        ))}
+      </fieldset>
+      {errorMessage ? <div>{errorMessage}</div> : null}
+    </>
+  ),
+}));
+*/
 const mockTemplate: QipMeasureTableTemplate = {
   type: ElementType.QipMeasureTable,
   id: "qip-measure-table",
@@ -89,18 +172,23 @@ const QipMeasureTableComponent = (
   disabled = false
 ) => (
   <MemoryRouter>
+    <ReportModal />
     <QipMeasureTableElement
       element={template}
-      updateElement={jest.fn()}
+      updateElement={vi.fn()}
       disabled={disabled}
     />
   </MemoryRouter>
 );
 
-describe("Test QipMeasureTable", () => {
+describe("QipMeasureTable", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockedUseStore.mockReturnValue({ ...mockUseStore, report: mockReport });
+    vi.clearAllMocks();
+    useStore.setState({
+      report: mockReport,
+      updateReport: vi.fn(),
+      saveReport: vi.fn(),
+    });
   });
 
   it("should render table headers and all measure names", () => {
@@ -191,8 +279,8 @@ describe("Test QipMeasureTable", () => {
   });
 
   it("should navigate to the correct measure page on Edit click", async () => {
-    const mockNavigate = jest.fn();
-    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    const mockNavigate = vi.fn();
+    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
     render(QipMeasureTableComponent());
 
@@ -205,43 +293,45 @@ describe("Test QipMeasureTable", () => {
   });
 
   it("should call setCurrentPageId after adding a measure from the modal", async () => {
-    const mockSetModalOpen = jest.fn();
-    const mockSetModalComponent = jest.fn();
-    const mockSetCurrentPageId = jest.fn();
-    const mockUpdateReport = jest.fn();
-
-    jest.spyOn(reportRequestMethods, "addQipTargetPage").mockResolvedValue({
-      report: mockReport,
-      pageId: "measure-targets-new",
-      originalValues: {},
-    });
-
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
-      report: mockReport,
-      updateReport: mockUpdateReport,
-      setCurrentPageId: mockSetCurrentPageId,
-      setModalOpen: mockSetModalOpen,
-      setModalComponent: mockSetModalComponent,
-    });
+    useStore.setState({ setCurrentPageId: vi.fn() });
 
     render(QipMeasureTableComponent());
 
     const addButton = screen.getByRole("button", { name: /Add measure/i });
     await userEvent.click(addButton);
 
-    expect(mockSetModalComponent).toHaveBeenCalled();
-
-    const modal = mockSetModalComponent.mock.calls[0][0];
-    await modal.props.onSubmit({
-      measureId: "ltss4",
-      measureName: "New Measure",
-      deliveryMethods: ["FFS"],
-      rates: ["n"],
+    await waitFor(() => {
+      expect(screen.getByText(/Select a measure/)).toBeVisible();
     });
+    // The CMSDS Dropdown does not have the "combobox" role,
+    // and it exposes its currently-selected option as a button,
+    // which makes this test look weird.
+    // We're selecting the "Not Started Measure" option from the dropdown.
+    await userEvent.click(
+      screen.getByRole("button", { name: /Select measure/ })
+    );
+    await userEvent.click(
+      screen.getByRole("option", { name: /Not Started Measure/ })
+    );
 
-    expect(mockSetCurrentPageId).toHaveBeenCalledWith("select-measures");
-    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
+    await userEvent.click(screen.getByRole("checkbox", { name: /FFS/ }));
+    await userEvent.click(screen.getByRole("checkbox", { name: /Rate One/ }));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(addQipTargetPage).toHaveBeenCalledWith(
+      useStore.getState().report,
+      expect.objectContaining({
+        measureId: "ltss1",
+        deliveryMethods: ["FFS"],
+        rates: ["r1"],
+      })
+    );
+    await waitFor(() =>
+      expect(useStore.getState().setCurrentPageId).toHaveBeenCalledWith(
+        "select-measures"
+      )
+    );
+    expect(useStore.getState().modalOpen).toBe(false);
   });
 
   it("should render a delete button for each measure", () => {
@@ -258,88 +348,49 @@ describe("Test QipMeasureTable", () => {
     ).toBeInTheDocument();
   });
 
-  it("should open the delete modal when the delete button is clicked", async () => {
-    const mockSetModalOpen = jest.fn();
-    const mockSetModalComponent = jest.fn();
-    const mockSetModalFinalFocusRef = jest.fn();
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
-      report: mockReport,
-      setModalOpen: mockSetModalOpen,
-      setModalComponent: mockSetModalComponent,
-      setModalFinalFocusRef: mockSetModalFinalFocusRef,
-    });
-
-    render(QipMeasureTableComponent());
-    await userEvent.click(
-      screen.getByRole("button", { name: "Delete Not Started Measure" })
-    );
-
-    expect(mockSetModalComponent).toHaveBeenCalled();
-    expect(mockSetModalComponent.mock.calls[0][1]).toBe(
-      "Are you sure you want to remove this measure?"
-    );
-    expect(mockSetModalFinalFocusRef).toHaveBeenCalled();
-  });
-
   it("should remove the measure and its page on delete confirm", async () => {
-    const mockSetModalOpen = jest.fn();
-    const mockSetModalComponent = jest.fn();
-    const mockUpdateReport = jest.fn();
-    const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = QipDeleteModal as jest.Mock;
-
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
+    const updateElement = vi.fn();
+    useStore.setState({
       report: mockReport,
-      updateReport: mockUpdateReport,
-      setModalOpen: mockSetModalOpen,
-      setModalComponent: mockSetModalComponent,
+      updateReport: vi.fn(),
     });
 
     render(
       <MemoryRouter>
         <QipMeasureTableElement
           element={mockTemplate}
-          updateElement={mockUpdateElement}
+          updateElement={updateElement}
         />
       </MemoryRouter>
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Delete Not Started Measure" })
     );
+    expect(openDeleteModal).toHaveBeenCalled();
 
-    // Invoke the onConfirm callback passed to QipDeleteModal
-    const onConfirm = mockedDeleteModal.mock.calls[0][3];
-    await onConfirm();
+    const deleteConfirmCallback = vi.mocked(useDeleteConfirmModal).mock
+      .calls[0][0].onConfirm;
+    await deleteConfirmCallback(
+      mockTemplate.answer!.slice(1),
+      mockTemplate.answer![0].pageId
+    );
 
-    expect(mockUpdateReport).toHaveBeenCalledWith(
+    expect(useStore.getState().updateReport).toHaveBeenCalledWith(
       expect.objectContaining({
         pages: expect.not.arrayContaining([
           expect.objectContaining({ id: "measure-targets-not-started" }),
         ]),
       })
     );
-    expect(mockUpdateElement).toHaveBeenCalledWith({
+    expect(updateElement).toHaveBeenCalledWith({
       answer: expect.not.arrayContaining([
         expect.objectContaining({ pageId: "measure-targets-not-started" }),
       ]),
     });
-    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
   });
 
   it("should close the modal without deleting on cancel", async () => {
-    const mockSetModalOpen = jest.fn();
-    const mockSetModalComponent = jest.fn();
-    const mockUpdateElement = jest.fn();
-    const mockedDeleteModal = QipDeleteModal as jest.Mock;
-
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
-      report: mockReport,
-      setModalOpen: mockSetModalOpen,
-      setModalComponent: mockSetModalComponent,
-    });
+    const mockUpdateElement = vi.fn();
 
     render(
       <MemoryRouter>
@@ -352,11 +403,7 @@ describe("Test QipMeasureTable", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Delete Not Started Measure" })
     );
-
-    const onClose = mockedDeleteModal.mock.calls[0][2];
-    onClose();
-
-    expect(mockSetModalOpen).toHaveBeenCalledWith(false);
+    expect(openDeleteModal).toHaveBeenCalledWith("measure-targets-not-started");
     expect(mockUpdateElement).not.toHaveBeenCalled();
   });
 

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { ReportType } from "../types/reports";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
 import { tacmReportTemplate as tacmReportTemplate2026 } from "./2026/tacm/tacm";
@@ -63,10 +64,8 @@ describe("Yearly Form Selection", () => {
   it("should return the template for the exact requested year, if one exists (QIP report)", () => {
     expect(getReportTemplate(ReportType.QIP, 2026)).toBe(qipReportTemplate2026);
   });
-});
 
-describe("get error message for unsupported report type", () => {
-  it("should throw an error for unsupported report type", () => {
+  it("should throw an error for any unsupported report type", () => {
     const unsupportedReportType = "UnsupportedReportType" as ReportType;
     const getTemplateCall = () =>
       getReportTemplate(unsupportedReportType, 2026);

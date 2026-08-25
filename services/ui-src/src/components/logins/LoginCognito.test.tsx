@@ -1,8 +1,17 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { LoginCognito } from "components";
 import { testA11yAct } from "utils/testing/commonTests";
+import { signIn } from "aws-amplify/auth";
+import { useNavigate } from "react-router-dom";
+
+vi.mock("aws-amplify/auth");
+vi.mock("react-router-dom", () => ({
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
+}));
+const mockNavigate = useNavigate();
 
 const loginCognitoComponent = (
   <RouterWrappedComponent>
@@ -10,37 +19,19 @@ const loginCognitoComponent = (
   </RouterWrappedComponent>
 );
 
-const mockSignIn = jest.fn();
-jest.mock("aws-amplify/auth", () => ({
-  signIn: (credentials: { username: string; password: string }) =>
-    mockSignIn(credentials),
-}));
-
-const mockUseNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-}));
-
 describe("<LoginCognito />", () => {
-  describe("Renders", () => {
-    beforeEach(() => {
-      render(loginCognitoComponent);
-    });
+  it("should call amplify auth login", async () => {
+    render(loginCognitoComponent);
 
-    test("LoginCognito login calls amplify auth login", async () => {
-      const emailInput = screen.getByLabelText("Email");
-      const passwordInput = screen.getByLabelText("Password");
-      const submitButton = screen.getByRole("button");
-      await userEvent.type(emailInput, "email@address.com");
-      await userEvent.type(passwordInput, "p@$$w0rd"); //pragma: allowlist secret
-      await userEvent.click(submitButton);
-      expect(mockSignIn).toHaveBeenCalledWith({
-        username: "email@address.com",
-        password: "p@$$w0rd", //pragma: allowlist secret
-      });
-      expect(mockUseNavigate).toHaveBeenCalledWith("/");
+    await userEvent.type(screen.getByLabelText("Email"), "email@address.com");
+    await userEvent.type(screen.getByLabelText("Password"), "p@$$w0rd"); //pragma: allowlist secret
+    await userEvent.click(screen.getByRole("button"));
+
+    expect(signIn).toHaveBeenCalledWith({
+      username: "email@address.com",
+      password: "p@$$w0rd", //pragma: allowlist secret
     });
+    expect(mockNavigate).toHaveBeenCalledWith("/");
   });
 
   testA11yAct(loginCognitoComponent);
