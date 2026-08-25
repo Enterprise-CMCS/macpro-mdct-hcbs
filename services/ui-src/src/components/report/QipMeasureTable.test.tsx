@@ -88,68 +88,7 @@ vi.mock("utils", async (importOriginal) => ({
   getReportsForState: vi.fn().mockResolvedValue([]),
   addQipTargetPage: vi.fn().mockResolvedValue({ report: { pages: [] } }),
 }));
-/*
-vi.mock("@cmsgov/design-system", () => ({
-  Dropdown: ({
-    label,
-    name,
-    value,
-    options,
-    disabled,
-    errorMessage,
-    onChange,
-  }: Omit<React.ComponentProps<typeof Dropdown>, "options"> & {
-    options: { label: string; value: string }[];
-  }) => (
-    <>
-      <label htmlFor={name}>{label}</label>
-      <select
-        id={name}
-        name={name}
-        value={value}
-        disabled={disabled}
-        onChange={onChange}
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      {errorMessage ? <div>{errorMessage}</div> : null}
-    </>
-  ),
-  ChoiceList: ({
-    label,
-    name,
-    choices,
-    errorMessage,
-    onChange,
-  }: Omit<React.ComponentProps<typeof ChoiceList>, "choices"> & {
-    choices: { label: string; value: string; checked: boolean }[];
-  }) => (
-    <>
-      <fieldset>
-        <legend>{label}</legend>
-        {choices.map((choice) => (
-          <div key={choice.value}>
-            <input
-              type="checkbox"
-              id={`${name}-${choice.value}`}
-              name={name}
-              value={choice.value}
-              checked={choice.checked}
-              onChange={onChange}
-            />
-            <label htmlFor={`${name}-${choice.value}`}>{choice.label}</label>
-          </div>
-        ))}
-      </fieldset>
-      {errorMessage ? <div>{errorMessage}</div> : null}
-    </>
-  ),
-}));
-*/
+
 const mockTemplate: QipMeasureTableTemplate = {
   type: ElementType.QipMeasureTable,
   id: "qip-measure-table",

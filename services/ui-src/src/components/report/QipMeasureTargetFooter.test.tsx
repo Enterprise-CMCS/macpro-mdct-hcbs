@@ -9,12 +9,9 @@ import {
 } from "types";
 import { QipMeasureTargetFooterElement } from "./QipMeasureTargetFooter";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
-// import userEventTl from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import { useStore } from "utils/state/useStore";
 import { useNavigate } from "react-router-dom";
-
-// const userEvent = userEventTl.setup({ advanceTimers: vi.advanceTimersByTime });
 
 const mockAutosave = vi.fn();
 
