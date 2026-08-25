@@ -45,6 +45,26 @@ describe("reportValidation", () => {
       expect(validatedData).toBeDefined();
     });
 
+    it("should accept a report with a Date element that has empty helperText", async () => {
+      const reportWithDateEmptyHelperText = structuredClone(validReport);
+
+      for (const page of reportWithDateEmptyHelperText.pages) {
+        if (!("elements" in page)) continue;
+        const dateElement = page.elements?.find(
+          (element) => element.type === "date"
+        );
+        if (dateElement) {
+          dateElement.helperText = "";
+          break;
+        }
+      }
+
+      const validatedData = await validateReportPayload(
+        reportWithDateEmptyHelperText
+      );
+      expect(validatedData).toBeDefined();
+    });
+
     it("should preserve answers for QIP measure table elements", async () => {
       const reportWithQipMeasureTableAnswer = structuredClone(validQipReport);
       const selectMeasuresPage = reportWithQipMeasureTableAnswer.pages.find(
@@ -139,8 +159,10 @@ describe("reportValidation", () => {
       year: 2026,
       options: {
         cahps: true,
+        "cahps-period": "2024",
         nciidd: false,
         nciad: true,
+        "nciad-period": "2024",
         pom: false,
       },
     });
@@ -155,6 +177,34 @@ describe("reportValidation", () => {
       obj.options = {};
       expect(isReportOptions(obj)).toBe(true);
     });
+
+    it.each([
+      ["cahps", "cahps-period"],
+      ["nciidd", "nciidd-period"],
+      ["nciad", "nciad-period"],
+      ["pom", "pom-period"],
+    ])(
+      "should reject options with %s set to true and no %s",
+      (surveyFlag, surveyPeriod) => {
+        const obj = buildValidReportOptions();
+        obj.options[surveyFlag] = true;
+        delete obj.options[surveyPeriod];
+
+        expect(isReportOptions(obj)).toBe(false);
+      }
+    );
+
+    it.each(["cahps-period", "nciidd-period", "nciad-period", "pom-period"])(
+      "should reject a non-four-digit year in %s",
+      (surveyPeriod) => {
+        const obj = buildValidReportOptions();
+        const surveyFlag = surveyPeriod.replace("-period", "");
+        obj.options[surveyFlag] = true;
+        obj.options[surveyPeriod] = "20x4";
+
+        expect(isReportOptions(obj)).toBe(false);
+      }
+    );
 
     function* generateInvalidReportOptions() {
       let obj = undefined;

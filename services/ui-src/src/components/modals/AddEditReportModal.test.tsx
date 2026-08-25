@@ -118,6 +118,41 @@ describe("AddEditReportModal", () => {
     expect(dropdown.value).toBe("2026");
   });
 
+  it("should show two years of survey periods before the reporting year", async () => {
+    render(addModalComponent);
+
+    for (const radio of screen.getAllByLabelText("Yes")) {
+      await userEvent.click(radio);
+    }
+
+    const periodDropdowns = screen.getAllByRole("button", {
+      name: /Survey start and end date/,
+    });
+    const calendarYearPeriods = ["Jan 2024 - Dec 2024", "Jan 2025 - Dec 2025"];
+    const julyToJunePeriods = [
+      "July 2024 - June 2025",
+      "July 2025 - June 2026",
+    ];
+    const expectedPeriods = [
+      calendarYearPeriods,
+      julyToJunePeriods,
+      julyToJunePeriods,
+      calendarYearPeriods,
+    ];
+
+    for (const [index, dropdown] of periodDropdowns.entries()) {
+      await userEvent.click(dropdown);
+      for (const period of expectedPeriods[index]) {
+        expect(
+          screen.getByRole("option", { name: period })
+        ).toBeInTheDocument();
+      }
+      await userEvent.click(
+        screen.getByRole("option", { name: expectedPeriods[index][0] })
+      );
+    }
+  });
+
   it("should call the API to create a report", async () => {
     render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
@@ -130,11 +165,55 @@ describe("AddEditReportModal", () => {
       await userEvent.click(radio);
     }
 
+    const periodDropdowns = screen.getAllByRole("button", {
+      name: /Survey start and end date/,
+    });
+    for (const dropdown of periodDropdowns) {
+      await userEvent.click(dropdown);
+      await userEvent.click(screen.getByRole("option", { name: /2024/ }));
+    }
+
     const submitBtn = screen.getByText("Start new");
     await userEvent.click(submitBtn);
 
     expect(mockReportHandler).toHaveBeenCalled();
     expect(createReport).toHaveBeenCalled();
+  });
+
+  it("should clear the selected survey period when its survey is changed to No", async () => {
+    render(addModalComponent);
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: "Quality Measure Set Report Name",
+      }),
+      "mock-name"
+    );
+
+    await userEvent.click(screen.getAllByLabelText("Yes")[0]);
+    await userEvent.click(
+      screen.getByRole("button", { name: /Survey start and end date/ })
+    );
+    await userEvent.click(
+      screen.getByRole("option", { name: "Jan 2024 - Dec 2024" })
+    );
+
+    const noOptions = screen.getAllByLabelText("No");
+    for (const noOption of noOptions) {
+      await userEvent.click(noOption);
+    }
+
+    await userEvent.click(screen.getByText("Start new"));
+
+    expect(createReport).toHaveBeenCalledWith(ReportType.QMS, "AB", {
+      name: "mock-name",
+      year: 2026,
+      options: {
+        cahps: false,
+        nciidd: false,
+        nciad: false,
+        pom: false,
+      },
+    });
   });
 
   it("should call the API to edit a report", async () => {

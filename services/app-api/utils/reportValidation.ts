@@ -52,6 +52,7 @@ const nestedHeadingTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NestedHeading)),
   id: string().required(),
   text: string().required(),
+  helperText: string().notRequired(),
 });
 
 const paragraphTemplateSchema = object().shape({
@@ -107,7 +108,7 @@ const dateTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Date)),
   id: string().required(),
   label: string().required(),
-  helperText: string().required(),
+  helperText: string().notRequired(),
   dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
@@ -690,11 +691,22 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
   submittedView: array().of(pageElementSchema).required(),
 });
 
+const periodValidator = (fieldName: string) =>
+  string().when(fieldName, ([value], schema) =>
+    value === true
+      ? schema.required().matches(/^\d{4}$/, "Must be a 4-digit year")
+      : schema.notRequired()
+  );
+
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
+  "cahps-period": periodValidator("cahps"),
   nciidd: boolean().notRequired(),
+  "nciidd-period": periodValidator("nciidd"),
   nciad: boolean().notRequired(),
+  "nciad-period": periodValidator("nciad"),
   pom: boolean().notRequired(),
+  "pom-period": periodValidator("pom"),
 });
 
 const measureTargetMappingSchema = array(

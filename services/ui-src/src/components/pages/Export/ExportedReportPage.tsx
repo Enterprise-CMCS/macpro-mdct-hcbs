@@ -110,24 +110,31 @@ export const reportDetails = (report: Report) => {
 
 export const reportSubmissionSetUp = (report: Report) => {
   if (report.type !== ReportType.QMS) return;
-  const rows = [
-    {
-      indicator: "Is your state reporting on the HCBS CAHPS Survey?",
-      response: report.options.cahps ? "Yes" : "No",
-    },
-    {
-      indicator: "Is your state reporting on the NCI-IDD Survey?",
-      response: report.options.nciidd ? "Yes" : "No",
-    },
-    {
-      indicator: "Is your state reporting on the NCI-AD Survey?",
-      response: report.options.nciad ? "Yes" : "No",
-    },
-    {
-      indicator: "Is your state reporting on the POM Survey?",
-      response: report.options.pom ? "Yes" : "No",
-    },
-  ];
+
+  const rows: { indicator: string; response: string }[] = [];
+  const surveys = [
+    { id: "cahps", name: "HCBS CAHPS" },
+    { id: "nciidd", name: "NCI-IDD" },
+    { id: "nciad", name: "NCI-AD" },
+    { id: "pom", name: "POM" },
+  ] as const;
+
+  for (let { id, name } of surveys) {
+    rows.push({
+      indicator: `Is your state reporting on the ${name} Survey?`,
+      response: report.options[id] ? "Yes" : "No",
+    });
+    if (report.options[id]) {
+      const year = Number(report.options[`${id}-period`]);
+      const isCalendarYear = id === "cahps" || id === "pom";
+      rows.push({
+        indicator: "Reporting start and end date",
+        response: isCalendarYear
+          ? `Jan ${year} - Dec ${year}`
+          : `July ${year} - June ${year + 1}`,
+      });
+    }
+  }
 
   return (
     <Box>

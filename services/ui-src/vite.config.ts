@@ -23,6 +23,8 @@ export default defineConfig({
     root: "src",
     setupFiles: "utils/testing/setupTests.tsx",
     environment: "jsdom",
+    /* We don't use global defs, but @testing-library/jest-dom does. */
+    globals: true,
     coverage: {
       /*
        * The default coverage directory is "<root>/coverage",

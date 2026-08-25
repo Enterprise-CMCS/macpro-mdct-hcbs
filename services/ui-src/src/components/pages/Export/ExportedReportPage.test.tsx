@@ -13,7 +13,14 @@ const report = {
   lastEdited: 1751987780396,
   lastEditedBy: "Mrs Editor",
   status: "In progress",
-  options: { cahps: true, nciidd: false, nciad: true, pom: false },
+  options: {
+    cahps: true,
+    "cahps-period": "2024",
+    nciidd: false,
+    nciad: true,
+    "nciad-period": "2024",
+    pom: false,
+  },
 } as Report;
 useStore.setState({ report });
 
@@ -49,8 +56,18 @@ describe("ExportedReportPage", () => {
     );
 
     expect(screen.getByRole("row", { name: /CAHPS Survey\? Yes/ }));
+    expect(
+      screen.getByRole("row", {
+        name: "Reporting start and end date Jan 2024 - Dec 2024",
+      })
+    ).toBeInTheDocument();
     expect(screen.getByRole("row", { name: /NCI-IDD Survey\? No/ }));
     expect(screen.getByRole("row", { name: /NCI-AD Survey\? Yes/ }));
+    expect(
+      screen.getByRole("row", {
+        name: "Reporting start and end date July 2024 - June 2025",
+      })
+    ).toBeInTheDocument();
     expect(screen.getByRole("row", { name: /POM Survey\? No/ }));
   });
 

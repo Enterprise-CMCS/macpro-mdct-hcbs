@@ -122,7 +122,16 @@ describe("sanitization functions", () => {
         const options = {
           name: "mock-report",
           year: 2026,
-          options: { cahps, nciidd, nciad, pom },
+          options: {
+            cahps,
+            ...(cahps && { "cahps-period": "2024" }),
+            nciidd,
+            ...(nciidd && { "nciidd-period": "2024" }),
+            nciad,
+            ...(nciad && { "nciad-period": "2024" }),
+            pom,
+            ...(pom && { "pom-period": "2024" }),
+          },
         };
         const user = {
           fullName: "Mock User",

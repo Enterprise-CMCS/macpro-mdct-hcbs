@@ -319,6 +319,33 @@ describe("<Page/>", () => {
         },
       ]);
     });
+
+    it("should render helper text for NestedHeading element", () => {
+      render(
+        <Page
+          id="mock-page"
+          elements={[
+            {
+              type: ElementType.NestedHeading,
+              id: "nested-heading-1",
+              text: "Performance Target Timeframe",
+              helperText:
+                "The performance target timeframe should be within the next reporting period.",
+            },
+          ]}
+          setElements={vi.fn()}
+        />
+      );
+
+      expect(
+        screen.getByText("Performance Target Timeframe")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "The performance target timeframe should be within the next reporting period."
+        )
+      ).toBeInTheDocument();
+    });
   });
 
   describe("with read only user", () => {

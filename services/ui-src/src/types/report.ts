@@ -277,6 +277,7 @@ export type NestedHeadingTemplate = {
   type: ElementType.NestedHeading;
   id: string;
   text: string;
+  helperText?: string;
 };
 
 export type ParagraphTemplate = {
@@ -759,9 +760,13 @@ export interface ReportOptions {
   year: number;
   options: {
     cahps?: boolean;
+    "cahps-period"?: string;
     nciidd?: boolean;
+    "nciidd-period"?: string;
     nciad?: boolean;
+    "nciad-period"?: string;
     pom?: boolean;
+    "pom-period"?: string;
   };
 }
 
