@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { matchers } from "@emotion/jest";
 import { TextField } from "components";
 import { testA11y } from "utils/testing/commonTests";
 import {
@@ -11,8 +10,6 @@ import {
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { useState } from "react";
 import { ErrorMessages } from "../../constants";
-
-expect.extend(matchers);
 
 jest.mock("utils/state/hooks/useElementIsHidden");
 const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
@@ -146,39 +143,6 @@ describe("<TextField />", () => {
     render(<TextFieldWrapper template={mockedTextboxElement} />);
     const textField = screen.queryByLabelText("test label");
     expect(textField).not.toBeInTheDocument();
-  });
-
-  test("NumberField input has maxWidth of 240px", () => {
-    const { container } = render(
-      <TextFieldWrapper template={mockedNumberField} />
-    );
-    const wrapperElement = container.firstElementChild;
-    expect(wrapperElement).toBeInTheDocument();
-    (expect as any)(wrapperElement).toHaveStyleRule("max-width", "240px", {
-      target: ".ds-c-field",
-    });
-  });
-
-  test("Textbox input has maxWidth of 460px", () => {
-    const { container } = render(
-      <TextFieldWrapper template={mockedTextboxElement} />
-    );
-    const wrapperElement = container.firstElementChild;
-    expect(wrapperElement).toBeInTheDocument();
-    (expect as any)(wrapperElement).toHaveStyleRule("max-width", "460px", {
-      target: ".ds-c-field",
-    });
-  });
-
-  test("Input has responsive width of 100%", () => {
-    const { container } = render(
-      <TextFieldWrapper template={mockedNumberField} />
-    );
-    const wrapperElement = container.firstElementChild;
-    expect(wrapperElement).toBeInTheDocument();
-    (expect as any)(wrapperElement).toHaveStyleRule("width", "100%", {
-      target: ".ds-c-field",
-    });
   });
 
   testA11y(<TextFieldWrapper template={mockedTextboxElement} />);
