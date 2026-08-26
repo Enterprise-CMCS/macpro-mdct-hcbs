@@ -1,12 +1,17 @@
 import { handler } from "../../libs/handler-lib";
+import { getFlag } from "../../libs/launchdarkly-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { canReleaseReport } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { getReport, putReport } from "../../storage/reports";
 import { ReportStatus } from "../../types/reports";
+import { sendEmail } from "../../utils/notifications/email";
+import { logger } from "../../../app-api/libs/debug-lib";
 
 export const releaseReport = handler(parseReportParameters, async (request) => {
+  const notificationsEnabled = await getFlag("notificationsSystem");
+
   const { reportType, state, id } = request.parameters;
   const user = request.user;
 
@@ -37,6 +42,15 @@ export const releaseReport = handler(parseReportParameters, async (request) => {
 
   // save the report that's being submitted (with the new information on top of it)
   await putReport(report);
+
+  if (notificationsEnabled) {
+    try {
+      await sendEmail(report);
+    } catch (error) {
+      // log and allow call to succeed even if email fails
+      logger.error(error);
+    }
+  }
 
   return ok();
 });

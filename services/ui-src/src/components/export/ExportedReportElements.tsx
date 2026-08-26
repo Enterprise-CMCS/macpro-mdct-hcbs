@@ -11,6 +11,11 @@ import { PerformanceNdrExport } from "components/rates/types/PerformanceNdr";
 import { EligibilityTableElementExport } from "components/report/WwlComponents/EligibilityTable";
 import { CheckboxExport } from "components/fields/CheckboxField";
 import { ListInputExport } from "components/fields/ListInput";
+import { DateRangeTemplate } from "types/report";
+import { ReportTableType } from "./ExportedReportTable";
+import { KeyActivitiesTableExport } from "components/report/QipComponents/KeyActivitiesTable";
+
+type ExportedElementResponse = ReportTableType["response"];
 
 //for ignoring any elements within the page by their id
 const ignoreIdList = ["quality-measures-subheader"];
@@ -18,10 +23,13 @@ const ignoreIdList = ["quality-measures-subheader"];
 //elements that are rendered as part of the table that does not need a unique renderer
 const tableElementList = [
   ElementType.Textbox,
+  ElementType.Date,
+  ElementType.DateRange,
   ElementType.Radio,
   ElementType.TextAreaField,
   ElementType.Checkbox,
   ElementType.ListInput,
+  ElementType.NumberField,
 ];
 
 const renderElementList = [
@@ -35,16 +43,24 @@ const renderElementList = [
   ElementType.MeasureDetails,
   ElementType.SubHeader,
   ElementType.EligibilityTable,
+  ElementType.KeyActivityTable,
 ];
 
 export const shouldUseTable = (type: ElementType) => {
   return tableElementList.includes(type);
 };
 
+const renderDateRangeAnswer = (element: DateRangeTemplate) => {
+  const start = element.answer?.start || notAnsweredText;
+  const end = element.answer?.end || notAnsweredText;
+
+  return `${element.labels.start}: ${start}\n${element.labels.end}: ${end}`;
+};
+
 export const renderElements = (
   section: MeasurePageTemplate,
   element: PageElement
-) => {
+): ExportedElementResponse => {
   const { type } = element;
   if (!renderElementList.includes(type) || ignoreIdList.includes(element.id))
     return;
@@ -72,15 +88,22 @@ export const renderElements = (
       return MeasureDetailsExport(section);
     case ElementType.EligibilityTable:
       return EligibilityTableElementExport(element, section.navTitle);
+    case ElementType.KeyActivityTable:
+      return KeyActivitiesTableExport(element);
+    case ElementType.QipMeasureTable:
+      // TODO: Should this render in the PDF? What should it look like?
+      return undefined;
     case ElementType.Checkbox:
       return CheckboxExport(element);
     case ElementType.ListInput:
       return ListInputExport(element);
+    case ElementType.DateRange:
+      return renderDateRangeAnswer(element);
   }
 
   if (!("answer" in element)) {
     return notAnsweredText;
   }
 
-  return element.answer ?? notAnsweredText;
+  return (element as { answer?: string }).answer ?? notAnsweredText;
 };

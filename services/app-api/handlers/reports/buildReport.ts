@@ -34,6 +34,7 @@ export const buildReport = async (
   const waiverList = getWaiverInfo(year, state);
 
   const report: Report = {
+    ...template,
     state: state,
     id: KSUID.randomSync().string,
     created: Date.now(),
@@ -47,7 +48,6 @@ export const buildReport = async (
     options: reportOptions.options,
     archived: false,
     submissionCount: 0,
-    pages: template.pages,
   };
 
   /**
@@ -80,6 +80,8 @@ export const buildReport = async (
       );
       report.pages.push(parentPage, ...childPages);
     }
+    delete (report as any).measureTemplates;
+    delete (report as any).measureLookup;
   }
 
   //certain checkbox forms that utilize waivers need to have their checkboxes generate during form generation
@@ -89,6 +91,7 @@ export const buildReport = async (
       ReportType.PCP,
       ReportType.TACM,
       ReportType.QMS,
+      ReportType.QIP,
       ReportType.WWL,
     ].includes(report.type)
   ) {
@@ -131,12 +134,12 @@ const initializeMeasurePage = (
 ) => {
   const page = structuredClone(template);
   page.cmit = measure.cmit;
-  page.cmitId = measure.uid;
   page.required = measure.required;
   page.status = PageStatus.NOT_STARTED;
 
   if (isMeasurePage) {
     page.dependentPages = measure.dependentPages;
+    page.cmitId = measure.uid;
     page.cmitInfo = cmitInfo;
   }
 

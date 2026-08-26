@@ -6,7 +6,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { LiteReport, ReportType } from "../../types";
+import { LiteReport, ReportOptions, ReportType } from "../../types";
 import assert from "node:assert";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -28,7 +28,11 @@ mockedUseStore.mockReturnValue(mockStateUserStore);
 
 jest.mock("utils/api/requestMethods/report", () => ({
   updateReport: () => mockUpdateReport(),
-  createReport: () => mockCreateReport(),
+  createReport: (
+    reportType: string,
+    state: string,
+    reportOptions: ReportOptions
+  ) => mockCreateReport(reportType, state, reportOptions),
   getReportsForState: () => mockGetReportsForState(),
 }));
 
@@ -146,6 +150,39 @@ describe("Test dropdown for year", () => {
     await userEvent.selectOptions(dropdown, "2026");
     expect(dropdown.value).toBe("2026");
   });
+
+  test("period dropdowns show the two years before the reporting year", async () => {
+    for (const radio of screen.getAllByLabelText("Yes")) {
+      await userEvent.click(radio);
+    }
+
+    const periodDropdowns = screen.getAllByRole("button", {
+      name: /Survey start and end date/,
+    });
+    const calendarYearPeriods = ["Jan 2024 - Dec 2024", "Jan 2025 - Dec 2025"];
+    const julyToJunePeriods = [
+      "July 2024 - June 2025",
+      "July 2025 - June 2026",
+    ];
+    const expectedPeriods = [
+      calendarYearPeriods,
+      julyToJunePeriods,
+      julyToJunePeriods,
+      calendarYearPeriods,
+    ];
+
+    for (const [index, dropdown] of periodDropdowns.entries()) {
+      await userEvent.click(dropdown);
+      for (const period of expectedPeriods[index]) {
+        expect(
+          screen.getByRole("option", { name: period })
+        ).toBeInTheDocument();
+      }
+      await userEvent.click(
+        screen.getByRole("option", { name: expectedPeriods[index][0] })
+      );
+    }
+  });
 });
 
 describe("Test submit", () => {
@@ -164,11 +201,55 @@ describe("Test submit", () => {
       await userEvent.click(radio);
     }
 
+    const periodDropdowns = screen.getAllByRole("button", {
+      name: /Survey start and end date/,
+    });
+    for (const dropdown of periodDropdowns) {
+      await userEvent.click(dropdown);
+      await userEvent.click(screen.getByRole("option", { name: /2024/ }));
+    }
+
     const submitBtn = screen.getByText("Start new");
     await userEvent.click(submitBtn);
 
     expect(mockReportHandler).toHaveBeenCalled();
     expect(mockCreateReport).toHaveBeenCalled();
+  });
+
+  it("removes a selected survey period when the survey is changed to No", async () => {
+    render(addModalComponent);
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: "Quality Measure Set Report Name",
+      }),
+      "mock-name"
+    );
+
+    await userEvent.click(screen.getAllByLabelText("Yes")[0]);
+    await userEvent.click(
+      screen.getByRole("button", { name: /Survey start and end date/ })
+    );
+    await userEvent.click(
+      screen.getByRole("option", { name: "Jan 2024 - Dec 2024" })
+    );
+
+    const noOptions = screen.getAllByLabelText("No");
+    for (const noOption of noOptions) {
+      await userEvent.click(noOption);
+    }
+
+    await userEvent.click(screen.getByText("Start new"));
+
+    expect(mockCreateReport).toHaveBeenCalledWith(ReportType.QMS, "AB", {
+      name: "mock-name",
+      year: 2026,
+      options: {
+        cahps: false,
+        nciidd: false,
+        nciad: false,
+        pom: false,
+      },
+    });
   });
 
   it("Simulate submitting an edited report", async () => {
@@ -226,6 +307,7 @@ describe("Test AddEditReportModal types", () => {
     { type: ReportType.TACM, text: "TACM Report" },
     { type: ReportType.CI, text: "Critical Incident Report" },
     { type: ReportType.PCP, text: "Person-Centered Planning Report" },
+    { type: ReportType.QIP, text: "Quality Improvement Plan" },
     { type: ReportType.WWL, text: "Waiver Waiting List Report" },
   ])("$type report type renders a title", ({ type, text }) => {
     render(
@@ -242,5 +324,45 @@ describe("Test AddEditReportModal types", () => {
       </RouterWrappedComponent>
     );
     expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
+  });
+
+  test("QIP renders the quality improvement plan subheading", () => {
+    render(
+      <RouterWrappedComponent>
+        <AddEditReportModal
+          activeState="AB"
+          reportType={ReportType.QIP}
+          modalDisclosure={{
+            isOpen: true,
+            onClose: mockCloseHandler,
+          }}
+          reportHandler={mockReportHandler}
+        />
+      </RouterWrappedComponent>
+    );
+
+    expect(
+      screen.getByText(
+        "Enter a report for each of your state's quality improvement plans."
+      )
+    ).toBeInTheDocument();
+  });
+
+  test("WWL renders the waiting list subheading", () => {
+    render(
+      <RouterWrappedComponent>
+        <AddEditReportModal
+          activeState="AB"
+          reportType={ReportType.WWL}
+          modalDisclosure={{
+            isOpen: true,
+            onClose: mockCloseHandler,
+          }}
+          reportHandler={mockReportHandler}
+        />
+      </RouterWrappedComponent>
+    );
+
+    expect(screen.getByText("Waiting List Separation")).toBeInTheDocument();
   });
 });

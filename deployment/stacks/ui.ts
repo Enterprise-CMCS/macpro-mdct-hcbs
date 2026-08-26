@@ -113,6 +113,16 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     }
   );
 
+  const cachePolicy = new cloudfront.CachePolicy(scope, "CustomCachePolicy", {
+    minTtl: Duration.seconds(0),
+    defaultTtl: Duration.days(1),
+    maxTtl: Duration.days(365),
+    queryStringBehavior: cloudfront.CacheQueryStringBehavior.none(),
+    cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+    enableAcceptEncodingBrotli: true,
+    enableAcceptEncodingGzip: true,
+  });
+
   const distribution = new cloudfront.Distribution(
     scope,
     "CloudFrontDistribution",
@@ -130,7 +140,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
           cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(uiBucket),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        cachePolicy,
         compress: true,
         responseHeadersPolicy: securityHeadersPolicy,
       },

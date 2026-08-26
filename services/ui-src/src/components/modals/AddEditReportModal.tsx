@@ -22,6 +22,7 @@ import QmsOptions from "./AddFormOptions/QmsOptions";
 import TacmOptions from "./AddFormOptions/TacmOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
 import PcpOptions from "./AddFormOptions/PcpOptions";
+import QipOptions from "./AddFormOptions/QipOptions";
 import WwlOptions from "./AddFormOptions/WwlOptions";
 import { ErrorMessages } from "../../constants";
 
@@ -41,6 +42,7 @@ export type AddEditReportModalOptions = {
    */
   OptionsComponent?: (props: {
     selectedReport: LiteReport | undefined;
+    year: string | undefined;
     onOptionsChange: (options: Record<string, any>) => void;
     submissionAttempted: boolean;
     setOptionsComplete: (isComplete: boolean) => void;
@@ -55,9 +57,39 @@ const buildModalOptions = (
     [ReportType.TACM]: TacmOptions,
     [ReportType.CI]: CiOptions,
     [ReportType.PCP]: PcpOptions,
+    [ReportType.QIP]: QipOptions,
     [ReportType.WWL]: WwlOptions,
   };
   return optionsByReportType[reportType];
+};
+
+const getSubheading = (reportType: ReportType): ReactElement | null => {
+  switch (reportType) {
+    case ReportType.WWL:
+      return (
+        <Box mt={4} mb={8}>
+          <Alert status={AlertTypes.WARNING} title="Waiting List Separation">
+            A separate report should be generated for each waiver waiting list
+            your state intends to include during the current reporting year.
+          </Alert>
+        </Box>
+      );
+    case ReportType.QIP:
+      return (
+        <Box mt={4} mb={8}>
+          <Alert
+            status={AlertTypes.WARNING}
+            title="Enter a report for each of your state's quality improvement plans."
+          >
+            States may use the same quality improvement plan for more than one
+            mandatory measure. If your state employs multiple QI plans, you will
+            need a separate report for each one.
+          </Alert>
+        </Box>
+      );
+    default:
+      return null;
+  }
 };
 
 export const AddEditReportModal = ({
@@ -180,30 +212,17 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
+  const subheading = getSubheading(reportType);
+
   return (
     <Modal
-      data-testid="add-edit-report-modal"
       formId="addEditReportModal"
       modalDisclosure={modalDisclosure}
       content={{
         heading: `${selectedReport ? "Edit" : "Add new"} ${
           verbiage.reportName
         }`,
-        subheading:
-          reportType === ReportType.WWL ? (
-            <Box mt={4} mb={8}>
-              <Alert
-                status={AlertTypes.WARNING}
-                title="Waiting List Separation"
-              >
-                A separate report should be generated for each waiver waiting
-                list your state intends to include during the current reporting
-                year.
-              </Alert>
-            </Box>
-          ) : (
-            ""
-          ),
+        subheading,
         actionButtonText: submitting ? (
           <Spinner size="md" />
         ) : (
@@ -246,6 +265,7 @@ export const AddEditReportModal = ({
           {OptionsComponent ? (
             <OptionsComponent
               selectedReport={selectedReport}
+              year={formData.year}
               onOptionsChange={onOptionsChange}
               submissionAttempted={submissionAttempted}
               setOptionsComplete={setOptionsComplete}

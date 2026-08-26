@@ -18,3 +18,4 @@ cdk.context.json
 **/.yarn/*
 services/ui-src/public/env-config.ts
 .vscode/settings.json
+.idea/

@@ -2,11 +2,7 @@ PROJECT=hcbs
 
 # Dynamo
 BannersTable=local-banners
-QmsReportsTable=local-qms-reports
-TacmReportsTable=local-tacm-reports
-CiReportsTable=local-ci-reports
-PcpReportsTable=local-pcp-reports
-WwlReportsTable=local-wwl-reports
+ReportsTable=local-reports
 NotificationsTable=local-notifications
 
 COGNITO_IDENTITY_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_IDENTITY_POOL_ID
@@ -14,6 +10,7 @@ COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT
 COGNITO_USER_POOL_CLIENT_DOMAIN=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT_DOMAIN
 COGNITO_USER_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_ID
 REACT_APP_LD_SDK_CLIENT=op://mdct_devs/hcbs_secrets/REACT_APP_LD_SDK_CLIENT
+LD_SDK_SERVER=op://mdct_devs/hcbs_secrets/LD_SDK_SERVER
 
 # These settings are needed for playwright end-to-end tests
 TEST_ADMIN_USER_EMAIL=op://mdct_devs/hcbs_secrets/CYPRESS_ADMIN_USER_EMAIL

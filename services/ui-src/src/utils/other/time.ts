@@ -30,6 +30,20 @@ export const formatMonthDayYear = (date: number) => {
   return [getPart("month"), getPart("day"), getPart("year")].join("/");
 };
 
+/**
+ * Format the given date to MM/yyyy. For example: "03/2024"
+ */
+export const formatMonthYear = (date: number) => {
+  const options = {
+    month: "2-digit",
+    year: "numeric",
+  } as const;
+  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const parts = formatter.formatToParts(date);
+  const getPart = (type: string) => parts.find((p) => p.type === type)!.value;
+  return [getPart("month"), getPart("year")].join("/");
+};
+
 /*
  * Calculates time remaining for things like timeout
  */
@@ -69,6 +83,27 @@ export const parseMMDDYYYY = (dateString: string): Date | undefined => {
   ) {
     return dateObj;
   }
+  return undefined;
+};
+
+/**
+ * Parse a date string in the format "MM/YYYY"
+ * @returns a Date (first day of month), or `undefined` if the input is invalid
+ */
+export const parseMMYYYY = (dateString: string): Date | undefined => {
+  if (!dateString || !/^\d{2}\/\d{4}$/.test(dateString)) {
+    return undefined;
+  }
+
+  const parts = dateString.split("/");
+  const month = parseInt(parts[0]) - 1;
+  const year = parseInt(parts[1]);
+
+  const dateObj = new Date(year, month, 1);
+  if (dateObj.getFullYear() === year && dateObj.getMonth() === month) {
+    return dateObj;
+  }
+
   return undefined;
 };
 

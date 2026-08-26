@@ -15,12 +15,14 @@ import { notAnsweredText } from "../../constants";
 import { ElementType } from "types";
 import { ReactElement } from "react";
 import { parseHtml } from "utils";
+import { DateTemplate } from "types/report";
 
 export type ReportTableType = {
   indicator: string;
   response?: string | number | ReactElement | undefined | string[];
   helperText?: string;
   type?: ElementType;
+  dateFormat?: DateTemplate["dateFormat"];
   required?: boolean;
   caption?: string;
 };
@@ -56,7 +58,11 @@ export const ExportedReportTable = ({ rows, caption }: Props) => {
               {row.helperText && (
                 <Text color="palette.gray">{parseHtml(row.helperText)}</Text>
               )}
-              {row.type === ElementType.Date && <Text>MM/DD/YYYY</Text>}
+              {row.type === ElementType.Date && (
+                <Text>
+                  {row.dateFormat === "MMYYYY" ? "MM/YYYY" : "MM/DD/YYYY"}
+                </Text>
+              )}
             </Td>
             <Td color={getTextColor(row)} style={{ whiteSpace: "pre-line" }}>
               {row.response || notAnsweredText}

@@ -1,6 +1,11 @@
 import { apiLib } from "utils";
 import { getRequestHeaders } from "./getRequestHeaders";
-import { LiteReport, Report, ReportOptions } from "types/report";
+import {
+  LiteReport,
+  MeasureTargetInfo,
+  Report,
+  ReportOptions,
+} from "types/report";
 
 export async function createReport(
   reportType: string,
@@ -26,6 +31,26 @@ export async function getReport(reportType: string, state: string, id: string) {
     `/reports/${reportType}/${state}/${id}`,
     options
   )!;
+}
+
+export async function addQipTargetPage(
+  report: Report,
+  newPageInfo: MeasureTargetInfo
+) {
+  return await apiLib.patch<{
+    /** The report, including new page */
+    report: Report;
+    /** The ID of the new page */
+    pageId: string;
+    /** Any QMS values that were copied as baselines on the new page */
+    originalValues: Record<string, number>;
+  }>(`/reports/${report.type}/${report.state}/${report.id}`, {
+    headers: await getRequestHeaders(),
+    body: {
+      patchType: "addQipTargetPage",
+      ...newPageInfo,
+    },
+  });
 }
 
 export async function putReport(report: Report) {

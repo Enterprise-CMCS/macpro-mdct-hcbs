@@ -1,8 +1,13 @@
 export const ErrorMessages = {
   endDateBeforeStartDate: "End date can't be before start date",
+  measurementEndDateBeforeStartDate:
+    "Measurement end date can't be before start date",
   mustBeADate: "Response must be a date in MMDDYYYY format",
   mustBeADateOptional:
     "If provided, response must be a date in MMDDYYYY format",
+  mustBeAMonthYear: "Response must be a date in MMYYYY format",
+  mustBeAMonthYearOptional:
+    "If provided, response must be a date in MMYYYY format",
   mustBeANumber: "Response must be a number",
   requiredResponse: "A response is required",
   mustBeAnEmail: "Response must be a valid email address",
@@ -12,6 +17,8 @@ export const ErrorMessages = {
   ) => `${numerator} must be 0 when the ${denominator} is 0`,
   mustBeUniqueReportName:
     "A report with this name already exists during this reporting period.",
+  wordCountExceeded: (count: number) =>
+    `Warning: You have exceeded the recommended ${count}-word limit. Please consider condensing your response to ensure clarity and conciseness before submitting.`,
 } as const;
 
 export const PRODUCTION_HOST_DOMAIN = "mdcthcbs.cms.gov";

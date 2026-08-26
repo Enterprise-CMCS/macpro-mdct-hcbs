@@ -8,7 +8,7 @@ import {
   BannerFormData,
 } from "types";
 import { MeasurePageTemplate, Report } from "types/report";
-import { ReactNode } from "react";
+import { ReactNode, RefObject } from "react";
 import {
   buildState,
   changeDeliveryMethods,
@@ -66,6 +66,7 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
   modalOpen: false,
   modalHeader: undefined,
   modalComponent: undefined,
+  modalFinalFocusRef: null,
   lastSavedTime: undefined,
   errorMessage: undefined,
   sidebarOpen: true,
@@ -86,8 +87,21 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
   setModalOpen: (modalOpen: boolean) =>
     set(() => ({ modalOpen }), false, { type: "setModalOpen" }),
   setModalComponent: (modalComponent: ReactNode, modalHeader: string) =>
-    set(() => ({ modalComponent, modalOpen: true, modalHeader }), false, {
-      type: "setModalComponent",
+    set(
+      () => ({
+        modalComponent,
+        modalOpen: true,
+        modalHeader,
+        modalFinalFocusRef: null,
+      }),
+      false,
+      { type: "setModalComponent" }
+    ),
+  setModalFinalFocusRef: (
+    modalFinalFocusRef: RefObject<HTMLElement | null> | null
+  ) =>
+    set(() => ({ modalFinalFocusRef }), false, {
+      type: "setModalFinalFocusRef",
     }),
   setAnswers: (answers: any) =>
     set((state: HcbsReportState) => mergeAnswers(answers, state), false, {
@@ -154,24 +168,11 @@ export const useStore = create(
 
 /*
  * Zustand doesn't directly export the type signatures of its callbacks.
- * These were manually written to precisely match what Zustand expects,
- * as of Zustand v4.5.2
- *
- * Note that it _is_ possible to access these types indirectly.
- * For example, Set<T> is `Parameters<Parameters<typeof devtools<T>>[0][0]`.
- * However, even though Typescript can handle that, our linter currently cannot.
- * If/when we upgrade our linter, it may be worthwhile to switch to that method.
+ * but we can access them indirectly with the Parameters utility type.
  */
 
 /** The type of a Set callback within Zustand. */
-type Set<TState> = <A extends string | { type: string }>(
-  partial:
-    | TState
-    | Partial<TState>
-    | ((state: TState) => TState | Partial<TState>),
-  replace?: boolean,
-  action?: A
-) => void;
+type Set<TState> = Parameters<Parameters<typeof devtools<TState>>[0]>[0];
 
 /** The type of a Get callback within Zustand. */
-type Get<TState> = () => TState;
+type Get<TState> = Parameters<Parameters<typeof devtools<TState>>[0]>[1];

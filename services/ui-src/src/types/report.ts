@@ -5,6 +5,7 @@ export enum ReportType {
   TACM = "TACM",
   CI = "CI",
   PCP = "PCP",
+  QIP = "QIP",
   WWL = "WWL",
 }
 
@@ -24,6 +25,8 @@ export const getReportName = (type: string | undefined) => {
       return "Critical Incident Report";
     case ReportType.PCP:
       return "Person-Centered Planning Report";
+    case ReportType.QIP:
+      return "QMS Quality Improvement Plans";
     case ReportType.WWL:
       return "Waiver Waiting List Report";
     default:
@@ -60,6 +63,8 @@ export type ReportBase = {
     | MeasurePageTemplate
     | ReviewSubmitTemplate
   )[];
+  /** Appears only in QIP. Used to generate Measure Target pages. */
+  measureTargetMapping?: MeasureTargetMapping;
 };
 export type ReportWithMeasuresTemplate = ReportBase & ReportMeasureConfig;
 
@@ -153,7 +158,7 @@ export const isFormPageTemplate = (
 export const isMeasurePageTemplate = (
   page: PageTemplate
 ): page is MeasurePageTemplate => {
-  return (page as MeasurePageTemplate).cmitId != undefined;
+  return page.type === PageType.Measure;
 };
 
 export type PageId = string;
@@ -175,17 +180,20 @@ export enum ElementType {
   NumberField = "numberField",
   TextAreaField = "textAreaField",
   Date = "date",
+  DateRange = "dateRange",
   Dropdown = "dropdown",
   Accordion = "accordion",
   Paragraph = "paragraph",
   Radio = "radio",
   Checkbox = "checkbox",
   ButtonLink = "buttonLink",
-  MeasureTable = "measureTable",
+  QmsMeasureTable = "qmsMeasureTable",
+  QipMeasureTable = "qipMeasureTable",
   MeasureResultsNavigationTable = "measureResultsNavigationTable",
   StatusTable = "statusTable",
   MeasureDetails = "measureDetails",
   MeasureFooter = "measureFooter",
+  QipMeasureTargetFooter = "qipMeasureTargetFooter",
   LengthOfStayRate = "lengthOfStay",
   ReadmissionRate = "readmissionRate",
   MultiCategoryNdr = "multiCategoryNdr",
@@ -197,6 +205,7 @@ export enum ElementType {
   SubmissionParagraph = "submissionParagraph",
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
+  KeyActivityTable = "keyActivityTable",
 }
 
 export type PageElement =
@@ -208,17 +217,20 @@ export type PageElement =
   | NumberFieldTemplate
   | TextAreaBoxTemplate
   | DateTemplate
+  | DateRangeTemplate
   | DropdownTemplate
   | AccordionTemplate
   | ParagraphTemplate
   | RadioTemplate
   | CheckboxTemplate
   | ButtonLinkTemplate
-  | MeasureTableTemplate
+  | QmsMeasureTableTemplate
+  | QipMeasureTableTemplate
   | MeasureResultsNavigationTableTemplate
   | StatusTableTemplate
   | MeasureDetailsTemplate
   | MeasureFooterTemplate
+  | QipMeasureTargetFooterTemplate
   | LengthOfStayRateTemplate
   | ReadmissionRateTemplate
   | MultiCategoryNdrTemplate
@@ -229,7 +241,8 @@ export type PageElement =
   | DividerTemplate
   | ListInputTemplate
   | SubmissionParagraphTemplate
-  | EligibilityTableTemplate;
+  | EligibilityTableTemplate
+  | KeyActivityTableTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -264,6 +277,7 @@ export type NestedHeadingTemplate = {
   type: ElementType.NestedHeading;
   id: string;
   text: string;
+  helperText?: string;
 };
 
 export type ParagraphTemplate = {
@@ -307,6 +321,7 @@ export type TextAreaBoxTemplate = {
   id: string;
   label: string;
   helperText?: string;
+  wordLimit?: number;
   answer?: string;
   hideCondition?: HideCondition;
   required: boolean;
@@ -316,9 +331,30 @@ export type DateTemplate = {
   type: ElementType.Date;
   id: string;
   label: string;
-  helperText: string;
+  helperText?: string;
+  dateFormat?: "MMDDYYYY" | "MMYYYY";
   answer?: string;
   required: boolean;
+};
+
+export type DateRangeTemplate = {
+  type: ElementType.DateRange;
+  id: string;
+  labels: {
+    top: string;
+    start: string;
+    end: string;
+  };
+  helperText?: string;
+  startHelperText?: string;
+  endHelperText?: string;
+  dateFormat?: "MMDDYYYY" | "MMYYYY";
+  answer: {
+    start: string;
+    end?: string;
+  };
+  required: boolean;
+  endDateRequired?: boolean;
 };
 
 export type DropdownTemplate = {
@@ -348,11 +384,81 @@ export type AccordionTemplate = {
   value: string;
 };
 
-export type MeasureTableTemplate = {
-  type: ElementType.MeasureTable;
+export type QmsMeasureTableTemplate = {
+  type: ElementType.QmsMeasureTable;
   id: string;
   caption: string;
   measureDisplay: "required" | "optional";
+};
+
+export type QipMeasureTableTemplate = {
+  id: string;
+  type: ElementType.QipMeasureTable;
+  caption: string;
+  answer?: {
+    /** The ID of the corresponding page in this QIP. Unique within this report. */
+    pageId: string;
+    /** The display name of the measure being targeted for improvement. */
+    measureName: string;
+    /** Mapping from rate ID to the value copied from QMS, if any. */
+    originalValues?: Record<string, number>;
+  }[];
+};
+
+/**
+ * Indicates which measures may be chosen for Quality Improvement Plans.
+ * Contains enough information to populate the measure target template pages.
+ * Used only within QIP reports.
+ *
+ * Note: This type def is shaped a bit oddly, such that TS can guarantee that
+ * any measure with includedInQms will also have qmsPageId and qmsElementId.
+ */
+export type MeasureTargetMapping = ({
+  /** The name as it will be displayed to the user, in various places. */
+  measureName: string;
+  /**
+   * An identifier unique within `report.measureTargetMapping`.
+   * Used as the value in a dropdown list, in order to tie back to this object.
+   *
+   * These identifiers may be official & meaningful (like `LTSS-1`)
+   * or invented for this purpose (like `CAHPS-CHOOSE`).
+   */
+  measureId: string;
+} & (
+  | {
+      /**
+       * Indicates that the measure is collected by the QMS report,
+       * and therefore that a baseline value _may_ be found there.
+       */
+      includedInQms: true;
+      deliveryMethods: {
+        [deliveryMethodId: string]: { qmsPageId: string };
+      };
+      rates: {
+        label: string;
+        id: string;
+        qmsElementId: string;
+      }[];
+    }
+  | {
+      /** Indicates that the measure is not collected by the QMS report. */
+      includedInQms: false;
+      deliveryMethods: {
+        [deliveryMethodId: string]: {};
+      };
+      rates: {
+        label: string;
+        id: string;
+      }[];
+    }
+))[];
+
+/** Payload of a request to PATCH addQipTargetPage. */
+export type MeasureTargetInfo = {
+  measureId: string;
+  qmsReportId?: string;
+  deliveryMethods: string[];
+  rates: string[];
 };
 
 export type EligibilityTableItem = {
@@ -377,6 +483,20 @@ export type EligibilityTableTemplate = {
   modalInstructions: string;
   frequencyOptions: { label: string; value: string }[];
   answer?: EligibilityTableItem[];
+};
+
+export type KeyActivityItem = {
+  id: string;
+  title: string;
+  completionDate?: string;
+};
+
+export type KeyActivityTableTemplate = {
+  type: ElementType.KeyActivityTable;
+  id: string;
+  caption: string;
+  required: boolean;
+  answer?: KeyActivityItem[];
 };
 
 export type MeasureResultsNavigationTableTemplate = {
@@ -429,7 +549,7 @@ export type ListInputTemplate = {
   id: string;
   label: string;
   fieldLabel: string;
-  helperText: string;
+  helperText?: string;
   buttonText: string;
   answer?: string[];
   required: boolean;
@@ -450,6 +570,12 @@ export type MeasureFooterTemplate = {
   clear?: boolean;
 };
 
+export type QipMeasureTargetFooterTemplate = {
+  type: ElementType.QipMeasureTargetFooter;
+  id: string;
+  returnTo: string;
+};
+
 export const LengthOfStayFieldNames = {
   actualCount: "actualCount",
   denominator: "denominator",
@@ -463,10 +589,21 @@ export const LengthOfStayFieldNames = {
 export type LengthOfStayField =
   (typeof LengthOfStayFieldNames)[keyof typeof LengthOfStayFieldNames];
 
+export type LengthOfStayHint = {
+  actualCountHint?: string;
+  denominatorHint?: string;
+  expectedCountHint?: string;
+  populationRateHint?: string;
+  actualRateHint?: string;
+  expectedRateHint?: string;
+  adjustedRateHint?: string;
+};
+
 export type LengthOfStayRateTemplate = {
   id: string;
   type: ElementType.LengthOfStayRate;
   labels: Record<LengthOfStayField, string>;
+  hintText?: LengthOfStayHint;
   answer?: Record<LengthOfStayField, number | undefined>;
   required: boolean;
   errors?: Record<LengthOfStayField, string>;
@@ -491,6 +628,7 @@ export type ReadmissionRateTemplate = {
   id: string;
   type: ElementType.ReadmissionRate;
   labels: Record<ReadmissionRateField, string>;
+  hintText: Record<ReadmissionRateField, string>;
   answer?: Record<ReadmissionRateField, number | undefined>;
   required: boolean;
   errors?: Record<ReadmissionRateField, string>;
@@ -513,11 +651,33 @@ export type RateSetData = {
   rates: RateType[];
 };
 
+export type RateHints = {
+  hintNumerator?: string;
+  hintDenominator?: string;
+  hintRate?: string;
+};
+
+export type CategoryHints = RateHints & { categoryId: string };
+
+export type Assessment = {
+  label: string;
+  id: string;
+  hints?: RateHints;
+  categoryHints?: CategoryHints[];
+};
+
+export type NdrCategory = {
+  label: string;
+  id: string;
+  autoCalc?: boolean;
+  hintRate?: string;
+};
+
 export type MultiCategoryNdrTemplate = {
   id: string;
   type: ElementType.MultiCategoryNdr;
-  assessments: { label: string; id: string }[];
-  categories: { label: string; id: string; autoCalc?: boolean }[];
+  assessments: Assessment[];
+  categories: NdrCategory[];
   multiplier?: number;
   answer?: RateSetData[];
   required: boolean;
@@ -527,8 +687,9 @@ export type MultiRateNdrTemplate = {
   id: string;
   type: ElementType.MultiRateNdr;
   label?: string;
+  hint?: string;
   helperText?: string;
-  assessments: { label: string; id: string }[];
+  assessments: Assessment[];
   answer?: RateSetData;
   required: boolean;
 };
@@ -537,6 +698,11 @@ export type NdrTemplate = {
   id: string;
   type: ElementType.Ndr;
   label: string;
+  hintText?: {
+    numeratorHint?: string;
+    denominatorHint?: string;
+    rateHint?: string;
+  };
   answer?: RateData;
   required: boolean;
 };
@@ -547,9 +713,9 @@ export type PerformanceNdrTemplate = {
   label?: string;
   answer?: RateData;
   hintText?: {
-    numHint: string | undefined;
-    denomHint: string | undefined;
-    rateHint: string | undefined;
+    numHint?: string;
+    denomHint?: string;
+    rateHint?: string;
   };
   required: boolean;
   multiplier?: number;
@@ -594,9 +760,13 @@ export interface ReportOptions {
   year: number;
   options: {
     cahps?: boolean;
+    "cahps-period"?: string;
     nciidd?: boolean;
+    "nciidd-period"?: string;
     nciad?: boolean;
+    "nciad-period"?: string;
     pom?: boolean;
+    "pom-period"?: string;
   };
 }
 

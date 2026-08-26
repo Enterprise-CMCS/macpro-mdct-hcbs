@@ -91,13 +91,24 @@ export const TextField = (
 
   const parsedHint = textbox.helperText && parseHtml(textbox.helperText);
   const labelText = textbox.label;
+  const maxFieldWidth =
+    textbox.type === ElementType.NumberField ? "240px" : "460px";
 
   if (hideElement) {
     return null;
   }
 
   return (
-    <Box>
+    <Box
+      width="100%"
+      maxWidth="460px"
+      sx={{
+        ".ds-c-field": {
+          width: "100%",
+          maxWidth: maxFieldWidth,
+        },
+      }}
+    >
       <CmsdsTextField
         name={textbox.id}
         label={labelText || ""}

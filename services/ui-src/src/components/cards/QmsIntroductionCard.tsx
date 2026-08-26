@@ -25,10 +25,11 @@ export const QmsIntroductionCard = () => {
       <ReportIntroCardActions reportType={ReportType.QMS} />
       <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label="When is the Quality Measure Set Report Due?">
-          The HCBS QMS report will be created and submitted biannually. CMS will
-          review and approve all HCBS QMS reports. The reporting period will
-          open on September 1 and close on December 31 during each year that
-          states and territories are required to report.
+          The HCBS QMS report will be created and submitted every other year,
+          starting in 2026. CMS will review and approve all HCBS QMS reports.
+          The reporting period will open on or after September 1 and close on
+          December 31 during each year that states and territories are required
+          to report.
         </AccordionItem>
       </Accordion>
     </ReportIntroCard>

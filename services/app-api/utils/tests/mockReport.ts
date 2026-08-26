@@ -1,10 +1,12 @@
 import { qmsReportTemplate as qmsReportTemplate2026 } from "../../forms/2026/qms/qms";
+import { getReportTemplate } from "../../forms/yearlyFormSelection";
 import {
   Report,
   PageType,
   ElementType,
   MeasureTemplateName,
   ReportStatus,
+  ReportType,
 } from "../../types/reports";
 import { StateAbbr } from "../constants";
 
@@ -25,6 +27,21 @@ export const validReport: Report = {
   archived: false,
   submissionCount: 0,
   options: {},
+};
+
+export const validQipReport: Report = {
+  state: "CO" as const,
+  id: "2rRaoAFm8yLB2N2wSkTJ0iRTDu0",
+  created: 1736524513631,
+  lastEdited: 1736524513631,
+  lastEditedBy: "Anthony Soprano",
+  lastEditedByEmail: "stateuser2@test.com",
+  status: ReportStatus.NOT_STARTED,
+  name: "yeehaw",
+  archived: false,
+  submissionCount: 0,
+  options: {},
+  ...getReportTemplate(ReportType.QIP, 2026),
 };
 
 export const missingStateReport = {
@@ -193,6 +210,64 @@ export const invalidRadioCheckedChildrenReport = {
       ],
     },
   },
+};
+
+export const reportWithListInputNoHelperText = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["general-info"],
+    },
+    {
+      id: "general-info",
+      navTitle: "General Information",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.ListInput,
+          id: "waivers-list-inputs",
+          label: "If an HCBS authority is not included above, add it here.",
+          fieldLabel: "Name and control number (if applicable)",
+          // helperText optional
+          buttonText: "Add HCBS authority",
+          required: false,
+        },
+      ],
+    },
+  ],
+};
+
+export const reportWithKeyActivityTable = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["qip"],
+    },
+    {
+      id: "qip",
+      navTitle: "QIP",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.KeyActivityTable,
+          id: "key-activities-table",
+          caption: "Key Activities",
+          required: true,
+          answer: [
+            {
+              id: "activity-1",
+              title: "Activity 1",
+              completionDate: "01/2026",
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 export const invalidPageElementType = {

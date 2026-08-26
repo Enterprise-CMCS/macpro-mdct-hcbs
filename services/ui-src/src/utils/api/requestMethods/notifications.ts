@@ -22,3 +22,18 @@ export async function updateNotifications(notification: Notification) {
   updateTimeout();
   return await apiLib.put<Notification[]>("/notifications", options);
 }
+
+export async function sendTestEmail(payload: {
+  toAddress: string;
+  subject: string;
+  message: string;
+}) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    body: { ...payload },
+  };
+
+  updateTimeout();
+  return await apiLib.post("/notifications/test-email", options);
+}

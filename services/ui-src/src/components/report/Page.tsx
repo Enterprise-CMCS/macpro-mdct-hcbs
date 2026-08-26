@@ -18,10 +18,13 @@ import {
 } from "../../types/report";
 import {
   DateField,
+  DateRange,
   DropdownField,
   MeasureDetailsElement,
   MeasureFooterElement,
-  MeasureTableElement,
+  QmsMeasureTableElement,
+  QipMeasureTargetFooterElement,
+  QipMeasureTableElement,
   MeasureResultsNavigationTableElement,
   RadioField,
   StatusTableElement,
@@ -37,6 +40,7 @@ import {
   CheckboxField,
   ListInput,
   EligibilityTableElement,
+  KeyActivitiesTableElement,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -79,6 +83,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <TextField {...{ updateElement, disabled, element }} />;
       case ElementType.Date:
         return <DateField {...{ updateElement, disabled, element }} />;
+      case ElementType.DateRange:
+        return <DateRange {...{ updateElement, disabled, element }} />;
       case ElementType.Dropdown:
         return <DropdownField {...{ updateElement, disabled, element }} />;
       case ElementType.Accordion:
@@ -89,8 +95,12 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <CheckboxField {...{ updateElement, disabled, element }} />;
       case ElementType.ButtonLink:
         return <ButtonLinkElement {...{ disabled, element }} />;
-      case ElementType.MeasureTable:
-        return <MeasureTableElement {...{ disabled, element }} />;
+      case ElementType.QmsMeasureTable:
+        return <QmsMeasureTableElement {...{ disabled, element }} />;
+      case ElementType.QipMeasureTable:
+        return (
+          <QipMeasureTableElement {...{ updateElement, disabled, element }} />
+        );
       case ElementType.MeasureResultsNavigationTable:
         return <MeasureResultsNavigationTableElement {...{ element }} />;
       case ElementType.StatusTable:
@@ -99,6 +109,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <MeasureDetailsElement />;
       case ElementType.MeasureFooter:
         return <MeasureFooterElement {...{ disabled, element }} />;
+      case ElementType.QipMeasureTargetFooter:
+        return <QipMeasureTargetFooterElement {...{ disabled, element }} />;
       case ElementType.LengthOfStayRate:
         return <LengthOfStay {...{ updateElement, disabled, element }} />;
       case ElementType.ReadmissionRate:
@@ -122,7 +134,15 @@ export const Page = ({ id, setElements, elements }: Props) => {
       case ElementType.ListInput:
         return <ListInput {...{ updateElement, disabled, element }} />;
       case ElementType.EligibilityTable:
-        return <EligibilityTableElement {...{ updateElement, element }} />;
+        return (
+          <EligibilityTableElement {...{ updateElement, disabled, element }} />
+        );
+      case ElementType.KeyActivityTable:
+        return (
+          <KeyActivitiesTableElement
+            {...{ updateElement, disabled, element }}
+          />
+        );
       default:
         assertExhaustive(element);
         return null;

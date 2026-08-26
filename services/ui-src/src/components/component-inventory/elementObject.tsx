@@ -7,12 +7,13 @@ import {
 } from "components/fields";
 import { Accordion, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
-  MeasureTableElement,
+  QmsMeasureTableElement,
   AccordionItem,
   MeasureResultsNavigationTableElement,
   StatusTableElement,
   MeasureDetailsElement,
   MeasureFooterElement,
+  QipMeasureTargetFooterElement,
   LengthOfStay,
   ReadmissionRate,
   MultiCategoryNdr,
@@ -22,6 +23,7 @@ import {
   StatusAlert,
   CheckboxField,
   EligibilityTableElement,
+  KeyActivitiesTableElement,
 } from "components";
 
 import {
@@ -58,7 +60,7 @@ import {
   checkboxFieldSection,
   listInputSection,
 } from "./pdfElementSectionHelpers";
-import { formatMonthDayYear } from "utils";
+import { formatMonthDayYear, formatMonthYear } from "utils";
 import { SubmissionParagraph } from "components/report/SubmissionParagraph";
 import { ListInput } from "components/fields/ListInput";
 
@@ -175,6 +177,18 @@ export const elementObject: {
           required: true,
         }}
       />,
+      <TextAreaField
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.TextAreaField,
+          id: "id-textareafield-word-count",
+          label: "TextAreaField with word count",
+          helperText:
+            "Briefly describe the tracking used to monitor progress toward the performance target (250-300 words).",
+          required: false,
+          wordLimit: 300,
+        }}
+      />,
     ],
     pdfVariants: [<ExportedReportWrapper section={textAreaSection} />],
   },
@@ -279,6 +293,17 @@ export const elementObject: {
           required: true,
         }}
       />,
+      <DateField
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.Date,
+          id: "id-month-year-field",
+          label: "DateField (MM/YYYY)",
+          helperText: "DateFieldElement is used to select a month and year.",
+          dateFormat: "MMYYYY",
+          required: true,
+        }}
+      />,
     ],
     pdfVariants: [
       <Table variant={"reportDetails"}>
@@ -294,6 +319,24 @@ export const elementObject: {
           <Tr>
             <Td>{2025}</Td>
             <Td>{formatMonthDayYear(1757897305331)}</Td>
+            <Td>{"test user"}</Td>
+            <Td>{"In progress"}</Td>
+          </Tr>
+        </Tbody>
+      </Table>,
+      <Table variant={"reportDetails"}>
+        <Thead>
+          <Tr>
+            <Th>Reporting year</Th>
+            <Th>Last edited</Th>
+            <Th>Edited by</Th>
+            <Th>Status</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>{2025}</Td>
+            <Td>{formatMonthYear(1757897305331)}</Td>
             <Td>{"test user"}</Td>
             <Td>{"In progress"}</Td>
           </Tr>
@@ -374,20 +417,20 @@ export const elementObject: {
     ],
     pdfVariants: ["Buttonlink currently not used in PDFs"],
   },
-  [ElementType.MeasureTable]: {
+  [ElementType.QmsMeasureTable]: {
     description: "A table for displaying measure status with navigation",
     id: "id-measure-table",
     variants: [
-      <MeasureTableElement
+      <QmsMeasureTableElement
         element={{
-          type: ElementType.MeasureTable,
+          type: ElementType.QmsMeasureTable,
           id: "id-measure-table",
           measureDisplay: "required",
           caption: "Required Measure Results",
         }}
       />,
     ],
-    pdfVariants: ["MeasureTable currently not used in PDFs"],
+    pdfVariants: ["QmsMeasureTable currently not used in PDFs"],
   },
   [ElementType.MeasureResultsNavigationTable]: {
     description: "A table for displaying measure results with navigation",
@@ -436,8 +479,30 @@ export const elementObject: {
           completeSection: true,
         }}
       />,
+      <MeasureFooterElement
+        element={{
+          type: ElementType.MeasureFooter,
+          id: "measure-footer",
+          prevTo: "select-measures",
+        }}
+      />,
     ],
     pdfVariants: ["MeasureFooter currently not used in PDFs"],
+  },
+  [ElementType.QipMeasureTargetFooter]: {
+    description:
+      "Footer for QIP measure target pages with a single action button",
+    id: "id-qip-measure-target-footer",
+    variants: [
+      <QipMeasureTargetFooterElement
+        element={{
+          type: ElementType.QipMeasureTargetFooter,
+          id: "qip-measure-target-footer",
+          returnTo: "select-measures",
+        }}
+      />,
+    ],
+    pdfVariants: ["QipMeasureTargetFooter currently not used in PDFs"],
   },
   [ElementType.LengthOfStayRate]: {
     description:
@@ -485,6 +550,17 @@ export const elementObject: {
             outlierCount: "outlierCount",
             outlierRate: "outlierRate",
           },
+          hintText: {
+            stayCount: "stayCount hint",
+            obsReadmissionCount: "obsReadmissionCount hint",
+            obsReadmissionRate: "obsReadmissionRate hint",
+            expReadmissionCount: "expReadmissionCount hint",
+            expReadmissionRate: "expReadmissionRate hint",
+            obsExpRatio: "obsExpRatio hint",
+            beneficiaryCount: "beneficiaryCount hint",
+            outlierCount: "outlierCount hint",
+            outlierRate: "outlierRate hint",
+          },
           required: true,
         }}
       />,
@@ -525,11 +601,23 @@ export const elementObject: {
           type: ElementType.MultiRateNdr,
           id: "measure-rates",
           assessments: [
-            { id: "assessment-1", label: "First Assessment" },
-            { id: "assessment-2", label: "Second Assessment" },
+            {
+              id: "assessment-1",
+              label: "First Assessment",
+              hints: {
+                hintNumerator: "hint numerator",
+                hintDenominator: "hint denominator",
+                hintRate: "hint rate",
+              },
+            },
+            {
+              id: "assessment-2",
+              label: "Second Assessment",
+            },
           ],
           required: true,
           helperText: "Helper text",
+          hint: "Hint text",
         }}
       />,
     ],
@@ -709,6 +797,29 @@ export const elementObject: {
       />,
     ],
     pdfVariants: [<ExportedReportWrapper section={EligibilityTableSection} />],
+  },
+  [ElementType.KeyActivityTable]: {
+    description: "Key Activity Table for QIP report",
+    id: "id-key-activity-table",
+    variants: [
+      <KeyActivitiesTableElement
+        updateElement={logNewElement}
+        element={{
+          type: ElementType.KeyActivityTable,
+          id: "id-key-activity-table",
+          caption: "Key Activities",
+          required: true,
+          answer: [
+            {
+              id: "sample-activity-1",
+              title: "Sample Activity",
+              completionDate: "12/2026",
+            },
+          ],
+        }}
+      />,
+    ],
+    pdfVariants: ["KeyActivityTable currently not used in PDFs"],
   },
   [ElementType.ListInput]: {
     description: "A field for entering a list of text values",

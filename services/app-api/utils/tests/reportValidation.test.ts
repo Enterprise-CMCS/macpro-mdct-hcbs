@@ -4,21 +4,102 @@ import {
   validateReportEditPayload,
 } from "../reportValidation";
 import {
-  validReport,
-  missingStateReport,
   incorrectStatusReport,
   incorrectTypeReport,
   invalidFormPageReport,
   invalidMeasurePageReport,
+  invalidPageElementType,
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
-  invalidPageElementType,
+  missingStateReport,
+  reportWithKeyActivityTable,
+  reportWithListInputNoHelperText,
+  validQipReport,
+  validReport,
 } from "./mockReport";
 
 describe("Test validateReportPayload function with valid report", () => {
   it("successfully validates a valid report object", async () => {
     const validatedData = await validateReportPayload(validReport);
     expect(validatedData).toEqual(validReport);
+  });
+
+  it("successfully validates a QIP with measureTargetMapping", async () => {
+    const validatedData = await validateReportPayload(validQipReport);
+    expect(validatedData).toEqual(validQipReport);
+  });
+
+  it("successfully validates a report with a ListInput element that has no helperText", async () => {
+    const validatedData = await validateReportPayload(
+      reportWithListInputNoHelperText
+    );
+    expect(validatedData).toBeDefined();
+  });
+
+  it("successfully validates a report with a KeyActivityTable element", async () => {
+    const validatedData = await validateReportPayload(
+      reportWithKeyActivityTable
+    );
+    expect(validatedData).toBeDefined();
+  });
+
+  it("successfully validates a report with a Date element that has empty helperText", async () => {
+    const reportWithDateEmptyHelperText = structuredClone(validReport);
+
+    for (const page of reportWithDateEmptyHelperText.pages) {
+      if (!("elements" in page)) continue;
+      const dateElement = page.elements?.find(
+        (element) => element.type === "date"
+      );
+      if (dateElement) {
+        dateElement.helperText = "";
+        break;
+      }
+    }
+
+    const validatedData = await validateReportPayload(
+      reportWithDateEmptyHelperText
+    );
+    expect(validatedData).toBeDefined();
+  });
+
+  it("preserves answers for QIP measure table elements", async () => {
+    const reportWithQipMeasureTableAnswer = structuredClone(validQipReport);
+    const selectMeasuresPage = reportWithQipMeasureTableAnswer.pages.find(
+      (page) => page.id === "select-measures" && "elements" in page
+    );
+    const selectMeasuresTable = selectMeasuresPage?.elements?.find(
+      (element) => element.id === "select-measures-table"
+    ) as { answer?: unknown[] } | undefined;
+
+    selectMeasuresTable!.answer = [
+      {
+        pageId: "measure-targets-ltss-1-0",
+        measureName: "LTSS-1",
+        originalValues: { n: 5 },
+      },
+    ];
+
+    const validatedData = await validateReportPayload(
+      reportWithQipMeasureTableAnswer
+    );
+
+    const validatedSelectMeasuresPage = validatedData.pages.find(
+      (page) => page.id === "select-measures"
+    );
+    const table = validatedSelectMeasuresPage?.elements?.find(
+      (element) =>
+        element.id === "select-measures-table" &&
+        element.type === "qipMeasureTable"
+    ) as { answer?: unknown[] } | undefined;
+
+    expect(table?.answer).toEqual([
+      {
+        pageId: "measure-targets-ltss-1-0",
+        measureName: "LTSS-1",
+        originalValues: { n: 5 },
+      },
+    ]);
   });
 });
 
@@ -78,8 +159,10 @@ describe("isReportOptions", () => {
     year: 2026,
     options: {
       cahps: true,
+      "cahps-period": "2024",
       nciidd: false,
       nciad: true,
+      "nciad-period": "2024",
       pom: false,
     },
   });
@@ -94,6 +177,34 @@ describe("isReportOptions", () => {
     obj.options = {};
     expect(isReportOptions(obj)).toBe(true);
   });
+
+  it.each([
+    ["cahps", "cahps-period"],
+    ["nciidd", "nciidd-period"],
+    ["nciad", "nciad-period"],
+    ["pom", "pom-period"],
+  ])(
+    "should reject options with %s set to true and no %s",
+    (surveyFlag, surveyPeriod) => {
+      const obj = buildValidReportOptions();
+      obj.options[surveyFlag] = true;
+      delete obj.options[surveyPeriod];
+
+      expect(isReportOptions(obj)).toBe(false);
+    }
+  );
+
+  it.each(["cahps-period", "nciidd-period", "nciad-period", "pom-period"])(
+    "should reject a non-four-digit year in %s",
+    (surveyPeriod) => {
+      const obj = buildValidReportOptions();
+      const surveyFlag = surveyPeriod.replace("-period", "");
+      obj.options[surveyFlag] = true;
+      obj.options[surveyPeriod] = "20x4";
+
+      expect(isReportOptions(obj)).toBe(false);
+    }
+  );
 
   function* generateInvalidReportOptions() {
     let obj = undefined;

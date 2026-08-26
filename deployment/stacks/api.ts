@@ -8,6 +8,7 @@ import {
   CfnOutput,
   Duration,
   RemovalPolicy,
+  Stack,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
@@ -25,6 +26,7 @@ interface CreateApiComponentsProps {
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   brokerString: string;
+  launchDarklyServer?: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -37,6 +39,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnets,
     brokerString,
     tables,
+    launchDarklyServer,
   } = props;
 
   const service = "app-api";
@@ -110,12 +113,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
+    launchDarklyServer,
   };
 
   const additionalPolicies = [
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
+        "dynamodb:BatchWriteItem",
         "dynamodb:DeleteItem",
         "dynamodb:GetItem",
         "dynamodb:PutItem",
@@ -139,6 +144,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         .filter(isDefined),
     }),
   ];
+
+  const sesResources = isLocalStack
+    ? ["*"]
+    : [`arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`];
+
+  const sesPolicy = new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    actions: ["ses:SendEmail", "ses:SendRawEmail"],
+    resources: sesResources,
+  });
 
   const commonProps = {
     brokerString,
@@ -189,6 +204,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  if (isDev) {
+    new Lambda(scope, "sendTestEmail", {
+      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
+      handler: "sendTestEmail",
+      path: "notifications/test-email",
+      method: "POST",
+      ...commonProps,
+      additionalPolicies: [...additionalPolicies, sesPolicy],
+    });
+  }
+
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
     handler: "createReport",
@@ -213,12 +239,21 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "patchReport", {
+    entry: "services/app-api/handlers/reports/patch.ts",
+    handler: "patchReport",
+    path: "reports/{reportType}/{state}/{id}",
+    method: "PATCH",
+    ...commonProps,
+  });
+
   new Lambda(scope, "submitReport", {
     entry: "services/app-api/handlers/reports/submit.ts",
     handler: "submitReport",
     path: "reports/submit/{reportType}/{state}/{id}",
     method: "POST",
     ...commonProps,
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new Lambda(scope, "getReport", {
@@ -251,6 +286,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "reports/release/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
+    additionalPolicies: [...additionalPolicies, sesPolicy],
   });
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
@@ -267,7 +303,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       topicNamespace: isDev ? `--${project}--${stage}--` : "",
       ...commonProps.environment,
     },
-    tables: tables.filter((table) => table.node.id === "QmsReports"),
+    tables: tables.filter((table) => table.node.id === "Reports"),
   });
 
   if (!isLocalStack) {

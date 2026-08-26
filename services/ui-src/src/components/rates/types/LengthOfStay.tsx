@@ -20,7 +20,7 @@ export const LengthOfStay = (
   props: PageElementProps<LengthOfStayRateTemplate>
 ) => {
   const { disabled, updateElement } = props;
-  const { labels, answer } = props.element;
+  const { labels, hintText, answer } = props.element;
 
   const stringifyAnswer = (newAnswer: typeof answer) => {
     return {
@@ -153,6 +153,7 @@ export const LengthOfStay = (
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.actualCount}
+          hint={hintText?.actualCountHint}
           errorMessage={errors.actualCount}
           disabled={disabled}
         ></CmsdsTextField>
@@ -162,6 +163,7 @@ export const LengthOfStay = (
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.denominator}
+          hint={hintText?.denominatorHint}
           errorMessage={errors.denominator}
           disabled={disabled}
         ></CmsdsTextField>
@@ -171,6 +173,7 @@ export const LengthOfStay = (
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.expectedCount}
+          hint={hintText?.expectedCountHint}
           errorMessage={errors.expectedCount}
           disabled={disabled}
         ></CmsdsTextField>
@@ -187,19 +190,21 @@ export const LengthOfStay = (
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.populationRate}
-          hint="If Multi-plan Population Rate is left empty, provide a brief explanation in the Additional Comments field below."
+          hint={hintText?.populationRateHint}
           errorMessage={errors.populationRate}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.actualRate}
           name="actualRate"
           value={displayValue.actualRate}
+          hint={hintText?.actualRateHint}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
           label={labels.expectedRate}
           name="expectedRate"
           value={displayValue.expectedRate}
+          hint={hintText?.expectedRateHint}
           disabled={true}
         ></CmsdsTextField>
         <CmsdsTextField
@@ -208,6 +213,7 @@ export const LengthOfStay = (
           onChange={onChangeHandler}
           onBlur={onChangeHandler}
           value={displayValue.adjustedRate}
+          hint={hintText?.adjustedRateHint}
           disabled={disabled}
           errorMessage={errors.adjustedRate}
         ></CmsdsTextField>

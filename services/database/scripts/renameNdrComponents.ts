@@ -5,8 +5,6 @@ import {
   BatchWriteCommandInput,
 } from "@aws-sdk/lib-dynamodb";
 
-main();
-
 /*
  * ENVIRONMENT VARIABLES TO SET:
  * STAGE: "main", "val", or "production" as appropriate.
@@ -194,3 +192,5 @@ type PageElement = {
     checkedChildren?: PageElement[];
   }[];
 };
+
+main();

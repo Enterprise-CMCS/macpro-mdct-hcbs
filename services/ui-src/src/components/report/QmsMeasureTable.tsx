@@ -18,7 +18,7 @@ import {
   isMeasureTemplate,
   MeasurePageTemplate,
   PageStatus,
-  MeasureTableTemplate,
+  QmsMeasureTableTemplate,
   PageType,
   ReportStatus,
 } from "types";
@@ -27,8 +27,8 @@ import { PageElementProps } from "./Elements";
 import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
-export const MeasureTableElement = (
-  props: PageElementProps<MeasureTableTemplate>
+export const QmsMeasureTableElement = (
+  props: PageElementProps<QmsMeasureTableTemplate>
 ) => {
   const table = props.element;
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
@@ -87,10 +87,14 @@ export const MeasureTableElement = (
   const errorMessage = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
     if (
-      measure.status === PageStatus.IN_PROGRESS ||
-      (measure.required && measure.status != PageStatus.COMPLETE)
+      measure.required &&
+      (measure.status ?? PageStatus.NOT_STARTED) === PageStatus.NOT_STARTED
     ) {
-      return <Text variant="error">Select "Edit" to begin measure.</Text>;
+      return (
+        <Text variant="error" fontSize="body_sm">
+          Select "Edit" to begin measure.
+        </Text>
+      );
     }
     return <></>;
   };
@@ -106,8 +110,10 @@ export const MeasureTableElement = (
         </Td>
         <Td>
           <Text fontWeight="bold">{measure.navTitle}</Text>
-          <Text>CMIT number: #{measure.cmit}</Text>
-          <Text>Status: {measure.status ?? "Not started"}</Text>
+          <Text fontSize="body_sm">CMIT number: #{measure.cmit}</Text>
+          <Text fontSize="body_sm">
+            Status: {measure.status ?? "Not started"}
+          </Text>
           {errorMessage(measure)}
         </Td>
         <Td>
@@ -129,6 +135,7 @@ export const MeasureTableElement = (
             <Button
               as={Link}
               variant={"outline"}
+              aria-label={`Edit ${measure.navTitle}`}
               href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
               onClick={(e) => {
                 e.preventDefault();

@@ -8,7 +8,7 @@ import {
   testModalData,
   completeGeneralInfo,
   submitReport,
-} from "./../utils/reportUtils";
+} from "../utils/reportUtils";
 
 test.use({ storageState: stateUserAuthPath });
 
@@ -35,6 +35,26 @@ const fillPCPForm = async (page: Page) => {
 };
 
 test.beforeEach(async ({ page }) => {
+  // mock LD SDK response
+  await page.route(/clientsdk\.launchdarkly\.us/, async (route) => {
+    await route.fulfill({
+      json: {
+        isPcpReportActive: {
+          version: 60,
+          flagVersion: 8,
+          value: true,
+          variation: 1,
+          trackEvents: false,
+        },
+      },
+    });
+  });
+
+  // stream seems to be constantly resetting and grabbing the real values; abort so it stops trying to re-fetch
+  await page.route(/clientstream\.launchdarkly\.us/, async (route) => {
+    await route.abort();
+  });
+
   await navigateToReportHome(page, reportSpecificData.reportButtonName);
 });
 

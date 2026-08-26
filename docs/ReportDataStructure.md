@@ -74,24 +74,30 @@ This does mean that the code will strictly grow over time!
 But any system solving this problem would involve similar growth;
 be it in source control, a "templates table" in a database, or somewhere else.
 
-## Size concerns
+## Storage details
 
-Since all report data is stored together in a single object,
-and since some reports may contain free-text fields or repeating structures,
-it is possible to exceed the DynamoDB's maximum object size.
+HCBS uses a single DynamoDB table to store all report types.
+The partition key indicates the report type and the U.S. state abbreviation.
+This makes it slightly easier to add new report types;
+there is no need to create a new table.
 
-We don't see this problem in the present or near future,
-but it does loom on the horizon.
+To avoid DynamoDB item size limits, each report is split into multiple items:
+one for top-level properties and one for each page in the report.
+The sort key indicates the report's ID,
+and for pages also includes the page ID.
+When in storage, the top-level object's array of page objects
+is replaced with an array of strings: the sort keys of its pages.
 
-One possible resolution would be to break out the pages into separate objects.
-Perhaps `report.pages` would become an array of KSUIDs,
-each of which would point to another DynamoDB object.
-But that would be a very relational way to use a document database...
+These details are hidden from the frontend.
+Reports are reassembled into a single object immediately after any query,
+and the partition key and sort key properties are deleted.
 
-Another possible approach would involve S3.
-Perhaps the DynamoDB entry would remain unchanged,
-except that `report.pages` would change from an array of objects to an S3 key.
-But spreading the data across multiple AWS services does not sound fun...
+In theory, size problems are still possible.
+For example, we may have a list of elements that users are allowed to expand,
+or a free text field into which users may type a novel.
+This would cause even a single page to exceed the DynamoDB item size limit.
+We don't expect this to happen.
+If it becomes a problem, one solution may be to move page storage to S3.
 
 ## Final note
 
@@ -103,7 +109,6 @@ We hope that:
 - The PageElement abstraction does a good job of keeping complexity manageable
 - The number of ETLs required over time is minimized
 - Version-controlling past reports gives meaningfully helpful visibility
-- Report sizes are not _too_ painful to deal with
 
 Failing that, hopefully HCBS is not too difficult to change,
 in whatever ways are needed.

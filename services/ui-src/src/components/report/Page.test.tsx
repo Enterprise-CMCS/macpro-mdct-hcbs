@@ -130,19 +130,19 @@ const elements: PageElement[] = [
     id: "",
   },
   {
-    type: ElementType.MeasureTable,
+    type: ElementType.QmsMeasureTable,
     measureDisplay: "required",
     id: "",
     caption: "Required Measure Results",
   },
   {
-    type: ElementType.MeasureTable,
+    type: ElementType.QmsMeasureTable,
     measureDisplay: "required",
     id: "",
     caption: "Required Measure Results",
   },
   {
-    type: ElementType.MeasureTable,
+    type: ElementType.QmsMeasureTable,
     id: "",
     measureDisplay: "optional",
     caption: "Optional Measure Results",
@@ -196,6 +196,30 @@ const elements: PageElement[] = [
       outlierCount: "Number of Outliers",
       outlierRate: "Outlier Rate",
     },
+    hintText: {
+      stayCount: "stayCount",
+      obsReadmissionCount: "obsReadmissionCount",
+      obsReadmissionRate: "obsReadmissionRate",
+      expReadmissionCount: "expReadmissionCount",
+      expReadmissionRate: "expReadmissionRate",
+      obsExpRatio: "obsExpRatio",
+      beneficiaryCount: "beneficiaryCount",
+      outlierCount: "outlierCount",
+      outlierRate: "outlierRate",
+    },
+  },
+  {
+    type: ElementType.KeyActivityTable,
+    id: "key-activities-table",
+    caption: "Key Activities",
+    required: true,
+    answer: [
+      {
+        id: "activity-1",
+        title: "Activity 1",
+        completionDate: "01/2026",
+      },
+    ],
   },
 ];
 
@@ -275,6 +299,66 @@ describe("Page Component with state user", () => {
       />
     );
     expect(container).not.toBeEmptyDOMElement();
+  });
+
+  test("should transmit changes to its parent through setElements", async () => {
+    const setElements = jest.fn();
+    render(
+      <Page
+        id="mock-page"
+        elements={[
+          {
+            type: ElementType.Date,
+            id: "measurement-period-start-date",
+            label: "Measurement start date",
+            helperText: "MM/DD/YYYY",
+            required: true,
+          },
+        ]}
+        setElements={setElements}
+      />
+    );
+
+    const dateField = screen.getByRole("textbox");
+    await userEvent.type(dateField, "10162024");
+
+    expect(setElements).toHaveBeenLastCalledWith([
+      {
+        type: ElementType.Date,
+        id: "measurement-period-start-date",
+        label: "Measurement start date",
+        helperText: "MM/DD/YYYY",
+        required: true,
+        answer: "10/16/2024",
+      },
+    ]);
+  });
+
+  test("should render helper text for NestedHeading element", () => {
+    render(
+      <Page
+        id="mock-page"
+        elements={[
+          {
+            type: ElementType.NestedHeading,
+            id: "nested-heading-1",
+            text: "Performance Target Timeframe",
+            helperText:
+              "The performance target timeframe should be within the next reporting period.",
+          },
+        ]}
+        setElements={jest.fn()}
+      />
+    );
+
+    expect(
+      screen.getByText("Performance Target Timeframe")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "The performance target timeframe should be within the next reporting period."
+      )
+    ).toBeInTheDocument();
   });
 });
 

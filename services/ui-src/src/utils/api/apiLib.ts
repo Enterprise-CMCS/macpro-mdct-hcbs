@@ -1,4 +1,4 @@
-import { get, put, post, del } from "aws-amplify/api";
+import { del, get, patch, post, put } from "aws-amplify/api";
 import { updateTimeout } from "utils";
 
 const apiName = "hcbs";
@@ -13,7 +13,7 @@ type ResponsePayload = Awaited<ReturnType<typeof get>["response"]>["body"];
  * TO maybe DO: These `undefined as T` casts are really gross! Do... something.
  */
 const apiRequest = async <T = unknown>(
-  request: typeof del | typeof get | typeof post | typeof put,
+  request: typeof del | typeof get | typeof patch | typeof post | typeof put,
   path: string,
   options: Record<string, any>
 ) => {
@@ -46,6 +46,8 @@ export const apiLib = {
     apiRequest(del, path, options),
   get: async <T>(path: string, options: Record<string, any>) =>
     apiRequest<T>(get, path, options),
+  patch: async <T>(path: string, options: Record<string, any>) =>
+    apiRequest<T>(patch, path, options),
   post: async <T>(path: string, options: Record<string, any>) =>
     apiRequest<T>(post, path, options),
   put: async <T>(path: string, options: Record<string, any>) =>

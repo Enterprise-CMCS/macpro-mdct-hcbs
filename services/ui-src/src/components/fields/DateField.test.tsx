@@ -1,7 +1,7 @@
 import { DateField } from "components/fields/DateField";
 import { testA11y } from "utils/testing/commonTests";
 import { DateTemplate, ElementType } from "types/report";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 
@@ -12,6 +12,16 @@ const mockedDateTextboxElement: DateTemplate = {
   helperText: "helper text",
   required: true,
 };
+
+const mockedMonthYearTextboxElement: DateTemplate = {
+  id: "mock-month-year-id",
+  type: ElementType.Date,
+  label: "test-month-year-field",
+  helperText: "helper text",
+  dateFormat: "MMYYYY",
+  required: true,
+};
+
 const updateSpy = jest.fn();
 
 const DateFieldWrapper = ({ template }: { template: DateTemplate }) => {
@@ -53,6 +63,44 @@ describe("<DateField />", () => {
 
       await userEvent.type(dateFieldInput, "10162024");
       expect(updateSpy).toHaveBeenCalledWith({ answer: "10/16/2024" });
+    });
+
+    test("Datefield supports MM/YYYY when dateFormat is MMYYYY", async () => {
+      render(<DateFieldWrapper template={mockedMonthYearTextboxElement} />);
+      const dateFieldInput = screen.getByRole("textbox");
+
+      await userEvent.type(dateFieldInput, "102024");
+      expect(updateSpy).toHaveBeenCalledWith({ answer: "10/2024" });
+    });
+
+    test("Datefield normalizes slash input for MM/YYYY", async () => {
+      render(<DateFieldWrapper template={mockedMonthYearTextboxElement} />);
+      const dateFieldInput = screen.getByRole("textbox");
+
+      await userEvent.type(dateFieldInput, "1/2024");
+      expect(updateSpy).toHaveBeenCalledWith({ answer: "01/2024" });
+    });
+
+    test("Datefield normalizes delimited M-YYYY input to 0M/YYYY", () => {
+      render(<DateFieldWrapper template={mockedMonthYearTextboxElement} />);
+      const dateFieldInput = screen.getByRole("textbox");
+
+      fireEvent.change(dateFieldInput, { target: { value: "1.2024" } });
+      expect(updateSpy).toHaveBeenCalledWith({ answer: "01/2024" });
+    });
+
+    test("Datefield validates MM/YYYY when dateFormat is MMYYYY", async () => {
+      render(<DateFieldWrapper template={mockedMonthYearTextboxElement} />);
+      const dateFieldInput = screen.getByRole("textbox");
+
+      await userEvent.type(dateFieldInput, "132024");
+
+      expect(
+        screen.getByText(/Response must be a date in MMYYYY format/)
+      ).toBeInTheDocument();
+      expect(updateSpy).not.toHaveBeenCalledWith({
+        answer: expect.any(String),
+      });
     });
   });
 

@@ -52,6 +52,7 @@ const nestedHeadingTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.NestedHeading)),
   id: string().required(),
   text: string().required(),
+  helperText: string().notRequired(),
 });
 
 const paragraphTemplateSchema = object().shape({
@@ -77,7 +78,7 @@ const listInputTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   fieldLabel: string().required(),
-  helperText: string().required(),
+  helperText: string().notRequired(),
   buttonText: string().required(),
   answer: array().of(string()).notRequired(),
   required: boolean().required(),
@@ -97,6 +98,7 @@ const textAreaTemplateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   helperText: string().notRequired(),
+  wordLimit: number().notRequired(),
   answer: string().notRequired(),
   hideCondition: hideConditionSchema,
   required: boolean().required(),
@@ -106,9 +108,34 @@ const dateTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Date)),
   id: string().required(),
   label: string().required(),
-  helperText: string().required(),
+  helperText: string().notRequired(),
+  dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
   answer: string().notRequired(),
   required: boolean().required(),
+});
+
+const dateRangeTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.DateRange)),
+  id: string().required(),
+  labels: object()
+    .shape({
+      top: string().required(),
+      start: string().required(),
+      end: string().required(),
+    })
+    .required(),
+  helperText: string().required(),
+  startHelperText: string().notRequired(),
+  endHelperText: string().notRequired(),
+  dateFormat: string().oneOf(["MMDDYYYY", "MMYYYY"]).notRequired(),
+  answer: object()
+    .shape({
+      start: string().defined(), // required to be present, but may be empty string
+      end: string().notRequired(),
+    })
+    .notRequired(),
+  required: boolean().required(),
+  endDateRequired: boolean().notRequired(),
 });
 
 const dropdownTemplateSchema = object().shape({
@@ -158,6 +185,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return numberFieldTemplateSchema;
     case ElementType.Date:
       return dateTemplateSchema;
+    case ElementType.DateRange:
+      return dateRangeTemplateSchema;
     case ElementType.Dropdown:
       return dropdownTemplateSchema;
     case ElementType.Accordion:
@@ -168,8 +197,10 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return checkboxTemplateSchema;
     case ElementType.ButtonLink:
       return buttonLinkTemplateSchema;
-    case ElementType.MeasureTable:
+    case ElementType.QmsMeasureTable:
       return measureTableTemplateSchema;
+    case ElementType.QipMeasureTable:
+      return qipMeasureTableTemplateSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
@@ -178,6 +209,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureDetailsTemplateSchema;
     case ElementType.MeasureFooter:
       return measureFooterSchema;
+    case ElementType.QipMeasureTargetFooter:
+      return qipMeasureTargetFooterSchema;
     case ElementType.LengthOfStayRate:
       return lengthOfStayRateSchema;
     case ElementType.ReadmissionRate:
@@ -198,6 +231,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return submissionParagraphSchema;
     case ElementType.EligibilityTable:
       return eligibilityTableSchema;
+    case ElementType.KeyActivityTable:
+      return keyActivityTableSchema;
     case ElementType.ListInput:
       return listInputTemplateSchema;
     default:
@@ -265,10 +300,25 @@ const submissionParagraphSchema = object().shape({
 });
 
 const measureTableTemplateSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.MeasureTable)),
+  type: string().required().matches(new RegExp(ElementType.QmsMeasureTable)),
   id: string().required(),
   measureDisplay: string().oneOf(["required", "optional"]).required(),
   caption: string().required(),
+});
+
+const qipMeasureTableTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.QipMeasureTable)),
+  id: string().required(),
+  caption: string().required(),
+  answer: array()
+    .of(
+      object().shape({
+        pageId: string().required(),
+        measureName: string().required(),
+        originalValues: mixed().notRequired(),
+      })
+    )
+    .notRequired(),
 });
 
 const eligibilityTableSchema = object().shape({
@@ -299,6 +349,22 @@ const eligibilityTableSchema = object().shape({
         recheck: string().required(),
         frequency: string().notRequired(),
         eligibilityUpdate: string().required(),
+      })
+    )
+    .notRequired(),
+});
+
+const keyActivityTableSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.KeyActivityTable)),
+  id: string().required(),
+  caption: string().required(),
+  required: boolean().required(),
+  answer: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        title: string().required(),
+        completionDate: string().notRequired(),
       })
     )
     .notRequired(),
@@ -340,6 +406,14 @@ const measureFooterSchema = object().shape({
   clear: boolean().notRequired(),
 });
 
+const qipMeasureTargetFooterSchema = object().shape({
+  type: string()
+    .required()
+    .matches(new RegExp(ElementType.QipMeasureTargetFooter)),
+  id: string().required(),
+  returnTo: string().required(),
+});
+
 const lengthOfStayRateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.LengthOfStayRate)),
   id: string().required(),
@@ -352,6 +426,17 @@ const lengthOfStayRateSchema = object().shape({
     expectedRate: string().required(),
     adjustedRate: string().required(),
   }),
+  hintText: object()
+    .shape({
+      actualCountHint: string().notRequired(),
+      denominatorHint: string().notRequired(),
+      expectedCountHint: string().notRequired(),
+      populationRateHint: string().notRequired(),
+      actualRateHint: string().notRequired(),
+      expectedRateHint: string().notRequired(),
+      adjustedRateHint: string().notRequired(),
+    })
+    .notRequired(),
   required: boolean().required(),
   answer: object()
     .shape({
@@ -380,6 +465,19 @@ const ReadmissionRateSchema = object().shape({
     outlierCount: string().required(),
     outlierRate: string().required(),
   }),
+  hintText: object()
+    .shape({
+      stayCount: string().required(),
+      obsReadmissionCount: string().required(),
+      obsReadmissionRate: string().required(),
+      expReadmissionCount: string().required(),
+      expReadmissionRate: string().required(),
+      obsExpRatio: string().required(),
+      beneficiaryCount: string().required(),
+      outlierCount: string().required(),
+      outlierRate: string().required(),
+    })
+    .required(),
   required: boolean().required(),
   answer: object()
     .shape({
@@ -404,6 +502,23 @@ const multiCategoryNdrSchema = object().shape({
       object().shape({
         id: string().required(),
         label: string().required(),
+        hints: object()
+          .shape({
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
+          })
+          .notRequired(),
+        categoryHints: array()
+          .of(
+            object().shape({
+              categoryId: string().required(),
+              hintNumerator: string().notRequired(),
+              hintDenominator: string().notRequired(),
+              hintRate: string().notRequired(),
+            })
+          )
+          .notRequired(),
       })
     )
     .required(),
@@ -413,6 +528,7 @@ const multiCategoryNdrSchema = object().shape({
         id: string().required(),
         label: string().required(),
         autoCalc: boolean().notRequired(),
+        hintRate: string().notRequired(),
       })
     )
     .required(),
@@ -437,6 +553,7 @@ const multiCategoryNdrSchema = object().shape({
 const multiRateNdrSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.MultiRateNdr)),
   id: string().required(),
+  hint: string().notRequired(),
   label: string().notRequired(),
   helperText: string().notRequired(),
   assessments: array()
@@ -444,6 +561,13 @@ const multiRateNdrSchema = object().shape({
       object().shape({
         id: string().required(),
         label: string().required(),
+        hints: object()
+          .shape({
+            hintNumerator: string().notRequired(),
+            hintDenominator: string().notRequired(),
+            hintRate: string().notRequired(),
+          })
+          .notRequired(),
       })
     )
     .required(),
@@ -467,6 +591,13 @@ const ndrRateSchema = object().shape({
   id: string().required(),
   label: string().required(),
   required: boolean().required(),
+  hintText: object()
+    .shape({
+      numeratorHint: string().notRequired(),
+      denominatorHint: string().notRequired(),
+      rateHint: string().notRequired(),
+    })
+    .notRequired(),
   answer: object()
     .shape({
       numerator: number().notRequired(),
@@ -560,12 +691,50 @@ const reviewSubmitTemplateSchema = formPageTemplateSchema.shape({
   submittedView: array().of(pageElementSchema).required(),
 });
 
+const periodValidator = (fieldName: string) =>
+  string().when(fieldName, ([value], schema) =>
+    value === true
+      ? schema.required().matches(/^\d{4}$/, "Must be a 4-digit year")
+      : schema.notRequired()
+  );
+
 const optionsSchema = object().shape({
   cahps: boolean().notRequired(),
+  "cahps-period": periodValidator("cahps"),
   nciidd: boolean().notRequired(),
+  "nciidd-period": periodValidator("nciidd"),
   nciad: boolean().notRequired(),
+  "nciad-period": periodValidator("nciad"),
   pom: boolean().notRequired(),
+  "pom-period": periodValidator("pom"),
 });
+
+const measureTargetMappingSchema = array(
+  object().shape({
+    measureName: string().required(),
+    measureId: string().required(),
+    includedInQms: boolean().required(),
+    deliveryMethods: object().shape({
+      FFS: object()
+        .shape({
+          qmsPageId: string().notRequired(),
+        })
+        .required(),
+      MLTSS: object()
+        .shape({
+          qmsPageId: string().notRequired(),
+        })
+        .required(),
+    }),
+    rates: array(
+      object().shape({
+        label: string().required(),
+        id: string().required(),
+        qmsElementId: string().notRequired(),
+      })
+    ),
+  })
+).notRequired();
 
 /**
  * This schema is meant to represent the pages field in the ReportTemplate type.
@@ -642,6 +811,7 @@ const reportValidateSchema = object().shape({
   archived: boolean().required(),
   options: optionsSchema,
   pages: pagesSchema,
+  measureTargetMapping: measureTargetMappingSchema,
 });
 
 // Can add more editable fields here in the future

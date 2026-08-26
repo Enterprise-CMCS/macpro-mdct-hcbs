@@ -34,20 +34,39 @@ import {
   enterMeasureResultsSubheader,
   measureResultsNavigationTable,
   measureFooter,
-  performanceRatesAssessmentElements,
-  exclusionRatesAssessmentElements,
-  performanceRatesPersonPlanElements,
-  exclusionRatesPersonPlanElements,
-  performanceRatesReassessmentPlanElements,
-  exclusionRatesPatientPlanElements,
+  performanceRatesReassessmentPlanFfsElements,
+  exclusionRatesPatientPlanFfsElements,
+  performanceRatesReassessmentPlanMltssElements,
+  exclusionRatesPatientPlanMltssElements,
+  performanceRatesAssessmentFfsElements,
+  exclusionRatesAssessmentFfsElements,
+  performanceRatesAssessmentMltssElements,
+  exclusionRatesAssessmentMltssElements,
+  performanceRatesPersonPlanFfsElements,
+  exclusionRatesPersonPlanFfsElements,
+  performanceRatesPersonPlanMltssElements,
+  exclusionRatesPersonPlanMltssElements,
   readmissionRate,
-  performanceRatePOM,
-  performanceRateTermStay,
+  performanceRateTermStayFfsElements,
+  performanceRateTermStayMltssElements,
   performanceRateFacilityDischarges,
   performanceRateFacilityTransitions,
   performanceRateSelfDirection,
   sectionCompleteBanner,
   measureCompleteBanner,
+  performanceRatesPersonCenteredPlanFfsElements,
+  exclusionRatesPersonCenteredPlanFfsElements,
+  exclusionRatesPersonCenteredPlanMltssElements,
+  performanceRatesPersonCenteredPlanMltssElements,
+  performanceRatePOM1,
+  performanceRatePOM2,
+  performanceRatePOM3,
+  performanceRatePOM4,
+  performanceRatePOM5,
+  performanceRatePOM6,
+  performanceRatePOM7,
+  performanceRateFASI1,
+  performanceRateFASI2,
 } from "../qms/qmsElements";
 
 export const measureTemplates: Record<
@@ -103,8 +122,8 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesAssessmentElements,
-      exclusionRatesAssessmentElements,
+      performanceRatesAssessmentFfsElements,
+      exclusionRatesAssessmentFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -136,8 +155,8 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesAssessmentElements,
-      exclusionRatesAssessmentElements,
+      performanceRatesAssessmentMltssElements,
+      exclusionRatesAssessmentMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -195,8 +214,8 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesPersonPlanElements,
-      exclusionRatesPersonPlanElements,
+      performanceRatesPersonPlanFfsElements,
+      exclusionRatesPersonPlanFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -228,8 +247,8 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesPersonPlanElements,
-      exclusionRatesPersonPlanElements,
+      performanceRatesPersonPlanMltssElements,
+      exclusionRatesPersonPlanMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -286,7 +305,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRateTermStay,
+      performanceRateTermStayFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -318,7 +337,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRateTermStay,
+      performanceRateTermStayMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -557,13 +576,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        required: true,
-        label:
-          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-      },
+      performanceRateFASI1,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -595,13 +608,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        required: true,
-        label:
-          "Participant who has Identified at Least as Many Total Personal Priorities as Functional Needs in the Areas of Self-Care, Mobility, or IADL",
-      },
+      performanceRateFASI1,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -658,13 +665,7 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        required: true,
-        label:
-          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
-      },
+      performanceRateFASI2,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -696,13 +697,7 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      {
-        type: ElementType.Ndr,
-        id: "measure-rates",
-        label:
-          "Participant whose Person-Centered Service Plan Documentation Addresses Needs in the Areas of Self-Care, Mobility, and IADL",
-        required: true,
-      },
+      performanceRateFASI2,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -813,29 +808,8 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       divider,
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-transmitted",
-        required: true,
-        assessments: [
-          {
-            id: "pc-plan",
-            label: "Participant with Person-Centered Plan Transmitted to PCP",
-          },
-        ],
-      },
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-refused",
-        label: "Exclusion Rate",
-        required: true,
-        assessments: [
-          {
-            id: "refused-pc-plan",
-            label: "Participant Refused to Share Person-Centered Plan",
-          },
-        ],
-      },
+      performanceRatesPersonCenteredPlanFfsElements,
+      exclusionRatesPersonCenteredPlanFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -868,29 +842,8 @@ export const measureTemplates: Record<
       ...whichProgramsWaivers,
       waiverListInputField,
       divider,
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-transmitted",
-        required: true,
-        assessments: [
-          {
-            id: "pc-plan",
-            label: "Participant with Person-Centered Plan Transmitted to PCP",
-          },
-        ],
-      },
-      {
-        type: ElementType.MultiRateNdr,
-        id: "measure-rates-refused",
-        label: "Exclusion Rate",
-        required: true,
-        assessments: [
-          {
-            id: "refused-pc-plan",
-            label: "Participant Refused to Share Person-Centered Plan",
-          },
-        ],
-      },
+      performanceRatesPersonCenteredPlanMltssElements,
+      exclusionRatesPersonCenteredPlanMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -948,8 +901,8 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesReassessmentPlanElements,
-      exclusionRatesPatientPlanElements,
+      performanceRatesReassessmentPlanFfsElements,
+      exclusionRatesPatientPlanFfsElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -981,8 +934,8 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatesReassessmentPlanElements,
-      exclusionRatesPatientPlanElements,
+      performanceRatesReassessmentPlanMltssElements,
+      exclusionRatesPatientPlanMltssElements,
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1041,10 +994,18 @@ export const measureTemplates: Record<
         type: ElementType.MultiRateNdr,
         id: "measure-rates",
         required: true,
+        hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
         assessments: [
           {
-            id: "gait-evaulation",
+            id: "gait-evaluation",
             label: "Fall or Problems with Balance or Gait Evaluation",
+            hints: {
+              hintNumerator:
+                "Number of Medicaid MLTSS participants who have documentation of an evaluation of whether the participant has experienced a fall or problems with balance or gait.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid MLTSS participants who have documentation of an evaluation of whether the participant has experienced a fall or problems with balance or gait.",
+            },
           },
         ],
       },
@@ -1083,14 +1044,29 @@ export const measureTemplates: Record<
         type: ElementType.MultiRateNdr,
         id: "measure-rates-assessed",
         required: true,
+        hint: "Statistically valid random sample of participants enrolled in Medicaid MLTSS for at least 150 days, continuously between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
         assessments: [
           {
             id: "fall-risk-assess",
             label: "Falls Risk Assessment",
+            hints: {
+              hintNumerator:
+                "Number of Medicaid MLTSS participants who have documentation of a falls risk assessment completed between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid MLTSS participants at risk for future falls who completed a risk assessment for falls.",
+            },
           },
           {
             id: "plan-care-falls",
             label: "Plan of Care for Falls",
+            hints: {
+              hintNumerator:
+                "Number of Medicaid MLTSS participants who have documentation of a plan of care to prevent future falls completed between August 1 of the year prior to the measurement year and December 31 of the measurement year, which includes, at a minimum, exercise therapy or referral to exercise.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid MLTSS participants at risk for future falls who had a documented plan of care to prevent future falls.",
+            },
           },
         ],
       },
@@ -1099,10 +1075,18 @@ export const measureTemplates: Record<
         id: "measure-rates-refused",
         required: true,
         label: "Exclusion Rate",
+        hint: "Number of participants who have been enrolled in Medicaid MLTSS plan for at least 150 days, continuously, between August 1 of the year prior to the measurement year and December 31 of the measurement year.",
         assessments: [
           {
             id: "refused-risk-assess",
             label: "Participant Refused Risk Assessment",
+            hints: {
+              hintNumerator:
+                "Number of participants who refused a risk assessment, a plan of care, or both a risk assessment for falls and a plan of care for falls.",
+              hintDenominator: "Auto-populates",
+              hintRate:
+                "Percentage of Medicaid managed care plan participants receiving LTSS who refused a risk assessment for falls, creation of a plan of care for falls, or both a risk assessment for falls and a plan of care for falls.",
+            },
           },
         ],
       },
@@ -1215,7 +1199,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM1,
+        label: "People Live in Integrated Environments (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1247,7 +1234,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM1,
+        label: "People Live in Integrated Environments (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1303,7 +1293,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM2,
+        label: "People Participate in the Life of the Community (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1335,7 +1328,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM2,
+        label: "People Participate in the Life of the Community (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1391,7 +1387,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM3,
+        label: "People Choose Services (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1423,7 +1422,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM3,
+        label: "People Choose Services (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1479,7 +1481,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM4,
+        label: "People Realize Personal Goals (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1511,7 +1516,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM4,
+        label: "People Realize Personal Goals (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1567,7 +1575,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM5,
+        label: "People are Free from Abuse and Neglect (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1599,7 +1610,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM5,
+        label: "People are Free from Abuse and Neglect (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1655,7 +1669,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM6,
+        label: "People Have the Best Possible Health (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1687,7 +1704,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM6,
+        label: "People Have the Best Possible Health (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1743,7 +1763,10 @@ export const measureTemplates: Record<
       feeForServiceMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM7,
+        label: "People Interact with Other Members of the Community (FFS LTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",
@@ -1775,7 +1798,10 @@ export const measureTemplates: Record<
       managedCareMeasureResultsSubheader,
       ...whichProgramsWaivers,
       waiverListInputField,
-      performanceRatePOM,
+      {
+        ...performanceRatePOM7,
+        label: "People Interact with Other Members of the Community (MLTSS)",
+      },
       {
         type: ElementType.MeasureFooter,
         id: "measure-footer",

@@ -55,7 +55,7 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
   return (
     <fieldset className="ds-c-fieldset" key="list-input-field">
       <legend className="ds-c-label">{label}</legend>
-      <p className="ds-c-hint">{helperText} </p>
+      {helperText && <p className="ds-c-hint">{helperText}</p>}
       {displayValue?.map((field, index) => (
         <HStack
           alignItems="flex-end"
@@ -72,14 +72,15 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
             errorMessage={errorMessages?.[index] ?? ""}
             disabled={disabled}
           ></TextField>
-          <Button
-            variant="unstyled"
-            onClick={() => onRemoveHandler(index)}
-            disabled={disabled}
-            aria-label={`Remove ${field}`}
-          >
-            <Image src={cancelPrimary} alt="Remove" />
-          </Button>
+          {!disabled && (
+            <Button
+              variant="unstyled"
+              onClick={() => onRemoveHandler(index)}
+              aria-label={`Remove ${field}`}
+            >
+              <Image src={cancelPrimary} alt="Remove" />
+            </Button>
+          )}
         </HStack>
       ))}
       <Button

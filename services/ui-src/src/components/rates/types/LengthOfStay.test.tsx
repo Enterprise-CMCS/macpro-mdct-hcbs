@@ -25,6 +25,15 @@ const mockedPerformanceElement: LengthOfStayRateTemplate = {
       "Expected Performance Rate for Minimizing Length of Facility Stay",
     adjustedRate: "Risk Adjusted Rate for Minimizing Length of Facility Stay",
   },
+  hintText: {
+    actualCountHint: "Actual count hint text",
+    denominatorHint: "Denominator hint text",
+    expectedCountHint: "Expected count hint text",
+    populationRateHint: "Population rate hint text",
+    actualRateHint: "Actual rate hint text",
+    expectedRateHint: "Expected rate hint text",
+    adjustedRateHint: "Adjusted rate hint text",
+  },
 };
 const updateSpy = jest.fn();
 
@@ -133,6 +142,18 @@ describe("<LengthOfStay />", () => {
 
       expect(getInput("actualRate")).toHaveValue("0.00");
       expect(getInput("expectedRate")).toHaveValue("0.00");
+    });
+
+    test("should display hint texts for all fields", () => {
+      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+
+      expect(screen.getByText("Actual count hint text")).toBeVisible();
+      expect(screen.getByText("Denominator hint text")).toBeVisible();
+      expect(screen.getByText("Expected count hint text")).toBeVisible();
+      expect(screen.getByText("Population rate hint text")).toBeVisible();
+      expect(screen.getByText("Actual rate hint text")).toBeVisible();
+      expect(screen.getByText("Expected rate hint text")).toBeVisible();
+      expect(screen.getByText("Adjusted rate hint text")).toBeVisible();
     });
   });
 

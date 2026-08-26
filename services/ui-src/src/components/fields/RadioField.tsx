@@ -165,7 +165,6 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
         {...props}
       />
       <Modal
-        data-testid="confirm-modal"
         modalDisclosure={{
           isOpen: radioModalIsOpen,
           onClose: modalCloseCustomHandler,
@@ -185,15 +184,15 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
 
 const sx = {
   children: {
-    padding: "0 22px",
+    padding: "0 0 0 22px",
     border: "4px #0071BC solid",
     borderWidth: "0 0 0 4px",
-    margin: "0 14px",
+    margin: "0 0 0 14px",
     "input:not(.ds-c-choice)": {
       width: "240px",
     },
     textarea: {
-      maxWidth: "440px",
+      maxWidth: "460px",
     },
   },
 };

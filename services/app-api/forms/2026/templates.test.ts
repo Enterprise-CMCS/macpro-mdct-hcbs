@@ -1,14 +1,20 @@
 import { PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
+import { pcpReportTemplate } from "./pcp/pcp";
+import { qipReportTemplate } from "./qip/qip";
 import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
 import { qmsReportTemplate } from "./qms/qms";
 import { tacmReportTemplate } from "./tacm/tacm";
+import { wwlReportTemplate } from "./wwl/wwl";
 
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
   { template: tacmReportTemplate, name: "TACM" },
   { template: ciReportTemplate, name: "CI" },
+  { template: qipReportTemplate, name: "QIP" },
+  { template: pcpReportTemplate, name: "PCP" },
+  { template: wwlReportTemplate, name: "WWL" },
 ];
 describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
   it(`${name} should exist`, () => {

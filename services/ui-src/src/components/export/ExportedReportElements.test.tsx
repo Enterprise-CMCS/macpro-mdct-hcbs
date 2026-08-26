@@ -83,7 +83,7 @@ describe("Test ExportedReportElements", () => {
       screen.getAllByText("test label: assessment 1").length
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText("Performance Rates Denominator").length
+      screen.getAllByText("test labels Denominator").length
     ).toBeGreaterThan(0);
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getAllByText("Not answered")).toHaveLength(1);
@@ -116,5 +116,103 @@ describe("Test ExportedReportElements", () => {
     render(element);
     expect(screen.getByText("Result")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(2);
+  });
+
+  test("Test render DateRange element", () => {
+    const element = renderElements(section, {
+      id: "measurement-period",
+      type: ElementType.DateRange,
+      labels: {
+        top: "Measurement period dates",
+        start: "Measurement start date",
+        end: "Measurement end date",
+      },
+      answer: {
+        start: "01/01/2024",
+        end: "12/31/2024",
+      },
+      required: true,
+    });
+
+    render(element);
+
+    expect(
+      screen.getByText(/Measurement start date: 01\/01\/2024/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Measurement end date: 12\/31\/2024/)
+    ).toBeInTheDocument();
+  });
+
+  test("Test render Key Activities element as table", () => {
+    const element = renderElements(section, {
+      id: "key-activities",
+      type: ElementType.KeyActivityTable,
+      caption: "Key Activities",
+      required: true,
+      answer: [
+        {
+          id: "activity-1",
+          title: "Key activity one",
+          completionDate: "12/2026",
+        },
+        {
+          id: "activity-2",
+          title: "Key activity two",
+          completionDate: "12/2026",
+        },
+      ],
+    });
+
+    render(element);
+
+    expect(
+      screen.getByRole("columnheader", { name: "Activity" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("columnheader", { name: "Expected completion month" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("cell", { name: "Key activity one" })
+    ).toBeVisible();
+    expect(screen.getAllByRole("cell", { name: "12/2026" })).toHaveLength(2);
+  });
+
+  test("Test render Key Activities date as N/A when missing", () => {
+    const element = renderElements(section, {
+      id: "key-activities",
+      type: ElementType.KeyActivityTable,
+      caption: "Key Activities",
+      required: true,
+      answer: [
+        {
+          id: "activity-1",
+          title: "Key activity one",
+          completionDate: "",
+        },
+      ],
+    });
+
+    render(element);
+
+    const activityCell = screen.getByRole("cell", { name: "Key activity one" });
+    const activityRow = activityCell.closest("tr");
+    const completionDateCell = activityRow?.querySelectorAll("td")[1];
+
+    expect(completionDateCell).toHaveTextContent("N/A");
+  });
+
+  test("Test render Key Activities element as Not answered when empty", () => {
+    const element = renderElements(section, {
+      id: "key-activities",
+      type: ElementType.KeyActivityTable,
+      caption: "Key Activities",
+      required: true,
+      answer: [],
+    });
+
+    render(element);
+
+    expect(screen.getByText("Not answered")).toBeInTheDocument();
   });
 });

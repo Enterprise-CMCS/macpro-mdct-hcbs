@@ -1,75 +1,123 @@
 import {
+  ElementType,
   FormPageTemplate,
   MeasurePageTemplate,
-  PageType,
   PageStatus,
   PageTemplate,
+  PageType,
 } from "types";
 
-export const shouldRender = (section: PageTemplate) => {
-  if (section.id === "review-submit" || section.id === "root") {
-    return false;
-  }
+/**
+ * Recursively step through the report,
+ * yielding each page that should be rendered in the PDF export view.
+ *
+ * Certain pages have special logic for whether or not they should render,
+ * or how to find their child pages.
+ *
+ * This function's flow should match the logic when viewing the actual report.
+ * @param allPages Every page of the `report.pages` array
+ * @param pageId The ID of the page currently under examination
+ */
+export function* iterateExportPages(
+  allPages: PageTemplate[],
+  pageId: string = "root"
+): Generator<PageTemplate> {
+  const page = allPages.find((p) => p.id === pageId)!;
+  console.assert(page, `Page '${pageId}' not found in report.pages!`);
 
-  if (
-    section.type === PageType.Measure &&
-    (section as MeasurePageTemplate).required === false &&
-    (section as MeasurePageTemplate).status === PageStatus.NOT_STARTED
-  ) {
-    return false;
-  }
-
-  if (
-    section.type === PageType.MeasureResults &&
-    (section as FormPageTemplate).status === PageStatus.NOT_STARTED
-  ) {
-    return false;
-  }
-
-  return true;
-};
-
-export const createMeasuresSection = (
-  isRequired: boolean,
-  reportPages: PageTemplate[]
-) => {
-  let filteredMeasures = reportPages.filter(
-    (section) =>
-      section.type === "measure" &&
-      (section as MeasurePageTemplate).required === isRequired
-  ) as MeasurePageTemplate[];
-
-  const measuresSection: PageTemplate[] = [];
-  if (filteredMeasures.length > 0) {
-    // Add heading to beginning of section
-    measuresSection.push({
-      navTitle: isRequired ? "Required Measures" : "Optional Measures",
-      id: isRequired
-        ? "required-measures-heading"
-        : "optional-measures-heading",
-      type: PageType.Standard,
-      elements: [],
-    });
-
-    // For every measure, add to section + add its dependent pages
-    for (let section of filteredMeasures) {
-      measuresSection.push(section);
-      const measureIdx = reportPages.findIndex(
-        (measure) => measure.id === section.id
-      );
-      reportPages.splice(Number(measureIdx), 1);
-
-      const depPages = section.dependentPages;
-      for (let page of depPages ?? []) {
-        const measureResultIdx = reportPages.findIndex(
-          (section) => section.id === page.template
-        );
-        if (measureResultIdx != -1) {
-          measuresSection.push(reportPages[measureResultIdx]);
-          reportPages.splice(measureResultIdx, 1);
-        }
+  switch (pageId) {
+    case "root":
+      yield* iterateChildPages(allPages, page.childPageIds ?? []);
+      return;
+    case "review-submit":
+      // We never render the Review And Submit page in the export view.
+      return;
+    case "req-measure-result":
+    case "optional-measure-result":
+      const isRequired = pageId === "req-measure-result";
+      const childPageIds = getMeasurePageIds(allPages, isRequired);
+      // Greedily iterate children, so that we can tell if there are any.
+      const childPages = [...iterateChildPages(allPages, childPageIds)];
+      if (childPages.length > 0) {
+        const title = isRequired ? "Required Measures" : "Optional Measures";
+        yield injectedHeaderPage(title);
+        yield* childPages;
       }
-    }
+      return;
+    case "select-measures":
+      yield* iterateChildPages(allPages, getTargetPageIds(page));
+      return;
   }
-  return measuresSection;
-};
+
+  switch (page.type) {
+    case PageType.Measure:
+      const mPage = page as MeasurePageTemplate;
+      if (mPage.required || mPage.status !== PageStatus.NOT_STARTED) {
+        yield mPage;
+        yield* iterateChildPages(allPages, getMeasureResultPageIds(mPage));
+      }
+      return;
+    case PageType.MeasureResults:
+      if ((page as FormPageTemplate).status !== PageStatus.NOT_STARTED) {
+        yield page;
+      }
+      return;
+  }
+
+  // This is a standard form page, which may or may not have child pages.
+  yield page;
+
+  if ("childPageIds" in page) {
+    yield* iterateChildPages(allPages, page.childPageIds ?? []);
+  }
+}
+
+/** Map an array of page IDs to an iterator over export pages */
+function* iterateChildPages(allPages: PageTemplate[], pageIds: string[]) {
+  for (let pageId of pageIds) {
+    yield* iterateExportPages(allPages, pageId);
+  }
+}
+
+/** Create an artificial "page" in the export, with no contents but a heading */
+function injectedHeaderPage(headerText: string) {
+  return {
+    navTitle: headerText,
+    id: "injected-heading",
+    type: PageType.Standard,
+    elements: [],
+  };
+}
+
+/**
+ * Search the QMS report for Measure pages.
+ * Returns either all required measures or all optional measures
+ */
+function getMeasurePageIds(allPages: PageTemplate[], isRequired: boolean) {
+  return allPages
+    .filter((page) => page.type === "measure")
+    .filter((page) => (page as MeasurePageTemplate).required === isRequired)
+    .map((page) => page.id);
+}
+
+/** Get the Measure Results pages for a given QMS Measure page */
+function getMeasureResultPageIds(measurePage: MeasurePageTemplate) {
+  return measurePage.dependentPages?.map((dp) => dp.template) ?? [];
+}
+
+/** Get the Measure Targets pages referenced by the QIP Select Measures page */
+function getTargetPageIds(selectMeasuresPage: PageTemplate) {
+  const childIds = selectMeasuresPage.elements
+    ?.filter((el) => el.type === ElementType.QipMeasureTable)
+    .find((el) => el.id === "select-measures-table")
+    ?.answer?.map((row) => row.pageId);
+  if (childIds === undefined) {
+    console.error(`Can't export measure target pages - can't find page IDs!`);
+    return [];
+  }
+  if (childIds.length === 0) {
+    console.warn(`Can't export measure target pages - no measures selected.`);
+    return [];
+  }
+  return childIds;
+}

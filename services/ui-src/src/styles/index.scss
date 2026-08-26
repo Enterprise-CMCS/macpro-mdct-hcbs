@@ -168,6 +168,15 @@ button {
   margin: 0;
 }
 
+// Style children of radio choices
+.ds-c-fieldset > div > .ds-c-choice-wrapper + * {
+  margin-top: 16px;
+  margin-left: 16px;
+  padding-left: 16px;
+  padding-bottom: 8px;
+  border-left: 4px solid var(--chakra-colors-palette-primary);
+}
+
 .chakra-modal__header {
   width: 85%;
 }
@@ -176,8 +185,14 @@ button {
   font-weight: normal;
 }
 
-// Tech Specs Link Styles
-.tech-spec-link {
+.word-limit-warning .ds-c-field {
+  border-color: var(--chakra-colors-palette-warn_darkest);
+  outline-color: var(--chakra-colors-palette-warn_darkest);
+  box-shadow: 0 0 0 1px var(--chakra-colors-palette-warn_darkest);
+}
+
+// Parsed HTML Link Styles
+.parsed-html-link {
   color: var(--chakra-colors-palette-primary);
   text-decoration: underline;
 

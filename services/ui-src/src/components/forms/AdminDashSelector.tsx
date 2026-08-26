@@ -6,13 +6,32 @@ import {
   ChoiceList,
   DropdownChangeObject,
 } from "@cmsgov/design-system";
-import { DropdownOptions, ReportType, getReportName } from "types";
+import { DropdownOptions, ReportType } from "types";
 import { StateNames } from "../../constants";
+
+const getReportName = (type: string | undefined) => {
+  switch (type) {
+    case ReportType.QMS:
+      return "Quality Measure Set Report (QMS)";
+    case ReportType.TACM:
+      return "Timely Access Compliance Measure Report (TACM)";
+    case ReportType.CI:
+      return "Critical Incident Report (CI)";
+    case ReportType.PCP:
+      return "Person-Centered Planning Report (PCP)";
+    case ReportType.QIP:
+      return "QMS Quality Improvement Plans (QMS QIP)";
+    case ReportType.WWL:
+      return "Waiver Waiting List Report (WWL)";
+    default:
+      return "";
+  }
+};
 
 const reportChoices = Object.values(ReportType).map((type) => {
   return {
     value: type,
-    label: `${getReportName(type)} (${type})`,
+    label: `${getReportName(type)}`,
   };
 });
 

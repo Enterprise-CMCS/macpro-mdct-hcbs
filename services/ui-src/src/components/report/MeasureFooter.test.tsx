@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ElementType, MeasureFooterTemplate } from "types";
 import { MeasureFooterElement } from "./MeasureFooter";
-import userEvent from "@testing-library/user-event";
+import userEventTl from "@testing-library/user-event";
 import { mockUseStore } from "utils/testing/setupJest";
 
 const mockUseNavigate = jest.fn();
@@ -51,6 +51,17 @@ const mockedMeasureSectionFooterElement: MeasureFooterTemplate = {
 };
 
 describe("Measure Footer", () => {
+  const userEvent = userEventTl.setup({ delay: null });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it("Test Measure Footer component", async () => {
     render(<MeasureFooterElement element={mockedMeasureFooterElement} />);
 

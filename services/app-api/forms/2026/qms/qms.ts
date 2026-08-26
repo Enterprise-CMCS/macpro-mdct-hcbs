@@ -51,7 +51,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
           label: "Contact email address",
           required: true,
           helperText:
-            "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
+            "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
         },
       ],
     },
@@ -83,7 +83,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
             "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
-          type: ElementType.MeasureTable,
+          type: ElementType.QmsMeasureTable,
           id: "required-measures",
           caption: "Required Measure Results",
           measureDisplay: "required",
@@ -119,7 +119,7 @@ export const qmsReportTemplate: ReportWithMeasuresTemplate = {
             "<p>Before submitting this form, all required measures must be in the <b>Complete</b> status.</p>",
         },
         {
-          type: ElementType.MeasureTable,
+          type: ElementType.QmsMeasureTable,
           id: "optional-measures",
           caption: "Optional Measure Results",
           measureDisplay: "optional",

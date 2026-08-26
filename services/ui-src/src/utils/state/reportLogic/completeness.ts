@@ -32,9 +32,11 @@ export const inferredReportStatus = (report: Report, pageId: string) => {
     return targetPage.status;
 
   // Calculated Pages with rollups
-  if (pageId === "req-measure-result") return requiredRollupPageStatus(report);
+  if (pageId === "req-measure-result")
+    return requiredMeasuresCombinedStatus(report);
   if (pageId === "optional-measure-result")
-    return optionalRollupPageStatus(report);
+    return optionalMeasuresCombinedStatus(report);
+  if (pageId === "select-measures") return qipTargetsCombinedStatus(report);
 
   // inferred pages
   if (pageIsCompletable(report, pageId)) return PageStatus.COMPLETE;
@@ -125,7 +127,7 @@ export const pageIsCompletable = (report: Report, pageId: string) => {
 };
 
 // Return complete if all complete, in progress if at least one in progress, else not started
-const requiredRollupPageStatus = (report: Report) => {
+const requiredMeasuresCombinedStatus = (report: Report) => {
   const requiredMeasures = report.pages.filter(
     (page) => isMeasurePageTemplate(page) && page.required
   ) as MeasurePageTemplate[];
@@ -148,7 +150,7 @@ const requiredRollupPageStatus = (report: Report) => {
 };
 
 // Return in progress if any in flight, then complete if any complete, not started otherwise
-const optionalRollupPageStatus = (report: Report) => {
+const optionalMeasuresCombinedStatus = (report: Report) => {
   const requiredMeasures = report.pages.filter(
     (page) => isMeasurePageTemplate(page) && !page.required
   );
@@ -159,6 +161,25 @@ const optionalRollupPageStatus = (report: Report) => {
     if (measure.status === PageStatus.COMPLETE) status = PageStatus.COMPLETE;
   }
   return status;
+};
+
+const qipTargetsCombinedStatus = (report: Report) => {
+  const targetPageStatuses =
+    report.pages
+      .find((page) => page.id === "select-measures")
+      ?.elements?.filter((el) => el.type === ElementType.QipMeasureTable)
+      .find((el) => el.id === "select-measures-table")
+      ?.answer?.map((row) => row.pageId)
+      .map((pageId) => inferredReportStatus(report, pageId)) ?? [];
+
+  if (targetPageStatuses.every((st) => st === PageStatus.NOT_STARTED)) {
+    return PageStatus.NOT_STARTED;
+  } else if (targetPageStatuses.every((st) => st === PageStatus.COMPLETE)) {
+    return PageStatus.COMPLETE;
+  } else {
+    // Some work has been done, but not all work is complete.
+    return PageStatus.IN_PROGRESS;
+  }
 };
 
 export const elementSatisfiesRequired = (
@@ -173,7 +194,6 @@ export const elementSatisfiesRequired = (
     return false;
   }
 
-  // TODO: make less ugly
   if (
     !("required" in element) ||
     !element.required ||
@@ -182,8 +202,11 @@ export const elementSatisfiesRequired = (
   ) {
     return true;
   }
-  if (!("answer" in element) || !element.answer) {
-    // TODO: number fields are currently represented as strings, need to be handled here when fixed
+  if (
+    !("answer" in element) ||
+    element.answer === undefined ||
+    element.answer === ""
+  ) {
     return false;
   }
   // Special handling - nested children
@@ -248,6 +271,18 @@ export const elementSatisfiesRequired = (
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
+  }
+
+  if (element.type === ElementType.DateRange) {
+    const endDateRequired = element.endDateRequired ?? element.required;
+    return !!element.answer.start && (!endDateRequired || !!element.answer.end);
+  }
+
+  if (
+    element.type === ElementType.KeyActivityTable &&
+    element.answer?.length === 0
+  ) {
+    return false;
   }
 
   if (element.type === ElementType.PerformanceNdr) {
