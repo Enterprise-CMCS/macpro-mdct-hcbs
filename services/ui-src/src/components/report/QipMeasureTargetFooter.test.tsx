@@ -63,11 +63,7 @@ describe("QipMeasureTargetFooter test(s)", () => {
   it("should render the button, call autosave, and navigate", async () => {
     renderWithAutosave(mockedQipMeasureTargetFooter);
 
-    expect(
-      screen.queryByRole("button", { name: "Previous" })
-    ).not.toBeInTheDocument();
-
-    const actionBtn = screen.getByRole("button", { name: "Save & return" });
+    const actionBtn = screen.getByRole("button", { name: "Previous" });
     await userEvent.click(actionBtn);
     jest.advanceTimersByTime(10);
 
@@ -92,7 +88,7 @@ describe("QipMeasureTargetFooter test(s)", () => {
 
     renderWithAutosave(mockedQipMeasureTargetFooter);
 
-    const actionBtn = screen.getByRole("button", { name: "Save & return" });
+    const actionBtn = screen.getByRole("button", { name: "Previous" });
     await userEvent.click(actionBtn);
     jest.advanceTimersByTime(10);
 
