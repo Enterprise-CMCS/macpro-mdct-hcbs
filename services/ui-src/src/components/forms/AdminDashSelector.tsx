@@ -6,6 +6,7 @@ import {
   ChoiceList,
   DropdownChangeObject,
 } from "@cmsgov/design-system";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import { DropdownOptions, ReportType } from "types";
 import { StateNames } from "../../constants";
 
@@ -28,12 +29,18 @@ const getReportName = (type: string | undefined) => {
   }
 };
 
-const reportChoices = Object.values(ReportType).map((type) => {
-  return {
-    value: type,
-    label: `${getReportName(type)}`,
-  };
-});
+type ReportFlagKey =
+  | "isTacmReportActive"
+  | "isCiReportActive"
+  | "isPcpReportActive"
+  | "isWwlReportActive";
+
+const reportFlagMap: Partial<Record<ReportType, ReportFlagKey>> = {
+  [ReportType.TACM]: "isTacmReportActive",
+  [ReportType.CI]: "isCiReportActive",
+  [ReportType.PCP]: "isPcpReportActive",
+  [ReportType.WWL]: "isWwlReportActive",
+};
 
 const buildStates = (): DropdownOptions[] => {
   const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
@@ -53,7 +60,20 @@ const dropdownStates = buildStates();
 export const AdminDashSelector = () => {
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedReport, setSelectedReport] = useState<string>("");
+  const flags = useFlags() as Record<ReportFlagKey, boolean> | undefined;
   const navigate = useNavigate();
+
+  const reportChoices = Object.values(ReportType)
+    .filter((type) => {
+      const requiredFlag = reportFlagMap[type];
+      return !requiredFlag || !!flags?.[requiredFlag];
+    })
+    .map((type) => {
+      return {
+        value: type,
+        label: `${getReportName(type)}`,
+      };
+    });
 
   const handleStateChange = (event: DropdownChangeObject) => {
     setSelectedState(event.target.value);

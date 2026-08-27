@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdminDashSelector } from "./AdminDashSelector";
 import { useNavigate } from "react-router-dom";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import assert from "node:assert";
 
 type DropdownProps = {
@@ -57,11 +58,21 @@ jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
 }));
 
+jest.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: jest.fn(),
+}));
+
 describe("AdminDashSelector Component", () => {
   const mockNavigate = jest.fn();
 
   beforeEach(() => {
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    (useFlags as jest.Mock).mockReturnValue({
+      isTacmReportActive: true,
+      isCiReportActive: true,
+      isPcpReportActive: true,
+      isWwlReportActive: true,
+    });
   });
 
   test("renders correctly with header and button label", () => {
@@ -133,5 +144,53 @@ describe("AdminDashSelector Component", () => {
     await userEvent.click(radioButton);
     // Now it should be enabled
     expect(submitButton).toBeEnabled();
+  });
+
+  test("hides disabled flagged report options", () => {
+    (useFlags as jest.Mock).mockReturnValue({
+      isTacmReportActive: false,
+      isCiReportActive: false,
+      isPcpReportActive: false,
+      isWwlReportActive: false,
+    });
+
+    render(<AdminDashSelector />);
+
+    expect(
+      screen.queryByLabelText("Timely Access Compliance Measure Report (TACM)")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Critical Incident Report (CI)")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Person-Centered Planning Report (PCP)")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Waiver Waiting List Report (WWL)")
+    ).not.toBeInTheDocument();
+  });
+
+  test("shows enabled flagged report options", () => {
+    (useFlags as jest.Mock).mockReturnValue({
+      isTacmReportActive: true,
+      isCiReportActive: false,
+      isPcpReportActive: false,
+      isWwlReportActive: false,
+    });
+
+    render(<AdminDashSelector />);
+
+    expect(
+      screen.getByLabelText("Timely Access Compliance Measure Report (TACM)")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Critical Incident Report (CI)")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Person-Centered Planning Report (PCP)")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("Waiver Waiting List Report (WWL)")
+    ).not.toBeInTheDocument();
   });
 });
