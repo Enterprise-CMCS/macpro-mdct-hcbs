@@ -206,7 +206,7 @@ export const KeyActivitiesTableElement = (
         onClick={onAddClick}
         mb="24px"
       >
-        <Image src={addIcon} alt={"Add Item"} />
+        <Image src={addIcon} alt={"Add Item"} sx={{ padding: "3px" }} />
         Add key activity
       </Button>
 
