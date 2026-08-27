@@ -78,12 +78,13 @@ jest.mock("./MeasureReplacementModal", () => ({
 }));
 
 const MeasureTableComponent = (
-  measureDisplay: QmsMeasureTableTemplate["measureDisplay"]
+  measureDisplay: QmsMeasureTableTemplate["measureDisplay"],
+  disabled = false
 ) => {
   const template = { ...mockTemplate, measureDisplay };
   return (
     <MemoryRouter>
-      <QmsMeasureTableElement element={template} />
+      <QmsMeasureTableElement element={template} disabled={disabled} />
     </MemoryRouter>
   );
 };
@@ -144,6 +145,22 @@ describe("Test QmsMeasureTable", () => {
     render(MeasureTableComponent("required"));
     const editButton = screen.getAllByText("Edit")[0];
     await userEvent.click(editButton);
+    expect(mockedNavigate).toHaveBeenCalledWith(
+      "/report/QMS/CO/123/mock-measure-1"
+    );
+  });
+
+  it("should display View instead of Edit in read-only mode", () => {
+    render(MeasureTableComponent("required", true));
+    expect(screen.getAllByText("View")[0]).toBeInTheDocument();
+    expect(screen.getByLabelText("View Mock Measure Req")).toBeInTheDocument();
+    expect(screen.queryByText("Edit")).not.toBeInTheDocument();
+  });
+
+  it("should navigate to the measure when the view button is clicked", async () => {
+    render(MeasureTableComponent("required", true));
+    const viewButton = screen.getByLabelText("View Mock Measure Req");
+    await userEvent.click(viewButton);
     expect(mockedNavigate).toHaveBeenCalledWith(
       "/report/QMS/CO/123/mock-measure-1"
     );

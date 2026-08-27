@@ -28,9 +28,9 @@ import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const QmsMeasureTableElement = (
-  props: PageElementProps<QmsMeasureTableTemplate>
+  props: PageElementProps<QmsMeasureTableTemplate> & { disabled?: boolean }
 ) => {
-  const table = props.element;
+  const { element: table, disabled = false } = props;
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
@@ -135,14 +135,14 @@ export const QmsMeasureTableElement = (
             <Button
               as={Link}
               variant={"outline"}
-              aria-label={`Edit ${measure.navTitle}`}
+              aria-label={`${disabled ? "View" : "Edit"} ${measure.navTitle}`}
               href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
               onClick={(e) => {
                 e.preventDefault();
                 handleEditClick(measure.id);
               }}
             >
-              Edit
+              {disabled ? "View" : "Edit"}
             </Button>
           </Flex>
         </Td>
