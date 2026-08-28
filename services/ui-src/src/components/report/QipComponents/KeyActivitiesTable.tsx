@@ -29,9 +29,10 @@ import { useState, ChangeEvent } from "react";
 import { useDeleteConfirmModal } from "../useDeleteConfirmModal";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
+import addIcon from "assets/icons/add/icon_add_blue.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages, notAnsweredText } from "../../../constants";
-import { AddIconButton, Alert } from "components";
+import { Alert } from "components";
 import { DateField } from "components/fields";
 import { useStore } from "utils";
 
@@ -198,13 +199,16 @@ export const KeyActivitiesTableElement = (
           Plan.
         </Alert>
       )}
-      <AddIconButton
-        buttonRef={addButtonRef}
+      <Button
+        ref={addButtonRef}
+        variant="outline"
+        leftIcon={<Image src={addIcon} alt="" />}
         isDisabled={disabled}
         onClick={onAddClick}
         mb="24px"
-        label="Add key activity"
-      />
+      >
+        Add key activity
+      </Button>
 
       {rows.length > 0 && (
         <Table variant="measure">

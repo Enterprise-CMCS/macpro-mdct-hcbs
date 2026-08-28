@@ -28,7 +28,7 @@ import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
-import { AddIconButton } from "components";
+import addIcon from "assets/icons/add/icon_add_blue.svg";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const EligibilityTableElement = (
@@ -203,13 +203,16 @@ export const EligibilityTableElement = (
         <Tbody>{rows}</Tbody>
       </Table>
 
-      <AddIconButton
+      <Button
+        variant="outline"
+        leftIcon={<Image src={addIcon} alt="" />}
         isDisabled={disabled}
         onClick={() => {
           onAddClick();
         }}
-        label="Add eligibility"
-      />
+      >
+        Add eligibility
+      </Button>
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
         <ModalOverlay />
