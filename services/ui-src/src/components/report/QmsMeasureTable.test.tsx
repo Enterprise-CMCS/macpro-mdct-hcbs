@@ -152,7 +152,7 @@ describe("Test QmsMeasureTable", () => {
 
   it("should display View instead of Edit in read-only mode", () => {
     render(MeasureTableComponent("required", true));
-    expect(screen.getAllByText("View")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("View")).toHaveLength(2);
     expect(screen.getByLabelText("View Mock Measure Req")).toBeInTheDocument();
     expect(screen.queryByText("Edit")).not.toBeInTheDocument();
   });

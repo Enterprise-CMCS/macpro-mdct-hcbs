@@ -312,11 +312,10 @@ describe("Measure Results Navigation Table", () => {
   test("should display View buttons in read-only mode", async () => {
     useStore.setState({ user: { userIsEndUser: false } as HcbsUser });
 
-    act(() => render(<ReportPageWrapper />));
+    render(<ReportPageWrapper />);
     await waitForRender();
 
-    const viewButtons = screen.getAllByRole("button", { name: "View" });
-    expect(viewButtons).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: "View" })).toHaveLength(2);
     expect(
       screen.queryByRole("button", { name: "Edit" })
     ).not.toBeInTheDocument();
