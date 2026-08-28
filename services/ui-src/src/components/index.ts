@@ -56,6 +56,7 @@ export { MultiCategoryNdr } from "./rates/types/MultiCategoryNdr";
 export { MultiRateNdr } from "../components/rates/types/MultiRateNdr";
 export { NDR } from "../components/rates/types/NDR";
 export { PerformanceNdr } from "./rates/types/PerformanceNdr";
+export { AddIconButton } from "./report/AddIconButton";
 export { MeasureDetailsElement } from "./report/MeasureDetails";
 export { MeasureFooterElement } from "./report/MeasureFooter";
 export { QipMeasureTargetFooterElement } from "./report/QipMeasureTargetFooter";

@@ -15,13 +15,12 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { MeasureTargetInfo, PageStatus, QipMeasureTableTemplate } from "types";
-import { TableStatusIcon } from "components";
+import { AddIconButton, TableStatusIcon } from "components";
 import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
 import { useDeleteConfirmModal } from "./useDeleteConfirmModal";
 import { addQipTargetPage, useStore } from "utils";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
-import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 
 export const QipMeasureTableElement = ({
@@ -161,15 +160,12 @@ export const QipMeasureTableElement = ({
 
   return (
     <>
-      <Button
-        ref={addButtonRef}
+      <AddIconButton
+        buttonRef={addButtonRef}
         onClick={() => setModalComponent(modal, "Add Measure")}
-        variant={"outline"}
         isDisabled={disabled}
-      >
-        <Image src={addIcon} alt="" sx={{ padding: "3px" }} />
-        Add measure
-      </Button>
+        label="Add measure"
+      />
       <Table variant="measure">
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>

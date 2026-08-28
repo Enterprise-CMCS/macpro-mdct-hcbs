@@ -27,12 +27,11 @@ import {
 import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
 import { useDeleteConfirmModal } from "../useDeleteConfirmModal";
-import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages, notAnsweredText } from "../../../constants";
-import { Alert } from "components";
+import { AddIconButton, Alert } from "components";
 import { DateField } from "components/fields";
 import { useStore } from "utils";
 
@@ -199,16 +198,13 @@ export const KeyActivitiesTableElement = (
           Plan.
         </Alert>
       )}
-      <Button
-        ref={addButtonRef}
-        variant={"outline"}
+      <AddIconButton
+        buttonRef={addButtonRef}
         isDisabled={disabled}
         onClick={onAddClick}
         mb="24px"
-      >
-        <Image src={addIcon} alt={"Add Item"} sx={{ padding: "3px" }} />
-        Add key activity
-      </Button>
+        label="Add key activity"
+      />
 
       {rows.length > 0 && (
         <Table variant="measure">
