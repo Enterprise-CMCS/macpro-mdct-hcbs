@@ -144,6 +144,7 @@ useStore.setState({ user: mockUser });
 describe("Measure Results Navigation Table", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    useStore.setState({ user: mockUser });
   });
 
   const waitForRender = async () => {
@@ -306,5 +307,18 @@ describe("Measure Results Navigation Table", () => {
     report = useStore.getState().report as any;
     expect(report.pages[2].elements[0].answer).not.toBeDefined();
     expect(report.pages[3].elements[0].answer).not.toBeDefined();
+  });
+
+  test("should display View buttons in read-only mode", async () => {
+    useStore.setState({ user: { userIsEndUser: false } as HcbsUser });
+
+    act(() => render(<ReportPageWrapper />));
+    await waitForRender();
+
+    const viewButtons = screen.getAllByRole("button", { name: "View" });
+    expect(viewButtons).toHaveLength(2);
+    expect(
+      screen.queryByRole("button", { name: "Edit" })
+    ).not.toBeInTheDocument();
   });
 });
