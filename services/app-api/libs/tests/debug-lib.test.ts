@@ -10,7 +10,7 @@ import {
   logger,
 } from "../debug-lib";
 
-// This requireActual() overrides the mock in setupTests.ts
+// This importOriginal() overrides the mock in setupTests.ts
 vi.mock("../debug-lib", async (importOriginal) => ({
   ...(await importOriginal()),
 }));

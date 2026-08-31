@@ -187,11 +187,7 @@ describe("reportActions", () => {
     });
 
     it("should accept weird values", () => {
-      /*
-       * I call these values are "weird" because JSON.stringify mangles them.
-       * That makes testing difficult, since we mock structuredClone with JSON,
-       * and our answer-merging code relies on structuredClone.
-       */
+      // I call these values are "weird" because JSON.stringify mangles them.
       const obj1 = {
         bigint: 456n,
         undef: undefined,
@@ -225,11 +221,6 @@ describe("reportActions", () => {
 
   describe("state/management/reportState: mergeAnswers", () => {
     it("should add answers to a question", () => {
-      // Jest is garbage
-      global.structuredClone = (val: unknown) => {
-        return JSON.parse(JSON.stringify(val));
-      };
-
       const state = buildState(testReport, false) as HcbsReportState;
 
       const answers = { elements: [null, { answer: "ANSWERED" }] };

@@ -186,10 +186,6 @@ describe("ReportPageWrapper", () => {
     });
 
     it.skip("should display error when text field is blurred with no input", async () => {
-      global.structuredClone = (val: unknown) => {
-        return JSON.parse(JSON.stringify(val));
-      };
-
       render(<ReportPageWrapper />);
       await waitFor(() => expect(getReport).toHaveBeenCalled());
 

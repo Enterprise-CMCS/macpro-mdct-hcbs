@@ -8,7 +8,7 @@ import { sub } from "date-fns";
 describe("utils/auth", () => {
   describe("AuthManager Initialization", () => {
     it("should require a new login when initializing when past expiration", async () => {
-      // Set an initial time, because jest runs too fast to have different timestamps
+      // Set an initial time, because the tests may run too fast to have different timestamps
       const expired = sub(Date.now(), {
         days: 5,
       }).toDateString();
@@ -40,7 +40,7 @@ describe("utils/auth", () => {
     });
 
     it("should refresh the auth session on refreshCredentials", async () => {
-      // Set an initial time, because jest runs too fast to have different timestamps
+      // Set an initial time, because the tests may run too fast to have different timestamps
       const initialExpiration = sub(Date.now(), { seconds: 5 }).toString();
       localStorage.setItem("mdcthcbs_session_exp", initialExpiration);
       await refreshCredentials();

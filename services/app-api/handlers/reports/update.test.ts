@@ -114,10 +114,6 @@ describe("updateReport", () => {
   });
 
   describe("Report validation failures", () => {
-    beforeEach(() => {
-      vi.clearAllMocks();
-    });
-
     it("should throw an error when validating a report with missing state", async () => {
       const missingStateEvent = {
         ...testEvent,

@@ -99,18 +99,18 @@ describe("Kafka Lib", () => {
     consoleSpy.log = vi.spyOn(console, "log").mockImplementation(vi.fn());
   });
 
-  it("should handles a dynamo event", async () => {
+  it("should handle a dynamo event", async () => {
     const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(1);
+    expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
   it("should handle events without versions", async () => {
     const sourceLib = new KafkaSourceLib("hcbs", null, [table]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(1);
+    expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
   it("should not pass through events from unrelated tables", async () => {
@@ -119,14 +119,14 @@ describe("Kafka Lib", () => {
     ]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(0);
+    expect(mockSendBatch).not.toHaveBeenCalled();
   });
 
   it("should ignore items with bad keys or missing events", async () => {
     const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler({});
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(0);
+    expect(mockSendBatch).not.toHaveBeenCalled();
   });
 
   it("should handle dynamo events with no OldImage", async () => {
@@ -147,7 +147,7 @@ describe("Kafka Lib", () => {
     const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler(dynamoInsertEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledWith({
+    expect(mockSendBatch).toHaveBeenCalledWith({
       topicMessages: [
         {
           messages: [
