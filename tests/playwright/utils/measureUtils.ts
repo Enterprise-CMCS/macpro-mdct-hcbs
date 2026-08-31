@@ -1,19 +1,21 @@
-import { expect, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 
-export const quickFillFields = async (page: Page, label: string) => {
+export const quickFillFields = async (page: Page, label: string | RegExp) => {
   //find all textboxes that contains the label passed in
   const fields = await page.getByRole("textbox", { name: label }).all();
 
   //loops through them all and only fill the ones that are enabled
-  for (var i = 0; i < fields.length; i++)
-    if (await fields[i].isEditable()) await fields[i].fill((i + 1).toString());
+  for (let i = 0; i < fields.length; i++) {
+    if (await fields[i].isEditable()) {
+      const value = (i + 1).toString();
+      await fields[i].fill(value);
+    }
+  }
 };
 
 export const completeAndReturn = async (page: Page) => {
-  expect(page.getByRole("button", { name: "Complete section" })).toBeEnabled();
   await page.getByRole("button", { name: "Complete section" }).click();
 
-  expect(page.getByRole("button", { name: "Complete measure" })).toBeEnabled();
   await page.getByRole("button", { name: "Complete measure" }).click();
 };
 
@@ -86,8 +88,12 @@ export const completeLTSS6 = async (page: Page) => {
   await page.getByLabel("Fee-For-Service (FFS LTSS)").check();
   await page.locator('button[name="Edit FFS"]').click();
 
-  await quickFillFields(page, "Denominator");
-  await quickFillFields(page, "Numerator");
+  await page
+    .getByRole("heading", { name: /LTSS-6: Fee-For-Service/ })
+    .waitFor({ state: "visible" });
+
+  await quickFillFields(page, /^Denominator \(/);
+  await quickFillFields(page, /^Numerator: /);
 
   await completeAndReturn(page);
 };

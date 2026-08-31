@@ -18,6 +18,8 @@ export const fillAddEditReportModal = async (page: Page, reportData: any) => {
     name: reportData.reportNameInputHeading,
   });
 
+  testModalData.datetime = Date.now();
+
   await setReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
   );
@@ -25,7 +27,22 @@ export const fillAddEditReportModal = async (page: Page, reportData: any) => {
   const addEditReportButton = page.getByRole("button", {
     name: "Start new",
   });
-  await addEditReportButton.click();
+  await Promise.all([
+    waitForReportRequest(page, "POST"),
+    addEditReportButton.click(),
+  ]);
+
+  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
+};
+
+const waitForReportRequest = async (page: Page, method: "POST" | "PUT") => {
+  const response = await page.waitForResponse(
+    (response) =>
+      response.url().includes("/reports") &&
+      response.request().method() === method
+  );
+
+  expect.soft(response.ok()).toBeTruthy();
 };
 
 export const navigateToReportHome = async (page: Page, name: string) => {
@@ -78,7 +95,6 @@ export const submitReport = async (reportType: string, page: Page) => {
     .getByRole("button", { name: "Submit " + reportType + " Report" })
     .click();
 
-  //wait until the modal is visible by checking for it's header before proceeding
   await expect(page.getByText("Are you sure you want to")).toBeVisible();
   await page
     .getByRole("button", {
@@ -87,7 +103,6 @@ export const submitReport = async (reportType: string, page: Page) => {
     })
     .click();
 
-  //checks that the successfully submitted page is showing
   await expect(page.getByText("Successfully Submitted")).toBeVisible();
 };
 
