@@ -21,7 +21,10 @@ export default defineConfig({
   },
   test: {
     root: "src",
-    setupFiles: "utils/testing/setupTests.tsx",
+    setupFiles: [
+      "utils/testing/setupPolyfills.ts",
+      "utils/testing/setupTests.tsx",
+    ],
     environment: "jsdom",
     /* We don't use global defs, but @testing-library/jest-dom does. */
     globals: true,

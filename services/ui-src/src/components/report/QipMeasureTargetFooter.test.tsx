@@ -60,11 +60,7 @@ describe("QipMeasureTargetFooter", () => {
   it("should render the button, call autosave, and navigate", async () => {
     renderWithAutosave(mockedQipMeasureTargetFooter);
 
-    expect(
-      screen.queryByRole("button", { name: "Previous" })
-    ).not.toBeInTheDocument();
-
-    const actionBtn = screen.getByRole("button", { name: "Save & return" });
+    const actionBtn = screen.getByRole("button", { name: "Previous" });
     await userEvent.click(actionBtn);
     vi.advanceTimersByTime(10);
 
@@ -84,7 +80,7 @@ describe("QipMeasureTargetFooter", () => {
 
     renderWithAutosave(mockedQipMeasureTargetFooter);
 
-    const actionBtn = screen.getByRole("button", { name: "Save & return" });
+    const actionBtn = screen.getByRole("button", { name: "Previous" });
     await userEvent.click(actionBtn);
     vi.advanceTimersByTime(10);
 
