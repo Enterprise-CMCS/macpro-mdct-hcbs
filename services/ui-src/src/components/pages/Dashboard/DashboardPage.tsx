@@ -34,7 +34,6 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useStore } from "utils";
-import { useFlags } from "launchdarkly-react-client-sdk";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
 import { getReportsForState } from "utils/api/requestMethods/report";
 import { Dropdown as CmsdsDropdownField } from "@cmsgov/design-system";
@@ -62,7 +61,6 @@ export const DashboardPage = () => {
     ? reportName
     : `${reportName}s`;
   const filterYear = searchParams.get("year") || "All";
-  const isImaReportActive = useFlags()?.isImaReportActive;
   const filterDropdownOptions =
     reportType === ReportType.IMA
       ? [
@@ -72,7 +70,6 @@ export const DashboardPage = () => {
       : [
           { label: "All", value: "All" },
           { label: "2026", value: "2026" },
-          ...(isImaReportActive ? [{ label: "2028", value: "2028" }] : []),
         ];
 
   useEffect(() => {
@@ -131,6 +128,17 @@ export const DashboardPage = () => {
     setSearchParams({
       year: dropdownValue,
     });
+  };
+
+  const getStartReportLabel = () => {
+    switch (reportType) {
+      case ReportType.QIP:
+        return "Start Quality Improvement Plan";
+      case ReportType.IMA:
+        return "Start Incident Management Assessment";
+      default:
+        return `Start ${reportName}`;
+    }
   };
 
   return (
@@ -352,13 +360,7 @@ export const DashboardPage = () => {
         {userIsEndUser && (
           <Flex justifyContent="center">
             <Button onClick={() => openAddEditReportModal()} type="submit">
-              {reportType === ReportType.QIP &&
-                "Start Quality Improvement Plan"}
-              {reportType === ReportType.IMA &&
-                "Start Incident Management Assessment"}
-              {reportType !== ReportType.QIP &&
-                reportType !== ReportType.IMA &&
-                `Start ${reportName}`}
+              {getStartReportLabel()}
             </Button>
           </Flex>
         )}

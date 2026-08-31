@@ -68,7 +68,7 @@ describe("Build Report", () => {
   });
 
   it("should always have unique element IDs within a page", async () => {
-    const nonQmsReportTypes = Object.values(ReportType).filter(
+    const baseReportTypes = Object.values(ReportType).filter(
       (rt) => rt !== ReportType.QMS && rt !== ReportType.IMA
     );
     const qmsOptionCombinations = [...booleanCombinations(4)].map(
@@ -77,7 +77,7 @@ describe("Build Report", () => {
 
     const reportTypesAndOptions = [
       // Every non-QMS, non-IMA report takes no options, so always has the same pages.
-      ...nonQmsReportTypes.map((type) => ({ type, opts: {}, year: 2026 })),
+      ...baseReportTypes.map((type) => ({ type, opts: {}, year: 2026 })),
       // QMS needs to be built with different options to get all possible pages.
       ...qmsOptionCombinations.map((opts) => ({
         type: ReportType.QMS,

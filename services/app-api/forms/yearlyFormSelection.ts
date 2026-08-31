@@ -78,7 +78,7 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
     case ReportType.PCP:
       return formsByYear[year].pcpReportTemplate;
     case ReportType.IMA:
-      if (year !== 2028) {
+      if (year < 2028) {
         throw new Error(
           `Invalid year - form templates for ${year} are not implemented`
         );
