@@ -30,12 +30,14 @@ const getReportName = (type: string | undefined) => {
 };
 
 type ReportFlagKey =
+  | "isQipReportActive"
   | "isTacmReportActive"
   | "isCiReportActive"
   | "isPcpReportActive"
   | "isWwlReportActive";
 
 const reportFlagMap: Partial<Record<ReportType, ReportFlagKey>> = {
+  [ReportType.QIP]: "isQipReportActive",
   [ReportType.TACM]: "isTacmReportActive",
   [ReportType.CI]: "isCiReportActive",
   [ReportType.PCP]: "isPcpReportActive",

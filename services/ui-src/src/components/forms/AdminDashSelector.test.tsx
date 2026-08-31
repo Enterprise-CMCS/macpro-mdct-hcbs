@@ -68,6 +68,7 @@ describe("AdminDashSelector Component", () => {
   beforeEach(() => {
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     (useFlags as jest.Mock).mockReturnValue({
+      isQipReportActive: true,
       isTacmReportActive: true,
       isCiReportActive: true,
       isPcpReportActive: true,
@@ -148,6 +149,7 @@ describe("AdminDashSelector Component", () => {
 
   test("hides disabled flagged report options", () => {
     (useFlags as jest.Mock).mockReturnValue({
+      isQipReportActive: false,
       isTacmReportActive: false,
       isCiReportActive: false,
       isPcpReportActive: false,
@@ -156,6 +158,9 @@ describe("AdminDashSelector Component", () => {
 
     render(<AdminDashSelector />);
 
+    expect(
+      screen.queryByLabelText("QMS Quality Improvement Plans (QMS QIP)")
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByLabelText("Timely Access Compliance Measure Report (TACM)")
     ).not.toBeInTheDocument();
@@ -172,6 +177,7 @@ describe("AdminDashSelector Component", () => {
 
   test("shows enabled flagged report options", () => {
     (useFlags as jest.Mock).mockReturnValue({
+      isQipReportActive: true,
       isTacmReportActive: true,
       isCiReportActive: false,
       isPcpReportActive: false,
@@ -180,6 +186,9 @@ describe("AdminDashSelector Component", () => {
 
     render(<AdminDashSelector />);
 
+    expect(
+      screen.getByLabelText("QMS Quality Improvement Plans (QMS QIP)")
+    ).toBeInTheDocument();
     expect(
       screen.getByLabelText("Timely Access Compliance Measure Report (TACM)")
     ).toBeInTheDocument();
