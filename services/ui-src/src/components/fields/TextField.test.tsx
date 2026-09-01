@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TextField } from "components";
@@ -11,10 +12,8 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { useState } from "react";
 import { ErrorMessages } from "../../constants";
 
-jest.mock("utils/state/hooks/useElementIsHidden");
-const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
-  typeof useElementIsHidden
->;
+vi.mock("utils/state/hooks/useElementIsHidden");
+vi.mocked(useElementIsHidden).mockReturnValue(false);
 
 const mockedTextboxElement: TextboxTemplate = {
   id: "mock-textbox-id",
@@ -36,7 +35,7 @@ const mockedNumberField: NumberFieldTemplate = {
   required: true,
 };
 
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const TextFieldWrapper = ({
   template,
@@ -53,16 +52,16 @@ const TextFieldWrapper = ({
 
 describe("<TextField />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("TextField is visible", () => {
+  it("should render a textbox", () => {
     render(<TextFieldWrapper template={mockedTextboxElement} />);
     const textField = screen.getByRole("textbox");
     expect(textField).toBeVisible();
   });
 
-  test("TextField should send updates to the Form", async () => {
+  it("should send updates to the Form", async () => {
     render(<TextFieldWrapper template={mockedTextboxElement} />);
     const textField = screen.getByRole("textbox");
 
@@ -71,7 +70,7 @@ describe("<TextField />", () => {
     expect(updateSpy).toHaveBeenCalledWith({ answer: "hello" });
   });
 
-  test("TextField should parse numeric values depending on its type", async () => {
+  it("should parse numeric values depending on its type", async () => {
     render(<TextFieldWrapper template={mockedNumberField} />);
     const textField = screen.getByRole("textbox");
 
@@ -80,7 +79,7 @@ describe("<TextField />", () => {
     expect(updateSpy).toHaveBeenCalledWith({ answer: 24 });
   });
 
-  test("TextField should show required validation error when required field is cleared", async () => {
+  it("should show required validation error when required field is cleared", async () => {
     render(<TextFieldWrapper template={mockedTextboxElement} />);
     const textField = screen.getByRole("textbox");
 
@@ -90,7 +89,7 @@ describe("<TextField />", () => {
     expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
   });
 
-  test("TextField should validate email format for email labels", async () => {
+  it("should validate email format for email labels", async () => {
     render(
       <TextFieldWrapper
         template={{ ...mockedTextboxElement, label: "contact email" }}
@@ -103,7 +102,7 @@ describe("<TextField />", () => {
     expect(screen.getByText(ErrorMessages.mustBeAnEmail)).toBeVisible();
   });
 
-  test("NumberField should show non-numeric validation error", async () => {
+  it("should show non-numeric validation error", async () => {
     render(<TextFieldWrapper template={mockedNumberField} />);
     const textField = screen.getByRole("textbox");
 
@@ -112,7 +111,7 @@ describe("<TextField />", () => {
     expect(screen.getByText(ErrorMessages.mustBeANumber)).toBeVisible();
   });
 
-  test("NumberField should render its initial value", () => {
+  it("should render its initial value", () => {
     render(
       <TextFieldWrapper template={{ ...mockedNumberField, answer: 123 }} />
     );
@@ -121,7 +120,7 @@ describe("<TextField />", () => {
     expect(textField).toHaveValue("123");
   });
 
-  test("NumberField should respond to measure clear", () => {
+  it("should respond to measure clear", () => {
     const props = {
       element: {
         ...mockedNumberField,
@@ -138,8 +137,8 @@ describe("<TextField />", () => {
     expect(textField).toHaveValue("");
   });
 
-  test("Text field is hidden if its hide conditions' controlling element has a matching answer", async () => {
-    mockedUseElementIsHidden.mockReturnValueOnce(true);
+  it("should be hidden if its hide conditions' controlling element has a matching answer", async () => {
+    vi.mocked(useElementIsHidden).mockReturnValueOnce(true);
     render(<TextFieldWrapper template={mockedTextboxElement} />);
     const textField = screen.queryByLabelText("test label");
     expect(textField).not.toBeInTheDocument();

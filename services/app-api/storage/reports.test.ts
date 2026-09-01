@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getReport,
   putReport,
@@ -63,13 +64,13 @@ const mockStoredReport = [
 
 describe("Report storage helpers", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockDynamo.reset();
   });
 
   describe("putReport", () => {
     it("should call DynamoDB to put report data", async () => {
-      const mockBatchWrite = jest.fn().mockResolvedValue({});
+      const mockBatchWrite = vi.fn().mockResolvedValue({});
       mockDynamo.on(BatchWriteCommand).callsFake(mockBatchWrite);
 
       await putReport(mockReport);
@@ -92,7 +93,7 @@ describe("Report storage helpers", () => {
 
   describe("getReport", () => {
     it("should call DynamoDB to get report data", async () => {
-      const mockQuery = jest.fn().mockResolvedValue({
+      const mockQuery = vi.fn().mockResolvedValue({
         Items: structuredClone(mockStoredReport),
       });
       mockDynamo.on(QueryCommand).callsFake(mockQuery);
@@ -124,7 +125,7 @@ describe("Report storage helpers", () => {
     it("should call DynamoDB to get multiple reports", async () => {
       const mockLiteReport = structuredClone(mockReport) as any;
       delete mockLiteReport.pages;
-      const mockQuery = jest.fn().mockResolvedValue({
+      const mockQuery = vi.fn().mockResolvedValue({
         Items: structuredClone(mockStoredReport),
         LastEvaluatedKey: undefined,
       });
@@ -146,7 +147,7 @@ describe("Report storage helpers", () => {
 
   describe("updateFields", () => {
     it("should call DynamoDB to update report data", async () => {
-      const mockUpdate = jest.fn();
+      const mockUpdate = vi.fn();
       mockDynamo.on(UpdateCommand).callsFake(mockUpdate);
 
       await updateFields(

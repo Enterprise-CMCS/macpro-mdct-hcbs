@@ -1,33 +1,27 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
-import { LiteReport, ReportType } from "../../types/reports";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
-import { StateAbbr } from "../../utils/constants";
 import { validReport } from "../../utils/tests/mockReport";
 import { partialUpdateReport } from "./partialUpdate";
+import { updateFields } from "../../storage/reports";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
     state: "PA",
     fullName: "Anthony Soprano",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canWriteState: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canWriteState: vi.fn().mockReturnValue(true),
 }));
 
-const mockUpdateFields = jest.fn();
-jest.mock("../../storage/reports", () => ({
-  getReport: jest.fn().mockReturnValue(validReport),
-  updateFields: (
-    fieldsToUpdate: Partial<LiteReport>,
-    reportType: ReportType,
-    state: StateAbbr,
-    id: string
-  ) => mockUpdateFields(fieldsToUpdate, reportType, state, id),
+vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn().mockReturnValue(validReport),
+  updateFields: vi.fn(),
 }));
 
 const report = JSON.stringify(validReport);
@@ -43,12 +37,12 @@ const testEvent: APIGatewayProxyEvent = {
   body: report,
 };
 
-describe("Test update report handler", () => {
+describe("partialUpdateReport", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  it("should return Bad Request if missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -57,13 +51,13 @@ describe("Test update report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  it("should return 403 if user is not authorized", async () => {
-    (canWriteState as jest.Mock).mockReturnValueOnce(false);
+  it("should return Forbidden if user is not authorized", async () => {
+    vi.mocked(canWriteState).mockReturnValueOnce(false);
     const response = await partialUpdateReport(testEvent);
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  it("should return Bad Request if missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
       pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
@@ -73,41 +67,50 @@ describe("Test update report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test body + param mismatch", async () => {
-    const badType = {
-      ...proxyEvent,
-      pathParameters: { reportType: "ZZ", state: "PA", id: "QMSPA123" },
-      body: report,
-    } as APIGatewayProxyEvent;
-    const badState = {
-      ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
-      body: JSON.stringify({ ...validReport, state: "OR" }),
-    } as APIGatewayProxyEvent;
-    const badId = {
-      ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "ZZOR1234" },
-      body: report,
-    } as APIGatewayProxyEvent;
+  it.each([
+    {
+      reason: "report type",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { reportType: "ZZ", state: "PA", id: "QMSPA123" },
+        body: report,
+      },
+    },
+    {
+      reason: "state",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
+        body: JSON.stringify({ ...validReport, state: "OR" }),
+      },
+    },
+    {
+      reason: "report ID",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { reportType: "QMS", state: "PA", id: "ZZOR1234" },
+        body: report,
+      },
+    },
+  ])(
+    "should return Bad Request if body does not match path params: $reason",
+    async ({ evt }) => {
+      const res = await partialUpdateReport(evt);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    }
+  );
 
-    const resType = await partialUpdateReport(badType);
-    expect(resType.statusCode).toBe(StatusCodes.BadRequest);
-    const resState = await partialUpdateReport(badState);
-    expect(resState.statusCode).toBe(StatusCodes.BadRequest);
-    const resId = await partialUpdateReport(badId);
-    expect(resId.statusCode).toBe(StatusCodes.BadRequest);
-  });
-
-  test("Test Successful update", async () => {
+  it("should successfully update a report", async () => {
     const res = await partialUpdateReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(updateFields).toHaveBeenCalled();
   });
 
-  test("Test validation strips everything not editable", async () => {
+  it("should not update non-editable fields", async () => {
     await partialUpdateReport(testEvent);
 
-    expect(mockUpdateFields).toHaveBeenCalledWith(
+    expect(updateFields).toHaveBeenCalledWith(
       {
         name: validReport.name,
       },

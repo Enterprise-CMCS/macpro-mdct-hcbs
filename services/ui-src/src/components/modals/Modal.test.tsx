@@ -1,12 +1,12 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-//components
 import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockCloseHandler = jest.fn();
-const mockConfirmationHandler = jest.fn();
+const mockCloseHandler = vi.fn();
+const mockConfirmationHandler = vi.fn();
 
 const content = {
   heading: "Dialog Heading",
@@ -28,27 +28,31 @@ const modalComponent = (
   </Modal>
 );
 
-describe("Test Modal", () => {
-  beforeEach(() => {});
+describe("Modal", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-  test("Modal shows the contents", () => {
+  it("should render its contents", () => {
     render(modalComponent);
     expect(screen.getByText(content.heading)).toBeTruthy();
     expect(screen.getByText(content.body)).toBeTruthy();
   });
 
-  test("Modals action button can be clicked", async () => {
+  it("should call its confirm handler when button is clicked", async () => {
     render(modalComponent);
     await userEvent.click(screen.getByText(/Dialog Action/i));
     expect(mockConfirmationHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("Modals close button can be clicked", async () => {
+  it("should close when Cancel is clockedModals close button can be clicked", async () => {
     render(modalComponent);
     await userEvent.click(screen.getByText(/Cancel/i));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    expect(mockConfirmationHandler).not.toHaveBeenCalled();
   });
-  test("Modals disable submit when prompted", () => {
+
+  it("should disable submit when prompted", () => {
     const disabledModal = (
       <Modal
         onConfirmHandler={mockConfirmationHandler}

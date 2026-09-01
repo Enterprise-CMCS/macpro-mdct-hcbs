@@ -34,7 +34,7 @@ export const QmsMeasureTableElement = (
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
-  const measures = report?.pages.filter((page) =>
+  const measures = (report?.pages ?? []).filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 

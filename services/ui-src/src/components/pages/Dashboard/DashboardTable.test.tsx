@@ -1,24 +1,19 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
 import { ReportStatus, Report, LiteReport } from "types";
 import { useStore } from "utils";
 import {
-  mockUseAdminStore,
-  mockUseStore,
+  mockAdminUser,
+  mockStateUser,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { VerticalTable } from "./DashboardTable";
 
-jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockReturnValue({}),
-}));
-const mockedUseStore = jest.mocked(useStore);
-mockedUseStore.mockReturnValue(mockUseStore);
-
-const mockArchive = jest.fn();
-const mockRelease = jest.fn();
-jest.mock("utils/api/requestMethods/report", () => ({
+const mockArchive = vi.fn();
+const mockRelease = vi.fn();
+vi.mock("utils/api/requestMethods/report", () => ({
   updateArchivedStatus: () => mockArchive(),
   releaseReport: () => mockRelease(),
 }));
@@ -47,8 +42,8 @@ const reports = [
   },
 ] as Report[];
 
-const mockOpenAddEditReportModal = jest.fn();
-const mockUnlockModalOnOpenHandler = jest.fn();
+const mockOpenAddEditReportModal = vi.fn();
+const mockUnlockModalOnOpenHandler = vi.fn();
 
 const standardDashboardTableComponent = (
   <RouterWrappedComponent>
@@ -56,7 +51,7 @@ const standardDashboardTableComponent = (
       reports={reports}
       openAddEditReportModal={mockOpenAddEditReportModal}
       unlockModalOnOpenHandler={mockUnlockModalOnOpenHandler}
-      onReportUpdate={jest.fn()}
+      onReportUpdate={vi.fn()}
     />
   </RouterWrappedComponent>
 );
@@ -78,10 +73,10 @@ const mockTableProps = {
   showReportSubmissionsColumn: false,
   showAdminControls: false,
   openAddEditReportModal: mockOpenAddEditReportModal,
-  navigate: jest.fn(),
+  navigate: vi.fn(),
   userIsEndUser: true,
-  toggleArchived: jest.fn(),
-  toggleRelease: jest.fn(),
+  toggleArchived: vi.fn(),
+  toggleRelease: vi.fn(),
   archiving: undefined,
   unlocking: undefined,
 };
@@ -106,28 +101,25 @@ const renderVerticalTableWithAdminControls = (overrideProps = {}) => {
   );
 };
 
-describe("Dashboard table with state user", () => {
+describe("Dashboard table", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockedUseStore.mockReturnValue(mockUseStore);
+    vi.clearAllMocks();
+    useStore.setState({ user: mockAdminUser });
   });
 
   it("should render edit button and call openAddEditReportModal on click", async () => {
+    useStore.setState({ user: mockStateUser });
+
     render(standardDashboardTableComponent);
+
     const editButton = screen.getByLabelText("Edit report 1 name");
     expect(editButton).toBeInTheDocument();
     await userEvent.click(editButton);
     expect(mockOpenAddEditReportModal).toHaveBeenCalled();
   });
-});
-
-describe("DashboardTable conditional rendering", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
 
   it("should call toggleArchived when Archive button is clicked in DashboardTable", async () => {
-    const mockToggleArchived = jest.fn();
+    const mockToggleArchived = vi.fn();
     renderVerticalTableWithAdminControls({
       toggleArchived: mockToggleArchived,
     });
@@ -139,7 +131,7 @@ describe("DashboardTable conditional rendering", () => {
   });
 
   it("should call toggleRelease when Unlock button is clicked in DashboardTable", async () => {
-    const mockToggleRelease = jest.fn();
+    const mockToggleRelease = vi.fn();
     const submittedReports = [
       {
         ...reports[0],
@@ -169,13 +161,6 @@ describe("DashboardTable conditional rendering", () => {
     const archivedReportUnlockButton = unlockButtons.at(-1)!;
     expect(archivedReportUnlockButton.closest("button")).toBeDisabled();
   });
-});
-
-describe("DashboardTable toggleArchived and toggleRelease", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    mockedUseStore.mockReturnValue(mockUseAdminStore);
-  });
 
   it("should handle undefined archived property and set to true", async () => {
     const reportWithUndefinedArchived = [
@@ -189,9 +174,9 @@ describe("DashboardTable toggleArchived and toggleRelease", () => {
       <RouterWrappedComponent>
         <DashboardTable
           reports={reportWithUndefinedArchived as unknown as LiteReport[]}
-          openAddEditReportModal={jest.fn()}
-          unlockModalOnOpenHandler={jest.fn()}
-          onReportUpdate={jest.fn()}
+          openAddEditReportModal={vi.fn()}
+          unlockModalOnOpenHandler={vi.fn()}
+          onReportUpdate={vi.fn()}
         />
       </RouterWrappedComponent>
     );
@@ -203,14 +188,14 @@ describe("DashboardTable toggleArchived and toggleRelease", () => {
   });
 
   it("should call onReportUpdate after toggling archive status", async () => {
-    const mockOnReportUpdate = jest.fn();
+    const mockOnReportUpdate = vi.fn();
 
     render(
       <RouterWrappedComponent>
         <DashboardTable
           reports={reports}
-          openAddEditReportModal={jest.fn()}
-          unlockModalOnOpenHandler={jest.fn()}
+          openAddEditReportModal={vi.fn()}
+          unlockModalOnOpenHandler={vi.fn()}
           onReportUpdate={mockOnReportUpdate}
         />
       </RouterWrappedComponent>
@@ -223,8 +208,8 @@ describe("DashboardTable toggleArchived and toggleRelease", () => {
   });
 
   it("should call onReportUpdate after releasing report", async () => {
-    const mockOnReportUpdate = jest.fn();
-    const mockUnlockHandler = jest.fn();
+    const mockOnReportUpdate = vi.fn();
+    const mockUnlockHandler = vi.fn();
     const submittedReport = [
       {
         ...reports[0],
@@ -237,7 +222,7 @@ describe("DashboardTable toggleArchived and toggleRelease", () => {
       <RouterWrappedComponent>
         <DashboardTable
           reports={submittedReport as LiteReport[]}
-          openAddEditReportModal={jest.fn()}
+          openAddEditReportModal={vi.fn()}
           unlockModalOnOpenHandler={mockUnlockHandler}
           onReportUpdate={mockOnReportUpdate}
         />

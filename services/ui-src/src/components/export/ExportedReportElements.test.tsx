@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { renderElements } from "./ExportedReportElements";
 import {
@@ -35,11 +36,12 @@ const section = {
   status: PageStatus.IN_PROGRESS,
 };
 
-describe("Test ExportedReportElements", () => {
+describe("ExportedReportElements", () => {
   beforeEach(() => {
     section.elements = [];
   });
-  test("Test render SubHeader element", () => {
+
+  it("should render a SubHeader element", () => {
     const element = renderElements(section, {
       id: "mock-sub-header",
       text: "mock sub header",
@@ -49,7 +51,8 @@ describe("Test ExportedReportElements", () => {
 
     expect(screen.getByText("mock sub header")).toBeInTheDocument();
   });
-  test("Test render Measure Details element", () => {
+
+  it("should render a Measure Details element", () => {
     const element = renderElements(section, {
       id: "mock-measure-details",
       type: ElementType.MeasureDetails,
@@ -61,7 +64,8 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByText("Steward: measure steward")).toBeInTheDocument();
     expect(screen.getByText("Collection method: Hybrid")).toBeInTheDocument();
   });
-  test("Test render NDR element", () => {
+
+  it("should render a NDR element", () => {
     section.elements.push(mockNDR);
     const element = renderElements(section, mockNDR);
     render(element);
@@ -74,7 +78,8 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getByRole("row", { name: "Denominator 3" })).toBeVisible();
     expect(screen.getByRole("row", { name: /Rate .* 1\.67/ })).toBeVisible();
   });
-  test("Test render Multi-Rate NDR element", () => {
+
+  it("should render a Multi-Rate NDR element", () => {
     section.elements.push(mockedMultiRateNdr);
     const element = renderElements(section, mockedMultiRateNdr);
     render(element);
@@ -88,7 +93,8 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByText("2")).toHaveLength(2);
     expect(screen.getAllByText("Not answered")).toHaveLength(1);
   });
-  test("Test render Multi-Category NDR element", () => {
+
+  it("should render a Multi-Category NDR element", () => {
     section.elements.push(mockMultiCategoryNdr);
     const element = renderElements(section, mockMultiCategoryNdr);
     render(element);
@@ -96,21 +102,24 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByText("Denominator (Assessment 1)")).toHaveLength(2);
     expect(screen.getAllByText("2")).toHaveLength(2);
   });
-  test("Test render FieldsExport element", () => {
+
+  it("should render a FieldsExport element", () => {
     section.elements.push(mockLengthOfStayFields);
     const element = renderElements(section, mockLengthOfStayFields);
     render(element);
     expect(screen.getByText("Actual Count")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(7);
   });
-  test("Test render Readmission Rate element", () => {
+
+  it("should render a Readmission Rate element", () => {
     section.elements.push(mockReadmissionRateFields);
     const element = renderElements(section, mockReadmissionRateFields);
     render(element);
     expect(screen.getByText("Expected Readmission Rate")).toBeInTheDocument();
     expect(screen.getAllByText("Not answered")).toHaveLength(9);
   });
-  test("Test render Performance NDR element", () => {
+
+  it("should render a Performance NDR element", () => {
     section.elements.push(mockPerformanceNdr);
     const element = renderElements(section, mockPerformanceNdr);
     render(element);
@@ -118,7 +127,7 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByText("Not answered")).toHaveLength(2);
   });
 
-  test("Test render DateRange element", () => {
+  it("should render a DateRange element", () => {
     const element = renderElements(section, {
       id: "measurement-period",
       type: ElementType.DateRange,
@@ -144,7 +153,7 @@ describe("Test ExportedReportElements", () => {
     ).toBeInTheDocument();
   });
 
-  test("Test render Key Activities element as table", () => {
+  it("should render a Key Activities element as table", () => {
     const element = renderElements(section, {
       id: "key-activities",
       type: ElementType.KeyActivityTable,
@@ -178,7 +187,7 @@ describe("Test ExportedReportElements", () => {
     expect(screen.getAllByRole("cell", { name: "12/2026" })).toHaveLength(2);
   });
 
-  test("Test render Key Activities date as N/A when missing", () => {
+  it("should render a Key Activities date as N/A when missing", () => {
     const element = renderElements(section, {
       id: "key-activities",
       type: ElementType.KeyActivityTable,
@@ -202,7 +211,7 @@ describe("Test ExportedReportElements", () => {
     expect(completionDateCell).toHaveTextContent("N/A");
   });
 
-  test("Test render Key Activities element as Not answered when empty", () => {
+  it("should render a Key Activities element as Not answered when empty", () => {
     const element = renderElements(section, {
       id: "key-activities",
       type: ElementType.KeyActivityTable,

@@ -112,7 +112,8 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
       eventToBeConfirmed === undefined
     ) {
       setEventToBeConfirmed(event);
-      return radioModalOnOpenHandler();
+      radioModalOnOpenHandler();
+      return;
     }
 
     const newDisplayValue = formatChoices(

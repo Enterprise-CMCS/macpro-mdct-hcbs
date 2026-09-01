@@ -1,28 +1,25 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mockUseStore } from "utils/testing/setupJest";
 import { BrowserRouter as Router, useParams } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { useStore } from "utils";
+import { Report, ReportType } from "types";
 
-jest.mock("utils/other/useBreakpoint", () => ({
-  useBreakpoint: jest.fn(() => ({
+vi.mock("utils/other/useBreakpoint", () => ({
+  useBreakpoint: vi.fn(() => ({
     isDesktop: true,
   })),
 }));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
   useNavigate: () => mockUseNavigate,
-  useParams: jest.fn(),
+  useParams: vi.fn(),
 }));
 
-const setCurrentPageId = jest.fn();
-const mockUseNavigate = jest.fn();
+const setCurrentPageId = vi.fn();
+const mockUseNavigate = vi.fn();
 
 const mockPageMap = new Map([
   ["root", 0],
@@ -38,39 +35,42 @@ const report = {
     { navTitle: "Section 2", id: "id-2" },
     { navTitle: "Child 1", id: "child-1" },
   ],
-};
+} as Report;
+
+const testComponent = (
+  <Router>
+    <Sidebar />
+  </Router>
+);
 
 describe("Sidebar", () => {
   beforeEach(() => {
-    (useStore as unknown as jest.Mock).mockReturnValue({
+    useStore.setState({
       pageMap: mockPageMap,
       report,
       currentPageId: "id-1",
       setCurrentPageId,
     });
-    (useParams as jest.Mock).mockReturnValue({
+    vi.mocked(useParams).mockReturnValue({
       reportType: "exampleReport",
       state: "exampleState",
       reportId: "123",
     });
   });
-  test("should not render if missing details from the store", () => {
-    (useStore as unknown as jest.Mock).mockReturnValueOnce({
+
+  it("should not render if missing details from the store", () => {
+    useStore.setState({
       pageMap: undefined,
       report: undefined,
       currentPageId: undefined,
       setCurrentPageId,
     });
 
-    const { container } = render(
-      <Router>
-        <Sidebar />
-      </Router>
-    );
+    const { container } = render(testComponent);
     expect(container).toBeEmptyDOMElement();
   });
 
-  test("should render section headers", () => {
+  it("should render section headers", () => {
     render(
       <Router>
         <Sidebar />
@@ -80,24 +80,16 @@ describe("Sidebar", () => {
     expect(screen.getByText("Section 2")).toBeInTheDocument();
   });
 
-  test("should attempt to navigate on Click", async () => {
-    render(
-      <Router>
-        <Sidebar />
-      </Router>
-    );
+  it("should navigate on link click", async () => {
+    render(testComponent);
     const link = screen.getByText("Section 1");
     await userEvent.click(link);
     const reportPath = "/report/exampleReport/exampleState/123/id-1";
     expect(mockUseNavigate).toHaveBeenCalledWith(reportPath);
   });
 
-  test("should expand on Click", async () => {
-    render(
-      <Router>
-        <Sidebar />
-      </Router>
-    );
+  it("should expand on button click", async () => {
+    render(testComponent);
 
     const expandButton = screen.getByAltText("Expand subitems");
     expect(screen.queryByText("Child 1")).not.toBeInTheDocument();
@@ -107,18 +99,8 @@ describe("Sidebar", () => {
     expect(screen.getByText("Child 1")).toBeInTheDocument();
   });
 
-  test("should render IMA heading when report type is IMA", () => {
-    (useStore as unknown as jest.Mock).mockReturnValueOnce({
-      pageMap: mockPageMap,
-      report: {
-        ...report,
-        type: "IMA",
-      },
-      currentPageId: "id-1",
-      setCurrentPageId,
-      setSidebar: jest.fn(),
-      sidebarOpen: true,
-    });
+  it("should render IMA heading when report type is IMA", () => {
+    useStore.setState({ report: { ...report, type: ReportType.IMA } });
 
     render(
       <Router>
