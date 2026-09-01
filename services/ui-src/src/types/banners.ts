@@ -38,4 +38,5 @@ export const bannerAreaLabels: Record<BannerArea, string> = {
   [BannerAreas.QIP]: "QMS QIP dashboard",
   [BannerAreas.TACM]: "TACM report dashboard",
   [BannerAreas.WWL]: "WWL report dashboard",
+  [BannerAreas.IMA]: "IMA report dashboard",
 };

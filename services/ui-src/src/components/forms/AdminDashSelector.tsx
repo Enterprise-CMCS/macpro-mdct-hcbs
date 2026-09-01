@@ -19,6 +19,8 @@ const getReportName = (type: string | undefined) => {
       return "Critical Incident Report (CI)";
     case ReportType.PCP:
       return "Person-Centered Planning Report (PCP)";
+    case ReportType.IMA:
+      return "Incident Management Assessments (IMA)";
     case ReportType.QIP:
       return "QMS Quality Improvement Plans (QMS QIP)";
     case ReportType.WWL:
