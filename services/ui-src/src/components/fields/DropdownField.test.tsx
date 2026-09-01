@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { testA11y } from "utils/testing/commonTests";
@@ -17,7 +18,7 @@ const mockedDropdownElement: DropdownTemplate = {
     { label: "2027", value: "2027" },
   ],
 };
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const DropdownWrapper = ({ template }: { template: DropdownTemplate }) => {
   const [element, setElement] = useState(template);
@@ -30,26 +31,24 @@ const DropdownWrapper = ({ template }: { template: DropdownTemplate }) => {
 
 describe("<DropdownField />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  describe("Test DropdownField basic functionality", () => {
-    test("DropdownField is visible", () => {
-      render(<DropdownWrapper template={mockedDropdownElement} />);
-      const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
-      expect(dropdown).toBeInTheDocument();
-      assert.ok(dropdown instanceof HTMLSelectElement);
-      expect(dropdown.options.length).toBe(3);
-    });
+  it("should render its options in a Select element", () => {
+    render(<DropdownWrapper template={mockedDropdownElement} />);
+    const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
+    expect(dropdown).toBeInTheDocument();
+    assert.ok(dropdown instanceof HTMLSelectElement);
+    expect(dropdown.options.length).toBe(3);
+  });
 
-    test("DropdownField should send updates to the Form", async () => {
-      render(<DropdownWrapper template={mockedDropdownElement} />);
-      const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
+  it("should send updates to the Form", async () => {
+    render(<DropdownWrapper template={mockedDropdownElement} />);
+    const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
 
-      await userEvent.selectOptions(dropdown, "2027");
+    await userEvent.selectOptions(dropdown, "2027");
 
-      expect(updateSpy).toHaveBeenCalledWith({ answer: "2027" });
-    });
+    expect(updateSpy).toHaveBeenCalledWith({ answer: "2027" });
   });
 
   testA11y(<DropdownWrapper template={mockedDropdownElement} />);

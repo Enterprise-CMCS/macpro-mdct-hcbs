@@ -95,7 +95,7 @@ Local authorization uses Cognito from the main/master stack in dev. The credenti
 
 ### Unit Testing
 
-We use Jest for unit tests.
+We use Vitest for unit tests.
 
 To run all frontend unit tests:
 
@@ -114,13 +114,13 @@ yarn test
 In either of these directories you can also check code coverage with
 
 ```
-yarn coverage
+yarn test --coverage
 ```
 
-Live reload all tests
+Unit tests run in watch mode by default. To run once and exit:
 
 ```
-yarn test --watch
+yarn test --run
 ```
 
 ### Integration Testing
@@ -131,7 +131,7 @@ We use Playwright for integration tests. See the `tests/playwright` directory.
 
 We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa11y) for primary accessibility testing.
 
-Unit tests use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
+Unit tests use [axe-core]https://github.com/dequelabs/axe-core), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
 Integration tests use [@axe-core/playwright](https://github.com/dequelabs/axe-core-npm).
 

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
@@ -11,21 +12,22 @@ import {
   validReport,
 } from "../../utils/tests/mockReport";
 import { updateReport } from "./update";
+import { putReport } from "../../storage/reports";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
     state: "PA",
     fullName: "Anthony Soprano",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canWriteState: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canWriteState: vi.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../storage/reports", () => ({
-  putReport: jest.fn(),
+vi.mock("../../storage/reports", () => ({
+  putReport: vi.fn(),
 }));
 
 const report = JSON.stringify(validReport);
@@ -41,12 +43,12 @@ const testEvent: APIGatewayProxyEvent = {
   body: report,
 };
 
-describe("Test update report handler", () => {
+describe("updateReport", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  it("should return Bad Request if missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -55,13 +57,13 @@ describe("Test update report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  it("should return 403 if user is not authorized", async () => {
-    (canWriteState as jest.Mock).mockReturnValueOnce(false);
+  it("should return Forbidden if user is not authorized", async () => {
+    vi.mocked(canWriteState).mockReturnValueOnce(false);
     const response = await updateReport(testEvent);
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  it("should return Bad Request if missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
       pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
@@ -71,85 +73,94 @@ describe("Test update report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test body + param mismatch", async () => {
-    const badType = {
-      ...proxyEvent,
-      pathParameters: { reportType: "ZZ", state: "PA", id: "QMSPA123" },
-      body: report,
-    } as APIGatewayProxyEvent;
-    const badState = {
-      ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
-      body: JSON.stringify({ ...validReport, state: "OR" }),
-    } as APIGatewayProxyEvent;
-    const badId = {
-      ...proxyEvent,
-      pathParameters: { reportType: "QMS", state: "PA", id: "ZZOR1234" },
-      body: report,
-    } as APIGatewayProxyEvent;
+  it.each([
+    {
+      reason: "report type",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { reportType: "ZZ", state: "PA", id: "QMSPA123" },
+        body: report,
+      },
+    },
+    {
+      reason: "state",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
+        body: JSON.stringify({ ...validReport, state: "OR" }),
+      },
+    },
+    {
+      reason: "report ID",
+      evt: {
+        ...proxyEvent,
+        pathParameters: { reportType: "QMS", state: "PA", id: "ZZOR1234" },
+        body: report,
+      },
+    },
+  ])(
+    "should return Bad Request if body does not match path params: $reason",
+    async ({ evt }) => {
+      const res = await updateReport(evt);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    }
+  );
 
-    const resType = await updateReport(badType);
-    expect(resType.statusCode).toBe(StatusCodes.BadRequest);
-    const resState = await updateReport(badState);
-    expect(resState.statusCode).toBe(StatusCodes.BadRequest);
-    const resId = await updateReport(badId);
-    expect(resId.statusCode).toBe(StatusCodes.BadRequest);
-  });
-
-  test("Test Successful update", async () => {
+  it("should successfully update a report", async () => {
     const res = await updateReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
-  });
-});
-
-describe("Test update report validation failures", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+    expect(putReport).toHaveBeenCalled();
   });
 
-  test("throws an error when validating a report with missing state", async () => {
-    const missingStateEvent = {
-      ...testEvent,
-      body: JSON.stringify(missingStateReport),
-    };
+  describe("Report validation failures", () => {
+    it("should throw an error when validating a report with missing state", async () => {
+      const missingStateEvent = {
+        ...testEvent,
+        body: JSON.stringify(missingStateReport),
+      };
 
-    const res = await updateReport(missingStateEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating a report with incorrect report type", async () => {
-    const incorrectReportTypeEvent = {
-      ...testEvent,
-      body: JSON.stringify(incorrectTypeReport),
-    };
+      const res = await updateReport(missingStateEvent);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    });
 
-    const res = await updateReport(incorrectReportTypeEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid form page object", async () => {
-    const invalidFormPageEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidFormPageReport),
-    };
+    it("should throw an error when validating a report with incorrect report type", async () => {
+      const incorrectReportTypeEvent = {
+        ...testEvent,
+        body: JSON.stringify(incorrectTypeReport),
+      };
 
-    const res = await updateReport(invalidFormPageEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid parent page object", async () => {
-    const invalidParentPageEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidParentPageReport),
-    };
+      const res = await updateReport(incorrectReportTypeEvent);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    });
 
-    const res = await updateReport(invalidParentPageEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-  test("throws an error when validating invalid radio element checked children object", async () => {
-    const invalidRadioCheckedChildrenEvent = {
-      ...testEvent,
-      body: JSON.stringify(invalidRadioCheckedChildrenReport),
-    };
-    const res = await updateReport(invalidRadioCheckedChildrenEvent);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    it("should throw an error when validating invalid form page object", async () => {
+      const invalidFormPageEvent = {
+        ...testEvent,
+        body: JSON.stringify(invalidFormPageReport),
+      };
+
+      const res = await updateReport(invalidFormPageEvent);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    });
+
+    it("should throw an error when validating invalid parent page object", async () => {
+      const invalidParentPageEvent = {
+        ...testEvent,
+        body: JSON.stringify(invalidParentPageReport),
+      };
+
+      const res = await updateReport(invalidParentPageEvent);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    });
+
+    it("should throw an error when validating invalid radio element checked children object", async () => {
+      const invalidRadioCheckedChildrenEvent = {
+        ...testEvent,
+        body: JSON.stringify(invalidRadioCheckedChildrenReport),
+      };
+      const res = await updateReport(invalidRadioCheckedChildrenEvent);
+      expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    });
   });
 });

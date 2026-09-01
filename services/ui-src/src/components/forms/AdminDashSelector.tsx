@@ -34,6 +34,11 @@ export const reportOptions: ReportOption[] = [
     flagName: "isPcpReportActive",
   },
   {
+    value: ReportType.IMA,
+    label: "Incident Management Assessments (IMA)",
+    flagName: "isImaReportActive",
+  },
+  {
     value: ReportType.QIP,
     label: "QMS Quality Improvement Plans (QMS QIP)",
     flagName: "isQipReportActive",

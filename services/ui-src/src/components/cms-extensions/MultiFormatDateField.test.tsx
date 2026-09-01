@@ -1,8 +1,9 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MultiFormatDateField } from "./MultiFormatDateField";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-const onChange = jest.fn();
+const onChange = vi.fn();
 
 const fullDateProps = {
   dateFormat: "MMDDYYYY" as const,
@@ -22,7 +23,7 @@ const monthYearProps = {
 
 describe("MultiFormatDateField", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("as a full-date input", () => {

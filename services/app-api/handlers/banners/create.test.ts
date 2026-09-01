@@ -1,35 +1,25 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createBanner } from "./create";
 import { StatusCodes } from "../../libs/response-lib";
 import { APIGatewayProxyEvent, User, UserRoles } from "../../types/types";
-import { authenticatedUser as actualAuthenticatedUser } from "../../utils/authentication";
+import { authenticatedUser } from "../../utils/authentication";
 import { BannerAreas, BannerFormData } from "../../types/banner";
-import {
-  getBanner as actualGetBanner,
-  putBanner as actualPutBanner,
-} from "../../storage/banners";
+import { getBanner, putBanner } from "../../storage/banners";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn(),
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn(),
 }));
-const authenticatedUser = actualAuthenticatedUser as jest.MockedFunction<
-  typeof actualAuthenticatedUser
->;
+
 const mockUser = {
   role: UserRoles.ADMIN,
   fullName: "mock username",
 } as User;
-authenticatedUser.mockReturnValue(mockUser);
+vi.mocked(authenticatedUser).mockReturnValue(mockUser);
 
-jest.mock("../../storage/banners", () => ({
-  getBanner: jest.fn(),
-  putBanner: jest.fn(),
+vi.mock("../../storage/banners", () => ({
+  getBanner: vi.fn(),
+  putBanner: vi.fn(),
 }));
-const getBanner = actualGetBanner as jest.MockedFunction<
-  typeof actualGetBanner
->;
-const putBanner = actualPutBanner as jest.MockedFunction<
-  typeof actualPutBanner
->;
 
 const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
@@ -48,7 +38,7 @@ const mockEvent = {
 
 describe("createBanner", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should store new banner data in the database", async () => {
@@ -80,7 +70,7 @@ describe("createBanner", () => {
   });
 
   it("should return an error if the user is not authorized", async () => {
-    authenticatedUser.mockReturnValueOnce({
+    vi.mocked(authenticatedUser).mockReturnValueOnce({
       ...mockUser,
       role: UserRoles.STATE_USER,
     });

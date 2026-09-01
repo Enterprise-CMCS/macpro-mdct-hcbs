@@ -1,6 +1,7 @@
+import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -29,7 +30,7 @@ describe("AccordionItem", () => {
     expect(content).not.toBeVisible();
   });
 
-  test("should expand when clicked", async () => {
+  it("should expand when clicked", async () => {
     const button = screen.getByRole("button", { name: "test" });
 
     await userEvent.click(button);

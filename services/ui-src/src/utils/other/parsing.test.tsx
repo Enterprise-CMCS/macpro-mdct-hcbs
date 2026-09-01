@@ -1,20 +1,23 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { sanitize } from "dompurify";
+import DOMPurify from "dompurify";
 import { parseHtml } from "utils";
 
-jest.mock("dompurify", () => ({
-  sanitize: jest.fn((el) => el),
+vi.mock("dompurify", () => ({
+  default: {
+    sanitize: vi.fn((el) => el),
+  },
 }));
 
 describe("utils/parsing", () => {
   describe("parseCustomHtml", () => {
-    test("should sanitize the input and return renderable React elements", () => {
+    it("should sanitize the input and return renderable React elements", () => {
       const htmlString = "<span><em>test text</em></span>";
 
       const elements = parseHtml(htmlString);
-      render(<>{elements}</>);
+      render(elements);
 
-      expect(sanitize).toHaveBeenCalled();
+      expect(DOMPurify.sanitize).toHaveBeenCalled();
       expect(screen.getByText("test text")).toBeInTheDocument();
     });
   });

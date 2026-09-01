@@ -24,6 +24,7 @@ import CiOptions from "./AddFormOptions/CiOptions";
 import PcpOptions from "./AddFormOptions/PcpOptions";
 import QipOptions from "./AddFormOptions/QipOptions";
 import WwlOptions from "./AddFormOptions/WwlOptions";
+import ImaOptions from "./AddFormOptions/ImaOptions";
 import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
@@ -59,6 +60,7 @@ const buildModalOptions = (
     [ReportType.PCP]: PcpOptions,
     [ReportType.QIP]: QipOptions,
     [ReportType.WWL]: WwlOptions,
+    [ReportType.IMA]: ImaOptions,
   };
   return optionsByReportType[reportType];
 };
@@ -87,6 +89,18 @@ const getSubheading = (reportType: ReportType): ReactElement | null => {
           </Alert>
         </Box>
       );
+    case ReportType.IMA:
+      return (
+        <Box mt={4} mb={8}>
+          <Alert
+            status={AlertTypes.WARNING}
+            title="Enter an assessment for each of your state's incident management systems."
+          >
+            If your state uses multiple systems, you will need a separate
+            assessment for each one.
+          </Alert>
+        </Box>
+      );
     default:
       return null;
   }
@@ -101,7 +115,10 @@ export const AddEditReportModal = ({
 }: Props) => {
   if (!isReportType(reportType)) return null;
 
-  const dropdownYears = [{ label: "2026", value: "2026" }];
+  const dropdownYears =
+    reportType === ReportType.IMA
+      ? [{ label: "2028", value: "2028" }]
+      : [{ label: "2026", value: "2026" }];
   const { verbiage, OptionsComponent } = buildModalOptions(reportType);
 
   const formDataForReport = (report: LiteReport | undefined) => ({

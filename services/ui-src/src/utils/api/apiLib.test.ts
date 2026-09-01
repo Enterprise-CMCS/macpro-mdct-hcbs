@@ -1,10 +1,28 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { apiLib } from "./apiLib";
-import { updateTimeout } from "utils";
+import { del, get, patch, post, put } from "aws-amplify/api";
+import { updateTimeout } from "../auth/authLifecycle";
 
-const mockAmplifyApi = require("aws-amplify/api");
+const { mockResponse } = vi.hoisted(() => ({
+  mockResponse: {
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(JSON.stringify({ foo: "bar" })),
+      },
+    }),
+  },
+}));
 
-jest.mock("utils", () => ({
-  updateTimeout: jest.fn(),
+vi.mock("aws-amplify/api", () => ({
+  del: vi.fn().mockReturnValue(mockResponse),
+  get: vi.fn().mockReturnValue(mockResponse),
+  patch: vi.fn().mockReturnValue(mockResponse),
+  post: vi.fn().mockReturnValue(mockResponse),
+  put: vi.fn().mockReturnValue(mockResponse),
+}));
+
+vi.mock("../auth/authLifecycle", () => ({
+  updateTimeout: vi.fn(),
 }));
 
 const path = "my/url";
@@ -24,48 +42,50 @@ const requestObj = {
 
 describe("API lib", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("Calling post should update the session timeout", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "post");
-    await apiLib.post(path, mockOptions);
-
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
-  });
-
-  test("Calling put should update the session timeout", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "put");
-    await apiLib.put(path, mockOptions);
-
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
-  });
-
-  test("Calling get should update the session timeout", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "get");
+  it("should update the session timeout when calling get", async () => {
     await apiLib.get(path, mockOptions);
 
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
+    expect(get).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
   });
 
-  test("Calling del should update the session timeout", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "del");
+  it("should update the session timeout when calling del", async () => {
     await apiLib.del(path, mockOptions);
 
-    expect(apiSpy).toBeCalledWith(requestObj);
-    expect(updateTimeout).toBeCalled();
+    expect(del).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
   });
 
-  test("API errors should be surfaced for handling", async () => {
+  it("should update the session timeout when calling post", async () => {
+    await apiLib.patch(path, mockOptions);
+
+    expect(patch).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
+  });
+
+  it("should update the session timeout when calling post", async () => {
+    await apiLib.post(path, mockOptions);
+
+    expect(post).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
+  });
+
+  it("should update the session timeout when calling put", async () => {
+    await apiLib.put(path, mockOptions);
+
+    expect(put).toHaveBeenCalledWith(requestObj);
+    expect(updateTimeout).toHaveBeenCalled();
+  });
+
+  it("should surface API errors for handling", async () => {
     // For this test only, ignore console output. We deliberately log the error.
-    const consoleSpy = jest.spyOn(console, "log");
+    const consoleSpy = vi.spyOn(console, "log");
     consoleSpy.mockImplementation(() => {});
 
-    const apiSpy = jest.spyOn(mockAmplifyApi, "del");
-    apiSpy.mockImplementationOnce(() => {
+    vi.mocked(del).mockImplementationOnce(() => {
       throw new Error("Mock 500 error");
     });
 

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   act,
   fireEvent,
@@ -14,8 +15,9 @@ import {
   ReportType,
 } from "types/report";
 import { ReportPageWrapper } from "./ReportPageWrapper";
-import { useStore } from "utils";
+import { getReport, useStore } from "utils";
 import { ReportAutosaveProvider } from "./ReportAutosaveProvider";
+import { useNavigate, useParams } from "react-router-dom";
 
 const testReport: Report = {
   type: ReportType.QMS,
@@ -70,75 +72,66 @@ const testReport: Report = {
   ],
 };
 
-const mockUseParams = jest.fn();
-const mockNavigate = jest.fn();
-const mockSaveReport = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  useParams: () => mockUseParams(),
-  useNavigate: () => mockNavigate,
+vi.mock("react-router-dom", () => ({
+  useParams: vi.fn(),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
 
-const mockGetReport = jest.fn().mockResolvedValue(testReport);
-jest.mock("../../utils/api/requestMethods/report", () => ({
-  getReport: () => mockGetReport(),
+vi.mock("../../utils/api/requestMethods/report", () => ({
+  getReport: vi.fn(),
 }));
-
-jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn(),
-}));
-
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mocked(getReport).mockResolvedValue(testReport);
 
 describe("ReportPageWrapper", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockUseParams.mockReturnValue({
+    vi.clearAllMocks();
+    vi.mocked(useParams).mockReturnValue({
       reportType: "QMS",
       state: "NJ",
       reportId: "QMSNJ123",
     });
-    mockedUseStore.mockImplementation((selector?) => {
-      const mockState = {
-        report: testReport,
-        pageMap: new Map([
-          ["root", 0],
-          ["general-info", 1],
-          ["req-measure-result", 2],
-        ]),
-        currentPageId: "general-info",
-        parentPage: {
-          index: 0,
-          childPageIds: ["general-info", "req-measure-result"],
-        },
-        saveReport: mockSaveReport,
-        setAnswers: jest.fn(),
-        loadReport: jest.fn(),
-      } as any;
-      return selector ? selector(mockState) : mockState;
+    useStore.setState({
+      report: testReport,
+      pageMap: new Map([
+        ["root", 0],
+        ["general-info", 1],
+        ["req-measure-result", 2],
+      ]),
+      currentPageId: "general-info",
+      parentPage: {
+        index: 0,
+        parent: "root",
+        childPageIds: ["general-info", "req-measure-result"],
+      },
+      saveReport: vi.fn(),
     });
   });
-  test("should not render if missing params", async () => {
-    mockUseParams.mockReturnValue({
+
+  it("should not render if missing params", async () => {
+    vi.mocked(useParams).mockReturnValue({
       reportType: undefined,
       state: undefined,
       reportId: undefined,
     });
     render(<ReportPageWrapper />);
-    expect(mockGetReport).not.toHaveBeenCalled();
+    expect(getReport).not.toHaveBeenCalled();
     expect(screen.getByText("bad params")).toBeTruthy(); // To be updated with real error page
   });
-  test("should render Loading if report not loaded", async () => {
-    mockGetReport.mockResolvedValueOnce(undefined);
+
+  it("should render Loading if report not loaded", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce(undefined as any);
+
     render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
+    await waitFor(() => expect(getReport).toHaveBeenCalled());
+
     expect(screen.getByText("Loading...")).toBeTruthy();
   });
-  test("should render if report exists", async () => {
+
+  it("should render if report exists", async () => {
     await act(async () => {
       render(<ReportPageWrapper />);
     });
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
+    await waitFor(() => expect(getReport).toHaveBeenCalled());
 
     await waitFor(() => {
       expect(screen.queryAllByText("General Information")).toBeDefined();
@@ -146,24 +139,21 @@ describe("ReportPageWrapper", () => {
     expect(screen.getByText("Continue")).toBeTruthy();
     expect(screen.queryAllByText("General Information")[0]).toBeTruthy();
   });
-  test("button should be clickable", async () => {
+
+  it("should navigate on Continue button click", async () => {
     await act(async () => {
       render(<ReportPageWrapper />);
     });
 
     const continueBtn = screen.getByRole("button", { name: "Continue" });
     await userEvent.click(continueBtn);
-    expect(mockNavigate).toHaveBeenCalledWith(
+    expect(useNavigate()).toHaveBeenCalledWith(
       "/report/QMS/NJ/QMSNJ123/req-measure-result"
     );
   });
 
-  test("run autosave when a text field has changed", async () => {
-    jest.useFakeTimers();
-
-    global.structuredClone = (val: unknown) => {
-      return JSON.parse(JSON.stringify(val));
-    };
+  it("should autosave when a text field has changed", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
 
     await act(async () => {
       render(
@@ -179,41 +169,40 @@ describe("ReportPageWrapper", () => {
     });
     expect(textbox).toHaveValue("2027");
 
-    jest.runAllTimers();
-    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled());
-  });
-});
-
-describe("Page validation", () => {
-  beforeEach(() => {
-    mockUseParams.mockReturnValue({
-      reportType: "QMS",
-      state: "NJ",
-      reportId: "QMSNJ123",
-    });
-  });
-
-  test.skip("form should display error when text field is blurred with no input", async () => {
-    global.structuredClone = (val: unknown) => {
-      return JSON.parse(JSON.stringify(val));
-    };
-
-    render(<ReportPageWrapper />);
-    await waitFor(() => expect(mockGetReport).toHaveBeenCalled());
-
-    const contactTitleInput = screen.getByLabelText("Another textbox");
-
-    // blur the textbox without entering anything
-    await act(async () => {
-      fireEvent.blur(contactTitleInput);
-    });
-
-    // validation error will appear since textbox is empty
-    const responseIsRequiredErrorMessage = screen.getAllByText(
-      "A response is required",
-      { exact: false }
+    vi.runAllTimers();
+    await waitFor(() =>
+      expect(useStore.getState().saveReport).toHaveBeenCalled()
     );
-    expect(responseIsRequiredErrorMessage[0]).toBeVisible();
-    expect(responseIsRequiredErrorMessage.length).toBe(2);
+    vi.useRealTimers();
+  });
+
+  describe("Page validation", () => {
+    beforeEach(() => {
+      vi.mocked(useParams).mockReturnValue({
+        reportType: "QMS",
+        state: "NJ",
+        reportId: "QMSNJ123",
+      });
+    });
+
+    it.skip("should display error when text field is blurred with no input", async () => {
+      render(<ReportPageWrapper />);
+      await waitFor(() => expect(getReport).toHaveBeenCalled());
+
+      const contactTitleInput = screen.getByLabelText("Another textbox");
+
+      // blur the textbox without entering anything
+      await act(async () => {
+        fireEvent.blur(contactTitleInput);
+      });
+
+      // validation error will appear since textbox is empty
+      const responseIsRequiredErrorMessage = screen.getAllByText(
+        "A response is required",
+        { exact: false }
+      );
+      expect(responseIsRequiredErrorMessage[0]).toBeVisible();
+      expect(responseIsRequiredErrorMessage.length).toBe(2);
+    });
   });
 });

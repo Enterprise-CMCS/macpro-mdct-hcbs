@@ -1,14 +1,19 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { mockMeasureTemplate } from "utils/testing/setupJest";
+import { mockMeasureTemplate } from "utils/testing/setupTests";
 import { MeasureReplacementModal } from "./MeasureReplacementModal";
 import { Modal } from "@chakra-ui/react";
 import userEvent from "@testing-library/user-event";
 
-const mockClose = jest.fn();
-const mockSubmit = jest.fn();
+const mockClose = vi.fn();
+const mockSubmit = vi.fn();
 
-describe("Test MeasureReplacementModal", () => {
-  it("Test MeasureReplacementModal Render", async () => {
+describe("MeasureReplacementModal", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should render and behave correctly", async () => {
     const modal = MeasureReplacementModal(
       mockMeasureTemplate,
       mockClose,
