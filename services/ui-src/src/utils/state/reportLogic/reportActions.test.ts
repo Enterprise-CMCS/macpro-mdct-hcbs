@@ -187,7 +187,7 @@ describe("reportActions", () => {
     });
 
     it("should accept weird values", () => {
-      // I call these values are "weird" because JSON.stringify mangles them.
+      // These values are "weird" because JSON.stringify mangles them.
       const obj1 = {
         bigint: 456n,
         undef: undefined,
@@ -243,11 +243,7 @@ describe("reportActions", () => {
   });
 
   describe("state/management/reportState: resetMeasure", () => {
-    it("should clear status and answers", async () => {
-      global.structuredClone = (val: unknown) => {
-        return JSON.parse(JSON.stringify(val));
-      };
-
+    it("should reset status and answers", async () => {
       const state = buildState(testReport, false) as HcbsReportState;
       const response = resetMeasure("LTSS-1", state);
       const measure = response!.report!.pages[4] as MeasurePageTemplate;
@@ -261,11 +257,7 @@ describe("reportActions", () => {
   });
 
   describe("state/management/reportState: clearMeasure", () => {
-    it("should clear status and answers", async () => {
-      global.structuredClone = (val: unknown) => {
-        return JSON.parse(JSON.stringify(val));
-      };
-
+    it("should clear most answers, but preserve status", async () => {
       const state = buildState(testReport, false) as HcbsReportState;
       const response = clearMeasure("LTSS-1", state, {
         ["measure-reporting-radio"]: "no",
@@ -282,10 +274,6 @@ describe("reportActions", () => {
 
   describe("state/management/reportState: markPageComplete", () => {
     it("should set page status to Complete", async () => {
-      global.structuredClone = (val: unknown) => {
-        return JSON.parse(JSON.stringify(val));
-      };
-
       const state = buildState(testReport, false) as HcbsReportState;
       const response = markPageComplete("LTSS-1", state);
       const measure = response!.report!.pages[4] as MeasurePageTemplate;
@@ -304,10 +292,6 @@ describe("reportActions", () => {
 
   describe("state/management/reportState: changeDeliveryMethods", () => {
     it("should clear unused methods", async () => {
-      global.structuredClone = (val: unknown) => {
-        return JSON.parse(JSON.stringify(val));
-      };
-
       const state = buildState(testReport, false) as HcbsReportState;
       const response = changeDeliveryMethods("LTSS-1", "MLTSS", state);
       const ffs = response.report?.pages.find(
@@ -318,10 +302,6 @@ describe("reportActions", () => {
     });
 
     it("should ignore used methods", async () => {
-      global.structuredClone = (val: unknown) => {
-        return JSON.parse(JSON.stringify(val));
-      };
-
       const state = buildState(testReport, false) as HcbsReportState;
       const response = changeDeliveryMethods("LTSS-1", "FFS", state);
       const ffs = response.report?.pages.find(
