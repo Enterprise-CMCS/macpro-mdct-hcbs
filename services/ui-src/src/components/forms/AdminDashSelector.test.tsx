@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AdminDashSelector } from "./AdminDashSelector";
+import { AdminDashSelector, reportOptions } from "./AdminDashSelector";
 import { useNavigate } from "react-router-dom";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import assert from "node:assert";
+import { ReportType } from "types";
 
 type DropdownProps = {
   label: string;
@@ -57,11 +59,32 @@ vi.mock("react-router-dom", () => ({
   useNavigate: vi.fn(),
 }));
 
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn(),
+}));
+
 describe("AdminDashSelector Component", () => {
   const mockNavigate = vi.fn();
 
+  const allFlagsEnabled = {
+    isTacmReportActive: true,
+    isCiReportActive: true,
+    isPcpReportActive: true,
+    isImaReportActive: true,
+    isQipReportActive: true,
+    isWwlReportActive: true,
+  };
+
+  it("reportOptions includes every ReportType", () => {
+    expect(reportOptions.map((o) => o.value)).toEqual(
+      Object.values(ReportType)
+    );
+  });
+
   beforeEach(() => {
+    vi.clearAllMocks();
     vi.mocked(useNavigate).mockReturnValue(mockNavigate);
+    vi.mocked(useFlags).mockReturnValue(allFlagsEnabled as any);
   });
 
   it("should render correctly with header and button label", () => {
@@ -134,5 +157,26 @@ describe("AdminDashSelector Component", () => {
     await userEvent.click(radioButton);
     // Now it should be enabled
     expect(submitButton).toBeEnabled();
+  });
+
+  it("hides report options whose feature flag is disabled", () => {
+    vi.mocked(useFlags).mockReturnValue({
+      ...allFlagsEnabled,
+      isQipReportActive: false,
+    } as any);
+
+    render(<AdminDashSelector />);
+
+    expect(
+      screen.queryByLabelText("QMS Quality Improvement Plans (QMS QIP)")
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows report options whose feature flag is enabled", () => {
+    render(<AdminDashSelector />);
+
+    expect(
+      screen.getByLabelText("QMS Quality Improvement Plans (QMS QIP)")
+    ).toBeInTheDocument();
   });
 });
