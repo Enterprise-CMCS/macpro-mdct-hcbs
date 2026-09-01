@@ -310,7 +310,7 @@ describe("Measure Results Navigation Table", () => {
     expect(report.pages[3].elements[0].answer).not.toBeDefined();
   });
 
-  test("should display View buttons in read-only mode", async () => {
+  it("should display View buttons in read-only mode", async () => {
     useStore.setState({ user: { userIsEndUser: false } as HcbsUser });
 
     render(<ReportPageWrapper />);
