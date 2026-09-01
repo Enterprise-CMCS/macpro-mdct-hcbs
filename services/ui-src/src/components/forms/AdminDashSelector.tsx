@@ -10,39 +10,40 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { DropdownOptions, ReportType } from "types";
 import { StateNames } from "../../constants";
 
-const getReportName = (type: string | undefined) => {
-  switch (type) {
-    case ReportType.QMS:
-      return "Quality Measure Set Report (QMS)";
-    case ReportType.TACM:
-      return "Timely Access Compliance Measure Report (TACM)";
-    case ReportType.CI:
-      return "Critical Incident Report (CI)";
-    case ReportType.PCP:
-      return "Person-Centered Planning Report (PCP)";
-    case ReportType.QIP:
-      return "QMS Quality Improvement Plans (QMS QIP)";
-    case ReportType.WWL:
-      return "Waiver Waiting List Report (WWL)";
-    default:
-      return "";
-  }
+type ReportOption = {
+  value: ReportType;
+  label: string;
+  flagName?: string;
 };
 
-type ReportFlagKey =
-  | "isQipReportActive"
-  | "isTacmReportActive"
-  | "isCiReportActive"
-  | "isPcpReportActive"
-  | "isWwlReportActive";
-
-const reportFlagMap: Partial<Record<ReportType, ReportFlagKey>> = {
-  [ReportType.QIP]: "isQipReportActive",
-  [ReportType.TACM]: "isTacmReportActive",
-  [ReportType.CI]: "isCiReportActive",
-  [ReportType.PCP]: "isPcpReportActive",
-  [ReportType.WWL]: "isWwlReportActive",
-};
+export const reportOptions: ReportOption[] = [
+  { value: ReportType.QMS, label: "Quality Measure Set Report (QMS)" },
+  {
+    value: ReportType.TACM,
+    label: "Timely Access Compliance Measure Report (TACM)",
+    flagName: "isTacmReportActive",
+  },
+  {
+    value: ReportType.CI,
+    label: "Critical Incident Report (CI)",
+    flagName: "isCiReportActive",
+  },
+  {
+    value: ReportType.PCP,
+    label: "Person-Centered Planning Report (PCP)",
+    flagName: "isPcpReportActive",
+  },
+  {
+    value: ReportType.QIP,
+    label: "QMS Quality Improvement Plans (QMS QIP)",
+    flagName: "isQipReportActive",
+  },
+  {
+    value: ReportType.WWL,
+    label: "Waiver Waiting List Report (WWL)",
+    flagName: "isWwlReportActive",
+  },
+];
 
 const buildStates = (): DropdownOptions[] => {
   const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
@@ -62,20 +63,12 @@ const dropdownStates = buildStates();
 export const AdminDashSelector = () => {
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedReport, setSelectedReport] = useState<string>("");
-  const flags = useFlags() as Record<ReportFlagKey, boolean> | undefined;
+  const flags = useFlags();
   const navigate = useNavigate();
 
-  const reportChoices = Object.values(ReportType)
-    .filter((type) => {
-      const requiredFlag = reportFlagMap[type];
-      return !requiredFlag || !!flags?.[requiredFlag];
-    })
-    .map((type) => {
-      return {
-        value: type,
-        label: `${getReportName(type)}`,
-      };
-    });
+  const reportChoices = reportOptions.filter(
+    (option) => !option.flagName || flags?.[option.flagName]
+  );
 
   const handleStateChange = (event: DropdownChangeObject) => {
     setSelectedState(event.target.value);
