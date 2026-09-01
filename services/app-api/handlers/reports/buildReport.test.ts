@@ -1,4 +1,5 @@
-import { booleanCombinations } from "../../testing/setupJest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { booleanCombinations } from "../../testing/setupTests";
 import {
   PageElement,
   ReportOptions,
@@ -10,13 +11,13 @@ import { StateAbbr } from "../../utils/constants";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { buildReport } from "./buildReport";
 
-jest.mock("../../utils/reportValidation", () => ({
-  validateReportPayload: jest.fn().mockImplementation(async (rpt) => rpt),
+vi.mock("../../utils/reportValidation", () => ({
+  validateReportPayload: vi.fn().mockImplementation(async (rpt) => rpt),
 }));
 
 describe("Build Report", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should successfully create a report", async () => {
@@ -47,7 +48,7 @@ describe("Build Report", () => {
 
   it("should throw an error when validation fails", async () => {
     // Manually throw validation error
-    (validateReportPayload as jest.Mock).mockImplementationOnce(() => {
+    vi.mocked(validateReportPayload).mockImplementationOnce(() => {
       throw new Error("you be havin some validatin errors");
     });
 

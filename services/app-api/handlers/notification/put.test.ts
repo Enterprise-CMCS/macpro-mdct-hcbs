@@ -1,26 +1,23 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { APIGatewayProxyEvent, User, UserRoles } from "../../types/types";
-import { authenticatedUser as actualAuthenticatedUser } from "../../utils/authentication";
+import { authenticatedUser } from "../../utils/authentication";
 import { Notification } from "../../types/notification";
 import { ReportType } from "../../types/reports";
 import { updateNotifications } from "./put";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn(),
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn(),
 }));
-
-const authenticatedUser = actualAuthenticatedUser as jest.MockedFunction<
-  typeof actualAuthenticatedUser
->;
 const mockUser = {
   role: UserRoles.ADMIN,
   fullName: "mock username",
 } as User;
-authenticatedUser.mockReturnValue(mockUser);
+vi.mocked(authenticatedUser).mockReturnValue(mockUser);
 
-jest.mock("../../storage/notifications", () => ({
-  scanAllNotifications: jest.fn(),
-  putNotifications: jest.fn(),
+vi.mock("../../storage/notifications", () => ({
+  scanAllNotifications: vi.fn(),
+  putNotifications: vi.fn(),
 }));
 
 const mockNotification: Notification = {
@@ -43,11 +40,11 @@ const mockFalseEvent = {
 
 describe("putNotifications", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should return an error if the user is not authorized", async () => {
-    authenticatedUser.mockReturnValueOnce({
+    vi.mocked(authenticatedUser).mockReturnValueOnce({
       ...mockUser,
       role: UserRoles.STATE_USER,
     });
@@ -58,7 +55,7 @@ describe("putNotifications", () => {
   });
 
   it("should return an error if the notification data is invalid", async () => {
-    authenticatedUser.mockReturnValueOnce({
+    vi.mocked(authenticatedUser).mockReturnValueOnce({
       ...mockUser,
       role: UserRoles.ADMIN,
     });
@@ -68,7 +65,7 @@ describe("putNotifications", () => {
   });
 
   it("should put data if the user is authorized and data is valid", async () => {
-    authenticatedUser.mockReturnValueOnce({
+    vi.mocked(authenticatedUser).mockReturnValueOnce({
       ...mockUser,
       role: UserRoles.ADMIN,
     });

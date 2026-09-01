@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { WWLIntroductionCard } from "./WWLIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11yAct } from "utils/testing/commonTests";

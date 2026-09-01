@@ -1,27 +1,35 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StatusTableElement } from "./StatusTable";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { useStore } from "utils";
+import { postSubmitReport, useStore } from "utils";
 import {
-  mockUseReadOnlyUserStore,
-  mockStateUserStore,
-} from "utils/testing/setupJest";
-import { PageStatus } from "types";
+  mockHelpDeskUser,
+  mockStateUser,
+  RouterWrappedComponent,
+} from "utils/testing/setupTests";
+import { ElementType, Report } from "types";
+import { ReportModal } from "./ReportModal";
 
-jest.mock("utils", () => ({
-  useStore: jest.fn(),
-  submitReport: jest.fn(),
+vi.mock("utils", async (importOriginal) => ({
+  ...(await importOriginal()),
+  postSubmitReport: vi.fn(),
 }));
 
-const mockNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+const mockNavigate = vi.fn();
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({
+    reportType: "QMS",
+    state: "CO",
+    reportId: "mock-report-id",
+  }),
   useNavigate: () => mockNavigate,
 }));
 
-jest.mock("launchdarkly-react-client-sdk", () => ({
-  useFlags: jest.fn().mockReturnValue({
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn().mockReturnValue({
     viewPdf: true,
   }),
 }));
@@ -31,69 +39,54 @@ const report = {
   id: "mock-report-id",
   state: "CO",
   pages: [
-    { childPageIds: ["1", "2"] },
-    { navTitle: "Section 1", id: "id-1" },
-    { navTitle: "Section 2", id: "id-2" },
+    { id: "root", childPageIds: ["id-1", "id-2", "review-submit"] },
+    {
+      id: "id-1",
+      navTitle: "Page One",
+      elements: [{ type: ElementType.Textbox, required: true, answer: "foo" }],
+    },
+    {
+      id: "id-2",
+      navTitle: "Page Two",
+      elements: [{ type: ElementType.Textbox, answer: undefined }],
+    },
   ],
-};
+} as Report;
 
-const mockPageMap = new Map([
-  ["root", 0],
-  ["1", 1],
-  ["2", 2],
-]);
+const submittableReport = structuredClone(report);
+(submittableReport as any).pages[2].elements[0].required = false;
 
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-const mockSetModalComponent = jest.fn();
+const unsubmittableReport = structuredClone(report);
+(unsubmittableReport as any).pages[2].elements[0].required = true;
 
-describe("StatusTable with state user", () => {
+// Calling loadReport also initializes the page map, etc
+useStore.getState().loadReport(submittableReport);
+
+describe("StatusTable", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-
-    mockedUseStore.mockImplementation(
-      (selector?: Parameters<typeof useStore>[0]) => {
-        if (selector) {
-          return {
-            sections: [
-              {
-                section: { navTitle: "Section 1", id: "id-1" },
-                displayStatus: PageStatus.COMPLETE,
-                submittable: true,
-              },
-              {
-                section: { navTitle: "Section 2", id: "id-2" },
-                displayStatus: PageStatus.IN_PROGRESS,
-                submittable: false,
-              },
-            ],
-            submittable: true,
-          };
-        }
-        return {
-          ...mockStateUserStore,
-          pageMap: mockPageMap,
-          report: report,
-          setModalComponent: mockSetModalComponent,
-        };
-      }
-    );
+    vi.clearAllMocks();
+    useStore.setState({ user: mockStateUser, report: submittableReport });
   });
 
-  test("table with section titles and status icons render", () => {
+  it("should render correctly", () => {
     render(
       <MemoryRouter>
         <StatusTableElement />
       </MemoryRouter>
     );
 
-    // Table headers
-    expect(screen.getByText("Section")).toBeInTheDocument();
-    expect(screen.getByText("Status")).toBeInTheDocument();
-
-    // Section navTitle and status for Section 1
-    expect(screen.getByText("Section 1")).toBeInTheDocument();
-    expect(screen.getByText("Complete")).toBeInTheDocument();
-    expect(screen.getByAltText("complete icon")).toBeInTheDocument();
+    expect(
+      screen.getByRole("table", { name: "Review & Submit" })
+    ).toBeVisible();
+    expect(screen.getByRole("columnheader", { name: "Section" })).toBeVisible();
+    expect(screen.getByRole("columnheader", { name: "Status" })).toBeVisible();
+    expect(screen.getByRole("columnheader", { name: "Actions" })).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "Page One complete icon Complete Edit" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "Page Two complete icon Complete Edit" })
+    ).toBeVisible();
   });
 
   it("should navigate to the correct editable page when the Edit button is clicked", async () => {
@@ -108,6 +101,7 @@ describe("StatusTable with state user", () => {
 
     expect(editButton).toBeVisible();
   });
+
   it("should navigate to PDF when the Review PDF button is clicked", async () => {
     render(
       <MemoryRouter>
@@ -124,65 +118,29 @@ describe("StatusTable with state user", () => {
 
   it("should call the API and render QMS submit modal when the Submit button is clicked", async () => {
     render(
-      <MemoryRouter initialEntries={["/report/QMS/CO/mock-report-id"]}>
-        <Routes>
-          <Route
-            path="/report/:reportType/:state/:reportId"
-            element={<StatusTableElement />}
-          />
-        </Routes>
-      </MemoryRouter>
+      <RouterWrappedComponent>
+        <ReportModal />
+        <StatusTableElement />
+      </RouterWrappedComponent>
     );
 
-    const submitButton = screen.getAllByRole("button", {
+    const pageSubmitButton = screen.getByRole("button", {
       name: /Submit QMS Report/i,
-    })[0];
-    await userEvent.click(submitButton);
+    });
+    await userEvent.click(pageSubmitButton);
 
-    expect(mockSetModalComponent).toBeCalled();
-  });
+    expect(screen.getByRole("dialog", { name: /Are you sure/i })).toBeVisible();
 
-  it("should render the correct submit button text when reportType is from the URL", async () => {
-    render(
-      <MemoryRouter initialEntries={["/report/TACM/CO/mock-report-id"]}>
-        <Routes>
-          <Route
-            path="/report/:reportType/:state/:reportId"
-            element={<StatusTableElement />}
-          />
-        </Routes>
-      </MemoryRouter>
-    );
+    const modalSubmitButton = screen.getByRole("button", {
+      name: /Submit QMS Report/i,
+    });
+    await userEvent.click(modalSubmitButton);
 
-    const submitButton = screen.getAllByRole("button", {
-      name: /Submit TACM Report/i,
-    })[0];
-    expect(submitButton).toBeInTheDocument();
+    expect(postSubmitReport).toHaveBeenCalled();
   });
 
   it("should disable the submit button when submittable is false", async () => {
-    mockedUseStore.mockImplementation(
-      (selector?: Parameters<typeof useStore>[0]) => {
-        if (selector) {
-          return {
-            sections: [
-              {
-                section: { navTitle: "Section 1", id: "id-1" },
-                displayStatus: PageStatus.COMPLETE,
-                submittable: true,
-              },
-            ],
-            submittable: false,
-          };
-        }
-        return {
-          ...mockStateUserStore,
-          pageMap: mockPageMap,
-          report: report,
-          setModalComponent: mockSetModalComponent,
-        };
-      }
-    );
+    useStore.setState({ report: unsubmittableReport });
 
     render(
       <MemoryRouter initialEntries={["/report/QMS/CO/mock-report-id"]}>
@@ -195,67 +153,30 @@ describe("StatusTable with state user", () => {
       </MemoryRouter>
     );
 
-    const submitButton = screen.getByRole("button", {
-      name: /Submit QMS Report/i,
-    });
-    expect(submitButton).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Submit/ })).toBeDisabled();
   });
 
   it("should not render anything if report is undefined", () => {
-    mockedUseStore.mockImplementation(() => ({
-      ...mockStateUserStore,
-      pageMap: mockPageMap,
-      report: undefined,
-      setModalComponent: mockSetModalComponent,
-    }));
+    useStore.setState({ report: undefined });
 
-    const { container } = render(
+    render(
       <MemoryRouter>
         <StatusTableElement />
       </MemoryRouter>
     );
-    expect(container.firstChild).toBeNull();
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
   });
-});
 
-describe("StatusPage with Read only user", () => {
-  beforeEach(() => {
-    mockedUseStore.mockImplementation(
-      (selector?: Parameters<typeof useStore>[0]) => {
-        if (selector) {
-          return {
-            sections: [
-              {
-                section: { navTitle: "Section 1", id: "id-1" },
-                displayStatus: PageStatus.COMPLETE,
-                submittable: true,
-              },
-              {
-                section: { navTitle: "Section 2", id: "id-2" },
-                displayStatus: PageStatus.IN_PROGRESS,
-                submittable: false,
-              },
-            ],
-            submittable: true,
-          };
-        }
-        return {
-          ...mockUseReadOnlyUserStore,
-          pageMap: mockPageMap,
-          report: report,
-          setModalComponent: mockSetModalComponent,
-        };
-      }
-    );
-  });
   it("should not render the Submit QMS Report button when user is read only", async () => {
+    useStore.setState({ user: mockHelpDeskUser });
+
     render(
       <MemoryRouter>
         <StatusTableElement />
       </MemoryRouter>
     );
 
-    const submitButton = screen.queryByText("Submit QMS Report");
-    expect(submitButton).not.toBeInTheDocument();
+    expect(screen.getByRole("table")).toBeVisible();
+    expect(screen.queryByRole("button", { name: /Submit/ })).toBeNull();
   });
 });

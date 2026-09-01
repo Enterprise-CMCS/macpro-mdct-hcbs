@@ -23,6 +23,7 @@ import { reportBasePath } from "utils/other/routing";
 import { SubmitReportModal } from "./SubmitReportModal";
 import { submittableMetricsSelector } from "utils/state/selectors";
 import { useFlags } from "launchdarkly-react-client-sdk";
+import { ReportType } from "types";
 
 export const StatusTableElement = () => {
   const { report, user, setModalComponent, setModalOpen, updateReport } =
@@ -53,12 +54,8 @@ export const StatusTableElement = () => {
   const modal = SubmitReportModal(
     () => setModalOpen(false),
     onSubmit,
-    reportType
+    reportType as ReportType
   );
-
-  const displayModal = () => {
-    setModalComponent(modal, "Are you sure you want to submit?");
-  };
 
   // Build Rows
   const rows = submittableMetrics?.sections.map((sectionDetails, index) => {
@@ -122,7 +119,9 @@ export const StatusTableElement = () => {
         {user?.userIsEndUser && (
           <Button
             alignSelf="flex-end"
-            onClick={async () => displayModal()}
+            onClick={() => {
+              setModalComponent(modal, "Are you sure you want to submit?");
+            }}
             disabled={!submittableMetrics?.submittable || submitting}
           >
             {submitting && <Spinner size="sm" marginRight="spacer2" />}

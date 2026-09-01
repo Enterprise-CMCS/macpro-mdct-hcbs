@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
@@ -9,15 +10,15 @@ import { mockClient } from "aws-sdk-client-mock";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.ADMIN,
     state: "PA",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canWriteBanner: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canWriteBanner: vi.fn().mockReturnValue(true),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -26,13 +27,13 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
-describe("Test deleteBanner API method", () => {
+describe("deleteBanner", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should delete the given banner from the database", async () => {
-    const mockDelete = jest.fn();
+    const mockDelete = vi.fn();
     dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
     const res = await deleteBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Ok);
@@ -40,7 +41,7 @@ describe("Test deleteBanner API method", () => {
   });
 
   it("should return an error if the user does not have permissions", async () => {
-    (canWriteBanner as jest.Mock).mockReturnValueOnce(false);
+    vi.mocked(canWriteBanner).mockReturnValueOnce(false);
     const res = await deleteBanner(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);

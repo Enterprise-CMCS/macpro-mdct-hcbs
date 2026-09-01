@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { AdminBannerForm } from "components";
 import userEvent from "@testing-library/user-event";
@@ -5,15 +6,15 @@ import { testA11yAct } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import { BannerShape } from "types";
 
-const mockWriteAdminBanner = jest.fn();
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+const mockWriteAdminBanner = vi.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 describe("<AdminBannerForm />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("AdminBannerForm can be filled and submitted without error", async () => {
+  it("should call the API when filled and submitted", async () => {
     render(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 
     // It is frustrating that this is a button + list, instead of an combobox.
@@ -52,11 +53,7 @@ describe("<AdminBannerForm />", () => {
     });
   });
 
-  testA11yAct(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
-});
-
-describe("AdminBannerForm validation", () => {
-  test("Display form errors when user tries to submit completely blank form", async () => {
+  it("should show errors when user tries to submit completely blank form", async () => {
     render(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 
     const submitButton = screen.getByText("Create Banner");
@@ -70,7 +67,7 @@ describe("AdminBannerForm validation", () => {
     expect(responseIsRequiredErrorMessage.length).toBe(4);
   });
 
-  test("Display errors when date range conflicts with existing banners", async () => {
+  it("should show errors when date range conflicts with existing banners", async () => {
     const existingBanner = {
       title: "alpha",
       area: "home",
@@ -123,7 +120,7 @@ describe("AdminBannerForm validation", () => {
     expect(screen.queryByText(rangeConflict)).not.toBeInTheDocument();
   });
 
-  test("User has form errors but then fills out the form and errors go away", async () => {
+  it("should clear existing errors when the form is filled", async () => {
     render(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 
     const submitButton = screen.getByText("Create Banner");
@@ -170,4 +167,6 @@ describe("AdminBannerForm validation", () => {
       endDate: "1970-01-02",
     });
   });
+
+  testA11yAct(<AdminBannerForm createBanner={mockWriteAdminBanner} />);
 });

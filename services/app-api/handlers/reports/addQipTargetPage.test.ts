@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import assert from "node:assert";
 import fs from "node:fs";
 import { StatusCodes } from "../../libs/response-lib";
@@ -27,12 +28,12 @@ const allFormYears = fs
 assert.ok(allFormYears.includes(2026), "Couldn't find yearly form folders!");
 const latestYear = allFormYears.at(-1)!;
 
-jest.mock("../../storage/reports", () => ({
-  getReport: jest.fn(),
-  putReport: jest.fn(),
+vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn(),
+  putReport: vi.fn(),
 }));
-const getReport = jest.mocked(actualGetReport);
-const putReport = jest.mocked(actualPutReport);
+const getReport = vi.mocked(actualGetReport);
+const putReport = vi.mocked(actualPutReport);
 
 /*
  * The code we're testing is very fragile.
@@ -69,7 +70,7 @@ const buildQms = async (year: number = latestYear) =>
 
 describe("addQipTargetPage", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should return badRequest if given a non-QIP report", async () => {
@@ -341,7 +342,7 @@ describe("addQipTargetPage", () => {
     ).measureTargetMapping!;
 
     it.each(mappings.filter((m) => m.includedInQms))(
-      "Copying measure $measureId",
+      "should successfully copy measure $measureId",
       async (mapping) => {
         const qmsReport = await buildQms();
         getReport.mockResolvedValue(qmsReport);

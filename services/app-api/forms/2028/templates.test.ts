@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
@@ -18,23 +19,24 @@ const reportsToTest = [
   { template: wwlReportTemplate, name: "WWL" },
   { template: imaReportTemplate, name: "IMA" },
 ];
-describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
-  it(`${name} should exist`, () => {
+
+describe.each(reportsToTest)("Report Template: $name", ({ template }) => {
+  it("should exist", () => {
     expect(template).toBeDefined();
   });
 
-  it(`${name} should have a root page`, () => {
+  it("should have a root page", () => {
     const root = template.pages.find((page) => page.id === "root");
     expect(root).toBeDefined();
   });
 
-  it(`${name} should not contain duplicate page IDs`, () => {
+  it("should not contain duplicate page IDs", () => {
     const pageIds = template.pages.map((page) => page.id);
     const uniqueIds = pageIds.filter((x, i, a) => i === a.indexOf(x));
     expect(pageIds).toEqual(uniqueIds);
   });
 
-  it(`${name} should have a child page for every ID referenced by a parent page`, () => {
+  it("should have a child page for every ID referenced by a parent page", () => {
     const allPageIds = template.pages
       .filter(
         (page) =>
@@ -51,7 +53,7 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
   });
 
   describe("Measure Templates", () => {
-    it("Should all have UIDs which exist in the CMIT list", () => {
+    it("should all have UIDs which exist in the CMIT list", () => {
       const existingUids = CMIT_LIST.map((cmitInfo) => cmitInfo.uid);
       for (let measure of defaultMeasures) {
         expect(existingUids).toContain(measure.uid);

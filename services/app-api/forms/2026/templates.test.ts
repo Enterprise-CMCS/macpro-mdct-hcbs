@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
@@ -49,7 +50,7 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
   });
 
   describe("Measure Templates", () => {
-    it("Should all have UIDs which exist in the CMIT list", () => {
+    it("should all have UIDs which exist in the CMIT list", () => {
       const existingUids = CMIT_LIST.map((cmitInfo) => cmitInfo.uid);
       for (let measure of defaultMeasures) {
         expect(existingUids).toContain(measure.uid);
