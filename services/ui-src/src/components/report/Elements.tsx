@@ -29,17 +29,12 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
 import whitePDFPrimary from "assets/icons/pdf/icon_pdf_white.svg";
 
-export type PageElementProps<T extends PageElement = PageElement> = T extends {
-  answer?: any;
-}
-  ? {
-      element: T;
-      updateElement: (updatedElement: Partial<T>) => void;
-      disabled?: boolean;
-    }
-  : {
-      element: T;
-    };
+export type PageElementProps<T extends PageElement = PageElement> = {
+  element: T;
+  disabled?: boolean;
+} & (T extends { answer?: any }
+  ? { updateElement: (updatedElement: Partial<T>) => void }
+  : {});
 
 export const HeaderElement = ({
   element,

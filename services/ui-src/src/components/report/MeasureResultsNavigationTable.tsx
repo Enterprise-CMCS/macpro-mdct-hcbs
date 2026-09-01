@@ -25,11 +25,9 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { PageElementProps } from "../report/Elements";
 
 export const MeasureResultsNavigationTableElement = (
-  props: PageElementProps<MeasureResultsNavigationTableTemplate> & {
-    disabled?: boolean;
-  }
+  props: PageElementProps<MeasureResultsNavigationTableTemplate>
 ) => {
-  const { element: table, disabled = false } = props;
+  const { element: table, disabled } = props;
   const { reportType, state, reportId } = useParams();
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
@@ -104,7 +102,6 @@ export const MeasureResultsNavigationTableElement = (
         </Td>
         <Td>
           <Button
-            key={`${disabled ? "View" : "Edit"} ${childLink.key}`}
             name={`${disabled ? "View" : "Edit"} ${childLink.key}`}
             variant="outline"
             disabled={!singleOption && !deliverySystemIsSelected}
