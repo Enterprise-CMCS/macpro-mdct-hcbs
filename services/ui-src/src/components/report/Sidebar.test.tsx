@@ -106,4 +106,28 @@ describe("Sidebar", () => {
 
     expect(screen.getByText("Child 1")).toBeInTheDocument();
   });
+
+  test("should render IMA heading when report type is IMA", () => {
+    (useStore as unknown as jest.Mock).mockReturnValueOnce({
+      pageMap: mockPageMap,
+      report: {
+        ...report,
+        type: "IMA",
+      },
+      currentPageId: "id-1",
+      setCurrentPageId,
+      setSidebar: jest.fn(),
+      sidebarOpen: true,
+    });
+
+    render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Incident Management Assessments" })
+    ).toBeInTheDocument();
+  });
 });

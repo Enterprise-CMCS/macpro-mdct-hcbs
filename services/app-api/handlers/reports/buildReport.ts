@@ -93,6 +93,7 @@ export const buildReport = async (
       ReportType.QMS,
       ReportType.QIP,
       ReportType.WWL,
+      ReportType.IMA,
     ].includes(report.type)
   ) {
     const waiverQuestions = report.pages
