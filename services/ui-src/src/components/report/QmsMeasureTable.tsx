@@ -28,9 +28,9 @@ import { useContext } from "react";
 import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 
 export const QmsMeasureTableElement = (
-  props: PageElementProps<QmsMeasureTableTemplate> & { disabled?: boolean }
+  props: PageElementProps<QmsMeasureTableTemplate>
 ) => {
-  const { element: table, disabled = false } = props;
+  const { element: table, disabled } = props;
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
