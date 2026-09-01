@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router, useParams } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { useStore } from "utils";
-import { Report } from "types";
+import { Report, ReportType } from "types";
 
 vi.mock("utils/other/useBreakpoint", () => ({
   useBreakpoint: vi.fn(() => ({
@@ -97,5 +97,19 @@ describe("Sidebar", () => {
     await userEvent.click(expandButton);
 
     expect(screen.getByText("Child 1")).toBeInTheDocument();
+  });
+
+  it("should render IMA heading when report type is IMA", () => {
+    useStore.setState({ report: { ...report, type: ReportType.IMA } });
+
+    render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Incident Management Assessments" })
+    ).toBeInTheDocument();
   });
 });

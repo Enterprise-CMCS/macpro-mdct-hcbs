@@ -23,10 +23,7 @@ vi.mock("utils/other/useBreakpoint", () => ({
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
   useNavigate: () => vi.fn(),
-  useParams: vi.fn(() => ({
-    reportType: "QMS",
-    state: "CO",
-  })),
+  useParams: vi.fn(),
 }));
 
 vi.mock("utils/api/requestMethods/report", () => ({
@@ -69,6 +66,7 @@ describe("DashboardPage", () => {
       useStore.setState({ user: mockStateUser });
       initAuthManager();
       vi.clearAllMocks();
+      vi.mocked(useParams).mockReturnValue({ reportType: "QMS", state: "CO" });
     });
 
     it("should render an empty state when there are no reports", async () => {
@@ -92,7 +90,7 @@ describe("DashboardPage", () => {
     });
 
     it("should not call reloadReports if no reportType passed in", async () => {
-      vi.mocked(useParams).mockResolvedValueOnce({}).mockResolvedValueOnce({});
+      vi.mocked(useParams).mockReturnValue({});
 
       render(dashboardComponent);
       expect(getReportsForState).toHaveBeenCalledTimes(0);
@@ -180,11 +178,46 @@ describe("DashboardPage", () => {
         screen.getByText("Add new Quality Measure Set Report")
       ).toBeInTheDocument();
     });
+
+    it("should render QIP-specific instructions", async () => {
+      vi.mocked(useParams).mockReturnValue({
+        reportType: "QIP",
+        state: "CO",
+      });
+
+      render(dashboardComponent);
+
+      await waitFor(() => {
+        expect(getReportsForState).toHaveBeenCalled();
+      });
+
+      expect(
+        screen.getByText(/you will need a separate report for each one/i)
+      ).toBeInTheDocument();
+    });
+
+    it("should render IMA-specific instructions", async () => {
+      vi.mocked(useParams).mockReturnValue({
+        reportType: "IMA",
+        state: "CO",
+      });
+
+      render(dashboardComponent);
+
+      await waitFor(() => {
+        expect(getReportsForState).toHaveBeenCalled();
+      });
+
+      expect(
+        screen.getByText(/you will need a separate assessment for each one/i)
+      ).toBeInTheDocument();
+    });
   });
 
-  describe("with readonly, non-admin user", () => {
+  describe("DashboardPage with Read only user", () => {
     beforeEach(() => {
       useStore.setState({ user: mockHelpDeskUser });
+      vi.mocked(useParams).mockReturnValue({ reportType: "QMS", state: "CO" });
     });
 
     it("should not render the Start Report button when user is read only", async () => {
@@ -201,9 +234,10 @@ describe("DashboardPage", () => {
     });
   });
 
-  describe("with admin user", () => {
+  describe("DashboardPage with Admin user", () => {
     beforeEach(() => {
       useStore.setState({ user: mockAdminUser });
+      vi.mocked(useParams).mockReturnValue({ reportType: "QMS", state: "CO" });
     });
 
     it("should not render the Start Report button when user is read only", async () => {

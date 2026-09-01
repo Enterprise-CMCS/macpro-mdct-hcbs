@@ -14,6 +14,7 @@ vi.mock("launchdarkly-react-client-sdk", () => ({
     isPcpReportActive: true,
     isQipReportActive: true,
     isWwlReportActive: true,
+    isImaReportActive: true,
   }),
 }));
 
@@ -44,6 +45,7 @@ describe("Home page", () => {
       { level: 2, name: /Compliance Reports/ },
       { level: 3, name: /Critical Incident Report/ },
       { level: 3, name: /Person-Centered Planning Report/ },
+      { level: 3, name: /Incident Management Assessments/ },
     ];
     for (let heading of headings) {
       expect(screen.getByRole("heading", heading)).toBeVisible();
@@ -58,6 +60,7 @@ describe("Home page", () => {
       isPcpReportActive: false,
       isQipReportActive: false,
       isWwlReportActive: false,
+      isImaReportActive: false,
     });
 
     render(homePage);
@@ -70,6 +73,7 @@ describe("Home page", () => {
       { level: 3, name: /Waiver Waiting List Report/ },
       { level: 3, name: /Critical Incident Report/ },
       { level: 3, name: /Person-Centered Planning Report/ },
+      { level: 3, name: /Incident Management Assessments/ },
     ];
     for (let heading of headings) {
       expect(screen.queryByRole("heading", heading)).not.toBeInTheDocument();
