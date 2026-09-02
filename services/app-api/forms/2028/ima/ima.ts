@@ -68,7 +68,7 @@ export const imaReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "info-systems-definition",
           text: '"Information systems" are defined as an interconnected set of information resources under the same direct management control that shares common functionality. A system normally includes hardware, software, information, data, applications, communications, and people. (Cited in 45 CFR § 164.304)',
-        }
+        },
         {
           type: ElementType.Radio,
           id: "info-systems-question-1",
@@ -85,6 +85,7 @@ export const imaReportTemplate: ReportBase = {
                   id: "question1-yes-radio",
                   label:
                     'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link">45 CFR part 164</a>?',
+                  required: true,
                   choices: [
                     {
                       label: "Yes",
