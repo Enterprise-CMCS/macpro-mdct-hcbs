@@ -35,10 +35,10 @@ export const imaReportTemplate: ReportBase = {
         {
           id: "contact-name",
           type: ElementType.Textbox,
-          label: "Contact name",
+          label: "Contact name/title",
           required: true,
           helperText:
-            "Enter a person's name or a position title for CMS to contact with questions about this report.",
+            "Provide name and/or title of the primary point of contact for follow-up regarding this assessment.",
         },
         {
           type: ElementType.Textbox,
@@ -46,10 +46,18 @@ export const imaReportTemplate: ReportBase = {
           label: "Contact email address",
           required: true,
           helperText:
-            "Enter an email address for the person or position above.  Department or program-wide email addresses are allowed.",
+            "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
         },
-        waiverListCheckboxField,
-        waiverListInputField,
+        {
+          ...waiverListCheckboxField,
+          label:
+            "Select all HCBS authorities included in this incident management assessment for this reporting period.",
+        },
+        {
+          ...waiverListInputField,
+          label:
+            "If an HCBS authority is not included above, but included in this IMA, add its name and control number here.",
+        },
       ],
     },
     {
