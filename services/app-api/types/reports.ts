@@ -422,7 +422,7 @@ export type DateRangeTemplate = {
     start: string;
     end: string;
   };
-  helperText: string;
+  helperText?: string;
   startHelperText?: string;
   endHelperText?: string;
   dateFormat?: "MMDDYYYY" | "MMYYYY";
