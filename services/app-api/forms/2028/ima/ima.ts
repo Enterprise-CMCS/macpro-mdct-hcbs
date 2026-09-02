@@ -18,7 +18,7 @@ export const imaReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "review-submit"],
+      childPageIds: ["general-info", "electronic-info-system", "review-submit"],
     },
     {
       id: "general-info",
@@ -50,6 +50,95 @@ export const imaReportTemplate: ReportBase = {
         },
         waiverListCheckboxField,
         waiverListInputField,
+      ],
+    },
+    {
+      id: "electronic-info-system",
+      navTitle: "Electronic Information Systems",
+      tabTitle: "Electronic Information Systems - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "electronic-info-header",
+          text: "Electronic information systems",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "info-systems-definition",
+          text: '"Information systems" are defined a an interconnected set of information resources under the same direct management control that shares common functionality.  A system normally includes hardware, software, information, data, applications, communications, and people. (Cited in 45 CFR § 164.304)',
+        },
+        {
+          type: ElementType.Radio,
+          id: "info-systems-question-1",
+          label:
+            'Does this IM system use an "information system" that matches that definition?',
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Radio,
+                  id: "question1-yes-radio",
+                  label:
+                    'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link" target="_blank">45 CFR part 164</a>?',
+                  required: true,
+                  choices: [
+                    {
+                      label: "Yes",
+                      value: "yes",
+                    },
+                    {
+                      label: "No",
+                      value: "no",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        {
+          id: "info-systems-question-2",
+          type: ElementType.Radio,
+          label:
+            "Has the state submitted an Advanced Planning Document (APD) for this IM system?",
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.DateRange,
+                  id: "question2-yes-date-range",
+                  labels: {
+                    top: "When did the state submit the APD?",
+                    start: "Start date",
+                    end: "End date",
+                  },
+                  dateFormat: "MMDDYYYY",
+                  answer: {
+                    start: "",
+                  },
+                  required: true,
+                  endDateRequired: true,
+                },
+              ],
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
       ],
     },
     {
