@@ -67,8 +67,8 @@ export const imaReportTemplate: ReportBase = {
         {
           type: ElementType.Paragraph,
           id: "info-systems-definition",
-          text: '"Information systems" are defined a an interconnected set of information resources under the same direct management control that shares common functionality.  A system normally includes hardware, software, information, data, applications, communications, and people. (Cited in 45 CFR § 164.304)',
-        },
+          text: '"Information systems" are defined as an interconnected set of information resources under the same direct management control that shares common functionality. A system normally includes hardware, software, information, data, applications, communications, and people. (Cited in 45 CFR § 164.304)',
+        }
         {
           type: ElementType.Radio,
           id: "info-systems-question-1",
