@@ -1,39 +1,32 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddEditReportModal } from "components";
 import {
-  mockStateUserStore,
+  mockStateUser,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
-import { LiteReport, ReportOptions, ReportType } from "../../types";
+import { LiteReport, ReportType } from "../../types";
 import assert from "node:assert";
 import { testA11y } from "utils/testing/commonTests";
+import { createReport, updateReport } from "utils/api/requestMethods/report";
 
-const mockCloseHandler = jest.fn();
-const mockReportHandler = jest.fn();
-const mockCreateReport = jest.fn();
-const mockUpdateReport = jest.fn();
-const mockGetReportsForState = jest.fn().mockResolvedValue([
-  {
-    id: "1",
-    name: "mock-name-a",
-    year: 2026,
-  } as LiteReport,
-]);
+const mockCloseHandler = vi.fn();
+const mockReportHandler = vi.fn();
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockStateUserStore);
+useStore.setState({ user: mockStateUser });
 
-jest.mock("utils/api/requestMethods/report", () => ({
-  updateReport: () => mockUpdateReport(),
-  createReport: (
-    reportType: string,
-    state: string,
-    reportOptions: ReportOptions
-  ) => mockCreateReport(reportType, state, reportOptions),
-  getReportsForState: () => mockGetReportsForState(),
+vi.mock("utils/api/requestMethods/report", () => ({
+  updateReport: vi.fn(),
+  createReport: vi.fn(),
+  getReportsForState: vi.fn().mockResolvedValue([
+    {
+      id: "1",
+      name: "mock-name-a",
+      year: 2026,
+    } as LiteReport,
+  ]),
 }));
 
 const addModalComponent = (
@@ -70,36 +63,25 @@ const editModalComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test general modal functionality", () => {
+describe("AddEditReportModal", () => {
   beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should be closeable by top button", async () => {
     render(addModalComponent);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Modal top close button can be clicked", async () => {
     await userEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("Modal bottom cancel button can be clicked", async () => {
+  it("should be closeabled by Cancel button", async () => {
+    render(addModalComponent);
     await userEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
-});
 
-describe("Test Add Report Modal", () => {
-  beforeEach(() => {
+  it("should show Add contents when in create mode", () => {
     render(addModalComponent);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Add Report Modal shows proper add contents", () => {
     expect(
       screen.getByText("Add new Quality Measure Set Report")
     ).toBeInTheDocument();
@@ -109,40 +91,25 @@ describe("Test Add Report Modal", () => {
     expect(screen.getByText("Start new")).toBeInTheDocument();
   });
 
-  testA11y(addModalComponent);
-});
-
-describe("Test Edit Report Modal", () => {
-  beforeEach(() => {
+  it("should show Edit contents when in edit mode", () => {
     render(editModalComponent);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Edit report modal shows the proper edit contents with editable name", () => {
     expect(
       screen.getByText("Edit Critical Incident Report")
     ).toBeInTheDocument();
     expect(screen.getByText("Save")).toBeInTheDocument();
     expect(screen.getByDisplayValue("report name thing")).toBeInTheDocument();
   });
-});
 
-describe("Test dropdown for year", () => {
-  beforeEach(() => {
+  it("should render year dropdown options", () => {
     render(addModalComponent);
-  });
-
-  test("Assert dropdown options are rendered", () => {
     const dropdown = screen.getByRole("button", {
       name: "2026 Select the quality measure set reporting year.",
     });
     expect(dropdown).toBeInTheDocument();
   });
 
-  test("Simulate selecting a year", async () => {
+  it("should allow year to be selected", async () => {
+    render(addModalComponent);
     const dropdown = screen.getAllByLabelText(
       "Select the quality measure set reporting year."
     )[0];
@@ -151,7 +118,9 @@ describe("Test dropdown for year", () => {
     expect(dropdown.value).toBe("2026");
   });
 
-  test("period dropdowns show the two years before the reporting year", async () => {
+  it("should show two years of survey periods before the reporting year", async () => {
+    render(addModalComponent);
+
     for (const radio of screen.getAllByLabelText("Yes")) {
       await userEvent.click(radio);
     }
@@ -183,13 +152,8 @@ describe("Test dropdown for year", () => {
       );
     }
   });
-});
 
-describe("Test submit", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-  it("Simulate submitting modal", async () => {
+  it("should call the API to create a report", async () => {
     render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
       name: "Quality Measure Set Report Name",
@@ -213,10 +177,10 @@ describe("Test submit", () => {
     await userEvent.click(submitBtn);
 
     expect(mockReportHandler).toHaveBeenCalled();
-    expect(mockCreateReport).toHaveBeenCalled();
+    expect(createReport).toHaveBeenCalled();
   });
 
-  it("removes a selected survey period when the survey is changed to No", async () => {
+  it("should clear the selected survey period when its survey is changed to No", async () => {
     render(addModalComponent);
     await userEvent.type(
       screen.getByRole("textbox", {
@@ -240,7 +204,7 @@ describe("Test submit", () => {
 
     await userEvent.click(screen.getByText("Start new"));
 
-    expect(mockCreateReport).toHaveBeenCalledWith(ReportType.QMS, "AB", {
+    expect(createReport).toHaveBeenCalledWith(ReportType.QMS, "AB", {
       name: "mock-name",
       year: 2026,
       options: {
@@ -252,7 +216,7 @@ describe("Test submit", () => {
     });
   });
 
-  it("Simulate submitting an edited report", async () => {
+  it("should call the API to edit a report", async () => {
     render(editModalComponent);
 
     const nameTextbox = screen.getByRole("textbox", {
@@ -265,12 +229,10 @@ describe("Test submit", () => {
     expect(submitBtn).toBeInTheDocument();
 
     await userEvent.click(submitBtn);
-    expect(mockUpdateReport).toHaveBeenCalled();
+    expect(updateReport).toHaveBeenCalled();
   });
-});
 
-describe("Test in line validation", () => {
-  it("Simulate submitting modal with duplicate report name", async () => {
+  it("should not allow two reports with the same name", async () => {
     const user = userEvent.setup();
     render(addModalComponent);
     const nameTextbox = screen.getByRole("textbox", {
@@ -297,19 +259,18 @@ describe("Test in line validation", () => {
 
     // Form should not submit when there's a validation error
     expect(mockReportHandler).not.toHaveBeenCalled();
-    expect(mockCreateReport).not.toHaveBeenCalled();
+    expect(createReport).not.toHaveBeenCalled();
   });
-});
 
-describe("Test AddEditReportModal types", () => {
-  test.each([
+  it.each([
     { type: ReportType.QMS, text: "Quality Measure Set Report" },
     { type: ReportType.TACM, text: "TACM Report" },
     { type: ReportType.CI, text: "Critical Incident Report" },
     { type: ReportType.PCP, text: "Person-Centered Planning Report" },
     { type: ReportType.QIP, text: "Quality Improvement Plan" },
     { type: ReportType.WWL, text: "Waiver Waiting List Report" },
-  ])("$type report type renders a title", ({ type, text }) => {
+    { type: ReportType.IMA, text: "Incident Management Assessment" },
+  ])("should render $type report title", ({ type, text }) => {
     render(
       <RouterWrappedComponent>
         <AddEditReportModal
@@ -326,7 +287,7 @@ describe("Test AddEditReportModal types", () => {
     expect(screen.getByText(`Add new ${text}`)).toBeInTheDocument();
   });
 
-  test("QIP renders the quality improvement plan subheading", () => {
+  it("should render special subheading for QIP", () => {
     render(
       <RouterWrappedComponent>
         <AddEditReportModal
@@ -348,7 +309,7 @@ describe("Test AddEditReportModal types", () => {
     ).toBeInTheDocument();
   });
 
-  test("WWL renders the waiting list subheading", () => {
+  it("should render special subheading for WWL", () => {
     render(
       <RouterWrappedComponent>
         <AddEditReportModal
@@ -365,4 +326,7 @@ describe("Test AddEditReportModal types", () => {
 
     expect(screen.getByText("Waiting List Separation")).toBeInTheDocument();
   });
+
+  testA11y(addModalComponent);
+  testA11y(editModalComponent);
 });

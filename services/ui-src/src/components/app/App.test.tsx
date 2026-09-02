@@ -1,16 +1,15 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import {
-  RouterWrappedComponent,
-  mockNoUserStore,
-  mockUseStore,
-} from "utils/testing/setupJest";
-import { useStore, UserProvider } from "utils";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
+import { useStore, UserProvider, fireTealiumPageView } from "utils";
 import { App } from "components";
 import { testA11yAct } from "utils/testing/commonTests";
+import { HcbsUser } from "types";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
+vi.mock("utils", async (importOriginal) => ({
+  ...(await importOriginal()),
+  fireTealiumPageView: vi.fn(),
+}));
 
 const appComponent = (
   <RouterWrappedComponent>
@@ -21,9 +20,12 @@ const appComponent = (
 );
 
 describe("<App />", () => {
-  test("App is visible", async () => {
-    mockedUseStore.mockReturnValue(mockUseStore);
+  it("should render the home page for a logged-in user", async () => {
+    useStore.setState({ user: {} as HcbsUser });
     render(appComponent);
+
+    expect(fireTealiumPageView).toHaveBeenCalled();
+
     expect(
       screen.getByRole("region", {
         name: "Official website of the United States government",
@@ -32,19 +34,26 @@ describe("<App />", () => {
     expect(
       screen.getByRole("button", { name: "Here's how you know" })
     ).toBeVisible();
-    // Unable to run assertions on collections
-    expect(screen.getAllByAltText("HCBS logo"));
-    expect(screen.getAllByAltText("Help"));
-    expect(screen.getAllByAltText("Account"));
+    expect(screen.getAllByAltText("HCBS logo")[0]).toBeVisible();
+    expect(screen.getAllByAltText("Help")[0]).toBeVisible();
+    expect(screen.getAllByAltText("Account")[0]).toBeVisible();
     expect(
-      screen.getAllByAltText("Department of Health and Human Services, USA")
-    );
-    expect(screen.getAllByAltText("Medicaid.gov: Keeping America Healthy"));
-    expect(screen.getAllByRole("button").length).toBe(3);
+      screen.getAllByAltText(/Health and Human Services/)[0]
+    ).toBeVisible();
+    expect(
+      screen.getAllByAltText("Medicaid.gov: Keeping America Healthy")[0]
+    ).toBeVisible();
+    expect(screen.getByRole("button", { name: /my account/i })).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: /select state or territory/i })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: /report dashboard/i })
+    ).toBeVisible();
   });
 
-  test("App renders local logins if there is no user", async () => {
-    mockedUseStore.mockReturnValue(mockNoUserStore);
+  it("should render the login page if there is no user", async () => {
+    useStore.setState({ user: undefined });
     render(appComponent);
     const headings = screen.getAllByRole("heading", { level: 2 });
     expect(headings.length).toBe(2);

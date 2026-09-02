@@ -46,6 +46,9 @@ export const fillAddEditReportModal = async (page: Page) => {
   const pomRadioButton = page.getByRole("radiogroup", {
     name: "Is your state reporting on the POM Survey?",
   });
+
+  testModalData.datetime = Date.now();
+
   await qmsSetReportNameInput.fill(
     testModalData.reportName + testModalData.datetime
   );
@@ -56,7 +59,22 @@ export const fillAddEditReportModal = async (page: Page) => {
   const addEditReportButton = page.getByRole("button", {
     name: "Start new",
   });
-  await addEditReportButton.click();
+  await Promise.all([
+    waitForReportRequest(page, "POST"),
+    addEditReportButton.click(),
+  ]);
+
+  await expect(page.locator(".chakra-modal__content-container")).toHaveCount(0);
+};
+
+const waitForReportRequest = async (page: Page, method: "POST" | "PUT") => {
+  const response = await page.waitForResponse(
+    (response) =>
+      response.url().includes("/reports") &&
+      response.request().method() === method
+  );
+
+  expect.soft(response.ok()).toBeTruthy();
 };
 
 test.beforeEach(async ({ page }) => {
@@ -74,11 +92,12 @@ test.describe("create and complete a QMS report as a state user", () => {
   });
 
   test("complete a QMS report as a state user", async ({ page }) => {
-    const reportBtn = page.getByRole("button", {
-      name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
-    });
+    const reportBtn = () =>
+      page.getByRole("button", {
+        name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
+      });
 
-    await reportBtn.click();
+    await reportBtn().click();
     await completeGeneralInfo(page);
 
     await page.getByRole("button", { name: "Continue" }).click();

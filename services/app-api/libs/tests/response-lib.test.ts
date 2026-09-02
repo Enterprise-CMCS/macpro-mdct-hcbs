@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import {
   ok,
   created,
@@ -10,7 +11,7 @@ import {
 } from "../response-lib";
 
 describe("HTTP Response helper functions", () => {
-  test("Responses should have correct status codes", () => {
+  it("should have correct status codes", () => {
     expect(ok({}).statusCode).toBe(200);
     expect(created({}).statusCode).toBe(201);
     expect(badRequest({}).statusCode).toBe(400);
@@ -21,17 +22,17 @@ describe("HTTP Response helper functions", () => {
     expect(internalServerError({}).statusCode).toBe(500);
   });
 
-  test("Responses should exclude a body if not provided", () => {
+  it("should exclude a body if not provided", () => {
     const response = badRequest();
     expect(response.body).toBeUndefined();
   });
 
-  test("Responses should include a body if provided", () => {
+  it("should include a body if provided", () => {
     const res = badRequest("try again");
     expect(res.body).toBe('"try again"');
   });
 
-  test("Responses should have the correct headers", () => {
+  it("should include the necessary headers", () => {
     const response = ok({});
     expect(response.headers["Access-Control-Allow-Origin"]).toBe("*");
     expect(response.headers["Access-Control-Allow-Credentials"]).toBe(true);

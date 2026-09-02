@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { putBanner, getBanner, deleteBanner, scanAllBanners } from "./banners";
 import { mockClient } from "aws-sdk-client-mock";
 import {
@@ -30,7 +31,7 @@ describe("Banner storage methods", () => {
   });
 
   it("should call Dynamo to create a new or updated banner", async () => {
-    const mockPut = jest.fn();
+    const mockPut = vi.fn();
     mockDynamo.on(PutCommand).callsFakeOnce(mockPut);
 
     await putBanner(mockBanner);
@@ -45,7 +46,7 @@ describe("Banner storage methods", () => {
   });
 
   it("should call Dynamo to fetch a banner", async () => {
-    const mockFetch = jest.fn().mockResolvedValue({ Item: mockBanner });
+    const mockFetch = vi.fn().mockResolvedValue({ Item: mockBanner });
     mockDynamo.on(GetCommand).callsFakeOnce(mockFetch);
 
     const banner = await getBanner("mock-key");
@@ -61,7 +62,7 @@ describe("Banner storage methods", () => {
   });
 
   it("should call Dynamo to scan all banners", async () => {
-    const mockScan = jest
+    const mockScan = vi
       .fn()
       .mockResolvedValueOnce({ Items: [mockBanner], LastEvaluatedKey: "foo" })
       .mockResolvedValueOnce({ Items: [mockBanner] });
@@ -79,7 +80,7 @@ describe("Banner storage methods", () => {
   });
 
   it("should call Dynamo to delete a banner", async () => {
-    const mockDelete = jest.fn();
+    const mockDelete = vi.fn();
     mockDynamo.on(DeleteCommand).callsFakeOnce(mockDelete);
 
     await deleteBanner("mock-key");

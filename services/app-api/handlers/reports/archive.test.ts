@@ -1,24 +1,24 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
-import { Report } from "../../types/reports";
 import { updateArchiveStatus } from "./archive";
+import { putReport } from "../../storage/reports";
+import { canArchiveReport } from "../../utils/authorization";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.ADMIN,
   }),
 }));
 
-const permissionMock = jest.fn().mockReturnValue(true);
-jest.mock("../../utils/authorization", () => ({
-  canArchiveReport: () => permissionMock(),
+vi.mock("../../utils/authorization", () => ({
+  canArchiveReport: vi.fn().mockReturnValue(true),
 }));
 
-const putMock = jest.fn();
-jest.mock("../../storage/reports", () => ({
-  getReport: jest.fn().mockReturnValue({ id: "A report", archived: false }),
-  putReport: (report: Report) => putMock(report),
+vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn().mockReturnValue({ id: "A report", archived: false }),
+  putReport: vi.fn(),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -32,47 +32,48 @@ const testEvent: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test" },
 };
 
-describe("Test archive report handler", () => {
+describe("updateArchiveStatus", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  describe("updateArchiveStatus", () => {
-    test("Test missing path params", async () => {
-      const badTestEvent: APIGatewayProxyEvent = {
-        ...proxyEvent,
-        headers: { "cognito-identity-id": "test" },
-      };
-      const res = await updateArchiveStatus(badTestEvent);
-      expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    });
+  it("should return Bad Request when missing path params", async () => {
+    const badTestEvent: APIGatewayProxyEvent = {
+      ...proxyEvent,
+      headers: { "cognito-identity-id": "test" },
+    };
+    const res = await updateArchiveStatus(badTestEvent);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  });
 
-    it("should return 403 if user is not authorized", async () => {
-      permissionMock.mockReturnValueOnce(false);
-      const response = await updateArchiveStatus(testEvent);
-      expect(response.statusCode).toBe(StatusCodes.Forbidden);
-    });
+  it("should return Forbidden if user is not authorized", async () => {
+    vi.mocked(canArchiveReport).mockReturnValueOnce(false);
+    const response = await updateArchiveStatus(testEvent);
+    expect(response.statusCode).toBe(StatusCodes.Forbidden);
+  });
 
-    it("should return Bad Request if user is not authorized", async () => {
-      const noBodyEvent: APIGatewayProxyEvent = {
-        ...proxyEvent,
-        pathParameters: {
-          reportType: "QMS",
-          state: "PA",
-          id: "myVeryFavoriteReport",
-        },
-        headers: { "cognito-identity-id": "test" },
-      };
+  it("should return Bad Request when request body is missing", async () => {
+    const noBodyEvent: APIGatewayProxyEvent = {
+      ...proxyEvent,
+      pathParameters: {
+        reportType: "QMS",
+        state: "PA",
+        id: "myVeryFavoriteReport",
+      },
+      headers: { "cognito-identity-id": "test" },
+    };
 
-      const response = await updateArchiveStatus(noBodyEvent);
-      expect(response.statusCode).toBe(StatusCodes.BadRequest);
-    });
+    const response = await updateArchiveStatus(noBodyEvent);
+    expect(response.statusCode).toBe(StatusCodes.BadRequest);
+  });
 
-    test("Test Successful archival", async () => {
-      const res = await updateArchiveStatus(testEvent);
+  it("should successfully archive a report", async () => {
+    const res = await updateArchiveStatus(testEvent);
 
-      expect(res.statusCode).toBe(StatusCodes.Ok);
-      expect(putMock).toHaveBeenCalledWith({ id: "A report", archived: true });
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledWith({
+      id: "A report",
+      archived: true,
     });
   });
 });

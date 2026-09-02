@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { PageTemplate } from "components";
 import { testA11y } from "utils/testing/commonTests";
@@ -16,7 +17,7 @@ const reportPageComponent = (
 
 describe("<PageTemplate />", () => {
   describe("standard", () => {
-    test("Check that PageTemplate (standard) renders", () => {
+    it("should render standard page contents", () => {
       const { getByText } = render(standardPageComponent);
       expect(getByText("Standard Test Text")).toBeVisible();
     });
@@ -25,7 +26,7 @@ describe("<PageTemplate />", () => {
   });
 
   describe("report", () => {
-    test("Check that PageTemplate (report) renders", () => {
+    it("should render report page contents", () => {
       const { getByText } = render(reportPageComponent);
       expect(getByText("Report Test Text")).toBeVisible();
     });

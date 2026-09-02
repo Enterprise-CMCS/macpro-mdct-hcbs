@@ -1,4 +1,5 @@
-import { booleanCombinations } from "../../testing/setupJest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { booleanCombinations } from "../../testing/setupTests";
 import {
   PageElement,
   ReportOptions,
@@ -10,13 +11,13 @@ import { StateAbbr } from "../../utils/constants";
 import { validateReportPayload } from "../../utils/reportValidation";
 import { buildReport } from "./buildReport";
 
-jest.mock("../../utils/reportValidation", () => ({
-  validateReportPayload: jest.fn().mockImplementation(async (rpt) => rpt),
+vi.mock("../../utils/reportValidation", () => ({
+  validateReportPayload: vi.fn().mockImplementation(async (rpt) => rpt),
 }));
 
 describe("Build Report", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should successfully create a report", async () => {
@@ -47,7 +48,7 @@ describe("Build Report", () => {
 
   it("should throw an error when validation fails", async () => {
     // Manually throw validation error
-    (validateReportPayload as jest.Mock).mockImplementationOnce(() => {
+    vi.mocked(validateReportPayload).mockImplementationOnce(() => {
       throw new Error("you be havin some validatin errors");
     });
 
@@ -68,24 +69,30 @@ describe("Build Report", () => {
   });
 
   it("should always have unique element IDs within a page", async () => {
-    const nonQmsReportTypes = Object.values(ReportType).filter(
-      (rt) => rt !== ReportType.QMS
+    const baseReportTypes = Object.values(ReportType).filter(
+      (rt) => rt !== ReportType.QMS && rt !== ReportType.IMA
     );
     const qmsOptionCombinations = [...booleanCombinations(4)].map(
       ([a, b, c, d]) => ({ cahps: a, nciidd: b, nciad: c, pom: d })
     );
 
     const reportTypesAndOptions = [
-      // Every non-QMS report takes no options, so always has the same pages.
-      ...nonQmsReportTypes.map((type) => ({ type, opts: {} })),
+      // Every non-QMS, non-IMA report takes no options, so always has the same pages.
+      ...baseReportTypes.map((type) => ({ type, opts: {}, year: 2026 })),
       // QMS needs to be built with different options to get all possible pages.
-      ...qmsOptionCombinations.map((opts) => ({ type: ReportType.QMS, opts })),
+      ...qmsOptionCombinations.map((opts) => ({
+        type: ReportType.QMS,
+        opts,
+        year: 2026,
+      })),
+      // IMA is only available for 2028
+      { type: ReportType.IMA, opts: {}, year: 2028 },
     ];
 
-    for (const { type, opts } of reportTypesAndOptions) {
+    for (const { type, opts, year } of reportTypesAndOptions) {
       const options = {
         name: "mock-report",
-        year: 2026,
+        year,
         options: opts,
       };
       const user = {

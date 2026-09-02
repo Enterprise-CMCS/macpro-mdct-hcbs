@@ -1,22 +1,18 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ReportIntroCard } from "components";
-import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
-import { useStore } from "utils";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("utils/other/useBreakpoint", () => ({
-  useBreakpoint: jest.fn(() => ({
+vi.mock("utils/other/useBreakpoint", () => ({
+  useBreakpoint: vi.fn(() => ({
     isDesktop: true,
   })),
 }));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
+const mockUseNavigate = vi.fn();
 
-const mockUseNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
@@ -31,19 +27,10 @@ const qmsReportTypeCardComponent = (
 );
 
 describe("<ReportTypeCard />", () => {
-  describe("Renders", () => {
-    beforeEach(() => {
-      render(qmsReportTypeCardComponent);
-    });
-
-    test("QMS ReportTypeCard is visible", () => {
-      expect(screen.getByText("Quality Measure Set")).toBeVisible();
-    });
-
-    test("QMS ReportTypeCard image is visible on desktop", () => {
-      const imageAltText = "Spreadsheet icon";
-      expect(screen.getByAltText(imageAltText)).toBeVisible();
-    });
+  it("should render correctly", () => {
+    render(qmsReportTypeCardComponent);
+    expect(screen.getByText("Quality Measure Set")).toBeVisible();
+    expect(screen.getByAltText("Spreadsheet icon")).toBeVisible();
   });
 
   testA11y(qmsReportTypeCardComponent);

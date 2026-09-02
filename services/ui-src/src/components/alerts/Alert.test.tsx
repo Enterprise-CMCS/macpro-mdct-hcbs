@@ -1,10 +1,8 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Alert } from "components";
 import { AlertTypes } from "types";
 import { testA11y } from "utils/testing/commonTests";
-
-/** The path to our alert SVG, as injected by jest */
-const alertIcon = "test-file-stub";
 
 const alertComponent = (
   <Alert title="Test alert!" link="https://example.com">
@@ -14,7 +12,7 @@ const alertComponent = (
 
 describe("<Alert />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should render correctly", () => {
@@ -25,7 +23,10 @@ describe("<Alert />", () => {
     ).toHaveAttribute("href", "https://example.com");
     expect(screen.getByRole("alert")).toHaveTextContent("This is for testing.");
     expect(screen.getByRole("img", { name: "Alert" })).toBeVisible();
-    expect(screen.getByAltText("Alert")).toHaveAttribute("src", alertIcon);
+    expect(screen.getByAltText("Alert")).toHaveAttribute(
+      "src",
+      expect.stringMatching(/^data:image/)
+    );
   });
 
   it("should hide the icon when appropriate", () => {
@@ -34,8 +35,8 @@ describe("<Alert />", () => {
   });
 
   it("should focus error alerts", () => {
-    const scrollSpy = jest.spyOn(Element.prototype, "scrollIntoView");
-    const focusSpy = jest.spyOn(HTMLElement.prototype, "focus");
+    const scrollSpy = vi.spyOn(Element.prototype, "scrollIntoView");
+    const focusSpy = vi.spyOn(HTMLElement.prototype, "focus");
 
     const { rerender } = render(<Alert status={AlertTypes.INFO} title="" />);
     expect(scrollSpy).not.toHaveBeenCalled();

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { screen, render } from "@testing-library/react";
 import { useStore } from "utils";
 import { ExportedReportPage } from "./ExportedReportPage";
@@ -30,7 +31,7 @@ const subHeader = (text: string) => ({
 });
 
 describe("ExportedReportPage", () => {
-  it("ExportReportPage is visible", () => {
+  it("should render correctly", () => {
     useStore.setState({
       report: {
         ...report,
@@ -70,7 +71,7 @@ describe("ExportedReportPage", () => {
     expect(screen.getByRole("row", { name: /POM Survey\? No/ }));
   });
 
-  it("Should not render filtered sections", () => {
+  it("should not render filtered sections", () => {
     useStore.setState({
       report: {
         ...report,
@@ -97,7 +98,7 @@ describe("ExportedReportPage", () => {
     expect(screen.queryByText(/Review/)).not.toBeInTheDocument();
   });
 
-  it("Should not render unreferenced sections", () => {
+  it("should not render unreferenced sections", () => {
     useStore.setState({
       report: {
         ...report,
@@ -124,7 +125,7 @@ describe("ExportedReportPage", () => {
     expect(screen.queryByText(/Beta/)).not.toBeInTheDocument();
   });
 
-  it("Should render required measures and results with section header", () => {
+  it("should render required measures and results with section header", () => {
     useStore.setState({
       report: {
         ...report,
@@ -188,7 +189,7 @@ describe("ExportedReportPage", () => {
     expect(screen.getByText(/Measure Beta/)).toBeInTheDocument();
   });
 
-  it("Should not render optional measure header when there is no optional data", () => {
+  it("should not render optional measure header when there is no optional data", () => {
     useStore.setState({
       report: {
         ...report,
@@ -222,7 +223,7 @@ describe("ExportedReportPage", () => {
     expect(screen.queryByText(/Measure Gamma/)).not.toBeInTheDocument();
   });
 
-  it("Should render optional section when it has data", () => {
+  it("should render optional section when it has data", () => {
     useStore.setState({
       report: {
         ...report,
@@ -250,7 +251,7 @@ describe("ExportedReportPage", () => {
     expect(screen.getByText(/Measure Gamma/)).toBeInTheDocument();
   });
 
-  it("Should render QIP Measure Target pages", () => {
+  it("should render QIP Measure Target pages", () => {
     useStore.setState({
       report: {
         ...report,

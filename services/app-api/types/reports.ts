@@ -9,6 +9,7 @@ export enum ReportType {
   PCP = "PCP",
   QIP = "QIP",
   WWL = "WWL",
+  IMA = "IMA",
 }
 export const isReportType = (x: unknown): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);

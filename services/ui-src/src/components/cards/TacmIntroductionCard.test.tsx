@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { TacmIntroductionCard } from "./TacmIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11yAct } from "utils/testing/commonTests";

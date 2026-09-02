@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RadioField } from "components";
 import { ElementType, RadioTemplate } from "types";
@@ -6,16 +7,12 @@ import { useStore } from "utils";
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("utils/state/hooks/useElementIsHidden");
-const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
-  typeof useElementIsHidden
->;
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-const mockClearMeasure = jest.fn();
-const mockChangeDeliveryMethods = jest.fn();
-const mockSetAnswers = jest.fn();
-mockedUseStore.mockReturnValue({
+vi.mock("utils/state/hooks/useElementIsHidden");
+
+const mockClearMeasure = vi.fn();
+const mockChangeDeliveryMethods = vi.fn();
+const mockSetAnswers = vi.fn();
+useStore.setState({
   currentPageId: "my-id",
   clearMeasure: mockClearMeasure,
   changeDeliveryMethods: mockChangeDeliveryMethods,
@@ -57,7 +54,7 @@ const mockRadioElement: RadioTemplate = {
     answer: "yes",
   },
 };
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const RadioFieldComponent = (
   <RadioField element={mockRadioElement} updateElement={updateSpy} />
@@ -65,10 +62,10 @@ const RadioFieldComponent = (
 
 describe("<RadioField />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("RadioField renders as Radio", () => {
+  it("should render as Radio", () => {
     render(RadioFieldComponent);
     expect(
       screen.getByRole("radiogroup", { name: "Mock Label" })
@@ -78,13 +75,13 @@ describe("<RadioField />", () => {
     expect(screen.getByRole("radio", { name: "Choice 3" })).toBeVisible();
   });
 
-  test("RadioField allows checking radio choices", async () => {
+  it("should allow checking radio choices", async () => {
     render(RadioFieldComponent);
     await userEvent.click(screen.getByRole("radio", { name: "Choice 1" }));
     expect(updateSpy).toHaveBeenCalledWith({ answer: "A" });
   });
 
-  test("RadioField displays children fields after selection", async () => {
+  it("should display children fields after selection", async () => {
     render(RadioFieldComponent);
     expect(
       screen.queryByRole("textbox", { name: "Text Label" })
@@ -94,31 +91,21 @@ describe("<RadioField />", () => {
     expect(screen.getByRole("textbox", { name: "Text Label" })).toBeVisible();
   });
 
-  testA11y(RadioFieldComponent);
-});
-
-describe("Radio field hide condition logic", () => {
-  test("Radio field is hidden if its hide conditions' controlling element has a matching answer", async () => {
-    mockedUseElementIsHidden.mockReturnValue(true);
+  it("should be hidden if its hide conditions' controlling element has a matching answer", async () => {
+    vi.mocked(useElementIsHidden).mockReturnValue(true);
     render(RadioFieldComponent);
     const radioField = screen.queryByText("Choice 1");
     expect(radioField).not.toBeInTheDocument();
   });
 
-  test("Radio field is NOT hidden if its hide conditions' controlling element has a different answer", async () => {
-    mockedUseElementIsHidden.mockReturnValue(false);
+  it("should NOT be hidden if its hide conditions' controlling element has a different answer", async () => {
+    vi.mocked(useElementIsHidden).mockReturnValue(false);
     render(RadioFieldComponent);
     const radioField = screen.queryByText("Choice 1");
     expect(radioField).toBeVisible();
   });
-});
 
-describe("Radio field click action logic", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Radio field triggers a report delivery methods change when toggled", async () => {
+  it("should trigger a report delivery methods change when toggled", async () => {
     const deliveryElement = {
       ...mockRadioElement,
       clickAction: "qmDeliveryMethodChange",
@@ -133,7 +120,7 @@ describe("Radio field click action logic", () => {
     expect(mockChangeDeliveryMethods).toHaveBeenCalled();
   });
 
-  test("Confirmation modal is shown when delivery method is changed, and clicking yes changes the radio value", async () => {
+  it("should show a confirmation modal when delivery method is changed, and clicking yes changes the radio value", async () => {
     const deliveryElement = {
       ...mockRadioElement,
       clickAction: "qmDeliveryMethodChange",
@@ -148,7 +135,8 @@ describe("Radio field click action logic", () => {
     expect(mockChangeDeliveryMethods).not.toHaveBeenCalled();
     expect(updateSpy).not.toHaveBeenCalled();
 
-    const modalYes = screen.getByText("Yes");
+    const modal = screen.getByRole("dialog");
+    const modalYes = within(modal).getByRole("button", { name: "Yes" });
     expect(modalYes).toBeVisible();
     await userEvent.click(modalYes);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(1);
@@ -156,7 +144,7 @@ describe("Radio field click action logic", () => {
     expect(updateSpy).toHaveBeenCalledWith({ answer: "A" });
   });
 
-  test("Confirmation modal is shown when delivery method is changed, and clicking no does not change the radio value", async () => {
+  it("should show a confirmation modal when delivery method is changed, and clicking no does not change the radio value", async () => {
     const deliveryElement = {
       ...mockRadioElement,
       clickAction: "qmDeliveryMethodChange",
@@ -171,14 +159,15 @@ describe("Radio field click action logic", () => {
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);
 
-    const modalNo = screen.getByText("No");
+    const modal = screen.getByRole("dialog");
+    const modalNo = within(modal).getByRole("button", { name: "No" });
     expect(modalNo).toBeVisible();
     await userEvent.click(modalNo);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);
   });
 
-  test("Radio field triggers a clear action when not reporting.", async () => {
+  it("should trigger a clear action when not reporting.", async () => {
     const deliveryElement = {
       ...mockRadioElement,
       clickAction: "qmReportingChange",
@@ -204,4 +193,6 @@ describe("Radio field click action logic", () => {
     await userEvent.click(radioField);
     expect(mockClearMeasure).toHaveBeenCalled();
   });
+
+  testA11y(RadioFieldComponent);
 });

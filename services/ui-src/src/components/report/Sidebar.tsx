@@ -26,6 +26,8 @@ const getTitle = (report: Report) => {
       return "Timely Access Report";
     case ReportType.PCP:
       return "Person-Centered Planning";
+    case ReportType.IMA:
+      return "Incident Management Assessments";
     case ReportType.QIP:
       return "Quality Improvement Plan";
     case ReportType.WWL:

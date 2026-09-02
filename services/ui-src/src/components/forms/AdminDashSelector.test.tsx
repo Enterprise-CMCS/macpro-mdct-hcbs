@@ -1,9 +1,11 @@
-// AdminDashSelector.test.tsx
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AdminDashSelector } from "./AdminDashSelector";
+import { AdminDashSelector, reportOptions } from "./AdminDashSelector";
 import { useNavigate } from "react-router-dom";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import assert from "node:assert";
+import { ReportType } from "types";
 
 type DropdownProps = {
   label: string;
@@ -24,7 +26,7 @@ type ChoiceListProps = {
   onChange: () => void;
 };
 
-jest.mock("@cmsgov/design-system", () => ({
+vi.mock("@cmsgov/design-system", () => ({
   Dropdown: ({ label, options, onChange, value }: DropdownProps) => (
     <select aria-label={label} onChange={onChange} value={value}>
       {options.map((option) => (
@@ -53,18 +55,39 @@ jest.mock("@cmsgov/design-system", () => ({
   ),
 }));
 
-jest.mock("react-router-dom", () => ({
-  useNavigate: jest.fn(),
+vi.mock("react-router-dom", () => ({
+  useNavigate: vi.fn(),
+}));
+
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn(),
 }));
 
 describe("AdminDashSelector Component", () => {
-  const mockNavigate = jest.fn();
+  const mockNavigate = vi.fn();
 
-  beforeEach(() => {
-    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+  const allFlagsEnabled = {
+    isTacmReportActive: true,
+    isCiReportActive: true,
+    isPcpReportActive: true,
+    isImaReportActive: true,
+    isQipReportActive: true,
+    isWwlReportActive: true,
+  };
+
+  it("reportOptions includes every ReportType", () => {
+    expect(reportOptions.map((o) => o.value)).toEqual(
+      Object.values(ReportType)
+    );
   });
 
-  test("renders correctly with header and button label", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
+    vi.mocked(useFlags).mockReturnValue(allFlagsEnabled as any);
+  });
+
+  it("should render correctly with header and button label", () => {
     render(<AdminDashSelector />);
 
     expect(
@@ -75,7 +98,7 @@ describe("AdminDashSelector Component", () => {
     ).toBeInTheDocument();
   });
 
-  test("allows user to select a state and report", async () => {
+  it("should allow user to select a state and report", async () => {
     render(<AdminDashSelector />);
 
     // Select a state
@@ -92,7 +115,7 @@ describe("AdminDashSelector Component", () => {
     expect(radioButton).toBeChecked();
   });
 
-  test("navigates to the correct report URL on form submission", async () => {
+  it("should navigate to the correct report URL on form submission", async () => {
     render(<AdminDashSelector />);
 
     // Select a state and report
@@ -112,7 +135,8 @@ describe("AdminDashSelector Component", () => {
     // Check if navigate is called with the correct parameters
     expect(mockNavigate).toHaveBeenCalledWith("report/QMS/CA");
   });
-  test("submit button is disabled when no state or report is selected", async () => {
+
+  it("should disable the submit button when no state or report is selected", async () => {
     render(<AdminDashSelector />);
 
     const submitButton = screen.getByRole("button", {
@@ -133,5 +157,26 @@ describe("AdminDashSelector Component", () => {
     await userEvent.click(radioButton);
     // Now it should be enabled
     expect(submitButton).toBeEnabled();
+  });
+
+  it("hides report options whose feature flag is disabled", () => {
+    vi.mocked(useFlags).mockReturnValue({
+      ...allFlagsEnabled,
+      isQipReportActive: false,
+    } as any);
+
+    render(<AdminDashSelector />);
+
+    expect(
+      screen.queryByLabelText("QMS Quality Improvement Plans (QMS QIP)")
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows report options whose feature flag is enabled", () => {
+    render(<AdminDashSelector />);
+
+    expect(
+      screen.getByLabelText("QMS Quality Improvement Plans (QMS QIP)")
+    ).toBeInTheDocument();
   });
 });
