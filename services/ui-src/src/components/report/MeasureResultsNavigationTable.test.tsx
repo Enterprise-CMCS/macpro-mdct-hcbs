@@ -309,4 +309,16 @@ describe("Measure Results Navigation Table", () => {
     expect(report.pages[2].elements[0].answer).not.toBeDefined();
     expect(report.pages[3].elements[0].answer).not.toBeDefined();
   });
+
+  it("should display View buttons in read-only mode", async () => {
+    useStore.setState({ user: { userIsEndUser: false } as HcbsUser });
+
+    render(<ReportPageWrapper />);
+    await waitForRender();
+
+    expect(screen.getAllByRole("button", { name: "View" })).toHaveLength(2);
+    expect(
+      screen.queryByRole("button", { name: "Edit" })
+    ).not.toBeInTheDocument();
+  });
 });

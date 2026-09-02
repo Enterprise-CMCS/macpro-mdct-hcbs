@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RadioField } from "components";
 import { ElementType, RadioTemplate } from "types";
@@ -135,7 +135,8 @@ describe("<RadioField />", () => {
     expect(mockChangeDeliveryMethods).not.toHaveBeenCalled();
     expect(updateSpy).not.toHaveBeenCalled();
 
-    const modalYes = screen.getByText("Yes");
+    const modal = screen.getByRole("dialog");
+    const modalYes = within(modal).getByRole("button", { name: "Yes" });
     expect(modalYes).toBeVisible();
     await userEvent.click(modalYes);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(1);
@@ -158,7 +159,8 @@ describe("<RadioField />", () => {
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);
     expect(mockSetAnswers).toHaveBeenCalledTimes(0);
 
-    const modalNo = screen.getByText("No");
+    const modal = screen.getByRole("dialog");
+    const modalNo = within(modal).getByRole("button", { name: "No" });
     expect(modalNo).toBeVisible();
     await userEvent.click(modalNo);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(0);

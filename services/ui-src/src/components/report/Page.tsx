@@ -102,7 +102,9 @@ export const Page = ({ id, setElements, elements }: Props) => {
           <QipMeasureTableElement {...{ updateElement, disabled, element }} />
         );
       case ElementType.MeasureResultsNavigationTable:
-        return <MeasureResultsNavigationTableElement {...{ element }} />;
+        return (
+          <MeasureResultsNavigationTableElement {...{ disabled, element }} />
+        );
       case ElementType.StatusTable:
         return <StatusTableElement />;
       case ElementType.MeasureDetails:
