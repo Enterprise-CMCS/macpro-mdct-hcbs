@@ -209,6 +209,7 @@ export enum ElementType {
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
+  ImaTable = "imaTable",
 }
 
 export type PageElement =
@@ -245,7 +246,8 @@ export type PageElement =
   | ListInputTemplate
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
-  | KeyActivityTableTemplate;
+  | KeyActivityTableTemplate
+  | ImaTableTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -464,6 +466,26 @@ export type MeasureTargetInfo = {
   rates: string[];
 };
 
+export type ImaTableColumn = {
+  id: string;
+  label: string;
+};
+
+export type ImaTableRow = {
+  id: string;
+  description: string;
+  answer?: "yes" | "no";
+};
+
+export type ImaTableTemplate = {
+  type: ElementType.ImaTable;
+  id: string;
+  caption: string;
+  columns: ImaTableColumn[];
+  rows: ImaTableRow[];
+  answer?: ImaTableRow[];
+};
+
 export type EligibilityTableItem = {
   title: string;
   description: string;
@@ -471,7 +493,6 @@ export type EligibilityTableItem = {
   frequency: string;
   eligibilityUpdate: string;
 };
-
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;

@@ -280,6 +280,7 @@ export enum ElementType {
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
+  ImaTable = "imaTable",
 }
 
 export type PageElement =
@@ -316,7 +317,8 @@ export type PageElement =
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
   | KeyActivityTableTemplate
-  | ListInputTemplate;
+  | ListInputTemplate
+  | ImaTableTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -841,6 +843,24 @@ export type StatusAlertTemplate = {
   title: string;
   text: string;
   status: AlertTypes;
+};
+
+export type ImaTableRow = {
+  id: string;
+  description: string;
+  answer?: "yes" | "no";
+};
+
+export type ImaTableTemplate = {
+  type: ElementType.ImaTable;
+  id: string;
+  caption: string;
+  columns: {
+    id: string;
+    label: string;
+  }[];
+  rows: ImaTableRow[];
+  answer?: ImaTableRow[];
 };
 
 /**

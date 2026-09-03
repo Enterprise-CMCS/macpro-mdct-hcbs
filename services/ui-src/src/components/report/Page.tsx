@@ -41,6 +41,7 @@ import {
   ListInput,
   EligibilityTableElement,
   KeyActivitiesTableElement,
+  ImaTableElement,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -145,6 +146,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
             {...{ updateElement, disabled, element }}
           />
         );
+      case ElementType.ImaTable:
+        return <ImaTableElement {...{ updateElement, disabled, element }} />;
       default:
         assertExhaustive(element);
         return null;

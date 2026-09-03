@@ -201,6 +201,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureTableTemplateSchema;
     case ElementType.QipMeasureTable:
       return qipMeasureTableTemplateSchema;
+    case ElementType.ImaTable:
+      return imaTableTemplateSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
@@ -316,6 +318,38 @@ const qipMeasureTableTemplateSchema = object().shape({
         pageId: string().required(),
         measureName: string().required(),
         originalValues: mixed().notRequired(),
+      })
+    )
+    .notRequired(),
+});
+
+const imaTableTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ImaTable)),
+  id: string().required(),
+  caption: string().required(),
+  columns: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+      })
+    )
+    .required(),
+  rows: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        description: string().required(),
+        answer: string().oneOf(["yes", "no"]).notRequired(),
+      })
+    )
+    .notRequired(),
+  answer: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        description: string().required(),
+        answer: string().oneOf(["yes", "no"]).notRequired(),
       })
     )
     .notRequired(),

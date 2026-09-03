@@ -83,6 +83,23 @@ export const imaReportTemplate: ReportBase = {
             "</p>",
         },
         {
+          type: ElementType.ImaTable,
+          id: "critical-incident-definition-table",
+          caption: "Critical Incident Definition Table",
+          columns: [
+            { id: "ima-description", label: "Incident Type" },
+            { id: "ima-radio-yes", label: "Yes" },
+            { id: "ima-radio-no", label: "No" },
+            { id: "ima-delete", label: "Delete" },
+          ],
+          rows: [
+            {
+              id: "verbal-abuse",
+              description: "Verbal Abuse",
+            },
+          ],
+        },
+        {
           type: ElementType.Divider,
           id: "divider",
         },
