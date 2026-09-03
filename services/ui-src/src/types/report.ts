@@ -211,6 +211,7 @@ export enum ElementType {
   KeyActivityTable = "keyActivityTable",
   ImaTable = "imaTable",
   ComplianceAlert = "complianceAlert",
+  ComplianceSection = "complianceSection",
 }
 
 export type PageElement =
@@ -249,11 +250,26 @@ export type PageElement =
   | EligibilityTableTemplate
   | KeyActivityTableTemplate
   | ImaTableTemplate
-  | ComplianceAlertTemplate;
+  | ComplianceAlertTemplate
+  | ComplianceSectionTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
   answer: string;
+};
+
+/** Shows elements only while the referenced ImaTable has a non-compliant answer. */
+export type ShowCondition = {
+  controllerElementId: string;
+  when: "nonCompliant";
+};
+
+/** Groups elements that appear and disappear together. */
+export type ComplianceSectionTemplate = {
+  type: ElementType.ComplianceSection;
+  id: string;
+  showCondition: ShowCondition;
+  elements: PageElement[];
 };
 
 export enum HeaderIcon {

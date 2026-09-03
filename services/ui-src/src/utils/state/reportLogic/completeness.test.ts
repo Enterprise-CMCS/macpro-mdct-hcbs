@@ -417,6 +417,65 @@ describe("Report completeness utilities", () => {
     });
   });
 
+  describe("compliance sections", () => {
+    const table = (answer?: string) =>
+      ({
+        id: "ima-table",
+        type: ElementType.ImaTable,
+        caption: "mock",
+        columns: [
+          { id: "yes", label: "Yes", type: "answer" },
+          { id: "no", label: "No", type: "answer", nonCompliant: true },
+        ],
+        rows: [{ id: "a", description: "A", answer }],
+      }) as unknown as PageElement;
+
+    const section = (justification?: string) =>
+      ({
+        id: "noncompliance-section",
+        type: ElementType.ComplianceSection,
+        showCondition: {
+          controllerElementId: "ima-table",
+          when: "nonCompliant",
+        },
+        elements: [
+          {
+            id: "justification",
+            type: ElementType.TextAreaField,
+            label: "Justification",
+            required: true,
+            answer: justification,
+          },
+        ],
+      }) as unknown as PageElement;
+
+    it("should not require hidden children", () => {
+      const elements = [table("yes"), section()];
+      expect(elementSatisfiesRequired(section(), elements)).toBeTruthy();
+    });
+
+    it("should require children once the section is shown", () => {
+      const elements = [table("no"), section()];
+      expect(elementSatisfiesRequired(section(), elements)).toBeFalsy();
+    });
+
+    it("should be satisfied when shown children are answered", () => {
+      const filled = section("because");
+      const elements = [table("no"), filled];
+      expect(elementSatisfiesRequired(filled, elements)).toBeTruthy();
+    });
+
+    it("should treat answered children as page progress", () => {
+      const report = {
+        pages: [
+          { id: "root", childPageIds: ["my-id"] },
+          { id: "my-id", elements: [table("no"), section("because")] },
+        ],
+      } as Report;
+      expect(pageInProgress(report, "my-id")).toBeTruthy();
+    });
+  });
+
   describe("elementSatisfiesRequired", () => {
     it("should return true when hidden or not required", () => {
       const hiddenElement: TextboxTemplate = {

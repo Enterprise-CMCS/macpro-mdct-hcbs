@@ -14,6 +14,7 @@ import {
   LengthOfStayFieldNames,
   assertExhaustive,
   ReadmissionRateFieldNames,
+  ShowCondition,
 } from "types";
 
 /**
@@ -75,9 +76,14 @@ export const pageInProgress = (report: Report, pageId: string) => {
     }
   };
 
-  const anyEdited = targetPage.elements.find(
-    (element) => "answer" in element && hasData(element.answer)
-  );
+  const elementHasData = (element: Partial<PageElement>): boolean => {
+    if (element.type === ElementType.ComplianceSection) {
+      return element.elements?.some(elementHasData) ?? false;
+    }
+    return "answer" in element && hasData(element.answer);
+  };
+
+  const anyEdited = targetPage.elements.find(elementHasData);
   return !!anyEdited;
 };
 
@@ -185,13 +191,21 @@ const qipTargetsCombinedStatus = (report: Report) => {
 export const elementSatisfiesRequired = (
   element: PageElement,
   pageElements: PageElement[]
-) => {
+): boolean => {
   //while list input is not required, if the user adds a field and leaves it blank, that would make it incomplete and prevent form submission
   if (
     element.type === ElementType.ListInput &&
     element.answer?.some((item) => item === "" || item === undefined)
   ) {
     return false;
+  }
+
+  // A hidden section's children cannot be filled in, so they cannot block completion.
+  if (element.type === ElementType.ComplianceSection) {
+    if (!sectionIsShown(element.showCondition, pageElements)) return true;
+    return element.elements.every((child) =>
+      elementSatisfiesRequired(child, pageElements)
+    );
   }
 
   if (
@@ -321,3 +335,28 @@ export const elementIsHidden = (
     controlElement.answer === hideCondition?.answer
   );
 };
+
+export const tableIsNonCompliant = (
+  controllerElementId: string,
+  elements: Partial<PageElement>[]
+) => {
+  const table = elements.find(
+    (target: any) => target?.id === controllerElementId
+  );
+  if (!table || table.type !== ElementType.ImaTable) return false;
+
+  const nonCompliantColumnIds = new Set(
+    table.columns
+      ?.filter((column) => column.nonCompliant)
+      .map((column) => column.id)
+  );
+  const rows = table.answer ?? table.rows ?? [];
+  return rows.some(
+    (row) => row.answer && nonCompliantColumnIds.has(row.answer)
+  );
+};
+
+export const sectionIsShown = (
+  showCondition: ShowCondition,
+  elements: Partial<PageElement>[]
+) => tableIsNonCompliant(showCondition.controllerElementId, elements);

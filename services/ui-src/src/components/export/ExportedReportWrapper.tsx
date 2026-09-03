@@ -9,6 +9,7 @@ import {
   ReviewSubmitTemplate,
 } from "types";
 import { renderElements, shouldUseTable } from "./ExportedReportElements";
+import { sectionIsShown } from "utils/state/reportLogic/completeness";
 import { chunkBy } from "utils/other/arrays";
 import { ExportedReportTable, ReportTableType } from "./ExportedReportTable";
 
@@ -110,6 +111,13 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         // The list of top-level answers is followed by the children of the 1st
         // selected answer, then the children of the 2nd selected answer, etc.
         return [element, ...expandCheckedChildren(allCheckedChildren)];
+      }
+
+      if (element.type === ElementType.ComplianceSection) {
+        // The section itself has nothing to render, only its children.
+        return sectionIsShown(element.showCondition, elements)
+          ? expandCheckedChildren(element.elements)
+          : [];
       }
 
       return [element];

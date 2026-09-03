@@ -43,6 +43,7 @@ import {
   KeyActivitiesTableElement,
   ImaTableElement,
   ComplianceAlert,
+  ComplianceSection,
 } from "components";
 import { useStore } from "utils";
 import { SubmissionParagraph } from "./SubmissionParagraph";
@@ -151,6 +152,8 @@ export const Page = ({ id, setElements, elements }: Props) => {
         return <ImaTableElement {...{ updateElement, disabled, element }} />;
       case ElementType.ComplianceAlert:
         return <ComplianceAlert {...{ element }} />;
+      case ElementType.ComplianceSection:
+        return <ComplianceSection {...{ updateElement, element }} />;
       default:
         assertExhaustive(element);
         return null;
