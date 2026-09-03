@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ImaTable } from "components";
 import { ImaTableColumn, ImaTableRow } from "types";
@@ -27,6 +27,10 @@ const defaultProps = {
   caption: "Critical Incident Definition Table",
   columns,
   rows,
+  addButtonText: "Add Other Incident Type",
+  customRowLabel: "Other incident type:",
+  errorMessage: "Not compliant.",
+  allowCustomRows: true,
   onAnswerChange,
   onDescriptionChange,
   onAddRow,
@@ -49,6 +53,39 @@ describe("<ImaTable />", () => {
         screen.getByRole("columnheader", { name: column.label })
       ).toBeVisible();
     }
+  });
+
+  it("should not render the add button or delete column when custom rows are not allowed", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        allowCustomRows={false}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    expect(
+      screen.queryByRole("button", { name: /Add Other Incident Type/ })
+    ).toBeNull();
+    expect(screen.queryByRole("columnheader", { name: "Delete" })).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Delete Other type" })
+    ).toBeNull();
+  });
+
+  it("should keep header and body cell counts aligned when custom rows are not allowed", () => {
+    render(<ImaTable {...defaultProps} allowCustomRows={false} />);
+
+    expect(screen.getAllByRole("columnheader")).toHaveLength(
+      columns.length - 1
+    );
+    const bodyRow = screen.getAllByRole("row")[1];
+    expect(within(bodyRow).getAllByRole("cell")).toHaveLength(
+      columns.length - 1
+    );
   });
 
   it("should render the label and helper text above the table", () => {
@@ -164,9 +201,24 @@ describe("<ImaTable />", () => {
       />
     );
 
-    const inputs = screen.getAllByRole("textbox", { name: "Incident type" });
+    const inputs = screen.getAllByRole("textbox", {
+      name: "Other incident type:",
+    });
     expect(inputs).toHaveLength(1);
     expect(inputs[0]).toHaveValue("Other type");
+    expect(screen.getByText("Other incident type:")).toBeVisible();
+  });
+
+  it("should render a custom row label when provided", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        customRowLabel="Other type:"
+        rows={[{ id: "other", description: "", custom: true }]}
+      />
+    );
+
+    expect(screen.getByRole("textbox", { name: "Other type:" })).toBeVisible();
   });
 
   it("should call onDescriptionChange when a custom description is edited", async () => {
@@ -178,7 +230,7 @@ describe("<ImaTable />", () => {
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Incident type" }),
+      screen.getByRole("textbox", { name: "Other incident type:" }),
       "A"
     );
 

@@ -858,6 +858,10 @@ export type ImaTableTemplate = {
   caption: string;
   label?: string;
   helperText?: string;
+  addButtonText?: string;
+  customRowLabel?: string;
+  errorMessage?: string;
+  allowCustomRows?: boolean;
   columns: {
     id: string;
     label: string;

@@ -329,6 +329,10 @@ const imaTableTemplateSchema = object().shape({
   caption: string().required(),
   label: string().notRequired(),
   helperText: string().notRequired(),
+  addButtonText: string().notRequired(),
+  customRowLabel: string().notRequired(),
+  errorMessage: string().notRequired(),
+  allowCustomRows: boolean().notRequired(),
   columns: array()
     .of(
       object().shape({

@@ -1,5 +1,7 @@
 import {
   Button,
+  FormLabel,
+  HStack,
   Image,
   Input,
   Radio,
@@ -24,6 +26,8 @@ interface ImaTableProps {
   label?: string;
   helperText?: string;
   addButtonText?: string;
+  customRowLabel?: string;
+  allowCustomRows?: boolean;
   disabled?: boolean;
   errorMessage?: string;
   onAnswerChange: (rowId: string, answer: "yes" | "no") => void;
@@ -32,39 +36,50 @@ interface ImaTableProps {
   onDeleteRow: (rowId: string) => void;
 }
 
+const isDeleteColumn = (column: ImaTableColumn) =>
+  column.label.trim().toLowerCase() === "delete";
+
 export const ImaTable = ({
   caption,
   columns,
   rows,
   label,
   helperText,
-  addButtonText = "Add Other Incident Type",
+  addButtonText,
+  customRowLabel,
+  allowCustomRows = false,
   disabled = false,
-  errorMessage = "Not compliant.",
+  errorMessage,
   onAnswerChange,
   onDescriptionChange,
   onAddRow,
   onDeleteRow,
 }: ImaTableProps) => {
+  const visibleColumns = allowCustomRows
+    ? columns
+    : columns.filter((column) => !isDeleteColumn(column));
+
   return (
     <fieldset className="ds-c-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
-      <Button
-        variant="outline"
-        leftIcon={<Image src={addIcon} alt="" />}
-        isDisabled={disabled}
-        onClick={onAddRow}
-      >
-        {addButtonText}
-      </Button>
+      {allowCustomRows && (
+        <Button
+          variant="outline"
+          leftIcon={<Image src={addIcon} alt="" />}
+          isDisabled={disabled}
+          onClick={onAddRow}
+        >
+          {addButtonText}
+        </Button>
+      )}
       <Table variant="status">
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
         <Thead>
           <Tr>
-            {columns.map((column) => (
+            {visibleColumns.map((column) => (
               <Th key={column.id} scope="col">
                 {column.label}
               </Th>
@@ -78,18 +93,23 @@ export const ImaTable = ({
               <Tr key={row.id}>
                 <Td>
                   {row.custom ? (
-                    <Input
-                      value={row.description}
-                      isDisabled={disabled}
-                      aria-label="Incident type"
-                      onChange={(event) =>
-                        onDescriptionChange(row.id, event.target.value)
-                      }
-                    />
+                    <HStack>
+                      <FormLabel htmlFor={`description-${row.id}`} margin={0}>
+                        {customRowLabel}
+                      </FormLabel>
+                      <Input
+                        id={`description-${row.id}`}
+                        value={row.description}
+                        isDisabled={disabled}
+                        onChange={(event) =>
+                          onDescriptionChange(row.id, event.target.value)
+                        }
+                      />
+                    </HStack>
                   ) : (
                     <Text>{row.description}</Text>
                   )}
-                  {row.answer === "no" && (
+                  {row.answer === "no" && errorMessage && (
                     <Text
                       role="alert"
                       color="palette.error_darker"
@@ -121,18 +141,20 @@ export const ImaTable = ({
                     <VisuallyHidden>{`No for ${rowName}`}</VisuallyHidden>
                   </Radio>
                 </Td>
-                <Td>
-                  {row.custom && (
-                    <Button
-                      variant="link"
-                      isDisabled={disabled}
-                      aria-label={`Delete ${rowName}`}
-                      onClick={() => onDeleteRow(row.id)}
-                    >
-                      <Image src={cancelIcon} alt="" />
-                    </Button>
-                  )}
-                </Td>
+                {allowCustomRows && (
+                  <Td>
+                    {row.custom && (
+                      <Button
+                        variant="link"
+                        isDisabled={disabled}
+                        aria-label={`Delete ${rowName}`}
+                        onClick={() => onDeleteRow(row.id)}
+                      >
+                        <Image src={cancelIcon} alt="" />
+                      </Button>
+                    )}
+                  </Td>
+                )}
               </Tr>
             );
           })}

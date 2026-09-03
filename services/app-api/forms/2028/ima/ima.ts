@@ -11,6 +11,7 @@ import {
   waiverListCheckboxField,
   waiverListInputField,
 } from "../elements";
+import { CRITICAL_INCIDENT_TYPES } from "./incidentTypes";
 
 export const imaReportTemplate: ReportBase = {
   type: ReportType.IMA,
@@ -90,18 +91,17 @@ export const imaReportTemplate: ReportBase = {
             "3.   Do ALL the HCBS program(s) under this IM system include the following incident types in their definition of critical incidents?",
           helperText:
             'If some programs include the incident type but others do not, select "No".',
+          allowCustomRows: true,
+          addButtonText: "Add Other Incident Type",
+          customRowLabel: "Other incident type:",
+          errorMessage: "Not compliant.",
           columns: [
-            { id: "ima-description", label: "Incident Type" },
+            { id: "ima-description", label: "Incident type" },
             { id: "ima-radio-yes", label: "Yes" },
             { id: "ima-radio-no", label: "No" },
             { id: "ima-delete", label: "Delete" },
           ],
-          rows: [
-            {
-              id: "verbal-abuse",
-              description: "Verbal Abuse",
-            },
-          ],
+          rows: CRITICAL_INCIDENT_TYPES,
         },
         {
           type: ElementType.Divider,
