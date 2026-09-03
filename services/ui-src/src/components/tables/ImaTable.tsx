@@ -17,7 +17,9 @@ import {
 } from "@chakra-ui/react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
+import errorIcon from "assets/icons/alert/icon_error.svg";
 import { ImaTableColumn, ImaTableRow } from "types";
+import { svgFilters } from "styles/foundations/filters";
 
 interface ImaTableProps {
   caption: string;
@@ -61,7 +63,18 @@ export const ImaTable = ({
     <fieldset className="ds-c-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
-      <Table variant="status">
+
+      {allowCustomRows && (
+        <Button
+          variant="outline"
+          leftIcon={<Image src={addIcon} alt="" />}
+          isDisabled={disabled}
+          onClick={onAddRow}
+        >
+          {addButtonText}
+        </Button>
+      )}
+      <Table variant="ima">
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
@@ -103,13 +116,21 @@ export const ImaTable = ({
                   {!row.custom &&
                     selectedColumn?.nonCompliant &&
                     errorMessage && (
-                      <Text
+                      <HStack
                         role="alert"
-                        color="palette.error_darker"
-                        fontSize="sm"
+                        spacing="0.25rem"
+                        alignItems="center"
                       >
-                        {errorMessage}
-                      </Text>
+                        <Image
+                          src={errorIcon}
+                          alt=""
+                          boxSize="0.75rem"
+                          filter={svgFilters.error_darker}
+                        />
+                        <Text color="palette.error_darker" fontSize="body_xs">
+                          {errorMessage}
+                        </Text>
+                      </HStack>
                     )}
                 </Td>
                 {answerColumns.map((column) => (

@@ -243,6 +243,7 @@ describe("<ImaTable />", () => {
     const alerts = screen.getAllByRole("alert");
     expect(alerts).toHaveLength(1);
     expect(alerts[0]).toHaveTextContent("Not compliant.");
+    expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
   });
 
   it("should not show an error for a custom row answered no", () => {
@@ -273,7 +274,7 @@ describe("<ImaTable />", () => {
     render(imaTableComponent);
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Add other incident type/ })
+      screen.getByRole("button", { name: "Add other incident type" })
     );
 
     expect(onAddRow).toHaveBeenCalledTimes(1);
@@ -397,7 +398,7 @@ describe("<ImaTable />", () => {
       screen.getByRole("button", { name: "Delete Other type" })
     ).toBeDisabled();
     expect(
-      screen.getByRole("button", { name: /Add other incident type/ })
+      screen.getByRole("button", { name: "Add other incident type" })
     ).toBeDisabled();
 
     await userEvent.click(

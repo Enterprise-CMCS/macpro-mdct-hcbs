@@ -45,6 +45,7 @@ const stripedVariant = () => ({
     },
   },
 });
+
 const measureVariant = {
   th: {
     ".mobile &": {
@@ -85,6 +86,7 @@ const measureVariant = {
     },
   },
 };
+
 const statusVariant = {
   td: {
     fontSize: "heading_sm",
@@ -161,8 +163,75 @@ const reportDetailsVariant = {
   },
 };
 
+const imaVariant = {
+  table: {
+    width: "100%",
+    maxWidth: "100%",
+    tableLayout: "fixed",
+    marginTop: "1rem",
+    th: {
+      padding: "0.45rem 0.5rem",
+      backgroundColor: "palette.primary_darkest",
+      color: "palette.white",
+      fontSize: "body_xs",
+      fontWeight: "heading_sm_bold",
+      textAlign: "left",
+      textTransform: "none",
+      border: "none",
+      "&:first-of-type": {
+        width: "58%",
+      },
+      "&:nth-of-type(2)": {
+        width: "13%",
+        textAlign: "center",
+      },
+      "&:nth-of-type(3)": {
+        width: "13%",
+        textAlign: "center",
+      },
+      "&:last-of-type": {
+        width: "16%",
+        textAlign: "center",
+      },
+    },
+    td: {
+      padding: "0.5rem",
+      fontSize: "body_xs",
+      verticalAlign: "middle",
+      border: "none",
+      overflowWrap: "break-word",
+      "&:first-of-type": {
+        textAlign: "left",
+      },
+      "&:nth-of-type(n + 2)": {
+        textAlign: "center",
+      },
+      ".mobile &": {
+        padding: "0.5rem 0.25rem",
+      },
+      label: {
+        margin: "0.5rem 0",
+        fontSize: "body_xs",
+        minWidth: "33%",
+        "&:not([data-checked]) > span[aria-hidden='true']": {
+          borderColor: "#262626",
+        },
+      },
+    },
+    tr: {
+      "&:nth-of-type(even)": {
+        backgroundColor: "palette.gray_lighter",
+      },
+      "&:nth-of-type(odd)": {
+        backgroundColor: "palette.white",
+      },
+    },
+  },
+};
+
 const variants = {
   striped: stripedVariant,
+  ima: imaVariant,
   measure: measureVariant,
   status: statusVariant,
   export: exportVariant,
