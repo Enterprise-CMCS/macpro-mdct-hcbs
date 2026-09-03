@@ -21,7 +21,7 @@ export const imaReportTemplate: ReportBase = {
       id: "root",
       childPageIds: [
         "general-info",
-        "critical-incident-definition",
+        "critical-incident-definitions",
         "review-submit",
       ],
     },
@@ -58,25 +58,25 @@ export const imaReportTemplate: ReportBase = {
       ],
     },
     {
-      id: "critical-incident-definition",
-      navTitle: "Critical Incident Definition",
-      tabTitle: "Critical Incident Definition - IMA - HCBS",
+      id: "critical-incident-definitions",
+      navTitle: "Critical Incident Definitions",
+      tabTitle: "Critical Incident Definitions - IMA - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
         {
           type: ElementType.Header,
-          id: "critical-incident-definition-header",
+          id: "critical-incident-definitions-header",
           text: "Critical incident definitions",
         },
         {
           type: ElementType.ImaTable,
-          id: "critical-incident-definition-table",
-          caption: "Critical Incident Definition Table",
+          id: "critical-incident-definitions-table",
+          caption: "Critical Incident Definitions Table",
           label:
-            "Do all HCBS programs under this IM system include the following incident types in their definition of critical incidents?",
+            "Do all HCBS programs under this IM system define critical incidents to include the following incident types?",
           helperText:
-            'If some programs include the incident type but others do not, select "No".',
+            "If some programs include the incident type but others do not, select “No.”",
           allowCustomRows: true,
           addButtonText: "Add other incident type",
           customRowLabel: "Other incident type:",
@@ -102,7 +102,7 @@ export const imaReportTemplate: ReportBase = {
           type: ElementType.ComplianceSection,
           id: "noncompliance-section",
           showCondition: {
-            controllerElementId: "critical-incident-definition-table",
+            controllerElementId: "critical-incident-definitions-table",
             when: "nonCompliant",
           },
           elements: [
@@ -115,26 +115,26 @@ export const imaReportTemplate: ReportBase = {
               id: "compliance-alert",
               status: AlertTypes.WARNING,
               title: "Warning Status",
-              text: "The State does not meet the requirement.",
-              controllerElementId: "critical-incident-definition-table",
+              text: "This incident management system appears to be non-compliant.",
+              controllerElementId: "critical-incident-definitions-table",
             },
             {
               type: ElementType.Paragraph,
               id: "reporting-requirement-text",
               title: "Reporting Requirement",
-              text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above.",
+              text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
             },
             {
               type: ElementType.TextAreaField,
               id: "noncompliance-justification",
-              label: "State Justification for Noncompliance:",
+              label: "Justification for system noncompliance:",
               required: true,
             },
             {
               type: ElementType.TextAreaField,
               id: "timeline-justification",
               label:
-                "State Actions and Timeline Required to Fully Demonstrate Compliance:",
+                "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
               required: true,
             },
           ],

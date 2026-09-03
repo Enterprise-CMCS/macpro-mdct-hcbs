@@ -24,10 +24,10 @@ const onAddRow = vi.fn();
 const onDeleteRow = vi.fn();
 
 const defaultProps = {
-  caption: "Critical Incident Definition Table",
+  caption: "Critical Incident Definitions Table",
   columns,
   rows,
-  addButtonText: "Add Other Incident Type",
+  addButtonText: "Add other incident type",
   customRowLabel: "Other incident type:",
   errorMessage: "Not compliant.",
   allowCustomRows: true,
@@ -68,7 +68,7 @@ describe("<ImaTable />", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: /Add Other Incident Type/ })
+      screen.queryByRole("button", { name: /Add other incident type/ })
     ).toBeNull();
     expect(screen.queryByRole("columnheader", { name: "Delete" })).toBeNull();
     expect(
@@ -243,6 +243,24 @@ describe("<ImaTable />", () => {
     const alerts = screen.getAllByRole("alert");
     expect(alerts).toHaveLength(1);
     expect(alerts[0]).toHaveTextContent("Not compliant.");
+  });
+
+  it("should not show an error for a custom row answered no", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          {
+            id: "other",
+            description: "Other type",
+            answer: "ima-radio-no",
+            custom: true,
+          },
+        ]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
   });
 
   it("should render a custom error message when provided", () => {

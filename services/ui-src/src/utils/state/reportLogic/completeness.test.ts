@@ -25,9 +25,29 @@ import {
   inferredReportStatus,
   pageInProgress,
   pageIsCompletable,
+  tableIsNonCompliant,
 } from "./completeness";
 
 describe("Report completeness utilities", () => {
+  describe("tableIsNonCompliant", () => {
+    const table = {
+      id: "ima-table",
+      type: ElementType.ImaTable,
+      caption: "mock",
+      columns: [
+        { id: "yes", label: "Yes", type: "answer" },
+        { id: "no", label: "No", type: "answer", nonCompliant: true },
+      ],
+      rows: [
+        { id: "other", description: "Other type", answer: "no", custom: true },
+      ],
+    } as unknown as PageElement;
+
+    it("should treat a custom row answered no as compliant", () => {
+      expect(tableIsNonCompliant("ima-table", [table])).toBe(false);
+    });
+  });
+
   describe("inferredReportStatus", () => {
     it("should handle different rollup types", () => {
       const report = {

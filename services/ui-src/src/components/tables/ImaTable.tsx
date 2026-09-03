@@ -110,15 +110,17 @@ export const ImaTable = ({
                   ) : (
                     <Text>{row.description}</Text>
                   )}
-                  {selectedColumn?.nonCompliant && errorMessage && (
-                    <Text
-                      role="alert"
-                      color="palette.error_darker"
-                      fontSize="sm"
-                    >
-                      {errorMessage}
-                    </Text>
-                  )}
+                  {!row.custom &&
+                    selectedColumn?.nonCompliant &&
+                    errorMessage && (
+                      <Text
+                        role="alert"
+                        color="palette.error_darker"
+                        fontSize="sm"
+                      >
+                        {errorMessage}
+                      </Text>
+                    )}
                 </Td>
                 {answerColumns.map((column) => (
                   <Td key={`${row.id}-${column.id}`}>

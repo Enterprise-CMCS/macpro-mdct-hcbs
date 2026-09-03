@@ -44,11 +44,11 @@ export const CRITICAL_INCIDENT_TYPES: ImaTableRow[] = [
   {
     id: "medication-error",
     description:
-      "A medication error leading to contact with a poison control center, a visit to urgent care or the ER, hospitalization, or death.",
+      "A medication error leading to contact with a poison control center, a visit to urgent care or the ER, hospitalization, or death",
   },
   {
     id: "death",
     description:
-      "An unexplained or unanticipated death, including but not limited to death, caused by abuse or neglect",
+      "An unexplained or unanticipated death, including but not limited to death caused by abuse or neglect",
   },
 ];
