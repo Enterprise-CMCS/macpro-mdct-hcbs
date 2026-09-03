@@ -47,6 +47,33 @@ describe("<ImaTable />", () => {
     }
   });
 
+  it("should render the label and helper text above the table", () => {
+    render(
+      <ImaTable
+        caption="Critical Incident Definition Table"
+        columns={columns}
+        rows={rows}
+        label="mock label"
+        helperText="mock helper text"
+        onAnswerChange={onAnswerChange}
+        onDeleteRow={onDeleteRow}
+      />
+    );
+
+    expect(screen.getByText("mock label")).toBeVisible();
+    expect(screen.getByText("mock helper text")).toBeVisible();
+    expect(screen.getByRole("group", { name: /mock label/ })).toContainElement(
+      screen.getByRole("table")
+    );
+  });
+
+  it("should omit the label and helper text when not provided", () => {
+    render(imaTableComponent);
+
+    expect(document.querySelector("legend")).toBeNull();
+    expect(document.querySelector(".ds-c-hint")).toBeNull();
+  });
+
   it("should render a row for each entry with its description", () => {
     render(imaTableComponent);
 
@@ -107,9 +134,7 @@ describe("<ImaTable />", () => {
 
     const alerts = screen.getAllByRole("alert");
     expect(alerts).toHaveLength(1);
-    expect(alerts[0]).toHaveTextContent(
-      "The State does not meet the requirement."
-    );
+    expect(alerts[0]).toHaveTextContent("Not compliant.");
   });
 
   it("should render a custom error message when provided", () => {

@@ -327,6 +327,8 @@ const imaTableTemplateSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.ImaTable)),
   id: string().required(),
   caption: string().required(),
+  label: string().notRequired(),
+  helperText: string().notRequired(),
   columns: array()
     .of(
       object().shape({

@@ -855,6 +855,8 @@ export type ImaTableTemplate = {
   type: ElementType.ImaTable;
   id: string;
   caption: string;
+  label?: string;
+  helperText?: string;
   columns: {
     id: string;
     label: string;

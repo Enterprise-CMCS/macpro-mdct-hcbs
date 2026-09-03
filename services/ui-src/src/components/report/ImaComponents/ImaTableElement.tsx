@@ -5,7 +5,7 @@ import { PageElementProps } from "../Elements";
 
 export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   const { element, updateElement, disabled = false } = props;
-  const { caption, columns } = element;
+  const { caption, columns, label, helperText } = element;
 
   const [rows, setRows] = useState<ImaTableRow[]>(
     structuredClone(element.answer) ?? structuredClone(element.rows)
@@ -30,6 +30,8 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
         caption,
         columns,
         rows,
+        label,
+        helperText,
         disabled,
         onAnswerChange,
         onDeleteRow,

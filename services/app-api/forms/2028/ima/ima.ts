@@ -86,6 +86,10 @@ export const imaReportTemplate: ReportBase = {
           type: ElementType.ImaTable,
           id: "critical-incident-definition-table",
           caption: "Critical Incident Definition Table",
+          label:
+            "3.   Do ALL the HCBS program(s) under this IM system include the following incident types in their definition of critical incidents?",
+          helperText:
+            'If some programs include the incident type but others do not, select "No".',
           columns: [
             { id: "ima-description", label: "Incident Type" },
             { id: "ima-radio-yes", label: "Yes" },
