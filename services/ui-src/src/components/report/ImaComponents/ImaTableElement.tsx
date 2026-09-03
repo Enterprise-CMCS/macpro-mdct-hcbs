@@ -25,8 +25,10 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
     updateElement({ answer: updatedRows });
   };
 
-  const onAnswerChange = (rowId: string, answer: "yes" | "no") => {
-    save(rows.map((row) => (row.id === rowId ? { ...row, answer } : row)));
+  const onAnswerChange = (rowId: string, columnId: string) => {
+    save(
+      rows.map((row) => (row.id === rowId ? { ...row, answer: columnId } : row))
+    );
   };
 
   const onDescriptionChange = (rowId: string, description: string) => {

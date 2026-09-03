@@ -6,16 +6,16 @@ import { ImaTableColumn, ImaTableRow } from "types";
 import { testA11y } from "utils/testing/commonTests";
 
 const columns: ImaTableColumn[] = [
-  { id: "ima-description", label: "Incident Type" },
-  { id: "ima-radio-yes", label: "Yes" },
-  { id: "ima-radio-no", label: "No" },
-  { id: "ima-delete", label: "Delete" },
+  { id: "ima-description", label: "Incident Type", type: "description" },
+  { id: "ima-radio-yes", label: "Yes", type: "answer" },
+  { id: "ima-radio-no", label: "No", type: "answer", nonCompliant: true },
+  { id: "ima-delete", label: "Delete", type: "delete" },
 ];
 
 const rows: ImaTableRow[] = [
   { id: "verbal-abuse", description: "Verbal Abuse" },
-  { id: "neglect", description: "Neglect", answer: "yes" },
-  { id: "exploitation", description: "Exploitation", answer: "no" },
+  { id: "neglect", description: "Neglect", answer: "ima-radio-yes" },
+  { id: "exploitation", description: "Exploitation", answer: "ima-radio-no" },
 ];
 
 const onAnswerChange = vi.fn();
@@ -153,7 +153,10 @@ describe("<ImaTable />", () => {
       screen.getByRole("radio", { name: "Yes for Verbal Abuse" })
     );
 
-    expect(onAnswerChange).toHaveBeenCalledWith("verbal-abuse", "yes");
+    expect(onAnswerChange).toHaveBeenCalledWith(
+      "verbal-abuse",
+      "ima-radio-yes"
+    );
   });
 
   it("should call onAnswerChange with no when the No radio is selected", async () => {
@@ -163,7 +166,75 @@ describe("<ImaTable />", () => {
       screen.getByRole("radio", { name: "No for Verbal Abuse" })
     );
 
-    expect(onAnswerChange).toHaveBeenCalledWith("verbal-abuse", "no");
+    expect(onAnswerChange).toHaveBeenCalledWith("verbal-abuse", "ima-radio-no");
+  });
+
+  it("should render a radio for every answer column", () => {
+    const multiNoColumns: ImaTableColumn[] = [
+      { id: "description", label: "Incident Type", type: "description" },
+      { id: "yes", label: "Yes", type: "answer" },
+      {
+        id: "no-some",
+        label: "No, some programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+      {
+        id: "no-none",
+        label: "No, no programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+    ];
+
+    render(
+      <ImaTable
+        {...defaultProps}
+        columns={multiNoColumns}
+        rows={[{ id: "verbal-abuse", description: "Verbal Abuse" }]}
+      />
+    );
+
+    expect(screen.getAllByRole("radio")).toHaveLength(3);
+    expect(
+      screen.getByRole("columnheader", { name: "No, some programs" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("radio", { name: "No, no programs for Verbal Abuse" })
+    ).toBeVisible();
+  });
+
+  it("should show the error message for any non-compliant answer column", () => {
+    const multiNoColumns: ImaTableColumn[] = [
+      { id: "description", label: "Incident Type", type: "description" },
+      { id: "yes", label: "Yes", type: "answer" },
+      {
+        id: "no-some",
+        label: "No, some programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+      {
+        id: "no-none",
+        label: "No, no programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+    ];
+
+    render(
+      <ImaTable
+        {...defaultProps}
+        columns={multiNoColumns}
+        rows={[
+          { id: "a", description: "A", answer: "yes" },
+          { id: "b", description: "B", answer: "no-some" },
+          { id: "c", description: "C", answer: "no-none" },
+        ]}
+      />
+    );
+
+    expect(screen.getAllByRole("alert")).toHaveLength(2);
   });
 
   it("should show an error message only on rows answered no", () => {

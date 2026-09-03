@@ -30,14 +30,11 @@ interface ImaTableProps {
   allowCustomRows?: boolean;
   disabled?: boolean;
   errorMessage?: string;
-  onAnswerChange: (rowId: string, answer: "yes" | "no") => void;
+  onAnswerChange: (rowId: string, columnId: string) => void;
   onDescriptionChange: (rowId: string, description: string) => void;
   onAddRow: () => void;
   onDeleteRow: (rowId: string) => void;
 }
-
-const isDeleteColumn = (column: ImaTableColumn) =>
-  column.label.trim().toLowerCase() === "delete";
 
 export const ImaTable = ({
   caption,
@@ -55,9 +52,10 @@ export const ImaTable = ({
   onAddRow,
   onDeleteRow,
 }: ImaTableProps) => {
+  const answerColumns = columns.filter((column) => column.type === "answer");
   const visibleColumns = allowCustomRows
     ? columns
-    : columns.filter((column) => !isDeleteColumn(column));
+    : columns.filter((column) => column.type !== "delete");
 
   return (
     <fieldset className="ds-c-fieldset">
@@ -89,6 +87,9 @@ export const ImaTable = ({
         <Tbody>
           {rows.map((row) => {
             const rowName = row.description || "new incident type";
+            const selectedColumn = answerColumns.find(
+              (column) => column.id === row.answer
+            );
             return (
               <Tr key={row.id}>
                 <Td>
@@ -109,7 +110,7 @@ export const ImaTable = ({
                   ) : (
                     <Text>{row.description}</Text>
                   )}
-                  {row.answer === "no" && errorMessage && (
+                  {selectedColumn?.nonCompliant && errorMessage && (
                     <Text
                       role="alert"
                       color="palette.error_darker"
@@ -119,28 +120,19 @@ export const ImaTable = ({
                     </Text>
                   )}
                 </Td>
-                <Td>
-                  <Radio
-                    name={row.id}
-                    value="yes"
-                    isDisabled={disabled}
-                    isChecked={row.answer === "yes"}
-                    onChange={() => onAnswerChange(row.id, "yes")}
-                  >
-                    <VisuallyHidden>{`Yes for ${rowName}`}</VisuallyHidden>
-                  </Radio>
-                </Td>
-                <Td>
-                  <Radio
-                    name={row.id}
-                    value="no"
-                    isDisabled={disabled}
-                    isChecked={row.answer === "no"}
-                    onChange={() => onAnswerChange(row.id, "no")}
-                  >
-                    <VisuallyHidden>{`No for ${rowName}`}</VisuallyHidden>
-                  </Radio>
-                </Td>
+                {answerColumns.map((column) => (
+                  <Td key={`${row.id}-${column.id}`}>
+                    <Radio
+                      name={row.id}
+                      value={column.id}
+                      isDisabled={disabled}
+                      isChecked={row.answer === column.id}
+                      onChange={() => onAnswerChange(row.id, column.id)}
+                    >
+                      <VisuallyHidden>{`${column.label} for ${rowName}`}</VisuallyHidden>
+                    </Radio>
+                  </Td>
+                ))}
                 {allowCustomRows && (
                   <Td>
                     {row.custom && (

@@ -338,6 +338,8 @@ const imaTableTemplateSchema = object().shape({
       object().shape({
         id: string().required(),
         label: string().required(),
+        type: string().oneOf(["description", "answer", "delete"]).required(),
+        nonCompliant: boolean().notRequired(),
       })
     )
     .required(),
@@ -346,7 +348,7 @@ const imaTableTemplateSchema = object().shape({
       object().shape({
         id: string().required(),
         description: string().required(),
-        answer: string().oneOf(["yes", "no"]).notRequired(),
+        answer: string().notRequired(),
         custom: boolean().notRequired(),
       })
     )
@@ -356,7 +358,7 @@ const imaTableTemplateSchema = object().shape({
       object().shape({
         id: string().required(),
         description: string().defined(),
-        answer: string().oneOf(["yes", "no"]).notRequired(),
+        answer: string().notRequired(),
         custom: boolean().notRequired(),
       })
     )

@@ -845,10 +845,19 @@ export type StatusAlertTemplate = {
   status: AlertTypes;
 };
 
+export type ImaTableColumn = {
+  id: string;
+  label: string;
+  type: "description" | "answer" | "delete";
+  /** Selecting this answer puts the row out of compliance. */
+  nonCompliant?: boolean;
+};
+
 export type ImaTableRow = {
   id: string;
   description: string;
-  answer?: "yes" | "no";
+  /** Id of the selected answer column. */
+  answer?: string;
   custom?: boolean;
 };
 
@@ -862,10 +871,7 @@ export type ImaTableTemplate = {
   customRowLabel?: string;
   errorMessage?: string;
   allowCustomRows?: boolean;
-  columns: {
-    id: string;
-    label: string;
-  }[];
+  columns: ImaTableColumn[];
   rows: ImaTableRow[];
   answer?: ImaTableRow[];
 };

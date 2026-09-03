@@ -96,10 +96,19 @@ export const imaReportTemplate: ReportBase = {
           customRowLabel: "Other incident type:",
           errorMessage: "Not compliant.",
           columns: [
-            { id: "ima-description", label: "Incident type" },
-            { id: "ima-radio-yes", label: "Yes" },
-            { id: "ima-radio-no", label: "No" },
-            { id: "ima-delete", label: "Delete" },
+            {
+              id: "ima-description",
+              label: "Incident type",
+              type: "description",
+            },
+            { id: "ima-radio-yes", label: "Yes", type: "answer" },
+            {
+              id: "ima-radio-no",
+              label: "No",
+              type: "answer",
+              nonCompliant: true,
+            },
+            { id: "ima-delete", label: "Delete", type: "delete" },
           ],
           rows: CRITICAL_INCIDENT_TYPES,
         },

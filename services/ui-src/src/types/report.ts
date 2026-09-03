@@ -469,12 +469,16 @@ export type MeasureTargetInfo = {
 export type ImaTableColumn = {
   id: string;
   label: string;
+  type: "description" | "answer" | "delete";
+  /** Selecting this answer puts the row out of compliance. */
+  nonCompliant?: boolean;
 };
 
 export type ImaTableRow = {
   id: string;
   description: string;
-  answer?: "yes" | "no";
+  /** Id of the selected answer column. */
+  answer?: string;
   custom?: boolean;
 };
 
