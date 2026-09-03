@@ -67,32 +67,18 @@ export const imaReportTemplate: ReportBase = {
         {
           type: ElementType.Header,
           id: "critical-incident-definition-header",
-          text: "Critical Incident Definition",
-        },
-        {
-          type: ElementType.Paragraph,
-          id: "description-text",
-          text: "States will use the information provided in their Access Rule IM System Assessment Tool(s) to complete the Access Rule IM System Reporting Template.",
-        },
-        {
-          id: "instructions-accordion",
-          type: ElementType.Accordion,
-          label: "Instructions",
-          value:
-            "<p>" +
-            "  If your state uses multiple incident management systems, you will need to complete a separate assessment tool for each unique system." +
-            "</p>",
+          text: "Critical incident definitions",
         },
         {
           type: ElementType.ImaTable,
           id: "critical-incident-definition-table",
           caption: "Critical Incident Definition Table",
           label:
-            "3.   Do ALL the HCBS program(s) under this IM system include the following incident types in their definition of critical incidents?",
+            "Do all HCBS programs under this IM system include the following incident types in their definition of critical incidents?",
           helperText:
             'If some programs include the incident type but others do not, select "No".',
           allowCustomRows: true,
-          addButtonText: "Add Other Incident Type",
+          addButtonText: "Add other incident type",
           customRowLabel: "Other incident type:",
           errorMessage: "Not compliant.",
           columns: [
