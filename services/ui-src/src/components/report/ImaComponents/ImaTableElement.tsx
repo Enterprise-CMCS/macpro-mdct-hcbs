@@ -20,6 +20,14 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
     save(rows.map((row) => (row.id === rowId ? { ...row, answer } : row)));
   };
 
+  const onDescriptionChange = (rowId: string, description: string) => {
+    save(rows.map((row) => (row.id === rowId ? { ...row, description } : row)));
+  };
+
+  const onAddRow = () => {
+    save([...rows, { id: crypto.randomUUID(), description: "", custom: true }]);
+  };
+
   const onDeleteRow = (rowId: string) => {
     save(rows.filter((row) => row.id !== rowId));
   };
@@ -34,6 +42,8 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
         helperText,
         disabled,
         onAnswerChange,
+        onDescriptionChange,
+        onAddRow,
         onDeleteRow,
       }}
     />

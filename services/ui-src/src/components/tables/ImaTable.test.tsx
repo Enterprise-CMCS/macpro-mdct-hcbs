@@ -19,17 +19,21 @@ const rows: ImaTableRow[] = [
 ];
 
 const onAnswerChange = vi.fn();
+const onDescriptionChange = vi.fn();
+const onAddRow = vi.fn();
 const onDeleteRow = vi.fn();
 
-const imaTableComponent = (
-  <ImaTable
-    caption="Critical Incident Definition Table"
-    columns={columns}
-    rows={rows}
-    onAnswerChange={onAnswerChange}
-    onDeleteRow={onDeleteRow}
-  />
-);
+const defaultProps = {
+  caption: "Critical Incident Definition Table",
+  columns,
+  rows,
+  onAnswerChange,
+  onDescriptionChange,
+  onAddRow,
+  onDeleteRow,
+};
+
+const imaTableComponent = <ImaTable {...defaultProps} />;
 
 describe("<ImaTable />", () => {
   beforeEach(() => {
@@ -50,13 +54,9 @@ describe("<ImaTable />", () => {
   it("should render the label and helper text above the table", () => {
     render(
       <ImaTable
-        caption="Critical Incident Definition Table"
-        columns={columns}
-        rows={rows}
+        {...defaultProps}
         label="mock label"
         helperText="mock helper text"
-        onAnswerChange={onAnswerChange}
-        onDeleteRow={onDeleteRow}
       />
     );
 
@@ -138,51 +138,129 @@ describe("<ImaTable />", () => {
   });
 
   it("should render a custom error message when provided", () => {
-    render(
-      <ImaTable
-        caption="Critical Incident Definition Table"
-        columns={columns}
-        rows={rows}
-        errorMessage="Custom error"
-        onAnswerChange={onAnswerChange}
-        onDeleteRow={onDeleteRow}
-      />
-    );
+    render(<ImaTable {...defaultProps} errorMessage="Custom error" />);
 
     expect(screen.getByRole("alert")).toHaveTextContent("Custom error");
   });
 
-  it("should call onDeleteRow with the row id when delete is clicked", async () => {
+  it("should call onAddRow when the add button is clicked", async () => {
     render(imaTableComponent);
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Delete Verbal Abuse" })
+      screen.getByRole("button", { name: /Add Other Incident Type/ })
     );
 
-    expect(onDeleteRow).toHaveBeenCalledWith("verbal-abuse");
+    expect(onAddRow).toHaveBeenCalledTimes(1);
+  });
+
+  it("should render an editable description for custom rows only", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    const inputs = screen.getAllByRole("textbox", { name: "Incident type" });
+    expect(inputs).toHaveLength(1);
+    expect(inputs[0]).toHaveValue("Other type");
+  });
+
+  it("should call onDescriptionChange when a custom description is edited", async () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "", custom: true }]}
+      />
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Incident type" }),
+      "A"
+    );
+
+    expect(onDescriptionChange).toHaveBeenCalledWith("other", "A");
+  });
+
+  it("should label the controls of a custom row without a description", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "", custom: true }]}
+      />
+    );
+
+    expect(
+      screen.getByRole("radio", { name: "Yes for new incident type" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Delete new incident type" })
+    ).toBeVisible();
+  });
+
+  it("should call onDeleteRow with the row id when delete is clicked", async () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete Other type" })
+    );
+
+    expect(onDeleteRow).toHaveBeenCalledWith("other");
+  });
+
+  it("should only render a delete button on rows added by the button", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Delete Other type" })
+    ).toBeVisible();
+    for (const row of rows) {
+      expect(
+        screen.queryByRole("button", { name: `Delete ${row.description}` })
+      ).toBeNull();
+    }
   });
 
   it("should disable all inputs when disabled", async () => {
     render(
       <ImaTable
-        caption="Critical Incident Definition Table"
-        columns={columns}
-        rows={rows}
+        {...defaultProps}
+        rows={[{ id: "other", description: "Other type", custom: true }]}
         disabled
-        onAnswerChange={onAnswerChange}
-        onDeleteRow={onDeleteRow}
       />
     );
 
     expect(
-      screen.getByRole("radio", { name: "Yes for Verbal Abuse" })
+      screen.getByRole("radio", { name: "Yes for Other type" })
     ).toBeDisabled();
     expect(
-      screen.getByRole("button", { name: "Delete Verbal Abuse" })
+      screen.getByRole("button", { name: "Delete Other type" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /Add Other Incident Type/ })
     ).toBeDisabled();
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Delete Verbal Abuse" })
+      screen.getByRole("button", { name: "Delete Other type" })
     );
     expect(onDeleteRow).not.toHaveBeenCalled();
   });

@@ -849,6 +849,7 @@ export type ImaTableRow = {
   id: string;
   description: string;
   answer?: "yes" | "no";
+  custom?: boolean;
 };
 
 export type ImaTableTemplate = {
