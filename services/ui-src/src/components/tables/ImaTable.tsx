@@ -104,6 +104,7 @@ export const ImaTable = ({
                       <Input
                         id={`description-${row.id}`}
                         value={row.description}
+                        borderColor="#262626"
                         isDisabled={disabled}
                         onChange={(event) =>
                           onDescriptionChange(row.id, event.target.value)

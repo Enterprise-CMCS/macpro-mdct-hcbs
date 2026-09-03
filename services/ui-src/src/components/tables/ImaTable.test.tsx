@@ -296,6 +296,7 @@ describe("<ImaTable />", () => {
     });
     expect(inputs).toHaveLength(1);
     expect(inputs[0]).toHaveValue("Other type");
+    expect(inputs[0]).toHaveStyle({ borderColor: "rgb(38, 38, 38)" });
     expect(screen.getByText("Other incident type:")).toBeVisible();
   });
 

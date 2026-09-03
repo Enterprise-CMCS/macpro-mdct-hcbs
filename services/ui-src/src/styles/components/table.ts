@@ -214,7 +214,10 @@ const imaVariant = {
         fontSize: "body_xs",
         minWidth: "33%",
         "&:not([data-checked]) > span[aria-hidden='true']": {
-          borderColor: "#262626",
+          borderColor: "palette.base",
+        },
+        "&[data-checked] > span[aria-hidden='true']": {
+          borderColor: "palette.primary",
         },
       },
     },
