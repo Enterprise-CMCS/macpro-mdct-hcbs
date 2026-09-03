@@ -117,11 +117,12 @@ export const imaReportTemplate: ReportBase = {
           id: "divider",
         },
         {
-          type: ElementType.StatusAlert,
-          id: "review-alert",
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
           status: AlertTypes.WARNING,
           title: "Warning Status",
           text: "The State does not meet the requirement.",
+          controllerElementId: "critical-incident-definition-table",
         },
         {
           type: ElementType.Paragraph,

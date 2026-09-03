@@ -227,6 +227,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return performanceNdrSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
+    case ElementType.ComplianceAlert:
+      return complianceAlertSchema;
     case ElementType.Divider:
       return dividerSchema;
     case ElementType.SubmissionParagraph:
@@ -687,6 +689,15 @@ const statusAlertSchema = object().shape({
   title: string().required(),
   text: string().required(),
   status: string().required(),
+});
+
+const complianceAlertSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ComplianceAlert)),
+  id: string().required(),
+  title: string().required(),
+  text: string().required(),
+  status: string().required(),
+  controllerElementId: string().required(),
 });
 
 const formPageTemplateSchema = object().shape({

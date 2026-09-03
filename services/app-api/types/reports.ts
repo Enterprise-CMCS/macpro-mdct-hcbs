@@ -281,6 +281,7 @@ export enum ElementType {
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
   ImaTable = "imaTable",
+  ComplianceAlert = "complianceAlert",
 }
 
 export type PageElement =
@@ -318,7 +319,8 @@ export type PageElement =
   | EligibilityTableTemplate
   | KeyActivityTableTemplate
   | ListInputTemplate
-  | ImaTableTemplate;
+  | ImaTableTemplate
+  | ComplianceAlertTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -845,18 +847,26 @@ export type StatusAlertTemplate = {
   status: AlertTypes;
 };
 
+export type ComplianceAlertTemplate = {
+  type: ElementType.ComplianceAlert;
+  id: string;
+  title: string;
+  text: string;
+  status: AlertTypes;
+  /** Id of the ImaTable whose answers determine compliance. */
+  controllerElementId: string;
+};
+
 export type ImaTableColumn = {
   id: string;
   label: string;
   type: "description" | "answer" | "delete";
-  /** Selecting this answer puts the row out of compliance. */
   nonCompliant?: boolean;
 };
 
 export type ImaTableRow = {
   id: string;
   description: string;
-  /** Id of the selected answer column. */
   answer?: string;
   custom?: boolean;
 };
