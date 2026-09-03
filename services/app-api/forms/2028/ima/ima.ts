@@ -18,7 +18,11 @@ export const imaReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "review-submit"],
+      childPageIds: [
+        "general-info",
+        "critical-incident-definition",
+        "review-submit",
+      ],
     },
     {
       id: "general-info",
@@ -50,6 +54,64 @@ export const imaReportTemplate: ReportBase = {
         },
         waiverListCheckboxField,
         waiverListInputField,
+      ],
+    },
+    {
+      id: "critical-incident-definition",
+      navTitle: "Critical Incident Definition",
+      tabTitle: "Critical Incident Definition - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "critical-incident-definition-header",
+          text: "Critical Incident Definition",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "description-text",
+          text: "States will use the information provided in their Access Rule IM System Assessment Tool(s) to complete the Access Rule IM System Reporting Template.",
+        },
+        {
+          id: "instructions-accordion",
+          type: ElementType.Accordion,
+          label: "Instructions",
+          value:
+            "<p>" +
+            "  If your state uses multiple incident management systems, you will need to complete a separate assessment tool for each unique system." +
+            "</p>",
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+        },
+        {
+          type: ElementType.StatusAlert,
+          id: "review-alert",
+          status: AlertTypes.WARNING,
+          title: "Warning Status",
+          text: "The State does not meet the requirement.",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "reporting-requirement-text",
+          title: "Reporting Requirement",
+          text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above.",
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "State Justification for Noncompliance:",
+          required: false,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "State Actions and Timeline Required to Fully Demonstrate Compliance:",
+          required: false,
+        },
       ],
     },
     {
