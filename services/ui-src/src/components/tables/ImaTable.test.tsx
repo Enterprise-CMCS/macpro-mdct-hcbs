@@ -273,7 +273,7 @@ describe("<ImaTable />", () => {
     render(imaTableComponent);
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Add Other Incident Type/ })
+      screen.getByRole("button", { name: /Add other incident type/ })
     );
 
     expect(onAddRow).toHaveBeenCalledTimes(1);
@@ -397,7 +397,7 @@ describe("<ImaTable />", () => {
       screen.getByRole("button", { name: "Delete Other type" })
     ).toBeDisabled();
     expect(
-      screen.getByRole("button", { name: /Add Other Incident Type/ })
+      screen.getByRole("button", { name: /Add other incident type/ })
     ).toBeDisabled();
 
     await userEvent.click(
