@@ -78,18 +78,6 @@ export const ImaTable = ({
         </Thead>
         <Tbody>
           {rows.map((row) => {
-            {
-              allowCustomRows && (
-                <Button
-                  variant="outline"
-                  leftIcon={<Image src={addIcon} alt="" />}
-                  isDisabled={disabled}
-                  onClick={onAddRow}
-                >
-                  {addButtonText}
-                </Button>
-              );
-            }
             const rowName = row.description || "new incident type";
             const selectedColumn = answerColumns.find(
               (column) => column.id === row.answer
