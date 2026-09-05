@@ -1,0 +1,412 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { ImaTable } from "components";
+import { ImaTableColumn, ImaTableRow } from "types";
+import { testA11y } from "utils/testing/commonTests";
+
+const columns: ImaTableColumn[] = [
+  { id: "ima-description", label: "Incident Type", type: "description" },
+  { id: "ima-radio-yes", label: "Yes", type: "answer" },
+  { id: "ima-radio-no", label: "No", type: "answer", nonCompliant: true },
+  { id: "ima-delete", label: "Delete", type: "delete" },
+];
+
+const rows: ImaTableRow[] = [
+  { id: "verbal-abuse", description: "Verbal Abuse" },
+  { id: "neglect", description: "Neglect", answer: "ima-radio-yes" },
+  { id: "exploitation", description: "Exploitation", answer: "ima-radio-no" },
+];
+
+const onAnswerChange = vi.fn();
+const onDescriptionChange = vi.fn();
+const onAddRow = vi.fn();
+const onDeleteRow = vi.fn();
+
+const defaultProps = {
+  caption: "Critical Incident Definitions Table",
+  columns,
+  rows,
+  addButtonText: "Add other incident type",
+  customRowLabel: "Other incident type:",
+  errorMessage: "Not compliant.",
+  allowCustomRows: true,
+  onAnswerChange,
+  onDescriptionChange,
+  onAddRow,
+  onDeleteRow,
+};
+
+const imaTableComponent = <ImaTable {...defaultProps} />;
+
+describe("<ImaTable />", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should render a header cell for each column", () => {
+    render(imaTableComponent);
+
+    expect(screen.getByRole("table")).toBeVisible();
+    for (const column of columns) {
+      expect(
+        screen.getByRole("columnheader", { name: column.label })
+      ).toBeVisible();
+    }
+  });
+
+  it("should not render the add button or delete column when custom rows are not allowed", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        allowCustomRows={false}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    expect(
+      screen.queryByRole("button", { name: /Add other incident type/ })
+    ).toBeNull();
+    expect(screen.queryByRole("columnheader", { name: "Delete" })).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Delete Other type" })
+    ).toBeNull();
+  });
+
+  it("should keep header and body cell counts aligned when custom rows are not allowed", () => {
+    render(<ImaTable {...defaultProps} allowCustomRows={false} />);
+
+    expect(screen.getAllByRole("columnheader")).toHaveLength(
+      columns.length - 1
+    );
+    const bodyRow = screen.getAllByRole("row")[1];
+    expect(within(bodyRow).getAllByRole("cell")).toHaveLength(
+      columns.length - 1
+    );
+  });
+
+  it("should render the label and helper text above the table", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        label="mock label"
+        helperText="mock helper text"
+      />
+    );
+
+    expect(screen.getByText("mock label")).toBeVisible();
+    expect(screen.getByText("mock helper text")).toBeVisible();
+    expect(screen.getByRole("group", { name: /mock label/ })).toContainElement(
+      screen.getByRole("table")
+    );
+  });
+
+  it("should omit the label and helper text when not provided", () => {
+    render(imaTableComponent);
+
+    expect(document.querySelector("legend")).toBeNull();
+    expect(document.querySelector(".ds-c-hint")).toBeNull();
+  });
+
+  it("should render a row for each entry with its description", () => {
+    render(imaTableComponent);
+
+    // one header row plus one row per entry
+    expect(screen.getAllByRole("row")).toHaveLength(rows.length + 1);
+    for (const row of rows) {
+      expect(screen.getByText(row.description)).toBeVisible();
+    }
+  });
+
+  it("should check the radio matching the saved answer", () => {
+    render(imaTableComponent);
+
+    expect(
+      screen.getByRole("radio", { name: "Yes for Neglect" })
+    ).toBeChecked();
+    expect(
+      screen.getByRole("radio", { name: "No for Neglect" })
+    ).not.toBeChecked();
+    expect(
+      screen.getByRole("radio", { name: "No for Exploitation" })
+    ).toBeChecked();
+  });
+
+  it("should leave both radios unchecked when there is no answer", () => {
+    render(imaTableComponent);
+
+    expect(
+      screen.getByRole("radio", { name: "Yes for Verbal Abuse" })
+    ).not.toBeChecked();
+    expect(
+      screen.getByRole("radio", { name: "No for Verbal Abuse" })
+    ).not.toBeChecked();
+  });
+
+  it("should call onAnswerChange with yes when the Yes radio is selected", async () => {
+    render(imaTableComponent);
+
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Yes for Verbal Abuse" })
+    );
+
+    expect(onAnswerChange).toHaveBeenCalledWith(
+      "verbal-abuse",
+      "ima-radio-yes"
+    );
+  });
+
+  it("should call onAnswerChange with no when the No radio is selected", async () => {
+    render(imaTableComponent);
+
+    await userEvent.click(
+      screen.getByRole("radio", { name: "No for Verbal Abuse" })
+    );
+
+    expect(onAnswerChange).toHaveBeenCalledWith("verbal-abuse", "ima-radio-no");
+  });
+
+  it("should render a radio for every answer column", () => {
+    const multiNoColumns: ImaTableColumn[] = [
+      { id: "description", label: "Incident Type", type: "description" },
+      { id: "yes", label: "Yes", type: "answer" },
+      {
+        id: "no-some",
+        label: "No, some programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+      {
+        id: "no-none",
+        label: "No, no programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+    ];
+
+    render(
+      <ImaTable
+        {...defaultProps}
+        columns={multiNoColumns}
+        rows={[{ id: "verbal-abuse", description: "Verbal Abuse" }]}
+      />
+    );
+
+    expect(screen.getAllByRole("radio")).toHaveLength(3);
+    expect(
+      screen.getByRole("columnheader", { name: "No, some programs" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("radio", { name: "No, no programs for Verbal Abuse" })
+    ).toBeVisible();
+  });
+
+  it("should show the error message for any non-compliant answer column", () => {
+    const multiNoColumns: ImaTableColumn[] = [
+      { id: "description", label: "Incident Type", type: "description" },
+      { id: "yes", label: "Yes", type: "answer" },
+      {
+        id: "no-some",
+        label: "No, some programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+      {
+        id: "no-none",
+        label: "No, no programs",
+        type: "answer",
+        nonCompliant: true,
+      },
+    ];
+
+    render(
+      <ImaTable
+        {...defaultProps}
+        columns={multiNoColumns}
+        rows={[
+          { id: "a", description: "A", answer: "yes" },
+          { id: "b", description: "B", answer: "no-some" },
+          { id: "c", description: "C", answer: "no-none" },
+        ]}
+      />
+    );
+
+    expect(screen.getAllByRole("alert")).toHaveLength(2);
+  });
+
+  it("should show an error message only on rows answered no", () => {
+    render(imaTableComponent);
+
+    const alerts = screen.getAllByRole("alert");
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0]).toHaveTextContent("Not compliant.");
+    expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
+  });
+
+  it("should not show an error for a custom row answered no", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          {
+            id: "other",
+            description: "Other type",
+            answer: "ima-radio-no",
+            custom: true,
+          },
+        ]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("should render a custom error message when provided", () => {
+    render(<ImaTable {...defaultProps} errorMessage="Custom error" />);
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Custom error");
+  });
+
+  it("should call onAddRow when the add button is clicked", async () => {
+    render(imaTableComponent);
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add other incident type" })
+    );
+
+    expect(onAddRow).toHaveBeenCalledTimes(1);
+  });
+
+  it("should render an editable description for custom rows only", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    const inputs = screen.getAllByRole("textbox", {
+      name: "Other incident type:",
+    });
+    expect(inputs).toHaveLength(1);
+    expect(inputs[0]).toHaveValue("Other type");
+    expect(inputs[0]).toHaveStyle({ borderColor: "rgb(38, 38, 38)" });
+    expect(screen.getByText("Other incident type:")).toBeVisible();
+  });
+
+  it("should render a custom row label when provided", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        customRowLabel="Other type:"
+        rows={[{ id: "other", description: "", custom: true }]}
+      />
+    );
+
+    expect(screen.getByRole("textbox", { name: "Other type:" })).toBeVisible();
+  });
+
+  it("should call onDescriptionChange when a custom description is edited", async () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "", custom: true }]}
+      />
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Other incident type:" }),
+      "A"
+    );
+
+    expect(onDescriptionChange).toHaveBeenCalledWith("other", "A");
+  });
+
+  it("should label the controls of a custom row without a description", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "", custom: true }]}
+      />
+    );
+
+    expect(
+      screen.getByRole("radio", { name: "Yes for new incident type" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Delete new incident type" })
+    ).toBeVisible();
+  });
+
+  it("should call onDeleteRow with the row id when delete is clicked", async () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete Other type" })
+    );
+
+    expect(onDeleteRow).toHaveBeenCalledWith("other");
+  });
+
+  it("should only render a delete button on rows added by the button", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[
+          ...rows,
+          { id: "other", description: "Other type", custom: true },
+        ]}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Delete Other type" })
+    ).toBeVisible();
+    for (const row of rows) {
+      expect(
+        screen.queryByRole("button", { name: `Delete ${row.description}` })
+      ).toBeNull();
+    }
+  });
+
+  it("should disable all inputs when disabled", async () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "Other type", custom: true }]}
+        disabled
+      />
+    );
+
+    expect(
+      screen.getByRole("radio", { name: "Yes for Other type" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Delete Other type" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Add other incident type" })
+    ).toBeDisabled();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Delete Other type" })
+    );
+    expect(onDeleteRow).not.toHaveBeenCalled();
+  });
+
+  testA11y(imaTableComponent);
+});

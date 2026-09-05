@@ -209,6 +209,9 @@ export enum ElementType {
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
+  ImaTable = "imaTable",
+  ComplianceAlert = "complianceAlert",
+  ComplianceSection = "complianceSection",
 }
 
 export type PageElement =
@@ -245,11 +248,28 @@ export type PageElement =
   | ListInputTemplate
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
-  | KeyActivityTableTemplate;
+  | KeyActivityTableTemplate
+  | ImaTableTemplate
+  | ComplianceAlertTemplate
+  | ComplianceSectionTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
   answer: string;
+};
+
+/** Shows elements only while the referenced ImaTable has a non-compliant answer. */
+export type ShowCondition = {
+  controllerElementId: string;
+  when: "nonCompliant";
+};
+
+/** Groups elements that appear and disappear together. */
+export type ComplianceSectionTemplate = {
+  type: ElementType.ComplianceSection;
+  id: string;
+  showCondition: ShowCondition;
+  elements: PageElement[];
 };
 
 export enum HeaderIcon {
@@ -297,6 +317,16 @@ export type StatusAlertTemplate = {
   title: string;
   text: string;
   status: AlertTypes;
+};
+
+export type ComplianceAlertTemplate = {
+  type: ElementType.ComplianceAlert;
+  id: string;
+  title: string;
+  text: string;
+  status: AlertTypes;
+  /** Id of the ImaTable whose answers determine compliance. */
+  controllerElementId: string;
 };
 
 export type TextboxTemplate = {
@@ -464,6 +494,35 @@ export type MeasureTargetInfo = {
   rates: string[];
 };
 
+export type ImaTableColumn = {
+  id: string;
+  label: string;
+  type: "description" | "answer" | "delete";
+  nonCompliant?: boolean;
+};
+
+export type ImaTableRow = {
+  id: string;
+  description: string;
+  answer?: string;
+  custom?: boolean;
+};
+
+export type ImaTableTemplate = {
+  type: ElementType.ImaTable;
+  id: string;
+  caption: string;
+  label?: string;
+  helperText?: string;
+  addButtonText?: string;
+  customRowLabel?: string;
+  errorMessage?: string;
+  allowCustomRows?: boolean;
+  columns: ImaTableColumn[];
+  rows: ImaTableRow[];
+  answer?: ImaTableRow[];
+};
+
 export type EligibilityTableItem = {
   title: string;
   description: string;
@@ -471,7 +530,6 @@ export type EligibilityTableItem = {
   frequency: string;
   eligibilityUpdate: string;
 };
-
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;

@@ -201,6 +201,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureTableTemplateSchema;
     case ElementType.QipMeasureTable:
       return qipMeasureTableTemplateSchema;
+    case ElementType.ImaTable:
+      return imaTableTemplateSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
@@ -225,6 +227,10 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return performanceNdrSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
+    case ElementType.ComplianceAlert:
+      return complianceAlertSchema;
+    case ElementType.ComplianceSection:
+      return complianceSectionSchema;
     case ElementType.Divider:
       return dividerSchema;
     case ElementType.SubmissionParagraph:
@@ -316,6 +322,48 @@ const qipMeasureTableTemplateSchema = object().shape({
         pageId: string().required(),
         measureName: string().required(),
         originalValues: mixed().notRequired(),
+      })
+    )
+    .notRequired(),
+});
+
+const imaTableTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ImaTable)),
+  id: string().required(),
+  caption: string().required(),
+  label: string().notRequired(),
+  helperText: string().notRequired(),
+  addButtonText: string().notRequired(),
+  customRowLabel: string().notRequired(),
+  errorMessage: string().notRequired(),
+  allowCustomRows: boolean().notRequired(),
+  columns: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+        type: string().oneOf(["description", "answer", "delete"]).required(),
+        nonCompliant: boolean().notRequired(),
+      })
+    )
+    .required(),
+  rows: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        description: string().required(),
+        answer: string().notRequired(),
+        custom: boolean().notRequired(),
+      })
+    )
+    .notRequired(),
+  answer: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        description: string().defined(),
+        answer: string().notRequired(),
+        custom: boolean().notRequired(),
       })
     )
     .notRequired(),
@@ -643,6 +691,27 @@ const statusAlertSchema = object().shape({
   title: string().required(),
   text: string().required(),
   status: string().required(),
+});
+
+const complianceAlertSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ComplianceAlert)),
+  id: string().required(),
+  title: string().required(),
+  text: string().required(),
+  status: string().required(),
+  controllerElementId: string().required(),
+});
+
+const complianceSectionSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ComplianceSection)),
+  id: string().required(),
+  showCondition: object()
+    .shape({
+      controllerElementId: string().required(),
+      when: string().oneOf(["nonCompliant"]).required(),
+    })
+    .required(),
+  elements: lazy(() => array().of(pageElementSchema).required()),
 });
 
 const formPageTemplateSchema = object().shape({
