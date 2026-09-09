@@ -34,15 +34,18 @@ const formatChoices = (
       });
     };
 
-    const checkedChildren = [
-      <Box key="radio-sub-page" sx={sx.children}>
-        <Page
-          id="radio-children"
-          setElements={setCheckedChildren}
-          elements={choice.checkedChildren}
-        />
-      </Box>,
-    ];
+    const checkedChildren =
+      choice.value === answer
+        ? [
+            <Box key="radio-sub-page" sx={sx.children}>
+              <Page
+                id="radio-children"
+                setElements={setCheckedChildren}
+                elements={choice.checkedChildren}
+              />
+            </Box>,
+          ]
+        : [];
 
     return {
       ...choice,
@@ -149,7 +152,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
       {radio.helperText && parseHtml(radio.helperText)}
     </Box>
   );
-  const labelText = radio.label;
+  const labelText = radio.label && parseHtml(radio.label);
 
   if (hideElement) {
     return null;
