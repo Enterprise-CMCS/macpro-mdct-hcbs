@@ -168,6 +168,22 @@ button {
   margin: 0;
 }
 
+.ima-table-fieldset {
+  width: 685px;
+  max-width: 100%;
+
+  .ds-c-label {
+    display: block;
+    width: 100%;
+    max-width: none;
+  }
+
+  .ds-c-hint {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 // Style children of radio choices
 .ds-c-fieldset > div > .ds-c-choice-wrapper + * {
   margin-top: 16px;

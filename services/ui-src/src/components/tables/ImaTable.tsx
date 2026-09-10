@@ -60,23 +60,9 @@ export const ImaTable = ({
     : columns.filter((column) => column.type !== "delete");
 
   return (
-    <fieldset
-      className="ds-c-fieldset"
-      style={{ width: "685px", maxWidth: "100%" }}
-    >
-      {label && (
-        <legend
-          className="ds-c-label"
-          style={{ display: "block", width: "100%", maxWidth: "none" }}
-        >
-          {label}
-        </legend>
-      )}
-      {helperText && (
-        <p className="ds-c-hint" style={{ width: "100%", maxWidth: "none" }}>
-          {helperText}
-        </p>
-      )}
+    <fieldset className="ds-c-fieldset ima-table-fieldset">
+      {label && <legend className="ds-c-label">{label}</legend>}
+      {helperText && <p className="ds-c-hint">{helperText}</p>}
       <Table variant="ima">
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
