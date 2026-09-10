@@ -23,7 +23,7 @@ const template: ImaTableTemplate = {
   ],
   addButtonText: "Add other incident type",
   customRowLabel: "Other incident type:",
-  allowCustomRows: true,
+  allowUserCreatedRows: true,
 };
 
 const updateSpy = vi.fn();

@@ -868,7 +868,7 @@ export type ImaTableRow = {
   id: string;
   description: string;
   answer?: string;
-  custom?: boolean;
+  isUserCreated?: boolean;
 };
 
 export type ImaTableTemplate = {
@@ -880,7 +880,7 @@ export type ImaTableTemplate = {
   addButtonText?: string;
   customRowLabel?: string;
   errorMessage?: string;
-  allowCustomRows?: boolean;
+  allowUserCreatedRows?: boolean;
   columns: ImaTableColumn[];
   rows: ImaTableRow[];
   answer?: ImaTableRow[];

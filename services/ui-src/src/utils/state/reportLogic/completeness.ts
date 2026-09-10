@@ -340,6 +340,7 @@ export const tableIsNonCompliant = (
   );
   const rows = table.answer ?? table.rows ?? [];
   return rows.some(
-    (row) => !row.custom && row.answer && nonCompliantColumnIds.has(row.answer)
+    (row) =>
+      !row.isUserCreated && row.answer && nonCompliantColumnIds.has(row.answer)
   );
 };

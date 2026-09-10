@@ -29,7 +29,7 @@ interface ImaTableProps {
   helperText?: string;
   addButtonText?: string;
   customRowLabel?: string;
-  allowCustomRows?: boolean;
+  allowUserCreatedRows?: boolean;
   disabled?: boolean;
   errorMessage?: string;
   onAnswerChange: (rowId: string, columnId: string) => void;
@@ -46,7 +46,7 @@ export const ImaTable = ({
   helperText,
   addButtonText,
   customRowLabel,
-  allowCustomRows = false,
+  allowUserCreatedRows = false,
   disabled = false,
   errorMessage,
   onAnswerChange,
@@ -55,7 +55,7 @@ export const ImaTable = ({
   onDeleteRow,
 }: ImaTableProps) => {
   const answerColumns = columns.filter((column) => column.type === "answer");
-  const visibleColumns = allowCustomRows
+  const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
 
@@ -85,7 +85,7 @@ export const ImaTable = ({
             return (
               <Tr key={row.id}>
                 <Td>
-                  {row.custom ? (
+                  {row.isUserCreated ? (
                     <HStack>
                       <FormLabel htmlFor={`description-${row.id}`} margin={0}>
                         {customRowLabel}
@@ -103,7 +103,7 @@ export const ImaTable = ({
                   ) : (
                     <Text>{row.description}</Text>
                   )}
-                  {!row.custom &&
+                  {!row.isUserCreated &&
                     selectedColumn?.nonCompliant &&
                     errorMessage && (
                       <HStack
@@ -136,9 +136,9 @@ export const ImaTable = ({
                     </Radio>
                   </Td>
                 ))}
-                {allowCustomRows && (
+                {allowUserCreatedRows && (
                   <Td>
-                    {row.custom && (
+                    {row.isUserCreated && (
                       <Button
                         variant="link"
                         isDisabled={disabled}
@@ -155,7 +155,7 @@ export const ImaTable = ({
           })}
         </Tbody>
       </Table>
-      {allowCustomRows && (
+      {allowUserCreatedRows && (
         <Button
           variant="outline"
           leftIcon={<Image src={addIcon} alt="" />}

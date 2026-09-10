@@ -77,7 +77,7 @@ export const imaReportTemplate: ReportBase = {
             "Do all HCBS programs under this IM system define critical incidents to include the following incident types?",
           helperText:
             "If some programs include the incident type but others do not, select “No.”",
-          allowCustomRows: true,
+          allowUserCreatedRows: true,
           addButtonText: "Add other incident type",
           customRowLabel: "Other incident type:",
           errorMessage: "Not compliant.",

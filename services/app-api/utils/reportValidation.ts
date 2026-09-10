@@ -334,7 +334,7 @@ const imaTableTemplateSchema = object().shape({
   addButtonText: string().notRequired(),
   customRowLabel: string().notRequired(),
   errorMessage: string().notRequired(),
-  allowCustomRows: boolean().notRequired(),
+  allowUserCreatedRows: boolean().notRequired(),
   columns: array()
     .of(
       object().shape({

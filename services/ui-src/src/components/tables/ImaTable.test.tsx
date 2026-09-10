@@ -30,7 +30,7 @@ const defaultProps = {
   addButtonText: "Add other incident type",
   customRowLabel: "Other incident type:",
   errorMessage: "Not compliant.",
-  allowCustomRows: true,
+  allowUserCreatedRows: true,
   onAnswerChange,
   onDescriptionChange,
   onAddRow,
@@ -59,10 +59,10 @@ describe("<ImaTable />", () => {
     render(
       <ImaTable
         {...defaultProps}
-        allowCustomRows={false}
+        allowUserCreatedRows={false}
         rows={[
           ...rows,
-          { id: "other", description: "Other type", custom: true },
+          { id: "other", description: "Other type", isUserCreated: true },
         ]}
       />
     );
@@ -77,7 +77,7 @@ describe("<ImaTable />", () => {
   });
 
   it("should keep header and body cell counts aligned when custom rows are not allowed", () => {
-    render(<ImaTable {...defaultProps} allowCustomRows={false} />);
+    render(<ImaTable {...defaultProps} allowUserCreatedRows={false} />);
 
     expect(screen.getAllByRole("columnheader")).toHaveLength(
       columns.length - 1
@@ -255,7 +255,7 @@ describe("<ImaTable />", () => {
             id: "other",
             description: "Other type",
             answer: "ima-radio-no",
-            custom: true,
+            isUserCreated: true,
           },
         ]}
       />
@@ -286,7 +286,7 @@ describe("<ImaTable />", () => {
         {...defaultProps}
         rows={[
           ...rows,
-          { id: "other", description: "Other type", custom: true },
+          { id: "other", description: "Other type", isUserCreated: true },
         ]}
       />
     );
@@ -305,7 +305,7 @@ describe("<ImaTable />", () => {
       <ImaTable
         {...defaultProps}
         customRowLabel="Other type:"
-        rows={[{ id: "other", description: "", custom: true }]}
+        rows={[{ id: "other", description: "", isUserCreated: true }]}
       />
     );
 
@@ -316,7 +316,7 @@ describe("<ImaTable />", () => {
     render(
       <ImaTable
         {...defaultProps}
-        rows={[{ id: "other", description: "", custom: true }]}
+        rows={[{ id: "other", description: "", isUserCreated: true }]}
       />
     );
 
@@ -332,7 +332,7 @@ describe("<ImaTable />", () => {
     render(
       <ImaTable
         {...defaultProps}
-        rows={[{ id: "other", description: "", custom: true }]}
+        rows={[{ id: "other", description: "", isUserCreated: true }]}
       />
     );
 
@@ -350,7 +350,7 @@ describe("<ImaTable />", () => {
         {...defaultProps}
         rows={[
           ...rows,
-          { id: "other", description: "Other type", custom: true },
+          { id: "other", description: "Other type", isUserCreated: true },
         ]}
       />
     );
@@ -368,7 +368,7 @@ describe("<ImaTable />", () => {
         {...defaultProps}
         rows={[
           ...rows,
-          { id: "other", description: "Other type", custom: true },
+          { id: "other", description: "Other type", isUserCreated: true },
         ]}
       />
     );
@@ -387,7 +387,7 @@ describe("<ImaTable />", () => {
     render(
       <ImaTable
         {...defaultProps}
-        rows={[{ id: "other", description: "Other type", custom: true }]}
+        rows={[{ id: "other", description: "Other type", isUserCreated: true }]}
         disabled
       />
     );

@@ -39,7 +39,12 @@ describe("Report completeness utilities", () => {
         { id: "no", label: "No", type: "answer", nonCompliant: true },
       ],
       rows: [
-        { id: "other", description: "Other type", answer: "no", custom: true },
+        {
+          id: "other",
+          description: "Other type",
+          answer: "no",
+          isUserCreated: true,
+        },
       ],
     } as unknown as PageElement;
 

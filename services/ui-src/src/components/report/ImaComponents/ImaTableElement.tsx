@@ -13,7 +13,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
     addButtonText,
     customRowLabel,
     errorMessage,
-    allowCustomRows,
+    allowUserCreatedRows,
   } = element;
 
   const [rows, setRows] = useState<ImaTableRow[]>(
@@ -36,7 +36,10 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   };
 
   const onAddRow = () => {
-    save([...rows, { id: crypto.randomUUID(), description: "", custom: true }]);
+    save([
+      ...rows,
+      { id: crypto.randomUUID(), description: "", isUserCreated: true },
+    ]);
   };
 
   const onDeleteRow = (rowId: string) => {
@@ -54,7 +57,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
         addButtonText,
         customRowLabel,
         errorMessage,
-        allowCustomRows,
+        allowUserCreatedRows,
         disabled,
         onAnswerChange,
         onDescriptionChange,
