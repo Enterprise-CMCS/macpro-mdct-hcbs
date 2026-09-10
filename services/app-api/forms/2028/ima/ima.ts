@@ -99,45 +99,35 @@ export const imaReportTemplate: ReportBase = {
           rows: CRITICAL_INCIDENT_TYPES,
         },
         {
-          type: ElementType.ComplianceSection,
-          id: "noncompliance-section",
-          showCondition: {
-            controllerElementId: "critical-incident-definitions-table",
-            when: "nonCompliant",
-          },
-          elements: [
-            {
-              type: ElementType.Divider,
-              id: "divider",
-            },
-            {
-              type: ElementType.ComplianceAlert,
-              id: "compliance-alert",
-              status: AlertTypes.WARNING,
-              title: "Warning Status",
-              text: "This incident management system appears to be non-compliant.",
-              controllerElementId: "critical-incident-definitions-table",
-            },
-            {
-              type: ElementType.Paragraph,
-              id: "reporting-requirement-text",
-              title: "Reporting Requirement",
-              text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
-            },
-            {
-              type: ElementType.TextAreaField,
-              id: "noncompliance-justification",
-              label: "Justification for system noncompliance:",
-              required: true,
-            },
-            {
-              type: ElementType.TextAreaField,
-              id: "timeline-justification",
-              label:
-                "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
-              required: true,
-            },
-          ],
+          type: ElementType.Divider,
+          id: "divider",
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "Warning Status",
+          text: "This incident management system appears to be non-compliant.",
+          controllerElementId: "critical-incident-definitions-table",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "reporting-requirement-text",
+          title: "Reporting Requirement",
+          text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          required: true,
         },
       ],
     },

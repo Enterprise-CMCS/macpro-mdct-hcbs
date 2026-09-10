@@ -90,7 +90,6 @@ export { TableStatusIcon } from "./tables/TableStatusIcon";
 export { ImaTable } from "./tables/ImaTable";
 export { ImaTableElement } from "./report/ImaComponents/ImaTableElement";
 export { ComplianceAlert } from "./report/ImaComponents/ComplianceAlert";
-export { ComplianceSection } from "./report/ImaComponents/ComplianceSection";
 // checkbox
 export { Checkbox } from "./checkbox/Checkbox";
 // dashboard

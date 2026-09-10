@@ -14,7 +14,6 @@ import {
   LengthOfStayFieldNames,
   assertExhaustive,
   ReadmissionRateFieldNames,
-  ShowCondition,
 } from "types";
 
 /**
@@ -77,9 +76,6 @@ export const pageInProgress = (report: Report, pageId: string) => {
   };
 
   const elementHasData = (element: Partial<PageElement>): boolean => {
-    if (element.type === ElementType.ComplianceSection) {
-      return element.elements?.some(elementHasData) ?? false;
-    }
     return "answer" in element && hasData(element.answer);
   };
 
@@ -198,14 +194,6 @@ export const elementSatisfiesRequired = (
     element.answer?.some((item) => item === "" || item === undefined)
   ) {
     return false;
-  }
-
-  // A hidden section's children cannot be filled in, so they cannot block completion.
-  if (element.type === ElementType.ComplianceSection) {
-    if (!sectionIsShown(element.showCondition, pageElements)) return true;
-    return element.elements.every((child) =>
-      elementSatisfiesRequired(child, pageElements)
-    );
   }
 
   if (
@@ -355,8 +343,3 @@ export const tableIsNonCompliant = (
     (row) => !row.custom && row.answer && nonCompliantColumnIds.has(row.answer)
   );
 };
-
-export const sectionIsShown = (
-  showCondition: ShowCondition,
-  elements: Partial<PageElement>[]
-) => tableIsNonCompliant(showCondition.controllerElementId, elements);
