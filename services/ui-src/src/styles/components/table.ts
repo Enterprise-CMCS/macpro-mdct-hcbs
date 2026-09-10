@@ -166,7 +166,7 @@ const reportDetailsVariant = {
 const imaVariant = {
   table: {
     width: "100%",
-    maxWidth: "100%",
+    maxWidth: "685px",
     tableLayout: "fixed",
     marginTop: "1rem",
     th: {
