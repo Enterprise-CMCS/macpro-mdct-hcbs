@@ -93,6 +93,7 @@ export const ImaTable = ({
                       <Input
                         id={`description-${row.id}`}
                         value={row.description}
+                        backgroundColor="palette.white"
                         borderColor="#262626"
                         isDisabled={disabled}
                         onChange={(event) =>
@@ -101,7 +102,7 @@ export const ImaTable = ({
                       />
                     </HStack>
                   ) : (
-                    <Text>{row.description}</Text>
+                    <Text fontSize="body_md">{row.description}</Text>
                   )}
                   {!row.isUserCreated &&
                     selectedColumn?.nonCompliant &&
@@ -117,7 +118,7 @@ export const ImaTable = ({
                           boxSize="0.75rem"
                           filter={svgFilters.error_darker}
                         />
-                        <Text color="palette.error_darker" fontSize="body_xs">
+                        <Text color="palette.error_darker" fontSize="body_md">
                           {errorMessage}
                         </Text>
                       </HStack>

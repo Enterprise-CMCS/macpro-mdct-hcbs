@@ -173,7 +173,7 @@ const imaVariant = {
       padding: "0.45rem 0.5rem",
       backgroundColor: "palette.primary_darkest",
       color: "palette.white",
-      fontSize: "body_xs",
+      fontSize: "body_sm",
       fontWeight: "heading_sm_bold",
       textAlign: "left",
       textTransform: "none",
@@ -196,7 +196,7 @@ const imaVariant = {
     },
     td: {
       padding: "0.5rem",
-      fontSize: "body_xs",
+      fontSize: "body_md",
       verticalAlign: "middle",
       border: "none",
       overflowWrap: "break-word",
@@ -211,7 +211,7 @@ const imaVariant = {
       },
       label: {
         margin: "0.5rem 0",
-        fontSize: "body_xs",
+        fontSize: "body_md",
         minWidth: "33%",
         "&:not([data-checked]) > span[aria-hidden='true']": {
           borderColor: "palette.base",
@@ -222,8 +222,9 @@ const imaVariant = {
       },
     },
     tr: {
+      border: "none",
       "&:nth-of-type(even)": {
-        backgroundColor: "palette.gray_lighter",
+        backgroundColor: "palette.gray_lightest_highlight",
       },
       "&:nth-of-type(odd)": {
         backgroundColor: "palette.white",
