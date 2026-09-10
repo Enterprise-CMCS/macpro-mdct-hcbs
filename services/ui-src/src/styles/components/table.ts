@@ -206,6 +206,10 @@ const imaVariant = {
       "&:nth-of-type(n + 2)": {
         textAlign: "center",
       },
+      ".ds-c-choice-wrapper": {
+        display: "flex",
+        justifyContent: "center",
+      },
       ".mobile &": {
         padding: "0.5rem 0.25rem",
       },

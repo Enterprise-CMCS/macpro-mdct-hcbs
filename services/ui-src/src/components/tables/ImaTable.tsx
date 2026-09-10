@@ -4,7 +4,6 @@ import {
   HStack,
   Image,
   Input,
-  Radio,
   Table,
   TableCaption,
   Tbody,
@@ -15,6 +14,7 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
+import { Choice } from "@cmsgov/design-system";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import errorIcon from "assets/icons/alert/icon_error.svg";
@@ -126,15 +126,17 @@ export const ImaTable = ({
                 </Td>
                 {answerColumns.map((column) => (
                   <Td key={`${row.id}-${column.id}`}>
-                    <Radio
+                    <Choice
+                      id={`${row.id}-${column.id}`}
+                      type="radio"
                       name={row.id}
                       value={column.id}
-                      isDisabled={disabled}
-                      isChecked={row.answer === column.id}
+                      label={column.label}
+                      aria-label={`${column.label} for ${rowName}`}
+                      disabled={disabled}
+                      checked={row.answer === column.id}
                       onChange={() => onAnswerChange(row.id, column.id)}
-                    >
-                      <VisuallyHidden>{`${column.label} for ${rowName}`}</VisuallyHidden>
-                    </Radio>
+                    />
                   </Td>
                 ))}
                 {allowUserCreatedRows && (
