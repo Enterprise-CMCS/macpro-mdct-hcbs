@@ -79,8 +79,7 @@ export const pageInProgress = (report: Report, pageId: string) => {
     return "answer" in element && hasData(element.answer);
   };
 
-  const anyEdited = targetPage.elements.find(elementHasData);
-  return !!anyEdited;
+  return targetPage.elements.some(elementHasData);
 };
 
 /**

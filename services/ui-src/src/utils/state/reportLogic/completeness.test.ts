@@ -21,6 +21,7 @@ import {
   ReadmissionRateTemplate,
 } from "types";
 import {
+  elementIsHidden,
   elementSatisfiesRequired,
   inferredReportStatus,
   pageInProgress,
@@ -421,6 +422,49 @@ describe("Report completeness utilities", () => {
       expect(pageIsCompletable(report, "my-id")).toBeFalsy();
     });
 
+    it("should return true when all dependent pages are complete", () => {
+      const report = {
+        pages: [
+          {
+            id: "my-id",
+            navTitle: "my title",
+            status: PageStatus.IN_PROGRESS,
+            type: PageType.Measure,
+            elements: [
+              {
+                id: "delivery-method-radio",
+                type: ElementType.Radio,
+                answer: "FFS",
+                required: true,
+                choices: [{ value: "FFS" }],
+              },
+            ],
+            dependentPages: [
+              {
+                key: "FFS",
+                template: "FFS-1",
+              },
+            ],
+          },
+          {
+            id: "FFS-1",
+            navTitle: "child title",
+            status: PageStatus.COMPLETE,
+            type: PageType.MeasureResults,
+            elements: [
+              {
+                id: "a-text",
+                type: ElementType.TextAreaField,
+                answer: "filled",
+                required: true,
+              },
+            ],
+          },
+        ],
+      } as Report;
+      expect(pageIsCompletable(report, "my-id")).toBeTruthy();
+    });
+
     it("should return true for a complete element", () => {
       const report = {
         pages: [
@@ -439,6 +483,38 @@ describe("Report completeness utilities", () => {
         ],
       } as Report;
       expect(pageIsCompletable(report, "my-id")).toBeTruthy();
+    });
+  });
+
+  describe("elementIsHidden", () => {
+    it("should return true only when the controlling element matches the hide condition", () => {
+      const elements = [
+        {
+          id: "trigger",
+          type: ElementType.Textbox,
+          answer: "hide-me",
+          required: false,
+        },
+      ] as PageElement[];
+
+      expect(
+        elementIsHidden(
+          { controllerElementId: "trigger", answer: "hide-me" },
+          elements
+        )
+      ).toBeTruthy();
+      expect(
+        elementIsHidden(
+          { controllerElementId: "trigger", answer: "show-me" },
+          elements
+        )
+      ).toBeFalsy();
+      expect(
+        elementIsHidden(
+          { controllerElementId: "missing", answer: "hide-me" },
+          elements
+        )
+      ).toBeFalsy();
     });
   });
 
