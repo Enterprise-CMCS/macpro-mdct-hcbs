@@ -211,6 +211,8 @@ const imaVariant = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        marginTop: "0",
+        columnGap: "0",
       },
       ".ima-user-created-row": {
         alignItems: "center",
@@ -233,16 +235,10 @@ const imaVariant = {
         margin: "0 auto",
         padding: 0,
       },
-      label: {
+      ".ima-user-created-row label": {
         margin: "0.5rem 0",
         fontSize: "body_md",
         minWidth: "33%",
-        "&:not([data-checked]) > span[aria-hidden='true']": {
-          borderColor: "palette.base",
-        },
-        "&[data-checked] > span[aria-hidden='true']": {
-          borderColor: "palette.primary",
-        },
       },
     },
     tr: {
