@@ -11,6 +11,7 @@ import {
   waiverListCheckboxField,
   waiverListInputField,
 } from "../elements";
+import { CRITICAL_INCIDENT_TYPES } from "./incidentTypes";
 
 export const imaReportTemplate: ReportBase = {
   type: ReportType.IMA,
@@ -18,7 +19,11 @@ export const imaReportTemplate: ReportBase = {
   pages: [
     {
       id: "root",
-      childPageIds: ["general-info", "review-submit"],
+      childPageIds: [
+        "general-info",
+        "critical-incident-definitions",
+        "review-submit",
+      ],
     },
     {
       id: "general-info",
@@ -57,6 +62,77 @@ export const imaReportTemplate: ReportBase = {
           ...waiverListInputField,
           label:
             "If an HCBS authority is not included above, but included in this IMA, add its name and control number here.",
+        },
+      ],
+    },
+    {
+      id: "critical-incident-definitions",
+      navTitle: "Critical Incident Definitions",
+      tabTitle: "Critical Incident Definitions - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "critical-incident-definitions-header",
+          text: "Critical incident definitions",
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "critical-incident-definitions-table",
+          caption: "Critical Incident Definitions Table",
+          label:
+            "Do all HCBS programs under this IM system define critical incidents to include the following incident types?",
+          helperText:
+            "If some programs include the incident type but others do not, select “No.”",
+          allowUserCreatedRows: true,
+          addButtonText: "Add other incident type",
+          userCreatedRowLabel: "Other incident type:",
+          errorMessage: "Not compliant.",
+          columns: [
+            {
+              id: "ima-description",
+              label: "Incident type",
+              type: "description",
+            },
+            { id: "ima-radio-yes", label: "Yes", type: "answer" },
+            {
+              id: "ima-radio-no",
+              label: "No",
+              type: "answer",
+              nonCompliant: true,
+            },
+            { id: "ima-delete", label: "Delete", type: "delete" },
+          ],
+          rows: CRITICAL_INCIDENT_TYPES,
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: ["critical-incident-definitions-table"],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
+          controllerElementId: ["critical-incident-definitions-table"],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          showWhenNonCompliant: ["critical-incident-definitions-table"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: ["critical-incident-definitions-table"],
+          required: true,
         },
       ],
     },

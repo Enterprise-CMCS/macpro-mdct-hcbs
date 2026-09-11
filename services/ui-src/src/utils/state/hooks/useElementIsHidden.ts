@@ -4,8 +4,11 @@ import { elementIsHidden } from "../reportLogic/completeness";
 import { useStore } from "../useStore";
 import { currentPageSelector } from "../selectors";
 
-export const useElementIsHidden = (hideCondition?: HideCondition) => {
-  if (!hideCondition) {
+export const useElementIsHidden = (
+  hideCondition?: HideCondition,
+  showWhenNonCompliant?: string[]
+) => {
+  if (!hideCondition && !showWhenNonCompliant) {
     // An element without a hide condition is never hidden.
     return false;
   }
@@ -18,9 +21,13 @@ export const useElementIsHidden = (hideCondition?: HideCondition) => {
       return;
     }
 
-    const hidden = elementIsHidden(hideCondition, currentPage.elements);
+    const hidden = elementIsHidden(
+      hideCondition,
+      currentPage.elements,
+      showWhenNonCompliant
+    );
     setHideElement(hidden);
-  }, [currentPage]);
+  }, [currentPage, hideCondition, showWhenNonCompliant]);
 
   return hideElement;
 };

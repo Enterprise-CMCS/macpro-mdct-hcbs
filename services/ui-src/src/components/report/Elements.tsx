@@ -20,6 +20,7 @@ import {
   MeasurePageTemplate,
   isMeasurePageTemplate,
   PageElement,
+  DividerTemplate,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -169,7 +170,16 @@ export const AccordionElement = ({
   );
 };
 
-export const DividerElement = (_props: PageElementProps) => {
+export const DividerElement = ({
+  element,
+}: PageElementProps<DividerTemplate>) => {
+  const hideElement = useElementIsHidden(
+    undefined,
+    element.showWhenNonCompliant
+  );
+
+  if (hideElement) return null;
+
   return <Divider></Divider>;
 };
 

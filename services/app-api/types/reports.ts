@@ -280,6 +280,8 @@ export enum ElementType {
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
+  ImaTable = "imaTable",
+  ComplianceAlert = "complianceAlert",
 }
 
 export type PageElement =
@@ -316,7 +318,9 @@ export type PageElement =
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
   | KeyActivityTableTemplate
-  | ListInputTemplate;
+  | ListInputTemplate
+  | ImaTableTemplate
+  | ComplianceAlertTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -396,6 +400,7 @@ export type TextAreaBoxTemplate = {
   wordLimit?: number;
   answer?: string;
   hideCondition?: HideCondition;
+  showWhenNonCompliant?: string[];
   required: boolean;
 };
 
@@ -442,6 +447,7 @@ export type DropdownTemplate = {
 export type DividerTemplate = {
   type: ElementType.Divider;
   id: string;
+  showWhenNonCompliant?: string[];
 };
 
 export type SubmissionParagraphTemplate = {
@@ -841,6 +847,45 @@ export type StatusAlertTemplate = {
   title: string;
   text: string;
   status: AlertTypes;
+};
+
+export type ComplianceAlertTemplate = {
+  type: ElementType.ComplianceAlert;
+  id: string;
+  title: string;
+  text: string;
+  status: AlertTypes;
+  /** IDs of the elements whose answers determine compliance. */
+  controllerElementId: string[];
+};
+
+export type ImaTableColumn = {
+  id: string;
+  label: string;
+  type: "description" | "answer" | "delete";
+  nonCompliant?: boolean;
+};
+
+export type ImaTableRow = {
+  id: string;
+  description: string;
+  answer?: string;
+  isUserCreated?: boolean;
+};
+
+export type ImaTableTemplate = {
+  type: ElementType.ImaTable;
+  id: string;
+  caption: string;
+  label?: string;
+  helperText?: string;
+  addButtonText?: string;
+  userCreatedRowLabel?: string;
+  errorMessage?: string;
+  allowUserCreatedRows?: boolean;
+  columns: ImaTableColumn[];
+  rows: ImaTableRow[];
+  answer?: ImaTableRow[];
 };
 
 /**

@@ -21,13 +21,39 @@ import {
   ReadmissionRateTemplate,
 } from "types";
 import {
+  elementIsHidden,
   elementSatisfiesRequired,
   inferredReportStatus,
   pageInProgress,
   pageIsCompletable,
 } from "./completeness";
+import { isNotCompliant } from "./compliance";
 
 describe("Report completeness utilities", () => {
+  describe("isNotCompliant", () => {
+    const table = {
+      id: "ima-table",
+      type: ElementType.ImaTable,
+      caption: "mock",
+      columns: [
+        { id: "yes", label: "Yes", type: "answer" },
+        { id: "no", label: "No", type: "answer", nonCompliant: true },
+      ],
+      rows: [
+        {
+          id: "other",
+          description: "Other type",
+          answer: "no",
+          isUserCreated: true,
+        },
+      ],
+    } as unknown as PageElement;
+
+    it("should not treat a user created row answered no as non-compliant", () => {
+      expect(isNotCompliant("ima-table", [table])).toBe(false);
+    });
+  });
+
   describe("inferredReportStatus", () => {
     it("should handle different rollup types", () => {
       const report = {
@@ -396,6 +422,49 @@ describe("Report completeness utilities", () => {
       expect(pageIsCompletable(report, "my-id")).toBeFalsy();
     });
 
+    it("should return true when all dependent pages are complete", () => {
+      const report = {
+        pages: [
+          {
+            id: "my-id",
+            navTitle: "my title",
+            status: PageStatus.IN_PROGRESS,
+            type: PageType.Measure,
+            elements: [
+              {
+                id: "delivery-method-radio",
+                type: ElementType.Radio,
+                answer: "FFS",
+                required: true,
+                choices: [{ value: "FFS" }],
+              },
+            ],
+            dependentPages: [
+              {
+                key: "FFS",
+                template: "FFS-1",
+              },
+            ],
+          },
+          {
+            id: "FFS-1",
+            navTitle: "child title",
+            status: PageStatus.COMPLETE,
+            type: PageType.MeasureResults,
+            elements: [
+              {
+                id: "a-text",
+                type: ElementType.TextAreaField,
+                answer: "filled",
+                required: true,
+              },
+            ],
+          },
+        ],
+      } as Report;
+      expect(pageIsCompletable(report, "my-id")).toBeTruthy();
+    });
+
     it("should return true for a complete element", () => {
       const report = {
         pages: [
@@ -414,6 +483,60 @@ describe("Report completeness utilities", () => {
         ],
       } as Report;
       expect(pageIsCompletable(report, "my-id")).toBeTruthy();
+    });
+  });
+
+  describe("elementIsHidden", () => {
+    it("should return true only when the controlling element matches the hide condition", () => {
+      const elements = [
+        {
+          id: "trigger",
+          type: ElementType.Textbox,
+          answer: "hide-me",
+          required: false,
+        },
+      ] as PageElement[];
+
+      expect(
+        elementIsHidden(
+          { controllerElementId: "trigger", answer: "hide-me" },
+          elements
+        )
+      ).toBeTruthy();
+      expect(
+        elementIsHidden(
+          { controllerElementId: "trigger", answer: "show-me" },
+          elements
+        )
+      ).toBeFalsy();
+      expect(
+        elementIsHidden(
+          { controllerElementId: "missing", answer: "hide-me" },
+          elements
+        )
+      ).toBeFalsy();
+    });
+
+    it("should hide elements until a controller table is non-compliant", () => {
+      const compliantTable = {
+        id: "ima-table",
+        type: ElementType.ImaTable,
+        columns: [
+          { id: "no", label: "No", type: "answer", nonCompliant: true },
+        ],
+        rows: [{ id: "incident", description: "Incident", answer: "yes" }],
+      } as unknown as PageElement;
+      const nonCompliantTable = {
+        ...compliantTable,
+        rows: [{ id: "incident", description: "Incident", answer: "no" }],
+      } as unknown as PageElement;
+
+      expect(
+        elementIsHidden(undefined, [compliantTable], ["ima-table"])
+      ).toBeTruthy();
+      expect(
+        elementIsHidden(undefined, [nonCompliantTable], ["ima-table"])
+      ).toBeFalsy();
     });
   });
 
