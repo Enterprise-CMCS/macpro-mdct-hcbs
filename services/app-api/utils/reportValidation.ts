@@ -697,7 +697,7 @@ const complianceAlertSchema = object().shape({
   title: string().required(),
   text: string().required(),
   status: string().required(),
-  controllerElementId: string().required(),
+  controllerElementId: array().of(string().required()).required(),
 });
 
 const formPageTemplateSchema = object().shape({

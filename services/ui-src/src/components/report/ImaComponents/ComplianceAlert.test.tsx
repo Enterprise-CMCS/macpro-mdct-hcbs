@@ -18,7 +18,7 @@ const mockAlert: ComplianceAlertTemplate = {
   title: "Warning Status",
   text: "The State does not meet the requirement.",
   status: AlertTypes.WARNING,
-  controllerElementId: "mock-table",
+  controllerElementId: ["mock-table"],
 };
 
 const mockTable: ImaTableTemplate = {
@@ -93,6 +93,34 @@ describe("<ComplianceAlert />", () => {
     ).toBeVisible();
   });
 
+  it("should render when any controlled table is non-compliant", () => {
+    const secondTable = {
+      ...structuredClone(mockTable),
+      id: "second-table",
+      rows: [{ id: "neglect", description: "Neglect", answer: "no" }],
+    };
+    useStore.setState({
+      ...storeStateWith(structuredClone(mockTable)),
+      report: {
+        pages: [
+          { id: "root", childPageIds: ["page-1"] },
+          { id: "page-1", elements: [mockTable, secondTable] },
+        ],
+      } as Report,
+    });
+
+    render(
+      <ComplianceAlert
+        element={{
+          ...mockAlert,
+          controllerElementId: ["mock-table", "second-table"],
+        }}
+      />
+    );
+
+    expect(screen.getByText("Warning Status")).toBeVisible();
+  });
+
   it("should read non-compliance from template rows when unanswered", () => {
     useStore.setState(
       storeStateWith({
@@ -111,7 +139,7 @@ describe("<ComplianceAlert />", () => {
   it("should not render when the controller element is missing", () => {
     render(
       <ComplianceAlert
-        element={{ ...mockAlert, controllerElementId: "does-not-exist" }}
+        element={{ ...mockAlert, controllerElementId: ["does-not-exist"] }}
       />
     );
 

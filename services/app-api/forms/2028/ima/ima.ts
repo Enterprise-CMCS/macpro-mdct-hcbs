@@ -108,7 +108,7 @@ export const imaReportTemplate: ReportBase = {
           status: AlertTypes.WARNING,
           title: "Warning Status",
           text: "This incident management system appears to be non-compliant.",
-          controllerElementId: "critical-incident-definitions-table",
+          controllerElementId: ["critical-incident-definitions-table"],
         },
         {
           type: ElementType.Paragraph,

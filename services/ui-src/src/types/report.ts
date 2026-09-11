@@ -309,8 +309,8 @@ export type ComplianceAlertTemplate = {
   title: string;
   text: string;
   status: AlertTypes;
-  /** Id of the ImaTable whose answers determine compliance. */
-  controllerElementId: string;
+  /** IDs of the elements whose answers determine compliance. */
+  controllerElementId: string[];
 };
 
 export type TextboxTemplate = {
