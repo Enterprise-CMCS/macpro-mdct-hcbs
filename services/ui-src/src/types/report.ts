@@ -499,7 +499,7 @@ export type ImaTableTemplate = {
   label?: string;
   helperText?: string;
   addButtonText?: string;
-  customRowLabel?: string;
+  userCreatedRowLabel?: string;
   errorMessage?: string;
   allowUserCreatedRows?: boolean;
   columns: ImaTableColumn[];

@@ -169,6 +169,7 @@ const imaVariant = {
     maxWidth: "685px",
     tableLayout: "fixed",
     marginTop: "1rem",
+    boxShadow: "0 4px 4px -1px rgba(0, 0, 0, 0.25)",
     th: {
       padding: "0.45rem 0.5rem",
       backgroundColor: "palette.primary_darkest",
@@ -195,7 +196,7 @@ const imaVariant = {
       },
     },
     td: {
-      padding: "0.5rem",
+      padding: "16px",
       fontSize: "body_md",
       verticalAlign: "middle",
       border: "none",
@@ -209,9 +210,6 @@ const imaVariant = {
       ".ds-c-choice-wrapper": {
         display: "flex",
         justifyContent: "center",
-      },
-      ".mobile &": {
-        padding: "0.5rem 0.25rem",
       },
       label: {
         margin: "0.5rem 0",

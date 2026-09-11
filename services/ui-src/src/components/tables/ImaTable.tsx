@@ -28,7 +28,7 @@ interface ImaTableProps {
   label?: string;
   helperText?: string;
   addButtonText?: string;
-  customRowLabel?: string;
+  userCreatedRowLabel?: string;
   allowUserCreatedRows?: boolean;
   disabled?: boolean;
   errorMessage?: string;
@@ -45,7 +45,7 @@ export const ImaTable = ({
   label,
   helperText,
   addButtonText,
-  customRowLabel,
+  userCreatedRowLabel,
   allowUserCreatedRows = false,
   disabled = false,
   errorMessage,
@@ -88,7 +88,7 @@ export const ImaTable = ({
                   {row.isUserCreated ? (
                     <HStack>
                       <FormLabel htmlFor={`description-${row.id}`} margin={0}>
-                        {customRowLabel}
+                        {userCreatedRowLabel}
                       </FormLabel>
                       <Input
                         id={`description-${row.id}`}

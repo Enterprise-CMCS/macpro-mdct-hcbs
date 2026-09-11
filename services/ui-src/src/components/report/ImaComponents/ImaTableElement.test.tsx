@@ -22,7 +22,7 @@ const template: ImaTableTemplate = {
     { id: "neglect", description: "Neglect", answer: "yes" },
   ],
   addButtonText: "Add other incident type",
-  customRowLabel: "Other incident type:",
+  userCreatedRowLabel: "Other incident type:",
   allowUserCreatedRows: true,
 };
 
@@ -59,11 +59,36 @@ describe("<ImaTableElement />", () => {
       />
     );
 
-    expect(screen.getByText("Saved incident")).toBeVisible();
+    expect(
+      screen.getByRole("textbox", { name: "Other incident type:" })
+    ).toHaveValue("Saved incident");
     expect(screen.queryByText("Abuse")).not.toBeInTheDocument();
     expect(
       screen.getByRole("radio", { name: "No for Saved incident" })
     ).toBeChecked();
+    expect(
+      screen.getByRole("button", { name: "Delete Saved incident" })
+    ).toBeVisible();
+  });
+
+  it("should preserve delete controls for saved user-created rows", () => {
+    render(
+      <ImaTableElementWrapper
+        initialTemplate={{
+          ...template,
+          answer: [
+            {
+              id: "saved-user-created",
+              description: "Saved user created incident",
+            },
+          ],
+        }}
+      />
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Delete Saved user created incident" })
+    ).toBeVisible();
   });
 
   it("should persist a selected answer", async () => {
@@ -79,7 +104,7 @@ describe("<ImaTableElement />", () => {
     });
   });
 
-  it("should add, edit, and delete a custom row", async () => {
+  it("should add, edit, and delete a user-created row", async () => {
     render(<ImaTableElementWrapper />);
 
     await userEvent.click(

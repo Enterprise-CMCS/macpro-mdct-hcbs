@@ -28,7 +28,7 @@ const defaultProps = {
   columns,
   rows,
   addButtonText: "Add other incident type",
-  customRowLabel: "Other incident type:",
+  userCreatedRowLabel: "Other incident type:",
   errorMessage: "Not compliant.",
   allowUserCreatedRows: true,
   onAnswerChange,
@@ -55,7 +55,7 @@ describe("<ImaTable />", () => {
     }
   });
 
-  it("should not render the add button or delete column when custom rows are not allowed", () => {
+  it("should not render the add button or delete column when user-created rows are not allowed", () => {
     render(
       <ImaTable
         {...defaultProps}
@@ -76,7 +76,7 @@ describe("<ImaTable />", () => {
     ).toBeNull();
   });
 
-  it("should keep header and body cell counts aligned when custom rows are not allowed", () => {
+  it("should keep header and body cell counts aligned when user-created rows are not allowed", () => {
     render(<ImaTable {...defaultProps} allowUserCreatedRows={false} />);
 
     expect(screen.getAllByRole("columnheader")).toHaveLength(
@@ -246,7 +246,7 @@ describe("<ImaTable />", () => {
     expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
   });
 
-  it("should not show an error for a custom row answered no", () => {
+  it("should not show an error for a user created row answered no", () => {
     render(
       <ImaTable
         {...defaultProps}
@@ -280,7 +280,7 @@ describe("<ImaTable />", () => {
     expect(onAddRow).toHaveBeenCalledTimes(1);
   });
 
-  it("should render an editable description for custom rows only", () => {
+  it("should render an editable description for user created rows only", () => {
     render(
       <ImaTable
         {...defaultProps}
@@ -300,11 +300,11 @@ describe("<ImaTable />", () => {
     expect(screen.getByText("Other incident type:")).toBeVisible();
   });
 
-  it("should render a custom row label when provided", () => {
+  it("should render a user created row label when provided", () => {
     render(
       <ImaTable
         {...defaultProps}
-        customRowLabel="Other type:"
+        userCreatedRowLabel="Other type:"
         rows={[{ id: "other", description: "", isUserCreated: true }]}
       />
     );
@@ -312,7 +312,7 @@ describe("<ImaTable />", () => {
     expect(screen.getByRole("textbox", { name: "Other type:" })).toBeVisible();
   });
 
-  it("should call onDescriptionChange when a custom description is edited", async () => {
+  it("should call onDescriptionChange when a user created description is edited", async () => {
     render(
       <ImaTable
         {...defaultProps}
@@ -328,7 +328,7 @@ describe("<ImaTable />", () => {
     expect(onDescriptionChange).toHaveBeenCalledWith("other", "A");
   });
 
-  it("should label the controls of a custom row without a description", () => {
+  it("should label the controls of a user created row without a description", () => {
     render(
       <ImaTable
         {...defaultProps}

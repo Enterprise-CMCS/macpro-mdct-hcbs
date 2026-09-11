@@ -332,7 +332,7 @@ const imaTableTemplateSchema = object().shape({
   label: string().notRequired(),
   helperText: string().notRequired(),
   addButtonText: string().notRequired(),
-  customRowLabel: string().notRequired(),
+  userCreatedRowLabel: string().notRequired(),
   errorMessage: string().notRequired(),
   allowUserCreatedRows: boolean().notRequired(),
   columns: array()
@@ -351,7 +351,7 @@ const imaTableTemplateSchema = object().shape({
         id: string().required(),
         description: string().required(),
         answer: string().notRequired(),
-        custom: boolean().notRequired(),
+        isUserCreated: boolean().notRequired(),
       })
     )
     .notRequired(),
@@ -361,7 +361,7 @@ const imaTableTemplateSchema = object().shape({
         id: string().required(),
         description: string().defined(),
         answer: string().notRequired(),
-        custom: boolean().notRequired(),
+        isUserCreated: boolean().notRequired(),
       })
     )
     .notRequired(),

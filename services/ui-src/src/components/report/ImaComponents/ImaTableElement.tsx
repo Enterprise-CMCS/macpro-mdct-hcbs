@@ -3,6 +3,24 @@ import { ImaTable } from "components";
 import { ImaTableRow, ImaTableTemplate } from "types";
 import { PageElementProps } from "../Elements";
 
+const identifyUserCreatedRows = (
+  tableRows: ImaTableRow[],
+  templateRows: ImaTableRow[]
+) => {
+  const templateRowIds = new Set(templateRows.map((row) => row.id));
+
+  return tableRows.map((row) => {
+    if (row.isUserCreated !== undefined) return row;
+
+    return templateRowIds.has(row.id) ? row : { ...row, isUserCreated: true };
+  });
+};
+
+const removeEmptyUserCreatedRows = (tableRows: ImaTableRow[]) =>
+  tableRows.filter(
+    (row) => !row.isUserCreated || row.description.trim().length > 0
+  );
+
 export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   const { element, updateElement, disabled = false } = props;
   const {
@@ -11,18 +29,23 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
     label,
     helperText,
     addButtonText,
-    customRowLabel,
+    userCreatedRowLabel,
     errorMessage,
     allowUserCreatedRows,
   } = element;
 
-  const [rows, setRows] = useState<ImaTableRow[]>(
-    structuredClone(element.answer) ?? structuredClone(element.rows)
+  const [rows, setRows] = useState<ImaTableRow[]>(() =>
+    removeEmptyUserCreatedRows(
+      identifyUserCreatedRows(
+        structuredClone(element.answer ?? element.rows),
+        element.rows
+      )
+    )
   );
 
   const save = (updatedRows: ImaTableRow[]) => {
     setRows(updatedRows);
-    updateElement({ answer: updatedRows });
+    updateElement({ answer: removeEmptyUserCreatedRows(updatedRows) });
   };
 
   const onAnswerChange = (rowId: string, columnId: string) => {
@@ -55,7 +78,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
         label,
         helperText,
         addButtonText,
-        customRowLabel,
+        userCreatedRowLabel,
         errorMessage,
         allowUserCreatedRows,
         disabled,

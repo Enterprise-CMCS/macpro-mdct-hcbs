@@ -79,7 +79,7 @@ export const imaReportTemplate: ReportBase = {
             "If some programs include the incident type but others do not, select “No.”",
           allowUserCreatedRows: true,
           addButtonText: "Add other incident type",
-          customRowLabel: "Other incident type:",
+          userCreatedRowLabel: "Other incident type:",
           errorMessage: "Not compliant.",
           columns: [
             {

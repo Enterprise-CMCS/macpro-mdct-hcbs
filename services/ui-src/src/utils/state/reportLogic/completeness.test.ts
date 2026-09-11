@@ -49,7 +49,7 @@ describe("Report completeness utilities", () => {
       ],
     } as unknown as PageElement;
 
-    it("should treat a custom row answered no as compliant", () => {
+    it("should treat a user created row answered no as compliant", () => {
       expect(tableIsNonCompliant("ima-table", [table])).toBe(false);
     });
   });
