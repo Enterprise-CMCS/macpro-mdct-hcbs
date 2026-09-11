@@ -26,8 +26,8 @@ import {
   inferredReportStatus,
   pageInProgress,
   pageIsCompletable,
-  tableIsNonCompliant,
 } from "./completeness";
+import { tableIsNonCompliant } from "./compliance";
 
 describe("Report completeness utilities", () => {
   describe("tableIsNonCompliant", () => {
