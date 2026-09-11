@@ -104,6 +104,29 @@ describe("<ImaTableElement />", () => {
     });
   });
 
+  it("should persist a blank user-created row", async () => {
+    render(<ImaTableElementWrapper />);
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add other incident type" })
+    );
+
+    expect(updateSpy).toHaveBeenLastCalledWith({
+      answer: expect.arrayContaining([
+        expect.objectContaining({ description: "", isUserCreated: true }),
+      ]),
+    });
+
+    await userEvent.click(
+      screen.getByRole("textbox", { name: "Other incident type:" })
+    );
+    await userEvent.tab();
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "A response is required"
+    );
+  });
+
   it("should add, edit, and delete a user-created row", async () => {
     render(<ImaTableElementWrapper />);
 

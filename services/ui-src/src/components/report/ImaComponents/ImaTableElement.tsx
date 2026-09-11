@@ -16,11 +16,6 @@ const identifyUserCreatedRows = (
   });
 };
 
-const removeEmptyUserCreatedRows = (tableRows: ImaTableRow[]) =>
-  tableRows.filter(
-    (row) => !row.isUserCreated || row.description.trim().length > 0
-  );
-
 export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   const { element, updateElement, disabled = false } = props;
   const {
@@ -35,17 +30,15 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   } = element;
 
   const [rows, setRows] = useState<ImaTableRow[]>(() =>
-    removeEmptyUserCreatedRows(
-      identifyUserCreatedRows(
-        structuredClone(element.answer ?? element.rows),
-        element.rows
-      )
+    identifyUserCreatedRows(
+      structuredClone(element.answer ?? element.rows),
+      element.rows
     )
   );
 
   const save = (updatedRows: ImaTableRow[]) => {
     setRows(updatedRows);
-    updateElement({ answer: removeEmptyUserCreatedRows(updatedRows) });
+    updateElement({ answer: updatedRows });
   };
 
   const onAnswerChange = (rowId: string, columnId: string) => {

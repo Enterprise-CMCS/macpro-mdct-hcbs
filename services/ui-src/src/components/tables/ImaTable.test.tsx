@@ -344,6 +344,49 @@ describe("<ImaTable />", () => {
     ).toBeVisible();
   });
 
+  it("should not show a required response error for a blank user created row by default", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "", isUserCreated: true }]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("should show a required response error for a blank user created row after it is blurred, instead of removing it", async () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "", isUserCreated: true }]}
+      />
+    );
+
+    await userEvent.click(
+      screen.getByRole("textbox", { name: "Other incident type:" })
+    );
+    await userEvent.tab();
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "A response is required"
+    );
+    expect(
+      screen.getByRole("textbox", { name: "Other incident type:" })
+    ).toBeVisible();
+  });
+
+  it("should not show a required response error once a user created row has a description", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        rows={[{ id: "other", description: "Other type", isUserCreated: true }]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
   it("should call onDeleteRow with the row id when delete is clicked", async () => {
     render(
       <ImaTable

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   FormLabel,
@@ -20,6 +21,7 @@ import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import errorIcon from "assets/icons/alert/icon_error.svg";
 import { ImaTableColumn, ImaTableRow } from "types";
 import { svgFilters } from "styles/foundations/filters";
+import { ErrorMessages } from "../../constants";
 
 interface ImaTableProps {
   caption: string;
@@ -58,6 +60,8 @@ export const ImaTable = ({
   const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
+  // Only show the required-response error after a user has blurred the field.
+  const [touchedRowIds, setTouchedRowIds] = useState(new Set<string>());
 
   return (
     <fieldset className="ds-c-fieldset ima-table-fieldset">
@@ -99,11 +103,33 @@ export const ImaTable = ({
                         onChange={(event) =>
                           onDescriptionChange(row.id, event.target.value)
                         }
+                        onBlur={() =>
+                          setTouchedRowIds((prev) => new Set(prev).add(row.id))
+                        }
                       />
                     </HStack>
                   ) : (
                     <Text fontSize="body_md">{row.description}</Text>
                   )}
+                  {row.isUserCreated &&
+                    !row.description.trim() &&
+                    touchedRowIds.has(row.id) && (
+                      <HStack
+                        role="alert"
+                        spacing="0.25rem"
+                        alignItems="center"
+                      >
+                        <Image
+                          src={errorIcon}
+                          alt=""
+                          boxSize="0.75rem"
+                          filter={svgFilters.error_darker}
+                        />
+                        <Text color="palette.error_darker" fontSize="body_md">
+                          {ErrorMessages.requiredResponse}
+                        </Text>
+                      </HStack>
+                    )}
                   {!row.isUserCreated &&
                     selectedColumn?.nonCompliant &&
                     errorMessage && (
