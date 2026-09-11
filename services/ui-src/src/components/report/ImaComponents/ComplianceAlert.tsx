@@ -1,16 +1,17 @@
 import { Alert } from "components/alerts/Alert";
 import { ComplianceAlertTemplate, ElementType, ImaTableTemplate } from "types";
 import { useStore } from "utils";
-import { currentPageSelector } from "utils/state/selectors";
+import { getReportElements } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "../Elements";
 
 export const ComplianceAlert = (
   props: PageElementProps<ComplianceAlertTemplate>
 ) => {
   const { element } = props;
-  const currentPage = useStore(currentPageSelector);
+  const report = useStore((state) => state.report);
+  const elements = getReportElements(report);
 
-  const tables = currentPage?.elements?.filter(
+  const tables = elements.filter(
     (pageElement): pageElement is ImaTableTemplate =>
       element.controllerElementId.includes(pageElement.id) &&
       pageElement.type === ElementType.ImaTable

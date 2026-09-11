@@ -203,6 +203,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return qipMeasureTableTemplateSchema;
     case ElementType.ImaTable:
       return imaTableTemplateSchema;
+    case ElementType.CompliantSection:
+      return compliantSectionSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
@@ -698,6 +700,13 @@ const complianceAlertSchema = object().shape({
   text: string().required(),
   status: string().required(),
   controllerElementId: array().of(string().required()).required(),
+});
+
+const compliantSectionSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.CompliantSection)),
+  id: string().required(),
+  controllerElementIds: array().of(string().required()).required(),
+  elements: array().of(pageElementSchema).required(),
 });
 
 const formPageTemplateSchema = object().shape({

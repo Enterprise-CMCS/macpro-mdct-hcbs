@@ -281,6 +281,7 @@ export enum ElementType {
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
   ImaTable = "imaTable",
+  CompliantSection = "compliantSection",
   ComplianceAlert = "complianceAlert",
 }
 
@@ -320,6 +321,7 @@ export type PageElement =
   | KeyActivityTableTemplate
   | ListInputTemplate
   | ImaTableTemplate
+  | CompliantSectionTemplate
   | ComplianceAlertTemplate;
 
 export type HideCondition = {
@@ -855,6 +857,13 @@ export type ComplianceAlertTemplate = {
   status: AlertTypes;
   /** IDs of the elements whose answers determine compliance. */
   controllerElementId: string[];
+};
+
+export type CompliantSectionTemplate = {
+  type: ElementType.CompliantSection;
+  id: string;
+  controllerElementIds: string[];
+  elements: PageElement[];
 };
 
 export type ImaTableColumn = {

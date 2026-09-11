@@ -99,10 +99,6 @@ export const imaReportTemplate: ReportBase = {
           rows: CRITICAL_INCIDENT_TYPES,
         },
         {
-          type: ElementType.Divider,
-          id: "divider",
-        },
-        {
           type: ElementType.ComplianceAlert,
           id: "compliance-alert",
           status: AlertTypes.WARNING,
@@ -111,17 +107,28 @@ export const imaReportTemplate: ReportBase = {
           controllerElementId: ["critical-incident-definitions-table"],
         },
         {
-          type: ElementType.TextAreaField,
-          id: "noncompliance-justification",
-          label: "Justification for system noncompliance:",
-          required: true,
-        },
-        {
-          type: ElementType.TextAreaField,
-          id: "timeline-justification",
-          label:
-            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
-          required: true,
+          type: ElementType.CompliantSection,
+          id: "ima-compliance-follow-up",
+          controllerElementIds: ["critical-incident-definitions-table"],
+          elements: [
+            {
+              type: ElementType.Divider,
+              id: "divider",
+            },
+            {
+              type: ElementType.TextAreaField,
+              id: "noncompliance-justification",
+              label: "Justification for system noncompliance:",
+              required: true,
+            },
+            {
+              type: ElementType.TextAreaField,
+              id: "timeline-justification",
+              label:
+                "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+              required: true,
+            },
+          ],
         },
       ],
     },

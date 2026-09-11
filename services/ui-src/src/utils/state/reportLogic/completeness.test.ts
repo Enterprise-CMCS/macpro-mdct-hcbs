@@ -49,8 +49,8 @@ describe("Report completeness utilities", () => {
       ],
     } as unknown as PageElement;
 
-    it("should treat a user created row answered no as compliant", () => {
-      expect(tableIsNonCompliant("ima-table", [table])).toBe(false);
+    it("should treat a user created row answered no as non-compliant", () => {
+      expect(tableIsNonCompliant("ima-table", [table])).toBe(true);
     });
   });
 

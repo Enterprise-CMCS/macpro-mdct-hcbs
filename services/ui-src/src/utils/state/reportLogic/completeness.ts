@@ -323,6 +323,7 @@ export const elementIsHidden = (
   );
 };
 
+// Returns true when an IMA table has any row selected in a noncompliant column.
 export const tableIsNonCompliant = (
   controllerElementId: string,
   elements: Partial<PageElement>[]
@@ -339,7 +340,10 @@ export const tableIsNonCompliant = (
   );
   const rows = table.answer ?? table.rows ?? [];
   return rows.some(
-    (row) =>
-      !row.isUserCreated && row.answer && nonCompliantColumnIds.has(row.answer)
+    (row) => row.answer && nonCompliantColumnIds.has(row.answer)
   );
 };
+
+// Flattens elements across all report pages for cross-page conditions to reuse IMA table
+export const getReportElements = (report: Report | undefined): PageElement[] =>
+  report?.pages.flatMap((page) => page.elements ?? []) ?? [];
