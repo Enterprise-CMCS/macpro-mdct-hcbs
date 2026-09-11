@@ -106,15 +106,9 @@ export const imaReportTemplate: ReportBase = {
           type: ElementType.ComplianceAlert,
           id: "compliance-alert",
           status: AlertTypes.WARNING,
-          title: "Warning Status",
-          text: "This incident management system appears to be non-compliant.",
-          controllerElementId: ["critical-incident-definitions-table"],
-        },
-        {
-          type: ElementType.Paragraph,
-          id: "reporting-requirement-text",
-          title: "Reporting Requirement",
+          title: "This incident management system appears to be non-compliant.",
           text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
+          controllerElementId: ["critical-incident-definitions-table"],
         },
         {
           type: ElementType.TextAreaField,
