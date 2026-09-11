@@ -198,7 +198,7 @@ const imaVariant = {
     td: {
       padding: "16px",
       fontSize: "body_md",
-      verticalAlign: "middle",
+      verticalAlign: "top",
       border: "none",
       overflowWrap: "break-word",
       "&:first-of-type": {
@@ -213,11 +213,13 @@ const imaVariant = {
         justifyContent: "center",
         marginTop: "0",
         columnGap: "0",
+        minHeight: "2.5rem",
       },
       ".ima-user-created-row": {
         alignItems: "center",
         flexWrap: "nowrap",
         width: "100%",
+        minHeight: "2.5rem",
         label: {
           flexShrink: 0,
           whiteSpace: "nowrap",
@@ -234,6 +236,7 @@ const imaVariant = {
         justifyContent: "center",
         margin: "0 auto",
         padding: 0,
+        minHeight: "2.5rem",
       },
       ".ima-user-created-row label": {
         margin: "0.5rem 0",

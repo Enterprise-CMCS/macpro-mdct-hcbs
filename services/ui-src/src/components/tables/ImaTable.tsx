@@ -18,9 +18,8 @@ import {
 import { Choice } from "@cmsgov/design-system";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
-import errorIcon from "assets/icons/alert/icon_error.svg";
+import errorIcon from "assets/icons/status/icon_status_alert.svg";
 import { ImaTableColumn, ImaTableRow } from "types";
-import { svgFilters } from "styles/foundations/filters";
 import { ErrorMessages } from "../../constants";
 
 interface ImaTableProps {
@@ -119,13 +118,8 @@ export const ImaTable = ({
                         spacing="0.25rem"
                         alignItems="center"
                       >
-                        <Image
-                          src={errorIcon}
-                          alt=""
-                          boxSize="0.75rem"
-                          filter={svgFilters.error_darker}
-                        />
-                        <Text color="palette.error_darker" fontSize="body_md">
+                        <Image src={errorIcon} alt="" boxSize="0.75rem" />
+                        <Text color="palette.error" fontSize="body_md">
                           {ErrorMessages.requiredResponse}
                         </Text>
                       </HStack>
@@ -138,13 +132,8 @@ export const ImaTable = ({
                         spacing="0.25rem"
                         alignItems="center"
                       >
-                        <Image
-                          src={errorIcon}
-                          alt=""
-                          boxSize="0.75rem"
-                          filter={svgFilters.error_darker}
-                        />
-                        <Text color="palette.error_darker" fontSize="body_md">
+                        <Image src={errorIcon} alt="" boxSize="0.75rem" />
+                        <Text color="palette.error" fontSize="body_md">
                           {errorMessage}
                         </Text>
                       </HStack>
