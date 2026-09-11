@@ -1,36 +1,18 @@
 import { Alert } from "components/alerts/Alert";
-import { ComplianceAlertTemplate, ElementType, ImaTableTemplate } from "types";
-import { useStore } from "utils";
-import { getReportElements } from "utils/state/reportLogic/completeness";
+import { ComplianceAlertTemplate } from "types";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { PageElementProps } from "../Elements";
 
 export const ComplianceAlert = (
   props: PageElementProps<ComplianceAlertTemplate>
 ) => {
   const { element } = props;
-  const report = useStore((state) => state.report);
-  const elements = getReportElements(report);
-
-  const tables = elements.filter(
-    (pageElement): pageElement is ImaTableTemplate =>
-      element.controllerElementId.includes(pageElement.id) &&
-      pageElement.type === ElementType.ImaTable
+  const hideElement = useElementIsHidden(
+    undefined,
+    element.controllerElementId
   );
 
-  const isNonCompliant = tables?.some((table) => {
-    const nonCompliantColumnIds = new Set(
-      table.columns
-        .filter((column) => column.nonCompliant)
-        .map((column) => column.id)
-    );
-    const rows = table.answer ?? table.rows;
-
-    return rows.some(
-      (row) => row.answer && nonCompliantColumnIds.has(row.answer)
-    );
-  });
-
-  if (!isNonCompliant) return <></>;
+  if (hideElement) return null;
 
   return (
     <Alert status={element.status} title={element.title}>

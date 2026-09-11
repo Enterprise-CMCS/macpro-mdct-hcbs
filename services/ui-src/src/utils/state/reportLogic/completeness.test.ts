@@ -516,6 +516,28 @@ describe("Report completeness utilities", () => {
         )
       ).toBeFalsy();
     });
+
+    it("should hide elements until a controller table is non-compliant", () => {
+      const compliantTable = {
+        id: "ima-table",
+        type: ElementType.ImaTable,
+        columns: [
+          { id: "no", label: "No", type: "answer", nonCompliant: true },
+        ],
+        rows: [{ id: "incident", description: "Incident", answer: "yes" }],
+      } as unknown as PageElement;
+      const nonCompliantTable = {
+        ...compliantTable,
+        rows: [{ id: "incident", description: "Incident", answer: "no" }],
+      } as unknown as PageElement;
+
+      expect(
+        elementIsHidden(undefined, [compliantTable], ["ima-table"])
+      ).toBeTruthy();
+      expect(
+        elementIsHidden(undefined, [nonCompliantTable], ["ima-table"])
+      ).toBeFalsy();
+    });
   });
 
   describe("elementSatisfiesRequired", () => {

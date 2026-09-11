@@ -210,7 +210,6 @@ export enum ElementType {
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
   ImaTable = "imaTable",
-  CompliantSection = "compliantSection",
   ComplianceAlert = "complianceAlert",
 }
 
@@ -250,7 +249,6 @@ export type PageElement =
   | EligibilityTableTemplate
   | KeyActivityTableTemplate
   | ImaTableTemplate
-  | CompliantSectionTemplate
   | ComplianceAlertTemplate;
 
 export type HideCondition = {
@@ -315,13 +313,6 @@ export type ComplianceAlertTemplate = {
   controllerElementId: string[];
 };
 
-export type CompliantSectionTemplate = {
-  type: ElementType.CompliantSection;
-  id: string;
-  controllerElementIds: string[];
-  elements: PageElement[];
-};
-
 export type TextboxTemplate = {
   type: ElementType.Textbox;
   id: string;
@@ -350,6 +341,7 @@ export type TextAreaBoxTemplate = {
   wordLimit?: number;
   answer?: string;
   hideCondition?: HideCondition;
+  showWhenNonCompliant?: string[];
   required: boolean;
 };
 
@@ -396,6 +388,7 @@ export type DropdownTemplate = {
 export type DividerTemplate = {
   type: ElementType.Divider;
   id: string;
+  showWhenNonCompliant?: string[];
 };
 
 export type SubmissionParagraphTemplate = {

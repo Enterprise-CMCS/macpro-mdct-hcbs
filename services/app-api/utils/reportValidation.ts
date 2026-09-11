@@ -101,6 +101,7 @@ const textAreaTemplateSchema = object().shape({
   wordLimit: number().notRequired(),
   answer: string().notRequired(),
   hideCondition: hideConditionSchema,
+  showWhenNonCompliant: array().of(string().required()).notRequired(),
   required: boolean().required(),
 });
 
@@ -203,8 +204,6 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return qipMeasureTableTemplateSchema;
     case ElementType.ImaTable:
       return imaTableTemplateSchema;
-    case ElementType.CompliantSection:
-      return compliantSectionSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
@@ -296,6 +295,7 @@ const buttonLinkTemplateSchema = object().shape({
 const dividerSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Divider)),
   id: string().required(),
+  showWhenNonCompliant: array().of(string().required()).notRequired(),
 });
 
 const submissionParagraphSchema = object().shape({
@@ -700,13 +700,6 @@ const complianceAlertSchema = object().shape({
   text: string().required(),
   status: string().required(),
   controllerElementId: array().of(string().required()).required(),
-});
-
-const compliantSectionSchema = object().shape({
-  type: string().required().matches(new RegExp(ElementType.CompliantSection)),
-  id: string().required(),
-  controllerElementIds: array().of(string().required()).required(),
-  elements: array().of(pageElementSchema).required(),
 });
 
 const formPageTemplateSchema = object().shape({

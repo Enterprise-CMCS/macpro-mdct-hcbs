@@ -199,7 +199,9 @@ export const elementSatisfiesRequired = (
     !("required" in element) ||
     !element.required ||
     ("hideCondition" in element &&
-      elementIsHidden(element.hideCondition, pageElements))
+      elementIsHidden(element.hideCondition, pageElements)) ||
+    ("showWhenNonCompliant" in element &&
+      elementIsHidden(undefined, pageElements, element.showWhenNonCompliant))
   ) {
     return true;
   }
@@ -309,8 +311,18 @@ export const elementSatisfiesRequired = (
 
 export const elementIsHidden = (
   hideCondition: HideCondition | undefined,
-  elements: Partial<PageElement>[]
+  elements: Partial<PageElement>[],
+  showWhenNonCompliant?: string[]
 ) => {
+  if (
+    showWhenNonCompliant &&
+    !showWhenNonCompliant.some((controllerElementId) =>
+      tableIsNonCompliant(controllerElementId, elements)
+    )
+  ) {
+    return true;
+  }
+
   if (!hideCondition) return false;
 
   const controlElement = elements.find((target: any) => {
