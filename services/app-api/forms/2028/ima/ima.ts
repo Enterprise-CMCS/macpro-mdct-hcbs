@@ -99,17 +99,17 @@ export const imaReportTemplate: ReportBase = {
           rows: CRITICAL_INCIDENT_TYPES,
         },
         {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: ["critical-incident-definitions-table"],
+        },
+        {
           type: ElementType.ComplianceAlert,
           id: "compliance-alert",
           status: AlertTypes.WARNING,
           title: "This incident management system appears to be non-compliant.",
           text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
           controllerElementId: ["critical-incident-definitions-table"],
-        },
-        {
-          type: ElementType.Divider,
-          id: "divider",
-          showWhenNonCompliant: ["critical-incident-definitions-table"],
         },
         {
           type: ElementType.TextAreaField,
