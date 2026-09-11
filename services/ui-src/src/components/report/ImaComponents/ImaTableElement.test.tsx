@@ -98,8 +98,18 @@ describe("<ImaTableElement />", () => {
 
     expect(updateSpy).toHaveBeenLastCalledWith({
       answer: [
-        { id: "abuse", description: "Abuse", answer: "no" },
-        { id: "neglect", description: "Neglect", answer: "yes" },
+        {
+          id: "abuse",
+          description: "Abuse",
+          answer: "no",
+          isUserCreated: false,
+        },
+        {
+          id: "neglect",
+          description: "Neglect",
+          answer: "yes",
+          isUserCreated: false,
+        },
       ],
     });
   });
@@ -141,7 +151,17 @@ describe("<ImaTableElement />", () => {
     await userEvent.click(screen.getByRole("button", { name: "Delete Other" }));
 
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
-    expect(updateSpy).toHaveBeenLastCalledWith({ answer: template.rows });
+    expect(updateSpy).toHaveBeenLastCalledWith({
+      answer: [
+        { id: "abuse", description: "Abuse", isUserCreated: false },
+        {
+          id: "neglect",
+          description: "Neglect",
+          answer: "yes",
+          isUserCreated: false,
+        },
+      ],
+    });
   });
 
   testA11y(<ImaTableElementWrapper />);

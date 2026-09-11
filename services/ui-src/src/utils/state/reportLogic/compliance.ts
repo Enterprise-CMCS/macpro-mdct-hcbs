@@ -15,7 +15,9 @@ export const isNotCompliant = (
       ?.filter((column) => column.nonCompliant)
       .map((column) => column.id)
   );
-  const rows = table.answer ?? table.rows ?? [];
+  const rows = (table.answer ?? table.rows ?? []).filter(
+    (row) => !row.isUserCreated
+  );
   return rows.some(
     (row) => row.answer && nonCompliantColumnIds.has(row.answer)
   );

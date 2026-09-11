@@ -12,7 +12,10 @@ const identifyUserCreatedRows = (
   return tableRows.map((row) => {
     if (row.isUserCreated !== undefined) return row;
 
-    return templateRowIds.has(row.id) ? row : { ...row, isUserCreated: true };
+    return {
+      ...row,
+      isUserCreated: !templateRowIds.has(row.id),
+    };
   });
 };
 

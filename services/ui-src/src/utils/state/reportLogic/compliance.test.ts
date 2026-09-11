@@ -43,6 +43,41 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
+  it("ignores a user-created row selecting a non-compliant column", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          rows: [
+            {
+              id: "other",
+              description: "Other incident",
+              answer: "no",
+              isUserCreated: true,
+            },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
+  it("only evaluates standard rows in a mixed table", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          rows: [
+            {
+              id: "other",
+              description: "Other incident",
+              answer: "no",
+              isUserCreated: true,
+            },
+            { id: "incident", description: "Incident", answer: "yes" },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
   it("returns false when no row selects a non-compliant column", () => {
     expect(isNotCompliant("ima-table", [createTable()])).toBe(false);
   });
