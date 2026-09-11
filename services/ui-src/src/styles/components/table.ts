@@ -209,7 +209,29 @@ const imaVariant = {
       },
       ".ds-c-choice-wrapper": {
         display: "flex",
+        alignItems: "center",
         justifyContent: "center",
+      },
+      ".ima-user-created-row": {
+        alignItems: "center",
+        flexWrap: "nowrap",
+        width: "100%",
+        label: {
+          flexShrink: 0,
+          whiteSpace: "nowrap",
+        },
+        input: {
+          minWidth: 0,
+          flex: 1,
+          borderWidth: "2px",
+        },
+      },
+      ".ima-delete-button": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: "0 auto",
+        padding: 0,
       },
       label: {
         margin: "0.5rem 0",

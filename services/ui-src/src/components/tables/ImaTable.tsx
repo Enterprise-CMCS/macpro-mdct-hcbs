@@ -86,7 +86,7 @@ export const ImaTable = ({
               <Tr key={row.id}>
                 <Td>
                   {row.isUserCreated ? (
-                    <HStack>
+                    <HStack className="ima-user-created-row">
                       <FormLabel htmlFor={`description-${row.id}`} margin={0}>
                         {userCreatedRowLabel}
                       </FormLabel>
@@ -143,6 +143,7 @@ export const ImaTable = ({
                   <Td>
                     {row.isUserCreated && (
                       <Button
+                        className="ima-delete-button"
                         variant="link"
                         isDisabled={disabled}
                         aria-label={`Delete ${rowName}`}
