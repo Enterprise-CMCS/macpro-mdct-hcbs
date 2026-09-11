@@ -27,10 +27,10 @@ import {
   pageInProgress,
   pageIsCompletable,
 } from "./completeness";
-import { tableIsNonCompliant } from "./compliance";
+import { isNotCompliant } from "./compliance";
 
 describe("Report completeness utilities", () => {
-  describe("tableIsNonCompliant", () => {
+  describe("isNotCompliant", () => {
     const table = {
       id: "ima-table",
       type: ElementType.ImaTable,
@@ -50,7 +50,7 @@ describe("Report completeness utilities", () => {
     } as unknown as PageElement;
 
     it("should treat a user created row answered no as non-compliant", () => {
-      expect(tableIsNonCompliant("ima-table", [table])).toBe(true);
+      expect(isNotCompliant("ima-table", [table])).toBe(true);
     });
   });
 

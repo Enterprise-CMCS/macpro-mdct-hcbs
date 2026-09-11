@@ -15,7 +15,7 @@ import {
   assertExhaustive,
   ReadmissionRateFieldNames,
 } from "types";
-import { tableIsNonCompliant } from "./compliance";
+import { isNotCompliant } from "./compliance";
 
 /**
  * Calculate the status of any page, including calculated values.
@@ -318,7 +318,7 @@ export const elementIsHidden = (
   if (
     showWhenNonCompliant &&
     !showWhenNonCompliant.some((controllerElementId) =>
-      tableIsNonCompliant(controllerElementId, elements)
+      isNotCompliant(controllerElementId, elements)
     )
   ) {
     return true;

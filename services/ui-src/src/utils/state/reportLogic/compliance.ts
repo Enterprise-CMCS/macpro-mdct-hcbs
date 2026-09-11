@@ -1,7 +1,7 @@
 import { ElementType, PageElement } from "types";
 
 // Returns true when an IMA table has any row selected in a noncompliant column.
-export const tableIsNonCompliant = (
+export const isNotCompliant = (
   controllerElementId: string,
   elements: Partial<PageElement>[]
 ) => {
