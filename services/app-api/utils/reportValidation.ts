@@ -354,7 +354,7 @@ const imaTableTemplateSchema = object().shape({
         isUserCreated: boolean().notRequired(),
       })
     )
-    .notRequired(),
+    .required(),
   answer: array()
     .of(
       object().shape({
