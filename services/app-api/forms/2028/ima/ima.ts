@@ -224,6 +224,72 @@ export const imaReportTemplate: ReportBase = {
             },
           ],
         },
+        {
+          type: ElementType.ImaTable,
+          id: "eletronic-incident-systems-table",
+          caption: "Electronic Incident Systems Table",
+          label:
+            "Does this IM system enable the state to do each of the following?",
+          errorMessage: "Not compliant.",
+          columns: [
+            {
+              id: "eis-description",
+              label: "Actions",
+              type: "description",
+            },
+            { id: "eis-radio-yes", label: "Yes", type: "answer" },
+            {
+              id: "eis-radio-no",
+              label: "No",
+              type: "answer",
+              nonCompliant: true,
+            },
+            { id: "eis-delete", label: "Delete", type: "delete" },
+          ],
+          rows: [
+            {
+              id: "collect-data",
+              description: "Collect electronic critical incident data",
+            },
+            {
+              id: "track-data",
+              description:
+                "Track that data, including the status and resolution of investigations",
+            },
+            {
+              id: "identify-trends-in-data",
+              description: "Identify trends in that data",
+            },
+          ],
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: ["eletronic-incident-systems-table"],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
+          controllerElementId: ["eletronic-incident-systems-table"],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          showWhenNonCompliant: ["eletronic-incident-systems-table"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: ["eletronic-incident-systems-table"],
+          required: true,
+        },
       ],
     },
     {
