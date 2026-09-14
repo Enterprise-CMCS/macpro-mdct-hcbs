@@ -263,6 +263,7 @@ const radioTemplateSchema = object().shape({
   required: boolean().required(),
   clickAction: string().notRequired(),
   hideCondition: hideConditionSchema,
+  nonCompliantOn: string().notRequired(),
 });
 
 const checkboxTemplateSchema = object().shape({
