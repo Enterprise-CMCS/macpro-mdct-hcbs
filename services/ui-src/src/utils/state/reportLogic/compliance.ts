@@ -18,7 +18,13 @@ export const isNotCompliant = (
   const rows = (table.answer ?? table.rows ?? []).filter(
     (row) => !row.isUserCreated
   );
-  return rows.some(
-    (row) => row.answer && nonCompliantColumnIds.has(row.answer)
-  );
+  return rows.some((row) => {
+    if (!row.answer) return false;
+
+    const rowSpecificNonCompliantAnswers = row.nonCompliantAnswers ?? [];
+    return (
+      rowSpecificNonCompliantAnswers.includes(row.answer) ||
+      nonCompliantColumnIds.has(row.answer)
+    );
+  });
 };

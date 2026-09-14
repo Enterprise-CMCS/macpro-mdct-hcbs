@@ -43,6 +43,43 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
+  it("returns true when a row selects a row-specific non-compliant answer", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          columns: [{ id: "yes", label: "Yes", type: "answer" }],
+          rows: [
+            {
+              id: "claims",
+              description: "Claims",
+              answer: "no-permissible-not-used",
+              nonCompliantAnswers: ["no-permissible-not-used"],
+            },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("returns false when a row-specific non-compliant answer is selected on a user-created row", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          columns: [{ id: "yes", label: "Yes", type: "answer" }],
+          rows: [
+            {
+              id: "other-source",
+              description: "Other source",
+              answer: "no-permissible-not-used",
+              nonCompliantAnswers: ["no-permissible-not-used"],
+              isUserCreated: true,
+            },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
   it("ignores a user-created row selecting a non-compliant column", () => {
     expect(
       isNotCompliant("ima-table", [

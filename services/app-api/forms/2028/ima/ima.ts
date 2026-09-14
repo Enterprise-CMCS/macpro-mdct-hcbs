@@ -12,6 +12,12 @@ import {
   waiverListInputField,
 } from "../elements";
 import { CRITICAL_INCIDENT_TYPES } from "./incidentTypes";
+import {
+  DATA_SOURCE_COLUMNS,
+  INCIDENT_REPORTING_COLUMNS,
+  UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_DURING,
+  UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_FAILURE,
+} from "./incidentsDuringAndFailureTables";
 
 export const imaReportTemplate: ReportBase = {
   type: ReportType.IMA,
@@ -22,6 +28,8 @@ export const imaReportTemplate: ReportBase = {
       childPageIds: [
         "general-info",
         "critical-incident-definitions",
+        "incidents-during-delivery-of-services",
+        "incidents-due-to-failure-to-deliver-services",
         "review-submit",
       ],
     },
@@ -132,6 +140,168 @@ export const imaReportTemplate: ReportBase = {
           label:
             "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
           showWhenNonCompliant: ["critical-incident-definitions-table"],
+          required: true,
+        },
+      ],
+    },
+    {
+      id: "incidents-during-delivery-of-services",
+      navTitle: "Incidents During Delivery of Services",
+      tabTitle: "Incidents During Delivery of Services - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "incidents-during-delivery-header",
+          text: "Incidents during delivery of services",
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "incidents-during-delivery-provider-reporting-table",
+          caption:
+            "Incidents During Delivery of Services Provider Reporting Table",
+          label:
+            "For each of the following incident types: Do all HCBS programs under this IM system require providers to report critical incidents occurring during service delivery, as specified in person-centered plans, within State-specified timeframes and procedures?",
+          helperText:
+            "If some programs include the incident type but others do not, select “No.”",
+          errorMessage: "Not compliant.",
+          columns: INCIDENT_REPORTING_COLUMNS,
+          rows: CRITICAL_INCIDENT_TYPES,
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "incidents-during-delivery-unreported-data-sources-table",
+          caption:
+            "Incidents During Delivery of Services Unreported Critical Incident Data Sources Table",
+          label:
+            "To the extent permissible, does the state use the following data sources to identify critical incidents that are unreported by providers and occur during the delivery of services?",
+          addButtonText: "Add data source",
+          userCreatedRowLabel: "Data source:",
+          errorMessage: "Not compliant.",
+          allowUserCreatedRows: true,
+          columns: DATA_SOURCE_COLUMNS,
+          rows: UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_DURING,
+        },
+        {
+          type: ElementType.Divider,
+          id: "incidents-during-delivery-divider",
+          showWhenNonCompliant: [
+            "incidents-during-delivery-provider-reporting-table",
+            "incidents-during-delivery-unreported-data-sources-table",
+          ],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "incidents-during-delivery-compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must require providers to report all critical incident types, and the state must utilize permissible required data sources (Claims data, MFCU, APS, CPS) to identify unreported incidents. If your system does not meet these requirements, please use the fields below to provide further detail.",
+          controllerElementId: [
+            "incidents-during-delivery-provider-reporting-table",
+            "incidents-during-delivery-unreported-data-sources-table",
+          ],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "incidents-during-delivery-noncompliance-justification",
+          label: "Justification for system noncompliance",
+          showWhenNonCompliant: [
+            "incidents-during-delivery-provider-reporting-table",
+            "incidents-during-delivery-unreported-data-sources-table",
+          ],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "incidents-during-delivery-timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: [
+            "incidents-during-delivery-provider-reporting-table",
+            "incidents-during-delivery-unreported-data-sources-table",
+          ],
+          required: true,
+        },
+      ],
+    },
+    {
+      id: "incidents-due-to-failure-to-deliver-services",
+      navTitle: "Incidents Due to Failure to Deliver Services",
+      tabTitle: "Incidents Due to Failure to Deliver Services - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "incidents-failure-to-deliver-header",
+          text: "Incidents due to failure to deliver services",
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "incidents-failure-to-deliver-provider-reporting-table",
+          caption:
+            "Incidents Due to Failure to Deliver Services Provider Reporting Table",
+          label:
+            "For each of the following incident types: Do all HCBS programs under this IM system require providers to report critical incidents occurring due to failure to deliver services, as specified in person-centered plans, within State-specified timeframes and procedures?",
+          helperText:
+            "If some programs include the incident type but others do not, select “No.”",
+          errorMessage: "Not compliant.",
+          columns: INCIDENT_REPORTING_COLUMNS,
+          rows: CRITICAL_INCIDENT_TYPES,
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "incidents-failure-to-deliver-unreported-data-sources-table",
+          caption:
+            "Incidents Due to Failure to Deliver Services Unreported Critical Incident Data Sources Table",
+          label:
+            "To the extent permissible, does the state use the following data sources to identify critical incidents that are unreported by providers and occur due to the failure to deliver services?",
+          addButtonText: "Add other agency",
+          userCreatedRowLabel: "Other agency:",
+          errorMessage: "Not compliant.",
+          allowUserCreatedRows: true,
+          columns: DATA_SOURCE_COLUMNS,
+          rows: UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_FAILURE,
+        },
+        {
+          type: ElementType.Divider,
+          id: "incidents-failure-to-deliver-divider",
+          showWhenNonCompliant: [
+            "incidents-failure-to-deliver-provider-reporting-table",
+            "incidents-failure-to-deliver-unreported-data-sources-table",
+          ],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "incidents-failure-to-deliver-compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must require providers to report all critical incident types, and the state must utilize permissible required data sources (Claims data, MFCU, APS, CPS) to identify unreported incidents. If your system does not meet these requirements, please use the fields below to provide further detail.",
+          controllerElementId: [
+            "incidents-failure-to-deliver-provider-reporting-table",
+            "incidents-failure-to-deliver-unreported-data-sources-table",
+          ],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "incidents-failure-to-deliver-noncompliance-justification",
+          label: "Justification for system noncompliance",
+          showWhenNonCompliant: [
+            "incidents-failure-to-deliver-provider-reporting-table",
+            "incidents-failure-to-deliver-unreported-data-sources-table",
+          ],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "incidents-failure-to-deliver-timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: [
+            "incidents-failure-to-deliver-provider-reporting-table",
+            "incidents-failure-to-deliver-unreported-data-sources-table",
+          ],
           required: true,
         },
       ],

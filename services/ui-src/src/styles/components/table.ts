@@ -238,10 +238,58 @@ const imaVariant = {
         padding: 0,
         minHeight: "2.5rem",
       },
+      "&.ima-delete-cell": {
+        padding: "16px",
+        verticalAlign: "middle",
+        textAlign: "center",
+        ".ima-delete-button": {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "0 auto",
+        },
+      },
       ".ima-user-created-row label": {
         margin: "0.5rem 0",
         fontSize: "body_md",
         minWidth: "33%",
+      },
+    },
+    "&.ima-table--extra-wide": {
+      width: "100%",
+      maxWidth: "992px",
+      tableLayout: "fixed",
+      th: {
+        padding: "0.75rem",
+        lineHeight: "1.35",
+        verticalAlign: "top",
+        textAlign: "left",
+        whiteSpace: "normal",
+        wordBreak: "normal",
+        overflowWrap: "break-word",
+        "&:first-of-type": {
+          width: "36%",
+        },
+        "&:nth-of-type(2)": {
+          width: "19%",
+        },
+        "&:nth-of-type(3)": {
+          width: "19%",
+        },
+        "&:nth-of-type(4)": {
+          width: "19%",
+        },
+        "&:last-of-type": {
+          width: "7%",
+          whiteSpace: "nowrap",
+        },
+      },
+      td: {
+        "&:first-of-type": {
+          width: "36%",
+          textAlign: "left",
+        },
       },
     },
     tr: {

@@ -870,6 +870,7 @@ export type ImaTableRow = {
   id: string;
   description: string;
   answer?: string;
+  nonCompliantAnswers?: string[];
   isUserCreated?: boolean;
 };
 

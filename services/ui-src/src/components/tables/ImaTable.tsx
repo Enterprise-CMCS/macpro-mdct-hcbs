@@ -59,6 +59,8 @@ export const ImaTable = ({
   const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
+  const tableClassName =
+    visibleColumns.length >= 5 ? "ima-table--extra-wide" : undefined;
   // Only show the required-response error after a user has blurred the field.
   const [touchedRowIds, setTouchedRowIds] = useState(new Set<string>());
 
@@ -66,7 +68,7 @@ export const ImaTable = ({
     <fieldset className="ds-c-fieldset ima-table-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
-      <Table variant="ima">
+      <Table variant="ima" className={tableClassName}>
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
@@ -85,6 +87,10 @@ export const ImaTable = ({
             const selectedColumn = answerColumns.find(
               (column) => column.id === row.answer
             );
+            const rowHasNonCompliantAnswer =
+              !!row.answer &&
+              (selectedColumn?.nonCompliant ||
+                row.nonCompliantAnswers?.includes(row.answer));
             return (
               <Tr key={row.id}>
                 <Td>
@@ -125,7 +131,7 @@ export const ImaTable = ({
                       </HStack>
                     )}
                   {!row.isUserCreated &&
-                    selectedColumn?.nonCompliant &&
+                    rowHasNonCompliantAnswer &&
                     errorMessage && (
                       <HStack
                         role="alert"
@@ -155,7 +161,7 @@ export const ImaTable = ({
                   </Td>
                 ))}
                 {allowUserCreatedRows && (
-                  <Td>
+                  <Td className="ima-delete-cell">
                     {row.isUserCreated && (
                       <Button
                         className="ima-delete-button"
