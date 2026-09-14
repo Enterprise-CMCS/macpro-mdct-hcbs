@@ -201,6 +201,9 @@ const imaVariant = {
       verticalAlign: "top",
       border: "none",
       overflowWrap: "break-word",
+      "&.ima-answer-cell": {
+        paddingRight: "16px",
+      },
       "&:first-of-type": {
         textAlign: "left",
       },
