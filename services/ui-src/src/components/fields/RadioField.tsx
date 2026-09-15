@@ -166,7 +166,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
           marginTop="0.25rem"
         >
           <Image src={errorIcon} alt="" boxSize="1rem" />
-          <Text as="span" color="palette.error" fontSize="body_md">
+          <Text as="span" color="palette.error" fontSize="body_sm">
             Not compliant.
           </Text>
         </Box>
@@ -178,7 +178,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
     return null;
   }
   return (
-    <Box sx={sx.radio}>
+    <Box sx={radio.nonCompliantOn ? sx.nonCompliantRadioQuestion : undefined}>
       <CmsdsChoiceList
         name={radio.id}
         type={"radio"}
@@ -207,7 +207,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
 };
 
 const sx = {
-  radio: {
+  nonCompliantRadioQuestion: {
     ".ds-c-fieldset > .ds-c-label": {
       maxWidth: "100%",
     },
