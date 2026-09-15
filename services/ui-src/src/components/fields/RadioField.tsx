@@ -166,7 +166,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
           marginTop="0.25rem"
         >
           <Image src={errorIcon} alt="" boxSize="1rem" />
-          <Text as="span" color="palette.error" fontSize="body_sm">
+          <Text as="span" color="palette.error" fontSize="body_md">
             Not compliant.
           </Text>
         </Box>
