@@ -197,7 +197,7 @@ describe("<RadioField />", () => {
   it("should show Not compliant when selected choice is non-compliant", async () => {
     const nonCompliantElement: RadioTemplate = {
       ...mockRadioElement,
-      id: "separate-investigations-question-1",
+      id: "mock-non-compliant-radio-id",
       answer: "no",
       nonCompliantOn: "no",
       choices: [

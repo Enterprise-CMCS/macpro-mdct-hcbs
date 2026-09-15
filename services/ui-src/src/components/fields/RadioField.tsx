@@ -65,8 +65,6 @@ const hintTextColor = (clickAction?: string) => {
 
 export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   const radio = props.element;
-  const compliantRadioQuestion =
-    radio.id === "separate-investigations-question-1";
   const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
@@ -176,7 +174,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
     return null;
   }
   return (
-    <Box sx={compliantRadioQuestion ? sx.compliantRadioQuestion : undefined}>
+    <Box sx={radio.nonCompliantOn ? sx.nonCompliantRadioQuestion : undefined}>
       <CmsdsChoiceList
         name={radio.id}
         type={"radio"}
@@ -205,7 +203,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
 };
 
 const sx = {
-  compliantRadioQuestion: {
+  nonCompliantRadioQuestion: {
     ".ds-c-fieldset > .ds-c-label": {
       maxWidth: "100%",
     },
