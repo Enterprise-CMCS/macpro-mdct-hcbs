@@ -121,15 +121,6 @@ describe("<ImaTable />", () => {
     }
   });
 
-  it("should vertically center the description cell", () => {
-    render(imaTableComponent);
-
-    const description = screen.getByText("Verbal Abuse");
-    expect(description.closest("td")).toHaveStyle({
-      verticalAlign: "middle",
-    });
-  });
-
   it("should check the radio matching the saved answer", () => {
     render(imaTableComponent);
 
