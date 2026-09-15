@@ -258,7 +258,7 @@ export const imaReportTemplate: ReportBase = {
           label:
             "To the extent permissible, does the state use the following data sources to identify critical incidents that are unreported by providers and occur due to the failure to deliver services?",
           addButtonText: "Add other agency",
-          userCreatedRowLabel: "Other agency:",
+          userCreatedRowLabel: "Other:",
           errorMessage: "Not compliant.",
           allowUserCreatedRows: true,
           columns: DATA_SOURCE_COLUMNS,
