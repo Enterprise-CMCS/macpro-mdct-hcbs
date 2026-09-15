@@ -30,6 +30,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
     userCreatedRowLabel,
     errorMessage,
     allowUserCreatedRows,
+    requiredCompliantAnswerId,
   } = element;
 
   const [rows, setRows] = useState<ImaTableRow[]>(() =>
@@ -77,6 +78,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
         userCreatedRowLabel,
         errorMessage,
         allowUserCreatedRows,
+        requiredCompliantAnswerId,
         disabled,
         onAnswerChange,
         onDescriptionChange,

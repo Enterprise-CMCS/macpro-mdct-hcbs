@@ -246,6 +246,68 @@ describe("<ImaTable />", () => {
     expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
   });
 
+  it("should show every standard row as non-compliant when no row selected the required compliant answer", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        allowUserCreatedRows={false}
+        requiredCompliantAnswerId="ima-radio-status-and-resolution"
+        columns={[
+          { id: "entity-description", label: "Entity", type: "description" },
+          { id: "ima-radio-no-referral", label: "No Referral", type: "answer" },
+          {
+            id: "ima-radio-status-and-resolution",
+            label: "Status & Resolution",
+            type: "answer",
+          },
+        ]}
+        rows={[
+          {
+            id: "entity-a",
+            description: "Entity A",
+            answer: "ima-radio-no-referral",
+          },
+          { id: "entity-b", description: "Entity B" },
+        ]}
+      />
+    );
+
+    expect(screen.getAllByRole("alert")).toHaveLength(2);
+  });
+
+  it("should not show table-wide non-compliant errors when any standard row selected the required compliant answer", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        allowUserCreatedRows={false}
+        requiredCompliantAnswerId="ima-radio-status-and-resolution"
+        columns={[
+          { id: "entity-description", label: "Entity", type: "description" },
+          { id: "ima-radio-no-referral", label: "No Referral", type: "answer" },
+          {
+            id: "ima-radio-status-and-resolution",
+            label: "Status & Resolution",
+            type: "answer",
+          },
+        ]}
+        rows={[
+          {
+            id: "entity-a",
+            description: "Entity A",
+            answer: "ima-radio-no-referral",
+          },
+          {
+            id: "entity-b",
+            description: "Entity B",
+            answer: "ima-radio-status-and-resolution",
+          },
+        ]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
   it("should not show an error for a user created row answered no", () => {
     render(
       <ImaTable

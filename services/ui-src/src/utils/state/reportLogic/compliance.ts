@@ -1,6 +1,6 @@
 import { ElementType, PageElement } from "types";
 
-// Returns true when an IMA table has any row selected in a noncompliant column.
+// Returns true when an IMA table has a non-compliant answer configuration.
 export const isNotCompliant = (
   controllerElementId: string,
   elements: Partial<PageElement>[]
@@ -18,7 +18,12 @@ export const isNotCompliant = (
   const rows = (table.answer ?? table.rows ?? []).filter(
     (row) => !row.isUserCreated
   );
-  return rows.some(
-    (row) => row.answer && nonCompliantColumnIds.has(row.answer)
+  const isMissingRequiredCompliantAnswer =
+    table.requiredCompliantAnswerId &&
+    !rows.some((row) => row.answer === table.requiredCompliantAnswerId);
+
+  return (
+    Boolean(isMissingRequiredCompliantAnswer) ||
+    rows.some((row) => row.answer && nonCompliantColumnIds.has(row.answer))
   );
 };

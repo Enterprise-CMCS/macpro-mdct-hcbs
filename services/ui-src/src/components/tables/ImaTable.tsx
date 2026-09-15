@@ -33,6 +33,7 @@ interface ImaTableProps {
   allowUserCreatedRows?: boolean;
   disabled?: boolean;
   errorMessage?: string;
+  requiredCompliantAnswerId?: string;
   onAnswerChange: (rowId: string, columnId: string) => void;
   onDescriptionChange: (rowId: string, description: string) => void;
   onAddRow: () => void;
@@ -50,6 +51,7 @@ export const ImaTable = ({
   allowUserCreatedRows = false,
   disabled = false,
   errorMessage,
+  requiredCompliantAnswerId,
   onAnswerChange,
   onDescriptionChange,
   onAddRow,
@@ -59,6 +61,11 @@ export const ImaTable = ({
   const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
+  const isMissingRequiredCompliantAnswer =
+    requiredCompliantAnswerId &&
+    !rows
+      .filter((row) => !row.isUserCreated)
+      .some((row) => row.answer === requiredCompliantAnswerId);
   // Only show the required-response error after a user has blurred the field.
   const [touchedRowIds, setTouchedRowIds] = useState(new Set<string>());
 
@@ -125,7 +132,8 @@ export const ImaTable = ({
                       </HStack>
                     )}
                   {!row.isUserCreated &&
-                    selectedColumn?.nonCompliant &&
+                    (selectedColumn?.nonCompliant ||
+                      isMissingRequiredCompliantAnswer) &&
                     errorMessage && (
                       <HStack
                         role="alert"

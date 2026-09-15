@@ -43,6 +43,53 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
+  it("returns true when no standard row selects the required compliant answer", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          requiredCompliantAnswerId: "both",
+          rows: [
+            { id: "entity-a", description: "Entity A", answer: "status" },
+            { id: "entity-b", description: "Entity B", answer: "resolution" },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("returns false when a standard row selects the required compliant answer", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          requiredCompliantAnswerId: "both",
+          rows: [
+            { id: "entity-a", description: "Entity A", answer: "status" },
+            { id: "entity-b", description: "Entity B", answer: "both" },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
+  it("ignores user-created rows selecting the required compliant answer", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          requiredCompliantAnswerId: "both",
+          rows: [
+            { id: "entity-a", description: "Entity A", answer: "status" },
+            {
+              id: "other",
+              description: "Other entity",
+              answer: "both",
+              isUserCreated: true,
+            },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
   it("ignores a user-created row selecting a non-compliant column", () => {
     expect(
       isNotCompliant("ima-table", [
