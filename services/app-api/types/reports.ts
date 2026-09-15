@@ -884,6 +884,7 @@ export type ImaTableTemplate = {
   errorMessage?: string;
   allowUserCreatedRows?: boolean;
   requiredCompliantAnswerId?: string;
+  answerColumnGroupWidth?: string;
   columns: ImaTableColumn[];
   rows: ImaTableRow[];
   answer?: ImaTableRow[];

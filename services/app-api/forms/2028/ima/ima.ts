@@ -170,6 +170,7 @@ export const imaReportTemplate: ReportBase = {
                     "Choose 'No Referral' if incidents aren't sent to the entity, or 'No Info Shared' if they don't share back. For active sharing, specify if the state receives only the Status, only the Resolution, or Both.",
                   allowUserCreatedRows: false,
                   requiredCompliantAnswerId: "ima-radio-status-and-resolution",
+                  answerColumnGroupWidth: "75%",
                   errorMessage: "Not compliant.",
                   columns: [
                     {

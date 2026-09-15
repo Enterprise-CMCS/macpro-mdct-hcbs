@@ -275,6 +275,41 @@ describe("<ImaTable />", () => {
     expect(screen.getAllByRole("alert")).toHaveLength(2);
   });
 
+  it("should allocate the configured table width across answer columns", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        allowUserCreatedRows={false}
+        answerColumnGroupWidth="75%"
+        columns={[
+          { id: "entity-description", label: "Entity", type: "description" },
+          { id: "no-referral", label: "No Referral", type: "answer" },
+          {
+            id: "no-info-shared",
+            label: "No Information Shared",
+            type: "answer",
+          },
+          { id: "status-only", label: "Status Only", type: "answer" },
+          { id: "resolution-only", label: "Resolution Only", type: "answer" },
+          {
+            id: "status-and-resolution",
+            label: "Status & Resolution",
+            type: "answer",
+          },
+        ]}
+        rows={[{ id: "entity-a", description: "Entity A" }]}
+      />
+    );
+
+    expect(screen.getByRole("table")).toHaveStyle({ tableLayout: "fixed" });
+    expect(screen.getByRole("columnheader", { name: "Entity" })).toHaveStyle({
+      width: "25%",
+    });
+    expect(
+      screen.getByRole("columnheader", { name: "Status & Resolution" })
+    ).toHaveStyle({ width: "15%" });
+  });
+
   it("should not show table-wide non-compliant errors when any standard row selected the required compliant answer", () => {
     render(
       <ImaTable

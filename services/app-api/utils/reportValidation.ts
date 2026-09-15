@@ -338,6 +338,7 @@ const imaTableTemplateSchema = object().shape({
   errorMessage: string().notRequired(),
   allowUserCreatedRows: boolean().notRequired(),
   requiredCompliantAnswerId: string().notRequired(),
+  answerColumnGroupWidth: string().notRequired(),
   columns: array()
     .of(
       object().shape({

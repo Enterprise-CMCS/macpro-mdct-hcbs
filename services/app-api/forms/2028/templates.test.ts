@@ -96,6 +96,7 @@ describe("IMA Investigation Referrals", () => {
         expect.objectContaining({
           id: "investigation-referrals-table",
           type: ElementType.ImaTable,
+          answerColumnGroupWidth: "75%",
         }),
       ])
     );

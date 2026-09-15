@@ -34,6 +34,7 @@ interface ImaTableProps {
   disabled?: boolean;
   errorMessage?: string;
   requiredCompliantAnswerId?: string;
+  answerColumnGroupWidth?: string;
   onAnswerChange: (rowId: string, columnId: string) => void;
   onDescriptionChange: (rowId: string, description: string) => void;
   onAddRow: () => void;
@@ -52,6 +53,7 @@ export const ImaTable = ({
   disabled = false,
   errorMessage,
   requiredCompliantAnswerId,
+  answerColumnGroupWidth,
   onAnswerChange,
   onDescriptionChange,
   onAddRow,
@@ -61,6 +63,30 @@ export const ImaTable = ({
   const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
+  const parsedAnswerColumnGroupPercentage = answerColumnGroupWidth?.endsWith(
+    "%"
+  )
+    ? Number.parseFloat(answerColumnGroupWidth)
+    : Number.NaN;
+  const answerColumnGroupPercentage = Number.isFinite(
+    parsedAnswerColumnGroupPercentage
+  )
+    ? parsedAnswerColumnGroupPercentage
+    : undefined;
+  const nonAnswerColumnCount = visibleColumns.filter(
+    (column) => column.type !== "answer"
+  ).length;
+  const answerColumnWidth =
+    answerColumnGroupPercentage !== undefined && answerColumns.length > 0
+      ? `${answerColumnGroupPercentage / answerColumns.length}%`
+      : undefined;
+  const nonAnswerColumnWidth =
+    answerColumnGroupPercentage !== undefined && nonAnswerColumnCount > 0
+      ? `${(100 - answerColumnGroupPercentage) / nonAnswerColumnCount}%`
+      : undefined;
+  const getColumnWidth = (column: ImaTableColumn) =>
+    column.type === "answer" ? answerColumnWidth : nonAnswerColumnWidth;
+  const getWidthStyle = (width?: string) => (width ? { width } : undefined);
   const isMissingRequiredCompliantAnswer =
     requiredCompliantAnswerId &&
     !rows
@@ -73,14 +99,25 @@ export const ImaTable = ({
     <fieldset className="ds-c-fieldset ima-table-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
-      <Table variant="ima">
+      <Table
+        variant="ima"
+        style={
+          answerColumnGroupPercentage !== undefined
+            ? { tableLayout: "fixed" }
+            : undefined
+        }
+      >
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
         <Thead>
           <Tr>
             {visibleColumns.map((column) => (
-              <Th key={column.id} scope="col">
+              <Th
+                key={column.id}
+                scope="col"
+                style={getWidthStyle(getColumnWidth(column))}
+              >
                 {column.label}
               </Th>
             ))}
@@ -94,7 +131,7 @@ export const ImaTable = ({
             );
             return (
               <Tr key={row.id}>
-                <Td>
+                <Td style={getWidthStyle(nonAnswerColumnWidth)}>
                   {row.isUserCreated ? (
                     <HStack className="ima-user-created-row">
                       <FormLabel htmlFor={`description-${row.id}`} margin={0}>
@@ -148,7 +185,10 @@ export const ImaTable = ({
                     )}
                 </Td>
                 {answerColumns.map((column) => (
-                  <Td key={`${row.id}-${column.id}`}>
+                  <Td
+                    key={`${row.id}-${column.id}`}
+                    style={getWidthStyle(answerColumnWidth)}
+                  >
                     <Choice
                       id={`${row.id}-${column.id}`}
                       type="radio"
