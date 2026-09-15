@@ -27,6 +27,76 @@ describe("isNotCompliant", () => {
     ).toBe(false);
   });
 
+  it("detects a nested radio answer through its parent choice", () => {
+    expect(
+      isNotCompliant("parent-radio", [
+        {
+          id: "parent-radio",
+          type: ElementType.Radio,
+          label: "Parent",
+          required: true,
+          answer: "yes",
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  id: "nested-radio",
+                  type: ElementType.Radio,
+                  label: "Nested",
+                  required: true,
+                  answer: "no",
+                  nonCompliantOn: "no",
+                  choices: [
+                    { label: "Yes", value: "yes" },
+                    { label: "No", value: "no" },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ])
+    ).toBe(true);
+  });
+
+  it("checks nested answers even when the parent has nonCompliantOn", () => {
+    expect(
+      isNotCompliant("parent-radio", [
+        {
+          id: "parent-radio",
+          type: ElementType.Radio,
+          label: "Parent",
+          required: true,
+          answer: "yes",
+          nonCompliantOn: "no",
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  id: "nested-radio",
+                  type: ElementType.Radio,
+                  label: "Nested",
+                  required: true,
+                  answer: "no",
+                  nonCompliantOn: "no",
+                  choices: [
+                    { label: "Yes", value: "yes" },
+                    { label: "No", value: "no" },
+                  ],
+                },
+              ],
+            },
+            { label: "No", value: "no" },
+          ],
+        },
+      ])
+    ).toBe(true);
+  });
+
   it("returns false when the table has no column metadata", () => {
     expect(
       isNotCompliant("ima-table", [createTable({ columns: undefined })])

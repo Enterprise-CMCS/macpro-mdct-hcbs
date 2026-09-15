@@ -171,6 +171,7 @@ export const imaReportTemplate: ReportBase = {
                   label:
                     'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link" target="_blank" rel="noopener noreferrer">45 CFR part 164<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>&nbsp;?',
                   required: true,
+                  nonCompliantOn: "no",
                   choices: [
                     {
                       label: "Yes",
@@ -265,7 +266,10 @@ export const imaReportTemplate: ReportBase = {
         {
           type: ElementType.Divider,
           id: "divider",
-          showWhenNonCompliant: ["eletronic-incident-systems-table"],
+          showWhenNonCompliant: [
+            "info-systems-question-1",
+            "eletronic-incident-systems-table",
+          ],
         },
         {
           type: ElementType.ComplianceAlert,
@@ -273,13 +277,19 @@ export const imaReportTemplate: ReportBase = {
           status: AlertTypes.WARNING,
           title: "This incident management system appears to be non-compliant.",
           text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
-          controllerElementId: ["eletronic-incident-systems-table"],
+          controllerElementId: [
+            "info-systems-question-1",
+            "eletronic-incident-systems-table",
+          ],
         },
         {
           type: ElementType.TextAreaField,
           id: "noncompliance-justification",
           label: "Justification for system noncompliance:",
-          showWhenNonCompliant: ["eletronic-incident-systems-table"],
+          showWhenNonCompliant: [
+            "info-systems-question-1",
+            "eletronic-incident-systems-table",
+          ],
           required: true,
         },
         {
@@ -287,7 +297,10 @@ export const imaReportTemplate: ReportBase = {
           id: "timeline-justification",
           label:
             "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
-          showWhenNonCompliant: ["eletronic-incident-systems-table"],
+          showWhenNonCompliant: [
+            "info-systems-question-1",
+            "eletronic-incident-systems-table",
+          ],
           required: true,
         },
       ],
