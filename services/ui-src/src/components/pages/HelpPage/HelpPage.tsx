@@ -23,7 +23,11 @@ export const HelpPage = () => {
           <Text sx={sx.bodyText}>For technical support and login issues:</Text>
           <Text sx={sx.emailText}>
             Email {!isDesktop && <br />}
-            <Link href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`} target="_blank">
+            <Link
+              href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {HELP_DESK_EMAIL_ADDRESS}
             </Link>
           </Text>
@@ -32,7 +36,11 @@ export const HelpPage = () => {
           <Text sx={sx.bodyText}>For questions about the online form:</Text>
           <Text sx={sx.emailText}>
             Email {!isDesktop && <br />}
-            <Link href={`mailto:${hcbsDemoEmailAddress}`} target="_blank">
+            <Link
+              href={`mailto:${hcbsDemoEmailAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {hcbsDemoEmailAddress}
             </Link>
           </Text>
