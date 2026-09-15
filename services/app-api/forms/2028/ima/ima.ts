@@ -151,76 +151,96 @@ export const imaReportTemplate: ReportBase = {
           text: "Investigation referrals",
         },
         {
-          type: ElementType.ImaTable,
-          id: "investigation-referrals-table",
-          caption: "Investigation Referrals Table",
+          type: ElementType.Radio,
+          id: "investigation-referrals-question",
           label:
-            "Select the option that best describes how critical incident information is shared with each entity:",
-          helperText:
-            "Choose 'No Referral' if incidents aren't sent to the entity, or 'No Info Shared' if they don't share back. For active sharing, specify if the state receives only the Status, only the Resolution, or Both.",
-          allowUserCreatedRows: false,
-          requiredCompliantAnswerId: "ima-radio-status-and-resolution",
-          errorMessage: "Not compliant.",
-          columns: [
+            "Does the state refer critical incidents to another entity for investigation?",
+          choices: [
             {
-              id: "entity-description",
-              label: "Entity",
-              type: "description",
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.ImaTable,
+                  id: "investigation-referrals-table",
+                  caption: "Investigation Referrals Table",
+                  label:
+                    "Select the option that best describes how critical incident information is shared with each entity:",
+                  helperText:
+                    "Choose 'No Referral' if incidents aren't sent to the entity, or 'No Info Shared' if they don't share back. For active sharing, specify if the state receives only the Status, only the Resolution, or Both.",
+                  allowUserCreatedRows: false,
+                  requiredCompliantAnswerId: "ima-radio-status-and-resolution",
+                  errorMessage: "Not compliant.",
+                  columns: [
+                    {
+                      id: "entity-description",
+                      label: "Entity",
+                      type: "description",
+                    },
+                    {
+                      id: "ima-radio-no-referral",
+                      label: "No Referral",
+                      type: "answer",
+                    },
+                    {
+                      id: "ima-radio-no-info-shared",
+                      label: "No Information Shared",
+                      type: "answer",
+                    },
+                    {
+                      id: "ima-radio-status-only",
+                      label: "Status Only",
+                      type: "answer",
+                    },
+                    {
+                      id: "ima-radio-resolution-only",
+                      label: "Resolution Only",
+                      type: "answer",
+                    },
+                    {
+                      id: "ima-radio-status-and-resolution",
+                      label: "Status & Resolution",
+                      type: "answer",
+                    },
+                  ],
+                  rows: INVESTIGATION_ENTITIES,
+                },
+                {
+                  type: ElementType.Divider,
+                  id: "divider",
+                  showWhenNonCompliant: ["investigation-referrals-table"],
+                },
+                {
+                  type: ElementType.ComplianceAlert,
+                  id: "compliance-alert",
+                  status: AlertTypes.WARNING,
+                  title:
+                    "This incident management system appears to be non-compliant.",
+                  text: "To be found in compliance, if the state refers critical incidents to another entity for investigation, then the state and entity must both share status and resolution.",
+                  controllerElementId: ["investigation-referrals-table"],
+                },
+                {
+                  type: ElementType.TextAreaField,
+                  id: "noncompliance-justification",
+                  label: "Justification for system noncompliance:",
+                  showWhenNonCompliant: ["investigation-referrals-table"],
+                  required: true,
+                },
+                {
+                  type: ElementType.TextAreaField,
+                  id: "timeline-justification",
+                  label:
+                    "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+                  showWhenNonCompliant: ["investigation-referrals-table"],
+                  required: true,
+                },
+              ],
             },
             {
-              id: "ima-radio-no-referral",
-              label: "No Referral",
-              type: "answer",
-            },
-            {
-              id: "ima-radio-no-info-shared",
-              label: "No Information Shared",
-              type: "answer",
-            },
-            {
-              id: "ima-radio-status-only",
-              label: "Status Only",
-              type: "answer",
-            },
-            {
-              id: "ima-radio-resolution-only",
-              label: "Resolution Only",
-              type: "answer",
-            },
-            {
-              id: "ima-radio-status-and-resolution",
-              label: "Status & Resolution",
-              type: "answer",
+              label: "No",
+              value: "no",
             },
           ],
-          rows: INVESTIGATION_ENTITIES,
-        },
-        {
-          type: ElementType.Divider,
-          id: "divider",
-          showWhenNonCompliant: ["investigation-referrals-table"],
-        },
-        {
-          type: ElementType.ComplianceAlert,
-          id: "compliance-alert",
-          status: AlertTypes.WARNING,
-          title: "This incident management system appears to be non-compliant.",
-          text: "To be found in compliance, if the state refers critical incidents to another entity for investigation, then the state and entity must both share status and resolution.",
-          controllerElementId: ["investigation-referrals-table"],
-        },
-        {
-          type: ElementType.TextAreaField,
-          id: "noncompliance-justification",
-          label: "Justification for system noncompliance:",
-          showWhenNonCompliant: ["investigation-referrals-table"],
-          required: true,
-        },
-        {
-          type: ElementType.TextAreaField,
-          id: "timeline-justification",
-          label:
-            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
-          showWhenNonCompliant: ["investigation-referrals-table"],
           required: true,
         },
       ],

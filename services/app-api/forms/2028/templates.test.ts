@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PageType } from "../../types/reports";
+import { ElementType, PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { pcpReportTemplate } from "./pcp/pcp";
@@ -62,5 +62,48 @@ describe.each(reportsToTest)("Report Template: $name", ({ template }) => {
         expect(existingUids).toContain(measure.uid);
       }
     });
+  });
+});
+
+describe("IMA Investigation Referrals", () => {
+  it("shows the referrals table only when the controlling question is answered yes", () => {
+    const page = imaReportTemplate.pages.find(
+      (page) => page.id === "investigation-referrals"
+    );
+    expect(page?.elements).toBeDefined();
+
+    const controller = page?.elements?.find(
+      (element) => element.id === "investigation-referrals-question"
+    );
+    expect(controller).toMatchObject({
+      type: ElementType.Radio,
+      required: true,
+    });
+
+    if (controller?.type !== ElementType.Radio) {
+      throw new Error(
+        "Expected investigation referrals controller to be a radio"
+      );
+    }
+
+    const yesChoice = controller.choices.find(
+      (choice) => choice.value === "yes"
+    );
+    const noChoice = controller.choices.find((choice) => choice.value === "no");
+
+    expect(yesChoice?.checkedChildren).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "investigation-referrals-table",
+          type: ElementType.ImaTable,
+        }),
+      ])
+    );
+    expect(noChoice?.checkedChildren).toBeUndefined();
+    expect(
+      page?.elements?.some(
+        (element) => element.id === "investigation-referrals-table"
+      )
+    ).toBe(false);
   });
 });
