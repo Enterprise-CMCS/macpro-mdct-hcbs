@@ -193,7 +193,7 @@ export const imaReportTemplate: ReportBase = {
           type: ElementType.TextAreaField,
           id: "separate-investigations-noncompliance-question-1",
           label:
-            "Describe how the state determines that an investigation has not been resolved within the specified timeframe, and requires a separate investigation.",
+            "Describe how the state determines that an investigation has been resolved.",
           showWhenNonCompliant: ["separate-investigations-question-1"],
           required: true,
         },
