@@ -203,9 +203,11 @@ const imaVariant = {
       overflowWrap: "break-word",
       "&:first-of-type": {
         textAlign: "left",
+        verticalAlign: "middle",
       },
       "&:nth-of-type(n + 2)": {
         textAlign: "center",
+        verticalAlign: "middle",
       },
       ".ds-c-choice-wrapper": {
         display: "flex",
