@@ -160,6 +160,7 @@ export const imaReportTemplate: ReportBase = {
           label:
             'Does this IM system use an "information system" that matches that definition?',
           required: true,
+          nonCompliantOn: "no",
           choices: [
             {
               label: "Yes",
@@ -276,7 +277,7 @@ export const imaReportTemplate: ReportBase = {
           id: "compliance-alert",
           status: AlertTypes.WARNING,
           title: "This incident management system appears to be non-compliant.",
-          text: "To be found in compliance, all HCBS programs under this IM system must define critical incidents to include all incident types listed above. If your system does not meet this requirement, please use the fields below to provide further detail.",
+          text: "To be found in compliance, all HCBS programs under this IM system must use an electronic information system that complies with the security and privacy provisions described in 45 CFR Part 164, and collects, tracks, and identifies trends in electronic critical incident data.",
           controllerElementId: [
             "info-systems-question-1",
             "eletronic-incident-systems-table",
