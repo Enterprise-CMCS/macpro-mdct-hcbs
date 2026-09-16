@@ -569,6 +569,7 @@ export type RadioTemplate = {
   required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
+  nonCompliantOn?: string;
 };
 
 export type CheckboxTemplate = {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, useDisclosure } from "@chakra-ui/react";
+import { Box, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import { ChoiceTemplate, PageElement, RadioTemplate } from "types";
 import { parseHtml, useStore } from "utils";
@@ -9,6 +9,7 @@ import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/C
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
 import { Modal } from "components";
+import errorIcon from "assets/icons/status/icon_status_alert.svg";
 
 const formatChoices = (
   choices: ChoiceTemplate[],
@@ -52,7 +53,7 @@ const formatChoices = (
   });
 };
 
-const hintTextColor = (clickAction: string) => {
+const hintTextColor = (clickAction?: string) => {
   switch (clickAction) {
     case "qmReportingChange":
     case "qmDeliveryMethodChange":
@@ -143,19 +144,37 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
     }
   };
 
+  const labelText = radio.label;
+  const showNonCompliantMessage =
+    radio.answer !== undefined && radio.answer === radio.nonCompliantOn;
   const parsedHint = (
     // This is as="span" because it is inside a CMSDS Hint, which is a <p>.
-    <Box as="span" color={hintTextColor(radio.clickAction!)}>
+    <Box as="span" color={hintTextColor(radio.clickAction)}>
       {radio.helperText && parseHtml(radio.helperText)}
+      {showNonCompliantMessage && (
+        <Box
+          as="span"
+          role="alert"
+          display="inline-flex"
+          alignItems="center"
+          gap="0.25rem"
+          color="palette.error"
+          marginTop="0.25rem"
+        >
+          <Image src={errorIcon} alt="" boxSize="1rem" />
+          <Text as="span" color="palette.error" fontSize="body_sm">
+            Not compliant.
+          </Text>
+        </Box>
+      )}
     </Box>
   );
-  const labelText = radio.label;
 
   if (hideElement) {
     return null;
   }
   return (
-    <Box>
+    <Box sx={radio.nonCompliantOn ? sx.nonCompliantRadioQuestion : undefined}>
       <CmsdsChoiceList
         name={radio.id}
         type={"radio"}
@@ -184,6 +203,11 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
 };
 
 const sx = {
+  nonCompliantRadioQuestion: {
+    ".ds-c-fieldset > .ds-c-label": {
+      maxWidth: "100%",
+    },
+  },
   children: {
     padding: "0 0 0 22px",
     border: "4px #0071BC solid",
