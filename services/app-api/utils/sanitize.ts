@@ -32,6 +32,12 @@ DOMPurify.setConfig({
   KEEP_CONTENT: false,
 });
 
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.tagName === "A" && node.getAttribute("target") === "_blank") {
+    node.setAttribute("rel", "noopener noreferrer");
+  }
+});
+
 // sanitize string
 export const sanitizeString = (string: string) => {
   if (DOMPurify.isSupported) {
