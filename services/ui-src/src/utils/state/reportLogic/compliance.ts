@@ -31,7 +31,7 @@ const isElementNotCompliant = (element: Partial<PageElement>): boolean => {
   );
 };
 
-// Returns true when the configured controller element is non-compliant
+// Returns true when the configured controller element and nested children is non-compliant
 export const isNotCompliant = (
   controllerElementId: string,
   elements: Partial<PageElement>[]
