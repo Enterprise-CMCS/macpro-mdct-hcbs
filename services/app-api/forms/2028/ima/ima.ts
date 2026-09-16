@@ -30,6 +30,7 @@ export const imaReportTemplate: ReportBase = {
         "critical-incident-definitions",
         "incidents-during-delivery-of-services",
         "incidents-due-to-failure-to-deliver-services",
+        "separate-investigations",
         "review-submit",
       ],
     },
@@ -302,6 +303,83 @@ export const imaReportTemplate: ReportBase = {
             "incidents-failure-to-deliver-provider-reporting-table",
             "incidents-failure-to-deliver-unreported-data-sources-table",
           ],
+          required: true,
+        },
+      ],
+    },
+    {
+      id: "separate-investigations",
+      navTitle: "Separate Investigations",
+      tabTitle: "Separate Investigations - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "separate-investigations-header",
+          text: "Separate investigations",
+        },
+        {
+          type: ElementType.Radio,
+          id: "separate-investigations-question-1",
+          label:
+            "If the investigating entity fails to report a resolution within the state-specified timeframe, does the state conduct its own separate investigation of the critical incident report?",
+          required: true,
+          nonCompliantOn: "no",
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.TextAreaField,
+                  id: "separate-investigations-question-2",
+                  label:
+                    "Describe how the state determines that an investigation has not been resolved within the specified timeframe, and requires a separate investigation.",
+                  required: true,
+                },
+              ],
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        {
+          type: ElementType.Divider,
+          id: "separate-investigations-divider",
+          showWhenNonCompliant: ["separate-investigations-question-1"],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "separate-investigations-compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, states must conduct its own separate investigation of the critical incident report if the investigating entity fails to report a resolution within the state-specified timeframe.",
+          controllerElementId: ["separate-investigations-question-1"],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "separate-investigations-noncompliance-question-1",
+          label:
+            "Describe how the state determines that an investigation has been resolved.",
+          showWhenNonCompliant: ["separate-investigations-question-1"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "separate-investigations-noncompliance-justification",
+          label: "Justification for system noncompliance.",
+          showWhenNonCompliant: ["separate-investigations-question-1"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "separate-investigations-noncompliance-timeline",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: ["separate-investigations-question-1"],
           required: true,
         },
       ],

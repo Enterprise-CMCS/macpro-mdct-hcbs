@@ -194,5 +194,24 @@ describe("<RadioField />", () => {
     expect(mockClearMeasure).toHaveBeenCalled();
   });
 
+  it("should show Not compliant when selected choice is non-compliant", async () => {
+    const nonCompliantElement: RadioTemplate = {
+      ...mockRadioElement,
+      id: "mock-non-compliant-radio-id",
+      answer: "no",
+      nonCompliantOn: "no",
+      choices: [
+        { label: "Yes", value: "yes" },
+        { label: "No", value: "no" },
+      ],
+    };
+
+    render(
+      <RadioField element={nonCompliantElement} updateElement={updateSpy} />
+    );
+
+    expect(screen.getByText("Not compliant.")).toBeVisible();
+  });
+
   testA11y(RadioFieldComponent);
 });

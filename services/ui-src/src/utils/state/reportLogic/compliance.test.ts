@@ -33,6 +33,23 @@ describe("isNotCompliant", () => {
     ).toBe(false);
   });
 
+  it("returns true when radio answer selects a non-compliant choice", () => {
+    expect(
+      isNotCompliant("separate-investigations-question-1", [
+        {
+          id: "separate-investigations-question-1",
+          type: ElementType.Radio,
+          answer: "no",
+          nonCompliantOn: "no",
+          choices: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+          ],
+        } as any,
+      ])
+    ).toBe(true);
+  });
+
   it("returns true when a row selects a non-compliant column", () => {
     expect(
       isNotCompliant("ima-table", [
