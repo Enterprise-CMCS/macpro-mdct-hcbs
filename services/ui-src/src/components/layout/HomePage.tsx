@@ -19,7 +19,7 @@ import { Banner } from "components/alerts/Banner";
 export const HomePage = () => {
   const banner = useStore(activeBannerSelector(BannerAreas.Home));
   const { userIsEndUser } = useStore().user ?? {};
-
+  const isQmsReportActive = useFlags()?.isQmsReportActive;
   const isTACMReportActive = useFlags()?.isTacmReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
   const isPCPReportActive = useFlags()?.isPcpReportActive;
@@ -51,15 +51,17 @@ export const HomePage = () => {
                 </Link>
               </Text>
             </Box>
-            <Box>
-              <Heading as="h2" variant="h2" marginBottom="spacer3">
-                Quality Reports
-              </Heading>
-              <Box display="flex" flexDirection="column" gap="spacer4">
-                <QmsIntroductionCard />
-                {isQipReportActive && <QipIntroductionCard />}
+            {(isQmsReportActive || isQipReportActive) && (
+              <Box>
+                <Heading as="h2" variant="h2" marginBottom="spacer3">
+                  Quality Reports
+                </Heading>
+                <Box display="flex" flexDirection="column" gap="spacer4">
+                  {isQmsReportActive && <QmsIntroductionCard />}
+                  {isQipReportActive && <QipIntroductionCard />}
+                </Box>
               </Box>
-            </Box>
+            )}
             {(isTACMReportActive || isWWLReportActive) && (
               <Box>
                 <Heading as="h2" variant="h2" marginBottom="spacer3">

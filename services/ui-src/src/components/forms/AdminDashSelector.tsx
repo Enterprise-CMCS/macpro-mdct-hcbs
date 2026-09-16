@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   Dropdown,
   ChoiceList,
@@ -17,7 +17,11 @@ type ReportOption = {
 };
 
 export const reportOptions: ReportOption[] = [
-  { value: ReportType.QMS, label: "Quality Measure Set Report (QMS)" },
+  {
+    value: ReportType.QMS,
+    label: "Quality Measure Set Report (QMS)",
+    flagName: "isQmsReportActive",
+  },
   {
     value: ReportType.TACM,
     label: "Timely Access Compliance Measure Report (TACM)",
@@ -71,9 +75,9 @@ export const AdminDashSelector = () => {
   const flags = useFlags();
   const navigate = useNavigate();
 
-  const reportChoices = reportOptions.filter(
-    (option) => !option.flagName || flags?.[option.flagName]
-  );
+  const reportChoices = reportOptions
+    .filter((option) => !option.flagName || flags?.[option.flagName])
+    .map(({ label, value }) => ({ label, value }));
 
   const handleStateChange = (event: DropdownChangeObject) => {
     setSelectedState(event.target.value);
@@ -105,21 +109,27 @@ export const AdminDashSelector = () => {
           })}
         </>
         <Flex sx={sx.navigationButton} flexDirection="column" gap="2rem">
-          <ChoiceList
-            name="radio"
-            type="radio"
-            label="Select a report:"
-            choices={reportChoices}
-            onChange={handleReportChange}
-          />
-          <Button
-            type="submit"
-            form="adminDashSelector"
-            onClick={() => handleSubmit()}
-            disabled={!selectedState || !selectedReport}
-          >
-            Go to Report Dashboard
-          </Button>
+          {reportChoices.length > 0 ? (
+            <>
+              <ChoiceList
+                name="radio"
+                type="radio"
+                label="Select a report:"
+                choices={reportChoices}
+                onChange={handleReportChange}
+              />
+              <Button
+                type="submit"
+                form="adminDashSelector"
+                onClick={() => handleSubmit()}
+                disabled={!selectedState || !selectedReport}
+              >
+                Go to Report Dashboard
+              </Button>
+            </>
+          ) : (
+            <Text>No reports are currently enabled.</Text>
+          )}
         </Flex>
       </form>
     </Box>

@@ -11,6 +11,18 @@ vi.mock("utils", async (importOriginal) => ({
   fireTealiumPageView: vi.fn(),
 }));
 
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn().mockReturnValue({
+    isQmsReportActive: true,
+    isTacmReportActive: true,
+    isCiReportActive: true,
+    isPcpReportActive: true,
+    isImaReportActive: true,
+    isQipReportActive: true,
+    isWwlReportActive: true,
+  }),
+}));
+
 const appComponent = (
   <RouterWrappedComponent>
     <UserProvider>
@@ -20,8 +32,12 @@ const appComponent = (
 );
 
 describe("<App />", () => {
-  it("should render the home page for a logged-in user", async () => {
-    useStore.setState({ user: {} as HcbsUser });
+  it("should render the home page for a logged-in user", () => {
+    useStore.setState({
+      user: {} as HcbsUser,
+      allBanners: [],
+      _lastFetchTime: Date.now(),
+    });
     render(appComponent);
 
     expect(fireTealiumPageView).toHaveBeenCalled();
@@ -52,8 +68,12 @@ describe("<App />", () => {
     ).toBeVisible();
   });
 
-  it("should render the login page if there is no user", async () => {
-    useStore.setState({ user: undefined });
+  it("should render the login page if there is no user", () => {
+    useStore.setState({
+      user: undefined,
+      allBanners: [],
+      _lastFetchTime: Date.now(),
+    });
     render(appComponent);
     const headings = screen.getAllByRole("heading", { level: 2 });
     expect(headings.length).toBe(2);
