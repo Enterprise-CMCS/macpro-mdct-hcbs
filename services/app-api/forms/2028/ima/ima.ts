@@ -228,7 +228,7 @@ export const imaReportTemplate: ReportBase = {
         },
         {
           type: ElementType.ImaTable,
-          id: "eletronic-incident-systems-table",
+          id: "electronic-incident-systems-table",
           caption: "Electronic Incident Systems Table",
           label:
             "Does this IM system enable the state to do each of the following?",
@@ -269,7 +269,7 @@ export const imaReportTemplate: ReportBase = {
           id: "divider",
           showWhenNonCompliant: [
             "info-systems-question-1",
-            "eletronic-incident-systems-table",
+            "electronic-incident-systems-table",
           ],
         },
         {
@@ -280,7 +280,7 @@ export const imaReportTemplate: ReportBase = {
           text: "To be found in compliance, all HCBS programs under this IM system must use an electronic information system that complies with the security and privacy provisions described in 45 CFR Part 164, and collects, tracks, and identifies trends in electronic critical incident data.",
           controllerElementId: [
             "info-systems-question-1",
-            "eletronic-incident-systems-table",
+            "electronic-incident-systems-table",
           ],
         },
         {
@@ -289,7 +289,7 @@ export const imaReportTemplate: ReportBase = {
           label: "Justification for system noncompliance:",
           showWhenNonCompliant: [
             "info-systems-question-1",
-            "eletronic-incident-systems-table",
+            "electronic-incident-systems-table",
           ],
           required: true,
         },
@@ -300,7 +300,7 @@ export const imaReportTemplate: ReportBase = {
             "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
           showWhenNonCompliant: [
             "info-systems-question-1",
-            "eletronic-incident-systems-table",
+            "electronic-incident-systems-table",
           ],
           required: true,
         },
