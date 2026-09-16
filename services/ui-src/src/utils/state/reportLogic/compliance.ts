@@ -1,21 +1,7 @@
-import {
-  ElementType,
-  ImaTableTemplate,
-  PageElement,
-  RadioTemplate,
-} from "types";
-
-const isRadioElement = (
-  element: Partial<PageElement>
-): element is Partial<RadioTemplate> => element.type === ElementType.Radio;
-
-const isImaTableElement = (
-  element: Partial<PageElement>
-): element is Partial<ImaTableTemplate> =>
-  element.type === ElementType.ImaTable;
+import { ElementType, PageElement } from "types";
 
 const isElementNotCompliant = (element: Partial<PageElement>): boolean => {
-  if (isRadioElement(element)) {
+  if (element.type === ElementType.Radio) {
     const selectedValue = element.answer;
     if (typeof selectedValue !== "string") return false;
 
@@ -30,7 +16,7 @@ const isElementNotCompliant = (element: Partial<PageElement>): boolean => {
     );
   }
 
-  if (!isImaTableElement(element)) return false;
+  if (element.type !== ElementType.ImaTable) return false;
 
   const nonCompliantColumnIds = new Set(
     element.columns
