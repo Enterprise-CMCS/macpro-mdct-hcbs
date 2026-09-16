@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { ChoiceTemplate, PageElement, RadioTemplate } from "types";
+import { ChoiceTemplate, PageElement, RadioTemplate, ReportType } from "types";
 import { parseHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
@@ -68,7 +68,8 @@ const hintTextColor = (clickAction?: string) => {
 
 export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   const radio = props.element;
-  const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
+  const { clearMeasure, changeDeliveryMethods, currentPageId, report } =
+    useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
   const initialDisplayValue = formatChoices(
@@ -178,7 +179,7 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
     return null;
   }
   return (
-    <Box sx={radio.nonCompliantOn ? sx.nonCompliantRadioQuestion : undefined}>
+    <Box sx={report?.type === ReportType.IMA ? sx.imaRadioQuestion : undefined}>
       <CmsdsChoiceList
         name={radio.id}
         type={"radio"}
@@ -207,9 +208,9 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
 };
 
 const sx = {
-  nonCompliantRadioQuestion: {
+  imaRadioQuestion: {
     ".ds-c-fieldset > .ds-c-label": {
-      maxWidth: "100%",
+      maxWidth: "685px",
     },
   },
   children: {
