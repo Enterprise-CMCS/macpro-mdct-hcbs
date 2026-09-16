@@ -158,7 +158,7 @@ export const imaReportTemplate: ReportBase = {
           type: ElementType.Radio,
           id: "info-systems-question-1",
           label:
-            'Does this IM system use an "information system" that matches that definition?',
+            "Does this IM system use an information system that matches that definition?",
           required: true,
           nonCompliantOn: "no",
           choices: [
