@@ -109,4 +109,22 @@ describe("<ListInput />", () => {
       screen.queryByRole("button", { name: "Remove" })
     ).not.toBeInTheDocument();
   });
+
+  it("should render the add button as disabled with the gray icon", () => {
+    render(
+      <div>
+        <ListInput
+          element={mockedListInputElement}
+          updateElement={updateSpy}
+          disabled={true}
+        />
+      </div>
+    );
+
+    const addBtn = screen.getByRole("button", { name: "mock button text" });
+    expect(addBtn).toBeDisabled();
+    expect(
+      decodeURIComponent(addBtn.querySelector("img")?.getAttribute("src") ?? "")
+    ).toMatch(/fill=['"]#d9d9d9['"]/i);
+  });
 });
