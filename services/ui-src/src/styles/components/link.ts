@@ -8,8 +8,8 @@ const baseStyles = {
 const primaryVariant = {
   color: "palette.primary",
   _visited: {
-    color: "palette.primary",
-    textDecorationColor: "palette.primary",
+    color: "palette.visited",
+    textDecorationColor: "palette.visited",
   },
   ":hover, :visited:hover": {
     color: "palette.primary_darker",
@@ -100,7 +100,7 @@ const outlineButtonVariant = {
   borderRadius: "5px",
   fontWeight: "bold",
   textDecoration: "none",
-  _visited: { color: "palette.primary" },
+  _visited: { color: "palette.visited" },
   ":hover, :visited:hover": {
     color: "palette.primary_darker",
     textDecoration: "none",

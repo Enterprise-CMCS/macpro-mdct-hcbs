@@ -222,6 +222,10 @@ button {
 // Parsed HTML Link Styles
 .parsed-html-link {
   color: var(--chakra-colors-palette-primary);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  padding: 0;
   text-decoration: underline;
 
   &:visited {
@@ -231,6 +235,16 @@ button {
   &:hover {
     color: var(--chakra-colors-palette-primary_darker);
   }
+}
+
+.parsed-html-link__external-icon {
+  color: inherit;
+  display: inline-block;
+  height: 0.9rem;
+  margin-left: 0.25rem;
+  position: relative;
+  top: 0.1rem;
+  width: 0.9rem;
 }
 
 .tech-spec-icon {
