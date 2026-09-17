@@ -98,7 +98,7 @@ export const ReportPageWrapper = () => {
 
   let pageMaxWidth = "fullPageWidth";
   if (currentPage.sidebar) {
-    pageMaxWidth = isWideImaPage ? "62rem" : "reportPageWidth";
+    pageMaxWidth = isWideImaPage ? "none" : "reportPageWidth";
   }
 
   return (

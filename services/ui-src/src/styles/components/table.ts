@@ -167,7 +167,6 @@ const imaVariant = {
   table: {
     width: "100%",
     maxWidth: "685px",
-    tableLayout: "fixed",
     marginTop: "1rem",
     boxShadow: "0 4px 4px -1px rgba(0, 0, 0, 0.25)",
     th: {
@@ -233,22 +232,31 @@ const imaVariant = {
         },
       },
       ".ima-delete-button": {
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         margin: "0 auto",
         padding: 0,
-        minHeight: "2.5rem",
+        width: "1.75rem",
+        minWidth: "1.75rem",
+        height: "1.75rem",
+        minHeight: "1.75rem",
+        lineHeight: 1,
+        img: {
+          display: "block",
+          width: "0.875rem",
+          height: "0.875rem",
+        },
       },
       "&.ima-delete-cell": {
-        padding: "16px",
+        padding: "12px 6px",
         verticalAlign: "middle",
         textAlign: "center",
+        whiteSpace: "nowrap",
         ".ima-delete-button": {
-          display: "flex",
+          display: "inline-flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "100%",
           margin: "0 auto",
         },
       },
@@ -260,8 +268,8 @@ const imaVariant = {
     },
     "&.ima-table--extra-wide": {
       width: "100%",
-      maxWidth: "992px",
-      tableLayout: "fixed",
+      maxWidth: "none",
+      tableLayout: "auto",
       th: {
         padding: "0.75rem",
         lineHeight: "1.35",
@@ -283,14 +291,22 @@ const imaVariant = {
           width: "19%",
         },
         "&:last-of-type": {
-          width: "7%",
+          width: "1%",
+          textAlign: "center",
           whiteSpace: "nowrap",
+          overflowWrap: "normal",
+          paddingLeft: "0.375rem",
+          paddingRight: "0.375rem",
         },
       },
       td: {
         "&:first-of-type": {
           width: "36%",
           textAlign: "left",
+        },
+        "&:last-of-type": {
+          width: "1%",
+          whiteSpace: "nowrap",
         },
       },
     },
