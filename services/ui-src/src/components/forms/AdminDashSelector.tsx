@@ -75,9 +75,9 @@ export const AdminDashSelector = () => {
   const flags = useFlags();
   const navigate = useNavigate();
 
-  const reportChoices = reportOptions
-    .filter((option) => !option.flagName || flags?.[option.flagName])
-    .map(({ label, value }) => ({ label, value }));
+  const reportChoices = reportOptions.filter(
+    (option) => !option.flagName || flags?.[option.flagName]
+  );
 
   const handleStateChange = (event: DropdownChangeObject) => {
     setSelectedState(event.target.value);
