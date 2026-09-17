@@ -11,6 +11,41 @@ import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider"
 import { Modal } from "components";
 import errorIcon from "assets/icons/status/icon_status_alert.svg";
 
+const clearNestedAnswers = <T extends PageElement>(element: T): T => {
+  const cleared = { ...element } as T;
+
+  if ("answer" in cleared) {
+    cleared.answer = undefined;
+  }
+
+  if ("choices" in cleared && Array.isArray(cleared.choices)) {
+    cleared.choices = cleared.choices.map((choice) => ({
+      ...choice,
+      checkedChildren: choice.checkedChildren?.map(clearNestedAnswers),
+    }));
+  }
+
+  if ("checkedChildren" in cleared && Array.isArray(cleared.checkedChildren)) {
+    cleared.checkedChildren = cleared.checkedChildren.map(clearNestedAnswers);
+  }
+
+  if (
+    "conditionalChildren" in cleared &&
+    Array.isArray(cleared.conditionalChildren)
+  ) {
+    cleared.conditionalChildren =
+      cleared.conditionalChildren.map(clearNestedAnswers);
+  }
+
+  return cleared;
+};
+
+const clearChoiceData = (choices: ChoiceTemplate[]): ChoiceTemplate[] =>
+  choices.map((choice) => ({
+    ...choice,
+    checkedChildren: choice.checkedChildren?.map(clearNestedAnswers),
+  }));
+
 const formatChoices = (
   choices: ChoiceTemplate[],
   answer: string | undefined,
@@ -121,14 +156,15 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
       return;
     }
 
+    const clearedChoices = clearChoiceData(radio.choices);
     const newDisplayValue = formatChoices(
-      radio.choices,
+      clearedChoices,
       value,
       props.updateElement
     );
     setDisplayValue(newDisplayValue);
 
-    props.updateElement({ answer: value });
+    props.updateElement({ answer: value, choices: clearedChoices });
 
     if (!radio.clickAction || !currentPageId) {
       return;

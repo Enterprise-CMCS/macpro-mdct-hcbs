@@ -112,7 +112,9 @@ describe("<RadioField />", () => {
   it("should allow checking radio choices", async () => {
     render(RadioFieldComponent);
     await userEvent.click(screen.getByRole("radio", { name: "Choice 1" }));
-    expect(updateSpy).toHaveBeenCalledWith({ answer: "A" });
+    expect(updateSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ answer: "A" })
+    );
   });
 
   it("should display children fields after selection", async () => {
@@ -121,8 +123,55 @@ describe("<RadioField />", () => {
       screen.queryByRole("textbox", { name: "Text Label" })
     ).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole("radio", { name: "Choice 2" }));
-    expect(updateSpy).toHaveBeenCalledWith({ answer: "B" });
+    expect(updateSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ answer: "B" })
+    );
     expect(screen.getByRole("textbox", { name: "Text Label" })).toBeVisible();
+  });
+
+  it("should clear child answers when the selected radio choice changes", async () => {
+    const radioWithChildData: RadioTemplate = {
+      ...mockRadioElement,
+      answer: "B",
+      choices: mockRadioElement.choices.map((choice) =>
+        choice.value === "B"
+          ? {
+              ...choice,
+              checkedChildren: [
+                {
+                  id: "child-date-id",
+                  type: ElementType.Date,
+                  label: "Date",
+                  required: true,
+                  answer: "10242024",
+                },
+              ],
+            }
+          : choice
+      ),
+    };
+
+    render(
+      <RadioField element={radioWithChildData} updateElement={updateSpy} />
+    );
+
+    await userEvent.click(screen.getByRole("radio", { name: "Choice 1" }));
+
+    expect(updateSpy).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        answer: "A",
+        choices: expect.arrayContaining([
+          expect.objectContaining({
+            value: "B",
+            checkedChildren: [
+              expect.objectContaining({
+                answer: undefined,
+              }),
+            ],
+          }),
+        ]),
+      })
+    );
   });
 
   it("should be hidden if its hide conditions' controlling element has a matching answer", async () => {
@@ -175,7 +224,9 @@ describe("<RadioField />", () => {
     await userEvent.click(modalYes);
     expect(mockChangeDeliveryMethods).toHaveBeenCalledTimes(1);
     expect(updateSpy).toHaveBeenCalledTimes(1);
-    expect(updateSpy).toHaveBeenCalledWith({ answer: "A" });
+    expect(updateSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ answer: "A" })
+    );
   });
 
   it("should show a confirmation modal when delivery method is changed, and clicking no does not change the radio value", async () => {
