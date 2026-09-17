@@ -91,14 +91,9 @@ export const ReportPageWrapper = () => {
     (submittedView ? currentPage?.submittedTabTitle : currentPage?.tabTitle) ??
     "";
 
-  const isWideImaPage = [
-    "incidents-during-delivery-of-services",
-    "incidents-due-to-failure-to-deliver-services",
-  ].includes(currentPage.id);
-
   let pageMaxWidth = "fullPageWidth";
   if (currentPage.sidebar) {
-    pageMaxWidth = isWideImaPage ? "none" : "reportPageWidth";
+    pageMaxWidth = currentPage.isExtraWide ? "none" : "reportPageWidth";
   }
 
   return (

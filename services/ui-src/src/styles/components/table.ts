@@ -253,12 +253,6 @@ const imaVariant = {
         verticalAlign: "middle",
         textAlign: "center",
         whiteSpace: "nowrap",
-        ".ima-delete-button": {
-          display: "inline-flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-        },
       },
       ".ima-user-created-row label": {
         margin: "0.5rem 0",
@@ -267,9 +261,7 @@ const imaVariant = {
       },
     },
     "&.ima-table--extra-wide": {
-      width: "100%",
       maxWidth: "none",
-      tableLayout: "auto",
       th: {
         padding: "0.75rem",
         lineHeight: "1.35",

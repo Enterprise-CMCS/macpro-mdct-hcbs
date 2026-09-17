@@ -151,6 +151,7 @@ export const imaReportTemplate: ReportBase = {
       tabTitle: "Incidents During Delivery of Services - IMA - HCBS",
       type: PageType.Standard,
       sidebar: true,
+      isExtraWide: true,
       elements: [
         {
           type: ElementType.Header,
@@ -232,6 +233,7 @@ export const imaReportTemplate: ReportBase = {
       tabTitle: "Incidents Due to Failure to Deliver Services - IMA - HCBS",
       type: PageType.Standard,
       sidebar: true,
+      isExtraWide: true,
       elements: [
         {
           type: ElementType.Header,
