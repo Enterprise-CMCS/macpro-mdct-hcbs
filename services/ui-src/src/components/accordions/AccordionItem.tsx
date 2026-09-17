@@ -44,6 +44,9 @@ const sx = {
     minHeight: "3.5rem",
     bg: "palette.gray_lightest",
     textAlign: "left",
+    _hover: {
+      bg: "palette.gray_light",
+    },
   },
   accordionPanel: {
     padding: "spacer3",
