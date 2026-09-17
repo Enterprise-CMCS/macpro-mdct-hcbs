@@ -9,17 +9,14 @@ import { testA11y } from "utils/testing/commonTests";
 
 vi.mock("utils/state/hooks/useElementIsHidden");
 
-vi.mock("@chakra-ui/react", async (importOriginal) => {
-  const chakra = await importOriginal<typeof import("@chakra-ui/react")>();
-  return {
-    ...chakra,
-    Box: ({ children, sx }: { children: React.ReactNode; sx?: unknown }) => (
-      <div data-testid="radio-field-wrapper" data-sx={JSON.stringify(sx)}>
-        {children}
-      </div>
-    ),
-  };
-});
+vi.mock("@chakra-ui/react", async (importOriginal) => ({
+  ...(await importOriginal()),
+  Box: ({ children, sx }: { children: React.ReactNode; sx?: unknown }) => (
+    <div data-testid="radio-field-wrapper" data-sx={JSON.stringify(sx)}>
+      {children}
+    </div>
+  ),
+}));
 
 const mockClearMeasure = vi.fn();
 const mockChangeDeliveryMethods = vi.fn();
