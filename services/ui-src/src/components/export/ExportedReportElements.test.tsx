@@ -136,6 +136,7 @@ describe("ExportedReportElements", () => {
         start: "Measurement start date",
         end: "Measurement end date",
       },
+      helperText: "",
       answer: {
         start: "01/01/2024",
         end: "12/31/2024",

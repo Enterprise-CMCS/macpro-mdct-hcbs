@@ -206,7 +206,7 @@ export const imaReportTemplate: ReportBase = {
               checkedChildren: [
                 {
                   type: ElementType.Date,
-                  id: "question2-yes-date-range",
+                  id: "question2-yes-date",
                   label: "When did the state submit the APD?",
                   dateFormat: "MMDDYYYY",
                   answer: "",
