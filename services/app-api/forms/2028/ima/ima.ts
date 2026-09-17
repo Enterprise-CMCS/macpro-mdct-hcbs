@@ -205,19 +205,12 @@ export const imaReportTemplate: ReportBase = {
               value: "yes",
               checkedChildren: [
                 {
-                  type: ElementType.DateRange,
+                  type: ElementType.Date,
                   id: "question2-yes-date-range",
-                  labels: {
-                    top: "When did the state submit the APD?",
-                    start: "Start date",
-                    end: "End date",
-                  },
+                  label: "When did the state submit the APD?",
                   dateFormat: "MMDDYYYY",
-                  answer: {
-                    start: "",
-                  },
+                  answer: "",
                   required: true,
-                  endDateRequired: true,
                 },
               ],
             },
