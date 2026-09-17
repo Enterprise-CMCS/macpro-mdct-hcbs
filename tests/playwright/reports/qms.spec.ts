@@ -78,6 +78,25 @@ const waitForReportRequest = async (page: Page, method: "POST" | "PUT") => {
 };
 
 test.beforeEach(async ({ page }) => {
+  // mock LD SDK response
+  await page.route(/clientsdk\.launchdarkly\.us/, async (route) => {
+    await route.fulfill({
+      json: {
+        isQmsReportActive: {
+          version: 60,
+          flagVersion: 8,
+          value: true,
+          variation: 1,
+          trackEvents: false,
+        },
+      },
+    });
+  });
+
+  await page.route(/clientstream\.launchdarkly\.us/, async (route) => {
+    await route.abort();
+  });
+
   await navigateToReportHome(page, reportSpecificData.reportButtonName);
 });
 
