@@ -344,7 +344,6 @@ const imaTableTemplateSchema = object().shape({
         id: string().required(),
         label: string().required(),
         type: string().oneOf(["description", "answer", "delete"]).required(),
-        nonCompliant: boolean().notRequired(),
       })
     )
     .required(),
@@ -355,6 +354,7 @@ const imaTableTemplateSchema = object().shape({
         description: string().required(),
         answer: string().notRequired(),
         isUserCreated: boolean().notRequired(),
+        isNonCompliant: boolean().notRequired(),
       })
     )
     .required(),
@@ -365,9 +365,13 @@ const imaTableTemplateSchema = object().shape({
         description: string().defined(),
         answer: string().notRequired(),
         isUserCreated: boolean().notRequired(),
+        isNonCompliant: boolean().notRequired(),
       })
     )
     .notRequired(),
+  complianceRule: string()
+    .oneOf(["any-no", "any-non-yes", "all-no", "all-not-referred"])
+    .required(),
 });
 
 const eligibilityTableSchema = object().shape({

@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import {
   AlertTypes,
   ComplianceAlertTemplate,
+  ComplianceRules,
   ElementType,
   HcbsReportState,
   ImaTableTemplate,
@@ -28,9 +29,10 @@ const mockTable: ImaTableTemplate = {
   columns: [
     { id: "description", label: "Incident Type", type: "description" },
     { id: "yes", label: "Yes", type: "answer" },
-    { id: "no", label: "No", type: "answer", nonCompliant: true },
+    { id: "no", label: "No", type: "answer" },
   ],
   rows: [{ id: "verbal-abuse", description: "Verbal Abuse" }],
+  complianceRule: ComplianceRules.AnyNo,
 };
 
 const storeStateWith = (table: ImaTableTemplate) =>

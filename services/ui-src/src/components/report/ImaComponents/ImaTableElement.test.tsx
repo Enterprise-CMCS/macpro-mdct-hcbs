@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
-import { ElementType, ImaTableTemplate } from "types";
+import { ComplianceRules, ElementType, ImaTableTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { ImaTableElement } from "./ImaTableElement";
 
@@ -14,7 +14,7 @@ const template: ImaTableTemplate = {
   columns: [
     { id: "description", label: "Incident type", type: "description" },
     { id: "yes", label: "Yes", type: "answer" },
-    { id: "no", label: "No", type: "answer", nonCompliant: true },
+    { id: "no", label: "No", type: "answer" },
     { id: "delete", label: "Delete", type: "delete" },
   ],
   rows: [
@@ -24,6 +24,7 @@ const template: ImaTableTemplate = {
   addButtonText: "Add other incident type",
   userCreatedRowLabel: "Other incident type:",
   allowUserCreatedRows: true,
+  complianceRule: ComplianceRules.AnyNo,
 };
 
 const updateSpy = vi.fn();
@@ -103,6 +104,7 @@ describe("<ImaTableElement />", () => {
           description: "Abuse",
           answer: "no",
           isUserCreated: false,
+          isNonCompliant: true,
         },
         {
           id: "neglect",
@@ -153,7 +155,11 @@ describe("<ImaTableElement />", () => {
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     expect(updateSpy).toHaveBeenLastCalledWith({
       answer: [
-        { id: "abuse", description: "Abuse", isUserCreated: false },
+        {
+          id: "abuse",
+          description: "Abuse",
+          isUserCreated: false,
+        },
         {
           id: "neglect",
           description: "Neglect",

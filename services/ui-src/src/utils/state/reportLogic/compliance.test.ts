@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ElementType, PageElement } from "types";
+import { ComplianceRules, ElementType, PageElement } from "types";
 import { isNotCompliant } from "./compliance";
 
 const createTable = (overrides: Partial<PageElement> = {}) =>
@@ -8,18 +8,19 @@ const createTable = (overrides: Partial<PageElement> = {}) =>
     type: ElementType.ImaTable,
     columns: [
       { id: "yes", label: "Yes", type: "answer" },
-      { id: "no", label: "No", type: "answer", nonCompliant: true },
+      { id: "no", label: "No", type: "answer" },
     ],
     rows: [{ id: "incident", description: "Incident", answer: "yes" }],
+    complianceRule: ComplianceRules.AnyNo,
     ...overrides,
   }) as unknown as PageElement;
 
 describe("isNotCompliant", () => {
-  it("returns false when the controller table is missing", () => {
+  it("should return false when the controller table is missing", () => {
     expect(isNotCompliant("missing-table", [])).toBe(false);
   });
 
-  it("returns false when the controller is not an IMA table", () => {
+  it("should return false when the controller is not an IMA table", () => {
     expect(
       isNotCompliant("text-field", [
         { id: "text-field", type: ElementType.Textbox },
@@ -27,7 +28,7 @@ describe("isNotCompliant", () => {
     ).toBe(false);
   });
 
-  it("detects a nested radio answer through its parent choice", () => {
+  it("should detect a nested radio answer through its parent choice", () => {
     expect(
       isNotCompliant("parent-radio", [
         {
@@ -61,7 +62,7 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
-  it("checks nested answers even when the parent has nonCompliantOn", () => {
+  it("should check nested answers even when the parent has nonCompliantOn", () => {
     expect(
       isNotCompliant("parent-radio", [
         {
@@ -97,13 +98,7 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
-  it("returns false when the table has no column metadata", () => {
-    expect(
-      isNotCompliant("ima-table", [createTable({ columns: undefined })])
-    ).toBe(false);
-  });
-
-  it("returns true when radio answer selects a non-compliant choice", () => {
+  it("should return true when radio answer selects a non-compliant choice", () => {
     expect(
       isNotCompliant("separate-investigations-question-1", [
         {
@@ -120,7 +115,7 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
-  it("returns true when a row selects a non-compliant column", () => {
+  it("should return true when a row selects a non-compliant column", () => {
     expect(
       isNotCompliant("ima-table", [
         createTable({
@@ -130,7 +125,7 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
-  it("ignores a user-created row selecting a non-compliant column", () => {
+  it("should ignore a user-created row selecting a non-compliant column", () => {
     expect(
       isNotCompliant("ima-table", [
         createTable({
@@ -144,10 +139,10 @@ describe("isNotCompliant", () => {
           ],
         }),
       ])
-    ).toBe(false);
+    ).toBeUndefined();
   });
 
-  it("only evaluates standard rows in a mixed table", () => {
+  it("should only evaluate standard rows in a mixed table", () => {
     expect(
       isNotCompliant("ima-table", [
         createTable({
@@ -165,21 +160,21 @@ describe("isNotCompliant", () => {
     ).toBe(false);
   });
 
-  it("returns false when no row selects a non-compliant column", () => {
+  it("should return false when no row selects a non-compliant column", () => {
     expect(isNotCompliant("ima-table", [createTable()])).toBe(false);
   });
 
-  it("ignores rows without an answer", () => {
+  it("should ignore rows without an answer", () => {
     expect(
       isNotCompliant("ima-table", [
         createTable({
           rows: [{ id: "incident", description: "Incident" }],
         }),
       ])
-    ).toBe(false);
+    ).toBeUndefined();
   });
 
-  it("uses the saved answer rows when they are available", () => {
+  it("should use the saved answer rows when they are available", () => {
     expect(
       isNotCompliant("ima-table", [
         createTable({
@@ -190,7 +185,7 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
-  it("falls back to template rows when no saved answer exists", () => {
+  it("should fall back to template rows when no saved answer exists", () => {
     expect(
       isNotCompliant("ima-table", [
         createTable({
@@ -201,10 +196,133 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
-  it("returns false when the table has neither answers nor rows", () => {
+  it.each(Object.values(ComplianceRules))(
+    "should return undefined when the table has neither answers nor rows (%s)",
+    (complianceRule) => {
+      expect(
+        isNotCompliant("ima-table", [
+          createTable({ complianceRule, answer: undefined, rows: undefined }),
+        ])
+      ).toBeUndefined();
+    }
+  );
+
+  it("should return true when any row is answered something other than yes under AnyNonYes", () => {
     expect(
       isNotCompliant("ima-table", [
-        createTable({ answer: undefined, rows: undefined }),
+        createTable({
+          complianceRule: ComplianceRules.AnyNonYes,
+          rows: [
+            { id: "incident-1", description: "Incident 1", answer: "yes" },
+            { id: "incident-2", description: "Incident 2", answer: "unsure" },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("should return false when every row is answered yes under AnyNonYes", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AnyNonYes,
+          rows: [
+            { id: "incident-1", description: "Incident 1", answer: "yes" },
+            { id: "incident-2", description: "Incident 2", answer: "yes" },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
+  it("should return true when every row is answered no under AllNo", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AllNo,
+          rows: [
+            { id: "incident-1", description: "Incident 1", answer: "no" },
+            { id: "incident-2", description: "Incident 2", answer: "no" },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("should return false when only some rows are answered no under AllNo", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AllNo,
+          rows: [
+            { id: "incident-1", description: "Incident 1", answer: "no" },
+            { id: "incident-2", description: "Incident 2", answer: "yes" },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
+  it("should ignore user-created rows when checking AllNo, even when mixed with standard rows", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AllNo,
+          rows: [
+            { id: "incident-1", description: "Incident 1", answer: "no" },
+            { id: "incident-2", description: "Incident 2", answer: "no" },
+            {
+              id: "other",
+              description: "Other incident",
+              answer: "yes",
+              isUserCreated: true,
+            },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("should return true when every row is answered not-referred under AllNotReferred", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AllNotReferred,
+          rows: [
+            {
+              id: "incident-1",
+              description: "Incident 1",
+              answer: "not-referred",
+            },
+            {
+              id: "incident-2",
+              description: "Incident 2",
+              answer: "not-referred",
+            },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("should return false when only some rows are answered not-referred under AllNotReferred", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AllNotReferred,
+          rows: [
+            {
+              id: "incident-1",
+              description: "Incident 1",
+              answer: "not-referred",
+            },
+            {
+              id: "incident-2",
+              description: "Incident 2",
+              answer: "referred",
+            },
+          ],
+        }),
       ])
     ).toBe(false);
   });
