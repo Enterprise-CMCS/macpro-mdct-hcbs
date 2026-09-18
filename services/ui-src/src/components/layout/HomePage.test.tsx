@@ -31,6 +31,21 @@ const homePage = (
 );
 
 describe("Home page", () => {
+  it("should render a clickable external quality information link", () => {
+    useStore.setState({ user: stateUser, allBanners: [] });
+    render(homePage);
+
+    const link = screen.getByRole("link", {
+      name: "Medicaid.gov's HCBS quality improvement resources",
+    });
+
+    expect(link).toHaveAttribute(
+      "href",
+      "https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
+    );
+    expect(link).toHaveAttribute("target", "_blank");
+  });
+
   it("should render a card for each enabled report type", () => {
     useStore.setState({ user: stateUser, allBanners: [] });
     render(homePage);

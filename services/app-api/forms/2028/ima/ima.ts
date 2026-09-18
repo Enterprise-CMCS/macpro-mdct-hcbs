@@ -171,7 +171,7 @@ export const imaReportTemplate: ReportBase = {
                   type: ElementType.Radio,
                   id: "info-systems-question-1-security-compliance",
                   label:
-                    'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link" target="_blank" rel="noopener noreferrer">45 CFR part 164<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>&nbsp;?',
+                    'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link" target="_blank" rel="noopener noreferrer">45 CFR part 164</a>&nbsp;?',
                   required: true,
                   nonCompliantOn: "no",
                   choices: [

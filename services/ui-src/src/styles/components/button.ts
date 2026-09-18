@@ -36,6 +36,9 @@ const primaryVariant = {
 const transparentVariant = {
     color: "palette.primary",
     backgroundColor: "transparent",
+    _visited: {
+      color: "palette.visited",
+    },
     _hover: {
       color: "palette.primary_darker",
       backgroundColor: "transparent",
@@ -74,7 +77,7 @@ const outlineVariant = () => ({
     },
   },
   _visited: {
-    color: "palette.primary",
+    color: "palette.visited",
   },
   ":hover, :visited:hover": {
     color: "palette.primary_darker",
