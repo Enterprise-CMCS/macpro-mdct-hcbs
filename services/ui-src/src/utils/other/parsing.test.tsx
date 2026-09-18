@@ -39,7 +39,8 @@ describe("utils/parsing", () => {
       expect(setAttribute).toHaveBeenCalledWith("rel", "noopener noreferrer");
     });
     it("should render parsed external links with the requested class, target, rel, and icon", () => {
-      const htmlString = '<a href="https://example.com">external link</a>';
+      const htmlString =
+        '<a href="https://example.com">external link<img src="/icon_external_link_main.svg" alt="(Opens in a new tab)"></a>';
 
       const elements = parseHtml(htmlString);
       render(elements);
@@ -55,7 +56,11 @@ describe("utils/parsing", () => {
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
       expect(link).toHaveClass("parsed-html-link");
-      expect(icon).toHaveClass("parsed-html-link__external-icon");
+      expect(icon).toHaveClass("external-link-icon");
+      expect(icon).toHaveClass("ds-c-icon--external-link");
+      expect(
+        screen.queryByAltText("(Opens in a new tab)")
+      ).not.toBeInTheDocument();
     });
   });
 });

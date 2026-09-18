@@ -1,4 +1,5 @@
 import React from "react";
+import { ExternalLinkIcon } from "@cmsgov/design-system";
 import DOMPurify from "dompurify";
 import parse, {
   attributesToProps,
@@ -12,25 +13,17 @@ const externalLinkAltText = "(Opens in a new tab)";
 
 const isExternalHref = (href?: string) => /^(https?:)?\/\//i.test(href ?? "");
 
+const isLegacyExternalLinkIcon = (domNode: DOMNode) =>
+  domNode instanceof Element &&
+  domNode.name === "img" &&
+  domNode.attribs.src === "/icon_external_link_main.svg";
+
 const externalLinkIcon = () =>
-  React.createElement(
-    "svg",
-    {
-      "aria-label": externalLinkAltText,
-      className: "parsed-html-link__external-icon",
-      focusable: "false",
-      role: "img",
-      viewBox: "0 0 18 18",
-    },
-    React.createElement("path", {
-      d: "M12.75 1.5h3.75v3.75H15V4.06l-6.22 6.22-1.06-1.06 6.22-6.22h-1.19V1.5Z",
-      fill: "currentColor",
-    }),
-    React.createElement("path", {
-      d: "M14.25 9v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 15V5.25A1.5 1.5 0 0 1 3 3.75h6v1.5H3V15h9.75V9h1.5Z",
-      fill: "currentColor",
-    })
-  );
+  React.createElement(ExternalLinkIcon, {
+    ariaHidden: false,
+    className: "external-link-icon",
+    title: externalLinkAltText,
+  });
 
 const parserOptions: HTMLReactParserOptions = {
   replace: (domNode: DOMNode) => {
@@ -56,7 +49,12 @@ const parserOptions: HTMLReactParserOptions = {
     return React.createElement(
       "a",
       attributesToProps(anchorAttributes),
-      domToReact(domNode.children as DOMNode[], parserOptions),
+      domToReact(
+        domNode.children.filter(
+          (child) => !opensInNewTab || !isLegacyExternalLinkIcon(child)
+        ) as DOMNode[],
+        parserOptions
+      ),
       opensInNewTab && externalLinkIcon()
     );
   },
