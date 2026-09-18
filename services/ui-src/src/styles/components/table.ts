@@ -244,8 +244,8 @@ const imaVariant = {
         lineHeight: 1,
         img: {
           display: "block",
-          width: "0.875rem",
-          height: "0.875rem",
+          width: "1.5rem",
+          height: "1.5rem",
         },
       },
       "&.ima-delete-cell": {
