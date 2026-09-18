@@ -498,6 +498,7 @@ export type ImaTableTemplate = {
   type: ElementType.ImaTable;
   id: string;
   caption: string;
+  compliantWhenAnyRowAnswers?: string;
   label?: string;
   helperText?: string;
   addButtonText?: string;

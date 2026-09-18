@@ -99,6 +99,38 @@ describe("isNotCompliant", () => {
     expect(isNotCompliant("ima-table", [createTable()])).toBe(false);
   });
 
+  it("returns false when a row selects the configured qualifying column", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          compliantWhenAnyRowAnswers: "partially-compliant",
+          rows: [
+            { id: "incident", description: "Incident", answer: "no" },
+            {
+              id: "method",
+              description: "Method",
+              answer: "partially-compliant",
+            },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
+  it("returns true when no row selects the configured qualifying column", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          compliantWhenAnyRowAnswers: "yes",
+          rows: [
+            { id: "incident", description: "Incident", answer: "no" },
+            { id: "method", description: "Method" },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
   it("ignores rows without an answer", () => {
     expect(
       isNotCompliant("ima-table", [

@@ -155,6 +155,7 @@ export const imaReportTemplate: ReportBase = {
           type: ElementType.ImaTable,
           id: "monitoring-methods-table",
           caption: "Monitoring Methods Table",
+          compliantWhenAnyRowAnswers: "methods-radio-yes",
           label:
             "Does the state use the following methods to monitor that providers report these critical incidents within the required process and timeframe?",
           allowUserCreatedRows: true,
