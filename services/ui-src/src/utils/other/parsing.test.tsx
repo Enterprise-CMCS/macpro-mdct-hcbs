@@ -37,6 +37,7 @@ describe("utils/parsing", () => {
       });
 
       expect(setAttribute).toHaveBeenCalledWith("rel", "noopener noreferrer");
+    });
     it("should render parsed external links with the requested class, target, rel, and icon", () => {
       const htmlString = '<a href="https://example.com">external link</a>';
 
