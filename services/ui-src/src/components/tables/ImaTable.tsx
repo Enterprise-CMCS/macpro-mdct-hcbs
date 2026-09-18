@@ -26,6 +26,7 @@ interface ImaTableProps {
   caption: string;
   columns: ImaTableColumn[];
   rows: ImaTableRow[];
+  compliantWhenAnyRowAnswers?: string;
   label?: string;
   helperText?: string;
   addButtonText?: string;
@@ -43,6 +44,7 @@ export const ImaTable = ({
   caption,
   columns,
   rows,
+  compliantWhenAnyRowAnswers,
   label,
   helperText,
   addButtonText,
@@ -56,6 +58,12 @@ export const ImaTable = ({
   onDeleteRow,
 }: ImaTableProps) => {
   const answerColumns = columns.filter((column) => column.type === "answer");
+  const hasAnsweredStandardRow = rows.some(
+    (row) => !row.isUserCreated && row.answer !== undefined
+  );
+  const hasQualifyingAnswer = rows.some(
+    (row) => !row.isUserCreated && row.answer === compliantWhenAnyRowAnswers
+  );
   const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
@@ -125,8 +133,10 @@ export const ImaTable = ({
                       </HStack>
                     )}
                   {!row.isUserCreated &&
-                    selectedColumn?.nonCompliant &&
-                    errorMessage && (
+                    errorMessage &&
+                    (compliantWhenAnyRowAnswers
+                      ? hasAnsweredStandardRow && !hasQualifyingAnswer
+                      : selectedColumn?.nonCompliant) && (
                       <HStack
                         role="alert"
                         spacing="0.25rem"

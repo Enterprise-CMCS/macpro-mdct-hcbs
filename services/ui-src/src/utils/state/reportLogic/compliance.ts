@@ -14,7 +14,7 @@ const isImaTableElement = (
 ): element is Partial<ImaTableTemplate> =>
   element.type === ElementType.ImaTable;
 
-// Returns true when an IMA table has any row selected in a noncompliant column.
+// Returns true when an IMA table fails its configured compliance rule.
 export const isNotCompliant = (
   controllerElementId: string,
   elements: Partial<PageElement>[]
@@ -44,6 +44,15 @@ export const isNotCompliant = (
     controllingElement.rows ??
     []
   ).filter((row) => !row.isUserCreated);
+
+  if (controllingElement.compliantWhenAnyRowAnswers) {
+    if (!rows.some((row) => row.answer !== undefined)) return false;
+
+    return !rows.some(
+      (row) => row.answer === controllingElement.compliantWhenAnyRowAnswers
+    );
+  }
+
   return rows.some(
     (row) => row.answer && nonCompliantColumnIds.has(row.answer)
   );

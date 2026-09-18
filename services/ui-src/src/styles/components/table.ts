@@ -198,7 +198,7 @@ const imaVariant = {
     td: {
       padding: "16px",
       fontSize: "body_md",
-      verticalAlign: "top",
+      verticalAlign: "middle",
       border: "none",
       overflowWrap: "break-word",
       "&:first-of-type": {

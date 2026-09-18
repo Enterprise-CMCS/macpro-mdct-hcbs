@@ -246,6 +246,44 @@ describe("<ImaTable />", () => {
     expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
   });
 
+  it("should show an error message on every standard row when no qualifying answer is selected", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        compliantWhenAnyRowAnswers="ima-radio-yes"
+        rows={[
+          { id: "a", description: "A", answer: "ima-radio-no" },
+          { id: "b", description: "B" },
+        ]}
+      />
+    );
+
+    expect(screen.getAllByRole("alert")).toHaveLength(2);
+  });
+
+  it("should not show errors when a configured-column table has no answers", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        compliantWhenAnyRowAnswers="ima-radio-yes"
+        rows={[
+          { id: "a", description: "A" },
+          { id: "b", description: "B" },
+        ]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("should not show errors when a qualifying answer is selected", () => {
+    render(
+      <ImaTable {...defaultProps} compliantWhenAnyRowAnswers="ima-radio-yes" />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
   it("should not show an error for a user created row answered no", () => {
     render(
       <ImaTable

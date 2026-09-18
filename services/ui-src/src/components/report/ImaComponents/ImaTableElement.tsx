@@ -24,6 +24,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   const {
     caption,
     columns,
+    compliantWhenAnyRowAnswers,
     label,
     helperText,
     addButtonText,
@@ -70,6 +71,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
       {...{
         caption,
         columns,
+        compliantWhenAnyRowAnswers,
         rows,
         label,
         helperText,
