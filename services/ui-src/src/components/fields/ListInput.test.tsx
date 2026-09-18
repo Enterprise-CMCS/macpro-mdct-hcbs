@@ -123,8 +123,6 @@ describe("<ListInput />", () => {
 
     const addBtn = screen.getByRole("button", { name: "mock button text" });
     expect(addBtn).toBeDisabled();
-    expect(
-      decodeURIComponent(addBtn.querySelector("img")?.getAttribute("src") ?? "")
-    ).toMatch(/fill=['"]#d9d9d9['"]/i);
+    expect(addBtn.querySelector("img")).toBeInTheDocument();
   });
 });

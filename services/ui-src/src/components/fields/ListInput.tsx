@@ -11,7 +11,6 @@ import {
 import { TextField } from "@cmsgov/design-system";
 import cancelPrimary from "assets/icons/cancel/icon_cancel_primary.svg";
 import addPrimary from "assets/icons/add/icon_add_blue.svg";
-import addGray from "assets/icons/add/icon_add_gray.svg";
 import { ErrorMessages } from "../../constants";
 
 export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
@@ -87,10 +86,9 @@ export const ListInput = (props: PageElementProps<ListInputTemplate>) => {
       <Button
         mt="1rem"
         variant="outline"
-        leftIcon={<Image src={disabled ? addGray : addPrimary} alt="Add" />}
+        leftIcon={<Image src={addPrimary} alt="Add" />}
         onClick={onAddHandler}
         disabled={disabled}
-        sx={sx.disabled}
       >
         {buttonText}
       </Button>
@@ -113,17 +111,6 @@ export const ListInputExport = (element: ListInputTemplate) => {
 };
 
 const sx = {
-  disabled: {
-    "&:disabled, &:disabled:hover": {
-      color: "palette.gray_lighter",
-      borderColor: "palette.gray_lighter",
-      opacity: 1,
-      pointerEvents: "none",
-      span: {
-        filter: "none",
-      },
-    },
-  },
   children: {
     padding: "0 22px",
     border: "4px #0071BC solid",

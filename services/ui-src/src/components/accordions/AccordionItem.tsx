@@ -45,7 +45,7 @@ const sx = {
     bg: "palette.gray_lightest",
     textAlign: "left",
     _hover: {
-      bg: "palette.gray_light",
+      bg: "palette.gray_lighter",
     },
   },
   accordionPanel: {
