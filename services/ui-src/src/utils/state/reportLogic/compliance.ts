@@ -1,56 +1,52 @@
-import {
-  ElementType,
-  ImaTableTemplate,
-  PageElement,
-  RadioTemplate,
-} from "types";
+import { ElementType, PageElement } from "types";
 
-const isRadioElement = (
-  element: Partial<PageElement>
-): element is Partial<RadioTemplate> => element.type === ElementType.Radio;
+const isElementNotCompliant = (element: Partial<PageElement>): boolean => {
+  if (element.type === ElementType.Radio) {
+    const selectedValue = element.answer;
+    if (typeof selectedValue !== "string") return false;
 
-const isImaTableElement = (
-  element: Partial<PageElement>
-): element is Partial<ImaTableTemplate> =>
-  element.type === ElementType.ImaTable;
+    const selectedChoice = element.choices?.find(
+      (choice) => choice.value === selectedValue
+    );
+    const selectedChildIsNotCompliant =
+      selectedChoice?.checkedChildren?.some(isElementNotCompliant) === true;
 
-// Returns true when an IMA table has any row selected in a noncompliant column.
+    return (
+      selectedValue === element.nonCompliantOn || selectedChildIsNotCompliant
+    );
+  }
+
+  if (element.type !== ElementType.ImaTable) return false;
+
+  const nonCompliantColumnIds = new Set(
+    element.columns
+      ?.filter((column) => column.nonCompliant)
+      .map((column) => column.id)
+  );
+  const rows = (element.answer ?? element.rows ?? []).filter(
+    (row) => !row.isUserCreated
+  );
+  return rows.some((row) => {
+    // Check if answer is in a non-compliant column
+    if (row.answer && nonCompliantColumnIds.has(row.answer)) {
+      return true;
+    }
+    // Check if answer is in the row's specific non-compliant answers list
+    if (row.answer && row.nonCompliantAnswers?.includes(row.answer)) {
+      return true;
+    }
+    return false;
+  });
+};
+
+// Returns true when the configured controller element is non-compliant, including any selected child branch that is marked non-compliant
 export const isNotCompliant = (
   controllerElementId: string,
   elements: Partial<PageElement>[]
 ) => {
   const controllingElement = elements.find(
-    (target) => target?.id === controllerElementId
+    (element) => element.id === controllerElementId
   );
   if (!controllingElement) return false;
-
-  if (isRadioElement(controllingElement)) {
-    const selectedValue = controllingElement.answer;
-    return (
-      typeof selectedValue === "string" &&
-      selectedValue === controllingElement.nonCompliantOn
-    );
-  }
-
-  if (!isImaTableElement(controllingElement)) return false;
-
-  const nonCompliantColumnIds = new Set(
-    controllingElement.columns
-      ?.filter((column) => column.nonCompliant)
-      .map((column) => column.id)
-  );
-  const rows = (
-    controllingElement.answer ??
-    controllingElement.rows ??
-    []
-  ).filter((row) => !row.isUserCreated);
-  return rows.some((row) => {
-    if (!row.answer) return false;
-
-    const rowSpecificNonCompliantAnswers = row.nonCompliantAnswers ?? [];
-    return (
-      rowSpecificNonCompliantAnswers.includes(row.answer) ||
-      nonCompliantColumnIds.has(row.answer)
-    );
-  });
+  return isElementNotCompliant(controllingElement);
 };

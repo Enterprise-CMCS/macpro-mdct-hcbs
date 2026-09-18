@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { HideCondition } from "types";
 import { elementIsHidden } from "../reportLogic/completeness";
 import { useStore } from "../useStore";
@@ -14,20 +13,7 @@ export const useElementIsHidden = (
   }
 
   const currentPage = useStore(currentPageSelector);
-  const [hideElement, setHideElement] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!currentPage?.elements) {
-      return;
-    }
-
-    const hidden = elementIsHidden(
-      hideCondition,
-      currentPage.elements,
-      showWhenNonCompliant
-    );
-    setHideElement(hidden);
-  }, [currentPage, hideCondition, showWhenNonCompliant]);
-
-  return hideElement;
+  return currentPage?.elements
+    ? elementIsHidden(hideCondition, currentPage.elements, showWhenNonCompliant)
+    : false;
 };

@@ -9,6 +9,7 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
   useFlags: vi.fn().mockReturnValue({
+    isQmsReportActive: true,
     isTacmReportActive: true,
     isCiReportActive: true,
     isPcpReportActive: true,
@@ -55,6 +56,7 @@ describe("Home page", () => {
   it("should not render disabled report types", () => {
     useStore.setState({ user: stateUser, allBanners: [] });
     (useFlags as any).mockReturnValue({
+      isQmsReportActive: false,
       isTacmReportActive: false,
       isCiReportActive: false,
       isPcpReportActive: false,
@@ -66,8 +68,10 @@ describe("Home page", () => {
     render(homePage);
 
     const headings = [
+      { level: 2, name: /Quality Reports/ },
       { level: 2, name: /Transparency Reports/ },
       { level: 2, name: /Compliance Reports/ },
+      { level: 3, name: /Quality Measure Set Report/ },
       { level: 3, name: /QMS Quality Improvement Plans/ },
       { level: 3, name: /Timely Access Compliance Measure Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },

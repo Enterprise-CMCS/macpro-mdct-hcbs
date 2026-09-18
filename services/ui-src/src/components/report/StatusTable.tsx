@@ -109,6 +109,7 @@ export const StatusTableElement = () => {
             as={RouterLink}
             to={reportBasePath(report) + "/export"}
             target="_blank"
+            rel="noopener noreferrer"
             colorScheme="blue"
             variant="outline"
             leftIcon={<Image src={lookupIconPrimary} />}
