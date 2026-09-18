@@ -117,6 +117,20 @@ describe("isNotCompliant", () => {
     ).toBe(false);
   });
 
+  it("returns false when a configured-column table has no answers", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          compliantWhenAnyRowAnswers: "yes",
+          rows: [
+            { id: "incident", description: "Incident" },
+            { id: "method", description: "Method" },
+          ],
+        }),
+      ])
+    ).toBe(false);
+  });
+
   it("returns true when no row selects the configured qualifying column", () => {
     expect(
       isNotCompliant("ima-table", [

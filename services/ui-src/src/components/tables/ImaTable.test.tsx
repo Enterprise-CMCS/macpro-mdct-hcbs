@@ -261,6 +261,21 @@ describe("<ImaTable />", () => {
     expect(screen.getAllByRole("alert")).toHaveLength(2);
   });
 
+  it("should not show errors when a configured-column table has no answers", () => {
+    render(
+      <ImaTable
+        {...defaultProps}
+        compliantWhenAnyRowAnswers="ima-radio-yes"
+        rows={[
+          { id: "a", description: "A" },
+          { id: "b", description: "B" },
+        ]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
   it("should not show errors when a qualifying answer is selected", () => {
     render(
       <ImaTable {...defaultProps} compliantWhenAnyRowAnswers="ima-radio-yes" />

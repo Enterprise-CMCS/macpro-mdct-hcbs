@@ -58,6 +58,9 @@ export const ImaTable = ({
   onDeleteRow,
 }: ImaTableProps) => {
   const answerColumns = columns.filter((column) => column.type === "answer");
+  const hasAnsweredStandardRow = rows.some(
+    (row) => !row.isUserCreated && row.answer !== undefined
+  );
   const hasQualifyingAnswer = rows.some(
     (row) => !row.isUserCreated && row.answer === compliantWhenAnyRowAnswers
   );
@@ -132,7 +135,7 @@ export const ImaTable = ({
                   {!row.isUserCreated &&
                     errorMessage &&
                     (compliantWhenAnyRowAnswers
-                      ? !hasQualifyingAnswer
+                      ? hasAnsweredStandardRow && !hasQualifyingAnswer
                       : selectedColumn?.nonCompliant) && (
                       <HStack
                         role="alert"

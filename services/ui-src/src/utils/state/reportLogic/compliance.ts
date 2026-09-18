@@ -46,6 +46,8 @@ export const isNotCompliant = (
   ).filter((row) => !row.isUserCreated);
 
   if (controllingElement.compliantWhenAnyRowAnswers) {
+    if (!rows.some((row) => row.answer !== undefined)) return false;
+
     return !rows.some(
       (row) => row.answer === controllingElement.compliantWhenAnyRowAnswers
     );
