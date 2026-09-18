@@ -60,8 +60,8 @@ export const ImaTable = ({
   const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
-  const tableClassName =
-    visibleColumns.length >= 5 ? "ima-table--extra-wide" : undefined;
+  const isExtraWideTable = visibleColumns.length >= 5;
+  const tableClassName = isExtraWideTable ? "ima-table--extra-wide" : undefined;
   // Only show the required-response error after a user has blurred the field.
   const [touchedRowIds, setTouchedRowIds] = useState(new Set<string>());
 
@@ -173,9 +173,9 @@ export const ImaTable = ({
                     {row.isUserCreated && (
                       <Button
                         className="ima-delete-button"
-                        variant="link"
-                        isDisabled={disabled}
+                        variant="unstyled"
                         aria-label={`Delete ${rowName}`}
+                        isDisabled={disabled}
                         onClick={() => onDeleteRow(row.id)}
                       >
                         <Image src={cancelIcon} alt="" />

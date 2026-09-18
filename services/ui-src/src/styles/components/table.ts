@@ -264,7 +264,9 @@ const imaVariant = {
       },
     },
     "&.ima-table--extra-wide": {
-      maxWidth: "none",
+      width: "min(992px, max(100%, calc(100vw - 28.5rem)))",
+      maxWidth: "992px",
+      tableLayout: "fixed",
       th: {
         padding: "0.75rem",
         lineHeight: "1.35",
@@ -286,7 +288,8 @@ const imaVariant = {
           width: "19%",
         },
         "&:last-of-type": {
-          width: "1%",
+          width: "4.5rem",
+          minWidth: "4.5rem",
           textAlign: "center",
           whiteSpace: "nowrap",
           overflowWrap: "normal",
@@ -300,7 +303,8 @@ const imaVariant = {
           textAlign: "left",
         },
         "&:last-of-type": {
-          width: "1%",
+          width: "4.5rem",
+          minWidth: "4.5rem",
           whiteSpace: "nowrap",
         },
       },
