@@ -169,13 +169,13 @@ button {
 }
 
 .ima-table-fieldset {
-  width: 685px;
+  width: 100%;
   max-width: 100%;
 
   .ds-c-label {
     display: block;
     width: 100%;
-    max-width: none;
+    max-width: 685px;
   }
 
   .ds-c-hint {

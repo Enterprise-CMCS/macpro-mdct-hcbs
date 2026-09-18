@@ -246,6 +246,75 @@ describe("<ImaTable />", () => {
     expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
   });
 
+  it("should show an error for a row-specific non-compliant answer", () => {
+    const rowSpecificColumns: ImaTableColumn[] = [
+      { id: "description", label: "Data Source", type: "description" },
+      { id: "yes", label: "Yes", type: "answer" },
+      {
+        id: "no-not-permissible",
+        label: "No, data sharing is not permissible",
+        type: "answer",
+      },
+      {
+        id: "no-permissible-not-used",
+        label: "No, permissible but not used",
+        type: "answer",
+      },
+      { id: "delete", label: "Delete", type: "delete" },
+    ];
+
+    render(
+      <ImaTable
+        {...defaultProps}
+        columns={rowSpecificColumns}
+        rows={[
+          {
+            id: "claims",
+            description: "Claims data",
+            answer: "no-permissible-not-used",
+            nonCompliantAnswers: ["no-permissible-not-used"],
+          },
+        ]}
+      />
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Not compliant.");
+  });
+
+  it("should not show an error when a row-specific non-compliant answer is selected on a row without row-specific rules", () => {
+    const rowSpecificColumns: ImaTableColumn[] = [
+      { id: "description", label: "Data Source", type: "description" },
+      { id: "yes", label: "Yes", type: "answer" },
+      {
+        id: "no-not-permissible",
+        label: "No, data sharing is not permissible",
+        type: "answer",
+      },
+      {
+        id: "no-permissible-not-used",
+        label: "No, permissible but not used",
+        type: "answer",
+      },
+      { id: "delete", label: "Delete", type: "delete" },
+    ];
+
+    render(
+      <ImaTable
+        {...defaultProps}
+        columns={rowSpecificColumns}
+        rows={[
+          {
+            id: "hospital",
+            description: "Hospitalization data",
+            answer: "no-permissible-not-used",
+          },
+        ]}
+      />
+    );
+
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
   it("should not show an error for a user created row answered no", () => {
     render(
       <ImaTable

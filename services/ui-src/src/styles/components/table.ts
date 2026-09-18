@@ -167,7 +167,6 @@ const imaVariant = {
   table: {
     width: "100%",
     maxWidth: "685px",
-    tableLayout: "fixed",
     marginTop: "1rem",
     boxShadow: "0 4px 4px -1px rgba(0, 0, 0, 0.25)",
     th: {
@@ -206,9 +205,11 @@ const imaVariant = {
       },
       "&:first-of-type": {
         textAlign: "left",
+        verticalAlign: "middle",
       },
       "&:nth-of-type(n + 2)": {
         textAlign: "center",
+        verticalAlign: "middle",
       },
       ".ds-c-choice-wrapper": {
         display: "flex",
@@ -234,17 +235,78 @@ const imaVariant = {
         },
       },
       ".ima-delete-button": {
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         margin: "0 auto",
         padding: 0,
-        minHeight: "2.5rem",
+        width: "1.75rem",
+        minWidth: "1.75rem",
+        height: "1.75rem",
+        minHeight: "1.75rem",
+        lineHeight: 1,
+        img: {
+          display: "block",
+          width: "1.5rem",
+          height: "1.5rem",
+        },
+      },
+      "&.ima-delete-cell": {
+        padding: "12px 6px",
+        verticalAlign: "middle",
+        textAlign: "center",
+        whiteSpace: "nowrap",
       },
       ".ima-user-created-row label": {
         margin: "0.5rem 0",
         fontSize: "body_md",
         minWidth: "33%",
+      },
+    },
+    "&.ima-table--extra-wide": {
+      width: "min(992px, max(100%, calc(100vw - 28.5rem)))",
+      maxWidth: "992px",
+      tableLayout: "fixed",
+      th: {
+        padding: "0.75rem",
+        lineHeight: "1.35",
+        verticalAlign: "top",
+        textAlign: "left",
+        whiteSpace: "normal",
+        wordBreak: "normal",
+        overflowWrap: "break-word",
+        "&:first-of-type": {
+          width: "36%",
+        },
+        "&:nth-of-type(2)": {
+          width: "19%",
+        },
+        "&:nth-of-type(3)": {
+          width: "19%",
+        },
+        "&:nth-of-type(4)": {
+          width: "19%",
+        },
+        "&:last-of-type": {
+          width: "4.5rem",
+          minWidth: "4.5rem",
+          textAlign: "center",
+          whiteSpace: "nowrap",
+          overflowWrap: "normal",
+          paddingLeft: "0.375rem",
+          paddingRight: "0.375rem",
+        },
+      },
+      td: {
+        "&:first-of-type": {
+          width: "36%",
+          textAlign: "left",
+        },
+        "&:last-of-type": {
+          width: "4.5rem",
+          minWidth: "4.5rem",
+          whiteSpace: "nowrap",
+        },
       },
     },
     tr: {

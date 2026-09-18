@@ -106,6 +106,7 @@ export type ParentPageTemplate = {
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
+  isExtraWide?: undefined;
 };
 
 export interface PageData {
@@ -124,6 +125,7 @@ export type FormPageTemplate = {
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
+  isExtraWide?: boolean;
   childPageIds?: PageId[];
 };
 
@@ -491,6 +493,7 @@ export type ImaTableRow = {
   id: string;
   description: string;
   answer?: string;
+  nonCompliantAnswers?: string[];
   isUserCreated?: boolean;
 };
 

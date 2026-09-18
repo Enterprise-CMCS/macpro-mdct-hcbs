@@ -26,9 +26,17 @@ const isElementNotCompliant = (element: Partial<PageElement>): boolean => {
   const rows = (element.answer ?? element.rows ?? []).filter(
     (row) => !row.isUserCreated
   );
-  return rows.some(
-    (row) => row.answer && nonCompliantColumnIds.has(row.answer)
-  );
+  return rows.some((row) => {
+    // Check if answer is in a non-compliant column
+    if (row.answer && nonCompliantColumnIds.has(row.answer)) {
+      return true;
+    }
+    // Check if answer is in the row's specific non-compliant answers list
+    if (row.answer && row.nonCompliantAnswers?.includes(row.answer)) {
+      return true;
+    }
+    return false;
+  });
 };
 
 // Returns true when the configured controller element is non-compliant, including any selected child branch that is marked non-compliant
