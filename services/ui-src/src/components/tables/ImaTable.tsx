@@ -140,7 +140,10 @@ export const ImaTable = ({
                     )}
                 </Td>
                 {answerColumns.map((column) => (
-                  <Td key={`${row.id}-${column.id}`}>
+                  <Td
+                    key={`${row.id}-${column.id}`}
+                    className="ima-answer-cell"
+                  >
                     <Choice
                       id={`${row.id}-${column.id}`}
                       type="radio"

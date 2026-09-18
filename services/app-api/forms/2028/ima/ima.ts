@@ -22,6 +22,7 @@ export const imaReportTemplate: ReportBase = {
       childPageIds: [
         "general-info",
         "critical-incident-definitions",
+        "electronic-info-system",
         "separate-investigations",
         "review-submit",
       ],
@@ -133,6 +134,168 @@ export const imaReportTemplate: ReportBase = {
           label:
             "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
           showWhenNonCompliant: ["critical-incident-definitions-table"],
+          required: true,
+        },
+      ],
+    },
+    {
+      id: "electronic-info-system",
+      navTitle: "Electronic Information Systems",
+      tabTitle: "Electronic Information Systems - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "electronic-info-header",
+          text: "Electronic information systems",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "info-systems-definition",
+          text: '"Information systems" are defined as an interconnected set of information resources under the same direct management control that shares common functionality. A system normally includes hardware, software, information, data, applications, communications, and people. (Cited in 45 CFR § 164.304)',
+        },
+        {
+          type: ElementType.Radio,
+          id: "info-systems-question-1",
+          label:
+            "Does this IM system use an information system that matches that definition?",
+          required: true,
+          nonCompliantOn: "no",
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Radio,
+                  id: "info-systems-question-1-security-compliance",
+                  label:
+                    'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link" target="_blank" rel="noopener noreferrer">45 CFR part 164<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>&nbsp;?',
+                  required: true,
+                  nonCompliantOn: "no",
+                  choices: [
+                    {
+                      label: "Yes",
+                      value: "yes",
+                    },
+                    {
+                      label: "No",
+                      value: "no",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        {
+          id: "info-systems-question-2",
+          type: ElementType.Radio,
+          label:
+            "Has the state submitted an Advanced Planning Document (APD) for this IM system?",
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.Date,
+                  id: "question2-yes-date",
+                  label: "When did the state submit the APD?",
+                  dateFormat: "MMDDYYYY",
+                  answer: "",
+                  required: true,
+                },
+              ],
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "electronic-incident-systems-table",
+          caption: "Electronic Incident Systems Table",
+          label:
+            "Does this IM system enable the state to do each of the following?",
+          errorMessage: "Not compliant.",
+          columns: [
+            {
+              id: "eis-description",
+              label: "Actions",
+              type: "description",
+            },
+            { id: "eis-radio-yes", label: "Yes", type: "answer" },
+            {
+              id: "eis-radio-no",
+              label: "No",
+              type: "answer",
+              nonCompliant: true,
+            },
+            { id: "eis-delete", label: "Delete", type: "delete" },
+          ],
+          rows: [
+            {
+              id: "collect-data",
+              description: "Collect electronic critical incident data",
+            },
+            {
+              id: "track-data",
+              description:
+                "Track that data, including the status and resolution of investigations",
+            },
+            {
+              id: "identify-trends-in-data",
+              description: "Identify trends in that data",
+            },
+          ],
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: [
+            "info-systems-question-1",
+            "electronic-incident-systems-table",
+          ],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must use an electronic information system that complies with the security and privacy provisions described in 45 CFR Part 164, and collects, tracks, and identifies trends in electronic critical incident data.",
+          controllerElementId: [
+            "info-systems-question-1",
+            "electronic-incident-systems-table",
+          ],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          showWhenNonCompliant: [
+            "info-systems-question-1",
+            "electronic-incident-systems-table",
+          ],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: [
+            "info-systems-question-1",
+            "electronic-incident-systems-table",
+          ],
           required: true,
         },
       ],

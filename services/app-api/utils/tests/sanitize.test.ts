@@ -19,6 +19,10 @@ const cleanString = "test";
 
 const dirtyLinkString = "<ul><li><a href=//google.com>click</ul>";
 const cleanLinkString = '<ul><li><a href="//google.com">click</a></li></ul>';
+const safeTargetLinkString =
+  '<a href="//google.com" target="_blank" rel="noopener noreferrer">click</a>';
+const unsafeTargetLinkString =
+  '<a href="//google.com" target="_blank" rel="nofollow">click</a>';
 
 // ARRAYS
 
@@ -72,6 +76,18 @@ describe("sanitization functions", () => {
 
     it("should clean dirty strings", () => {
       expect(sanitizeString(dirtyLinkString)).toEqual(cleanLinkString);
+    });
+
+    it("should enforce safe rel values on links that open in a new tab", () => {
+      expect(sanitizeString(safeTargetLinkString)).toEqual(
+        safeTargetLinkString
+      );
+      expect(
+        sanitizeString('<a href="//google.com" target="_blank">click</a>')
+      ).toEqual(safeTargetLinkString);
+      expect(sanitizeString(unsafeTargetLinkString)).toEqual(
+        safeTargetLinkString
+      );
     });
   });
 
