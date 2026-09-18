@@ -5,6 +5,7 @@ import {
   HeaderIcon,
   ReportBase,
   AlertTypes,
+  ComplianceRules,
 } from "../../../types/reports";
 import {
   exportToPDF,
@@ -97,16 +98,16 @@ export const imaReportTemplate: ReportBase = {
               label: "Incident type",
               type: "description",
             },
-            { id: "ima-radio-yes", label: "Yes", type: "answer" },
+            { id: "yes", label: "Yes", type: "answer" },
             {
-              id: "ima-radio-no",
+              id: "no",
               label: "No",
               type: "answer",
-              nonCompliant: true,
             },
             { id: "ima-delete", label: "Delete", type: "delete" },
           ],
           rows: CRITICAL_INCIDENT_TYPES,
+          complianceRule: ComplianceRules.AnyNo,
         },
         {
           type: ElementType.Divider,
@@ -233,12 +234,11 @@ export const imaReportTemplate: ReportBase = {
               label: "Actions",
               type: "description",
             },
-            { id: "eis-radio-yes", label: "Yes", type: "answer" },
+            { id: "yes", label: "Yes", type: "answer" },
             {
-              id: "eis-radio-no",
+              id: "no",
               label: "No",
               type: "answer",
-              nonCompliant: true,
             },
             { id: "eis-delete", label: "Delete", type: "delete" },
           ],
@@ -257,6 +257,7 @@ export const imaReportTemplate: ReportBase = {
               description: "Identify trends in that data",
             },
           ],
+          complianceRule: ComplianceRules.AnyNo,
         },
         {
           type: ElementType.Divider,
