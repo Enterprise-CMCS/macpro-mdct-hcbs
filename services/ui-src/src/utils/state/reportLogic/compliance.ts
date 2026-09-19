@@ -2,6 +2,7 @@ import {
   assertExhaustive,
   ComplianceRules,
   ElementType,
+  ImaTableRow,
   ImaTableTemplate,
   PageElement,
   RadioTemplate,
@@ -22,9 +23,10 @@ const getEligibleAnswerRows = (
 
 const anyRowAnswers = (
   table: ImaTableTemplate,
-  matches: (answer: string) => boolean
+  matches: (answer: string) => boolean,
+  isEligible: (row: ImaTableRow) => boolean = () => true
 ): ImaTableComplianceResult => {
-  const answerRows = getEligibleAnswerRows(table);
+  const answerRows = getEligibleAnswerRows(table)?.filter(isEligible);
   if (!answerRows?.length) return { isNonCompliant: undefined };
 
   const nonCompliantRows = answerRows.filter((row) => matches(row.answer!));
@@ -65,6 +67,59 @@ const tableHasAllNoAnswers = (table: ImaTableTemplate) =>
 const tableHasAllNotReferredAnswers = (table: ImaTableTemplate) =>
   allRowsAnswer(table, (answer) => answer === "not-referred");
 
+// TODO: not yet wired up to any real table (IMA doc II.D.2/II.E.2 data-
+//  source tables aren't built yet). Only rows in RELEVANT_ROW_IDS count toward
+//  compliance; noncompliance triggers if any of those rows are answered
+//  NON_COMPLIANT_ANSWER. Other rows in the same table never affect compliance.
+//  Update these literals to match the real row ids/answer value once that
+//  table is built.
+const RELEVANT_ROW_IDS = ["claims-data", "mfcu", "aps", "cps"];
+const NON_COMPLIANT_ANSWER = "permissible-but-unused";
+
+const tableHasAnyRelevantRowMatchingValue = (table: ImaTableTemplate) =>
+  anyRowAnswers(
+    table,
+    (answer) => answer === NON_COMPLIANT_ANSWER,
+    (row) => RELEVANT_ROW_IDS.includes(row.id)
+  );
+
+// TODO: not yet wired up to any real table (IMA doc II.F.2 investigation
+//  referrals table isn't built yet). Two independent triggers, combined with OR:
+//    1. any row answered with one of PARTIAL_SHARING_ANSWERS
+//    2. every eligible row answered "not-referred" (mirrors AllNotReferred)
+//  Update PARTIAL_SHARING_ANSWERS to match the real answer values once that
+//  table is built.
+const PARTIAL_SHARING_ANSWERS = [
+  "no-info-shared",
+  "status-only",
+  "resolution-only",
+];
+
+const tableHasAnyPartialOrAllNotReferredAnswers = (
+  table: ImaTableTemplate
+): ImaTableComplianceResult => {
+  const anyPartial = anyRowAnswers(table, (answer) =>
+    PARTIAL_SHARING_ANSWERS.includes(answer)
+  );
+  const allNotReferred = allRowsAnswer(
+    table,
+    (answer) => answer === "not-referred"
+  );
+
+  const isNonCompliant =
+    anyPartial.isNonCompliant || allNotReferred.isNonCompliant;
+
+  return {
+    isNonCompliant,
+    nonCompliantRowIds: isNonCompliant
+      ? [
+          ...(anyPartial.nonCompliantRowIds ?? []),
+          ...(allNotReferred.nonCompliantRowIds ?? []),
+        ]
+      : undefined,
+  };
+};
+
 export const isImaTableNonCompliant = (
   table: ImaTableTemplate
 ): ImaTableComplianceResult => {
@@ -77,6 +132,12 @@ export const isImaTableNonCompliant = (
       return tableHasAllNoAnswers(table);
     case ComplianceRules.AllNotReferred:
       return tableHasAllNotReferredAnswers(table);
+    // TODO: no table uses this rule yet. See IMA doc II.D.2/II.E.2.
+    case ComplianceRules.AnyRelevantRowMatchesValue:
+      return tableHasAnyRelevantRowMatchingValue(table);
+    // TODO: no table uses this rule yet. See IMA doc II.F.2.
+    case ComplianceRules.AnyPartialOrAllNotReferred:
+      return tableHasAnyPartialOrAllNotReferredAnswers(table);
     default:
       assertExhaustive(table.complianceRule);
       console.error(`Unknown compliance rule: ${table.complianceRule}`);

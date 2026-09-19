@@ -370,7 +370,14 @@ const imaTableTemplateSchema = object().shape({
     )
     .notRequired(),
   complianceRule: string()
-    .oneOf(["any-no", "any-non-yes", "all-no", "all-not-referred"])
+    .oneOf([
+      "any-no",
+      "any-non-yes",
+      "all-no",
+      "all-not-referred",
+      "any-relevant-row-matches-value",
+      "any-partial-or-all-not-referred",
+    ])
     .required(),
 });
 

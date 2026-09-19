@@ -499,6 +499,10 @@ export const ComplianceRules = {
   AnyNonYes: "any-non-yes",
   AllNo: "all-no",
   AllNotReferred: "all-not-referred",
+  // TODO: not yet used by any table. See IMA doc II.D.2/II.E.2.
+  AnyRelevantRowMatchesValue: "any-relevant-row-matches-value",
+  // TODO: not yet used by any table. See IMA doc II.F.2.
+  AnyPartialOrAllNotReferred: "any-partial-or-all-not-referred",
 } as const;
 export type ComplianceRule =
   (typeof ComplianceRules)[keyof typeof ComplianceRules];
