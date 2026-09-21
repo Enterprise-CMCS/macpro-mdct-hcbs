@@ -156,9 +156,9 @@ const isRadioButtonNonCompliant = (element: RadioTemplate) => {
 const isElementNotCompliant = (element: PageElement): boolean | undefined => {
   switch (element.type) {
     case ElementType.ImaTable:
-      return isImaTableNonCompliant(element as ImaTableTemplate).isNonCompliant;
+      return isImaTableNonCompliant(element).isNonCompliant;
     case ElementType.Radio:
-      return isRadioButtonNonCompliant(element as RadioTemplate);
+      return isRadioButtonNonCompliant(element);
     default:
       return false;
   }
