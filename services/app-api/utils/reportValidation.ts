@@ -17,6 +17,7 @@ import {
   PageElement,
   ReportOptions,
   assertExhaustive,
+  ComplianceRules,
 } from "../types/reports";
 import { error } from "./constants";
 
@@ -369,16 +370,7 @@ const imaTableTemplateSchema = object().shape({
       })
     )
     .notRequired(),
-  complianceRule: string()
-    .oneOf([
-      "any-no",
-      "any-non-yes",
-      "all-no",
-      "all-not-referred",
-      "any-relevant-row-matches-value",
-      "any-partial-or-all-not-referred",
-    ])
-    .required(),
+  complianceRule: string().oneOf(Object.values(ComplianceRules)).required(),
 });
 
 const eligibilityTableSchema = object().shape({

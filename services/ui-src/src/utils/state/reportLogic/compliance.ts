@@ -9,7 +9,7 @@ import {
 } from "types";
 
 type ImaTableComplianceResult = {
-  isNonCompliant: boolean | undefined;
+  isNonCompliant?: boolean;
   nonCompliantRowIds?: string[];
 };
 
@@ -146,22 +146,14 @@ export const isImaTableNonCompliant = (
 };
 
 const isRadioButtonNonCompliant = (element: RadioTemplate) => {
-  const selectedValue = element.answer;
-  if (typeof selectedValue !== "string") return false;
-
-  const selectedChoice = element.choices?.find(
-    (choice) => choice.value === selectedValue
-  );
-  const selectedChildIsNotCompliant =
-    selectedChoice?.checkedChildren?.some(isElementNotCompliant) === true;
-  return (
-    selectedValue === element.nonCompliantOn || selectedChildIsNotCompliant
-  );
+  if (typeof element.answer !== "string") return undefined;
+  if (element.answer === element.nonCompliantOn) return true;
+  return element.choices
+    .find((choice) => choice.value === element.answer)
+    ?.checkedChildren?.some(isElementNotCompliant);
 };
 
-const isElementNotCompliant = (
-  element: Partial<PageElement>
-): boolean | undefined => {
+const isElementNotCompliant = (element: PageElement): boolean | undefined => {
   switch (element.type) {
     case ElementType.ImaTable:
       return isImaTableNonCompliant(element as ImaTableTemplate).isNonCompliant;
@@ -175,7 +167,7 @@ const isElementNotCompliant = (
 // Returns true when the configured controller element is non-compliant, including any selected child branch that is marked non-compliant
 export const isNotCompliant = (
   controllerElementId: string,
-  elements: Partial<PageElement>[]
+  elements: PageElement[]
 ) => {
   const controllingElement = elements.find(
     (element) => element.id === controllerElementId

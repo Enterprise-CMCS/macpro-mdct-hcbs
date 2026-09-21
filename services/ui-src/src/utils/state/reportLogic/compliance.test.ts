@@ -23,7 +23,7 @@ describe("isNotCompliant", () => {
   it("should return false when the controller is not an IMA table", () => {
     expect(
       isNotCompliant("text-field", [
-        { id: "text-field", type: ElementType.Textbox },
+        { id: "text-field", type: ElementType.Textbox } as PageElement,
       ])
     ).toBe(false);
   });
