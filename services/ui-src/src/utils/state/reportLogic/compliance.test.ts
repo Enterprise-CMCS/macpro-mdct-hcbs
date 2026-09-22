@@ -143,7 +143,7 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
-  it("returns false when a row-specific non-compliant answer is selected on a row without row-specific rules", () => {
+  it("returns undefined when a row-specific non-compliant answer is selected on a row without row-specific rules", () => {
     expect(
       isNotCompliant("ima-table", [
         createTable({
@@ -157,7 +157,7 @@ describe("isNotCompliant", () => {
           ],
         }),
       ])
-    ).toBe(false);
+    ).toBeUndefined();
   });
 
   it("ignores a user-created row selecting a row-specific non-compliant answer", () => {
