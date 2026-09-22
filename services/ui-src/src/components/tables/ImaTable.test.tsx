@@ -7,15 +7,20 @@ import { testA11y } from "utils/testing/commonTests";
 
 const columns: ImaTableColumn[] = [
   { id: "ima-description", label: "Incident Type", type: "description" },
-  { id: "ima-radio-yes", label: "Yes", type: "answer" },
-  { id: "ima-radio-no", label: "No", type: "answer", nonCompliant: true },
+  { id: "yes", label: "Yes", type: "answer" },
+  { id: "no", label: "No", type: "answer" },
   { id: "ima-delete", label: "Delete", type: "delete" },
 ];
 
 const rows: ImaTableRow[] = [
   { id: "verbal-abuse", description: "Verbal Abuse" },
-  { id: "neglect", description: "Neglect", answer: "ima-radio-yes" },
-  { id: "exploitation", description: "Exploitation", answer: "ima-radio-no" },
+  { id: "neglect", description: "Neglect", answer: "yes" },
+  {
+    id: "exploitation",
+    description: "Exploitation",
+    answer: "no",
+    isNonCompliant: true,
+  },
 ];
 
 const onAnswerChange = vi.fn();
@@ -153,10 +158,7 @@ describe("<ImaTable />", () => {
       screen.getByRole("radio", { name: "Yes for Verbal Abuse" })
     );
 
-    expect(onAnswerChange).toHaveBeenCalledWith(
-      "verbal-abuse",
-      "ima-radio-yes"
-    );
+    expect(onAnswerChange).toHaveBeenCalledWith("verbal-abuse", "yes");
   });
 
   it("should call onAnswerChange with no when the No radio is selected", async () => {
@@ -166,7 +168,7 @@ describe("<ImaTable />", () => {
       screen.getByRole("radio", { name: "No for Verbal Abuse" })
     );
 
-    expect(onAnswerChange).toHaveBeenCalledWith("verbal-abuse", "ima-radio-no");
+    expect(onAnswerChange).toHaveBeenCalledWith("verbal-abuse", "no");
   });
 
   it("should render a radio for every answer column", () => {
@@ -177,13 +179,11 @@ describe("<ImaTable />", () => {
         id: "no-some",
         label: "No, some programs",
         type: "answer",
-        nonCompliant: true,
       },
       {
         id: "no-none",
         label: "No, no programs",
         type: "answer",
-        nonCompliant: true,
       },
     ];
 
@@ -204,7 +204,7 @@ describe("<ImaTable />", () => {
     ).toBeVisible();
   });
 
-  it("should show the error message for any non-compliant answer column", () => {
+  it("should show the error message for any non-compliant answer", () => {
     const multiNoColumns: ImaTableColumn[] = [
       { id: "description", label: "Incident Type", type: "description" },
       { id: "yes", label: "Yes", type: "answer" },
@@ -212,13 +212,11 @@ describe("<ImaTable />", () => {
         id: "no-some",
         label: "No, some programs",
         type: "answer",
-        nonCompliant: true,
       },
       {
         id: "no-none",
         label: "No, no programs",
         type: "answer",
-        nonCompliant: true,
       },
     ];
 
@@ -228,8 +226,18 @@ describe("<ImaTable />", () => {
         columns={multiNoColumns}
         rows={[
           { id: "a", description: "A", answer: "yes" },
-          { id: "b", description: "B", answer: "no-some" },
-          { id: "c", description: "C", answer: "no-none" },
+          {
+            id: "b",
+            description: "B",
+            answer: "no-some",
+            isNonCompliant: true,
+          },
+          {
+            id: "c",
+            description: "C",
+            answer: "no-none",
+            isNonCompliant: true,
+          },
         ]}
       />
     );
@@ -245,76 +253,6 @@ describe("<ImaTable />", () => {
     expect(alerts[0]).toHaveTextContent("Not compliant.");
     expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
   });
-
-  it("should show an error for a row-specific non-compliant answer", () => {
-    const rowSpecificColumns: ImaTableColumn[] = [
-      { id: "description", label: "Data Source", type: "description" },
-      { id: "yes", label: "Yes", type: "answer" },
-      {
-        id: "no-not-permissible",
-        label: "No, data sharing is not permissible",
-        type: "answer",
-      },
-      {
-        id: "no-permissible-not-used",
-        label: "No, permissible but not used",
-        type: "answer",
-      },
-      { id: "delete", label: "Delete", type: "delete" },
-    ];
-
-    render(
-      <ImaTable
-        {...defaultProps}
-        columns={rowSpecificColumns}
-        rows={[
-          {
-            id: "claims",
-            description: "Claims data",
-            answer: "no-permissible-not-used",
-            nonCompliantAnswers: ["no-permissible-not-used"],
-          },
-        ]}
-      />
-    );
-
-    expect(screen.getByRole("alert")).toHaveTextContent("Not compliant.");
-  });
-
-  it("should not show an error when a row-specific non-compliant answer is selected on a row without row-specific rules", () => {
-    const rowSpecificColumns: ImaTableColumn[] = [
-      { id: "description", label: "Data Source", type: "description" },
-      { id: "yes", label: "Yes", type: "answer" },
-      {
-        id: "no-not-permissible",
-        label: "No, data sharing is not permissible",
-        type: "answer",
-      },
-      {
-        id: "no-permissible-not-used",
-        label: "No, permissible but not used",
-        type: "answer",
-      },
-      { id: "delete", label: "Delete", type: "delete" },
-    ];
-
-    render(
-      <ImaTable
-        {...defaultProps}
-        columns={rowSpecificColumns}
-        rows={[
-          {
-            id: "hospital",
-            description: "Hospitalization data",
-            answer: "no-permissible-not-used",
-          },
-        ]}
-      />
-    );
-
-    expect(screen.queryByRole("alert")).toBeNull();
-  });
-
   it("should not show an error for a user created row answered no", () => {
     render(
       <ImaTable
@@ -323,7 +261,7 @@ describe("<ImaTable />", () => {
           {
             id: "other",
             description: "Other type",
-            answer: "ima-radio-no",
+            answer: "no",
             isUserCreated: true,
           },
         ]}

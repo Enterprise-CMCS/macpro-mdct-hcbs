@@ -1,6 +1,6 @@
 import { ImaTableColumn, ImaTableRow } from "../../../types/reports";
 
-const PERMISSIBLE_NOT_USED_ANSWER_ID = "data-source-no-permissible-not-used";
+const PERMISSIBLE_NOT_USED_ANSWER_ID = "permissible-but-unused";
 
 export const INCIDENT_REPORTING_COLUMNS: ImaTableColumn[] = [
   {
@@ -8,8 +8,8 @@ export const INCIDENT_REPORTING_COLUMNS: ImaTableColumn[] = [
     label: "Incident type",
     type: "description",
   },
-  { id: "incident-yes", label: "Yes", type: "answer" },
-  { id: "incident-no", label: "No", type: "answer", nonCompliant: true },
+  { id: "yes", label: "Yes", type: "answer" },
+  { id: "no", label: "No", type: "answer" },
 ];
 
 export const DATA_SOURCE_COLUMNS: ImaTableColumn[] = [
@@ -25,7 +25,7 @@ export const DATA_SOURCE_COLUMNS: ImaTableColumn[] = [
     type: "answer",
   },
   {
-    id: "data-source-no-permissible-not-used",
+    id: "permissible-but-unused",
     label:
       "No, data sharing is permissible but we do not use this data source to identify critical incidents",
     type: "answer",
@@ -44,17 +44,17 @@ export const UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_DURING: ImaTableRow[] = [
     nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
   {
-    id: "medicaid-fraud-control-unit",
+    id: "mfcu",
     description: "Medicaid Fraud Control Unit (MFCU) data",
     nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
   {
-    id: "state-adult-protective-services",
+    id: "aps",
     description: "State Adult Protective Services (APS) data",
     nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
   {
-    id: "state-child-protective-services",
+    id: "cps",
     description: "State Child Protective Services (CPS) data",
     nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
@@ -88,17 +88,17 @@ export const UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_FAILURE: ImaTableRow[] =
       nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },
     {
-      id: "medicaid-fraud-control-unit",
+      id: "mfcu",
       description: "Medicaid Fraud Control Unit (MFCU)",
       nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },
     {
-      id: "state-adult-protective-services",
+      id: "aps",
       description: "State Adult Protective Services (APS)",
       nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },
     {
-      id: "state-child-protective-services",
+      id: "cps",
       description: "State Child Protective Services (CPS)",
       nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },

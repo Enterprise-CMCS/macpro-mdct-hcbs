@@ -866,7 +866,6 @@ export type ImaTableColumn = {
   id: string;
   label: string;
   type: "description" | "answer" | "delete";
-  nonCompliant?: boolean;
 };
 
 export type ImaTableRow = {
@@ -875,7 +874,21 @@ export type ImaTableRow = {
   answer?: string;
   nonCompliantAnswers?: string[];
   isUserCreated?: boolean;
+  isNonCompliant?: boolean;
 };
+
+export const ComplianceRules = {
+  AnyNo: "any-no",
+  AnyNonYes: "any-non-yes",
+  AllNo: "all-no",
+  AllNotReferred: "all-not-referred",
+  // TODO: not yet used by any table. See IMA doc II.D.2/II.E.2.
+  AnyRelevantRowMatchesValue: "any-relevant-row-matches-value",
+  // TODO: not yet used by any table. See IMA doc II.F.2.
+  AnyPartialOrAllNotReferred: "any-partial-or-all-not-referred",
+} as const;
+export type ComplianceRule =
+  (typeof ComplianceRules)[keyof typeof ComplianceRules];
 
 export type ImaTableTemplate = {
   type: ElementType.ImaTable;
@@ -890,6 +903,7 @@ export type ImaTableTemplate = {
   columns: ImaTableColumn[];
   rows: ImaTableRow[];
   answer?: ImaTableRow[];
+  complianceRule: ComplianceRule;
 };
 
 /**

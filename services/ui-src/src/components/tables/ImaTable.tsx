@@ -85,13 +85,6 @@ export const ImaTable = ({
         <Tbody>
           {rows.map((row) => {
             const rowName = row.description || "new incident type";
-            const selectedColumn = answerColumns.find(
-              (column) => column.id === row.answer
-            );
-            const rowHasNonCompliantAnswer =
-              !!row.answer &&
-              (selectedColumn?.nonCompliant ||
-                row.nonCompliantAnswers?.includes(row.answer));
             return (
               <Tr key={row.id}>
                 <Td>
@@ -135,20 +128,14 @@ export const ImaTable = ({
                   ) : (
                     <Text fontSize="body_md">{row.description}</Text>
                   )}
-                  {!row.isUserCreated &&
-                    rowHasNonCompliantAnswer &&
-                    errorMessage && (
-                      <HStack
-                        role="alert"
-                        spacing="0.25rem"
-                        alignItems="center"
-                      >
-                        <Image src={errorIcon} alt="" boxSize="0.75rem" />
-                        <Text color="palette.error" fontSize="body_md">
-                          {errorMessage}
-                        </Text>
-                      </HStack>
-                    )}
+                  {!row.isUserCreated && row.isNonCompliant && errorMessage && (
+                    <HStack role="alert" spacing="0.25rem" alignItems="center">
+                      <Image src={errorIcon} alt="" boxSize="0.75rem" />
+                      <Text color="palette.error" fontSize="body_md">
+                        {errorMessage}
+                      </Text>
+                    </HStack>
+                  )}
                 </Td>
                 {answerColumns.map((column) => (
                   <Td

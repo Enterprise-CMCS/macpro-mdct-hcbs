@@ -17,6 +17,7 @@ import {
   PageElement,
   ReportOptions,
   assertExhaustive,
+  ComplianceRules,
 } from "../types/reports";
 import { error } from "./constants";
 
@@ -344,7 +345,6 @@ const imaTableTemplateSchema = object().shape({
         id: string().required(),
         label: string().required(),
         type: string().oneOf(["description", "answer", "delete"]).required(),
-        nonCompliant: boolean().notRequired(),
       })
     )
     .required(),
@@ -356,6 +356,7 @@ const imaTableTemplateSchema = object().shape({
         answer: string().notRequired(),
         nonCompliantAnswers: array().of(string().required()).notRequired(),
         isUserCreated: boolean().notRequired(),
+        isNonCompliant: boolean().notRequired(),
       })
     )
     .required(),
@@ -367,9 +368,11 @@ const imaTableTemplateSchema = object().shape({
         answer: string().notRequired(),
         nonCompliantAnswers: array().of(string().required()).notRequired(),
         isUserCreated: boolean().notRequired(),
+        isNonCompliant: boolean().notRequired(),
       })
     )
     .notRequired(),
+  complianceRule: string().oneOf(Object.values(ComplianceRules)).required(),
 });
 
 const eligibilityTableSchema = object().shape({
