@@ -19,6 +19,7 @@ import {
   TextboxTemplate,
   PageTemplate,
   ReadmissionRateTemplate,
+  ComplianceRules,
 } from "types";
 import {
   elementIsHidden,
@@ -37,7 +38,7 @@ describe("Report completeness utilities", () => {
       caption: "mock",
       columns: [
         { id: "yes", label: "Yes", type: "answer" },
-        { id: "no", label: "No", type: "answer", nonCompliant: true },
+        { id: "no", label: "No", type: "answer" },
       ],
       rows: [
         {
@@ -50,7 +51,7 @@ describe("Report completeness utilities", () => {
     } as unknown as PageElement;
 
     it("should not treat a user created row answered no as non-compliant", () => {
-      expect(isNotCompliant("ima-table", [table])).toBe(false);
+      expect(isNotCompliant("ima-table", [table])).toBe(undefined);
     });
   });
 
@@ -521,10 +522,9 @@ describe("Report completeness utilities", () => {
       const compliantTable = {
         id: "ima-table",
         type: ElementType.ImaTable,
-        columns: [
-          { id: "no", label: "No", type: "answer", nonCompliant: true },
-        ],
+        columns: [{ id: "no", label: "No", type: "answer" }],
         rows: [{ id: "incident", description: "Incident", answer: "yes" }],
+        complianceRule: ComplianceRules.AnyNo,
       } as unknown as PageElement;
       const nonCompliantTable = {
         ...compliantTable,

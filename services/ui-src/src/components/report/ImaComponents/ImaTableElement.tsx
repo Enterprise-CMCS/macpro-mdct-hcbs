@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ImaTable } from "components";
 import { ImaTableRow, ImaTableTemplate } from "types";
+import { isImaTableNonCompliant } from "utils/state/reportLogic/compliance";
 import { PageElementProps } from "../Elements";
 
 const identifyUserCreatedRows = (
@@ -40,8 +41,18 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   );
 
   const save = (updatedRows: ImaTableRow[]) => {
-    setRows(updatedRows);
-    updateElement({ answer: updatedRows });
+    const { nonCompliantRowIds } = isImaTableNonCompliant({
+      ...element,
+      answer: updatedRows,
+    });
+    const nonCompliantIds = new Set(nonCompliantRowIds);
+    const rowsWithCompliance = updatedRows.map((row) => ({
+      ...row,
+      isNonCompliant: nonCompliantIds.has(row.id) || undefined,
+    }));
+
+    setRows(rowsWithCompliance);
+    updateElement({ answer: rowsWithCompliance });
   };
 
   const onAnswerChange = (rowId: string, columnId: string) => {

@@ -312,7 +312,7 @@ export const elementSatisfiesRequired = (
 
 export const elementIsHidden = (
   hideCondition: HideCondition | undefined,
-  elements: Partial<PageElement>[],
+  elements: PageElement[],
   showWhenNonCompliant?: string[]
 ) => {
   if (

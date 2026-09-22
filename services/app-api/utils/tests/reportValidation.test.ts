@@ -13,6 +13,8 @@ import {
   invalidParentPageReport,
   invalidRadioCheckedChildrenReport,
   missingStateReport,
+  reportWithImaTable,
+  reportWithInvalidImaTableComplianceRule,
   reportWithKeyActivityTable,
   reportWithListInputNoHelperText,
   validQipReport,
@@ -42,6 +44,11 @@ describe("reportValidation", () => {
       const validatedData = await validateReportPayload(
         reportWithKeyActivityTable
       );
+      expect(validatedData).toBeDefined();
+    });
+
+    it("should accept a report with an ImaTable element", async () => {
+      const validatedData = await validateReportPayload(reportWithImaTable);
       expect(validatedData).toBeDefined();
     });
 
@@ -111,44 +118,25 @@ describe("reportValidation", () => {
   });
 
   describe("invalid report scenarios", () => {
-    it("should reject a report with missing state", () => {
+    it.each([
+      ["a report with missing state", missingStateReport],
+      ["a report with incorrect status", incorrectStatusReport],
+      ["a report with incorrect report type", incorrectTypeReport],
+      ["invalid form page object", invalidFormPageReport],
+      ["invalid measure page object", invalidMeasurePageReport],
+      ["invalid parent page object", invalidParentPageReport],
+      [
+        "invalid radio element checked children object",
+        invalidRadioCheckedChildrenReport,
+      ],
+      ["invalid page element type", invalidPageElementType],
+      [
+        "an ImaTable element with an invalid complianceRule",
+        reportWithInvalidImaTableComplianceRule,
+      ],
+    ])("should reject %s", (_description, report) => {
       expect(async () => {
-        await validateReportPayload(missingStateReport);
-      }).rejects.toThrow();
-    });
-    it("should reject a report with incorrect status", () => {
-      expect(async () => {
-        await validateReportPayload(incorrectStatusReport);
-      }).rejects.toThrow();
-    });
-    it("should reject a report with incorrect report type", () => {
-      expect(async () => {
-        await validateReportPayload(incorrectTypeReport);
-      }).rejects.toThrow();
-    });
-    it("should reject invalid form page object", () => {
-      expect(async () => {
-        await validateReportPayload(invalidFormPageReport);
-      }).rejects.toThrow();
-    });
-    it("should reject invalid measure page object", () => {
-      expect(async () => {
-        await validateReportPayload(invalidMeasurePageReport);
-      }).rejects.toThrow();
-    });
-    it("should reject invalid parent page object", () => {
-      expect(async () => {
-        await validateReportPayload(invalidParentPageReport);
-      }).rejects.toThrow();
-    });
-    it("should reject invalid radio element checked children object", () => {
-      expect(async () => {
-        await validateReportPayload(invalidRadioCheckedChildrenReport);
-      }).rejects.toThrow();
-    });
-    it("should reject invalid page element type", () => {
-      expect(async () => {
-        await validateReportPayload(invalidPageElementType);
+        await validateReportPayload(report);
       }).rejects.toThrow();
     });
   });
