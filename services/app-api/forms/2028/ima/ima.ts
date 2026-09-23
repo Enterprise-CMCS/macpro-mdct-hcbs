@@ -13,6 +13,7 @@ import {
   waiverListInputField,
 } from "../elements";
 import { CRITICAL_INCIDENT_TYPES } from "./incidentTypes";
+import { MONITORING_METHODS_TYPES } from "./monitoringTypes";
 
 export const imaReportTemplate: ReportBase = {
   type: ReportType.IMA,
@@ -24,6 +25,7 @@ export const imaReportTemplate: ReportBase = {
         "general-info",
         "critical-incident-definitions",
         "electronic-info-system",
+        "monitoring-methods",
         "separate-investigations",
         "review-submit",
       ],
@@ -135,6 +137,76 @@ export const imaReportTemplate: ReportBase = {
           label:
             "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
           showWhenNonCompliant: ["critical-incident-definitions-table"],
+          required: true,
+        },
+      ],
+    },
+    {
+      id: "monitoring-methods",
+      navTitle: "Monitoring Methods",
+      tabTitle: "Monitoring Methods - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "monitoring-methods-header",
+          text: "Monitoring methods",
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "monitoring-methods-table",
+          caption: "Monitoring Methods Table",
+          label:
+            "Does the state use the following methods to monitor that providers report these critical incidents within the required process and timeframe?",
+          allowUserCreatedRows: true,
+          addButtonText: "Add other method",
+          userCreatedRowLabel: "Other method:",
+          errorMessage: "Not compliant.",
+          columns: [
+            {
+              id: "ima-description",
+              label:
+                "Methods to monitor provider compliance with reporting critical incidents",
+              type: "description",
+            },
+            { id: "yes", label: "Yes", type: "answer" },
+            {
+              id: "no",
+              label: "No",
+              type: "answer",
+            },
+            { id: "ima-delete", label: "Delete", type: "delete" },
+          ],
+          rows: MONITORING_METHODS_TYPES,
+          complianceRule: ComplianceRules.AllNo,
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: ["monitoring-methods-table"],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must use the above methods to monitor that providers report critical incidents within the required process and timeframe.",
+          controllerElementId: ["monitoring-methods-table"],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          showWhenNonCompliant: ["monitoring-methods-table"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: ["monitoring-methods-table"],
           required: true,
         },
       ],
