@@ -11,7 +11,7 @@ import {
   QipIntroductionCard,
   WWLIntroductionCard,
 } from "components";
-import { useStore } from "utils";
+import { externalLinkAltText, useStore } from "utils";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { activeBannerSelector } from "utils/state/selectors";
 import { BannerAreas } from "types";
@@ -52,7 +52,11 @@ export const HomePage = () => {
                   rel="noopener noreferrer"
                 >
                   Medicaid.gov's HCBS quality improvement resources
-                  <ExternalLinkIcon ariaHidden className="external-link-icon" />
+                  <ExternalLinkIcon
+                    ariaHidden={false}
+                    title={externalLinkAltText}
+                    className="external-link-icon"
+                  />
                 </Link>
                 {"."}
               </Text>

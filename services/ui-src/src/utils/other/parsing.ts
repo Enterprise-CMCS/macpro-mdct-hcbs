@@ -9,7 +9,7 @@ import parse, {
   HTMLReactParserOptions,
 } from "html-react-parser";
 
-const externalLinkAltText = "(Opens in a new tab)";
+export const externalLinkAltText = "(Opens in a new tab)";
 
 const isExternalHref = (href?: string) => /^(https?:)?\/\//i.test(href ?? "");
 

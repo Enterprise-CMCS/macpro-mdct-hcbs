@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from "@cmsgov/design-system";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType, isReportType } from "types";
-import { useStore } from "utils";
+import { externalLinkAltText, useStore } from "utils";
 
 /**
  * This component is contained within each card on the state user home page.
@@ -50,7 +50,11 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           rel="noopener noreferrer"
         >
           User Guide and Help File
-          <ExternalLinkIcon ariaHidden={true} className="external-link-icon" />
+          <ExternalLinkIcon
+            ariaHidden={false}
+            title={externalLinkAltText}
+            className="external-link-icon"
+          />
         </Button>
       )}
       <Button
