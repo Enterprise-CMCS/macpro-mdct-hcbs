@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ReportType } from "../types/reports";
 import { qmsReportTemplate as qmsReportTemplate2026 } from "./2026/qms/qms";
-import { harReportTemplate as harReportTemplate2026 } from "./2026/ha/ha";
+import { haReportTemplate as haReportTemplate2026 } from "./2026/ha/ha";
 import { ciReportTemplate as ciReportTemplate2026 } from "./2026/ci/ci";
 import { pcpReportTemplate as pcpReportTemplate2026 } from "./2026/pcp/pcp";
 import { qipReportTemplate as qipReportTemplate2026 } from "./2026/qip/qip";
@@ -30,7 +30,7 @@ describe("Yearly Form Selection", () => {
   });
 
   it("should return the template for the exact requested year, if one exists (HA report)", () => {
-    expect(getReportTemplate(ReportType.HA, 2026)).toBe(harReportTemplate2026);
+    expect(getReportTemplate(ReportType.HA, 2026)).toBe(haReportTemplate2026);
   });
 
   it("should throw an error if the requested year is not available (CI report)", () => {

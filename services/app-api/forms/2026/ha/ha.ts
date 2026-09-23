@@ -27,7 +27,7 @@ import {
   habilitationHAPCH2Rate,
 } from "./haElements";
 
-export const harReportTemplate: ReportBase = {
+export const haReportTemplate: ReportBase = {
   type: ReportType.HA,
   year: 2026,
   pages: [
