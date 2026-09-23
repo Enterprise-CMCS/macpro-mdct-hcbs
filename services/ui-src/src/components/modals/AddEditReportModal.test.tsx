@@ -264,7 +264,7 @@ describe("AddEditReportModal", () => {
 
   it.each([
     { type: ReportType.QMS, text: "Quality Measure Set Report" },
-    { type: ReportType.TACM, text: "TACM Report" },
+    { type: ReportType.HA, text: "HCBS Access Report" },
     { type: ReportType.CI, text: "Critical Incident Report" },
     { type: ReportType.PCP, text: "Person-Centered Planning Report" },
     { type: ReportType.QIP, text: "Quality Improvement Plan" },

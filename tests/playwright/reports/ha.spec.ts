@@ -11,10 +11,10 @@ import {
 test.use({ storageState: stateUserAuthPath });
 
 const reportSpecificData = {
-  reportButtonName: "Enter TACM Report online",
-  startReportButtonName: "Start Timely Access Compliance Measure Report",
-  modalHeading: "Add new TACM Report",
-  reportNameInputHeading: "TACM Report Name",
+  reportButtonName: "Enter HA Report online",
+  startReportButtonName: "Start HCBS Access Report",
+  modalHeading: "Add new HCBS Access Report",
+  reportNameInputHeading: "HCBS Access Report Name",
 };
 
 test.beforeEach(async ({ page }) => {
@@ -22,7 +22,7 @@ test.beforeEach(async ({ page }) => {
   await page.route(/clientsdk\.launchdarkly\.us/, async (route) => {
     await route.fulfill({
       json: {
-        isTacmReportActive: {
+        isHaReportActive: {
           version: 60,
           flagVersion: 8,
           value: true,
@@ -39,7 +39,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("create a TACM report as a state user", async ({ page }) => {
+test("create a HA report as a state user", async ({ page }) => {
   await navigateToReportHome(page, reportSpecificData.reportButtonName);
   await navigateToAddEditReportModal(
     page,

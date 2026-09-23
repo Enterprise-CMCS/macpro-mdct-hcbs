@@ -6,7 +6,7 @@ export default [
     replicationFactor: 3,
     topics: [
       ".qms-reports",
-      ".tacm-reports",
+      ".har-reports",
       ".ci-reports",
       ".pcp-reports",
       ".qip-reports",

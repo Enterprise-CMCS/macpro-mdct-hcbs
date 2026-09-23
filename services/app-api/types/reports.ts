@@ -4,7 +4,7 @@ import { StateAbbr } from "../utils/constants";
 
 export enum ReportType {
   QMS = "QMS",
-  TACM = "TACM",
+  HA = "HA",
   CI = "CI",
   PCP = "PCP",
   QIP = "QIP",

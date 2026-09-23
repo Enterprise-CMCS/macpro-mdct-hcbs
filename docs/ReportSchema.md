@@ -3,7 +3,7 @@
 This document is a detailed look at the structure and fields of HCBS reports.
 For a more general overview, see docs/ReportDataStructure.md.
 
-Note that all HCBS report types (QMS, CI, TACM, IMA, PCP, WWL, QIP) use the same schema.
+Note that all HCBS report types (QMS, CI, HA, IMA, PCP, WWL, QIP) use the same schema.
 Top-level fields are treated identically. The pages can have the same elements.
 The main exception is in how the QMS report treats measure sub-pages;
 more on that below.
@@ -17,7 +17,7 @@ more on that below.
   -- and each table has a corresponding Kafka topic:
   --
   -- - `aws.mdct.hcbs.qms-reports.v0`
-  -- - `aws.mdct.hcbs.tacm-reports.v0`
+  -- - `aws.mdct.hcbs.har-reports.v0`
   -- - `aws.mdct.hcbs.ci-reports.v0`
   -- - `aws.mdct.hcbs.ima-reports.v0`
   -- - `aws.mdct.hcbs.pcp-reports.v0`
@@ -36,7 +36,7 @@ more on that below.
 - `lastEdited` (number): Timestamp for report modification.
 - `lastEditedBy` (string): The full name of the modifying user.
 - `lastEditedByEmail` (string): The email of the modifying user.
-- `type` (string): The type of the report ("QMS", "TACM", etc)
+- `type` (string): The type of the report ("QMS", "HA", etc)
 - `status` (string): "Not started", "In progress", or "Submitted"
 - `name` (string): The user-assigned name for this report.
   When a state has multiple reports of a given type within a given year,

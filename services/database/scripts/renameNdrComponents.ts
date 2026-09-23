@@ -55,7 +55,7 @@ async function main() {
 
 /** Find all reports of all types, and collect the ones that need updating */
 async function* reportsToUpdate() {
-  const reportTypes = ["qms", "tacm", "ci", "pcp", "wwl"];
+  const reportTypes = ["qms", "har", "ci", "pcp", "wwl"];
   for (const reportType of reportTypes) {
     const tableName = `${process.env.STAGE}-${reportType}-reports`;
     for await (const report of scanReports(tableName)) {

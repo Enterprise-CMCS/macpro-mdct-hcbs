@@ -68,7 +68,7 @@ describe("AdminDashSelector Component", () => {
 
   const allFlagsEnabled = {
     isQmsReportActive: true,
-    isTacmReportActive: true,
+    isHaReportActive: true,
     isCiReportActive: true,
     isPcpReportActive: true,
     isImaReportActive: true,
@@ -188,7 +188,7 @@ describe("AdminDashSelector Component", () => {
   it("hides the report selection section when no reports are enabled", () => {
     vi.mocked(useFlags).mockReturnValue({
       isQmsReportActive: false,
-      isTacmReportActive: false,
+      isHaReportActive: false,
       isCiReportActive: false,
       isPcpReportActive: false,
       isImaReportActive: false,

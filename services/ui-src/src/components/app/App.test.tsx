@@ -14,7 +14,7 @@ vi.mock("utils", async (importOriginal) => ({
 vi.mock("launchdarkly-react-client-sdk", () => ({
   useFlags: vi.fn().mockReturnValue({
     isQmsReportActive: true,
-    isTacmReportActive: true,
+    isHaReportActive: true,
     isCiReportActive: true,
     isPcpReportActive: true,
     isImaReportActive: true,

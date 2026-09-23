@@ -19,7 +19,7 @@ import {
 } from "types/report";
 import { AlertTypes } from "types";
 import QmsOptions from "./AddFormOptions/QmsOptions";
-import TacmOptions from "./AddFormOptions/TacmOptions";
+import HaOptions from "./AddFormOptions/HaOptions";
 import CiOptions from "./AddFormOptions/CiOptions";
 import PcpOptions from "./AddFormOptions/PcpOptions";
 import QipOptions from "./AddFormOptions/QipOptions";
@@ -39,7 +39,7 @@ export type AddEditReportModalOptions = {
   /**
    * If a report type has inputs to specify its creation options,
    * those inputs will be included in this component.
-   * If not (as for TACM and CI), this will be undefined.
+   * If not (as for HA and CI), this will be undefined.
    */
   OptionsComponent?: (props: {
     selectedReport: LiteReport | undefined;
@@ -55,7 +55,7 @@ const buildModalOptions = (
 ): AddEditReportModalOptions => {
   const optionsByReportType: Record<ReportType, AddEditReportModalOptions> = {
     [ReportType.QMS]: QmsOptions,
-    [ReportType.TACM]: TacmOptions,
+    [ReportType.HA]: HaOptions,
     [ReportType.CI]: CiOptions,
     [ReportType.PCP]: PcpOptions,
     [ReportType.QIP]: QipOptions,

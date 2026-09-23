@@ -41,7 +41,7 @@ describe("<ReportIntroCardActions />", () => {
 
     it.each([
       { type: ReportType.QMS, text: "QMS Report" },
-      { type: ReportType.TACM, text: "TACM Report" },
+      { type: ReportType.HA, text: "HA Report" },
       { type: ReportType.CI, text: "CI Report" },
       { type: ReportType.PCP, text: "PCP Report" },
       { type: ReportType.IMA, text: "IMA" },
