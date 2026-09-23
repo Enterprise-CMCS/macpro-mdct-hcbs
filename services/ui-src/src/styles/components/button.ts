@@ -46,6 +46,10 @@ const transparentVariant = {
         filter: svgFilters.primary_darker,
       },
     },
+    _active: {
+      color: "palette.primary_darkest",
+      backgroundColor: "transparent",
+    },
   },
   sidebarToggleVariant = {
     position: "absolute",
