@@ -112,4 +112,18 @@ describe("Sidebar", () => {
       screen.getByRole("heading", { name: "Incident Management Assessments" })
     ).toBeInTheDocument();
   });
+
+  it("should render HA heading when report type is HA", () => {
+    useStore.setState({ report: { ...report, type: ReportType.HA } });
+
+    render(
+      <Router>
+        <Sidebar />
+      </Router>
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "HCBS Access Report" })
+    ).toBeInTheDocument();
+  });
 });
