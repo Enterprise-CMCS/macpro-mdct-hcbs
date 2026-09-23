@@ -13,11 +13,6 @@ export const externalLinkAltText = "(Opens in a new tab)";
 
 const isExternalHref = (href?: string) => /^(https?:)?\/\//i.test(href ?? "");
 
-const isLegacyExternalLinkIcon = (domNode: DOMNode) =>
-  domNode instanceof Element &&
-  domNode.name === "img" &&
-  domNode.attribs.src === "/icon_external_link_main.svg";
-
 const externalLinkIcon = () =>
   React.createElement(ExternalLinkIcon, {
     ariaHidden: false,
@@ -49,12 +44,7 @@ const parserOptions: HTMLReactParserOptions = {
     return React.createElement(
       "a",
       attributesToProps(anchorAttributes),
-      domToReact(
-        domNode.children.filter(
-          (child) => !opensInNewTab || !isLegacyExternalLinkIcon(child)
-        ) as DOMNode[],
-        parserOptions
-      ),
+      domToReact(domNode.children as DOMNode[], parserOptions),
       opensInNewTab && externalLinkIcon()
     );
   },

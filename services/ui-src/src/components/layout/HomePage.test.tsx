@@ -36,7 +36,7 @@ describe("Home page", () => {
     render(homePage);
 
     const link = screen.getByRole("link", {
-      name: "Medicaid.gov's HCBS quality improvement resources",
+      name: /Medicaid.gov's HCBS quality improvement resources \(Opens in a new tab\)/,
     });
 
     expect(link).toHaveAttribute(
