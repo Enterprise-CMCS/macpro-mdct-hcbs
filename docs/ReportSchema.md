@@ -17,7 +17,7 @@ more on that below.
   -- and each table has a corresponding Kafka topic:
   --
   -- - `aws.mdct.hcbs.qms-reports.v0`
-  -- - `aws.mdct.hcbs.har-reports.v0`
+  -- - `aws.mdct.hcbs.ha-reports.v0`
   -- - `aws.mdct.hcbs.ci-reports.v0`
   -- - `aws.mdct.hcbs.ima-reports.v0`
   -- - `aws.mdct.hcbs.pcp-reports.v0`
