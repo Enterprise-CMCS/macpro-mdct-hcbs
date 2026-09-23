@@ -245,6 +245,14 @@ describe("<ImaTable />", () => {
     expect(screen.getAllByRole("alert")).toHaveLength(2);
   });
 
+  it("should show an error message only on rows answered no", () => {
+    render(imaTableComponent);
+
+    const alerts = screen.getAllByRole("alert");
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0]).toHaveTextContent("Not compliant.");
+    expect(alerts[0].querySelector('img[alt=""]')).toBeInTheDocument();
+  });
   it("should not show an error for a user created row answered no", () => {
     render(
       <ImaTable

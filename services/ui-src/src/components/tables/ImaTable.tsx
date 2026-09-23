@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Box,
   Button,
   FormLabel,
   HStack,
@@ -59,6 +60,8 @@ export const ImaTable = ({
   const visibleColumns = allowUserCreatedRows
     ? columns
     : columns.filter((column) => column.type !== "delete");
+  const isExtraWideTable = visibleColumns.length >= 5;
+  const tableClassName = isExtraWideTable ? "ima-table--extra-wide" : undefined;
   // Only show the required-response error after a user has blurred the field.
   const [touchedRowIds, setTouchedRowIds] = useState(new Set<string>());
 
@@ -66,7 +69,7 @@ export const ImaTable = ({
     <fieldset className="ds-c-fieldset ima-table-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
-      <Table variant="ima">
+      <Table variant="ima" className={tableClassName}>
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
@@ -90,37 +93,41 @@ export const ImaTable = ({
                       <FormLabel htmlFor={`description-${row.id}`} margin={0}>
                         {userCreatedRowLabel}
                       </FormLabel>
-                      <Input
-                        id={`description-${row.id}`}
-                        value={row.description}
-                        backgroundColor="palette.white"
-                        borderColor="#262626"
-                        isDisabled={disabled}
-                        onChange={(event) =>
-                          onDescriptionChange(row.id, event.target.value)
-                        }
-                        onBlur={() =>
-                          setTouchedRowIds((prev) => new Set(prev).add(row.id))
-                        }
-                      />
+                      <Box flex="1" minWidth="0">
+                        {touchedRowIds.has(row.id) &&
+                          !row.description.trim() && (
+                            <HStack
+                              role="alert"
+                              spacing="0.25rem"
+                              alignItems="center"
+                              marginBottom="0.25rem"
+                            >
+                              <Image src={errorIcon} alt="" boxSize="0.75rem" />
+                              <Text color="palette.error" fontSize="body_md">
+                                {ErrorMessages.requiredResponse}
+                              </Text>
+                            </HStack>
+                          )}
+                        <Input
+                          id={`description-${row.id}`}
+                          value={row.description}
+                          backgroundColor="palette.white"
+                          borderColor="#262626"
+                          isDisabled={disabled}
+                          onChange={(event) =>
+                            onDescriptionChange(row.id, event.target.value)
+                          }
+                          onBlur={() =>
+                            setTouchedRowIds((prev) =>
+                              new Set(prev).add(row.id)
+                            )
+                          }
+                        />
+                      </Box>
                     </HStack>
                   ) : (
                     <Text fontSize="body_md">{row.description}</Text>
                   )}
-                  {row.isUserCreated &&
-                    !row.description.trim() &&
-                    touchedRowIds.has(row.id) && (
-                      <HStack
-                        role="alert"
-                        spacing="0.25rem"
-                        alignItems="center"
-                      >
-                        <Image src={errorIcon} alt="" boxSize="0.75rem" />
-                        <Text color="palette.error" fontSize="body_md">
-                          {ErrorMessages.requiredResponse}
-                        </Text>
-                      </HStack>
-                    )}
                   {!row.isUserCreated && row.isNonCompliant && errorMessage && (
                     <HStack role="alert" spacing="0.25rem" alignItems="center">
                       <Image src={errorIcon} alt="" boxSize="0.75rem" />
@@ -149,13 +156,13 @@ export const ImaTable = ({
                   </Td>
                 ))}
                 {allowUserCreatedRows && (
-                  <Td>
+                  <Td className="ima-delete-cell">
                     {row.isUserCreated && (
                       <Button
                         className="ima-delete-button"
-                        variant="link"
-                        isDisabled={disabled}
+                        variant="unstyled"
                         aria-label={`Delete ${rowName}`}
+                        isDisabled={disabled}
                         onClick={() => onDeleteRow(row.id)}
                       >
                         <Image src={cancelIcon} alt="" />
