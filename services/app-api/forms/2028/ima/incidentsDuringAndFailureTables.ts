@@ -1,7 +1,5 @@
 import { ImaTableColumn, ImaTableRow } from "../../../types/reports";
 
-const PERMISSIBLE_NOT_USED_ANSWER_ID = "permissible-but-unused";
-
 export const INCIDENT_REPORTING_COLUMNS: ImaTableColumn[] = [
   {
     id: "incident-description",
@@ -41,22 +39,18 @@ export const UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_DURING: ImaTableRow[] = [
   {
     id: "claims-data",
     description: "Claims data (e.g., MMIS)",
-    nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
   {
     id: "mfcu",
     description: "Medicaid Fraud Control Unit (MFCU) data",
-    nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
   {
     id: "aps",
     description: "State Adult Protective Services (APS) data",
-    nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
   {
     id: "cps",
     description: "State Child Protective Services (CPS) data",
-    nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
   },
   {
     id: "other-state-agency",
@@ -85,22 +79,18 @@ export const UNREPORTED_CRITICAL_INCIDENT_DATA_SOURCES_FAILURE: ImaTableRow[] =
     {
       id: "claims-data",
       description: "Claims data (e.g., MMIS)",
-      nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },
     {
       id: "mfcu",
       description: "Medicaid Fraud Control Unit (MFCU)",
-      nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },
     {
       id: "aps",
       description: "State Adult Protective Services (APS)",
-      nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },
     {
       id: "cps",
       description: "State Child Protective Services (CPS)",
-      nonCompliantAnswers: [PERMISSIBLE_NOT_USED_ANSWER_ID],
     },
     {
       id: "other-state-agency",
