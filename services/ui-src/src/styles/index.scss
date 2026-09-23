@@ -228,6 +228,9 @@ button {
   padding: 0;
   text-decoration: underline;
   white-space: nowrap;
+  // Aligning the icon via flexbox (below) is font-metric independent
+  display: inline-flex;
+  align-items: center;
 
   &:visited {
     color: var(--chakra-colors-palette-visited);
@@ -236,13 +239,16 @@ button {
   &:hover {
     color: var(--chakra-colors-palette-primary_darker);
   }
+
+  &:active {
+    color: var(--color-primary-darkest);
+  }
 }
 
 .external-link-icon.ds-c-icon {
   color: inherit;
-  display: inline-block;
-  height: 1em;
+  flex-shrink: 0;
+  font-size: 1em;
   margin-left: 0.25em;
-  vertical-align: -0.125em;
   width: 1em;
 }
