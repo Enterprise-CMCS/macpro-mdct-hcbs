@@ -25,10 +25,10 @@ import {
   personalCareHAPCH2Rate,
   habilitationRate,
   habilitationHAPCH2Rate,
-} from "./tacmElements";
+} from "./haElements";
 
-export const tacmReportTemplate: ReportBase = {
-  type: ReportType.TACM,
+export const haReportTemplate: ReportBase = {
+  type: ReportType.HA,
   year: 2028,
   pages: [
     {
@@ -38,7 +38,7 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "general-info",
       navTitle: "General Information",
-      tabTitle: "General Information - TACM - HCBS",
+      tabTitle: "General Information - HA - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -70,7 +70,7 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "hapch-1",
       navTitle: "HCBS HAPCH-1",
-      tabTitle: "HAPCH-1: Service Start Time - TACM - HCBS",
+      tabTitle: "HAPCH-1: Service Start Time - HA - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -120,7 +120,7 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "hapch-2",
       navTitle: "HCBS HAPCH-2",
-      tabTitle: "HAPCH-2: Authorized Hours Provided - TACM - HCBS",
+      tabTitle: "HAPCH-2: Authorized Hours Provided - HA - HCBS",
       type: PageType.Standard,
       sidebar: true,
       elements: [
@@ -171,8 +171,8 @@ export const tacmReportTemplate: ReportBase = {
     {
       id: "review-submit",
       navTitle: "Review & Submit",
-      tabTitle: "Review & Submit - TACM - HCBS",
-      submittedTabTitle: "Successfully Submitted - TACM - HCBS",
+      tabTitle: "Review & Submit - HA - HCBS",
+      submittedTabTitle: "Successfully Submitted - HA - HCBS",
       type: PageType.ReviewSubmit,
       sidebar: true,
       hideNavButtons: true,
@@ -182,7 +182,7 @@ export const tacmReportTemplate: ReportBase = {
           id: "review-alert",
           status: AlertTypes.ERROR,
           title: "Your form is not ready for submission",
-          text: "Some sections of the TACM Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
+          text: "Some sections of the HA Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
@@ -193,7 +193,7 @@ export const tacmReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your TACM Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your HA Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
         },
         {
           type: ElementType.Paragraph,
@@ -232,7 +232,7 @@ export const tacmReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           weight: "bold",
           id: "submitted-what-happens",
-          text: "Email your CMS representative to inform them that you have submitted the TACM report and it is ready for their review.",
+          text: "Email your CMS representative to inform them that you have submitted the HA report and it is ready for their review.",
         },
         exportToPDF,
       ],

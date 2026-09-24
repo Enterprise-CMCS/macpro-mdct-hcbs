@@ -4,7 +4,7 @@ import {
   CiIntroductionCard,
   PageTemplate,
   QmsIntroductionCard,
-  TacmIntroductionCard,
+  HaIntroductionCard,
   PCPIntroductionCard,
   IMAIntroductionCard,
   QipIntroductionCard,
@@ -20,7 +20,7 @@ export const HomePage = () => {
   const banner = useStore(activeBannerSelector(BannerAreas.Home));
   const { userIsEndUser } = useStore().user ?? {};
   const isQmsReportActive = useFlags()?.isQmsReportActive;
-  const isTACMReportActive = useFlags()?.isTacmReportActive;
+  const isHAReportActive = useFlags()?.isHaReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
   const isPCPReportActive = useFlags()?.isPcpReportActive;
   const isQipReportActive = useFlags()?.isQipReportActive;
@@ -62,13 +62,13 @@ export const HomePage = () => {
                 </Box>
               </Box>
             )}
-            {(isTACMReportActive || isWWLReportActive) && (
+            {(isHAReportActive || isWWLReportActive) && (
               <Box>
                 <Heading as="h2" variant="h2" marginBottom="spacer3">
                   Transparency Reports
                 </Heading>
                 <Box display="flex" flexDirection="column" gap="spacer4">
-                  {isTACMReportActive && <TacmIntroductionCard />}
+                  {isHAReportActive && <HaIntroductionCard />}
                   {isWWLReportActive && <WWLIntroductionCard />}
                 </Box>
               </Box>

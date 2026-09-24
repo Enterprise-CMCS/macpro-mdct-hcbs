@@ -4,7 +4,7 @@ import { StateAbbr } from "../utils/constants";
 
 export enum ReportType {
   QMS = "QMS",
-  TACM = "TACM",
+  HA = "HA",
   CI = "CI",
   PCP = "PCP",
   QIP = "QIP",
@@ -220,6 +220,7 @@ export type ParentPageTemplate = {
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
+  isExtraWide?: undefined;
 };
 
 export type FormPageTemplate = {
@@ -232,6 +233,7 @@ export type FormPageTemplate = {
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
+  isExtraWide?: boolean;
   childPageIds?: PageId[];
 };
 

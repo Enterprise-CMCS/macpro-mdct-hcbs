@@ -3,7 +3,7 @@ import KafkaSourceLib from "../../../utils/kafka/kafka-source-lib";
 
 const _tableTopics: { [key in ReportType]: string } = {
   QMS: "qms-reports",
-  TACM: "tacm-reports",
+  HA: "ha-reports",
   CI: "ci-reports",
   IMA: "ima-reports",
   PCP: "pcp-reports",

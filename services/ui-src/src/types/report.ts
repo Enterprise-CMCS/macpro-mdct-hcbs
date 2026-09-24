@@ -2,7 +2,7 @@ import { AlertTypes, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
-  TACM = "TACM",
+  HA = "HA",
   CI = "CI",
   PCP = "PCP",
   IMA = "IMA",
@@ -20,8 +20,8 @@ export const getReportName = (type: string | undefined) => {
   switch (type) {
     case ReportType.QMS:
       return "Quality Measure Set Report";
-    case ReportType.TACM:
-      return "Timely Access Compliance Measure Report";
+    case ReportType.HA:
+      return "HCBS Access Report";
     case ReportType.CI:
       return "Critical Incident Report";
     case ReportType.PCP:
@@ -106,6 +106,7 @@ export type ParentPageTemplate = {
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
+  isExtraWide?: undefined;
 };
 
 export interface PageData {
@@ -124,6 +125,7 @@ export type FormPageTemplate = {
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
+  isExtraWide?: boolean;
   childPageIds?: PageId[];
 };
 

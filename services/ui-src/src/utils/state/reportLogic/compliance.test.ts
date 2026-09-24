@@ -125,6 +125,58 @@ describe("isNotCompliant", () => {
     ).toBe(true);
   });
 
+  it("returns true when a row selects a row-specific non-compliant answer", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AnyRelevantRowMatchesValue,
+          rows: [
+            {
+              id: "claims-data",
+              description: "Claims data (e.g., MMIS)",
+              answer: "permissible-but-unused",
+            },
+          ],
+        }),
+      ])
+    ).toBe(true);
+  });
+
+  it("returns undefined when a row-specific non-compliant answer is selected on a row without row-specific rules", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AnyRelevantRowMatchesValue,
+          rows: [
+            {
+              id: "hospitalization-data",
+              description: "Hospitalization data",
+              answer: "permissible-but-unused",
+            },
+          ],
+        }),
+      ])
+    ).toBeUndefined();
+  });
+
+  it("ignores a user-created row selecting a row-specific non-compliant answer", () => {
+    expect(
+      isNotCompliant("ima-table", [
+        createTable({
+          complianceRule: ComplianceRules.AnyRelevantRowMatchesValue,
+          rows: [
+            {
+              id: "other-source",
+              description: "Other source",
+              answer: "permissible-but-unused",
+              isUserCreated: true,
+            },
+          ],
+        }),
+      ])
+    ).toBeUndefined();
+  });
+
   it("should ignore a user-created row selecting a non-compliant column", () => {
     expect(
       isNotCompliant("ima-table", [

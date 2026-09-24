@@ -23,9 +23,9 @@ export const reportOptions: ReportOption[] = [
     flagName: "isQmsReportActive",
   },
   {
-    value: ReportType.TACM,
-    label: "Timely Access Compliance Measure Report (TACM)",
-    flagName: "isTacmReportActive",
+    value: ReportType.HA,
+    label: "HCBS Access Report (HA)",
+    flagName: "isHaReportActive",
   },
   {
     value: ReportType.CI,
