@@ -23,6 +23,7 @@ import { ImaTableColumn, ImaTableRow } from "types";
 import { ErrorMessages } from "../../constants";
 
 interface ImaTableProps {
+  tableId?: string;
   caption: string;
   columns: ImaTableColumn[];
   rows: ImaTableRow[];
@@ -40,6 +41,7 @@ interface ImaTableProps {
 }
 
 export const ImaTable = ({
+  tableId,
   caption,
   columns,
   rows,
@@ -66,7 +68,7 @@ export const ImaTable = ({
     <fieldset className="ds-c-fieldset ima-table-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
-      <Table variant="ima">
+      <Table id={tableId} variant="ima">
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>

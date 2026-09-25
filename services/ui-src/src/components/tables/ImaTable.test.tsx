@@ -60,6 +60,17 @@ describe("<ImaTable />", () => {
     }
   });
 
+  it("should render the table ID used for page-specific styling", () => {
+    render(
+      <ImaTable {...defaultProps} tableId="investigation-referrals-table" />
+    );
+
+    expect(screen.getByRole("table")).toHaveAttribute(
+      "id",
+      "investigation-referrals-table"
+    );
+  });
+
   it("should not render the add button or delete column when user-created rows are not allowed", () => {
     render(
       <ImaTable

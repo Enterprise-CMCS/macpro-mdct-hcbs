@@ -195,6 +195,17 @@ const imaVariant = {
         textAlign: "center",
       },
     },
+    "&#investigation-referrals-table": {
+      th: {
+        width: "15%",
+        "&:first-of-type": {
+          width: "25%",
+        },
+        "&:last-of-type": {
+          width: "15%",
+        },
+      },
+    },
     td: {
       padding: "16px",
       fontSize: "body_md",
