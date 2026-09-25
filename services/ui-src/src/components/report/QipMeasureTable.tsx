@@ -1,9 +1,8 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import {
   Button,
   Flex,
   Image,
-  Link,
   Table,
   TableCaption,
   Tbody,
@@ -30,7 +29,6 @@ export const QipMeasureTableElement = ({
   updateElement,
 }: PageElementProps<QipMeasureTableTemplate>) => {
   const { reportType, state, reportId } = useParams();
-  const navigate = useNavigate();
   const {
     report,
     updateReport,
@@ -128,18 +126,12 @@ export const QipMeasureTableElement = ({
         </Td>
         <Td textAlign="center">
           <Flex justifyContent="center">
-            {/* TODO: We don't need this href, right? If not, remove from QMS Measure Table too. */}
             <Button
-              as={Link}
+              as={RouterLink}
+              data-navigation-link="true"
               variant={"outline"}
               aria-label={`${disabled ? "View" : "Edit"} ${measureTarget.measureName}`}
-              href={`/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`}
-              onClick={(e) => {
-                e.preventDefault();
-                navigate(
-                  `/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`
-                );
-              }}
+              to={`/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`}
             >
               {disabled ? "View" : "Edit"}
             </Button>

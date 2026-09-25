@@ -108,7 +108,7 @@ const outlineButtonVariant = {
   borderRadius: "5px",
   fontWeight: "bold",
   textDecoration: "none",
-  _visited: { color: "palette.visited" },
+  _visited: { color: "palette.primary" },
   ":hover, :visited:hover": {
     color: "palette.primary_darker",
     textDecoration: "none",

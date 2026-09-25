@@ -81,7 +81,7 @@ const outlineVariant = () => ({
     },
   },
   _visited: {
-    color: "palette.visited",
+    color: "palette.primary",
   },
   ":hover, :visited:hover": {
     color: "palette.primary_darker",
