@@ -24,6 +24,7 @@ import { ImaTableColumn, ImaTableRow } from "types";
 import { ErrorMessages } from "../../constants";
 
 interface ImaTableProps {
+  tableId?: string;
   caption: string;
   columns: ImaTableColumn[];
   rows: ImaTableRow[];
@@ -41,6 +42,7 @@ interface ImaTableProps {
 }
 
 export const ImaTable = ({
+  tableId,
   caption,
   columns,
   rows,
@@ -69,7 +71,11 @@ export const ImaTable = ({
     <fieldset className="ds-c-fieldset ima-table-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
+<<<<<<< HEAD
       <Table variant="ima" className={tableClassName}>
+=======
+      <Table id={tableId} variant="ima">
+>>>>>>> 9f697d90 (Added styling for IMA table for Investigation Referrals page.)
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
