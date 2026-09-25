@@ -270,6 +270,88 @@ export const reportWithKeyActivityTable = {
   ],
 };
 
+export const reportWithImaTable = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["ima"],
+    },
+    {
+      id: "ima",
+      navTitle: "IMA",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.ImaTable,
+          id: "ima-table",
+          caption: "Critical Incidents",
+          columns: [
+            {
+              id: "description",
+              label: "Incident type",
+              type: "description",
+            },
+            { id: "yes", label: "Yes", type: "answer" },
+            { id: "no", label: "No", type: "answer" },
+            { id: "delete", label: "Delete", type: "delete" },
+          ],
+          rows: [
+            {
+              id: "abuse",
+              description: "Abuse",
+              answer: "yes",
+            },
+          ],
+          complianceRule: "any-no",
+        },
+      ],
+    },
+  ],
+};
+
+export const reportWithInvalidImaTableComplianceRule = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["ima"],
+    },
+    {
+      id: "ima",
+      navTitle: "IMA",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.ImaTable,
+          id: "ima-table",
+          caption: "Critical Incidents",
+          columns: [
+            {
+              id: "description",
+              label: "Incident type",
+              type: "description",
+            },
+            { id: "yes", label: "Yes", type: "answer" },
+            { id: "no", label: "No", type: "answer" },
+            { id: "delete", label: "Delete", type: "delete" },
+          ],
+          rows: [
+            {
+              id: "abuse",
+              description: "Abuse",
+              answer: "yes",
+            },
+          ],
+          complianceRule: "not-a-real-rule",
+        },
+      ],
+    },
+  ],
+};
+
 export const invalidPageElementType = {
   ...validReport,
   pages: [

@@ -22,8 +22,8 @@ const getTitle = (report: Report) => {
       return "Critical Incident Report";
     case ReportType.QMS:
       return "Quality Measure Set Report";
-    case ReportType.TACM:
-      return "Timely Access Report";
+    case ReportType.HA:
+      return "HCBS Access Report";
     case ReportType.PCP:
       return "Person-Centered Planning";
     case ReportType.IMA:

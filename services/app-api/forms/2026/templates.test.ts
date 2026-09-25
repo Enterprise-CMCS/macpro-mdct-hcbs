@@ -6,12 +6,12 @@ import { pcpReportTemplate } from "./pcp/pcp";
 import { qipReportTemplate } from "./qip/qip";
 import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
 import { qmsReportTemplate } from "./qms/qms";
-import { tacmReportTemplate } from "./tacm/tacm";
+import { haReportTemplate } from "./ha/ha";
 import { wwlReportTemplate } from "./wwl/wwl";
 
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
-  { template: tacmReportTemplate, name: "TACM" },
+  { template: haReportTemplate, name: "HA" },
   { template: ciReportTemplate, name: "CI" },
   { template: qipReportTemplate, name: "QIP" },
   { template: pcpReportTemplate, name: "PCP" },

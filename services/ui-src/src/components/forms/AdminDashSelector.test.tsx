@@ -67,7 +67,8 @@ describe("AdminDashSelector Component", () => {
   const mockNavigate = vi.fn();
 
   const allFlagsEnabled = {
-    isTacmReportActive: true,
+    isQmsReportActive: true,
+    isHaReportActive: true,
     isCiReportActive: true,
     isPcpReportActive: true,
     isImaReportActive: true,
@@ -162,11 +163,15 @@ describe("AdminDashSelector Component", () => {
   it("hides report options whose feature flag is disabled", () => {
     vi.mocked(useFlags).mockReturnValue({
       ...allFlagsEnabled,
+      isQmsReportActive: false,
       isQipReportActive: false,
     } as any);
 
     render(<AdminDashSelector />);
 
+    expect(
+      screen.queryByLabelText("Quality Measure Set Report (QMS)")
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByLabelText("QMS Quality Improvement Plans (QMS QIP)")
     ).not.toBeInTheDocument();
@@ -177,6 +182,28 @@ describe("AdminDashSelector Component", () => {
 
     expect(
       screen.getByLabelText("QMS Quality Improvement Plans (QMS QIP)")
+    ).toBeInTheDocument();
+  });
+
+  it("hides the report selection section when no reports are enabled", () => {
+    vi.mocked(useFlags).mockReturnValue({
+      isQmsReportActive: false,
+      isHaReportActive: false,
+      isCiReportActive: false,
+      isPcpReportActive: false,
+      isImaReportActive: false,
+      isQipReportActive: false,
+      isWwlReportActive: false,
+    } as any);
+
+    render(<AdminDashSelector />);
+
+    expect(screen.queryByText("Select a report:")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Go to Report Dashboard" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText("No reports are currently enabled.")
     ).toBeInTheDocument();
   });
 });

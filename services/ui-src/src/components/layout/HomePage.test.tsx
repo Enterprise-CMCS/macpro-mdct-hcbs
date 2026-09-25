@@ -9,7 +9,8 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
   useFlags: vi.fn().mockReturnValue({
-    isTacmReportActive: true,
+    isQmsReportActive: true,
+    isHaReportActive: true,
     isCiReportActive: true,
     isPcpReportActive: true,
     isQipReportActive: true,
@@ -40,7 +41,7 @@ describe("Home page", () => {
       { level: 3, name: /Quality Measure Set Report/ },
       { level: 3, name: /QMS Quality Improvement Plans/ },
       { level: 2, name: /Transparency Reports/ },
-      { level: 3, name: /Timely Access Compliance Measure Report/ },
+      { level: 3, name: /HCBS Access Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },
       { level: 2, name: /Compliance Reports/ },
       { level: 3, name: /Critical Incident Report/ },
@@ -55,7 +56,8 @@ describe("Home page", () => {
   it("should not render disabled report types", () => {
     useStore.setState({ user: stateUser, allBanners: [] });
     (useFlags as any).mockReturnValue({
-      isTacmReportActive: false,
+      isQmsReportActive: false,
+      isHaReportActive: false,
       isCiReportActive: false,
       isPcpReportActive: false,
       isQipReportActive: false,
@@ -66,10 +68,12 @@ describe("Home page", () => {
     render(homePage);
 
     const headings = [
+      { level: 2, name: /Quality Reports/ },
       { level: 2, name: /Transparency Reports/ },
       { level: 2, name: /Compliance Reports/ },
+      { level: 3, name: /Quality Measure Set Report/ },
       { level: 3, name: /QMS Quality Improvement Plans/ },
-      { level: 3, name: /Timely Access Compliance Measure Report/ },
+      { level: 3, name: /HCBS Access Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },
       { level: 3, name: /Critical Incident Report/ },
       { level: 3, name: /Person-Centered Planning Report/ },

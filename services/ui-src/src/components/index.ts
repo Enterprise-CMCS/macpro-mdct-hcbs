@@ -18,7 +18,7 @@ export { Card } from "./cards/Card";
 export { HelpCard } from "./cards/HelpCard";
 export { ReportIntroCard } from "./cards/ReportIntroCard";
 export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
-export { TacmIntroductionCard } from "./cards/TacmIntroductionCard";
+export { HaIntroductionCard } from "./cards/HaIntroductionCard";
 export { CiIntroductionCard } from "./cards/CiIntroductionCard";
 export { PCPIntroductionCard } from "./cards/PCPIntroductionCard";
 export { IMAIntroductionCard } from "./cards/IMAIntroductionCard";
@@ -87,6 +87,9 @@ export { PostLogoutRedirect } from "./PostLogoutRedirect/index";
 // tables
 export { Table } from "./tables/Table";
 export { TableStatusIcon } from "./tables/TableStatusIcon";
+export { ImaTable } from "./tables/ImaTable";
+export { ImaTableElement } from "./report/ImaComponents/ImaTableElement";
+export { ComplianceAlert } from "./report/ImaComponents/ComplianceAlert";
 // checkbox
 export { Checkbox } from "./checkbox/Checkbox";
 // dashboard

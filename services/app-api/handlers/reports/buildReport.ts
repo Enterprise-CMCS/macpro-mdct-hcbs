@@ -89,7 +89,7 @@ export const buildReport = async (
     [
       ReportType.CI,
       ReportType.PCP,
-      ReportType.TACM,
+      ReportType.HA,
       ReportType.QMS,
       ReportType.QIP,
       ReportType.WWL,

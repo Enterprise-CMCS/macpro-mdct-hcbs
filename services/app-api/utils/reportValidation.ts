@@ -17,6 +17,7 @@ import {
   PageElement,
   ReportOptions,
   assertExhaustive,
+  ComplianceRules,
 } from "../types/reports";
 import { error } from "./constants";
 
@@ -101,6 +102,7 @@ const textAreaTemplateSchema = object().shape({
   wordLimit: number().notRequired(),
   answer: string().notRequired(),
   hideCondition: hideConditionSchema,
+  showWhenNonCompliant: array().of(string().required()).notRequired(),
   required: boolean().required(),
 });
 
@@ -201,6 +203,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return measureTableTemplateSchema;
     case ElementType.QipMeasureTable:
       return qipMeasureTableTemplateSchema;
+    case ElementType.ImaTable:
+      return imaTableTemplateSchema;
     case ElementType.MeasureResultsNavigationTable:
       return measureResultsNavigationTableTemplateSchema;
     case ElementType.StatusTable:
@@ -225,6 +229,8 @@ const pageElementSchema = lazy((value: PageElement): Schema => {
       return performanceNdrSchema;
     case ElementType.StatusAlert:
       return statusAlertSchema;
+    case ElementType.ComplianceAlert:
+      return complianceAlertSchema;
     case ElementType.Divider:
       return dividerSchema;
     case ElementType.SubmissionParagraph:
@@ -258,6 +264,7 @@ const radioTemplateSchema = object().shape({
   required: boolean().required(),
   clickAction: string().notRequired(),
   hideCondition: hideConditionSchema,
+  nonCompliantOn: string().notRequired(),
 });
 
 const checkboxTemplateSchema = object().shape({
@@ -290,6 +297,7 @@ const buttonLinkTemplateSchema = object().shape({
 const dividerSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Divider)),
   id: string().required(),
+  showWhenNonCompliant: array().of(string().required()).notRequired(),
 });
 
 const submissionParagraphSchema = object().shape({
@@ -319,6 +327,50 @@ const qipMeasureTableTemplateSchema = object().shape({
       })
     )
     .notRequired(),
+});
+
+const imaTableTemplateSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ImaTable)),
+  id: string().required(),
+  caption: string().required(),
+  label: string().notRequired(),
+  helperText: string().notRequired(),
+  addButtonText: string().notRequired(),
+  userCreatedRowLabel: string().notRequired(),
+  errorMessage: string().notRequired(),
+  allowUserCreatedRows: boolean().notRequired(),
+  columns: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        label: string().required(),
+        type: string().oneOf(["description", "answer", "delete"]).required(),
+      })
+    )
+    .required(),
+  rows: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        description: string().required(),
+        answer: string().notRequired(),
+        isUserCreated: boolean().notRequired(),
+        isNonCompliant: boolean().notRequired(),
+      })
+    )
+    .required(),
+  answer: array()
+    .of(
+      object().shape({
+        id: string().required(),
+        description: string().defined(),
+        answer: string().notRequired(),
+        isUserCreated: boolean().notRequired(),
+        isNonCompliant: boolean().notRequired(),
+      })
+    )
+    .notRequired(),
+  complianceRule: string().oneOf(Object.values(ComplianceRules)).required(),
 });
 
 const eligibilityTableSchema = object().shape({
@@ -643,6 +695,15 @@ const statusAlertSchema = object().shape({
   title: string().required(),
   text: string().required(),
   status: string().required(),
+});
+
+const complianceAlertSchema = object().shape({
+  type: string().required().matches(new RegExp(ElementType.ComplianceAlert)),
+  id: string().required(),
+  title: string().required(),
+  text: string().required(),
+  status: string().required(),
+  controllerElementId: array().of(string().required()).required(),
 });
 
 const formPageTemplateSchema = object().shape({

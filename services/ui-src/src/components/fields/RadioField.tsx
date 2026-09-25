@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, useDisclosure } from "@chakra-ui/react";
+import { Box, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
-import { ChoiceTemplate, PageElement, RadioTemplate } from "types";
+import { ChoiceTemplate, PageElement, RadioTemplate, ReportType } from "types";
 import { parseHtml, useStore } from "utils";
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Page } from "components/report/Page";
@@ -9,6 +9,42 @@ import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/C
 import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
 import { Modal } from "components";
+import errorIcon from "assets/icons/status/icon_status_alert.svg";
+
+const clearNestedAnswers = <T extends PageElement>(element: T): T => {
+  const cleared = { ...element } as T;
+
+  if ("answer" in cleared) {
+    cleared.answer = undefined;
+  }
+
+  if ("choices" in cleared && Array.isArray(cleared.choices)) {
+    cleared.choices = cleared.choices.map((choice) => ({
+      ...choice,
+      checkedChildren: choice.checkedChildren?.map(clearNestedAnswers),
+    }));
+  }
+
+  if ("checkedChildren" in cleared && Array.isArray(cleared.checkedChildren)) {
+    cleared.checkedChildren = cleared.checkedChildren.map(clearNestedAnswers);
+  }
+
+  if (
+    "conditionalChildren" in cleared &&
+    Array.isArray(cleared.conditionalChildren)
+  ) {
+    cleared.conditionalChildren =
+      cleared.conditionalChildren.map(clearNestedAnswers);
+  }
+
+  return cleared;
+};
+
+const clearChoiceData = (choices: ChoiceTemplate[]): ChoiceTemplate[] =>
+  choices.map((choice) => ({
+    ...choice,
+    checkedChildren: choice.checkedChildren?.map(clearNestedAnswers),
+  }));
 
 const formatChoices = (
   choices: ChoiceTemplate[],
@@ -34,15 +70,18 @@ const formatChoices = (
       });
     };
 
-    const checkedChildren = [
-      <Box key="radio-sub-page" sx={sx.children}>
-        <Page
-          id="radio-children"
-          setElements={setCheckedChildren}
-          elements={choice.checkedChildren}
-        />
-      </Box>,
-    ];
+    const checkedChildren =
+      choice.value === answer
+        ? [
+            <Box key="radio-sub-page" sx={sx.children}>
+              <Page
+                id="radio-children"
+                setElements={setCheckedChildren}
+                elements={choice.checkedChildren}
+              />
+            </Box>,
+          ]
+        : [];
 
     return {
       ...choice,
@@ -52,7 +91,7 @@ const formatChoices = (
   });
 };
 
-const hintTextColor = (clickAction: string) => {
+const hintTextColor = (clickAction?: string) => {
   switch (clickAction) {
     case "qmReportingChange":
     case "qmDeliveryMethodChange":
@@ -64,7 +103,8 @@ const hintTextColor = (clickAction: string) => {
 
 export const RadioField = (props: PageElementProps<RadioTemplate>) => {
   const radio = props.element;
-  const { clearMeasure, changeDeliveryMethods, currentPageId } = useStore();
+  const { clearMeasure, changeDeliveryMethods, currentPageId, report } =
+    useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
   const initialDisplayValue = formatChoices(
@@ -116,14 +156,15 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
       return;
     }
 
+    const clearedChoices = clearChoiceData(radio.choices);
     const newDisplayValue = formatChoices(
-      radio.choices,
+      clearedChoices,
       value,
       props.updateElement
     );
     setDisplayValue(newDisplayValue);
 
-    props.updateElement({ answer: value });
+    props.updateElement({ answer: value, choices: clearedChoices });
 
     if (!radio.clickAction || !currentPageId) {
       return;
@@ -143,19 +184,38 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
     }
   };
 
+  const labelText = radio.label ? parseHtml(radio.label) : "";
+  const showNonCompliantMessage =
+    radio.answer !== undefined && radio.answer === radio.nonCompliantOn;
+
   const parsedHint = (
     // This is as="span" because it is inside a CMSDS Hint, which is a <p>.
-    <Box as="span" color={hintTextColor(radio.clickAction!)}>
+    <Box as="span" color={hintTextColor(radio.clickAction)}>
       {radio.helperText && parseHtml(radio.helperText)}
+      {showNonCompliantMessage && (
+        <Box
+          as="span"
+          role="alert"
+          display="inline-flex"
+          alignItems="center"
+          gap="0.25rem"
+          color="palette.error"
+          marginTop="0.25rem"
+        >
+          <Image src={errorIcon} alt="" boxSize="1rem" />
+          <Text as="span" color="palette.error" fontSize="body_sm">
+            Not compliant.
+          </Text>
+        </Box>
+      )}
     </Box>
   );
-  const labelText = radio.label;
 
   if (hideElement) {
     return null;
   }
   return (
-    <Box>
+    <Box sx={report?.type === ReportType.IMA ? sx.imaRadioQuestion : undefined}>
       <CmsdsChoiceList
         name={radio.id}
         type={"radio"}
@@ -184,6 +244,11 @@ export const RadioField = (props: PageElementProps<RadioTemplate>) => {
 };
 
 const sx = {
+  imaRadioQuestion: {
+    ".ds-c-fieldset > .ds-c-label": {
+      maxWidth: "685px",
+    },
+  },
   children: {
     padding: "0 0 0 22px",
     border: "4px #0071BC solid",

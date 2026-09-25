@@ -31,14 +31,16 @@ describe("SubmitReportModal", () => {
   });
 
   it("should label the submit button with the report type", async () => {
-    const modal = SubmitReportModal(mockClose, mockSubmit, ReportType.TACM);
+    const modal = SubmitReportModal(mockClose, mockSubmit, ReportType.HA);
     render(
       <Modal isOpen={true} onClose={mockClose}>
         {modal}
       </Modal>
     );
 
-    const submit = screen.getByRole("button", { name: "Submit TACM Report" });
+    const submit = screen.getByRole("button", {
+      name: "Submit HA Report",
+    });
     expect(submit).toBeVisible();
   });
 });

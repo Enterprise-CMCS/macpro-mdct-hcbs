@@ -1,0 +1,190 @@
+import { useState } from "react";
+import {
+  Box,
+  Button,
+  FormLabel,
+  HStack,
+  Image,
+  Input,
+  Table,
+  TableCaption,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  VisuallyHidden,
+} from "@chakra-ui/react";
+import { Choice } from "@cmsgov/design-system";
+import addIcon from "assets/icons/add/icon_add_blue.svg";
+import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
+import errorIcon from "assets/icons/status/icon_status_alert.svg";
+import { ImaTableColumn, ImaTableRow } from "types";
+import { ErrorMessages } from "../../constants";
+
+interface ImaTableProps {
+  caption: string;
+  columns: ImaTableColumn[];
+  rows: ImaTableRow[];
+  label?: string;
+  helperText?: string;
+  addButtonText?: string;
+  userCreatedRowLabel?: string;
+  allowUserCreatedRows?: boolean;
+  disabled?: boolean;
+  errorMessage?: string;
+  onAnswerChange: (rowId: string, columnId: string) => void;
+  onDescriptionChange: (rowId: string, description: string) => void;
+  onAddRow: () => void;
+  onDeleteRow: (rowId: string) => void;
+}
+
+export const ImaTable = ({
+  caption,
+  columns,
+  rows,
+  label,
+  helperText,
+  addButtonText,
+  userCreatedRowLabel,
+  allowUserCreatedRows = false,
+  disabled = false,
+  errorMessage,
+  onAnswerChange,
+  onDescriptionChange,
+  onAddRow,
+  onDeleteRow,
+}: ImaTableProps) => {
+  const answerColumns = columns.filter((column) => column.type === "answer");
+  const visibleColumns = allowUserCreatedRows
+    ? columns
+    : columns.filter((column) => column.type !== "delete");
+  const isExtraWideTable = visibleColumns.length >= 5;
+  const tableClassName = isExtraWideTable ? "ima-table--extra-wide" : undefined;
+  // Only show the required-response error after a user has blurred the field.
+  const [touchedRowIds, setTouchedRowIds] = useState(new Set<string>());
+
+  return (
+    <fieldset className="ds-c-fieldset ima-table-fieldset">
+      {label && <legend className="ds-c-label">{label}</legend>}
+      {helperText && <p className="ds-c-hint">{helperText}</p>}
+      <Table variant="ima" className={tableClassName}>
+        <TableCaption>
+          <VisuallyHidden>{caption}</VisuallyHidden>
+        </TableCaption>
+        <Thead>
+          <Tr>
+            {visibleColumns.map((column) => (
+              <Th key={column.id} scope="col">
+                {column.label}
+              </Th>
+            ))}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {rows.map((row) => {
+            const rowName = row.description || "new incident type";
+            return (
+              <Tr key={row.id}>
+                <Td>
+                  {row.isUserCreated ? (
+                    <HStack className="ima-user-created-row">
+                      <FormLabel htmlFor={`description-${row.id}`} margin={0}>
+                        {userCreatedRowLabel}
+                      </FormLabel>
+                      <Box flex="1" minWidth="0">
+                        {touchedRowIds.has(row.id) &&
+                          !row.description.trim() && (
+                            <HStack
+                              role="alert"
+                              spacing="0.25rem"
+                              alignItems="center"
+                              marginBottom="0.25rem"
+                            >
+                              <Image src={errorIcon} alt="" boxSize="0.75rem" />
+                              <Text color="palette.error" fontSize="body_md">
+                                {ErrorMessages.requiredResponse}
+                              </Text>
+                            </HStack>
+                          )}
+                        <Input
+                          id={`description-${row.id}`}
+                          value={row.description}
+                          backgroundColor="palette.white"
+                          borderColor="#262626"
+                          isDisabled={disabled}
+                          onChange={(event) =>
+                            onDescriptionChange(row.id, event.target.value)
+                          }
+                          onBlur={() =>
+                            setTouchedRowIds((prev) =>
+                              new Set(prev).add(row.id)
+                            )
+                          }
+                        />
+                      </Box>
+                    </HStack>
+                  ) : (
+                    <Text fontSize="body_md">{row.description}</Text>
+                  )}
+                  {!row.isUserCreated && row.isNonCompliant && errorMessage && (
+                    <HStack role="alert" spacing="0.25rem" alignItems="center">
+                      <Image src={errorIcon} alt="" boxSize="0.75rem" />
+                      <Text color="palette.error" fontSize="body_md">
+                        {errorMessage}
+                      </Text>
+                    </HStack>
+                  )}
+                </Td>
+                {answerColumns.map((column) => (
+                  <Td
+                    key={`${row.id}-${column.id}`}
+                    className="ima-answer-cell"
+                  >
+                    <Choice
+                      id={`${row.id}-${column.id}`}
+                      type="radio"
+                      name={row.id}
+                      value={column.id}
+                      label={column.label}
+                      aria-label={`${column.label} for ${rowName}`}
+                      disabled={disabled}
+                      checked={row.answer === column.id}
+                      onChange={() => onAnswerChange(row.id, column.id)}
+                    />
+                  </Td>
+                ))}
+                {allowUserCreatedRows && (
+                  <Td className="ima-delete-cell">
+                    {row.isUserCreated && (
+                      <Button
+                        className="ima-delete-button"
+                        variant="unstyled"
+                        aria-label={`Delete ${rowName}`}
+                        isDisabled={disabled}
+                        onClick={() => onDeleteRow(row.id)}
+                      >
+                        <Image src={cancelIcon} alt="" />
+                      </Button>
+                    )}
+                  </Td>
+                )}
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
+      {allowUserCreatedRows && (
+        <Button
+          variant="outline"
+          leftIcon={<Image src={addIcon} alt="" />}
+          isDisabled={disabled}
+          onClick={onAddRow}
+        >
+          {addButtonText}
+        </Button>
+      )}
+    </fieldset>
+  );
+};
