@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PageType } from "../../types/reports";
+import { ElementType, PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { pcpReportTemplate } from "./pcp/pcp";
@@ -62,5 +62,19 @@ describe.each(reportsToTest)("Report Template: $name", ({ template }) => {
         expect(existingUids).toContain(measure.uid);
       }
     });
+  });
+});
+
+describe("IMA Investigation Referrals", () => {
+  it("should not mark No as non-compliant", () => {
+    const page = imaReportTemplate.pages.find(
+      ({ id }) => id === "investigation-referrals"
+    );
+    const question = page?.elements?.find(
+      ({ id }) => id === "investigation-referrals-question"
+    );
+
+    expect(question).toMatchObject({ type: ElementType.Radio });
+    expect(question).not.toHaveProperty("nonCompliantOn");
   });
 });
