@@ -115,6 +115,10 @@ const sx = {
       marginLeft: "0rem",
       marginRight: "0.5rem",
     },
+    // Prevent icon clipping in button.
+    ".external-link-icon": {
+      marginBottom: "0.05em",
+    },
     ".mobile &": {
       marginRight: "0",
     },

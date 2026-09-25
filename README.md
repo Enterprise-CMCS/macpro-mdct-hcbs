@@ -141,7 +141,7 @@ Integration tests use [@axe-core/playwright](https://github.com/dequelabs/axe-co
 HTML supplied through content fields is rendered with `parseHtml` in
 [services/ui-src/src/utils/other/parsing.ts](services/ui-src/src/utils/other/parsing.ts).
 That helper sanitizes the HTML with DOMPurify before parsing it. It also normalizes
-links: absolute and protocol-relative URLs, as well as links explicitly using
+links through the module's `linkReplacer`: absolute and protocol-relative URLs, as well as links explicitly using
 `target="_blank"`, open in a new tab, include `rel="noopener noreferrer"`, and
 display the accessible external-link icon and "(Opens in a new tab)" label.
 
