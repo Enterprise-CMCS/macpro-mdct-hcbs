@@ -13,6 +13,7 @@ import {
   waiverListInputField,
 } from "../elements";
 import { CRITICAL_INCIDENT_TYPES } from "./incidentTypes";
+import { INVESTIGATION_REFERRAL_TYPES } from "./referralTypes";
 
 export const imaReportTemplate: ReportBase = {
   type: ReportType.IMA,
@@ -24,6 +25,7 @@ export const imaReportTemplate: ReportBase = {
         "general-info",
         "critical-incident-definitions",
         "electronic-info-system",
+        "investigation-referrals",
         "separate-investigations",
         "review-submit",
       ],
@@ -297,6 +299,112 @@ export const imaReportTemplate: ReportBase = {
             "info-systems-question-1",
             "electronic-incident-systems-table",
           ],
+          required: true,
+        },
+      ],
+    },
+    {
+      id: "investigation-referrals",
+      navTitle: "Investigation Referrals",
+      tabTitle: "Investigation Referrals - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "investigation-referrals-header",
+          text: "Investigation referrals",
+        },
+        {
+          type: ElementType.Radio,
+          id: "investigation-referrals-question",
+          label:
+            "Does the state refer critical incidents to another entity for investigation?",
+          required: true,
+          nonCompliantOn: "no",
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.ImaTable,
+                  id: "investigation-referrals-table",
+                  caption: "Investigation Referrals Table",
+                  label:
+                    "Select the option that best describes how critical incident information is shared with each entity:",
+                  helperText:
+                    'Choose "No Referral" if incidents aren\'t sent to the entity, or "No Info Shared" if they don\'t share back. For active sharing, specify if the state receives only the Status, only the Resolution, or Both.',
+                  errorMessage: "Not compliant.",
+                  columns: [
+                    {
+                      id: "investigation-referrals-description",
+                      label: "Data Sources",
+                      type: "description",
+                    },
+                    {
+                      id: "no-referral",
+                      label: "No Referral",
+                      type: "answer",
+                    },
+                    {
+                      id: "no-info-shared",
+                      label: "No Info Shared",
+                      type: "answer",
+                    },
+                    {
+                      id: "status-only",
+                      label: "Status Only",
+                      type: "answer",
+                    },
+                    {
+                      id: "resolution-only",
+                      label: "Resolution Only",
+                      type: "answer",
+                    },
+                    {
+                      id: "both",
+                      label: "Status & Resolution",
+                      type: "answer",
+                    },
+                  ],
+                  rows: [...INVESTIGATION_REFERRAL_TYPES],
+                  complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+                },
+              ],
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: ["investigation-referrals-table"],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must use an electronic information system that complies with the security and privacy provisions described in 45 CFR Part 164, and collects, tracks, and identifies trends in electronic critical incident data.",
+          controllerElementId: ["investigation-referrals-table"],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          showWhenNonCompliant: ["investigation-referrals-table"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: ["investigation-referrals-table"],
           required: true,
         },
       ],
