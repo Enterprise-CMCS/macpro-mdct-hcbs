@@ -1,8 +1,9 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@cmsgov/design-system";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType, isReportType } from "types";
-import { useStore } from "utils";
+import { externalLinkAltText, useStore } from "utils";
 
 /**
  * This component is contained within each card on the state user home page.
@@ -49,10 +50,10 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           rel="noopener noreferrer"
         >
           User Guide and Help File
-          <Image
-            src="/icon_external_link_main.svg"
-            sx={sx.externalLinkIcon}
-            alt="(Opens in New Tab)"
+          <ExternalLinkIcon
+            ariaHidden={false}
+            title={externalLinkAltText}
+            className="external-link-icon"
           />
         </Button>
       )}
@@ -114,12 +115,12 @@ const sx = {
       marginLeft: "0rem",
       marginRight: "0.5rem",
     },
+    // Prevent icon clipping in button.
+    ".external-link-icon": {
+      marginBottom: "0.05em",
+    },
     ".mobile &": {
       marginRight: "0",
     },
-  },
-  externalLinkIcon: {
-    marginLeft: "0.5rem",
-    height: "1rem",
   },
 };

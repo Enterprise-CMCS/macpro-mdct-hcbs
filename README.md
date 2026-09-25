@@ -20,6 +20,7 @@ HCBS are types of person-centered care delivered in the home and community which
 
 - [Quick Start](#quick-start)
 - [Testing](#testing)
+- [Rich HTML content](#rich-html-content)
 - [Deployments](#deployments)
 - [Architecture](#architecture)
 - [Copyright and license](#copyright-and-license)
@@ -134,6 +135,18 @@ We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa
 Unit tests use [axe-core]https://github.com/dequelabs/axe-core), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
 Integration tests use [@axe-core/playwright](https://github.com/dequelabs/axe-core-npm).
+
+## Rich HTML content
+
+HTML supplied through content fields is rendered with `parseHtml` in
+[services/ui-src/src/utils/other/parsing.ts](services/ui-src/src/utils/other/parsing.ts).
+That helper sanitizes the HTML with DOMPurify before parsing it. It also normalizes
+links through the module's `linkReplacer`: absolute and protocol-relative URLs, as well as links explicitly using
+`target="_blank"`, open in a new tab, include `rel="noopener noreferrer"`, and
+display the accessible external-link icon and "(Opens in a new tab)" label.
+
+When changing this behavior, update the focused tests in
+[services/ui-src/src/utils/other/parsing.test.tsx](services/ui-src/src/utils/other/parsing.test.tsx).
 
 ### oxfmt
 

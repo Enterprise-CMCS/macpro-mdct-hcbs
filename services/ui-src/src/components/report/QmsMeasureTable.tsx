@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import {
   Button,
   Table,
@@ -8,7 +8,6 @@ import {
   Thead,
   Tr,
   Text,
-  Link,
   TableCaption,
   Flex,
   VisuallyHidden,
@@ -65,11 +64,6 @@ export const QmsMeasureTableElement = (
   };
 
   const { reportType, state, reportId } = useParams();
-  const navigate = useNavigate();
-
-  const handleEditClick = (measureId: string) => {
-    navigate(`/report/${reportType}/${state}/${reportId}/${measureId}`);
-  };
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
@@ -133,14 +127,10 @@ export const QmsMeasureTableElement = (
             ) : null}
             {/* TO-DO: Fix format of measure id */}
             <Button
-              as={Link}
+              as={RouterLink}
               variant={"outline"}
               aria-label={`${disabled ? "View" : "Edit"} ${measure.navTitle}`}
-              href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                handleEditClick(measure.id);
-              }}
+              to={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
             >
               {disabled ? "View" : "Edit"}
             </Button>
