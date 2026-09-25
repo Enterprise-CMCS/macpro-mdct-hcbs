@@ -321,7 +321,6 @@ export const imaReportTemplate: ReportBase = {
           label:
             "Does the state refer critical incidents to another entity for investigation?",
           required: true,
-          nonCompliantOn: "no",
           choices: [
             {
               label: "Yes",
