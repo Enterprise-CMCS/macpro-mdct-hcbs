@@ -232,3 +232,17 @@ describe("HA sampling methodology", () => {
     }
   );
 });
+
+describe("IMA Investigation Referrals", () => {
+  it("should not mark No as non-compliant", () => {
+    const page = imaReportTemplate.pages.find(
+      ({ id }) => id === "investigation-referrals"
+    );
+    const question = page?.elements?.find(
+      ({ id }) => id === "investigation-referrals-question"
+    );
+
+    expect(question).toMatchObject({ type: ElementType.Radio });
+    expect(question).not.toHaveProperty("nonCompliantOn");
+  });
+});
