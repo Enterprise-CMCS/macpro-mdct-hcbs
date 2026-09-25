@@ -128,7 +128,6 @@ export const QipMeasureTableElement = ({
           <Flex justifyContent="center">
             <Button
               as={RouterLink}
-              data-navigation-link="true"
               variant={"outline"}
               aria-label={`${disabled ? "View" : "Edit"} ${measureTarget.measureName}`}
               to={`/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`}
