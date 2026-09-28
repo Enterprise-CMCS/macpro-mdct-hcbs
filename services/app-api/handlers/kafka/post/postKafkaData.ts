@@ -1,7 +1,11 @@
-import { ReportType } from "../../../types/reports";
-import KafkaSourceLib from "../../../utils/kafka/kafka-source-lib";
+import { ReportType, isReportType } from "../../../types/reports";
+import { GetDynamoInfo, GetKafkaConfig, kafkaHandler } from "../kafkaLib";
+import { unmarshall } from "@aws-sdk/util-dynamodb";
+import { getReport } from "../../../storage/reports";
 
-const _tableTopics: { [key in ReportType]: string } = {
+const version = "v0";
+const topicPrefix = "aws.mdct.hcbs";
+const reportTopics: { [key in ReportType]: string } = {
   QMS: "qms-reports",
   HA: "ha-reports",
   CI: "ci-reports",
@@ -11,19 +15,69 @@ const _tableTopics: { [key in ReportType]: string } = {
   WWL: "wwl-reports",
 };
 
-const topicPrefix = "aws.mdct.hcbs";
-const version = "v0";
-const tables: { sourceName: string; topicName: string }[] = [
-  // TODO: When HCBS starts sending data to Kafa,
-  // determine the appropriate topic based on the individual item
-  // (not on which table it's in, since all reports share a table).
-  // Additionally, write code to reassemble the report pages
-  // before sending the report on.
-  // Alternatively, establish with our integration partners
-  // that HCBS topics are Different from other MDCT apps,
-  // and that the item shape is Different as well.
-];
+const getConfig: GetKafkaConfig = () => {
+  const { brokerString, STAGE } = process.env;
 
-const postKafkaData = new KafkaSourceLib(topicPrefix, version, tables);
+  if (!brokerString) {
+    throw new Error("Missing Kafka config: brokerString required");
+  } else if (brokerString === "localstack") {
+    console.debug("Ignoring event: Localstack should not talk to Kafka");
+    return undefined;
+  }
 
-exports.handler = postKafkaData.handler.bind(postKafkaData);
+  if (!STAGE) {
+    throw new Error("Missing Kafka config: STAGE required");
+  }
+
+  return {
+    clientId: `hcbs-${STAGE}`,
+    brokers: brokerString.split(","),
+    retry: { initialRetryTime: 300, retries: 8 },
+    ssl: { rejectUnauthorized: false },
+  };
+};
+
+const getDynamoInfo: GetDynamoInfo = async (record) => {
+  const source = record.eventSourceARN;
+  const namespace = process.env.topicNamespace ?? "";
+  const reportsTable = process.env.ReportsTable;
+
+  if (reportsTable && !source.includes(`/${reportsTable}/`)) {
+    return undefined;
+  }
+
+  const payload = unmarshall(record.dynamodb.NewImage);
+  if (
+    !isReportType(payload.type) ||
+    typeof payload.state !== "string" ||
+    typeof payload.id !== "string" ||
+    typeof payload.sortKey !== "string"
+  ) {
+    return undefined;
+  }
+
+  if (payload.sortKey.includes("#")) {
+    return undefined;
+  }
+
+  const report = await getReport(
+    payload.type,
+    payload.state as Parameters<typeof getReport>[1],
+    payload.id
+  );
+  if (!report) {
+    throw new Error(
+      `Could not reassemble report ${payload.type}/${payload.state}/${payload.id}`
+    );
+  }
+
+  return {
+    topic: `${namespace}${topicPrefix}.${reportTopics[payload.type]}.${version}`,
+    payload: report,
+  };
+};
+
+export const handler = kafkaHandler({
+  getConfig,
+  getDynamoInfo,
+});

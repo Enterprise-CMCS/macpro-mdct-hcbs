@@ -79,10 +79,10 @@ describe("Report storage helpers", () => {
         {
           RequestItems: {
             "local-reports": [
-              { PutRequest: { Item: mockStoredReport[0] } },
               { PutRequest: { Item: mockStoredReport[1] } },
               { PutRequest: { Item: mockStoredReport[2] } },
               { PutRequest: { Item: mockStoredReport[3] } },
+              { PutRequest: { Item: mockStoredReport[0] } },
             ],
           },
         },
@@ -104,6 +104,7 @@ describe("Report storage helpers", () => {
       expect(mockQuery).toHaveBeenCalledWith(
         {
           TableName: "local-reports",
+          ConsistentRead: true,
           KeyConditionExpression: "pKey = :pKey AND begins_with(sortKey, :id)",
           ExpressionAttributeValues: {
             ":pKey": "QMS#CO",
