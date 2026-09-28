@@ -11,7 +11,7 @@ import {
   Report,
   ReportType,
 } from "types";
-import { MemoryRouter, useNavigate } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { ReportModal } from "./ReportModal";
 import { addQipTargetPage } from "utils";
 
@@ -69,7 +69,6 @@ vi.mock("react-router-dom", async (importOriginal) => ({
     state: "CO",
     reportId: "123",
   }),
-  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
 
 vi.mock("./useDeleteConfirmModal", () => ({
@@ -217,16 +216,12 @@ describe("QipMeasureTable", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("should navigate to the correct measure page on Edit click", async () => {
-    const mockNavigate = vi.fn();
-    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
-
+  it("should link to the correct measure page on Edit click", () => {
     render(QipMeasureTableComponent());
 
     const editLinks = screen.getAllByRole("link", { name: /Edit/i });
-    await userEvent.click(editLinks[0]);
-
-    expect(mockNavigate).toHaveBeenCalledWith(
+    expect(editLinks[0]).toHaveAttribute(
+      "href",
       "/report/QIP/CO/123/measure-targets-not-started"
     );
   });

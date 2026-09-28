@@ -38,5 +38,25 @@ describe("utils/parsing", () => {
 
       expect(setAttribute).toHaveBeenCalledWith("rel", "noopener noreferrer");
     });
+    it("should render parsed external links with the requested class, target, rel, and icon", () => {
+      const htmlString = '<a href="https://example.com">external link</a>';
+
+      const elements = parseHtml(htmlString);
+      render(elements);
+
+      const link = screen.getByRole("link", {
+        name: /external link \(Opens in a new tab\)/,
+      });
+      const icon = screen.getByRole("img", {
+        name: "(Opens in a new tab)",
+      });
+
+      expect(link).toHaveAttribute("href", "https://example.com");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      expect(link).toHaveClass("parsed-html-link");
+      expect(icon).toHaveClass("external-link-icon");
+      expect(icon).toHaveClass("ds-c-icon--external-link");
+    });
   });
 });

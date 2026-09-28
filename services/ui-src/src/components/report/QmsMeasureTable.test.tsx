@@ -11,7 +11,7 @@ import {
   Report,
   ReportStatus,
 } from "types";
-import { MemoryRouter, useNavigate } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 
 const mockReport = {
   status: ReportStatus.IN_PROGRESS,
@@ -49,9 +49,7 @@ vi.mock("react-router-dom", async (importOriginal) => ({
     state: "CO",
     reportId: "123",
   }),
-  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
-const mockedNavigate = vi.mocked(useNavigate());
 
 const mockTemplate: QmsMeasureTableTemplate = {
   type: ElementType.QmsMeasureTable,
@@ -133,11 +131,11 @@ describe("QmsMeasureTable", () => {
     expect(substituteButton).not.toBeInTheDocument();
   });
 
-  it("should navigate to the measure when the edit button is clicked", async () => {
+  it("should link to the measure when the edit button is clicked", () => {
     render(MeasureTableComponent("required"));
-    const editButton = screen.getAllByText("Edit")[0];
-    await userEvent.click(editButton);
-    expect(mockedNavigate).toHaveBeenCalledWith(
+    const editButton = screen.getByLabelText("Edit Mock Measure Req");
+    expect(editButton).toHaveAttribute(
+      "href",
       "/report/QMS/CO/123/mock-measure-1"
     );
   });
@@ -149,11 +147,11 @@ describe("QmsMeasureTable", () => {
     expect(screen.queryByText("Edit")).not.toBeInTheDocument();
   });
 
-  it("should navigate to the measure when the view button is clicked", async () => {
+  it("should link to the measure when the view button is clicked", () => {
     render(MeasureTableComponent("required", true));
     const viewButton = screen.getByLabelText("View Mock Measure Req");
-    await userEvent.click(viewButton);
-    expect(mockedNavigate).toHaveBeenCalledWith(
+    expect(viewButton).toHaveAttribute(
+      "href",
       "/report/QMS/CO/123/mock-measure-1"
     );
   });
