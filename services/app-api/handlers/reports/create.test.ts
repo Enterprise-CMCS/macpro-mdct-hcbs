@@ -1,26 +1,29 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { putReport } from "../../storage/reports";
 import { UserRoles } from "../../types/types";
+import { Report } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { createReport } from "./create";
+import { buildReport } from "./buildReport";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
     state: "PA",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canWriteState: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canWriteState: vi.fn().mockReturnValue(true),
 }));
 
-jest.mock("./buildReport", () => ({
-  buildReport: jest.fn().mockReturnValue({ id: "A report" }),
+vi.mock("./buildReport", () => ({
+  buildReport: vi.fn(),
 }));
 
-jest.mock("../../storage/reports", () => ({
-  putReport: jest.fn(),
+vi.mock("../../storage/reports", () => ({
+  putReport: vi.fn(),
 }));
 
 const testEvent = {
@@ -34,12 +37,12 @@ const testEvent = {
   }),
 };
 
-describe("Test create report handler", () => {
+describe("createReport", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  it("should return Bad Request if missing path params", async () => {
     const badTestEvent = {
       ...testEvent,
       pathParameters: {},
@@ -48,13 +51,13 @@ describe("Test create report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  it("should return 403 if user is not authorized", async () => {
-    (canWriteState as jest.Mock).mockReturnValueOnce(false);
+  it("should return Forbidden if user is not authorized", async () => {
+    vi.mocked(canWriteState).mockReturnValueOnce(false);
     const response = await createReport(testEvent);
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  it("should return Bad Request if missing body", async () => {
     const emptyBodyEvent = {
       ...testEvent,
       pathParameters: { reportType: "QMS", state: "PA" },
@@ -64,19 +67,23 @@ describe("Test create report handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test Successful create", async () => {
+  it("should create a new report and store it", async () => {
+    const mockReport = { id: "A report" } as Report;
+    vi.mocked(buildReport).mockResolvedValueOnce(mockReport);
+
     const res = await createReport(testEvent);
 
-    expect(putReport).toHaveBeenCalled();
+    expect(putReport).toHaveBeenCalledWith(mockReport);
     expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(JSON.parse(res.body!)).toEqual(mockReport);
   });
-});
 
-test("Test invalid report type", async () => {
-  const invalidDataEvent = {
-    ...testEvent,
-    pathParameters: { reportType: "BM", state: "NM" },
-  };
-  const res = await createReport(invalidDataEvent);
-  expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  it("should return Bad Request if report type is invalid", async () => {
+    const invalidDataEvent = {
+      ...testEvent,
+      pathParameters: { reportType: "BM", state: "NM" },
+    };
+    const res = await createReport(invalidDataEvent);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+  });
 });

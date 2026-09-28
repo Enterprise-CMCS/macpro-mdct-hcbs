@@ -1,13 +1,14 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { isValidBanner } from "../bannerValidation";
 import { logger } from "../../libs/debug-lib";
 import { BannerAreas, BannerFormData } from "../../types/banner";
 
-jest.mock("../../libs/debug-lib", () => ({
+vi.mock("../../libs/debug-lib", () => ({
   logger: {
-    warn: jest.fn(),
+    warn: vi.fn(),
   },
 }));
-const warn = logger.warn as jest.Mock;
+const warn = vi.mocked(logger.warn);
 
 const validPayload: BannerFormData = {
   title: "mock title",
@@ -20,7 +21,7 @@ const validPayload: BannerFormData = {
 
 describe("isValidBanner", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should accept a valid payload", () => {

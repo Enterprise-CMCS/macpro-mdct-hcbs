@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NDR } from "./NDR";
@@ -12,7 +13,7 @@ const mockedPerformanceElement: NdrTemplate = {
   label: "test label",
   required: true,
 };
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const NdrWrapper = ({ template }: { template: NdrTemplate }) => {
   const [element, setElement] = useState(template);
@@ -24,133 +25,131 @@ const NdrWrapper = ({ template }: { template: NdrTemplate }) => {
 };
 
 describe("<NDR />", () => {
-  describe("Test NDR component", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    test("NDR is visible", () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should render correctly", () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      expect(
-        screen.getByRole("textbox", { name: "Numerator" })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("textbox", { name: "Denominator" })
-      ).toBeInTheDocument();
-      expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
-      expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
-    });
+    expect(
+      screen.getByRole("textbox", { name: "Numerator" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Denominator" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Rate" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Rate" })).toBeDisabled();
+  });
 
-    test("Rate should calculate", async () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should auto-calculate rate", async () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "1"));
-      expect(numerator).toHaveValue("1");
+    const numerator = screen.getByRole("textbox", { name: "Numerator" });
+    await act(async () => await userEvent.type(numerator, "1"));
+    expect(numerator).toHaveValue("1");
 
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "2"));
-      expect(denominator).toHaveValue("2");
+    const denominator = screen.getByRole("textbox", { name: "Denominator" });
+    await act(async () => await userEvent.type(denominator, "2"));
+    expect(denominator).toHaveValue("2");
 
-      const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("0.5");
-    });
+    const rate = screen.getByRole("textbox", { name: "Rate" });
+    expect(rate).toHaveValue("0.5");
+  });
 
-    test("Rate should not display a decimal point if it is not needed", async () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should not display a decimal point if it is not needed", async () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "27"));
+    const numerator = screen.getByRole("textbox", { name: "Numerator" });
+    await act(async () => await userEvent.type(numerator, "27"));
 
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "3"));
+    const denominator = screen.getByRole("textbox", { name: "Denominator" });
+    await act(async () => await userEvent.type(denominator, "3"));
 
-      const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("9");
-    });
+    const rate = screen.getByRole("textbox", { name: "Rate" });
+    expect(rate).toHaveValue("9");
+  });
 
-    test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should display trailing decimal places if the value is rounded to 0", async () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await act(async () => await userEvent.type(numerator, "4"));
+    const numerator = screen.getByRole("textbox", { name: "Numerator" });
+    await act(async () => await userEvent.type(numerator, "4"));
 
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await act(async () => await userEvent.type(denominator, "2000"));
+    const denominator = screen.getByRole("textbox", { name: "Denominator" });
+    await act(async () => await userEvent.type(denominator, "2000"));
 
-      const rate = screen.getByRole("textbox", { name: "Rate" });
-      expect(rate).toHaveValue("0.00");
-    });
+    const rate = screen.getByRole("textbox", { name: "Rate" });
+    expect(rate).toHaveValue("0.00");
+  });
 
-    test("Proper error should show if a required field is empty", async () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should show an error if a required field is empty", async () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await userEvent.type(denominator, "4");
-      await userEvent.type(denominator, "{backspace}");
+    const denominator = screen.getByRole("textbox", { name: "Denominator" });
+    await userEvent.type(denominator, "4");
+    await userEvent.type(denominator, "{backspace}");
 
-      expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
-    });
+    expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
+  });
 
-    test("Proper error should show if a field has invalid input", async () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should show an error if a field has invalid input", async () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await userEvent.type(denominator, "string");
+    const denominator = screen.getByRole("textbox", { name: "Denominator" });
+    await userEvent.type(denominator, "string");
 
-      expect(screen.getByText(ErrorMessages.mustBeANumber)).toBeVisible();
-    });
+    expect(screen.getByText(ErrorMessages.mustBeANumber)).toBeVisible();
+  });
 
-    test("Error should show if the denominator is 0 and the numerator is not 0, and also clear", async () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should show an error if the denominator is 0 and the numerator is not 0", async () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await userEvent.type(numerator, "4");
+    const numerator = screen.getByRole("textbox", { name: "Numerator" });
+    await userEvent.type(numerator, "4");
 
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await userEvent.type(denominator, "0");
+    const denominator = screen.getByRole("textbox", { name: "Denominator" });
+    await userEvent.type(denominator, "0");
 
-      expect(screen.getByText(ErrorMessages.denominatorZero())).toBeVisible();
+    expect(screen.getByText(ErrorMessages.denominatorZero())).toBeVisible();
 
-      await userEvent.type(denominator, "4");
+    await userEvent.type(denominator, "4");
 
-      expect(
-        screen.queryByText(ErrorMessages.denominatorZero())
-      ).not.toBeInTheDocument();
-    });
+    expect(
+      screen.queryByText(ErrorMessages.denominatorZero())
+    ).not.toBeInTheDocument();
+  });
 
-    test("Rate should be 0 if both numerator and denominator are 0", async () => {
-      render(<NdrWrapper template={mockedPerformanceElement} />);
+  it("should set rate to 0 if both numerator and denominator are 0", async () => {
+    render(<NdrWrapper template={mockedPerformanceElement} />);
 
-      const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await userEvent.type(numerator, "0");
+    const numerator = screen.getByRole("textbox", { name: "Numerator" });
+    await userEvent.type(numerator, "0");
 
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await userEvent.type(denominator, "0");
+    const denominator = screen.getByRole("textbox", { name: "Denominator" });
+    await userEvent.type(denominator, "0");
 
-      const result = screen.getByRole("textbox", { name: "Rate" });
-      expect(result).toHaveValue("0.00");
-    });
+    const result = screen.getByRole("textbox", { name: "Rate" });
+    expect(result).toHaveValue("0.00");
+  });
 
-    test("should display hint text when provided", () => {
-      render(
-        <NdrWrapper
-          template={{
-            ...mockedPerformanceElement,
-            hintText: {
-              numeratorHint: "Numerator hint text",
-              denominatorHint: "Denominator hint text",
-              rateHint: "Rate hint text",
-            },
-          }}
-        />
-      );
+  it("should display hint text when provided", () => {
+    render(
+      <NdrWrapper
+        template={{
+          ...mockedPerformanceElement,
+          hintText: {
+            numeratorHint: "Numerator hint text",
+            denominatorHint: "Denominator hint text",
+            rateHint: "Rate hint text",
+          },
+        }}
+      />
+    );
 
-      expect(screen.getByText("Numerator hint text")).toBeVisible();
-      expect(screen.getByText("Denominator hint text")).toBeVisible();
-      expect(screen.getByText("Rate hint text")).toBeVisible();
-    });
+    expect(screen.getByText("Numerator hint text")).toBeVisible();
+    expect(screen.getByText("Denominator hint text")).toBeVisible();
+    expect(screen.getByText("Rate hint text")).toBeVisible();
   });
 
   testA11y(<NdrWrapper template={mockedPerformanceElement} />);

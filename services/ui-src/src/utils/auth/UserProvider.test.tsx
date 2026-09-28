@@ -1,19 +1,16 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { useContext } from "react";
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-// utils
+import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import { UserContext, UserProvider, useStore } from "utils";
-import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 
-jest.mock("utils/state/useStore");
-const mockSetUser = jest.fn();
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockUseStore,
-  setUser: mockSetUser,
-});
-
-// COMPONENTS
+vi.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: vi.fn(),
+  signInWithRedirect: vi.fn(),
+  signOut: vi.fn(),
+}));
 
 const TestComponent = () => {
   const { ...context } = useContext(UserContext);
@@ -23,7 +20,7 @@ const TestComponent = () => {
       <button onClick={() => context.loginWithIDM()}>Log In with IDM</button>
       User Test
       <p>
-        {mockedUseStore().showLocalLogins
+        {useStore.getState().showLocalLogins
           ? "showLocalLogins is true"
           : "showLocalLogins is false"}
       </p>
@@ -39,7 +36,6 @@ const testComponent = (
   </RouterWrappedComponent>
 );
 
-// HELPERS
 const originalLocationDescriptor = Object.getOwnPropertyDescriptor(
   global,
   "location"
@@ -49,22 +45,13 @@ const setWindowOrigin = (windowOrigin: string) => {
   global.window = Object.create(window);
   Object.defineProperty(window, "location", {
     value: {
-      assign: jest.fn(),
+      assign: vi.fn(),
       origin: windowOrigin,
       pathname: "/",
     },
     writable: true,
   });
 };
-
-const breakCheckAuthState = async () => {
-  const mockAmplify = require("aws-amplify/auth");
-  mockAmplify.currentSession = jest.fn().mockImplementation(() => {
-    throw new Error("Some error occured");
-  });
-};
-
-// TESTS
 
 describe("<UserProvider />", () => {
   beforeAll(() => {
@@ -75,40 +62,68 @@ describe("<UserProvider />", () => {
     Object.defineProperty(global, "location", originalLocationDescriptor);
   });
 
-  describe("Test UserProvider", () => {
-    beforeEach(async () => {
-      await act(async () => {
-        render(testComponent);
-      });
-    });
+  it("should render child components", () => {
+    render(testComponent);
+    expect(screen.getByText("User Test")).toBeVisible();
+  });
 
-    test("child component renders", () => {
-      expect(screen.getByText("User Test")).toBeVisible();
+  it("should redirect to site root on logout", async () => {
+    render(testComponent);
+    await act(async () => {
+      const logoutButton = screen.getByRole("button", { name: "Logout" });
+      await userEvent.click(logoutButton);
     });
+    expect(window.location.pathname).toEqual("/");
+  });
 
-    test("test logout function", async () => {
-      await act(async () => {
-        const logoutButton = screen.getByRole("button", { name: "Logout" });
-        await userEvent.click(logoutButton);
+  it("should successfully login with IDM", async () => {
+    render(testComponent);
+    await act(async () => {
+      const loginButton = screen.getByRole("button", {
+        name: "Log In with IDM",
       });
-      expect(window.location.pathname).toEqual("/");
+      await userEvent.click(loginButton);
     });
+    expect(screen.getByText("User Test")).toBeVisible();
+  });
 
-    test("test login with IDM function", async () => {
-      await act(async () => {
-        const loginButton = screen.getByRole("button", {
-          name: "Log In with IDM",
-        });
-        await userEvent.click(loginButton);
-      });
-      expect(screen.getByText("User Test")).toBeVisible();
+  it("should set the user field of the store on initial load", async () => {
+    vi.mocked(fetchAuthSession).mockResolvedValueOnce({
+      tokens: {
+        idToken: {
+          payload: {
+            email: "email@address.com",
+            given_name: "first",
+            family_name: "last",
+            "custom:cms_roles": "roles",
+            "custom:cms_state": "ZZ",
+          },
+        },
+        accessToken: {} as any,
+      },
+    });
+    await act(async () => {
+      render(testComponent);
+    });
+    expect(useStore.getState().user).toEqual({
+      email: "email@address.com",
+      given_name: "first",
+      family_name: "last",
+      full_name: "first last",
+      userRole: undefined,
+      state: "ZZ",
+      userIsAdmin: false,
+      userIsReadOnly: false,
+      userIsEndUser: false,
     });
   });
 
-  describe("Test UserProvider with production path", () => {
-    test("test production authenticates with idm when current authenticated user throws an error", async () => {
+  describe("with production path", () => {
+    it("should authenticate with idm when current authenticated user throws an error", async () => {
       setWindowOrigin("mdcthcbs.cms.gov");
-      await breakCheckAuthState();
+      vi.mocked(fetchAuthSession).mockImplementationOnce(() => {
+        throw new Error("mock session error");
+      });
       await act(async () => {
         render(testComponent);
       });
@@ -117,10 +132,12 @@ describe("<UserProvider />", () => {
     });
   });
 
-  describe("Test UserProvider with non-production path", () => {
-    test("Non-production error state correctly sets showLocalLogins", async () => {
+  describe("with non-production path", () => {
+    it("should correctly set showLocalLogins in non-production error state", async () => {
       setWindowOrigin("wherever");
-      await breakCheckAuthState();
+      vi.mocked(fetchAuthSession).mockImplementationOnce(() => {
+        throw new Error("mock session error");
+      });
       await act(async () => {
         render(testComponent);
       });
@@ -129,13 +146,12 @@ describe("<UserProvider />", () => {
     });
   });
 
-  describe("Test UserProvider error handling", () => {
-    test("Logs error to console if logout throws error", async () => {
-      jest.spyOn(console, "log").mockImplementation(jest.fn());
-      const spy = jest.spyOn(console, "log");
+  describe("error handling", () => {
+    it("should log an error to console if logout throws", async () => {
+      vi.spyOn(console, "log").mockImplementation(vi.fn());
+      const spy = vi.spyOn(console, "log");
 
-      const mockAmplify = require("aws-amplify/auth");
-      mockAmplify.signOut = jest.fn().mockImplementation(() => {
+      vi.mocked(signOut).mockImplementation(() => {
         throw new Error("Some error occured");
       });
 
@@ -149,37 +165,6 @@ describe("<UserProvider />", () => {
       });
 
       expect(spy).toHaveBeenCalled();
-    });
-  });
-
-  test("test check auth function", async () => {
-    const mockAmplify = require("aws-amplify/auth");
-    mockAmplify.fetchAuthSession = jest.fn().mockResolvedValue({
-      tokens: {
-        idToken: {
-          payload: {
-            email: "email@address.com",
-            given_name: "first",
-            family_name: "last",
-            "custom:cms_roles": "roles",
-            "custom:cms_state": "ZZ",
-          },
-        },
-      },
-    });
-    await act(async () => {
-      render(testComponent);
-    });
-    expect(mockSetUser).toHaveBeenCalledWith({
-      email: "email@address.com",
-      given_name: "first",
-      family_name: "last",
-      full_name: "first last",
-      userRole: undefined,
-      state: "ZZ",
-      userIsAdmin: false,
-      userIsReadOnly: false,
-      userIsEndUser: false,
     });
   });
 });

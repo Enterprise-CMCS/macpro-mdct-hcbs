@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
@@ -16,19 +17,17 @@ import { useStore } from "utils";
 import { HcbsUser } from "types";
 import { useNavigate } from "react-router-dom";
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
-  useParams: jest.fn(() => ({
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
+  useParams: vi.fn(() => ({
     reportType: "QMS",
     state: "CO",
     reportId: "mock-report-id",
     pageId: "MOCK-1",
   })),
 }));
-const mockNavigate = useNavigate() as jest.MockedFunction<
-  ReturnType<typeof useNavigate>
->;
+const mockNavigate = vi.mocked(useNavigate());
 
 const buildMockReport = (): Report =>
   ({
@@ -130,20 +129,16 @@ const buildMockReport = (): Report =>
     ],
   }) as Report;
 
-jest.mock("../../utils/api/requestMethods/report", () => ({
-  getReport: jest.fn(),
+vi.mock("../../utils/api/requestMethods/report", () => ({
+  getReport: vi.fn(),
 }));
-const mockedGetReport = getReport as unknown as jest.MockedFunction<
-  typeof getReport
->;
-mockedGetReport.mockResolvedValue(buildMockReport());
+vi.mocked(getReport).mockResolvedValue(buildMockReport());
 
-const mockUser = { userIsEndUser: true } as HcbsUser;
-useStore.setState({ user: mockUser });
+useStore.setState({ user: { userIsEndUser: true } as HcbsUser });
 
 describe("Measure Results Navigation Table", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const waitForRender = async () => {
@@ -153,7 +148,7 @@ describe("Measure Results Navigation Table", () => {
     });
   };
 
-  it("should disabled both nav buttons when delivery method is unspecified", async () => {
+  it("should disable both nav buttons when delivery method is unspecified", async () => {
     act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
@@ -163,33 +158,40 @@ describe("Measure Results Navigation Table", () => {
     expect(mltssNavButton).toBeDisabled();
   });
 
-  it("should enable nav buttons when delivery methods are selected", async () => {
+  it("should enable FFS nav button when FFS delivery method is selected", async () => {
     act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
+    const ffsOption = screen.getByRole("radio", { name: /Fee-For-Service/ });
+    await userEvent.click(ffsOption);
+
     const buttons = screen.queryAllByRole("button", { name: "Edit" });
     const [ffsNavButton, mltssNavButton] = buttons;
-
-    const ffsOption = screen.getByRole("radio", { name: /Fee-For-Service/ });
-    const mltssOption = screen.getByRole("radio", { name: /Managed Care/ });
-    const bothOption = screen.getByRole("radio", { name: /Both/ });
-
-    expect(ffsNavButton).toBeDisabled();
-    expect(mltssNavButton).toBeDisabled();
-
-    await userEvent.click(ffsOption);
     expect(ffsNavButton).toBeEnabled();
     expect(mltssNavButton).toBeDisabled();
+  });
 
+  it("should enable MLTSS nav button when MLTSS delivery method is selected", async () => {
+    act(() => render(<ReportPageWrapper />));
+    await waitForRender();
+
+    const mltssOption = screen.getByRole("radio", { name: /Managed Care/ });
     await userEvent.click(mltssOption);
-    // Dismiss the delivery method change confirmation modal
-    await userEvent.click(screen.getByRole("button", { name: "Yes" }));
+
+    const buttons = screen.queryAllByRole("button", { name: "Edit" });
+    const [ffsNavButton, mltssNavButton] = buttons;
     expect(mltssNavButton).toBeEnabled();
     expect(ffsNavButton).toBeDisabled();
+  });
 
+  it("should enable both nav buttons when both delivery methods are selected", async () => {
+    act(() => render(<ReportPageWrapper />));
+    await waitForRender();
+
+    const bothOption = screen.getByRole("radio", { name: /Both/ });
     await userEvent.click(bothOption);
-    // Dismiss the delivery method change confirmation modal
-    await userEvent.click(screen.getByRole("button", { name: "Yes" }));
+    const buttons = screen.queryAllByRole("button", { name: "Edit" });
+    const [ffsNavButton, mltssNavButton] = buttons;
     expect(ffsNavButton).toBeEnabled();
     expect(mltssNavButton).toBeEnabled();
   });
@@ -237,7 +239,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
-  test("Changing the reporting radio should clear data for this measure", async () => {
+  it("should clear measure data when the reporting radio changes", async () => {
     act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
@@ -267,7 +269,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
-  test("Changing delivery method should clear measure details pages", async () => {
+  it("should clear measure details pages when delivery method changes", async () => {
     act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
@@ -286,7 +288,7 @@ describe("Measure Results Navigation Table", () => {
   });
 
   // This test isn't really about the MRNavTable, but it's convenient to put here
-  test("Changing delivery method should clear measure details pages", async () => {
+  it("should clear measure details pages when Clear Measure is clicked", async () => {
     act(() => render(<ReportPageWrapper />));
     await waitForRender();
 
@@ -306,5 +308,17 @@ describe("Measure Results Navigation Table", () => {
     report = useStore.getState().report as any;
     expect(report.pages[2].elements[0].answer).not.toBeDefined();
     expect(report.pages[3].elements[0].answer).not.toBeDefined();
+  });
+
+  it("should display View buttons in read-only mode", async () => {
+    useStore.setState({ user: { userIsEndUser: false } as HcbsUser });
+
+    render(<ReportPageWrapper />);
+    await waitForRender();
+
+    expect(screen.getAllByRole("button", { name: "View" })).toHaveLength(2);
+    expect(
+      screen.queryByRole("button", { name: "Edit" })
+    ).not.toBeInTheDocument();
   });
 });

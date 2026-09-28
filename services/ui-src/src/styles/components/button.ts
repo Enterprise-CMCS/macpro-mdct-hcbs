@@ -63,8 +63,13 @@ const outlineVariant = () => ({
   textDecoration: "none",
   fontWeight: "bold",
   "&:disabled, &:disabled:hover": {
-    color: "palette.gray_dark",
-    borderColor: "palette.gray_dark",
+    color: "palette.gray_lighter",
+    borderColor: "palette.gray_lighter",
+    opacity: 1,
+    pointerEvents: "none",
+    span: {
+      filter: svgFilters.gray_lighter,
+    },
   },
   _hover: {
     ...theme.components.Button.variants.transparent._hover,

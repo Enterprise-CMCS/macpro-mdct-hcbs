@@ -1,7 +1,7 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QmsMeasureTableElement } from "./QmsMeasureTable";
-import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import {
   ElementType,
@@ -42,23 +42,16 @@ const mockReport = {
   ],
 } as Report;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockUseStore,
-  report: mockReport,
-});
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({
     reportType: "QMS",
     state: "CO",
     reportId: "123",
   }),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
-const mockedNavigate = useNavigate() as jest.Mock;
+const mockedNavigate = vi.mocked(useNavigate());
 
 const mockTemplate: QmsMeasureTableTemplate = {
   type: ElementType.QmsMeasureTable,
@@ -67,7 +60,7 @@ const mockTemplate: QmsMeasureTableTemplate = {
   caption: "Required Measure Results",
 };
 
-jest.mock("./MeasureReplacementModal", () => ({
+vi.mock("./MeasureReplacementModal", () => ({
   MeasureReplacementModal: (
     measure: MeasurePageTemplate,
     _onClose: unknown,
@@ -78,19 +71,21 @@ jest.mock("./MeasureReplacementModal", () => ({
 }));
 
 const MeasureTableComponent = (
-  measureDisplay: QmsMeasureTableTemplate["measureDisplay"]
+  measureDisplay: QmsMeasureTableTemplate["measureDisplay"],
+  disabled = false
 ) => {
   const template = { ...mockTemplate, measureDisplay };
   return (
     <MemoryRouter>
-      <QmsMeasureTableElement element={template} />
+      <QmsMeasureTableElement element={template} disabled={disabled} />
     </MemoryRouter>
   );
 };
 
-describe("Test QmsMeasureTable", () => {
+describe("QmsMeasureTable", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
+    useStore.setState({ report: mockReport });
   });
 
   it("should display required measures when in required mode", () => {
@@ -112,10 +107,9 @@ describe("Test QmsMeasureTable", () => {
   });
 
   it("should perform substitution when the button is clicked", async () => {
-    const mockSubstitute = jest.fn();
+    const mockSubstitute = vi.fn();
     const requiredMeasure = mockReport.pages.find((p: any) => p.required);
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
+    useStore.setState({
       report: mockReport,
       setSubstitute: mockSubstitute,
     });
@@ -128,8 +122,7 @@ describe("Test QmsMeasureTable", () => {
   });
 
   it("should not show the substitute button for submitted reports", () => {
-    mockedUseStore.mockReturnValueOnce({
-      ...mockUseStore,
+    useStore.setState({
       report: {
         ...mockReport,
         status: ReportStatus.SUBMITTED,
@@ -144,6 +137,22 @@ describe("Test QmsMeasureTable", () => {
     render(MeasureTableComponent("required"));
     const editButton = screen.getAllByText("Edit")[0];
     await userEvent.click(editButton);
+    expect(mockedNavigate).toHaveBeenCalledWith(
+      "/report/QMS/CO/123/mock-measure-1"
+    );
+  });
+
+  it("should display View instead of Edit in read-only mode", () => {
+    render(MeasureTableComponent("required", true));
+    expect(screen.getAllByText("View")).toHaveLength(2);
+    expect(screen.getByLabelText("View Mock Measure Req")).toBeInTheDocument();
+    expect(screen.queryByText("Edit")).not.toBeInTheDocument();
+  });
+
+  it("should navigate to the measure when the view button is clicked", async () => {
+    render(MeasureTableComponent("required", true));
+    const viewButton = screen.getByLabelText("View Mock Measure Req");
+    await userEvent.click(viewButton);
     expect(mockedNavigate).toHaveBeenCalledWith(
       "/report/QMS/CO/123/mock-measure-1"
     );

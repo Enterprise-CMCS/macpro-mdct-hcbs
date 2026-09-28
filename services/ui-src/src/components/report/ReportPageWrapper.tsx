@@ -91,6 +91,11 @@ export const ReportPageWrapper = () => {
     (submittedView ? currentPage?.submittedTabTitle : currentPage?.tabTitle) ??
     "";
 
+  let pageMaxWidth = "fullPageWidth";
+  if (currentPage.sidebar) {
+    pageMaxWidth = currentPage.isExtraWide ? "none" : "reportPageWidth";
+  }
+
   return (
     <HStack position="relative" spacing="0" height="100%">
       <Title tabTitle={renderTabTitle} />
@@ -104,7 +109,7 @@ export const ReportPageWrapper = () => {
         }
         margin={currentPage.sidebar ? { md: "0 4rem" } : { md: "0 6rem" }}
         width="100%"
-        maxWidth={currentPage.sidebar ? "reportPageWidth" : "fullPageWidth"}
+        maxWidth={pageMaxWidth}
         gap="0rem"
       >
         <Box

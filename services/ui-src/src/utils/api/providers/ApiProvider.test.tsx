@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ApiProvider } from "./ApiProvider";
 
@@ -10,11 +11,8 @@ const testComponent = (
 );
 
 describe("<ApiProvider />", () => {
-  beforeEach(async () => {
+  it("should render correctly", () => {
     render(testComponent);
-  });
-
-  test("ApiProvider renders children", () => {
     expect(screen.getByText("Test")).toBeVisible();
   });
 });

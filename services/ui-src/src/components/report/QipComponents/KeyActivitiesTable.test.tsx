@@ -1,25 +1,28 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { ElementType, KeyActivityTableTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { KeyActivitiesTableElement } from "./KeyActivitiesTable";
+import { ReportModal } from "../ReportModal";
 
-const mockOpenDeleteModal = jest.fn();
+const mockOpenDeleteModal = vi.fn();
 let capturedOnConfirm: (remaining: any[], deletedId: string) => void;
 
-jest.mock("../useDeleteConfirmModal", () => ({
+vi.mock("../useDeleteConfirmModal", () => ({
   useDeleteConfirmModal: ({ onConfirm }: any) => {
     capturedOnConfirm = onConfirm;
     return {
       addButtonRef: { current: null },
-      getDeleteButtonRef: jest.fn().mockReturnValue(() => {}),
+      getDeleteButtonRef: vi.fn().mockReturnValue(() => {}),
       openDeleteModal: mockOpenDeleteModal,
     };
   },
 }));
 
-jest.mock("components/fields", () => ({
+vi.mock("components/fields", async (importOriginal) => ({
+  ...(await importOriginal()),
   DateField: ({ element, updateElement }: any) => (
     <input
       aria-label={element.label}
@@ -51,7 +54,7 @@ const populatedTemplate: KeyActivityTableTemplate = {
   ],
 };
 
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const KeyActivitiesTableWrapper = ({
   template,
@@ -65,13 +68,16 @@ const KeyActivitiesTableWrapper = ({
   };
 
   return (
-    <KeyActivitiesTableElement element={element} updateElement={onChange} />
+    <>
+      <ReportModal />
+      <KeyActivitiesTableElement element={element} updateElement={onChange} />
+    </>
   );
 };
 
 describe("<KeyActivitiesTableElement />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should display warning when there are no activities", () => {

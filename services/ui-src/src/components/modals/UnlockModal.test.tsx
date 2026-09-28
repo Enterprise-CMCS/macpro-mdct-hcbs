@@ -1,9 +1,10 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { UnlockModal } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockCloseHandler = jest.fn();
+const mockCloseHandler = vi.fn();
 
 const modalComponent = (
   <UnlockModal
@@ -14,13 +15,13 @@ const modalComponent = (
   />
 );
 
-describe("Test Modal", () => {
+describe("UnlockModal", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    render(modalComponent);
+    vi.clearAllMocks();
   });
 
-  test("Modal shows the contents", () => {
+  it("should render its contents", () => {
+    render(modalComponent);
     expect(screen.getByText("You unlocked this report")).toBeTruthy();
     expect(
       screen.getByText(
@@ -29,12 +30,14 @@ describe("Test Modal", () => {
     ).toBeTruthy();
   });
 
-  test("Modals action button can be clicked", async () => {
+  it("should call its action handler", async () => {
+    render(modalComponent);
     await userEvent.click(screen.getByText("Return to dashboard"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("Modals close button can be clicked", async () => {
+  it("should call its close handler", async () => {
+    render(modalComponent);
     await userEvent.click(screen.getByText("Close"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
@@ -5,19 +6,19 @@ import { listBanners } from "./fetch";
 import { scanAllBanners } from "../../storage/banners";
 import { BannerShape, BannerAreas } from "../../types/banner";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.ADMIN,
     state: "PA",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  isAuthenticated: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  isAuthenticated: vi.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../storage/banners", () => ({
-  scanAllBanners: jest.fn(),
+vi.mock("../../storage/banners", () => ({
+  scanAllBanners: vi.fn(),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -40,18 +41,18 @@ const mockBanner: BannerShape = {
 
 describe("listBanners", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should query Dynamo for banner data", async () => {
-    (scanAllBanners as jest.Mock).mockResolvedValueOnce([mockBanner]);
+    vi.mocked(scanAllBanners).mockResolvedValueOnce([mockBanner]);
     const res = await listBanners(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(JSON.parse(res.body!)).toEqual([mockBanner]);
   });
 
   it("should return an empty array if no banners exist", async () => {
-    (scanAllBanners as jest.Mock).mockResolvedValueOnce([]);
+    vi.mocked(scanAllBanners).mockResolvedValueOnce([]);
     const res = await listBanners(testEvent);
     expect(res.body).toBe("[]");
     expect(res.statusCode).toBe(StatusCodes.Ok);

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { collectPageItems, createClient } from "./dynamodb-lib";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 

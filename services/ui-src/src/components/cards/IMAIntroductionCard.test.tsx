@@ -1,21 +1,20 @@
-import { TacmIntroductionCard } from "./TacmIntroductionCard";
+import { describe, expect, it } from "vitest";
+import { IMAIntroductionCard } from "./IMAIntroductionCard";
 import { render, screen } from "@testing-library/react";
 import { testA11yAct } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const component = (
   <RouterWrappedComponent>
-    <TacmIntroductionCard />
+    <IMAIntroductionCard />
   </RouterWrappedComponent>
 );
 
-describe("TacmIntroductionCard", () => {
+describe("IMAIntroductionCard", () => {
   it("should render", () => {
     render(component);
     expect(
-      screen.getByText("The Timely Access Compliance Measures support", {
-        exact: false,
-      })
+      screen.getByText("When are the Incident Management Assessments Due?")
     ).toBeVisible();
   });
 

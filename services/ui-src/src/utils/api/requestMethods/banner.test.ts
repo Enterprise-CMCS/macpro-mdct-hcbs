@@ -1,5 +1,7 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getBanners, createBanner, deleteBanner } from "./banner";
-import { initAuthManager } from "utils/auth/authLifecycle";
+import { apiLib } from "../apiLib";
+import { updateTimeout } from "../../auth/authLifecycle";
 import { BannerAreas, BannerFormData } from "types";
 
 const mockBanner: BannerFormData = {
@@ -11,28 +13,53 @@ const mockBanner: BannerFormData = {
   endDate: "2026-03-06",
 };
 
-describe("utils/banner", () => {
+vi.mock("../apiLib", () => ({
+  apiLib: {
+    get: vi.fn(),
+    post: vi.fn(),
+    del: vi.fn(),
+  },
+}));
+
+vi.mock("../../auth/authLifecycle", () => ({
+  updateTimeout: vi.fn(),
+}));
+
+describe("Banner request methods", () => {
   beforeEach(async () => {
-    jest.useFakeTimers();
-    initAuthManager();
-    jest.runAllTimers();
+    vi.clearAllMocks();
   });
 
-  describe("getBanner()", () => {
-    test("executes", () => {
-      expect(getBanners()).toBeTruthy();
+  describe("getBanners", () => {
+    it("should call the correct endpoint", async () => {
+      await getBanners();
+      expect(vi.mocked(updateTimeout)).toHaveBeenCalled();
+      expect(vi.mocked(apiLib.get)).toHaveBeenCalledWith(
+        "/banners",
+        expect.any(Object)
+      );
     });
   });
 
-  describe("writeBanner()", () => {
-    test("executes", () => {
-      expect(createBanner(mockBanner)).toBeTruthy();
+  describe("createBanner", () => {
+    it("should call the correct endpoint", async () => {
+      await createBanner(mockBanner);
+      expect(vi.mocked(updateTimeout)).toHaveBeenCalled();
+      expect(vi.mocked(apiLib.post)).toHaveBeenCalledWith(
+        "/banners",
+        expect.objectContaining({ body: mockBanner })
+      );
     });
   });
 
-  describe("deleteBanner()", () => {
-    test("executes", () => {
-      expect(deleteBanner("mock-banner-key")).toBeTruthy();
+  describe("deleteBanner", () => {
+    it("should call the correct endpoint", async () => {
+      await deleteBanner("mock-id");
+      expect(vi.mocked(updateTimeout)).toHaveBeenCalled();
+      expect(vi.mocked(apiLib.del)).toHaveBeenCalledWith(
+        "/banners/mock-id",
+        expect.any(Object)
+      );
     });
   });
 });

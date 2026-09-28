@@ -20,6 +20,7 @@ import {
   MeasurePageTemplate,
   isMeasurePageTemplate,
   PageElement,
+  DividerTemplate,
 } from "types";
 import { AccordionItem } from "components";
 import arrowLeftIcon from "assets/icons/arrows/icon_arrow_left_blue.png";
@@ -29,17 +30,12 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { currentPageSelector } from "utils/state/selectors";
 import whitePDFPrimary from "assets/icons/pdf/icon_pdf_white.svg";
 
-export type PageElementProps<T extends PageElement = PageElement> = T extends {
-  answer?: any;
-}
-  ? {
-      element: T;
-      updateElement: (updatedElement: Partial<T>) => void;
-      disabled?: boolean;
-    }
-  : {
-      element: T;
-    };
+export type PageElementProps<T extends PageElement = PageElement> = {
+  element: T;
+  disabled?: boolean;
+} & (T extends { answer?: any }
+  ? { updateElement: (updatedElement: Partial<T>) => void }
+  : {});
 
 export const HeaderElement = ({
   element,
@@ -174,7 +170,16 @@ export const AccordionElement = ({
   );
 };
 
-export const DividerElement = (_props: PageElementProps) => {
+export const DividerElement = ({
+  element,
+}: PageElementProps<DividerTemplate>) => {
+  const hideElement = useElementIsHidden(
+    undefined,
+    element.showWhenNonCompliant
+  );
+
+  if (hideElement) return null;
+
   return <Divider></Divider>;
 };
 

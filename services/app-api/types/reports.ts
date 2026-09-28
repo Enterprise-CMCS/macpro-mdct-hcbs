@@ -4,11 +4,12 @@ import { StateAbbr } from "../utils/constants";
 
 export enum ReportType {
   QMS = "QMS",
-  TACM = "TACM",
+  HA = "HA",
   CI = "CI",
   PCP = "PCP",
   QIP = "QIP",
   WWL = "WWL",
+  IMA = "IMA",
 }
 export const isReportType = (x: unknown): x is ReportType => {
   return Object.values(ReportType).includes(x as ReportType);
@@ -219,6 +220,7 @@ export type ParentPageTemplate = {
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
+  isExtraWide?: undefined;
 };
 
 export type FormPageTemplate = {
@@ -231,6 +233,7 @@ export type FormPageTemplate = {
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
+  isExtraWide?: boolean;
   childPageIds?: PageId[];
 };
 
@@ -279,6 +282,8 @@ export enum ElementType {
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
+  ImaTable = "imaTable",
+  ComplianceAlert = "complianceAlert",
 }
 
 export type PageElement =
@@ -315,7 +320,9 @@ export type PageElement =
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
   | KeyActivityTableTemplate
-  | ListInputTemplate;
+  | ListInputTemplate
+  | ImaTableTemplate
+  | ComplianceAlertTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -395,6 +402,7 @@ export type TextAreaBoxTemplate = {
   wordLimit?: number;
   answer?: string;
   hideCondition?: HideCondition;
+  showWhenNonCompliant?: string[];
   required: boolean;
 };
 
@@ -441,6 +449,7 @@ export type DropdownTemplate = {
 export type DividerTemplate = {
   type: ElementType.Divider;
   id: string;
+  showWhenNonCompliant?: string[];
 };
 
 export type SubmissionParagraphTemplate = {
@@ -465,6 +474,7 @@ export type RadioTemplate = {
   required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
+  nonCompliantOn?: string;
 };
 
 export type CheckboxTemplate = {
@@ -840,6 +850,59 @@ export type StatusAlertTemplate = {
   title: string;
   text: string;
   status: AlertTypes;
+};
+
+export type ComplianceAlertTemplate = {
+  type: ElementType.ComplianceAlert;
+  id: string;
+  title: string;
+  text: string;
+  status: AlertTypes;
+  /** IDs of the elements whose answers determine compliance. */
+  controllerElementId: string[];
+};
+
+export type ImaTableColumn = {
+  id: string;
+  label: string;
+  type: "description" | "answer" | "delete";
+};
+
+export type ImaTableRow = {
+  id: string;
+  description: string;
+  answer?: string;
+  isUserCreated?: boolean;
+  isNonCompliant?: boolean;
+};
+
+export const ComplianceRules = {
+  AnyNo: "any-no",
+  AnyNonYes: "any-non-yes",
+  AllNo: "all-no",
+  AllNotReferred: "all-not-referred",
+  // TODO: not yet used by any table. See IMA doc II.D.2/II.E.2.
+  AnyRelevantRowMatchesValue: "any-relevant-row-matches-value",
+  // TODO: not yet used by any table. See IMA doc II.F.2.
+  AnyPartialOrAllNotReferred: "any-partial-or-all-not-referred",
+} as const;
+export type ComplianceRule =
+  (typeof ComplianceRules)[keyof typeof ComplianceRules];
+
+export type ImaTableTemplate = {
+  type: ElementType.ImaTable;
+  id: string;
+  caption: string;
+  label?: string;
+  helperText?: string;
+  addButtonText?: string;
+  userCreatedRowLabel?: string;
+  errorMessage?: string;
+  allowUserCreatedRows?: boolean;
+  columns: ImaTableColumn[];
+  rows: ImaTableRow[];
+  answer?: ImaTableRow[];
+  complianceRule: ComplianceRule;
 };
 
 /**

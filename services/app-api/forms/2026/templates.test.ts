@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
@@ -5,12 +6,12 @@ import { pcpReportTemplate } from "./pcp/pcp";
 import { qipReportTemplate } from "./qip/qip";
 import { defaultMeasures, pomMeasures } from "./qms/measureOptions";
 import { qmsReportTemplate } from "./qms/qms";
-import { tacmReportTemplate } from "./tacm/tacm";
+import { haReportTemplate } from "./ha/ha";
 import { wwlReportTemplate } from "./wwl/wwl";
 
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
-  { template: tacmReportTemplate, name: "TACM" },
+  { template: haReportTemplate, name: "HA" },
   { template: ciReportTemplate, name: "CI" },
   { template: qipReportTemplate, name: "QIP" },
   { template: pcpReportTemplate, name: "PCP" },
@@ -49,7 +50,7 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
   });
 
   describe("Measure Templates", () => {
-    it("Should all have UIDs which exist in the CMIT list", () => {
+    it("should all have UIDs which exist in the CMIT list", () => {
       const existingUids = CMIT_LIST.map((cmitInfo) => cmitInfo.uid);
       for (let measure of defaultMeasures) {
         expect(existingUids).toContain(measure.uid);

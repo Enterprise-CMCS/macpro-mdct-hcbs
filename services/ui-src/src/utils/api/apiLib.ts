@@ -1,5 +1,5 @@
 import { del, get, patch, post, put } from "aws-amplify/api";
-import { updateTimeout } from "utils";
+import { updateTimeout } from "../auth/authLifecycle";
 
 const apiName = "hcbs";
 

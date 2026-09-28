@@ -1,15 +1,16 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ComponentInventory } from "./ComponentInventory";
 
-const mockUseParams = jest.fn().mockReturnValue({
+const mockUseParams = vi.fn().mockReturnValue({
   reportType: "mockReportType",
   state: "mockState",
   reportId: "mockReportId",
   pageId: "mockPageId",
 });
-const mockNavigate = jest.fn();
+const mockNavigate = vi.fn();
 
-jest.mock("react-router-dom", () => ({
+vi.mock("react-router-dom", () => ({
   useParams: () => mockUseParams(),
   useNavigate: () => mockNavigate,
 }));

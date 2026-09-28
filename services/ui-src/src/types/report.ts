@@ -2,9 +2,10 @@ import { AlertTypes, StateAbbr } from "./other";
 
 export enum ReportType {
   QMS = "QMS",
-  TACM = "TACM",
+  HA = "HA",
   CI = "CI",
   PCP = "PCP",
+  IMA = "IMA",
   QIP = "QIP",
   WWL = "WWL",
 }
@@ -19,12 +20,14 @@ export const getReportName = (type: string | undefined) => {
   switch (type) {
     case ReportType.QMS:
       return "Quality Measure Set Report";
-    case ReportType.TACM:
-      return "Timely Access Compliance Measure Report";
+    case ReportType.HA:
+      return "HCBS Access Report";
     case ReportType.CI:
       return "Critical Incident Report";
     case ReportType.PCP:
       return "Person-Centered Planning Report";
+    case ReportType.IMA:
+      return "Incident Management Assessments";
     case ReportType.QIP:
       return "QMS Quality Improvement Plans";
     case ReportType.WWL:
@@ -103,6 +106,7 @@ export type ParentPageTemplate = {
   elements?: undefined;
   sidebar?: undefined;
   hideNavButtons?: undefined;
+  isExtraWide?: undefined;
 };
 
 export interface PageData {
@@ -121,6 +125,7 @@ export type FormPageTemplate = {
   elements: PageElement[];
   sidebar?: boolean;
   hideNavButtons?: boolean;
+  isExtraWide?: boolean;
   childPageIds?: PageId[];
 };
 
@@ -206,6 +211,8 @@ export enum ElementType {
   ListInput = "listInput",
   EligibilityTable = "eligibilityTable",
   KeyActivityTable = "keyActivityTable",
+  ImaTable = "imaTable",
+  ComplianceAlert = "complianceAlert",
 }
 
 export type PageElement =
@@ -242,7 +249,9 @@ export type PageElement =
   | ListInputTemplate
   | SubmissionParagraphTemplate
   | EligibilityTableTemplate
-  | KeyActivityTableTemplate;
+  | KeyActivityTableTemplate
+  | ImaTableTemplate
+  | ComplianceAlertTemplate;
 
 export type HideCondition = {
   controllerElementId: string;
@@ -296,6 +305,16 @@ export type StatusAlertTemplate = {
   status: AlertTypes;
 };
 
+export type ComplianceAlertTemplate = {
+  type: ElementType.ComplianceAlert;
+  id: string;
+  title: string;
+  text: string;
+  status: AlertTypes;
+  /** IDs of the elements whose answers determine compliance. */
+  controllerElementId: string[];
+};
+
 export type TextboxTemplate = {
   type: ElementType.Textbox;
   id: string;
@@ -324,6 +343,7 @@ export type TextAreaBoxTemplate = {
   wordLimit?: number;
   answer?: string;
   hideCondition?: HideCondition;
+  showWhenNonCompliant?: string[];
   required: boolean;
 };
 
@@ -345,7 +365,7 @@ export type DateRangeTemplate = {
     start: string;
     end: string;
   };
-  helperText?: string;
+  helperText: string;
   startHelperText?: string;
   endHelperText?: string;
   dateFormat?: "MMDDYYYY" | "MMYYYY";
@@ -370,6 +390,7 @@ export type DropdownTemplate = {
 export type DividerTemplate = {
   type: ElementType.Divider;
   id: string;
+  showWhenNonCompliant?: string[];
 };
 
 export type SubmissionParagraphTemplate = {
@@ -461,6 +482,49 @@ export type MeasureTargetInfo = {
   rates: string[];
 };
 
+export type ImaTableColumn = {
+  id: string;
+  label: string;
+  type: "description" | "answer" | "delete";
+};
+
+export type ImaTableRow = {
+  id: string;
+  description: string;
+  answer?: string;
+  isUserCreated?: boolean;
+  isNonCompliant?: boolean;
+};
+
+export const ComplianceRules = {
+  AnyNo: "any-no",
+  AnyNonYes: "any-non-yes",
+  AllNo: "all-no",
+  AllNotReferred: "all-not-referred",
+  // TODO: not yet used by any table. See IMA doc II.D.2/II.E.2.
+  AnyRelevantRowMatchesValue: "any-relevant-row-matches-value",
+  // TODO: not yet used by any table. See IMA doc II.F.2.
+  AnyPartialOrAllNotReferred: "any-partial-or-all-not-referred",
+} as const;
+export type ComplianceRule =
+  (typeof ComplianceRules)[keyof typeof ComplianceRules];
+
+export type ImaTableTemplate = {
+  type: ElementType.ImaTable;
+  id: string;
+  caption: string;
+  label?: string;
+  helperText?: string;
+  addButtonText?: string;
+  userCreatedRowLabel?: string;
+  errorMessage?: string;
+  allowUserCreatedRows?: boolean;
+  columns: ImaTableColumn[];
+  rows: ImaTableRow[];
+  answer?: ImaTableRow[];
+  complianceRule: ComplianceRule;
+};
+
 export type EligibilityTableItem = {
   title: string;
   description: string;
@@ -468,7 +532,6 @@ export type EligibilityTableItem = {
   frequency: string;
   eligibilityUpdate: string;
 };
-
 export type EligibilityTableTemplate = {
   type: ElementType.EligibilityTable;
   id: string;
@@ -522,6 +585,7 @@ export type RadioTemplate = {
   required: boolean;
   hideCondition?: HideCondition;
   clickAction?: string;
+  nonCompliantOn?: string;
 };
 
 export type CheckboxTemplate = {

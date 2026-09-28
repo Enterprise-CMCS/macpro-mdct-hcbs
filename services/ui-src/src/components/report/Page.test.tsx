@@ -1,7 +1,5 @@
-import {
-  mockUseReadOnlyUserStore,
-  mockUseStore,
-} from "utils/testing/setupJest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { mockHelpDeskUser, mockStateUser } from "utils/testing/setupTests";
 import { useNavigate, useParams } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
@@ -10,30 +8,19 @@ import { useStore } from "utils";
 import { Page } from "./Page";
 import { AlertTypes } from "types";
 
-jest.mock("react-router-dom", () => ({
-  useNavigate: jest.fn(),
-  useParams: jest.fn(),
+vi.mock("react-router-dom", () => ({
+  useNavigate: vi.fn(),
+  useParams: vi.fn(),
 }));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockImplementation(
-  (selector?: (state: typeof mockUseStore) => unknown) => {
-    if (selector) {
-      return selector(mockUseStore);
-    }
-    return mockUseStore;
-  }
-);
-
 // Mock the more complex elements, let them test themselves
-jest.mock("./StatusTable", () => {
+vi.mock("./StatusTable", () => {
   return { StatusTableElement: () => <div>Status Table</div> };
 });
 
-const mockNavigate = jest.fn();
-(useNavigate as jest.Mock).mockReturnValue(mockNavigate);
-(useParams as jest.Mock).mockReturnValue({
+const mockNavigate = vi.fn();
+vi.mocked(useNavigate).mockReturnValue(mockNavigate);
+vi.mocked(useParams).mockReturnValue({
   reportType: "exampleReport",
   state: "exampleState",
   reportId: "123",
@@ -125,20 +112,14 @@ const elements: PageElement[] = [
   },
   {
     type: ElementType.ButtonLink,
+    id: "",
     to: "report-page-id",
     label: "click me",
-    id: "",
   },
   {
     type: ElementType.QmsMeasureTable,
-    measureDisplay: "required",
     id: "",
-    caption: "Required Measure Results",
-  },
-  {
-    type: ElementType.QmsMeasureTable,
     measureDisplay: "required",
-    id: "",
     caption: "Required Measure Results",
   },
   {
@@ -252,142 +233,150 @@ const dateFieldElement: PageElement[] = [
   },
 ];
 
-describe("Page Component with state user", () => {
-  test.each(elements)("Renders all element types: %p", (element) => {
-    const { container } = render(
-      <Page id="mock-page" elements={[element]} setElements={jest.fn()} />
-    );
-    expect(container).not.toBeEmptyDOMElement();
+describe("<Page/>", () => {
+  describe("with state user", () => {
+    beforeEach(() => {
+      useStore.setState({ user: mockStateUser });
+    });
+
+    it.each(elements)("should render all element types: $type", (element) => {
+      const { container } = render(
+        <Page id="mock-page" elements={[element]} setElements={vi.fn()} />
+      );
+      expect(container).not.toBeEmptyDOMElement();
+    });
+
+    it("should render and navigate correctly for ButtonLink element", async () => {
+      render(
+        <Page
+          id="mock-page"
+          elements={[
+            {
+              type: ElementType.ButtonLink,
+              id: "",
+              to: "report-page-id",
+              label: "click me",
+            },
+          ]}
+          setElements={vi.fn()}
+        />
+      );
+
+      // Button renders
+      const button = screen.getByRole("button", { name: /click me/i });
+      expect(button).toBeInTheDocument();
+
+      // Navigation
+      await userEvent.click(button);
+      expect(mockNavigate).toHaveBeenCalledWith(
+        "/report/exampleReport/exampleState/123/report-page-id"
+      );
+    });
+
+    it("should not render if it is passed missing types", () => {
+      // Page Element prevents us from doing this with typescript, but the real world may have other plans
+      const badObject = { type: "unused element name" };
+
+      const { container } = render(
+        <Page
+          id="mock-page"
+          elements={[badObject as unknown as PageElement]}
+          setElements={vi.fn()}
+        />
+      );
+      expect(container).not.toBeEmptyDOMElement();
+    });
+
+    it("should transmit changes to its parent through setElements", async () => {
+      const setElements = vi.fn();
+      render(
+        <Page
+          id="mock-page"
+          elements={[
+            {
+              type: ElementType.Date,
+              id: "measurement-period-start-date",
+              label: "Measurement start date",
+              helperText: "MM/DD/YYYY",
+              required: true,
+            },
+          ]}
+          setElements={setElements}
+        />
+      );
+
+      const dateField = screen.getByRole("textbox");
+      await userEvent.type(dateField, "10162024");
+
+      expect(setElements).toHaveBeenLastCalledWith([
+        {
+          type: ElementType.Date,
+          id: "measurement-period-start-date",
+          label: "Measurement start date",
+          helperText: "MM/DD/YYYY",
+          required: true,
+          answer: "10/16/2024",
+        },
+      ]);
+    });
+
+    it("should render helper text for NestedHeading element", () => {
+      render(
+        <Page
+          id="mock-page"
+          elements={[
+            {
+              type: ElementType.NestedHeading,
+              id: "nested-heading-1",
+              text: "Performance Target Timeframe",
+              helperText:
+                "The performance target timeframe should be within the next reporting period.",
+            },
+          ]}
+          setElements={vi.fn()}
+        />
+      );
+
+      expect(
+        screen.getByText("Performance Target Timeframe")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "The performance target timeframe should be within the next reporting period."
+        )
+      ).toBeInTheDocument();
+    });
   });
 
-  test("should render and navigate correctly for ButtonLink element", async () => {
-    render(
-      <Page
-        id="mock-page"
-        elements={[
-          {
-            type: ElementType.ButtonLink,
-            id: "",
-            to: "report-page-id",
-            label: "click me",
-          },
-        ]}
-        setElements={jest.fn()}
-      />
-    );
+  describe("with read only user", () => {
+    beforeEach(() => {
+      useStore.setState({ user: mockHelpDeskUser });
+    });
 
-    // Button renders
-    const button = screen.getByRole("button", { name: /click me/i });
-    expect(button).toBeInTheDocument();
+    it("should disabled text fields and radio buttons", () => {
+      render(
+        <Page
+          id="mock-page"
+          elements={textFieldElement}
+          setElements={vi.fn()}
+        />
+      );
+      const textField = screen.getByRole("textbox");
+      const radioButton = screen.getByLabelText("radio choice 1");
+      expect(textField).toBeDisabled();
+      expect(radioButton).toBeDisabled();
+    });
 
-    // Navigation
-    await userEvent.click(button);
-    expect(mockNavigate).toHaveBeenCalledWith(
-      "/report/exampleReport/exampleState/123/report-page-id"
-    );
-  });
-
-  test("should not render if it is passed missing types", () => {
-    // Page Element prevents us from doing this with typescript, but the real world may have other plans
-    const badObject = { type: "unused element name" };
-
-    const { container } = render(
-      <Page
-        id="mock-page"
-        elements={[badObject as unknown as PageElement]}
-        setElements={jest.fn()}
-      />
-    );
-    expect(container).not.toBeEmptyDOMElement();
-  });
-
-  test("should transmit changes to its parent through setElements", async () => {
-    const setElements = jest.fn();
-    render(
-      <Page
-        id="mock-page"
-        elements={[
-          {
-            type: ElementType.Date,
-            id: "measurement-period-start-date",
-            label: "Measurement start date",
-            helperText: "MM/DD/YYYY",
-            required: true,
-          },
-        ]}
-        setElements={setElements}
-      />
-    );
-
-    const dateField = screen.getByRole("textbox");
-    await userEvent.type(dateField, "10162024");
-
-    expect(setElements).toHaveBeenLastCalledWith([
-      {
-        type: ElementType.Date,
-        id: "measurement-period-start-date",
-        label: "Measurement start date",
-        helperText: "MM/DD/YYYY",
-        required: true,
-        answer: "10/16/2024",
-      },
-    ]);
-  });
-
-  test("should render helper text for NestedHeading element", () => {
-    render(
-      <Page
-        id="mock-page"
-        elements={[
-          {
-            type: ElementType.NestedHeading,
-            id: "nested-heading-1",
-            text: "Performance Target Timeframe",
-            helperText:
-              "The performance target timeframe should be within the next reporting period.",
-          },
-        ]}
-        setElements={jest.fn()}
-      />
-    );
-
-    expect(
-      screen.getByText("Performance Target Timeframe")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "The performance target timeframe should be within the next reporting period."
-      )
-    ).toBeInTheDocument();
-  });
-});
-
-describe("Page Component with read only user", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockUseReadOnlyUserStore);
-  });
-  test("text field and radio button should be disabled", () => {
-    render(
-      <Page
-        id="mock-page"
-        elements={textFieldElement}
-        setElements={jest.fn()}
-      />
-    );
-    const textField = screen.getByRole("textbox");
-    const radioButton = screen.getByLabelText("radio choice 1");
-    expect(textField).toBeDisabled();
-    expect(radioButton).toBeDisabled();
-  });
-  test("date field should be disabled", () => {
-    render(
-      <Page
-        id="mock-page"
-        elements={dateFieldElement}
-        setElements={jest.fn()}
-      />
-    );
-    const dateField = screen.getByRole("textbox");
-    expect(dateField).toBeDisabled();
+    it("should disable date fields", () => {
+      render(
+        <Page
+          id="mock-page"
+          elements={dateFieldElement}
+          setElements={vi.fn()}
+        />
+      );
+      const dateField = screen.getByRole("textbox");
+      expect(dateField).toBeDisabled();
+    });
   });
 });

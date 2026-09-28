@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import { ReadmissionRate } from "./ReadmissionRate";
 import userEvent from "@testing-library/user-event";
@@ -39,7 +40,7 @@ const mockedPerformanceElement: ReadmissionRateTemplate = {
 };
 
 const mockedHintText = mockedPerformanceElement.hintText;
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const ReadmissionRateWrapper = ({
   template,
@@ -55,189 +56,187 @@ const ReadmissionRateWrapper = ({
 };
 
 describe("<ReadmissionRate />", () => {
-  describe("Test ReadmissionRate component", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    const labels = mockedPerformanceElement.labels;
-    const getInput = (fieldId: ReadmissionRateField) => {
-      return screen.getByRole("textbox", { name: labels[fieldId] });
-    };
+  const labels = mockedPerformanceElement.labels;
+  const getInput = (fieldId: ReadmissionRateField) => {
+    return screen.getByRole("textbox", { name: labels[fieldId] });
+  };
 
-    const enterValue = async (fieldId: ReadmissionRateField, value: string) => {
-      await act(() => userEvent.type(getInput(fieldId), value));
-    };
+  const enterValue = async (fieldId: ReadmissionRateField, value: string) => {
+    await act(() => userEvent.type(getInput(fieldId), value));
+  };
 
-    test("Fields are visible, and disabled appropriately", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should render all fields, enabled or disabled appropriately", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      // All fields should be visible
-      for (let fieldId of Object.keys(labels)) {
-        expect(getInput(fieldId as ReadmissionRateField)).toBeInTheDocument();
-      }
+    // All fields should be visible
+    for (let fieldId of Object.keys(labels)) {
+      expect(getInput(fieldId as ReadmissionRateField)).toBeInTheDocument();
+    }
 
-      // User input fields should not be disabled
-      for (let editableFieldId of [
-        "stayCount",
-        "obsReadmissionCount",
-        "expReadmissionCount",
-        "beneficiaryCount",
-        "outlierCount",
-      ] as const) {
-        expect(getInput(editableFieldId)).not.toBeDisabled();
-      }
+    // User input fields should not be disabled
+    for (let editableFieldId of [
+      "stayCount",
+      "obsReadmissionCount",
+      "expReadmissionCount",
+      "beneficiaryCount",
+      "outlierCount",
+    ] as const) {
+      expect(getInput(editableFieldId)).not.toBeDisabled();
+    }
 
-      // Calculated fields should be disabled
-      for (let autoCalcFieldId of [
-        "obsReadmissionRate",
-        "expReadmissionRate",
-        "obsExpRatio",
-        "outlierRate",
-      ] as const) {
-        expect(getInput(autoCalcFieldId)).toBeDisabled();
-      }
-    });
+    // Calculated fields should be disabled
+    for (let autoCalcFieldId of [
+      "obsReadmissionRate",
+      "expReadmissionRate",
+      "obsExpRatio",
+      "outlierRate",
+    ] as const) {
+      expect(getInput(autoCalcFieldId)).toBeDisabled();
+    }
+  });
 
-    test("Fields should auto-calculate with correct multipliers", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
-      await enterValue("stayCount", "100");
-      await enterValue("obsReadmissionCount", "25");
-      await enterValue("expReadmissionCount", "20");
-      await enterValue("beneficiaryCount", "1000");
-      await enterValue("outlierCount", "5");
+  it("should auto-calculate derived fields with correct multipliers", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+    await enterValue("stayCount", "100");
+    await enterValue("obsReadmissionCount", "25");
+    await enterValue("expReadmissionCount", "20");
+    await enterValue("beneficiaryCount", "1000");
+    await enterValue("outlierCount", "5");
 
-      // Col 3: (25/100) * 100 = 25%
-      expect(getInput("obsReadmissionRate")).toHaveValue("25");
-      // Col 5: (20/100) * 100 = 20.00%
-      expect(getInput("expReadmissionRate")).toHaveValue("20");
-      // Col 6: 25/20 = 1.25 (ratio, no multiplier)
-      expect(getInput("obsExpRatio")).toHaveValue("1.25");
-      // Col 9: (5/1000) * 1000 = 5.00 per 1000
-      expect(getInput("outlierRate")).toHaveValue("5");
-    });
+    // Col 3: (25/100) * 100 = 25%
+    expect(getInput("obsReadmissionRate")).toHaveValue("25");
+    // Col 5: (20/100) * 100 = 20.00%
+    expect(getInput("expReadmissionRate")).toHaveValue("20");
+    // Col 6: 25/20 = 1.25 (ratio, no multiplier)
+    expect(getInput("obsExpRatio")).toHaveValue("1.25");
+    // Col 9: (5/1000) * 1000 = 5.00 per 1000
+    expect(getInput("outlierRate")).toHaveValue("5");
+  });
 
-    test("Error should show if stayCount is 0 and obsReadmissionCount is not 0", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should show an error if stayCount is 0 and obsReadmissionCount is not 0", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("stayCount", "0");
-      await enterValue("obsReadmissionCount", "1");
+    await enterValue("stayCount", "0");
+    await enterValue("obsReadmissionCount", "1");
 
-      expect(
-        screen.getByText(
-          ErrorMessages.denominatorZero(
-            mockedPerformanceElement.labels.obsReadmissionCount,
-            mockedPerformanceElement.labels.stayCount
-          )
+    expect(
+      screen.getByText(
+        ErrorMessages.denominatorZero(
+          mockedPerformanceElement.labels.obsReadmissionCount,
+          mockedPerformanceElement.labels.stayCount
         )
-      ).toBeVisible();
-    });
+      )
+    ).toBeVisible();
+  });
 
-    test("Error should show if stayCount is 0 and expReadmissionCount is not 0", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should show an error if stayCount is 0 and expReadmissionCount is not 0", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("stayCount", "0");
-      await enterValue("expReadmissionCount", "1");
+    await enterValue("stayCount", "0");
+    await enterValue("expReadmissionCount", "1");
 
-      expect(
-        screen.getByText(
-          ErrorMessages.denominatorZero(
-            mockedPerformanceElement.labels.expReadmissionCount,
-            mockedPerformanceElement.labels.stayCount
-          )
+    expect(
+      screen.getByText(
+        ErrorMessages.denominatorZero(
+          mockedPerformanceElement.labels.expReadmissionCount,
+          mockedPerformanceElement.labels.stayCount
         )
-      ).toBeVisible();
-    });
+      )
+    ).toBeVisible();
+  });
 
-    test("Error should show if expReadmissionCount is 0 and obsReadmissionCount is not 0", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should show an error if expReadmissionCount is 0 and obsReadmissionCount is not 0", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("expReadmissionCount", "0");
-      await enterValue("obsReadmissionCount", "1");
+    await enterValue("expReadmissionCount", "0");
+    await enterValue("obsReadmissionCount", "1");
 
-      expect(
-        screen.getByText(
-          ErrorMessages.denominatorZero(
-            mockedPerformanceElement.labels.obsReadmissionCount,
-            mockedPerformanceElement.labels.expReadmissionCount
-          )
+    expect(
+      screen.getByText(
+        ErrorMessages.denominatorZero(
+          mockedPerformanceElement.labels.obsReadmissionCount,
+          mockedPerformanceElement.labels.expReadmissionCount
         )
-      ).toBeVisible();
-    });
+      )
+    ).toBeVisible();
+  });
 
-    test("Error should show if beneficiaryCount is 0 and outlierCount is not 0", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should show an error if beneficiaryCount is 0 and outlierCount is not 0", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("beneficiaryCount", "0");
-      await enterValue("outlierCount", "1");
+    await enterValue("beneficiaryCount", "0");
+    await enterValue("outlierCount", "1");
 
-      expect(
-        screen.getByText(
-          ErrorMessages.denominatorZero(
-            mockedPerformanceElement.labels.outlierCount,
-            mockedPerformanceElement.labels.beneficiaryCount
-          )
+    expect(
+      screen.getByText(
+        ErrorMessages.denominatorZero(
+          mockedPerformanceElement.labels.outlierCount,
+          mockedPerformanceElement.labels.beneficiaryCount
         )
-      ).toBeVisible();
-    });
+      )
+    ).toBeVisible();
+  });
 
-    test("Error should clear when denominator becomes non-zero", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should clear the error when denominator becomes non-zero", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("stayCount", "0");
-      await enterValue("obsReadmissionCount", "1");
+    await enterValue("stayCount", "0");
+    await enterValue("obsReadmissionCount", "1");
 
-      await act(() => userEvent.clear(getInput("stayCount")));
-      await enterValue("stayCount", "4");
+    await act(() => userEvent.clear(getInput("stayCount")));
+    await enterValue("stayCount", "4");
 
-      expect(
-        screen.queryByText(
-          ErrorMessages.denominatorZero(
-            mockedPerformanceElement.labels.obsReadmissionCount,
-            mockedPerformanceElement.labels.stayCount
-          )
+    expect(
+      screen.queryByText(
+        ErrorMessages.denominatorZero(
+          mockedPerformanceElement.labels.obsReadmissionCount,
+          mockedPerformanceElement.labels.stayCount
         )
-      ).not.toBeInTheDocument();
-    });
+      )
+    ).not.toBeInTheDocument();
+  });
 
-    test("Rate should be 0 if both numerator and denominator are 0", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should set rate to 0 if both numerator and denominator are 0", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("stayCount", "0");
-      await enterValue("obsReadmissionCount", "0");
-      await enterValue("expReadmissionCount", "0");
-      await enterValue("beneficiaryCount", "0");
-      await enterValue("outlierCount", "0");
+    await enterValue("stayCount", "0");
+    await enterValue("obsReadmissionCount", "0");
+    await enterValue("expReadmissionCount", "0");
+    await enterValue("beneficiaryCount", "0");
+    await enterValue("outlierCount", "0");
 
-      expect(getInput("obsReadmissionRate")).toHaveValue("0.00");
-      expect(getInput("expReadmissionRate")).toHaveValue("0.00");
-      expect(getInput("obsExpRatio")).toHaveValue("0.00");
-      expect(getInput("outlierRate")).toHaveValue("0.00");
-    });
+    expect(getInput("obsReadmissionRate")).toHaveValue("0.00");
+    expect(getInput("expReadmissionRate")).toHaveValue("0.00");
+    expect(getInput("obsExpRatio")).toHaveValue("0.00");
+    expect(getInput("outlierRate")).toHaveValue("0.00");
+  });
 
-    test("Calculated fields should be empty when denominators are non-zero but numerators are missing", async () => {
-      render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
+  it("should not calculate rates when denominators are non-zero but numerators are missing", async () => {
+    render(<ReadmissionRateWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("stayCount", "100");
-      await enterValue("beneficiaryCount", "1000");
+    await enterValue("stayCount", "100");
+    await enterValue("beneficiaryCount", "1000");
 
-      expect(getInput("obsReadmissionRate")).toHaveValue("");
-      expect(getInput("expReadmissionRate")).toHaveValue("");
-      expect(getInput("obsExpRatio")).toHaveValue("");
-      expect(getInput("outlierRate")).toHaveValue("");
-    });
+    expect(getInput("obsReadmissionRate")).toHaveValue("");
+    expect(getInput("expReadmissionRate")).toHaveValue("");
+    expect(getInput("obsExpRatio")).toHaveValue("");
+    expect(getInput("outlierRate")).toHaveValue("");
+  });
 
-    test("Hint text is displayed for each field when provided", () => {
-      render(
-        <ReadmissionRateWrapper
-          template={{ ...mockedPerformanceElement, hintText: mockedHintText }}
-        />
-      );
+  it("should display hint text for each field when provided", () => {
+    render(
+      <ReadmissionRateWrapper
+        template={{ ...mockedPerformanceElement, hintText: mockedHintText }}
+      />
+    );
 
-      for (const hint of Object.values(mockedHintText)) {
-        expect(screen.getByText(hint)).toBeInTheDocument();
-      }
-    });
+    for (const hint of Object.values(mockedHintText)) {
+      expect(screen.getByText(hint)).toBeInTheDocument();
+    }
   });
 
   testA11y(<ReadmissionRateWrapper template={mockedPerformanceElement} />);

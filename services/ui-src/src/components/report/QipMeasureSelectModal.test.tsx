@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import assert from "node:assert";
@@ -28,7 +29,7 @@ type ChoiceListProps = {
   onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-jest.mock("@cmsgov/design-system", () => ({
+vi.mock("@cmsgov/design-system", () => ({
   Dropdown: ({
     label,
     name,
@@ -85,13 +86,13 @@ jest.mock("@cmsgov/design-system", () => ({
   ),
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({ state: "CO" }),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({ state: "CO" }),
 }));
 
-const mockGetReportsForState = jest.fn().mockResolvedValue([]);
-jest.mock("utils", () => ({
+const mockGetReportsForState = vi.fn().mockResolvedValue([]);
+vi.mock("utils", () => ({
   getReportsForState: (...args: unknown[]) => mockGetReportsForState(...args),
 }));
 
@@ -110,17 +111,14 @@ const defaultMeasureMapping: MeasureTargetMapping = [
 
 const renderInModal = ({
   measureTargetMapping = defaultMeasureMapping,
-  onSubmit = jest.fn().mockResolvedValue(undefined),
-}: {
-  measureTargetMapping?: MeasureTargetMapping;
-  onSubmit?: jest.Mock;
+  onSubmit = vi.fn().mockResolvedValue(undefined),
 }) => {
   render(
-    <Modal isOpen={true} onClose={jest.fn()}>
+    <Modal isOpen={true} onClose={vi.fn()}>
       <ModalContent>
         <QipMeasureSelectModal
           measureTargetMapping={measureTargetMapping}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           onSubmit={onSubmit}
         />
       </ModalContent>
@@ -138,7 +136,7 @@ const waitForInitialLoad = async () => {
 
 describe("QipMeasureSelectModal", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockGetReportsForState.mockResolvedValue([]);
   });
 
@@ -313,7 +311,7 @@ describe("QipMeasureSelectModal", () => {
 
   it("should display a submit error message when add measure request fails", async () => {
     const { onSubmit } = renderInModal({
-      onSubmit: jest.fn().mockRejectedValue(new Error("submit failed")),
+      onSubmit: vi.fn().mockRejectedValue(new Error("submit failed")),
     });
     await waitForInitialLoad();
 

@@ -27,9 +27,15 @@ DOMPurify.setConfig({
     "img",
   ],
   // On those tags, only these attributes are allowed
-  ALLOWED_ATTR: ["href", "alt", "target", "class", "src"],
+  ALLOWED_ATTR: ["href", "alt", "target", "rel", "class", "src"],
   // If a tag is removed, so will all its child elements & text
   KEEP_CONTENT: false,
+});
+
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.tagName === "A" && node.getAttribute("target") === "_blank") {
+    node.setAttribute("rel", "noopener noreferrer");
+  }
 });
 
 // sanitize string

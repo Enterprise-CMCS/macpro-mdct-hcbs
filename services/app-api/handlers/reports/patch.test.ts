@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ok, StatusCodes } from "../../libs/response-lib";
 import { getReport } from "../../storage/reports";
 import { Report, ReportStatus, ReportType } from "../../types/reports";
@@ -6,20 +7,20 @@ import { canWriteState } from "../../utils/authorization";
 import { addQipTargetPage } from "./addQipTargetPage";
 import { patchReport } from "./patch";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
     state: "PA",
     fullName: "Anthony Soprano",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canWriteState: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canWriteState: vi.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../storage/reports", () => ({
-  getReport: jest.fn(),
+vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn(),
 }));
 const testReport = {
   type: ReportType.QIP,
@@ -27,10 +28,10 @@ const testReport = {
   state: "CO",
   status: ReportStatus.IN_PROGRESS,
 } as Report;
-jest.mocked(getReport).mockResolvedValue(testReport);
+vi.mocked(getReport).mockResolvedValue(testReport);
 
-jest.mock("./addQipTargetPage", () => ({
-  addQipTargetPage: jest.fn(),
+vi.mock("./addQipTargetPage", () => ({
+  addQipTargetPage: vi.fn(),
 }));
 
 const testEvent = {
@@ -45,7 +46,7 @@ const testEvent = {
 
 describe("Test update report handler", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should return Bad Request if path parameters are missing", async () => {
@@ -55,7 +56,7 @@ describe("Test update report handler", () => {
   });
 
   it("should return Forbidden if user is not authorized", async () => {
-    (canWriteState as jest.Mock).mockReturnValueOnce(false);
+    vi.mocked(canWriteState).mockReturnValueOnce(false);
     const response = await patchReport(testEvent);
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
@@ -67,13 +68,13 @@ describe("Test update report handler", () => {
   });
 
   it("should return Not Found if report is not in the database", async () => {
-    jest.mocked(getReport).mockResolvedValueOnce(undefined);
+    vi.mocked(getReport).mockResolvedValueOnce(undefined);
     const res = await patchReport(testEvent);
     expect(res.statusCode).toBe(StatusCodes.NotFound);
   });
 
   it("should return Conflict if report is not editable", async () => {
-    jest.mocked(getReport).mockResolvedValueOnce({
+    vi.mocked(getReport).mockResolvedValueOnce({
       ...testReport,
       status: ReportStatus.SUBMITTED,
     });
@@ -92,7 +93,7 @@ describe("Test update report handler", () => {
   });
 
   it("should forward calls to addQipTargetPage", async () => {
-    jest.mocked(addQipTargetPage).mockResolvedValue(ok("Page added"));
+    vi.mocked(addQipTargetPage).mockResolvedValue(ok("Page added"));
     const res = await patchReport(testEvent);
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(res.body).toBe(`"Page added"`);

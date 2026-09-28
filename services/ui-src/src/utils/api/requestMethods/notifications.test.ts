@@ -1,56 +1,68 @@
-import { initAuthManager } from "utils/auth/authLifecycle";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { updateTimeout } from "../../auth/authLifecycle";
 import { ReportType } from "types";
-import { Notification } from "types/notification";
 import {
   getNotifications,
   updateNotifications,
   sendTestEmail,
 } from "./notifications";
+import { apiLib } from "../apiLib";
 
-const mockPost = require("aws-amplify/api").post;
+vi.mock("../apiLib", () => ({
+  apiLib: {
+    del: vi.fn(),
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+  },
+}));
 
-const mockNotifications: Notification[] = [
-  {
-    category: ReportType.CI,
-    enabled: true,
-  },
-  {
-    category: ReportType.WWL,
-    enabled: true,
-  },
-];
+vi.mock("../../auth/authLifecycle", () => ({
+  updateTimeout: vi.fn(),
+}));
 
 describe("utils/notifications", () => {
   beforeEach(async () => {
-    initAuthManager();
+    vi.clearAllMocks();
   });
 
   describe("getNotifications()", () => {
-    test("executes", () => {
-      expect(getNotifications()).toBeTruthy();
+    it("should call the correct endpoint", async () => {
+      await getNotifications();
+      expect(vi.mocked(updateTimeout)).toHaveBeenCalled();
+      expect(vi.mocked(apiLib.get)).toHaveBeenCalledWith(
+        "/notifications",
+        expect.any(Object)
+      );
     });
   });
 
   describe("updateNotifications()", () => {
-    test("executes", () => {
-      expect(updateNotifications(mockNotifications[0])).toBeTruthy();
+    it("should call the correct endpoint", async () => {
+      await updateNotifications({ category: ReportType.CI, enabled: true });
+      expect(vi.mocked(updateTimeout)).toHaveBeenCalled();
+      expect(vi.mocked(apiLib.put)).toHaveBeenCalledWith(
+        "/notifications",
+        expect.objectContaining({
+          body: { category: ReportType.CI, enabled: true },
+        })
+      );
     });
   });
 
   describe("sendTestEmail()", () => {
-    test("calls the test-email endpoint with the provided payload", async () => {
+    it("should call the correct endpoint", async () => {
       const payload = {
         toAddress: "test@example.com",
         subject: "Test Subject",
         message: "Test message",
       };
       await sendTestEmail(payload);
-      expect(mockPost).toHaveBeenCalledWith(
+      expect(updateTimeout).toHaveBeenCalled();
+      expect(vi.mocked(apiLib.post)).toHaveBeenCalledWith(
+        "/notifications/test-email",
         expect.objectContaining({
-          path: "/notifications/test-email",
-          options: expect.objectContaining({
-            body: payload,
-          }),
+          body: payload,
         })
       );
     });

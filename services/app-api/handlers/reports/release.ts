@@ -40,7 +40,7 @@ export const releaseReport = handler(parseReportParameters, async (request) => {
   report.submittedBy = undefined;
   report.submittedByEmail = undefined;
 
-  // save the report that's being submitted (with the new information on top of it)
+  // save the report that's being un-submitted (with the new information on top of it)
   await putReport(report);
 
   if (notificationsEnabled) {

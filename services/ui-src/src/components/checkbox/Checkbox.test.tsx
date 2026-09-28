@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Checkbox } from "components";
@@ -10,7 +11,7 @@ const checkboxButtonComponent = (
     name={"test-checkbox"}
     label={"Test checkbox"}
     checked={false}
-    onCheckedChange={jest.fn()}
+    onCheckedChange={vi.fn()}
   />
 );
 
@@ -29,12 +30,12 @@ const CheckboxTestComponent = () => {
 };
 
 describe("<Checkbox />", () => {
-  it("renders unchecked by default", () => {
+  it("should render unchecked by default", () => {
     render(checkboxButtonComponent);
     expect(screen.getByLabelText(/Test checkbox/i)).not.toBeChecked();
   });
 
-  it("gets checked when clicked", async () => {
+  it("should be checked when clicked", async () => {
     const user = userEvent.setup();
 
     render(<CheckboxTestComponent />);

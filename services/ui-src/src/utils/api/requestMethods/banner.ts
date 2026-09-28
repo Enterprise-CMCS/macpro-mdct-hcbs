@@ -1,4 +1,5 @@
-import { apiLib, updateTimeout } from "utils";
+import { apiLib } from "../apiLib";
+import { updateTimeout } from "../../auth/authLifecycle";
 import { getRequestHeaders } from "./getRequestHeaders";
 import { BannerShape, BannerFormData } from "types/banners";
 

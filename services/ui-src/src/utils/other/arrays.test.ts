@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { chunkBy, zip } from "./arrays";
 
 describe("zip", () => {

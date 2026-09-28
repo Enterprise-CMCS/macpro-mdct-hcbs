@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdminPage } from "components";
@@ -60,9 +61,9 @@ const mockBannerHome3 = {
   key: "b479358a-22a1-4d27-8b3a-91d11b556b75", // #gitleaks:allow
 } as BannerShape;
 
-const fetchBanners = jest.fn();
-const createBanner = jest.fn();
-const deleteBanner = jest.fn();
+const fetchBanners = vi.fn();
+const createBanner = vi.fn();
+const deleteBanner = vi.fn();
 const bannerMethods = {
   fetchBanners,
   createBanner,
@@ -71,7 +72,7 @@ const bannerMethods = {
 
 describe("<AdminPage />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should render the current banners under subheaders", async () => {

@@ -1,5 +1,6 @@
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { Table } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -16,15 +17,11 @@ const tableComponent = (
 );
 
 describe("<Table />", () => {
-  beforeEach(() => {
+  it("should render corectly", () => {
     render(tableComponent);
-  });
 
-  test("Table is visible", () => {
     expect(screen.getByRole("table")).toBeVisible();
-  });
 
-  test("renders the table with correct headers", () => {
     const rows = screen.getAllByRole("row");
     expect(rows).toHaveLength(1);
     expect(screen.getByText("mock header 1")).toBeInTheDocument();

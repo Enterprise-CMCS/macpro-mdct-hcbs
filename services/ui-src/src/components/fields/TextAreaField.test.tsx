@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TextAreaField } from "components";
@@ -7,11 +8,8 @@ import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 import { useState } from "react";
 import { ErrorMessages } from "../../constants";
 
-jest.mock("utils/state/hooks/useElementIsHidden");
-const mockedUseElementIsHidden = useElementIsHidden as jest.MockedFunction<
-  typeof useElementIsHidden
->;
-mockedUseElementIsHidden.mockReturnValue(false);
+vi.mock("utils/state/hooks/useElementIsHidden");
+vi.mocked(useElementIsHidden).mockReturnValue(false);
 
 const mockedTextAreaElement: TextAreaBoxTemplate = {
   id: "mock-textarea-id",
@@ -24,7 +22,7 @@ const mockedTextAreaElement: TextAreaBoxTemplate = {
   },
   required: true,
 };
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const TextAreaWrapper = ({ template }: { template: TextAreaBoxTemplate }) => {
   const [element, setElement] = useState(template);
@@ -37,16 +35,16 @@ const TextAreaWrapper = ({ template }: { template: TextAreaBoxTemplate }) => {
 
 describe("<TextAreaField />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("TextAreaField is visible", () => {
+  it("should render a textbox", () => {
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
     const textAreaField = screen.getByRole("textbox");
     expect(textAreaField).toBeVisible();
   });
 
-  test("TextAreaField should send updates to the Form", async () => {
+  it("should send updates to the Form", async () => {
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
     const textAreaField = screen.getByRole("textbox");
 
@@ -55,7 +53,7 @@ describe("<TextAreaField />", () => {
     expect(updateSpy).toHaveBeenCalledWith({ answer: "hello" });
   });
 
-  test("TextAreaField should send undefined when input is cleared", async () => {
+  it("should send undefined when input is cleared", async () => {
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
     const textAreaField = screen.getByRole("textbox");
 
@@ -66,19 +64,19 @@ describe("<TextAreaField />", () => {
     expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
   });
 
-  test("Text area field is hidden if its hide conditions' controlling element has a matching answer", async () => {
-    mockedUseElementIsHidden.mockReturnValueOnce(true);
+  it("should be hidden if its hide conditions' controlling element has a matching answer", async () => {
+    vi.mocked(useElementIsHidden).mockReturnValueOnce(true);
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
     const textField = screen.queryByLabelText("test label");
     expect(textField).not.toBeInTheDocument();
   });
 
-  test("word count is not shown when no wordLimit is set", () => {
+  it("should not show word count when no wordLimit is set", () => {
     render(<TextAreaWrapper template={mockedTextAreaElement} />);
     expect(screen.queryByText(/Suggested length/)).not.toBeInTheDocument();
   });
 
-  test("optional indicator is shown when field is not required", () => {
+  it("should show optional indicator when field is not required", () => {
     render(
       <TextAreaWrapper
         template={{ ...mockedTextAreaElement, required: false }}
@@ -88,7 +86,7 @@ describe("<TextAreaField />", () => {
     expect(screen.getByText("(optional)")).toBeVisible();
   });
 
-  test("word count shows 0 when field is empty", () => {
+  it("should show word count of 0 when field is empty", () => {
     render(
       <TextAreaWrapper
         template={{ ...mockedTextAreaElement, wordLimit: 300 }}
@@ -97,7 +95,7 @@ describe("<TextAreaField />", () => {
     expect(screen.getByText("Suggested length 0/300 words")).toBeVisible();
   });
 
-  test("word count updates as user types", async () => {
+  it("should update word count as user types", async () => {
     render(
       <TextAreaWrapper
         template={{ ...mockedTextAreaElement, wordLimit: 300 }}
@@ -107,7 +105,7 @@ describe("<TextAreaField />", () => {
     expect(screen.getByText("Suggested length 2/300 words")).toBeVisible();
   });
 
-  test("error shown when word limit exceeded", async () => {
+  it("should show a warning when word limit exceeded", async () => {
     render(
       <TextAreaWrapper template={{ ...mockedTextAreaElement, wordLimit: 3 }} />
     );

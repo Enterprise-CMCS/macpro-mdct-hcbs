@@ -1,4 +1,4 @@
-import { apiLib } from "utils";
+import { apiLib } from "../apiLib";
 import { getRequestHeaders } from "./getRequestHeaders";
 import {
   LiteReport,
@@ -31,6 +31,18 @@ export async function getReport(reportType: string, state: string, id: string) {
     `/reports/${reportType}/${state}/${id}`,
     options
   )!;
+}
+
+export async function getReportsForState(reportType: string, state: string) {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+  };
+
+  return await apiLib.get<LiteReport[]>(
+    `/reports/${reportType}/${state}`,
+    options
+  );
 }
 
 export async function addQipTargetPage(
@@ -103,18 +115,6 @@ export async function updateArchivedStatus(
 
   return await apiLib.put(
     `/reports/${report.type}/${report.state}/${report.id}/archive`,
-    options
-  );
-}
-
-export async function getReportsForState(reportType: string, state: string) {
-  const requestHeaders = await getRequestHeaders();
-  const options = {
-    headers: { ...requestHeaders },
-  };
-
-  return await apiLib.get<LiteReport[]>(
-    `/reports/${reportType}/${state}`,
     options
   );
 }

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createReport,
   getReport,
@@ -7,80 +8,122 @@ import {
   postSubmitReport,
   updateArchivedStatus,
   updateReport,
+  addQipTargetPage,
 } from "./report";
-// types
 import {
   MeasurePageTemplate,
+  MeasureTargetInfo,
   Report,
   ReportOptions,
   ReportType,
 } from "types/report";
+import { apiLib } from "utils";
+
+vi.mock("../apiLib", () => ({
+  apiLib: {
+    del: vi.fn(),
+    get: vi.fn(),
+    patch: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+  },
+}));
+const mockGet = vi.mocked(apiLib.get);
+const mockPatch = vi.mocked(apiLib.patch);
+const mockPost = vi.mocked(apiLib.post);
+const mockPut = vi.mocked(apiLib.put);
 
 const report = {
+  id: "mock-id",
   type: ReportType.QMS,
   state: "NJ",
   name: "A Title",
   pages: [] as MeasurePageTemplate[],
 } as Report;
 
-const mockGet = jest.fn();
-const mockPost = jest.fn();
-const mockPut = jest.fn();
-jest.mock("../apiLib", () => ({
-  apiLib: {
-    get: (path: string, opts: Record<string, any>) => mockGet(path, opts),
-    post: (path: string, opts: Record<string, any>) => mockPost(path, opts),
-    put: (path: string, opts: Record<string, any>) => mockPut(path, opts),
-  },
-}));
-
-const mockReport: ReportOptions = {
-  name: "report name",
-  year: 2026,
-  options: {} as ReportOptions["options"],
-};
-
 describe("utils/report", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-  });
-  test("getReport", async () => {
-    await getReport("reportType", "PA", "mock-id");
-    expect(mockGet).toHaveBeenCalledTimes(1);
+    vi.clearAllMocks();
   });
 
-  test("getReportsForState", async () => {
-    await getReportsForState("reportType", "PA");
-    expect(mockGet).toHaveBeenCalledTimes(1);
+  it("should call the correct endpoint for createReport", async () => {
+    const reportCreatePayload: ReportOptions = {
+      name: "report name",
+      year: 2026,
+      options: {},
+    };
+    await createReport("WWL", "PA", reportCreatePayload);
+    expect(mockPost).toHaveBeenCalledWith(
+      "/reports/WWL/PA",
+      expect.objectContaining({ body: reportCreatePayload })
+    );
   });
 
-  test("createReport", async () => {
-    await createReport("reportType", "PA", mockReport);
-    expect(mockPost).toHaveBeenCalledTimes(1);
+  it("should call the correct endpoint for getReport", async () => {
+    await getReport("WWL", "PA", "mock-id");
+    expect(mockGet).toHaveBeenCalledWith(
+      "/reports/WWL/PA/mock-id",
+      expect.any(Object)
+    );
   });
 
-  test("putReport", async () => {
+  it("should call the correct endpoint for getReportsForState", async () => {
+    await getReportsForState("WWL", "PA");
+    expect(mockGet).toHaveBeenCalledWith("/reports/WWL/PA", expect.any(Object));
+  });
+
+  it("should call the correct endpoint for addQipTargetPage", async () => {
+    const targetInfo = { measureId: "LTSS-1" } as MeasureTargetInfo;
+    await addQipTargetPage({ ...report, type: ReportType.QIP }, targetInfo);
+
+    expect(mockPatch).toHaveBeenCalledWith(
+      "/reports/QIP/NJ/mock-id",
+      expect.objectContaining({
+        body: {
+          patchType: "addQipTargetPage",
+          measureId: "LTSS-1",
+        },
+      })
+    );
+  });
+
+  it("should call the correct endpoint for putReport", async () => {
     await putReport(report);
-    expect(mockPut).toHaveBeenCalledTimes(1);
+    expect(mockPut).toHaveBeenCalledWith(
+      "/reports/QMS/NJ/mock-id",
+      expect.objectContaining({ body: report })
+    );
   });
 
-  test("submitReport", async () => {
-    await postSubmitReport(report);
-    expect(mockPost).toHaveBeenCalledTimes(1);
-  });
-
-  test("updateArchivedStatus", async () => {
-    await updateArchivedStatus(report, true);
-    expect(mockPut).toHaveBeenCalledTimes(1);
-  });
-
-  test("releaseReport", async () => {
-    await releaseReport(report);
-    expect(mockPut).toHaveBeenCalledTimes(1);
-  });
-
-  test("updateReport", async () => {
+  it("should call the correct endpoint for updateReport", async () => {
     await updateReport(report);
-    expect(mockPut).toHaveBeenCalledTimes(1);
+    expect(mockPut).toHaveBeenCalledWith(
+      "/reports/update/QMS/NJ/mock-id",
+      expect.objectContaining({ body: report })
+    );
+  });
+
+  it("should call the correct endpoint for submitReport", async () => {
+    await postSubmitReport(report);
+    expect(mockPost).toHaveBeenCalledWith(
+      "/reports/submit/QMS/NJ/mock-id",
+      expect.objectContaining({ body: report })
+    );
+  });
+
+  it("should call the correct endpoint for updateArchivedStatus", async () => {
+    await updateArchivedStatus(report, true);
+    expect(mockPut).toHaveBeenCalledWith(
+      "/reports/QMS/NJ/mock-id/archive",
+      expect.objectContaining({ body: { archived: true } })
+    );
+  });
+
+  it("should call the correct endpoint for releaseReport", async () => {
+    await releaseReport(report);
+    expect(mockPut).toHaveBeenCalledWith(
+      "/reports/release/QMS/NJ/mock-id",
+      expect.objectContaining({ body: report })
+    );
   });
 });

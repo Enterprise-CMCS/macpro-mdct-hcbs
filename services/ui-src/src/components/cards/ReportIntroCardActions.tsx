@@ -1,6 +1,5 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
-import externalLinkIcon from "/icon_external_link_main.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType, isReportType } from "types";
 import { useStore } from "utils";
@@ -21,10 +20,12 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         return "CI Report";
       case ReportType.QMS:
         return "QMS Report";
-      case ReportType.TACM:
-        return "TACM Report";
+      case ReportType.HA:
+        return "HA Report";
       case ReportType.PCP:
         return "PCP Report";
+      case ReportType.IMA:
+        return "IMA";
       case ReportType.QIP:
         return "QMS QIP";
       case ReportType.WWL:
@@ -49,7 +50,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         >
           User Guide and Help File
           <Image
-            src={externalLinkIcon}
+            src="/icon_external_link_main.svg"
             sx={sx.externalLinkIcon}
             alt="(Opens in New Tab)"
           />

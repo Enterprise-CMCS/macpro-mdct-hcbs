@@ -1,58 +1,39 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   authenticatedUser,
   parseUserFromToken,
   DecodedToken,
 } from "../authentication";
-import { proxyEvent } from "../../testing/proxyEvent";
-import { UserRoles } from "../../types/types";
+import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 
-var mockDecode: jest.Mock;
+const encodeJwt = (x: any) => `eyJhbGciOiJub25lIn0.${btoa(JSON.stringify(x))}.`;
 
-jest.mock("jwt-decode", () => {
-  mockDecode = jest.fn();
-  return {
-    __esModule: true,
-    default: mockDecode,
-  };
-});
-
-const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
-const mockToken = {
+const mockToken: DecodedToken = {
   "custom:cms_roles": "other-role,mdcthcbs-state-user,another-role",
   "custom:cms_state": "CO",
-  email_verified: true,
   email: "stateuser@test.com",
   given_name: "Helen Hunt",
   family_name: "Jackson",
-} as DecodedToken;
+};
+const apiKeyEvent = {
+  headers: { "x-api-key": encodeJwt(mockToken) } as Record<string, string>,
+} as APIGatewayProxyEvent;
+const noKeyEvent = {
+  headers: { "x-api-key": encodeJwt(null) } as Record<string, string>,
+} as APIGatewayProxyEvent;
 
 describe("Authentication methods", () => {
   describe("Test authorization with api key and environment variables", () => {
-    afterEach(() => {
-      jest.clearAllMocks();
+    beforeEach(() => {
+      vi.clearAllMocks();
     });
-    test("is not authorized when token is missing or invalid", () => {
-      mockDecode.mockImplementation(() => {
-        return undefined;
-      });
-      const authStatus = authenticatedUser(apiKeyEvent);
+
+    it("should not authorize when token is missing or invalid", () => {
+      const authStatus = authenticatedUser(noKeyEvent);
       expect(authStatus).toBeFalsy();
     });
-    test("is authorized when api key is passed and environment variables are set", () => {
-      mockDecode.mockReturnValue(mockToken);
-      const authStatus = authenticatedUser(apiKeyEvent);
-      expect(authStatus).toBeTruthy();
-    });
-  });
 
-  describe("Test authorization with api key", () => {
-    beforeEach(() => {
-      mockDecode.mockReturnValue(mockToken);
-    });
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-    test("is authorized when api key is passed", () => {
+    it("should authorize when api key is passed and environment variables are set", () => {
       const authStatus = authenticatedUser(apiKeyEvent);
       expect(authStatus).toBeTruthy();
     });
