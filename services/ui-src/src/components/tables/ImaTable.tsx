@@ -71,11 +71,7 @@ export const ImaTable = ({
     <fieldset className="ds-c-fieldset ima-table-fieldset">
       {label && <legend className="ds-c-label">{label}</legend>}
       {helperText && <p className="ds-c-hint">{helperText}</p>}
-<<<<<<< HEAD
-      <Table variant="ima" className={tableClassName}>
-=======
-      <Table id={tableId} variant="ima">
->>>>>>> 9f697d90 (Added styling for IMA table for Investigation Referrals page.)
+      <Table id={tableId} className={tableClassName} variant="ima">
         <TableCaption>
           <VisuallyHidden>{caption}</VisuallyHidden>
         </TableCaption>
