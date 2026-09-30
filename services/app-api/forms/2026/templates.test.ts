@@ -61,3 +61,14 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
     });
   });
 });
+
+describe("HA service type sections", () => {
+  it.each(["hapch-1", "hapch-2"])(
+    "%s should have unique element IDs so each section's fields are independent",
+    (pageId) => {
+      const page = haReportTemplate.pages.find((page) => page.id === pageId)!;
+      const ids = page.elements!.map((element) => element.id);
+      expect(ids).toEqual([...new Set(ids)]);
+    }
+  );
+});

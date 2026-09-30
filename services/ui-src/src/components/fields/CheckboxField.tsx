@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import {
@@ -11,6 +11,8 @@ import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
 import { Page } from "components/report/Page";
 import { Alert } from "components/alerts/Alert";
+import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
+import { useStore } from "utils";
 
 const formatChoices = (
   choices: ChoiceTemplate[],
@@ -56,6 +58,8 @@ const formatChoices = (
 
 export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   const checkbox = props.element;
+  const { clearHiddenElements, currentPageId } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
   const initialDisplayValue = formatChoices(
     checkbox.choices,
     checkbox.answer ?? [],
@@ -90,6 +94,17 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
     );
     setDisplayValue(newDisplayValue);
     props.updateElement({ answer: newValue });
+
+    if (!checkbox.clickAction || !currentPageId) {
+      return;
+    }
+
+    switch (checkbox.clickAction) {
+      case "serviceTypeChange":
+        clearHiddenElements(currentPageId, checkbox.id);
+        autosave();
+        return;
+    }
   };
 
   const labelText = checkbox.label;

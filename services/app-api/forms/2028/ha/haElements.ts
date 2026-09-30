@@ -1,8 +1,73 @@
 import {
+  CheckboxTemplate,
   ElementType,
+  HideCondition,
+  PageElement,
   PerformanceNdrTemplate,
   TextAreaBoxTemplate,
 } from "../../../types/reports";
+import {
+  additionalNotesField,
+  didYouFollowSpecifications,
+  stateSamplingMethologyQuestion,
+} from "../elements";
+
+const serviceTypeChoices = [
+  { label: "Homemaker", value: "homemaker" },
+  { label: "Home Health Aide", value: "home-health-aide" },
+  { label: "Personal Care", value: "personal-care" },
+  { label: "Habilitation", value: "habilitation" },
+];
+
+export const serviceTypesCheckbox: CheckboxTemplate = {
+  type: ElementType.Checkbox,
+  id: "service-types-checkbox",
+  label: "Which service types are included in this measure?",
+  helperText: "Select all that apply.",
+  choices: serviceTypeChoices,
+  required: true,
+  clickAction: "serviceTypeChange",
+};
+
+const showWhenSelected = (serviceTypes: string[]): HideCondition => ({
+  controllerElementId: serviceTypesCheckbox.id,
+  answerExcludes: serviceTypes,
+});
+
+const showWhenAnySelected = showWhenSelected(
+  serviceTypeChoices.map((choice) => choice.value)
+);
+
+// Rate, sampling methodology, and divider for a single service type
+export const serviceTypeSection = (
+  serviceType: string,
+  rate: PerformanceNdrTemplate
+): PageElement[] => {
+  const hideCondition = showWhenSelected([serviceType]);
+  return [
+    { ...rate, hideCondition },
+    {
+      type: ElementType.SubHeader,
+      id: `${serviceType}-state-sampling-methodology-subheader`,
+      text: "State sampling methodology",
+      hideCondition,
+    },
+    // Prefixed IDs keep each section's radio group and fields unique on the page
+    {
+      ...stateSamplingMethologyQuestion,
+      id: `${serviceType}-${stateSamplingMethologyQuestion.id}`,
+      hideCondition,
+      choices: stateSamplingMethologyQuestion.choices.map((choice) => ({
+        ...choice,
+        checkedChildren: choice.checkedChildren?.map((child) => ({
+          ...child,
+          id: `${serviceType}-${child.id}`,
+        })),
+      })),
+    },
+    { type: ElementType.Divider, id: `${serviceType}-divider`, hideCondition },
+  ];
+};
 
 export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
@@ -11,7 +76,22 @@ export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
     "Brief explanation of the state's process to convert service units into hours.",
   label: "Conversion of service units into hours",
   required: true,
+  hideCondition: showWhenAnySelected,
 };
+
+export const additionalDetailsSection = (
+  extraFields: TextAreaBoxTemplate[] = []
+): PageElement[] => [
+  {
+    type: ElementType.SubHeader,
+    id: "additional-details-subheader",
+    text: "Additional Details",
+    hideCondition: showWhenAnySelected,
+  },
+  ...extraFields,
+  { ...didYouFollowSpecifications, hideCondition: showWhenAnySelected },
+  { ...additionalNotesField, hideCondition: showWhenAnySelected },
+];
 
 // Rates for Homemaker for HAPC-1 measure
 export const homemakerRate: PerformanceNdrTemplate = {

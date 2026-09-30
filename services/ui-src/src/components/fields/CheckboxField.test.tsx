@@ -4,9 +4,15 @@ import userEvent from "@testing-library/user-event";
 import { CheckboxField } from "components";
 import { ElementType, CheckboxTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
+import { useStore } from "utils";
 import { CheckboxExport } from "./CheckboxField";
 
 const updateSpy = vi.fn();
+const mockClearHiddenElements = vi.fn();
+useStore.setState({
+  currentPageId: "my-page",
+  clearHiddenElements: mockClearHiddenElements,
+});
 
 const mockCheckboxElement: CheckboxTemplate = {
   id: "mock-checkbox-id",
@@ -71,6 +77,37 @@ describe("<CheckboxField />", () => {
     await userEvent.click(screen.getByRole("checkbox", { name: "Choice 2" }));
     expect(updateSpy).toHaveBeenCalledWith({ answer: ["B"] });
     expect(screen.getByRole("textbox", { name: "Text Label" })).toBeVisible();
+  });
+
+  describe("serviceTypeChange click action", () => {
+    const serviceTypeElement: CheckboxTemplate = {
+      ...mockCheckboxElement,
+      answer: ["A"],
+      clickAction: "serviceTypeChange",
+    };
+
+    it("should clear hidden elements on change", async () => {
+      render(
+        <CheckboxField element={serviceTypeElement} updateElement={updateSpy} />
+      );
+      await userEvent.click(screen.getByRole("checkbox", { name: "Choice 1" }));
+      expect(updateSpy).toHaveBeenCalledWith({ answer: [] });
+      expect(mockClearHiddenElements).toHaveBeenCalledWith(
+        "my-page",
+        "mock-checkbox-id"
+      );
+    });
+
+    it("should not clear anything without a click action", async () => {
+      render(
+        <CheckboxField
+          element={{ ...mockCheckboxElement, answer: ["A"] }}
+          updateElement={updateSpy}
+        />
+      );
+      await userEvent.click(screen.getByRole("checkbox", { name: "Choice 1" }));
+      expect(mockClearHiddenElements).not.toHaveBeenCalled();
+    });
   });
 
   testA11y(CheckboxComponent);

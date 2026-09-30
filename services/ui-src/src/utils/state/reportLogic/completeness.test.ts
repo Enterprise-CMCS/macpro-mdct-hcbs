@@ -518,6 +518,34 @@ describe("Report completeness utilities", () => {
       ).toBeFalsy();
     });
 
+    it("should hide answerExcludes elements until the controller answer includes the value", () => {
+      const condition = {
+        controllerElementId: "service-types",
+        answerExcludes: ["homemaker", "habilitation"],
+      };
+      const checkbox = (answer?: string[]) =>
+        [
+          {
+            id: "service-types",
+            type: ElementType.Checkbox,
+            label: "Service types",
+            choices: [],
+            required: true,
+            ...(answer && { answer }),
+          },
+        ] as PageElement[];
+
+      expect(elementIsHidden(condition, checkbox())).toBe(true);
+      expect(elementIsHidden(condition, checkbox([]))).toBe(true);
+      expect(elementIsHidden(condition, checkbox(["personal-care"]))).toBe(
+        true
+      );
+      expect(
+        elementIsHidden(condition, checkbox(["personal-care", "homemaker"]))
+      ).toBe(false);
+      expect(elementIsHidden(condition, [])).toBe(false);
+    });
+
     it("should hide elements until a controller table is non-compliant", () => {
       const compliantTable = {
         id: "ima-table",
@@ -713,6 +741,17 @@ describe("Report completeness utilities", () => {
       expect(
         elementSatisfiesRequired(incompleteCheckbox, [incompleteCheckbox])
       ).toBeFalsy();
+    });
+
+    it("should reject a required checkbox with no selections", () => {
+      const checkbox = {
+        id: "empty-checkbox",
+        answer: [],
+        type: ElementType.Checkbox,
+        choices: [{ label: "me", value: "foo" }],
+        required: true,
+      } as unknown as CheckboxTemplate;
+      expect(elementSatisfiesRequired(checkbox, [checkbox])).toBeFalsy();
     });
 
     it("should accept complete LengthOfStay rates", () => {

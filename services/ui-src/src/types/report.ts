@@ -255,7 +255,8 @@ export type PageElement =
 
 export type HideCondition = {
   controllerElementId: string;
-  answer: string;
+  answer?: string;
+  answerExcludes?: string[];
 };
 
 export enum HeaderIcon {
@@ -391,6 +392,7 @@ export type DividerTemplate = {
   type: ElementType.Divider;
   id: string;
   showWhenNonCompliant?: string[];
+  hideCondition?: HideCondition;
 };
 
 export type SubmissionParagraphTemplate = {
@@ -598,6 +600,7 @@ export type CheckboxTemplate = {
   emptyAlertTitle?: string;
   emptyAlertDescription?: string;
   required: boolean;
+  clickAction?: string;
 };
 
 export type ButtonLinkTemplate = {
@@ -786,6 +789,7 @@ export type PerformanceNdrTemplate = {
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
   conditionalChildren?: PageElement[];
+  hideCondition?: HideCondition;
 };
 
 export type ChoiceTemplate = {
