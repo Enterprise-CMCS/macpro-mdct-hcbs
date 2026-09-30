@@ -1,15 +1,8 @@
 import { Kafka } from "kafkajs";
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { getReport } from "../../../storage/reports";
 import { ReportType } from "../../../types/reports";
+import { handler } from "./postKafkaData";
 
 const { mockConnect, mockSendBatch, mockGetReport } = vi.hoisted(() => ({
   mockConnect: vi.fn(),
@@ -46,8 +39,6 @@ const fullReport = {
   pages: [{ id: "root" }],
 } as any;
 
-const loadHandler = async () => (await import("./postKafkaData.js")).handler;
-
 const createRecord = ({
   type = "QMS",
   sortKey = "report-1",
@@ -58,7 +49,7 @@ const createRecord = ({
   sortKey?: string;
   eventID?: string;
   eventName?: string;
-}) => ({
+} = {}) => ({
   eventID,
   eventName,
   dynamodb: {
@@ -80,13 +71,6 @@ describe("postKafkaData", () => {
     ReportsTable: process.env.ReportsTable,
   };
 
-  beforeAll(() => {
-    process.env.brokerString = "brokerA,brokerB";
-    process.env.STAGE = "testing";
-    process.env.topicNamespace = namespace;
-    process.env.ReportsTable = reportTable;
-  });
-
   afterAll(() => {
     process.env.brokerString = originalEnv.brokerString;
     process.env.STAGE = originalEnv.STAGE;
@@ -96,13 +80,14 @@ describe("postKafkaData", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.resetModules();
+    process.env.brokerString = "brokerA,brokerB";
+    process.env.STAGE = "testing";
+    process.env.topicNamespace = namespace;
+    process.env.ReportsTable = reportTable;
     mockedGetReport.mockResolvedValue(fullReport);
   });
 
   it("should publish a full QMS report to the QMS topic", async () => {
-    const handler = await loadHandler();
-
     await handler({ Records: [createRecord({ type: "QMS" })] });
 
     expect(Kafka).toHaveBeenCalledWith({
@@ -132,7 +117,6 @@ describe("postKafkaData", () => {
   });
 
   it("should publish a full QIP report to the QIP topic", async () => {
-    const handler = await loadHandler();
     mockedGetReport.mockResolvedValueOnce({
       ...fullReport,
       type: ReportType.QIP,
@@ -159,8 +143,6 @@ describe("postKafkaData", () => {
   });
 
   it("should not publish page items", async () => {
-    const handler = await loadHandler();
-
     await handler({ Records: [createRecord({ sortKey: "report-1#page-a" })] });
 
     expect(mockedGetReport).not.toHaveBeenCalled();
@@ -168,8 +150,6 @@ describe("postKafkaData", () => {
   });
 
   it("should publish exactly one message for multiple stream records", async () => {
-    const handler = await loadHandler();
-
     await handler({
       Records: [
         createRecord({ sortKey: "report-1#root", eventID: "evt-page-1" }),
@@ -190,5 +170,63 @@ describe("postKafkaData", () => {
     });
     const [firstCall] = mockSendBatch.mock.calls;
     expect(firstCall[0].topicMessages[0].messages).toHaveLength(1);
+  });
+
+  it("should ignore events when Kafka is configured for LocalStack", async () => {
+    process.env.brokerString = "localstack";
+
+    await handler({ Records: [createRecord()] });
+
+    expect(mockedGetReport).not.toHaveBeenCalled();
+    expect(mockSendBatch).not.toHaveBeenCalled();
+  });
+
+  it("should reject events when Kafka configuration is incomplete", async () => {
+    delete process.env.brokerString;
+    await expect(handler({ Records: [] })).rejects.toThrow(
+      "Missing Kafka config: brokerString required"
+    );
+
+    process.env.brokerString = "brokerA";
+    delete process.env.STAGE;
+    await expect(handler({ Records: [] })).rejects.toThrow(
+      "Missing Kafka config: STAGE required"
+    );
+  });
+
+  it("should ignore records from other tables", async () => {
+    const record = createRecord();
+    record.eventSourceARN = record.eventSourceARN.replace(
+      reportTable,
+      "other-Reports"
+    );
+
+    await handler({ Records: [record] });
+
+    expect(mockedGetReport).not.toHaveBeenCalled();
+    expect(mockSendBatch).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["an invalid type", { type: { S: "INVALID" } }],
+    ["a non-string state", { state: { N: "1" } }],
+    ["a non-string id", { id: { N: "1" } }],
+    ["a non-string sort key", { sortKey: { N: "1" } }],
+  ])("should ignore records with %s", async (_description, change) => {
+    const record = createRecord();
+    Object.assign(record.dynamodb.NewImage, change);
+
+    await handler({ Records: [record] });
+
+    expect(mockedGetReport).not.toHaveBeenCalled();
+    expect(mockSendBatch).not.toHaveBeenCalled();
+  });
+
+  it("should fail when the report cannot be reassembled", async () => {
+    mockedGetReport.mockResolvedValueOnce(undefined);
+
+    await expect(handler({ Records: [createRecord()] })).rejects.toThrow(
+      "Could not reassemble report QMS/CO/report-1"
+    );
   });
 });
