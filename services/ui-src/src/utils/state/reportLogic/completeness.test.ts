@@ -925,6 +925,49 @@ describe("Report completeness utilities", () => {
       expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
     });
 
+    it("requires a rate's sampling response and selected follow-up fields", () => {
+      const element: PerformanceNdrTemplate = {
+        id: "homemaker-1-rate",
+        type: ElementType.PerformanceNdr,
+        required: true,
+        answer: { numerator: 1, denominator: 2, rate: 50 },
+        children: [
+          {
+            id: "sampling-question",
+            type: ElementType.Radio,
+            label: "What sampling methodology was used?",
+            required: true,
+            choices: [
+              { label: "Entire population", value: "Entire population" },
+              {
+                label: "Probability sample",
+                value: "Probability sample",
+                checkedChildren: [
+                  {
+                    id: "sample-size",
+                    type: ElementType.NumberField,
+                    label: "Sample size",
+                    required: true,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+      expect(elementSatisfiesRequired(element, [element])).toBe(false);
+      const question = element.children![0];
+      if (question.type !== ElementType.Radio)
+        throw new Error("Expected radio");
+      question.answer = "Probability sample";
+      expect(elementSatisfiesRequired(element, [element])).toBe(false);
+      const followUp = question.choices[1].checkedChildren![0];
+      if (followUp.type !== ElementType.NumberField)
+        throw new Error("Expected number field");
+      followUp.answer = 20;
+      expect(elementSatisfiesRequired(element, [element])).toBe(true);
+    });
+
     it.each([
       undefined,
       [{}],

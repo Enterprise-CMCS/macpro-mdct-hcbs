@@ -682,6 +682,7 @@ const performanceNdrSchema = object().shape({
   displayRateAsPercent: boolean().notRequired(),
   minPerformanceLevel: number().notRequired(),
   conditionalChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+  children: lazy(() => array().of(pageElementSchema).notRequired()),
 });
 
 const parentPageTemplateSchema = object().shape({
