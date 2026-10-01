@@ -4,11 +4,14 @@ import { getReport } from "../../../storage/reports";
 import { ReportType } from "../../../types/reports";
 import { handler } from "./postKafkaData";
 
-const { mockConnect, mockSendBatch, mockGetReport } = vi.hoisted(() => ({
-  mockConnect: vi.fn(),
-  mockSendBatch: vi.fn(),
-  mockGetReport: vi.fn(),
-}));
+const { mockConnect, mockSendBatch, mockGetReport, mockOn } = vi.hoisted(
+  () => ({
+    mockConnect: vi.fn(),
+    mockSendBatch: vi.fn(),
+    mockGetReport: vi.fn(),
+    mockOn: vi.fn(),
+  })
+);
 
 vi.mock("kafkajs", () => ({
   Kafka: vi.fn(
@@ -17,6 +20,7 @@ vi.mock("kafkajs", () => ({
         connect: mockConnect,
         disconnect: vi.fn(),
         sendBatch: mockSendBatch,
+        on: mockOn,
       });
     }
   ),
@@ -53,6 +57,10 @@ const createRecord = ({
   eventID,
   eventName,
   dynamodb: {
+    Keys: {
+      pKey: { S: `${type}#CO` },
+      sortKey: { S: sortKey },
+    },
     NewImage: {
       type: { S: type },
       state: { S: "CO" },
@@ -72,10 +80,13 @@ describe("postKafkaData", () => {
   };
 
   afterAll(() => {
-    process.env.brokerString = originalEnv.brokerString;
-    process.env.STAGE = originalEnv.STAGE;
-    process.env.topicNamespace = originalEnv.topicNamespace;
-    process.env.ReportsTable = originalEnv.ReportsTable;
+    for (const [key, value] of Object.entries(originalEnv)) {
+      if (value === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = value;
+      }
+    }
   });
 
   beforeEach(() => {
@@ -104,7 +115,10 @@ describe("postKafkaData", () => {
           messages: [
             expect.objectContaining({
               key: "QMS#CO#report-1",
-              value: JSON.stringify(fullReport),
+              value: JSON.stringify({
+                NewImage: fullReport,
+                Keys: { pKey: "QMS#CO", sortKey: "report-1" },
+              }),
               headers: {
                 eventID: "evt-1",
                 eventName: "MODIFY",
@@ -134,7 +148,10 @@ describe("postKafkaData", () => {
           messages: [
             expect.objectContaining({
               key: "QIP#CO#report-1",
-              value: JSON.stringify({ ...fullReport, type: "QIP" }),
+              value: JSON.stringify({
+                NewImage: { ...fullReport, type: "QIP" },
+                Keys: { pKey: "QIP#CO", sortKey: "report-1" },
+              }),
             }),
           ],
         },
@@ -192,6 +209,17 @@ describe("postKafkaData", () => {
     await expect(handler({ Records: [] })).rejects.toThrow(
       "Missing Kafka config: STAGE required"
     );
+
+    process.env.STAGE = "testing";
+    delete process.env.ReportsTable;
+    await expect(handler({ Records: [] })).rejects.toThrow(
+      "Missing Kafka config: ReportsTable required"
+    );
+
+    process.env.brokerString = "localstack";
+    await expect(handler({ Records: [] })).rejects.toThrow(
+      "Missing Kafka config: ReportsTable required"
+    );
   });
 
   it("should ignore records from other tables", async () => {
@@ -222,11 +250,11 @@ describe("postKafkaData", () => {
     expect(mockSendBatch).not.toHaveBeenCalled();
   });
 
-  it("should fail when the report cannot be reassembled", async () => {
+  it("should ignore records when the report cannot be reassembled", async () => {
     mockedGetReport.mockResolvedValueOnce(undefined);
 
-    await expect(handler({ Records: [createRecord()] })).rejects.toThrow(
-      "Could not reassemble report QMS/CO/report-1"
-    );
+    await handler({ Records: [createRecord()] });
+
+    expect(mockSendBatch).not.toHaveBeenCalled();
   });
 });

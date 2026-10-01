@@ -41,17 +41,17 @@ const dynamoClient = createDynamoClient();
 
 export const putReport = async (report: Report) => {
   const items = [
-    ...report.pages.map((page) => ({
-      ...page,
-      pKey: `${report.type}#${report.state}`,
-      sortKey: `${report.id}#${page.id}`,
-    })),
     {
       ...report,
       pKey: `${report.type}#${report.state}`,
       sortKey: report.id,
       pages: report.pages.map((page) => `${report.id}#${page.id}`),
     },
+    ...report.pages.map((page) => ({
+      ...page,
+      pKey: `${report.type}#${report.state}`,
+      sortKey: `${report.id}#${page.id}`,
+    })),
   ];
 
   /** DynamoDB only allows this many items in a single BatchWriteCommand */

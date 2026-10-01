@@ -79,10 +79,10 @@ describe("Report storage helpers", () => {
         {
           RequestItems: {
             "local-reports": [
+              { PutRequest: { Item: mockStoredReport[0] } },
               { PutRequest: { Item: mockStoredReport[1] } },
               { PutRequest: { Item: mockStoredReport[2] } },
               { PutRequest: { Item: mockStoredReport[3] } },
-              { PutRequest: { Item: mockStoredReport[0] } },
             ],
           },
         },
