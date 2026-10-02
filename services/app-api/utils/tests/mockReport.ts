@@ -92,6 +92,31 @@ export const reportWithNestedPerformanceRate: Report = {
   ],
 };
 
+export const reportWithUnsupportedPerformanceRateChild = {
+  ...validReport,
+  pages: [
+    {
+      id: "rate-page",
+      navTitle: "Rate",
+      type: PageType.Standard,
+      elements: [
+        {
+          type: ElementType.PerformanceNdr,
+          id: "example-rate",
+          required: true,
+          children: [
+            {
+              type: ElementType.Header,
+              id: "unsupported-child",
+              text: "Unsupported",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const missingStateReport = {
   ...validReport,
   state: undefined,

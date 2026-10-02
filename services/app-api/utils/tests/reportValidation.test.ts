@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { ElementType } from "../../types/reports";
 import {
   isReportOptions,
   validateReportPayload,
@@ -19,6 +18,7 @@ import {
   reportWithKeyActivityTable,
   reportWithListInputNoHelperText,
   reportWithNestedPerformanceRate,
+  reportWithUnsupportedPerformanceRateChild,
   validQipReport,
   validReport,
 } from "./mockReport";
@@ -137,32 +137,9 @@ describe("reportValidation", () => {
 
   describe("invalid report scenarios", () => {
     it("rejects unsupported children of a performance rate", async () => {
-      const page = reportWithNestedPerformanceRate.pages[0];
-      if (!page.elements?.[0]) throw new Error("Missing mock performance rate");
-      const invalidReport = {
-        ...reportWithNestedPerformanceRate,
-        pages: [
-          {
-            ...page,
-            elements: [
-              {
-                ...page.elements[0],
-                children: [
-                  {
-                    type: ElementType.Header,
-                    id: "unsupported-child",
-                    text: "Unsupported",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      };
-
-      await expect(validateReportPayload(invalidReport)).rejects.toThrow(
-        "Unsupported PerformanceNdr child type"
-      );
+      await expect(
+        validateReportPayload(reportWithUnsupportedPerformanceRateChild)
+      ).rejects.toThrow("Unsupported PerformanceNdr child type");
     });
 
     it.each([
