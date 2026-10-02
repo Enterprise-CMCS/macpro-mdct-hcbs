@@ -6,6 +6,8 @@ import { ElementType, PerformanceNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
 import { ErrorMessages } from "../../../constants";
+import { useStore } from "utils";
+import { mockStateUser } from "utils/testing/setupTests";
 
 const mockedElement: PerformanceNdrTemplate = {
   id: "mock-perf-id",
@@ -57,6 +59,46 @@ describe("<PerformanceNdr />", () => {
         screen.getByRole("textbox", { name: "Result" })
       ).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Result" })).toBeDisabled();
+    });
+
+    it("renders and saves always-visible nested sampling questions", async () => {
+      useStore.setState({ user: mockStateUser });
+      render(
+        <PerformanceNdrWrapper
+          template={{
+            ...mockedElement,
+            children: [
+              {
+                type: ElementType.SubHeader,
+                id: "sampling-header",
+                text: "State sampling methodology",
+              },
+              {
+                type: ElementType.Radio,
+                id: "sampling-question",
+                label: "What sampling methodology was used?",
+                required: true,
+                choices: [
+                  { label: "Entire population", value: "Entire population" },
+                  { label: "Probability sample", value: "Probability sample" },
+                ],
+              },
+            ],
+          }}
+        />
+      );
+      expect(screen.getByText("State sampling methodology")).toBeVisible();
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Entire population" })
+      );
+      expect(updateSpy).toHaveBeenCalledWith({
+        children: expect.arrayContaining([
+          expect.objectContaining({
+            id: "sampling-question",
+            answer: "Entire population",
+          }),
+        ]),
+      });
     });
 
     it("should auto-calculate rate", async () => {
@@ -227,6 +269,49 @@ describe("<PerformanceNdr />", () => {
   });
 
   describe("PerformanceNdr Export", () => {
+    it("exports the rate's sampling response and selected details", () => {
+      render(
+        PerformanceNdrExport({
+          ...mockedElement,
+          children: [
+            {
+              type: ElementType.SubHeader,
+              id: "sampling-header",
+              text: "State sampling methodology",
+            },
+            {
+              type: ElementType.Radio,
+              id: "sampling-question",
+              label: "What sampling methodology was used?",
+              answer: "Probability sample",
+              required: true,
+              choices: [
+                {
+                  label: "Probability sample",
+                  value: "Probability sample",
+                  checkedChildren: [
+                    {
+                      type: ElementType.NumberField,
+                      id: "sample-size",
+                      label: "Sample size",
+                      answer: 20,
+                      required: true,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        })
+      );
+      expect(
+        screen.getByRole("row", {
+          name: "State sampling methodology: What sampling methodology was used? Probability sample",
+        })
+      ).toBeVisible();
+      expect(screen.getByRole("row", { name: "Sample size 20" })).toBeVisible();
+    });
+
     it("should render a normal rate", () => {
       render(
         PerformanceNdrExport({
