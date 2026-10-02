@@ -56,6 +56,10 @@ export class PrerequisiteStack extends Stack {
         service: ec2.GatewayVpcEndpointAwsService.S3,
       });
 
+      vpc.addGatewayEndpoint("DynamoDbEndpoint", {
+        service: ec2.GatewayVpcEndpointAwsService.DYNAMODB,
+      });
+
       // add optional app-specific prerequisites
       this.addAdditionalPrerequisitesAsync(vpc);
     }
