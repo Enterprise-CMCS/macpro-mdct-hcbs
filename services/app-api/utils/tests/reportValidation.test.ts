@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ElementType } from "../../types/reports";
 import {
   isReportOptions,
   validateReportPayload,
@@ -17,6 +18,7 @@ import {
   reportWithInvalidImaTableComplianceRule,
   reportWithKeyActivityTable,
   reportWithListInputNoHelperText,
+  reportWithNestedPerformanceRate,
   validQipReport,
   validReport,
 } from "./mockReport";
@@ -26,6 +28,22 @@ describe("reportValidation", () => {
     it("should accept a valid report object", async () => {
       const validatedData = await validateReportPayload(validReport);
       expect(validatedData).toEqual(validReport);
+    });
+
+    it("preserves answers nested in a performance rate", async () => {
+      const validated = await validateReportPayload(
+        reportWithNestedPerformanceRate
+      );
+      const validatedRate = validated.pages[0].elements?.[0];
+      expect(validatedRate).toMatchObject({
+        children: [
+          { text: "Sampling methodology" },
+          {
+            answer: "Probability sample",
+            choices: [{ checkedChildren: [{ answer: "Sampling approach" }] }],
+          },
+        ],
+      });
     });
 
     it("should accept a QIP with measureTargetMapping", async () => {
@@ -118,6 +136,35 @@ describe("reportValidation", () => {
   });
 
   describe("invalid report scenarios", () => {
+    it("rejects unsupported children of a performance rate", async () => {
+      const page = reportWithNestedPerformanceRate.pages[0];
+      if (!page.elements?.[0]) throw new Error("Missing mock performance rate");
+      const invalidReport = {
+        ...reportWithNestedPerformanceRate,
+        pages: [
+          {
+            ...page,
+            elements: [
+              {
+                ...page.elements[0],
+                children: [
+                  {
+                    type: ElementType.Header,
+                    id: "unsupported-child",
+                    text: "Unsupported",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      await expect(validateReportPayload(invalidReport)).rejects.toThrow(
+        "Unsupported PerformanceNdr child type"
+      );
+    });
+
     it.each([
       ["a report with missing state", missingStateReport],
       ["a report with incorrect status", incorrectStatusReport],

@@ -44,6 +44,54 @@ export const validQipReport: Report = {
   ...getReportTemplate(ReportType.QIP, 2026),
 };
 
+export const reportWithNestedPerformanceRate: Report = {
+  ...validReport,
+  pages: [
+    {
+      id: "rate-page",
+      navTitle: "Rate",
+      type: PageType.Standard,
+      elements: [
+        {
+          type: ElementType.PerformanceNdr,
+          id: "example-rate",
+          required: true,
+          answer: { numerator: 10, denominator: 20, rate: 50 },
+          children: [
+            {
+              type: ElementType.SubHeader,
+              id: "sampling-header",
+              text: "Sampling methodology",
+            },
+            {
+              type: ElementType.Radio,
+              id: "sampling-question",
+              label: "What sampling methodology was used?",
+              required: true,
+              answer: "Probability sample",
+              choices: [
+                {
+                  label: "Probability sample",
+                  value: "Probability sample",
+                  checkedChildren: [
+                    {
+                      type: ElementType.TextAreaField,
+                      id: "sampling-approach",
+                      label: "Describe the sampling approach",
+                      required: true,
+                      answer: "Sampling approach",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const missingStateReport = {
   ...validReport,
   state: undefined,
