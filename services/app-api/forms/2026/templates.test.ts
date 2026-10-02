@@ -27,50 +27,6 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
     expect(root).toBeDefined();
   });
 
-  describe("HA sampling methodology", () => {
-    it.each(["hapch-1", "hapch-2"])(
-      "has a distinct sampling question within each %s rate, not at page level",
-      (pageId) => {
-        const page = haReportTemplate.pages.find((item) => item.id === pageId);
-        const elements = page?.elements ?? [];
-        const rates = elements.filter(
-          (element) => element.type === ElementType.PerformanceNdr
-        );
-        expect(rates).toHaveLength(4);
-        expect(
-          elements.some(
-            (element) => element.id === "state-sampling-methodology-question"
-          )
-        ).toBe(false);
-
-        const ids = rates.flatMap(
-          (rate) =>
-            rate.children?.flatMap((child) =>
-              child.type === ElementType.Radio
-                ? [
-                    child.id,
-                    ...child.choices.flatMap((choice) =>
-                      (choice.checkedChildren ?? []).map((field) => field.id)
-                    ),
-                  ]
-                : []
-            ) ?? []
-        );
-        expect(ids).toHaveLength(24);
-        expect(new Set(ids).size).toBe(ids.length);
-        for (const rate of rates) {
-          expect(rate.children?.map((child) => child.type)).toEqual([
-            ElementType.SubHeader,
-            ElementType.Radio,
-          ]);
-          expect(
-            rate.children?.every((child) => child.id.startsWith(rate.id))
-          ).toBe(true);
-        }
-      }
-    );
-  });
-
   it(`${name} should not contain duplicate page IDs`, () => {
     const pageIds = template.pages.map((page) => page.id);
     const uniqueIds = pageIds.filter((x, i, a) => i === a.indexOf(x));
@@ -104,4 +60,48 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
       }
     });
   });
+});
+
+describe("HA sampling methodology", () => {
+  it.each(["hapch-1", "hapch-2"])(
+    "has a distinct sampling question within each %s rate, not at page level",
+    (pageId) => {
+      const page = haReportTemplate.pages.find((item) => item.id === pageId);
+      const elements = page?.elements ?? [];
+      const rates = elements.filter(
+        (element) => element.type === ElementType.PerformanceNdr
+      );
+      expect(rates).toHaveLength(4);
+      expect(
+        elements.some((element) =>
+          element.id.includes("state-sampling-methodology")
+        )
+      ).toBe(false);
+
+      const ids: string[] = [];
+      for (const rate of rates) {
+        expect(rate.children?.map((child) => child.type)).toEqual([
+          ElementType.SubHeader,
+          ElementType.Radio,
+        ]);
+        for (const child of rate.children ?? []) {
+          expect(child.id.startsWith(`${rate.id}-`)).toBe(true);
+          ids.push(child.id);
+          if (child.type === ElementType.Radio) {
+            expect(child.required).toBe(true);
+            expect(
+              child.choices.some((choice) => choice.checkedChildren?.length)
+            ).toBe(true);
+            for (const choice of child.choices) {
+              for (const field of choice.checkedChildren ?? []) {
+                expect(field.id.startsWith(`${rate.id}-`)).toBe(true);
+                ids.push(field.id);
+              }
+            }
+          }
+        }
+      }
+      expect(new Set(ids).size).toBe(ids.length);
+    }
+  );
 });
