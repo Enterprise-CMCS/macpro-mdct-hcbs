@@ -41,9 +41,7 @@ const getDynamoInfo: GetDynamoInfo = async (record) => {
   const payload = unmarshall(record.dynamodb.NewImage);
   if (
     !isReportType(payload.type) ||
-    !isStateAbbreviation(
-      typeof payload.state === "string" ? payload.state : undefined
-    ) ||
+    !isStateAbbreviation(payload.state) ||
     typeof payload.id !== "string" ||
     typeof payload.sortKey !== "string"
   ) {
@@ -55,10 +53,7 @@ const getDynamoInfo: GetDynamoInfo = async (record) => {
     return undefined;
   }
 
-  const report = await getReport(payload.type, payload.state, payload.id);
-  if (!report) {
-    return undefined;
-  }
+  const report = (await getReport(payload.type, payload.state, payload.id))!;
 
   const reportTopics: { [key in ReportType]: string } = {
     QMS: "qms-reports",
