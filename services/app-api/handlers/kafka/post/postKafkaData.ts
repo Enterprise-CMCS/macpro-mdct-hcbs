@@ -1,29 +1,77 @@
-import { ReportType } from "../../../types/reports";
-import KafkaSourceLib from "../../../utils/kafka/kafka-source-lib";
+import { ReportType, isReportType } from "../../../types/reports";
+import { GetDynamoInfo, GetKafkaConfig, kafkaHandler } from "../kafkaLib";
+import { unmarshall } from "@aws-sdk/util-dynamodb";
+import { getReport } from "../../../storage/reports";
+import { isStateAbbreviation } from "../../../utils/constants";
 
-const _tableTopics: { [key in ReportType]: string } = {
-  QMS: "qms-reports",
-  HA: "ha-reports",
-  CI: "ci-reports",
-  IMA: "ima-reports",
-  PCP: "pcp-reports",
-  QIP: "qip-reports",
-  WWL: "wwl-reports",
+const getConfig: GetKafkaConfig = () => {
+  const { brokerString, STAGE } = process.env;
+
+  if (!brokerString) {
+    throw new Error("Missing Kafka config: brokerString required");
+  }
+  if (!process.env.ReportsTable) {
+    throw new Error("Missing Kafka config: ReportsTable required");
+  }
+  if (brokerString === "localstack") {
+    console.debug("Ignoring event: Localstack should not talk to Kafka");
+    return undefined;
+  }
+
+  if (!STAGE) {
+    throw new Error("Missing Kafka config: STAGE required");
+  }
+  return {
+    clientId: `hcbs-${STAGE}`,
+    brokers: brokerString.split(","),
+    retry: { initialRetryTime: 300, retries: 8 },
+    ssl: { rejectUnauthorized: false },
+  };
 };
 
-const topicPrefix = "aws.mdct.hcbs";
-const version = "v0";
-const tables: { sourceName: string; topicName: string }[] = [
-  // TODO: When HCBS starts sending data to Kafa,
-  // determine the appropriate topic based on the individual item
-  // (not on which table it's in, since all reports share a table).
-  // Additionally, write code to reassemble the report pages
-  // before sending the report on.
-  // Alternatively, establish with our integration partners
-  // that HCBS topics are Different from other MDCT apps,
-  // and that the item shape is Different as well.
-];
+const getDynamoInfo: GetDynamoInfo = async (record) => {
+  const source = record.eventSourceARN;
+  const namespace = process.env.topicNamespace ?? "";
+  const reportsTable = process.env.ReportsTable;
 
-const postKafkaData = new KafkaSourceLib(topicPrefix, version, tables);
+  if (!source.includes(`/${reportsTable}/`)) {
+    return undefined;
+  }
 
-exports.handler = postKafkaData.handler.bind(postKafkaData);
+  const payload = unmarshall(record.dynamodb.NewImage);
+  if (
+    !isReportType(payload.type) ||
+    !isStateAbbreviation(payload.state) ||
+    typeof payload.id !== "string" ||
+    typeof payload.sortKey !== "string"
+  ) {
+    return undefined;
+  }
+
+  // Skip page records; the report record publishes the full report.
+  if (payload.sortKey.includes("#")) {
+    return undefined;
+  }
+
+  const report = (await getReport(payload.type, payload.state, payload.id))!;
+
+  const reportTopics: { [key in ReportType]: string } = {
+    QMS: "qms-reports",
+    HA: "ha-reports",
+    CI: "ci-reports",
+    IMA: "ima-reports",
+    PCP: "pcp-reports",
+    QIP: "qip-reports",
+    WWL: "wwl-reports",
+  };
+
+  return {
+    topic: `${namespace}aws.mdct.hcbs.${reportTopics[payload.type]}.v0`,
+    payload: report,
+  };
+};
+
+export const handler = kafkaHandler({
+  getConfig,
+  getDynamoInfo,
+});
