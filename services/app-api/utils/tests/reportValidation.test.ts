@@ -17,6 +17,8 @@ import {
   reportWithInvalidImaTableComplianceRule,
   reportWithKeyActivityTable,
   reportWithListInputNoHelperText,
+  reportWithNestedPerformanceRate,
+  reportWithUnsupportedPerformanceRateChild,
   validQipReport,
   validReport,
 } from "./mockReport";
@@ -26,6 +28,22 @@ describe("reportValidation", () => {
     it("should accept a valid report object", async () => {
       const validatedData = await validateReportPayload(validReport);
       expect(validatedData).toEqual(validReport);
+    });
+
+    it("preserves answers nested in a performance rate", async () => {
+      const validated = await validateReportPayload(
+        reportWithNestedPerformanceRate
+      );
+      const validatedRate = validated.pages[0].elements?.[0];
+      expect(validatedRate).toMatchObject({
+        children: [
+          { text: "Sampling methodology" },
+          {
+            answer: "Probability sample",
+            choices: [{ checkedChildren: [{ answer: "Sampling approach" }] }],
+          },
+        ],
+      });
     });
 
     it("should accept a QIP with measureTargetMapping", async () => {
@@ -118,6 +136,12 @@ describe("reportValidation", () => {
   });
 
   describe("invalid report scenarios", () => {
+    it("rejects unsupported children of a performance rate", async () => {
+      await expect(
+        validateReportPayload(reportWithUnsupportedPerformanceRateChild)
+      ).rejects.toThrow("Unsupported PerformanceNdr child type");
+    });
+
     it.each([
       ["a report with missing state", missingStateReport],
       ["a report with incorrect status", incorrectStatusReport],
