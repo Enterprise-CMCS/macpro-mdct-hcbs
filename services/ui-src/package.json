@@ -45,12 +45,12 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-helmet": "^6.1.11",
     "@vitejs/plugin-react": "^6.0.1",
-    "@vitest/coverage-v8": "^4.1.5",
+    "@vitest/coverage-v8": "^4.1.11",
     "axe-core": "^4.13.0",
     "pa11y": "^6.2.3",
     "pa11y-runner-htmlcs": "^2.0.1",
     "typescript": "^5.9.3",
     "vite": "^8.0.16",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.11"
   }
 }
