@@ -31,6 +31,72 @@ import {
 import { isNotCompliant } from "./compliance";
 
 describe("Report completeness utilities", () => {
+  describe("service type measure completion", () => {
+    it.each([
+      {
+        answer: undefined,
+        filledServices: ["homemaker", "personal-care"],
+        complete: false,
+      },
+      {
+        answer: [],
+        filledServices: ["homemaker", "personal-care"],
+        complete: false,
+      },
+      { answer: ["homemaker"], filledServices: [], complete: false },
+      { answer: ["homemaker"], filledServices: ["homemaker"], complete: true },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker"],
+        complete: false,
+      },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker", "personal-care"],
+        complete: true,
+      },
+    ])(
+      "requires selected services to be filled: $answer / $filledServices",
+      ({ answer, filledServices, complete }) => {
+        const serviceTypes = ["homemaker", "personal-care"];
+        const report = {
+          pages: [
+            {
+              id: "access-measure",
+              type: PageType.Measure,
+              elements: [
+                {
+                  id: "service-types",
+                  type: ElementType.Checkbox,
+                  label: "Service types",
+                  required: true,
+                  choices: serviceTypes.map((value) => ({
+                    value,
+                    label: value,
+                  })),
+                  answer,
+                },
+                ...serviceTypes.map((serviceType) => ({
+                  id: `${serviceType}-rate`,
+                  type: ElementType.PerformanceNdr,
+                  required: true,
+                  hideCondition: {
+                    controllerElementId: "service-types",
+                    answerExcludes: [serviceType],
+                  },
+                  answer: filledServices.includes(serviceType)
+                    ? { numerator: 1, denominator: 2, rate: 50 }
+                    : undefined,
+                })),
+              ],
+            },
+          ],
+        } as Report;
+        expect(pageIsCompletable(report, "access-measure")).toBe(complete);
+      }
+    );
+  });
+
   describe("isNotCompliant", () => {
     const table = {
       id: "ima-table",
