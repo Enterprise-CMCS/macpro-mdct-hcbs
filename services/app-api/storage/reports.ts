@@ -110,6 +110,7 @@ export const getReport = async (
   const response = await dynamoClient.send(
     new QueryCommand({
       TableName,
+      ConsistentRead: true,
       KeyConditionExpression: "pKey = :pKey AND begins_with(sortKey, :id)",
       ExpressionAttributeValues: {
         ":pKey": `${reportType}#${state}`,
