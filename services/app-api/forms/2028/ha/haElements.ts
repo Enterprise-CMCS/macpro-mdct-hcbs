@@ -3,6 +3,35 @@ import {
   PerformanceNdrTemplate,
   TextAreaBoxTemplate,
 } from "../../../types/reports";
+import { stateSamplingMethologyQuestion } from "../elements";
+
+const stateSamplingMethologyQuestionHAReport = (
+  rateId: string
+): NonNullable<PerformanceNdrTemplate["children"]> => [
+  {
+    type: ElementType.SubHeader,
+    id: `${rateId}-state-sampling-methodology-subheader`,
+    text: "State sampling methodology",
+  },
+  {
+    ...stateSamplingMethologyQuestion,
+    id: `${rateId}-${stateSamplingMethologyQuestion.id}`,
+    choices: stateSamplingMethologyQuestion.choices.map((choice) => ({
+      ...choice,
+      checkedChildren: choice.checkedChildren?.map((child) => ({
+        ...child,
+        id: `${rateId}-${child.id}`,
+      })),
+    })),
+  },
+];
+
+const withSamplingMethodology = (
+  rate: PerformanceNdrTemplate
+): PerformanceNdrTemplate => ({
+  ...rate,
+  children: stateSamplingMethologyQuestionHAReport(rate.id),
+});
 
 export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
   type: ElementType.TextAreaField,
@@ -14,7 +43,7 @@ export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
 };
 
 // Rates for Homemaker for HAPC-1 measure
-export const homemakerRate: PerformanceNdrTemplate = {
+export const homemakerRate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "homemaker-1-rate",
   required: true,
@@ -29,10 +58,10 @@ export const homemakerRate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});
 
 // Rates for Homemaker for HAPC-2 measure
-export const homemakerHAPCH2Rate: PerformanceNdrTemplate = {
+export const homemakerHAPCH2Rate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "homemaker-2-rate",
   required: true,
@@ -47,10 +76,10 @@ export const homemakerHAPCH2Rate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});
 
 // Rates for Home Health Aide or HAPCH-1 measure
-export const homeHealthAideRate: PerformanceNdrTemplate = {
+export const homeHealthAideRate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "home-health-aide-1-rate",
   required: true,
@@ -65,10 +94,10 @@ export const homeHealthAideRate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});
 
 // Rates for Home Health Aide for HAPCH-2 measure
-export const homeHealthAideHAPCH2Rate: PerformanceNdrTemplate = {
+export const homeHealthAideHAPCH2Rate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "home-health-aide-2-rate",
   required: true,
@@ -83,10 +112,10 @@ export const homeHealthAideHAPCH2Rate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});
 
 // Rates for Personal Care for HAPCH-1 measure
-export const personalCareRate: PerformanceNdrTemplate = {
+export const personalCareRate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "personal-care-1-rate",
   required: true,
@@ -101,10 +130,10 @@ export const personalCareRate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});
 
 // Rates for Personal Care for HAPCH-2 measure
-export const personalCareHAPCH2Rate: PerformanceNdrTemplate = {
+export const personalCareHAPCH2Rate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "personal-care-2-rate",
   required: true,
@@ -119,10 +148,10 @@ export const personalCareHAPCH2Rate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});
 
 // Rates for Habilitation for HAPCH-1 measure
-export const habilitationRate: PerformanceNdrTemplate = {
+export const habilitationRate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "habilitation-1-rate",
   required: true,
@@ -137,10 +166,10 @@ export const habilitationRate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});
 
 // Rates for Habilitation for HAPCH-2 measure
-export const habilitationHAPCH2Rate: PerformanceNdrTemplate = {
+export const habilitationHAPCH2Rate = withSamplingMethodology({
   type: ElementType.PerformanceNdr,
   id: "habilitation-2-rate",
   required: true,
@@ -155,4 +184,4 @@ export const habilitationHAPCH2Rate: PerformanceNdrTemplate = {
   },
   multiplier: 100,
   displayRateAsPercent: true,
-};
+});

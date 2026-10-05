@@ -675,6 +675,7 @@ export type PerformanceNdrTemplate = {
   displayRateAsPercent?: boolean;
   minPerformanceLevel?: number;
   conditionalChildren?: PageElement[];
+  children?: (SubHeaderTemplate | RadioTemplate)[];
 };
 
 export type ChoiceTemplate = {

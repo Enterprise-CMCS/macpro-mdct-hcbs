@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import {
   CheckboxTemplate,
   ComplianceRules,
@@ -7,6 +8,9 @@ import {
   PageType,
   RadioTemplate,
 } from "../../types/reports";
+=======
+import { ElementType, PageType } from "../../types/reports";
+>>>>>>> 48af16e3 (HCBS Access Report - New Measure Functionality pt 1 - State Sampling Methodology (#826))
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { pcpReportTemplate } from "./pcp/pcp";
@@ -183,4 +187,48 @@ describe("IMA Investigation Referrals", () => {
       );
     }
   });
+});
+
+describe("HA sampling methodology", () => {
+  it.each(["hapch-1", "hapch-2"])(
+    "has a distinct sampling question within each %s rate, not at page level",
+    (pageId) => {
+      const page = haReportTemplate.pages.find((item) => item.id === pageId);
+      const elements = page?.elements ?? [];
+      const rates = elements.filter(
+        (element) => element.type === ElementType.PerformanceNdr
+      );
+      expect(rates).toHaveLength(4);
+      expect(
+        elements.some((element) =>
+          element.id.includes("state-sampling-methodology")
+        )
+      ).toBe(false);
+
+      const ids: string[] = [];
+      for (const rate of rates) {
+        expect(rate.children?.map((child) => child.type)).toEqual([
+          ElementType.SubHeader,
+          ElementType.Radio,
+        ]);
+        for (const child of rate.children ?? []) {
+          expect(child.id.startsWith(`${rate.id}-`)).toBe(true);
+          ids.push(child.id);
+          if (child.type === ElementType.Radio) {
+            expect(child.required).toBe(true);
+            expect(
+              child.choices.some((choice) => choice.checkedChildren?.length)
+            ).toBe(true);
+            for (const choice of child.choices) {
+              for (const field of choice.checkedChildren ?? []) {
+                expect(field.id.startsWith(`${rate.id}-`)).toBe(true);
+                ids.push(field.id);
+              }
+            }
+          }
+        }
+      }
+      expect(new Set(ids).size).toBe(ids.length);
+    }
+  );
 });
