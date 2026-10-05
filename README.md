@@ -130,9 +130,9 @@ We use Playwright for integration tests. See the `tests/playwright` directory.
 
 ### Accessibility Testing
 
-We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa11y) for primary accessibility testing.
+We use [axe](https://www.deque.com/axe/) for primary accessibility testing.
 
-Unit tests use [axe-core]https://github.com/dequelabs/axe-core), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
+Unit tests use [axe-core]https://github.com/dequelabs/axe-core).
 
 Integration tests use [@axe-core/playwright](https://github.com/dequelabs/axe-core-npm).
 
@@ -188,7 +188,7 @@ yarn oxlint --deny-warnings
 
 On a push to the repository or opening a pull request the [deploy.yml](https://github.com/Enterprise-CMCS/macpro-mdct-hcbs/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
 
-Upon opening a pull request into the main branch the scripts will also trigger a Playwright E2E and an A11y step to ensure that the code quality is still passing the End-to-End and accessibility tests.
+Upon opening a pull request into the main branch the scripts will also trigger a Playwright E2E step to ensure that the code quality is still passing the end-to-end tests.
 
 ## Deployments
 
