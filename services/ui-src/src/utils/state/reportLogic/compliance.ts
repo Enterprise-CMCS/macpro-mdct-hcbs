@@ -83,39 +83,18 @@ const tableHasAnyRelevantRowMatchingValue = (table: ImaTableTemplate) =>
     (row) => RELEVANT_ROW_IDS.includes(row.id)
   );
 
-// TODO: not yet wired up to any real table (IMA doc II.F.2 investigation
-//  referrals table isn't built yet). Two independent triggers, combined with OR:
-//    1. any row answered with one of PARTIAL_SHARING_ANSWERS
-//    2. every eligible row answered "not-referred" (mirrors AllNotReferred)
-//  Update PARTIAL_SHARING_ANSWERS to match the real answer values once that
-//  table is built.
-const PARTIAL_SHARING_ANSWERS = [
-  "no-info-shared",
-  "status-only",
-  "resolution-only",
-];
-
 const tableHasAnyPartialOrAllNotReferredAnswers = (
   table: ImaTableTemplate
 ): ImaTableComplianceResult => {
-  const anyPartial = anyRowAnswers(table, (answer) =>
-    PARTIAL_SHARING_ANSWERS.includes(answer)
-  );
-  const allNotReferred = allRowsAnswer(
-    table,
-    (answer) => answer === "not-referred"
-  );
+  const answeredRows = getEligibleAnswerRows(table);
+  if (!answeredRows?.length) return { isNonCompliant: undefined };
 
-  const isNonCompliant =
-    anyPartial.isNonCompliant || allNotReferred.isNonCompliant;
+  const isNonCompliant = !answeredRows.some((row) => row.answer === "both");
 
   return {
     isNonCompliant,
     nonCompliantRowIds: isNonCompliant
-      ? [
-          ...(anyPartial.nonCompliantRowIds ?? []),
-          ...(allNotReferred.nonCompliantRowIds ?? []),
-        ]
+      ? answeredRows.map((row) => row.id)
       : undefined,
   };
 };
@@ -135,7 +114,6 @@ export const isImaTableNonCompliant = (
     // TODO: no table uses this rule yet. See IMA doc II.D.2/II.E.2.
     case ComplianceRules.AnyRelevantRowMatchesValue:
       return tableHasAnyRelevantRowMatchingValue(table);
-    // TODO: no table uses this rule yet. See IMA doc II.F.2.
     case ComplianceRules.AnyPartialOrAllNotReferred:
       return tableHasAnyPartialOrAllNotReferredAnswers(table);
     default:

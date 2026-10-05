@@ -590,7 +590,7 @@ export const imaReportTemplate: ReportBase = {
                       type: "description",
                     },
                     {
-                      id: "no-referral",
+                      id: "not-referred",
                       label: "No Referral",
                       type: "answer",
                     },
@@ -618,6 +618,76 @@ export const imaReportTemplate: ReportBase = {
                   rows: [...INVESTIGATION_REFERRAL_TYPES],
                   complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
                 },
+                {
+                  type: ElementType.Radio,
+                  id: "investigation-referrals-follow-up",
+                  label:
+                    "Does that state have an interagency information-sharing agreement (e.g. MOU) with any entities?",
+                  required: true,
+                  choices: [
+                    {
+                      label: "Yes",
+                      value: "yes",
+                      checkedChildren: [
+                        {
+                          type: ElementType.Checkbox,
+                          id: "investigation-referrals-entities",
+                          label:
+                            "Which entities have an information-sharing agreement?",
+                          required: true,
+                          choices: [
+                            {
+                              label: "Provider licensing and/or credentialing",
+                              value: "provider-licensing-credentialing",
+                            },
+                            {
+                              label:
+                                "Provider screening, enrollment, suspension and termination",
+                              value:
+                                "provider-screening-enrollment-suspension-termination",
+                            },
+                            {
+                              label: "Agency that manages the Abuse Registry",
+                              value: "abuse-registry-agency",
+                            },
+                            {
+                              label: "Adult Protective Services (APS)",
+                              value: "adult-protective-services",
+                            },
+                            {
+                              label: "Child Protective Services (CPS)",
+                              value: "child-protective-services",
+                            },
+                            {
+                              label: "Medicaid Fraud Control Unit (MFCU)",
+                              value: "medicaid-fraud-control-unit",
+                            },
+                            {
+                              label: "Neighboring states",
+                              value: "neighboring-states",
+                            },
+                            {
+                              label: "State Medicaid Agency",
+                              value: "state-medicaid-agency",
+                            },
+                            {
+                              label: "Operating Agency",
+                              value: "operating-agency",
+                            },
+                            {
+                              label: "Other entity",
+                              value: "other-entity",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      label: "No",
+                      value: "no",
+                    },
+                  ],
+                },
               ],
             },
             {
@@ -629,7 +699,7 @@ export const imaReportTemplate: ReportBase = {
         {
           type: ElementType.Divider,
           id: "divider",
-          showWhenNonCompliant: ["investigation-referrals-table"],
+          showWhenNonCompliant: ["investigation-referrals-question"],
         },
         {
           type: ElementType.ComplianceAlert,
@@ -637,13 +707,13 @@ export const imaReportTemplate: ReportBase = {
           status: AlertTypes.WARNING,
           title: "This incident management system appears to be non-compliant.",
           text: "To be found in compliance, all HCBS programs under this IM system must use an electronic information system that complies with the security and privacy provisions described in 45 CFR Part 164, and collects, tracks, and identifies trends in electronic critical incident data.",
-          controllerElementId: ["investigation-referrals-table"],
+          controllerElementId: ["investigation-referrals-question"],
         },
         {
           type: ElementType.TextAreaField,
           id: "noncompliance-justification",
           label: "Justification for system noncompliance:",
-          showWhenNonCompliant: ["investigation-referrals-table"],
+          showWhenNonCompliant: ["investigation-referrals-question"],
           required: true,
         },
         {
@@ -651,7 +721,7 @@ export const imaReportTemplate: ReportBase = {
           id: "timeline-justification",
           label:
             "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
-          showWhenNonCompliant: ["investigation-referrals-table"],
+          showWhenNonCompliant: ["investigation-referrals-question"],
           required: true,
         },
       ],
