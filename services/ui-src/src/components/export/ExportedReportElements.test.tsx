@@ -49,7 +49,9 @@ describe("ExportedReportElements", () => {
     });
     render(element);
 
-    expect(screen.getByText("mock sub header")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "mock sub header", level: 3 })
+    ).toBeInTheDocument();
   });
 
   it("should render a Measure Details element", () => {
