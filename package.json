@@ -63,5 +63,12 @@
     "util": "^0.12.5",
     "yargs": "^17.7.2"
   },
+  "resolutions": {
+    "brace-expansion@^5.0.8": "^5.0.12",
+    "diff@^5.0.0": "^5.2.2",
+    "make-fetch-happen": "^15.0.6",
+    "node-gyp": "^12.4.0",
+    "socks@^2.8.3": "^2.8.10"
+  },
   "packageManager": "yarn@4.12.0"
 }
