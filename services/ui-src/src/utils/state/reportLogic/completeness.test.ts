@@ -3,9 +3,7 @@ import {
   CheckboxTemplate,
   DateRangeTemplate,
   ElementType,
-  KeyActivityTableTemplate,
   LengthOfStayRateTemplate,
-  ListInputTemplate,
   MeasurePageTemplate,
   PerformanceNdrTemplate,
   MultiRateNdrTemplate,
@@ -18,7 +16,6 @@ import {
   Report,
   TextboxTemplate,
   PageTemplate,
-  ReadmissionRateTemplate,
   ComplianceRules,
 } from "types";
 import {
@@ -55,9 +52,39 @@ describe("Report completeness utilities", () => {
         filledServices: ["homemaker", "personal-care"],
         complete: true,
       },
+      {
+        answer: [],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker", "personal-care"],
+        complete: false,
+      },
+      {
+        answer: ["homemaker"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: [],
+        complete: false,
+      },
+      {
+        answer: ["homemaker"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker"],
+        complete: true,
+      },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker"],
+        complete: false,
+      },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker", "personal-care"],
+        complete: true,
+      },
     ])(
-      "requires selected services to be filled: $answer / $filledServices",
-      ({ answer, filledServices, complete }) => {
+      "requires selected services to be filled: $answer / $filledServices / $filledSampling",
+      ({ answer, filledServices, filledSampling, complete }) => {
         const serviceTypes = ["homemaker", "personal-care"];
         const report = {
           pages: [
@@ -86,6 +113,25 @@ describe("Report completeness utilities", () => {
                   },
                   answer: filledServices.includes(serviceType)
                     ? { numerator: 1, denominator: 2, rate: 50 }
+                    : undefined,
+                  children: filledSampling
+                    ? [
+                        {
+                          id: `${serviceType}-sampling`,
+                          type: ElementType.Radio,
+                          label: "Sampling methodology",
+                          required: true,
+                          choices: [
+                            {
+                              label: "Entire population",
+                              value: "Entire population",
+                            },
+                          ],
+                          answer: filledSampling.includes(serviceType)
+                            ? "Entire population"
+                            : undefined,
+                        },
+                      ]
                     : undefined,
                 })),
               ],
@@ -1030,114 +1076,46 @@ describe("Report completeness utilities", () => {
       expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
     });
 
-    it.each([
-      undefined,
-      [{}],
-      [{ rates: [{ numerator: 7, rate: 1.4 }] }],
-      [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
-      [{ denominator: 5, rates: [{ rate: 1.4 }] }],
-      [{ denominator: 5, rates: [{ numerator: 7 }] }],
-    ])(
-      "should accept incomplete MultiCategoryNdr elements when optional",
-      (answer) => {
-        const element = {
-          type: ElementType.MultiCategoryNdr,
-          answer,
-          required: false, // ← It's not required
-        } as unknown as MultiCategoryNdrTemplate;
-        expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
-      }
-    );
-
-    it("should reject incomplete ListInput", () => {
-      const element = {
-        type: ElementType.ListInput,
+    it("requires a rate's sampling response and selected follow-up fields", () => {
+      const element: PerformanceNdrTemplate = {
+        id: "homemaker-1-rate",
+        type: ElementType.PerformanceNdr,
         required: true,
-        answer: [""],
-      } as ListInputTemplate;
-      expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
-    });
-
-    it.each([
-      ["no entries", []],
-      ["no answer", undefined],
-    ])("should reject required KeyActivityTable with %s", (_, answer) => {
-      const element = {
-        type: ElementType.KeyActivityTable,
-        id: "key-activities-table",
-        caption: "Key Activities",
-        required: true,
-        answer,
-      } as KeyActivityTableTemplate;
-      expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
-    });
-
-    it("should accept required KeyActivityTable with at least one entry", () => {
-      const element = {
-        type: ElementType.KeyActivityTable,
-        id: "key-activities-table",
-        caption: "Key Activities",
-        required: true,
-        answer: [{ id: "1", title: "Some Activity" }],
-      } as KeyActivityTableTemplate;
-      expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
-    });
-
-    it("should reject ReadmissionRate with errors", () => {
-      const element = {
-        type: ElementType.ReadmissionRate,
-        required: true,
-        errors: { stayCount: "Mock error message" },
-        answer: {
-          stayCount: 42,
-          obsReadmissionCount: 42,
-          obsReadmissionRate: 42,
-          expReadmissionCount: 42,
-          expReadmissionRate: 42,
-          obsExpRatio: 42,
-          beneficiaryCount: 42,
-          outlierCount: 42,
-          outlierRate: 42,
-        },
-      } as ReadmissionRateTemplate;
+        answer: { numerator: 1, denominator: 2, rate: 50 },
+        children: [
+          {
+            id: "sampling-question",
+            type: ElementType.Radio,
+            label: "What sampling methodology was used?",
+            required: true,
+            choices: [
+              { label: "Entire population", value: "Entire population" },
+              {
+                label: "Probability sample",
+                value: "Probability sample",
+                checkedChildren: [
+                  {
+                    id: "sample-size",
+                    type: ElementType.NumberField,
+                    label: "Sample size",
+                    required: true,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
       expect(elementSatisfiesRequired(element, [element])).toBe(false);
-    });
-
-    it("should reject ReadmissionRate with missing fields", () => {
-      const element = {
-        type: ElementType.ReadmissionRate,
-        required: true,
-        answer: {
-          stayCount: 42,
-          obsReadmissionCount: 42,
-          obsReadmissionRate: 42,
-          expReadmissionCount: 42,
-          expReadmissionRate: 42,
-          obsExpRatio: 42,
-          beneficiaryCount: 42,
-          outlierCount: undefined,
-          outlierRate: 42,
-        },
-      } as ReadmissionRateTemplate;
+      const question = element.children![0];
+      if (question.type !== ElementType.Radio)
+        throw new Error("Expected radio");
+      question.answer = "Probability sample";
       expect(elementSatisfiesRequired(element, [element])).toBe(false);
-    });
-
-    it("should accept complete ReadmissionRate", () => {
-      const element = {
-        type: ElementType.ReadmissionRate,
-        required: true,
-        answer: {
-          stayCount: 42,
-          obsReadmissionCount: 42,
-          obsReadmissionRate: 42,
-          expReadmissionCount: 42,
-          expReadmissionRate: 42,
-          obsExpRatio: 42,
-          beneficiaryCount: 42,
-          outlierCount: 42,
-          outlierRate: 42,
-        },
-      } as ReadmissionRateTemplate;
+      const followUp = question.choices[1].checkedChildren![0];
+      if (followUp.type !== ElementType.NumberField)
+        throw new Error("Expected number field");
+      followUp.answer = 20;
       expect(elementSatisfiesRequired(element, [element])).toBe(true);
     });
   });

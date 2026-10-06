@@ -8,6 +8,7 @@ export default [
       ".qms-reports",
       ".ha-reports",
       ".ci-reports",
+      ".ima-reports",
       ".pcp-reports",
       ".qip-reports",
       ".wwl-reports",

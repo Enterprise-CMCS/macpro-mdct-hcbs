@@ -68,6 +68,7 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   );
   const [displayValue, setDisplayValue] = useState(initialDisplayValue);
   const [pendingValue, setPendingValue] = useState<string>();
+  const [showRemovalWarning, setShowRemovalWarning] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const closeModal = () => {
@@ -129,6 +130,7 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   const confirmSelection = () => {
     if (pendingValue !== undefined) {
       changeSelection(pendingValue);
+      setShowRemovalWarning(true);
     }
     closeModal();
   };
@@ -142,7 +144,20 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
         type={"checkbox"}
         label={labelText || ""}
         choices={displayValue}
-        hint={checkbox.helperText}
+        hint={
+          checkbox.clickAction === "serviceTypeChange" && showRemovalWarning ? (
+            <>
+              {checkbox.helperText}
+              <Box as="span" display="block" color="palette.warn_darkest">
+                Warning: Changing this response will clear any data previously
+                entered in the corresponding delivery system measure results
+                sections.
+              </Box>
+            </>
+          ) : (
+            checkbox.helperText
+          )
+        }
         onChange={onChangeHandler}
         {...props}
       />

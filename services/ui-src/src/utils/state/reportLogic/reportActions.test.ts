@@ -298,6 +298,29 @@ describe("reportActions", () => {
       controllerElementId: "service-types-checkbox",
       answerExcludes: values,
     });
+    const samplingQuestion = (rateId: string): RadioTemplate => ({
+      id: `${rateId}-sampling`,
+      type: ElementType.Radio,
+      label: "Sampling methodology",
+      required: true,
+      answer: "Probability sample",
+      choices: [
+        { label: "Entire population", value: "Entire population" },
+        {
+          label: "Probability sample",
+          value: "Probability sample",
+          checkedChildren: [
+            {
+              id: `${rateId}-sampling-details`,
+              type: ElementType.TextAreaField,
+              label: "Sampling details",
+              required: true,
+              answer: "Saved sampling details",
+            },
+          ],
+        },
+      ],
+    });
     const serviceTypeReport = {
       ...testReport,
       pages: [
@@ -322,6 +345,7 @@ describe("reportActions", () => {
               required: true,
               answer: { numerator: 1, denominator: 2, rate: 50 },
               hideCondition: hideCondition("homemaker"),
+              children: [samplingQuestion("homemaker-1-rate")],
             },
             {
               type: ElementType.PerformanceNdr,
@@ -329,6 +353,7 @@ describe("reportActions", () => {
               required: true,
               answer: { numerator: 1, denominator: 4, rate: 25 },
               hideCondition: hideCondition("personal-care"),
+              children: [samplingQuestion("personal-care-1-rate")],
             },
             {
               type: ElementType.TextAreaField,
@@ -362,11 +387,19 @@ describe("reportActions", () => {
 
       expect(checkbox.answer).toEqual(["personal-care"]);
       expect(homemaker.answer).toBeUndefined();
+      const hiddenSampling = homemaker.children![0] as RadioTemplate;
+      expect(hiddenSampling.answer).toBeUndefined();
+      expect(hiddenSampling.choices[1].checkedChildren![0]).toEqual(
+        expect.objectContaining({ answer: undefined })
+      );
       expect(personalCare.answer).toEqual({
         numerator: 1,
         denominator: 4,
         rate: 25,
       });
+      expect(personalCare.children).toEqual([
+        samplingQuestion("personal-care-1-rate"),
+      ]);
       expect(notes.answer).toBe("keep me");
     });
 

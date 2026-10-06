@@ -87,11 +87,28 @@ describe("<CheckboxField />", () => {
   });
 
   describe("serviceTypeChange click action", () => {
+    const removalWarningText =
+      "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.";
     const serviceTypeElement: CheckboxTemplate = {
       ...mockCheckboxElement,
       answer: ["A"],
+      helperText: "Select all that apply.",
       clickAction: "serviceTypeChange",
     };
+
+    it("should show the removal warning below the hint only after confirmed removal", async () => {
+      render(
+        <CheckboxField element={serviceTypeElement} updateElement={updateSpy} />
+      );
+      expect(screen.queryByText(removalWarningText)).not.toBeInTheDocument();
+      await userEvent.click(screen.getByRole("checkbox", { name: "Choice 1" }));
+      expect(screen.queryByText(removalWarningText)).not.toBeInTheDocument();
+      await userEvent.click(screen.getByRole("button", { name: "Yes" }));
+      const warning = screen.getByText(removalWarningText);
+      expect(warning).toBeVisible();
+      expect(warning).toHaveStyle({ display: "block" });
+      expect(warning.parentElement).toHaveTextContent("Select all that apply.");
+    });
 
     it("should clear hidden elements only after confirming deselection", async () => {
       render(
@@ -141,6 +158,7 @@ describe("<CheckboxField />", () => {
         expect(updateSpy).not.toHaveBeenCalled();
         expect(mockClearHiddenElements).not.toHaveBeenCalled();
         expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+        expect(screen.queryByText(removalWarningText)).not.toBeInTheDocument();
       }
     );
 
@@ -151,6 +169,7 @@ describe("<CheckboxField />", () => {
       await userEvent.click(screen.getByRole("checkbox", { name: "Choice 3" }));
       expect(updateSpy).toHaveBeenCalledWith({ answer: ["A", "C"] });
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(screen.queryByText(removalWarningText)).not.toBeInTheDocument();
     });
 
     describe("service section data", () => {

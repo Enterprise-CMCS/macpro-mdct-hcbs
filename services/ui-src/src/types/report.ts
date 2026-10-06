@@ -790,6 +790,7 @@ export type PerformanceNdrTemplate = {
   minPerformanceLevel?: number;
   conditionalChildren?: PageElement[];
   hideCondition?: HideCondition;
+  children?: (SubHeaderTemplate | RadioTemplate)[];
 };
 
 export type ChoiceTemplate = {

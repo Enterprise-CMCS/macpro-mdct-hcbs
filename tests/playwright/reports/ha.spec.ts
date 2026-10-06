@@ -86,13 +86,30 @@ const assertServiceTypeSections = async (page: Page) => {
   await expect(samplingQuestions).toHaveCount(2);
   await expect(additionalDetails).toHaveCount(1);
 
-  await serviceTypes.getByLabel("Homemaker", { exact: true }).uncheck();
+  await numerators.first().fill("10");
+  const confirmation = page.getByRole("dialog", { name: "Are you sure?" });
+  await serviceTypes.getByLabel("Homemaker", { exact: true }).click();
+  await expect(confirmation).toBeVisible();
+  await confirmation.getByRole("button", { name: "No", exact: true }).click();
+  await expect(
+    serviceTypes.getByLabel("Homemaker", { exact: true })
+  ).toBeChecked();
+  await expect(numerators.first()).toHaveValue("10");
+
+  await serviceTypes.getByLabel("Homemaker", { exact: true }).click();
+  await confirmation.getByRole("button", { name: "Yes", exact: true }).click();
   await expect(homemakerHeading).toHaveCount(0);
   await expect(numerators).toHaveCount(1);
   await expect(samplingQuestions).toHaveCount(1);
   await expect(additionalDetails).toHaveCount(1);
 
-  await serviceTypes.getByLabel("Personal Care", { exact: true }).uncheck();
+  await serviceTypes.getByLabel("Homemaker", { exact: true }).check();
+  await expect(numerators.first()).toHaveValue("");
+  await serviceTypes.getByLabel("Homemaker", { exact: true }).click();
+  await confirmation.getByRole("button", { name: "Yes", exact: true }).click();
+
+  await serviceTypes.getByLabel("Personal Care", { exact: true }).click();
+  await confirmation.getByRole("button", { name: "Yes", exact: true }).click();
   await expect(numerators).toHaveCount(0);
   await expect(samplingQuestions).toHaveCount(0);
   await expect(additionalDetails).toHaveCount(0);

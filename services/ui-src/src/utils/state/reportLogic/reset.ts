@@ -81,6 +81,11 @@ export const performResetPageElement = (element: PageElement) => {
   if ("answer" in element) {
     element.answer = undefined;
   }
+  if (element.type === ElementType.PerformanceNdr) {
+    for (const childElement of element.children ?? []) {
+      performResetPageElement(childElement);
+    }
+  }
   if (
     element.type === ElementType.Radio ||
     element.type === ElementType.Checkbox

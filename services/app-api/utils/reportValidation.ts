@@ -662,6 +662,21 @@ const ndrRateSchema = object().shape({
     .notRequired(),
 });
 
+const performanceNdrChildSchema = lazy((value: PageElement): Schema => {
+  switch (value?.type) {
+    case ElementType.SubHeader:
+      return subHeaderTemplateSchema;
+    case ElementType.Radio:
+      return radioTemplateSchema;
+    default:
+      return mixed().test(
+        "performance-ndr-child",
+        "Unsupported PerformanceNdr child type",
+        () => false
+      );
+  }
+});
+
 const performanceNdrSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.PerformanceNdr)),
   id: string().required(),
@@ -686,6 +701,7 @@ const performanceNdrSchema = object().shape({
   minPerformanceLevel: number().notRequired(),
   conditionalChildren: lazy(() => array().of(pageElementSchema).notRequired()),
   hideCondition: hideConditionSchema,
+  children: array().of(performanceNdrChildSchema).notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({
