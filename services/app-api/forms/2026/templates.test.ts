@@ -64,6 +64,31 @@ describe.each(reportsToTest)("Report Templates", ({ template, name }) => {
 
 describe("HA service type sections", () => {
   it.each(["hapch-1", "hapch-2"])(
+    "%s should hide the checkbox divider until any service is selected",
+    (pageId) => {
+      const elements = haReportTemplate.pages.find(
+        (page) => page.id === pageId
+      )!.elements!;
+      const checkboxIndex = elements.findIndex(
+        (element) => element.id === "service-types-checkbox"
+      );
+      expect(elements[checkboxIndex + 1]).toEqual({
+        type: ElementType.Divider,
+        id: "service-types-divider",
+        hideCondition: {
+          controllerElementId: "service-types-checkbox",
+          answerExcludes: [
+            "homemaker",
+            "home-health-aide",
+            "personal-care",
+            "habilitation",
+          ],
+        },
+      });
+    }
+  );
+
+  it.each(["hapch-1", "hapch-2"])(
     "%s should have unique element IDs so each section's fields are independent",
     (pageId) => {
       const page = haReportTemplate.pages.find((page) => page.id === pageId)!;

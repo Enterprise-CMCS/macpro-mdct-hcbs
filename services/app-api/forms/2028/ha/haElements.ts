@@ -1,5 +1,6 @@
 import {
   CheckboxTemplate,
+  DividerTemplate,
   ElementType,
   HideCondition,
   PageElement,
@@ -37,6 +38,12 @@ const showWhenSelected = (serviceTypes: string[]): HideCondition => ({
 const showWhenAnySelected = showWhenSelected(
   serviceTypeChoices.map((choice) => choice.value)
 );
+
+export const serviceTypesDivider: DividerTemplate = {
+  type: ElementType.Divider,
+  id: "service-types-divider",
+  hideCondition: showWhenAnySelected,
+};
 
 export const serviceTypeSection = (
   serviceType: string,

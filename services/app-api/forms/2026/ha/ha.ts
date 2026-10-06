@@ -7,7 +7,6 @@ import {
   AlertTypes,
 } from "../../../types/reports";
 import {
-  divider,
   exportToPDF,
   waiverListCheckboxField,
   waiverListInputField,
@@ -23,6 +22,7 @@ import {
   habilitationRate,
   habilitationHAPCH2Rate,
   serviceTypesCheckbox,
+  serviceTypesDivider,
   serviceTypeSection,
   additionalDetailsSection,
 } from "./haElements";
@@ -94,7 +94,7 @@ export const haReportTemplate: ReportBase = {
             "</ul>",
         },
         serviceTypesCheckbox,
-        divider,
+        serviceTypesDivider,
         ...serviceTypeSection("homemaker", homemakerRate),
         ...serviceTypeSection("home-health-aide", homeHealthAideRate),
         ...serviceTypeSection("personal-care", personalCareRate),
@@ -129,7 +129,7 @@ export const haReportTemplate: ReportBase = {
             "</ul>",
         },
         serviceTypesCheckbox,
-        divider,
+        serviceTypesDivider,
         ...serviceTypeSection("homemaker", homemakerHAPCH2Rate),
         ...serviceTypeSection("home-health-aide", homeHealthAideHAPCH2Rate),
         ...serviceTypeSection("personal-care", personalCareHAPCH2Rate),
