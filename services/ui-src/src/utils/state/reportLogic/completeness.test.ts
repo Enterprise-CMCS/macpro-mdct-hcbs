@@ -3,7 +3,9 @@ import {
   CheckboxTemplate,
   DateRangeTemplate,
   ElementType,
+  KeyActivityTableTemplate,
   LengthOfStayRateTemplate,
+  ListInputTemplate,
   MeasurePageTemplate,
   PerformanceNdrTemplate,
   MultiRateNdrTemplate,
@@ -14,6 +16,7 @@ import {
   PageType,
   RadioTemplate,
   Report,
+  ReadmissionRateTemplate,
   TextboxTemplate,
   PageTemplate,
   ComplianceRules,
@@ -1116,6 +1119,117 @@ describe("Report completeness utilities", () => {
       if (followUp.type !== ElementType.NumberField)
         throw new Error("Expected number field");
       followUp.answer = 20;
+      expect(elementSatisfiesRequired(element, [element])).toBe(true);
+    });
+
+    it.each([
+      undefined,
+      [{}],
+      [{ rates: [{ numerator: 7, rate: 1.4 }] }],
+      [{ denominator: 5, rates: [{ numerator: 7, rate: 1.4 }] }],
+      [{ denominator: 5, rates: [{ rate: 1.4 }] }],
+      [{ denominator: 5, rates: [{ numerator: 7 }] }],
+    ])(
+      "should accept incomplete MultiCategoryNdr elements when optional",
+      (answer) => {
+        const element = {
+          type: ElementType.MultiCategoryNdr,
+          answer,
+          required: false,
+        } as unknown as MultiCategoryNdrTemplate;
+        expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+      }
+    );
+
+    it("should reject incomplete ListInput", () => {
+      const element = {
+        type: ElementType.ListInput,
+        required: true,
+        answer: [""],
+      } as ListInputTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+    });
+
+    it.each([
+      ["no entries", []],
+      ["no answer", undefined],
+    ])("should reject required KeyActivityTable with %s", (_, answer) => {
+      const element = {
+        type: ElementType.KeyActivityTable,
+        id: "key-activities-table",
+        caption: "Key Activities",
+        required: true,
+        answer,
+      } as KeyActivityTableTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBeFalsy();
+    });
+
+    it("should accept required KeyActivityTable with at least one entry", () => {
+      const element = {
+        type: ElementType.KeyActivityTable,
+        id: "key-activities-table",
+        caption: "Key Activities",
+        required: true,
+        answer: [{ id: "1", title: "Some Activity" }],
+      } as KeyActivityTableTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
+    });
+
+    it("should reject ReadmissionRate with errors", () => {
+      const element = {
+        type: ElementType.ReadmissionRate,
+        required: true,
+        errors: { stayCount: "Mock error message" },
+        answer: {
+          stayCount: 42,
+          obsReadmissionCount: 42,
+          obsReadmissionRate: 42,
+          expReadmissionCount: 42,
+          expReadmissionRate: 42,
+          obsExpRatio: 42,
+          beneficiaryCount: 42,
+          outlierCount: 42,
+          outlierRate: 42,
+        },
+      } as ReadmissionRateTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBe(false);
+    });
+
+    it("should reject ReadmissionRate with missing fields", () => {
+      const element = {
+        type: ElementType.ReadmissionRate,
+        required: true,
+        answer: {
+          stayCount: 42,
+          obsReadmissionCount: 42,
+          obsReadmissionRate: 42,
+          expReadmissionCount: 42,
+          expReadmissionRate: 42,
+          obsExpRatio: 42,
+          beneficiaryCount: 42,
+          outlierCount: undefined,
+          outlierRate: 42,
+        },
+      } as ReadmissionRateTemplate;
+      expect(elementSatisfiesRequired(element, [element])).toBe(false);
+    });
+
+    it("should accept complete ReadmissionRate", () => {
+      const element = {
+        type: ElementType.ReadmissionRate,
+        required: true,
+        answer: {
+          stayCount: 42,
+          obsReadmissionCount: 42,
+          obsReadmissionRate: 42,
+          expReadmissionCount: 42,
+          expReadmissionRate: 42,
+          obsExpRatio: 42,
+          beneficiaryCount: 42,
+          outlierCount: 42,
+          outlierRate: 42,
+        },
+      } as ReadmissionRateTemplate;
       expect(elementSatisfiesRequired(element, [element])).toBe(true);
     });
   });
