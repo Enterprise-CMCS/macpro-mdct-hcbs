@@ -302,8 +302,6 @@ const imaVariant = {
           width: "4.5rem",
           minWidth: "4.5rem",
           textAlign: "center",
-          whiteSpace: "nowrap",
-          overflowWrap: "normal",
           paddingLeft: "0.375rem",
           paddingRight: "0.375rem",
         },

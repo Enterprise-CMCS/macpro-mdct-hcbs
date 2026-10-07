@@ -86,8 +86,10 @@ const tableHasAnyRelevantRowMatchingValue = (table: ImaTableTemplate) =>
 const tableHasAnyPartialOrAllNotReferredAnswers = (
   table: ImaTableTemplate
 ): ImaTableComplianceResult => {
-  const answeredRows = getEligibleAnswerRows(table);
-  if (!answeredRows?.length) return { isNonCompliant: undefined };
+  const answeredRows = getEligibleAnswerRows(table, true);
+  if (!answeredRows?.length || answeredRows.some((row) => !row.answer)) {
+    return { isNonCompliant: undefined };
+  }
 
   const isNonCompliant = !answeredRows.some((row) => row.answer === "both");
 

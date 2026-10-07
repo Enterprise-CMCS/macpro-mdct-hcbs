@@ -341,7 +341,7 @@ describe("isNotCompliant", () => {
   });
 
   it.each(["not-referred", "no-info-shared", "status-only", "resolution-only"])(
-    "flags only answered standard referral rows when none selects both (%s)",
+    "flags completed standard referral rows when none selects both (%s)",
     (answer) => {
       const table = createTable({
         complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
@@ -352,7 +352,11 @@ describe("isNotCompliant", () => {
             description: "Incident 2",
             answer: "not-referred",
           },
-          { id: "incident-3", description: "Incident 3" },
+          {
+            id: "incident-3",
+            description: "Incident 3",
+            answer: "not-referred",
+          },
           {
             id: "other",
             description: "Other entity",
@@ -364,7 +368,7 @@ describe("isNotCompliant", () => {
 
       expect(isImaTableNonCompliant(table)).toEqual({
         isNonCompliant: true,
-        nonCompliantRowIds: ["incident-1", "incident-2"],
+        nonCompliantRowIds: ["incident-1", "incident-2", "incident-3"],
       });
     }
   );
@@ -375,7 +379,6 @@ describe("isNotCompliant", () => {
     "status-only",
     "resolution-only",
     "both",
-    undefined,
   ])("is compliant when a referral row selects both alongside %s", (answer) => {
     const table = createTable({
       complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
@@ -390,6 +393,29 @@ describe("isNotCompliant", () => {
       nonCompliantRowIds: undefined,
     });
   });
+
+  it.each([
+    ["both", undefined],
+    ["both", ""],
+    ["not-referred", undefined],
+    ["status-only", ""],
+    [undefined, undefined],
+  ])(
+    "defers referral compliance until all standard rows are answered (%s, %s)",
+    (firstAnswer, secondAnswer) => {
+      const table = createTable({
+        complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+        rows: [
+          { id: "incident-1", description: "Incident 1", answer: firstAnswer },
+          { id: "incident-2", description: "Incident 2", answer: secondAnswer },
+        ],
+      }) as ImaTableTemplate;
+
+      expect(isImaTableNonCompliant(table)).toEqual({
+        isNonCompliant: undefined,
+      });
+    }
+  );
 
   it("ignores user-created referral rows when checking for both", () => {
     const table = createTable({

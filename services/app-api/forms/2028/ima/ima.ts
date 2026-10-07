@@ -706,7 +706,7 @@ export const imaReportTemplate: ReportBase = {
           id: "compliance-alert",
           status: AlertTypes.WARNING,
           title: "This incident management system appears to be non-compliant.",
-          text: "To be found in compliance, all HCBS programs under this IM system must use an electronic information system that complies with the security and privacy provisions described in 45 CFR Part 164, and collects, tracks, and identifies trends in electronic critical incident data.",
+          text: "To be found in compliance, if the state refers critical incidents to another entity for investigation, then the state and entity must both share status and resolution.",
           controllerElementId: ["investigation-referrals-question"],
         },
         {

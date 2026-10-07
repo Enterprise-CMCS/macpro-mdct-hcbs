@@ -86,9 +86,6 @@ describe("IMA Investigation Referrals", () => {
   ) as RadioTemplate;
 
   it("should not mark No as non-compliant", () => {
-    const page = imaReportTemplate.pages.find(
-      ({ id }) => id === "investigation-referrals"
-    );
     const question = page?.elements?.find(
       ({ id }) => id === "investigation-referrals-question"
     );
