@@ -411,6 +411,21 @@ describe("Investigation Referrals page", () => {
     getFollowUp().choices.find((choice) => choice.value === "yes")!
       .checkedChildren![0] as CheckboxTemplate;
 
+  const answerUnansweredReferralRows = async () => {
+    const table = getQuestion().choices.find(
+      (choice) => choice.value === "yes"
+    )!.checkedChildren![0] as ImaTableTemplate;
+    for (const row of table.answer ?? table.rows) {
+      if (!row.isUserCreated && !row.answer) {
+        await userEvent.click(
+          screen.getByRole("radio", {
+            name: `No Referral for ${row.description}`,
+          })
+        );
+      }
+    }
+  };
+
   const InvestigationReferralsPage = () => {
     const page = useStore(currentPageSelector)!;
     return (
@@ -477,9 +492,18 @@ describe("Investigation Referrals page", () => {
       })
     );
 
+    expect(screen.queryByText(warningTitle)).not.toBeInTheDocument();
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+    expect(screen.queryByText("Not compliant.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+
+    await answerUnansweredReferralRows();
+
     expect(screen.getByText(warningTitle)).toBeVisible();
     expect(screen.getByRole("separator")).toBeVisible();
-    expect(screen.getByText("Not compliant.")).toBeVisible();
+    expect(screen.getAllByText("Not compliant.")).toHaveLength(
+      table.getAllByRole("row").length - 1
+    );
     expect(
       screen.getByRole("textbox", {
         name: "Justification for system noncompliance:",
@@ -507,7 +531,9 @@ describe("Investigation Referrals page", () => {
     );
 
     expect(screen.getByText(warningTitle)).toBeVisible();
-    expect(screen.getAllByText("Not compliant.")).toHaveLength(2);
+    expect(screen.getAllByText("Not compliant.")).toHaveLength(
+      table.getAllByRole("row").length - 1
+    );
   });
 
   it("requires entity selections only for follow-up Yes and clears inactive answers", async () => {
@@ -595,6 +621,10 @@ describe("Investigation Referrals page", () => {
         name: "No Referral for Adult Protective Services (APS)",
       })
     );
+    expect(requiredAnswersAreSatisfied()).toBe(true);
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+
+    await answerUnansweredReferralRows();
     expect(requiredAnswersAreSatisfied()).toBe(false);
 
     await userEvent.type(
@@ -657,7 +687,14 @@ describe("Investigation Referrals page", () => {
         name: "Medicaid Fraud Control Unit (MFCU)",
       })
     ).toBeChecked();
+    expect(screen.queryByText(warningTitle)).not.toBeInTheDocument();
+    expect(screen.queryByText("Not compliant.")).not.toBeInTheDocument();
+
+    await answerUnansweredReferralRows();
+
     expect(screen.getByText(warningTitle)).toBeVisible();
-    expect(screen.getByText("Not compliant.")).toBeVisible();
+    expect(screen.getAllByText("Not compliant.")).toHaveLength(
+      within(screen.getByRole("table")).getAllByRole("row").length - 1
+    );
   });
 });
