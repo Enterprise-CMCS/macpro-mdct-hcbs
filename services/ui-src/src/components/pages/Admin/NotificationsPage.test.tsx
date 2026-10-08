@@ -2,12 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFlags } from "launchdarkly-react-client-sdk";
-import { sendTestEmail } from "utils/api/requestMethods/notifications";
 import { NotificationsPage } from "./NotificationsPage";
-
-vi.mock("utils/api/requestMethods/notifications", () => ({
-  sendTestEmail: vi.fn(),
-}));
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
   useFlags: vi.fn(),
@@ -18,8 +13,8 @@ describe("<NotificationsPage />", () => {
     vi.clearAllMocks();
     vi.mocked(useFlags).mockReturnValue({
       notificationsSystem: true,
+      isHaReportActive: true,
     } as ReturnType<typeof useFlags>);
-    vi.mocked(sendTestEmail).mockResolvedValue(undefined);
   });
 
   it("renders the notification assignment guidance", async () => {
@@ -47,7 +42,7 @@ describe("<NotificationsPage />", () => {
     expect(screen.getByText(/Edit or remove assignments:/)).toBeVisible();
   });
 
-  it("shows the test email controls only when the feature is enabled", () => {
+  it("hides Add email when the feature is disabled", () => {
     vi.mocked(useFlags).mockReturnValue({
       notificationsSystem: false,
     } as ReturnType<typeof useFlags>);
@@ -55,60 +50,57 @@ describe("<NotificationsPage />", () => {
     render(<NotificationsPage />);
 
     expect(
-      screen.queryByPlaceholderText("Enter recipient email")
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Send Test Email" })
+      screen.queryByRole("button", { name: "Add email" })
     ).not.toBeInTheDocument();
   });
 
-  it("enables sending after an email address is entered and sends the test email", async () => {
+  it("opens the modal and resets the form after canceling", async () => {
     const user = userEvent.setup();
     render(<NotificationsPage />);
 
-    const sendButton = screen.getByRole("button", { name: "Send Test Email" });
-    expect(sendButton).toBeDisabled();
-
+    await user.click(screen.getByRole("button", { name: "Add email" }));
+    expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
     await user.type(
-      screen.getByPlaceholderText("Enter recipient email"),
-      "tester@example.com"
+      screen.getByRole("textbox", { name: /Email/ }),
+      "po@example.com"
     );
-    expect(sendButton).toBeEnabled();
-
-    await user.click(sendButton);
-
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
     await waitFor(() => {
-      expect(sendTestEmail).toHaveBeenCalledWith({
-        toAddress: "tester@example.com",
-        subject: "HCBS Notification Test",
-        message: "This is a test notification from the HCBS system.",
-      });
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
-    expect(sendButton).toBeEnabled();
+    await user.click(screen.getByRole("button", { name: "Add email" }));
+    expect(screen.getByRole("textbox", { name: /Email/ })).toHaveValue("");
   });
 
-  it("shows a loading state while the test email is being sent", async () => {
+  it("disables Add email for a read-only page", () => {
+    render(<NotificationsPage disabled />);
+    expect(screen.getByRole("button", { name: "Add email" })).toBeDisabled();
+  });
+
+  it("reports that saving is unavailable when persistence is not supplied", async () => {
     const user = userEvent.setup();
-    let resolveEmailRequest!: () => void;
-    vi.mocked(sendTestEmail).mockReturnValue(
-      new Promise<void>((resolve) => {
-        resolveEmailRequest = resolve;
+    render(<NotificationsPage />);
+    await user.click(screen.getByRole("button", { name: "Add email" }));
+    await user.type(
+      screen.getByRole("textbox", { name: /Email/ }),
+      "po@example.com"
+    );
+    await user.click(screen.getByRole("button", { name: /^States/ }));
+    await user.click(
+      await screen.findByRole("menuitemcheckbox", { name: "Alabama" })
+    );
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: /^Report Types/ }));
+    await user.click(
+      await screen.findByRole("menuitemcheckbox", {
+        name: /HA: HCBS Access Report/,
       })
     );
-    render(<NotificationsPage />);
-
-    await user.type(
-      screen.getByPlaceholderText("Enter recipient email"),
-      "tester@example.com"
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "Save" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Saving assignments is not available yet."
     );
-    const sendButton = screen.getByRole("button", { name: "Send Test Email" });
-    await user.click(sendButton);
-
-    expect(sendButton).toBeDisabled();
-
-    resolveEmailRequest();
-    await waitFor(() => {
-      expect(sendButton).toBeEnabled();
-    });
+    expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
   });
 });
