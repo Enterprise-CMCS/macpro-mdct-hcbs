@@ -2,11 +2,22 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mockHelpDeskUser, mockStateUser } from "utils/testing/setupTests";
 import { useNavigate, useParams } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import { render, screen } from "@testing-library/react";
-import { ElementType, PageElement } from "types/report";
+import { render, screen, within } from "@testing-library/react";
+import {
+  CheckboxTemplate,
+  ElementType,
+  ImaTableTemplate,
+  isFormPageTemplate,
+  PageElement,
+  RadioTemplate,
+  Report,
+} from "types/report";
 import { useStore } from "utils";
 import { Page } from "./Page";
 import { AlertTypes } from "types";
+import { currentPageSelector } from "utils/state/selectors";
+import { elementSatisfiesRequired } from "utils/state/reportLogic/completeness";
+import { imaReportTemplate } from "../../../../app-api/forms/2028/ima/ima";
 
 vi.mock("react-router-dom", () => ({
   useNavigate: vi.fn(),
@@ -378,5 +389,275 @@ describe("<Page/>", () => {
       const dateField = screen.getByRole("textbox");
       expect(dateField).toBeDisabled();
     });
+  });
+});
+
+describe("Investigation Referrals page", () => {
+  const followUpLabel =
+    "Does that state have an interagency information-sharing agreement (e.g. MOU) with any entities?";
+  const warningTitle =
+    "This incident management system appears to be non-compliant.";
+
+  const getQuestion = () =>
+    currentPageSelector(useStore.getState())!.elements!.find(
+      (element) => element.id === "investigation-referrals-question"
+    ) as RadioTemplate;
+
+  const getFollowUp = () =>
+    getQuestion().choices.find((choice) => choice.value === "yes")!
+      .checkedChildren![1] as RadioTemplate;
+
+  const getEntities = () =>
+    getFollowUp().choices.find((choice) => choice.value === "yes")!
+      .checkedChildren![0] as CheckboxTemplate;
+
+  const InvestigationReferralsPage = () => {
+    const page = useStore(currentPageSelector)!;
+    return (
+      <Page
+        id={page.id}
+        elements={page.elements!}
+        setElements={(updatedElements) => {
+          const report = useStore.getState().report!;
+          useStore.setState({
+            report: {
+              ...report,
+              pages: report.pages.map((reportPage) =>
+                isFormPageTemplate(reportPage) && reportPage.id === page.id
+                  ? { ...reportPage, elements: updatedElements }
+                  : reportPage
+              ),
+            },
+          });
+        }}
+      />
+    );
+  };
+
+  beforeEach(() => {
+    const report = structuredClone(imaReportTemplate) as unknown as Report;
+    useStore.setState({
+      user: mockStateUser,
+      report,
+      pageMap: new Map(report.pages.map((page, index) => [page.id, index])),
+      currentPageId: "investigation-referrals",
+    });
+  });
+
+  it("shows the table and follow-up only when the main answer is Yes", async () => {
+    render(<InvestigationReferralsPage />);
+
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    expect(screen.queryByText(followUpLabel)).not.toBeInTheDocument();
+    expect(screen.queryByText(warningTitle)).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("radio", { name: "No" }));
+
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    expect(screen.queryByText(warningTitle)).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("radio", { name: "Yes" }));
+
+    expect(screen.getByRole("table")).toBeVisible();
+    expect(
+      screen.getByRole("radiogroup", { name: followUpLabel })
+    ).toBeVisible();
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(screen.queryByText(warningTitle)).not.toBeInTheDocument();
+  });
+
+  it("updates row flags and compliance-dependent fields through the parent radio", async () => {
+    render(<InvestigationReferralsPage />);
+    await userEvent.click(screen.getByRole("radio", { name: "Yes" }));
+
+    const table = within(screen.getByRole("table"));
+    await userEvent.click(
+      table.getByRole("radio", {
+        name: "Status Only for Provider licensing and/or credentialing",
+      })
+    );
+
+    expect(screen.getByText(warningTitle)).toBeVisible();
+    expect(screen.getByRole("separator")).toBeVisible();
+    expect(screen.getByText("Not compliant.")).toBeVisible();
+    expect(
+      screen.getByRole("textbox", {
+        name: "Justification for system noncompliance:",
+      })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("textbox", { name: /What actions will the state take/ })
+    ).toBeVisible();
+
+    await userEvent.click(
+      table.getByRole("radio", {
+        name: "Status & Resolution for Adult Protective Services (APS)",
+      })
+    );
+
+    expect(screen.queryByText(warningTitle)).not.toBeInTheDocument();
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+    expect(screen.queryByText("Not compliant.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+
+    await userEvent.click(
+      table.getByRole("radio", {
+        name: "No Referral for Adult Protective Services (APS)",
+      })
+    );
+
+    expect(screen.getByText(warningTitle)).toBeVisible();
+    expect(screen.getAllByText("Not compliant.")).toHaveLength(2);
+  });
+
+  it("requires entity selections only for follow-up Yes and clears inactive answers", async () => {
+    render(<InvestigationReferralsPage />);
+    await userEvent.click(screen.getByRole("radio", { name: "Yes" }));
+
+    const pageElements = () =>
+      currentPageSelector(useStore.getState())!.elements!;
+    expect(elementSatisfiesRequired(getQuestion(), pageElements())).toBe(false);
+
+    const followUp = within(
+      screen.getByRole("radiogroup", { name: followUpLabel })
+    );
+    await userEvent.click(followUp.getByRole("radio", { name: "Yes" }));
+
+    expect(screen.getAllByRole("checkbox")).toHaveLength(10);
+    expect(elementSatisfiesRequired(getQuestion(), pageElements())).toBe(false);
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Adult Protective Services (APS)" })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "Child Protective Services (CPS)" })
+    );
+
+    expect(getEntities().answer).toEqual([
+      "adult-protective-services",
+      "child-protective-services",
+    ]);
+    expect(elementSatisfiesRequired(getQuestion(), pageElements())).toBe(true);
+
+    await userEvent.click(followUp.getByRole("radio", { name: "No" }));
+
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(getEntities().answer).toBeUndefined();
+    expect(elementSatisfiesRequired(getQuestion(), pageElements())).toBe(true);
+
+    await userEvent.click(followUp.getByRole("radio", { name: "Yes" }));
+    expect(
+      screen
+        .getAllByRole("checkbox")
+        .every((checkbox) => !(checkbox as HTMLInputElement).checked)
+    ).toBe(true);
+    expect(elementSatisfiesRequired(getQuestion(), pageElements())).toBe(false);
+
+    const mainNoAnswer = screen
+      .getAllByRole("radio", { name: "No" })
+      .find(
+        (radio) =>
+          radio.getAttribute("name") === "investigation-referrals-question"
+      )!;
+    await userEvent.click(mainNoAnswer);
+
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    expect(screen.queryByText(followUpLabel)).not.toBeInTheDocument();
+    expect(getFollowUp().answer).toBeUndefined();
+    expect(getEntities().answer).toBeUndefined();
+    const table = getQuestion().choices.find(
+      (choice) => choice.value === "yes"
+    )!.checkedChildren![0] as ImaTableTemplate;
+    expect(table.answer).toBeUndefined();
+    expect(elementSatisfiesRequired(getQuestion(), pageElements())).toBe(true);
+  });
+
+  it("requires justifications only while the referral table is non-compliant", async () => {
+    render(<InvestigationReferralsPage />);
+    await userEvent.click(screen.getByRole("radio", { name: "Yes" }));
+    await userEvent.click(
+      within(screen.getByRole("radiogroup", { name: followUpLabel })).getByRole(
+        "radio",
+        { name: "No" }
+      )
+    );
+
+    const requiredAnswersAreSatisfied = () => {
+      const pageElements = currentPageSelector(useStore.getState())!.elements!;
+      return pageElements.every((element) =>
+        elementSatisfiesRequired(element, pageElements)
+      );
+    };
+    expect(requiredAnswersAreSatisfied()).toBe(true);
+
+    await userEvent.click(
+      screen.getByRole("radio", {
+        name: "No Referral for Adult Protective Services (APS)",
+      })
+    );
+    expect(requiredAnswersAreSatisfied()).toBe(false);
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: "Justification for system noncompliance:",
+      }),
+      "Agreement is being revised."
+    );
+    await userEvent.tab();
+    expect(requiredAnswersAreSatisfied()).toBe(false);
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /What actions will the state take/ }),
+      "Complete the revision next quarter."
+    );
+    await userEvent.tab();
+    expect(requiredAnswersAreSatisfied()).toBe(true);
+
+    await userEvent.click(
+      screen.getByRole("radio", {
+        name: "Status & Resolution for Adult Protective Services (APS)",
+      })
+    );
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    expect(requiredAnswersAreSatisfied()).toBe(true);
+  });
+
+  it("restores nested table and checkbox answers when the page is reopened", async () => {
+    const { unmount } = render(<InvestigationReferralsPage />);
+    await userEvent.click(screen.getByRole("radio", { name: "Yes" }));
+    await userEvent.click(
+      screen.getByRole("radio", {
+        name: "Status Only for Provider licensing and/or credentialing",
+      })
+    );
+    await userEvent.click(
+      within(screen.getByRole("radiogroup", { name: followUpLabel })).getByRole(
+        "radio",
+        { name: "Yes" }
+      )
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: "Medicaid Fraud Control Unit (MFCU)",
+      })
+    );
+
+    const savedReport = structuredClone(useStore.getState().report!);
+    unmount();
+    useStore.setState({ report: savedReport });
+    render(<InvestigationReferralsPage />);
+
+    expect(
+      screen.getByRole("radio", {
+        name: "Status Only for Provider licensing and/or credentialing",
+      })
+    ).toBeChecked();
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Medicaid Fraud Control Unit (MFCU)",
+      })
+    ).toBeChecked();
+    expect(screen.getByText(warningTitle)).toBeVisible();
+    expect(screen.getByText("Not compliant.")).toBeVisible();
   });
 });

@@ -23,6 +23,7 @@ const identifyUserCreatedRows = (
 export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   const { element, updateElement, disabled = false } = props;
   const {
+    id,
     caption,
     columns,
     label,
@@ -79,6 +80,7 @@ export const ImaTableElement = (props: PageElementProps<ImaTableTemplate>) => {
   return (
     <ImaTable
       {...{
+        tableId: id,
         caption,
         columns,
         rows,
