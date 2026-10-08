@@ -16,7 +16,7 @@ export const QipDeleteModal = (
         <Button colorScheme="blue" onClick={onConfirm}>
           {confirmLabel}
         </Button>
-        <Button variant="link" fontWeight="bold" onClick={onClose}>
+        <Button variant="link" onClick={onClose}>
           Cancel
         </Button>
       </ModalFooter>
