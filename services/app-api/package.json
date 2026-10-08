@@ -12,7 +12,7 @@
     "@aws-sdk/client-ses": "~3.1012.0",
     "@aws-sdk/lib-dynamodb": "~3.1100.0",
     "@launchdarkly/node-server-sdk": "^9.11.1",
-    "dompurify": "^3.4.13",
+    "dompurify": "^3.4.16",
     "jsdom": "^26.0.0",
     "jwt-decode": "3.1.2",
     "kafkajs": "^2.2.4",
@@ -23,11 +23,11 @@
   "devDependencies": {
     "@types/jsdom": "20.0.0",
     "@types/node": "^22.5.1",
-    "@vitest/coverage-v8": "^4.1.5",
+    "@vitest/coverage-v8": "^4.1.11",
     "aws-sdk-client-mock": "~4.1.0",
     "dotenv": "^16.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.11"
   }
 }

@@ -8,8 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "coverage": "vitest --run --coverage",
-    "test": "vitest",
-    "a11y": "pa11y --runner axe --runner htmlcs"
+    "test": "vitest"
   },
   "dependencies": {
     "@chakra-ui/react": "2.10.6",
@@ -22,7 +21,7 @@
     "core-js": "^3.41.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
-    "dompurify": "^3.4.13",
+    "dompurify": "^3.4.16",
     "framer-motion": "^11",
     "html-react-parser": "^3.0.16",
     "launchdarkly-react-client-sdk": "^3.9.3",
@@ -45,12 +44,10 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-helmet": "^6.1.11",
     "@vitejs/plugin-react": "^6.0.1",
-    "@vitest/coverage-v8": "^4.1.5",
+    "@vitest/coverage-v8": "^4.1.11",
     "axe-core": "^4.13.0",
-    "pa11y": "^6.2.3",
-    "pa11y-runner-htmlcs": "^2.0.1",
     "typescript": "^5.9.3",
     "vite": "^8.0.16",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.11"
   }
 }
