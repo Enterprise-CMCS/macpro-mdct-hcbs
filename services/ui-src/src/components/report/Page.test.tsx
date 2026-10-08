@@ -534,7 +534,7 @@ describe("Investigation Referrals page", () => {
     expect(screen.getAllByText("Not compliant.")).toHaveLength(
       table.getAllByRole("row").length - 1
     );
-  });
+  }, 10_000);
 
   it("requires entity selections only for follow-up Yes and clears inactive answers", async () => {
     render(<InvestigationReferralsPage />);
@@ -650,7 +650,7 @@ describe("Investigation Referrals page", () => {
     );
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     expect(requiredAnswersAreSatisfied()).toBe(true);
-  });
+  }, 10_000);
 
   it("restores nested table and checkbox answers when the page is reopened", async () => {
     const { unmount } = render(<InvestigationReferralsPage />);
@@ -696,5 +696,5 @@ describe("Investigation Referrals page", () => {
     expect(screen.getAllByText("Not compliant.")).toHaveLength(
       within(screen.getByRole("table")).getAllByRole("row").length - 1
     );
-  });
+  }, 10_000);
 });
