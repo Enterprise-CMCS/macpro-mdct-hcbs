@@ -77,9 +77,14 @@ export const performResetMeasure = (measureId: string, report: Report) => {
 /**
  * Resets an element back to a pristine state, useful for more complex types
  */
-const performResetPageElement = (element: PageElement) => {
+export const performResetPageElement = (element: PageElement) => {
   if ("answer" in element) {
     element.answer = undefined;
+  }
+  if (element.type === ElementType.PerformanceNdr) {
+    for (const childElement of element.children ?? []) {
+      performResetPageElement(childElement);
+    }
   }
   if (
     element.type === ElementType.Radio ||

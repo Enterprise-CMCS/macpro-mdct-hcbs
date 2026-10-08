@@ -16,9 +16,9 @@ import {
   PageType,
   RadioTemplate,
   Report,
+  ReadmissionRateTemplate,
   TextboxTemplate,
   PageTemplate,
-  ReadmissionRateTemplate,
   ComplianceRules,
 } from "types";
 import {
@@ -31,6 +31,121 @@ import {
 import { isNotCompliant } from "./compliance";
 
 describe("Report completeness utilities", () => {
+  describe("service type measure completion", () => {
+    it.each([
+      {
+        answer: undefined,
+        filledServices: ["homemaker", "personal-care"],
+        complete: false,
+      },
+      {
+        answer: [],
+        filledServices: ["homemaker", "personal-care"],
+        complete: false,
+      },
+      { answer: ["homemaker"], filledServices: [], complete: false },
+      { answer: ["homemaker"], filledServices: ["homemaker"], complete: true },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker"],
+        complete: false,
+      },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker", "personal-care"],
+        complete: true,
+      },
+      {
+        answer: [],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker", "personal-care"],
+        complete: false,
+      },
+      {
+        answer: ["homemaker"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: [],
+        complete: false,
+      },
+      {
+        answer: ["homemaker"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker"],
+        complete: true,
+      },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker"],
+        complete: false,
+      },
+      {
+        answer: ["homemaker", "personal-care"],
+        filledServices: ["homemaker", "personal-care"],
+        filledSampling: ["homemaker", "personal-care"],
+        complete: true,
+      },
+    ])(
+      "requires selected services to be filled: $answer / $filledServices / $filledSampling",
+      ({ answer, filledServices, filledSampling, complete }) => {
+        const serviceTypes = ["homemaker", "personal-care"];
+        const report = {
+          pages: [
+            {
+              id: "access-measure",
+              type: PageType.Measure,
+              elements: [
+                {
+                  id: "service-types",
+                  type: ElementType.Checkbox,
+                  label: "Service types",
+                  required: true,
+                  choices: serviceTypes.map((value) => ({
+                    value,
+                    label: value,
+                  })),
+                  answer,
+                },
+                ...serviceTypes.map((serviceType) => ({
+                  id: `${serviceType}-rate`,
+                  type: ElementType.PerformanceNdr,
+                  required: true,
+                  hideCondition: {
+                    controllerElementId: "service-types",
+                    answerExcludes: [serviceType],
+                  },
+                  answer: filledServices.includes(serviceType)
+                    ? { numerator: 1, denominator: 2, rate: 50 }
+                    : undefined,
+                  children: filledSampling
+                    ? [
+                        {
+                          id: `${serviceType}-sampling`,
+                          type: ElementType.Radio,
+                          label: "Sampling methodology",
+                          required: true,
+                          choices: [
+                            {
+                              label: "Entire population",
+                              value: "Entire population",
+                            },
+                          ],
+                          answer: filledSampling.includes(serviceType)
+                            ? "Entire population"
+                            : undefined,
+                        },
+                      ]
+                    : undefined,
+                })),
+              ],
+            },
+          ],
+        } as Report;
+        expect(pageIsCompletable(report, "access-measure")).toBe(complete);
+      }
+    );
+  });
+
   describe("isNotCompliant", () => {
     const table = {
       id: "ima-table",
@@ -518,6 +633,34 @@ describe("Report completeness utilities", () => {
       ).toBeFalsy();
     });
 
+    it("should hide answerExcludes elements until the controller answer includes the value", () => {
+      const condition = {
+        controllerElementId: "service-types",
+        answerExcludes: ["homemaker", "habilitation"],
+      };
+      const checkbox = (answer?: string[]) =>
+        [
+          {
+            id: "service-types",
+            type: ElementType.Checkbox,
+            label: "Service types",
+            choices: [],
+            required: true,
+            ...(answer && { answer }),
+          },
+        ] as PageElement[];
+
+      expect(elementIsHidden(condition, checkbox())).toBe(true);
+      expect(elementIsHidden(condition, checkbox([]))).toBe(true);
+      expect(elementIsHidden(condition, checkbox(["personal-care"]))).toBe(
+        true
+      );
+      expect(
+        elementIsHidden(condition, checkbox(["personal-care", "homemaker"]))
+      ).toBe(false);
+      expect(elementIsHidden(condition, [])).toBe(false);
+    });
+
     it("should hide elements until a controller table is non-compliant", () => {
       const compliantTable = {
         id: "ima-table",
@@ -713,6 +856,17 @@ describe("Report completeness utilities", () => {
       expect(
         elementSatisfiesRequired(incompleteCheckbox, [incompleteCheckbox])
       ).toBeFalsy();
+    });
+
+    it("should reject a required checkbox with no selections", () => {
+      const checkbox = {
+        id: "empty-checkbox",
+        answer: [],
+        type: ElementType.Checkbox,
+        choices: [{ label: "me", value: "foo" }],
+        required: true,
+      } as unknown as CheckboxTemplate;
+      expect(elementSatisfiesRequired(checkbox, [checkbox])).toBeFalsy();
     });
 
     it("should accept complete LengthOfStay rates", () => {
@@ -981,7 +1135,7 @@ describe("Report completeness utilities", () => {
         const element = {
           type: ElementType.MultiCategoryNdr,
           answer,
-          required: false, // ← It's not required
+          required: false,
         } as unknown as MultiCategoryNdrTemplate;
         expect(elementSatisfiesRequired(element, [element])).toBeTruthy();
       }

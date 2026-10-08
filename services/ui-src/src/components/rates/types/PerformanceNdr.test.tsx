@@ -6,6 +6,12 @@ import { ElementType, PerformanceNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
 import { ErrorMessages } from "../../../constants";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
+
+vi.mock("utils/state/hooks/useElementIsHidden", () => ({
+  useElementIsHidden: vi.fn().mockReturnValue(false),
+}));
+const mockUseElementIsHidden = vi.mocked(useElementIsHidden);
 import { useStore } from "utils";
 import { mockStateUser } from "utils/testing/setupTests";
 
@@ -59,6 +65,24 @@ describe("<PerformanceNdr />", () => {
         screen.getByRole("textbox", { name: "Result" })
       ).toBeInTheDocument();
       expect(screen.getByRole("textbox", { name: "Result" })).toBeDisabled();
+    });
+
+    it("should not render when its hide condition is met", () => {
+      mockUseElementIsHidden.mockReturnValueOnce(true);
+      render(
+        <PerformanceNdrWrapper
+          template={{
+            ...mockedElement,
+            hideCondition: {
+              controllerElementId: "service-types-checkbox",
+              answerExcludes: ["homemaker"],
+            },
+          }}
+        />
+      );
+      expect(
+        screen.queryByRole("textbox", { name: "Numerator" })
+      ).not.toBeInTheDocument();
     });
 
     it("renders and saves always-visible nested sampling questions", async () => {

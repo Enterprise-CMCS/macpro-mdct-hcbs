@@ -21,6 +21,7 @@ import {
 } from "../../../constants";
 import { Alert, Page } from "components";
 import { ExportRateTable } from "components/export/ExportedReportTable";
+import { useElementIsHidden } from "utils/state/hooks/useElementIsHidden";
 
 const FieldNames = {
   numerator: "numerator",
@@ -29,6 +30,14 @@ const FieldNames = {
 type FieldName = (typeof FieldNames)[keyof typeof FieldNames];
 
 export const PerformanceNdr = (
+  props: PageElementProps<PerformanceNdrTemplate>
+) => {
+  const hideElement = useElementIsHidden(props.element.hideCondition);
+  if (hideElement) return null;
+  return <PerformanceNdrFields {...props} />;
+};
+
+const PerformanceNdrFields = (
   props: PageElementProps<PerformanceNdrTemplate>
 ) => {
   const { updateElement, disabled, element } = props;

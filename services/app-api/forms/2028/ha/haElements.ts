@@ -1,9 +1,60 @@
 import {
+  CheckboxTemplate,
+  DividerTemplate,
   ElementType,
+  HideCondition,
+  PageElement,
   PerformanceNdrTemplate,
   TextAreaBoxTemplate,
 } from "../../../types/reports";
-import { stateSamplingMethologyQuestion } from "../elements";
+import {
+  additionalNotesField,
+  didYouFollowSpecifications,
+  stateSamplingMethologyQuestion,
+} from "../elements";
+
+const serviceTypeChoices = [
+  { label: "Homemaker", value: "homemaker" },
+  { label: "Home Health Aide", value: "home-health-aide" },
+  { label: "Personal Care", value: "personal-care" },
+  { label: "Habilitation", value: "habilitation" },
+];
+
+export const serviceTypesCheckbox: CheckboxTemplate = {
+  type: ElementType.Checkbox,
+  id: "service-types-checkbox",
+  label: "Which service types are included in this measure?",
+  helperText: "Select all that apply.",
+  choices: serviceTypeChoices,
+  required: true,
+  clickAction: "serviceTypeChange",
+};
+
+const showWhenSelected = (serviceTypes: string[]): HideCondition => ({
+  controllerElementId: serviceTypesCheckbox.id,
+  answerExcludes: serviceTypes,
+});
+
+const showWhenAnySelected = showWhenSelected(
+  serviceTypeChoices.map((choice) => choice.value)
+);
+
+export const serviceTypesDivider: DividerTemplate = {
+  type: ElementType.Divider,
+  id: "service-types-divider",
+  hideCondition: showWhenAnySelected,
+};
+
+export const serviceTypeSection = (
+  serviceType: string,
+  rate: PerformanceNdrTemplate
+): PageElement[] => {
+  const hideCondition = showWhenSelected([serviceType]);
+  return [
+    { ...rate, hideCondition },
+    { type: ElementType.Divider, id: `${serviceType}-divider`, hideCondition },
+  ];
+};
 
 const stateSamplingMethologyQuestionHAReport = (
   rateId: string
@@ -40,7 +91,22 @@ export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
     "Brief explanation of the state's process to convert service units into hours.",
   label: "Conversion of service units into hours",
   required: true,
+  hideCondition: showWhenAnySelected,
 };
+
+export const additionalDetailsSection = (
+  extraFields: TextAreaBoxTemplate[] = []
+): PageElement[] => [
+  {
+    type: ElementType.SubHeader,
+    id: "additional-details-subheader",
+    text: "Additional Details",
+    hideCondition: showWhenAnySelected,
+  },
+  ...extraFields,
+  { ...didYouFollowSpecifications, hideCondition: showWhenAnySelected },
+  { ...additionalNotesField, hideCondition: showWhenAnySelected },
+];
 
 // Rates for Homemaker for HAPC-1 measure
 export const homemakerRate = withSamplingMethodology({

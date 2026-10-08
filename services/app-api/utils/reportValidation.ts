@@ -24,7 +24,8 @@ import { error } from "./constants";
 const hideConditionSchema = object()
   .shape({
     controllerElementId: string().required(),
-    answer: string().required(),
+    answer: string().notRequired(),
+    answerExcludes: array().of(string().required()).notRequired(),
   })
   .notRequired()
   .default(undefined);
@@ -284,6 +285,7 @@ const checkboxTemplateSchema = object().shape({
   emptyAlertTitle: string().notRequired(),
   emptyAlertDescription: string().notRequired(),
   required: boolean().required(),
+  clickAction: string().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({
@@ -298,6 +300,7 @@ const dividerSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Divider)),
   id: string().required(),
   showWhenNonCompliant: array().of(string().required()).notRequired(),
+  hideCondition: hideConditionSchema,
 });
 
 const submissionParagraphSchema = object().shape({
@@ -697,6 +700,7 @@ const performanceNdrSchema = object().shape({
   displayRateAsPercent: boolean().notRequired(),
   minPerformanceLevel: number().notRequired(),
   conditionalChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+  hideCondition: hideConditionSchema,
   children: array().of(performanceNdrChildSchema).notRequired(),
 });
 

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ElementType, PageElement } from "../../types/reports";
 import {
   isReportOptions,
   validateReportPayload,
@@ -132,6 +133,48 @@ describe("reportValidation", () => {
     it("should strip out any non-editable fields", async () => {
       const validatedData = await validateReportEditPayload(validReport);
       expect(validatedData).toEqual({ name: validReport.name });
+    });
+
+    it("should preserve service type checkbox clickAction and answerExcludes hide conditions", async () => {
+      const report = structuredClone(validReport);
+      const page = report.pages.find((page) => "elements" in page)!;
+      const serviceTypeElements = [
+        {
+          type: ElementType.Checkbox,
+          id: "service-types-checkbox",
+          label: "Which service types are included in this measure?",
+          choices: [{ label: "Homemaker", value: "homemaker" }],
+          answer: ["homemaker"],
+          required: true,
+          clickAction: "serviceTypeChange",
+        },
+        {
+          type: ElementType.PerformanceNdr,
+          id: "homemaker-1-rate",
+          required: true,
+          hideCondition: {
+            controllerElementId: "service-types-checkbox",
+            answerExcludes: ["homemaker"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "homemaker-divider",
+          hideCondition: {
+            controllerElementId: "service-types-checkbox",
+            answerExcludes: ["homemaker"],
+          },
+        },
+      ] as PageElement[];
+      page.elements!.push(...serviceTypeElements);
+
+      const validatedData = await validateReportPayload(report);
+      const validatedPage = validatedData.pages.find(
+        (validated) => validated.id === page.id
+      )!;
+      expect(validatedPage.elements!.slice(-3)).toMatchObject(
+        serviceTypeElements
+      );
     });
   });
 
