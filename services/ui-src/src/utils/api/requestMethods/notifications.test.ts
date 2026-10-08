@@ -1,11 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { updateTimeout } from "../../auth/authLifecycle";
 import { ReportType } from "types";
-import {
-  getNotifications,
-  updateNotifications,
-  sendTestEmail,
-} from "./notifications";
+import { getNotifications, updateNotifications } from "./notifications";
 import { apiLib } from "../apiLib";
 
 vi.mock("../apiLib", () => ({
@@ -45,24 +41,6 @@ describe("utils/notifications", () => {
         "/notifications",
         expect.objectContaining({
           body: { category: ReportType.CI, enabled: true },
-        })
-      );
-    });
-  });
-
-  describe("sendTestEmail()", () => {
-    it("should call the correct endpoint", async () => {
-      const payload = {
-        toAddress: "test@example.com",
-        subject: "Test Subject",
-        message: "Test message",
-      };
-      await sendTestEmail(payload);
-      expect(updateTimeout).toHaveBeenCalled();
-      expect(vi.mocked(apiLib.post)).toHaveBeenCalledWith(
-        "/notifications/test-email",
-        expect.objectContaining({
-          body: payload,
         })
       );
     });

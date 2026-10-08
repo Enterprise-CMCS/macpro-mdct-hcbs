@@ -4,30 +4,25 @@ import {
   Button,
   Flex,
   Heading,
-  Input,
+  Image,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
+import addIcon from "assets/icons/add/icon_add_blue.svg";
 import { AccordionItem, PageTemplate } from "components";
-import { useState } from "react";
-
-import { sendTestEmail } from "utils/api/requestMethods/notifications";
 import { useFlags } from "launchdarkly-react-client-sdk";
+import { AddEmailModal } from "./AddEmailModal";
+import { NotificationAssignment } from "types/notification";
 
-export const NotificationsPage = () => {
-  const [sending, setSending] = useState(false);
-  const [testEmailAddress, setTestEmailAddress] = useState("");
+export const NotificationsPage = ({
+  disabled = false,
+  onAddEmail,
+}: {
+  disabled?: boolean;
+  onAddEmail?: (assignment: NotificationAssignment) => Promise<void>;
+}) => {
   const { notificationsSystem } = useFlags() ?? {};
-
-  const handleSendEmail = async () => {
-    setSending(true);
-    await sendTestEmail({
-      toAddress: testEmailAddress,
-      subject: "HCBS Notification Test",
-      message: "This is a test notification from the HCBS system.",
-    });
-    setSending(false);
-  };
-
+  const modalDisclosure = useDisclosure();
   return (
     <PageTemplate>
       <Box sx={sx.introTextBox}>
@@ -83,28 +78,31 @@ export const NotificationsPage = () => {
       </Box>
       <Box>
         {notificationsSystem && (
-          <Box mt="spacer4">
+          <Box mt="spacer1">
             <Flex gap="spacer2" align="center">
-              <Input
-                sx={sx.emailInput}
-                type="email"
-                placeholder="Enter recipient email"
-                value={testEmailAddress}
-                onChange={(e) => setTestEmailAddress(e.target.value)}
-              />
               <Button
-                sx={sx.sendButton}
-                loadingText="Sending..."
-                isLoading={sending}
-                isDisabled={!testEmailAddress}
-                onClick={handleSendEmail}
+                variant="outline"
+                leftIcon={<Image src={addIcon} alt="" />}
+                onClick={modalDisclosure.onOpen}
+                isDisabled={disabled}
               >
-                Send Test Email
+                Add email
               </Button>
             </Flex>
           </Box>
         )}
       </Box>
+      {notificationsSystem && modalDisclosure.isOpen && (
+        <AddEmailModal
+          modalDisclosure={modalDisclosure}
+          onSubmit={async (assignment) => {
+            if (!onAddEmail) {
+              throw new Error("Saving assignments is not available yet.");
+            }
+            await onAddEmail(assignment);
+          }}
+        />
+      )}
     </PageTemplate>
   );
 };
@@ -113,12 +111,6 @@ const sx = {
   accordion: {
     marginTop: "spacer4",
     color: "palette.base",
-  },
-  emailInput: {
-    maxWidth: "20rem",
-  },
-  sendButton: {
-    padding: "0 1.5rem",
   },
   introTextBox: {
     width: "100%",

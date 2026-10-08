@@ -6,6 +6,7 @@ const baseStyles = {
     ".close": {
       position: "absolute",
       right: "spacer4",
+      fontWeight: "bold",
     },
     borderRadius: "none",
     padding: "spacer4",
@@ -25,6 +26,9 @@ const baseStyles = {
   footer: {
     display: "block",
     padding: "0",
+    button: {
+      fontWeight: "bold",
+    },
     "button:first-of-type": {
       marginRight: "spacer3",
     },
