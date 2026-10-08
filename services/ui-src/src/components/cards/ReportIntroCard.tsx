@@ -20,7 +20,7 @@ export const ReportIntroCard = ({ title, children }: Props) => {
         {isDesktop && (
           <Image
             src={spreadsheetIcon}
-            alt="Spreadsheet icon"
+            alt="Spreadsheet"
             sx={sx.spreadsheetIcon}
           />
         )}

@@ -30,7 +30,7 @@ describe("<ReportTypeCard />", () => {
   it("should render correctly", () => {
     render(qmsReportTypeCardComponent);
     expect(screen.getByText("Quality Measure Set")).toBeVisible();
-    expect(screen.getByAltText("Spreadsheet icon")).toBeVisible();
+    expect(screen.getByAltText("Spreadsheet")).toBeVisible();
   });
 
   testA11y(qmsReportTypeCardComponent);

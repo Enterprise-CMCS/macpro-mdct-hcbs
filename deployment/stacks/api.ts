@@ -109,6 +109,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   const environment: any = {
+    STAGE: stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),

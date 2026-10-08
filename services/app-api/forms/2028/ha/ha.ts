@@ -9,7 +9,6 @@ import {
 import {
   additionalNotesField,
   divider,
-  stateSamplingMethologyQuestion,
   didYouFollowSpecifications,
   exportToPDF,
   waiverListCheckboxField,
@@ -103,13 +102,6 @@ export const haReportTemplate: ReportBase = {
         divider,
         {
           type: ElementType.SubHeader,
-          id: "state-sampling-methodology-subheader",
-          text: "State sampling methodology",
-        },
-        stateSamplingMethologyQuestion,
-        divider,
-        {
-          type: ElementType.SubHeader,
           id: "additional-details-subheader",
           text: "Additional Details",
         },
@@ -150,13 +142,6 @@ export const haReportTemplate: ReportBase = {
         personalCareHAPCH2Rate,
         divider,
         habilitationHAPCH2Rate,
-        divider,
-        {
-          type: ElementType.SubHeader,
-          id: "state-sampling-methodology-subheader",
-          text: "State sampling methodology",
-        },
-        stateSamplingMethologyQuestion,
         divider,
         {
           type: ElementType.SubHeader,
