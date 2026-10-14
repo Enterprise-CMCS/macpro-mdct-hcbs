@@ -57,26 +57,28 @@ describe("<DropdownField />", () => {
       <DropdownField
         element={{
           ...mockedDropdownElement,
+          label: "States",
           answer: "",
           options: [
             { label: "- Select an option -", value: "" },
-            ...mockedDropdownElement.options,
+            { label: "Alabama", value: "AL" },
+            { label: "Alaska", value: "AK" },
           ],
         }}
         updateElement={updateSpy}
         clearOnSelect
       />
     );
-    const dropdown = screen.getAllByLabelText("test-dropdown-field")[0];
+    const dropdown = screen.getAllByLabelText("States")[0];
 
-    await userEvent.selectOptions(dropdown, "2027");
+    await userEvent.selectOptions(dropdown, "AL");
 
-    expect(updateSpy).toHaveBeenLastCalledWith({ answer: "2027" });
+    expect(updateSpy).toHaveBeenLastCalledWith({ answer: "AL" });
     expect(dropdown).toHaveValue("");
 
-    await userEvent.selectOptions(dropdown, "2026");
+    await userEvent.selectOptions(dropdown, "AK");
 
-    expect(updateSpy).toHaveBeenLastCalledWith({ answer: "2026" });
+    expect(updateSpy).toHaveBeenLastCalledWith({ answer: "AK" });
     expect(dropdown).toHaveValue("");
   });
 
