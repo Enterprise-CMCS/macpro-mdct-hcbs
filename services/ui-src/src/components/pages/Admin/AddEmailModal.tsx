@@ -171,7 +171,6 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
           name="email"
           label="Email"
           type="email"
-          placeholder="Input text"
           required
           disabled={submitting}
           value={email}
