@@ -1,14 +1,15 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { logger } from "../../libs/debug-lib";
 import { Notification } from "../../types/notification";
 import { ReportType } from "../../types/reports";
 import { isValidNotification } from "../notificationsValidation";
 
-jest.mock("../../libs/debug-lib", () => ({
+vi.mock("../../libs/debug-lib", () => ({
   logger: {
-    warn: jest.fn(),
+    warn: vi.fn(),
   },
 }));
-const warn = logger.warn as jest.Mock;
+const warn = vi.mocked(logger.warn);
 
 const validPayload: Notification = {
   category: ReportType.CI,
@@ -17,7 +18,7 @@ const validPayload: Notification = {
 
 describe("isValidNotifications", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should reject a notification with non object type", () => {

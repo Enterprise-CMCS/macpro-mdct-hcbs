@@ -11,6 +11,7 @@ export const genericErrorContent = (
       <Link
         href={`mailto:${HELP_DESK_EMAIL_ADDRESS}`}
         target="_blank"
+        rel="noopener noreferrer"
         color="black"
         fontWeight="bold"
       >

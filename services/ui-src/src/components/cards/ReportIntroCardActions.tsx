@@ -1,9 +1,9 @@
 import { Button, Flex, Image, Link } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@cmsgov/design-system";
 import nextIcon from "assets/icons/arrows/icon_arrow_next_white.svg";
-import externalLinkIcon from "/icon_external_link_main.svg";
 import { useNavigate } from "react-router-dom";
 import { ReportType, isReportType } from "types";
-import { useStore } from "utils";
+import { externalLinkAltText, useStore } from "utils";
 
 /**
  * This component is contained within each card on the state user home page.
@@ -21,10 +21,12 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         return "CI Report";
       case ReportType.QMS:
         return "QMS Report";
-      case ReportType.TACM:
-        return "TACM Report";
+      case ReportType.HA:
+        return "HA Report";
       case ReportType.PCP:
         return "PCP Report";
+      case ReportType.IMA:
+        return "IMA";
       case ReportType.QIP:
         return "QMS QIP";
       case ReportType.WWL:
@@ -48,10 +50,10 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           rel="noopener noreferrer"
         >
           User Guide and Help File
-          <Image
-            src={externalLinkIcon}
-            sx={sx.externalLinkIcon}
-            alt="(Opens in New Tab)"
+          <ExternalLinkIcon
+            ariaHidden={false}
+            title={externalLinkAltText}
+            className="external-link-icon"
           />
         </Button>
       )}
@@ -63,7 +65,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
           e.preventDefault();
           navigate(dashboardRoute);
         }}
-        rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
+        rightIcon={<Image src={nextIcon} alt="Link" height="1rem" />}
         sx={sx.link}
       >
         Enter {getReportName(reportType)} online
@@ -113,12 +115,12 @@ const sx = {
       marginLeft: "0rem",
       marginRight: "0.5rem",
     },
+    // Prevent icon clipping in button.
+    ".external-link-icon": {
+      marginBottom: "0.05em",
+    },
     ".mobile &": {
       marginRight: "0",
     },
-  },
-  externalLinkIcon: {
-    marginLeft: "0.5rem",
-    height: "1rem",
   },
 };

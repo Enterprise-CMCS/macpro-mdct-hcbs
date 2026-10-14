@@ -12,7 +12,7 @@
     "rootDir": "./",
     "resolveJsonModule": true,
     "lib": ["ES2022"],
-    "module": "node16",
+    "module": "nodenext",
     "target": "ES2022",
     "isolatedModules": true
   },

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import {
   getNotifications,
@@ -7,34 +8,23 @@ import { NotificationsPage } from "./NotificationsPage";
 import { ReportType } from "types";
 import userEvent from "@testing-library/user-event";
 
-jest.mock("utils/api/requestMethods/notifications", () => ({
-  getNotifications: jest.fn(),
-  updateNotifications: jest.fn(),
+vi.mock("utils/api/requestMethods/notifications", () => ({
+  getNotifications: vi.fn(),
+  updateNotifications: vi.fn(),
 }));
 
-jest.mock("launchdarkly-react-client-sdk", () => ({
-  useFlags: jest.fn().mockReturnValue({ notificationsSystem: true }),
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn().mockReturnValue({ notificationsSystem: true }),
 }));
-
-const mockedGet = getNotifications as jest.MockedFunction<
-  typeof getNotifications
->;
-const mockedUpdate = updateNotifications as jest.MockedFunction<
-  typeof updateNotifications
->;
 
 describe("<NotificationsPage />", () => {
   beforeEach(() => {
-    mockedGet.mockResolvedValue([]);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should display checked state for enabled notifications", async () => {
-    (getNotifications as jest.Mock).mockResolvedValue([
-      { category: "CI", enabled: true },
+    vi.mocked(getNotifications).mockResolvedValue([
+      { category: ReportType.CI, enabled: true },
     ]);
 
     render(<NotificationsPage />);
@@ -43,8 +33,8 @@ describe("<NotificationsPage />", () => {
     expect(CIcheckbox).toBeChecked();
   });
 
-  it("should update local state and calls updateNotifications", async () => {
-    mockedGet.mockResolvedValueOnce([
+  it("should update local state and call updateNotifications", async () => {
+    vi.mocked(getNotifications).mockResolvedValueOnce([
       { category: ReportType.WWL, enabled: true },
     ]);
 
@@ -60,7 +50,7 @@ describe("<NotificationsPage />", () => {
     expect(WWLcheckbox).not.toBeChecked();
 
     await waitFor(() => {
-      expect(mockedUpdate).toHaveBeenCalledWith({
+      expect(updateNotifications).toHaveBeenCalledWith({
         category: ReportType.WWL,
         enabled: false,
       });

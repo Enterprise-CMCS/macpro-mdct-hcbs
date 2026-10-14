@@ -1,41 +1,42 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { releaseReport } from "./release";
 import { canReleaseReport } from "../../utils/authorization";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { validReport } from "../../utils/tests/mockReport";
-import { ReportStatus } from "../../types/reports";
+import { Report, ReportStatus } from "../../types/reports";
 import { getFlag } from "../../libs/launchdarkly-lib";
 import { sendEmail } from "../../utils/notifications/email";
+import { getReport } from "../../storage/reports";
 
-jest.mock("../../libs/launchdarkly-lib", () => ({
-  getFlag: jest.fn().mockResolvedValue(true),
+vi.mock("../../libs/launchdarkly-lib", () => ({
+  getFlag: vi.fn().mockResolvedValue(true),
 }));
 
-jest.mock("../../utils/notifications/email", () => ({
-  sendEmail: jest.fn().mockResolvedValue(undefined),
+vi.mock("../../utils/notifications/email", () => ({
+  sendEmail: vi.fn().mockResolvedValue(undefined),
 }));
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.ADMIN,
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canReleaseReport: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canReleaseReport: vi.fn().mockReturnValue(true),
 }));
 
-const mockGet = jest.fn().mockReturnValue({
+vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn(),
+  putReport: vi.fn(),
+}));
+vi.mocked(getReport).mockResolvedValue({
   id: "A report",
   status: ReportStatus.SUBMITTED,
   name: "name",
-});
-
-jest.mock("../../storage/reports", () => ({
-  getReport: () => mockGet(),
-  putReport: jest.fn(),
-}));
+} as Report);
 
 const report = JSON.stringify(validReport);
 
@@ -50,12 +51,12 @@ const testEvent: APIGatewayProxyEvent = {
   body: report,
 };
 
-describe("Test releaseReport handler", () => {
+describe("releaseReport", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("Test missing path params", async () => {
+  it("should return Bad Request if missing path params", async () => {
     const badTestEvent = {
       ...proxyEvent,
       pathParameters: {},
@@ -64,13 +65,13 @@ describe("Test releaseReport handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  it("should return 403 if user is not authorized", async () => {
-    (canReleaseReport as jest.Mock).mockReturnValueOnce(false);
+  it("should return Forbidden if user is not authorized", async () => {
+    vi.mocked(canReleaseReport).mockReturnValueOnce(false);
     const response = await releaseReport(testEvent);
     expect(response.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test missing body", async () => {
+  it("should return Bad Request if missing body", async () => {
     const emptyBodyEvent = {
       ...proxyEvent,
       pathParameters: { reportType: "QMS", state: "PA", id: "QMSPA123" },
@@ -80,34 +81,35 @@ describe("Test releaseReport handler", () => {
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
   });
 
-  test("Test archived report", async () => {
-    mockGet.mockReturnValueOnce({
+  it("should return Forbidden if the report is archived", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
       id: "A report",
       archived: true,
       status: ReportStatus.SUBMITTED,
-    });
+    } as Report);
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
   });
 
-  test("Test unlocked report", async () => {
-    mockGet.mockReturnValueOnce({
+  it("should succeed on an already-released report", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
       id: "A report",
-      status: ReportStatus.SUBMITTED,
-    });
-    const res = await releaseReport(testEvent);
-
-    expect(res.statusCode).toBe(StatusCodes.Ok);
-  });
-  test("Test successful lock of report", async () => {
+      status: ReportStatus.IN_PROGRESS,
+    } as Report);
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
   });
 
-  test("Test release succeeds without sending email when flag is off", async () => {
-    (getFlag as jest.Mock).mockResolvedValueOnce(false);
+  it("should un-submit a submitted report", async () => {
+    const res = await releaseReport(testEvent);
+
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+  });
+
+  it("should not send an email on unlock if the email flag is off", async () => {
+    vi.mocked(getFlag).mockResolvedValueOnce(false);
 
     const res = await releaseReport(testEvent);
 

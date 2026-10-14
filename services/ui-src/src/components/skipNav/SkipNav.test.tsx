@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SkipNav } from "components";
@@ -13,7 +14,7 @@ const skipNavComponent = (
 );
 
 describe("<SkipNav />", () => {
-  test("renders skip link with accessible text and becomes focusable", async () => {
+  it("should render skip link with accessible text and become focusable", async () => {
     render(skipNavComponent);
 
     const skipNavLink = screen.getByRole("link", {

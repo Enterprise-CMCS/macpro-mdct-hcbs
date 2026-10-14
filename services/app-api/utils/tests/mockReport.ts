@@ -44,6 +44,79 @@ export const validQipReport: Report = {
   ...getReportTemplate(ReportType.QIP, 2026),
 };
 
+export const reportWithNestedPerformanceRate: Report = {
+  ...validReport,
+  pages: [
+    {
+      id: "rate-page",
+      navTitle: "Rate",
+      type: PageType.Standard,
+      elements: [
+        {
+          type: ElementType.PerformanceNdr,
+          id: "example-rate",
+          required: true,
+          answer: { numerator: 10, denominator: 20, rate: 50 },
+          children: [
+            {
+              type: ElementType.SubHeader,
+              id: "sampling-header",
+              text: "Sampling methodology",
+            },
+            {
+              type: ElementType.Radio,
+              id: "sampling-question",
+              label: "What sampling methodology was used?",
+              required: true,
+              answer: "Probability sample",
+              choices: [
+                {
+                  label: "Probability sample",
+                  value: "Probability sample",
+                  checkedChildren: [
+                    {
+                      type: ElementType.TextAreaField,
+                      id: "sampling-approach",
+                      label: "Describe the sampling approach",
+                      required: true,
+                      answer: "Sampling approach",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const reportWithUnsupportedPerformanceRateChild = {
+  ...validReport,
+  pages: [
+    {
+      id: "rate-page",
+      navTitle: "Rate",
+      type: PageType.Standard,
+      elements: [
+        {
+          type: ElementType.PerformanceNdr,
+          id: "example-rate",
+          required: true,
+          children: [
+            {
+              type: ElementType.Header,
+              id: "unsupported-child",
+              text: "Unsupported",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const missingStateReport = {
   ...validReport,
   state: undefined,
@@ -264,6 +337,88 @@ export const reportWithKeyActivityTable = {
               completionDate: "01/2026",
             },
           ],
+        },
+      ],
+    },
+  ],
+};
+
+export const reportWithImaTable = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["ima"],
+    },
+    {
+      id: "ima",
+      navTitle: "IMA",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.ImaTable,
+          id: "ima-table",
+          caption: "Critical Incidents",
+          columns: [
+            {
+              id: "description",
+              label: "Incident type",
+              type: "description",
+            },
+            { id: "yes", label: "Yes", type: "answer" },
+            { id: "no", label: "No", type: "answer" },
+            { id: "delete", label: "Delete", type: "delete" },
+          ],
+          rows: [
+            {
+              id: "abuse",
+              description: "Abuse",
+              answer: "yes",
+            },
+          ],
+          complianceRule: "any-no",
+        },
+      ],
+    },
+  ],
+};
+
+export const reportWithInvalidImaTableComplianceRule = {
+  ...validReport,
+  pages: [
+    {
+      id: "root",
+      childPageIds: ["ima"],
+    },
+    {
+      id: "ima",
+      navTitle: "IMA",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.ImaTable,
+          id: "ima-table",
+          caption: "Critical Incidents",
+          columns: [
+            {
+              id: "description",
+              label: "Incident type",
+              type: "description",
+            },
+            { id: "yes", label: "Yes", type: "answer" },
+            { id: "no", label: "No", type: "answer" },
+            { id: "delete", label: "Delete", type: "delete" },
+          ],
+          rows: [
+            {
+              id: "abuse",
+              description: "Abuse",
+              answer: "yes",
+            },
+          ],
+          complianceRule: "not-a-real-rule",
         },
       ],
     },

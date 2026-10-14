@@ -1,7 +1,8 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mockClient } from "aws-sdk-client-mock";
 import {
   DynamoDBDocumentClient,
-  paginateScan,
+  ScanCommand,
   PutCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { Notification } from "../types/notification";
@@ -15,26 +16,13 @@ const mockNotification: Notification = {
   enabled: true,
 };
 
-jest.mock("@aws-sdk/lib-dynamodb", () => {
-  const actual = jest.requireActual("@aws-sdk/lib-dynamodb");
-  return { ...actual, paginateScan: jest.fn() };
-});
-
-const mockedPaginateScan = paginateScan as unknown as jest.Mock;
-
-function mockPages(pages: any[]) {
-  return (async function* () {
-    for (const page of pages) yield page;
-  })();
-}
-
 describe("Notification storage methods", () => {
   beforeEach(() => {
     mockDynamo.reset();
   });
 
-  it("should call Dynamo to updated notification", async () => {
-    const mockPut = jest.fn();
+  it("should call Dynamo to update notification", async () => {
+    const mockPut = vi.fn();
     mockDynamo.on(PutCommand).callsFakeOnce(mockPut);
 
     await putNotifications(mockNotification);
@@ -48,9 +36,10 @@ describe("Notification storage methods", () => {
   });
 
   it("should call Dynamo to scan all notifications", async () => {
-    mockedPaginateScan.mockReturnValue(
-      mockPages([{ Items: [mockNotification] }, { Items: [mockNotification] }])
-    );
+    mockDynamo
+      .on(ScanCommand)
+      .resolvesOnce({ Items: [mockNotification], LastEvaluatedKey: {} })
+      .resolvesOnce({ Items: [mockNotification], LastEvaluatedKey: undefined });
 
     const items = await scanAllNotifications();
 

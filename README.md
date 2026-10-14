@@ -20,6 +20,7 @@ HCBS are types of person-centered care delivered in the home and community which
 
 - [Quick Start](#quick-start)
 - [Testing](#testing)
+- [Rich HTML content](#rich-html-content)
 - [Deployments](#deployments)
 - [Architecture](#architecture)
 - [Copyright and license](#copyright-and-license)
@@ -51,6 +52,8 @@ Before starting the project we're going to install some tools. We recommend havi
 3. In the root directory run `pre-commit install`
 
 ### Running the project locally
+
+If you don't already have a localstack account, create an account via `https://app.localstack.cloud/sign-up` with a hobby account before running the shell script below. Make sure to select "Hobby" account, and you can export your personal auth token at `https://app.localstack.cloud/settings/auth-tokens` to bypass licensing issues.
 
 In the root of the project run `./run local --update-env` to pull in values from 1Password and run the project. Alternatively, if you do not have a 1Password account you will need to reach out to an MDCT team member for values for your `.env `. Then you can run `./run local` to use a static manually populated `.env` file.
 
@@ -93,7 +96,7 @@ Local authorization uses Cognito from the main/master stack in dev. The credenti
 
 ### Unit Testing
 
-We use Jest for unit tests.
+We use Vitest for unit tests.
 
 To run all frontend unit tests:
 
@@ -112,13 +115,13 @@ yarn test
 In either of these directories you can also check code coverage with
 
 ```
-yarn coverage
+yarn test --coverage
 ```
 
-Live reload all tests
+Unit tests run in watch mode by default. To run once and exit:
 
 ```
-yarn test --watch
+yarn test --run
 ```
 
 ### Integration Testing
@@ -129,9 +132,21 @@ We use Playwright for integration tests. See the `tests/playwright` directory.
 
 We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa11y) for primary accessibility testing.
 
-Unit tests use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
+Unit tests use [axe-core]https://github.com/dequelabs/axe-core), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
 Integration tests use [@axe-core/playwright](https://github.com/dequelabs/axe-core-npm).
+
+## Rich HTML content
+
+HTML supplied through content fields is rendered with `parseHtml` in
+[services/ui-src/src/utils/other/parsing.ts](services/ui-src/src/utils/other/parsing.ts).
+That helper sanitizes the HTML with DOMPurify before parsing it. It also normalizes
+links through the module's `linkReplacer`: absolute and protocol-relative URLs, as well as links explicitly using
+`target="_blank"`, open in a new tab, include `rel="noopener noreferrer"`, and
+display the accessible external-link icon and "(Opens in a new tab)" label.
+
+When changing this behavior, update the focused tests in
+[services/ui-src/src/utils/other/parsing.test.tsx](services/ui-src/src/utils/other/parsing.test.tsx).
 
 ### oxfmt
 

@@ -1,16 +1,10 @@
+import { vi } from "vitest";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
-import "jest-axe/extend-expect";
 import * as framerMotion from "framer-motion";
 import {
   UserRoles,
-  HcbsUserState,
-  UserContextShape,
-  HcbsBannerState,
-  HcbsReportState,
-  ReportType,
-  ReportStatus,
   PageType,
   MeasureTemplateName,
   MeasurePageTemplate,
@@ -25,61 +19,68 @@ import {
 
 global.React = React;
 
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
-
 framerMotion.MotionGlobalConfig.skipAnimations = true;
 
 /* Mocks window.matchMedia (https://bit.ly/3Qs4ZrV) */
 Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
-window.scrollBy = jest.fn();
-window.scrollTo = jest.fn();
-Element.prototype.scrollTo = jest.fn();
-Element.prototype.scrollIntoView = jest.fn();
+window.scrollBy = vi.fn();
+window.scrollTo = vi.fn();
+Element.prototype.scrollTo = vi.fn();
+Element.prototype.scrollIntoView = vi.fn();
+
+(window as any)._env_ = {};
 
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
-jest.mock("@chakra-ui/transition", () => ({
-  ...jest.requireActual("@chakra-ui/transition"),
-  Collapse: jest.fn(({ in: inProp, children }: any) => (
+vi.mock("@chakra-ui/transition", async (importOriginal) => ({
+  ...(await importOriginal()),
+  Collapse: vi.fn(({ in: inProp, children }: any) => (
     <div hidden={!inProp}>{children}</div>
   )),
 }));
 
 /* Mock Amplify */
-jest.mock("aws-amplify/api", () => ({
-  get: jest.fn().mockImplementation(() => ({
+vi.mock("aws-amplify/api", () => ({
+  get: vi.fn().mockImplementation(() => ({
     response: Promise.resolve({
       body: {
         text: () => Promise.resolve(`{"json":"blob"}`),
       },
     }),
   })),
-  post: jest.fn().mockImplementation(() => ({
+  patch: vi.fn().mockImplementation(() => ({
     response: Promise.resolve({
       body: {
         text: () => Promise.resolve(`{"json":"blob"}`),
       },
     }),
   })),
-  put: jest.fn().mockImplementation(() => ({
+  post: vi.fn().mockImplementation(() => ({
     response: Promise.resolve({
       body: {
         text: () => Promise.resolve(`{"json":"blob"}`),
       },
     }),
   })),
-  del: jest.fn().mockImplementation(() => ({
+  put: vi.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        text: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
+  del: vi.fn().mockImplementation(() => ({
     response: Promise.resolve({
       body: {
         text: () => Promise.resolve(`{"json":"blob"}`),
@@ -88,103 +89,59 @@ jest.mock("aws-amplify/api", () => ({
   })),
 }));
 
-jest.mock("aws-amplify/auth", () => ({
-  fetchAuthSession: jest.fn().mockReturnValue({
+vi.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: vi.fn().mockReturnValue({
     idToken: () => ({
       payload: "eyJLongToken",
     }),
   }),
-  signOut: jest.fn().mockImplementation(() => Promise.resolve()),
+  signOut: vi.fn().mockImplementation(() => Promise.resolve()),
   signInWithRedirect: () => {},
 }));
 
-//  BANNER STATES / STORE
+Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
+  configurable: false,
+  value: function () {},
+});
 
-export const mockBannerStore: HcbsBannerState = {
-  allBanners: [],
-  _lastFetchTime: 0,
-  fetchBanners: async () => {},
-  createBanner: async () => {},
-  deleteBanner: async () => {},
+export const mockStateUser = {
+  userRole: UserRoles.STATE_USER,
+  email: "stateuser@test.com",
+  given_name: "Thelonious",
+  family_name: "States",
+  full_name: "Thelonious States",
+  state: "MN",
+  userIsEndUser: true,
 };
 
-// USER CONTEXT
-
-export const mockUserContext: UserContextShape = {
-  user: undefined,
-  logout: async () => {},
-  loginWithIDM: async () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => "",
+export const mockStateApprover = {
+  userRole: UserRoles.APPROVER,
+  email: "stateapprover@test.com",
+  given_name: "Zara",
+  family_name: "Zustimmer",
+  full_name: "Zara Zustimmer",
+  state: "MN",
+  userIsAdmin: true,
 };
 
-// USER STATES / STORE
-
-export const mockNoUserStore: HcbsUserState = {
-  user: undefined,
-  showLocalLogins: true,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
+export const mockHelpDeskUser = {
+  userRole: UserRoles.HELP_DESK,
+  email: "helpdeskuser@test.com",
+  given_name: "Clippy",
+  family_name: "Helperson",
+  full_name: "Clippy Helperson",
+  state: undefined,
+  userIsReadOnly: true,
 };
 
-export const mockStateUserStore: HcbsUserState = {
-  user: {
-    userRole: UserRoles.STATE_USER,
-    email: "stateuser@test.com",
-    given_name: "Thelonious",
-    family_name: "States",
-    full_name: "Thelonious States",
-    state: "MN",
-    userIsEndUser: true,
-  },
-  showLocalLogins: true,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
-};
-
-export const mockStateApproverStore: HcbsUserState = {
-  user: {
-    userRole: UserRoles.APPROVER,
-    email: "stateapprover@test.com",
-    given_name: "Zara",
-    family_name: "Zustimmer",
-    full_name: "Zara Zustimmer",
-    state: "MN",
-    userIsAdmin: true,
-  },
-  showLocalLogins: true,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
-};
-
-export const mockHelpDeskUserStore: HcbsUserState = {
-  user: {
-    userRole: UserRoles.HELP_DESK,
-    email: "helpdeskuser@test.com",
-    given_name: "Clippy",
-    family_name: "Helperson",
-    full_name: "Clippy Helperson",
-    state: undefined,
-    userIsReadOnly: true,
-  },
-  showLocalLogins: false,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
-};
-
-export const mockAdminUserStore: HcbsUserState = {
-  user: {
-    userRole: UserRoles.ADMIN,
-    email: "adminuser@test.com",
-    given_name: "Adam",
-    family_name: "Admin",
-    full_name: "Adam Admin",
-    state: undefined,
-    userIsAdmin: true,
-  },
-  showLocalLogins: false,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
+export const mockAdminUser = {
+  userRole: UserRoles.ADMIN,
+  email: "adminuser@test.com",
+  given_name: "Adam",
+  family_name: "Admin",
+  full_name: "Adam Admin",
+  state: undefined,
+  userIsAdmin: true,
 };
 
 export const mockMeasureTemplate: MeasurePageTemplate = {
@@ -319,68 +276,6 @@ export const mockMeasureTemplateNotReporting: MeasurePageTemplate = {
   ],
 };
 
-export const mockReportStore: HcbsReportState = {
-  modalOpen: false,
-  sidebarOpen: true,
-  currentPageId: "LTSS-1",
-  pageMap: new Map([
-    ["root", 0],
-    [mockMeasureTemplate.id, 1],
-  ]),
-  report: {
-    id: "mock-id",
-    type: ReportType.QMS,
-    status: ReportStatus.IN_PROGRESS,
-    name: "mock-report-title",
-    year: 2026,
-    options: {},
-    state: "PR",
-    archived: false,
-    submissionCount: 0,
-    pages: [
-      {
-        id: "root",
-        childPageIds: [mockMeasureTemplate.id, mock2MeasureTemplate.id],
-      },
-      { ...mockMeasureTemplate, cmit: 960 },
-      { ...mock2MeasureTemplate, cmit: 961 },
-    ],
-  },
-  loadReport: () => {},
-  updateReport: () => {},
-  setCurrentPageId: () => {},
-  setModalOpen: () => {},
-  setModalComponent: () => {},
-  setModalFinalFocusRef: () => {},
-  setAnswers: () => {},
-  resetMeasure: () => {},
-  clearMeasure: () => {},
-  changeDeliveryMethods: () => {},
-  setSubstitute: () => {},
-  setSidebar: () => {},
-  completePage: () => {},
-  saveReport: async () => {},
-};
-
-// BOUND STORE
-
-export const mockUseStore: HcbsUserState & HcbsBannerState & HcbsReportState = {
-  ...mockStateUserStore,
-  ...mockBannerStore,
-  ...mockReportStore,
-};
-
-export const mockUseAdminStore: HcbsUserState & HcbsBannerState = {
-  ...mockAdminUserStore,
-  ...mockBannerStore,
-};
-
-export const mockUseReadOnlyUserStore: HcbsUserState & HcbsBannerState = {
-  ...mockHelpDeskUserStore,
-  ...mockBannerStore,
-  ...mockReportStore,
-};
-
 // ROUTER
 
 export const RouterWrappedComponent: React.FC<{ children: any }> = ({
@@ -390,7 +285,7 @@ export const RouterWrappedComponent: React.FC<{ children: any }> = ({
 // LAUNCHDARKLY
 
 export const mockLDClient = {
-  variation: jest.fn(() => true),
+  variation: vi.fn(() => true),
 };
 
 // ASSET

@@ -1,35 +1,85 @@
-import { mockUseStore } from "utils/testing/setupJest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   activeBannerSelector,
   currentPageSelector,
   submittableMetricsSelector,
 } from "./selectors";
-import { BannerShape, BannerAreas, PageStatus } from "types";
+import {
+  BannerShape,
+  BannerAreas,
+  PageStatus,
+  HcbsReportState,
+  ElementType,
+} from "types";
 import { useStore } from "./useStore";
 
-jest.mock("utils", () => ({
-  getBanners: jest.fn(),
-  createBanner: jest.fn(),
-  deleteBanner: jest.fn(),
+vi.mock("utils", () => ({
+  getBanners: vi.fn(),
+  createBanner: vi.fn(),
+  deleteBanner: vi.fn(),
 }));
 
 describe("Selectors", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("getCurrentPage should return the current page object", async () => {
-    const page = currentPageSelector(mockUseStore);
+  describe("getCurrentPage", () => {
+    it("should return the current page object", async () => {
+      const mockStoreState = {
+        currentPageId: "page-1",
+        report: { pages: [{ id: "root" }, { id: "page-1" }, { id: "page-2" }] },
+        pageMap: new Map([
+          ["root", 0],
+          ["page-1", 1],
+          ["page-2", 2],
+        ]),
+      } as HcbsReportState;
 
-    expect(page?.id).toEqual(mockUseStore.currentPageId);
+      const page = currentPageSelector(mockStoreState);
+
+      expect(page).toBe(mockStoreState.report!.pages[1]);
+    });
   });
 
-  test("submittableMetricsSelector should return the readiness of the report", async () => {
-    const result = submittableMetricsSelector(mockUseStore);
+  describe("submittableMetricsSelector", () => {
+    it("should return the readiness of the report", async () => {
+      const mockStoreState = {
+        report: {
+          pages: [
+            { id: "root", childPageIds: ["page-1", "page-2"] },
+            {
+              id: "page-1",
+              elements: [
+                {
+                  type: ElementType.Textbox,
+                  required: true,
+                  answer: "completed element",
+                },
+                {
+                  type: ElementType.Textbox,
+                  required: true,
+                  answer: undefined, //incomplete element
+                },
+              ],
+            },
+            { id: "page-2" },
+          ],
+        },
+        pageMap: new Map([
+          ["root", 0],
+          ["page-1", 1],
+          ["page-2", 2],
+        ]),
+      } as HcbsReportState;
+      const result = submittableMetricsSelector(mockStoreState);
 
-    expect(result?.sections[0]?.submittable).toEqual(false);
-    expect(result?.sections[0]?.displayStatus).toEqual(PageStatus.IN_PROGRESS);
-    expect(result?.submittable).toEqual(false);
+      expect(result?.sections[0]?.submittable).toEqual(false);
+      expect(result?.sections[0]?.displayStatus).toEqual(
+        PageStatus.IN_PROGRESS
+      );
+      expect(result?.submittable).toEqual(false);
+    });
   });
 
   describe("activeBannerSelector", () => {
@@ -93,7 +143,7 @@ describe("Selectors", () => {
     });
 
     it("should kick off a fetch if the data is old", () => {
-      const mockFetch = jest.fn();
+      const mockFetch = vi.fn();
       useStore.setState({
         allBanners: [],
         _lastFetchTime: 0,
@@ -107,7 +157,7 @@ describe("Selectors", () => {
     });
 
     it("should NOT kick off a fetch if the data is new", () => {
-      const mockFetch = jest.fn();
+      const mockFetch = vi.fn();
       useStore.setState({
         allBanners: [],
         _lastFetchTime: Date.now(),

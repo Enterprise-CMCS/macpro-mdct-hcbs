@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { PerformanceNdr, PerformanceNdrExport } from "./PerformanceNdr";
@@ -5,6 +6,8 @@ import { ElementType, PerformanceNdrTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
 import { ErrorMessages } from "../../../constants";
+import { useStore } from "utils";
+import { mockStateUser } from "utils/testing/setupTests";
 
 const mockedElement: PerformanceNdrTemplate = {
   id: "mock-perf-id",
@@ -23,7 +26,7 @@ const mockedElement: PerformanceNdrTemplate = {
     },
   ],
 };
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const PerformanceNdrWrapper = ({
   template,
@@ -41,10 +44,10 @@ const PerformanceNdrWrapper = ({
 describe("<PerformanceNdr />", () => {
   describe("Test PerformanceNdr component", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
-    test("PerformanceNdr is visible", () => {
+    it("should render correctly", () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
       expect(
         screen.getByRole("textbox", { name: "Numerator" })
@@ -58,7 +61,47 @@ describe("<PerformanceNdr />", () => {
       expect(screen.getByRole("textbox", { name: "Result" })).toBeDisabled();
     });
 
-    test("Rate should calculate", async () => {
+    it("renders and saves always-visible nested sampling questions", async () => {
+      useStore.setState({ user: mockStateUser });
+      render(
+        <PerformanceNdrWrapper
+          template={{
+            ...mockedElement,
+            children: [
+              {
+                type: ElementType.SubHeader,
+                id: "sampling-header",
+                text: "State sampling methodology",
+              },
+              {
+                type: ElementType.Radio,
+                id: "sampling-question",
+                label: "What sampling methodology was used?",
+                required: true,
+                choices: [
+                  { label: "Entire population", value: "Entire population" },
+                  { label: "Probability sample", value: "Probability sample" },
+                ],
+              },
+            ],
+          }}
+        />
+      );
+      expect(screen.getByText("State sampling methodology")).toBeVisible();
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Entire population" })
+      );
+      expect(updateSpy).toHaveBeenCalledWith({
+        children: expect.arrayContaining([
+          expect.objectContaining({
+            id: "sampling-question",
+            answer: "Entire population",
+          }),
+        ]),
+      });
+    });
+
+    it("should auto-calculate rate", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -73,7 +116,7 @@ describe("<PerformanceNdr />", () => {
       expect(result).toHaveValue("50");
     });
 
-    test("Rate should not display a decimal point if it is not needed", async () => {
+    it("should not display a decimal point if it is not needed", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -86,7 +129,7 @@ describe("<PerformanceNdr />", () => {
       expect(result).toHaveValue("900");
     });
 
-    test("Rate should not display as a percent normally", async () => {
+    it("should not display as a percent normally", async () => {
       render(
         <PerformanceNdrWrapper
           template={{ ...mockedElement, displayRateAsPercent: false }}
@@ -103,7 +146,7 @@ describe("<PerformanceNdr />", () => {
       expect(screen.queryByText("%")).not.toBeInTheDocument();
     });
 
-    test("Rate should display as a percent when appropriate", async () => {
+    it("should display as a percent when appropriate", async () => {
       render(
         <PerformanceNdrWrapper
           template={{ ...mockedElement, displayRateAsPercent: true }}
@@ -120,7 +163,7 @@ describe("<PerformanceNdr />", () => {
       expect(screen.getByText("%")).toBeVisible();
     });
 
-    test("Rate should display trailing decimal places if the value is rounded to 0", async () => {
+    it("should display trailing decimal places if the value is rounded to 0", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -133,7 +176,7 @@ describe("<PerformanceNdr />", () => {
       expect(result).toHaveValue("0.2");
     });
 
-    test("Proper error should show if a required field is empty", async () => {
+    it("should show an error if a required field is empty", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
@@ -143,7 +186,7 @@ describe("<PerformanceNdr />", () => {
       expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
     });
 
-    test("Proper error should show if a field has invalid input", async () => {
+    it("should show an error if a field has invalid input", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
@@ -152,7 +195,7 @@ describe("<PerformanceNdr />", () => {
       expect(screen.getByText(ErrorMessages.mustBeANumber)).toBeVisible();
     });
 
-    test("Error should show if the denominator is 0 and the numerator is not 0, and also clear", async () => {
+    it("should show an error if the denominator is 0 and the numerator is not 0", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -169,7 +212,7 @@ describe("<PerformanceNdr />", () => {
       ).not.toBeInTheDocument();
     });
 
-    test("Rate should be 0 if both numerator and denominator are 0", async () => {
+    it("should set rate to 0 if both numerator and denominator are 0", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -184,12 +227,12 @@ describe("<PerformanceNdr />", () => {
   });
 
   describe("Miniminum Performance Rate Alerts", () => {
-    test("Alert should be not visible if rate is empty", async () => {
+    it("should not display alert if rate is empty", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
-    test("Success Alert should be visible if minimum rate is met", async () => {
+    it("should display Success alert if minimum rate is met", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -198,12 +241,10 @@ describe("<PerformanceNdr />", () => {
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
       await userEvent.type(denominator, "10");
 
-      const result = screen.getByRole("alert");
-
-      expect(result).toHaveTextContent("Success");
+      expect(screen.getByRole("alert")).toHaveTextContent("Success");
     });
 
-    test("Warning Alert should be visible if minimum rate is met", async () => {
+    it("should show Warning alert and conditional children if minimum rate is NOT met", async () => {
       render(<PerformanceNdrWrapper template={mockedElement} />);
 
       const numerator = screen.getByRole("textbox", { name: "Numerator" });
@@ -212,25 +253,65 @@ describe("<PerformanceNdr />", () => {
       const denominator = screen.getByRole("textbox", { name: "Denominator" });
       await userEvent.type(denominator, "10");
 
-      const result = screen.getByRole("alert");
-
-      expect(result).toHaveTextContent("Warning");
-    });
-
-    test("Conditional children should be visible if minimum rate is met", async () => {
-      render(<PerformanceNdrWrapper template={mockedElement} />);
-
-      const numerator = screen.getByRole("textbox", { name: "Numerator" });
-      await userEvent.type(numerator, "1");
-
-      const denominator = screen.getByRole("textbox", { name: "Denominator" });
-      await userEvent.type(denominator, "10");
-
+      expect(screen.getByRole("alert")).toHaveTextContent("Warning");
       expect(screen.getByText("test text area")).toBeVisible();
+    });
+
+    it("should show conditional children if minimum rate is NOT met", async () => {
+      render(<PerformanceNdrWrapper template={mockedElement} />);
+
+      const numerator = screen.getByRole("textbox", { name: "Numerator" });
+      await userEvent.type(numerator, "1");
+
+      const denominator = screen.getByRole("textbox", { name: "Denominator" });
+      await userEvent.type(denominator, "10");
     });
   });
 
   describe("PerformanceNdr Export", () => {
+    it("exports the rate's sampling response and selected details", () => {
+      render(
+        PerformanceNdrExport({
+          ...mockedElement,
+          children: [
+            {
+              type: ElementType.SubHeader,
+              id: "sampling-header",
+              text: "State sampling methodology",
+            },
+            {
+              type: ElementType.Radio,
+              id: "sampling-question",
+              label: "What sampling methodology was used?",
+              answer: "Probability sample",
+              required: true,
+              choices: [
+                {
+                  label: "Probability sample",
+                  value: "Probability sample",
+                  checkedChildren: [
+                    {
+                      type: ElementType.NumberField,
+                      id: "sample-size",
+                      label: "Sample size",
+                      answer: 20,
+                      required: true,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        })
+      );
+      expect(
+        screen.getByRole("row", {
+          name: "State sampling methodology: What sampling methodology was used? Probability sample",
+        })
+      ).toBeVisible();
+      expect(screen.getByRole("row", { name: "Sample size 20" })).toBeVisible();
+    });
+
     it("should render a normal rate", () => {
       render(
         PerformanceNdrExport({

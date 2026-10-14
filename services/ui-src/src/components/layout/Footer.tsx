@@ -66,6 +66,7 @@ export const Footer = () => {
               <Link
                 href="https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
                 target="_blank"
+                rel="noopener noreferrer"
                 variant="inverse"
                 sx={sx.link}
               >

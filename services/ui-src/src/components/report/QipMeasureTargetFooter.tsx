@@ -38,8 +38,10 @@ export const QipMeasureTargetFooterElement = (
       {displayDivider(currentPage) && (
         <Divider marginBottom="spacer3"></Divider>
       )}
-      <Flex justifyContent="flex-end">
-        <Button onClick={() => onActionButton()}>Save &amp; return</Button>
+      <Flex justifyContent="space-between">
+        <Button variant="outline" onClick={() => onActionButton()}>
+          Previous
+        </Button>
       </Flex>
     </Box>
   );

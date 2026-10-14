@@ -1,18 +1,21 @@
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { HomePage } from "./HomePage";
 import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
 import { BannerAreas, BannerShape, HcbsUser } from "types";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
-jest.mock("launchdarkly-react-client-sdk", () => ({
-  useFlags: jest.fn().mockReturnValue({
-    isTacmReportActive: true,
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn().mockReturnValue({
+    isQmsReportActive: true,
+    isHaReportActive: true,
     isCiReportActive: true,
     isPcpReportActive: true,
     isQipReportActive: true,
     isWwlReportActive: true,
+    isImaReportActive: true,
   }),
 }));
 
@@ -28,6 +31,21 @@ const homePage = (
 );
 
 describe("Home page", () => {
+  it("should render a clickable external quality information link", () => {
+    useStore.setState({ user: stateUser, allBanners: [] });
+    render(homePage);
+
+    const link = screen.getByRole("link", {
+      name: "Medicaid.gov's HCBS quality improvement resources (Opens in a new tab)",
+    });
+
+    expect(link).toHaveAttribute(
+      "href",
+      "https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
+    );
+    expect(link).toHaveAttribute("target", "_blank");
+  });
+
   it("should render a card for each enabled report type", () => {
     useStore.setState({ user: stateUser, allBanners: [] });
     render(homePage);
@@ -38,11 +56,12 @@ describe("Home page", () => {
       { level: 3, name: /Quality Measure Set Report/ },
       { level: 3, name: /QMS Quality Improvement Plans/ },
       { level: 2, name: /Transparency Reports/ },
-      { level: 3, name: /Timely Access Compliance Measure Report/ },
+      { level: 3, name: /HCBS Access Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },
       { level: 2, name: /Compliance Reports/ },
       { level: 3, name: /Critical Incident Report/ },
       { level: 3, name: /Person-Centered Planning Report/ },
+      { level: 3, name: /Incident Management Assessments/ },
     ];
     for (let heading of headings) {
       expect(screen.getByRole("heading", heading)).toBeVisible();
@@ -52,23 +71,28 @@ describe("Home page", () => {
   it("should not render disabled report types", () => {
     useStore.setState({ user: stateUser, allBanners: [] });
     (useFlags as any).mockReturnValue({
-      isTacmReportActive: false,
+      isQmsReportActive: false,
+      isHaReportActive: false,
       isCiReportActive: false,
       isPcpReportActive: false,
       isQipReportActive: false,
       isWwlReportActive: false,
+      isImaReportActive: false,
     });
 
     render(homePage);
 
     const headings = [
+      { level: 2, name: /Quality Reports/ },
       { level: 2, name: /Transparency Reports/ },
       { level: 2, name: /Compliance Reports/ },
+      { level: 3, name: /Quality Measure Set Report/ },
       { level: 3, name: /QMS Quality Improvement Plans/ },
-      { level: 3, name: /Timely Access Compliance Measure Report/ },
+      { level: 3, name: /HCBS Access Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },
       { level: 3, name: /Critical Incident Report/ },
       { level: 3, name: /Person-Centered Planning Report/ },
+      { level: 3, name: /Incident Management Assessments/ },
     ];
     for (let heading of headings) {
       expect(screen.queryByRole("heading", heading)).not.toBeInTheDocument();

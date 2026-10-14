@@ -36,12 +36,19 @@ const primaryVariant = {
 const transparentVariant = {
     color: "palette.primary",
     backgroundColor: "transparent",
+    _visited: {
+      color: "palette.visited",
+    },
     _hover: {
       color: "palette.primary_darker",
       backgroundColor: "transparent",
       span: {
         filter: svgFilters.primary_darker,
       },
+    },
+    _active: {
+      color: "palette.primary_darkest",
+      backgroundColor: "transparent",
     },
   },
   sidebarToggleVariant = {
@@ -63,8 +70,13 @@ const outlineVariant = () => ({
   textDecoration: "none",
   fontWeight: "bold",
   "&:disabled, &:disabled:hover": {
-    color: "palette.gray_dark",
-    borderColor: "palette.gray_dark",
+    color: "palette.gray_lighter",
+    borderColor: "palette.gray_lighter",
+    opacity: 1,
+    pointerEvents: "none",
+    span: {
+      filter: svgFilters.gray_lighter,
+    },
   },
   _hover: {
     ...theme.components.Button.variants.transparent._hover,

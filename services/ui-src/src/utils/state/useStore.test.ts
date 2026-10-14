@@ -1,29 +1,17 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BannerShape, BannerAreas } from "types/banners";
 import { useStore } from "./useStore";
-import {
-  getBanners as actualGetBanners,
-  createBanner as actualCreateBanner,
-  deleteBanner as actualDeleteBanner,
-} from "utils";
+import { getBanners, createBanner, deleteBanner } from "utils";
 
-jest.mock("utils", () => ({
-  getBanners: jest.fn(),
-  createBanner: jest.fn(),
-  deleteBanner: jest.fn(),
+vi.mock("utils", () => ({
+  getBanners: vi.fn(),
+  createBanner: vi.fn(),
+  deleteBanner: vi.fn(),
 }));
-const getBanners = actualGetBanners as jest.MockedFunction<
-  typeof actualGetBanners
->;
-const createBanner = actualCreateBanner as jest.MockedFunction<
-  typeof actualCreateBanner
->;
-const deleteBanner = actualDeleteBanner as jest.MockedFunction<
-  typeof actualDeleteBanner
->;
 
 describe("useStore", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("banner store", () => {
@@ -42,7 +30,7 @@ describe("useStore", () => {
 
     it("should update the _lastFetchTime on fetch", async () => {
       useStore.setState({ allBanners: [], _lastFetchTime: 0 });
-      getBanners.mockResolvedValueOnce([mockBanner]);
+      vi.mocked(getBanners).mockResolvedValueOnce([mockBanner]);
 
       await useStore.getState().fetchBanners();
 

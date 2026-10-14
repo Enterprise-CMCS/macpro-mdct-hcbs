@@ -1,22 +1,33 @@
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import KafkaSourceLib from "./kafka-source-lib";
 
-let tempNamespace: string | undefined;
-let tempBrokers: string | undefined;
-
-const mockSendBatch = jest.fn();
-const mockProducer = jest.fn().mockImplementation(() => {
-  return {
-    disconnect: () => {},
-    removeListener: () => {},
-    connect: () => {},
-    sendBatch: mockSendBatch,
-  };
-});
-
-jest.mock("kafkajs", () => ({
-  Kafka: jest.fn().mockImplementation(() => {
-    return { producer: mockProducer };
-  }),
+const { mockConnect, mockSendBatch, mockDisconnect, mockOn } = vi.hoisted(
+  () => ({
+    mockConnect: vi.fn(),
+    mockSendBatch: vi.fn(),
+    mockDisconnect: vi.fn(),
+    mockOn: vi.fn(),
+  })
+);
+vi.mock("kafkajs", () => ({
+  Kafka: vi.fn(
+    class {
+      producer = vi.fn().mockReturnValue({
+        disconnect: mockDisconnect,
+        connect: mockConnect,
+        sendBatch: mockSendBatch,
+        on: mockOn,
+      });
+    }
+  ),
 }));
 
 const stage = "testing";
@@ -62,13 +73,14 @@ const dynamoEvent = {
   ],
 };
 
-let consoleSpy: {
-  log: jest.SpyInstance<void>;
-} = {
-  log: jest.fn() as jest.SpyInstance,
+let consoleSpy = {
+  log: vi.fn(),
 };
 
-describe("Test Kafka Lib", () => {
+describe("Kafka Lib", () => {
+  let tempNamespace: string | undefined;
+  let tempBrokers: string | undefined;
+
   beforeAll(() => {
     tempNamespace = process.env.topicNamespace;
     tempBrokers = process.env.brokerString;
@@ -83,44 +95,41 @@ describe("Test Kafka Lib", () => {
   });
 
   beforeEach(() => {
-    consoleSpy.log = jest.spyOn(console, "log").mockImplementation();
+    vi.clearAllMocks();
+    consoleSpy.log = vi.spyOn(console, "log").mockImplementation(vi.fn());
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Handles a dynamo event", async () => {
+  it("should handle a dynamo event", async () => {
     const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(1);
+    expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
-  test("Handles events without versions", async () => {
+  it("should handle events without versions", async () => {
     const sourceLib = new KafkaSourceLib("hcbs", null, [table]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(1);
+    expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
-  test("Does not pass through events from unrelated tables", async () => {
+  it("should not pass through events from unrelated tables", async () => {
     const sourceLib = new KafkaSourceLib("hcbs", "v0", [
       { sourceName: "unrelated-table", topicName: "unrelated-topic" },
     ]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(0);
+    expect(mockSendBatch).not.toHaveBeenCalled();
   });
 
-  test("Ignores items with bad keys or missing events", async () => {
+  it("should ignore items with bad keys or missing events", async () => {
     const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler({});
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(0);
+    expect(mockSendBatch).not.toHaveBeenCalled();
   });
 
-  test("Handles dynamo events with no OldImage", async () => {
+  it("should handle dynamo events with no OldImage", async () => {
     const dynamoInsertEvent = {
       Records: [
         {
@@ -138,7 +147,7 @@ describe("Test Kafka Lib", () => {
     const sourceLib = new KafkaSourceLib("hcbs", "v0", [table]);
     await sourceLib.handler(dynamoInsertEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledWith({
+    expect(mockSendBatch).toHaveBeenCalledWith({
       topicMessages: [
         {
           messages: [

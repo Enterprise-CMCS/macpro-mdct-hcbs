@@ -23,12 +23,12 @@ import {
 import { EligibilityTableTemplate, EligibilityTableItem } from "types";
 import { PageElementProps } from "../Elements";
 import { Fragment, useState, ChangeEvent, useEffect } from "react";
-import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import cancelIconGray from "assets/icons/cancel/icon_cancel_gray.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
 import { ChoiceList, TextField } from "@cmsgov/design-system";
 import { ErrorMessages } from "../../../constants";
+import addIcon from "assets/icons/add/icon_add_blue.svg";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
 export const EligibilityTableElement = (
@@ -204,13 +204,13 @@ export const EligibilityTableElement = (
       </Table>
 
       <Button
-        variant={"outline"}
+        variant="outline"
+        leftIcon={<Image src={addIcon} alt="" />}
         isDisabled={disabled}
         onClick={() => {
           onAddClick();
         }}
       >
-        <Image src={addIcon} alt="" sx={sx.addIcon} />
         Add eligibility
       </Button>
 
@@ -360,9 +360,6 @@ export const EligibilityTableElementExport = (
 };
 
 const sx = {
-  addIcon: {
-    padding: "3px",
-  },
   children: {
     padding: "0 22px",
     border: "4px #0071BC solid",

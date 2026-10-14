@@ -1,39 +1,58 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   Dropdown,
   ChoiceList,
   DropdownChangeObject,
 } from "@cmsgov/design-system";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import { DropdownOptions, ReportType } from "types";
 import { StateNames } from "../../constants";
 
-const getReportName = (type: string | undefined) => {
-  switch (type) {
-    case ReportType.QMS:
-      return "Quality Measure Set Report (QMS)";
-    case ReportType.TACM:
-      return "Timely Access Compliance Measure Report (TACM)";
-    case ReportType.CI:
-      return "Critical Incident Report (CI)";
-    case ReportType.PCP:
-      return "Person-Centered Planning Report (PCP)";
-    case ReportType.QIP:
-      return "QMS Quality Improvement Plans (QMS QIP)";
-    case ReportType.WWL:
-      return "Waiver Waiting List Report (WWL)";
-    default:
-      return "";
-  }
+type ReportOption = {
+  value: ReportType;
+  label: string;
+  flagName?: string;
 };
 
-const reportChoices = Object.values(ReportType).map((type) => {
-  return {
-    value: type,
-    label: `${getReportName(type)}`,
-  };
-});
+export const reportOptions: ReportOption[] = [
+  {
+    value: ReportType.QMS,
+    label: "Quality Measure Set Report (QMS)",
+    flagName: "isQmsReportActive",
+  },
+  {
+    value: ReportType.HA,
+    label: "HCBS Access Report (HA)",
+    flagName: "isHaReportActive",
+  },
+  {
+    value: ReportType.CI,
+    label: "Critical Incident Report (CI)",
+    flagName: "isCiReportActive",
+  },
+  {
+    value: ReportType.PCP,
+    label: "Person-Centered Planning Report (PCP)",
+    flagName: "isPcpReportActive",
+  },
+  {
+    value: ReportType.IMA,
+    label: "Incident Management Assessments (IMA)",
+    flagName: "isImaReportActive",
+  },
+  {
+    value: ReportType.QIP,
+    label: "QMS Quality Improvement Plans (QMS QIP)",
+    flagName: "isQipReportActive",
+  },
+  {
+    value: ReportType.WWL,
+    label: "Waiver Waiting List Report (WWL)",
+    flagName: "isWwlReportActive",
+  },
+];
 
 const buildStates = (): DropdownOptions[] => {
   const dropdownStates: DropdownOptions[] = Object.entries(StateNames).map(
@@ -53,7 +72,12 @@ const dropdownStates = buildStates();
 export const AdminDashSelector = () => {
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedReport, setSelectedReport] = useState<string>("");
+  const flags = useFlags();
   const navigate = useNavigate();
+
+  const reportChoices = reportOptions.filter(
+    (option) => !option.flagName || flags?.[option.flagName]
+  );
 
   const handleStateChange = (event: DropdownChangeObject) => {
     setSelectedState(event.target.value);
@@ -85,21 +109,27 @@ export const AdminDashSelector = () => {
           })}
         </>
         <Flex sx={sx.navigationButton} flexDirection="column" gap="2rem">
-          <ChoiceList
-            name="radio"
-            type="radio"
-            label="Select a report:"
-            choices={reportChoices}
-            onChange={handleReportChange}
-          />
-          <Button
-            type="submit"
-            form="adminDashSelector"
-            onClick={() => handleSubmit()}
-            disabled={!selectedState || !selectedReport}
-          >
-            Go to Report Dashboard
-          </Button>
+          {reportChoices.length > 0 ? (
+            <>
+              <ChoiceList
+                name="radio"
+                type="radio"
+                label="Select a report:"
+                choices={reportChoices}
+                onChange={handleReportChange}
+              />
+              <Button
+                type="submit"
+                form="adminDashSelector"
+                onClick={() => handleSubmit()}
+                disabled={!selectedState || !selectedReport}
+              >
+                Go to Report Dashboard
+              </Button>
+            </>
+          ) : (
+            <Text>No reports are currently enabled.</Text>
+          )}
         </Flex>
       </form>
     </Box>

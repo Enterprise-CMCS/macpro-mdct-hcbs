@@ -1,15 +1,17 @@
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@cmsgov/design-system";
 import {
   AdminDashSelector,
   CiIntroductionCard,
   PageTemplate,
   QmsIntroductionCard,
-  TacmIntroductionCard,
+  HaIntroductionCard,
   PCPIntroductionCard,
+  IMAIntroductionCard,
   QipIntroductionCard,
   WWLIntroductionCard,
 } from "components";
-import { useStore } from "utils";
+import { externalLinkAltText, useStore } from "utils";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { activeBannerSelector } from "utils/state/selectors";
 import { BannerAreas } from "types";
@@ -18,12 +20,13 @@ import { Banner } from "components/alerts/Banner";
 export const HomePage = () => {
   const banner = useStore(activeBannerSelector(BannerAreas.Home));
   const { userIsEndUser } = useStore().user ?? {};
-
-  const isTACMReportActive = useFlags()?.isTacmReportActive;
+  const isQmsReportActive = useFlags()?.isQmsReportActive;
+  const isHAReportActive = useFlags()?.isHaReportActive;
   const isCIReportActive = useFlags()?.isCiReportActive;
   const isPCPReportActive = useFlags()?.isPcpReportActive;
   const isQipReportActive = useFlags()?.isQipReportActive;
   const isWWLReportActive = useFlags()?.isWwlReportActive;
+  const isIMAReportActive = useFlags()?.isImaReportActive;
 
   return (
     <>
@@ -42,40 +45,52 @@ export const HomePage = () => {
                 about measuring and improving quality in home and
                 community-based services, please visit{" "}
                 <Link
-                  isExternal
-                  href="https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
+                  href={
+                    "https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  this link.
+                  Medicaid.gov's HCBS quality improvement resources
+                  <ExternalLinkIcon
+                    ariaHidden={false}
+                    title={externalLinkAltText}
+                    className="external-link-icon"
+                  />
                 </Link>
+                {"."}
               </Text>
             </Box>
-            <Box>
-              <Heading as="h2" variant="h2" marginBottom="spacer3">
-                Quality Reports
-              </Heading>
-              <Box display="flex" flexDirection="column" gap="spacer4">
-                <QmsIntroductionCard />
-                {isQipReportActive && <QipIntroductionCard />}
+            {(isQmsReportActive || isQipReportActive) && (
+              <Box>
+                <Heading as="h2" variant="h2" marginBottom="spacer3">
+                  Quality Reports
+                </Heading>
+                <Box display="flex" flexDirection="column" gap="spacer4">
+                  {isQmsReportActive && <QmsIntroductionCard />}
+                  {isQipReportActive && <QipIntroductionCard />}
+                </Box>
               </Box>
-            </Box>
-            {(isTACMReportActive || isWWLReportActive) && (
+            )}
+            {(isHAReportActive || isWWLReportActive) && (
               <Box>
                 <Heading as="h2" variant="h2" marginBottom="spacer3">
                   Transparency Reports
                 </Heading>
                 <Box display="flex" flexDirection="column" gap="spacer4">
-                  {isTACMReportActive && <TacmIntroductionCard />}
+                  {isHAReportActive && <HaIntroductionCard />}
                   {isWWLReportActive && <WWLIntroductionCard />}
                 </Box>
               </Box>
             )}
-            {(isCIReportActive || isPCPReportActive) && (
+            {(isCIReportActive || isPCPReportActive || isIMAReportActive) && (
               <Box>
                 <Heading as="h2" variant="h2" marginBottom="spacer3">
                   Compliance Reports
                 </Heading>
                 <Box display="flex" flexDirection="column" gap="spacer4">
                   {isCIReportActive && <CiIntroductionCard />}
+                  {isIMAReportActive && <IMAIntroductionCard />}
                   {isPCPReportActive && <PCPIntroductionCard />}
                 </Box>
               </Box>

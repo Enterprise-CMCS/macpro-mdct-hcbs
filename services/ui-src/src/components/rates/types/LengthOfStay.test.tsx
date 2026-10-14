@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import { LengthOfStay } from "./LengthOfStay";
 import userEvent from "@testing-library/user-event";
@@ -35,7 +36,7 @@ const mockedPerformanceElement: LengthOfStayRateTemplate = {
     adjustedRateHint: "Adjusted rate hint text",
   },
 };
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const LengthOfStayWrapper = ({
   template,
@@ -51,110 +52,109 @@ const LengthOfStayWrapper = ({
 };
 
 describe("<LengthOfStay />", () => {
-  describe("Test LengthOfStay component", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    const labels = mockedPerformanceElement.labels;
-    const getInput = (fieldId: LengthOfStayField) => {
-      return screen.getByRole("textbox", { name: labels[fieldId] });
-    };
+  const labels = mockedPerformanceElement.labels;
+  const getInput = (fieldId: LengthOfStayField) => {
+    return screen.getByRole("textbox", { name: labels[fieldId] });
+  };
 
-    const getInputWithOptionalField = (fieldId: LengthOfStayField) => {
-      return screen.getByText((content) => content.startsWith(labels[fieldId]));
-    };
+  const getInputWithOptionalField = (fieldId: LengthOfStayField) => {
+    return screen.getByText((content) => content.startsWith(labels[fieldId]));
+  };
 
-    const enterValue = async (fieldId: LengthOfStayField, value: string) => {
-      await act(() => userEvent.type(getInput(fieldId), value));
-    };
-    test("Fields are visible, and disabled appropriately", async () => {
-      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
-      for (let fieldId of Object.keys(labels)) {
-        if (fieldId === "populationRate")
-          expect(
-            getInputWithOptionalField(fieldId as LengthOfStayField)
-          ).toBeInTheDocument();
-        else expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
-      }
+  const enterValue = async (fieldId: LengthOfStayField, value: string) => {
+    await act(() => userEvent.type(getInput(fieldId), value));
+  };
 
-      for (let editableFieldId of [
-        "actualCount",
-        "denominator",
-        "expectedCount",
-        "adjustedRate",
-      ] as const) {
-        expect(getInput(editableFieldId)).not.toBeDisabled();
-      }
+  it("should render its fields, enabled or disabled appropriately", async () => {
+    render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+    for (let fieldId of Object.keys(labels)) {
+      if (fieldId === "populationRate")
+        expect(
+          getInputWithOptionalField(fieldId as LengthOfStayField)
+        ).toBeInTheDocument();
+      else expect(getInput(fieldId as LengthOfStayField)).toBeInTheDocument();
+    }
 
-      expect(
-        getInputWithOptionalField("populationRate" as LengthOfStayField)
-      ).not.toBeDisabled();
+    for (let editableFieldId of [
+      "actualCount",
+      "denominator",
+      "expectedCount",
+      "adjustedRate",
+    ] as const) {
+      expect(getInput(editableFieldId)).not.toBeDisabled();
+    }
 
-      for (let autoCalcFieldId of ["actualRate", "expectedRate"] as const) {
-        expect(getInput(autoCalcFieldId)).toBeDisabled();
-      }
-    });
+    expect(
+      getInputWithOptionalField("populationRate" as LengthOfStayField)
+    ).not.toBeDisabled();
 
-    test("Fields should auto-calculate", async () => {
-      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+    for (let autoCalcFieldId of ["actualRate", "expectedRate"] as const) {
+      expect(getInput(autoCalcFieldId)).toBeDisabled();
+    }
+  });
 
-      await enterValue("actualCount", "1");
-      await enterValue("denominator", "2");
-      await enterValue("expectedCount", "1");
-      await enterValue("adjustedRate", "2");
+  it("should auto-calculate rates", async () => {
+    render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 
-      expect(getInput("actualRate")).toHaveValue("0.5");
-      expect(getInput("expectedRate")).toHaveValue("0.5");
-    });
+    await enterValue("actualCount", "1");
+    await enterValue("denominator", "2");
+    await enterValue("expectedCount", "1");
+    await enterValue("adjustedRate", "2");
 
-    test("Error should show if the denominator is 0, and should also clear", async () => {
-      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+    expect(getInput("actualRate")).toHaveValue("0.5");
+    expect(getInput("expectedRate")).toHaveValue("0.5");
+  });
 
-      await enterValue("denominator", "0");
+  it("should show an if the denominator is 0, and should also clear", async () => {
+    render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 
-      expect(
-        screen.getByText(
-          ErrorMessages.denominatorZero(
-            mockedPerformanceElement.labels.actualCount,
-            mockedPerformanceElement.labels.denominator
-          )
+    await enterValue("denominator", "0");
+
+    expect(
+      screen.getByText(
+        ErrorMessages.denominatorZero(
+          mockedPerformanceElement.labels.actualCount,
+          mockedPerformanceElement.labels.denominator
         )
-      ).toBeVisible();
+      )
+    ).toBeVisible();
 
-      await enterValue("denominator", "4");
-      expect(
-        screen.queryByText(
-          ErrorMessages.denominatorZero(
-            mockedPerformanceElement.labels.actualCount,
-            mockedPerformanceElement.labels.denominator
-          )
+    await enterValue("denominator", "4");
+    expect(
+      screen.queryByText(
+        ErrorMessages.denominatorZero(
+          mockedPerformanceElement.labels.actualCount,
+          mockedPerformanceElement.labels.denominator
         )
-      ).not.toBeInTheDocument();
-    });
+      )
+    ).not.toBeInTheDocument();
+  });
 
-    test("Rate should be 0 if both numerator and denominator are 0", async () => {
-      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+  it("should set rate to 0 if both numerator and denominator are 0", async () => {
+    render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 
-      await enterValue("actualCount", "0");
-      await enterValue("denominator", "0");
-      await enterValue("expectedCount", "0");
+    await enterValue("actualCount", "0");
+    await enterValue("denominator", "0");
+    await enterValue("expectedCount", "0");
 
-      expect(getInput("actualRate")).toHaveValue("0.00");
-      expect(getInput("expectedRate")).toHaveValue("0.00");
-    });
+    expect(getInput("actualRate")).toHaveValue("0.00");
+    expect(getInput("expectedRate")).toHaveValue("0.00");
+  });
 
-    test("should display hint texts for all fields", () => {
-      render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
+  it("should display hint texts for all fields", () => {
+    render(<LengthOfStayWrapper template={mockedPerformanceElement} />);
 
-      expect(screen.getByText("Actual count hint text")).toBeVisible();
-      expect(screen.getByText("Denominator hint text")).toBeVisible();
-      expect(screen.getByText("Expected count hint text")).toBeVisible();
-      expect(screen.getByText("Population rate hint text")).toBeVisible();
-      expect(screen.getByText("Actual rate hint text")).toBeVisible();
-      expect(screen.getByText("Expected rate hint text")).toBeVisible();
-      expect(screen.getByText("Adjusted rate hint text")).toBeVisible();
-    });
+    expect(screen.getByText("Actual count hint text")).toBeVisible();
+    expect(screen.getByText("Denominator hint text")).toBeVisible();
+    expect(screen.getByText("Expected count hint text")).toBeVisible();
+    expect(screen.getByText("Population rate hint text")).toBeVisible();
+    expect(screen.getByText("Actual rate hint text")).toBeVisible();
+    expect(screen.getByText("Expected rate hint text")).toBeVisible();
+    expect(screen.getByText("Adjusted rate hint text")).toBeVisible();
   });
 
   testA11y(<LengthOfStayWrapper template={mockedPerformanceElement} />);

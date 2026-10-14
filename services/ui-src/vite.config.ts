@@ -1,3 +1,5 @@
+// This magic comment extends vite's TS definitions to include vitest's too.
+/// <reference types="vitest/config" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -16,5 +18,31 @@ export default defineConfig({
   },
   resolve: {
     tsconfigPaths: true,
+  },
+  test: {
+    root: "src",
+    setupFiles: "utils/testing/setupTests.tsx",
+    environment: "jsdom",
+    /* We don't use global defs, but @testing-library/jest-dom does. */
+    globals: true,
+    coverage: {
+      /*
+       * The default coverage directory is "<root>/coverage",
+       * but we want to output to ui-src/coverage instead.
+       */
+      reportsDirectory: "../coverage",
+      reporter: [
+        [
+          // Generate machine-readable coverage files for Code Climate
+          "lcov",
+          // filepaths in the lcov report should start with services/ui-src
+          { projectRoot: "../.." },
+        ],
+        // Print a table of each file's coverage to the terminal
+        ["text"],
+        // Print a table of overall coverage to the terminal
+        ["text-summary"],
+      ],
+    },
   },
 });

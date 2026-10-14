@@ -3,7 +3,7 @@
 This document is a detailed look at the structure and fields of HCBS reports.
 For a more general overview, see docs/ReportDataStructure.md.
 
-Note that all HCBS report types (QMS, CI, TACM, PCP, WWL, QIP) use the same schema.
+Note that all HCBS report types (QMS, CI, HA, IMA, PCP, WWL, QIP) use the same schema.
 Top-level fields are treated identically. The pages can have the same elements.
 The main exceptions are in how the QMS and QIP reports treats measure sub-pages;
 more on that below.
@@ -18,7 +18,8 @@ The QMS and QIP reports each have a Kafka topic that receives messages when the 
 <!--
   -- TODO: MDCT-6742 currently only mentions QMS/QIP but these exist in config.js. Adding these to be uncommented if these reports are used.
   --
-  -- - TACM: `aws.mdct.hcbs.tacm-reports.v0`
+  -- - HA: `aws.mdct.hcbs.ha-reports.v0`
+  -- - IMA: `aws.mdct.hcbs.ima-reports.v0`
   -- - CI: `aws.mdct.hcbs.ci-reports.v0`
   -- - PCP: `aws.mdct.hcbs.pcp-reports.v0`
   -- - WWL: `aws.mdct.hcbs.wwl-reports.v0`
@@ -35,7 +36,7 @@ For example: `--hcbs--my-branch-name--aws.mdct.hcbs.qms-reports.v0`
 - `lastEdited` (number): Timestamp for report modification.
 - `lastEditedBy` (string): The full name of the modifying user.
 - `lastEditedByEmail` (string): The email of the modifying user.
-- `type` (string): The type of the report ("QMS", "TACM", etc)
+- `type` (string): The type of the report ("QMS", "HA", etc)
 - `submitted` (number, optional): Timestamp for the latest submission. Milliseconds since epoch.
 - `submissionDates` (object[], optional): List of submitted dates in number timestamps `{ submitted: number }`.
 - `submittedBy` (string, optional): The full name of submitting user.

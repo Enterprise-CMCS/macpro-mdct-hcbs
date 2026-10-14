@@ -1,7 +1,7 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QmsMeasureTableElement } from "./QmsMeasureTable";
-import { mockUseStore } from "utils/testing/setupJest";
 import { useStore } from "utils/state/useStore";
 import {
   ElementType,
@@ -11,7 +11,7 @@ import {
   Report,
   ReportStatus,
 } from "types";
-import { MemoryRouter, useNavigate } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 
 const mockReport = {
   status: ReportStatus.IN_PROGRESS,
@@ -42,23 +42,14 @@ const mockReport = {
   ],
 } as Report;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockUseStore,
-  report: mockReport,
-});
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: jest.fn().mockReturnValue({
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useParams: vi.fn().mockReturnValue({
     reportType: "QMS",
     state: "CO",
     reportId: "123",
   }),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
 }));
-const mockedNavigate = useNavigate() as jest.Mock;
 
 const mockTemplate: QmsMeasureTableTemplate = {
   type: ElementType.QmsMeasureTable,
@@ -67,7 +58,7 @@ const mockTemplate: QmsMeasureTableTemplate = {
   caption: "Required Measure Results",
 };
 
-jest.mock("./MeasureReplacementModal", () => ({
+vi.mock("./MeasureReplacementModal", () => ({
   MeasureReplacementModal: (
     measure: MeasurePageTemplate,
     _onClose: unknown,
@@ -78,19 +69,21 @@ jest.mock("./MeasureReplacementModal", () => ({
 }));
 
 const MeasureTableComponent = (
-  measureDisplay: QmsMeasureTableTemplate["measureDisplay"]
+  measureDisplay: QmsMeasureTableTemplate["measureDisplay"],
+  disabled = false
 ) => {
   const template = { ...mockTemplate, measureDisplay };
   return (
     <MemoryRouter>
-      <QmsMeasureTableElement element={template} />
+      <QmsMeasureTableElement element={template} disabled={disabled} />
     </MemoryRouter>
   );
 };
 
-describe("Test QmsMeasureTable", () => {
+describe("QmsMeasureTable", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
+    useStore.setState({ report: mockReport });
   });
 
   it("should display required measures when in required mode", () => {
@@ -112,10 +105,9 @@ describe("Test QmsMeasureTable", () => {
   });
 
   it("should perform substitution when the button is clicked", async () => {
-    const mockSubstitute = jest.fn();
+    const mockSubstitute = vi.fn();
     const requiredMeasure = mockReport.pages.find((p: any) => p.required);
-    mockedUseStore.mockReturnValue({
-      ...mockUseStore,
+    useStore.setState({
       report: mockReport,
       setSubstitute: mockSubstitute,
     });
@@ -128,8 +120,7 @@ describe("Test QmsMeasureTable", () => {
   });
 
   it("should not show the substitute button for submitted reports", () => {
-    mockedUseStore.mockReturnValueOnce({
-      ...mockUseStore,
+    useStore.setState({
       report: {
         ...mockReport,
         status: ReportStatus.SUBMITTED,
@@ -140,11 +131,27 @@ describe("Test QmsMeasureTable", () => {
     expect(substituteButton).not.toBeInTheDocument();
   });
 
-  it("should navigate to the measure when the edit button is clicked", async () => {
+  it("should link to the measure when the edit button is clicked", () => {
     render(MeasureTableComponent("required"));
-    const editButton = screen.getAllByText("Edit")[0];
-    await userEvent.click(editButton);
-    expect(mockedNavigate).toHaveBeenCalledWith(
+    const editButton = screen.getByLabelText("Edit Mock Measure Req");
+    expect(editButton).toHaveAttribute(
+      "href",
+      "/report/QMS/CO/123/mock-measure-1"
+    );
+  });
+
+  it("should display View instead of Edit in read-only mode", () => {
+    render(MeasureTableComponent("required", true));
+    expect(screen.getAllByText("View")).toHaveLength(2);
+    expect(screen.getByLabelText("View Mock Measure Req")).toBeInTheDocument();
+    expect(screen.queryByText("Edit")).not.toBeInTheDocument();
+  });
+
+  it("should link to the measure when the view button is clicked", () => {
+    render(MeasureTableComponent("required", true));
+    const viewButton = screen.getByLabelText("View Mock Measure Req");
+    expect(viewButton).toHaveAttribute(
+      "href",
       "/report/QMS/CO/123/mock-measure-1"
     );
   });

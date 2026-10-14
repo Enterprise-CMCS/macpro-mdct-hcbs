@@ -1,14 +1,14 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useDeleteConfirmModal } from "./useDeleteConfirmModal";
 import { QipDeleteModal } from "./QipDeleteModal";
 import { useStore } from "utils";
-import { mockUseStore } from "utils/testing/setupJest";
 
 let mockQipOnClose: () => void;
 let mockQipOnConfirm: () => void;
 let mockQipBody: string;
 
-jest.mock("./QipDeleteModal", () => ({
+vi.mock("./QipDeleteModal", () => ({
   QipDeleteModal: (
     ...[_body, _confirmLabel, onClose, onConfirm]: Parameters<
       typeof QipDeleteModal
@@ -21,10 +21,10 @@ jest.mock("./QipDeleteModal", () => ({
   },
 }));
 
-jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn(),
+vi.mock("utils/state/useStore", () => ({
+  useStore: vi.fn(),
 }));
-const mockedUseStore = jest.mocked(useStore);
+const mockedUseStore = vi.mocked(useStore);
 
 const items = [
   { id: "item-1", label: "Item 1" },
@@ -33,10 +33,10 @@ const items = [
 ];
 
 describe("useDeleteConfirmModal", () => {
-  const mockSetModalComponent = jest.fn();
-  const mockSetModalOpen = jest.fn();
-  const mockSetModalFinalFocusRef = jest.fn();
-  const mockOnConfirm = jest.fn();
+  const mockSetModalComponent = vi.fn();
+  const mockSetModalOpen = vi.fn();
+  const mockSetModalFinalFocusRef = vi.fn();
+  const mockOnConfirm = vi.fn();
 
   const defaultOptions = {
     items,
@@ -48,9 +48,8 @@ describe("useDeleteConfirmModal", () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockedUseStore.mockReturnValue({
-      ...mockUseStore,
       setModalComponent: mockSetModalComponent,
       setModalOpen: mockSetModalOpen,
       setModalFinalFocusRef: mockSetModalFinalFocusRef,

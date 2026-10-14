@@ -15,6 +15,7 @@ import {
   assertExhaustive,
   ReadmissionRateFieldNames,
 } from "types";
+import { isNotCompliant } from "./compliance";
 
 /**
  * Calculate the status of any page, including calculated values.
@@ -75,10 +76,11 @@ export const pageInProgress = (report: Report, pageId: string) => {
     }
   };
 
-  const anyEdited = targetPage.elements.find(
-    (element) => "answer" in element && hasData(element.answer)
-  );
-  return !!anyEdited;
+  const elementHasData = (element: Partial<PageElement>): boolean => {
+    return "answer" in element && hasData(element.answer);
+  };
+
+  return targetPage.elements.some(elementHasData);
 };
 
 /**
@@ -185,7 +187,7 @@ const qipTargetsCombinedStatus = (report: Report) => {
 export const elementSatisfiesRequired = (
   element: PageElement,
   pageElements: PageElement[]
-) => {
+): boolean => {
   //while list input is not required, if the user adds a field and leaves it blank, that would make it incomplete and prevent form submission
   if (
     element.type === ElementType.ListInput &&
@@ -198,7 +200,9 @@ export const elementSatisfiesRequired = (
     !("required" in element) ||
     !element.required ||
     ("hideCondition" in element &&
-      elementIsHidden(element.hideCondition, pageElements))
+      elementIsHidden(element.hideCondition, pageElements)) ||
+    ("showWhenNonCompliant" in element &&
+      elementIsHidden(undefined, pageElements, element.showWhenNonCompliant))
   ) {
     return true;
   }
@@ -289,6 +293,13 @@ export const elementSatisfiesRequired = (
     if (element.answer.numerator === undefined) return false;
     if (element.answer.denominator === undefined) return false;
     if (element.answer.rate === undefined) return false;
+    const children = element.children;
+    if (
+      children &&
+      !children.every((child) => elementSatisfiesRequired(child, children))
+    ) {
+      return false;
+    }
 
     //For forms like PCP-1 & PCP-2, they have conditional children rendered based on if performance level has been reached.
     if (
@@ -308,8 +319,18 @@ export const elementSatisfiesRequired = (
 
 export const elementIsHidden = (
   hideCondition: HideCondition | undefined,
-  elements: Partial<PageElement>[]
+  elements: PageElement[],
+  showWhenNonCompliant?: string[]
 ) => {
+  if (
+    showWhenNonCompliant &&
+    !showWhenNonCompliant.some((controllerElementId) =>
+      isNotCompliant(controllerElementId, elements)
+    )
+  ) {
+    return true;
+  }
+
   if (!hideCondition) return false;
 
   const controlElement = elements.find((target: any) => {
@@ -321,3 +342,7 @@ export const elementIsHidden = (
     controlElement.answer === hideCondition?.answer
   );
 };
+
+// Flattens elements across all report pages for cross-page conditions to reuse IMA table
+export const getReportElements = (report: Report | undefined): PageElement[] =>
+  report?.pages.flatMap((page) => page.elements ?? []) ?? [];

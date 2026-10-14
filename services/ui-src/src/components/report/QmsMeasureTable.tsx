@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import {
   Button,
   Table,
@@ -8,7 +8,6 @@ import {
   Thead,
   Tr,
   Text,
-  Link,
   TableCaption,
   Flex,
   VisuallyHidden,
@@ -30,11 +29,11 @@ import { ReportAutosaveContext } from "./ReportAutosaveProvider";
 export const QmsMeasureTableElement = (
   props: PageElementProps<QmsMeasureTableTemplate>
 ) => {
-  const table = props.element;
+  const { element: table, disabled } = props;
   const { report, setModalComponent, setModalOpen, setSubstitute } = useStore();
   const { autosave } = useContext(ReportAutosaveContext);
 
-  const measures = report?.pages.filter((page) =>
+  const measures = (report?.pages ?? []).filter((page) =>
     isMeasureTemplate(page)
   ) as MeasurePageTemplate[];
 
@@ -65,11 +64,6 @@ export const QmsMeasureTableElement = (
   };
 
   const { reportType, state, reportId } = useParams();
-  const navigate = useNavigate();
-
-  const handleEditClick = (measureId: string) => {
-    navigate(`/report/${reportType}/${state}/${reportId}/${measureId}`);
-  };
 
   const getTableStatus = (measure: MeasurePageTemplate) => {
     //TO DO: clean up when report check code is ready
@@ -133,16 +127,12 @@ export const QmsMeasureTableElement = (
             ) : null}
             {/* TO-DO: Fix format of measure id */}
             <Button
-              as={Link}
+              as={RouterLink}
               variant={"outline"}
-              aria-label={`Edit ${measure.navTitle}`}
-              href={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                handleEditClick(measure.id);
-              }}
+              aria-label={`${disabled ? "View" : "Edit"} ${measure.navTitle}`}
+              to={`/report/${reportType}/${state}/${reportId}/${measure.id}`}
             >
-              Edit
+              {disabled ? "View" : "Edit"}
             </Button>
           </Flex>
         </Td>

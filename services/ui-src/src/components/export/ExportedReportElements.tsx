@@ -68,7 +68,7 @@ export const renderElements = (
   switch (type) {
     case ElementType.SubHeader:
       return (
-        <Heading as="h4" variant="nestedHeading">
+        <Heading as="h3" variant="nestedHeading">
           {element.text}
         </Heading>
       );

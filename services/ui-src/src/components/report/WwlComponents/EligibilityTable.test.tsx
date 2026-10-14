@@ -1,20 +1,13 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ElementType, EligibilityTableTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { useState } from "react";
-import { useStore } from "utils";
-import { mockUseStore } from "utils/testing/setupJest";
 import {
   EligibilityTableElement,
   EligibilityTableElementExport,
 } from "./EligibilityTable";
-
-jest.mock("utils/state/useStore", () => ({
-  useStore: jest.fn().mockReturnValue({}),
-}));
-const mockedUseStore = jest.mocked(useStore);
-mockedUseStore.mockReturnValue(mockUseStore);
 
 const mockedElement: EligibilityTableTemplate = {
   id: "mock-id",
@@ -28,7 +21,10 @@ const mockedElement: EligibilityTableTemplate = {
     eligibilityUpdate: "eligibilityUpdate",
   },
   modalInstructions: "modalInstructions",
-  frequencyOptions: [{ label: "Annually", value: "Annually" }],
+  frequencyOptions: [
+    { label: "Annually", value: "Annually" },
+    { label: "Monthly", value: "Monthly" },
+  ],
   answer: [
     {
       title: "mockTitle1",
@@ -39,7 +35,7 @@ const mockedElement: EligibilityTableTemplate = {
     },
   ],
 };
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const EligibilityTableWrapper = ({
   template,
@@ -55,98 +51,96 @@ const EligibilityTableWrapper = ({
 };
 
 describe("<EligibilityTableElement />", () => {
-  describe("Test EligibilityTableElement component", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should render correctly", () => {
+    render(<EligibilityTableWrapper template={mockedElement} />);
+    expect(screen.getAllByText("Other Eligibility")[0]).toBeVisible();
+    expect(screen.getByText("mockTitle1")).toBeVisible();
+  });
+
+  it("should open a closable modal to add eligibility", async () => {
+    render(<EligibilityTableWrapper template={mockedElement} />);
+
+    const addButton = screen.getByText("Add eligibility");
+    await userEvent.click(addButton);
+    const modalTitle = screen.getByText("Add other eligibility");
+    expect(modalTitle).toBeVisible();
+
+    const closeButton = screen.getByText("Close");
+    await userEvent.click(closeButton);
+    expect(modalTitle).not.toBeVisible();
+  });
+
+  it("should allow the user to add a new eligibility", async () => {
+    render(<EligibilityTableWrapper template={mockedElement} />);
+    const addButton = screen.getByText("Add eligibility");
+    await userEvent.click(addButton);
+
+    const title = screen.getByRole("textbox", {
+      name: mockedElement.fieldLabels.title,
     });
+    await userEvent.type(title, "mockTitle2");
 
-    test("EligibilityTableElement is visible", () => {
-      render(<EligibilityTableWrapper template={mockedElement} />);
-      expect(screen.getAllByText("Other Eligibility")[0]).toBeVisible();
-      expect(screen.getByText("mockTitle1")).toBeVisible();
+    const description = screen.getByRole("textbox", {
+      name: mockedElement.fieldLabels.description,
     });
+    await userEvent.type(description, "mockDescription2");
 
-    test("Modal should open and close", async () => {
-      render(<EligibilityTableWrapper template={mockedElement} />);
+    const radios = screen.getAllByText("No");
+    await userEvent.click(radios[0]); // recheck
+    await userEvent.click(radios[1]); // eligibility update
 
-      const addButton = screen.getByText("Add eligibility");
-      await userEvent.click(addButton);
-      const modalTitle = screen.getByText("Add other eligibility");
-      expect(modalTitle).toBeVisible();
+    const saveButton = screen.getByText("Save");
+    await userEvent.click(saveButton);
+    expect(screen.getByText("mockTitle2")).toBeVisible();
+    expect(updateSpy).toHaveBeenCalled();
+  });
 
-      const closeButton = screen.getByText("Close");
-      await userEvent.click(closeButton);
-      expect(modalTitle).not.toBeVisible();
+  it("should show errors when fields are invalid", async () => {
+    render(<EligibilityTableWrapper template={mockedElement} />);
+    const addButton = screen.getByText("Add eligibility");
+    await userEvent.click(addButton);
+
+    const title = screen.getByRole("textbox", {
+      name: mockedElement.fieldLabels.title,
     });
+    await userEvent.type(title, "mockTitle1");
 
-    test("Able to add new eligibility", async () => {
-      render(<EligibilityTableWrapper template={mockedElement} />);
-      const addButton = screen.getByText("Add eligibility");
-      await userEvent.click(addButton);
+    const saveButton = screen.getByText("Save");
+    await userEvent.click(saveButton);
+    expect(screen.getAllByText("A response is required")[0]).toBeVisible();
+    expect(screen.getByText("Title must be unique")).toBeVisible();
+  });
 
-      const title = screen.getByRole("textbox", {
-        name: mockedElement.fieldLabels.title,
-      });
-      await userEvent.type(title, "mockTitle2");
-
-      const description = screen.getByRole("textbox", {
-        name: mockedElement.fieldLabels.description,
-      });
-      await userEvent.type(description, "mockDescription2");
-
-      const radios = screen.getAllByText("No");
-      await userEvent.click(radios[0]); // recheck
-      await userEvent.click(radios[1]); // eligibility update
-
-      const saveButton = screen.getByText("Save");
-      await userEvent.click(saveButton);
-      expect(screen.getByText("mockTitle2")).toBeVisible();
-      expect(updateSpy).toHaveBeenCalled();
+  it("should allow the user to delete an eligibility", async () => {
+    render(<EligibilityTableWrapper template={mockedElement} />);
+    const deleteButton = screen.getByRole("button", {
+      name: "Delete mockTitle1",
     });
+    await userEvent.click(deleteButton);
 
-    test("Field validations showing proper errors", async () => {
-      render(<EligibilityTableWrapper template={mockedElement} />);
-      const addButton = screen.getByText("Add eligibility");
-      await userEvent.click(addButton);
+    expect(screen.queryByText("mockTitle1")).not.toBeInTheDocument();
+    expect(updateSpy).toHaveBeenCalled();
+  });
 
-      const title = screen.getByRole("textbox", {
-        name: mockedElement.fieldLabels.title,
-      });
-      await userEvent.type(title, "mockTitle1");
+  it("should allow the user to edit an eligibility", async () => {
+    render(<EligibilityTableWrapper template={mockedElement} />);
+    const editButton = screen.getByText("Edit");
+    await userEvent.click(editButton);
 
-      const saveButton = screen.getByText("Save");
-      await userEvent.click(saveButton);
-      expect(screen.getAllByText("A response is required")[0]).toBeVisible();
-      expect(screen.getByText("Title must be unique")).toBeVisible();
+    const title = screen.getByRole("textbox", {
+      name: mockedElement.fieldLabels.title,
     });
+    await userEvent.type(title, "addonTitle");
 
-    test("Able to delete eligibility", async () => {
-      render(<EligibilityTableWrapper template={mockedElement} />);
-      const deleteButton = screen.getByRole("button", {
-        name: "Delete mockTitle1",
-      });
-      await userEvent.click(deleteButton);
-
-      expect(screen.queryByText("mockTitle1")).not.toBeInTheDocument();
-      expect(updateSpy).toHaveBeenCalled();
-    });
-
-    test("Able to edit eligibility", async () => {
-      render(<EligibilityTableWrapper template={mockedElement} />);
-      const editButton = screen.getByText("Edit");
-      await userEvent.click(editButton);
-
-      const title = screen.getByRole("textbox", {
-        name: mockedElement.fieldLabels.title,
-      });
-      await userEvent.type(title, "addonTitle");
-
-      const saveButton = screen.getByText("Save");
-      await userEvent.click(saveButton);
-      expect(updateSpy).toHaveBeenCalled();
-      expect(screen.getByText("mockTitle1addonTitle")).toBeVisible();
-      expect(updateSpy).toHaveBeenCalled();
-    });
+    const saveButton = screen.getByText("Save");
+    await userEvent.click(saveButton);
+    expect(updateSpy).toHaveBeenCalled();
+    expect(screen.getByText("mockTitle1addonTitle")).toBeVisible();
+    expect(updateSpy).toHaveBeenCalled();
   });
 
   describe("EligibilityTableElementExport", () => {

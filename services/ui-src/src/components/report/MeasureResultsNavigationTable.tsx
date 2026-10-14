@@ -27,7 +27,7 @@ import { PageElementProps } from "../report/Elements";
 export const MeasureResultsNavigationTableElement = (
   props: PageElementProps<MeasureResultsNavigationTableTemplate>
 ) => {
-  const table = props.element;
+  const { element: table, disabled } = props;
   const { reportType, state, reportId } = useParams();
   const { report } = useStore();
   const currentPage = useStore(currentPageSelector);
@@ -102,13 +102,12 @@ export const MeasureResultsNavigationTableElement = (
         </Td>
         <Td>
           <Button
-            key={`Edit ${childLink.key}`}
-            name={`Edit ${childLink.key}`}
+            name={`${disabled ? "View" : "Edit"} ${childLink.key}`}
             variant="outline"
             disabled={!singleOption && !deliverySystemIsSelected}
             onClick={() => navigate(buildPath(childLink.template))}
           >
-            Edit
+            {disabled ? "View" : "Edit"}
           </Button>
         </Td>
       </Tr>

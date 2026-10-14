@@ -1,9 +1,10 @@
 import { ModalBody, ModalFooter, Button } from "@chakra-ui/react";
+import { ReportType } from "types";
 
 export const SubmitReportModal = (
   onClose: (modalOpen: boolean) => void,
   onSubmit: () => Promise<void>,
-  reportType: string = "QMS"
+  reportType: ReportType
 ) => {
   const submitHandler = async () => {
     await onSubmit();

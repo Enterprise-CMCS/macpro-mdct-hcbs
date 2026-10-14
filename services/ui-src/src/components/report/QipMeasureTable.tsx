@@ -1,9 +1,8 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import {
   Button,
   Flex,
   Image,
-  Link,
   Table,
   TableCaption,
   Tbody,
@@ -16,12 +15,12 @@ import {
 } from "@chakra-ui/react";
 import { MeasureTargetInfo, PageStatus, QipMeasureTableTemplate } from "types";
 import { TableStatusIcon } from "components";
+import addIcon from "assets/icons/add/icon_add_blue.svg";
 import { QipMeasureSelectModal } from "./QipMeasureSelectModal";
 import { useDeleteConfirmModal } from "./useDeleteConfirmModal";
 import { addQipTargetPage, useStore } from "utils";
 import { inferredReportStatus } from "utils/state/reportLogic/completeness";
 import { PageElementProps } from "./Elements";
-import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 
 export const QipMeasureTableElement = ({
@@ -30,7 +29,6 @@ export const QipMeasureTableElement = ({
   updateElement,
 }: PageElementProps<QipMeasureTableTemplate>) => {
   const { reportType, state, reportId } = useParams();
-  const navigate = useNavigate();
   const {
     report,
     updateReport,
@@ -77,7 +75,9 @@ export const QipMeasureTableElement = ({
 
     updateReport(patchedReport);
 
-    if (reportId) setCurrentPageId("select-measures");
+    if (reportId) {
+      setCurrentPageId("select-measures");
+    }
 
     updateElement({
       answer: updatedMeasures as QipMeasureTableTemplate["answer"],
@@ -110,8 +110,6 @@ export const QipMeasureTableElement = ({
     return <></>;
   };
 
-  const handleDeleteClick = (pageId: string) => openDeleteModal(pageId);
-
   const rows = (measureTargets ?? []).map((measureTarget) => {
     const status = getTableStatus(measureTarget.pageId);
     return (
@@ -128,18 +126,11 @@ export const QipMeasureTableElement = ({
         </Td>
         <Td textAlign="center">
           <Flex justifyContent="center">
-            {/* TODO: We don't need this href, right? If not, remove from QMS Measure Table too. */}
             <Button
-              as={Link}
+              as={RouterLink}
               variant={"outline"}
               aria-label={`${disabled ? "View" : "Edit"} ${measureTarget.measureName}`}
-              href={`/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`}
-              onClick={(e) => {
-                e.preventDefault();
-                navigate(
-                  `/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`
-                );
-              }}
+              to={`/report/${reportType}/${state}/${reportId}/${measureTarget.pageId}`}
             >
               {disabled ? "View" : "Edit"}
             </Button>
@@ -148,7 +139,7 @@ export const QipMeasureTableElement = ({
                 ref={getDeleteButtonRef(measureTarget.pageId)}
                 variant="transparent"
                 aria-label={`Delete ${measureTarget.measureName}`}
-                onClick={() => handleDeleteClick(measureTarget.pageId)}
+                onClick={() => openDeleteModal(measureTarget.pageId)}
               >
                 <Image src={cancelIcon} alt="" />
               </Button>
@@ -163,11 +154,11 @@ export const QipMeasureTableElement = ({
     <>
       <Button
         ref={addButtonRef}
+        variant="outline"
+        leftIcon={<Image src={addIcon} alt="" />}
         onClick={() => setModalComponent(modal, "Add Measure")}
-        variant={"outline"}
         isDisabled={disabled}
       >
-        <Image src={addIcon} alt="" sx={{ padding: "3px" }} />
         Add measure
       </Button>
       <Table variant="measure">

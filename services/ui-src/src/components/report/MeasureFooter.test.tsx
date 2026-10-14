@@ -1,28 +1,22 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { ElementType, MeasureFooterTemplate } from "types";
+import {
+  ElementType,
+  HcbsUser,
+  MeasureFooterTemplate,
+  PageType,
+  Report,
+} from "types";
 import { MeasureFooterElement } from "./MeasureFooter";
-import userEventTl from "@testing-library/user-event";
-import { mockUseStore } from "utils/testing/setupJest";
+import userEvent from "@testing-library/user-event";
+import { useStore } from "utils";
 
-const mockUseNavigate = jest.fn();
+const mockUseNavigate = vi.fn();
 
-jest.mock("utils/state/useStore", () => ({
-  useStore: jest
-    .fn()
-    .mockImplementation(
-      (selector?: (state: typeof mockUseStore) => unknown) => {
-        if (selector) {
-          return selector(mockUseStore);
-        }
-        return mockUseStore;
-      }
-    ),
-}));
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
   useNavigate: () => mockUseNavigate,
-  useParams: jest.fn(() => ({
+  useParams: vi.fn(() => ({
     reportType: "QMS",
     state: "CO",
     reportId: "mock-id",
@@ -50,86 +44,84 @@ const mockedMeasureSectionFooterElement: MeasureFooterTemplate = {
   completeSection: true,
 };
 
-describe("Measure Footer", () => {
-  const userEvent = userEventTl.setup({ delay: null });
+useStore.setState({
+  user: { userIsEndUser: true } as HcbsUser,
+  report: {
+    pages: [
+      { id: "root", childPageIds: ["page-1"] },
+      {
+        id: "page-1",
+        type: PageType.Measure,
+        required: true,
+        elements: [{ type: ElementType.Textbox, answer: "complete" }],
+      },
+    ],
+  } as Report,
+  pageMap: new Map([
+    ["root", 0],
+    ["page-1", 1],
+  ]),
+  currentPageId: "page-1",
+});
 
+describe("Measure Footer", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.useFakeTimers();
+    vi.clearAllMocks();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
-  it("Test Measure Footer component", async () => {
+  it("should respond to button clicks", async () => {
     render(<MeasureFooterElement element={mockedMeasureFooterElement} />);
 
-    //click previous
-    const previousLink = screen.getByRole("button", {
-      name: "Previous",
-    });
-    await userEvent.click(previousLink);
+    await userEvent.click(screen.getByRole("button", { name: "Previous" }));
     const prevRoute = "/report/QMS/CO/mock-id/req-measure-result";
     expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
-    //click next
-    const nextLink = screen.getByRole("button", {
-      name: "Next",
-    });
-    await userEvent.click(nextLink);
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
     const nextRoute = "/report/QMS/CO/mock-id/mock-next-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(nextRoute);
 
-    //click clear
-    const clearBtn = screen.getByRole("button", {
-      name: "Clear measure data",
-    });
-    await userEvent.click(clearBtn);
+    await userEvent.click(screen.getByRole("button", { name: /Clear/ }));
+    // TODO: assert on behavior. What should have happened?
 
-    //click complete measure
-    const completeMeasureBtn = screen.getByRole("button", {
-      name: "Complete measure",
-    });
-    await userEvent.click(completeMeasureBtn);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Complete measure" })
+    );
+    // TODO: assert on behavior. What should have happened?
   });
 
-  it("Test Measure Footer component as a measure section", async () => {
+  it("should behave correctly as a measure section footer", async () => {
     render(
       <MeasureFooterElement element={mockedMeasureSectionFooterElement} />
     );
 
-    //click previous
-    const previousLink = screen.getByRole("button", {
-      name: "Previous",
-    });
-    await userEvent.click(previousLink);
+    await userEvent.click(screen.getByRole("button", { name: "Previous" }));
     const prevRoute = "/report/QMS/CO/mock-id/mock-prev-link";
     expect(mockUseNavigate).toHaveBeenCalledWith(prevRoute);
 
-    //click complete section
-    const completeSectionBtn = screen.getByRole("button", {
-      name: "Complete section",
-    });
-    await userEvent.click(completeSectionBtn);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Complete section" })
+    );
+    // TODO: assert on behavior. What should have happened?
   });
 
-  it("Test Measure Footer component without optional fields", () => {
+  it("should not render optional buttons when they are not needed", () => {
     render(<MeasureFooterElement element={mockedMeasureFooterEmpty} />);
 
     expect(screen.getByText("Previous")).toBeInTheDocument();
 
-    expect(
-      screen.queryByRole("button", { name: "Next" })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Clear measure data" })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Complete section" })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Complete measure" })
-    ).not.toBeInTheDocument();
+    const optionalButtonNames = [
+      "Next",
+      "Clear measure data",
+      "Complete section",
+      "Complete measure",
+    ];
+    for (let name of optionalButtonNames) {
+      expect(screen.queryByRole("button", { name })).not.toBeInTheDocument();
+    }
   });
 });

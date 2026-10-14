@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CheckboxField } from "components";
@@ -5,7 +6,7 @@ import { ElementType, CheckboxTemplate } from "types";
 import { testA11y } from "utils/testing/commonTests";
 import { CheckboxExport } from "./CheckboxField";
 
-const updateSpy = jest.fn();
+const updateSpy = vi.fn();
 
 const mockCheckboxElement: CheckboxTemplate = {
   id: "mock-checkbox-id",
@@ -46,23 +47,23 @@ const CheckboxComponent = (
 
 describe("<CheckboxField />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test("CheckboxField renders as Checkboxes", () => {
+  it("should render as Checkboxes", () => {
     render(CheckboxComponent);
     expect(screen.getByRole("checkbox", { name: "Choice 1" })).toBeVisible();
     expect(screen.getByRole("checkbox", { name: "Choice 2" })).toBeVisible();
     expect(screen.getByRole("checkbox", { name: "Choice 3" })).toBeVisible();
   });
 
-  test("CheckboxField allows checking checkbox choices", async () => {
+  it("should allow checking checkbox choices", async () => {
     render(CheckboxComponent);
     await userEvent.click(screen.getByRole("checkbox", { name: "Choice 1" }));
     expect(updateSpy).toHaveBeenCalledWith({ answer: ["A"] });
   });
 
-  test("CheckboxField displays children fields after selection", async () => {
+  it("should display children fields after selection", async () => {
     render(CheckboxComponent);
     expect(
       screen.queryByRole("textbox", { name: "Text Label" })
@@ -76,7 +77,7 @@ describe("<CheckboxField />", () => {
 });
 
 describe("<CheckboxExport/>", () => {
-  it("renders selected labels when answer is array", () => {
+  it("should render selected labels when answer is array", () => {
     const element: CheckboxTemplate = {
       type: ElementType.Checkbox,
       id: "check",
@@ -89,13 +90,13 @@ describe("<CheckboxExport/>", () => {
       answer: ["a", "b"],
     };
 
-    render(<>{CheckboxExport(element)}</>);
+    render(CheckboxExport(element));
 
     expect(screen.getByText("Option A")).toBeInTheDocument();
     expect(screen.getByText("Option B")).toBeInTheDocument();
   });
 
-  it("returns empty for no answer", () => {
+  it("should render empty if unanswered", () => {
     const element: CheckboxTemplate = {
       type: ElementType.Checkbox,
       id: "check",
@@ -105,7 +106,7 @@ describe("<CheckboxExport/>", () => {
       answer: [],
     };
 
-    render(<>{CheckboxExport(element)}</>);
+    render(CheckboxExport(element));
 
     expect(screen.queryByRole("listitem")).toBeNull();
   });

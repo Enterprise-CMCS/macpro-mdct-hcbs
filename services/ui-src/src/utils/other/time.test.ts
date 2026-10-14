@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import {
   calculateRemainingSeconds,
   formatMonthDayYear,
@@ -6,12 +7,13 @@ import {
   parseMMDDYYYY,
   parseMMYYYY,
 } from "./time";
+import assert from "node:assert";
 
 const getLocalHourMinuteTimeRegex = /[0-2]?[0-9]:[0-5][0-9](a|p)m/;
 
 describe("utils/time", () => {
   describe("getLocalHourMinuteTime()", () => {
-    it("returns correct hourminute format", () => {
+    it("should return the correct hourminute format", () => {
       const localHourMinuteTime = getLocalHourMinuteTime();
       expect(localHourMinuteTime).toMatch(getLocalHourMinuteTimeRegex);
     });
@@ -35,130 +37,131 @@ describe("utils/time", () => {
   });
 
   describe("calculateTimeLeft()", () => {
-    it("returns 0 when no value is given", () => {
+    it("should return 0 when no value is given", () => {
       expect(calculateRemainingSeconds()).toBeCloseTo(0);
     });
 
-    it("checks that expiration time is greater than zero", () => {
+    it("should return a positive remaining time for expiration in the future", () => {
       const expirationTime = "2050-11-18T12:53:11-05:00";
       expect(calculateRemainingSeconds(expirationTime)).toBeGreaterThan(0);
     });
   });
-});
 
-describe("test parseMMDDYYYY helper function", () => {
-  it("should correctly parse a valid MMDDYYYY date string", () => {
-    const date = parseMMDDYYYY("12/25/2023");
-    expect(date).toBeInstanceOf(Date);
-    expect(date?.getFullYear()).toBe(2023);
-    expect(date?.getMonth()).toBe(11); // December (0-indexed)
-    expect(date?.getDate()).toBe(25);
-    expect(date?.getHours()).toBe(0); // Should be normalized to midnight
-    expect(date?.getMinutes()).toBe(0);
-    expect(date?.getSeconds()).toBe(0);
-    expect(date?.getMilliseconds()).toBe(0);
+  describe("test parseMMDDYYYY helper function", () => {
+    it("should correctly parse a valid MMDDYYYY date string", () => {
+      const date = parseMMDDYYYY("12/25/2023");
+      expect(date).toBeInstanceOf(Date);
+      expect(date?.getFullYear()).toBe(2023);
+      expect(date?.getMonth()).toBe(11); // December (0-indexed)
+      expect(date?.getDate()).toBe(25);
+      expect(date?.getHours()).toBe(0); // Should be normalized to midnight
+      expect(date?.getMinutes()).toBe(0);
+      expect(date?.getSeconds()).toBe(0);
+      expect(date?.getMilliseconds()).toBe(0);
+    });
+
+    it("should correctly parse a valid MMDDYYYY date string with single digit month/day", () => {
+      const date = parseMMDDYYYY("01/05/2024");
+      expect(date).toBeInstanceOf(Date);
+      expect(date?.getFullYear()).toBe(2024);
+      expect(date?.getMonth()).toBe(0); // January (0-indexed)
+      expect(date?.getDate()).toBe(5);
+    });
+
+    it("should correctly parse a leap year date", () => {
+      const date = parseMMDDYYYY("02/29/2028"); // 2028 is a leap year
+      expect(date).toBeInstanceOf(Date);
+      expect(date?.getFullYear()).toBe(2028);
+      expect(date?.getMonth()).toBe(1); // February (0-indexed)
+      expect(date?.getDate()).toBe(29);
+    });
+
+    it("should return null for 02/29 in a non-leap year", () => {
+      const date = parseMMDDYYYY("02/29/2027");
+      expect(date).toBeFalsy();
+    });
+
+    it("should return null for an invalid month", () => {
+      const date = parseMMDDYYYY("13/01/2023");
+      expect(date).toBeFalsy();
+    });
+
+    it("should return null for an invalid day", () => {
+      const date = parseMMDDYYYY("01/32/2023");
+      expect(date).toBeFalsy();
+    });
+
+    it("should return null for an invalid day for a specific month", () => {
+      const date = parseMMDDYYYY("04/31/2023"); // April has 30 days
+      expect(date).toBeFalsy();
+    });
+
+    it("should return null for an incorrect format (missing slashes)", () => {
+      const date = parseMMDDYYYY("12-25-2023");
+      expect(date).toBeFalsy();
+    });
+
+    it("should return null for an incorrect format (wrong number of digits)", () => {
+      const date = parseMMDDYYYY("1/2/2023");
+      expect(date).toBeFalsy();
+    });
+
+    it("should return null for an incorrect format", () => {
+      const date = parseMMDDYYYY("12/25/2023abc");
+      expect(date).toBeFalsy();
+    });
+
+    it("should correctly parse a valid future date", () => {
+      const futureDate = parseMMDDYYYY("07/15/2050");
+      expect(futureDate).toBeInstanceOf(Date);
+      expect(futureDate?.getFullYear()).toBe(2050);
+      expect(futureDate?.getMonth()).toBe(6);
+      expect(futureDate?.getDate()).toBe(15);
+    });
+
+    it("should return null for day or month being zero", () => {
+      expect(parseMMDDYYYY("00/10/2023")).toBeFalsy();
+      expect(parseMMDDYYYY("10/00/2023")).toBeFalsy();
+    });
   });
 
-  it("should correctly parse a valid MMDDYYYY date string with single digit month/day", () => {
-    const date = parseMMDDYYYY("01/05/2024");
-    expect(date).toBeInstanceOf(Date);
-    expect(date?.getFullYear()).toBe(2024);
-    expect(date?.getMonth()).toBe(0); // January (0-indexed)
-    expect(date?.getDate()).toBe(5);
-  });
+  describe("test parseMMYYYY helper function", () => {
+    it("should correctly parse a valid MMYYYY date string", () => {
+      const date = parseMMYYYY("12/2023");
+      expect(date).toBeInstanceOf(Date);
+      assert.ok(!!date);
+      expect(date.getFullYear()).toBe(2023);
+      expect(date.getMonth()).toBe(11);
+      expect(date.getDate()).toBe(1);
+      expect(date.getHours()).toBe(0);
+      expect(date.getMinutes()).toBe(0);
+      expect(date.getSeconds()).toBe(0);
+      expect(date.getMilliseconds()).toBe(0);
+    });
 
-  it("should correctly parse a leap year date", () => {
-    const date = parseMMDDYYYY("02/29/2028"); // 2028 is a leap year
-    expect(date).toBeInstanceOf(Date);
-    expect(date?.getFullYear()).toBe(2028);
-    expect(date?.getMonth()).toBe(1); // February (0-indexed)
-    expect(date?.getDate()).toBe(29);
-  });
+    it("should correctly parse February in leap and non-leap years", () => {
+      const leapYearDate = parseMMYYYY("02/2028");
+      const nonLeapYearDate = parseMMYYYY("02/2027");
 
-  it("should return null for 02/29 in a non-leap year", () => {
-    const date = parseMMDDYYYY("02/29/2027");
-    expect(date).toBeFalsy();
-  });
+      expect(leapYearDate).toBeInstanceOf(Date);
+      expect(nonLeapYearDate).toBeInstanceOf(Date);
+      expect(leapYearDate?.getMonth()).toBe(1);
+      expect(nonLeapYearDate?.getMonth()).toBe(1);
+      expect(leapYearDate?.getDate()).toBe(1);
+      expect(nonLeapYearDate?.getDate()).toBe(1);
+    });
 
-  it("should return null for an invalid month", () => {
-    const date = parseMMDDYYYY("13/01/2023");
-    expect(date).toBeFalsy();
-  });
+    it("should return undefined for invalid month bounds", () => {
+      expect(parseMMYYYY("00/2024")).toBeUndefined();
+      expect(parseMMYYYY("13/2024")).toBeUndefined();
+    });
 
-  it("should return null for an invalid day", () => {
-    const date = parseMMDDYYYY("01/32/2023");
-    expect(date).toBeFalsy();
-  });
-
-  it("should return null for an invalid day for a specific month", () => {
-    const date = parseMMDDYYYY("04/31/2023"); // April has 30 days
-    expect(date).toBeFalsy();
-  });
-
-  it("should return null for an incorrect format (missing slashes)", () => {
-    const date = parseMMDDYYYY("12-25-2023");
-    expect(date).toBeFalsy();
-  });
-
-  it("should return null for an incorrect format (wrong number of digits)", () => {
-    const date = parseMMDDYYYY("1/2/2023");
-    expect(date).toBeFalsy();
-  });
-
-  it("should return null for an incorrect format", () => {
-    const date = parseMMDDYYYY("12/25/2023abc");
-    expect(date).toBeFalsy();
-  });
-
-  it("should correctly parse a valid future date", () => {
-    const futureDate = parseMMDDYYYY("07/15/2050");
-    expect(futureDate).toBeInstanceOf(Date);
-    expect(futureDate?.getFullYear()).toBe(2050);
-    expect(futureDate?.getMonth()).toBe(6);
-    expect(futureDate?.getDate()).toBe(15);
-  });
-
-  it("should return null for day or month being zero", () => {
-    expect(parseMMDDYYYY("00/10/2023")).toBeFalsy();
-    expect(parseMMDDYYYY("10/00/2023")).toBeFalsy();
-  });
-});
-
-describe("test parseMMYYYY helper function", () => {
-  it("should correctly parse a valid MMYYYY date string", () => {
-    const date = parseMMYYYY("12/2023");
-    expect(date).toBeInstanceOf(Date);
-    expect(date?.getFullYear()).toBe(2023);
-    expect(date?.getMonth()).toBe(11);
-    expect(date?.getDate()).toBe(1);
-    expect(date?.getHours()).toBe(0);
-    expect(date?.getMinutes()).toBe(0);
-    expect(date?.getSeconds()).toBe(0);
-    expect(date?.getMilliseconds()).toBe(0);
-  });
-
-  it("should correctly parse February in leap and non-leap years", () => {
-    const leapYearDate = parseMMYYYY("02/2028");
-    const nonLeapYearDate = parseMMYYYY("02/2027");
-
-    expect(leapYearDate).toBeInstanceOf(Date);
-    expect(nonLeapYearDate).toBeInstanceOf(Date);
-    expect(leapYearDate?.getMonth()).toBe(1);
-    expect(nonLeapYearDate?.getMonth()).toBe(1);
-    expect(leapYearDate?.getDate()).toBe(1);
-    expect(nonLeapYearDate?.getDate()).toBe(1);
-  });
-
-  it("should return undefined for invalid month bounds", () => {
-    expect(parseMMYYYY("00/2024")).toBeUndefined();
-    expect(parseMMYYYY("13/2024")).toBeUndefined();
-  });
-
-  it("should return undefined for incorrect formats", () => {
-    expect(parseMMYYYY("2/2024")).toBeUndefined();
-    expect(parseMMYYYY("02-2024")).toBeUndefined();
-    expect(parseMMYYYY("02/24")).toBeUndefined();
-    expect(parseMMYYYY("02/2024abc")).toBeUndefined();
-    expect(parseMMYYYY("")).toBeUndefined();
+    it("should return undefined for incorrect formats", () => {
+      expect(parseMMYYYY("2/2024")).toBeUndefined();
+      expect(parseMMYYYY("02-2024")).toBeUndefined();
+      expect(parseMMYYYY("02/24")).toBeUndefined();
+      expect(parseMMYYYY("02/2024abc")).toBeUndefined();
+      expect(parseMMYYYY("")).toBeUndefined();
+    });
   });
 });

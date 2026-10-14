@@ -27,9 +27,9 @@ import {
 import { PageElementProps } from "../Elements";
 import { useState, ChangeEvent } from "react";
 import { useDeleteConfirmModal } from "../useDeleteConfirmModal";
-import addIcon from "assets/icons/add/icon_add_blue.svg";
 import cancelIcon from "assets/icons/cancel/icon_cancel_primary.svg";
 import closeIcon from "assets/icons/close/icon_close_primary.svg";
+import addIcon from "assets/icons/add/icon_add_blue.svg";
 import { TextField } from "@cmsgov/design-system";
 import { ErrorMessages, notAnsweredText } from "../../../constants";
 import { Alert } from "components";
@@ -201,12 +201,12 @@ export const KeyActivitiesTableElement = (
       )}
       <Button
         ref={addButtonRef}
-        variant={"outline"}
+        variant="outline"
+        leftIcon={<Image src={addIcon} alt="" />}
         isDisabled={disabled}
         onClick={onAddClick}
         mb="24px"
       >
-        <Image src={addIcon} alt={"Add Item"} />
         Add key activity
       </Button>
 

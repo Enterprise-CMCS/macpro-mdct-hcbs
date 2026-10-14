@@ -7,13 +7,21 @@ const baseStyles = {
 
 const primaryVariant = {
   color: "palette.primary",
+  // Aligns icon children via flexbox instead of vertical-align, which looks
+  // different per font-size/line-height context.
+  display: "inline-flex",
+  alignItems: "center",
   _visited: {
-    color: "palette.primary",
-    textDecorationColor: "palette.primary",
+    color: "palette.visited",
+    textDecorationColor: "palette.visited",
   },
   ":hover, :visited:hover": {
     color: "palette.primary_darker",
     textDecorationColor: "palette.primary_darker",
+  },
+  ":active, :visited:active": {
+    color: "palette.primary_darkest",
+    textDecorationColor: "palette.primary_darkest",
   },
 };
 const returnVariant = {

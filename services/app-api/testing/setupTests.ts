@@ -1,3 +1,5 @@
+import { vi } from "vitest";
+
 process.env.ReportsTable = "local-reports";
 process.env.BannersTable = "local-banners";
 
@@ -11,21 +13,21 @@ process.env.BannersTable = "local-banners";
  * The only test where we need to observe logger output is debug-lib.test.ts,
  * which overrides this mock.
  */
-jest.mock("../libs/debug-lib", () => {
-  const debug = jest.fn();
-  const info = jest.fn();
-  const warn = jest.fn();
-  const error = jest.fn();
+vi.mock("../libs/debug-lib", () => {
+  const debug = vi.fn();
+  const info = vi.fn();
+  const warn = vi.fn();
+  const error = vi.fn();
   const logger = { debug, info, warn, error };
   return {
-    trace: jest.fn(),
+    trace: vi.fn(),
     debug,
     info,
     warn,
     error,
     logger,
-    init: jest.fn(),
-    flush: jest.fn(),
+    init: vi.fn(),
+    flush: vi.fn(),
   };
 });
 

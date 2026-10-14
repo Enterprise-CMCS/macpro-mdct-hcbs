@@ -1,23 +1,26 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { StatusCodes } from "../../libs/response-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { canReadState } from "../../utils/authorization";
 import { getReport, getReportsForState } from "./get";
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn().mockResolvedValue({
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn().mockResolvedValue({
     role: UserRoles.STATE_USER,
     state: "PA",
   }),
 }));
 
-jest.mock("../../utils/authorization", () => ({
-  canReadState: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/authorization", () => ({
+  canReadState: vi.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../storage/reports", () => ({
-  getReport: jest.fn().mockReturnValue({ id: "A report" }),
-  queryReportsForState: jest.fn().mockReturnValue([{ id: "A report" }]),
+vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn().mockReturnValue({ id: "A report" }),
+  queryReportsForState: vi
+    .fn()
+    .mockReturnValue([{ id: "A report" }, { id: "B report" }]),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -30,13 +33,13 @@ const testEvent: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test" },
 };
 
-describe("Test get report handler", () => {
+describe("Get Report Handlers", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("getReport", () => {
-    test("Test missing path params", async () => {
+    it("should return Bad Request if missing path params", async () => {
       const badTestEvent: APIGatewayProxyEvent = {
         ...proxyEvent,
         headers: { "cognito-identity-id": "test" },
@@ -45,21 +48,22 @@ describe("Test get report handler", () => {
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
     });
 
-    it("should return 403 if user is not authorized", async () => {
-      (canReadState as jest.Mock).mockReturnValueOnce(false);
+    it("should return Forbidden if user is not authorized", async () => {
+      vi.mocked(canReadState).mockReturnValueOnce(false);
       const response = await getReport(testEvent);
       expect(response.statusCode).toBe(StatusCodes.Forbidden);
     });
 
-    test("Test Successful get", async () => {
+    it("should successfully return a report", async () => {
       const res = await getReport(testEvent);
 
       expect(res.statusCode).toBe(StatusCodes.Ok);
+      expect(JSON.parse(res.body!)).toEqual({ id: "A report" });
     });
   });
 
   describe("getReportsForState", () => {
-    test("Test missing path params", async () => {
+    it("should return Bad Request if missing path params", async () => {
       const badTestEvent: APIGatewayProxyEvent = {
         ...proxyEvent,
         headers: { "cognito-identity-id": "test" },
@@ -68,16 +72,20 @@ describe("Test get report handler", () => {
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
     });
 
-    it("should return 403 if user is not authorized", async () => {
-      (canReadState as jest.Mock).mockReturnValueOnce(false);
+    it("should return Forbidden if user is not authorized", async () => {
+      vi.mocked(canReadState).mockReturnValueOnce(false);
       const response = await getReportsForState(testEvent);
       expect(response.statusCode).toBe(StatusCodes.Forbidden);
     });
 
-    test("Test Successful get", async () => {
+    it("should successfully return a list of report metadata", async () => {
       const res = await getReportsForState(testEvent);
 
       expect(res.statusCode).toBe(StatusCodes.Ok);
+      expect(JSON.parse(res.body!)).toEqual([
+        { id: "A report" },
+        { id: "B report" },
+      ]);
     });
   });
 });

@@ -1,4 +1,7 @@
-import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
+import {
+  ChoiceList as CmsdsChoiceList,
+  Dropdown as CmsdsDropdown,
+} from "@cmsgov/design-system";
 import { LiteReport } from "types";
 import { AddEditReportModalOptions } from "../AddEditReportModal";
 import { useEffect, useState } from "react";
@@ -20,6 +23,7 @@ export const verbiage = {
 export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] =
   ({
     selectedReport,
+    year,
     onOptionsChange,
     submissionAttempted,
     setOptionsComplete,
@@ -38,33 +42,73 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
 
     const formDataForReport = (report: LiteReport | undefined) => ({
       cahps: report?.options.cahps?.toString(),
+      "cahps-period": report?.options["cahps-period"],
       nciidd: report?.options.nciidd?.toString(),
+      "nciidd-period": report?.options["nciidd-period"],
       nciad: report?.options.nciad?.toString(),
+      "nciad-period": report?.options["nciad-period"],
       pom: report?.options.pom?.toString(),
+      "pom-period": report?.options["pom-period"],
     });
     const initialFormData = formDataForReport(selectedReport);
     const [formData, setFormData] = useState(initialFormData);
     const [errorData, setErrorData] = useState({
       cahps: "",
+      "cahps-period": "",
       nciidd: "",
+      "nciidd-period": "",
       nciad: "",
+      "nciad-period": "",
       pom: "",
+      "pom-period": "",
     });
+
+    const buildOptions = (form: typeof formData) =>
+      Object.keys(optionLabels).reduce<Record<string, boolean | string>>(
+        (options, survey) => {
+          assertIsKey(survey);
+          const isSelected = form[survey] === "true";
+          const periodKey = `${survey}-period` as keyof typeof form;
+
+          options[survey] = isSelected;
+          if (isSelected && form[periodKey]) {
+            options[periodKey] = form[periodKey];
+          }
+
+          return options;
+        },
+        {}
+      );
 
     useEffect(() => {
       setFormData(formDataForReport(selectedReport));
     }, [selectedReport]);
 
+    const computeErrors = (form: typeof formData) => {
+      const errorFlags = {
+        cahps: !form.cahps,
+        "cahps-period": form.cahps === "true" && !form["cahps-period"],
+        nciidd: !form.nciidd,
+        "nciidd-period": form.nciidd === "true" && !form["nciidd-period"],
+        nciad: !form.nciad,
+        "nciad-period": form.nciad === "true" && !form["nciad-period"],
+        pom: !form.pom,
+        "pom-period": form.pom === "true" && !form["pom-period"],
+      };
+
+      return Object.fromEntries(
+        Object.entries(errorFlags).map(([fieldName, isInError]) => [
+          fieldName,
+          isInError ? ErrorMessages.requiredResponse : "",
+        ])
+      ) as Record<keyof typeof errorFlags, string>;
+    };
+
     useEffect(() => {
       if (submissionAttempted) {
-        const newErrorData = {
-          cahps: formData.cahps ? "" : ErrorMessages.requiredResponse,
-          nciidd: formData.nciidd ? "" : ErrorMessages.requiredResponse,
-          nciad: formData.nciad ? "" : ErrorMessages.requiredResponse,
-          pom: formData.pom ? "" : ErrorMessages.requiredResponse,
-        };
+        const newErrorData = computeErrors(formData);
         setErrorData(newErrorData);
-        setOptionsComplete(Object.values(formData).every((val) => !!val));
+        setOptionsComplete(Object.values(newErrorData).every((val) => !val));
       }
     }, [submissionAttempted]);
 
@@ -72,25 +116,56 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
       target: { name: string; value: string };
     }) => {
       const { name, value } = evt.target;
+      const clearedPeriod =
+        name in optionLabels && value === "false"
+          ? { [`${name}-period`]: undefined }
+          : {};
       const updatedFormData = {
         ...formData,
         [name]: value,
+        ...clearedPeriod,
       };
       setFormData(updatedFormData);
 
-      const updatedOptions = {
-        cahps: updatedFormData.cahps == "true",
-        nciidd: updatedFormData.nciidd == "true",
-        nciad: updatedFormData.nciad == "true",
-        pom: updatedFormData.pom == "true",
-      };
-      onOptionsChange(updatedOptions);
+      onOptionsChange(buildOptions(updatedFormData));
 
-      setErrorData({
-        ...errorData,
-        [name]: value ? "" : ErrorMessages.requiredResponse,
-      });
-      setOptionsComplete(Object.values(updatedFormData).every((val) => !!val));
+      const updatedErrors = computeErrors(updatedFormData);
+      if (submissionAttempted) {
+        setErrorData(updatedErrors);
+      }
+      setOptionsComplete(Object.values(updatedErrors).every((val) => !val));
+    };
+
+    const parsedYear = Number(year);
+    const buildPeriodOptions = (
+      startMonth: string,
+      endMonth: string,
+      endYearOffset: number
+    ) => [
+      {
+        label: "Select a survey year",
+        value: "",
+      },
+      {
+        label: `${startMonth} ${parsedYear - 2} - ${endMonth} ${
+          parsedYear - 2 + endYearOffset
+        }`,
+        value: `${parsedYear - 2}`,
+      },
+      {
+        label: `${startMonth} ${parsedYear - 1} - ${endMonth} ${
+          parsedYear - 1 + endYearOffset
+        }`,
+        value: `${parsedYear - 1}`,
+      },
+    ];
+    const julyToJunePeriodOptions = buildPeriodOptions("July", "June", 1);
+    const calendarYearPeriodOptions = buildPeriodOptions("Jan", "Dec", 0);
+    const periodOptionsBySurvey = {
+      nciidd: julyToJunePeriodOptions,
+      nciad: julyToJunePeriodOptions,
+      cahps: calendarYearPeriodOptions,
+      pom: calendarYearPeriodOptions,
     };
 
     return (
@@ -105,14 +180,26 @@ export const QmsOptionsComponent: AddEditReportModalOptions["OptionsComponent"] 
               label={label}
               choices={[
                 {
-                  label: "Yes",
-                  value: "true",
-                  checked: formData[key] === "true",
-                },
-                {
                   label: "No",
                   value: "false",
                   checked: formData[key] === "false",
+                },
+                {
+                  label: "Yes",
+                  value: "true",
+                  checked: formData[key] === "true",
+                  checkedChildren: (
+                    <CmsdsDropdown
+                      name={`${key}-period`}
+                      label="Survey start and end date"
+                      hint="Choose a survey year from the two years prior to the reporting year."
+                      value={formData[`${key}-period`]}
+                      options={periodOptionsBySurvey[key]}
+                      errorMessage={errorData[`${key}-period`]}
+                      onChange={onChange}
+                      disabled={Number.isNaN(parsedYear)}
+                    />
+                  ),
                 },
               ]}
               errorMessage={errorData[key]}

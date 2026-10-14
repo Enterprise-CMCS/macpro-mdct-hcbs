@@ -1,28 +1,34 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { handler as handlerLib } from "../handler-lib";
 import { proxyEvent } from "../../testing/proxyEvent";
 import { authenticatedUser } from "../../utils/authentication";
 import * as logger from "../debug-lib";
 import { ok, StatusCodes } from "../response-lib";
+import { User } from "../../types/types";
 
-jest.mock("../debug-lib", () => ({
-  init: jest.fn(),
-  debug: jest.fn(),
-  error: jest.fn(),
-  flush: jest.fn(),
+vi.mock("../debug-lib", () => ({
+  init: vi.fn(),
+  debug: vi.fn(),
+  error: vi.fn(),
+  flush: vi.fn(),
 }));
 
-jest.mock("../../utils/authentication", () => ({
-  authenticatedUser: jest.fn(),
+vi.mock("../../utils/authentication", () => ({
+  authenticatedUser: vi.fn(),
 }));
 
 const parser = () => ({});
 
-describe("Test Lambda Handler Lib", () => {
-  test("Test successful authorized lambda workflow", async () => {
-    const testFunc = jest.fn().mockReturnValue(ok("test"));
+describe("Lambda Handler Lib", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should coordinate parsing, logging, authentication, and business logic", async () => {
+    const testFunc = vi.fn().mockReturnValue(ok("test"));
     const handler = handlerLib(parser, testFunc);
 
-    (authenticatedUser as jest.Mock).mockReturnValue({});
+    vi.mocked(authenticatedUser).mockReturnValue({} as User);
     const res = await handler(proxyEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
@@ -46,25 +52,26 @@ describe("Test Lambda Handler Lib", () => {
     );
   });
 
-  test("Test unsuccessful authorization lambda workflow", async () => {
-    const testFunc = jest.fn();
+  it("should return Unauthenticated immediately if user cannot be identified", async () => {
+    const testFunc = vi.fn();
     const handler = handlerLib(parser, testFunc);
 
-    (authenticatedUser as jest.Mock).mockReturnValue(undefined);
+    vi.mocked(authenticatedUser).mockReturnValue(undefined);
     const res = await handler(proxyEvent);
 
+    expect(testFunc).not.toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
     expect(res.body).toBe(`"User is not authorized to access this resource."`);
   });
 
-  test("Test Errored lambda workflow", async () => {
+  it("should return Internal Server Error if the business logic throws", async () => {
     const err = new Error("Test Error");
-    const testFunc = jest.fn().mockImplementation(() => {
+    const testFunc = vi.fn().mockImplementation(() => {
       throw err;
     });
     const handler = handlerLib(parser, testFunc);
 
-    (authenticatedUser as jest.Mock).mockReturnValue({});
+    vi.mocked(authenticatedUser).mockReturnValue({} as User);
     const res = await handler(proxyEvent);
 
     expect(testFunc).toHaveBeenCalled();

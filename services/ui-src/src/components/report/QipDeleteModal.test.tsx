@@ -1,10 +1,11 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/react";
 import { QipDeleteModal } from "./QipDeleteModal";
 
-const onClose = jest.fn();
-const onConfirm = jest.fn();
+const onClose = vi.fn();
+const onConfirm = vi.fn();
 
 const renderInModal = (body: string, confirmLabel: string) =>
   render(
@@ -18,7 +19,7 @@ const renderInModal = (body: string, confirmLabel: string) =>
 
 describe("QipDeleteModal", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should render the body text and confirm label", () => {

@@ -1,23 +1,19 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useContext } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import {
   ReportAutosaveContext,
   ReportAutosaveProvider,
 } from "./ReportAutosaveProvider";
+import { useStore } from "utils/state/useStore";
+import { Report } from "types";
 
-const mockSaveReport = jest.fn();
-
-jest.mock("utils/state/useStore", () => ({
-  useStore: () => ({
-    report: { id: "test-report" },
-    saveReport: mockSaveReport,
-  }),
-}));
-
-// COMPONENTS
+useStore.setState({
+  report: { id: "test-report" } as Report,
+  saveReport: vi.fn(),
+});
 
 const TestComponent = () => {
   const { ...context } = useContext(ReportAutosaveContext);
@@ -37,22 +33,21 @@ const testComponent = (
   </RouterWrappedComponent>
 );
 
-// TESTS
-
 describe("<UserProvider />", () => {
   beforeEach(async () => {
     render(testComponent);
   });
 
-  test("child component renders", () => {
+  it("should render its children", () => {
     expect(screen.getByText("Save Test")).toBeVisible();
   });
 
-  test("test autosave function", async () => {
+  it("should call the save function", async () => {
     const saveButton = screen.getByRole("button", { name: "Save" });
     await userEvent.click(saveButton);
-    await waitFor(() => expect(mockSaveReport).toHaveBeenCalled(), {
-      timeout: 3000,
-    });
+    await waitFor(
+      () => expect(useStore.getState().saveReport).toHaveBeenCalled(),
+      { timeout: 3000 }
+    );
   });
 });

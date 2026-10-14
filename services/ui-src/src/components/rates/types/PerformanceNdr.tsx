@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Heading, Stack } from "@chakra-ui/react";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { PerformanceNdrTemplate, AlertTypes, PageElement } from "types";
+import {
+  PerformanceNdrTemplate,
+  AlertTypes,
+  PageElement,
+  ElementType,
+} from "types";
 import {
   parseNumber,
   removeNoise,
@@ -9,7 +14,11 @@ import {
   stringifyResult,
 } from "../calculations";
 import { PageElementProps } from "components/report/Elements";
-import { ErrorMessages, autoCalculatesText } from "../../../constants";
+import {
+  ErrorMessages,
+  autoCalculatesText,
+  notAnsweredText,
+} from "../../../constants";
 import { Alert, Page } from "components";
 import { ExportRateTable } from "components/export/ExportedReportTable";
 
@@ -31,6 +40,7 @@ export const PerformanceNdr = (
     displayRateAsPercent,
     minPerformanceLevel,
     conditionalChildren,
+    children,
   } = element;
   const multiplierVal = multiplier ?? 1; // default multiplier value
 
@@ -246,6 +256,24 @@ export const PerformanceNdr = (
           </div>
           {performanceLevelStatusAlert()}
           {conditonalChildren()}
+          {children && (
+            <Page
+              id={`${element.id}-children`}
+              elements={children}
+              setElements={(updatedChildren) => {
+                if (
+                  !updatedChildren.every(
+                    (child) =>
+                      child.type === ElementType.SubHeader ||
+                      child.type === ElementType.Radio
+                  )
+                ) {
+                  throw new Error("Unsupported PerformanceNdr child");
+                }
+                updateElement({ children: updatedChildren });
+              }}
+            />
+          )}
         </Stack>
       </Stack>
     </Stack>
@@ -299,6 +327,37 @@ export const PerformanceNdrExport = (
       helperText: element.hintText?.rateHint,
     },
     ...children,
+    ...(element.children ?? []).flatMap((child) => {
+      if (child.type === ElementType.SubHeader) return [];
+      const choice = child.choices.find(
+        (option) => option.value === child.answer
+      );
+      const subheader = element.children?.find(
+        (item) => item.type === ElementType.SubHeader
+      );
+      return [
+        {
+          indicator: subheader
+            ? `${subheader.text}: ${child.label}`
+            : child.label,
+          response: child.answer ?? notAnsweredText,
+        },
+        ...(choice?.checkedChildren ?? []).map((field) => {
+          if (
+            field.type !== ElementType.TextAreaField &&
+            field.type !== ElementType.NumberField
+          ) {
+            throw new Error(
+              `Unsupported PerformanceNdr follow-up: ${field.type}`
+            );
+          }
+          return {
+            indicator: field.label,
+            response: String(field.answer ?? notAnsweredText),
+          };
+        }),
+      ];
+    }),
   ];
   return <>{ExportRateTable([{ label, rows }], caption)}</>;
 };
@@ -320,7 +379,7 @@ const formatRateForExport = (
 
 const sx = {
   performance: {
-    input: {
+    "input:not(.ds-c-choice)": {
       width: "240px",
     },
     ".rate-wrapper:has(.percent-sign)": {

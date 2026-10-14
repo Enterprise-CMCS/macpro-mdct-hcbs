@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { AdminMenu } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
