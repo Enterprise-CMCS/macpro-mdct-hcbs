@@ -315,25 +315,19 @@ The user can choose to add additional pages using the select measures feature.
 On the "Select Measures & Targets" page (`select-measures`),
 the user chooses a measure, its delivery methods, and its rates.
 The API then generates a target page for that measure.
+
+If the page already exists, it will increment a suffixed number tag.
 For example, adding LTSS-1 creates a page with the ID `measure-targets-LTSS-1-0`;
 adding it a second time creates `measure-targets-LTSS-1-1`.
-Removing a measure deletes its page.
+
+Removing a measure will delete its respective page.
+Unlike adding, removal has no API endpoint:
+the frontend removes the page and the table entry, then saves the report.
 
 Because pages are added and removed after the report is created,
 look pages up by `id`, not by position in `report.pages`.
-This differs from QMS, whose pages are fixed once the report exists.
 
 ### How target pages are generated
-
-Three things in the report make this work:
-
-- `report.measureTargetMapping` lists the measures a user may choose,
-  along with the delivery methods and rates each one offers.
-  It also records where to find each rate in the QMS report, for measures that QMS collects.
-- A template page with `id: "measure-target-template"`.
-  Some of its strings and element IDs contain `{variables}`.
-- A `qipMeasureTable` element on the `select-measures` page.
-  Its `answer` has one entry per added measure.
 
 When a user adds a measure, the API clones the template page and fills in the variables.
 It generates baseline and target number fields for each chosen delivery method and rate,
@@ -348,6 +342,6 @@ and recorded in the `originalValues` of the table entry.
 
 ### Completion Logic
 
-QIP pages have no manual "mark as complete" step.
+QIP pages don't have a manual "mark as complete" step.
 A page is complete when all of its elements are complete.
 The "Select Measures & Targets" page is complete when every target page is complete.
