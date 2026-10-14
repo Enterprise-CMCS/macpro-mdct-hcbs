@@ -26,7 +26,9 @@ const selectOptions = async (label: string, options: string[]) => {
   );
   const menu = within(await screen.findByRole("menu"));
   for (const name of options) {
-    await userEvent.click(menu.getByRole("menuitemcheckbox", { name }));
+    await userEvent.click(
+      menu.getByText(name, { selector: '[role="menuitemcheckbox"]' })
+    );
   }
   await userEvent.keyboard("{Escape}");
 };
@@ -154,6 +156,7 @@ describe("<AddEmailModal />", () => {
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(screen.getByText(ErrorMessages.mustBeAnEmail)).toBeVisible();
     expect(onSubmit).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
   });
 
   it("requires a state after all selected states are deselected", async () => {
