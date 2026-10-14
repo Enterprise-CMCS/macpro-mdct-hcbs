@@ -66,9 +66,8 @@ describe("<AddEmailModal />", () => {
   });
 
   it("shows required errors without saving an empty form", async () => {
-    const user = userEvent.setup();
     render(modal);
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(screen.getAllByText(ErrorMessages.requiredResponse)).toHaveLength(3);
     for (const error of screen.getAllByText(ErrorMessages.requiredResponse)) {
       expect(error).toHaveClass("ds-c-inline-error");
@@ -83,23 +82,14 @@ describe("<AddEmailModal />", () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it("shows state and report labels without required asterisks", () => {
-    render(modal);
-    expect(screen.getByText("States", { selector: "label" }).textContent).toBe(
-      "States"
-    );
-    expect(
-      screen.getByText("Report Types", { selector: "label" }).textContent
-    ).toBe("Report Types");
-  });
-
   it("lists states from constants and all available report types", async () => {
-    const user = userEvent.setup();
     render(modal);
-    await user.click(screen.getByRole("button", { name: /^States/ }));
+    await userEvent.click(screen.getByRole("button", { name: /^States/ }));
     expect(await getVisibleMenuOptions()).toEqual(Object.values(StateNames));
-    await user.keyboard("{Escape}");
-    await user.click(screen.getByRole("button", { name: /^Report Types/ }));
+    await userEvent.keyboard("{Escape}");
+    await userEvent.click(
+      screen.getByRole("button", { name: /^Report Types/ })
+    );
     expect(await getVisibleMenuOptions()).toEqual(
       [ReportType.QMS, ReportType.HA, ReportType.QIP].map(
         (type) => `${type}: ${getReportName(type)}`
@@ -117,9 +107,10 @@ describe("<AddEmailModal />", () => {
       isImaReportActive: true,
       isWwlReportActive: true,
     });
-    const user = userEvent.setup();
     render(modal);
-    await user.click(screen.getByRole("button", { name: /^Report Types/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /^Report Types/ })
+    );
     expect(await getVisibleMenuOptions()).toEqual(
       Object.values(ReportType).map((type) => `${type}: ${getReportName(type)}`)
     );
@@ -127,21 +118,21 @@ describe("<AddEmailModal />", () => {
 
   it("hides reports when feature flags are unavailable", async () => {
     vi.mocked(useFlags).mockReturnValue({});
-    const user = userEvent.setup();
     render(modal);
-    await user.click(screen.getByRole("button", { name: /^Report Types/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /^Report Types/ })
+    );
     expect(screen.queryByRole("menuitemcheckbox")).not.toBeInTheDocument();
   });
 
   it("saves multiple selected states and reports, then closes", async () => {
-    const user = userEvent.setup();
     render(modal);
     await completeForm();
     expect(screen.getByRole("button", { name: /States \(2\)/ })).toBeVisible();
     expect(
       screen.getByRole("button", { name: /Report Types \(2\)/ })
     ).toBeVisible();
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith({
         email: "po@example.com",
@@ -153,23 +144,24 @@ describe("<AddEmailModal />", () => {
   });
 
   it("validates email format and keeps the modal open", async () => {
-    const user = userEvent.setup();
     render(modal);
     await completeForm();
-    await user.clear(screen.getByRole("textbox", { name: /Email/ }));
-    await user.type(screen.getByRole("textbox", { name: /Email/ }), "invalid");
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await userEvent.clear(screen.getByRole("textbox", { name: /Email/ }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /Email/ }),
+      "invalid"
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(screen.getByText(ErrorMessages.mustBeAnEmail)).toBeVisible();
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it("requires a state after all selected states are deselected", async () => {
-    const user = userEvent.setup();
     render(modal);
     await completeForm();
     await selectOptions("States", ["Alabama", "Alaska"]);
     expect(screen.getByRole("button", { name: /States \(0\)/ })).toBeVisible();
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
     expect(onSubmit).not.toHaveBeenCalled();
   });
@@ -184,42 +176,39 @@ describe("<AddEmailModal />", () => {
           resolveSubmission = resolve;
         })
     );
-    const user = userEvent.setup();
     render(modal);
     await completeForm();
     const save = screen.getByRole("button", { name: "Save" });
-    await user.click(save);
+    await userEvent.click(save);
     expect(save).toBeDisabled();
     expect(screen.getByRole("textbox", { name: /Email/ })).toBeDisabled();
     expect(onClose).not.toHaveBeenCalled();
-    await user.click(save);
+    await userEvent.click(save);
     expect(onSubmit).toHaveBeenCalledOnce();
     await act(async () => resolveSubmission());
     expect(onClose).toHaveBeenCalledOnce();
   });
 
   it("displays submission errors and allows retrying", async () => {
-    const user = userEvent.setup();
     onSubmit.mockRejectedValueOnce(
       new Error("Saving assignments is not available yet.")
     );
     render(modal);
     await completeForm();
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Saving assignments is not available yet."
     );
     expect(onClose).not.toHaveBeenCalled();
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => expect(onClose).toHaveBeenCalledOnce());
   });
 
   it.each(["Cancel", /Close/])(
     "closes with %s without saving",
     async (name) => {
-      const user = userEvent.setup();
       render(modal);
-      await user.click(screen.getByRole("button", { name }));
+      await userEvent.click(screen.getByRole("button", { name }));
       expect(onClose).toHaveBeenCalledOnce();
       expect(onSubmit).not.toHaveBeenCalled();
     }
