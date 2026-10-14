@@ -60,11 +60,11 @@ const MultiSelect = ({
           textAlign="left"
           fontWeight="normal"
           isDisabled={disabled}
-          aria-labelledby={`${id}-label ${id}-selection`}
+          aria-label={`${label}, ${values.length} selected`}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
         >
-          <span id={`${id}-selection`}>
+          <span>
             {label} ({values.length})
           </span>
         </MenuButton>

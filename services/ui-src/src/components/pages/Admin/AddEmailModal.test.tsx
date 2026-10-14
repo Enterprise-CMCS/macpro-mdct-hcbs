@@ -32,8 +32,8 @@ const selectOptions = async (label: string, options: string[]) => {
 const completeForm = async () => {
   await userEvent.click(screen.getByRole("textbox", { name: "Email" }));
   await userEvent.paste("po@example.com");
-  await selectOptions("States States (0)", ["Alabama", "Alaska"]);
-  await selectOptions("Report Types Report Types (0)", [
+  await selectOptions("States, 0 selected", ["Alabama", "Alaska"]);
+  await selectOptions("Report Types, 0 selected", [
     `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
     `${ReportType.QIP}: ${getReportName(ReportType.QIP)}`,
   ]);
@@ -71,10 +71,7 @@ describe("<AddEmailModal />", () => {
       expect(error).toHaveClass("ds-c-inline-error");
       expect(error.querySelector("svg")).toBeInTheDocument();
     }
-    for (const label of [
-      "States States (0)",
-      "Report Types Report Types (0)",
-    ]) {
+    for (const label of ["States, 0 selected", "Report Types, 0 selected"]) {
       expect(
         screen.getByRole("button", { name: label })
       ).toHaveAccessibleDescription(`Error: ${ErrorMessages.requiredResponse}`);
@@ -86,12 +83,12 @@ describe("<AddEmailModal />", () => {
   it("lists states from constants and all available report types", async () => {
     render(modal);
     await userEvent.click(
-      screen.getByRole("button", { name: "States States (0)" })
+      screen.getByRole("button", { name: "States, 0 selected" })
     );
     expect(await getVisibleMenuOptions()).toEqual(Object.values(StateNames));
     await userEvent.keyboard("{Escape}");
     await userEvent.click(
-      screen.getByRole("button", { name: "Report Types Report Types (0)" })
+      screen.getByRole("button", { name: "Report Types, 0 selected" })
     );
     expect(await getVisibleMenuOptions()).toEqual(
       [ReportType.QMS, ReportType.HA, ReportType.QIP].map(
@@ -112,7 +109,7 @@ describe("<AddEmailModal />", () => {
     });
     render(modal);
     await userEvent.click(
-      screen.getByRole("button", { name: "Report Types Report Types (0)" })
+      screen.getByRole("button", { name: "Report Types, 0 selected" })
     );
     expect(await getVisibleMenuOptions()).toEqual(
       Object.values(ReportType).map((type) => `${type}: ${getReportName(type)}`)
@@ -123,7 +120,7 @@ describe("<AddEmailModal />", () => {
     vi.mocked(useFlags).mockReturnValue({});
     render(modal);
     await userEvent.click(
-      screen.getByRole("button", { name: "Report Types Report Types (0)" })
+      screen.getByRole("button", { name: "Report Types, 0 selected" })
     );
     expect(screen.queryByRole("menuitemcheckbox")).not.toBeInTheDocument();
   });
@@ -132,10 +129,10 @@ describe("<AddEmailModal />", () => {
     render(modal);
     await completeForm();
     expect(
-      screen.getByRole("button", { name: "States States (2)" })
+      screen.getByRole("button", { name: "States, 2 selected" })
     ).toBeVisible();
     expect(
-      screen.getByRole("button", { name: "Report Types Report Types (2)" })
+      screen.getByRole("button", { name: "Report Types, 2 selected" })
     ).toBeVisible();
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => {
@@ -164,12 +161,12 @@ describe("<AddEmailModal />", () => {
 
   it("requires a state after all selected states are deselected", async () => {
     render(modal);
-    await selectOptions("States States (0)", ["Alabama", "Alaska"]);
+    await selectOptions("States, 0 selected", ["Alabama", "Alaska"]);
     expect(
-      screen.getByRole("button", { name: "States States (2)" })
+      screen.getByRole("button", { name: "States, 2 selected" })
     ).toBeVisible();
-    await selectOptions("States States (2)", ["Alabama", "Alaska"]);
-    const states = screen.getByRole("button", { name: "States States (0)" });
+    await selectOptions("States, 2 selected", ["Alabama", "Alaska"]);
+    const states = screen.getByRole("button", { name: "States, 0 selected" });
     expect(states).toBeVisible();
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(states).toHaveAccessibleDescription(
