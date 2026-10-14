@@ -56,6 +56,7 @@ const MultiSelect = ({
           variant="outline"
           rightIcon={<HiChevronDown />}
           width="100%"
+          paddingX="spacer1"
           textAlign="left"
           fontWeight="normal"
           isDisabled={disabled}
@@ -140,7 +141,6 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
       footer={
         <ModalFooter gap="4">
           <Button
-            colorScheme="blue"
             mr={3}
             type="submit"
             form="add-email-form"

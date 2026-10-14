@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { AddEmailModal } from "./AddEmailModal";
@@ -44,6 +44,14 @@ const completeForm = async (user: ReturnType<typeof userEvent.setup>) => {
     `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
     `${ReportType.QIP}: ${getReportName(ReportType.QIP)}`,
   ]);
+};
+
+const getVisibleMenuOptions = async () => {
+  const menu = await screen.findByRole("menu");
+  await waitFor(() => expect(menu).toBeVisible());
+  return within(menu)
+    .getAllByRole("menuitemcheckbox")
+    .map((option) => option.textContent);
 };
 
 describe("<AddEmailModal />", () => {
@@ -94,32 +102,14 @@ describe("<AddEmailModal />", () => {
     const user = userEvent.setup();
     render(modal);
     await user.click(screen.getByRole("button", { name: /^States/ }));
-    for (const name of Object.values(StateNames)) {
-      expect(
-        await screen.findByRole("menuitemcheckbox", { name })
-      ).toBeInTheDocument();
-    }
+    expect(await getVisibleMenuOptions()).toEqual(Object.values(StateNames));
     await user.keyboard("{Escape}");
     await user.click(screen.getByRole("button", { name: /^Report Types/ }));
-    for (const type of [ReportType.QMS, ReportType.HA, ReportType.QIP]) {
-      expect(
-        await screen.findByRole("menuitemcheckbox", {
-          name: `${type}: ${getReportName(type)}`,
-        })
-      ).toBeInTheDocument();
-    }
-    for (const type of [
-      ReportType.CI,
-      ReportType.PCP,
-      ReportType.IMA,
-      ReportType.WWL,
-    ]) {
-      expect(
-        screen.queryByRole("menuitemcheckbox", {
-          name: `${type}: ${getReportName(type)}`,
-        })
-      ).not.toBeInTheDocument();
-    }
+    expect(await getVisibleMenuOptions()).toEqual(
+      [ReportType.QMS, ReportType.HA, ReportType.QIP].map(
+        (type) => `${type}: ${getReportName(type)}`
+      )
+    );
   });
 
   it("lists all reports when their feature flags are enabled", async () => {
@@ -135,13 +125,9 @@ describe("<AddEmailModal />", () => {
     const user = userEvent.setup();
     render(modal);
     await user.click(screen.getByRole("button", { name: /^Report Types/ }));
-    for (const type of Object.values(ReportType)) {
-      expect(
-        await screen.findByRole("menuitemcheckbox", {
-          name: `${type}: ${getReportName(type)}`,
-        })
-      ).toBeVisible();
-    }
+    expect(await getVisibleMenuOptions()).toEqual(
+      Object.values(ReportType).map((type) => `${type}: ${getReportName(type)}`)
+    );
   });
 
   it("hides reports when feature flags are unavailable", async () => {
