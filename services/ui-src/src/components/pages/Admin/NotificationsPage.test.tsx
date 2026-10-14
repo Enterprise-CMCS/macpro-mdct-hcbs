@@ -230,13 +230,15 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("textbox", { name: "Email" }),
       "po@example.com"
     );
-    await user.click(screen.getByRole("button", { name: "States States (0)" }));
+    await user.click(
+      screen.getByRole("button", { name: "States, 0 selected" })
+    );
     await user.click(
       await screen.findByRole("menuitemcheckbox", { name: "Alabama" })
     );
     await user.keyboard("{Escape}");
     await user.click(
-      screen.getByRole("button", { name: "Report Types Report Types (0)" })
+      screen.getByRole("button", { name: "Report Types, 0 selected" })
     );
     await user.click(
       await screen.findByRole("menuitemcheckbox", {
