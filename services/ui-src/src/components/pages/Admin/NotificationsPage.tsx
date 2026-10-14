@@ -43,7 +43,7 @@ export const NotificationsPage = ({
   );
   const modalDisclosure = useDisclosure();
   return (
-    <PageTemplate>
+    <PageTemplate sxOverride={sx.page}>
       <Box sx={sx.introTextBox}>
         <Heading
           as="h1"
@@ -232,6 +232,12 @@ export const NotificationsPage = ({
 };
 
 const sx = {
+  page: {
+    // Keeps dropdown menu above sticky footer
+    ".ds-c-dropdown__menu-container": {
+      zIndex: "popover",
+    },
+  },
   filterChip: {
     paddingY: "spacer_half",
     paddingX: "spacer1",
