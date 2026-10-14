@@ -55,10 +55,7 @@ const MultiSelect = ({
           as={Button}
           variant="outline"
           rightIcon={<HiChevronDown />}
-          width="100%"
-          paddingX="spacer1"
-          textAlign="left"
-          fontWeight="normal"
+          sx={sx.menuButton}
           isDisabled={disabled}
           aria-label={`${label}, ${values.length} selected`}
           aria-invalid={!!error}
@@ -218,4 +215,13 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
       </VStack>
     </Modal>
   );
+};
+
+const sx = {
+  menuButton: {
+    width: "100%",
+    paddingX: "spacer1",
+    textAlign: "left",
+    fontWeight: "normal",
+  },
 };
