@@ -28,8 +28,9 @@ const selectOptions = async (
   await user.click(
     screen.getByRole("button", { name: new RegExp(`^${label}`) })
   );
+  const menu = within(await screen.findByRole("menu"));
   for (const name of options) {
-    await user.click(await screen.findByRole("menuitemcheckbox", { name }));
+    await user.click(menu.getByRole("menuitemcheckbox", { name }));
   }
   await user.keyboard("{Escape}");
 };
