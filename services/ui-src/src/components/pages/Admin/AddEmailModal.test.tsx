@@ -21,9 +21,7 @@ const modal = (
 );
 
 const selectOptions = async (label: string, options: string[]) => {
-  await userEvent.click(
-    screen.getByRole("button", { name: new RegExp(`^${label}`) })
-  );
+  await userEvent.click(screen.getByRole("button", { name: label }));
   const menu = within(await screen.findByRole("menu"));
   for (const name of options) {
     await userEvent.click(menu.getByText(name));
@@ -32,10 +30,10 @@ const selectOptions = async (label: string, options: string[]) => {
 };
 
 const completeForm = async () => {
-  await userEvent.click(screen.getByRole("textbox", { name: /Email/ }));
+  await userEvent.click(screen.getByRole("textbox", { name: "Email" }));
   await userEvent.paste("po@example.com");
-  await selectOptions("States", ["Alabama", "Alaska"]);
-  await selectOptions("Report Types", [
+  await selectOptions("States States (0)", ["Alabama", "Alaska"]);
+  await selectOptions("Report Types Report Types (0)", [
     `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
     `${ReportType.QIP}: ${getReportName(ReportType.QIP)}`,
   ]);
@@ -73,10 +71,13 @@ describe("<AddEmailModal />", () => {
       expect(error).toHaveClass("ds-c-inline-error");
       expect(error.querySelector("svg")).toBeInTheDocument();
     }
-    for (const label of ["States", "Report Types"]) {
+    for (const label of [
+      "States States (0)",
+      "Report Types Report Types (0)",
+    ]) {
       expect(
-        screen.getByRole("button", { name: new RegExp(`^${label}`) })
-      ).toHaveAccessibleDescription(/A response is required/);
+        screen.getByRole("button", { name: label })
+      ).toHaveAccessibleDescription(`Error: ${ErrorMessages.requiredResponse}`);
     }
     expect(onSubmit).not.toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
@@ -84,11 +85,13 @@ describe("<AddEmailModal />", () => {
 
   it("lists states from constants and all available report types", async () => {
     render(modal);
-    await userEvent.click(screen.getByRole("button", { name: /^States/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "States States (0)" })
+    );
     expect(await getVisibleMenuOptions()).toEqual(Object.values(StateNames));
     await userEvent.keyboard("{Escape}");
     await userEvent.click(
-      screen.getByRole("button", { name: /^Report Types/ })
+      screen.getByRole("button", { name: "Report Types Report Types (0)" })
     );
     expect(await getVisibleMenuOptions()).toEqual(
       [ReportType.QMS, ReportType.HA, ReportType.QIP].map(
@@ -109,7 +112,7 @@ describe("<AddEmailModal />", () => {
     });
     render(modal);
     await userEvent.click(
-      screen.getByRole("button", { name: /^Report Types/ })
+      screen.getByRole("button", { name: "Report Types Report Types (0)" })
     );
     expect(await getVisibleMenuOptions()).toEqual(
       Object.values(ReportType).map((type) => `${type}: ${getReportName(type)}`)
@@ -120,7 +123,7 @@ describe("<AddEmailModal />", () => {
     vi.mocked(useFlags).mockReturnValue({});
     render(modal);
     await userEvent.click(
-      screen.getByRole("button", { name: /^Report Types/ })
+      screen.getByRole("button", { name: "Report Types Report Types (0)" })
     );
     expect(screen.queryByRole("menuitemcheckbox")).not.toBeInTheDocument();
   });
@@ -128,9 +131,11 @@ describe("<AddEmailModal />", () => {
   it("saves multiple selected states and reports, then closes", async () => {
     render(modal);
     await completeForm();
-    expect(screen.getByRole("button", { name: /States \(2\)/ })).toBeVisible();
     expect(
-      screen.getByRole("button", { name: /Report Types \(2\)/ })
+      screen.getByRole("button", { name: "States States (2)" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Report Types Report Types (2)" })
     ).toBeVisible();
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() => {
@@ -146,9 +151,9 @@ describe("<AddEmailModal />", () => {
   it("validates email format and keeps the modal open", async () => {
     render(modal);
     await completeForm();
-    await userEvent.clear(screen.getByRole("textbox", { name: /Email/ }));
+    await userEvent.clear(screen.getByRole("textbox", { name: "Email" }));
     await userEvent.type(
-      screen.getByRole("textbox", { name: /Email/ }),
+      screen.getByRole("textbox", { name: "Email" }),
       "invalid"
     );
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -159,12 +164,20 @@ describe("<AddEmailModal />", () => {
 
   it("requires a state after all selected states are deselected", async () => {
     render(modal);
-    await completeForm();
-    await selectOptions("States", ["Alabama", "Alaska"]);
-    expect(screen.getByRole("button", { name: /States \(0\)/ })).toBeVisible();
+    await selectOptions("States States (0)", ["Alabama", "Alaska"]);
+    expect(
+      screen.getByRole("button", { name: "States States (2)" })
+    ).toBeVisible();
+    await selectOptions("States States (2)", ["Alabama", "Alaska"]);
+    const states = screen.getByRole("button", { name: "States States (0)" });
+    expect(states).toBeVisible();
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
-    expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
+    expect(states).toHaveAccessibleDescription(
+      `Error: ${ErrorMessages.requiredResponse}`
+    );
+    expect(states).toHaveAttribute("aria-invalid", "true");
     expect(onSubmit).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
   });
 
   it("disables saving while submission is pending", async () => {
@@ -182,7 +195,7 @@ describe("<AddEmailModal />", () => {
     const save = screen.getByRole("button", { name: "Save" });
     await userEvent.click(save);
     expect(save).toBeDisabled();
-    expect(screen.getByRole("textbox", { name: /Email/ })).toBeDisabled();
+    expect(screen.getByRole("textbox", { name: "Email" })).toBeDisabled();
     expect(onClose).not.toHaveBeenCalled();
     await userEvent.click(save);
     expect(onSubmit).toHaveBeenCalledOnce();
@@ -205,7 +218,7 @@ describe("<AddEmailModal />", () => {
     await waitFor(() => expect(onClose).toHaveBeenCalledOnce());
   });
 
-  it.each(["Cancel", /Close/])(
+  it.each(["Cancel", "Close"])(
     "closes with %s without saving",
     async (name) => {
       render(modal);
