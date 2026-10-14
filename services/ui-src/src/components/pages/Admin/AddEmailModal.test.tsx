@@ -32,10 +32,8 @@ const selectOptions = async (label: string, options: string[]) => {
 };
 
 const completeForm = async () => {
-  await userEvent.type(
-    screen.getByRole("textbox", { name: /Email/ }),
-    "po@example.com"
-  );
+  await userEvent.click(screen.getByRole("textbox", { name: /Email/ }));
+  await userEvent.paste("po@example.com");
   await selectOptions("States", ["Alabama", "Alaska"]);
   await selectOptions("Report Types", [
     `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
