@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { NotificationsPage } from "./NotificationsPage";
@@ -69,9 +69,11 @@ describe("<NotificationsPage />", () => {
     const user = userEvent.setup();
     render(<NotificationsPage />);
     await user.click(screen.getByRole("button", { name: /States$/ }));
-    for (const name of Object.values(StateNames)) {
-      expect(screen.getByRole("option", { name })).toBeInTheDocument();
-    }
+    const options = within(screen.getByRole("listbox")).getAllByRole("option");
+    expect(options.map((option) => option.textContent)).toEqual([
+      "- Select an option -",
+      ...Object.values(StateNames),
+    ]);
   });
 
   it("lists only enabled reports in the report filter", async () => {
