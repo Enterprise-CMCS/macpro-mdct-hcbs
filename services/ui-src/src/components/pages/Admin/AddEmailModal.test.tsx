@@ -26,9 +26,7 @@ const selectOptions = async (label: string, options: string[]) => {
   );
   const menu = within(await screen.findByRole("menu"));
   for (const name of options) {
-    await userEvent.click(
-      menu.getByText(name, { selector: '[role="menuitemcheckbox"]' })
-    );
+    await userEvent.click(menu.getByText(name));
   }
   await userEvent.keyboard("{Escape}");
 };
