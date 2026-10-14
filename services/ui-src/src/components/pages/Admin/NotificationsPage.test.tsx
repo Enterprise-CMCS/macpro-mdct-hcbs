@@ -27,7 +27,9 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("heading", { name: "Notifications Settings" })
     ).toBeVisible();
     expect(
-      screen.getByText(/notification assignments page should be used/i)
+      screen.getByText("The notification assignments page should be used", {
+        exact: false,
+      })
     ).toBeVisible();
 
     await user.click(
@@ -38,10 +40,10 @@ describe("<NotificationsPage />", () => {
         screen.getByText("How to manage notification assignments:")
       ).toBeVisible()
     );
-    expect(screen.getByText(/Add a new assignment:/)).toBeVisible();
-    expect(screen.getByText(/Filter assignments:/)).toBeVisible();
-    expect(screen.getByText(/Sort assignments:/)).toBeVisible();
-    expect(screen.getByText(/Edit or remove assignments:/)).toBeVisible();
+    expect(screen.getByText("Add a new assignment:")).toBeVisible();
+    expect(screen.getByText("Filter assignments:")).toBeVisible();
+    expect(screen.getByText("Sort assignments:")).toBeVisible();
+    expect(screen.getByText("Edit or remove assignments:")).toBeVisible();
   });
 
   it("hides Add email when the feature is disabled", () => {
@@ -55,10 +57,12 @@ describe("<NotificationsPage />", () => {
       screen.queryByRole("button", { name: "Add email" })
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /States$/ })
+      screen.queryByRole("button", { name: "- Select an option - States" })
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /Report Types$/ })
+      screen.queryByRole("button", {
+        name: "- Select an option - Report Types",
+      })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Clear Filters" })
@@ -68,7 +72,9 @@ describe("<NotificationsPage />", () => {
   it("lists states from constants in the state filter", async () => {
     const user = userEvent.setup();
     render(<NotificationsPage />);
-    await user.click(screen.getByRole("button", { name: /States$/ }));
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - States" })
+    );
     const options = within(screen.getByRole("listbox")).getAllByRole("option");
     expect(options.map((option) => option.textContent)).toEqual([
       "- Select an option -",
@@ -85,7 +91,9 @@ describe("<NotificationsPage />", () => {
     });
     const user = userEvent.setup();
     render(<NotificationsPage />);
-    await user.click(screen.getByRole("button", { name: /Report Types$/ }));
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - Report Types" })
+    );
     for (const type of [ReportType.QMS, ReportType.QIP, ReportType.HA]) {
       expect(
         screen.getByRole("option", {
@@ -110,9 +118,13 @@ describe("<NotificationsPage />", () => {
   it("selects filters and clears both selections", async () => {
     const user = userEvent.setup();
     render(<NotificationsPage disabled />);
-    await user.click(screen.getByRole("button", { name: /States$/ }));
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - States" })
+    );
     await user.click(screen.getByRole("option", { name: "Alabama" }));
-    await user.click(screen.getByRole("button", { name: /Report Types$/ }));
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - Report Types" })
+    );
     await user.click(
       screen.getByRole("option", { name: "HA: HCBS Access Report" })
     );
@@ -123,12 +135,10 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("button", { name: "Remove HA filter" })
     ).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Clear Filters" }));
-    expect(
-      screen.queryByRole("button", { name: /^Remove .* filter$/ })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Selected filters")).not.toBeInTheDocument();
     for (const label of ["States", "Report Types"]) {
       expect(
-        screen.getByRole("button", { name: new RegExp(`${label}$`) })
+        screen.getByRole("button", { name: `- Select an option - ${label}` })
       ).toHaveTextContent("- Select an option -");
     }
   });
@@ -142,20 +152,28 @@ describe("<NotificationsPage />", () => {
     const user = userEvent.setup();
     render(<NotificationsPage />);
     for (const state of ["Alaska", "North Carolina", "Alaska"]) {
-      await user.click(screen.getByRole("button", { name: /States$/ }));
-      await user.click(screen.getByRole("option", { name: state }));
-      expect(screen.getByRole("button", { name: /States$/ })).toHaveTextContent(
-        "- Select an option -"
+      await user.click(
+        screen.getByRole("button", { name: "- Select an option - States" })
       );
+      await user.click(screen.getByRole("option", { name: state }));
+      expect(
+        screen.getByRole("button", { name: "- Select an option - States" })
+      ).toHaveTextContent("- Select an option -");
     }
     for (const report of [
       "HA: HCBS Access Report",
       "QIP: QMS Quality Improvement Plans",
     ]) {
-      await user.click(screen.getByRole("button", { name: /Report Types$/ }));
+      await user.click(
+        screen.getByRole("button", {
+          name: "- Select an option - Report Types",
+        })
+      );
       await user.click(screen.getByRole("option", { name: report }));
       expect(
-        screen.getByRole("button", { name: /Report Types$/ })
+        screen.getByRole("button", {
+          name: "- Select an option - Report Types",
+        })
       ).toHaveTextContent("- Select an option -");
     }
     expect(
@@ -178,9 +196,7 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("button", { name: "Remove HA filter" })
     ).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Clear Filters" }));
-    expect(
-      screen.queryByRole("button", { name: /^Remove .* filter$/ })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Selected filters")).not.toBeInTheDocument();
   });
 
   it("opens the modal and resets the form after canceling", async () => {
@@ -190,7 +206,7 @@ describe("<NotificationsPage />", () => {
     await user.click(screen.getByRole("button", { name: "Add email" }));
     expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
     await user.type(
-      screen.getByRole("textbox", { name: /Email/ }),
+      screen.getByRole("textbox", { name: "Email" }),
       "po@example.com"
     );
     await user.click(screen.getByRole("button", { name: "Cancel" }));
@@ -198,7 +214,7 @@ describe("<NotificationsPage />", () => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
     await user.click(screen.getByRole("button", { name: "Add email" }));
-    expect(screen.getByRole("textbox", { name: /Email/ })).toHaveValue("");
+    expect(screen.getByRole("textbox", { name: "Email" })).toHaveValue("");
   });
 
   it("disables Add email for a read-only page", () => {
@@ -211,18 +227,20 @@ describe("<NotificationsPage />", () => {
     render(<NotificationsPage />);
     await user.click(screen.getByRole("button", { name: "Add email" }));
     await user.type(
-      screen.getByRole("textbox", { name: /Email/ }),
+      screen.getByRole("textbox", { name: "Email" }),
       "po@example.com"
     );
-    await user.click(screen.getByRole("button", { name: /^States/ }));
+    await user.click(screen.getByRole("button", { name: "States States (0)" }));
     await user.click(
       await screen.findByRole("menuitemcheckbox", { name: "Alabama" })
     );
     await user.keyboard("{Escape}");
-    await user.click(screen.getByRole("button", { name: /^Report Types/ }));
+    await user.click(
+      screen.getByRole("button", { name: "Report Types Report Types (0)" })
+    );
     await user.click(
       await screen.findByRole("menuitemcheckbox", {
-        name: /HA: HCBS Access Report/,
+        name: "HA: HCBS Access Report",
       })
     );
     await user.keyboard("{Escape}");
