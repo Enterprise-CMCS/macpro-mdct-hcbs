@@ -68,8 +68,22 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
         working-directory: tests
-      - name: Install Playwright Browsers
+
+      - name: Cache Playwright Browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with: 
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('yarn.lock') }}
+
+      - name: Install Chromium and System Deps (Cache Miss)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: yarn playwright install --with-deps chromium
+        working-directory: tests
+
+      - name: Install Chromium System Deps Only (Cache Hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: yarn playwright install-deps chromium
         working-directory: tests
 
       - name: Run Playwright tests
