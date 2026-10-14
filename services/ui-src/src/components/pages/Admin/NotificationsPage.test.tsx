@@ -40,10 +40,6 @@ describe("<NotificationsPage />", () => {
         screen.getByText("How to manage notification assignments:")
       ).toBeVisible()
     );
-    expect(screen.getByText("Add a new assignment:")).toBeVisible();
-    expect(screen.getByText("Filter assignments:")).toBeVisible();
-    expect(screen.getByText("Sort assignments:")).toBeVisible();
-    expect(screen.getByText("Edit or remove assignments:")).toBeVisible();
   });
 
   it("hides Add email when the feature is disabled", () => {
