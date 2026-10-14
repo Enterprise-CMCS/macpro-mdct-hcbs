@@ -20,28 +20,24 @@ const modal = (
   />
 );
 
-const selectOptions = async (
-  user: ReturnType<typeof userEvent.setup>,
-  label: string,
-  options: string[]
-) => {
-  await user.click(
+const selectOptions = async (label: string, options: string[]) => {
+  await userEvent.click(
     screen.getByRole("button", { name: new RegExp(`^${label}`) })
   );
   const menu = within(await screen.findByRole("menu"));
   for (const name of options) {
-    await user.click(menu.getByRole("menuitemcheckbox", { name }));
+    await userEvent.click(menu.getByRole("menuitemcheckbox", { name }));
   }
-  await user.keyboard("{Escape}");
+  await userEvent.keyboard("{Escape}");
 };
 
-const completeForm = async (user: ReturnType<typeof userEvent.setup>) => {
-  await user.type(
+const completeForm = async () => {
+  await userEvent.type(
     screen.getByRole("textbox", { name: /Email/ }),
     "po@example.com"
   );
-  await selectOptions(user, "States", ["Alabama", "Alaska"]);
-  await selectOptions(user, "Report Types", [
+  await selectOptions("States", ["Alabama", "Alaska"]);
+  await selectOptions("Report Types", [
     `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
     `${ReportType.QIP}: ${getReportName(ReportType.QIP)}`,
   ]);
@@ -142,7 +138,7 @@ describe("<AddEmailModal />", () => {
   it("saves multiple selected states and reports, then closes", async () => {
     const user = userEvent.setup();
     render(modal);
-    await completeForm(user);
+    await completeForm();
     expect(screen.getByRole("button", { name: /States \(2\)/ })).toBeVisible();
     expect(
       screen.getByRole("button", { name: /Report Types \(2\)/ })
@@ -161,7 +157,7 @@ describe("<AddEmailModal />", () => {
   it("validates email format and keeps the modal open", async () => {
     const user = userEvent.setup();
     render(modal);
-    await completeForm(user);
+    await completeForm();
     await user.clear(screen.getByRole("textbox", { name: /Email/ }));
     await user.type(screen.getByRole("textbox", { name: /Email/ }), "invalid");
     await user.click(screen.getByRole("button", { name: "Save" }));
@@ -172,8 +168,8 @@ describe("<AddEmailModal />", () => {
   it("requires a state after all selected states are deselected", async () => {
     const user = userEvent.setup();
     render(modal);
-    await completeForm(user);
-    await selectOptions(user, "States", ["Alabama", "Alaska"]);
+    await completeForm();
+    await selectOptions("States", ["Alabama", "Alaska"]);
     expect(screen.getByRole("button", { name: /States \(0\)/ })).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Save" }));
     expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
@@ -192,7 +188,7 @@ describe("<AddEmailModal />", () => {
     );
     const user = userEvent.setup();
     render(modal);
-    await completeForm(user);
+    await completeForm();
     const save = screen.getByRole("button", { name: "Save" });
     await user.click(save);
     expect(save).toBeDisabled();
@@ -210,7 +206,7 @@ describe("<AddEmailModal />", () => {
       new Error("Saving assignments is not available yet.")
     );
     render(modal);
-    await completeForm(user);
+    await completeForm();
     await user.click(screen.getByRole("button", { name: "Save" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Saving assignments is not available yet."
