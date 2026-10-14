@@ -53,7 +53,8 @@ const MultiSelect = ({
       <Menu closeOnSelect={false}>
         <MenuButton
           as={Button}
-          variant="outline"
+          variant="unstyled"
+          className="ds-c-dropdown__button ds-c-field"
           rightIcon={<HiChevronDown />}
           sx={sx.menuButton}
           isDisabled={disabled}
@@ -220,8 +221,6 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
 const sx = {
   menuButton: {
     width: "100%",
-    paddingX: "spacer1",
-    textAlign: "left",
-    fontWeight: "normal",
+    padding: "spacer1",
   },
 };
