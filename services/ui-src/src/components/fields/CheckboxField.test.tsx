@@ -88,7 +88,7 @@ describe("<CheckboxField />", () => {
 
   describe("serviceTypeChange click action", () => {
     const removalWarningText =
-      "Warning: Changing this response will clear any data previously entered in the corresponding delivery system measure results sections.";
+      "Warning: Changing this response will clear any data previously entered in the corresponding service sections.";
     const serviceTypeElement: CheckboxTemplate = {
       ...mockCheckboxElement,
       answer: ["A"],
@@ -102,7 +102,7 @@ describe("<CheckboxField />", () => {
       );
       expect(screen.queryByText(removalWarningText)).not.toBeInTheDocument();
       await userEvent.click(screen.getByRole("checkbox", { name: "Choice 1" }));
-      expect(screen.queryByText(removalWarningText)).not.toBeInTheDocument();
+      expect(screen.getAllByText(removalWarningText)).toHaveLength(1);
       await userEvent.click(screen.getByRole("button", { name: "Yes" }));
       const warning = screen.getByText(removalWarningText);
       expect(warning).toBeVisible();

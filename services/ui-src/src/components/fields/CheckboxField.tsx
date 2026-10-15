@@ -15,6 +15,9 @@ import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider"
 import { useStore } from "utils";
 import { Modal } from "components";
 
+const serviceTypeRemovalWarning =
+  "Warning: Changing this response will clear any data previously entered in the corresponding service sections.";
+
 const formatChoices = (
   choices: ChoiceTemplate[],
   answer: string[],
@@ -88,12 +91,12 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   }, [checkbox.choices, checkbox.answer]);
 
   const changeSelection = (value: string) => {
-    let set = new Set(checkbox.answer);
+    const selections = new Set(checkbox.answer);
 
-    if (set.has(value)) set.delete(value);
-    else set.add(value);
+    if (selections.has(value)) selections.delete(value);
+    else selections.add(value);
 
-    const newValue = [...set];
+    const newValue = [...selections];
     const newDisplayValue = formatChoices(
       checkbox.choices,
       newValue,
@@ -145,13 +148,11 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
         label={labelText || ""}
         choices={displayValue}
         hint={
-          checkbox.clickAction === "serviceTypeChange" && showRemovalWarning ? (
+          showRemovalWarning ? (
             <>
               {checkbox.helperText}
               <Box as="span" display="block" color="palette.warn_darkest">
-                Warning: Changing this response will clear any data previously
-                entered in the corresponding delivery system measure results
-                sections.
+                {serviceTypeRemovalWarning}
               </Box>
             </>
           ) : (
@@ -167,8 +168,7 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
           onConfirmHandler={confirmSelection}
           content={{
             heading: "Are you sure?",
-            subheading:
-              "Warning: Changing this response will clear any data previously entered in the corresponding service sections.",
+            subheading: serviceTypeRemovalWarning,
             actionButtonText: "Yes",
             closeButtonText: "No",
           }}
