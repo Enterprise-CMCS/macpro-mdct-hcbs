@@ -149,19 +149,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
-  // sending emails requires manual steps and approvals, so we only do them in dev, val, prod
   let sesPolicy = new iam.PolicyStatement({
     effect: iam.Effect.DENY,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
     resources: ["*"],
   });
-  if (isLocalStack) {
-    sesPolicy = new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["ses:SendEmail", "ses:SendRawEmail"],
-      resources: ["*"],
-    });
-  } else if (!isDev) {
+  if (!isDev) {
     const topic = new sns.Topic(scope, `${project}-${stage}-failedEmailTopic`);
     new sns.Subscription(scope, `${project}-${stage}-email-subscription`, {
       topic,
@@ -183,65 +176,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       destination: ses.EventDestination.snsTopic(topic),
       configurationSetEventDestinationName: `${project}-${stage}-email-topic`,
       enabled: isProduction,
-      events: [
-        ses.EmailSendingEvent.REJECT,
-        ses.EmailSendingEvent.BOUNCE,
-        ses.EmailSendingEvent.COMPLAINT,
-      ],
-    });
-
-    const senderIdentity = new ses.EmailIdentity(
-      scope,
-      "SenderDomainIdentity",
-      {
-        identity: ses.Identity.domain("cms.hhs.gov"),
-        configurationSet: configSet,
-      }
-    );
-
-    sesPolicy = new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["ses:SendEmail", "ses:SendRawEmail"],
-      resources: [
-        senderIdentity.emailIdentityArn,
-        `arn:aws:ses:${Aws.REGION}:${Aws.ACCOUNT_ID}:configuration-set/${configSet.configurationSetName}`,
-      ],
-    });
-  } else {
-    sesPolicy = new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["ses:SendEmail", "ses:SendRawEmail"],
-      resources: [
-        `arn:aws:ses:us-east-1:${Aws.ACCOUNT_ID}:identity/cms.hhs.gov`,
-      ],
-    });
-  }
-  if (!isDev) {
-    const topic = new sns.Topic(scope, `${project}-${stage}-failedEmailTopic`);
-    new sns.Subscription(scope, `${project}-${stage}-email-subscription`, {
-      topic: sns.Topic.fromTopicArn(
-        scope,
-        `${project}-${stage}-failed-email-topic`,
-        topic.topicArn
-      ),
-      endpoint: "mdct-integrations@coforma.io",
-      protocol: sns.SubscriptionProtocol.EMAIL,
-    });
-
-    const configSet = new ses.ConfigurationSet(
-      scope,
-      `${project}-${stage}-email-configuration-set`,
-      {
-        sendingEnabled: true,
-        configurationSetName: `${project}-${stage}-email-configuration-set`,
-        reputationMetrics: true,
-      }
-    );
-
-    configSet.addEventDestination("sns", {
-      destination: ses.EventDestination.snsTopic(topic),
-      configurationSetEventDestinationName: `${project}-${stage}-email-topic`,
-      enabled: isProduction, // only send alerts to sns in prod
       events: [
         ses.EmailSendingEvent.REJECT,
         ses.EmailSendingEvent.BOUNCE,
