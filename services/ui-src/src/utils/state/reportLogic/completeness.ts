@@ -339,7 +339,7 @@ export const elementIsHidden = (
   });
   if (
     controlElement?.type === ElementType.Checkbox &&
-    hideCondition.answerExcludes
+    "answerExcludes" in hideCondition
   ) {
     return !hideCondition.answerExcludes.some((value) =>
       controlElement.answer?.includes(value)
@@ -348,7 +348,8 @@ export const elementIsHidden = (
   return (
     !!controlElement &&
     "answer" in controlElement &&
-    controlElement.answer === hideCondition?.answer
+    "answer" in hideCondition &&
+    controlElement.answer === hideCondition.answer
   );
 };
 

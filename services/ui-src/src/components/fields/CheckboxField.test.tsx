@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CheckboxField, TextField } from "components";
 import {
@@ -115,9 +115,8 @@ describe("<CheckboxField />", () => {
         <CheckboxField element={serviceTypeElement} updateElement={updateSpy} />
       );
       await userEvent.click(screen.getByRole("checkbox", { name: "Choice 1" }));
-      expect(
-        screen.getByRole("dialog", { name: "Are you sure?" })
-      ).toBeVisible();
+      const dialog = screen.getByRole("dialog", { name: "Are you sure?" });
+      await waitFor(() => expect(dialog).toBeVisible());
       expect(
         screen.getByText(
           "Warning: Changing this response will clear any data previously entered in the corresponding service sections."

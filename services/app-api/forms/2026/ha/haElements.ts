@@ -1,17 +1,10 @@
 import {
   CheckboxTemplate,
-  DividerTemplate,
   ElementType,
-  HideCondition,
-  PageElement,
   PerformanceNdrTemplate,
   TextAreaBoxTemplate,
 } from "../../../types/reports";
-import {
-  additionalNotesField,
-  didYouFollowSpecifications,
-  stateSamplingMethologyQuestion,
-} from "../elements";
+import { stateSamplingMethologyQuestion } from "../elements";
 
 const serviceTypeChoices = [
   { label: "Homemaker", value: "homemaker" },
@@ -28,32 +21,6 @@ export const serviceTypesCheckbox: CheckboxTemplate = {
   choices: serviceTypeChoices,
   required: true,
   clickAction: "serviceTypeChange",
-};
-
-const showWhenSelected = (serviceTypes: string[]): HideCondition => ({
-  controllerElementId: serviceTypesCheckbox.id,
-  answerExcludes: serviceTypes,
-});
-
-const showWhenAnySelected = showWhenSelected(
-  serviceTypeChoices.map((choice) => choice.value)
-);
-
-export const serviceTypesDivider: DividerTemplate = {
-  type: ElementType.Divider,
-  id: "service-types-divider",
-  hideCondition: showWhenAnySelected,
-};
-
-export const serviceTypeSection = (
-  serviceType: string,
-  rate: PerformanceNdrTemplate
-): PageElement[] => {
-  const hideCondition = showWhenSelected([serviceType]);
-  return [
-    { ...rate, hideCondition },
-    { type: ElementType.Divider, id: `${serviceType}-divider`, hideCondition },
-  ];
 };
 
 const stateSamplingMethologyQuestionHAReport = (
@@ -91,22 +58,7 @@ export const conversionOfServiceUnitsField: TextAreaBoxTemplate = {
     "Brief explanation of the state's process to convert service units into hours.",
   label: "Conversion of service units into hours",
   required: true,
-  hideCondition: showWhenAnySelected,
 };
-
-export const additionalDetailsSection = (
-  extraFields: TextAreaBoxTemplate[] = []
-): PageElement[] => [
-  {
-    type: ElementType.SubHeader,
-    id: "additional-details-subheader",
-    text: "Additional Details",
-    hideCondition: showWhenAnySelected,
-  },
-  ...extraFields,
-  { ...didYouFollowSpecifications, hideCondition: showWhenAnySelected },
-  { ...additionalNotesField, hideCondition: showWhenAnySelected },
-];
 
 // Rates for Homemaker for HAPC-1 measure
 export const homemakerRate = withSamplingMethodology({

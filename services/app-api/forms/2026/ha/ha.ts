@@ -7,6 +7,8 @@ import {
   AlertTypes,
 } from "../../../types/reports";
 import {
+  additionalNotesField,
+  didYouFollowSpecifications,
   exportToPDF,
   waiverListCheckboxField,
   waiverListInputField,
@@ -22,9 +24,6 @@ import {
   habilitationRate,
   habilitationHAPCH2Rate,
   serviceTypesCheckbox,
-  serviceTypesDivider,
-  serviceTypeSection,
-  additionalDetailsSection,
 } from "./haElements";
 
 export const haReportTemplate: ReportBase = {
@@ -94,12 +93,117 @@ export const haReportTemplate: ReportBase = {
             "</ul>",
         },
         serviceTypesCheckbox,
-        serviceTypesDivider,
-        ...serviceTypeSection("homemaker", homemakerRate),
-        ...serviceTypeSection("home-health-aide", homeHealthAideRate),
-        ...serviceTypeSection("personal-care", personalCareRate),
-        ...serviceTypeSection("habilitation", habilitationRate),
-        ...additionalDetailsSection(),
+        {
+          type: ElementType.Divider,
+          id: "service-types-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
+        {
+          ...homemakerRate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["homemaker"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "homemaker-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["homemaker"],
+          },
+        },
+        {
+          ...homeHealthAideRate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["home-health-aide"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "home-health-aide-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["home-health-aide"],
+          },
+        },
+        {
+          ...personalCareRate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["personal-care"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "personal-care-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["personal-care"],
+          },
+        },
+        {
+          ...habilitationRate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["habilitation"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "habilitation-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["habilitation"],
+          },
+        },
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
+        {
+          ...didYouFollowSpecifications,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
+        {
+          ...additionalNotesField,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
       ],
     },
     {
@@ -129,12 +233,129 @@ export const haReportTemplate: ReportBase = {
             "</ul>",
         },
         serviceTypesCheckbox,
-        serviceTypesDivider,
-        ...serviceTypeSection("homemaker", homemakerHAPCH2Rate),
-        ...serviceTypeSection("home-health-aide", homeHealthAideHAPCH2Rate),
-        ...serviceTypeSection("personal-care", personalCareHAPCH2Rate),
-        ...serviceTypeSection("habilitation", habilitationHAPCH2Rate),
-        ...additionalDetailsSection([conversionOfServiceUnitsField]),
+        {
+          type: ElementType.Divider,
+          id: "service-types-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
+        {
+          ...homemakerHAPCH2Rate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["homemaker"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "homemaker-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["homemaker"],
+          },
+        },
+        {
+          ...homeHealthAideHAPCH2Rate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["home-health-aide"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "home-health-aide-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["home-health-aide"],
+          },
+        },
+        {
+          ...personalCareHAPCH2Rate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["personal-care"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "personal-care-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["personal-care"],
+          },
+        },
+        {
+          ...habilitationHAPCH2Rate,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["habilitation"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "habilitation-divider",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: ["habilitation"],
+          },
+        },
+        {
+          type: ElementType.SubHeader,
+          id: "additional-details-subheader",
+          text: "Additional Details",
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
+        {
+          ...conversionOfServiceUnitsField,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
+        {
+          ...didYouFollowSpecifications,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
+        {
+          ...additionalNotesField,
+          hideCondition: {
+            controllerElementId: serviceTypesCheckbox.id,
+            answerExcludes: [
+              "homemaker",
+              "home-health-aide",
+              "personal-care",
+              "habilitation",
+            ],
+          },
+        },
       ],
     },
     {

@@ -253,11 +253,10 @@ export type PageElement =
   | ImaTableTemplate
   | ComplianceAlertTemplate;
 
-export type HideCondition = {
-  controllerElementId: string;
-  answer?: string;
-  answerExcludes?: string[];
-};
+export type HideCondition = { controllerElementId: string } & (
+  | { answer: string }
+  | { answerExcludes: string[] }
+);
 
 export enum HeaderIcon {
   Check = "check",
