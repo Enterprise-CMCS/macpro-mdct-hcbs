@@ -107,17 +107,6 @@ a missing assignment returns HTTP 404.
 
 TO-DO: Delete removes the assignment from the `${stage}-notification-assignments` DynamoDB table.
 
-With `notificationsSystem` enabled, submitting a report or an admin unlocking a
-submitted report back to In Progress sends status emails to the report contact
-and saved assignments matching both the report's state and report type.
-Assignments are read at send time, so newly added or edited selections apply to
-future status changes without a separate subscription step. Recipient addresses
-are deduplicated, and each recipient receives a separate email. Saving an
-assignment does not send a confirmation email or notifications for past changes.
-When the flag is off, neither contacts nor assigned recipients receive status emails.
-If subscriber lookup fails, contact delivery is still attempted, and the lookup
-failure is logged and propagated to the status handler.
-
 ## Testing
 
 ### Unit Testing
