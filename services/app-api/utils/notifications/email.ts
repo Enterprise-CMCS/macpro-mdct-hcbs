@@ -1,7 +1,6 @@
 import { ElementType, Report, ReportStatus } from "../../types/reports";
 import { sendSesEmail } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
-import { scanNotificationAssignments } from "../../storage/notificationAssignments";
 
 const FROM_ADDRESS = "MDCT_NoReply@cms.hhs.gov";
 
@@ -48,48 +47,15 @@ const getContactEmail = (report: Report): string | undefined => {
 
 export const sendEmail = async (report: Report) => {
   const { name, status } = report;
-  const contactEmail = getContactEmail(report);
-  const sendToRecipient = (recipient: string) => {
-    const emailTemplate = getTemplate(name, status, [recipient]);
-    logger.info(
-      "Sending email to: ",
-      recipient,
-      "with content: ",
-      emailTemplate
-    );
-    return sendSesEmail(emailTemplate);
-  };
-  const assignments = await scanNotificationAssignments().catch(
-    async (error: unknown) => {
-      logger.error("Unable to load notification subscribers", {
-        id: report.id,
-        status,
-        error,
-      });
-      if (contactEmail) {
-        await sendToRecipient(contactEmail.trim().toLowerCase());
-      }
-      throw error;
-    }
-  );
-  const recipients = new Set(
-    [
-      ...(contactEmail ? [contactEmail] : []),
-      ...assignments
-        .filter(
-          (assignment) =>
-            assignment.states.includes(report.state) &&
-            assignment.reports.includes(report.type)
-        )
-        .map((assignment) => assignment.email),
-    ].map((email) => email.trim().toLowerCase())
-  );
-  if (recipients.size === 0) {
+  const recipient = getContactEmail(report);
+  if (!recipient) {
     logger.warn("sendEmail: no recipients found for report", {
       id: report.id,
       status: report.status,
     });
     return;
   }
-  await Promise.all([...recipients].map(sendToRecipient));
+  const emailTemplate = getTemplate(name, status, [recipient]);
+  logger.info("Sending email to: ", recipient, "with content: ", emailTemplate);
+  await sendSesEmail(emailTemplate);
 };
