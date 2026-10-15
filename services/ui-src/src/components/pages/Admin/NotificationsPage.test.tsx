@@ -5,6 +5,18 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { NotificationsPage } from "./NotificationsPage";
 import { StateNames } from "../../../constants";
 import { getReportName, ReportType } from "types/report";
+import { NotificationAssignment } from "types/notification";
+import {
+  createNotificationAssignment,
+  getNotificationAssignments,
+  updateNotificationAssignment,
+} from "utils/api/requestMethods/notificationAssignments";
+
+vi.mock("utils/api/requestMethods/notificationAssignments", () => ({
+  createNotificationAssignment: vi.fn(),
+  updateNotificationAssignment: vi.fn(),
+  getNotificationAssignments: vi.fn(),
+}));
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
   useFlags: vi.fn(),
@@ -13,6 +25,7 @@ vi.mock("launchdarkly-react-client-sdk", () => ({
 describe("<NotificationsPage />", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(getNotificationAssignments).mockResolvedValue([]);
     vi.mocked(useFlags).mockReturnValue({
       notificationsSystem: true,
       isHaReportActive: true,
@@ -63,6 +76,8 @@ describe("<NotificationsPage />", () => {
     expect(
       screen.queryByRole("button", { name: "Clear Filters" })
     ).not.toBeInTheDocument();
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    expect(getNotificationAssignments).not.toHaveBeenCalled();
   });
 
   it("lists states from constants in the state filter", async () => {
@@ -218,9 +233,70 @@ describe("<NotificationsPage />", () => {
     expect(screen.getByRole("button", { name: "Add email" })).toBeDisabled();
   });
 
-  it("reports that saving is unavailable when persistence is not supplied", async () => {
+  it("filters assignments by any selected state and report, and clears the filters", async () => {
     const user = userEvent.setup();
+    const assignments: NotificationAssignment[] = [
+      {
+        email: "alabama@example.com",
+        states: ["AL"],
+        reports: [ReportType.HA],
+      },
+      { email: "alaska@example.com", states: ["AK"], reports: [ReportType.HA] },
+      { email: "qip@example.com", states: ["AL"], reports: [ReportType.QIP] },
+      { email: "ohio@example.com", states: ["OH"], reports: [ReportType.HA] },
+    ];
+    vi.mocked(getNotificationAssignments).mockResolvedValue(assignments);
     render(<NotificationsPage />);
+    await screen.findByRole("cell", { name: "alabama@example.com" });
+    for (const state of ["Alabama", "Alaska"]) {
+      await user.click(
+        screen.getByRole("button", { name: "- Select an option - States" })
+      );
+      await user.click(screen.getByRole("option", { name: state }));
+    }
+    expect(screen.queryByText("ohio@example.com")).not.toBeInTheDocument();
+    expect(screen.getByText("qip@example.com")).toBeVisible();
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - Report Types" })
+    );
+    await user.click(
+      screen.getByRole("option", { name: "HA: HCBS Access Report" })
+    );
+    expect(screen.getByText("alabama@example.com")).toBeVisible();
+    expect(screen.getByText("alaska@example.com")).toBeVisible();
+    expect(screen.queryByText("qip@example.com")).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: "Remove Alabama filter" })
+    );
+    expect(screen.queryByText("alabama@example.com")).not.toBeInTheDocument();
+    expect(screen.getByText("alaska@example.com")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Clear Filters" }));
+    for (const { email } of assignments) {
+      expect(screen.getByText(email)).toBeVisible();
+    }
+  });
+
+  it("loads assignments with Edit available and Delete unavailable", async () => {
+    const assignment: NotificationAssignment = {
+      email: "po@example.com",
+      states: ["AK", "NC", "OH"],
+      reports: [ReportType.QIP, ReportType.IMA],
+    };
+    vi.mocked(getNotificationAssignments).mockResolvedValue([assignment]);
+    render(<NotificationsPage />);
+    expect(
+      await screen.findByRole("button", { name: "Edit po@example.com" })
+    ).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: "Delete po@example.com" })
+    ).toBeDisabled();
+  });
+
+  const fillAssignment = async () => {
+    const user = userEvent.setup();
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Add email" })).toBeEnabled()
+    );
     await user.click(screen.getByRole("button", { name: "Add email" }));
     await user.type(
       screen.getByRole("textbox", { name: "Email" }),
@@ -243,9 +319,118 @@ describe("<NotificationsPage />", () => {
     );
     await user.keyboard("{Escape}");
     await user.click(screen.getByRole("button", { name: "Save" }));
+  };
+
+  it("saves an assignment to the API, updates the table, and loads it after remounting", async () => {
+    const assignment: NotificationAssignment = {
+      email: "po@example.com",
+      states: ["AL"],
+      reports: [ReportType.HA],
+    };
+    vi.mocked(createNotificationAssignment).mockResolvedValue(assignment);
+    const { unmount } = render(<NotificationsPage />);
+    await fillAssignment();
+    expect(createNotificationAssignment).toHaveBeenCalledWith(assignment);
+    expect(
+      await screen.findByRole("cell", { name: assignment.email })
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
+    unmount();
+    vi.mocked(getNotificationAssignments).mockResolvedValue([assignment]);
+    render(<NotificationsPage />);
+    expect(
+      await screen.findByRole("cell", { name: assignment.email })
+    ).toBeVisible();
+    expect(getNotificationAssignments).toHaveBeenCalledTimes(2);
+  });
+
+  it("keeps the modal open and displays duplicate and save errors without adding a row", async () => {
+    vi.mocked(createNotificationAssignment).mockRejectedValueOnce(
+      new Error(
+        "An assignment already exists for this email. Use Edit to update it."
+      )
+    );
+    render(<NotificationsPage />);
+    await fillAssignment();
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Saving assignments is not available yet."
+      "Use Edit to update it."
     );
     expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
+    expect(
+      screen.queryByRole("cell", { name: "po@example.com" })
+    ).not.toBeInTheDocument();
+    vi.mocked(createNotificationAssignment).mockRejectedValueOnce(
+      new Error("Unable to save.")
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Unable to save."
+    );
+  });
+
+  it("shows loading and load failures with a retry instead of an empty table", async () => {
+    vi.mocked(getNotificationAssignments).mockRejectedValueOnce(
+      new Error("Unable to load.")
+    );
+    render(<NotificationsPage />);
+    expect(
+      screen.getByText("Loading notification assignments")
+    ).toBeInTheDocument();
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Unable to load."
+    );
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("table")).toBeVisible();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("opens Edit with existing data, saves updates, and resets when adding", async () => {
+    const user = userEvent.setup();
+    const assignment: NotificationAssignment = {
+      email: "po@example.com",
+      states: ["AL"],
+      reports: [ReportType.HA],
+    };
+    const updated: NotificationAssignment = {
+      ...assignment,
+      states: ["AL", "AK"],
+    };
+    vi.mocked(getNotificationAssignments).mockResolvedValue([assignment]);
+    vi.mocked(updateNotificationAssignment).mockRejectedValueOnce(
+      new Error("Update failed.")
+    );
+    render(<NotificationsPage />);
+    await user.click(
+      await screen.findByRole("button", { name: "Edit po@example.com" })
+    );
+    expect(
+      screen.getByRole("dialog", { name: "Edit Assignments" })
+    ).toBeVisible();
+    await user.click(
+      screen.getByRole("button", { name: "States, 1 selected" })
+    );
+    await user.click(
+      await screen.findByRole("menuitemcheckbox", { name: "Alaska" })
+    );
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "Save" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Update failed."
+    );
+    expect(screen.getByRole("dialog")).toBeVisible();
+    vi.mocked(updateNotificationAssignment).mockResolvedValue(updated);
+    await user.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
+    expect(updateNotificationAssignment).toHaveBeenLastCalledWith(updated);
+    expect(screen.getByRole("cell", { name: "AL, AK" })).toBeVisible();
+    expect(createNotificationAssignment).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Add email" }));
+    expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
+    expect(screen.getByRole("textbox", { name: "Email" })).toHaveValue("");
   });
 });

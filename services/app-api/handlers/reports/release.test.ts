@@ -100,12 +100,25 @@ describe("releaseReport", () => {
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(sendEmail).not.toHaveBeenCalled();
   });
 
   it("should un-submit a submitted report", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
+      ...validReport,
+      status: ReportStatus.SUBMITTED,
+    });
     const res = await releaseReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        state: validReport.state,
+        type: validReport.type,
+        status: ReportStatus.IN_PROGRESS,
+      })
+    );
+    expect(getFlag).toHaveBeenCalledWith("notificationsSystem");
   });
 
   it("should not send an email on unlock if the email flag is off", async () => {
