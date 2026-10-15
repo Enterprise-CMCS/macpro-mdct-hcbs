@@ -7,6 +7,8 @@ import { validReport } from "../../utils/tests/mockReport";
 import { submitReport } from "./submit";
 import { putReport } from "../../storage/reports";
 import { ReportStatus } from "../../types/reports";
+import { getFlag } from "../../libs/launchdarkly-lib";
+import { sendEmail } from "../../utils/notifications/email";
 
 vi.mock("../../libs/launchdarkly-lib", () => ({
   getFlag: vi.fn().mockResolvedValue(true),
@@ -144,5 +146,20 @@ describe("submitReport", () => {
         lastEditedByEmail: "myname@example.com",
       })
     );
+    expect(sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        state: validReport.state,
+        type: validReport.type,
+        status: ReportStatus.SUBMITTED,
+      })
+    );
+    expect(getFlag).toHaveBeenCalledWith("notificationsSystem");
+  });
+
+  it("does not send submission notifications when the flag is off", async () => {
+    vi.mocked(getFlag).mockResolvedValueOnce(false);
+    const res = await submitReport(testEvent);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(sendEmail).not.toHaveBeenCalled();
   });
 });

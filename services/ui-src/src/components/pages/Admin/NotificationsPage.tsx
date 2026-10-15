@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   Box,
@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   Image,
+  Spinner,
   Tag,
   TagCloseButton,
   TagLabel,
@@ -15,7 +16,8 @@ import {
 import addIcon from "assets/icons/add/icon_add_blue.svg";
 import { AccordionItem, DropdownField, PageTemplate } from "components";
 import { useFlags } from "launchdarkly-react-client-sdk";
-import { AddEmailModal } from "./AddEmailModal";
+import { AddEditEmailModal } from "./AddEditEmailModal";
+import { NotificationAssignmentsTable } from "./NotificationAssignmentsTable";
 import { NotificationAssignment } from "types/notification";
 import {
   ElementType,
@@ -26,22 +28,66 @@ import {
 import { isStateAbbr, StateAbbr } from "types/other";
 import { reportOptions } from "components/forms/AdminDashSelector";
 import { StateNames } from "../../../constants";
+import {
+  createNotificationAssignment,
+  getNotificationAssignments,
+  updateNotificationAssignment,
+} from "utils/api/requestMethods/notificationAssignments";
 
 export const NotificationsPage = ({
   disabled = false,
-  onAddEmail,
 }: {
   disabled?: boolean;
-  onAddEmail?: (assignment: NotificationAssignment) => Promise<void>;
 }) => {
   const flags = useFlags() ?? {};
   const { notificationsSystem } = flags;
+  const [savedAssignments, setSavedAssignments] = useState<
+    NotificationAssignment[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [selectedStates, setSelectedStates] = useState<StateAbbr[]>([]);
   const [selectedReports, setSelectedReports] = useState<ReportType[]>([]);
   const availableReports = reportOptions.filter(
     (option) => !option.flagName || flags[option.flagName]
   );
   const modalDisclosure = useDisclosure();
+  const [editingAssignment, setEditingAssignment] =
+    useState<NotificationAssignment>();
+  useEffect(() => {
+    if (!notificationsSystem) return;
+    let active = true;
+    setLoading(true);
+    setLoadError("");
+    getNotificationAssignments()
+      .then((result) => {
+        if (active) setSavedAssignments(result);
+      })
+      .catch((error: unknown) => {
+        if (active) {
+          setLoadError(
+            error instanceof Error
+              ? error.message
+              : "Unable to load notification assignments. Please try again."
+          );
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [notificationsSystem, loadAttempt]);
+
+  const filteredAssignments = savedAssignments.filter(
+    (assignment) =>
+      (selectedStates.length === 0 ||
+        assignment.states.some((state) => selectedStates.includes(state))) &&
+      (selectedReports.length === 0 ||
+        assignment.reports.some((report) => selectedReports.includes(report)))
+  );
   return (
     <PageTemplate sxOverride={sx.page}>
       <Box sx={sx.introTextBox}>
@@ -62,7 +108,7 @@ export const NotificationsPage = ({
         <Accordion sx={sx.accordion} allowToggle={true} defaultIndex={[-1]}>
           <AccordionItem label="Notification Assignments">
             <Box>
-              <Heading fontSize="heading_md" fontWeight="heading_md">
+              <Heading sx={sx.instructionsHeading}>
                 How to manage notification assignments:
               </Heading>
               <ol>
@@ -97,19 +143,22 @@ export const NotificationsPage = ({
       </Box>
       <Box>
         {notificationsSystem && (
-          <Box mt="spacer1">
-            <Flex gap="spacer2" align="center">
+          <Box sx={sx.assignments}>
+            <Flex sx={sx.addEmail}>
               <Button
                 variant="outline"
                 leftIcon={<Image src={addIcon} alt="" />}
-                onClick={modalDisclosure.onOpen}
-                isDisabled={disabled}
+                onClick={() => {
+                  setEditingAssignment(undefined);
+                  modalDisclosure.onOpen();
+                }}
+                isDisabled={disabled || loading}
               >
                 Add email
               </Button>
             </Flex>
-            <Flex mt="spacer4" gap="spacer3" align="flex-end" flexWrap="wrap">
-              <Box width={{ base: "100%", md: "15rem" }}>
+            <Flex sx={sx.filters}>
+              <Box sx={sx.filterField}>
                 <DropdownField
                   element={{
                     id: "notification-state-filter",
@@ -137,7 +186,7 @@ export const NotificationsPage = ({
                   }}
                 />
               </Box>
-              <Box width={{ base: "100%", md: "15rem" }}>
+              <Box sx={sx.filterField}>
                 <DropdownField
                   element={{
                     id: "notification-report-filter",
@@ -177,12 +226,7 @@ export const NotificationsPage = ({
               </Button>
             </Flex>
             {(selectedStates.length > 0 || selectedReports.length > 0) && (
-              <Flex
-                mt="spacer3"
-                gap="spacer1"
-                flexWrap="wrap"
-                aria-label="Selected filters"
-              >
+              <Flex sx={sx.selectedFilters} aria-label="Selected filters">
                 {selectedStates.map((state) => (
                   <Tag key={state} size="lg" sx={sx.filterChip}>
                     <TagLabel>{StateNames[state]}</TagLabel>
@@ -213,17 +257,55 @@ export const NotificationsPage = ({
                 ))}
               </Flex>
             )}
+            {loading && (
+              <Flex sx={sx.statusContainer}>
+                <Spinner label="Loading notification assignments" />
+              </Flex>
+            )}
+            {loadError && (
+              <Box sx={sx.statusContainer}>
+                <Text role="alert" sx={sx.loadError}>
+                  {loadError}
+                </Text>
+                <Button
+                  variant="link"
+                  onClick={() => setLoadAttempt((previous) => previous + 1)}
+                >
+                  Retry
+                </Button>
+              </Box>
+            )}
+            {!loading && !loadError && (
+              <NotificationAssignmentsTable
+                assignments={filteredAssignments}
+                disabled={disabled}
+                onEdit={(assignment) => {
+                  setEditingAssignment(assignment);
+                  modalDisclosure.onOpen();
+                }}
+              />
+            )}
           </Box>
         )}
       </Box>
       {notificationsSystem && modalDisclosure.isOpen && (
-        <AddEmailModal
+        <AddEditEmailModal
+          key={editingAssignment?.email ?? "add"}
+          assignment={editingAssignment}
           modalDisclosure={modalDisclosure}
           onSubmit={async (assignment) => {
-            if (!onAddEmail) {
-              throw new Error("Saving assignments is not available yet.");
+            if (editingAssignment) {
+              const saved = await updateNotificationAssignment(assignment);
+              setSavedAssignments((previous) =>
+                previous.map((existing) =>
+                  existing.email === saved.email ? saved : existing
+                )
+              );
+            } else {
+              const saved = await createNotificationAssignment(assignment);
+              setSavedAssignments((previous) => [...previous, saved]);
+              if (loadError) setLoadAttempt((previous) => previous + 1);
             }
-            await onAddEmail(assignment);
           }}
         />
       )}
@@ -232,6 +314,37 @@ export const NotificationsPage = ({
 };
 
 const sx = {
+  instructionsHeading: {
+    fontSize: "heading_md",
+    fontWeight: "heading_md",
+  },
+  assignments: {
+    marginTop: "spacer1",
+  },
+  addEmail: {
+    gap: "spacer2",
+    alignItems: "center",
+  },
+  filters: {
+    marginTop: "spacer4",
+    gap: "spacer3",
+    alignItems: "flex-end",
+    flexWrap: "wrap",
+  },
+  filterField: {
+    width: { base: "100%", md: "15rem" },
+  },
+  selectedFilters: {
+    marginTop: "spacer3",
+    gap: "spacer1",
+    flexWrap: "wrap",
+  },
+  statusContainer: {
+    marginTop: "spacer3",
+  },
+  loadError: {
+    color: "palette.error",
+  },
   page: {
     // Keeps dropdown menu above sticky footer
     ".ds-c-dropdown__menu-container": {

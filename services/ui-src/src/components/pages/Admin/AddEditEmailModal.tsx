@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import {
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Menu,
@@ -10,7 +11,6 @@ import {
   MenuOptionGroup,
   ModalFooter,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 import { HiChevronDown } from "react-icons/hi";
 import { InlineError, TextField } from "@cmsgov/design-system";
@@ -25,6 +25,7 @@ import { isEmail } from "utils/validation/inputValidation";
 
 type Props = {
   modalDisclosure: { isOpen: boolean; onClose: () => void };
+  assignment?: NotificationAssignment;
   onSubmit: (assignment: NotificationAssignment) => Promise<void>;
 };
 
@@ -46,54 +47,76 @@ const MultiSelect = ({
   const id = label.toLowerCase().replaceAll(" ", "-");
   return (
     <FormControl isInvalid={!!error} isRequired>
-      <FormLabel id={`${id}-label`} fontWeight="bold" requiredIndicator={null}>
+      <FormLabel id={`${id}-label`} sx={sx.label} requiredIndicator={null}>
         {label}
       </FormLabel>
       <InlineError id={`${id}-error`}>{error}</InlineError>
       <Menu closeOnSelect={false}>
-        <MenuButton
-          as={Button}
-          variant="unstyled"
-          className="ds-c-dropdown__button ds-c-field"
-          rightIcon={<HiChevronDown />}
-          sx={sx.menuButton}
-          isDisabled={disabled}
-          aria-label={`${label}, ${values.length} selected`}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${id}-error` : undefined}
-        >
-          <span>
-            {label} ({values.length})
-          </span>
-        </MenuButton>
-        <MenuList maxHeight="18rem" overflowY="auto">
-          <MenuOptionGroup
-            type="checkbox"
-            value={values}
-            onChange={(selected) =>
-              onChange(Array.isArray(selected) ? selected : [selected])
-            }
-          >
-            {options.map((option) => (
-              <MenuItemOption key={option.value} value={option.value}>
-                {option.label}
-              </MenuItemOption>
-            ))}
-          </MenuOptionGroup>
-        </MenuList>
+        {({ isOpen }) => (
+          <>
+            <MenuButton
+              as={Button}
+              variant="unstyled"
+              className="ds-c-dropdown__button ds-c-field"
+              rightIcon={<HiChevronDown />}
+              sx={sx.menuButton}
+              isDisabled={disabled}
+              aria-label={`${label}, ${values.length} selected`}
+              aria-invalid={!!error}
+              aria-describedby={error ? `${id}-error` : undefined}
+            >
+              <span>
+                {label} ({values.length})
+              </span>
+            </MenuButton>
+            <MenuList
+              rootProps={{
+                sx: isOpen ? sx.openMenuRoot : sx.closedMenuRoot,
+              }}
+              sx={sx.menuList}
+            >
+              <MenuOptionGroup
+                type="checkbox"
+                value={values}
+                onChange={(selected) =>
+                  onChange(Array.isArray(selected) ? selected : [selected])
+                }
+              >
+                {options.map((option) => (
+                  <MenuItemOption key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItemOption>
+                ))}
+              </MenuOptionGroup>
+            </MenuList>
+          </>
+        )}
       </Menu>
     </FormControl>
   );
 };
 
-export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
+export const AddEditEmailModal = ({
+  modalDisclosure,
+  assignment,
+  onSubmit,
+}: Props) => {
   const flags = useFlags();
   const availableReports = reportOptions
-    .filter((option) => !option.flagName || flags?.[option.flagName])
+    .filter(
+      (option) =>
+        !option.flagName ||
+        flags?.[option.flagName] ||
+        assignment?.reports.includes(option.value)
+    )
     .map((option) => option.value);
-  const [email, setEmail] = useState("");
-  const [states, setStates] = useState<NotificationAssignment["states"]>([]);
-  const [reports, setReports] = useState<ReportType[]>([]);
+  const [email, setEmail] = useState(assignment?.email ?? "");
+  const [states, setStates] = useState<NotificationAssignment["states"]>(
+    assignment?.states ?? []
+  );
+  const [reports, setReports] = useState<ReportType[]>(
+    assignment?.reports ?? []
+  );
   const [errors, setErrors] = useState({ email: "", states: "", reports: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -135,11 +158,14 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
   return (
     <Modal
       modalDisclosure={modalDisclosure}
-      content={{ heading: "Add Email", actionButtonText: "Save" }}
+      content={{
+        heading: assignment ? "Edit Assignments" : "Add Email",
+        actionButtonText: "Save",
+      }}
       footer={
-        <ModalFooter gap="4">
+        <ModalFooter sx={sx.footer}>
           <Button
-            mr={3}
+            sx={sx.saveButton}
             type="submit"
             form="add-email-form"
             isLoading={submitting}
@@ -153,16 +179,16 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
         </ModalFooter>
       }
     >
-      <Text mb={8}>
-        Enter an email address and select states and reports below for a user to
-        receive notifications from the assigned states and reports.
+      <Text sx={sx.description}>
+        {assignment
+          ? "Edit states and reports assigned to the email displayed below to receive notifications."
+          : "Enter an email address and select states and reports below for a user to receive notifications from the assigned states and reports."}
       </Text>
-      <VStack
+      <Flex
         as="form"
         id="add-email-form"
         noValidate
-        align="stretch"
-        spacing={8}
+        sx={sx.form}
         onSubmit={handleSubmit}
       >
         <TextField
@@ -170,7 +196,7 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
           label="Email"
           type="email"
           required
-          disabled={submitting}
+          disabled={!!assignment || submitting}
           value={email}
           errorMessage={errors.email}
           onChange={(event) => {
@@ -209,18 +235,51 @@ export const AddEmailModal = ({ modalDisclosure, onSubmit }: Props) => {
           }}
         />
         {submitError && (
-          <Text role="alert" color="red.600">
+          <Text role="alert" sx={sx.submitError}>
             {submitError}
           </Text>
         )}
-      </VStack>
+      </Flex>
     </Modal>
   );
 };
 
 const sx = {
+  label: {
+    fontWeight: "bold",
+  },
   menuButton: {
     width: "100%",
     padding: "spacer1",
+  },
+  openMenuRoot: {
+    display: "contents",
+  },
+  closedMenuRoot: {
+    display: "none",
+  },
+  menuList: {
+    width: "100%",
+    minWidth: 0,
+    maxHeight: "8rem",
+    overflowY: "auto",
+    marginTop: "spacer1",
+  },
+  footer: {
+    gap: 4,
+  },
+  saveButton: {
+    marginRight: 3,
+  },
+  description: {
+    marginBottom: 8,
+  },
+  form: {
+    flexDirection: "column",
+    alignItems: "stretch",
+    gap: 8,
+  },
+  submitError: {
+    color: "red.600",
   },
 };

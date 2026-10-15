@@ -2,9 +2,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFlags } from "launchdarkly-react-client-sdk";
-import { AddEmailModal } from "./AddEmailModal";
+import { AddEditEmailModal } from "./AddEditEmailModal";
 import { ErrorMessages, StateNames } from "../../../constants";
 import { getReportName, ReportType } from "types/report";
+import { NotificationAssignment } from "types/notification";
 import { testA11y } from "utils/testing/commonTests";
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
@@ -14,7 +15,7 @@ vi.mock("launchdarkly-react-client-sdk", () => ({
 const onClose = vi.fn();
 const onSubmit = vi.fn();
 const modal = (
-  <AddEmailModal
+  <AddEditEmailModal
     modalDisclosure={{ isOpen: true, onClose }}
     onSubmit={onSubmit}
   />
@@ -47,7 +48,7 @@ const getVisibleMenuOptions = async () => {
     .map((option) => option.textContent);
 };
 
-describe("<AddEmailModal />", () => {
+describe("<AddEditEmailModal />", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     onSubmit.mockReset();
@@ -226,4 +227,77 @@ describe("<AddEmailModal />", () => {
   );
 
   testA11y(modal);
+
+  it("keeps the short scrollable options list in the form layout", async () => {
+    render(modal);
+    await userEvent.click(
+      screen.getByRole("button", { name: "States, 0 selected" })
+    );
+    const menu = await screen.findByRole("menu");
+    expect(menu).toHaveStyle({ maxHeight: "8rem", overflowY: "auto" });
+    expect(menu.parentElement).toHaveStyle({
+      display: "contents",
+    });
+    await userEvent.keyboard("{Escape}");
+    expect(menu.parentElement).toHaveStyle({ display: "none" });
+  });
+
+  const assignment: NotificationAssignment = {
+    email: "po@example.com",
+    states: ["AL", "AK"],
+    reports: [ReportType.HA, ReportType.IMA],
+  };
+
+  it("prefills edit mode, disables email, and saves changed selections", async () => {
+    render(
+      <AddEditEmailModal
+        modalDisclosure={{ isOpen: true, onClose }}
+        assignment={assignment}
+        onSubmit={onSubmit}
+      />
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("dialog", { name: "Edit Assignments" })
+      ).toBeVisible()
+    );
+    expect(
+      screen.getByText(
+        "Edit states and reports assigned to the email displayed below to receive notifications."
+      )
+    ).toBeVisible();
+    expect(screen.getByRole("textbox", { name: "Email" })).toHaveValue(
+      assignment.email
+    );
+    expect(screen.getByRole("textbox", { name: "Email" })).toBeDisabled();
+    await selectOptions("States, 2 selected", ["Alabama"]);
+    await selectOptions("Report Types, 2 selected", [
+      `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
+    ]);
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith({
+        email: assignment.email,
+        states: ["AK"],
+        reports: [ReportType.IMA],
+      })
+    );
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("requires selections in edit mode and cancels without saving", async () => {
+    render(
+      <AddEditEmailModal
+        modalDisclosure={{ isOpen: true, onClose }}
+        assignment={assignment}
+        onSubmit={onSubmit}
+      />
+    );
+    await selectOptions("States, 2 selected", ["Alabama", "Alaska"]);
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    expect(screen.getByText(ErrorMessages.requiredResponse)).toBeVisible();
+    expect(onSubmit).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(onClose).toHaveBeenCalledOnce();
+  });
 });

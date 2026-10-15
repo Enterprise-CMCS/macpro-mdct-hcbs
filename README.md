@@ -92,6 +92,32 @@ Local dev is built around the cdk setup which gets run locally by Localstack.
 
 Local authorization uses Cognito from the main/master stack in dev. The credentials are injected locally by the `./run update-env` command which fetches values from 1password and puts them into a gitignored `.env` file.
 
+### Notification assignments
+
+With `notificationsSystem` enabled, the Notifications Settings page loads saved
+assignments and persists Add Email submissions through the admin-only
+`GET /notification-assignments`, `POST /notification-assignments`, and
+`PUT /notification-assignments` endpoints.
+Assignments are stored in the `${stage}-notification-assignments` DynamoDB table,
+separately from the report-category notification settings. Email addresses are
+trimmed and lowercased; duplicate emails return HTTP 409 with guidance to use Edit or Delete.
+Edit opens the shared Add/Edit Email modal with existing selections and a disabled
+email field. Saving replaces the states and reports for that assignment; updating
+a missing assignment returns HTTP 404.
+
+TO-DO: Delete removes the assignment from the `${stage}-notification-assignments` DynamoDB table.
+
+With `notificationsSystem` enabled, submitting a report or an admin unlocking a
+submitted report back to In Progress sends status emails to the report contact
+and saved assignments matching both the report's state and report type.
+Assignments are read at send time, so newly added or edited selections apply to
+future status changes without a separate subscription step. Recipient addresses
+are deduplicated, and each recipient receives a separate email. Saving an
+assignment does not send a confirmation email or notifications for past changes.
+When the flag is off, neither contacts nor assigned recipients receive status emails.
+If subscriber lookup fails, contact delivery is still attempted, and the lookup
+failure is logged and propagated to the status handler.
+
 ## Testing
 
 ### Unit Testing
