@@ -174,7 +174,7 @@ export const DividerElement = ({
   element,
 }: PageElementProps<DividerTemplate>) => {
   const hideElement = useElementIsHidden(
-    undefined,
+    element.hideCondition,
     element.showWhenNonCompliant
   );
 
