@@ -24,6 +24,7 @@ export const Modal = ({
   formId,
   children,
   disableConfirm,
+  footer,
 }: Props) => {
   const { isMobile } = useBreakpoint();
 
@@ -53,37 +54,38 @@ export const Modal = ({
           </Button>
         </Flex>
         <ModalBody>{children}</ModalBody>
-        <ModalFooter>
-          {formId && (
-            <Button
-              sx={sx.action}
-              form={formId}
-              type="submit"
-              disabled={disableConfirm}
-            >
-              {submitting ? <Spinner size="md" /> : content.actionButtonText}
-            </Button>
-          )}
-          {onConfirmHandler && (
-            <Button
-              sx={sx.action}
-              onClick={() => onConfirmHandler()}
-              disabled={disableConfirm}
-            >
-              {submitting ? <Spinner size="md" /> : content.actionButtonText}
-            </Button>
-          )}
-          {content.closeButtonText && (
-            <Button
-              sx={sx.close}
-              variant="link"
-              onClick={modalDisclosure.onClose}
-              fontWeight="bold"
-            >
-              {content.closeButtonText}
-            </Button>
-          )}
-        </ModalFooter>
+        {footer ?? (
+          <ModalFooter>
+            {formId && (
+              <Button
+                sx={sx.action}
+                form={formId}
+                type="submit"
+                disabled={disableConfirm}
+              >
+                {submitting ? <Spinner size="md" /> : content.actionButtonText}
+              </Button>
+            )}
+            {onConfirmHandler && (
+              <Button
+                sx={sx.action}
+                onClick={() => onConfirmHandler()}
+                disabled={disableConfirm}
+              >
+                {submitting ? <Spinner size="md" /> : content.actionButtonText}
+              </Button>
+            )}
+            {content.closeButtonText && (
+              <Button
+                sx={sx.close}
+                variant="link"
+                onClick={modalDisclosure.onClose}
+              >
+                {content.closeButtonText}
+              </Button>
+            )}
+          </ModalFooter>
+        )}
       </ModalContent>
     </ChakraModal>
   );
@@ -105,6 +107,7 @@ interface Props {
   disableConfirm?: boolean;
   formId?: string;
   children?: ReactNode;
+  footer?: ReactNode;
 }
 
 const sx = {
@@ -128,6 +131,7 @@ const sx = {
     },
   },
   close: {
+    fontWeight: "bold",
     padding: "0 spacer2",
     ".mobile &": {
       fontSize: "body_sm",

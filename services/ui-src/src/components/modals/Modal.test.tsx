@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Text } from "@chakra-ui/react";
+import { Button, ModalFooter, Text } from "@chakra-ui/react";
 import { Modal } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -37,6 +37,40 @@ describe("Modal", () => {
     render(modalComponent);
     expect(screen.getByText(content.heading)).toBeTruthy();
     expect(screen.getByText(content.body)).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Close/ })).toBeInTheDocument();
+  });
+
+  it("renders a custom footer instead of the default actions", async () => {
+    render(
+      <Modal
+        modalDisclosure={{ isOpen: true, onClose: mockCloseHandler }}
+        content={content}
+        onConfirmHandler={mockConfirmationHandler}
+        footer={
+          <ModalFooter>
+            <Button onClick={mockConfirmationHandler}>Custom action</Button>
+          </ModalFooter>
+        }
+      >
+        <Text>{content.body}</Text>
+      </Modal>
+    );
+    await waitFor(() =>
+      expect(screen.getByText(content.heading)).toBeVisible()
+    );
+    expect(screen.getByText(content.body)).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: content.actionButtonText })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Cancel" })
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Custom action" })
+    );
+    expect(mockConfirmationHandler).toHaveBeenCalledOnce();
+    await userEvent.click(screen.getByRole("button", { name: /Close/ }));
+    expect(mockCloseHandler).toHaveBeenCalledOnce();
   });
 
   it("should call its confirm handler when button is clicked", async () => {

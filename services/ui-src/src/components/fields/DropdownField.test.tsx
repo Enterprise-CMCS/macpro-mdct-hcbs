@@ -49,6 +49,37 @@ describe("<DropdownField />", () => {
     await userEvent.selectOptions(dropdown, "2027");
 
     expect(updateSpy).toHaveBeenCalledWith({ answer: "2027" });
+    expect(dropdown).toHaveValue("2027");
+  });
+
+  it("resets to the placeholder when clearOnSelect is enabled", async () => {
+    render(
+      <DropdownField
+        element={{
+          ...mockedDropdownElement,
+          label: "States",
+          answer: "",
+          options: [
+            { label: "- Select an option -", value: "" },
+            { label: "Alabama", value: "AL" },
+            { label: "Alaska", value: "AK" },
+          ],
+        }}
+        updateElement={updateSpy}
+        clearOnSelect
+      />
+    );
+    const dropdown = screen.getAllByLabelText("States")[0];
+
+    await userEvent.selectOptions(dropdown, "AL");
+
+    expect(updateSpy).toHaveBeenLastCalledWith({ answer: "AL" });
+    expect(dropdown).toHaveValue("");
+
+    await userEvent.selectOptions(dropdown, "AK");
+
+    expect(updateSpy).toHaveBeenLastCalledWith({ answer: "AK" });
+    expect(dropdown).toHaveValue("");
   });
 
   testA11y(<DropdownWrapper template={mockedDropdownElement} />);
