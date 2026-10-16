@@ -3,12 +3,14 @@ import {
   aws_apigateway as apigateway,
   aws_iam as iam,
   aws_logs as logs,
+  aws_ses as ses,
+  aws_sns as sns,
   aws_wafv2 as wafv2,
   aws_ec2 as ec2,
   CfnOutput,
   Duration,
   RemovalPolicy,
-  Stack,
+  Aws,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
@@ -43,6 +45,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   } = props;
 
   const service = "app-api";
+  const isProduction = stage === "production";
 
   const kafkaSecurityGroup = new ec2.SecurityGroup(
     scope,
@@ -146,15 +149,58 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
-  const sesResources = isLocalStack
-    ? ["*"]
-    : [`arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`];
-
-  const sesPolicy = new iam.PolicyStatement({
-    effect: iam.Effect.ALLOW,
+  let sesPolicy = new iam.PolicyStatement({
+    effect: iam.Effect.DENY,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: sesResources,
+    resources: ["*"],
   });
+  if (!isDev) {
+    const topic = new sns.Topic(scope, `${project}-${stage}-failedEmailTopic`);
+    new sns.Subscription(scope, `${project}-${stage}-email-subscription`, {
+      topic,
+      endpoint: "mdct-integrations@coforma.io",
+      protocol: sns.SubscriptionProtocol.EMAIL,
+    });
+
+    const configSet = new ses.ConfigurationSet(
+      scope,
+      `${project}-${stage}-email-configuration-set`,
+      {
+        sendingEnabled: true,
+        configurationSetName: `${project}-${stage}-email-configuration-set`,
+        reputationMetrics: true,
+      }
+    );
+
+    configSet.addEventDestination("sns", {
+      destination: ses.EventDestination.snsTopic(topic),
+      configurationSetEventDestinationName: `${project}-${stage}-email-topic`,
+      enabled: isProduction,
+      events: [
+        ses.EmailSendingEvent.REJECT,
+        ses.EmailSendingEvent.BOUNCE,
+        ses.EmailSendingEvent.COMPLAINT,
+      ],
+    });
+
+    const senderIdentity = new ses.EmailIdentity(
+      scope,
+      "SenderDomainIdentity",
+      {
+        identity: ses.Identity.domain("cms.hhs.gov"),
+        configurationSet: configSet,
+      }
+    );
+
+    sesPolicy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["ses:SendEmail", "ses:SendRawEmail"],
+      resources: [
+        senderIdentity.emailIdentityArn,
+        `arn:aws:ses:${Aws.REGION}:${Aws.ACCOUNT_ID}:configuration-set/${configSet.configurationSetName}`,
+      ],
+    });
+  }
 
   const commonProps = {
     brokerString,
