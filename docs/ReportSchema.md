@@ -5,7 +5,7 @@ For a more general overview, see docs/ReportDataStructure.md.
 
 Note that all HCBS report types (QMS, CI, HA, IMA, PCP, WWL, QIP) use the same schema.
 Top-level fields are treated identically. The pages can have the same elements.
-The main exceptions are in how the QMS and QIP reports treats measure sub-pages;
+The main exceptions are in how the QMS and QIP reports treat measure sub-pages;
 more on that below.
 
 ## Kafka Topics
@@ -192,7 +192,7 @@ Here is the complete list of element types, roughly categorized:
   - `keyActivityTable`: A list of key activities for the quality improvement plan.
     - Renders as a table with an "add" button, and edit and delete buttons on each row.
     - Answer is an array of objects of type `{ id: string, title: string, completionDate?: string }`.
-    - `completionDate` is a month and year in the format `MMYYYY`.
+    - `completionDate` is a month and year in the format `MM/YYYY`.
     - Currently used only in the QIP report.
   - `ndr`: A set of three numeric fields: numerator, denominator, and rate.
     - Rate is auto-calculated as soon as numerator and denominator are entered.
