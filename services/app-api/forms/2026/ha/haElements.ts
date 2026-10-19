@@ -1,9 +1,27 @@
 import {
+  CheckboxTemplate,
   ElementType,
   PerformanceNdrTemplate,
   TextAreaBoxTemplate,
 } from "../../../types/reports";
 import { stateSamplingMethologyQuestion } from "../elements";
+
+const serviceTypeChoices = [
+  { label: "Homemaker", value: "homemaker" },
+  { label: "Home Health Aide", value: "home-health-aide" },
+  { label: "Personal Care", value: "personal-care" },
+  { label: "Habilitation", value: "habilitation" },
+];
+
+export const serviceTypesCheckbox: CheckboxTemplate = {
+  type: ElementType.Checkbox,
+  id: "service-types-checkbox",
+  label: "Which service types are included in this measure?",
+  helperText: "Select all that apply.",
+  choices: serviceTypeChoices,
+  required: true,
+  clickAction: "serviceTypeChange",
+};
 
 const stateSamplingMethologyQuestionHAReport = (
   rateId: string

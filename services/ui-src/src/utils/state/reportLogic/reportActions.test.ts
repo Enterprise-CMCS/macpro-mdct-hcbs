@@ -12,9 +12,12 @@ import {
   TextboxTemplate,
   FormPageTemplate,
   RadioTemplate,
+  CheckboxTemplate,
+  PerformanceNdrTemplate,
 } from "types/report";
 import {
   buildState,
+  clearHiddenElements,
   clearMeasure,
   mergeAnswers,
   resetMeasure,
@@ -287,6 +290,124 @@ describe("reportActions", () => {
       const state = buildState(testReport, false) as HcbsReportState;
       const result = await saveReport(state);
       expect(result?.lastSavedTime).toBeTruthy();
+    });
+  });
+
+  describe("state/management/reportState: clearHiddenElements", () => {
+    const hideCondition = (...values: string[]) => ({
+      controllerElementId: "service-types-checkbox",
+      answerExcludes: values,
+    });
+    const samplingQuestion = (rateId: string): RadioTemplate => ({
+      id: `${rateId}-sampling`,
+      type: ElementType.Radio,
+      label: "Sampling methodology",
+      required: true,
+      answer: "Probability sample",
+      choices: [
+        { label: "Entire population", value: "Entire population" },
+        {
+          label: "Probability sample",
+          value: "Probability sample",
+          checkedChildren: [
+            {
+              id: `${rateId}-sampling-details`,
+              type: ElementType.TextAreaField,
+              label: "Sampling details",
+              required: true,
+              answer: "Saved sampling details",
+            },
+          ],
+        },
+      ],
+    });
+    const serviceTypeReport = {
+      ...testReport,
+      pages: [
+        ...testReport.pages,
+        {
+          id: "hapch-1",
+          navTitle: "HAPCH-1",
+          type: PageType.Standard,
+          sidebar: true,
+          elements: [
+            {
+              type: ElementType.Checkbox,
+              id: "service-types-checkbox",
+              label: "Service types",
+              choices: [],
+              answer: ["personal-care"],
+              required: true,
+            },
+            {
+              type: ElementType.PerformanceNdr,
+              id: "homemaker-1-rate",
+              required: true,
+              answer: { numerator: 1, denominator: 2, rate: 50 },
+              hideCondition: hideCondition("homemaker"),
+              children: [samplingQuestion("homemaker-1-rate")],
+            },
+            {
+              type: ElementType.PerformanceNdr,
+              id: "personal-care-1-rate",
+              required: true,
+              answer: { numerator: 1, denominator: 4, rate: 25 },
+              hideCondition: hideCondition("personal-care"),
+              children: [samplingQuestion("personal-care-1-rate")],
+            },
+            {
+              type: ElementType.TextAreaField,
+              id: "additional-notes-field",
+              label: "Notes",
+              required: false,
+              answer: "keep me",
+              hideCondition: hideCondition("homemaker", "personal-care"),
+            },
+          ],
+        },
+      ],
+    } as Report;
+
+    it("should clear only elements the checkbox now hides", () => {
+      const state = buildState(serviceTypeReport, false) as HcbsReportState;
+      const response = clearHiddenElements(
+        "hapch-1",
+        "service-types-checkbox",
+        state
+      );
+      const page = response.report!.pages.find(
+        (page) => page.id === "hapch-1"
+      ) as FormPageTemplate;
+      const [checkbox, homemaker, personalCare, notes] = page.elements as [
+        CheckboxTemplate,
+        PerformanceNdrTemplate,
+        PerformanceNdrTemplate,
+        TextboxTemplate,
+      ];
+
+      expect(checkbox.answer).toEqual(["personal-care"]);
+      expect(homemaker.answer).toBeUndefined();
+      const hiddenSampling = homemaker.children![0] as RadioTemplate;
+      expect(hiddenSampling.answer).toBeUndefined();
+      expect(hiddenSampling.choices[1].checkedChildren![0]).toEqual(
+        expect.objectContaining({ answer: undefined })
+      );
+      expect(personalCare.answer).toEqual({
+        numerator: 1,
+        denominator: 4,
+        rate: 25,
+      });
+      expect(personalCare.children).toEqual([
+        samplingQuestion("personal-care-1-rate"),
+      ]);
+      expect(notes.answer).toBe("keep me");
+    });
+
+    it("should do nothing for a missing page", () => {
+      const state = buildState(serviceTypeReport, false) as HcbsReportState;
+      expect(
+        clearHiddenElements("nope", "service-types-checkbox", state)
+      ).toEqual({});
     });
   });
 
