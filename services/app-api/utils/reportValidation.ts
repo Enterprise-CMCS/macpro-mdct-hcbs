@@ -27,6 +27,13 @@ const hideConditionSchema = object()
     answer: string().notRequired(),
     answerExcludes: array().of(string().required()).notRequired(),
   })
+  .test(
+    "exclusive-answer-condition",
+    "A hide condition must specify either answer or answerExcludes, but not both.",
+    (value) =>
+      value === undefined ||
+      (value.answer !== undefined) !== (value.answerExcludes !== undefined)
+  )
   .notRequired()
   .default(undefined);
 

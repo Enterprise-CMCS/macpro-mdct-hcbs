@@ -179,6 +179,29 @@ describe("reportValidation", () => {
   });
 
   describe("invalid report scenarios", () => {
+    it("should reject hide conditions with both or neither answer matcher", async () => {
+      const invalidHideConditions = [
+        {
+          controllerElementId: "service-types-checkbox",
+          answer: "homemaker",
+          answerExcludes: ["homemaker"],
+        },
+        { controllerElementId: "service-types-checkbox" },
+      ];
+
+      for (const hideCondition of invalidHideConditions) {
+        const report = structuredClone(validReport);
+        const page = report.pages.find((candidate) => "elements" in candidate)!;
+        page.elements!.push({
+          type: ElementType.Divider,
+          id: "invalid-hide-condition-divider",
+          hideCondition,
+        } as PageElement);
+
+        await expect(validateReportPayload(report)).rejects.toThrow();
+      }
+    });
+
     it("rejects unsupported children of a performance rate", async () => {
       await expect(
         validateReportPayload(reportWithUnsupportedPerformanceRateChild)
