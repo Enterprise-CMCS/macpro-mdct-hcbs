@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { ElementType, PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { pcpReportTemplate } from "./pcp/pcp";
@@ -9,6 +8,15 @@ import { qmsReportTemplate } from "./qms/qms";
 import { haReportTemplate } from "./ha/ha";
 import { wwlReportTemplate } from "./wwl/wwl";
 import { imaReportTemplate } from "./ima/ima";
+import {
+  CheckboxTemplate,
+  ComplianceRules,
+  ElementType,
+  ImaTableTemplate,
+  PageType,
+  RadioTemplate,
+} from "../../types/reports";
+import { INVESTIGATION_REFERRAL_TYPES } from "./ima/referralTypes";
 
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
@@ -107,4 +115,110 @@ describe("HA sampling methodology", () => {
       expect(new Set(ids).size).toBe(ids.length);
     }
   );
+});
+
+describe("IMA Investigation Referrals", () => {
+  const page = imaReportTemplate.pages.find(
+    ({ id }) => id === "investigation-referrals"
+  )!;
+
+  const mainQuestion = page.elements!.find(
+    ({ id }) => id === "investigation-referrals-question"
+  ) as RadioTemplate;
+
+  it("should not mark No as non-compliant", () => {
+    expect(mainQuestion).toMatchObject({ type: ElementType.Radio });
+    expect(mainQuestion).not.toHaveProperty("nonCompliantOn");
+  });
+
+  it("configures the referral table's rows, answer columns, and compliance rule", () => {
+    const table = mainQuestion.choices.find(({ value }) => value === "yes")!
+      .checkedChildren![0] as ImaTableTemplate;
+
+    expect(table).toMatchObject({
+      id: "investigation-referrals-table",
+      type: ElementType.ImaTable,
+      complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+    });
+    expect(table.rows).toEqual(INVESTIGATION_REFERRAL_TYPES);
+    expect(
+      table.columns.filter(({ type }) => type === "answer").map(({ id }) => id)
+    ).toEqual([
+      "not-referred",
+      "no-info-shared",
+      "status-only",
+      "resolution-only",
+      "both",
+    ]);
+    expect(mainQuestion.required).toBe(true);
+    expect(
+      mainQuestion.choices.find(({ value }) => value === "no")!.checkedChildren
+    ).toBeUndefined();
+  });
+
+  it("nests the required follow-up after the table and entity checkboxes under Yes", () => {
+    const followUp = mainQuestion.choices.find(({ value }) => value === "yes")!
+      .checkedChildren![1] as RadioTemplate;
+
+    expect(followUp).toMatchObject({
+      id: "investigation-referrals-follow-up",
+      type: ElementType.Radio,
+      required: true,
+    });
+    expect(followUp.choices.map(({ value }) => value)).toEqual(["yes", "no"]);
+    expect(
+      followUp.choices.find(({ value }) => value === "no")!.checkedChildren
+    ).toBeUndefined();
+
+    const entities = followUp.choices.find(({ value }) => value === "yes")!
+      .checkedChildren![0] as CheckboxTemplate;
+
+    expect(entities).toMatchObject({
+      id: "investigation-referrals-entities",
+      type: ElementType.Checkbox,
+      required: true,
+    });
+    expect(entities.choices.map(({ value }) => value)).toEqual([
+      "provider-licensing-credentialing",
+      "provider-screening-enrollment-suspension-termination",
+      "abuse-registry-agency",
+      "adult-protective-services",
+      "child-protective-services",
+      "medicaid-fraud-control-unit",
+      "neighboring-states",
+      "state-medicaid-agency",
+      "operating-agency",
+      "other-entity",
+    ]);
+  });
+
+  it("uses the parent radio to control the non-compliance elements", () => {
+    for (const id of [
+      "divider",
+      "noncompliance-justification",
+      "timeline-justification",
+    ]) {
+      expect(page.elements!.find((element) => element.id === id)).toMatchObject(
+        {
+          showWhenNonCompliant: [mainQuestion.id],
+        }
+      );
+    }
+    expect(
+      page.elements!.find(({ id }) => id === "compliance-alert")
+    ).toMatchObject({
+      controllerElementId: [mainQuestion.id],
+    });
+    for (const id of [
+      "noncompliance-justification",
+      "timeline-justification",
+    ]) {
+      expect(page.elements!.find((element) => element.id === id)).toMatchObject(
+        {
+          type: ElementType.TextAreaField,
+          required: true,
+        }
+      );
+    }
+  });
 });
