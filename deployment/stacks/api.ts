@@ -10,7 +10,7 @@ import {
   CfnOutput,
   Duration,
   RemovalPolicy,
-  Aws,
+  Stack,
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda.ts";
 import { WafConstruct } from "../constructs/waf.ts";
@@ -45,7 +45,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   } = props;
 
   const service = "app-api";
-  const isProduction = stage === "production";
 
   const kafkaSecurityGroup = new ec2.SecurityGroup(
     scope,
@@ -118,6 +117,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ),
     brokerString,
     launchDarklyServer,
+    ...(!isDev
+      ? { SES_CONFIGURATION_SET: `${project}-${stage}-email-configuration-set` }
+      : {}),
   };
 
   const additionalPolicies = [
@@ -175,7 +177,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     configSet.addEventDestination("sns", {
       destination: ses.EventDestination.snsTopic(topic),
       configurationSetEventDestinationName: `${project}-${stage}-email-topic`,
-      enabled: isProduction,
+      enabled: true,
       events: [
         ses.EmailSendingEvent.REJECT,
         ses.EmailSendingEvent.BOUNCE,
@@ -183,21 +185,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       ],
     });
 
-    const senderIdentity = new ses.EmailIdentity(
-      scope,
-      "SenderDomainIdentity",
-      {
-        identity: ses.Identity.domain("cms.hhs.gov"),
-        configurationSet: configSet,
-      }
-    );
-
     sesPolicy = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["ses:SendEmail", "ses:SendRawEmail"],
       resources: [
-        senderIdentity.emailIdentityArn,
-        `arn:aws:ses:${Aws.REGION}:${Aws.ACCOUNT_ID}:configuration-set/${configSet.configurationSetName}`,
+        `arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`,
+        `arn:aws:ses:us-east-1:${Stack.of(scope).account}:configuration-set/${configSet.configurationSetName}`,
       ],
     });
   }
