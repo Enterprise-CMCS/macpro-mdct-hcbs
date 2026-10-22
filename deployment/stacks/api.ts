@@ -193,12 +193,13 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         configurationSet: configSet,
       }
     );
+    senderIdentity.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
     sesPolicy = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["ses:SendEmail", "ses:SendRawEmail"],
       resources: [
-        senderIdentity.emailIdentityArn,
+        `arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`,
         `arn:aws:ses:us-east-1:${Stack.of(scope).account}:configuration-set/${configSet.configurationSetName}`,
       ],
     });
