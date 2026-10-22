@@ -185,6 +185,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       ],
     });
 
+    const senderIdentity = new ses.EmailIdentity(
+      scope,
+      "SenderDomainIdentity",
+      {
+        identity: ses.Identity.domain("cms.hhs.gov"),
+        configurationSet: configSet,
+      }
+    );
+    senderIdentity.applyRemovalPolicy(RemovalPolicy.RETAIN);
+
     sesPolicy = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["ses:SendEmail", "ses:SendRawEmail"],
