@@ -96,16 +96,17 @@ Local authorization uses Cognito from the main/master stack in dev. The credenti
 
 With `notificationsSystem` enabled, the Notifications Settings page loads saved
 assignments and persists Add Email submissions through the admin-only
-`GET /notification-assignments`, `POST /notification-assignments`, and
-`PUT /notification-assignments` endpoints.
+`GET /notification-assignments`, `POST /notification-assignments`,
+`PUT /notification-assignments`, and `DELETE /notification-assignments/{email}`
+endpoints.
 Assignments are stored in the `${stage}-notification-assignments` DynamoDB table,
 separately from the report-category notification settings. Email addresses are
 trimmed and lowercased; duplicate emails return HTTP 409 with guidance to use Edit or Delete.
 Edit opens the shared Add/Edit Email modal with existing selections and a disabled
 email field. Saving replaces the states and reports for that assignment; updating
 a missing assignment returns HTTP 404.
-
-TO-DO: Delete removes the assignment from the `${stage}-notification-assignments` DynamoDB table.
+Delete removes the assignment from the `${stage}-notification-assignments` DynamoDB
+table; deleting a missing assignment returns HTTP 404.
 
 ## Testing
 

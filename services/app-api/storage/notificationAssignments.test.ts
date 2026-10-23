@@ -2,12 +2,14 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { mockClient } from "aws-sdk-client-mock";
 import { ConditionalCheckFailedException } from "@aws-sdk/client-dynamodb";
 import {
+  DeleteCommand,
   DynamoDBDocumentClient,
   PutCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import {
   createNotificationAssignment,
+  deleteNotificationAssignment,
   scanNotificationAssignments,
   updateNotificationAssignment,
 } from "./notificationAssignments";
@@ -41,6 +43,16 @@ describe("Notification assignment storage", () => {
       TableName: "local-notification-assignments",
       Item: assignment,
       ConditionExpression: "attribute_not_exists(email)",
+    });
+  });
+
+  it("deletes only an existing email", async () => {
+    mockDynamo.on(DeleteCommand).resolves({});
+    await deleteNotificationAssignment(assignment.email);
+    expect(mockDynamo.commandCalls(DeleteCommand)[0].args[0].input).toEqual({
+      TableName: "local-notification-assignments",
+      Key: { email: assignment.email },
+      ConditionExpression: "attribute_exists(email)",
     });
   });
 

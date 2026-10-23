@@ -1,8 +1,10 @@
 import { string } from "yup";
 import { logger } from "../libs/debug-lib";
-import { NotificationAssignment } from "../types/notification";
+import {
+  isNotificationState,
+  NotificationAssignment,
+} from "../types/notification";
 import { isReportType } from "../types/reports";
-import { isStateAbbreviation } from "./constants";
 
 export const normalizeNotificationAssignment = (
   assignment: NotificationAssignment
@@ -45,11 +47,11 @@ export const isValidNotificationAssignment = (
     assignment.states.length === 0 ||
     !assignment.states.every(
       (state: unknown) =>
-        typeof state === "string" && isStateAbbreviation(state)
+        typeof state === "string" && isNotificationState(state)
     )
   ) {
     logger.warn(
-      "Invalid: assignment.states must contain valid state abbreviations"
+      "Invalid: assignment.states must contain valid state abbreviations or be the ALL designation"
     );
     return false;
   }

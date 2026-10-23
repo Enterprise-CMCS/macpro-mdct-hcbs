@@ -229,6 +229,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "deleteNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/delete.ts",
+    handler: "deleteNotificationAssignment",
+    path: "notification-assignments/{email}",
+    method: "DELETE",
+    ...commonProps,
+  });
+
   if (isDev) {
     new Lambda(scope, "sendTestEmail", {
       entry: "services/app-api/handlers/notification/sendTestEmail.ts",

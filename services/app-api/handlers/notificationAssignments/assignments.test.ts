@@ -6,16 +6,19 @@ import { NotificationAssignment } from "../../types/notification";
 import { authenticatedUser } from "../../utils/authentication";
 import {
   createNotificationAssignment as storeAssignment,
+  deleteNotificationAssignment as deleteStoredAssignment,
   scanNotificationAssignments,
   updateNotificationAssignment as updateStoredAssignment,
 } from "../../storage/notificationAssignments";
 import { createNotificationAssignment } from "./create";
+import { deleteNotificationAssignment } from "./delete";
 import { fetchNotificationAssignments } from "./fetch";
 import { updateNotificationAssignment } from "./update";
 
 vi.mock("../../utils/authentication", () => ({ authenticatedUser: vi.fn() }));
 vi.mock("../../storage/notificationAssignments", () => ({
   createNotificationAssignment: vi.fn(),
+  deleteNotificationAssignment: vi.fn(),
   scanNotificationAssignments: vi.fn(),
   updateNotificationAssignment: vi.fn(),
 }));
@@ -28,6 +31,10 @@ const assignment: NotificationAssignment = {
 };
 const event = (body: unknown = assignment) =>
   ({ body: JSON.stringify(body) }) as APIGatewayProxyEvent;
+const deleteEvent = (email: string | undefined = "po@example.com") =>
+  ({
+    pathParameters: email ? { email } : undefined,
+  }) as unknown as APIGatewayProxyEvent;
 
 describe("Notification assignment handlers", () => {
   beforeEach(() => {
@@ -47,6 +54,17 @@ describe("Notification assignment handlers", () => {
     expect(result.statusCode).toBe(201);
     expect(JSON.parse(result.body!)).toEqual(assignment);
     expect(storeAssignment).toHaveBeenCalledWith(assignment);
+  });
+
+  it("accepts All as a state", async () => {
+    const result = await createNotificationAssignment(
+      event({ ...assignment, states: ["ALL"] })
+    );
+    expect(result.statusCode).toBe(201);
+    expect(storeAssignment).toHaveBeenCalledWith({
+      ...assignment,
+      states: ["ALL"],
+    });
   });
 
   it("lists saved assignments", async () => {
@@ -71,6 +89,10 @@ describe("Notification assignment handlers", () => {
       );
       expect(updateStoredAssignment).not.toHaveBeenCalled();
       expect(scanNotificationAssignments).not.toHaveBeenCalled();
+      expect(
+        (await deleteNotificationAssignment(deleteEvent())).statusCode
+      ).toBe(403);
+      expect(deleteStoredAssignment).not.toHaveBeenCalled();
     }
   );
 
@@ -79,6 +101,9 @@ describe("Notification assignment handlers", () => {
     expect((await createNotificationAssignment(event())).statusCode).toBe(401);
     expect((await fetchNotificationAssignments(event())).statusCode).toBe(401);
     expect((await updateNotificationAssignment(event())).statusCode).toBe(401);
+    expect((await deleteNotificationAssignment(deleteEvent())).statusCode).toBe(
+      401
+    );
   });
 
   it.each([
@@ -155,5 +180,38 @@ describe("Notification assignment handlers", () => {
     );
     expect((await createNotificationAssignment(event())).statusCode).toBe(500);
     expect((await fetchNotificationAssignments(event())).statusCode).toBe(500);
+  });
+
+  it("deletes an assignment by decoded, normalized email", async () => {
+    const result = await deleteNotificationAssignment(
+      deleteEvent("PO%40Example.com")
+    );
+    expect(result.statusCode).toBe(200);
+    expect(deleteStoredAssignment).toHaveBeenCalledWith("po@example.com");
+  });
+
+  it("rejects deletes without a valid email in the path", async () => {
+    expect(
+      (await deleteNotificationAssignment(deleteEvent(""))).statusCode
+    ).toBe(400);
+    expect(
+      (await deleteNotificationAssignment(deleteEvent("%E0%A4%A"))).statusCode
+    ).toBe(400);
+    expect(deleteStoredAssignment).not.toHaveBeenCalled();
+  });
+
+  it("returns not found for missing assignments and surfaces other delete failures", async () => {
+    vi.mocked(deleteStoredAssignment).mockRejectedValueOnce(
+      new ConditionalCheckFailedException({ message: "Missing", $metadata: {} })
+    );
+    expect((await deleteNotificationAssignment(deleteEvent())).statusCode).toBe(
+      404
+    );
+    vi.mocked(deleteStoredAssignment).mockRejectedValueOnce(
+      new Error("Unavailable")
+    );
+    expect((await deleteNotificationAssignment(deleteEvent())).statusCode).toBe(
+      500
+    );
   });
 });

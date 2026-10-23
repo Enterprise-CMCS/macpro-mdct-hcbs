@@ -8,12 +8,14 @@ import { getReportName, ReportType } from "types/report";
 import { NotificationAssignment } from "types/notification";
 import {
   createNotificationAssignment,
+  deleteNotificationAssignment,
   getNotificationAssignments,
   updateNotificationAssignment,
 } from "utils/api/requestMethods/notificationAssignments";
 
 vi.mock("utils/api/requestMethods/notificationAssignments", () => ({
   createNotificationAssignment: vi.fn(),
+  deleteNotificationAssignment: vi.fn(),
   updateNotificationAssignment: vi.fn(),
   getNotificationAssignments: vi.fn(),
 }));
@@ -126,7 +128,7 @@ describe("<NotificationsPage />", () => {
     }
   });
 
-  it("selects filters and clears both selections", async () => {
+  it("selects filters and displays All chip when clearing both selections", async () => {
     const user = userEvent.setup();
     render(<NotificationsPage disabled />);
     await user.click(
@@ -146,7 +148,7 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("button", { name: "Remove HA filter" })
     ).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Clear Filters" }));
-    expect(screen.queryByLabelText("Selected filters")).not.toBeInTheDocument();
+    expect(screen.getByText("All")).toBeVisible();
     for (const label of ["States", "Report Types"]) {
       expect(
         screen.getByRole("button", { name: `- Select an option - ${label}` })
@@ -207,7 +209,84 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("button", { name: "Remove HA filter" })
     ).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Clear Filters" }));
-    expect(screen.queryByLabelText("Selected filters")).not.toBeInTheDocument();
+    expect(screen.getByText("All")).toBeVisible();
+  });
+
+  it("shows the All chip by default and replaces it when a filter is selected", async () => {
+    const user = userEvent.setup();
+    render(<NotificationsPage />);
+    expect(screen.getByText("All")).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: "Remove All filter" })
+    ).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - States" })
+    );
+    await user.click(screen.getByRole("option", { name: "Alabama" }));
+    expect(screen.queryByText("All")).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: "Remove Alabama filter" })
+    );
+    expect(screen.getByText("All")).toBeVisible();
+  });
+
+  it("matches multi-state assignments when combining state and report filters", async () => {
+    const user = userEvent.setup();
+    const assignments: NotificationAssignment[] = [
+      { email: "ha@example.com", states: ["AL"], reports: [ReportType.HA] },
+      {
+        email: "multi@example.com",
+        states: ["AL", "OH"],
+        reports: [ReportType.HA, ReportType.QIP],
+      },
+      { email: "ohio@example.com", states: ["OH"], reports: [ReportType.HA] },
+    ];
+    vi.mocked(getNotificationAssignments).mockResolvedValue(assignments);
+    vi.mocked(useFlags).mockReturnValue({
+      notificationsSystem: true,
+      isHaReportActive: true,
+      isQipReportActive: true,
+    });
+    render(<NotificationsPage />);
+    await screen.findByRole("cell", { name: "multi@example.com" });
+    expect(screen.getByText("All")).toBeVisible();
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - States" })
+    );
+    await user.click(screen.getByRole("option", { name: "Ohio" }));
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - Report Types" })
+    );
+    await user.click(
+      screen.getByRole("option", { name: "QIP: QMS Quality Improvement Plans" })
+    );
+    expect(screen.getByText("multi@example.com")).toBeVisible();
+    expect(screen.queryByText("ha@example.com")).not.toBeInTheDocument();
+    expect(screen.queryByText("ohio@example.com")).not.toBeInTheDocument();
+    expect(screen.queryByText("All")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Clear Filters" }));
+    expect(screen.getByText("All")).toBeVisible();
+    for (const { email } of assignments) {
+      expect(screen.getByText(email)).toBeVisible();
+    }
+  });
+
+  it("includes assignments to all states when filtering by a state", async () => {
+    const user = userEvent.setup();
+    vi.mocked(getNotificationAssignments).mockResolvedValue([
+      { email: "all@example.com", states: ["ALL"], reports: [ReportType.HA] },
+      { email: "ohio@example.com", states: ["OH"], reports: [ReportType.HA] },
+      { email: "alaska@example.com", states: ["AK"], reports: [ReportType.HA] },
+    ]);
+    render(<NotificationsPage />);
+    await screen.findByRole("cell", { name: "ohio@example.com" });
+    await user.click(
+      screen.getByRole("button", { name: "- Select an option - States" })
+    );
+    await user.click(screen.getByRole("option", { name: "Ohio" }));
+    expect(screen.getByText("all@example.com")).toBeVisible();
+    expect(screen.getByText("ohio@example.com")).toBeVisible();
+    expect(screen.queryByText("alaska@example.com")).not.toBeInTheDocument();
   });
 
   it("opens the modal and resets the form after canceling", async () => {
@@ -276,7 +355,7 @@ describe("<NotificationsPage />", () => {
     }
   });
 
-  it("loads assignments with Edit available and Delete unavailable", async () => {
+  it("loads assignments with Edit and Delete available", async () => {
     const assignment: NotificationAssignment = {
       email: "po@example.com",
       states: ["AK", "NC", "OH"],
@@ -289,7 +368,57 @@ describe("<NotificationsPage />", () => {
     ).toBeEnabled();
     expect(
       screen.getByRole("button", { name: "Delete po@example.com" })
-    ).toBeDisabled();
+    ).toBeEnabled();
+  });
+
+  it("deletes an assignment and removes it from the table", async () => {
+    const user = userEvent.setup();
+    const assignments: NotificationAssignment[] = [
+      { email: "alpha@example.com", states: ["AL"], reports: [ReportType.HA] },
+      { email: "beta@example.com", states: ["AK"], reports: [ReportType.HA] },
+    ];
+    vi.mocked(getNotificationAssignments).mockResolvedValue(assignments);
+    vi.mocked(deleteNotificationAssignment).mockResolvedValue(undefined);
+    render(<NotificationsPage />);
+    await user.click(
+      await screen.findByRole("button", { name: "Delete alpha@example.com" })
+    );
+    expect(deleteNotificationAssignment).toHaveBeenCalledWith(
+      "alpha@example.com"
+    );
+    await waitFor(() =>
+      expect(screen.queryByText("alpha@example.com")).not.toBeInTheDocument()
+    );
+    expect(screen.getByText("beta@example.com")).toBeVisible();
+  });
+
+  it("keeps the row and displays an error when delete fails", async () => {
+    const user = userEvent.setup();
+    const assignment: NotificationAssignment = {
+      email: "po@example.com",
+      states: ["AL"],
+      reports: [ReportType.HA],
+    };
+    vi.mocked(getNotificationAssignments).mockResolvedValue([assignment]);
+    vi.mocked(deleteNotificationAssignment).mockRejectedValueOnce(
+      new Error("This assignment no longer exists.")
+    );
+    render(<NotificationsPage />);
+    await user.click(
+      await screen.findByRole("button", { name: "Delete po@example.com" })
+    );
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "This assignment no longer exists."
+    );
+    expect(screen.getByRole("cell", { name: assignment.email })).toBeVisible();
+    vi.mocked(deleteNotificationAssignment).mockResolvedValue(undefined);
+    await user.click(
+      screen.getByRole("button", { name: "Delete po@example.com" })
+    );
+    await waitFor(() =>
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument()
+    );
+    expect(screen.queryByText(assignment.email)).not.toBeInTheDocument();
   });
 
   const fillAssignment = async () => {

@@ -1,9 +1,18 @@
+import { StateNames } from "../constants";
 import { ReportType } from "./report";
-import { StateAbbr } from "./other";
+import { isStateAbbr, StateAbbr } from "./other";
+
+export const NotificationStateNames = { ALL: "All", ...StateNames };
+
+export type NotificationState = StateAbbr | "ALL";
+
+export const isNotificationState = (
+  value: string | undefined
+): value is NotificationState => value === "ALL" || isStateAbbr(value);
 
 export interface NotificationAssignment {
   email: string;
-  states: StateAbbr[];
+  states: NotificationState[];
   reports: ReportType[];
 }
 

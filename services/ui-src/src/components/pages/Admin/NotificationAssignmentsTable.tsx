@@ -13,7 +13,10 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { HiArrowDown, HiArrowUp } from "react-icons/hi";
-import { NotificationAssignment } from "types/notification";
+import {
+  NotificationAssignment,
+  NotificationStateNames,
+} from "types/notification";
 
 interface Props {
   assignments: NotificationAssignment[];
@@ -69,7 +72,13 @@ export const NotificationAssignmentsTable = ({
           {sortedAssignments.map((assignment) => (
             <Tr key={assignment.email}>
               <Td sx={sx.emailCell}>{assignment.email}</Td>
-              <Td>{assignment.states.join(", ")}</Td>
+              <Td>
+                {assignment.states
+                  .map((state) =>
+                    state === "ALL" ? NotificationStateNames.ALL : state
+                  )
+                  .join(", ")}
+              </Td>
               <Td>{assignment.reports.join(", ")}</Td>
               <Td>
                 <Flex sx={sx.actions}>

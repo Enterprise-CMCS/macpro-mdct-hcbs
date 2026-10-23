@@ -39,6 +39,23 @@ export const parseReportParameters = (event: APIGatewayProxyEvent) => {
 
 export const emptyParser = (_event: APIGatewayProxyEvent) => ({});
 
+export const parseNotificationAssignmentEmail = (
+  event: APIGatewayProxyEvent
+) => {
+  const encodedEmail = event.pathParameters?.email;
+  if (!encodedEmail) {
+    logger.warn("Missing email in path");
+    return undefined;
+  }
+
+  try {
+    return { email: decodeURIComponent(encodedEmail).trim().toLowerCase() };
+  } catch {
+    logger.warn("Invalid email in path");
+    return undefined;
+  }
+};
+
 export const parseBannerKey = (event: APIGatewayProxyEvent) => {
   const bannerKey = event.pathParameters?.bannerId;
   if (!bannerKey) {

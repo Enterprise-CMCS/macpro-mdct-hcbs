@@ -1,4 +1,4 @@
-import { PutCommand, paginateScan } from "@aws-sdk/lib-dynamodb";
+import { DeleteCommand, PutCommand, paginateScan } from "@aws-sdk/lib-dynamodb";
 import { collectPageItems, createClient } from "./dynamo/dynamodb-lib";
 import { NotificationAssignment } from "../types/notification";
 
@@ -32,6 +32,16 @@ export const updateNotificationAssignment = async (
     new PutCommand({
       TableName: tableName,
       Item: assignment,
+      ConditionExpression: "attribute_exists(email)",
+    })
+  );
+};
+
+export const deleteNotificationAssignment = async (email: string) => {
+  await client.send(
+    new DeleteCommand({
+      TableName: tableName,
+      Key: { email },
       ConditionExpression: "attribute_exists(email)",
     })
   );

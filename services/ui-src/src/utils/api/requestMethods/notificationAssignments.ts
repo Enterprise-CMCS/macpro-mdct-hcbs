@@ -38,3 +38,12 @@ export const updateNotificationAssignment = async (
     body: assignment,
   });
 };
+
+export const deleteNotificationAssignment = async (email: string) => {
+  const headers = await getRequestHeaders();
+  updateTimeout();
+  return await apiLib.del(
+    `/notification-assignments/${encodeURIComponent(email)}`,
+    { headers }
+  );
+};

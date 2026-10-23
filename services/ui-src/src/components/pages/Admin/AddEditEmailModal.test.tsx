@@ -3,9 +3,12 @@ import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { AddEditEmailModal } from "./AddEditEmailModal";
-import { ErrorMessages, StateNames } from "../../../constants";
+import { ErrorMessages } from "../../../constants";
 import { getReportName, ReportType } from "types/report";
-import { NotificationAssignment } from "types/notification";
+import {
+  NotificationAssignment,
+  NotificationStateNames,
+} from "types/notification";
 import { testA11y } from "utils/testing/commonTests";
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
@@ -86,7 +89,9 @@ describe("<AddEditEmailModal />", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "States, 0 selected" })
     );
-    expect(await getVisibleMenuOptions()).toEqual(Object.values(StateNames));
+    expect(await getVisibleMenuOptions()).toEqual(
+      Object.values(NotificationStateNames)
+    );
     await userEvent.keyboard("{Escape}");
     await userEvent.click(
       screen.getByRole("button", { name: "Report Types, 0 selected" })
@@ -144,6 +149,24 @@ describe("<AddEditEmailModal />", () => {
       });
       expect(onClose).toHaveBeenCalledOnce();
     });
+  });
+
+  it("saves All as a state selection", async () => {
+    render(modal);
+    await userEvent.click(screen.getByRole("textbox", { name: "Email" }));
+    await userEvent.paste("po@example.com");
+    await selectOptions("States, 0 selected", ["All"]);
+    await selectOptions("Report Types, 0 selected", [
+      `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
+    ]);
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith({
+        email: "po@example.com",
+        states: ["ALL"],
+        reports: [ReportType.HA],
+      })
+    );
   });
 
   it("validates email format and keeps the modal open", async () => {
