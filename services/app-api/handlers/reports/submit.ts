@@ -3,7 +3,7 @@ import { handler } from "../../libs/handler-lib";
 import { getFlag } from "../../libs/launchdarkly-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
-import { putReport } from "../../storage/reports";
+import { getReport, putReport } from "../../storage/reports";
 import { Report, ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
@@ -58,12 +58,16 @@ export const submitReport = handler(parseReportParameters, async (request) => {
     return badRequest("Invalid request");
   }
 
+  const savedReport = notificationsEnabled
+    ? await getReport(reportType, state, id)
+    : undefined;
+
   // save the report that's being submitted (with the new information on top of it)
   await putReport(validatedPayload);
 
-  if (notificationsEnabled) {
+  if (notificationsEnabled && savedReport?.status !== ReportStatus.SUBMITTED) {
     try {
-      await sendEmail(report);
+      await sendEmail(validatedPayload);
     } catch (error) {
       // log and allow call to succeed even if email fails
       logger.error(error);
