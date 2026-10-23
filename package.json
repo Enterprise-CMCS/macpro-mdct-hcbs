@@ -56,7 +56,7 @@
     "aws-cdk-local": "~3.0.4",
     "dotenv": "^16.6.1",
     "esbuild": "^0.28.1",
-    "oxfmt": "^0.24.0",
+    "oxfmt": "^0.52.0",
     "oxlint": "^1.41.0",
     "tsx": "^4.22.4",
     "typescript": "^5.9.3",
@@ -68,7 +68,8 @@
     "diff@^5.0.0": "^5.2.2",
     "make-fetch-happen": "^15.0.6",
     "node-gyp": "^12.4.0",
-    "socks@^2.8.3": "^2.8.10"
+    "socks@^2.8.3": "^2.8.10",
+    "tinypool@2.1.0": "^2.1.2"
   },
   "packageManager": "yarn@4.12.0"
 }
