@@ -4,6 +4,7 @@ import {
   Flex,
   Show,
   Td,
+  Th,
   Tr,
   VStack,
   Text,
@@ -64,14 +65,15 @@ export const HorizontalTable = (props: TableProps) => {
     <Table content={props.tableContent}>
       {props.reports.map((report, idx) => (
         <Tr key={report.id}>
-          <Td
+          <Th
+            scope="row"
             fontWeight={"bold"}
             maxWidth={"14.25rem"}
             fontSize="body_md"
             padding="16px 16px 16px 0"
           >
             {report.name}
-          </Td>
+          </Th>
           <Td>{report.year}</Td>
           <Td>
             {!!report.lastEdited && formatMonthDayYear(report.lastEdited)}
