@@ -6,8 +6,8 @@ export interface Notification {
   enabled: boolean;
 }
 
-export interface NotificationRecipientRecord {
-  state: StateAbbr;
-  id: string;
+export interface NotificationAssignment {
   email: string;
+  states: StateAbbr[];
+  reports: ReportType[];
 }

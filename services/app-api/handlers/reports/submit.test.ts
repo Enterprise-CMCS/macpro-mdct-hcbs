@@ -156,6 +156,23 @@ describe("submitReport", () => {
     );
   });
 
+  it("should notify when an unlocked report is resubmitted", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
+      ...validReport,
+      status: ReportStatus.IN_PROGRESS,
+    });
+
+    const response = await submitReport(testEvent);
+
+    expect(response.statusCode).toBe(StatusCodes.Ok);
+    expect(sendEmail).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({
+        status: ReportStatus.SUBMITTED,
+        submittedByEmail: "myname@example.com",
+      })
+    );
+  });
+
   it("should preserve saving but not notify an already submitted stored report", async () => {
     vi.mocked(getReport).mockResolvedValueOnce({
       ...validReport,
@@ -191,5 +208,25 @@ describe("submitReport", () => {
     vi.mocked(sendEmail).mockRejectedValueOnce(new Error("SES unavailable"));
     expect((await submitReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
     expect(putReport).toHaveBeenCalledTimes(1);
+  });
+
+  it("should save successfully when the notification report lookup fails", async () => {
+    vi.mocked(getReport).mockRejectedValueOnce(
+      new Error("Could not find all pages for report")
+    );
+
+    const response = await submitReport(testEvent);
+
+    expect(response.statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({
+        status: ReportStatus.SUBMITTED,
+        submittedByEmail: "myname@example.com",
+      })
+    );
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(putReport).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(sendEmail).mock.invocationCallOrder[0]
+    );
   });
 });

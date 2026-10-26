@@ -43,17 +43,12 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         type: dynamodb.AttributeType.STRING,
       },
     }),
-    new DynamoDBTable(scope, "NotificationRecipients", {
+    new DynamoDBTable(scope, "NotificationAssignments", {
       stage,
       isDev,
-      name: "notifications-recipients",
-      streamable: false,
+      name: "notification-assignments",
       partitionKey: {
-        name: "state",
-        type: dynamodb.AttributeType.STRING,
-      },
-      sortKey: {
-        name: "id",
+        name: "email",
         type: dynamodb.AttributeType.STRING,
       },
     }),

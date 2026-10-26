@@ -58,9 +58,14 @@ export const submitReport = handler(parseReportParameters, async (request) => {
     return badRequest("Invalid request");
   }
 
-  const savedReport = notificationsEnabled
-    ? await getReport(reportType, state, id)
-    : undefined;
+  let savedReport: Report | undefined;
+  if (notificationsEnabled) {
+    try {
+      savedReport = await getReport(reportType, state, id);
+    } catch (error) {
+      logger.error(error);
+    }
+  }
 
   // save the report that's being submitted (with the new information on top of it)
   await putReport(validatedPayload);
