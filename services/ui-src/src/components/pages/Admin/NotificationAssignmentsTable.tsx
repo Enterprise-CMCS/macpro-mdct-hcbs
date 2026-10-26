@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Spinner,
   Table,
   TableCaption,
   Tbody,
@@ -13,16 +14,14 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { HiArrowDown, HiArrowUp } from "react-icons/hi";
-import {
-  NotificationAssignment,
-  NotificationStateNames,
-} from "types/notification";
+import { NotificationAssignment } from "types/notification";
 
 interface Props {
   assignments: NotificationAssignment[];
   disabled?: boolean;
   onEdit?: (assignment: NotificationAssignment) => void;
   onDelete?: (assignment: NotificationAssignment) => void;
+  isDeleting?: Record<string, boolean>;
 }
 
 export const NotificationAssignmentsTable = ({
@@ -30,6 +29,7 @@ export const NotificationAssignmentsTable = ({
   disabled = false,
   onEdit,
   onDelete,
+  isDeleting = {},
 }: Props) => {
   const [ascending, setAscending] = useState(true);
   const sortedAssignments = assignments.toSorted((first, second) =>
@@ -72,13 +72,7 @@ export const NotificationAssignmentsTable = ({
           {sortedAssignments.map((assignment) => (
             <Tr key={assignment.email}>
               <Td sx={sx.emailCell}>{assignment.email}</Td>
-              <Td>
-                {assignment.states
-                  .map((state) =>
-                    state === "ALL" ? NotificationStateNames.ALL : state
-                  )
-                  .join(", ")}
-              </Td>
+              <Td sx={sx.statesCell}>{assignment.states.join(", ")}</Td>
               <Td>{assignment.reports.join(", ")}</Td>
               <Td>
                 <Flex sx={sx.actions}>
@@ -93,10 +87,16 @@ export const NotificationAssignmentsTable = ({
                   <Button
                     variant="link"
                     aria-label={`Delete ${assignment.email}`}
-                    isDisabled={disabled || !onDelete}
+                    isDisabled={
+                      disabled || !onDelete || isDeleting[assignment.email]
+                    }
                     onClick={() => onDelete?.(assignment)}
                   >
-                    Delete
+                    {isDeleting[assignment.email] ? (
+                      <Spinner size="md" />
+                    ) : (
+                      "Delete"
+                    )}
                   </Button>
                 </Flex>
               </Td>
@@ -139,6 +139,9 @@ const sx = {
   },
   emailCell: {
     overflowWrap: "anywhere",
+  },
+  statesCell: {
+    maxWidth: "15rem",
   },
   actions: {
     gap: "spacer2",

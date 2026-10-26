@@ -17,13 +17,10 @@ import { InlineError, TextField } from "@cmsgov/design-system";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { Modal } from "components";
 import { reportOptions } from "components/forms/AdminDashSelector";
-import { ErrorMessages } from "../../../constants";
+import { ErrorMessages, StateNames } from "../../../constants";
 import { getReportName, ReportType } from "types/report";
-import {
-  isNotificationState,
-  NotificationAssignment,
-  NotificationStateNames,
-} from "types/notification";
+import { isStateAbbr } from "types/other";
+import { NotificationAssignment } from "types/notification";
 import { isEmail } from "utils/validation/inputValidation";
 
 type Props = {
@@ -209,14 +206,23 @@ export const AddEditEmailModal = ({
         />
         <MultiSelect
           label="States"
-          options={Object.entries(NotificationStateNames).map(
-            ([value, label]) => ({ value, label })
-          )}
+          options={[
+            { value: "ALL", label: "All" },
+            ...Object.entries(StateNames).map(([value, label]) => ({
+              value,
+              label,
+            })),
+          ]}
           values={states}
           error={errors.states}
           disabled={submitting}
           onChange={(selected) => {
-            setStates(selected.filter((state) => isNotificationState(state)));
+            setStates(
+              (selected.includes("ALL")
+                ? Object.keys(StateNames)
+                : selected
+              ).filter(isStateAbbr)
+            );
             setErrors((previous) => ({ ...previous, states: "" }));
           }}
         />

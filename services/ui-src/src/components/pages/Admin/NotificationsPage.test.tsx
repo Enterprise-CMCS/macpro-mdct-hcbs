@@ -251,24 +251,6 @@ describe("<NotificationsPage />", () => {
     }
   });
 
-  it("includes assignments to all states when filtering by a state", async () => {
-    const user = userEvent.setup();
-    vi.mocked(getNotificationAssignments).mockResolvedValue([
-      { email: "all@example.com", states: ["ALL"], reports: [ReportType.HA] },
-      { email: "ohio@example.com", states: ["OH"], reports: [ReportType.HA] },
-      { email: "alaska@example.com", states: ["AK"], reports: [ReportType.HA] },
-    ]);
-    render(<NotificationsPage />);
-    await screen.findByRole("cell", { name: "ohio@example.com" });
-    await user.click(
-      screen.getByRole("button", { name: "- Select an option - States" })
-    );
-    await user.click(screen.getByRole("option", { name: "Ohio" }));
-    expect(screen.getByText("all@example.com")).toBeVisible();
-    expect(screen.getByText("ohio@example.com")).toBeVisible();
-    expect(screen.queryByText("alaska@example.com")).not.toBeInTheDocument();
-  });
-
   it("opens the modal and resets the form after canceling", async () => {
     const user = userEvent.setup();
     render(<NotificationsPage />);
@@ -370,6 +352,32 @@ describe("<NotificationsPage />", () => {
       expect(screen.queryByText("alpha@example.com")).not.toBeInTheDocument()
     );
     expect(screen.getByText("beta@example.com")).toBeVisible();
+  });
+
+  it("shows a spinner on the Delete button while deleting", async () => {
+    const user = userEvent.setup();
+    let finishDelete: () => void = () => {};
+    vi.mocked(getNotificationAssignments).mockResolvedValue([
+      { email: "po@example.com", states: ["AL"], reports: [ReportType.HA] },
+    ]);
+    vi.mocked(deleteNotificationAssignment).mockReturnValue(
+      new Promise((resolve) => {
+        finishDelete = () => resolve(undefined);
+      })
+    );
+    render(<NotificationsPage />);
+    await user.click(
+      await screen.findByRole("button", { name: "Delete po@example.com" })
+    );
+    const deleteButton = screen.getByRole("button", {
+      name: "Delete po@example.com",
+    });
+    expect(deleteButton).toBeDisabled();
+    expect(within(deleteButton).getByText("Loading...")).toBeInTheDocument();
+    finishDelete();
+    await waitFor(() =>
+      expect(screen.queryByText("po@example.com")).not.toBeInTheDocument()
+    );
   });
 
   it("keeps the row and displays an error when delete fails", async () => {

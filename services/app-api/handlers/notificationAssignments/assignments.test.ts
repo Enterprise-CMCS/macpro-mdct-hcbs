@@ -56,17 +56,6 @@ describe("Notification assignment handlers", () => {
     expect(storeAssignment).toHaveBeenCalledWith(assignment);
   });
 
-  it("accepts All as a state", async () => {
-    const result = await createNotificationAssignment(
-      event({ ...assignment, states: ["ALL"] })
-    );
-    expect(result.statusCode).toBe(201);
-    expect(storeAssignment).toHaveBeenCalledWith({
-      ...assignment,
-      states: ["ALL"],
-    });
-  });
-
   it("lists saved assignments", async () => {
     const result = await fetchNotificationAssignments(event());
     expect(result.statusCode).toBe(200);

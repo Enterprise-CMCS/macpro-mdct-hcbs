@@ -3,12 +3,9 @@ import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { AddEditEmailModal } from "./AddEditEmailModal";
-import { ErrorMessages } from "../../../constants";
+import { ErrorMessages, StateNames } from "../../../constants";
 import { getReportName, ReportType } from "types/report";
-import {
-  NotificationAssignment,
-  NotificationStateNames,
-} from "types/notification";
+import { NotificationAssignment } from "types/notification";
 import { testA11y } from "utils/testing/commonTests";
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
@@ -89,9 +86,10 @@ describe("<AddEditEmailModal />", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "States, 0 selected" })
     );
-    expect(await getVisibleMenuOptions()).toEqual(
-      Object.values(NotificationStateNames)
-    );
+    expect(await getVisibleMenuOptions()).toEqual([
+      "All",
+      ...Object.values(StateNames),
+    ]);
     await userEvent.keyboard("{Escape}");
     await userEvent.click(
       screen.getByRole("button", { name: "Report Types, 0 selected" })
@@ -151,11 +149,16 @@ describe("<AddEditEmailModal />", () => {
     });
   });
 
-  it("saves All as a state selection", async () => {
+  it("selects every state when All is chosen", async () => {
     render(modal);
     await userEvent.click(screen.getByRole("textbox", { name: "Email" }));
     await userEvent.paste("po@example.com");
     await selectOptions("States, 0 selected", ["All"]);
+    expect(
+      screen.getByRole("button", {
+        name: `States, ${Object.keys(StateNames).length} selected`,
+      })
+    ).toBeVisible();
     await selectOptions("Report Types, 0 selected", [
       `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
     ]);
@@ -163,10 +166,47 @@ describe("<AddEditEmailModal />", () => {
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({
         email: "po@example.com",
-        states: ["ALL"],
+        states: Object.keys(StateNames),
         reports: [ReportType.HA],
       })
     );
+  });
+
+  it("selects every state when All is chosen after other states", async () => {
+    render(modal);
+    await selectOptions("States, 0 selected", ["Alabama", "All"]);
+    expect(
+      screen.getByRole("button", {
+        name: `States, ${Object.keys(StateNames).length} selected`,
+      })
+    ).toBeVisible();
+  });
+
+  it("allows states to be deselected after All and never submits All", async () => {
+    render(modal);
+    await userEvent.click(screen.getByRole("textbox", { name: "Email" }));
+    await userEvent.paste("po@example.com");
+    await selectOptions("States, 0 selected", ["All"]);
+    await selectOptions(`States, ${Object.keys(StateNames).length} selected`, [
+      "Alabama",
+    ]);
+    expect(
+      screen.getByRole("button", {
+        name: `States, ${Object.keys(StateNames).length - 1} selected`,
+      })
+    ).toBeVisible();
+    await selectOptions("Report Types, 0 selected", [
+      `${ReportType.HA}: ${getReportName(ReportType.HA)}`,
+    ]);
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith({
+        email: "po@example.com",
+        states: Object.keys(StateNames).filter((state) => state !== "AL"),
+        reports: [ReportType.HA],
+      })
+    );
+    expect(onSubmit.mock.calls[0][0].states).not.toContain("ALL");
   });
 
   it("validates email format and keeps the modal open", async () => {
@@ -306,6 +346,30 @@ describe("<AddEditEmailModal />", () => {
       })
     );
     expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("selects every state when All is chosen in edit mode", async () => {
+    render(
+      <AddEditEmailModal
+        modalDisclosure={{ isOpen: true, onClose }}
+        assignment={assignment}
+        onSubmit={onSubmit}
+      />
+    );
+    await selectOptions("States, 2 selected", ["All"]);
+    expect(
+      screen.getByRole("button", {
+        name: `States, ${Object.keys(StateNames).length} selected`,
+      })
+    ).toBeVisible();
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith({
+        email: assignment.email,
+        states: Object.keys(StateNames),
+        reports: assignment.reports,
+      })
+    );
   });
 
   it("requires selections in edit mode and cancels without saving", async () => {

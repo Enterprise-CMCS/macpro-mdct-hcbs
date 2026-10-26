@@ -53,21 +53,6 @@ describe("<NotificationAssignmentsTable />", () => {
     expect(assignments[0].email).toBe("zebra@example.com");
   });
 
-  it("shows and allows for All in the states column", () => {
-    render(
-      <NotificationAssignmentsTable
-        assignments={[
-          {
-            email: "all@example.com",
-            states: ["ALL"],
-            reports: [ReportType.HA],
-          },
-        ]}
-      />
-    );
-    expect(screen.getByRole("cell", { name: "All" })).toBeVisible();
-  });
-
   it("passes the selected assignment to Edit and Delete callbacks", async () => {
     const user = userEvent.setup();
     const onEdit = vi.fn();

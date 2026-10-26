@@ -49,6 +49,7 @@ export const NotificationsPage = ({
   const [loadError, setLoadError] = useState("");
   const [loadAttempt, setLoadAttempt] = useState(0);
   const [deleteError, setDeleteError] = useState("");
+  const [isDeleting, setIsDeleting] = useState<Record<string, boolean>>({});
   const [selectedStates, setSelectedStates] = useState<StateAbbr[]>([]);
   const [selectedReports, setSelectedReports] = useState<ReportType[]>([]);
   const availableReports = reportOptions.filter(
@@ -85,6 +86,7 @@ export const NotificationsPage = ({
 
   const onDelete = async (assignment: NotificationAssignment) => {
     setDeleteError("");
+    setIsDeleting((previous) => ({ ...previous, [assignment.email]: true }));
     try {
       await deleteNotificationAssignment(assignment.email);
       setSavedAssignments((previous) =>
@@ -96,15 +98,15 @@ export const NotificationsPage = ({
           ? error.message
           : "Unable to delete notification assignment. Please try again."
       );
+    } finally {
+      setIsDeleting((previous) => ({ ...previous, [assignment.email]: false }));
     }
   };
 
   const filteredAssignments = savedAssignments.filter(
     (assignment) =>
       (selectedStates.length === 0 ||
-        assignment.states.some(
-          (state) => state === "ALL" || selectedStates.includes(state)
-        )) &&
+        assignment.states.some((state) => selectedStates.includes(state))) &&
       (selectedReports.length === 0 ||
         assignment.reports.some((report) => selectedReports.includes(report)))
   );
@@ -311,6 +313,7 @@ export const NotificationsPage = ({
                   modalDisclosure.onOpen();
                 }}
                 onDelete={onDelete}
+                isDeleting={isDeleting}
               />
             )}
           </Box>
