@@ -53,7 +53,7 @@ describe("<NotificationAssignmentsTable />", () => {
     expect(assignments[0].email).toBe("zebra@example.com");
   });
 
-  it("shows All in the states column", () => {
+  it("shows and allows for All in the states column", () => {
     render(
       <NotificationAssignmentsTable
         assignments={[
