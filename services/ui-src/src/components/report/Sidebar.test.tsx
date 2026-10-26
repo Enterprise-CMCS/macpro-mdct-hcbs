@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router, useParams } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
@@ -97,6 +97,22 @@ describe("Sidebar", () => {
     await userEvent.click(expandButton);
 
     expect(screen.getByText("Child 1")).toBeInTheDocument();
+  });
+
+  it("should convey the sidebar expanded state when toggled", async () => {
+    useStore.setState({ sidebarOpen: false });
+    render(testComponent);
+
+    const sidebarButton = screen.getByLabelText("Sidebar");
+    await waitFor(() => {
+      expect(sidebarButton).toHaveAttribute("aria-expanded", "false");
+    });
+
+    await userEvent.click(sidebarButton);
+    expect(sidebarButton).toHaveAttribute("aria-expanded", "true");
+
+    await userEvent.click(sidebarButton);
+    expect(sidebarButton).toHaveAttribute("aria-expanded", "false");
   });
 
   it("should render IMA heading when report type is IMA", () => {
