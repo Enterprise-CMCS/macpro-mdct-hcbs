@@ -128,7 +128,7 @@ describe("<NotificationsPage />", () => {
     }
   });
 
-  it("selects filters and displays All chip when clearing both selections", async () => {
+  it("selects filters and clears both selections", async () => {
     const user = userEvent.setup();
     render(<NotificationsPage disabled />);
     await user.click(
@@ -148,7 +148,7 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("button", { name: "Remove HA filter" })
     ).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Clear Filters" }));
-    expect(screen.getByText("All")).toBeVisible();
+    expect(screen.queryByLabelText("Selected filters")).not.toBeInTheDocument();
     for (const label of ["States", "Report Types"]) {
       expect(
         screen.getByRole("button", { name: `- Select an option - ${label}` })
@@ -209,25 +209,7 @@ describe("<NotificationsPage />", () => {
       screen.getByRole("button", { name: "Remove HA filter" })
     ).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Clear Filters" }));
-    expect(screen.getByText("All")).toBeVisible();
-  });
-
-  it("shows the All chip by default and replaces it when a filter is selected", async () => {
-    const user = userEvent.setup();
-    render(<NotificationsPage />);
-    expect(screen.getByText("All")).toBeVisible();
-    expect(
-      screen.queryByRole("button", { name: "Remove All filter" })
-    ).not.toBeInTheDocument();
-    await user.click(
-      screen.getByRole("button", { name: "- Select an option - States" })
-    );
-    await user.click(screen.getByRole("option", { name: "Alabama" }));
-    expect(screen.queryByText("All")).not.toBeInTheDocument();
-    await user.click(
-      screen.getByRole("button", { name: "Remove Alabama filter" })
-    );
-    expect(screen.getByText("All")).toBeVisible();
+    expect(screen.queryByLabelText("Selected filters")).not.toBeInTheDocument();
   });
 
   it("matches multi-state assignments when combining state and report filters", async () => {
@@ -249,7 +231,6 @@ describe("<NotificationsPage />", () => {
     });
     render(<NotificationsPage />);
     await screen.findByRole("cell", { name: "multi@example.com" });
-    expect(screen.getByText("All")).toBeVisible();
     await user.click(
       screen.getByRole("button", { name: "- Select an option - States" })
     );
@@ -263,9 +244,8 @@ describe("<NotificationsPage />", () => {
     expect(screen.getByText("multi@example.com")).toBeVisible();
     expect(screen.queryByText("ha@example.com")).not.toBeInTheDocument();
     expect(screen.queryByText("ohio@example.com")).not.toBeInTheDocument();
-    expect(screen.queryByText("All")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Clear Filters" }));
-    expect(screen.getByText("All")).toBeVisible();
+    expect(screen.queryByLabelText("Selected filters")).not.toBeInTheDocument();
     for (const { email } of assignments) {
       expect(screen.getByText(email)).toBeVisible();
     }

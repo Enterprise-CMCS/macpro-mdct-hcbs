@@ -99,8 +99,6 @@ export const NotificationsPage = ({
     }
   };
 
-  const hasSelectedFilters =
-    selectedStates.length > 0 || selectedReports.length > 0;
   const filteredAssignments = savedAssignments.filter(
     (assignment) =>
       (selectedStates.length === 0 ||
@@ -247,41 +245,38 @@ export const NotificationsPage = ({
                 Clear Filters
               </Button>
             </Flex>
-            <Flex sx={sx.selectedFilters} aria-label="Selected filters">
-              {!hasSelectedFilters && (
-                <Tag size="lg" sx={sx.filterChip}>
-                  <TagLabel>All</TagLabel>
-                </Tag>
-              )}
-              {selectedStates.map((state) => (
-                <Tag key={state} size="lg" sx={sx.filterChip}>
-                  <TagLabel>{StateNames[state]}</TagLabel>
-                  <TagCloseButton
-                    sx={sx.filterChipClose}
-                    aria-label={`Remove ${StateNames[state]} filter`}
-                    onClick={() =>
-                      setSelectedStates((previous) =>
-                        previous.filter((value) => value !== state)
-                      )
-                    }
-                  />
-                </Tag>
-              ))}
-              {selectedReports.map((report) => (
-                <Tag key={report} size="lg" sx={sx.filterChip}>
-                  <TagLabel>{report}</TagLabel>
-                  <TagCloseButton
-                    sx={sx.filterChipClose}
-                    aria-label={`Remove ${report} filter`}
-                    onClick={() =>
-                      setSelectedReports((previous) =>
-                        previous.filter((value) => value !== report)
-                      )
-                    }
-                  />
-                </Tag>
-              ))}
-            </Flex>
+            {(selectedStates.length > 0 || selectedReports.length > 0) && (
+              <Flex sx={sx.selectedFilters} aria-label="Selected filters">
+                {selectedStates.map((state) => (
+                  <Tag key={state} size="lg" sx={sx.filterChip}>
+                    <TagLabel>{StateNames[state]}</TagLabel>
+                    <TagCloseButton
+                      sx={sx.filterChipClose}
+                      aria-label={`Remove ${StateNames[state]} filter`}
+                      onClick={() =>
+                        setSelectedStates((previous) =>
+                          previous.filter((value) => value !== state)
+                        )
+                      }
+                    />
+                  </Tag>
+                ))}
+                {selectedReports.map((report) => (
+                  <Tag key={report} size="lg" sx={sx.filterChip}>
+                    <TagLabel>{report}</TagLabel>
+                    <TagCloseButton
+                      sx={sx.filterChipClose}
+                      aria-label={`Remove ${report} filter`}
+                      onClick={() =>
+                        setSelectedReports((previous) =>
+                          previous.filter((value) => value !== report)
+                        )
+                      }
+                    />
+                  </Tag>
+                ))}
+              </Flex>
+            )}
             {loading && (
               <Flex sx={sx.statusContainer}>
                 <Spinner label="Loading notification assignments" />
