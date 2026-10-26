@@ -104,11 +104,11 @@ describe("DashboardPage", () => {
       });
 
       const table = container.querySelector("table")!;
-      const columns = [...table.querySelectorAll("tr th")].map(
+      const columns = [...table.querySelectorAll("thead th")].map(
         (th) => th.textContent!
       );
       const rows = [...table.querySelectorAll("tbody tr")].map((tr) => [
-        ...tr.querySelectorAll("td"),
+        ...tr.querySelectorAll("th[scope='row'], td"),
       ]);
 
       expect(columns.length).toBeGreaterThanOrEqual(4);
@@ -140,11 +140,11 @@ describe("DashboardPage", () => {
       await userEvent.click(screen.getByText("Filter"));
 
       const table = container.querySelector("table")!;
-      const columns = [...table.querySelectorAll("tr th")].map(
+      const columns = [...table.querySelectorAll("thead th")].map(
         (th) => th.textContent!
       );
       const rows = [...table.querySelectorAll("tbody tr")].map((tr) => [
-        ...tr.querySelectorAll("td"),
+        ...tr.querySelectorAll("th[scope='row'], td"),
       ]);
 
       expect(columns.length).toBeGreaterThanOrEqual(4);
