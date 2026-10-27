@@ -2,7 +2,7 @@ import { ComponentStyleConfig, theme } from "@chakra-ui/react";
 
 const baseStyles = {
   table: {
-    th: {
+    "thead th, tfoot th": {
       padding: "0.5rem 0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
@@ -16,7 +16,13 @@ const baseStyles = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
     },
-    td: {
+    "th[scope='row']": {
+      color: "inherit",
+      textTransform: "none",
+      letterSpacing: "normal",
+      fontFamily: "inherit",
+    },
+    "td, th[scope='row']": {
       paddingLeft: 0,
       borderTop: "1px solid",
       borderBottom: "1px solid",
@@ -194,6 +200,17 @@ const imaVariant = {
         textAlign: "center",
       },
     },
+    "&#investigation-referrals-table": {
+      th: {
+        width: "15%",
+        "&:first-of-type": {
+          width: "25%",
+        },
+        "&:last-of-type": {
+          width: "15%",
+        },
+      },
+    },
     td: {
       padding: "16px",
       fontSize: "body_md",
@@ -291,8 +308,6 @@ const imaVariant = {
           width: "4.5rem",
           minWidth: "4.5rem",
           textAlign: "center",
-          whiteSpace: "nowrap",
-          overflowWrap: "normal",
           paddingLeft: "0.375rem",
           paddingRight: "0.375rem",
         },

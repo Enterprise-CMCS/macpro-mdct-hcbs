@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ElementType, PageElement } from "../../types/reports";
 import {
   isReportOptions,
   validateReportPayload,
@@ -133,9 +134,74 @@ describe("reportValidation", () => {
       const validatedData = await validateReportEditPayload(validReport);
       expect(validatedData).toEqual({ name: validReport.name });
     });
+
+    it("should preserve service type checkbox clickAction and answerExcludes hide conditions", async () => {
+      const report = structuredClone(validReport);
+      const page = report.pages.find((page) => "elements" in page)!;
+      const serviceTypeElements = [
+        {
+          type: ElementType.Checkbox,
+          id: "service-types-checkbox",
+          label: "Which service types are included in this measure?",
+          choices: [{ label: "Homemaker", value: "homemaker" }],
+          answer: ["homemaker"],
+          required: true,
+          clickAction: "serviceTypeChange",
+        },
+        {
+          type: ElementType.PerformanceNdr,
+          id: "homemaker-1-rate",
+          required: true,
+          hideCondition: {
+            controllerElementId: "service-types-checkbox",
+            answerExcludes: ["homemaker"],
+          },
+        },
+        {
+          type: ElementType.Divider,
+          id: "homemaker-divider",
+          hideCondition: {
+            controllerElementId: "service-types-checkbox",
+            answerExcludes: ["homemaker"],
+          },
+        },
+      ] as PageElement[];
+      page.elements!.push(...serviceTypeElements);
+
+      const validatedData = await validateReportPayload(report);
+      const validatedPage = validatedData.pages.find(
+        (validated) => validated.id === page.id
+      )!;
+      expect(validatedPage.elements!.slice(-3)).toMatchObject(
+        serviceTypeElements
+      );
+    });
   });
 
   describe("invalid report scenarios", () => {
+    it("should reject hide conditions with both or neither answer matcher", async () => {
+      const invalidHideConditions = [
+        {
+          controllerElementId: "service-types-checkbox",
+          answer: "homemaker",
+          answerExcludes: ["homemaker"],
+        },
+        { controllerElementId: "service-types-checkbox" },
+      ];
+
+      for (const hideCondition of invalidHideConditions) {
+        const report = structuredClone(validReport);
+        const page = report.pages.find((candidate) => "elements" in candidate)!;
+        page.elements!.push({
+          type: ElementType.Divider,
+          id: "invalid-hide-condition-divider",
+          hideCondition,
+        } as PageElement);
+
+        await expect(validateReportPayload(report)).rejects.toThrow();
+      }
+    });
+
     it("rejects unsupported children of a performance rate", async () => {
       await expect(
         validateReportPayload(reportWithUnsupportedPerformanceRateChild)

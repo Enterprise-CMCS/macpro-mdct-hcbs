@@ -225,6 +225,7 @@ export const elementSatisfiesRequired = (
   }
 
   if (element.type === ElementType.Checkbox) {
+    if (element.answer?.length === 0) return false;
     for (const choice of element.choices) {
       if (!element.answer?.includes(choice.value) || !choice.checkedChildren) {
         continue;
@@ -336,10 +337,19 @@ export const elementIsHidden = (
   const controlElement = elements.find((target: any) => {
     return target?.id === hideCondition?.controllerElementId;
   });
+  if (
+    controlElement?.type === ElementType.Checkbox &&
+    "answerExcludes" in hideCondition
+  ) {
+    return !hideCondition.answerExcludes.some((value) =>
+      controlElement.answer?.includes(value)
+    );
+  }
   return (
     !!controlElement &&
     "answer" in controlElement &&
-    controlElement.answer === hideCondition?.answer
+    "answer" in hideCondition &&
+    controlElement.answer === hideCondition.answer
   );
 };
 

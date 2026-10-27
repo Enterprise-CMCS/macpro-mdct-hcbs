@@ -9,7 +9,7 @@ import {
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupTests";
-import { VerticalTable } from "./DashboardTable";
+import { HorizontalTable, VerticalTable } from "./DashboardTable";
 
 const mockArchive = vi.fn();
 const mockRelease = vi.fn();
@@ -105,6 +105,24 @@ describe("Dashboard table", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     useStore.setState({ user: mockAdminUser });
+  });
+
+  it("should render each submission name as the first cell with row scope", () => {
+    render(
+      <RouterWrappedComponent>
+        <HorizontalTable {...mockTableProps} />
+      </RouterWrappedComponent>
+    );
+
+    const rowHeaders = screen.getAllByRole("rowheader");
+    expect(rowHeaders).toHaveLength(reports.length);
+    rowHeaders.forEach((header, index) => {
+      expect(header.tagName).toBe("TH");
+      expect(header).toHaveAttribute("scope", "row");
+      expect(header).toHaveTextContent(reports[index].name);
+      expect(header.parentElement?.firstElementChild).toBe(header);
+      expect(header.nextElementSibling?.tagName).toBe("TD");
+    });
   });
 
   it("should render edit button and call openAddEditReportModal on click", async () => {
