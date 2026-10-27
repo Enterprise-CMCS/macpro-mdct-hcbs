@@ -254,6 +254,38 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "createNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/create.ts",
+    handler: "createNotificationAssignment",
+    path: "notification-assignments",
+    method: "POST",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "fetchNotificationAssignments", {
+    entry: "services/app-api/handlers/notificationAssignments/fetch.ts",
+    handler: "fetchNotificationAssignments",
+    path: "notification-assignments",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "updateNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/update.ts",
+    handler: "updateNotificationAssignment",
+    path: "notification-assignments",
+    method: "PUT",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "deleteNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/delete.ts",
+    handler: "deleteNotificationAssignment",
+    path: "notification-assignments/{email}",
+    method: "DELETE",
+    ...commonProps,
+  });
+
   if (isDev) {
     new Lambda(scope, "sendTestEmail", {
       entry: "services/app-api/handlers/notification/sendTestEmail.ts",
