@@ -12,7 +12,15 @@ import {
   validReport,
 } from "../../utils/tests/mockReport";
 import { updateReport } from "./update";
-import { putReport } from "../../storage/reports";
+import { getReport, putReport } from "../../storage/reports";
+import { ReportStatus } from "../../types/reports";
+import { getFlag } from "../../libs/launchdarkly-lib";
+import { sendEmail } from "../../utils/notifications/email";
+import { logger } from "../../libs/debug-lib";
+
+vi.mock("../../libs/launchdarkly-lib");
+vi.mock("../../utils/notifications/email");
+vi.mock("../../libs/debug-lib");
 
 vi.mock("../../utils/authentication", () => ({
   authenticatedUser: vi.fn().mockResolvedValue({
@@ -27,6 +35,7 @@ vi.mock("../../utils/authorization", () => ({
 }));
 
 vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn(),
   putReport: vi.fn(),
 }));
 
@@ -46,6 +55,11 @@ const testEvent: APIGatewayProxyEvent = {
 describe("updateReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(getFlag).mockResolvedValue(true);
+    vi.mocked(getReport).mockResolvedValue({
+      ...validReport,
+      status: ReportStatus.IN_PROGRESS,
+    });
   });
 
   it("should return Bad Request if missing path params", async () => {
@@ -110,7 +124,91 @@ describe("updateReport", () => {
     const res = await updateReport(testEvent);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
-    expect(putReport).toHaveBeenCalled();
+    expect(putReport).toHaveBeenCalledWith(
+      expect.objectContaining({ status: ReportStatus.IN_PROGRESS })
+    );
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("should notify after saving a Submitted to In Progress transition", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
+      ...validReport,
+      status: ReportStatus.SUBMITTED,
+    });
+
+    const response = await updateReport(testEvent);
+
+    expect(response.statusCode).toBe(StatusCodes.Ok);
+    expect(sendEmail).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ status: ReportStatus.IN_PROGRESS })
+    );
+    expect(vi.mocked(sendEmail).mock.calls[0][0]).toEqual(
+      vi.mocked(putReport).mock.calls[0][0]
+    );
+    expect(vi.mocked(putReport).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(sendEmail).mock.invocationCallOrder[0]
+    );
+  });
+
+  it("should not notify when a report is first edited", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
+      ...validReport,
+      status: ReportStatus.NOT_STARTED,
+    });
+
+    expect((await updateReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("should skip notification lookup and sending when disabled", async () => {
+    vi.mocked(getFlag).mockResolvedValueOnce(false);
+
+    expect((await updateReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(getReport).not.toHaveBeenCalled();
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("should still save when the notification lookup fails", async () => {
+    const error = new Error("Lookup unavailable");
+    vi.mocked(getReport).mockRejectedValueOnce(error);
+
+    expect((await updateReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(logger.error).toHaveBeenCalledWith(error);
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("should not notify when the previous status is unknown", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce(undefined);
+
+    expect((await updateReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("should preserve a successful update when notification delivery fails", async () => {
+    const error = new Error("SES unavailable");
+    vi.mocked(getReport).mockResolvedValueOnce({
+      ...validReport,
+      status: ReportStatus.SUBMITTED,
+    });
+    vi.mocked(sendEmail).mockRejectedValueOnce(error);
+
+    expect((await updateReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(logger.error).toHaveBeenCalledWith(error);
+  });
+
+  it("should reject submitting a report through the update endpoint", async () => {
+    const response = await updateReport({
+      ...testEvent,
+      body: JSON.stringify({ ...validReport, status: ReportStatus.SUBMITTED }),
+    });
+
+    expect(response.statusCode).toBe(StatusCodes.BadRequest);
+    expect(putReport).not.toHaveBeenCalled();
   });
 
   describe("Report validation failures", () => {
