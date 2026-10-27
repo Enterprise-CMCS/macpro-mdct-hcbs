@@ -44,6 +44,7 @@ describe("Notification assignment handlers", () => {
   });
 
   it("creates normalized assignments and returns the saved data", async () => {
+    const normalized = { ...assignment, email: "PO@example.com" };
     const result = await createNotificationAssignment(
       event({
         email: " PO@Example.com ",
@@ -52,8 +53,8 @@ describe("Notification assignment handlers", () => {
       })
     );
     expect(result.statusCode).toBe(201);
-    expect(JSON.parse(result.body!)).toEqual(assignment);
-    expect(storeAssignment).toHaveBeenCalledWith(assignment);
+    expect(JSON.parse(result.body!)).toEqual(normalized);
+    expect(storeAssignment).toHaveBeenCalledWith(normalized);
   });
 
   it("lists saved assignments", async () => {
@@ -125,6 +126,7 @@ describe("Notification assignment handlers", () => {
   });
 
   it("updates an existing assignment and returns its normalized data", async () => {
+    const normalized = { ...assignment, email: "PO@example.com" };
     const result = await updateNotificationAssignment(
       event({
         ...assignment,
@@ -133,8 +135,8 @@ describe("Notification assignment handlers", () => {
       })
     );
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body!)).toEqual(assignment);
-    expect(updateStoredAssignment).toHaveBeenCalledWith(assignment);
+    expect(JSON.parse(result.body!)).toEqual(normalized);
+    expect(updateStoredAssignment).toHaveBeenCalledWith(normalized);
   });
 
   it("rejects updates to missing assignments and surfaces other failures", async () => {
@@ -171,12 +173,12 @@ describe("Notification assignment handlers", () => {
     expect((await fetchNotificationAssignments(event())).statusCode).toBe(500);
   });
 
-  it("deletes an assignment by decoded, normalized email", async () => {
+  it("deletes an assignment by decoded email with only the domain lowercased", async () => {
     const result = await deleteNotificationAssignment(
       deleteEvent("PO%40Example.com")
     );
     expect(result.statusCode).toBe(200);
-    expect(deleteStoredAssignment).toHaveBeenCalledWith("po@example.com");
+    expect(deleteStoredAssignment).toHaveBeenCalledWith("PO@example.com");
   });
 
   it("rejects deletes without a valid email in the path", async () => {

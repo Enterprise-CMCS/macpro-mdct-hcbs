@@ -2,7 +2,7 @@ import { DeleteCommand, PutCommand, paginateScan } from "@aws-sdk/lib-dynamodb";
 import { collectPageItems, createClient } from "./dynamo/dynamodb-lib";
 import { NotificationAssignment } from "../types/notification";
 
-const tableName = process.env.NotificationAssignmentsTable;
+const TableName = process.env.NotificationAssignmentsTable;
 const client = createClient();
 
 export const createNotificationAssignment = async (
@@ -10,7 +10,7 @@ export const createNotificationAssignment = async (
 ) => {
   await client.send(
     new PutCommand({
-      TableName: tableName,
+      TableName,
       Item: assignment,
       ConditionExpression: "attribute_not_exists(email)",
     })
@@ -18,10 +18,7 @@ export const createNotificationAssignment = async (
 };
 
 export const scanNotificationAssignments = async () => {
-  const pages = paginateScan(
-    { client },
-    { TableName: tableName, ConsistentRead: true }
-  );
+  const pages = paginateScan({ client }, { TableName, ConsistentRead: true });
   return (await collectPageItems(pages)) as NotificationAssignment[];
 };
 
@@ -30,7 +27,7 @@ export const updateNotificationAssignment = async (
 ) => {
   await client.send(
     new PutCommand({
-      TableName: tableName,
+      TableName,
       Item: assignment,
       ConditionExpression: "attribute_exists(email)",
     })
@@ -40,7 +37,7 @@ export const updateNotificationAssignment = async (
 export const deleteNotificationAssignment = async (email: string) => {
   await client.send(
     new DeleteCommand({
-      TableName: tableName,
+      TableName,
       Key: { email },
       ConditionExpression: "attribute_exists(email)",
     })

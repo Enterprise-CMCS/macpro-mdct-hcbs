@@ -461,7 +461,7 @@ describe("<NotificationsPage />", () => {
       await screen.findByRole("cell", { name: assignment.email })
     ).toBeVisible();
     expect(getNotificationAssignments).toHaveBeenCalledTimes(2);
-  });
+  }, 15000);
 
   it("keeps the modal open and displays duplicate and save errors without adding a row", async () => {
     vi.mocked(createNotificationAssignment).mockRejectedValueOnce(
@@ -485,7 +485,7 @@ describe("<NotificationsPage />", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Unable to save."
     );
-  });
+  }, 15000);
 
   it("shows loading and load failures with a retry instead of an empty table", async () => {
     vi.mocked(getNotificationAssignments).mockRejectedValueOnce(

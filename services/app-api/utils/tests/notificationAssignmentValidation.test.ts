@@ -13,14 +13,14 @@ const assignment = {
 };
 
 describe("notification assignment validation", () => {
-  it("normalizes email and deduplicates selections without mutating input", () => {
+  it("trims email, lowercases only the domain, and deduplicates selections without mutating input", () => {
     const input: NotificationAssignment = {
       email: " PO@Example.com ",
       states: ["AL", "AK", "AL"],
       reports: [ReportType.HA, ReportType.QIP, ReportType.HA],
     };
     expect(normalizeNotificationAssignment(input)).toEqual({
-      email: "po@example.com",
+      email: "PO@example.com",
       states: ["AL", "AK"],
       reports: [ReportType.HA, ReportType.QIP],
     });

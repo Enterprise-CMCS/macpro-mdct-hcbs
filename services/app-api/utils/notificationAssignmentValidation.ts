@@ -4,10 +4,19 @@ import { NotificationAssignment } from "../types/notification";
 import { isReportType } from "../types/reports";
 import { isStateAbbreviation } from "./constants";
 
+// Lower case the domain part of the email
+export const normalizeEmailDomain = (email: string) => {
+  const trimmed = email.trim();
+  const atIndex = trimmed.lastIndexOf("@");
+  return atIndex === -1
+    ? trimmed
+    : trimmed.slice(0, atIndex + 1) + trimmed.slice(atIndex + 1).toLowerCase();
+};
+
 export const normalizeNotificationAssignment = (
   assignment: NotificationAssignment
 ): NotificationAssignment => ({
-  email: assignment.email.trim().toLowerCase(),
+  email: normalizeEmailDomain(assignment.email),
   states: [...new Set(assignment.states)],
   reports: [...new Set(assignment.reports)],
 });
