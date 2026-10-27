@@ -14,17 +14,13 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import addIcon from "assets/icons/add/icon_add_blue.svg";
-import { AccordionItem, DropdownField, PageTemplate } from "components";
+import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
+import { AccordionItem, PageTemplate } from "components";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { AddEditEmailModal } from "./AddEditEmailModal";
 import { NotificationAssignmentsTable } from "./NotificationAssignmentsTable";
 import { NotificationAssignment } from "types/notification";
-import {
-  ElementType,
-  getReportName,
-  isReportType,
-  ReportType,
-} from "types/report";
+import { getReportName, isReportType, ReportType } from "types/report";
 import { isStateAbbr, StateAbbr } from "types/other";
 import { reportOptions } from "components/forms/AdminDashSelector";
 import { StateNames } from "../../../constants";
@@ -181,56 +177,46 @@ export const NotificationsPage = ({
             </Flex>
             <Flex sx={sx.filters}>
               <Box sx={sx.filterField}>
-                <DropdownField
-                  element={{
-                    id: "notification-state-filter",
-                    type: ElementType.Dropdown,
-                    label: "States",
-                    required: false,
-                    answer: "",
-                    options: [
-                      { label: "- Select an option -", value: "" },
-                      ...Object.entries(StateNames).map(([value, label]) => ({
-                        value,
-                        label,
-                      })),
-                    ],
-                  }}
-                  clearOnSelect
-                  updateElement={({ answer }) => {
-                    if (isStateAbbr(answer)) {
+                <CmsdsDropdown
+                  name="notification-state-filter"
+                  label="States"
+                  value=""
+                  options={[
+                    { label: "- Select an option -", value: "" },
+                    ...Object.entries(StateNames).map(([value, label]) => ({
+                      value,
+                      label,
+                    })),
+                  ]}
+                  onChange={({ target: { value } }) => {
+                    if (isStateAbbr(value)) {
                       setSelectedStates((previous) =>
-                        previous.includes(answer)
+                        previous.includes(value)
                           ? previous
-                          : [...previous, answer]
+                          : [...previous, value]
                       );
                     }
                   }}
                 />
               </Box>
               <Box sx={sx.filterField}>
-                <DropdownField
-                  element={{
-                    id: "notification-report-filter",
-                    type: ElementType.Dropdown,
-                    label: "Report Types",
-                    required: false,
-                    answer: "",
-                    options: [
-                      { label: "- Select an option -", value: "" },
-                      ...availableReports.map(({ value }) => ({
-                        value,
-                        label: `${value}: ${getReportName(value)}`,
-                      })),
-                    ],
-                  }}
-                  clearOnSelect
-                  updateElement={({ answer }) => {
-                    if (isReportType(answer)) {
+                <CmsdsDropdown
+                  name="notification-report-filter"
+                  label="Report Types"
+                  value=""
+                  options={[
+                    { label: "- Select an option -", value: "" },
+                    ...availableReports.map(({ value }) => ({
+                      value,
+                      label: `${value}: ${getReportName(value)}`,
+                    })),
+                  ]}
+                  onChange={({ target: { value } }) => {
+                    if (isReportType(value)) {
                       setSelectedReports((previous) =>
-                        previous.includes(answer)
+                        previous.includes(value)
                           ? previous
-                          : [...previous, answer]
+                          : [...previous, value]
                       );
                     }
                   }}
