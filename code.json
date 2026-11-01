@@ -23,7 +23,7 @@
   "disclaimerURL": "",
   "disclaimerText": "",
   "vcs": "git",
-  "laborHours": 13312,
+  "laborHours": 13596,
   "reuseFrequency": {
     "forks": 3,
     "clones": 0
@@ -53,8 +53,8 @@
   "partners": [],
   "date": {
     "created": "2024-05-02T18:31:28Z",
-    "lastModified": "2026-09-28T16:03:20Z",
-    "metadataLastUpdated": "2026-10-01T00:42:21.119Z"
+    "lastModified": "2026-10-27T16:03:55Z",
+    "metadataLastUpdated": "2026-11-01T00:26:09.668Z"
   },
   "tags": [
     "mdct"
