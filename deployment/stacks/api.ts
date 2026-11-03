@@ -134,7 +134,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
-      resources: tables.map((table) => table.table.tableArn),
+      resources: tables.flatMap((table) => [
+        table.table.tableArn,
+        `${table.table.tableArn}/index/*`,
+      ]),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -258,16 +261,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     entry: "services/app-api/handlers/notificationAssignments/fetch.ts",
     handler: "fetchNotificationAssignments",
     path: "notification-assignments",
-    method: "GET",
-    ...commonProps,
-  });
-
-  // The static "emails" segment avoids a sibling variable clash with {email}.
-  new Lambda(scope, "fetchEmailsForReportAndState", {
-    entry:
-      "services/app-api/handlers/notificationAssignments/fetchEmailsForReportAndState.ts",
-    handler: "fetchEmailsForReportAndState",
-    path: "notification-assignments/emails/{reportType}/{state}",
     method: "GET",
     ...commonProps,
   });
