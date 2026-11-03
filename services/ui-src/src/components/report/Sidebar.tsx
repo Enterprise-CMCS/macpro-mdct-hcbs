@@ -107,7 +107,8 @@ export const Sidebar = () => {
   return (
     <Box sx={sx.sidebar} className={sidebarOpen ? "open" : "closed"}>
       <Button
-        aria-label="Open/Close sidebar menu"
+        aria-label="Sidebar"
+        aria-expanded={sidebarOpen}
         variant="sidebarToggle"
         onClick={() => setSidebar(!sidebarOpen)}
         className={sidebarOpen ? "open" : "closed"}
