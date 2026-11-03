@@ -4,6 +4,7 @@ import { updateTimeout } from "../../auth/authLifecycle";
 import { getRequestHeaders } from "./getRequestHeaders";
 import {
   deleteNotificationAssignment,
+  getEmailsForReportAndState,
   getNotificationAssignments,
   putNotificationAssignment,
 } from "./notificationAssignments";
@@ -35,6 +36,22 @@ describe("Notification assignment requests", () => {
       headers: { "x-api-key": "test" },
     });
     expect(updateTimeout).toHaveBeenCalled();
+  });
+
+  it("loads the emails for a report and state", async () => {
+    vi.mocked(apiLib.get).mockResolvedValue(["a@example.com"]);
+    expect(await getEmailsForReportAndState(ReportType.HA, "AL")).toEqual([
+      "a@example.com",
+    ]);
+    expect(apiLib.get).toHaveBeenCalledWith(
+      `/notification-assignments/emails/${ReportType.HA}/AL`,
+      { headers: { "x-api-key": "test" } }
+    );
+    expect(updateTimeout).toHaveBeenCalled();
+    vi.mocked(apiLib.get).mockRejectedValue(new Error("Unavailable"));
+    await expect(
+      getEmailsForReportAndState(ReportType.HA, "AL")
+    ).rejects.toThrow("Unavailable");
   });
 
   it("saves an assignment using PUT and returns the saved data", async () => {
