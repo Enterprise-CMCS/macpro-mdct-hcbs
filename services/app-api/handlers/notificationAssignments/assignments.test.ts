@@ -5,16 +5,19 @@ import { NotificationAssignment } from "../../types/notification";
 import { authenticatedUser } from "../../utils/authentication";
 import {
   deleteNotificationAssignment as deleteStoredAssignment,
+  getEmailsForReportAndState,
   putNotificationAssignment as putStoredAssignment,
   scanNotificationAssignments,
 } from "../../storage/notificationAssignments";
 import { deleteNotificationAssignment } from "./delete";
+import { fetchEmailsForReportAndState } from "./fetchEmailsForReportAndState";
 import { fetchNotificationAssignments } from "./fetch";
 import { putNotificationAssignment } from "./put";
 
 vi.mock("../../utils/authentication", () => ({ authenticatedUser: vi.fn() }));
 vi.mock("../../storage/notificationAssignments", () => ({
   deleteNotificationAssignment: vi.fn(),
+  getEmailsForReportAndState: vi.fn(),
   putNotificationAssignment: vi.fn(),
   scanNotificationAssignments: vi.fn(),
 }));
@@ -30,6 +33,10 @@ const event = (body: unknown = assignment) =>
 const deleteEvent = (email: string | undefined = "po@example.com") =>
   ({
     pathParameters: email ? { email } : undefined,
+  }) as unknown as APIGatewayProxyEvent;
+const emailsEvent = (reportType = ReportType.HA as string, state = "AL") =>
+  ({
+    pathParameters: { reportType, state },
   }) as unknown as APIGatewayProxyEvent;
 
 describe("Notification assignment handlers", () => {
@@ -115,6 +122,56 @@ describe("Notification assignment handlers", () => {
     );
     expect((await putNotificationAssignment(event())).statusCode).toBe(500);
     expect((await fetchNotificationAssignments(event())).statusCode).toBe(500);
+  });
+
+  it("lists the emails for a report and state", async () => {
+    vi.mocked(getEmailsForReportAndState).mockResolvedValue([
+      "a@example.com",
+      "b@example.com",
+    ]);
+    const result = await fetchEmailsForReportAndState(emailsEvent());
+    expect(result.statusCode).toBe(200);
+    expect(JSON.parse(result.body!)).toEqual([
+      "a@example.com",
+      "b@example.com",
+    ]);
+    expect(getEmailsForReportAndState).toHaveBeenCalledWith(
+      ReportType.HA,
+      "AL"
+    );
+  });
+
+  it("denies the emails lookup to non-admins and unauthenticated users", async () => {
+    vi.mocked(authenticatedUser).mockReturnValue({
+      ...user,
+      role: UserRoles.STATE_USER,
+    });
+    expect((await fetchEmailsForReportAndState(emailsEvent())).statusCode).toBe(
+      403
+    );
+    vi.mocked(authenticatedUser).mockReturnValue(undefined);
+    expect((await fetchEmailsForReportAndState(emailsEvent())).statusCode).toBe(
+      401
+    );
+    expect(getEmailsForReportAndState).not.toHaveBeenCalled();
+  });
+
+  it("rejects an invalid report type or state, and surfaces storage failures", async () => {
+    expect(
+      (await fetchEmailsForReportAndState(emailsEvent("INVALID"))).statusCode
+    ).toBe(400);
+    expect(
+      (await fetchEmailsForReportAndState(emailsEvent(ReportType.HA, "XX")))
+        .statusCode
+    ).toBe(400);
+    expect(getEmailsForReportAndState).not.toHaveBeenCalled();
+
+    vi.mocked(getEmailsForReportAndState).mockRejectedValue(
+      new Error("Database unavailable")
+    );
+    expect((await fetchEmailsForReportAndState(emailsEvent())).statusCode).toBe(
+      500
+    );
   });
 
   it("deletes an assignment by decoded email with only the domain lowercased", async () => {

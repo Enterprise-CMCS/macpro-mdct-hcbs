@@ -19,7 +19,7 @@ import { ReportType } from "../types/reports";
 const mockDynamo = mockClient(DynamoDBDocumentClient);
 const TableName = "local-notification-assignments";
 const assignment: NotificationAssignment = {
-  email: "po@example.com",
+  email: "one@example.com",
   states: ["AL", "CO"],
   reports: [ReportType.HA],
 };
@@ -73,14 +73,16 @@ describe("Notification assignment storage", () => {
 
   it("does nothing when deleting an email with no rows", async () => {
     mockDynamo.on(QueryCommand).resolves({ Items: [] });
-    await deleteNotificationAssignment("none@x.com");
+    await deleteNotificationAssignment("none@example.com");
     expect(mockDynamo.commandCalls(DeleteCommand)).toHaveLength(0);
   });
 
   it("gets emails through the byReportState index, with no scan", async () => {
-    mockDynamo.on(QueryCommand).resolves({ Items: [{ email: "a@x.com" }] });
+    mockDynamo
+      .on(QueryCommand)
+      .resolves({ Items: [{ email: "one@example.com" }] });
     expect(await getEmailsForReportAndState(ReportType.HA, "AL")).toEqual([
-      "a@x.com",
+      "one@example.com",
     ]);
     expect(
       mockDynamo.commandCalls(QueryCommand)[0].args[0].input
@@ -90,6 +92,58 @@ describe("Notification assignment storage", () => {
       ExpressionAttributeValues: { ":rs": `${ReportType.HA}#AL` },
     });
     expect(mockDynamo.commandCalls(ScanCommand)).toHaveLength(0);
+  });
+
+  it("returns every email assigned to the same report and state", async () => {
+    const reportState = `${ReportType.HA}#AL`;
+    mockDynamo.on(QueryCommand).resolves({
+      Items: [
+        { email: "one@example.com", reportState },
+        { email: "two@example.com", reportState },
+        { email: "three@example.com", reportState },
+      ],
+    });
+    expect(await getEmailsForReportAndState(ReportType.HA, "AL")).toEqual([
+      "one@example.com",
+      "two@example.com",
+      "three@example.com",
+    ]);
+    expect(mockDynamo.commandCalls(QueryCommand)).toHaveLength(1);
+    expect(
+      mockDynamo.commandCalls(QueryCommand)[0].args[0].input
+    ).toMatchObject({
+      ExpressionAttributeValues: { ":rs": reportState },
+    });
+  });
+
+  it("returns emails from every page for the same report and state", async () => {
+    const reportState = `${ReportType.HA}#AL`;
+    const lastKey = { email: "two@example.com", reportState };
+    mockDynamo
+      .on(QueryCommand)
+      .resolvesOnce({
+        Items: [
+          { email: "one@example.com", reportState },
+          { email: "two@example.com", reportState },
+        ],
+        LastEvaluatedKey: lastKey,
+      })
+      .resolvesOnce({
+        Items: [
+          { email: "three@example.com", reportState },
+          { email: "four@example.com", reportState },
+        ],
+      });
+    expect(await getEmailsForReportAndState(ReportType.HA, "AL")).toEqual([
+      "one@example.com",
+      "two@example.com",
+      "three@example.com",
+      "four@example.com",
+    ]);
+    expect(mockDynamo.commandCalls(QueryCommand)).toHaveLength(2);
+    expect(
+      mockDynamo.commandCalls(QueryCommand)[1].args[0].input
+    ).toMatchObject({ ExclusiveStartKey: lastKey });
   });
 
   it("loads every page with consistent reads and regroups rows by email", async () => {
@@ -102,12 +156,12 @@ describe("Notification assignment storage", () => {
       .resolvesOnce({
         Items: [
           rows[1],
-          { email: "second@example.com", reportState: rows[0].reportState },
+          { email: "two@example.com", reportState: rows[0].reportState },
         ],
       });
     expect(await scanNotificationAssignments()).toEqual([
       assignment,
-      { email: "second@example.com", states: ["AL"], reports: [ReportType.HA] },
+      { email: "two@example.com", states: ["AL"], reports: [ReportType.HA] },
     ]);
     expect(mockDynamo.commandCalls(ScanCommand)).toHaveLength(2);
     expect(mockDynamo.commandCalls(ScanCommand)[0].args[0].input).toMatchObject(
