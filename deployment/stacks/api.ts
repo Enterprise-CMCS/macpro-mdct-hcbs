@@ -265,7 +265,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  // The static "emails" segment avoids a sibling variable clash with {email}.
   new Lambda(scope, "fetchEmailsForReportAndState", {
     entry:
       "services/app-api/handlers/notificationAssignments/fetchEmailsForReportAndState.ts",
