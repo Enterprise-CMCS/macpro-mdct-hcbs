@@ -134,10 +134,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
-      resources: tables.flatMap((table) => [
-        table.table.tableArn,
-        `${table.table.tableArn}/index/*`,
-      ]),
+      resources: tables.map((table) => table.table.tableArn),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
