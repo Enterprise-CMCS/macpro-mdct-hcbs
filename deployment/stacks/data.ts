@@ -51,6 +51,17 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         name: "email",
         type: dynamodb.AttributeType.STRING,
       },
+      sortKey: {
+        name: "reportState",
+        type: dynamodb.AttributeType.STRING,
+      },
+      gsi: {
+        indexName: "byReportState",
+        partitionKey: {
+          name: "reportState",
+          type: dynamodb.AttributeType.STRING,
+        },
+      },
     }),
   ];
 
