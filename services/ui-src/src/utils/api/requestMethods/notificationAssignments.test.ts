@@ -3,10 +3,9 @@ import { apiLib } from "../apiLib";
 import { updateTimeout } from "../../auth/authLifecycle";
 import { getRequestHeaders } from "./getRequestHeaders";
 import {
-  createNotificationAssignment,
   deleteNotificationAssignment,
   getNotificationAssignments,
-  updateNotificationAssignment,
+  putNotificationAssignment,
 } from "./notificationAssignments";
 import { NotificationAssignment } from "types/notification";
 import { ReportType } from "types/report";
@@ -38,35 +37,22 @@ describe("Notification assignment requests", () => {
     expect(updateTimeout).toHaveBeenCalled();
   });
 
-  it("creates an assignment and returns the saved data", async () => {
-    vi.mocked(apiLib.post).mockResolvedValue(assignment);
-    expect(await createNotificationAssignment(assignment)).toEqual(assignment);
-    expect(apiLib.post).toHaveBeenCalledWith("/notification-assignments", {
+  it("saves an assignment using PUT and returns the saved data", async () => {
+    vi.mocked(apiLib.put).mockResolvedValue(assignment);
+    expect(await putNotificationAssignment(assignment)).toEqual(assignment);
+    expect(apiLib.put).toHaveBeenCalledWith("/notification-assignments", {
       headers: { "x-api-key": "test" },
       body: assignment,
     });
   });
 
   it("propagates save and load errors", async () => {
-    vi.mocked(apiLib.post).mockRejectedValue(new Error("Conflict"));
+    vi.mocked(apiLib.put).mockRejectedValue(new Error("Unavailable"));
     vi.mocked(apiLib.get).mockRejectedValue(new Error("Unavailable"));
-    await expect(createNotificationAssignment(assignment)).rejects.toThrow(
-      "Conflict"
+    await expect(putNotificationAssignment(assignment)).rejects.toThrow(
+      "Unavailable"
     );
     await expect(getNotificationAssignments()).rejects.toThrow("Unavailable");
-  });
-
-  it("updates an existing assignment using PUT", async () => {
-    vi.mocked(apiLib.put).mockResolvedValue(assignment);
-    expect(await updateNotificationAssignment(assignment)).toEqual(assignment);
-    expect(apiLib.put).toHaveBeenCalledWith("/notification-assignments", {
-      headers: { "x-api-key": "test" },
-      body: assignment,
-    });
-    vi.mocked(apiLib.put).mockRejectedValue(new Error("Not found"));
-    await expect(updateNotificationAssignment(assignment)).rejects.toThrow(
-      "Not found"
-    );
   });
 
   it("deletes an assignment using DELETE with the encoded email", async () => {

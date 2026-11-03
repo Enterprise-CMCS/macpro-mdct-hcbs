@@ -14,21 +14,7 @@ export const getNotificationAssignments = async () => {
   );
 };
 
-export const createNotificationAssignment = async (
-  assignment: NotificationAssignment
-) => {
-  const headers = await getRequestHeaders();
-  updateTimeout();
-  return await apiLib.post<NotificationAssignment>(
-    "/notification-assignments",
-    {
-      headers,
-      body: assignment,
-    }
-  );
-};
-
-export const updateNotificationAssignment = async (
+export const putNotificationAssignment = async (
   assignment: NotificationAssignment
 ) => {
   const headers = await getRequestHeaders();

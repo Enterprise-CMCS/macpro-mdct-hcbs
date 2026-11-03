@@ -7,16 +7,14 @@ import { StateNames } from "../../../constants";
 import { getReportName, ReportType } from "types/report";
 import { NotificationAssignment } from "types/notification";
 import {
-  createNotificationAssignment,
   deleteNotificationAssignment,
   getNotificationAssignments,
-  updateNotificationAssignment,
+  putNotificationAssignment,
 } from "utils/api/requestMethods/notificationAssignments";
 
 vi.mock("utils/api/requestMethods/notificationAssignments", () => ({
-  createNotificationAssignment: vi.fn(),
   deleteNotificationAssignment: vi.fn(),
-  updateNotificationAssignment: vi.fn(),
+  putNotificationAssignment: vi.fn(),
   getNotificationAssignments: vi.fn(),
 }));
 
@@ -444,10 +442,10 @@ describe("<NotificationsPage />", () => {
       states: ["AL"],
       reports: [ReportType.HA],
     };
-    vi.mocked(createNotificationAssignment).mockResolvedValue(assignment);
+    vi.mocked(putNotificationAssignment).mockResolvedValue(assignment);
     const { unmount } = render(<NotificationsPage />);
     await fillAssignment();
-    expect(createNotificationAssignment).toHaveBeenCalledWith(assignment);
+    expect(putNotificationAssignment).toHaveBeenCalledWith(assignment);
     expect(
       await screen.findByRole("cell", { name: assignment.email })
     ).toBeVisible();
@@ -463,28 +461,36 @@ describe("<NotificationsPage />", () => {
     expect(getNotificationAssignments).toHaveBeenCalledTimes(2);
   }, 15000);
 
-  it("keeps the modal open and displays duplicate and save errors without adding a row", async () => {
-    vi.mocked(createNotificationAssignment).mockRejectedValueOnce(
-      new Error(
-        "An assignment already exists for this email. Use Edit to update it."
-      )
-    );
+  it("blocks adding an email that already has an assignment", async () => {
+    vi.mocked(getNotificationAssignments).mockResolvedValue([
+      {
+        email: "po@example.com",
+        states: ["AK"],
+        reports: [ReportType.HA],
+      },
+    ]);
     render(<NotificationsPage />);
     await fillAssignment();
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Use Edit to update it."
     );
     expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
-    expect(
-      screen.queryByRole("cell", { name: "po@example.com" })
-    ).not.toBeInTheDocument();
-    vi.mocked(createNotificationAssignment).mockRejectedValueOnce(
+    expect(putNotificationAssignment).not.toHaveBeenCalled();
+  }, 15000);
+
+  it("keeps the modal open and displays save errors without adding a row", async () => {
+    vi.mocked(putNotificationAssignment).mockRejectedValueOnce(
       new Error("Unable to save.")
     );
-    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    render(<NotificationsPage />);
+    await fillAssignment();
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Unable to save."
     );
+    expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
+    expect(
+      screen.queryByRole("cell", { name: "po@example.com" })
+    ).not.toBeInTheDocument();
   }, 15000);
 
   it("shows loading and load failures with a retry instead of an empty table", async () => {
@@ -516,7 +522,7 @@ describe("<NotificationsPage />", () => {
       states: ["AL", "AK"],
     };
     vi.mocked(getNotificationAssignments).mockResolvedValue([assignment]);
-    vi.mocked(updateNotificationAssignment).mockRejectedValueOnce(
+    vi.mocked(putNotificationAssignment).mockRejectedValueOnce(
       new Error("Update failed.")
     );
     render(<NotificationsPage />);
@@ -538,14 +544,13 @@ describe("<NotificationsPage />", () => {
       "Update failed."
     );
     expect(screen.getByRole("dialog")).toBeVisible();
-    vi.mocked(updateNotificationAssignment).mockResolvedValue(updated);
+    vi.mocked(putNotificationAssignment).mockResolvedValue(updated);
     await user.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() =>
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
     );
-    expect(updateNotificationAssignment).toHaveBeenLastCalledWith(updated);
+    expect(putNotificationAssignment).toHaveBeenLastCalledWith(updated);
     expect(screen.getByRole("cell", { name: "AL, AK" })).toBeVisible();
-    expect(createNotificationAssignment).not.toHaveBeenCalled();
     await user.click(screen.getByRole("button", { name: "Add email" }));
     expect(screen.getByRole("dialog", { name: "Add Email" })).toBeVisible();
     expect(screen.getByRole("textbox", { name: "Email" })).toHaveValue("");

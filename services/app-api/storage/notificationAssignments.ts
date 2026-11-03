@@ -1,4 +1,3 @@
-import { ConditionalCheckFailedException } from "@aws-sdk/client-dynamodb";
 import {
   DeleteCommand,
   PutCommand,
@@ -14,11 +13,11 @@ const TableName = process.env.NotificationAssignmentsTable;
 const client = createClient();
 
 // An email is stored as one row per report and state, e.g. "QMS#CO".
-type Row = { email: string; reportState: string };
+type NotificationRow = { email: string; reportState: string };
 
 // Turns one assignment into its rows: reports [QMS, IMA] x states [CO, AL] = 4 rows.
 const makeRows = (assignment: NotificationAssignment) => {
-  const rows: Row[] = [];
+  const rows: NotificationRow[] = [];
   for (const report of assignment.reports) {
     for (const state of assignment.states) {
       rows.push({
@@ -31,7 +30,7 @@ const makeRows = (assignment: NotificationAssignment) => {
 };
 
 // Turns rows back into one assignment per email, which is what the API returns.
-const groupRowsByEmail = (rows: Row[]) => {
+const groupRowsByEmail = (rows: NotificationRow[]) => {
   const assignments = new Map<string, NotificationAssignment>();
   for (const row of rows) {
     const [report, state] = row.reportState.split("#");
@@ -61,12 +60,8 @@ const getRowsForEmail = async (email: string) => {
       ExpressionAttributeValues: { ":email": email },
     }
   );
-  return (await collectPageItems(pages)) as Row[];
+  return (await collectPageItems(pages)) as NotificationRow[];
 };
-
-// Handlers map this exception to 404/409, as they did for conditional writes.
-const conflict = (message: string) =>
-  new ConditionalCheckFailedException({ message, $metadata: {} });
 
 /**
  * Puts each row into the DynamoDB table concurrently. Note that this is *NOT* an atomic operation and could result in partial failures. If issues
@@ -75,7 +70,7 @@ const conflict = (message: string) =>
  * @param rows
  * @returns
  */
-const putRows = async (rows: Row[]) => {
+const putRows = async (rows: NotificationRow[]) => {
   await Promise.all(
     rows.map((row) => client.send(new PutCommand({ TableName, Item: row })))
   );
@@ -88,7 +83,7 @@ const putRows = async (rows: Row[]) => {
  * @param rows
  * @returns
  */
-const deleteRows = async (rows: Row[]) => {
+const deleteRows = async (rows: NotificationRow[]) => {
   await Promise.all(
     rows.map((row) => {
       const Key = { email: row.email, reportState: row.reportState };
@@ -97,20 +92,24 @@ const deleteRows = async (rows: Row[]) => {
   );
 };
 
-export const createNotificationAssignment = async (
+export const putNotificationAssignment = async (
   assignment: NotificationAssignment
 ) => {
   const existingRows = await getRowsForEmail(assignment.email);
-  if (existingRows.length > 0) {
-    throw conflict("Assignment already exists");
-  }
 
-  await putRows(makeRows(assignment));
+  const newRows = makeRows(assignment);
+  const newKeys = newRows.map((row) => row.reportState);
+  const rowsToDelete = existingRows.filter(
+    (row) => !newKeys.includes(row.reportState)
+  );
+
+  await putRows(newRows);
+  await deleteRows(rowsToDelete);
 };
 
 export const scanNotificationAssignments = async () => {
   const pages = paginateScan({ client }, { TableName, ConsistentRead: true });
-  const rows = (await collectPageItems(pages)) as Row[];
+  const rows = (await collectPageItems(pages)) as NotificationRow[];
   return groupRowsByEmail(rows);
 };
 
@@ -127,33 +126,11 @@ export const getEmailsForReportAndState = async (
       ExpressionAttributeValues: { ":rs": `${report}#${state}` },
     }
   );
-  const rows = (await collectPageItems(pages)) as Row[];
+  const rows = (await collectPageItems(pages)) as NotificationRow[];
   return rows.map((row) => row.email);
-};
-
-export const updateNotificationAssignment = async (
-  assignment: NotificationAssignment
-) => {
-  const existingRows = await getRowsForEmail(assignment.email);
-  if (existingRows.length === 0) {
-    throw conflict("Assignment does not exist");
-  }
-
-  const newRows = makeRows(assignment);
-  const newKeys = newRows.map((row) => row.reportState);
-  const rowsToDelete = existingRows.filter(
-    (row) => !newKeys.includes(row.reportState)
-  );
-
-  await putRows(newRows);
-  await deleteRows(rowsToDelete);
 };
 
 export const deleteNotificationAssignment = async (email: string) => {
   const existingRows = await getRowsForEmail(email);
-  if (existingRows.length === 0) {
-    throw conflict("Assignment does not exist");
-  }
-
   await deleteRows(existingRows);
 };

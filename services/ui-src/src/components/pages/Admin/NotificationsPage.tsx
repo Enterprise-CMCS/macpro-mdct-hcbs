@@ -25,10 +25,9 @@ import { isStateAbbr, StateAbbr } from "types/other";
 import { reportOptions } from "components/forms/AdminDashSelector";
 import { StateNames } from "../../../constants";
 import {
-  createNotificationAssignment,
   deleteNotificationAssignment,
   getNotificationAssignments,
-  updateNotificationAssignment,
+  putNotificationAssignment,
 } from "utils/api/requestMethods/notificationAssignments";
 
 export const NotificationsPage = ({
@@ -311,17 +310,26 @@ export const NotificationsPage = ({
           assignment={editingAssignment}
           modalDisclosure={modalDisclosure}
           onSubmit={async (assignment) => {
-            if (editingAssignment) {
-              const saved = await updateNotificationAssignment(assignment);
-              setSavedAssignments((previous) =>
-                previous.map((existing) =>
-                  existing.email === saved.email ? saved : existing
-                )
+            const emailAlreadyExists = savedAssignments.some(
+              (existing) =>
+                existing.email.toLowerCase() === assignment.email.toLowerCase()
+            );
+            if (!editingAssignment && emailAlreadyExists) {
+              throw new Error(
+                "An assignment already exists for this email. Use Edit to update it."
               );
-            } else {
-              const saved = await createNotificationAssignment(assignment);
-              setSavedAssignments((previous) => [...previous, saved]);
-              if (loadError) setLoadAttempt((previous) => previous + 1);
+            }
+
+            const saved = await putNotificationAssignment(assignment);
+            setSavedAssignments((previous) =>
+              emailAlreadyExists
+                ? previous.map((existing) =>
+                    existing.email === saved.email ? saved : existing
+                  )
+                : [...previous, saved]
+            );
+            if (!editingAssignment && loadError) {
+              setLoadAttempt((previous) => previous + 1);
             }
           }}
         />

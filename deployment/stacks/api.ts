@@ -254,14 +254,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "createNotificationAssignment", {
-    entry: "services/app-api/handlers/notificationAssignments/create.ts",
-    handler: "createNotificationAssignment",
-    path: "notification-assignments",
-    method: "POST",
-    ...commonProps,
-  });
-
   new Lambda(scope, "fetchNotificationAssignments", {
     entry: "services/app-api/handlers/notificationAssignments/fetch.ts",
     handler: "fetchNotificationAssignments",
@@ -270,9 +262,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "updateNotificationAssignment", {
-    entry: "services/app-api/handlers/notificationAssignments/update.ts",
-    handler: "updateNotificationAssignment",
+  new Lambda(scope, "putNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/put.ts",
+    handler: "putNotificationAssignment",
     path: "notification-assignments",
     method: "PUT",
     ...commonProps,

@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { mockClient } from "aws-sdk-client-mock";
-import { ConditionalCheckFailedException } from "@aws-sdk/client-dynamodb";
 import {
   DeleteCommand,
   DynamoDBDocumentClient,
@@ -9,11 +8,10 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import {
-  createNotificationAssignment,
   deleteNotificationAssignment,
   getEmailsForReportAndState,
+  putNotificationAssignment,
   scanNotificationAssignments,
-  updateNotificationAssignment,
 } from "./notificationAssignments";
 import { NotificationAssignment } from "../types/notification";
 import { ReportType } from "../types/reports";
@@ -37,28 +35,21 @@ const deletes = () =>
 describe("Notification assignment storage", () => {
   beforeEach(() => mockDynamo.reset());
 
-  it("creates one row per report and state", async () => {
+  it("puts one row per report and state for a new email", async () => {
     mockDynamo.on(QueryCommand).resolves({ Items: [] });
     mockDynamo.on(PutCommand).resolves({});
-    await createNotificationAssignment(assignment);
+    await putNotificationAssignment(assignment);
     expect(puts()).toEqual(rows.map((Item) => ({ TableName, Item })));
+    expect(deletes()).toEqual([]);
   });
 
-  it("rejects create when the email already has rows", async () => {
-    mockDynamo.on(QueryCommand).resolves({ Items: [rows[0]] });
-    await expect(createNotificationAssignment(assignment)).rejects.toThrow(
-      ConditionalCheckFailedException
-    );
-    expect(mockDynamo.commandCalls(PutCommand)).toHaveLength(0);
-  });
-
-  it("updates by putting current rows and deleting removed ones", async () => {
+  it("puts current rows and deletes removed ones for an existing email", async () => {
     mockDynamo.on(QueryCommand).resolves({
       Items: [rows[0], { email: assignment.email, reportState: "OLD#TX" }],
     });
     mockDynamo.on(PutCommand).resolves({});
     mockDynamo.on(DeleteCommand).resolves({});
-    await updateNotificationAssignment(assignment);
+    await putNotificationAssignment(assignment);
     expect(puts()).toEqual(rows.map((Item) => ({ TableName, Item })));
     expect(deletes()).toEqual([
       {
@@ -66,13 +57,6 @@ describe("Notification assignment storage", () => {
         Key: { email: assignment.email, reportState: "OLD#TX" },
       },
     ]);
-  });
-
-  it("rejects update when the email has no rows", async () => {
-    mockDynamo.on(QueryCommand).resolves({ Items: [] });
-    await expect(updateNotificationAssignment(assignment)).rejects.toThrow(
-      ConditionalCheckFailedException
-    );
   });
 
   it("deletes every row for an email", async () => {
@@ -87,11 +71,10 @@ describe("Notification assignment storage", () => {
     );
   });
 
-  it("rejects delete when the email has no rows", async () => {
+  it("does nothing when deleting an email with no rows", async () => {
     mockDynamo.on(QueryCommand).resolves({ Items: [] });
-    await expect(deleteNotificationAssignment("none@x.com")).rejects.toThrow(
-      ConditionalCheckFailedException
-    );
+    await deleteNotificationAssignment("none@x.com");
+    expect(mockDynamo.commandCalls(DeleteCommand)).toHaveLength(0);
   });
 
   it("gets emails through the byReportState index, with no scan", async () => {
