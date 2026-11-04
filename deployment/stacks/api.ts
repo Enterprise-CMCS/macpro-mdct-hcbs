@@ -257,19 +257,19 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  new Lambda(scope, "fetchNotificationAssignments", {
-    entry: "services/app-api/handlers/notificationAssignments/fetch.ts",
-    handler: "fetchNotificationAssignments",
-    path: "notification-assignments",
-    method: "GET",
-    ...commonProps,
-  });
-
   new Lambda(scope, "fetchEmailsForReportAndState", {
     entry:
       "services/app-api/handlers/notificationAssignments/fetchEmailsForReportAndState.ts",
     handler: "fetchEmailsForReportAndState",
     path: "notification-assignments/emails/{reportType}/{state}",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "fetchNotificationAssignments", {
+    entry: "services/app-api/handlers/notificationAssignments/fetch.ts",
+    handler: "fetchNotificationAssignments",
+    path: "notification-assignments",
     method: "GET",
     ...commonProps,
   });
@@ -289,17 +289,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     method: "DELETE",
     ...commonProps,
   });
-
-  if (isDev) {
-    new Lambda(scope, "sendTestEmail", {
-      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
-      handler: "sendTestEmail",
-      path: "notifications/test-email",
-      method: "POST",
-      ...commonProps,
-      additionalPolicies: [...additionalPolicies, sesPolicy],
-    });
-  }
 
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
