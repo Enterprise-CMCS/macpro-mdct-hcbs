@@ -79,7 +79,9 @@ export const NotificationAssignmentsTable = ({
                   <Button
                     variant="outline"
                     aria-label={`Edit ${assignment.email}`}
-                    isDisabled={disabled || !onEdit}
+                    isDisabled={
+                      disabled || !onEdit || isDeleting[assignment.email]
+                    }
                     onClick={() => onEdit?.(assignment)}
                   >
                     Edit

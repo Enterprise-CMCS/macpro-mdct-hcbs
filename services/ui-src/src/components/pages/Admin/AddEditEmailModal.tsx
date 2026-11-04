@@ -142,8 +142,9 @@ export const AddEditEmailModal = ({
 
     setSubmitting(true);
     try {
+      const submittedForm = event.currentTarget;
       await onSubmit({ email: address, states, reports });
-      modalDisclosure.onClose();
+      if (submittedForm.isConnected) modalDisclosure.onClose();
     } catch (error) {
       setSubmitError(
         error instanceof Error

@@ -49,12 +49,7 @@ export const parseNotificationAssignmentEmail = (
     return undefined;
   }
 
-  try {
-    return { email: normalizeEmailDomain(decodeURIComponent(encodedEmail)) };
-  } catch {
-    logger.warn("Invalid email in path");
-    return undefined;
-  }
+  return { email: normalizeEmailDomain(encodedEmail) };
 };
 
 export const parseBannerKey = (event: APIGatewayProxyEvent) => {
