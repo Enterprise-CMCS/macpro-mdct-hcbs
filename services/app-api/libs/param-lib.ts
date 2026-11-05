@@ -1,7 +1,6 @@
 import { isReportType } from "../types/reports";
 import { APIGatewayProxyEvent } from "../types/types";
 import { isStateAbbreviation } from "../utils/constants";
-import { normalizeEmailDomain } from "../utils/notificationAssignmentValidation";
 import { logger } from "./debug-lib";
 
 export const parseReportTypeAndState = (event: APIGatewayProxyEvent) => {
@@ -50,7 +49,7 @@ export const parseNotificationAssignmentEmail = (
   }
 
   try {
-    return { email: normalizeEmailDomain(decodeURIComponent(encodedEmail)) };
+    return { email: decodeURIComponent(encodedEmail) };
   } catch {
     logger.warn("Invalid email in path");
     return undefined;

@@ -47,7 +47,7 @@ describe("Notification assignment handlers", () => {
   });
 
   it("puts normalized assignments and returns the saved data", async () => {
-    const normalized = { ...assignment, email: "PO@example.com" };
+    const normalized = { ...assignment, email: "PO@Example.com" };
     const result = await putNotificationAssignment(
       event({
         email: " PO@Example.com ",
@@ -174,12 +174,12 @@ describe("Notification assignment handlers", () => {
     );
   });
 
-  it("deletes an assignment by decoded email with only the domain lowercased", async () => {
+  it("deletes an assignment by decoded email", async () => {
     const result = await deleteNotificationAssignment(
       deleteEvent("PO%40Example.com")
     );
     expect(result.statusCode).toBe(200);
-    expect(deleteStoredAssignment).toHaveBeenCalledWith("PO@example.com");
+    expect(deleteStoredAssignment).toHaveBeenCalledWith("PO@Example.com");
   });
 
   it("rejects deletes without a valid email in the path", async () => {

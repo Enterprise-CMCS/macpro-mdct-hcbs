@@ -7,9 +7,7 @@ import {
 } from "@cmsgov/design-system";
 import { parseHtml } from "utils";
 
-export const DropdownField = (
-  props: PageElementProps<DropdownTemplate> & { clearOnSelect?: boolean }
-) => {
+export const DropdownField = (props: PageElementProps<DropdownTemplate>) => {
   /**
    * TODO:
    * https://design.cms.gov/components/dropdown/?theme=core
@@ -26,7 +24,7 @@ export const DropdownField = (
 
   const onChangeHandler = async (event: DropdownChangeObject) => {
     const value = event.target.value;
-    setDisplayValue(props.clearOnSelect ? dropdown.options[0].value : value);
+    setDisplayValue(value);
     props.updateElement({ answer: value });
   };
 

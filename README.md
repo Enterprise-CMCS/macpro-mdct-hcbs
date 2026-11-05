@@ -103,7 +103,7 @@ endpoints.
 
 Assignments are stored in the `${stage}-notification-assignments` DynamoDB table,
 separately from the report-category notification settings. Email addresses are
-trimmed and lowercased.
+trimmed and otherwise stored as entered.
 
 Get returns every assignment and runs a whole table scan.
 
