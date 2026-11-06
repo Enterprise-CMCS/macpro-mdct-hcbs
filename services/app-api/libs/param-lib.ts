@@ -1,6 +1,7 @@
 import { isReportType } from "../types/reports";
 import { APIGatewayProxyEvent } from "../types/types";
 import { isStateAbbreviation } from "../utils/constants";
+import { normalizeEmailDomain } from "../utils/notificationAssignmentValidation";
 import { logger } from "./debug-lib";
 
 export const parseReportTypeAndState = (event: APIGatewayProxyEvent) => {
@@ -38,6 +39,23 @@ export const parseReportParameters = (event: APIGatewayProxyEvent) => {
 };
 
 export const emptyParser = (_event: APIGatewayProxyEvent) => ({});
+
+export const parseNotificationAssignmentEmail = (
+  event: APIGatewayProxyEvent
+) => {
+  const encodedEmail = event.pathParameters?.email;
+  if (!encodedEmail) {
+    logger.warn("Missing email in path");
+    return undefined;
+  }
+
+  try {
+    return { email: normalizeEmailDomain(decodeURIComponent(encodedEmail)) };
+  } catch {
+    logger.warn("Invalid email in path");
+    return undefined;
+  }
+};
 
 export const parseBannerKey = (event: APIGatewayProxyEvent) => {
   const bannerKey = event.pathParameters?.bannerId;
