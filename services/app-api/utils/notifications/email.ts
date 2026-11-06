@@ -1,61 +1,85 @@
-import { ElementType, Report, ReportStatus } from "../../types/reports";
+import {
+  ElementType,
+  Report,
+  ReportStatus,
+  TextboxTemplate,
+} from "../../types/reports";
 import { sendSesEmail } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
+import { scanNotificationAssignments } from "../../storage/notificationAssignments";
+import { string } from "yup";
+import { inRevisionTemplate, submittedTemplate } from "./emailTemplates";
 
 const FROM_ADDRESS = "MDCT_NoReply@cms.hhs.gov";
-
-const getTemplate = (
-  name: string,
-  status: ReportStatus,
-  recipients: string[]
-) => ({
-  Source: FROM_ADDRESS,
-  Destination: {
-    ToAddresses: recipients,
-  },
-  Message: {
-    Subject: { Data: `MDCT HCBS Status Update for: ${name}` },
-    Body: {
-      Text: {
-        Data: `Dear User,
-
-This is an automated notification to inform you that there has been a change in the status of a report within the Home and Community-Based Services (HCBS) platform on MDCT.
-
-Please find the details of the update below:
-
-Update Summary
-
-    Report Name: ${name}
-
-    New Status: ${status}
-
-    Date of Change: ${new Date().toDateString()}
-
-If you believe this status change was made in error, or if you have questions regarding the requirements for this new status, please contact your system administrator or reach out to the HCBS support desk.
-`,
-      },
-    },
-  },
-});
+const recipientEmailSchema = string().email().required();
 
 const getContactEmail = (report: Report): string | undefined => {
   return report.pages
     .find((page) => page.id === "general-info")
-    ?.elements?.filter((element) => element.type === ElementType.Textbox)
-    .find((element) => element.id === "contact-email")?.answer;
+    ?.elements?.find(
+      (element): element is TextboxTemplate =>
+        element.type === ElementType.Textbox && element.id === "contact-email"
+    )?.answer;
 };
 
+const getSubmittedRecipients = async (report: Report) => {
+  const cmsRecipients = (await scanNotificationAssignments()).filter(
+    (assignment) =>
+      assignment.states.includes(report.state) &&
+      assignment.reports.includes(report.type)
+  );
+  if (cmsRecipients.length === 0) {
+    logger.warn("sendEmail: no CMS recipients assigned to state and report", {
+      state: report.state,
+      reportType: report.type,
+    });
+  }
+  return [
+    getContactEmail(report),
+    report.submittedByEmail,
+    ...cmsRecipients.map((recipient) => recipient.email),
+  ];
+};
+
+const getInRevisionRecipients = (report: Report) => [getContactEmail(report)];
+
 export const sendEmail = async (report: Report) => {
-  const { name, status } = report;
-  const recipient = getContactEmail(report);
-  if (!recipient) {
+  const { recipients, message } =
+    report.status === ReportStatus.SUBMITTED
+      ? {
+          recipients: await getSubmittedRecipients(report),
+          message: submittedTemplate(report),
+        }
+      : {
+          recipients: getInRevisionRecipients(report),
+          message: inRevisionTemplate(report),
+        };
+  const addresses = recipients.filter(
+    (email): email is string => typeof email === "string" && email !== ""
+  );
+  const validRecipients = [...new Set(addresses)].filter((email) => {
+    if (!recipientEmailSchema.isValidSync(email)) {
+      logger.warn("sendEmail: excluding invalid recipient email", {
+        id: report.id,
+        email,
+      });
+      return false;
+    }
+    return true;
+  });
+  if (validRecipients.length === 0) {
     logger.warn("sendEmail: no recipients found for report", {
       id: report.id,
       status: report.status,
     });
     return;
   }
-  const emailTemplate = getTemplate(name, status, [recipient]);
-  logger.info("Sending email to: ", recipient, "with content: ", emailTemplate);
-  await sendSesEmail(emailTemplate);
+  logger.info("Sending email to: ", validRecipients);
+  await sendSesEmail({
+    Source: FROM_ADDRESS,
+    Destination: {
+      ToAddresses: validRecipients,
+    },
+    Message: message,
+  });
 };

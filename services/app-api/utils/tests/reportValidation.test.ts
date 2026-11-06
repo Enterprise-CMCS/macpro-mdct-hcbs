@@ -25,6 +25,26 @@ import {
 } from "./mockReport";
 
 describe("reportValidation", () => {
+  it("should validate contact email format without requiring draft answers", async () => {
+    const report = structuredClone(validReport);
+    const contact = report.pages
+      .find((page) => page.id === "general-info")
+      ?.elements?.find((element) => element.id === "contact-email");
+    if (contact?.type !== ElementType.Textbox) {
+      throw new Error("Expected contact email textbox");
+    }
+    contact.answer = "invalid-email";
+    await expect(validateReportPayload(report)).rejects.toThrow(
+      "Invalid contact email address"
+    );
+    contact.answer = "contact@example.com";
+    await expect(validateReportPayload(report)).resolves.toBeDefined();
+    contact.answer = "";
+    await expect(validateReportPayload(report)).resolves.toBeDefined();
+    Object.assign(contact, { answer: null });
+    await expect(validateReportPayload(report)).resolves.toBeDefined();
+  });
+
   describe("valid report scenarios", () => {
     it("should accept a valid report object", async () => {
       const validatedData = await validateReportPayload(validReport);
