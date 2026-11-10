@@ -26,8 +26,7 @@ export const HDCWCIntroductionCard = () => {
             submitted ...
           </p>
           <p>
-            The HCBS Direct Care Worker Compensation Report deadlines are TBD
-            ...
+            The HCBS Direct Care Worker Compensation Report deadlines are TBD...
           </p>
         </AccordionItem>
       </Accordion>
