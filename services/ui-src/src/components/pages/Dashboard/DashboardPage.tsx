@@ -62,7 +62,7 @@ export const DashboardPage = () => {
     : `${reportName}s`;
   const filterYear = searchParams.get("year") || "All";
   const filterDropdownOptions =
-    reportType === ReportType.IMA
+    reportType === ReportType.IMA || reportType === ReportType.HDCWC
       ? [
           { label: "All", value: "All" },
           { label: "2028", value: "2028" },
@@ -136,6 +136,8 @@ export const DashboardPage = () => {
         return "Start Quality Improvement Plan";
       case ReportType.IMA:
         return "Start Incident Management Assessment";
+      case ReportType.HDCWC:
+        return "Start HCBS Direct Care Worker Compensation Report";
       default:
         return `Start ${reportName}`;
     }
@@ -247,13 +249,13 @@ export const DashboardPage = () => {
                   return (
                     <>
                       <p>
-                        Click the <b>"Start {reportName}"</b> button to begin
-                        creating your report. A series of questions will appear
-                        to gather the necessary information for your report.
-                        Fill out each field accurately to ensure your report is
-                        complete. Before submitting, review the information
-                        you've provided. If everything looks good, confirm your
-                        entries and proceed.
+                        Click the <b>"{getStartReportLabel()}"</b> button to
+                        begin creating your report. A series of questions will
+                        appear to gather the necessary information for your
+                        report. Fill out each field accurately to ensure your
+                        report is complete. Before submitting, review the
+                        information you've provided. If everything looks good,
+                        confirm your entries and proceed.
                       </p>
                       <p>
                         Once the report is generated, you can edit the name of
@@ -274,7 +276,8 @@ export const DashboardPage = () => {
                     );
                   } else if (
                     reportType === ReportType.QIP ||
-                    reportType === ReportType.IMA
+                    reportType === ReportType.IMA ||
+                    reportType === ReportType.HDCWC
                   ) {
                     return null;
                   } else {

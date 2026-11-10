@@ -70,7 +70,10 @@ describe("Build Report", () => {
 
   it("should always have unique element IDs within a page", async () => {
     const baseReportTypes = Object.values(ReportType).filter(
-      (rt) => rt !== ReportType.QMS && rt !== ReportType.IMA
+      (rt) =>
+        rt !== ReportType.QMS &&
+        rt !== ReportType.IMA &&
+        rt !== ReportType.HDCWC
     );
     const qmsOptionCombinations = [...booleanCombinations(4)].map(
       ([a, b, c, d]) => ({ cahps: a, nciidd: b, nciad: c, pom: d })
@@ -87,6 +90,8 @@ describe("Build Report", () => {
       })),
       // IMA is only available for 2028
       { type: ReportType.IMA, opts: {}, year: 2028 },
+      // HDCWC is only available for 2028
+      { type: ReportType.HDCWC, opts: {}, year: 2028 },
     ];
 
     for (const { type, opts, year } of reportTypesAndOptions) {

@@ -31,6 +31,8 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
         return "QMS QIP";
       case ReportType.WWL:
         return "WWL Report";
+      case ReportType.HDCWC:
+        return "HDCWC";
     }
   };
 

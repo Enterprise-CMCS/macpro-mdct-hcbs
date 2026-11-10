@@ -60,6 +60,7 @@ const getDynamoInfo: GetDynamoInfo = async (record) => {
     HA: "ha-reports",
     CI: "ci-reports",
     IMA: "ima-reports",
+    HDCWC: "hdcwc-reports",
     PCP: "pcp-reports",
     QIP: "qip-reports",
     WWL: "wwl-reports",
