@@ -88,8 +88,8 @@ describe("Notification assignment storage", () => {
       mockDynamo.commandCalls(QueryCommand)[0].args[0].input
     ).toMatchObject({
       IndexName: "byReportState",
-      KeyConditionExpression: "reportState = :rs",
-      ExpressionAttributeValues: { ":rs": `${ReportType.HA}#AL` },
+      KeyConditionExpression: "reportState = :reportState",
+      ExpressionAttributeValues: { ":reportState": `${ReportType.HA}#AL` },
     });
     expect(mockDynamo.commandCalls(ScanCommand)).toHaveLength(0);
   });
@@ -112,7 +112,7 @@ describe("Notification assignment storage", () => {
     expect(
       mockDynamo.commandCalls(QueryCommand)[0].args[0].input
     ).toMatchObject({
-      ExpressionAttributeValues: { ":rs": reportState },
+      ExpressionAttributeValues: { ":reportState": reportState },
     });
   });
 
