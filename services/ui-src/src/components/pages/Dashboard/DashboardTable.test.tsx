@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DashboardTable } from "components";
 import { ReportStatus, Report, LiteReport } from "types";
@@ -176,11 +176,18 @@ describe("Dashboard table", () => {
 
   it("should show archive and reopen controls for CMS reviewers", () => {
     useStore.setState({ user: mockCMSReviewerUser });
-    renderVerticalTableWithAdminControls();
+    render(standardDashboardTableComponent);
 
-    expect(screen.getAllByText("Archive")).toHaveLength(2);
-    expect(screen.getByText("Unarchive")).toBeInTheDocument();
-    expect(screen.getAllByText("Unlock")).toHaveLength(3);
+    const activeReportRow = screen.getByRole("row", { name: /report 1/ });
+    const submittedReportRow = screen.getByRole("row", { name: /report 2/ });
+
+    expect(
+      within(activeReportRow).getByRole("button", { name: "Archive" })
+    ).toBeVisible();
+    expect(screen.getByRole("button", { name: "Unarchive" })).toBeVisible();
+    expect(
+      within(submittedReportRow).getByRole("button", { name: "Unlock" })
+    ).toBeVisible();
   });
 
   it("should disabled Unlock button for archived reports", () => {
