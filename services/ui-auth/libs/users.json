@@ -51,6 +51,31 @@
     ]
   },
   {
+    "username": "cmsreviewer@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "cmsreviewer@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Reviewer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdcthcbs-cms-reviewer"
+      }
+    ]
+  },
+  {
     "username": "helpdeskuser@test.com",
     "attributes": [
       {
