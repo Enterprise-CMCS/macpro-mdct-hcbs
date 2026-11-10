@@ -89,7 +89,7 @@ export const HorizontalTable = (props: TableProps) => {
                 <Button
                   variant="link"
                   onClick={() => props.openAddEditReportModal(report)}
-                  aria-label={`Edit ${report.name} name`}
+                  aria-label={`Edit name ${report.name}`}
                 >
                   Edit name
                 </Button>
@@ -100,8 +100,8 @@ export const HorizontalTable = (props: TableProps) => {
                 disabled={report.archived}
                 aria-label={
                   report.status !== ReportStatus.SUBMITTED
-                    ? `Edit ${report.name} report`
-                    : `View ${report.name} report`
+                    ? `Edit ${report.name}`
+                    : `View ${report.name}`
                 }
               >
                 {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
@@ -185,7 +185,7 @@ export const VerticalTable = (props: TableProps) => {
               <Button
                 variant="link"
                 onClick={() => props.openAddEditReportModal(report)}
-                aria-label={`Edit ${report.name} name`}
+                aria-label={`Edit name ${report.name}`}
               >
                 Edit name
               </Button>
@@ -199,8 +199,8 @@ export const VerticalTable = (props: TableProps) => {
               disabled={report.archived}
               aria-label={
                 report.status !== ReportStatus.SUBMITTED
-                  ? "Edit " + report.name + " report"
-                  : "View " + report.name + " report"
+                  ? "Edit " + report.name
+                  : "View " + report.name
               }
             >
               {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED

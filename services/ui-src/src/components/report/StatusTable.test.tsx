@@ -81,12 +81,10 @@ describe("StatusTable", () => {
     expect(screen.getByRole("columnheader", { name: "Section" })).toBeVisible();
     expect(screen.getByRole("columnheader", { name: "Status" })).toBeVisible();
     expect(screen.getByRole("columnheader", { name: "Actions" })).toBeVisible();
-    expect(
-      screen.getByRole("row", { name: "Page One complete icon Complete Edit" })
-    ).toBeVisible();
-    expect(
-      screen.getByRole("row", { name: "Page Two complete icon Complete Edit" })
-    ).toBeVisible();
+    expect(screen.getByRole("row", { name: /Page One/ })).toBeVisible();
+    expect(screen.getByRole("row", { name: /Page Two/ })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Edit Page One" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Edit Page Two" })).toBeVisible();
   });
 
   it("should navigate to the correct editable page when the Edit button is clicked", async () => {

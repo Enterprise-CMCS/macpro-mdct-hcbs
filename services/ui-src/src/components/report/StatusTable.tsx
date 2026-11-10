@@ -73,6 +73,7 @@ export const StatusTableElement = () => {
           <Button
             variant="outline"
             leftIcon={<Image src={editIconPrimary} />}
+            aria-label={`Edit ${section.navTitle}`}
             onClick={() => handleEditClick(section.id)}
           >
             Edit
