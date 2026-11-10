@@ -19,7 +19,7 @@ export const SubmitReportModal = (
         <Button colorScheme="blue" mr={3} onClick={() => submitHandler()}>
           {`Submit ${reportType} Report`}
         </Button>
-        <Button variant="link" fontWeight="bold" onClick={() => onClose(false)}>
+        <Button variant="link" onClick={() => onClose(false)}>
           Cancel
         </Button>
       </ModalFooter>
