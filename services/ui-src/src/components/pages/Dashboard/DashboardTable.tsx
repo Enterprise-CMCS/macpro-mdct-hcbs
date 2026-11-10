@@ -250,7 +250,7 @@ export const DashboardTable = ({
   onReportUpdate,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
-  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
+  const { userCanManageReports, userIsEndUser } = useStore().user ?? {};
 
   const [archiving, setArchiving] = useState<number>();
   const [unlocking, setUnlocking] = useState<number>();
@@ -258,7 +258,7 @@ export const DashboardTable = ({
   // Translate role to defined behaviors
   const showEditNameColumn = userIsEndUser;
   const showReportSubmissionsColumn = !userIsEndUser;
-  const showAdminControls = userIsAdmin;
+  const showAdminControls = userCanManageReports;
 
   // Build header columns based on defined behaviors per role
   const headers = [

@@ -41,7 +41,7 @@ import { activeBannerSelector } from "utils/state/selectors";
 import { Banner } from "components/alerts/Banner";
 
 export const DashboardPage = () => {
-  const { userIsEndUser, userIsAdmin } = useStore().user ?? {};
+  const { userIsEndUser, userCanManageReports } = useStore().user ?? {};
   const { reportType, state } = useParams();
   const banner = useStore(activeBannerSelector(reportType as BannerArea));
   const [isLoading, setIsLoading] = useState(true);
@@ -93,7 +93,7 @@ export const DashboardPage = () => {
     (async () => {
       setIsLoading(true);
       let result = await getReportsForState(reportType, state);
-      if (!userIsAdmin) {
+      if (!userCanManageReports) {
         result = result.filter((report: LiteReport) => !report.archived);
       }
       setReports(result);
@@ -159,7 +159,7 @@ export const DashboardPage = () => {
           defaultIndex={[-1]} // sets the accordion to closed by default
         >
           <AccordionItem label="Instructions" sx={sx.accordionItem}>
-            {userIsAdmin ? (
+            {userCanManageReports ? (
               <Box sx={sx.accordionPanel}>
                 <Heading fontSize="heading_md" fontWeight="heading_md">
                   Admin Instructions
@@ -346,7 +346,7 @@ export const DashboardPage = () => {
           </Flex>
         )}
         {!reports?.length &&
-          (userIsAdmin ? (
+          (userCanManageReports ? (
             <Text variant="tableEmpty">
               Once a state or territory begins a QMS Report, you will be able to
               view it here.

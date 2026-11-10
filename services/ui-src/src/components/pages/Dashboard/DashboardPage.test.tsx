@@ -3,6 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { DashboardPage } from "components";
 import {
   mockAdminUser,
+  mockCMSReviewerUser,
   mockHelpDeskUser,
   mockStateUser,
   RouterWrappedComponent,
@@ -274,6 +275,38 @@ describe("DashboardPage", () => {
           }
         )
       ).toBeVisible();
+    });
+  });
+
+  describe("DashboardPage with CMS Reviewer", () => {
+    beforeEach(() => {
+      useStore.setState({ user: mockCMSReviewerUser });
+      vi.mocked(useParams).mockReturnValue({ reportType: "QMS", state: "CO" });
+    });
+
+    it("should show archived reports so they can be unarchived", async () => {
+      vi.mocked(getReportsForState).mockResolvedValueOnce([
+        {
+          id: "QMSCOARCHIVED",
+          type: "QMS",
+          state: "CO",
+          lastEdited: new Date("2024-10-24T08:31:54").valueOf(),
+          lastEditedBy: "Mock User",
+          status: "Not started",
+          name: "Archived reviewer report",
+          year: 2026,
+          archived: true,
+        } as Report,
+      ]);
+
+      render(dashboardComponent);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText("Archived reviewer report")
+        ).toBeInTheDocument();
+      });
+      expect(screen.getAllByText("Unarchive").length).toBeGreaterThan(0);
     });
   });
 });

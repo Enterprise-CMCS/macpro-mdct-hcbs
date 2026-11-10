@@ -6,6 +6,7 @@ import { ReportStatus, Report, LiteReport } from "types";
 import { useStore } from "utils";
 import {
   mockAdminUser,
+  mockCMSReviewerUser,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupTests";
@@ -171,6 +172,15 @@ describe("Dashboard table", () => {
   it("should show Unarchive text for archived reports", () => {
     renderVerticalTableWithAdminControls();
     expect(screen.getByText("Unarchive")).toBeInTheDocument();
+  });
+
+  it("should show archive and reopen controls for CMS reviewers", () => {
+    useStore.setState({ user: mockCMSReviewerUser });
+    renderVerticalTableWithAdminControls();
+
+    expect(screen.getAllByText("Archive")).toHaveLength(2);
+    expect(screen.getByText("Unarchive")).toBeInTheDocument();
+    expect(screen.getAllByText("Unlock")).toHaveLength(3);
   });
 
   it("should disabled Unlock button for archived reports", () => {

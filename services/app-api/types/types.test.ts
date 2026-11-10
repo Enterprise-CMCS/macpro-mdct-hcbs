@@ -11,6 +11,7 @@ describe("type utilities", () => {
     it.each([
       "mdcthcbs-bor",
       "mdcthcbs-appr",
+      "mdcthcbs-cms-reviewer",
       "mdcthcbs-hd",
       "mdcthcbs-internal-user",
       "mdcthcbs-state-user",
