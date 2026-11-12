@@ -4,6 +4,7 @@ PROJECT=hcbs
 BannersTable=local-banners
 ReportsTable=local-reports
 NotificationsTable=local-notifications
+NotificationAssignmentsTable=local-notification-assignments
 
 COGNITO_IDENTITY_POOL_ID=op://mdct_devs/hcbs_secrets/COGNITO_IDENTITY_POOL_ID
 COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/hcbs_secrets/COGNITO_USER_POOL_CLIENT_ID
