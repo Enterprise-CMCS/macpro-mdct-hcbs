@@ -2,7 +2,7 @@ import { ComponentStyleConfig, theme } from "@chakra-ui/react";
 
 const baseStyles = {
   table: {
-    th: {
+    "thead th, tfoot th": {
       padding: "0.5rem 0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
@@ -16,7 +16,13 @@ const baseStyles = {
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
     },
-    td: {
+    "th[scope='row']": {
+      color: "inherit",
+      textTransform: "none",
+      letterSpacing: "normal",
+      fontFamily: "inherit",
+    },
+    "td, th[scope='row']": {
       paddingLeft: 0,
       borderTop: "1px solid",
       borderBottom: "1px solid",

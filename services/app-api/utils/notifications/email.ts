@@ -6,7 +6,7 @@ import {
 } from "../../types/reports";
 import { sendSesEmail } from "../../libs/ses-lib";
 import { logger } from "../../libs/debug-lib";
-import { scanNotificationAssignments } from "../../storage/notificationAssignments";
+import { getEmailsForReportAndState } from "../../storage/notificationAssignments";
 import { string } from "yup";
 import { inRevisionTemplate, submittedTemplate } from "./emailTemplates";
 
@@ -23,10 +23,9 @@ const getContactEmail = (report: Report): string | undefined => {
 };
 
 const getSubmittedRecipients = async (report: Report) => {
-  const cmsRecipients = (await scanNotificationAssignments()).filter(
-    (assignment) =>
-      assignment.states.includes(report.state) &&
-      assignment.reports.includes(report.type)
+  const cmsRecipients = await getEmailsForReportAndState(
+    report.type,
+    report.state
   );
   if (cmsRecipients.length === 0) {
     logger.warn("sendEmail: no CMS recipients assigned to state and report", {
@@ -34,11 +33,7 @@ const getSubmittedRecipients = async (report: Report) => {
       reportType: report.type,
     });
   }
-  return [
-    getContactEmail(report),
-    report.submittedByEmail,
-    ...cmsRecipients.map((recipient) => recipient.email),
-  ];
+  return [getContactEmail(report), report.submittedByEmail, ...cmsRecipients];
 };
 
 const getInRevisionRecipients = (report: Report) => [getContactEmail(report)];

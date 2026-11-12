@@ -2,6 +2,7 @@ import { vi } from "vitest";
 
 process.env.ReportsTable = "local-reports";
 process.env.BannersTable = "local-banners";
+process.env.NotificationAssignmentsTable = "local-notification-assignments";
 
 /*
  * This mock mutes all logger output during tests! Including console errors!

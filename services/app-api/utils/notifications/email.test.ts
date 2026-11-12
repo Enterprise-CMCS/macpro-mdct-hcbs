@@ -2,8 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { sendEmail } from "./email";
 import { validReport } from "../tests/mockReport";
 import { sendSesEmail } from "../../libs/ses-lib";
-import { scanNotificationAssignments } from "../../storage/notificationAssignments";
-import { ElementType, ReportStatus, ReportType } from "../../types/reports";
+import {
+  getEmailsForReportAndState,
+  scanNotificationAssignments,
+} from "../../storage/notificationAssignments";
+import { ElementType, ReportStatus } from "../../types/reports";
 import { JSDOM } from "jsdom";
 
 vi.mock("../../libs/ses-lib");
@@ -12,7 +15,7 @@ vi.mock("../../storage/notificationAssignments");
 describe("sendEmail", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(scanNotificationAssignments).mockResolvedValue([]);
+    vi.mocked(getEmailsForReportAndState).mockResolvedValue([]);
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-10-26T16:32:46.480Z"));
   });
@@ -34,32 +37,18 @@ describe("sendEmail", () => {
       throw new Error("Expected contact email textbox");
     }
     contact.answer = "contact@example.com";
-    vi.mocked(scanNotificationAssignments).mockResolvedValue([
-      {
-        states: [report.state],
-        reports: [report.type],
-        email: "cms@example.com",
-      },
-      {
-        states: [report.state],
-        reports: [report.type],
-        email: "submitter@example.com",
-      },
-      {
-        states: ["CA"],
-        reports: [report.type],
-        email: "other-state@example.com",
-      },
-      {
-        states: [report.state],
-        reports: [ReportType.HA],
-        email: "other-report@example.com",
-      },
+    vi.mocked(getEmailsForReportAndState).mockResolvedValue([
+      "cms@example.com",
+      "submitter@example.com",
     ]);
 
     await sendEmail(report);
 
-    expect(scanNotificationAssignments).toHaveBeenCalledTimes(1);
+    expect(getEmailsForReportAndState).toHaveBeenCalledExactlyOnceWith(
+      report.type,
+      report.state
+    );
+    expect(scanNotificationAssignments).not.toHaveBeenCalled();
     expect(sendSesEmail).toHaveBeenCalledTimes(1);
     const email = vi.mocked(sendSesEmail).mock.calls[0][0];
     expect(email.Destination).toEqual({
@@ -111,17 +100,14 @@ describe("sendEmail", () => {
       throw new Error("Expected contact email textbox");
     }
     contact.answer = "contact@example.com";
-    vi.mocked(scanNotificationAssignments).mockResolvedValue([
-      {
-        states: [report.state],
-        reports: [report.type],
-        email: "cms@example.com",
-      },
+    vi.mocked(getEmailsForReportAndState).mockResolvedValue([
+      "cms@example.com",
     ]);
 
     await sendEmail(report);
 
     expect(scanNotificationAssignments).not.toHaveBeenCalled();
+    expect(getEmailsForReportAndState).not.toHaveBeenCalled();
     expect(sendSesEmail).toHaveBeenCalledTimes(1);
     const email = vi.mocked(sendSesEmail).mock.calls[0][0];
     expect(email.Destination).toEqual({
@@ -171,7 +157,7 @@ describe("sendEmail", () => {
   });
 
   it("should propagate lookup failures to the handler without sending", async () => {
-    vi.mocked(scanNotificationAssignments).mockRejectedValueOnce(
+    vi.mocked(getEmailsForReportAndState).mockRejectedValueOnce(
       new Error("Dynamo unavailable")
     );
     await expect(
@@ -196,13 +182,9 @@ describe("sendEmail", () => {
       throw new Error("Expected contact email textbox");
     }
     contact.answer = "invalid-contact";
-    vi.mocked(scanNotificationAssignments).mockResolvedValue([
-      { email: "invalid-cms", states: [report.state], reports: [report.type] },
-      {
-        email: "cms@example.com",
-        states: [report.state],
-        reports: [report.type],
-      },
+    vi.mocked(getEmailsForReportAndState).mockResolvedValue([
+      "invalid-cms",
+      "cms@example.com",
     ]);
 
     await sendEmail(report);
