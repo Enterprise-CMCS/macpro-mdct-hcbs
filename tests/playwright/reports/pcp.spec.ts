@@ -83,7 +83,8 @@ test.describe("create and complete a PCP report as a state user", () => {
   test("complete a PCP report as a state user", async ({ page }) => {
     const reportBtn = () =>
       page.getByRole("button", {
-        name: `Edit ${testModalData.reportName}${testModalData.datetime} report`,
+        name: `Edit ${testModalData.reportName}${testModalData.datetime}`,
+        exact: true,
       });
 
     await reportBtn().click();
