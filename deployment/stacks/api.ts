@@ -134,7 +134,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
-      resources: tables.map((table) => table.table.tableArn),
+      resources: tables.flatMap((table) => [
+        table.table.tableArn,
+        `${table.table.tableArn}/index/*`,
+      ]),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -254,16 +257,38 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (isDev) {
-    new Lambda(scope, "sendTestEmail", {
-      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
-      handler: "sendTestEmail",
-      path: "notifications/test-email",
-      method: "POST",
-      ...commonProps,
-      additionalPolicies: [...additionalPolicies, sesPolicy],
-    });
-  }
+  new Lambda(scope, "fetchEmailsForReportAndState", {
+    entry:
+      "services/app-api/handlers/notificationAssignments/fetchEmailsForReportAndState.ts",
+    handler: "fetchEmailsForReportAndState",
+    path: "notification-assignments/emails/{reportType}/{state}",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "fetchNotificationAssignments", {
+    entry: "services/app-api/handlers/notificationAssignments/fetch.ts",
+    handler: "fetchNotificationAssignments",
+    path: "notification-assignments",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "putNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/put.ts",
+    handler: "putNotificationAssignment",
+    path: "notification-assignments",
+    method: "PUT",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "deleteNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/delete.ts",
+    handler: "deleteNotificationAssignment",
+    path: "notification-assignments/{email}",
+    method: "DELETE",
+    ...commonProps,
+  });
 
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
