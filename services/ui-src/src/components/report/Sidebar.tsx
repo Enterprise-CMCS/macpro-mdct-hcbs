@@ -70,6 +70,7 @@ export const Sidebar = () => {
         <Link
           variant={"sidebar"}
           className={page.id === currentPageId ? "selected" : ""}
+          aria-current={page.id === currentPageId ? "true" : undefined}
           href={`/report/${reportType}/${state}/${reportId}/${page.id}`}
           onClick={(e) => {
             e.preventDefault();
