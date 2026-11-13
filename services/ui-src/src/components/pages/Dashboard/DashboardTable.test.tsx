@@ -130,7 +130,9 @@ describe("Dashboard table", () => {
 
     render(standardDashboardTableComponent);
 
-    const editButton = screen.getByLabelText("Edit report 1 name");
+    const editButton = screen.getByRole("button", {
+      name: "Edit name report 1",
+    });
     expect(editButton).toBeInTheDocument();
     await userEvent.click(editButton);
     expect(mockOpenAddEditReportModal).toHaveBeenCalled();
