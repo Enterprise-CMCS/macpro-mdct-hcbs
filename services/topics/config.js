@@ -9,6 +9,7 @@ export default [
       ".ha-reports",
       ".ci-reports",
       ".ima-reports",
+      ".hdcwc-reports",
       ".pcp-reports",
       ".qip-reports",
       ".wwl-reports",

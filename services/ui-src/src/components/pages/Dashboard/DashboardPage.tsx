@@ -62,7 +62,7 @@ export const DashboardPage = () => {
     : `${reportName}s`;
   const filterYear = searchParams.get("year") || "All";
   const filterDropdownOptions =
-    reportType === ReportType.IMA
+    reportType === ReportType.IMA || reportType === ReportType.HDCWC
       ? [
           { label: "All", value: "All" },
           { label: "2028", value: "2028" },
@@ -136,6 +136,8 @@ export const DashboardPage = () => {
         return "Start Quality Improvement Plan";
       case ReportType.IMA:
         return "Start Incident Management Assessment";
+      case ReportType.HDCWC:
+        return "Start HCBS Direct Care Worker Compensation Report";
       default:
         return `Start ${reportName}`;
     }
@@ -274,7 +276,8 @@ export const DashboardPage = () => {
                     );
                   } else if (
                     reportType === ReportType.QIP ||
-                    reportType === ReportType.IMA
+                    reportType === ReportType.IMA ||
+                    reportType === ReportType.HDCWC
                   ) {
                     return null;
                   } else {

@@ -8,6 +8,7 @@ import { qipReportTemplate as qipReportTemplate2026 } from "./2026/qip/qip";
 import { wwlReportTemplate as wwlReportTemplate2026 } from "./2026/wwl/wwl";
 import { qmsReportTemplate as qmsReportTemplate2028 } from "./2028/qms/qms";
 import { imaReportTemplate as imaReportTemplate2028 } from "./2028/ima/ima";
+import { hdcwcReportTemplate as hdcwcReportTemplate2028 } from "./2028/hdcwc/hdcwc";
 import { getReportTemplate } from "./yearlyFormSelection";
 
 describe("Yearly Form Selection", () => {
@@ -63,6 +64,12 @@ describe("Yearly Form Selection", () => {
 
   it("should return the template for the exact requested year, if one exists (IMA report 2028)", () => {
     expect(getReportTemplate(ReportType.IMA, 2028)).toBe(imaReportTemplate2028);
+  });
+
+  it("should return the template for the exact requested year, if one exists (HDCWC report 2028)", () => {
+    expect(getReportTemplate(ReportType.HDCWC, 2028)).toBe(
+      hdcwcReportTemplate2028
+    );
   });
 
   it("should throw an error if the requested year is not available (WWL report)", () => {

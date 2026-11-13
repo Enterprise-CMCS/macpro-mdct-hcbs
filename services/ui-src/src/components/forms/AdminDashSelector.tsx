@@ -52,6 +52,11 @@ export const reportOptions: ReportOption[] = [
     label: "Waiver Waiting List Report (WWL)",
     flagName: "isWwlReportActive",
   },
+  {
+    value: ReportType.HDCWC,
+    label: "HCBS Direct Care Worker Compensation Report (HDCWC)",
+    flagName: "isHdcwcReportActive",
+  },
 ];
 
 const buildStates = (): DropdownOptions[] => {

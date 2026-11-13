@@ -8,6 +8,7 @@ export enum ReportType {
   IMA = "IMA",
   QIP = "QIP",
   WWL = "WWL",
+  HDCWC = "HDCWC",
 }
 
 export const isReportType = (
@@ -32,6 +33,8 @@ export const getReportName = (type: string | undefined) => {
       return "QMS Quality Improvement Plans";
     case ReportType.WWL:
       return "Waiver Waiting List Report";
+    case ReportType.HDCWC:
+      return "HCBS Direct Care Worker Compensation Reports";
     default:
       return "";
   }
