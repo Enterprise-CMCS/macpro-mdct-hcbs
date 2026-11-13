@@ -23,6 +23,7 @@ The QMS and QIP reports each have a Kafka topic that receives messages when the 
   -- - CI: `aws.mdct.hcbs.ci-reports.v0`
   -- - PCP: `aws.mdct.hcbs.pcp-reports.v0`
   -- - WWL: `aws.mdct.hcbs.wwl-reports.v0`
+  -- - HDCWC: `aws.mdct.hcbs.hdcwc-reports.v0`
   -->
 
 In ephemeral development environments, each topic name is prefixed.

@@ -21,13 +21,8 @@ export const HDCWCIntroductionCard = () => {
       <ReportIntroCardActions reportType={ReportType.HDCWC} />
       <Accordion allowToggle={true} defaultIndex={[-1]}>
         <AccordionItem label="When is the HCBS Direct Care Worker Compensation Report Due?">
-          <p>
-            The HCBS Direct Care Worker Compensation Report will be created and
-            submitted ...
-          </p>
-          <p>
-            The HCBS Direct Care Worker Compensation Report deadlines are TBD...
-          </p>
+          <p>The HCBS Access Report will be created and submitted ...</p>
+          <p>The HCBS Access Report deadlines are TBD...</p>
         </AccordionItem>
       </Accordion>
     </ReportIntroCard>
