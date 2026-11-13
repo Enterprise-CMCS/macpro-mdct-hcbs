@@ -249,13 +249,16 @@ export const DashboardPage = () => {
                   return (
                     <>
                       <p>
-                        Click the <b>"{getStartReportLabel()}"</b> button to
-                        begin creating your report. A series of questions will
-                        appear to gather the necessary information for your
-                        report. Fill out each field accurately to ensure your
-                        report is complete. Before submitting, review the
-                        information you've provided. If everything looks good,
-                        confirm your entries and proceed.
+                        Click the{" "}
+                        <b>
+                          "Start HCBS Direct Care Worker Compensation Report"
+                        </b>{" "}
+                        button to begin creating your report. A series of
+                        questions will appear to gather the necessary
+                        information for your report. Fill out each field
+                        accurately to ensure your report is complete. Before
+                        submitting, review the information you've provided. If
+                        everything looks good, confirm your entries and proceed.
                       </p>
                       <p>
                         Once the report is generated, you can edit the name of

@@ -109,6 +109,7 @@ describe("<AddEditEmailModal />", () => {
       isCiReportActive: true,
       isPcpReportActive: true,
       isImaReportActive: true,
+      isHdcwcReportActive: true,
       isWwlReportActive: true,
     });
     render(modal);
