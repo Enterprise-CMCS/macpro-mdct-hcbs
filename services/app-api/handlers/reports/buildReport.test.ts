@@ -90,7 +90,6 @@ describe("Build Report", () => {
       })),
       // IMA is only available for 2028
       { type: ReportType.IMA, opts: {}, year: 2028 },
-      // HDCWC is only available for 2028
       { type: ReportType.HDCWC, opts: {}, year: 2028 },
     ];
 

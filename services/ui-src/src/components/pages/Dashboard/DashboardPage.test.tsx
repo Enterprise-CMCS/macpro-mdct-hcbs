@@ -179,6 +179,25 @@ describe("DashboardPage", () => {
       ).toBeInTheDocument();
     });
 
+    it("should render the HDCWC start button label", async () => {
+      vi.mocked(useParams).mockReturnValue({
+        reportType: "HDCWC",
+        state: "CO",
+      });
+
+      render(dashboardComponent);
+
+      await waitFor(() => {
+        expect(getReportsForState).toHaveBeenCalled();
+      });
+
+      expect(
+        screen.getByRole("button", {
+          name: "Start HCBS Direct Care Worker Compensation Report",
+        })
+      ).toBeInTheDocument();
+    });
+
     it("should render QIP-specific instructions", async () => {
       vi.mocked(useParams).mockReturnValue({
         reportType: "QIP",

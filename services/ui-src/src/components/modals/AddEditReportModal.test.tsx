@@ -270,6 +270,10 @@ describe("AddEditReportModal", () => {
     { type: ReportType.QIP, text: "Quality Improvement Plan" },
     { type: ReportType.WWL, text: "Waiver Waiting List Report" },
     { type: ReportType.IMA, text: "Incident Management Assessment" },
+    {
+      type: ReportType.HDCWC,
+      text: "HCBS Direct Care Worker Compensation Report",
+    },
   ])("should render $type report title", ({ type, text }) => {
     render(
       <RouterWrappedComponent>

@@ -36,10 +36,10 @@ export const hdcwcReportTemplate: ReportBase = {
         {
           id: "contact-name",
           type: ElementType.Textbox,
-          label: "Contact name",
+          label: "Contact name/title",
           required: true,
           helperText:
-            "Enter a person's name or a position title for CMS to contact with questions about this report.",
+            "Provide name and/or title of the primary point of contact for follow-up regarding this assessment.",
         },
         {
           type: ElementType.Textbox,
@@ -49,8 +49,16 @@ export const hdcwcReportTemplate: ReportBase = {
           helperText:
             "Enter an email address for the person or position above. Department or program-wide email addresses are allowed.",
         },
-        waiverListCheckboxField,
-        waiverListInputField,
+        {
+          ...waiverListCheckboxField,
+          label:
+            "Select all HCBS authorities included in this incident management assessment for this reporting period.",
+        },
+        {
+          ...waiverListInputField,
+          label:
+            "If an HCBS authority is not included above, add its name and control number here.",
+        },
       ],
     },
     {
@@ -67,7 +75,7 @@ export const hdcwcReportTemplate: ReportBase = {
           id: "review-alert",
           status: AlertTypes.ERROR,
           title: "Your form is not ready for submission",
-          text: "Some sections of the HDCWC Report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
+          text: "Some sections of the report have errors or are missing required responses. Ensure all required fields are completed with valid responses before submitting.",
         },
         {
           type: ElementType.Header,
@@ -78,7 +86,13 @@ export const hdcwcReportTemplate: ReportBase = {
           type: ElementType.Paragraph,
           id: "review-text",
           title: "Ready to submit?",
-          text: 'Double check that everything in your HDCWC Report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
+          text: 'Double check that everything in your report is accurate. Once your report is submitted and in "Submitted" status, your report will lock. To make edits after submitting, you will need to contact your CMS HCBS Lead to unlock your report.',
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "review-compliance",
+          title: "Compliance review",
+          text: "Your CMS HCBS Lead will review your report and may contact you and unlock your report for editing if there are corrections to be made.",
         },
         {
           type: ElementType.StatusTable,
@@ -100,6 +114,18 @@ export const hdcwcReportTemplate: ReportBase = {
         {
           type: ElementType.Divider,
           id: "divider",
+        },
+        {
+          type: ElementType.Paragraph,
+          id: "submitted-what-explanation",
+          title: "What happens now?",
+          text: 'Your dashboard will indicate the status of this report as "Submitted". Your report is now locked from editing.',
+        },
+        {
+          type: ElementType.Paragraph,
+          weight: "bold",
+          id: "submitted-what-happens",
+          text: "Email your CMS representative to inform them that you have submitted the report and it is ready for their review.",
         },
         exportToPDF,
       ],

@@ -159,6 +159,26 @@ describe("postKafkaData", () => {
     });
   });
 
+  it("should publish an HDCWC report to the HDCWC topic", async () => {
+    mockedGetReport.mockResolvedValueOnce({
+      ...fullReport,
+      type: ReportType.HDCWC,
+    } as any);
+
+    await handler({
+      Records: [createRecord({ type: "HDCWC", eventID: "evt-3" })],
+    });
+
+    expect(mockedGetReport).toHaveBeenCalledWith("HDCWC", "CO", "report-1");
+    expect(mockSendBatch).toHaveBeenCalledWith({
+      topicMessages: [
+        expect.objectContaining({
+          topic: expect.stringContaining("hdcwc-reports"),
+        }),
+      ],
+    });
+  });
+
   it("should not publish page items", async () => {
     await handler({ Records: [createRecord({ sortKey: "report-1#page-a" })] });
 
