@@ -72,7 +72,7 @@ const mockTableProps = {
   reports: reports,
   showEditNameColumn: true,
   showReportSubmissionsColumn: false,
-  showAdminControls: false,
+  showReportActions: false,
   openAddEditReportModal: mockOpenAddEditReportModal,
   navigate: vi.fn(),
   userIsEndUser: true,
@@ -86,7 +86,7 @@ const mockAdminTableProps = {
   ...mockTableProps,
   showEditNameColumn: false,
   showReportSubmissionsColumn: true,
-  showAdminControls: true,
+  showReportActions: true,
   userIsEndUser: false,
 };
 
