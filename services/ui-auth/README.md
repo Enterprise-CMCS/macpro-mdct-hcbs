@@ -36,6 +36,7 @@ The CDK Trigger Lambda (`createUsers.js`) will automatically create the user; no
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `mdcthcbs-bor`           | Business Owner Representative (Admin)                                                                                              |
 | `mdcthcbs-appr`          | Approver                                                                                                                           |
+| `mdcthcbs-cms-reviewer`  | CMS Reviewer (view, reopen, and archive reports)                                                                                   |
 | `mdcthcbs-hd`            | Help Desk                                                                                                                          |
 | `mdcthcbs-internal-user` | Internal User                                                                                                                      |
 | `mdcthcbs-state-user`    | State User                                                                                                                         |

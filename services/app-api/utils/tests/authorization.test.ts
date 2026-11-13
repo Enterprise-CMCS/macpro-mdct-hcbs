@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   canArchiveReport,
+  canChangeNotification,
   canReadState,
   canReleaseReport,
   canWriteBanner,
@@ -14,6 +15,10 @@ const adminUser = {
 
 const approverUser = {
   role: UserRoles.APPROVER,
+} as User;
+
+const cmsReviewerUser = {
+  role: UserRoles.CMS_REVIEWER,
 } as User;
 
 const internalUser = {
@@ -35,12 +40,21 @@ describe("Authorization functions", () => {
       expect(canReadState(adminUser, "CO")).toBe(true);
     });
 
+    it("should allow CMS reviewers to read any state", () => {
+      expect(canReadState(cmsReviewerUser, "CO")).toBe(true);
+      expect(canReadState(cmsReviewerUser, "TX")).toBe(true);
+    });
+
     it("should allow state users to read their own state", () => {
       expect(canReadState(stateUser, "CO")).toBe(true);
     });
 
     it("should forbid state users to read other states", () => {
       expect(canReadState(stateUser, "TX")).toBe(false);
+    });
+
+    it("should not allow CMS reviewers to write state reports", () => {
+      expect(canWriteState(cmsReviewerUser, "CO")).toBe(false);
     });
   });
 
@@ -59,9 +73,10 @@ describe("Authorization functions", () => {
   });
 
   describe("canReleaseReport", () => {
-    it("should allow admins and approvers, forbid others", () => {
+    it("should allow admins, approvers, CMS reviewers but forbid others", () => {
       expect(canReleaseReport(adminUser)).toBe(true);
       expect(canReleaseReport(approverUser)).toBe(true);
+      expect(canReleaseReport(cmsReviewerUser)).toBe(true);
 
       expect(canReleaseReport(stateUser)).toBe(false);
       expect(canReleaseReport(helpDeskUser)).toBe(false);
@@ -70,9 +85,10 @@ describe("Authorization functions", () => {
   });
 
   describe("canArchiveReport", () => {
-    it("should allow admins and approvers, forbid others", () => {
+    it("should allow admins, approvers, CMS reviewers but forbid others", () => {
       expect(canArchiveReport(adminUser)).toBe(true);
       expect(canArchiveReport(approverUser)).toBe(true);
+      expect(canArchiveReport(cmsReviewerUser)).toBe(true);
 
       expect(canArchiveReport(stateUser)).toBe(false);
       expect(canArchiveReport(helpDeskUser)).toBe(false);
@@ -84,9 +100,16 @@ describe("Authorization functions", () => {
       expect(canWriteBanner(adminUser)).toBe(true);
 
       expect(canWriteBanner(approverUser)).toBe(false);
+      expect(canWriteBanner(cmsReviewerUser)).toBe(false);
       expect(canWriteBanner(stateUser)).toBe(false);
       expect(canWriteBanner(helpDeskUser)).toBe(false);
       expect(canWriteBanner(internalUser)).toBe(false);
+    });
+  });
+
+  describe("canChangeNotification", () => {
+    it("should forbid CMS reviewers", () => {
+      expect(canChangeNotification(cmsReviewerUser)).toBe(false);
     });
   });
 });
