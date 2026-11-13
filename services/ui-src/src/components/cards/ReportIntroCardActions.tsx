@@ -35,6 +35,7 @@ export const ReportIntroCardActions = ({ reportType }: Props) => {
   };
 
   const helpFiles: { [key in ReportType]?: string } = {
+    QIP: "CMS_QMS_QIP_User_Guide_and_Help_File.pdf",
     QMS: "CMS_QMS_User_Guide_and_Help_File.pdf",
   };
 
