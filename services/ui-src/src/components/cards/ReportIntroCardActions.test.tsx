@@ -40,6 +40,27 @@ describe("<ReportIntroCardActions />", () => {
     });
 
     it.each([
+      {
+        reportType: ReportType.QMS,
+        href: `${window.location.origin}/CMS_QMS_User_Guide_and_Help_File.pdf`,
+      },
+      {
+        reportType: ReportType.QIP,
+        href: `${window.location.origin}/CMS_QMS_QIP_User_Guide_and_Help_File.pdf`,
+      },
+    ])(
+      "should render the user guide link when report type is $reportType",
+      ({ reportType, href }) => {
+        render(reportActionsComponent(reportType));
+        const userGuideLink = screen.getByRole("link", {
+          name: /User Guide and Help File/i,
+        });
+        expect(userGuideLink).toBeVisible();
+        expect(userGuideLink).toHaveAttribute("href", href);
+      }
+    );
+
+    it.each([
       { type: ReportType.QMS, text: "QMS Report" },
       { type: ReportType.HA, text: "HA Report" },
       { type: ReportType.CI, text: "CI Report" },
