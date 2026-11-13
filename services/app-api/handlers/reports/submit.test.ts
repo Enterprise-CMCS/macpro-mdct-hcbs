@@ -5,8 +5,10 @@ import { APIGatewayProxyEvent, UserRoles } from "../../types/types";
 import { canWriteState } from "../../utils/authorization";
 import { validReport } from "../../utils/tests/mockReport";
 import { submitReport } from "./submit";
-import { putReport } from "../../storage/reports";
+import { getReport, putReport } from "../../storage/reports";
 import { ReportStatus } from "../../types/reports";
+import { sendEmail } from "../../utils/notifications/email";
+import { getFlag } from "../../libs/launchdarkly-lib";
 
 vi.mock("../../libs/launchdarkly-lib", () => ({
   getFlag: vi.fn().mockResolvedValue(true),
@@ -30,6 +32,7 @@ vi.mock("../../utils/authorization", () => ({
 }));
 
 vi.mock("../../storage/reports", () => ({
+  getReport: vi.fn(),
   putReport: vi.fn(),
 }));
 
@@ -54,6 +57,7 @@ const testEvent: APIGatewayProxyEvent = {
 describe("submitReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(getReport).mockResolvedValue(structuredClone(validReport));
   });
 
   it("should return Bad Request if missing path params", async () => {
@@ -143,6 +147,86 @@ describe("submitReport", () => {
         lastEditedBy: "myname",
         lastEditedByEmail: "myname@example.com",
       })
+    );
+    expect(sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        status: ReportStatus.SUBMITTED,
+        submittedByEmail: "myname@example.com",
+      })
+    );
+  });
+
+  it("should notify when an unlocked report is resubmitted", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
+      ...validReport,
+      status: ReportStatus.IN_PROGRESS,
+    });
+
+    const response = await submitReport(testEvent);
+
+    expect(response.statusCode).toBe(StatusCodes.Ok);
+    expect(sendEmail).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({
+        status: ReportStatus.SUBMITTED,
+        submittedByEmail: "myname@example.com",
+      })
+    );
+  });
+
+  it("should preserve saving but not notify an already submitted stored report", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce({
+      ...validReport,
+      status: ReportStatus.SUBMITTED,
+    });
+    const res = await submitReport(testEvent);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        submissionCount: 1,
+        submittedByEmail: "myname@example.com",
+      })
+    );
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("should preserve submission behavior when no stored report is found", async () => {
+    vi.mocked(getReport).mockResolvedValueOnce(undefined);
+    expect((await submitReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("should submit without email when the flag is disabled", async () => {
+    vi.mocked(getFlag).mockResolvedValueOnce(false);
+    expect((await submitReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(sendEmail).not.toHaveBeenCalled();
+    expect(getReport).not.toHaveBeenCalled();
+  });
+
+  it("should keep a successful submission when email fails", async () => {
+    vi.mocked(sendEmail).mockRejectedValueOnce(new Error("SES unavailable"));
+    expect((await submitReport(testEvent)).statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledTimes(1);
+  });
+
+  it("should save successfully when the notification report lookup fails", async () => {
+    vi.mocked(getReport).mockRejectedValueOnce(
+      new Error("Could not find all pages for report")
+    );
+
+    const response = await submitReport(testEvent);
+
+    expect(response.statusCode).toBe(StatusCodes.Ok);
+    expect(putReport).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({
+        status: ReportStatus.SUBMITTED,
+        submittedByEmail: "myname@example.com",
+      })
+    );
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(putReport).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(sendEmail).mock.invocationCallOrder[0]
     );
   });
 });
