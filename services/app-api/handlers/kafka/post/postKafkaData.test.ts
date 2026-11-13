@@ -36,6 +36,7 @@ const namespace = "--hcbs--test-stage--";
 const reportTable = "testing-Reports";
 const qmsTopic = `${namespace}aws.mdct.hcbs.qms-reports.v0`;
 const qipTopic = `${namespace}aws.mdct.hcbs.qip-reports.v0`;
+const hdcwcTopic = `${namespace}aws.mdct.hcbs.hdcwc-reports.v0`;
 const fullReport = {
   id: "report-1",
   type: ReportType.QMS,
@@ -159,7 +160,7 @@ describe("postKafkaData", () => {
     });
   });
 
-  it("should publish an HDCWC report to the HDCWC topic", async () => {
+  it("should publish a full HDCWC report to the HDCWC topic", async () => {
     mockedGetReport.mockResolvedValueOnce({
       ...fullReport,
       type: ReportType.HDCWC,
@@ -172,9 +173,18 @@ describe("postKafkaData", () => {
     expect(mockedGetReport).toHaveBeenCalledWith("HDCWC", "CO", "report-1");
     expect(mockSendBatch).toHaveBeenCalledWith({
       topicMessages: [
-        expect.objectContaining({
-          topic: expect.stringContaining("hdcwc-reports"),
-        }),
+        {
+          topic: hdcwcTopic,
+          messages: [
+            expect.objectContaining({
+              key: "HDCWC#CO#report-1",
+              value: JSON.stringify({
+                NewImage: { ...fullReport, type: "HDCWC" },
+                Keys: { pKey: "HDCWC#CO", sortKey: "report-1" },
+              }),
+            }),
+          ],
+        },
       ],
     });
   });
