@@ -24,8 +24,16 @@ import { error } from "./constants";
 const hideConditionSchema = object()
   .shape({
     controllerElementId: string().required(),
-    answer: string().required(),
+    answer: string().notRequired(),
+    answerExcludes: array().of(string().required()).notRequired(),
   })
+  .test(
+    "exclusive-answer-condition",
+    "A hide condition must specify either answer or answerExcludes, but not both.",
+    (value) =>
+      value === undefined ||
+      (value.answer !== undefined) !== (value.answerExcludes !== undefined)
+  )
   .notRequired()
   .default(undefined);
 
@@ -284,6 +292,7 @@ const checkboxTemplateSchema = object().shape({
   emptyAlertTitle: string().notRequired(),
   emptyAlertDescription: string().notRequired(),
   required: boolean().required(),
+  clickAction: string().notRequired(),
 });
 
 const buttonLinkTemplateSchema = object().shape({
@@ -298,6 +307,7 @@ const dividerSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.Divider)),
   id: string().required(),
   showWhenNonCompliant: array().of(string().required()).notRequired(),
+  hideCondition: hideConditionSchema,
 });
 
 const submissionParagraphSchema = object().shape({
@@ -659,6 +669,21 @@ const ndrRateSchema = object().shape({
     .notRequired(),
 });
 
+const performanceNdrChildSchema = lazy((value: PageElement): Schema => {
+  switch (value?.type) {
+    case ElementType.SubHeader:
+      return subHeaderTemplateSchema;
+    case ElementType.Radio:
+      return radioTemplateSchema;
+    default:
+      return mixed().test(
+        "performance-ndr-child",
+        "Unsupported PerformanceNdr child type",
+        () => false
+      );
+  }
+});
+
 const performanceNdrSchema = object().shape({
   type: string().required().matches(new RegExp(ElementType.PerformanceNdr)),
   id: string().required(),
@@ -682,6 +707,8 @@ const performanceNdrSchema = object().shape({
   displayRateAsPercent: boolean().notRequired(),
   minPerformanceLevel: number().notRequired(),
   conditionalChildren: lazy(() => array().of(pageElementSchema).notRequired()),
+  hideCondition: hideConditionSchema,
+  children: array().of(performanceNdrChildSchema).notRequired(),
 });
 
 const parentPageTemplateSchema = object().shape({

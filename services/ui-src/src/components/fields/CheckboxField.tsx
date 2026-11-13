@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
+import React, { useState, useEffect, useContext } from "react";
+import { Box, ListItem, UnorderedList, useDisclosure } from "@chakra-ui/react";
 import { PageElementProps } from "components/report/Elements";
 import {
   AlertTypes,
@@ -11,6 +11,12 @@ import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { ChoiceProps } from "@cmsgov/design-system/dist/react-components/types/ChoiceList/ChoiceList";
 import { Page } from "components/report/Page";
 import { Alert } from "components/alerts/Alert";
+import { ReportAutosaveContext } from "components/report/ReportAutosaveProvider";
+import { useStore } from "utils";
+import { Modal } from "components";
+
+const serviceTypeRemovalWarning =
+  "Warning: Changing this response will clear any data previously entered in the corresponding service sections.";
 
 const formatChoices = (
   choices: ChoiceTemplate[],
@@ -56,12 +62,22 @@ const formatChoices = (
 
 export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
   const checkbox = props.element;
+  const { clearHiddenElements, currentPageId } = useStore();
+  const { autosave } = useContext(ReportAutosaveContext);
   const initialDisplayValue = formatChoices(
     checkbox.choices,
     checkbox.answer ?? [],
     props.updateElement
   );
   const [displayValue, setDisplayValue] = useState(initialDisplayValue);
+  const [pendingValue, setPendingValue] = useState<string>();
+  const [showRemovalWarning, setShowRemovalWarning] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const closeModal = () => {
+    setPendingValue(undefined);
+    onClose();
+  };
 
   // Need to listen to prop updates from the parent for events like a measure clear
   useEffect(() => {
@@ -74,15 +90,13 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
     );
   }, [checkbox.choices, checkbox.answer]);
 
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const changeSelection = (value: string) => {
+    const selections = new Set(checkbox.answer);
 
-    let set = new Set(checkbox.answer);
+    if (selections.has(value)) selections.delete(value);
+    else selections.add(value);
 
-    if (set.has(value)) set.delete(value);
-    else set.add(value);
-
-    const newValue = [...set];
+    const newValue = [...selections];
     const newDisplayValue = formatChoices(
       checkbox.choices,
       newValue,
@@ -90,6 +104,38 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
     );
     setDisplayValue(newDisplayValue);
     props.updateElement({ answer: newValue });
+
+    if (!checkbox.clickAction || !currentPageId) {
+      return;
+    }
+
+    switch (checkbox.clickAction) {
+      case "serviceTypeChange":
+        clearHiddenElements(currentPageId, checkbox.id);
+        autosave();
+        return;
+    }
+  };
+
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (
+      checkbox.clickAction === "serviceTypeChange" &&
+      checkbox.answer?.includes(value)
+    ) {
+      setPendingValue(value);
+      onOpen();
+      return;
+    }
+    changeSelection(value);
+  };
+
+  const confirmSelection = () => {
+    if (pendingValue !== undefined) {
+      changeSelection(pendingValue);
+      setShowRemovalWarning(true);
+    }
+    closeModal();
   };
 
   const labelText = checkbox.label;
@@ -101,10 +147,33 @@ export const CheckboxField = (props: PageElementProps<CheckboxTemplate>) => {
         type={"checkbox"}
         label={labelText || ""}
         choices={displayValue}
-        hint={checkbox.helperText}
+        hint={
+          showRemovalWarning ? (
+            <>
+              {checkbox.helperText}
+              <Box as="span" display="block" color="palette.warn_darkest">
+                {serviceTypeRemovalWarning}
+              </Box>
+            </>
+          ) : (
+            checkbox.helperText
+          )
+        }
         onChange={onChangeHandler}
         {...props}
       />
+      {checkbox.clickAction === "serviceTypeChange" && (
+        <Modal
+          modalDisclosure={{ isOpen, onClose: closeModal }}
+          onConfirmHandler={confirmSelection}
+          content={{
+            heading: "Are you sure?",
+            subheading: serviceTypeRemovalWarning,
+            actionButtonText: "Yes",
+            closeButtonText: "No",
+          }}
+        />
+      )}
       {displayValue.length === 0 && !!checkbox.emptyAlertDescription ? (
         <Box mt={2}>
           <Alert

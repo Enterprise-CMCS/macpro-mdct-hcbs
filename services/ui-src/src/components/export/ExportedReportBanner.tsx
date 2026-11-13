@@ -14,7 +14,7 @@ export const ExportedReportBanner = ({ reportName }: Props) => {
     <Box sx={sx.container}>
       <Text>Click below to export or print {reportName} shown here</Text>
       <Button sx={sx.pdfButton} onClick={onClickHandler}>
-        <Image src={pdfIcon} alt="PDF Icon" />
+        <Image src={pdfIcon} alt="PDF" />
         Download PDF
       </Button>
     </Box>

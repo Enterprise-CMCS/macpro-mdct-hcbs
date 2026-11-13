@@ -104,6 +104,7 @@ describe("Report storage helpers", () => {
       expect(mockQuery).toHaveBeenCalledWith(
         {
           TableName: "local-reports",
+          ConsistentRead: true,
           KeyConditionExpression: "pKey = :pKey AND begins_with(sortKey, :id)",
           ExpressionAttributeValues: {
             ":pKey": "QMS#CO",

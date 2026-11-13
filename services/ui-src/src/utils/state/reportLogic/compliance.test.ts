@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { ComplianceRules, ElementType, PageElement } from "types";
-import { isNotCompliant } from "./compliance";
+import {
+  ComplianceRules,
+  ElementType,
+  ImaTableTemplate,
+  PageElement,
+} from "types";
+import { isImaTableNonCompliant, isNotCompliant } from "./compliance";
 
 const createTable = (overrides: Partial<PageElement> = {}) =>
   ({
@@ -333,6 +338,140 @@ describe("isNotCompliant", () => {
         }),
       ])
     ).toBe(true);
+  });
+
+  it.each(["not-referred", "no-info-shared", "status-only", "resolution-only"])(
+    "flags completed standard referral rows when none selects both (%s)",
+    (answer) => {
+      const table = createTable({
+        complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+        rows: [
+          { id: "incident-1", description: "Incident 1", answer },
+          {
+            id: "incident-2",
+            description: "Incident 2",
+            answer: "not-referred",
+          },
+          {
+            id: "incident-3",
+            description: "Incident 3",
+            answer: "not-referred",
+          },
+          {
+            id: "other",
+            description: "Other entity",
+            answer: "status-only",
+            isUserCreated: true,
+          },
+        ],
+      }) as ImaTableTemplate;
+
+      expect(isImaTableNonCompliant(table)).toEqual({
+        isNonCompliant: true,
+        nonCompliantRowIds: ["incident-1", "incident-2", "incident-3"],
+      });
+    }
+  );
+
+  it.each([
+    "not-referred",
+    "no-info-shared",
+    "status-only",
+    "resolution-only",
+    "both",
+  ])("is compliant when a referral row selects both alongside %s", (answer) => {
+    const table = createTable({
+      complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+      rows: [
+        { id: "incident-1", description: "Incident 1", answer: "both" },
+        { id: "incident-2", description: "Incident 2", answer },
+      ],
+    }) as ImaTableTemplate;
+
+    expect(isImaTableNonCompliant(table)).toEqual({
+      isNonCompliant: false,
+      nonCompliantRowIds: undefined,
+    });
+  });
+
+  it.each([
+    ["both", undefined],
+    ["both", ""],
+    ["not-referred", undefined],
+    ["status-only", ""],
+    [undefined, undefined],
+  ])(
+    "defers referral compliance until all standard rows are answered (%s, %s)",
+    (firstAnswer, secondAnswer) => {
+      const table = createTable({
+        complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+        rows: [
+          { id: "incident-1", description: "Incident 1", answer: firstAnswer },
+          { id: "incident-2", description: "Incident 2", answer: secondAnswer },
+        ],
+      }) as ImaTableTemplate;
+
+      expect(isImaTableNonCompliant(table)).toEqual({
+        isNonCompliant: undefined,
+      });
+    }
+  );
+
+  it("ignores user-created referral rows when checking for both", () => {
+    const table = createTable({
+      complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+      rows: [
+        { id: "incident", description: "Incident", answer: "not-referred" },
+        {
+          id: "other",
+          description: "Other entity",
+          answer: "both",
+          isUserCreated: true,
+        },
+      ],
+    }) as ImaTableTemplate;
+
+    expect(isImaTableNonCompliant(table)).toEqual({
+      isNonCompliant: true,
+      nonCompliantRowIds: ["incident"],
+    });
+  });
+
+  it.each([undefined, "", "both", "status-only"])(
+    "returns no referral judgment when only user-created rows have answers (%s)",
+    (answer) => {
+      const table = createTable({
+        complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+        rows: [
+          { id: "incident", description: "Incident" },
+          {
+            id: "other",
+            description: "Other entity",
+            answer,
+            isUserCreated: true,
+          },
+        ],
+      }) as ImaTableTemplate;
+
+      expect(isImaTableNonCompliant(table)).toEqual({
+        isNonCompliant: undefined,
+      });
+    }
+  );
+
+  it("uses saved referral answers rather than template answers", () => {
+    const table = createTable({
+      complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+      rows: [{ id: "incident", description: "Incident", answer: "both" }],
+      answer: [
+        { id: "incident", description: "Incident", answer: "not-referred" },
+      ],
+    }) as ImaTableTemplate;
+
+    expect(isImaTableNonCompliant(table)).toEqual({
+      isNonCompliant: true,
+      nonCompliantRowIds: ["incident"],
+    });
   });
 
   it("should return true when every row is answered not-referred under AllNotReferred", () => {

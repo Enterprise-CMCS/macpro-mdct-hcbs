@@ -46,7 +46,7 @@ describe("SubnavBar component", () => {
   it("should display last saved time and check icon", () => {
     renderSubnavBar();
     expect(screen.getByText(/Last saved 2 minutes ago/)).toBeInTheDocument();
-    expect(screen.getByAltText(/gray checkmark icon/)).toBeInTheDocument();
+    expect(screen.getByAltText(/gray checkmark/)).toBeInTheDocument();
   });
 
   it("should not display last saved time or check icon if lastSavedTime is falsy", () => {
@@ -56,8 +56,6 @@ describe("SubnavBar component", () => {
     });
     renderSubnavBar();
     expect(screen.queryByText(/Last saved/)).not.toBeInTheDocument();
-    expect(
-      screen.queryByAltText(/gray checkmark icon/)
-    ).not.toBeInTheDocument();
+    expect(screen.queryByAltText(/gray checkmark/)).not.toBeInTheDocument();
   });
 });

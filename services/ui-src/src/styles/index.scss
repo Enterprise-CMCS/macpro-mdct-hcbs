@@ -222,7 +222,15 @@ button {
 // Parsed HTML Link Styles
 .parsed-html-link {
   color: var(--chakra-colors-palette-primary);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  padding: 0;
   text-decoration: underline;
+  white-space: nowrap;
+  // Aligning the icon via flexbox (below) is font-metric independent
+  display: inline-flex;
+  align-items: center;
 
   &:visited {
     color: var(--chakra-colors-palette-visited);
@@ -231,18 +239,17 @@ button {
   &:hover {
     color: var(--chakra-colors-palette-primary_darker);
   }
+
+  &:active {
+    color: var(--color-primary-darkest);
+  }
 }
 
-.tech-spec-icon {
-  display: inline-block;
-  margin-left: 0.5rem;
-  height: 1rem;
-  top: 2px;
-  position: relative;
-  stroke: currentColor;
-}
-
-.tech-spec-icon-hint-size {
-  @extend .tech-spec-icon;
-  height: 0.9rem;
+.external-link-icon.ds-c-icon {
+  color: inherit;
+  flex-shrink: 0;
+  font-size: 1em;
+  margin-left: 0.25em;
+  height: 1em;
+  width: 1em;
 }

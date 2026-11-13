@@ -19,15 +19,29 @@ const mockParams = {
 
 describe("sendSesEmail", () => {
   beforeEach(() => {
+    vi.unstubAllEnvs();
     sesMock.reset();
   });
 
   it("should call client.send with a SendEmailCommand", async () => {
+    vi.stubEnv("SES_CONFIGURATION_SET", "");
     sesMock.on(SendEmailCommand).resolves({});
 
     await sendSesEmail(mockParams);
 
     expect(sesMock.calls()).toHaveLength(1);
     expect(sesMock.calls()[0].args[0].input).toMatchObject(mockParams);
+  });
+
+  it("should use the configured SES configuration set", async () => {
+    vi.stubEnv("SES_CONFIGURATION_SET", "hcbs-val-email-configuration-set");
+    sesMock.on(SendEmailCommand).resolves({});
+
+    await sendSesEmail(mockParams);
+
+    expect(sesMock.calls()[0].args[0].input).toMatchObject({
+      ...mockParams,
+      ConfigurationSetName: "hcbs-val-email-configuration-set",
+    });
   });
 });

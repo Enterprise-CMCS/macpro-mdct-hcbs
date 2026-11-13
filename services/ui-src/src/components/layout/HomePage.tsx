@@ -1,4 +1,5 @@
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@cmsgov/design-system";
 import {
   AdminDashSelector,
   CiIntroductionCard,
@@ -10,7 +11,7 @@ import {
   QipIntroductionCard,
   WWLIntroductionCard,
 } from "components";
-import { useStore } from "utils";
+import { externalLinkAltText, useStore } from "utils";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { activeBannerSelector } from "utils/state/selectors";
 import { BannerAreas } from "types";
@@ -44,11 +45,20 @@ export const HomePage = () => {
                 about measuring and improving quality in home and
                 community-based services, please visit{" "}
                 <Link
-                  isExternal
-                  href="https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
+                  href={
+                    "https://www.medicaid.gov/medicaid/quality-of-care/quality-improvement-initiatives/measuring-and-improving-quality-home-and-community-based-services"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  this link.
+                  Medicaid.gov's HCBS quality improvement resources
+                  <ExternalLinkIcon
+                    ariaHidden={false}
+                    title={externalLinkAltText}
+                    className="external-link-icon"
+                  />
                 </Link>
+                {"."}
               </Text>
             </Box>
             {(isQmsReportActive || isQipReportActive) && (

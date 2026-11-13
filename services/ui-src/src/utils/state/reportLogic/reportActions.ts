@@ -16,7 +16,12 @@ import {
 } from "types/report";
 import { putReport } from "utils/api/requestMethods/report";
 import { getLocalHourMinuteTime } from "utils";
-import { performClearMeasure, performResetMeasure } from "./reset";
+import {
+  performClearMeasure,
+  performResetMeasure,
+  performResetPageElement,
+} from "./reset";
+import { elementIsHidden } from "./completeness";
 
 export const buildState = (
   report: Report | undefined,
@@ -240,6 +245,35 @@ export const changeDeliveryMethods = (
       .includes(dependentPage.key);
     if (!deliverySystemIsSelected) {
       performResetMeasure(dependentPage.template, report);
+    }
+  }
+  return { report };
+};
+
+/**
+ * Clear answers of elements on the page hidden by the given controller element
+ */
+export const clearHiddenElements = (
+  pageId: string,
+  controllerElementId: string,
+  state: HcbsReportState
+) => {
+  if (!state.report) {
+    return {};
+  }
+  const report = structuredClone(state.report);
+  const page = report.pages.find((page) => page.id === pageId);
+  if (!page?.elements) {
+    return {};
+  }
+
+  for (const element of page.elements) {
+    if (
+      "hideCondition" in element &&
+      element.hideCondition?.controllerElementId === controllerElementId &&
+      elementIsHidden(element.hideCondition, page.elements)
+    ) {
+      performResetPageElement(element);
     }
   }
   return { report };

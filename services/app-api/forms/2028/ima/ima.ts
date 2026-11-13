@@ -13,6 +13,8 @@ import {
   waiverListInputField,
 } from "../elements";
 import { CRITICAL_INCIDENT_TYPES } from "./incidentTypes";
+import { MONITORING_METHODS_TYPES } from "./monitoringTypes";
+import { INVESTIGATION_REFERRAL_TYPES } from "./referralTypes";
 import {
   DATA_SOURCE_COLUMNS,
   INCIDENT_REPORTING_COLUMNS,
@@ -30,8 +32,10 @@ export const imaReportTemplate: ReportBase = {
         "general-info",
         "critical-incident-definitions",
         "electronic-info-system",
+        "monitoring-methods",
         "incidents-during-delivery-of-services",
         "incidents-due-to-failure-to-deliver-services",
+        "investigation-referrals",
         "separate-investigations",
         "review-submit",
       ],
@@ -148,6 +152,76 @@ export const imaReportTemplate: ReportBase = {
       ],
     },
     {
+      id: "monitoring-methods",
+      navTitle: "Monitoring Methods",
+      tabTitle: "Monitoring Methods - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "monitoring-methods-header",
+          text: "Monitoring methods",
+        },
+        {
+          type: ElementType.ImaTable,
+          id: "monitoring-methods-table",
+          caption: "Monitoring Methods Table",
+          label:
+            "Does the state use the following methods to monitor that providers report these critical incidents within the required process and timeframe?",
+          allowUserCreatedRows: true,
+          addButtonText: "Add other method",
+          userCreatedRowLabel: "Other method:",
+          errorMessage: "Not compliant.",
+          columns: [
+            {
+              id: "ima-description",
+              label:
+                "Methods to monitor provider compliance with reporting critical incidents",
+              type: "description",
+            },
+            { id: "yes", label: "Yes", type: "answer" },
+            {
+              id: "no",
+              label: "No",
+              type: "answer",
+            },
+            { id: "ima-delete", label: "Delete", type: "delete" },
+          ],
+          rows: MONITORING_METHODS_TYPES,
+          complianceRule: ComplianceRules.AllNo,
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: ["monitoring-methods-table"],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, all HCBS programs under this IM system must use the above methods to monitor that providers report critical incidents within the required process and timeframe.",
+          controllerElementId: ["monitoring-methods-table"],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          showWhenNonCompliant: ["monitoring-methods-table"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: ["monitoring-methods-table"],
+          required: true,
+        },
+      ],
+    },
+    {
       id: "electronic-info-system",
       navTitle: "Electronic Information Systems",
       tabTitle: "Electronic Information Systems - IMA - HCBS",
@@ -180,7 +254,7 @@ export const imaReportTemplate: ReportBase = {
                   type: ElementType.Radio,
                   id: "info-systems-question-1-security-compliance",
                   label:
-                    'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link" target="_blank" rel="noopener noreferrer">45 CFR part 164<img src="/icon_external_link_main.svg" class="tech-spec-icon" alt="(Opens in a new tab)"></a>&nbsp;?',
+                    'Does this IM system comply with the security and privacy provisions described in <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-C/part-164/subpart-C" class="parsed-html-link" target="_blank" rel="noopener noreferrer">45 CFR part 164</a>&nbsp;?',
                   required: true,
                   nonCompliantOn: "no",
                   choices: [
@@ -473,6 +547,181 @@ export const imaReportTemplate: ReportBase = {
             "incidents-failure-to-deliver-provider-reporting-table",
             "incidents-failure-to-deliver-unreported-data-sources-table",
           ],
+          required: true,
+        },
+      ],
+    },
+    {
+      id: "investigation-referrals",
+      navTitle: "Investigation Referrals",
+      tabTitle: "Investigation Referrals - IMA - HCBS",
+      type: PageType.Standard,
+      sidebar: true,
+      elements: [
+        {
+          type: ElementType.Header,
+          id: "investigation-referrals-header",
+          text: "Investigation referrals",
+        },
+        {
+          type: ElementType.Radio,
+          id: "investigation-referrals-question",
+          label:
+            "Does the state refer critical incidents to another entity for investigation?",
+          required: true,
+          choices: [
+            {
+              label: "Yes",
+              value: "yes",
+              checkedChildren: [
+                {
+                  type: ElementType.ImaTable,
+                  id: "investigation-referrals-table",
+                  caption: "Investigation Referrals Table",
+                  label:
+                    "Select the option that best describes how critical incident information is shared with each entity:",
+                  helperText:
+                    'Choose "No Referral" if incidents aren\'t sent to the entity, or "No Info Shared" if they don\'t share back. For active sharing, specify if the state receives only the Status, only the Resolution, or Both.',
+                  errorMessage: "Not compliant.",
+                  columns: [
+                    {
+                      id: "investigation-referrals-description",
+                      label: "Data Sources",
+                      type: "description",
+                    },
+                    {
+                      id: "not-referred",
+                      label: "No Referral",
+                      type: "answer",
+                    },
+                    {
+                      id: "no-info-shared",
+                      label: "No Info Shared",
+                      type: "answer",
+                    },
+                    {
+                      id: "status-only",
+                      label: "Status Only",
+                      type: "answer",
+                    },
+                    {
+                      id: "resolution-only",
+                      label: "Resolution Only",
+                      type: "answer",
+                    },
+                    {
+                      id: "both",
+                      label: "Status & Resolution",
+                      type: "answer",
+                    },
+                  ],
+                  rows: [...INVESTIGATION_REFERRAL_TYPES],
+                  complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+                },
+                {
+                  type: ElementType.Radio,
+                  id: "investigation-referrals-follow-up",
+                  label:
+                    "Does that state have an interagency information-sharing agreement (e.g. MOU) with any entities?",
+                  required: true,
+                  choices: [
+                    {
+                      label: "Yes",
+                      value: "yes",
+                      checkedChildren: [
+                        {
+                          type: ElementType.Checkbox,
+                          id: "investigation-referrals-entities",
+                          label:
+                            "Which entities have an information-sharing agreement?",
+                          required: true,
+                          choices: [
+                            {
+                              label: "Provider licensing and/or credentialing",
+                              value: "provider-licensing-credentialing",
+                            },
+                            {
+                              label:
+                                "Provider screening, enrollment, suspension and termination",
+                              value:
+                                "provider-screening-enrollment-suspension-termination",
+                            },
+                            {
+                              label: "Agency that manages the Abuse Registry",
+                              value: "abuse-registry-agency",
+                            },
+                            {
+                              label: "Adult Protective Services (APS)",
+                              value: "adult-protective-services",
+                            },
+                            {
+                              label: "Child Protective Services (CPS)",
+                              value: "child-protective-services",
+                            },
+                            {
+                              label: "Medicaid Fraud Control Unit (MFCU)",
+                              value: "medicaid-fraud-control-unit",
+                            },
+                            {
+                              label: "Neighboring states",
+                              value: "neighboring-states",
+                            },
+                            {
+                              label: "State Medicaid Agency",
+                              value: "state-medicaid-agency",
+                            },
+                            {
+                              label: "Operating Agency",
+                              value: "operating-agency",
+                            },
+                            {
+                              label: "Other entity",
+                              value: "other-entity",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      label: "No",
+                      value: "no",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              label: "No",
+              value: "no",
+            },
+          ],
+        },
+        {
+          type: ElementType.Divider,
+          id: "divider",
+          showWhenNonCompliant: ["investigation-referrals-question"],
+        },
+        {
+          type: ElementType.ComplianceAlert,
+          id: "compliance-alert",
+          status: AlertTypes.WARNING,
+          title: "This incident management system appears to be non-compliant.",
+          text: "To be found in compliance, if the state refers critical incidents to another entity for investigation, then the state and entity must both share status and resolution.",
+          controllerElementId: ["investigation-referrals-question"],
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "noncompliance-justification",
+          label: "Justification for system noncompliance:",
+          showWhenNonCompliant: ["investigation-referrals-question"],
+          required: true,
+        },
+        {
+          type: ElementType.TextAreaField,
+          id: "timeline-justification",
+          label:
+            "What actions will the state take to fully demonstrate compliance? Include a timeline for these actions.",
+          showWhenNonCompliant: ["investigation-referrals-question"],
           required: true,
         },
       ],

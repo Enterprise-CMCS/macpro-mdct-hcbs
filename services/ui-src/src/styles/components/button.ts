@@ -36,12 +36,19 @@ const primaryVariant = {
 const transparentVariant = {
     color: "palette.primary",
     backgroundColor: "transparent",
+    _visited: {
+      color: "palette.visited",
+    },
     _hover: {
       color: "palette.primary_darker",
       backgroundColor: "transparent",
       span: {
         filter: svgFilters.primary_darker,
       },
+    },
+    _active: {
+      color: "palette.primary_darkest",
+      backgroundColor: "transparent",
     },
   },
   sidebarToggleVariant = {

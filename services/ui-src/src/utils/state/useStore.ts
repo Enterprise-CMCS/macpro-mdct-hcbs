@@ -12,6 +12,7 @@ import { ReactNode, RefObject } from "react";
 import {
   buildState,
   changeDeliveryMethods,
+  clearHiddenElements,
   clearMeasure,
   markPageComplete,
   mergeAnswers,
@@ -142,6 +143,15 @@ const reportStore = (set: Set<HcbsReportState>, get: Get<HcbsReportState>) => ({
       false,
       {
         type: "changeDeliveryMethods",
+      }
+    ),
+  clearHiddenElements: (pageId: string, controllerElementId: string) =>
+    set(
+      (state: HcbsReportState) =>
+        clearHiddenElements(pageId, controllerElementId, state),
+      false,
+      {
+        type: "clearHiddenElements",
       }
     ),
   saveReport: async () => {

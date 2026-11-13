@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { PageType } from "../../types/reports";
 import { ciReportTemplate } from "./ci/ci";
 import { CMIT_LIST } from "./cmit";
 import { pcpReportTemplate } from "./pcp/pcp";
@@ -9,6 +8,15 @@ import { qmsReportTemplate } from "./qms/qms";
 import { haReportTemplate } from "./ha/ha";
 import { wwlReportTemplate } from "./wwl/wwl";
 import { imaReportTemplate } from "./ima/ima";
+import {
+  CheckboxTemplate,
+  ComplianceRules,
+  ElementType,
+  ImaTableTemplate,
+  PageType,
+  RadioTemplate,
+} from "../../types/reports";
+import { INVESTIGATION_REFERRAL_TYPES } from "./ima/referralTypes";
 
 const reportsToTest = [
   { template: qmsReportTemplate, name: "QMS" },
@@ -62,5 +70,191 @@ describe.each(reportsToTest)("Report Template: $name", ({ template }) => {
         expect(existingUids).toContain(measure.uid);
       }
     });
+  });
+});
+
+describe("HA service type sections", () => {
+  it.each(["hapch-1", "hapch-2"])(
+    "%s should hide the checkbox divider until any service is selected",
+    (pageId) => {
+      const elements = haReportTemplate.pages.find(
+        (page) => page.id === pageId
+      )!.elements!;
+      const checkboxIndex = elements.findIndex(
+        (element) => element.id === "service-types-checkbox"
+      );
+      expect(elements[checkboxIndex + 1]).toEqual({
+        type: ElementType.Divider,
+        id: "service-types-divider",
+        hideCondition: {
+          controllerElementId: "service-types-checkbox",
+          answerExcludes: [
+            "homemaker",
+            "home-health-aide",
+            "personal-care",
+            "habilitation",
+          ],
+        },
+      });
+    }
+  );
+
+  it.each(["hapch-1", "hapch-2"])(
+    "%s should have unique element IDs so each section's fields are independent",
+    (pageId) => {
+      const page = haReportTemplate.pages.find((page) => page.id === pageId)!;
+      const ids = page.elements!.map((element) => element.id);
+      expect(ids).toEqual([...new Set(ids)]);
+    }
+  );
+});
+
+describe("HA sampling methodology", () => {
+  it.each(["hapch-1", "hapch-2"])(
+    "has a distinct sampling question within each %s rate, not at page level",
+    (pageId) => {
+      const page = haReportTemplate.pages.find((item) => item.id === pageId);
+      const elements = page?.elements ?? [];
+      const rates = elements.filter(
+        (element) => element.type === ElementType.PerformanceNdr
+      );
+      expect(rates).toHaveLength(4);
+      expect(
+        elements.some((element) =>
+          element.id.includes("state-sampling-methodology")
+        )
+      ).toBe(false);
+
+      const ids: string[] = [];
+      for (const rate of rates) {
+        expect(rate.children?.map((child) => child.type)).toEqual([
+          ElementType.SubHeader,
+          ElementType.Radio,
+        ]);
+        for (const child of rate.children ?? []) {
+          expect(child.id.startsWith(`${rate.id}-`)).toBe(true);
+          ids.push(child.id);
+          if (child.type === ElementType.Radio) {
+            expect(child.required).toBe(true);
+            expect(
+              child.choices.some((choice) => choice.checkedChildren?.length)
+            ).toBe(true);
+            for (const choice of child.choices) {
+              for (const field of choice.checkedChildren ?? []) {
+                expect(field.id.startsWith(`${rate.id}-`)).toBe(true);
+                ids.push(field.id);
+              }
+            }
+          }
+        }
+      }
+      expect(new Set(ids).size).toBe(ids.length);
+    }
+  );
+});
+
+describe("IMA Investigation Referrals", () => {
+  const page = imaReportTemplate.pages.find(
+    ({ id }) => id === "investigation-referrals"
+  )!;
+
+  const mainQuestion = page.elements!.find(
+    ({ id }) => id === "investigation-referrals-question"
+  ) as RadioTemplate;
+
+  it("should not mark No as non-compliant", () => {
+    expect(mainQuestion).toMatchObject({ type: ElementType.Radio });
+    expect(mainQuestion).not.toHaveProperty("nonCompliantOn");
+  });
+
+  it("configures the referral table's rows, answer columns, and compliance rule", () => {
+    const table = mainQuestion.choices.find(({ value }) => value === "yes")!
+      .checkedChildren![0] as ImaTableTemplate;
+
+    expect(table).toMatchObject({
+      id: "investigation-referrals-table",
+      type: ElementType.ImaTable,
+      complianceRule: ComplianceRules.AnyPartialOrAllNotReferred,
+    });
+    expect(table.rows).toEqual(INVESTIGATION_REFERRAL_TYPES);
+    expect(
+      table.columns.filter(({ type }) => type === "answer").map(({ id }) => id)
+    ).toEqual([
+      "not-referred",
+      "no-info-shared",
+      "status-only",
+      "resolution-only",
+      "both",
+    ]);
+    expect(mainQuestion.required).toBe(true);
+    expect(
+      mainQuestion.choices.find(({ value }) => value === "no")!.checkedChildren
+    ).toBeUndefined();
+  });
+
+  it("nests the required follow-up after the table and entity checkboxes under Yes", () => {
+    const followUp = mainQuestion.choices.find(({ value }) => value === "yes")!
+      .checkedChildren![1] as RadioTemplate;
+
+    expect(followUp).toMatchObject({
+      id: "investigation-referrals-follow-up",
+      type: ElementType.Radio,
+      required: true,
+    });
+    expect(followUp.choices.map(({ value }) => value)).toEqual(["yes", "no"]);
+    expect(
+      followUp.choices.find(({ value }) => value === "no")!.checkedChildren
+    ).toBeUndefined();
+
+    const entities = followUp.choices.find(({ value }) => value === "yes")!
+      .checkedChildren![0] as CheckboxTemplate;
+
+    expect(entities).toMatchObject({
+      id: "investigation-referrals-entities",
+      type: ElementType.Checkbox,
+      required: true,
+    });
+    expect(entities.choices.map(({ value }) => value)).toEqual([
+      "provider-licensing-credentialing",
+      "provider-screening-enrollment-suspension-termination",
+      "abuse-registry-agency",
+      "adult-protective-services",
+      "child-protective-services",
+      "medicaid-fraud-control-unit",
+      "neighboring-states",
+      "state-medicaid-agency",
+      "operating-agency",
+      "other-entity",
+    ]);
+  });
+
+  it("uses the parent radio to control the non-compliance elements", () => {
+    for (const id of [
+      "divider",
+      "noncompliance-justification",
+      "timeline-justification",
+    ]) {
+      expect(page.elements!.find((element) => element.id === id)).toMatchObject(
+        {
+          showWhenNonCompliant: [mainQuestion.id],
+        }
+      );
+    }
+    expect(
+      page.elements!.find(({ id }) => id === "compliance-alert")
+    ).toMatchObject({
+      controllerElementId: [mainQuestion.id],
+    });
+    for (const id of [
+      "noncompliance-justification",
+      "timeline-justification",
+    ]) {
+      expect(page.elements!.find((element) => element.id === id)).toMatchObject(
+        {
+          type: ElementType.TextAreaField,
+          required: true,
+        }
+      );
+    }
   });
 });

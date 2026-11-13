@@ -7,7 +7,7 @@ import { error } from "../../utils/constants";
 import { getReport, putReport } from "../../storage/reports";
 import { ReportStatus } from "../../types/reports";
 import { sendEmail } from "../../utils/notifications/email";
-import { logger } from "../../../app-api/libs/debug-lib";
+import { logger } from "../../libs/debug-lib";
 
 export const releaseReport = handler(parseReportParameters, async (request) => {
   const notificationsEnabled = await getFlag("notificationsSystem");

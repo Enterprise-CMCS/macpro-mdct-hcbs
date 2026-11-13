@@ -3,6 +3,8 @@ import {
   aws_apigateway as apigateway,
   aws_iam as iam,
   aws_logs as logs,
+  aws_ses as ses,
+  aws_sns as sns,
   aws_wafv2 as wafv2,
   aws_ec2 as ec2,
   CfnOutput,
@@ -109,11 +111,15 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   });
 
   const environment: any = {
+    STAGE: stage,
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
     brokerString,
     launchDarklyServer,
+    ...(!isDev
+      ? { SES_CONFIGURATION_SET: `${project}-${stage}-email-configuration-set` }
+      : {}),
   };
 
   const additionalPolicies = [
@@ -128,7 +134,10 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "dynamodb:Scan",
         "dynamodb:UpdateItem",
       ],
-      resources: tables.map((table) => table.table.tableArn),
+      resources: tables.flatMap((table) => [
+        table.table.tableArn,
+        `${table.table.tableArn}/index/*`,
+      ]),
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -145,15 +154,59 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }),
   ];
 
-  const sesResources = isLocalStack
-    ? ["*"]
-    : [`arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`];
-
-  const sesPolicy = new iam.PolicyStatement({
-    effect: iam.Effect.ALLOW,
+  let sesPolicy = new iam.PolicyStatement({
+    effect: iam.Effect.DENY,
     actions: ["ses:SendEmail", "ses:SendRawEmail"],
-    resources: sesResources,
+    resources: ["*"],
   });
+  if (!isDev) {
+    const topic = new sns.Topic(scope, `${project}-${stage}-failedEmailTopic`);
+    new sns.Subscription(scope, `${project}-${stage}-email-subscription`, {
+      topic,
+      endpoint: "mdct-integrations@coforma.io",
+      protocol: sns.SubscriptionProtocol.EMAIL,
+    });
+
+    const configSet = new ses.ConfigurationSet(
+      scope,
+      `${project}-${stage}-email-configuration-set`,
+      {
+        sendingEnabled: true,
+        configurationSetName: `${project}-${stage}-email-configuration-set`,
+        reputationMetrics: true,
+      }
+    );
+
+    configSet.addEventDestination("sns", {
+      destination: ses.EventDestination.snsTopic(topic),
+      configurationSetEventDestinationName: `${project}-${stage}-email-topic`,
+      enabled: true,
+      events: [
+        ses.EmailSendingEvent.REJECT,
+        ses.EmailSendingEvent.BOUNCE,
+        ses.EmailSendingEvent.COMPLAINT,
+      ],
+    });
+
+    const senderIdentity = new ses.EmailIdentity(
+      scope,
+      "SenderDomainIdentity",
+      {
+        identity: ses.Identity.domain("cms.hhs.gov"),
+        configurationSet: configSet,
+      }
+    );
+    senderIdentity.applyRemovalPolicy(RemovalPolicy.RETAIN);
+
+    sesPolicy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["ses:SendEmail", "ses:SendRawEmail"],
+      resources: [
+        `arn:aws:ses:us-east-1:${Stack.of(scope).account}:identity/cms.hhs.gov`,
+        `arn:aws:ses:us-east-1:${Stack.of(scope).account}:configuration-set/${configSet.configurationSetName}`,
+      ],
+    });
+  }
 
   const commonProps = {
     brokerString,
@@ -204,16 +257,38 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
-  if (isDev) {
-    new Lambda(scope, "sendTestEmail", {
-      entry: "services/app-api/handlers/notification/sendTestEmail.ts",
-      handler: "sendTestEmail",
-      path: "notifications/test-email",
-      method: "POST",
-      ...commonProps,
-      additionalPolicies: [...additionalPolicies, sesPolicy],
-    });
-  }
+  new Lambda(scope, "fetchEmailsForReportAndState", {
+    entry:
+      "services/app-api/handlers/notificationAssignments/fetchEmailsForReportAndState.ts",
+    handler: "fetchEmailsForReportAndState",
+    path: "notification-assignments/emails/{reportType}/{state}",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "fetchNotificationAssignments", {
+    entry: "services/app-api/handlers/notificationAssignments/fetch.ts",
+    handler: "fetchNotificationAssignments",
+    path: "notification-assignments",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "putNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/put.ts",
+    handler: "putNotificationAssignment",
+    path: "notification-assignments",
+    method: "PUT",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "deleteNotificationAssignment", {
+    entry: "services/app-api/handlers/notificationAssignments/delete.ts",
+    handler: "deleteNotificationAssignment",
+    path: "notification-assignments/{email}",
+    method: "DELETE",
+    ...commonProps,
+  });
 
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
