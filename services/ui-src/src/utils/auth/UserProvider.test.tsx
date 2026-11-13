@@ -113,6 +113,35 @@ describe("<UserProvider />", () => {
       userRole: undefined,
       state: "ZZ",
       userIsAdmin: false,
+      userCanManageReports: false,
+      userIsReadOnly: false,
+      userIsEndUser: false,
+    });
+  });
+
+  it("should grant CMS reviewers report management without admin access", async () => {
+    vi.mocked(fetchAuthSession).mockResolvedValueOnce({
+      tokens: {
+        idToken: {
+          payload: {
+            email: "reviewer@cms.gov",
+            given_name: "CMS",
+            family_name: "Reviewer",
+            "custom:cms_roles": "mdcthcbs-cms-reviewer",
+          },
+        },
+        accessToken: {} as any,
+      },
+    });
+
+    await act(async () => {
+      render(testComponent);
+    });
+
+    expect(useStore.getState().user).toMatchObject({
+      userRole: "mdcthcbs-cms-reviewer",
+      userIsAdmin: false,
+      userCanManageReports: true,
       userIsReadOnly: false,
       userIsEndUser: false,
     });
