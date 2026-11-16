@@ -79,11 +79,11 @@ const textboxTemplateSchema = object().shape({
   helperText: string().notRequired(),
   answer: string()
     .notRequired()
-    .when("id", ([id], schema) =>
-      id === "contact-email"
-        ? schema.email("Invalid contact email address")
-        : schema
-    ),
+    .when("id", {
+      is: "contact-email",
+      // oxlint-disable-next-line unicorn/no-thenable
+      then: (schema) => schema.email("Invalid contact email address"),
+    }),
   required: boolean().required(),
   hideCondition: hideConditionSchema,
 });
