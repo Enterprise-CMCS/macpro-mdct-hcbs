@@ -4,7 +4,7 @@ import { getFlag } from "../../libs/launchdarkly-lib";
 import { parseReportParameters } from "../../libs/param-lib";
 import { badRequest, forbidden, ok } from "../../libs/response-lib";
 import { getReport, putReport } from "../../storage/reports";
-import { Report, ReportStatus } from "../../types/reports";
+import { ReportStatus } from "../../types/reports";
 import { canWriteState } from "../../utils/authorization";
 import { error } from "../../utils/constants";
 import { validateReportPayload } from "../../utils/reportValidation";
@@ -40,10 +40,10 @@ export const updateReport = handler(parseReportParameters, async (request) => {
   }
 
   const notificationsEnabled = await getFlag("notificationsSystem");
-  let savedReport: Report | undefined;
+  let previousStatus: ReportStatus | undefined;
   if (notificationsEnabled) {
     try {
-      savedReport = await getReport(reportType, state, id);
+      previousStatus = (await getReport(reportType, state, id))?.status;
     } catch (error) {
       logger.error(error);
     }
@@ -55,7 +55,7 @@ export const updateReport = handler(parseReportParameters, async (request) => {
 
   await putReport(report);
 
-  if (notificationsEnabled && savedReport?.status === ReportStatus.SUBMITTED) {
+  if (notificationsEnabled && previousStatus === ReportStatus.SUBMITTED) {
     try {
       await sendEmail(report);
     } catch (error) {

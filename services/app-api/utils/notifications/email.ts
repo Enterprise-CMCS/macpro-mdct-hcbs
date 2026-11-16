@@ -56,7 +56,7 @@ export const sendEmail = async (report: Report) => {
     if (!recipientEmailSchema.isValidSync(email)) {
       logger.warn("sendEmail: excluding invalid recipient email", {
         id: report.id,
-        email,
+        status: report.status,
       });
       return false;
     }
@@ -69,7 +69,13 @@ export const sendEmail = async (report: Report) => {
     });
     return;
   }
-  logger.info("Sending email to: ", validRecipients);
+  logger.info("sendEmail: sending notification", {
+    id: report.id,
+    reportType: report.type,
+    state: report.state,
+    status: report.status,
+    recipientCount: validRecipients.length,
+  });
   await sendSesEmail({
     Source: FROM_ADDRESS,
     Destination: {

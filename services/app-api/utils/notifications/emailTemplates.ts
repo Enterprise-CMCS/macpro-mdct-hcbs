@@ -42,6 +42,29 @@ export const submittedTemplate = (report: Report) => {
       Data: `HCBS - ${report.type}: ${report.name} has been Submitted`,
     },
     Body: {
+      Text: {
+        Data: `This is an automated notification that the status of a report has changed within the MDCT Home and Community-Based Services (HCBS) platform. The report has been submitted by the State and is now ready for CMS review.
+
+Update summary
+
+- Report: ${report.type}
+- Report name: ${report.name}
+- New status: Submitted
+- Date of change: ${formatDate(report.submitted)}
+
+Please follow the steps below to access the submission within the portal:
+
+1. Log in to the MDCT Portal: https://mdcthcbs.cms.gov/
+2. Select ${report.type}.
+3. Find ${report.name}.
+4. Select the report to begin your review.
+
+If you believe this status change was made in error or have questions, please reach out to the HCBS support desk at mdct_help@cms.hhs.gov.
+
+Sincerely,
+
+The HCBS Team`,
+      },
       Html: {
         Data: `<p>This is an automated notification that the status of a report has changed within the MDCT Home and Community-Based Services (HCBS) platform. The report has been submitted by the State and is now ready for CMS review.</p>
 <p>Update summary</p>
@@ -73,6 +96,29 @@ export const inRevisionTemplate = (report: Report) => {
       Data: `HCBS - ${report.type}: ${report.name} status changed to In Revision`,
     },
     Body: {
+      Text: {
+        Data: `This is an automated notification that the status of a report has changed within the MDCT Home and Community-Based Services (HCBS) platform. You now have permission to edit and resubmit this report.
+
+Update summary
+
+- Report: ${report.type}
+- Report name: ${report.name}
+- New status: In Revision
+- Date of change: ${formatDate(undefined)}
+
+Please follow the steps below to access the report within the portal:
+
+1. Log in to the MDCT Portal: https://mdcthcbs.cms.gov/
+2. Select ${report.type}.
+3. Find ${report.name}.
+4. Select the report to begin making your revisions.
+
+If you believe this status change was made in error, or if you have questions regarding the requirements for this new status, please reach out to the HCBS support desk at mdct_help@cms.hhs.gov.
+
+Sincerely,
+
+The HCBS Team`,
+      },
       Html: {
         Data: `<p>This is an automated notification that the status of a report has changed within the MDCT Home and Community-Based Services (HCBS) platform. You now have permission to edit and resubmit this report.</p>
 <p>Update summary</p>

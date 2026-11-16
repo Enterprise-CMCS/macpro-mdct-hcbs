@@ -58,10 +58,10 @@ export const submitReport = handler(parseReportParameters, async (request) => {
     return badRequest("Invalid request");
   }
 
-  let savedReport: Report | undefined;
+  let previousStatus: ReportStatus | undefined;
   if (notificationsEnabled) {
     try {
-      savedReport = await getReport(reportType, state, id);
+      previousStatus = (await getReport(reportType, state, id))?.status;
     } catch (error) {
       logger.error(error);
     }
@@ -70,7 +70,7 @@ export const submitReport = handler(parseReportParameters, async (request) => {
   // save the report that's being submitted (with the new information on top of it)
   await putReport(validatedPayload);
 
-  if (notificationsEnabled && savedReport?.status !== ReportStatus.SUBMITTED) {
+  if (notificationsEnabled && previousStatus !== ReportStatus.SUBMITTED) {
     try {
       await sendEmail(validatedPayload);
     } catch (error) {

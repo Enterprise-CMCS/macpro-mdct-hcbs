@@ -8,9 +8,11 @@ import {
 } from "../../storage/notificationAssignments";
 import { ElementType, ReportStatus } from "../../types/reports";
 import { JSDOM } from "jsdom";
+import { logger } from "../../libs/debug-lib";
 
 vi.mock("../../libs/ses-lib");
 vi.mock("../../storage/notificationAssignments");
+vi.mock("../../libs/debug-lib");
 
 describe("sendEmail", () => {
   beforeEach(() => {
@@ -60,6 +62,29 @@ describe("sendEmail", () => {
     });
     expect(email.Message?.Subject?.Data).toBe(
       `HCBS - ${report.type}: ${report.name} has been Submitted`
+    );
+    expect(email.Message?.Body?.Text?.Data).toBe(
+      `This is an automated notification that the status of a report has changed within the MDCT Home and Community-Based Services (HCBS) platform. The report has been submitted by the State and is now ready for CMS review.
+
+Update summary
+
+- Report: ${report.type}
+- Report name: ${report.name}
+- New status: Submitted
+- Date of change: 10/20/2026, 8:00pm ET
+
+Please follow the steps below to access the submission within the portal:
+
+1. Log in to the MDCT Portal: https://mdcthcbs.cms.gov/
+2. Select ${report.type}.
+3. Find ${report.name}.
+4. Select the report to begin your review.
+
+If you believe this status change was made in error or have questions, please reach out to the HCBS support desk at mdct_help@cms.hhs.gov.
+
+Sincerely,
+
+The HCBS Team`
     );
     expect(email.Message?.Body?.Html?.Data).toBeDefined();
     const dom = new JSDOM(email.Message?.Body?.Html?.Data);
@@ -115,6 +140,29 @@ describe("sendEmail", () => {
     });
     expect(email.Message?.Subject?.Data).toBe(
       `HCBS - ${report.type}: ${report.name} status changed to In Revision`
+    );
+    expect(email.Message?.Body?.Text?.Data).toBe(
+      `This is an automated notification that the status of a report has changed within the MDCT Home and Community-Based Services (HCBS) platform. You now have permission to edit and resubmit this report.
+
+Update summary
+
+- Report: ${report.type}
+- Report name: ${report.name}
+- New status: In Revision
+- Date of change: 10/26/2026, 12:32pm ET
+
+Please follow the steps below to access the report within the portal:
+
+1. Log in to the MDCT Portal: https://mdcthcbs.cms.gov/
+2. Select ${report.type}.
+3. Find ${report.name}.
+4. Select the report to begin making your revisions.
+
+If you believe this status change was made in error, or if you have questions regarding the requirements for this new status, please reach out to the HCBS support desk at mdct_help@cms.hhs.gov.
+
+Sincerely,
+
+The HCBS Team`
     );
     expect(email.Message?.Body?.Html?.Data).toBeDefined();
     const dom = new JSDOM(email.Message?.Body?.Html?.Data);
@@ -196,6 +244,30 @@ describe("sendEmail", () => {
         },
       })
     );
+    expect(logger.info).toHaveBeenCalledExactlyOnceWith(
+      "sendEmail: sending notification",
+      {
+        id: report.id,
+        reportType: report.type,
+        state: report.state,
+        status: report.status,
+        recipientCount: 2,
+      }
+    );
+    expect(logger.warn).toHaveBeenCalledTimes(2);
+    expect(logger.warn).toHaveBeenCalledWith(
+      "sendEmail: excluding invalid recipient email",
+      { id: report.id, status: report.status }
+    );
+    const logs = JSON.stringify([
+      ...vi.mocked(logger.info!).mock.calls,
+      ...vi.mocked(logger.warn!).mock.calls,
+    ]);
+    expect(logs).not.toContain("submitter@example.com");
+    expect(logs).not.toContain("cms@example.com");
+    expect(logs).not.toContain("invalid-contact");
+    expect(logs).not.toContain("invalid-cms");
+    expect(logs).not.toContain(report.name);
   });
 
   it("should not send when every recipient address is malformed", async () => {
