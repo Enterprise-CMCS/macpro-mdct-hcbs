@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter as Router, useParams } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
@@ -86,6 +86,35 @@ describe("Sidebar", () => {
     await userEvent.click(link);
     const reportPath = "/report/exampleReport/exampleState/123/id-1";
     expect(mockUseNavigate).toHaveBeenCalledWith(reportPath);
+  });
+
+  it("marks only the current page link as current when the page changes", () => {
+    render(testComponent);
+    const firstLink = screen.getByText("Section 1").closest("a");
+    const secondLink = screen.getByText("Section 2").closest("a");
+
+    expect(firstLink).toHaveAttribute("aria-current", "true");
+    expect(secondLink).not.toHaveAttribute("aria-current");
+
+    act(() => useStore.setState({ currentPageId: "id-2" }));
+
+    expect(firstLink).not.toHaveAttribute("aria-current");
+    expect(secondLink).toHaveAttribute("aria-current", "true");
+  });
+
+  it("marks a current child page link as current", async () => {
+    render(testComponent);
+    await userEvent.click(screen.getByAltText("Expand subitems"));
+
+    act(() => useStore.setState({ currentPageId: "child-1" }));
+
+    expect(screen.getByText("Section 1").closest("a")).not.toHaveAttribute(
+      "aria-current"
+    );
+    expect(screen.getByText("Child 1").closest("a")).toHaveAttribute(
+      "aria-current",
+      "true"
+    );
   });
 
   it("should expand on button click", async () => {
