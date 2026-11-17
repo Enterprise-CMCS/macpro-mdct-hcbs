@@ -72,6 +72,7 @@ describe("AdminDashSelector Component", () => {
     isCiReportActive: true,
     isPcpReportActive: true,
     isImaReportActive: true,
+    isHdcwcReportActive: true,
     isQipReportActive: true,
     isWwlReportActive: true,
   };
@@ -192,6 +193,7 @@ describe("AdminDashSelector Component", () => {
       isCiReportActive: false,
       isPcpReportActive: false,
       isImaReportActive: false,
+      isHdcwcReportActive: false,
       isQipReportActive: false,
       isWwlReportActive: false,
     } as any);

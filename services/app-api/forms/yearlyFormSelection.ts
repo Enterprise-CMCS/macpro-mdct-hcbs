@@ -12,6 +12,7 @@ import { CMIT_LIST as CMIT_LIST_2028 } from "./2028/cmit";
 import { WAIVER_LIST as WAIVER_LIST_2028 } from "./2028/waivers";
 import { qmsReportTemplate as qmsReportTemplate2028 } from "./2028/qms/qms";
 import { haReportTemplate as harReportTemplate2028 } from "./2028/ha/ha";
+import { hdcwcReportTemplate as hdcwcReportTemplate2028 } from "./2028/hdcwc/hdcwc";
 import { imaReportTemplate as imaReportTemplate2028 } from "./2028/ima/ima";
 import { pcpReportTemplate as pcpReportTemplate2028 } from "./2028/pcp/pcp";
 import { qipReportTemplate as qipReportTemplate2028 } from "./2028/qip/qip";
@@ -35,6 +36,7 @@ const formsByYear = {
     qmsReportTemplate: qmsReportTemplate2028,
     haReportTemplate: harReportTemplate2028,
     ciReportTemplate: ciReportTemplate2028,
+    hdcwcReportTemplate: hdcwcReportTemplate2028,
     imaReportTemplate: imaReportTemplate2028,
     pcpReportTemplate: pcpReportTemplate2028,
     qipReportTemplate: qipReportTemplate2028,
@@ -84,6 +86,8 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
         );
       }
       return formsByYear[2028].imaReportTemplate;
+    case ReportType.HDCWC:
+      return formsByYear[2028].hdcwcReportTemplate;
     case ReportType.QIP:
       return formsByYear[year].qipReportTemplate;
     case ReportType.WWL:

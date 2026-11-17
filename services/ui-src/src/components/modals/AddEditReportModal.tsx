@@ -25,6 +25,7 @@ import PcpOptions from "./AddFormOptions/PcpOptions";
 import QipOptions from "./AddFormOptions/QipOptions";
 import WwlOptions from "./AddFormOptions/WwlOptions";
 import ImaOptions from "./AddFormOptions/ImaOptions";
+import HdcwcOptions from "./AddFormOptions/HdcwcOptions";
 import { ErrorMessages } from "../../constants";
 
 export type AddEditReportModalOptions = {
@@ -61,6 +62,7 @@ const buildModalOptions = (
     [ReportType.QIP]: QipOptions,
     [ReportType.WWL]: WwlOptions,
     [ReportType.IMA]: ImaOptions,
+    [ReportType.HDCWC]: HdcwcOptions,
   };
   return optionsByReportType[reportType];
 };
@@ -116,7 +118,7 @@ export const AddEditReportModal = ({
   if (!isReportType(reportType)) return null;
 
   const dropdownYears =
-    reportType === ReportType.IMA
+    reportType === ReportType.IMA || reportType === ReportType.HDCWC
       ? [{ label: "2028", value: "2028" }]
       : [{ label: "2026", value: "2026" }];
   const { verbiage, OptionsComponent } = buildModalOptions(reportType);

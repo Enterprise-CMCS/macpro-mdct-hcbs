@@ -19,6 +19,7 @@ export { HelpCard } from "./cards/HelpCard";
 export { ReportIntroCard } from "./cards/ReportIntroCard";
 export { QmsIntroductionCard } from "./cards/QmsIntroductionCard";
 export { HaIntroductionCard } from "./cards/HaIntroductionCard";
+export { HDCWCIntroductionCard } from "./cards/HDCWCIntroductionCard";
 export { CiIntroductionCard } from "./cards/CiIntroductionCard";
 export { PCPIntroductionCard } from "./cards/PCPIntroductionCard";
 export { IMAIntroductionCard } from "./cards/IMAIntroductionCard";

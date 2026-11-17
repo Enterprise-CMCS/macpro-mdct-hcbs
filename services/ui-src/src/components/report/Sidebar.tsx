@@ -32,6 +32,8 @@ const getTitle = (report: Report) => {
       return "Quality Improvement Plan";
     case ReportType.WWL:
       return "Waiver Waiting List Report";
+    case ReportType.HDCWC:
+      return "HCBS Direct Care Worker Compensation Report";
     default:
       assertExhaustive(report.type);
       return "";
