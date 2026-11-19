@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { RouterWrappedComponent } from "utils/testing/setupTests";
+import {
+  mockCMSReviewerUser,
+  RouterWrappedComponent,
+} from "utils/testing/setupTests";
+import { useStore } from "utils";
 import { Header } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -23,6 +27,16 @@ describe("<Header />", () => {
     expect(screen.getByRole("img", { name: "Help" })).toBeVisible();
     expect(screen.getByRole("img", { name: "Account" })).toBeVisible();
     expect(screen.getByAltText("Arrow down")).toBeVisible();
+  });
+
+  it("should hide the Admin menu from CMS reviewers", () => {
+    useStore.setState({ user: mockCMSReviewerUser });
+
+    render(headerComponent);
+
+    expect(
+      screen.queryByRole("button", { name: "admin menu" })
+    ).not.toBeInTheDocument();
   });
 
   it("should expand the My Account menu", async () => {

@@ -122,6 +122,7 @@ export const mockStateApprover = {
   full_name: "Zara Zustimmer",
   state: "MN",
   userIsAdmin: true,
+  userCanManageReports: true,
 };
 
 export const mockHelpDeskUser = {
@@ -142,6 +143,19 @@ export const mockAdminUser = {
   full_name: "Adam Admin",
   state: undefined,
   userIsAdmin: true,
+  userCanManageReports: true,
+};
+
+export const mockCMSReviewerUser = {
+  userRole: UserRoles.CMS_REVIEWER,
+  email: "cmsreviewer@test.com",
+  given_name: "Casey",
+  family_name: "Reviewer",
+  full_name: "Casey Reviewer",
+  state: undefined,
+  userIsAdmin: false,
+  userCanManageReports: true,
+  userIsEndUser: false,
 };
 
 export const mockMeasureTemplate: MeasurePageTemplate = {

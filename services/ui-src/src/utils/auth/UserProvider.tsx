@@ -82,6 +82,11 @@ export const UserProvider = ({ children }: Props) => {
       const userCheck = {
         userIsAdmin:
           userRole === UserRoles.ADMIN || userRole === UserRoles.APPROVER,
+        userCanManageReports: [
+          UserRoles.ADMIN,
+          UserRoles.APPROVER,
+          UserRoles.CMS_REVIEWER,
+        ].includes(userRole as UserRoles),
         userIsReadOnly:
           userRole === UserRoles.HELP_DESK || userRole === UserRoles.INTERNAL,
         userIsEndUser: userRole === UserRoles.STATE_USER,
