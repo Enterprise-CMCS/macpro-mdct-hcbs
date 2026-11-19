@@ -5,6 +5,7 @@ import { StateAbbr } from "./constants";
 const statelessRoles = [
   UserRoles.ADMIN,
   UserRoles.APPROVER,
+  UserRoles.CMS_REVIEWER,
   UserRoles.HELP_DESK,
   UserRoles.INTERNAL,
 ];
@@ -31,11 +32,15 @@ export const canWriteBanner = (user: User) => {
 };
 
 export const canArchiveReport = (user: User) => {
-  return [UserRoles.ADMIN, UserRoles.APPROVER].includes(user.role);
+  return [UserRoles.ADMIN, UserRoles.APPROVER, UserRoles.CMS_REVIEWER].includes(
+    user.role
+  );
 };
 
 export const canReleaseReport = (user: User) => {
-  return [UserRoles.ADMIN, UserRoles.APPROVER].includes(user.role);
+  return [UserRoles.ADMIN, UserRoles.APPROVER, UserRoles.CMS_REVIEWER].includes(
+    user.role
+  );
 };
 
 export const canChangeNotification = (user: User) => {

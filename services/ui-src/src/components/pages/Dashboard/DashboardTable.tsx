@@ -39,7 +39,7 @@ interface TableProps extends Omit<
   tableContent: { caption: string; headRow: string[] };
   showEditNameColumn: boolean | undefined;
   showReportSubmissionsColumn: boolean;
-  showAdminControls: boolean | undefined;
+  showReportActions: boolean | undefined;
   navigate: NavigateFunction;
   userIsEndUser: boolean | undefined;
   toggleArchived: (rowIndex: number) => void;
@@ -89,7 +89,7 @@ export const HorizontalTable = (props: TableProps) => {
                 <Button
                   variant="link"
                   onClick={() => props.openAddEditReportModal(report)}
-                  aria-label={`Edit ${report.name} name`}
+                  aria-label={`Edit name ${report.name}`}
                 >
                   Edit name
                 </Button>
@@ -100,15 +100,15 @@ export const HorizontalTable = (props: TableProps) => {
                 disabled={report.archived}
                 aria-label={
                   report.status !== ReportStatus.SUBMITTED
-                    ? `Edit ${report.name} report`
-                    : `View ${report.name} report`
+                    ? `Edit ${report.name}`
+                    : `View ${report.name}`
                 }
               >
                 {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
                   ? "Edit"
                   : "View"}
               </Button>
-              {props.showAdminControls && (
+              {props.showReportActions && (
                 <>
                   <Button
                     variant="link"
@@ -185,7 +185,7 @@ export const VerticalTable = (props: TableProps) => {
               <Button
                 variant="link"
                 onClick={() => props.openAddEditReportModal(report)}
-                aria-label={`Edit ${report.name} name`}
+                aria-label={`Edit name ${report.name}`}
               >
                 Edit name
               </Button>
@@ -199,15 +199,15 @@ export const VerticalTable = (props: TableProps) => {
               disabled={report.archived}
               aria-label={
                 report.status !== ReportStatus.SUBMITTED
-                  ? "Edit " + report.name + " report"
-                  : "View " + report.name + " report"
+                  ? "Edit " + report.name
+                  : "View " + report.name
               }
             >
               {props.userIsEndUser && report.status !== ReportStatus.SUBMITTED
                 ? "Edit"
                 : "View"}
             </Button>
-            {props.showAdminControls && (
+            {props.showReportActions && (
               <>
                 <Button
                   variant="link"
@@ -250,7 +250,7 @@ export const DashboardTable = ({
   onReportUpdate,
 }: DashboardTableProps) => {
   const navigate = useNavigate();
-  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
+  const { userCanManageReports, userIsEndUser } = useStore().user ?? {};
 
   const [archiving, setArchiving] = useState<number>();
   const [unlocking, setUnlocking] = useState<number>();
@@ -258,7 +258,7 @@ export const DashboardTable = ({
   // Translate role to defined behaviors
   const showEditNameColumn = userIsEndUser;
   const showReportSubmissionsColumn = !userIsEndUser;
-  const showAdminControls = userIsAdmin;
+  const showReportActions = userCanManageReports;
 
   // Build header columns based on defined behaviors per role
   const headers = [
@@ -312,7 +312,7 @@ export const DashboardTable = ({
           reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
-          showAdminControls,
+          showReportActions,
           openAddEditReportModal,
           navigate,
           userIsEndUser,
@@ -328,7 +328,7 @@ export const DashboardTable = ({
           reports,
           showEditNameColumn,
           showReportSubmissionsColumn,
-          showAdminControls,
+          showReportActions,
           openAddEditReportModal,
           navigate,
           userIsEndUser,

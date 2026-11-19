@@ -73,10 +73,10 @@ export const assertReportIsCreated = async (
 };
 
 export const enterReport = async (page: Page, data: typeof testModalData) => {
-  const editReportButton = page.getByLabel(
-    "Edit " + data.reportName + data.datetime + " report",
-    { exact: true }
-  );
+  const editReportButton = page.getByRole("button", {
+    name: `Edit ${data.reportName}${data.datetime}`,
+    exact: true,
+  });
   await editReportButton.click();
 };
 

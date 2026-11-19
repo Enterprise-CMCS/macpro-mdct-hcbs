@@ -4,6 +4,7 @@
 export enum UserRoles {
   ADMIN = "mdcthcbs-bor", // "MDCT HCBS Business Owner Representative"
   APPROVER = "mdcthcbs-appr", // "MDCT HCBS Approver"
+  CMS_REVIEWER = "mdcthcbs-cms-reviewer", // "CMS Reviewer"
   HELP_DESK = "mdcthcbs-hd", // "MDCT HCBS Help Desk"
   INTERNAL = "mdcthcbs-internal-user", // "MDCT HCBS Internal User"
   STATE_USER = "mdcthcbs-state-user", // "MDCT HCBS State User"
@@ -17,6 +18,7 @@ export interface HcbsUser {
   state?: string;
   userRole?: string;
   userIsAdmin?: boolean;
+  userCanManageReports?: boolean;
   userIsReadOnly?: boolean;
   userIsEndUser?: boolean;
 }
