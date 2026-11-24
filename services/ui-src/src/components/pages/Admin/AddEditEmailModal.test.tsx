@@ -81,7 +81,7 @@ describe("<AddEditEmailModal />", () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it("lists states from constants and all available report types", async () => {
+  it("lists states from constants and all available report types (sorted alphabetically)", async () => {
     render(modal);
     await userEvent.click(
       screen.getByRole("button", { name: "States, 0 selected" })
@@ -94,10 +94,10 @@ describe("<AddEditEmailModal />", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Report Types, 0 selected" })
     );
-    expect(await getVisibleMenuOptions()).toEqual(
-      [ReportType.QMS, ReportType.HA, ReportType.QIP].map(
-        (type) => `${type}: ${getReportName(type)}`
-      )
+    expect((await getVisibleMenuOptions()).toSorted()).toEqual(
+      [ReportType.QMS, ReportType.HA, ReportType.QIP]
+        .map((type) => `${type}: ${getReportName(type)}`)
+        .toSorted()
     );
   });
 
@@ -116,8 +116,10 @@ describe("<AddEditEmailModal />", () => {
     await userEvent.click(
       screen.getByRole("button", { name: "Report Types, 0 selected" })
     );
-    expect(await getVisibleMenuOptions()).toEqual(
-      Object.values(ReportType).map((type) => `${type}: ${getReportName(type)}`)
+    expect((await getVisibleMenuOptions()).toSorted()).toEqual(
+      Object.values(ReportType)
+        .map((type) => `${type}: ${getReportName(type)}`)
+        .toSorted()
     );
   });
 

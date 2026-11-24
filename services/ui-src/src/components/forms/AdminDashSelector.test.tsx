@@ -77,9 +77,9 @@ describe("AdminDashSelector Component", () => {
     isWwlReportActive: true,
   };
 
-  it("reportOptions includes every ReportType", () => {
-    expect(reportOptions.map((o) => o.value)).toEqual(
-      Object.values(ReportType)
+  it("reportOptions includes every ReportType (must be sorted now that list is alphabetical)", () => {
+    expect(reportOptions.map((o) => o.value).toSorted()).toEqual(
+      Object.values(ReportType).toSorted()
     );
   });
 
