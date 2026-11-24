@@ -80,7 +80,8 @@ describe("Build Report", () => {
     );
 
     const reportTypesAndOptions = [
-      // Every non-QMS, non-IMA report takes no options, so always has the same pages.
+      // Every non-QMS report takes no options, so always has the same pages.
+      // (IMA and HDCWC are added separately below, since they have no 2026 template)
       ...baseReportTypes.map((type) => ({ type, opts: {}, year: 2026 })),
       // QMS needs to be built with different options to get all possible pages.
       ...qmsOptionCombinations.map((opts) => ({
@@ -88,7 +89,7 @@ describe("Build Report", () => {
         opts,
         year: 2026,
       })),
-      // IMA is only available for 2028
+      // IMA and HDCWC are only available for 2028
       { type: ReportType.IMA, opts: {}, year: 2028 },
       { type: ReportType.HDCWC, opts: {}, year: 2028 },
     ];

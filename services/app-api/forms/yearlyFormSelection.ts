@@ -26,6 +26,9 @@ const formsByYear = {
     qmsReportTemplate: qmsReportTemplate2026,
     haReportTemplate: harReportTemplate2026,
     ciReportTemplate: ciReportTemplate2026,
+    // IMA and HDCWC have no 2026 template
+    imaReportTemplate: undefined,
+    hdcwcReportTemplate: undefined,
     pcpReportTemplate: pcpReportTemplate2026,
     qipReportTemplate: qipReportTemplate2026,
     wwlReportTemplate: wwlReportTemplate2026,
@@ -69,6 +72,16 @@ export const getWaiverInfo = (year: number, state: StateAbbr) => {
 };
 
 export const getReportTemplate = (reportType: ReportType, year: number) => {
+  const template = selectReportTemplate(reportType, year);
+  if (!template) {
+    throw new Error(
+      `Invalid year - ${reportType} form template for ${year} is not implemented`
+    );
+  }
+  return template;
+};
+
+const selectReportTemplate = (reportType: ReportType, year: number) => {
   assertYearIsValid(year);
   switch (reportType) {
     case ReportType.QMS:
@@ -80,14 +93,9 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
     case ReportType.PCP:
       return formsByYear[year].pcpReportTemplate;
     case ReportType.IMA:
-      if (year < 2028) {
-        throw new Error(
-          `Invalid year - form templates for ${year} are not implemented`
-        );
-      }
-      return formsByYear[2028].imaReportTemplate;
+      return formsByYear[year].imaReportTemplate;
     case ReportType.HDCWC:
-      return formsByYear[2028].hdcwcReportTemplate;
+      return formsByYear[year].hdcwcReportTemplate;
     case ReportType.QIP:
       return formsByYear[year].qipReportTemplate;
     case ReportType.WWL:
