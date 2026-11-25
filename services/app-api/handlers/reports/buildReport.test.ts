@@ -70,14 +70,18 @@ describe("Build Report", () => {
 
   it("should always have unique element IDs within a page", async () => {
     const baseReportTypes = Object.values(ReportType).filter(
-      (rt) => rt !== ReportType.QMS && rt !== ReportType.IMA
+      (rt) =>
+        rt !== ReportType.QMS &&
+        rt !== ReportType.IMA &&
+        rt !== ReportType.HDCWC
     );
     const qmsOptionCombinations = [...booleanCombinations(4)].map(
       ([a, b, c, d]) => ({ cahps: a, nciidd: b, nciad: c, pom: d })
     );
 
     const reportTypesAndOptions = [
-      // Every non-QMS, non-IMA report takes no options, so always has the same pages.
+      // Every non-QMS report takes no options, so always has the same pages.
+      // (IMA and HDCWC are added separately below, since they have no 2026 template)
       ...baseReportTypes.map((type) => ({ type, opts: {}, year: 2026 })),
       // QMS needs to be built with different options to get all possible pages.
       ...qmsOptionCombinations.map((opts) => ({
@@ -85,8 +89,9 @@ describe("Build Report", () => {
         opts,
         year: 2026,
       })),
-      // IMA is only available for 2028
+      // IMA and HDCWC are only available for 2028
       { type: ReportType.IMA, opts: {}, year: 2028 },
+      { type: ReportType.HDCWC, opts: {}, year: 2028 },
     ];
 
     for (const { type, opts, year } of reportTypesAndOptions) {

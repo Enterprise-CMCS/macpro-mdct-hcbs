@@ -16,6 +16,7 @@ vi.mock("launchdarkly-react-client-sdk", () => ({
     isQipReportActive: true,
     isWwlReportActive: true,
     isImaReportActive: true,
+    isHdcwcReportActive: true,
   }),
 }));
 
@@ -57,6 +58,7 @@ describe("Home page", () => {
       { level: 3, name: /QMS Quality Improvement Plans/ },
       { level: 2, name: /Transparency Reports/ },
       { level: 3, name: /HCBS Access Report/ },
+      { level: 3, name: /HCBS Direct Care Worker Compensation Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },
       { level: 2, name: /Compliance Reports/ },
       { level: 3, name: /Critical Incident Report/ },
@@ -78,6 +80,7 @@ describe("Home page", () => {
       isQipReportActive: false,
       isWwlReportActive: false,
       isImaReportActive: false,
+      isHdcwcReportActive: false,
     });
 
     render(homePage);
@@ -89,6 +92,7 @@ describe("Home page", () => {
       { level: 3, name: /Quality Measure Set Report/ },
       { level: 3, name: /QMS Quality Improvement Plans/ },
       { level: 3, name: /HCBS Access Report/ },
+      { level: 3, name: /HCBS Direct Care Worker Compensation Report/ },
       { level: 3, name: /Waiver Waiting List Report/ },
       { level: 3, name: /Critical Incident Report/ },
       { level: 3, name: /Person-Centered Planning Report/ },

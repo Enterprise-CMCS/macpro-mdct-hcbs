@@ -16,11 +16,12 @@ type ReportOption = {
   flagName?: string;
 };
 
+// Listed alphabetically, shows up on admin page.
 export const reportOptions: ReportOption[] = [
   {
-    value: ReportType.QMS,
-    label: "Quality Measure Set Report (QMS)",
-    flagName: "isQmsReportActive",
+    value: ReportType.CI,
+    label: "Critical Incident Report (CI)",
+    flagName: "isCiReportActive",
   },
   {
     value: ReportType.HA,
@@ -28,14 +29,9 @@ export const reportOptions: ReportOption[] = [
     flagName: "isHaReportActive",
   },
   {
-    value: ReportType.CI,
-    label: "Critical Incident Report (CI)",
-    flagName: "isCiReportActive",
-  },
-  {
-    value: ReportType.PCP,
-    label: "Person-Centered Planning Report (PCP)",
-    flagName: "isPcpReportActive",
+    value: ReportType.HDCWC,
+    label: "HCBS Direct Care Worker Compensation Report (HDCWC)",
+    flagName: "isHdcwcReportActive",
   },
   {
     value: ReportType.IMA,
@@ -43,9 +39,19 @@ export const reportOptions: ReportOption[] = [
     flagName: "isImaReportActive",
   },
   {
+    value: ReportType.PCP,
+    label: "Person-Centered Planning Report (PCP)",
+    flagName: "isPcpReportActive",
+  },
+  {
     value: ReportType.QIP,
     label: "QMS Quality Improvement Plans (QMS QIP)",
     flagName: "isQipReportActive",
+  },
+  {
+    value: ReportType.QMS,
+    label: "Quality Measure Set Report (QMS)",
+    flagName: "isQmsReportActive",
   },
   {
     value: ReportType.WWL,

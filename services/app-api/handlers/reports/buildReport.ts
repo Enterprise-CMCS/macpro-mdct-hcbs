@@ -84,29 +84,17 @@ export const buildReport = async (
     delete (report as any).measureLookup;
   }
 
-  //certain checkbox forms that utilize waivers need to have their checkboxes generate during form generation
-  if (
-    [
-      ReportType.CI,
-      ReportType.PCP,
-      ReportType.HA,
-      ReportType.QMS,
-      ReportType.QIP,
-      ReportType.WWL,
-      ReportType.IMA,
-    ].includes(report.type)
-  ) {
-    const waiverQuestions = report.pages
-      .flatMap((page) => page.elements ?? [])
-      .filter((el) => el.id == "waivers-list-checkboxes")
-      .filter((el) => el.type === ElementType.Checkbox);
+  // Waiver checkboxes are generated during form generation, for any report that has them
+  const waiverQuestions = report.pages
+    .flatMap((page) => page.elements ?? [])
+    .filter((el) => el.id == "waivers-list-checkboxes")
+    .filter((el) => el.type === ElementType.Checkbox);
 
-    for (const question of waiverQuestions) {
-      question.choices = waiverList.map((waiver) => ({
-        label: `${waiver.waiverType}: ${waiver.controlNumber} ${waiver.programTitle}`,
-        value: waiver.id,
-      }));
-    }
+  for (const question of waiverQuestions) {
+    question.choices = waiverList.map((waiver) => ({
+      label: `${waiver.waiverType}: ${waiver.controlNumber} ${waiver.programTitle}`,
+      value: waiver.id,
+    }));
   }
 
   /**

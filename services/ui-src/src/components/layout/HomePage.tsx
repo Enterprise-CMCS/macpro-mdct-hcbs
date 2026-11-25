@@ -6,6 +6,7 @@ import {
   PageTemplate,
   QmsIntroductionCard,
   HaIntroductionCard,
+  HDCWCIntroductionCard,
   PCPIntroductionCard,
   IMAIntroductionCard,
   QipIntroductionCard,
@@ -27,6 +28,7 @@ export const HomePage = () => {
   const isQipReportActive = useFlags()?.isQipReportActive;
   const isWWLReportActive = useFlags()?.isWwlReportActive;
   const isIMAReportActive = useFlags()?.isImaReportActive;
+  const isHDCWCReportActive = useFlags()?.isHdcwcReportActive;
 
   return (
     <>
@@ -72,13 +74,14 @@ export const HomePage = () => {
                 </Box>
               </Box>
             )}
-            {(isHAReportActive || isWWLReportActive) && (
+            {(isHAReportActive || isHDCWCReportActive || isWWLReportActive) && (
               <Box>
                 <Heading as="h2" variant="h2" marginBottom="spacer3">
                   Transparency Reports
                 </Heading>
                 <Box display="flex" flexDirection="column" gap="spacer4">
                   {isHAReportActive && <HaIntroductionCard />}
+                  {isHDCWCReportActive && <HDCWCIntroductionCard />}
                   {isWWLReportActive && <WWLIntroductionCard />}
                 </Box>
               </Box>

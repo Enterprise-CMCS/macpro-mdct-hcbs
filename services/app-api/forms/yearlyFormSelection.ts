@@ -12,6 +12,7 @@ import { CMIT_LIST as CMIT_LIST_2028 } from "./2028/cmit";
 import { WAIVER_LIST as WAIVER_LIST_2028 } from "./2028/waivers";
 import { qmsReportTemplate as qmsReportTemplate2028 } from "./2028/qms/qms";
 import { haReportTemplate as harReportTemplate2028 } from "./2028/ha/ha";
+import { hdcwcReportTemplate as hdcwcReportTemplate2028 } from "./2028/hdcwc/hdcwc";
 import { imaReportTemplate as imaReportTemplate2028 } from "./2028/ima/ima";
 import { pcpReportTemplate as pcpReportTemplate2028 } from "./2028/pcp/pcp";
 import { qipReportTemplate as qipReportTemplate2028 } from "./2028/qip/qip";
@@ -25,6 +26,9 @@ const formsByYear = {
     qmsReportTemplate: qmsReportTemplate2026,
     haReportTemplate: harReportTemplate2026,
     ciReportTemplate: ciReportTemplate2026,
+    // IMA and HDCWC have no 2026 template
+    imaReportTemplate: undefined,
+    hdcwcReportTemplate: undefined,
     pcpReportTemplate: pcpReportTemplate2026,
     qipReportTemplate: qipReportTemplate2026,
     wwlReportTemplate: wwlReportTemplate2026,
@@ -35,6 +39,7 @@ const formsByYear = {
     qmsReportTemplate: qmsReportTemplate2028,
     haReportTemplate: harReportTemplate2028,
     ciReportTemplate: ciReportTemplate2028,
+    hdcwcReportTemplate: hdcwcReportTemplate2028,
     imaReportTemplate: imaReportTemplate2028,
     pcpReportTemplate: pcpReportTemplate2028,
     qipReportTemplate: qipReportTemplate2028,
@@ -67,6 +72,16 @@ export const getWaiverInfo = (year: number, state: StateAbbr) => {
 };
 
 export const getReportTemplate = (reportType: ReportType, year: number) => {
+  const template = selectReportTemplate(reportType, year);
+  if (!template) {
+    throw new Error(
+      `Invalid year - ${reportType} form template for ${year} is not implemented`
+    );
+  }
+  return template;
+};
+
+const selectReportTemplate = (reportType: ReportType, year: number) => {
   assertYearIsValid(year);
   switch (reportType) {
     case ReportType.QMS:
@@ -78,12 +93,9 @@ export const getReportTemplate = (reportType: ReportType, year: number) => {
     case ReportType.PCP:
       return formsByYear[year].pcpReportTemplate;
     case ReportType.IMA:
-      if (year < 2028) {
-        throw new Error(
-          `Invalid year - form templates for ${year} are not implemented`
-        );
-      }
-      return formsByYear[2028].imaReportTemplate;
+      return formsByYear[year].imaReportTemplate;
+    case ReportType.HDCWC:
+      return formsByYear[year].hdcwcReportTemplate;
     case ReportType.QIP:
       return formsByYear[year].qipReportTemplate;
     case ReportType.WWL:

@@ -8,6 +8,7 @@ import { qmsReportTemplate } from "./qms/qms";
 import { haReportTemplate } from "./ha/ha";
 import { wwlReportTemplate } from "./wwl/wwl";
 import { imaReportTemplate } from "./ima/ima";
+import { hdcwcReportTemplate } from "./hdcwc/hdcwc";
 import {
   CheckboxTemplate,
   ComplianceRules,
@@ -26,6 +27,7 @@ const reportsToTest = [
   { template: pcpReportTemplate, name: "PCP" },
   { template: wwlReportTemplate, name: "WWL" },
   { template: imaReportTemplate, name: "IMA" },
+  { template: hdcwcReportTemplate, name: "HDCWC" },
 ];
 
 describe.each(reportsToTest)("Report Template: $name", ({ template }) => {
