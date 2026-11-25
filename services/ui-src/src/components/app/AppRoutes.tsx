@@ -20,7 +20,6 @@ export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
 
   const { pathname } = useLocation();
-  const isPdfActive = useFlags()?.viewPdf;
   const componentInventoryPageEnabled = useFlags()?.componentInventory;
   const notificationsPageEnabled = useFlags()?.notificationsSystem;
   const firstRouteRender = useRef(true);
@@ -65,12 +64,10 @@ export const AppRoutes = () => {
             path="/report/:reportType/:state"
             element={<DashboardPage />}
           />
-          {isPdfActive && (
-            <Route
-              path="/report/:reportType/:state/:reportId/export"
-              element={<ExportedReportPage />}
-            />
-          )}
+          <Route
+            path="/report/:reportType/:state/:reportId/export"
+            element={<ExportedReportPage />}
+          />
           <Route
             path="/report/:reportType/:state/:reportId/:pageId?"
             element={<ReportPageWrapper />}

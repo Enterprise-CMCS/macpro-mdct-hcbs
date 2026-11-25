@@ -22,7 +22,6 @@ import { TableStatusIcon } from "components/tables/TableStatusIcon";
 import { reportBasePath } from "utils/other/routing";
 import { SubmitReportModal } from "./SubmitReportModal";
 import { submittableMetricsSelector } from "utils/state/selectors";
-import { useFlags } from "launchdarkly-react-client-sdk";
 import { ReportType } from "types";
 
 export const StatusTableElement = () => {
@@ -31,7 +30,6 @@ export const StatusTableElement = () => {
   const { reportType, state, reportId } = useParams();
   const navigate = useNavigate();
   const submittableMetrics = useStore(submittableMetricsSelector);
-  const isPdfActive = useFlags()?.viewPdf;
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   if (!report) {
@@ -105,19 +103,17 @@ export const StatusTableElement = () => {
         justifyContent="space-between"
         mt={5}
       >
-        {isPdfActive && (
-          <Button
-            as={RouterLink}
-            to={reportBasePath(report) + "/export"}
-            target="_blank"
-            rel="noopener noreferrer"
-            colorScheme="blue"
-            variant="outline"
-            leftIcon={<Image src={lookupIconPrimary} />}
-          >
-            Review PDF
-          </Button>
-        )}
+        <Button
+          as={RouterLink}
+          to={reportBasePath(report) + "/export"}
+          target="_blank"
+          rel="noopener noreferrer"
+          colorScheme="blue"
+          variant="outline"
+          leftIcon={<Image src={lookupIconPrimary} />}
+        >
+          Review PDF
+        </Button>
         {user?.userIsEndUser && (
           <Button
             alignSelf="flex-end"
