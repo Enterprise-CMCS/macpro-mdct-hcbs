@@ -28,12 +28,6 @@ vi.mock("react-router-dom", async (importOriginal) => ({
   useNavigate: () => mockNavigate,
 }));
 
-vi.mock("launchdarkly-react-client-sdk", () => ({
-  useFlags: vi.fn().mockReturnValue({
-    viewPdf: true,
-  }),
-}));
-
 const report = {
   type: "QMS",
   id: "mock-report-id",
